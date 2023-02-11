@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -305,9 +306,12 @@ public class ServiceControllerКлиент extends IntentService {
             }
             LinkedBlockingQueue<String> BluetoothСерверов =new LinkedBlockingQueue<>() ;///TODO  служебный xiaomi "BC:61:93:E6:F2:EB", МОЙ XIAOMI FC:19:99:79:D6:D4  //////      "BC:61:93:E6:E2:63","FF:19:99:79:D6:D4"
             uuidКлиент=        ParcelUuid.fromString("00000000-0000-1000-8000-00805f9b34fb").getUuid();
-            BluetoothСерверов.offer("BC:61:93:E6:F2:EB");//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4
+            // TODO: 11.02.2023 СПИСОК СЕРВЕРОВ
+    /*         BluetoothСерверов.offer("FC:19:99:79:D6:D4");//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  XIAOMI 9NTC*/
+            BluetoothСерверов.offer("48:59:A4:5B:C1:F5");//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  ZTE
+            BluetoothСерверов.offer("BC:61:93:E6:F2:EB");//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  XIAOMI 9A
 
-            BluetoothСерверов.spliterator().forEachRemaining(new Consumer<String>() {
+            BluetoothСерверов.forEach(new Consumer<String>() {
                 @Override
                 public void accept(String АдресаBluetoothСерверов) {
                     pairedDevices.add(bluetoothAdapter.getRemoteDevice(АдресаBluetoothСерверов)) ;
@@ -316,15 +320,17 @@ public class ServiceControllerКлиент extends IntentService {
             });
 
             ///  Set<BluetoothDevice> bluetoothDevicesДополнительный = bluetoothAdapter.getBondedDevices();
-            //ExecutorService esМенеджерПотоковСканер=Executors.newFixedThreadPool(pairedDevices.size());
+            ExecutorService esМенеджерПотоковСканер=Executors.newFixedThreadPool(pairedDevices.size());
             Log.d(this.getClass().getName(), "\n" + " pairedDevices.size() " + pairedDevices.size());
             pairedDevices.forEach(new Consumer<BluetoothDevice>() {///  bluetoothAdapter.getBondedDevices()
                 @Override
                 public void accept(BluetoothDevice bluetoothDevice) {
                     try{
                     // TODO: 26.01.2023 начало сервера GATT
+                        esМенеджерПотоковСканер.submit(()->{
                             МетодРаботыСТекущийСерверомGATT(bluetoothDevice);
                             Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT().... ");
+                        });
                     } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -514,6 +520,8 @@ public class ServiceControllerКлиент extends IntentService {
                 }
                 }
             });
+            // TODO: 11.02.2023
+            esМенеджерПотоковСканер.shutdown();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
