@@ -24,6 +24,7 @@
         android:padding="5dp"
         android:text="Статус"
         android:textStyle="bold"
+        android:textColor="#949796"
         app:layout_constraintBottom_toTopOf="@+id/bottomcontrolfragmen2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

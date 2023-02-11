@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
@@ -767,36 +768,45 @@ public class FragmentScannerUser extends Fragment {
                                     });
                                     Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                     break;
+                                // TODO: 11.02.2023 ДРУГИЕ ОТВЕТЫ
                                 case "SERVER#SousAvtoERROR" :
-                                    handler.postDelayed(()->{
+                                    handler.post(()->{
                                         materialButtonКакоеДействие.setText("Не Успешно !!!");
+                                        МетодЗаписываемСтатусРаботысGATT("Не Успешно !!!",new Date().toLocaleString());
+                                        // TODO: 08.02.2023 показыввем клиент смененый статус
+                                        String ПоследнийСтатусСканера=preferences.getString("СменаСтатусРАботыКлиентасGATT","");
+                                        String ПоследнаяДатаСканера=preferences.getString("СменаДАтаРАботыGATT","");
+                                        holder.   materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера.toUpperCase()+"\n"+ПоследнаяДатаСканера);
+                                        holder.   materialTextViewСтатусПоследнегоДействие.setTextColor(Color.RED);
+                                        holder. materialTextViewСтатусПоследнегоДействие.forceLayout();
+                                        holder. materialTextViewСтатусПоследнегоДействие.refreshDrawableState();
                                         handler.postDelayed(()-> {
                                             materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
                                         },3000);
-                                    },1000);
+                                    });
                                     Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                     break;
 
                                 case "SERVER#SERVER#SousAvtoNULL" :
-                                    handler.postDelayed(()->{
+                                    handler.post(()->{
                                         materialButtonКакоеДействие.setText("Нет связи !!!");//
+                                        Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                         handler.postDelayed(()-> {
                                             materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
                                         },3000);
-                                    },1000);
+                                    });
                                     Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                     break;
 
                                 case "SERVER#SousAvtoDONTDIVICE" :
-                                    handler.postDelayed(()->{
+                                    handler.post(()->{
                                         materialButtonКакоеДействие.setText("Нет  сопряжение !!!");
                                         Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
                                         v2.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
                                         handler.postDelayed(()-> {
                                             materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
                                         },3000);
-
-                                    },1000);
+                                    });
                                     Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                     break;
                                 default:
@@ -807,7 +817,7 @@ public class FragmentScannerUser extends Fragment {
                                     handler.post(()->{
                                         materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
                                         materialButtonКакоеДействие.startAnimation(animation);
-                                        materialButtonКакоеДействие.setText("Успешно");
+                                        materialButtonКакоеДействие.setText("Успешно !!!");
                                         Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
                                         v2.vibrate(VibrationEffect.createOneShot(250, VibrationEffect.DEFAULT_AMPLITUDE));
                                         // TODO: 07.02.2023
@@ -817,8 +827,10 @@ public class FragmentScannerUser extends Fragment {
                                         String ПоследнийСтатусСканера=preferences.getString("СменаСтатусРАботыКлиентасGATT","");
                                         String ПоследнаяДатаСканера=preferences.getString("СменаДАтаРАботыGATT","");
                                         holder.   materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера.toUpperCase()+"\n"+ПоследнаяДатаСканера);
+                                        holder.   materialTextViewСтатусПоследнегоДействие.setTextColor(Color.parseColor("#949796"));
                                         holder. materialTextViewСтатусПоследнегоДействие.forceLayout();
                                         holder. materialTextViewСтатусПоследнегоДействие.refreshDrawableState();
+                                        // TODO: 11.02.2023  
                                         handler.postDelayed(()-> {
                                             materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
                                         },3000);
