@@ -723,7 +723,7 @@ public class FragmentServerUser extends Fragment {
                                     case "SERVERGATTConnectiong" :
                                         handler.post(()->{
                                            holder.materialButtonСервер.setText("Коннект...");
-                                            Log.i(this.getClass().getName(), "  Коннект... на сервере ответ КЛИЕНТУ  " );
+                                            Log.i(this.getClass().getName(), "  Коннект... на сервере ответ КЛИЕНТУ  " );//
                                         });
                                         break;
                                     case "SERVERGATTRUNNIGSTARTING" :
