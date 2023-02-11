@@ -326,8 +326,9 @@ public class ServiceControllerServer extends IntentService {
                                 handler.post(()->{
                                     mutableLiveDataGATTServer.setValue("SERVERGATTConnectiong");
                                 });
-                                device.createBond();
+                                // TODO: 11.02.2023 после ПИНГА КЛИЕНТ ПРИСОДЕНИЕ СЕРВЕР---КЛИЕНТ
                                 server.connect(device,true);
+                                device.createBond();
                                 break;
                             case BluetoothProfile.STATE_DISCONNECTED:
                                 Log.i(TAG, "Connected to GATT server. BluetoothProfile.STATE_CONNECTING ");
@@ -466,12 +467,13 @@ public class ServiceControllerServer extends IntentService {
                                     Log.i(TAG, "SERVER#SousAvtoNULL" + " " + new Date().toLocaleString());
                                     characteristicsServer.setValue("SERVER#SousAvtoNULL");
                                 }
-                                server.notifyCharacteristicChanged(device, characteristic, true);
-                                server.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, new Date().toLocaleString().toString().getBytes(StandardCharsets.UTF_8));
-                                // TODO: 11.02.2023 close
-                                server.cancelConnection(device);
                             }
                         }
+                        // TODO: 11.02.2023 ответ КЛИЕНТУ
+                        server.notifyCharacteristicChanged(device, characteristic, true);
+                        server.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, new Date().toLocaleString().toString().getBytes(StandardCharsets.UTF_8));
+                        // TODO: 11.02.2023 close
+                        server.cancelConnection(device);
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

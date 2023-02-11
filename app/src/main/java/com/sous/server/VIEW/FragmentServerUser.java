@@ -755,7 +755,7 @@ public class FragmentServerUser extends Fragment {
                                         holder.materialButtonСервер.startAnimation(animationServer);
 
                                         // TODO: 09.02.2023 пинг
-                                            linkedКолПодкСерверу.add(mutableLiveDataGATTServer.getValue());
+                                        linkedКолПодкСерверу.add(mutableLiveDataGATTServer.getValue());
                                           linkedКолПодкСерверу=  linkedКолПодкСерверу.stream().distinct().collect(Collectors.toList());
                                         Log.i(this.getClass().getName(), "   linkedКолПодкСерверу  " +linkedКолПодкСерверу);
 
