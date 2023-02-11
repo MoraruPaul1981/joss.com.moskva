@@ -468,6 +468,8 @@ public class ServiceControllerServer extends IntentService {
                                 }
                                 server.notifyCharacteristicChanged(device, characteristic, true);
                                 server.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, new Date().toLocaleString().toString().getBytes(StandardCharsets.UTF_8));
+                                // TODO: 11.02.2023 close
+                                server.cancelConnection(device);
                             }
                         }
                     } catch (Exception e) {
