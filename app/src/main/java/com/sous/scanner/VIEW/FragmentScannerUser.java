@@ -768,24 +768,6 @@ public class FragmentScannerUser extends Fragment {
                                     });
                                     Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                     break;
-                                // TODO: 11.02.2023 ДРУГИЕ ОТВЕТЫ
-                                case "SERVER#SousAvtoERROR" :
-                                    handler.post(()->{
-                                        materialButtonКакоеДействие.setText("Не Успешно !!!");
-                                        МетодЗаписываемСтатусРаботысGATT("Не Успешно !!!",new Date().toLocaleString());
-                                        // TODO: 08.02.2023 показыввем клиент смененый статус
-                                        String ПоследнийСтатусСканера=preferences.getString("СменаСтатусРАботыКлиентасGATT","");
-                                        String ПоследнаяДатаСканера=preferences.getString("СменаДАтаРАботыGATT","");
-                                        holder.   materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера.toUpperCase()+"\n"+ПоследнаяДатаСканера);
-                                        holder.   materialTextViewСтатусПоследнегоДействие.setTextColor(Color.RED);
-                                        holder. materialTextViewСтатусПоследнегоДействие.forceLayout();
-                                        holder. materialTextViewСтатусПоследнегоДействие.refreshDrawableState();
-                                        handler.postDelayed(()-> {
-                                            materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
-                                        },3000);
-                                    });
-                                    Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
-                                    break;
 
                                 case "SERVER#SERVER#SousAvtoNULL" :
                                     handler.post(()->{
@@ -831,6 +813,26 @@ public class FragmentScannerUser extends Fragment {
                                         holder. materialTextViewСтатусПоследнегоДействие.forceLayout();
                                         holder. materialTextViewСтатусПоследнегоДействие.refreshDrawableState();
                                         // TODO: 11.02.2023  
+                                        handler.postDelayed(()-> {
+                                            materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
+                                        },3000);
+                                    });
+                                    Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
+                                    break;
+                                // TODO: 11.02.2023 ДРУГИЕ ОТВЕТЫ
+                                case "SERVER#SousAvtoERROR" :
+                                    handler.post(()->{
+                                        Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                                        v2.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+                                        materialButtonКакоеДействие.setText("Не Успешно !!!");
+                                        МетодЗаписываемСтатусРаботысGATT("Не Успешно !!!",new Date().toLocaleString());
+                                        // TODO: 08.02.2023 показыввем клиент смененый статус
+                                        String ПоследнийСтатусСканера=preferences.getString("СменаСтатусРАботыКлиентасGATT","");
+                                        String ПоследнаяДатаСканера=preferences.getString("СменаДАтаРАботыGATT","");
+                                        holder.   materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера.toUpperCase()+"\n"+ПоследнаяДатаСканера);
+                                        holder.   materialTextViewСтатусПоследнегоДействие.setTextColor(Color.RED);
+                                        holder. materialTextViewСтатусПоследнегоДействие.forceLayout();
+                                        holder. materialTextViewСтатусПоследнегоДействие.refreshDrawableState();
                                         handler.postDelayed(()-> {
                                             materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
                                         },3000);

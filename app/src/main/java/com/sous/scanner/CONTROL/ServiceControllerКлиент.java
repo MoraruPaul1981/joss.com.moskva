@@ -306,7 +306,7 @@ public class ServiceControllerКлиент extends IntentService {
             UUID     uuidКлючСервераXiaomi9AСлужебный =        ParcelUuid.fromString("20000000-0000-1000-8000-00805f9b34fb").getUuid();
             // TODO: 11.02.2023 СПИСОК СЕРВЕРОВ
             BluetoothСерверов.put("BC:61:93:E6:F2:EB",uuidКлючСервераXiaomi9AСлужебный);//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  XIAOMI 9A
-            BluetoothСерверов.put("48:59:A4:5B:C1:F5",uuidКлючСервераZTE);//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  XIAOMI 9A
+          //  BluetoothСерверов.put("48:59:A4:5B:C1:F5",uuidКлючСервераZTE);//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  XIAOMI 9A
           //  BluetoothСерверов.put("48:59:A4:5B:C1:F5",uuidКлючСервераZTE);//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  XIAOMI 9A
             ///  Set<BluetoothDevice> bluetoothDevicesДополнительный = bluetoothAdapter.getBondedDevices();
             /*         BluetoothСерверов.offer("FC:19:99:79:D6:D4");//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  XIAOMI 9NTC*/
