@@ -361,17 +361,13 @@ public class ServiceControllerServer extends IntentService {
                     try{
                         BluetoothGattService services = characteristic.getService();
                         if (services!=null) {
-                            BluetoothGattCharacteristic characteristicsServerXiaomi9A = services.getCharacteristic(   ParcelUuid.fromString("10000000-0000-1000-8000-00805f9b34fb").getUuid());
-                            BluetoothGattCharacteristic characteristicsServerZTE = services.getCharacteristic(ParcelUuid.fromString("20000000-0000-1000-8000-00805f9b34fb").getUuid());
+                            BluetoothGattCharacteristic characteristicsДляСерверОтКлиента = services.getCharacteristic(   ParcelUuid.fromString("10000000-0000-1000-8000-00805f9b34fb").getUuid());
+                           // BluetoothGattCharacteristic characteristicsServerZTE = services.getCharacteristic(ParcelUuid.fromString("20000000-0000-1000-8000-00805f9b34fb").getUuid());
                             final Integer[] РезультатЗаписиДанныхПИнгаДвайсаВБАзу = {0};
                             // TODO: 12.02.2023 ОТВЕТ КЛИЕНТУ
-                            if (characteristicsServerXiaomi9A!=null) {
-                                МетодОтветаОТGATTСеврераКлиентуДанныеми(device, requestId, characteristic, offset, value, characteristicsServerXiaomi9A, РезультатЗаписиДанныхПИнгаДвайсаВБАзу);
-                                Log.i(TAG, "onCharacteristicWriteRequest to GATT server  characteristicsServerXiaomi9A" + characteristicsServerXiaomi9A);
-                            }
-                            if (characteristicsServerZTE!=null) {
-                                МетодОтветаОТGATTСеврераКлиентуДанныеми(device, requestId, characteristic, offset, value, characteristicsServerZTE, РезультатЗаписиДанныхПИнгаДвайсаВБАзу);
-                                Log.i(TAG, "onCharacteristicWriteRequest to GATT server  characteristicsServerZTE" + characteristicsServerZTE);
+                            if (characteristicsДляСерверОтКлиента!=null) {
+                                МетодОтветаОТGATTСеврераКлиентуДанныеми(device, requestId, characteristic, offset, value, characteristicsДляСерверОтКлиента, РезультатЗаписиДанныхПИнгаДвайсаВБАзу);
+                                Log.i(TAG, "onCharacteristicWriteRequest to GATT server  characteristicsДляСерверОтКлиента" + characteristicsДляСерверОтКлиента);
                             }
                         }
                     } catch (Exception e) {
@@ -391,12 +387,12 @@ public class ServiceControllerServer extends IntentService {
                 }
 
                 @SuppressLint("NewApi")
-                private void МетодОтветаОТGATTСеврераКлиентуДанныеми(BluetoothDevice device,
-                                                                     int requestId,
-                                                                     BluetoothGattCharacteristic characteristic,
-                                                                     int offset, byte[] value,
-                                                                     BluetoothGattCharacteristic characteristicsServerОтКлиента,
-                                                                     Integer[] РезультатЗаписиДанныхПИнгаДвайсаВБАзу) {
+                private void МетодОтветаОТGATTСеврераКлиентуДанныеми(@NonNull BluetoothDevice device,
+                                                                     @NonNull int requestId,
+                                                                     @NonNull BluetoothGattCharacteristic characteristic,
+                                                                     @NonNull  int offset, byte[] value,
+                                                                     @NonNull  BluetoothGattCharacteristic characteristicsServerОтКлиента,
+                                                                     @NonNull Integer[] РезультатЗаписиДанныхПИнгаДвайсаВБАзу) {
                     try {
                         if (value != null) {
                             String ПришлиДанныеОтКлиентаЗапрос = new String(value);
@@ -551,36 +547,51 @@ public class ServiceControllerServer extends IntentService {
          /*   uuidSERVER = ParcelUuid.fromString("00000000-0000-1000-8000-00805f9b34fb").getUuid();
             Log.d(this.getClass().getName(), " pairedDevices " + pairedDevices + "uuidSERVER " + uuidSERVER);*/
 
-            LinkedHashMap<String,UUID> BluetoothСерверов =new LinkedHashMap<>() ;///TODO  служебный xiaomi "BC:61:93:E6:F2:EB", МОЙ XIAOMI FC:19:99:79:D6:D4  //////      "BC:61:93:E6:E2:63","FF:19:99:79:D6:D4"
+            ///TODO  служебный xiaomi "BC:61:93:E6:F2:EB", МОЙ XIAOMI FC:19:99:79:D6:D4  //////      "BC:61:93:E6:E2:63","FF:19:99:79:D6:D4"
             UUID     uuidXiami9A=        ParcelUuid.fromString("10000000-0000-1000-8000-00805f9b34fb").getUuid();
             UUID     uuidZTE=        ParcelUuid.fromString("20000000-0000-1000-8000-00805f9b34fb").getUuid();
-            BluetoothСерверов.put("BC:61:93:E6:F2:EB",uuidXiami9A);//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  XIAOMI 9A
-            BluetoothСерверов.put("48:59:A4:5B:C1:F5",uuidZTE);
             Log.d(this.getClass().getName(), " pairedDevices " + pairedDevices + "uuidXiami9A " + uuidXiami9A + " uuidZTE " +uuidZTE);
-                BluetoothСерверов.forEach(new BiConsumer<String, UUID>() {
-                    @Override
-                    public void accept(String s, UUID uuidSERVER) {
-                        BluetoothGattService service = new BluetoothGattService(uuidSERVER, BluetoothGattService.SERVICE_TYPE_PRIMARY);
+            BluetoothGattService serviceXiami9A = new BluetoothGattService(uuidXiami9A, BluetoothGattService.SERVICE_TYPE_PRIMARY);
+            BluetoothGattService serviceZTE = new BluetoothGattService(uuidZTE, BluetoothGattService.SERVICE_TYPE_PRIMARY);
+            // TODO: 12.02.2023 первый сервер
+            BluetoothGattCharacteristic characteristicXiami9A = new BluetoothGattCharacteristic(uuidXiami9A,
+                    BluetoothGattCharacteristic.PROPERTY_READ |
+                            BluetoothGattCharacteristic.PROPERTY_WRITE |
+                            BluetoothGattCharacteristic.PROPERTY_NOTIFY,
+                    BluetoothGattCharacteristic.PERMISSION_READ |
+                            BluetoothGattCharacteristic.PROPERTY_INDICATE |
+                            BluetoothGattCharacteristic.PROPERTY_BROADCAST |
+                            BluetoothGattCharacteristic.PERMISSION_WRITE);
+            characteristicXiami9A.addDescriptor(new
+                    BluetoothGattDescriptor(uuidXiami9A,
+                    BluetoothGattCharacteristic.PERMISSION_WRITE | BluetoothGattCharacteristic.PERMISSION_READ
+                            | BluetoothGattCharacteristic.PROPERTY_READ | BluetoothGattCharacteristic.PROPERTY_WRITE |
+                            BluetoothGattCharacteristic.PROPERTY_INDICATE |
+                            BluetoothGattCharacteristic.PROPERTY_BROADCAST
+                            | BluetoothGattCharacteristic.PROPERTY_NOTIFY));
+            serviceXiami9A.addCharacteristic(characteristicXiami9A);
 
-                        BluetoothGattCharacteristic characteristic = new BluetoothGattCharacteristic(uuidSERVER,
-                                BluetoothGattCharacteristic.PROPERTY_READ |
-                                        BluetoothGattCharacteristic.PROPERTY_WRITE |
-                                        BluetoothGattCharacteristic.PROPERTY_NOTIFY,
-                                BluetoothGattCharacteristic.PERMISSION_READ |
-                                        BluetoothGattCharacteristic.PROPERTY_INDICATE |
-                                        BluetoothGattCharacteristic.PROPERTY_BROADCAST |
-                                        BluetoothGattCharacteristic.PERMISSION_WRITE);
-                        characteristic.addDescriptor(new
-                                BluetoothGattDescriptor(uuidSERVER,
-                                BluetoothGattCharacteristic.PERMISSION_WRITE | BluetoothGattCharacteristic.PERMISSION_READ
-                                        | BluetoothGattCharacteristic.PROPERTY_READ | BluetoothGattCharacteristic.PROPERTY_WRITE |
-                                        BluetoothGattCharacteristic.PROPERTY_INDICATE |
-                                        BluetoothGattCharacteristic.PROPERTY_BROADCAST
-                                        | BluetoothGattCharacteristic.PROPERTY_NOTIFY));
-                        service.addCharacteristic(characteristic);
-                        server.addService(service);
-                    }
-                });
+
+            // TODO: 12.02.2023 второе сервер
+            BluetoothGattCharacteristic characteristicZTE = new BluetoothGattCharacteristic(uuidZTE,
+                    BluetoothGattCharacteristic.PROPERTY_READ |
+                            BluetoothGattCharacteristic.PROPERTY_WRITE |
+                            BluetoothGattCharacteristic.PROPERTY_NOTIFY,
+                    BluetoothGattCharacteristic.PERMISSION_READ |
+                            BluetoothGattCharacteristic.PROPERTY_INDICATE |
+                            BluetoothGattCharacteristic.PROPERTY_BROADCAST |
+                            BluetoothGattCharacteristic.PERMISSION_WRITE);
+            characteristicZTE.addDescriptor(new
+                    BluetoothGattDescriptor(uuidZTE,
+                    BluetoothGattCharacteristic.PERMISSION_WRITE | BluetoothGattCharacteristic.PERMISSION_READ
+                            | BluetoothGattCharacteristic.PROPERTY_READ | BluetoothGattCharacteristic.PROPERTY_WRITE |
+                            BluetoothGattCharacteristic.PROPERTY_INDICATE |
+                            BluetoothGattCharacteristic.PROPERTY_BROADCAST
+                            | BluetoothGattCharacteristic.PROPERTY_NOTIFY));
+            serviceZTE.addCharacteristic(characteristicZTE);
+            // TODO: 12.02.2023 добавлев в сервер
+            server.addService(serviceXiami9A);
+            server.addService(serviceZTE);
             Log.d(this.getClass().getName(), "\n" + " pairedDevices.size() " + pairedDevices.size());
         } catch (Exception e) {
             e.printStackTrace();
