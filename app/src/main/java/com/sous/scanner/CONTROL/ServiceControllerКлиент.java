@@ -40,6 +40,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -309,7 +311,8 @@ public class ServiceControllerКлиент extends IntentService {
             ///  Set<BluetoothDevice> bluetoothDevicesДополнительный = bluetoothAdapter.getBondedDevices();
             /*         BluetoothСерверов.offer("FC:19:99:79:D6:D4");//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  XIAOMI 9NTC*/
             /// BluetoothСерверов.offer("48:59:A4:5B:C1:F5");//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  ZTE
-            ExecutorService esМенеджерПотоковСканер=Executors.newFixedThreadPool(BluetoothСерверов.size());
+            //ExecutorService esМенеджерПотоковСканер=Executors.newFixedThreadPool(BluetoothСерверов.size());
+            CompletionService esМенеджерПотоковСканер= new ExecutorCompletionService<>(Executors.newFixedThreadPool(BluetoothСерверов.size()) );
             Log.d(this.getClass().getName(), "\n" + " pairedDevices.size() " + BluetoothСерверов.size());
             BluetoothСерверов.forEach(new BiConsumer<String, UUID>() {
                 @Override
@@ -322,6 +325,7 @@ public class ServiceControllerКлиент extends IntentService {
                             // TODO: 12.02.2023  запускаем задачу в потоке
                             МетодРаботыСТекущийСерверомGATT(bluetoothDevice, UuidГлавныйКлючСерверGATT,uuid);
                             Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT()....  UuidСамСервер "+ UuidГлавныйКлючСерверGATT +"uuid " +uuid);
+                            return null;
                         });
                     } catch (Exception e) {
                     e.printStackTrace();
@@ -510,7 +514,7 @@ public class ServiceControllerКлиент extends IntentService {
                 }
             });
             // TODO: 11.02.2023
-            esМенеджерПотоковСканер.shutdown();
+            esМенеджерПотоковСканер.poll();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
