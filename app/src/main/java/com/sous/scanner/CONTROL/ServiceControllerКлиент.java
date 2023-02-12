@@ -39,6 +39,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -48,6 +49,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
@@ -76,8 +78,6 @@ public class ServiceControllerКлиент extends IntentService {
     private ExecutorService executorServiceСканер;
     private BluetoothManager bluetoothManager;
     private BluetoothAdapter bluetoothAdapter;
-    private Set<BluetoothDevice> pairedDevices=new HashSet<>();
-    private    UUID uuidКлиент;
     public ServiceControllerКлиент() {
         super("ServiceControllerКлиент");
     }
@@ -304,31 +304,26 @@ public class ServiceControllerКлиент extends IntentService {
             while (bluetoothAdapter.isEnabled()==false){
                 bluetoothAdapter.enable();
             }
-            LinkedBlockingQueue<String> BluetoothСерверов =new LinkedBlockingQueue<>() ;///TODO  служебный xiaomi "BC:61:93:E6:F2:EB", МОЙ XIAOMI FC:19:99:79:D6:D4  //////      "BC:61:93:E6:E2:63","FF:19:99:79:D6:D4"
-            uuidКлиент=        ParcelUuid.fromString("00000000-0000-1000-8000-00805f9b34fb").getUuid();
+            LinkedHashMap<String,UUID> BluetoothСерверов =new LinkedHashMap<>() ;///TODO  служебный xiaomi "BC:61:93:E6:F2:EB", МОЙ XIAOMI FC:19:99:79:D6:D4  //////      "BC:61:93:E6:E2:63","FF:19:99:79:D6:D4"
+             UUID     uuidXiami9A=        ParcelUuid.fromString("10000000-0000-1000-8000-00805f9b34fb").getUuid();
+             UUID     uuidZTE=        ParcelUuid.fromString("20000000-0000-1000-8000-00805f9b34fb").getUuid();
             // TODO: 11.02.2023 СПИСОК СЕРВЕРОВ
     /*         BluetoothСерверов.offer("FC:19:99:79:D6:D4");//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  XIAOMI 9NTC*/
-            BluetoothСерверов.offer("48:59:A4:5B:C1:F5");//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  ZTE
-            BluetoothСерверов.offer("BC:61:93:E6:F2:EB");//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  XIAOMI 9A
-
-            BluetoothСерверов.forEach(new Consumer<String>() {
-                @Override
-                public void accept(String АдресаBluetoothСерверов) {
-                    pairedDevices.add(bluetoothAdapter.getRemoteDevice(АдресаBluetoothСерверов)) ;
-                    Log.d(this.getClass().getName()," pairedDevices " +pairedDevices  + "uuidКлиент "+uuidКлиент );
-                }
-            });
-
+           /// BluetoothСерверов.offer("48:59:A4:5B:C1:F5");//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  ZTE
+            BluetoothСерверов.put("BC:61:93:E6:F2:EB",uuidXiami9A);//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  XIAOMI 9A
+            BluetoothСерверов.put("48:59:A4:5B:C1:F5",uuidZTE);//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  XIAOMI 9A
             ///  Set<BluetoothDevice> bluetoothDevicesДополнительный = bluetoothAdapter.getBondedDevices();
-            ExecutorService esМенеджерПотоковСканер=Executors.newFixedThreadPool(pairedDevices.size());
-            Log.d(this.getClass().getName(), "\n" + " pairedDevices.size() " + pairedDevices.size());
-            pairedDevices.forEach(new Consumer<BluetoothDevice>() {///  bluetoothAdapter.getBondedDevices()
+            ExecutorService esМенеджерПотоковСканер=Executors.newFixedThreadPool(BluetoothСерверов.size());
+            Log.d(this.getClass().getName(), "\n" + " pairedDevices.size() " + BluetoothСерверов.size());
+            BluetoothСерверов.forEach(new BiConsumer<String, UUID>() {
                 @Override
-                public void accept(BluetoothDevice bluetoothDevice) {
+                public void accept(String АдресаBluetoothСерверов, UUID uuid) {
                     try{
                     // TODO: 26.01.2023 начало сервера GATT
+                        BluetoothDevice bluetoothDevice=bluetoothAdapter.getRemoteDevice(АдресаBluetoothСерверов);
+                        Log.d(this.getClass().getName()," bluetoothDevice " +bluetoothDevice  );
                         esМенеджерПотоковСканер.submit(()->{
-                            МетодРаботыСТекущийСерверомGATT(bluetoothDevice);
+                            МетодРаботыСТекущийСерверомGATT(bluetoothDevice,uuid);
                             Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT().... ");
                         });
                     } catch (Exception e) {
@@ -348,7 +343,7 @@ public class ServiceControllerКлиент extends IntentService {
 
                 }
 
-                private void МетодРаботыСТекущийСерверомGATT(@NonNull  BluetoothDevice bluetoothDevice) {
+                private void МетодРаботыСТекущийСерверомGATT(@NonNull  BluetoothDevice bluetoothDevice,@NonNull  UUID uuid) {
                     // TODO: 25.01.2023 ПЕРВЫЙ ВАРИАНТ СЕРВЕР gatt
                     try{
                     BluetoothGattCallback bluetoothGattCallback = new BluetoothGattCallback() {
@@ -393,11 +388,11 @@ public class ServiceControllerКлиент extends IntentService {
                             super.onServicesDiscovered(gatt, status);
                             try{
                                 if (status == BluetoothGatt.GATT_SUCCESS) {
-                                    BluetoothGattService services = gatt.getService(uuidКлиент);
+                                    BluetoothGattService services = gatt.getService(uuid);
                                     if (services!=null) {
                                         Boolean КоннектССевромGATT = gatt.connect();
                                         Log.d(TAG, "Trying КоннектССевромGATT " + КоннектССевромGATT);
-                                        BluetoothGattCharacteristic characteristics = services.getCharacteristic(uuidКлиент);
+                                        BluetoothGattCharacteristic characteristics = services.getCharacteristic(uuid);
                                         gatt.setCharacteristicNotification(characteristics, true);
                                         characteristics.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
                                         ///Once you have a characteristic object, you can perform read/write
