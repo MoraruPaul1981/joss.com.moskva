@@ -95,11 +95,14 @@ public class ServiceControllerServer extends IntentService {
     public ServiceControllerServer() {
         super("ServiceControllerServer");
     }
-    private MutableLiveData<String> mutableLiveDataGATTServer;
+    private MutableLiveData<Bundle> mutableLiveDataGATTServer;
     private        LocationManager locationManager ;
     private  List<Address> addressesgetGPS;
     private  Location lastLocation;
-    private  UUID UuidГлавныйКлючСервер;
+    private  UUID UuidГлавныйКлючСерверGATT;
+    private  UUID     uuidКлючСервераZTE;
+    private   UUID uuidКлючСервераXiaomi9AСлужебный;
+    private  Bundle bundleСервер;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -247,13 +250,13 @@ public class ServiceControllerServer extends IntentService {
     }
 
     // TODO: 30.11.2022 сервер СКАНИРОВАНИЯ
-    public void МетодГлавныйСеврера(@NonNull Handler handler, @NonNull Context context, @NonNull BluetoothManager bluetoothManager, @NonNull MutableLiveData<String>mutableLiveDataGATTServer) {
+    public void МетодГлавныйСеврера(@NonNull Handler handler, @NonNull Context context, @NonNull BluetoothManager bluetoothManager, @NonNull MutableLiveData<Bundle>mutableLiveDataGATTServer) {
         this.context = context;
         this.handler = handler;
         this.bluetoothManagerServer = bluetoothManager;
         this.mutableLiveDataGATTServer=mutableLiveDataGATTServer;
         // TODO: 08.12.2022 уснатавливаем настройки Bluetooth
-
+        bundleСервер=new Bundle();
         Log.w(this.getClass().getName(), " SERVER  bluetoothManager  " + bluetoothManager + " bluetoothAdapter " + bluetoothAdapter);
         try {
             МетодЗапускаСервера();
@@ -299,7 +302,9 @@ public class ServiceControllerServer extends IntentService {
                     locationManager = (LocationManager)
                             getSystemService(Context.LOCATION_SERVICE);
                     handler.post(()->{
-                        mutableLiveDataGATTServer.setValue("SERVERGATTRUNNIGSTARTING");
+                        bundleСервер.clear();
+                        bundleСервер.putString("Статус","SERVERGATTRUNNIGSTARTING");
+                        mutableLiveDataGATTServer.setValue(bundleСервер);
                         // TODO: 07.02.2023  создаем GPS
                         МетодПолучениеGPS();
                 });
@@ -312,25 +317,25 @@ public class ServiceControllerServer extends IntentService {
                     try {
                         switch (newState) {
                             case BluetoothProfile.STATE_CONNECTED:
-                                Log.i(TAG, "Connected to GATT server. BluetoothProfile.STATE_CONNECTED");
+                                Log.i(TAG, "Connected to GATT server. BluetoothProfile.STATE_CONNECTED device.getAddress()  " +   device.getAddress().toString());
                                 Vibrator v2 = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-                                v2.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+                                v2.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
                                 handler.post(()->{
-                                    mutableLiveDataGATTServer.setValue("SERVERGATTConnectiong");
+                                    bundleСервер.clear();
+                                    bundleСервер.putString("Статус","SERVERGATTConnectiong");
+                                    bundleСервер.putString("Дивайс",device.getName());
+                                    mutableLiveDataGATTServer.setValue(bundleСервер);
                                 });
                                 server.connect(device,true);
                                 device.createBond();
                                 break;
                             case BluetoothProfile.STATE_DISCONNECTED:
-                                Log.i(TAG, "Connected to GATT server. BluetoothProfile.STATE_CONNECTING ");
+                                Log.i(TAG, "Connected to GATT server. BluetoothProfile.STATE_CONNECTING   device.getAddress() "+  device.getAddress());
                                 server.cancelConnection(device);
                                 break;
                         }
 
                     } catch (Exception e) {
-                        handler.post(()->{
-                            mutableLiveDataGATTServer.setValue("SERVERGATTRUNNIGERRORS");
-                        });
                         e.printStackTrace();
                         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                                 + Thread.currentThread().getStackTrace()[2].getLineNumber());
@@ -368,14 +373,15 @@ public class ServiceControllerServer extends IntentService {
                                     @Override
                                     public void accept(BluetoothGattCharacteristic bluetoothGattCharacteristic) {
                                         // TODO: 12.02.2023 ОТВЕТ КЛИЕНТУ
-                                        if (bluetoothGattCharacteristic!=null) {
+                                        if (bluetoothGattCharacteristic.getUuid()== uuidКлючСервераXiaomi9AСлужебный) {
                                             МетодОтветаОТGATTСеврераКлиентуДанныеми(device, requestId, characteristic, offset, value);
-                                            Log.i(TAG, "onCharacteristicWriteRequest to GATT server  characteristicsДляСерверОтКлиента" + characteristicsДляСерверОтКлиента);
+                                            Log.i(TAG, "onCharacteristicWriteRequest to GATT server  characteristicsДляСерверОтКлиента" + characteristicsДляСерверОтКлиента+
+                                                    " bluetoothGattCharacteristic.getUuid() " +bluetoothGattCharacteristic.getUuid());
                                         }
                                     }
                                 });
                                 // TODO: 12.02.2023 после цикла выключаем пользователя
-                                server.cancelConnection(device);
+                               // server.cancelConnection(device);
                             }
                         }
                     } catch (Exception e) {
@@ -439,7 +445,6 @@ public class ServiceControllerServer extends IntentService {
                                 contentValuesВставкаДанных[0].put("date_update", new Date().toLocaleString());
                                 Log.i(TAG, "contentValuesВставкаДанных.length" + contentValuesВставкаДанных.length);
 
-
                                 Completable completableВставка = Completable.complete()
                                         .subscribeOn(Schedulers.io())
                                         .fromSupplier(new Supplier<Integer>() {
@@ -447,27 +452,9 @@ public class ServiceControllerServer extends IntentService {
                                             public Integer get() throws Throwable {
                                                 // TODO: 09.02.2023  запись в базу дивайса Отметка сотрдунка
                                                 РезультатЗаписиДанныхПИнгаДвайсаВБАзу[0] = МетодЗаписиОтмечаногоСотрудникаВБАзу(contentValuesВставкаДанных);
-                                                Log.i(TAG, " РезультатЗаписиДанныхПИнгаДвайсаВБАзу " + РезультатЗаписиДанныхПИнгаДвайсаВБАзу[0] + " contentValuesВставкаДанных " + contentValuesВставкаДанных);
+                                                Log.i(TAG, " РезультатЗаписиДанныхПИнгаДвайсаВБАзу " + РезультатЗаписиДанныхПИнгаДвайсаВБАзу[0] +
+                                                        " contentValuesВставкаДанных " + contentValuesВставкаДанных);
                                                 return РезультатЗаписиДанныхПИнгаДвайсаВБАзу[0];
-                                            }
-                                        })
-                                        .doOnComplete(new Action() {
-                                            @Override
-                                            public void run() throws Throwable {
-                                                if (РезультатЗаписиДанныхПИнгаДвайсаВБАзу[0] > 0) {
-                                                    // TODO: 09.02.2023 сам статус дляОтвета;
-                                                    handler.post(()->{
-                                                        mutableLiveDataGATTServer.setValue(ДанныеСодранныеОтКлиента);
-                                                        characteristicsServerОтКлиента.setValue("SERVER#SousAvtoSuccess");
-                                                    });
-                                                } else {
-                                                    // TODO: 09.02.2023 сам статус дляОтвета;
-                                                    handler.post(()->{
-                                                        mutableLiveDataGATTServer.setValue("Пинг прошел ," + "\n" +
-                                                                "Без записи в базу !!!");
-                                                        characteristicsServerОтКлиента.setValue("SERVER#SousAvtoERROR");
-                                                    });
-                                                }
                                             }
                                         })
                                         .doOnError(new Consumer<Throwable>() {
@@ -485,6 +472,37 @@ public class ServiceControllerServer extends IntentService {
                                                 valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
                                                 new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
                                             }
+                                        })
+                                        .doOnComplete(new Action() {
+                                            @Override
+                                            public void run() throws Throwable {
+                                                Vibrator v2 = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                                                v2.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
+                                                if (РезультатЗаписиДанныхПИнгаДвайсаВБАзу[0] > 0) {
+                                                    // TODO: 09.02.2023 сам статус дляОтвета;
+                                                    Log.i(TAG, "SERVER#SousAvtoSuccess РезультатЗаписиДанныхПИнгаДвайсаВБАзу " + " " + РезультатЗаписиДанныхПИнгаДвайсаВБАзу);
+                                                    handler.post(()->{
+                                                        bundleСервер.clear();
+                                                        bundleСервер.putString("Статус","SERVER#SousAvtoSuccess");
+                                                        bundleСервер.putString("ОтветКлиентуВсатвкаВБАзу",ДанныеСодранныеОтКлиента);
+                                                        bundleСервер.putString("Дивайс",device.getName());
+                                                        mutableLiveDataGATTServer.setValue(bundleСервер);
+                                                        characteristicsServerОтКлиента.setValue("SERVER#SousAvtoSuccess");
+                                                    });
+                                                } else {
+                                                    // TODO: 09.02.2023 сам статус дляОтвета;
+                                                    handler.post(()->{
+                                                        Log.i(TAG, "SERVER#SousAvtoERROR РезультатЗаписиДанныхПИнгаДвайсаВБАзу " + " " + РезультатЗаписиДанныхПИнгаДвайсаВБАзу);
+                                                        bundleСервер.clear();
+                                                        bundleСервер.putString("Статус","SERVER#SousAvtoERROR");
+                                                        bundleСервер.putString("ОтветКлиентуВсатвкаВБАзу","Пинг прошел ," + "\n" +
+                                                                "Без записи в базу !!!");
+                                                        bundleСервер.putString("Дивайс",device.getName());
+                                                        mutableLiveDataGATTServer.setValue(bundleСервер);
+                                                        characteristicsServerОтКлиента.setValue("SERVER#SousAvtoERROR");
+                                                    });
+                                                }
+                                            }
                                         });
                                 completableВставка.blockingSubscribe();
                                 Log.i(TAG, "SERVER#SousAvtoSuccess" + " " + new Date().toLocaleString());
@@ -496,6 +514,7 @@ public class ServiceControllerServer extends IntentService {
                             Log.i(TAG, "SERVER#SousAvtoNULL" + " " + new Date().toLocaleString());
                             characteristicsServerОтКлиента.setValue("SERVER#SousAvtoNULL");
                         }
+                        // TODO: 12.02.2023  ОТВЕТ !!!
                         server.notifyCharacteristicChanged(device, characteristicsServerОтКлиента, true);
                         server.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, new Date().toLocaleString().toString().getBytes(StandardCharsets.UTF_8));
                 } catch (Exception e) {
@@ -554,13 +573,13 @@ public class ServiceControllerServer extends IntentService {
             Log.d(this.getClass().getName(), " pairedDevices " + pairedDevices + "uuidSERVER " + uuidSERVER);*/
 
             ///TODO  служебный xiaomi "BC:61:93:E6:F2:EB", МОЙ XIAOMI FC:19:99:79:D6:D4  //////      "BC:61:93:E6:E2:63","FF:19:99:79:D6:D4"
-            UuidГлавныйКлючСервер =        ParcelUuid.fromString("10000000-0000-1000-8000-00805f9b34fb").getUuid();
-            // TODO: 12.02.2023 Адреса серверов для Клиентна 
-            UUID     uuidКлючСервераZTE=        ParcelUuid.fromString("30000000-0000-1000-8000-00805f9b34fb").getUuid();
-            UUID     uuidКлючСервераXiaomi9C=        ParcelUuid.fromString("20000000-0000-1000-8000-00805f9b34fb").getUuid();
-            BluetoothGattService service= new BluetoothGattService(UuidГлавныйКлючСервер, BluetoothGattService.SERVICE_TYPE_PRIMARY);
+            UuidГлавныйКлючСерверGATT =        ParcelUuid.fromString("10000000-0000-1000-8000-00805f9b34fb").getUuid();
+            // TODO: 12.02.2023 Адреса серверов для Клиентна
+               uuidКлючСервераZTE=        ParcelUuid.fromString("30000000-0000-1000-8000-00805f9b34fb").getUuid();
+               uuidКлючСервераXiaomi9AСлужебный =        ParcelUuid.fromString("20000000-0000-1000-8000-00805f9b34fb").getUuid();
+            BluetoothGattService service= new BluetoothGattService(UuidГлавныйКлючСерверGATT, BluetoothGattService.SERVICE_TYPE_PRIMARY);
             // TODO: 12.02.2023 первый сервер
-            BluetoothGattCharacteristic characteristicXiami9A = new BluetoothGattCharacteristic(uuidКлючСервераXiaomi9C,
+            BluetoothGattCharacteristic characteristicXiami9A = new BluetoothGattCharacteristic(uuidКлючСервераXiaomi9AСлужебный,
                     BluetoothGattCharacteristic.PROPERTY_READ |
                             BluetoothGattCharacteristic.PROPERTY_WRITE |
                             BluetoothGattCharacteristic.PROPERTY_NOTIFY,
@@ -569,13 +588,13 @@ public class ServiceControllerServer extends IntentService {
                             BluetoothGattCharacteristic.PROPERTY_BROADCAST |
                             BluetoothGattCharacteristic.PERMISSION_WRITE);
             characteristicXiami9A.addDescriptor(new
-                    BluetoothGattDescriptor(uuidКлючСервераXiaomi9C,
+                    BluetoothGattDescriptor(uuidКлючСервераXiaomi9AСлужебный,
                     BluetoothGattCharacteristic.PERMISSION_WRITE | BluetoothGattCharacteristic.PERMISSION_READ
                             | BluetoothGattCharacteristic.PROPERTY_READ | BluetoothGattCharacteristic.PROPERTY_WRITE |
                             BluetoothGattCharacteristic.PROPERTY_INDICATE |
                             BluetoothGattCharacteristic.PROPERTY_BROADCAST
                             | BluetoothGattCharacteristic.PROPERTY_NOTIFY));
-
+            service.addCharacteristic(characteristicXiami9A);
             // TODO: 12.02.2023 добавлев в сервер
             // TODO: 12.02.2023 второе сервер
             BluetoothGattCharacteristic characteristicZTE = new BluetoothGattCharacteristic(uuidКлючСервераZTE,
@@ -594,7 +613,6 @@ public class ServiceControllerServer extends IntentService {
                             BluetoothGattCharacteristic.PROPERTY_BROADCAST
                             | BluetoothGattCharacteristic.PROPERTY_NOTIFY));
             service.addCharacteristic(characteristicZTE);
-            service.addCharacteristic(characteristicXiami9A);
             // TODO: 12.02.2023 добавлев в сервер
             server.addService(service);
             Log.d(this.getClass().getName(), "\n" + " pairedDevices.size() " + pairedDevices.size());

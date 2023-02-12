@@ -64,7 +64,7 @@ public class FragmentServerUser extends Fragment {
     private  Handler handler;
     private ServiceControllerServer.LocalBinderСканнер binderСканнерServer;
     private BluetoothManager bluetoothManager;
-    private MutableLiveData<String> mutableLiveDataGATTServer;
+    private MutableLiveData<Bundle> mutableLiveDataGATTServer;
     private List<String> linkedКолПодкСерверу;
 
     private Long version;
@@ -679,7 +679,9 @@ public class FragmentServerUser extends Fragment {
                         @Override
                         public void onClick(View v) {
                             Log.i(this.getClass().getName(), "   запуск сервера МетодЗапускGattServer " + v );
-                            mutableLiveDataGATTServer.setValue("SERVERGATTRUNNIGReBOOT");
+                          Bundle   bundleСервер=new Bundle();
+                            bundleСервер.putString("Статус","SERVERGATTRUNNIGSTARTING");
+                            mutableLiveDataGATTServer.setValue(bundleСервер);
                            // Snackbar.make(v, "Сервер  Bluetooth ....",Snackbar.LENGTH_LONG).setAction("Action",null).show();
                             Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
                             v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
@@ -713,13 +715,15 @@ public class FragmentServerUser extends Fragment {
                             event.getTargetState().name();
                         }
                     });
-                    mutableLiveDataGATTServer.observe(lifecycleOwner, new Observer<String>() {
+                    mutableLiveDataGATTServer.observe(lifecycleOwner, new Observer<Bundle>() {
                         @Override
-                        public void onChanged(String ОтветОтСерврера) {
+                        public void onChanged(Bundle ОтветОтСерврера) {
                             if (mutableLiveDataGATTServer.getValue()!=null) {
                                 Log.i(this.getClass().getName(), "   создание МетодЗаполенияФрагмента1 mutableLiveDataGATTServer " + mutableLiveDataGATTServer);
+                                Bundle bundleОтСервера=mutableLiveDataGATTServer.getValue();
+                                String СтатусОтСервера=    bundleОтСервера.getString("Статус");
                                 // TODO: 24.01.2023  показываем поозователю Статуса
-                                switch (mutableLiveDataGATTServer.getValue().toString()){
+                                switch (СтатусОтСервера){
                                     case "SERVERGATTConnectiong" :
                                         handler.post(()->{
                                            holder.materialButtonСервер.setText("Коннект...");
@@ -748,21 +752,40 @@ public class FragmentServerUser extends Fragment {
                                             Log.i(this.getClass().getName(), "   Перезапуск на сервере ответ КЛИЕНТУ  " );
                                         });
                                         break;
-                                    default:
-                                        // TODO: 09.02.2023  Успешое подклоючение
-                                        Log.i(this.getClass().getName(), "  " +
-                                                " Успешный ПИНГ на сервере ответ КЛИЕНТУ  " + mutableLiveDataGATTServer.getValue().toString());
-                                        holder.materialButtonСервер.startAnimation(animationServer);
-
-                                        // TODO: 09.02.2023 пинг
-                                        linkedКолПодкСерверу.add(mutableLiveDataGATTServer.getValue());
-                                          linkedКолПодкСерверу=  linkedКолПодкСерверу.stream().distinct().collect(Collectors.toList());
-                                        Log.i(this.getClass().getName(), "   linkedКолПодкСерверу  " +linkedКолПодкСерверу);
-
+                                    case "SERVER#SousAvtoERROR" :
                                         handler.post(()->{
-                                            holder.materialButtonСервер.setText(mutableLiveDataGATTServer.getValue().toString());
-                                            Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
-                                            v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
+                                            holder.materialButtonСервер.startAnimation(animationServer);
+                                            handler.post(()->{
+                                                holder.materialButtonСервер.setText(bundleОтСервера.getString("ОтветКлиентуВсатвкаВБАзу")+
+                                                        "\n"+
+                                                        "Девайс: "   +
+                                                        "\n"  + bundleОтСервера.getString("Дивайс"));
+                                                // TODO: 09.02.2023 пинг
+                                                linkedКолПодкСерверу.add(СтатусОтСервера);
+                                                linkedКолПодкСерверу=  linkedКолПодкСерверу.stream().distinct().collect(Collectors.toList());
+                                                Log.i(this.getClass().getName(), "   Перезапуск на сервере ответ КЛИЕНТУ  " );
+                                                Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                                                v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
+                                            });
+                                            handler.postDelayed(()-> {
+                                                holder.materialButtonСервер.setText("Работает..."
+                                                        + "\n"
+                                                        + "\n"+"пинг: " +linkedКолПодкСерверу.size());
+                                            },5000);
+                                        });
+                                        break;
+                                    case "SERVER#SousAvtoSuccess" :
+                                        handler.post(()->{
+                                            holder.materialButtonСервер.startAnimation(animationServer);
+                                            handler.post(()->{
+                                                holder.materialButtonСервер.setText(bundleОтСервера.getString("ОтветКлиентуВсатвкаВБАзу"));
+                                                // TODO: 09.02.2023 пинг
+                                                linkedКолПодкСерверу.add(СтатусОтСервера);
+                                                linkedКолПодкСерверу=  linkedКолПодкСерверу.stream().distinct().collect(Collectors.toList());
+                                                Log.i(this.getClass().getName(), "   Перезапуск на сервере ответ КЛИЕНТУ  " );
+                                                Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                                                v2.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+                                            });
                                             handler.postDelayed(()-> {
                                                 holder.materialButtonСервер.setText("Работает..."
                                                         + "\n"

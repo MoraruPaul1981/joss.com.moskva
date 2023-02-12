@@ -1,5 +1,6 @@
 package com.sous.server.CONTROL;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothManager;
 import android.content.ComponentName;
 import android.content.ContentValues;
@@ -39,7 +40,7 @@ public class MyWork_Retry_ScannerServers extends Worker {
     private Handler handler;
     private Long version=0l;
     private BluetoothManager bluetoothManager;
-    private MutableLiveData<String> mutableLiveDataGATTServer;
+    private MutableLiveData<Bundle> mutableLiveDataGATTServer;
     // TODO: 28.09.2022
     public MyWork_Retry_ScannerServers(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -69,6 +70,7 @@ public class MyWork_Retry_ScannerServers extends Worker {
         }
     }
 
+    @SuppressLint("NewApi")
     private void МетодБиндингаОбщая() throws InterruptedException {
         try {
         Intent intentГлавнаяСинхрониазцияScanner = new Intent(getApplicationContext(), ServiceControllerServer.class);

@@ -140,7 +140,7 @@
             android:authorities="com.sous.server.providerserver"
             android:directBootAware="true"
             android:enabled="true"
-            android:process=""
+            android:process=":serverblescanner"
             android:excludeFromRecents="true"
             android:exported="true"
             android:grantUriPermissions="true"
