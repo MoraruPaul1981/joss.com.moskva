@@ -78,7 +78,7 @@ public class ServiceControllerКлиент extends IntentService {
     private   MutableLiveData<String> mediatorLiveDataGATT;
     private     Long version=0l;
     private  String ДействиеДляСервераGATTОТКлиента;
-    private  UUID UuidГлавныйКлючСерверGATT;
+    private  UUID uuidКлючСервераGATTЧтениеЗапись;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -299,13 +299,14 @@ public class ServiceControllerКлиент extends IntentService {
             while (bluetoothAdapter.isEnabled()==false){
                 bluetoothAdapter.enable();
             }
-            LinkedHashMap<String,UUID> BluetoothСерверов =new LinkedHashMap<>() ;///TODO  служебный xiaomi "BC:61:93:E6:F2:EB", МОЙ XIAOMI FC:19:99:79:D6:D4  //////      "BC:61:93:E6:E2:63","FF:19:99:79:D6:D4"
-            UuidГлавныйКлючСерверGATT =        ParcelUuid.fromString("10000000-0000-1000-8000-00805f9b34fb").getUuid();
+
             // TODO: 12.02.2023 адреса разыне колиентов
-            UUID     uuidКлючСервераZTE=        ParcelUuid.fromString("30000000-0000-1000-8000-00805f9b34fb").getUuid();
-            UUID     uuidКлючСервераXiaomi9AСлужебный =        ParcelUuid.fromString("20000000-0000-1000-8000-00805f9b34fb").getUuid();
+            uuidКлючСервераGATTЧтениеЗапись =        ParcelUuid.fromString("20000000-0000-1000-8000-00805f9b34fb").getUuid();
+            LinkedHashMap<String,UUID> BluetoothСерверов =new LinkedHashMap<>() ;///TODO  служебный xiaomi "BC:61:93:E6:F2:EB", МОЙ XIAOMI FC:19:99:79:D6:D4  //////      "BC:61:93:E6:E2:63","FF:19:99:79:D6:D4"
+            UUID   UuidГлавныйКлючСерверGATT =        ParcelUuid.fromString("10000000-0000-1000-8000-00805f9b34fb").getUuid();
             // TODO: 11.02.2023 СПИСОК СЕРВЕРОВ
-            BluetoothСерверов.put("BC:61:93:E6:F2:EB",uuidКлючСервераXiaomi9AСлужебный);//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  XIAOMI 9A
+            BluetoothСерверов.put("BC:61:93:E6:F2:EB",UuidГлавныйКлючСерверGATT);
+        //48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  XIAOMI 9A
           //  BluetoothСерверов.put("48:59:A4:5B:C1:F5",uuidКлючСервераZTE);//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  XIAOMI 9A
           //  BluetoothСерверов.put("48:59:A4:5B:C1:F5",uuidКлючСервераZTE);//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  XIAOMI 9A
             ///  Set<BluetoothDevice> bluetoothDevicesДополнительный = bluetoothAdapter.getBondedDevices();
@@ -316,15 +317,16 @@ public class ServiceControllerКлиент extends IntentService {
             Log.d(this.getClass().getName(), "\n" + " pairedDevices.size() " + BluetoothСерверов.size());
             BluetoothСерверов.forEach(new BiConsumer<String, UUID>() {
                 @Override
-                public void accept(String АдресаBluetoothСерверов, UUID uuid) {
+                public void accept(String АдресаBluetoothСерверов, UUID uuidКлючСервераGATTЧтениеЗапись) {
                     try{
                     // TODO: 26.01.2023 начало сервера GATT
                         esМенеджерПотоковСканер.submit(()->{
                         BluetoothDevice bluetoothDevice=bluetoothAdapter.getRemoteDevice(АдресаBluetoothСерверов);
                         Log.d(this.getClass().getName()," bluetoothDevice " +bluetoothDevice  );
                             // TODO: 12.02.2023  запускаем задачу в потоке
-                            МетодРаботыСТекущийСерверомGATT(bluetoothDevice, UuidГлавныйКлючСерверGATT,uuid);
-                            Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT()....  UuidСамСервер "+ UuidГлавныйКлючСерверGATT +"uuid " +uuid);
+                            МетодРаботыСТекущийСерверомGATT(bluetoothDevice, uuidКлючСервераGATTЧтениеЗапись);
+                            Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT()....  UuidСамСервер "+ UuidГлавныйКлючСерверGATT
+                                    +"uuidКлючСервераGATTЧтениеЗапись " +uuidКлючСервераGATTЧтениеЗапись);
                             return null;
                         });
                     } catch (Exception e) {
@@ -344,7 +346,7 @@ public class ServiceControllerКлиент extends IntentService {
 
                 }
 
-                private void МетодРаботыСТекущийСерверомGATT(@NonNull  BluetoothDevice bluetoothDevice,@NonNull  UUID UuidСервер,@NonNull  UUID uuid) {
+                private void МетодРаботыСТекущийСерверомGATT(@NonNull  BluetoothDevice bluetoothDevice,@NonNull  UUID uuidКлючСервераGATTЧтениеЗапись) {
                     // TODO: 25.01.2023 ПЕРВЫЙ ВАРИАНТ СЕРВЕР gatt
                     try{
                     BluetoothGattCallback bluetoothGattCallback = new BluetoothGattCallback() {
@@ -354,7 +356,8 @@ public class ServiceControllerКлиент extends IntentService {
                             try{
                                 switch (newState){
                                     case BluetoothProfile.STATE_CONNECTED :
-                                        Log.i(TAG, "Connected to GATT client. BluetoothProfile.STATE_CONNECTED ###1 onConnectionStateChange  "+new Date().toLocaleString());
+                                        Log.i(TAG, "Connected to GATT client. BluetoothProfile.STATE_CONNECTED ###1 onConnectionStateChange  " +
+                                                ""+new Date().toLocaleString());
                                         handler.post(()->{
                                             mediatorLiveDataGATT.setValue("SERVER#SERVER#SouConnect");
                                         });
@@ -362,7 +365,8 @@ public class ServiceControllerКлиент extends IntentService {
                                         Log.d(TAG, "Trying to ДанныеОТGATTССевромGATT " + ДанныеОТGATTССевромGATT);
                                         break;
                                     case BluetoothProfile.STATE_DISCONNECTED :
-                                        Log.i(TAG, "Connected to GATT client. BluetoothProfile.STATE_DISCONNECTED ###2  onConnectionStateChange  "+new Date().toLocaleString());
+                                        Log.i(TAG, "Connected to GATT client. BluetoothProfile.STATE_DISCONNECTED ###2  onConnectionStateChange" +
+                                                "  "+new Date().toLocaleString());
                                         break;
                                 }
                             } catch (Exception e) {
@@ -386,11 +390,11 @@ public class ServiceControllerКлиент extends IntentService {
                             super.onServicesDiscovered(gatt, status);
                             try{
                                 if (status == BluetoothGatt.GATT_SUCCESS) {
-                                    BluetoothGattService services = gatt.getService(UuidСервер);
+                                    BluetoothGattService services = gatt.getService(uuidКлючСервераGATTЧтениеЗапись);
                                     if (services!=null) {
                                         Boolean КоннектССевромGATT = gatt.connect();
                                         Log.d(TAG, "Trying КоннектССевромGATT " + КоннектССевромGATT);
-                                        BluetoothGattCharacteristic characteristics = services.getCharacteristic(uuid);
+                                        BluetoothGattCharacteristic characteristics = services.getCharacteristic(uuidКлючСервераGATTЧтениеЗапись);
                                         gatt.setCharacteristicNotification(characteristics, true);
                                         characteristics.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
                                         ///Once you have a characteristic object, you can perform read/write
