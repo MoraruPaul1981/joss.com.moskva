@@ -438,7 +438,7 @@ public class ServiceControllerServer extends IntentService {
                                 contentValuesВставкаДанных[0].put("gps2", String.valueOf(addressesgetGPS.get(0).getLongitude()));
                                 contentValuesВставкаДанных[0].put("namedevice", device.getName().toString());
                                 // TODO: 10.02.2023 версия данных
-                                Integer current_table = МетодПоискДАнныхПоБазе("SELECT MAX ( current_table  ) AS MAX_R  FROM scannerserversuccess ");
+                                Integer current_table = МетодПоискДАнныхПоБазе("SELECT MAX ( current_table  ) AS MAX_R  FROM scannerserversuccess");
                                 contentValuesВставкаДанных[0].put("current_table", current_table);
                                 String uuid = МетодГенерацииUUID();
                                 contentValuesВставкаДанных[0].put("uuid", uuid);
@@ -842,9 +842,6 @@ public class ServiceControllerServer extends IntentService {
             String provider = "com.sous.server.providerserver";
             Uri uri = Uri.parse("content://"+provider+"/" +"scannerserversuccess" + "");
             ContentResolver resolver = context.getContentResolver();
-            grantUriPermission(provider, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            grantUriPermission(provider, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            grantUriPermission(provider, uri, Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
             РезульататЗАписиНовогоДивайса=   resolver.bulkInsert(uri, contentValues);
             Log.w(context.getClass().getName(), " РЕЗУЛЬТАТ insertData  РезульататЗАписиНовогоДивайса ЗНАЧЕНИЯ  " +  РезульататЗАписиНовогоДивайса.toString() );
         } catch (Exception e) {
@@ -872,8 +869,6 @@ public class ServiceControllerServer extends IntentService {
             String provider = "com.sous.server.providerserver";
             Uri uri = Uri.parse("content://"+provider+"/" +"scannerserversuccess" + "");
             ContentResolver resolver = context.getContentResolver();
-            resolver.takePersistableUriPermission(uri,Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            resolver.takePersistableUriPermission(uri,Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
              Cursor cursorПолучаемДЛяСевреа=   resolver.query(uri,new String[]{СамЗапрос},null,null,null,null);
             cursorПолучаемДЛяСевреа.moveToFirst();
              if (cursorПолучаемДЛяСевреа.getCount()>0){
