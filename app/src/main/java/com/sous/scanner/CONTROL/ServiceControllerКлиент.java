@@ -291,7 +291,7 @@ public class ServiceControllerКлиент extends IntentService {
             Log.d(TAG, "1МетодЗапускаСканиваронияДляАндройд: Запускаем.... Метод Сканирования Для Android binder.isBinderAlive()  "+"\n+" +
                     ""+binder.isBinderAlive()+ " date "+new Date().toString().toString()+"" +
                     "\n"+" POOL "+Thread.currentThread().getName() +
-                    "\n" + " ALL POOLS  " +Thread.getAllStackTraces().entrySet().size());
+                    "\n" + " ALL POOLS  " +Thread.getAllStackTraces().entrySet().size());//
             // TODO: 08.12.2022 сканирование Bluetooth
             bluetoothAdapter = bluetoothManager.getAdapter();
             while (bluetoothAdapter.isEnabled()==false){
@@ -319,7 +319,7 @@ public class ServiceControllerКлиент extends IntentService {
                         esМенеджерПотоковСканер.submit(()->{
                         BluetoothDevice bluetoothDevice=bluetoothAdapter.getRemoteDevice(АдресаBluetoothСерверов);
                         Log.d(this.getClass().getName()," bluetoothDevice " +bluetoothDevice  );
-                            // TODO: 12.02.2023  запускаем задачу в потоке  
+                            // TODO: 12.02.2023  запускаем задачу в потоке
                             МетодРаботыСТекущийСерверомGATT(bluetoothDevice, UuidГлавныйКлючСервер,uuid);
                             Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT()....  UuidСамСервер "+ UuidГлавныйКлючСервер +"uuid " +uuid);
                         });
