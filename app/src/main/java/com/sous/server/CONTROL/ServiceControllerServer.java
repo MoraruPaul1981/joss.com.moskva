@@ -53,8 +53,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -63,7 +61,6 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.function.BiConsumer;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
@@ -102,7 +99,7 @@ public class ServiceControllerServer extends IntentService {
     private        LocationManager locationManager ;
     private  List<Address> addressesgetGPS;
     private  Location lastLocation;
-    private  UUID     UuidСамСервер;
+    private  UUID UuidГлавныйКлючСервер;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -557,12 +554,13 @@ public class ServiceControllerServer extends IntentService {
             Log.d(this.getClass().getName(), " pairedDevices " + pairedDevices + "uuidSERVER " + uuidSERVER);*/
 
             ///TODO  служебный xiaomi "BC:61:93:E6:F2:EB", МОЙ XIAOMI FC:19:99:79:D6:D4  //////      "BC:61:93:E6:E2:63","FF:19:99:79:D6:D4"
-            UuidСамСервер=        ParcelUuid.fromString("10000000-0000-1000-8000-00805f9b34fb").getUuid();
-            UUID     uuidXIAOMI=        ParcelUuid.fromString("20000000-0000-1000-8000-00805f9b34fb").getUuid();
-            UUID     uuidZTE=        ParcelUuid.fromString("30000000-0000-1000-8000-00805f9b34fb").getUuid();
-            BluetoothGattService service= new BluetoothGattService(UuidСамСервер, BluetoothGattService.SERVICE_TYPE_PRIMARY);
+            UuidГлавныйКлючСервер =        ParcelUuid.fromString("10000000-0000-1000-8000-00805f9b34fb").getUuid();
+            // TODO: 12.02.2023 Адреса серверов для Клиентна 
+            UUID     uuidКлючСервераZTE=        ParcelUuid.fromString("30000000-0000-1000-8000-00805f9b34fb").getUuid();
+            UUID     uuidКлючСервераXiaomi9C=        ParcelUuid.fromString("20000000-0000-1000-8000-00805f9b34fb").getUuid();
+            BluetoothGattService service= new BluetoothGattService(UuidГлавныйКлючСервер, BluetoothGattService.SERVICE_TYPE_PRIMARY);
             // TODO: 12.02.2023 первый сервер
-            BluetoothGattCharacteristic characteristicXiami9A = new BluetoothGattCharacteristic(uuidXIAOMI,
+            BluetoothGattCharacteristic characteristicXiami9A = new BluetoothGattCharacteristic(uuidКлючСервераXiaomi9C,
                     BluetoothGattCharacteristic.PROPERTY_READ |
                             BluetoothGattCharacteristic.PROPERTY_WRITE |
                             BluetoothGattCharacteristic.PROPERTY_NOTIFY,
@@ -571,7 +569,7 @@ public class ServiceControllerServer extends IntentService {
                             BluetoothGattCharacteristic.PROPERTY_BROADCAST |
                             BluetoothGattCharacteristic.PERMISSION_WRITE);
             characteristicXiami9A.addDescriptor(new
-                    BluetoothGattDescriptor(uuidXIAOMI,
+                    BluetoothGattDescriptor(uuidКлючСервераXiaomi9C,
                     BluetoothGattCharacteristic.PERMISSION_WRITE | BluetoothGattCharacteristic.PERMISSION_READ
                             | BluetoothGattCharacteristic.PROPERTY_READ | BluetoothGattCharacteristic.PROPERTY_WRITE |
                             BluetoothGattCharacteristic.PROPERTY_INDICATE |
@@ -580,7 +578,7 @@ public class ServiceControllerServer extends IntentService {
 
             // TODO: 12.02.2023 добавлев в сервер
             // TODO: 12.02.2023 второе сервер
-            BluetoothGattCharacteristic characteristicZTE = new BluetoothGattCharacteristic(uuidZTE,
+            BluetoothGattCharacteristic characteristicZTE = new BluetoothGattCharacteristic(uuidКлючСервераZTE,
                     BluetoothGattCharacteristic.PROPERTY_READ |
                             BluetoothGattCharacteristic.PROPERTY_WRITE |
                             BluetoothGattCharacteristic.PROPERTY_NOTIFY,
@@ -589,7 +587,7 @@ public class ServiceControllerServer extends IntentService {
                             BluetoothGattCharacteristic.PROPERTY_BROADCAST |
                             BluetoothGattCharacteristic.PERMISSION_WRITE);
             characteristicZTE.addDescriptor(new
-                    BluetoothGattDescriptor(uuidZTE,
+                    BluetoothGattDescriptor(uuidКлючСервераZTE,
                     BluetoothGattCharacteristic.PERMISSION_WRITE | BluetoothGattCharacteristic.PERMISSION_READ
                             | BluetoothGattCharacteristic.PROPERTY_READ | BluetoothGattCharacteristic.PROPERTY_WRITE |
                             BluetoothGattCharacteristic.PROPERTY_INDICATE |
