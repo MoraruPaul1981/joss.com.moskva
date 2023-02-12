@@ -76,7 +76,7 @@ public class ServiceControllerКлиент extends IntentService {
     private   MutableLiveData<String> mediatorLiveDataGATT;
     private     Long version=0l;
     private  String ДействиеДляСервераGATTОТКлиента;
-    private  UUID UuidГлавныйКлючСервер;
+    private  UUID UuidГлавныйКлючСерверGATT;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -298,12 +298,12 @@ public class ServiceControllerКлиент extends IntentService {
                 bluetoothAdapter.enable();
             }
             LinkedHashMap<String,UUID> BluetoothСерверов =new LinkedHashMap<>() ;///TODO  служебный xiaomi "BC:61:93:E6:F2:EB", МОЙ XIAOMI FC:19:99:79:D6:D4  //////      "BC:61:93:E6:E2:63","FF:19:99:79:D6:D4"
-            UuidГлавныйКлючСервер =        ParcelUuid.fromString("10000000-0000-1000-8000-00805f9b34fb").getUuid();
+            UuidГлавныйКлючСерверGATT =        ParcelUuid.fromString("10000000-0000-1000-8000-00805f9b34fb").getUuid();
             // TODO: 12.02.2023 адреса разыне колиентов
             UUID     uuidКлючСервераZTE=        ParcelUuid.fromString("30000000-0000-1000-8000-00805f9b34fb").getUuid();
-            UUID     uuidКлючСервераXiaomi9C =        ParcelUuid.fromString("20000000-0000-1000-8000-00805f9b34fb").getUuid();
+            UUID     uuidКлючСервераXiaomi9AСлужебный =        ParcelUuid.fromString("20000000-0000-1000-8000-00805f9b34fb").getUuid();
             // TODO: 11.02.2023 СПИСОК СЕРВЕРОВ
-            BluetoothСерверов.put("BC:61:93:E6:F2:EB",uuidКлючСервераXiaomi9C);//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  XIAOMI 9A
+            BluetoothСерверов.put("BC:61:93:E6:F2:EB",uuidКлючСервераXiaomi9AСлужебный);//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  XIAOMI 9A
             BluetoothСерверов.put("48:59:A4:5B:C1:F5",uuidКлючСервераZTE);//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  XIAOMI 9A
           //  BluetoothСерверов.put("48:59:A4:5B:C1:F5",uuidКлючСервераZTE);//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  XIAOMI 9A
             ///  Set<BluetoothDevice> bluetoothDevicesДополнительный = bluetoothAdapter.getBondedDevices();
@@ -320,8 +320,8 @@ public class ServiceControllerКлиент extends IntentService {
                         BluetoothDevice bluetoothDevice=bluetoothAdapter.getRemoteDevice(АдресаBluetoothСерверов);
                         Log.d(this.getClass().getName()," bluetoothDevice " +bluetoothDevice  );
                             // TODO: 12.02.2023  запускаем задачу в потоке
-                            МетодРаботыСТекущийСерверомGATT(bluetoothDevice, UuidГлавныйКлючСервер,uuid);
-                            Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT()....  UuidСамСервер "+ UuidГлавныйКлючСервер +"uuid " +uuid);
+                            МетодРаботыСТекущийСерверомGATT(bluetoothDevice, UuidГлавныйКлючСерверGATT,uuid);
+                            Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT()....  UuidСамСервер "+ UuidГлавныйКлючСерверGATT +"uuid " +uuid);
                         });
                     } catch (Exception e) {
                     e.printStackTrace();
