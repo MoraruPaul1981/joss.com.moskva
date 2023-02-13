@@ -21,6 +21,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.GnssNavigationMessage;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -114,6 +115,7 @@ public class ServiceControllerServer extends IntentService {
     private        LocationManager locationManager ;
     private  LocationListener locationListener;
     private  BluetoothGattCharacteristic characteristicsServerОтКлиента;
+    @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     public void onCreate() {
         super.onCreate();
@@ -340,7 +342,13 @@ public class ServiceControllerServer extends IntentService {
                      Log.d(TAG, "lastLocation takeWhile CONNECT FOR FOR FOR GPS LOCATION   "+lastLocation+ " время  : " +new Date().toLocaleString() );
                      Log.d(TAG, "lastLocation МетодИнициализацииGPS "+lastLocation );
 
-
+            locationManager.registerGnssNavigationMessageCallback(new GnssNavigationMessage.Callback() {
+                @Override
+                public void onGnssNavigationMessageReceived(GnssNavigationMessage event) {
+                    super.onGnssNavigationMessageReceived(event);
+                    Log.d(TAG, "lastLocation МетодИнициализацииGPS "+lastLocation );
+                }
+            }, handler);//GnssNavigationMessage.Callback
 
 
 // create observable
