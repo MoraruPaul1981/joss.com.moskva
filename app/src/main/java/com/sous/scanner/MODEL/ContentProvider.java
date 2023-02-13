@@ -29,22 +29,17 @@ public class ContentProvider extends android.content.ContentProvider {
         try{
             ИменаТаблицыОтАндройда=new CopyOnWriteArrayList<>();
             ИменаТаблицыОтАндройда.add("errordsu1");
-            ИменаТаблицыОтАндройда.add("tablescannerandroid");
-            ИменаТаблицыОтАндройда.add("tablescannerpublic");
             Log.d(this.getClass().getName(),  " ContentProvider" +uriMatcherДЛяПровайдераКонтентБазаДанных );
             Log.d(this.getClass().getName(), " ИменаТаблицыОтАндройда "+ИменаТаблицыОтАндройда );
             uriMatcherДЛяПровайдераКонтентБазаДанных=new UriMatcher(ИменаТаблицыОтАндройда.size());
             ИменаТаблицыОтАндройда.forEach(new Consumer<String>() {
                 @Override
                 public void accept(String ЭлементТаблица) {
-                    uriMatcherДЛяПровайдераКонтентБазаДанных.addURI("com.sous.server.providerscanner",ЭлементТаблица.toString(),ТекущаяСтрокаПриДОбавлениииURL);
+                    uriMatcherДЛяПровайдераКонтентБазаДанных.addURI("com.sous.scanner.providerscanner",ЭлементТаблица.toString(),ТекущаяСтрокаПриДОбавлениииURL);
                     Log.d(this.getClass().getName(), " ЭлементТаблица "+ЭлементТаблица + " ТекущаяСтрокаПриДОбавлениииURL " +ТекущаяСтрокаПриДОбавлениииURL);
                     ТекущаяСтрокаПриДОбавлениииURL++;
                 }
             });
-
-            PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
-            version = pInfo.getLongVersionCode();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -68,6 +63,8 @@ public class ContentProvider extends android.content.ContentProvider {
                 Create_Database_СамаБАзаSQLite=new CREATE_DATABASEScanner(getContext()).getССылкаНаСозданнуюБазу();
                 Log.w(this.getClass().getName(), "Create_Database_СамаБАзаSQLite " + Create_Database_СамаБАзаSQLite + " getContext()) " +getContext());
             }
+            PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
+            version = pInfo.getLongVersionCode();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
