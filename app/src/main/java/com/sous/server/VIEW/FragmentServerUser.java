@@ -759,6 +759,12 @@ public class FragmentServerUser extends Fragment {
                                             Log.i(this.getClass().getName(), "   Не работает на сервере ответ КЛИЕНТУ  " );
                                         });
                                         break;
+                                    case "SERVER#SousAvtoNULL" :
+                                        handler.post(()->{
+                                            holder.materialButtonСервер.setText("Ошибка нет данных !!!");
+                                            Log.i(this.getClass().getName(), "   Не работает на сервере ответ КЛИЕНТУ  " );
+                                        });
+                                        break;
                                     case "SERVERGATTRUNNIGReBOOT" :
                                         handler.post(()->{
                                             holder.materialButtonСервер.setText("Перезапуск...");

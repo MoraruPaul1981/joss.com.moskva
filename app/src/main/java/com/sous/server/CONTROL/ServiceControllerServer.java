@@ -397,7 +397,11 @@ public class ServiceControllerServer extends IntentService {
                         final Integer[] РезультатЗаписиДанныхПИнгаДвайсаВБАзу = {0};
                         if (value != null) {
                             String ПришлиДанныеОтКлиентаЗапрос = new String(value);
-                            Log.i(TAG, "Connected to GATT server  newValueПришлиДАнныеОтКлиента." + new String(value));
+                            Log.i(TAG, "Connected to GATT server  newValueПришлиДАнныеОтКлиента." + new String(value)+
+                                    " value.length " +value.length  + " addressesgetGPS "+addressesgetGPS );
+                            while (addressesgetGPS==null){
+                                МетодПолучениеGPS();
+                            }
                             // TODO: 07.02.2023  Записываем ВБАзу Данные
                             if (value.length > 0  && addressesgetGPS!=null) {
                                 String ДанныеСодранныеОтКлиента = "Девайс отмечен..." + "\n" + device.getName().toString() +
@@ -416,16 +420,22 @@ public class ServiceControllerServer extends IntentService {
                             } else {
                                 Log.i(TAG, "SERVER#SousAvtoERROR" + " " + new Date().toLocaleString());
                                 characteristicsServerОтКлиента.setValue("SERVER#SousAvtoERROR");
+                                bundleСервер.clear();
+                                bundleСервер.putString("Статус","SERVER#SousAvtoERROR");
+                                bundleСервер.putString("Дивайс",device.getName());
+                                mutableLiveDataGATTServer.setValue(bundleСервер);
                             }
                         } else {
                             Log.i(TAG, "SERVER#SousAvtoNULL" + " " + new Date().toLocaleString());
                             characteristicsServerОтКлиента.setValue("SERVER#SousAvtoNULL");
+                            bundleСервер.clear();
+                            bundleСервер.putString("Статус","SERVER#SousAvtoNULL");
+                            bundleСервер.putString("Дивайс",device.getName());
+                            mutableLiveDataGATTServer.setValue(bundleСервер);
                         }
                         // TODO: 12.02.2023  ОТВЕТ !!!
                         server.notifyCharacteristicChanged(device, characteristicsServerОтКлиента, true);
                         server.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, new Date().toLocaleString().toString().getBytes(StandardCharsets.UTF_8));
-                        // TODO: 13.02.2023  закрыываем
-                        server.cancelConnection(device);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
