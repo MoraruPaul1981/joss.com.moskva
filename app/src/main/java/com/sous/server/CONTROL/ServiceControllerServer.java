@@ -46,6 +46,7 @@ import com.onesignal.OneSignal;
 import com.sous.server.MODEL.CREATE_DATABASEServer;
 import com.sous.server.MODEL.MyFirebaseMessagingServiceServerScanners;
 import com.sous.server.MODEL.SubClassErrors;
+import com.sous.server.VIEW.MyLocationListener;
 
 
 import java.io.IOException;
@@ -62,8 +63,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Predicate;
@@ -117,7 +121,10 @@ public class ServiceControllerServer extends IntentService {
             TAG = getClass().getName().toString();
             executorServiceСканер = Executors.newCachedThreadPool();
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
+
             version = pInfo.getLongVersionCode();
+            // TODO: 13.02.2023  ИНИЦИАЛИЗАЦИИ GPS
+            МетодИнициализацииGPS();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -256,14 +263,12 @@ public class ServiceControllerServer extends IntentService {
     public void МетодГлавныйЗапускGattServer(@NonNull Handler handler, @NonNull Context context,
                                              @NonNull BluetoothManager bluetoothManager,
                                              @NonNull MutableLiveData<Bundle>mutableLiveDataGATTServer,
-                                             @NonNull Location lastLocation,
-                                             @NonNull   LocationListener locationListener) {
+                                             @NonNull LocationManager locationManager ) {
         this.context = context;
         this.handler = handler;
         this.bluetoothManagerServer = bluetoothManager;
         this.mutableLiveDataGATTServer=mutableLiveDataGATTServer;
-        this.lastLocation=lastLocation;
-        this.locationListener=locationListener;
+        this.locationManager=locationManager;
         // TODO: 08.12.2022 уснатавливаем настройки Bluetooth
         bundleСервер=new Bundle();
         Log.w(this.getClass().getName(), " SERVER  МетодГлавныйЗапускGattServer  bluetoothManager  " + bluetoothManager );
@@ -286,7 +291,65 @@ public class ServiceControllerServer extends IntentService {
         }
 
     }
+    @SuppressLint("MissingPermission")
+    private void МетодИнициализацииGPS() {
+        try{
+// create observable
+         Observable.range(0, 90000)
+                 .takeWhile(new Predicate<Integer>() {
+                     @Override
+                     public boolean test(Integer integer) throws Throwable {
+                         if (lastLocation!=null) {
+                             return false;
+                         } else {
+                             return true;
+                         }
+                     }
+                 })
+                 .subscribe(new Observer<Integer>() {
+                @Override
+                public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+                    Log.d(TAG, "lastLocation takeWhile "+lastLocation );
+                }
 
+                @Override
+                public void onNext(@io.reactivex.rxjava3.annotations.NonNull Integer integer) {
+                    Log.d(TAG, "lastLocation takeWhile "+lastLocation );
+                    // TODO: 01.02.2023 Получение Новго Ключа Для Сканера
+                    locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+                    locationListener = new MyLocationListener(context);
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 90000, 0.0F, locationListener);
+                    lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    Log.d(TAG, "lastLocation takeWhile CONNECT FOR FOR FOR GPS LOCATION   "+lastLocation+ " время  : " +new Date().toLocaleString()+ "  integer "+integer );
+                }
+
+                @Override
+                public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                    Log.d(TAG, "lastLocation takeWhile "+lastLocation );
+                }
+
+                @Override
+                public void onComplete() {
+                    Log.d(TAG, "lastLocation takeWhile "+lastLocation );
+                    МетодПолучениеЛокацииGPS();
+                }
+            });
+            Log.d(TAG, "lastLocation takeWhile "+lastLocation );
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
     // TODO: 08.12.2022 Метод Сервер
     @SuppressLint("MissingPermission")
     public void МетодЗапускаСервера() {
@@ -307,8 +370,6 @@ public class ServiceControllerServer extends IntentService {
                         bundleСервер.clear();
                         bundleСервер.putString("Статус","SERVERGATTRUNNIGSTARTING");
                         mutableLiveDataGATTServer.setValue(bundleСервер);
-                        // TODO: 07.02.2023  создаем GPS
-                        МетодПолучениеGPS();
                 });
 
             // TODO: 26.01.2023 Сервер КОД
@@ -619,7 +680,7 @@ public class ServiceControllerServer extends IntentService {
     }
 
     @SuppressLint({"NewApi", "SuspiciousIndentation", "MissingPermission"})
-    private void МетодПолучениеGPS() {
+    private void МетодПолучениеЛокацииGPS() {
         try{
                 if (lastLocation != null) {
                     locationListener.onLocationChanged(lastLocation);
@@ -682,7 +743,7 @@ public class ServiceControllerServer extends IntentService {
             // TODO: 23.12.2021 ЧЕТЫРЕ ПОПЫТКИ ПОДКЛЮЧЕНИЕ В СЕВРЕРУONESIGNAL
             Observable observableПолученияКлючаОтСервераOneSignal=  Observable.interval(20, TimeUnit.SECONDS)
                     .take(3,TimeUnit.MINUTES)
-                    .subscribeOn(Schedulers.newThread())
+                    .subscribeOn(Schedulers.io())
                     .doOnNext(new io.reactivex.rxjava3.functions.Consumer<Long>() {
                         @Override
                         public void accept(Long aLong) throws Throwable {

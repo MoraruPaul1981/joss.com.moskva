@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Locale;
 
 /*---------- Listener class to get coordinates ------------- */
-class MyLocationListener implements LocationListener {
+public class MyLocationListener implements LocationListener {
     private  Context context;
     private String TAG;
 
