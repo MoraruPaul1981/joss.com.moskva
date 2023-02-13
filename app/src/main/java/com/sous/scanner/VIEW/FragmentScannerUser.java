@@ -782,6 +782,7 @@ public class FragmentScannerUser extends Fragment {
                                         },3000);
                                     });
                                     Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
+                                    progressСканер.setVisibility(View.INVISIBLE);
                                     break;
 
                                 case "SERVER#SousAvtoDONTDIVICE" :
@@ -793,9 +794,11 @@ public class FragmentScannerUser extends Fragment {
                                         },3000);
                                     });
                                     Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
+                                    progressСканер.setVisibility(View.INVISIBLE);
                                     break;
                                 default:
                                     Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
+                                    progressСканер.setVisibility(View.INVISIBLE);
                                     break;
                                 case "SERVER#SousAvtoSuccess" :
                                     // TODO: 07.02.2023 Успешный статус
@@ -820,6 +823,7 @@ public class FragmentScannerUser extends Fragment {
                                         },3000);
                                     });
                                     Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
+                                    progressСканер.setVisibility(View.INVISIBLE);
                                     break;
                                 // TODO: 11.02.2023 ДРУГИЕ ОТВЕТЫ
                                 case "SERVER#SousAvtoERROR" :
@@ -839,18 +843,8 @@ public class FragmentScannerUser extends Fragment {
                                         },3000);
                                     });
                                     Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
+                                    progressСканер.setVisibility(View.INVISIBLE);
                                     break;
-                                case "SERVER#SousAvtoEXIT" :
-                                    handler.post(()->{
-                                        materialButtonКакоеДействие.setText("Завершение работы...");
-                                        handler.postDelayed(()-> {
-                                            v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
-                                            materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
-                                            materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
-                                            Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
-                                        },3000);
-
-                                    });
                             }
                         }
                     }

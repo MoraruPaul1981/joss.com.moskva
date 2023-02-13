@@ -535,10 +535,13 @@ public class ServiceControllerКлиент extends IntentService {
 
                 private void МетодВыключениеКлиентаGatt() {
                     handler.postDelayed(()->{
-                        mediatorLiveDataGATT.setValue("SERVER#SousAvtoEXIT");
+                        BluetoothGattService services = gatt.getService(UuidГлавныйКлючСерверGATT);
                         Log.i(TAG, "GATT CLIENT Proccessing from GATT server.SERVER#SousAvtoEXIT " +
-                                new Date().toLocaleString() + ДействиеДляСервераGATTОТКлиента + " BluetoothGatt.GATT_SUCCESS "+BluetoothGatt.GATT_SUCCESS);
-                        gatt.close();
+                                new Date().toLocaleString() + ДействиеДляСервераGATTОТКлиента + " BluetoothGatt.GATT_SUCCESS "+BluetoothGatt.GATT_SUCCESS+ " services "+services);
+                        if (services==null) {
+                            mediatorLiveDataGATT.setValue("SERVER#SERVER#SousAvtoNULL");
+                            gatt.close();
+                        }
                     },10000);
                 }
             });
