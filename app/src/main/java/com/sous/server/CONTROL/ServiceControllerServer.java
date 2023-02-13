@@ -364,7 +364,7 @@ public class ServiceControllerServer extends IntentService {
                         BluetoothGattService services = characteristic.getService();
                         if (services!=null) {
                             BluetoothGattCharacteristic characteristicsДляСерверОтКлиента = services.getCharacteristic(uuidКлючСервераGATTЧтениеЗапись);
-                            if (characteristicsДляСерверОтКлиента!=null){
+                            if (characteristicsДляСерверОтКлиента!=null && characteristic!=null && value!=null ){
                                 // TODO: 12.02.2023 ОТВЕТ КЛИЕНТУ
                                     МетодОтветаОТGATTСеврераКлиентуДанныеми(device, requestId, characteristic, offset, value);
                                     Log.i(TAG, "onCharacteristicWriteRequest to GATT server  characteristicsДляСерверОтКлиента"
