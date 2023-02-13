@@ -350,7 +350,12 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
                     Manifest.permission.BLUETOOTH_ADVERTISE,
                     Manifest.permission.BLUETOOTH_ADMIN,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.INTERNET,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_NETWORK_STATE,
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION
+
             };
             String[] PERMISSIONS_LOCATION = {
                     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -362,7 +367,11 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
                     Manifest.permission.BLUETOOTH_ADVERTISE,
                     Manifest.permission.BLUETOOTH_ADMIN,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.INTERNET,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_NETWORK_STATE,
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION
             };
             int permission1 = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
             int permission2 = ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN);
@@ -380,11 +389,6 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
                         1
                 );
             }
-            String provider = "com.sous.server.providerserver";
-            Uri uri = Uri.parse("content://"+provider+"/" +"scannerserversuccess" + "");
-            ContentResolver resolver = this.getContentResolver();
-            this.grantUriPermission(provider, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

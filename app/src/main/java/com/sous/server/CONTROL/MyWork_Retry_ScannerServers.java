@@ -152,7 +152,7 @@ public class MyWork_Retry_ScannerServers extends Worker {
         try {
                 WorkManagerScanner = WorkManager.getInstance(getApplicationContext().getApplicationContext()).getWorkInfosByTag(ИмяСлужбыСинхронизации).get();
             Log.i(context.getClass().getName(), " doWork doWork doWork RETRY MyWork_Retry_ScannerServers SERVER "+WorkManagerScanner );
-            binderСканнерServer.getService().МетодГлавныйЗапускGattServer(handler, getApplicationContext(),bluetoothManager,mutableLiveDataGATTServer);
+         //   binderСканнерServer.getService().МетодГлавныйЗапускGattServer(handler, getApplicationContext(),bluetoothManager,mutableLiveDataGATTServer);
 
         } catch (Exception e) {
             e.printStackTrace();

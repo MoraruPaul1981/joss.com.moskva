@@ -1,4 +1,4 @@
-package com.sous.server.CONTROL;
+package com.sous.server.VIEW;
 
 import android.content.Context;
 import android.location.Address;

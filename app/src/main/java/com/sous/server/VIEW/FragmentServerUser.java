@@ -7,6 +7,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
+import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -70,6 +72,8 @@ public class FragmentServerUser extends Fragment {
     private Long version;
     private  ServiceControllerServer serviceControllerServer;
     private LocationManager locationManager ;
+    private Location lastLocation;
+    private LocationListener locationListener;
     @SuppressLint({"RestrictedApi", "MissingPermission"})
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -143,8 +147,9 @@ public class FragmentServerUser extends Fragment {
     public void onStart() {
         super.onStart();
         try {
-            МетодHandler();
             // TODO: 06.12.2022
+            МетодИнициализацииGPS();
+            МетодHandler();
             МетодИнициализацииRecycleViewДляЗадач();
             МетодКпопкаВозвращениеBACK();
             МетодЗапускGattServer();
@@ -222,7 +227,7 @@ public class FragmentServerUser extends Fragment {
                 }
                 if(bluetoothAdapter.isEnabled()==true){
                     // TODO: 06.12.2022 запускаем GATT SERVER
-                    serviceControllerServer.МетодГлавныйЗапускGattServer(handler, getActivity(),bluetoothManager,mutableLiveDataGATTServer);
+                    serviceControllerServer.МетодГлавныйЗапускGattServer(handler, getActivity(),bluetoothManager,mutableLiveDataGATTServer,lastLocation,locationListener);
                     Log.d(getClass().getClass().getName(), "\n" + " МетодЗапускGattServer" + new Date() );
                 }
             }
@@ -861,7 +866,30 @@ public class FragmentServerUser extends Fragment {
                 return  ArrayListДанныеОтСканироваиниеДивайсов.size();
             }
         }
-
+    @SuppressLint("MissingPermission")
+    private void МетодИнициализацииGPS() {
+        try{
+            while (lastLocation==null) {
+                locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+                locationListener = new MyLocationListener(getContext());
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 90000, 0.0F, locationListener);
+                lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
         //TODO метод делает callback с ответом на экран
         private void МетодПерегрузкаRecyceView() {
             try {

@@ -118,7 +118,6 @@ public class ServiceControllerServer extends IntentService {
             executorServiceСканер = Executors.newCachedThreadPool();
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
-            МетодИнициализацииGPS();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -136,30 +135,7 @@ public class ServiceControllerServer extends IntentService {
 
     }
 
-    @SuppressLint("MissingPermission")
-    private void МетодИнициализацииGPS() {
-        try{
-        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new MyLocationListener(context);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 90000, 0.0F, locationListener);
-        lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            // TODO: 13.02.2023
-        МетодПолучениеGPS();
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        ContentValues valuesЗаписываемОшибки = new ContentValues();
-        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-        final Object ТекущаяВерсияПрограммы = version;
-        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-    }
-    }
+
 
     public class LocalBinderСканнер extends Binder {
         public ServiceControllerServer getService() {
@@ -279,11 +255,15 @@ public class ServiceControllerServer extends IntentService {
     // TODO: 30.11.2022 сервер СКАНИРОВАНИЯ
     public void МетодГлавныйЗапускGattServer(@NonNull Handler handler, @NonNull Context context,
                                              @NonNull BluetoothManager bluetoothManager,
-                                             @NonNull MutableLiveData<Bundle>mutableLiveDataGATTServer) {
+                                             @NonNull MutableLiveData<Bundle>mutableLiveDataGATTServer,
+                                             @NonNull Location lastLocation,
+                                             @NonNull   LocationListener locationListener) {
         this.context = context;
         this.handler = handler;
         this.bluetoothManagerServer = bluetoothManager;
         this.mutableLiveDataGATTServer=mutableLiveDataGATTServer;
+        this.lastLocation=lastLocation;
+        this.locationListener=locationListener;
         // TODO: 08.12.2022 уснатавливаем настройки Bluetooth
         bundleСервер=new Bundle();
         Log.w(this.getClass().getName(), " SERVER  МетодГлавныйЗапускGattServer  bluetoothManager  " + bluetoothManager );
@@ -328,7 +308,7 @@ public class ServiceControllerServer extends IntentService {
                         bundleСервер.putString("Статус","SERVERGATTRUNNIGSTARTING");
                         mutableLiveDataGATTServer.setValue(bundleСервер);
                         // TODO: 07.02.2023  создаем GPS
-                     ///   МетодПолучениеGPS();
+                        МетодПолучениеGPS();
                 });
 
             // TODO: 26.01.2023 Сервер КОД
@@ -425,23 +405,34 @@ public class ServiceControllerServer extends IntentService {
                         if (value != null) {
                             String ПришлиДанныеОтКлиентаЗапрос = new String(value);
                             Log.i(TAG, "Connected to GATT server  newValueПришлиДАнныеОтКлиента." + new String(value) +
-                                    " value.length " + value.length + " addressesgetGPS " + addressesgetGPS);
+                                    " value.length " + value.length );
                             // TODO: 07.02.2023  Записываем ВБАзу Данные
-                            if (value.length > 0 && addressesgetGPS != null && characteristicsServerОтКлиента != null) {
+                            if (value.length > 0 &&   characteristicsServerОтКлиента != null) {
                                 // TODO: 13.02.2023
-                                String ДанныеСодранныеОтКлиента = "Девайс отмечен..." + "\n" + device.getName().toString() +
-                                        "\n" + device.getAddress().toString() +
-                                        "\n" + new Date().toLocaleString()
-                                        + "\n" + ПришлиДанныеОтКлиентаЗапрос
-                                        + "\n" + "GPS"
-                                        + "\n" + "город: " + addressesgetGPS.get(0).getLocality()
-                                        + "\n" + "адрес: " + addressesgetGPS.get(0).getAddressLine(0)
-                                        + "\n" + "(корд1) " + addressesgetGPS.get(0).getLatitude()
-                                        + "\n" + "(корд2) " + addressesgetGPS.get(0).getLongitude();
+                                String ДанныеСодранныеОтКлиента;
+                                if (addressesgetGPS!=null) {
+                                    ДанныеСодранныеОтКлиента = "Девайс отмечен..." + "\n" + device.getName().toString() +
+                                            "\n" + device.getAddress().toString() +
+                                            "\n" + new Date().toLocaleString()
+                                            + "\n" + ПришлиДанныеОтКлиентаЗапрос
+                                            + "\n" + "GPS"
+                                            + "\n" + "город: " + addressesgetGPS.get(0).getLocality()
+                                            + "\n" + "адрес: " + addressesgetGPS.get(0).getAddressLine(0)
+                                            + "\n" + "(корд1) " + addressesgetGPS.get(0).getLatitude()
+                                            + "\n" + "(корд2) " + addressesgetGPS.get(0).getLongitude();
+                                } else {
+                                    ДанныеСодранныеОтКлиента = "Девайс отмечен..." + "\n" + device.getName().toString() +
+                                            "\n" + device.getAddress().toString() +
+                                            "\n" + new Date().toLocaleString()
+                                            + "\n" + ПришлиДанныеОтКлиентаЗапрос;
+                                }
 
                                 // TODO: 13.02.2023  Метод Записи Девайса в базу
                                 МетодЗаписиДевайсавБазу(device, РезультатЗаписиДанныхПИнгаДвайсаВБАзу, ПришлиДанныеОтКлиентаЗапрос, ДанныеСодранныеОтКлиента);
                                 Log.i(TAG, "SERVER#SousAvtoSuccess" + " " + new Date().toLocaleString());
+                                // TODO: 12.02.2023  ОТВЕТ !!!
+                                server.notifyCharacteristicChanged(device, characteristicsServerОтКлиента, true);
+
                             } else {
                                 Log.i(TAG, "SERVER#SousAvtoNULL" + " " + new Date().toLocaleString());
                                 characteristicsServerОтКлиента.setValue("SERVER#SousAvtoNULL");
@@ -452,7 +443,6 @@ public class ServiceControllerServer extends IntentService {
                             }
                         }
                         // TODO: 12.02.2023  ОТВЕТ !!!
-                        server.notifyCharacteristicChanged(device, characteristicsServerОтКлиента, true);
                         server.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, new Date().toLocaleString().toString().getBytes(StandardCharsets.UTF_8));
                 } catch (Exception e) {
                     e.printStackTrace();
