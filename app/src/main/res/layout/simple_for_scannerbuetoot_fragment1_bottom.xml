@@ -21,7 +21,7 @@
         android:gravity="center"
         android:maxLines="50"
         android:singleLine="false"
-        android:text="Остановлен !!!"
+        android:text="Стартует...."
         android:textAlignment="gravity"
         android:textColor="#0E0E0E"
         android:textSize="12sp"

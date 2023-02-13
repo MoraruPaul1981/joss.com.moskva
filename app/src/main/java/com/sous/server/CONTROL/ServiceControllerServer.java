@@ -260,6 +260,7 @@ public class ServiceControllerServer extends IntentService {
     }
 
     // TODO: 30.11.2022 сервер СКАНИРОВАНИЯ
+    @SuppressLint("MissingPermission")
     public void МетодГлавныйЗапускGattServer(@NonNull Handler handler, @NonNull Context context,
                                              @NonNull BluetoothManager bluetoothManager,
                                              @NonNull MutableLiveData<Bundle>mutableLiveDataGATTServer,
@@ -271,8 +272,11 @@ public class ServiceControllerServer extends IntentService {
         this.locationManager=locationManager;
         // TODO: 08.12.2022 уснатавливаем настройки Bluetooth
         bundleСервер=new Bundle();
-        Log.w(this.getClass().getName(), " SERVER  МетодГлавныйЗапускGattServer  bluetoothManager  " + bluetoothManager );
+        Log.w(this.getClass().getName(), " SERVER  МетодГлавныйЗапускGattServer  bluetoothManager  " + bluetoothManager + "server "+server);
         try {
+            if(server!=null){
+                server.close();
+            }
             // TODO: 13.02.2023  ИНИЦИАЛИЗАЦИИ GPS
             МетодИнициализацииGPS();
             Log.w(this.getClass().getName(), "   МетодГлавныйЗапускGattServer   ");
