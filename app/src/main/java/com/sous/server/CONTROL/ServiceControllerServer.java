@@ -26,7 +26,9 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.CancellationSignal;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -38,6 +40,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -125,6 +128,9 @@ public class ServiceControllerServer extends IntentService {
             executorServiceСканер = Executors.newCachedThreadPool();
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
+            // TODO: 13.02.2023  ИНИЦИАЛИЗАЦИИ GPS
+            МетодИнициализацииGPS();
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -277,8 +283,12 @@ public class ServiceControllerServer extends IntentService {
             if(server!=null){
                 server.close();
             }
-            // TODO: 13.02.2023  ИНИЦИАЛИЗАЦИИ GPS
-            МетодИнициализацииGPS();
+
+            // TODO: 13.02.2023
+            МетодПолучениеЛокацииGPS();
+
+            МетодЗапускаСервера();
+            Log.w(this.getClass().getName(), "   МетодГлавныйЗапускGattServer   ");
             Log.w(this.getClass().getName(), "   МетодГлавныйЗапускGattServer   ");
         } catch (Exception e) {
             e.printStackTrace();
@@ -296,33 +306,43 @@ public class ServiceControllerServer extends IntentService {
         }
 
     }
+    @RequiresApi(api = Build.VERSION_CODES.R)
     @SuppressLint("MissingPermission")
     private void МетодИнициализацииGPS() {
         try{
-         ExecutorService executorService=Executors.newCachedThreadPool();
-         executorService.submit(()->{
-             handler.post(()->{
+
                  bundleСервер.clear();
                  bundleСервер.putString("Статус", "SERVER#SousAvtoStartingGPS");
                  mutableLiveDataGATTServer.setValue(bundleСервер);
                  // TODO: 01.02.2023 Получение Новго Ключа Для Сканера
-                while (lastLocation==null) {
+            ExecutorService executorServiceGPS=Executors.newCachedThreadPool();
+            executorServiceGPS.submit(()->{
+                Log.d(TAG, "lastLocation МетодИнициализацииGPS "+lastLocation );
+                return null;
+            });
+            ExecutorService executorServiceGetCurrent=Executors.newCachedThreadPool();
+            executorServiceGetCurrent.submit(()->{
+                Log.d(TAG, "lastLocation МетодИнициализацииGPS "+lastLocation );
+                return null;
+            });
+            CancellationSignal signal = new CancellationSignal();
                      locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
                      locationListener = new MyLocationListener(context);
-                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 90000, 0.0F, locationListener);
-                     lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 90000, 0.0F,executorServiceGPS, locationListener);
+                     //lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                      locationManager.getCurrentLocation(LocationManager.GPS_PROVIDER,signal,
+                              executorServiceGetCurrent, new java.util.function.Consumer<Location>() {
+                         @Override
+                         public void accept(Location location) {
+                             Log.d(TAG, "lastLocation МетодИнициализацииGPS "+lastLocation );
+                         }
+                     });
                      Log.d(TAG, "lastLocation takeWhile CONNECT FOR FOR FOR GPS LOCATION   "+lastLocation+ " время  : " +new Date().toLocaleString() );
                      Log.d(TAG, "lastLocation МетодИнициализацииGPS "+lastLocation );
-                 }
-                 // TODO: 13.02.2023
-                 МетодПолучениеЛокацииGPS();
-                 executorService.shutdown();
-                 if(executorService.isShutdown()==true){
-                     МетодЗапускаСервера();
-                     Log.w(this.getClass().getName(), "   МетодГлавныйЗапускGattServer   ");
-                 }
-             });
-         });
+
+
+
+
 // create observable
             Log.d(TAG, "lastLocation takeWhile "+lastLocation );
         } catch (Exception e) {
