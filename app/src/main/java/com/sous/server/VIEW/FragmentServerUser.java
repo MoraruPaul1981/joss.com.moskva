@@ -759,10 +759,10 @@ public class FragmentServerUser extends Fragment {
                                     case   "SERVER#SousAvtoStartingGPS" :
                                         handler.post(()->{
                                             holder.materialButtonСервер.startAnimation(animationServer);
-                                            holder.materialButtonСервер.setText("Стартует..."
+                                            holder.materialButtonСервер.setText("Включение GPS..."
                                                     + "\n"
                                                     + "\n"+"пинг: " +linkedКолПодкСерверу.size());
-                                            Log.i(this.getClass().getName(), "  Работает... на сервере ответ КЛИЕНТУ  "
+                                            Log.i(this.getClass().getName(), "  Работает GPS ... на сервере ответ КЛИЕНТУ  "
                                                     +"\n"+"пинги: " +linkedКолПодкСерверу.size() );
                                         });
                                         break;
@@ -775,7 +775,7 @@ public class FragmentServerUser extends Fragment {
                                     case "SERVER#SousAvtoNULL" :
                                         handler.post(()->{
                                             holder.materialButtonСервер.setText("Ошибка нет данных !!!");
-                                            Log.i(this.getClass().getName(), "   Не работает на сервере ответ КЛИЕНТУ  " );
+                                            Log.i(this.getClass().getName(), "    Ошибка нет данных !!! на сервере ответ КЛИЕНТУ  " );
                                         });
                                         break;
                                     case "SERVERGATTRUNNIGReBOOT" :
@@ -795,7 +795,7 @@ public class FragmentServerUser extends Fragment {
                                                 // TODO: 09.02.2023 пинг
                                                 linkedКолПодкСерверу.add(СтатусОтСервера);
                                                 linkedКолПодкСерверу=  linkedКолПодкСерверу.stream().distinct().collect(Collectors.toList());
-                                                Log.i(this.getClass().getName(), "   Перезапуск на сервере ответ КЛИЕНТУ  " );
+                                                Log.i(this.getClass().getName(), "  Ошибка на ответ КЛИЕНТУ  " );
                                                 Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
                                                 v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
                                             });
@@ -814,7 +814,7 @@ public class FragmentServerUser extends Fragment {
                                                 // TODO: 09.02.2023 пинг
                                                 linkedКолПодкСерверу.add(СтатусОтСервера);
                                                 linkedКолПодкСерверу=  linkedКолПодкСерверу.stream().distinct().collect(Collectors.toList());
-                                                Log.i(this.getClass().getName(), "   Перезапуск на сервере ответ КЛИЕНТУ  " );
+                                                Log.i(this.getClass().getName(), "   Успех на сервере ответ КЛИЕНТУ  " );
                                                 Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
                                                 v2.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
                                             });
@@ -906,20 +906,7 @@ public class FragmentServerUser extends Fragment {
             public boolean handleMessage(@NonNull android.os.Message  msg) {
                 try{
                Bundle bundle=     msg.getData();
-          switch (          bundle.getString("КакоеДейтвие","")){
-              case "ВыключаемPrograssbar":
-                  Log.i(this.getClass().getName(), "      bundle.getString( КакоеДейтвие" +  bundle.getString("КакоеДейтвие",""));
-                  break;
-              case "ОтветОтКлиентаСканера":
-                  Log.i(this.getClass().getName(), "      bundle.getString( КакоеДейтвие" +  bundle.getString("КакоеДейтвие",""));
-               String[] ИМяДеваяса=   bundle.getStringArray("ДанныеСканирования");
-                  bundle.getStringArrayList("ДанныеСканирования");
-                  Toast.makeText(getContext(), " Ответ от Службы Сканирования ...."+ИМяДеваяса[0]+ " " +ИМяДеваяса[1], Toast.LENGTH_SHORT).show();
-                  break;
-              default:
-                  Log.i(this.getClass().getName(), "      bundle.getString( КакоеДейтвие" +  bundle.getString("КакоеДейтвие",""));
-                  break;
-          }
+                    Log.i(this.getClass().getName(), "      bundle.getString( КакоеДейтвие" +  bundle.getString("КакоеДейтвие",""));
                     Log.d(this.getClass().getName(), "msg " + msg);
                 } catch (Exception e) {
                     e.printStackTrace();
