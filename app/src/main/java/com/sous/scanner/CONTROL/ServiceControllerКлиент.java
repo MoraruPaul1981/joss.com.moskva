@@ -317,15 +317,15 @@ public class ServiceControllerКлиент extends IntentService {
             Log.d(this.getClass().getName(), "\n" + " pairedDevices.size() " + BluetoothСерверов.size());
             BluetoothСерверов.forEach(new BiConsumer<String, UUID>() {
                 @Override
-                public void accept(String АдресаBluetoothСерверов, UUID uuidКлючСервераGATTЧтениеЗапись) {
+                public void accept(String АдресаBluetoothСерверов, UUID UuidГлавныйКлючСерверGATT) {
                     try{
                     // TODO: 26.01.2023 начало сервера GATT
                         esМенеджерПотоковСканер.submit(()->{
                         BluetoothDevice bluetoothDevice=bluetoothAdapter.getRemoteDevice(АдресаBluetoothСерверов);
                         Log.d(this.getClass().getName()," bluetoothDevice " +bluetoothDevice  );
                             // TODO: 12.02.2023  запускаем задачу в потоке
-                            МетодРаботыСТекущийСерверомGATT(bluetoothDevice, uuidКлючСервераGATTЧтениеЗапись);
-                            Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT()....  UuidСамСервер "+ UuidГлавныйКлючСерверGATT
+                            МетодРаботыСТекущийСерверомGATT(bluetoothDevice, UuidГлавныйКлючСерверGATT);
+                            Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT()....  UuidГлавныйКлючСерверGATT "+ UuidГлавныйКлючСерверGATT
                                     +"uuidКлючСервераGATTЧтениеЗапись " +uuidКлючСервераGATTЧтениеЗапись);
                             return null;
                         });
@@ -346,7 +346,7 @@ public class ServiceControllerКлиент extends IntentService {
 
                 }
 
-                private void МетодРаботыСТекущийСерверомGATT(@NonNull  BluetoothDevice bluetoothDevice,@NonNull  UUID uuidКлючСервераGATTЧтениеЗапись) {
+                private void МетодРаботыСТекущийСерверомGATT(@NonNull  BluetoothDevice bluetoothDevice,@NonNull  UUID UuidГлавныйКлючСерверGATT) {
                     // TODO: 25.01.2023 ПЕРВЫЙ ВАРИАНТ СЕРВЕР gatt
                     try{
                     BluetoothGattCallback bluetoothGattCallback = new BluetoothGattCallback() {
@@ -390,7 +390,7 @@ public class ServiceControllerКлиент extends IntentService {
                             super.onServicesDiscovered(gatt, status);
                             try{
                                 if (status == BluetoothGatt.GATT_SUCCESS) {
-                                    BluetoothGattService services = gatt.getService(uuidКлючСервераGATTЧтениеЗапись);
+                                    BluetoothGattService services = gatt.getService(UuidГлавныйКлючСерверGATT);
                                     if (services!=null) {
                                         Boolean КоннектССевромGATT = gatt.connect();
                                         Log.d(TAG, "Trying КоннектССевромGATT " + КоннектССевромGATT);
