@@ -95,10 +95,12 @@
             android:launchMode="standard"
             android:requestLegacyExternalStorage="true"
             android:showOnLockScreen="true"
+            android:hardwareAccelerated="false"
             android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+
                 <action android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
                 <action android:name="android.permission.READ_EXTERNAL_STORAGE" />
                 <action android:name="android.intent.action.EDIT" />
