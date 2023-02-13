@@ -114,7 +114,7 @@ public class BroadcastReceiverWorkManagerScannersServer extends BroadcastReceive
                     .build();
             PeriodicWorkRequest periodicWorkRequestconstraintsПовторныйЗапскСлужбыServerScanner
                     = new PeriodicWorkRequest.Builder(MyWork_Retry_ScannerServers.class,
-                    14, TimeUnit.HOURS)//MIN_PERIODIC_FLEX_MILLIS////  PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MILLISECONDS PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS
+                    22, TimeUnit.MINUTES)//MIN_PERIODIC_FLEX_MILLIS////  PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MILLISECONDS PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS
                     .addTag(ИмяСлужбыСинхронизации)
                     .setInputData(myDataДляОбщейСинхрониазации)
                     .setConstraints(constraintsПовторныйЗапскСлужбыServerScanner)

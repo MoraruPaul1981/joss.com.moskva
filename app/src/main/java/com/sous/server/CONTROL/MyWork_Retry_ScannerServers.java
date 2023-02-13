@@ -47,11 +47,11 @@ public class MyWork_Retry_ScannerServers extends Worker {
         super(context, workerParams);
         try{
        this.context = context;
-        Log.i(this.context.getClass().getName(), " public MyWork_Async_Синхронизация_Общая(@NonNull Context context," +
-                " @NonNull WorkerParameters workerParams) {  Контекст "+"\n"+ this.context);
-            PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
+        Log.i(this.context.getClass().getName(), " public MyWork_Retry_ScannerServers(@NonNull Context context," +
+                " @NonNull WorkerParameters MyWork_Retry_ScannerServers) {  Контекст "+"\n"+ this.context);
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
-            bluetoothManager = (BluetoothManager) getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
+            bluetoothManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
             mutableLiveDataGATTServer=new MutableLiveData<>();
             locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             // TODO: 22.12.2022
@@ -82,7 +82,7 @@ public class MyWork_Retry_ScannerServers extends Worker {
             public void onServiceConnected(ComponentName name, IBinder service) {
                 // TODO: 31.01.2023 код
                 Log.d(getApplicationContext().getClass().getName().toString(), "\n"
-                        + "onServiceConnected  ОБЩАЯ messengerActivity  ");
+                        + "onServiceConnected  ОБЩАЯ MyWork_Retry_ScannerServers  ");
                 binderСканнерServer = ( ServiceControllerServer.LocalBinderСканнер) service;
                 if(binderСканнерServer.isBinderAlive()){
                     Log.i(getApplicationContext().getClass().getName(), "    onServiceConnected  binderСканнерServer.isBinderAlive()"
@@ -152,9 +152,7 @@ public class MyWork_Retry_ScannerServers extends Worker {
     public Result doWork() {
         try {
                 WorkManagerScanner = WorkManager.getInstance(getApplicationContext().getApplicationContext()).getWorkInfosByTag(ИмяСлужбыСинхронизации).get();
-            Log.i(context.getClass().getName(), " doWork doWork doWork RETRY WorkManagerScanner SERVER "+WorkManagerScanner );
-
-
+            Log.i(context.getClass().getName(), " doWork doWork doWork RETRY MyWork_Retry_ScannerServers SERVER "+WorkManagerScanner );
             binderСканнерServer.getService().МетодГлавныйЗапускGattServer(handler, getApplicationContext(),bluetoothManager,mutableLiveDataGATTServer,locationManager);
 
         } catch (Exception e) {
