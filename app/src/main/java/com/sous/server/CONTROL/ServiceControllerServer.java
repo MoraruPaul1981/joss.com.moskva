@@ -29,6 +29,7 @@ import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.Message;
 import android.os.ParcelUuid;
 import android.os.VibrationEffect;
@@ -59,6 +60,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -121,10 +124,7 @@ public class ServiceControllerServer extends IntentService {
             TAG = getClass().getName().toString();
             executorServiceСканер = Executors.newCachedThreadPool();
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
-
             version = pInfo.getLongVersionCode();
-            // TODO: 13.02.2023  ИНИЦИАЛИЗАЦИИ GPS
-            МетодИнициализацииGPS();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -273,7 +273,8 @@ public class ServiceControllerServer extends IntentService {
         bundleСервер=new Bundle();
         Log.w(this.getClass().getName(), " SERVER  МетодГлавныйЗапускGattServer  bluetoothManager  " + bluetoothManager );
         try {
-            МетодЗапускаСервера();
+            // TODO: 13.02.2023  ИНИЦИАЛИЗАЦИИ GPS
+            МетодИнициализацииGPS();
             Log.w(this.getClass().getName(), "   МетодГлавныйЗапускGattServer   ");
         } catch (Exception e) {
             e.printStackTrace();
@@ -294,46 +295,28 @@ public class ServiceControllerServer extends IntentService {
     @SuppressLint("MissingPermission")
     private void МетодИнициализацииGPS() {
         try{
+         ExecutorService executorService=Executors.newCachedThreadPool();
+         executorService.submit(()->{
+             handler.post(()->{
+                 // TODO: 01.02.2023 Получение Новго Ключа Для Сканера
+                 while (lastLocation==null) {
+                     locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+                     locationListener = new MyLocationListener(context);
+                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 90000, 0.0F, locationListener);
+                     lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                     Log.d(TAG, "lastLocation takeWhile CONNECT FOR FOR FOR GPS LOCATION   "+lastLocation+ " время  : " +new Date().toLocaleString() );
+                     Log.d(TAG, "lastLocation МетодИнициализацииGPS "+lastLocation );
+                 }
+                 // TODO: 13.02.2023
+                 МетодПолучениеЛокацииGPS();
+                 executorService.shutdown();
+                 if(executorService.isShutdown()==true){
+                     МетодЗапускаСервера();
+                     Log.w(this.getClass().getName(), "   МетодГлавныйЗапускGattServer   ");
+                 }
+             });
+         });
 // create observable
-         Observable.range(0, 90000)
-                 .takeWhile(new Predicate<Integer>() {
-                     @Override
-                     public boolean test(Integer integer) throws Throwable {
-                         if (lastLocation!=null) {
-                             return false;
-                         } else {
-                             return true;
-                         }
-                     }
-                 })
-                 .subscribe(new Observer<Integer>() {
-                @Override
-                public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-                    Log.d(TAG, "lastLocation takeWhile "+lastLocation );
-                }
-
-                @Override
-                public void onNext(@io.reactivex.rxjava3.annotations.NonNull Integer integer) {
-                    Log.d(TAG, "lastLocation takeWhile "+lastLocation );
-                    // TODO: 01.02.2023 Получение Новго Ключа Для Сканера
-                    locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-                    locationListener = new MyLocationListener(context);
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 90000, 0.0F, locationListener);
-                    lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    Log.d(TAG, "lastLocation takeWhile CONNECT FOR FOR FOR GPS LOCATION   "+lastLocation+ " время  : " +new Date().toLocaleString()+ "  integer "+integer );
-                }
-
-                @Override
-                public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                    Log.d(TAG, "lastLocation takeWhile "+lastLocation );
-                }
-
-                @Override
-                public void onComplete() {
-                    Log.d(TAG, "lastLocation takeWhile "+lastLocation );
-                    МетодПолучениеЛокацииGPS();
-                }
-            });
             Log.d(TAG, "lastLocation takeWhile "+lastLocation );
         } catch (Exception e) {
             e.printStackTrace();
