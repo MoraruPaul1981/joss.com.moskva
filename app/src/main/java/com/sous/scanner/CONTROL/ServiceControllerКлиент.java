@@ -79,6 +79,7 @@ public class ServiceControllerКлиент extends IntentService {
     private     Long version=0l;
     private  String ДействиеДляСервераGATTОТКлиента;
     private  UUID uuidКлючСервераGATTЧтениеЗапись;
+    private  BluetoothGatt gatt;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -327,7 +328,7 @@ public class ServiceControllerКлиент extends IntentService {
                             МетодРаботыСТекущийСерверомGATT(bluetoothDevice, UuidГлавныйКлючСерверGATT);
                             Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT()....  UuidГлавныйКлючСерверGATT "+ UuidГлавныйКлючСерверGATT
                                     +"uuidКлючСервераGATTЧтениеЗапись " +uuidКлючСервераGATTЧтениеЗапись);
-                            return null;
+                            return UuidГлавныйКлючСерверGATT;
                         });
                     } catch (Exception e) {
                     e.printStackTrace();
@@ -475,7 +476,7 @@ public class ServiceControllerКлиент extends IntentService {
                         }
                     };
                     // TODO: 26.01.2023  конец сервера GATT
-                    BluetoothGatt gatt =      bluetoothDevice.connectGatt(context, false, bluetoothGattCallback, BluetoothDevice.TRANSPORT_AUTO,0,handler);
+                     gatt =      bluetoothDevice.connectGatt(context, false, bluetoothGattCallback, BluetoothDevice.TRANSPORT_AUTO,0,handler);
                     Log.d(this.getClass().getName(), "\n" + " bluetoothDevice" + bluetoothDevice);
                     gatt.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH);
                     bluetoothDevice.createBond();
@@ -518,7 +519,9 @@ public class ServiceControllerКлиент extends IntentService {
                 }
             });
             // TODO: 11.02.2023
-            esМенеджерПотоковСканер.poll();
+            Object ОтветОтGattServer=     esМенеджерПотоковСканер.poll(10,TimeUnit.SECONDS).get();
+            Log.i(TAG, " ОтветОтGattServer  " + ОтветОтGattServer+" drema "+new Date().toLocaleString());
+           /// mediatorLiveDataGATT
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
