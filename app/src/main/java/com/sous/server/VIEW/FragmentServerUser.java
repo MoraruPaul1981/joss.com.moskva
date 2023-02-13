@@ -756,6 +756,16 @@ public class FragmentServerUser extends Fragment {
                                                     +"\n"+"пинги: " +linkedКолПодкСерверу.size() );
                                         });
                                         break;
+                                    case   "SERVER#SousAvtoStartingGPS" :
+                                        handler.post(()->{
+                                            holder.materialButtonСервер.startAnimation(animationServer);
+                                            holder.materialButtonСервер.setText("Стартует..."
+                                                    + "\n"
+                                                    + "\n"+"пинг: " +linkedКолПодкСерверу.size());
+                                            Log.i(this.getClass().getName(), "  Работает... на сервере ответ КЛИЕНТУ  "
+                                                    +"\n"+"пинги: " +linkedКолПодкСерверу.size() );
+                                        });
+                                        break;
                                     case "SERVERGATTRUNNIGERRORS" :
                                         handler.post(()->{
                                             holder.materialButtonСервер.setText("Не работает !!!");

@@ -298,8 +298,11 @@ public class ServiceControllerServer extends IntentService {
          ExecutorService executorService=Executors.newCachedThreadPool();
          executorService.submit(()->{
              handler.post(()->{
+                 bundleСервер.clear();
+                 bundleСервер.putString("Статус", "SERVER#SousAvtoStartingGPS");
+                 mutableLiveDataGATTServer.setValue(bundleСервер);
                  // TODO: 01.02.2023 Получение Новго Ключа Для Сканера
-                 while (lastLocation==null) {
+                while (lastLocation==null) {
                      locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
                      locationListener = new MyLocationListener(context);
                      locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 90000, 0.0F, locationListener);
