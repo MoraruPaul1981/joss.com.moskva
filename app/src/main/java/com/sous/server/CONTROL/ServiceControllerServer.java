@@ -39,6 +39,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.util.concurrent.AtomicDouble;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.onesignal.OneSignal;
 
@@ -249,14 +250,15 @@ public class ServiceControllerServer extends IntentService {
 
     // TODO: 30.11.2022 сервер СКАНИРОВАНИЯ
     public void МетодГлавныйСеврера(@NonNull Handler handler, @NonNull Context context,
-                                    @NonNull BluetoothManager bluetoothManager, @NonNull MutableLiveData<Bundle>mutableLiveDataGATTServer) {
+                                    @NonNull BluetoothManager bluetoothManager,
+                                    @NonNull MutableLiveData<Bundle>mutableLiveDataGATTServer) {
         this.context = context;
         this.handler = handler;
         this.bluetoothManagerServer = bluetoothManager;
         this.mutableLiveDataGATTServer=mutableLiveDataGATTServer;
         // TODO: 08.12.2022 уснатавливаем настройки Bluetooth
         bundleСервер=new Bundle();
-        Log.w(this.getClass().getName(), " SERVER  bluetoothManager  " + bluetoothManager + " bluetoothAdapter " + bluetoothAdapter);
+        Log.w(this.getClass().getName(), " SERVER  МетодГлавныйСеврера  bluetoothManager  " + bluetoothManager );
         try {
             МетодЗапускаСервера();
             Log.w(this.getClass().getName(), "   МетодГлавныйСеврера  ");
@@ -292,12 +294,7 @@ public class ServiceControllerServer extends IntentService {
                     "" + binder.isBinderAlive() + " date " + new Date().toString().toString() + "" +
                     "\n" + " POOL " + Thread.currentThread().getName() +
                     "\n" + " ALL POOLS  " + Thread.getAllStackTraces().entrySet().size());
-            // TODO: 08.12.2022 сканирование Bluetooth
-            bluetoothAdapter = bluetoothManagerServer.getAdapter();
-            while (bluetoothAdapter.isEnabled()==false){
-                bluetoothAdapter.enable();
-            }
-                    // TODO: 07.02.2023  иницилизирем Запуск GPS
+            // TODO: 07.02.2023  иницилизирем Запуск GPS
                     locationManager = (LocationManager)
                             getSystemService(Context.LOCATION_SERVICE);
                     handler.post(()->{
@@ -330,7 +327,6 @@ public class ServiceControllerServer extends IntentService {
                                 break;
                             case BluetoothProfile.STATE_DISCONNECTED:
                                 Log.i(TAG, "Connected to GATT server. BluetoothProfile.STATE_CONNECTING   device.getAddress() "+  device.getAddress());
-                                server.cancelConnection(device);
                                 break;
                         }
 
@@ -509,6 +505,8 @@ public class ServiceControllerServer extends IntentService {
                         // TODO: 12.02.2023  ОТВЕТ !!!
                         server.notifyCharacteristicChanged(device, characteristicsServerОтКлиента, true);
                         server.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, new Date().toLocaleString().toString().getBytes(StandardCharsets.UTF_8));
+                        // TODO: 13.02.2023  закрыываем
+                        server.cancelConnection(device);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

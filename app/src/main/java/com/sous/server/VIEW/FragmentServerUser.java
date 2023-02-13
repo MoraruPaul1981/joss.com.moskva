@@ -36,6 +36,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.sous.server.CONTROL.ServiceControllerServer;
+import com.sous.server.MODEL.CREATE_DATABASEServer;
 import com.sous.server.MODEL.SubClassErrors;
 import com.sous.server.R;
 
@@ -43,6 +44,7 @@ import com.sous.server.R;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -90,6 +92,12 @@ public class FragmentServerUser extends Fragment {
             version = pInfo.getLongVersionCode();
             serviceControllerServer=     binderСканнерServer.getService();
             linkedКолПодкСерверу=new LinkedList<>();
+            // TODO: 13.02.2023 разрешения
+            // TODO: 30.01.2023  видимый
+            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION,0);
+            //startActivity(discoverableIntent);
+            startActivity(discoverableIntent);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -204,15 +212,20 @@ public class FragmentServerUser extends Fragment {
     }
 
     ///todo первый метод #1
+    @SuppressLint("MissingPermission")
     private void МетодЗапускGattServer() {
         try {
-            // TODO: 30.01.2023  видимый
-            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION,0);
-            //startActivity(discoverableIntent);
-            startActivityForResult(discoverableIntent, 16);
-            // TODO: 06.12.2022 запускаем GATT SERVER
-            serviceControllerServer.МетодГлавныйСеврера(handler, getActivity(),bluetoothManager,mutableLiveDataGATTServer);
+            BluetoothAdapter     bluetoothAdapter = bluetoothManager.getAdapter();
+            if (bluetoothAdapter!=null) {
+                while (bluetoothAdapter.isEnabled()==false){
+                    bluetoothAdapter.enable();
+                }
+                if(bluetoothAdapter.isEnabled()==true){
+                    // TODO: 06.12.2022 запускаем GATT SERVER
+                    serviceControllerServer.МетодГлавныйСеврера(handler, getActivity(),bluetoothManager,mutableLiveDataGATTServer);
+                    Log.d(getClass().getClass().getName(), "\n" + " МетодЗапускGattServer" + new Date() );
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
