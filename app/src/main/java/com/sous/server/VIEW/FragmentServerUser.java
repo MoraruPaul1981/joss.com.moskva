@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -36,7 +37,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.sous.server.CONTROL.ServiceControllerServer;
-import com.sous.server.MODEL.CREATE_DATABASEServer;
 import com.sous.server.MODEL.SubClassErrors;
 import com.sous.server.R;
 
@@ -48,8 +48,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 
@@ -71,6 +69,7 @@ public class FragmentServerUser extends Fragment {
 
     private Long version;
     private  ServiceControllerServer serviceControllerServer;
+    private LocationManager locationManager ;
     @SuppressLint({"RestrictedApi", "MissingPermission"})
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -98,6 +97,7 @@ public class FragmentServerUser extends Fragment {
             discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION,0);
             //startActivity(discoverableIntent);
             startActivity(discoverableIntent);
+            locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -222,7 +222,7 @@ public class FragmentServerUser extends Fragment {
                 }
                 if(bluetoothAdapter.isEnabled()==true){
                     // TODO: 06.12.2022 запускаем GATT SERVER
-                    serviceControllerServer.МетодГлавныйСеврера(handler, getActivity(),bluetoothManager,mutableLiveDataGATTServer);
+                    serviceControllerServer.МетодГлавныйЗапускGattServer(handler, getActivity(),bluetoothManager,mutableLiveDataGATTServer,locationManager);
                     Log.d(getClass().getClass().getName(), "\n" + " МетодЗапускGattServer" + new Date() );
                 }
             }

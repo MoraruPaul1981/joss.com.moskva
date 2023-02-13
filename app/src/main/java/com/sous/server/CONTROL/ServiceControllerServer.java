@@ -39,7 +39,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.util.concurrent.AtomicDouble;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.onesignal.OneSignal;
 
@@ -97,11 +96,13 @@ public class ServiceControllerServer extends IntentService {
         super("ServiceControllerServer");
     }
     private MutableLiveData<Bundle> mutableLiveDataGATTServer;
-    private        LocationManager locationManager ;
+
     private  List<Address> addressesgetGPS;
     private  Location lastLocation;
     private   UUID uuidКлючСервераGATTЧтениеЗапись;
     private  Bundle bundleСервер;
+    private        LocationManager locationManager ;
+    private  LocationListener locationListener;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -116,6 +117,7 @@ public class ServiceControllerServer extends IntentService {
             executorServiceСканер = Executors.newCachedThreadPool();
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
+            locationListener = new MyLocationListener(context);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -249,19 +251,21 @@ public class ServiceControllerServer extends IntentService {
     }
 
     // TODO: 30.11.2022 сервер СКАНИРОВАНИЯ
-    public void МетодГлавныйСеврера(@NonNull Handler handler, @NonNull Context context,
-                                    @NonNull BluetoothManager bluetoothManager,
-                                    @NonNull MutableLiveData<Bundle>mutableLiveDataGATTServer) {
+    public void МетодГлавныйЗапускGattServer(@NonNull Handler handler, @NonNull Context context,
+                                             @NonNull BluetoothManager bluetoothManager,
+                                             @NonNull MutableLiveData<Bundle>mutableLiveDataGATTServer,
+                                             @NonNull LocationManager locationManager) {
         this.context = context;
         this.handler = handler;
         this.bluetoothManagerServer = bluetoothManager;
         this.mutableLiveDataGATTServer=mutableLiveDataGATTServer;
+        this.locationManager=locationManager;
         // TODO: 08.12.2022 уснатавливаем настройки Bluetooth
         bundleСервер=new Bundle();
-        Log.w(this.getClass().getName(), " SERVER  МетодГлавныйСеврера  bluetoothManager  " + bluetoothManager );
+        Log.w(this.getClass().getName(), " SERVER  МетодГлавныйЗапускGattServer  bluetoothManager  " + bluetoothManager );
         try {
             МетодЗапускаСервера();
-            Log.w(this.getClass().getName(), "   МетодГлавныйСеврера  ");
+            Log.w(this.getClass().getName(), "   МетодГлавныйЗапускGattServer   ");
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -295,8 +299,6 @@ public class ServiceControllerServer extends IntentService {
                     "\n" + " POOL " + Thread.currentThread().getName() +
                     "\n" + " ALL POOLS  " + Thread.getAllStackTraces().entrySet().size());
             // TODO: 07.02.2023  иницилизирем Запуск GPS
-                    locationManager = (LocationManager)
-                            getSystemService(Context.LOCATION_SERVICE);
                     handler.post(()->{
                         bundleСервер.clear();
                         bundleСервер.putString("Статус","SERVERGATTRUNNIGSTARTING");
@@ -607,11 +609,8 @@ public class ServiceControllerServer extends IntentService {
     private void МетодПолучениеGPS() {
         try{
             handler.post(()->{
-                LocationListener locationListener = new MyLocationListener(context);
-                locationManager.requestLocationUpdates(
-                        LocationManager.GPS_PROVIDER, 90000, 0.0F, locationListener);
-                lastLocation = locationManager.getLastKnownLocation(
-                        LocationManager.GPS_PROVIDER);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 90000, 0.0F, locationListener);
+                lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 if (lastLocation != null) {
                     locationListener.onLocationChanged(lastLocation);
                     while (lastLocation.isComplete()==false);
