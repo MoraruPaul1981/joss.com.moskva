@@ -222,7 +222,7 @@ public class FragmentServerUser extends Fragment {
                 }
                 if(bluetoothAdapter.isEnabled()==true){
                     // TODO: 06.12.2022 запускаем GATT SERVER
-                    serviceControllerServer.МетодГлавныйЗапускGattServer(handler, getActivity(),bluetoothManager,mutableLiveDataGATTServer,locationManager);
+                    serviceControllerServer.МетодГлавныйЗапускGattServer(handler, getActivity(),bluetoothManager,mutableLiveDataGATTServer);
                     Log.d(getClass().getClass().getName(), "\n" + " МетодЗапускGattServer" + new Date() );
                 }
             }

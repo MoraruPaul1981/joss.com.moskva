@@ -41,7 +41,7 @@ public class MyWork_Retry_ScannerServers extends Worker {
     private Long version=0l;
     private BluetoothManager bluetoothManager;
     private MutableLiveData<Bundle> mutableLiveDataGATTServer;
-    private LocationManager locationManager ;
+
     // TODO: 28.09.2022
     public MyWork_Retry_ScannerServers(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -53,7 +53,6 @@ public class MyWork_Retry_ScannerServers extends Worker {
             version = pInfo.getLongVersionCode();
             bluetoothManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
             mutableLiveDataGATTServer=new MutableLiveData<>();
-            locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             // TODO: 22.12.2022
             МетодБиндингаОбщая();
         } catch (Exception e) {
@@ -153,7 +152,7 @@ public class MyWork_Retry_ScannerServers extends Worker {
         try {
                 WorkManagerScanner = WorkManager.getInstance(getApplicationContext().getApplicationContext()).getWorkInfosByTag(ИмяСлужбыСинхронизации).get();
             Log.i(context.getClass().getName(), " doWork doWork doWork RETRY MyWork_Retry_ScannerServers SERVER "+WorkManagerScanner );
-            binderСканнерServer.getService().МетодГлавныйЗапускGattServer(handler, getApplicationContext(),bluetoothManager,mutableLiveDataGATTServer,locationManager);
+            binderСканнерServer.getService().МетодГлавныйЗапускGattServer(handler, getApplicationContext(),bluetoothManager,mutableLiveDataGATTServer);
 
         } catch (Exception e) {
             e.printStackTrace();

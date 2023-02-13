@@ -117,7 +117,7 @@ public class ServiceControllerServer extends IntentService {
             executorServiceСканер = Executors.newCachedThreadPool();
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
-            locationListener = new MyLocationListener(context);
+            МетодИнициализацииGPS();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -133,6 +133,31 @@ public class ServiceControllerServer extends IntentService {
             new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
 
+    }
+
+    @SuppressLint("MissingPermission")
+    private void МетодИнициализацииGPS() {
+        try{
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new MyLocationListener(context);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 90000, 0.0F, locationListener);
+        lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            // TODO: 13.02.2023
+        МетодПолучениеGPS();
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ContentValues valuesЗаписываемОшибки = new ContentValues();
+        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+        final Object ТекущаяВерсияПрограммы = version;
+        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+    }
     }
 
     public class LocalBinderСканнер extends Binder {
@@ -253,13 +278,11 @@ public class ServiceControllerServer extends IntentService {
     // TODO: 30.11.2022 сервер СКАНИРОВАНИЯ
     public void МетодГлавныйЗапускGattServer(@NonNull Handler handler, @NonNull Context context,
                                              @NonNull BluetoothManager bluetoothManager,
-                                             @NonNull MutableLiveData<Bundle>mutableLiveDataGATTServer,
-                                             @NonNull LocationManager locationManager) {
+                                             @NonNull MutableLiveData<Bundle>mutableLiveDataGATTServer) {
         this.context = context;
         this.handler = handler;
         this.bluetoothManagerServer = bluetoothManager;
         this.mutableLiveDataGATTServer=mutableLiveDataGATTServer;
-        this.locationManager=locationManager;
         // TODO: 08.12.2022 уснатавливаем настройки Bluetooth
         bundleСервер=new Bundle();
         Log.w(this.getClass().getName(), " SERVER  МетодГлавныйЗапускGattServer  bluetoothManager  " + bluetoothManager );
@@ -304,7 +327,7 @@ public class ServiceControllerServer extends IntentService {
                         bundleСервер.putString("Статус","SERVERGATTRUNNIGSTARTING");
                         mutableLiveDataGATTServer.setValue(bundleСервер);
                         // TODO: 07.02.2023  создаем GPS
-                        МетодПолучениеGPS();
+                     ///   МетодПолучениеGPS();
                 });
 
             // TODO: 26.01.2023 Сервер КОД
@@ -399,9 +422,6 @@ public class ServiceControllerServer extends IntentService {
                             String ПришлиДанныеОтКлиентаЗапрос = new String(value);
                             Log.i(TAG, "Connected to GATT server  newValueПришлиДАнныеОтКлиента." + new String(value)+
                                     " value.length " +value.length  + " addressesgetGPS "+addressesgetGPS );
-                            while (addressesgetGPS==null){
-                                МетодПолучениеGPS();
-                            }
                             // TODO: 07.02.2023  Записываем ВБАзу Данные
                             if (value.length > 0  && addressesgetGPS!=null) {
                                 String ДанныеСодранныеОтКлиента = "Девайс отмечен..." + "\n" + device.getName().toString() +
@@ -618,9 +638,6 @@ public class ServiceControllerServer extends IntentService {
     @SuppressLint({"NewApi", "SuspiciousIndentation", "MissingPermission"})
     private void МетодПолучениеGPS() {
         try{
-            handler.post(()->{
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 90000, 0.0F, locationListener);
-                lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 if (lastLocation != null) {
                     locationListener.onLocationChanged(lastLocation);
                     while (lastLocation.isComplete()==false);
@@ -655,7 +672,6 @@ public class ServiceControllerServer extends IntentService {
                         Log.i(TAG, "MyLocationListener GPS addressesgetGPS "+addressesgetGPS);
                     Log.i(TAG, "locationListener"+ " " +locationListener);
                 }
-            });
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
