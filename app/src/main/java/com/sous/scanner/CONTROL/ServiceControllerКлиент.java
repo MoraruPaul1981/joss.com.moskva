@@ -460,7 +460,8 @@ public class ServiceControllerКлиент extends IntentService {
                                         mediatorLiveDataGATT.setValue(ОтветОтСервераОбратно);
                                     });
                                 }
-                                gatt.close();
+                                // TODO: 13.02.2023  Разрываем сокедение с сервером
+                                МетодРазрываСоедениесGAttServer();
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -504,6 +505,11 @@ public class ServiceControllerКлиент extends IntentService {
                 }
                 }
 
+                private void МетодРазрываСоедениесGAttServer() {
+                    gatt.disconnect();
+                    gatt.close();
+                }
+
                 private void МетодЗапускаGATTКлиента(@NonNull BluetoothDevice bluetoothDevice, BluetoothGattCallback bluetoothGattCallback) {
                     gatt =      bluetoothDevice.connectGatt(context, false, bluetoothGattCallback, BluetoothDevice.TRANSPORT_AUTO,0,handler);
                     Log.d(this.getClass().getName(), "\n" + " bluetoothDevice" + bluetoothDevice);
@@ -540,7 +546,8 @@ public class ServiceControllerКлиент extends IntentService {
                                 new Date().toLocaleString() + ДействиеДляСервераGATTОТКлиента + " BluetoothGatt.GATT_SUCCESS "+BluetoothGatt.GATT_SUCCESS+ " services "+services);
                         if (services==null) {
                             mediatorLiveDataGATT.setValue("SERVER#SERVER#SousAvtoNULL");
-                            gatt.close();
+                            // TODO: 13.02.2023  Разрываем сокедение с сервером
+                            МетодРазрываСоедениесGAttServer();
                         }
                     },10000);
                 }
