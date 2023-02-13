@@ -748,23 +748,26 @@ public class FragmentScannerUser extends Fragment {
                         if (mediatorLiveDataGATT.getValue()!=null) {
                             Log.i(this.getClass().getName(), "   создание МетодЗаполенияФрагмента1 mediatorLiveDataGATT " + mediatorLiveDataGATT);
                             // TODO: 24.01.2023  показываем поозователю Статуса
-
+                            Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
                             switch (mediatorLiveDataGATT.getValue().toString()){
                                 case "SERVER#SERVER#SouConnect" :
                                     handler.post(()-> {
                                         materialButtonКакоеДействие.setText("Коннект...");
+                                        v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
                                     });
                                     Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                     break;
                                 case "GATTCLIENTCALLBACK" :
                                     handler.post(()-> {
                                         materialButtonКакоеДействие.setText("Ответ...");
+                                        v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
                                     });
                                     Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                     break;
                                 case "GATTCLIENTProccessing" :
                                     handler.post(()->{
                                         materialButtonКакоеДействие.setText("В процессе...");
+                                        v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
                                     });
                                     Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                     break;
@@ -772,6 +775,7 @@ public class FragmentScannerUser extends Fragment {
                                 case "SERVER#SERVER#SousAvtoNULL" :
                                     handler.post(()->{
                                         materialButtonКакоеДействие.setText("Нет связи !!!");//
+                                        v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
                                         Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                         handler.postDelayed(()-> {
                                             materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
@@ -783,8 +787,7 @@ public class FragmentScannerUser extends Fragment {
                                 case "SERVER#SousAvtoDONTDIVICE" :
                                     handler.post(()->{
                                         materialButtonКакоеДействие.setText("Нет  сопряжение !!!");
-                                        Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
-                                        v2.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+                                        v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
                                         handler.postDelayed(()-> {
                                             materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
                                         },3000);
@@ -800,7 +803,6 @@ public class FragmentScannerUser extends Fragment {
                                         materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
                                         materialButtonКакоеДействие.startAnimation(animation);
                                         materialButtonКакоеДействие.setText("Успешно !!!");
-                                        Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
                                         v2.vibrate(VibrationEffect.createOneShot(250, VibrationEffect.DEFAULT_AMPLITUDE));
                                         // TODO: 07.02.2023
                                         // TODO: 07.02.2023  записываем смены статуса
@@ -822,7 +824,6 @@ public class FragmentScannerUser extends Fragment {
                                 // TODO: 11.02.2023 ДРУГИЕ ОТВЕТЫ
                                 case "SERVER#SousAvtoERROR" :
                                     handler.post(()->{
-                                        Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
                                         v2.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
                                         materialButtonКакоеДействие.setText("Не Успешно !!!");
                                         МетодЗаписываемСтатусРаботысGATT("Не Успешно !!!",new Date().toLocaleString());
@@ -839,6 +840,17 @@ public class FragmentScannerUser extends Fragment {
                                     });
                                     Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                     break;
+                                case "SERVER#SousAvtoEXIT" :
+                                    handler.post(()->{
+                                        materialButtonКакоеДействие.setText("Завершение работы...");
+                                        handler.postDelayed(()-> {
+                                            v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
+                                            materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
+                                            materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
+                                            Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
+                                        },3000);
+
+                                    });
                             }
                         }
                     }
@@ -945,22 +957,6 @@ public class FragmentScannerUser extends Fragment {
             public boolean handleMessage(@NonNull android.os.Message  msg) {
                 try{
                     Bundle bundle=     msg.getData();
-                    switch (          bundle.getString("КакоеДейтвие","")){
-                        case "ВыключаемPrograssbar":
-                            Log.i(this.getClass().getName(), "      bundle.getString( КакоеДейтвие" +  bundle.getString("КакоеДейтвие",""));
-                            progressСканер.setVisibility(View.INVISIBLE);
-                            break;
-                        case "ОтветОтКлиентаСканера":
-                            Log.i(this.getClass().getName(), "      bundle.getString( КакоеДейтвие" +  bundle.getString("КакоеДейтвие",""));
-                            progressСканер.setVisibility(View.INVISIBLE);
-                            String[] ИМяДеваяса=   bundle.getStringArray("ДанныеСканирования");
-                            bundle.getStringArrayList("ДанныеСканирования");
-                            Toast.makeText(getContext(), " Ответ от Службы Сканирования ...."+ИМяДеваяса[0]+ " " +ИМяДеваяса[1], Toast.LENGTH_SHORT).show();
-                            break;
-                        default:
-                            Log.i(this.getClass().getName(), "      bundle.getString( КакоеДейтвие" +  bundle.getString("КакоеДейтвие",""));
-                            break;
-                    }
                     Log.d(this.getClass().getName(), "msg " + msg);
                 } catch (Exception e) {
                     e.printStackTrace();

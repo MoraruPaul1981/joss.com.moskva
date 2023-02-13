@@ -47,7 +47,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Predicate;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -262,7 +265,9 @@ public class ServiceControllerКлиент extends IntentService {
         // TODO: 08.12.2022 уснатавливаем настройки Bluetooth
         Log.w(this.getClass().getName(), "   bluetoothManager  "+bluetoothManager+ " bluetoothAdapter " +bluetoothAdapter + "mediatorLiveDataGATT " +mediatorLiveDataGATT);
         try{
+
             МетодЗапускаСканированиеКлиент();
+            Log.w(this.getClass().getName(), "   МетодКлиент  characteristics  ");
             Log.w(this.getClass().getName(), "   МетодКлиент  characteristics  ");
         } catch (Exception e) {
             e.printStackTrace();
@@ -415,6 +420,9 @@ public class ServiceControllerКлиент extends IntentService {
                                             });
                                         }
                                     }
+
+                                }else{
+                                    Log.i(TAG, "GATT CLIENT Proccessing from GATT server.GATTCLIENTProccessing " + new Date().toLocaleString());
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -476,7 +484,28 @@ public class ServiceControllerКлиент extends IntentService {
                         }
                     };
                     // TODO: 26.01.2023  конец сервера GATT
-                     gatt =      bluetoothDevice.connectGatt(context, false, bluetoothGattCallback, BluetoothDevice.TRANSPORT_AUTO,0,handler);
+                        МетодЗапускаGATTКлиента(bluetoothDevice, bluetoothGattCallback);
+                        // TODO: 13.02.2023  делаем принудительный таймант по выключение сервервер через 10 секунд
+                        МетодВыключениеКлиентаGatt();
+
+                    } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    ContentValues valuesЗаписываемОшибки=new ContentValues();
+                    valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
+                    valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
+                    valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
+                    valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    final Object ТекущаяВерсияПрограммы = version;
+                    Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+                    valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
+                    new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+                }
+                }
+
+                private void МетодЗапускаGATTКлиента(@NonNull BluetoothDevice bluetoothDevice, BluetoothGattCallback bluetoothGattCallback) {
+                    gatt =      bluetoothDevice.connectGatt(context, false, bluetoothGattCallback, BluetoothDevice.TRANSPORT_AUTO,0,handler);
                     Log.d(this.getClass().getName(), "\n" + " bluetoothDevice" + bluetoothDevice);
                     gatt.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH);
                     bluetoothDevice.createBond();
@@ -502,25 +531,20 @@ public class ServiceControllerКлиент extends IntentService {
                             Log.i(TAG, "BluetoothDevice.BOND_BONDED " + bondstate);
                             break;
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    ContentValues valuesЗаписываемОшибки=new ContentValues();
-                    valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
-                    valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
-                    valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
-                    valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    final Object ТекущаяВерсияПрограммы = version;
-                    Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                    valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
-                    new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
                 }
+
+                private void МетодВыключениеКлиентаGatt() {
+                    handler.postDelayed(()->{
+                        mediatorLiveDataGATT.setValue("SERVER#SousAvtoEXIT");
+                        Log.i(TAG, "GATT CLIENT Proccessing from GATT server.SERVER#SousAvtoEXIT " +
+                                new Date().toLocaleString() + ДействиеДляСервераGATTОТКлиента + " BluetoothGatt.GATT_SUCCESS "+BluetoothGatt.GATT_SUCCESS);
+                        gatt.close();
+                    },10000);
                 }
             });
             // TODO: 11.02.2023
-            Object ОтветОтGattServer=     esМенеджерПотоковСканер.poll(10,TimeUnit.SECONDS).get();
-            Log.i(TAG, " ОтветОтGattServer  " + ОтветОтGattServer+" drema "+new Date().toLocaleString());
+                esМенеджерПотоковСканер.poll();
+            Log.i(TAG, " ОтветОтGattServer  " +new Date().toLocaleString());
            /// mediatorLiveDataGATT
         } catch (Exception e) {
             e.printStackTrace();
