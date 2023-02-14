@@ -113,6 +113,9 @@ public class ServiceControllerServer extends IntentService {
     private  Bundle bundleСервер;
     private        LocationManager locationManager ;
     private  LocationListener locationListener;
+    private  String ВозврящаетсяКлючScannerONESIGNAl = new String();
+
+    private  String КлючДляServerFibaseOneSingnal="220d6edf-2b29-453e-97a8-d2aefe4a9eb0";
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     public void onCreate() {
@@ -302,10 +305,11 @@ public class ServiceControllerServer extends IntentService {
                 });
                 server.close();
             }
+
+              // TODO: 14.02.2023 Firebase
+            МетодПолучениеServerСканеарКлюча_OndeSignal(КлючДляServerFibaseOneSingnal);
+            
             // TODO: 13.02.2023 Получаем GPS
-           /* if (lastLocation==null) {
-                МетодИнициализацииGPS();
-            }*/
             МетодПолучениеЛокацииGPS();
             // TODO: 14.02.2023    ЗарускаемСамСервер
             МетодЗапускаСервера();
@@ -423,7 +427,6 @@ public class ServiceControllerServer extends IntentService {
                                     mutableLiveDataGATTServer.setValue(bundleСервер);
                                 });
                                 server.connect(device,true);
-                                device.createBond();
                                 break;
                             case BluetoothProfile.STATE_DISCONNECTED:
                                 Log.i(TAG, "Connected to GATT server. BluetoothProfile.STATE_CONNECTING   device.getAddress() "+  device.getAddress());
@@ -923,62 +926,14 @@ public class ServiceControllerServer extends IntentService {
 // TODO: 14.11.2021  ПОВТОРЫЙ ЗАПУСК ВОРК МЕНЕДЖЕР
 
     public String МетодПолучениеServerСканеарКлюча_OndeSignal(@NonNull String КлючДляFirebaseNotification) {
-        final String[] ВозврящаетсяКлючScannerONESIGNAl = {null};
         try {
             // TODO: 23.12.2021 ЧЕТЫРЕ ПОПЫТКИ ПОДКЛЮЧЕНИЕ В СЕВРЕРУONESIGNAL
-            Observable observableПолученияКлючаОтСервераOneSignal=  Observable.interval(20, TimeUnit.SECONDS)
-                    .take(3,TimeUnit.MINUTES)
-                    .subscribeOn(Schedulers.io())
-                    .doOnNext(new io.reactivex.rxjava3.functions.Consumer<Long>() {
-                        @Override
-                        public void accept(Long aLong) throws Throwable {
-                            // TODO: 01.02.2023 Получение Новго Ключа Для Сканера
-                            ВозврящаетсяКлючScannerONESIGNAl[0] =     МетодПолучениеКлючаОтСлужбыONESIGNALAndFirebase(КлючДляFirebaseNotification);
-                            Log.d(context.getClass().getName(), "  Observable.interval    ВозврящаетсяКлючScannerONESIGNAl[0] " +   ВозврящаетсяКлючScannerONESIGNAl[0]);
-                        }
-                    })
-                    .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Throwable {
-                            Log.e(context.getClass().getName(), "  doOnError МетодПолучениеНовгоКлюча_OndeSignal "  +"\n" +throwable.getMessage().toString());
-                        }
-                    })
-                    .takeWhile(new Predicate<Object>() {
-                        @Override
-                        public boolean test(Object o) throws Throwable {
-                            // TODO: 26.12.2021
-                            Log.w(context.getClass().getName(), "   takeWhile ВозврящаетсяКлючScannerONESIGNAl " +
-                                    "" +Thread.currentThread().getName()+ "  ВозврящаетсяКлючScannerONESIGNAl " + ВозврящаетсяКлючScannerONESIGNAl[0]);
-                            if (   ВозврящаетсяКлючScannerONESIGNAl[0] !=null) {
-                                Log.w(context.getClass().getName(), "  ДЛЯ ТЕКУЩЕГО ПОЛЬЗОВАТЕЛЯ (телефона)Ключ ПришелОтСЕРВЕРА SUCEESSSSSS !!!@!  " +
-                                        " takeWhile МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal САМ КЛЮЧ ::::"
-                                        + ВозврящаетсяКлючScannerONESIGNAl[0] +"\n"+
-                                        " Thread.currentThread().getName() " +Thread.currentThread().getName());
-                                return false;
-                            }else {
-                                return true;
-                            }
-                        }
-                    })
-                    .onErrorComplete(new Predicate<Throwable>() {
-                        @Override
-                        public boolean test(Throwable throwable) throws Throwable {
-                            Log.e(context.getClass().getName(), "  doOnError МетодПолучениеНовгоКлюча_OndeSignal "  +"\n" +throwable.getMessage().toString());
-                            return false;
-                        }
-                    })
-                    .doOnComplete(new Action() {
-                        @Override
-                        public void run() throws Throwable {
-                            Log.w(context.getClass().getName(), " doOnTerminate  ВозврящаетсяКлючScannerONESIGNAl" + ВозврящаетсяКлючScannerONESIGNAl[0]);
-                            // TODO: 06.01.2022
-                            // TODO: 06.01.2022
-                            Log.w(context.getClass().getName(), "  onComplete МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal"  +"\n"+
-                                    " Thread.currentThread().getName() " +Thread.currentThread().getName());
-                        }
-                    });
-// TODO: 07.01.2022 GREAT OPERATIONS подпииска на данные
-            observableПолученияКлючаОтСервераOneSignal.subscribe();
+            // TODO: 01.02.2023 Получение Новго Ключа Для Сканера
+            if ( ВозврящаетсяКлючScannerONESIGNAl.length()==0) {
+                ВозврящаетсяКлючScannerONESIGNAl =     МетодПолучениеКлючаОтСлужбыONESIGNALAndFirebase(КлючДляFirebaseNotification);
+                Log.d(context.getClass().getName(), "  Observable.interval    ВозврящаетсяКлючScannerONESIGNAl[0] " +   ВозврящаетсяКлючScannerONESIGNAl);
+            }
+            Log.d(context.getClass().getName(), "  Observable.interval    ВозврящаетсяКлючScannerONESIGNAl[0] " +   ВозврящаетсяКлючScannerONESIGNAl);
             // TODO: 05.01.2022  ДЕЛАЕМ ПОДПИСКУ НА ОСУЩЕСТВЛЛЕНУЮ ДАННЫХ
         } catch (Exception e) {
             e.printStackTrace();
@@ -994,8 +949,7 @@ public class ServiceControllerServer extends IntentService {
             valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
             new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
-
-        return ВозврящаетсяКлючScannerONESIGNAl[0];
+        return ВозврящаетсяКлючScannerONESIGNAl;
     }
 
     private String МетодПолучениеКлючаОтСлужбыONESIGNALAndFirebase(@NonNull String КлючДляFirebaseNotification) {
@@ -1010,7 +964,7 @@ public class ServiceControllerServer extends IntentService {
             OneSignal.setAppId(КлючДляFirebaseNotification);
             OneSignal.disablePush(false);
             //TODO srating.......... firebase cloud --ПРИШЛО СООБЩЕНИЕ
-            FirebaseMessagingService firebaseMessagingService =new MyFirebaseMessagingServiceServerScanners();
+            FirebaseMessagingService firebaseMessagingService =new MyFirebaseMessagingServiceServerScanners(context);
             //TODO srating......  oneSignal
             Log.d(this.getClass().getName(), "  FirebaseMessagingService"  );
             // TODO: 07.12.2021
@@ -1023,8 +977,13 @@ public class ServiceControllerServer extends IntentService {
             OneSignal.sendTag("grp_msg", "serverscanners");
             OneSignal.sendTag("android_background_data", "true");
             OneSignal.sendTag("content_available", "true");
+            // TODO: 14.02.2023 получаем uuid для onesingal
+         String tokenOneSignal=   OneSignal.getDeviceState().getPushToken();
+            tokenOneSignal=   OneSignal.getDeviceState().getPushToken();
             //TODO srating......  oneSignal
-            ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal = OneSignal.getDeviceState().getUserId();
+            if (tokenOneSignal!=null) {
+                ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal = OneSignal.getDeviceState().getUserId();
+            }
             // TODO: 15.12.2021
             Log.d(this.getClass().getName(), "  ПОСЛЕ КЛЮЧ ДЛЯ SERVER SCANNER  OneSignal........  220d6edf-2b29-453e-97a8-d2aefe4a9eb0  "+"\n"+
                     "   OneSignal.getTriggerValueForKey(\"GT_PLAYER_ID\"); " + OneSignal.getTriggerValueForKey("GT_PLAYER_ID")+

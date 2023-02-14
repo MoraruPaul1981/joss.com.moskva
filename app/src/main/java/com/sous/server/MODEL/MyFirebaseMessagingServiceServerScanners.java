@@ -1,6 +1,7 @@
 package com.sous.server.MODEL;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.util.Log;
@@ -10,12 +11,13 @@ import com.google.firebase.messaging.RemoteMessage;
 import java.util.Map;
 
 public class MyFirebaseMessagingServiceServerScanners extends FirebaseMessagingService {
-
+    Context context;
     private Long version=0l;
     // TODO: 02.12.2021
-    public MyFirebaseMessagingServiceServerScanners() {
+    public MyFirebaseMessagingServiceServerScanners(@NonNull Context context) {
         super();
         try{
+            this.context=context;
         Log.w(this.getClass().getName(), " MyFirebaseMessagingServiceServerScanners " );
         } catch (Exception e) {
             e.printStackTrace();
@@ -29,7 +31,7 @@ public class MyFirebaseMessagingServiceServerScanners extends FirebaseMessagingS
             final Object ТекущаяВерсияПрограммы = version;
             Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
             valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
     }
 
@@ -51,7 +53,7 @@ public class MyFirebaseMessagingServiceServerScanners extends FirebaseMessagingS
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
       super.onMessageReceived(remoteMessage);
         try{
-            PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             version = pInfo.getLongVersionCode();
 
             Log.d(this.getClass().getName(), " onMessageReceived ПРИШЛО СООБЩЕНИЕ УВЕДОМЛЕНИЯ  SERVER BLE SCANNER  С САЙТА ONESIGNAL !!!!!!!!!!!!  " +
@@ -91,7 +93,7 @@ public class MyFirebaseMessagingServiceServerScanners extends FirebaseMessagingS
             final Object ТекущаяВерсияПрограммы = version;
             Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
             valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
     }
 
@@ -136,7 +138,7 @@ public class MyFirebaseMessagingServiceServerScanners extends FirebaseMessagingS
             final Object ТекущаяВерсияПрограммы = version;
             Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
             valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
     }
 

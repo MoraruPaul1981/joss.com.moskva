@@ -67,7 +67,7 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
     private LinearLayout linearLayou;
     private  Long version;
     private MaterialTextView materialTextViewToolBar;
-    private  String КлючДляServerFibaseOneSingnal="220d6edf-2b29-453e-97a8-d2aefe4a9eb0";
+
     private    AsyncTaskLoader asyncTaskLoader;
     @SuppressLint("RestrictedApi")
     @Override
@@ -253,26 +253,7 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
         new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
     }
     }
-    private void МетодЗапускаемПолучениеServerКлючаOndeSignalFirebase(@NonNull String КлючДляServerFibaseOneSingnal) {
-        try {
-            binderСканнер.getService().МетодПолучениеServerСканеарКлюча_OndeSignal(КлючДляServerFibaseOneSingnal);
-            Log.i(this.getClass().getName(), "   создание МетодЗаполенияФрагмента1 mediatorLiveDataGATT "+КлючДляServerFibaseOneSingnal );
-            //TODO
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-    }
+
     public void МетодСобыытиеКнопокСканирования(@NotNull Intent intent) {
         try {
             bottomNavigationItemViewВыход.setOnClickListener(new View.OnClickListener() {
@@ -442,7 +423,6 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
                                 if(binderСканнер.isBinderAlive()){
                                     Log.i(getApplicationContext().getClass().getName(), "  onServiceConnected  onServiceConnected  МетодБиндингаСканирование"
                                             + binderСканнер.isBinderAlive());
-                                    МетодЗапускаемПолучениеServerКлючаOndeSignalFirebase(КлючДляServerFibaseOneSingnal);
                                     binderСканнер.linkToDeath(new IBinder.DeathRecipient() {
                                         @Override
                                         public void binderDied() {

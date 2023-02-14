@@ -1,5 +1,6 @@
 package com.sous.server.CONTROL;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
@@ -44,7 +45,7 @@ public class MyWork_Async_Синхронизация_ScannerServer extends Worke
        this.context = context;
         Log.i(this.context.getClass().getName(), " public MyWork_Async_Синхронизация_Общая(@NonNull Context context," +
                 " @NonNull WorkerParameters workerParams) {  Контекст "+"\n"+ this.context);
-            PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             // TODO: 22.12.2022
             МетодБиндингаОбщая();
@@ -64,24 +65,25 @@ public class MyWork_Async_Синхронизация_ScannerServer extends Worke
         }
     }
 
+    @SuppressLint("NewApi")
     private void МетодБиндингаОбщая() throws InterruptedException {
         try {
-        Intent intentГлавнаяСинхрониазцияScanner = new Intent(getApplicationContext(), ServiceControllerServer.class);
-        getApplicationContext().bindService(intentГлавнаяСинхрониазцияScanner,Context.BIND_AUTO_CREATE,
+        Intent intentГлавнаяСинхрониазцияScanner = new Intent(context, ServiceControllerServer.class);
+        context.bindService(intentГлавнаяСинхрониазцияScanner,Context.BIND_AUTO_CREATE,
                 executorServiceServerScanner, new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 // TODO: 31.01.2023 код
-                Log.d(getApplicationContext().getClass().getName().toString(), "\n"
+                Log.d(context.getClass().getName().toString(), "\n"
                         + "onServiceConnected  ОБЩАЯ messengerActivity  ");
                 binderСканнерServer = ( ServiceControllerServer.LocalBinderСканнер) service;
                 if(binderСканнерServer.isBinderAlive()){
-                    Log.i(getApplicationContext().getClass().getName(), "    onServiceConnected  binderСканнерServer.isBinderAlive()"
+                    Log.i(context.getClass().getName(), "    onServiceConnected  binderСканнерServer.isBinderAlive()"
                             + binderСканнерServer.isBinderAlive());
                     binderСканнерServer.linkToDeath(new IBinder.DeathRecipient() {
                         @Override
                         public void binderDied() {
-                            Log.i(getApplicationContext().getClass().getName(), "    onServiceConnected  binderСканнерServer.isBinderAlive()"
+                            Log.i(context.getClass().getName(), "    onServiceConnected  binderСканнерServer.isBinderAlive()"
                                     + binderСканнерServer.isBinderAlive());
 
                         }
@@ -91,7 +93,7 @@ public class MyWork_Async_Синхронизация_ScannerServer extends Worke
             }
             @Override
             public void onServiceDisconnected(ComponentName name) {
-                Log.d(getApplicationContext().getClass().getName().toString(), "\n"
+                Log.d(context.getClass().getName().toString(), "\n"
                         + "onServiceConnected  ОБЩАЯ messengerActivity  ");
             }
         });
@@ -117,7 +119,7 @@ public class MyWork_Async_Синхронизация_ScannerServer extends Worke
     public void onStopped() {
         super.onStopped();
         try{
-            Log.d(getApplicationContext().getClass().getName().toString(), "\n"
+            Log.d(context.getClass().getName().toString(), "\n"
                     + "onStopped  onStopped");
         } catch (Exception e) {
             e.printStackTrace();
@@ -138,7 +140,7 @@ public class MyWork_Async_Синхронизация_ScannerServer extends Worke
     @Override
     public Result doWork() {
         try {
-                WorkManagerScanner = WorkManager.getInstance(getApplicationContext().getApplicationContext()).getWorkInfosByTag(ИмяСлужбыСинхронизации).get();
+                WorkManagerScanner = WorkManager.getInstance(context).getWorkInfosByTag(ИмяСлужбыСинхронизации).get();
             Log.i(context.getClass().getName(), "СИНХРОНИЗАЦИЯ WorkManagerScanner  SERVER  "+WorkManagerScanner );
 
         } catch (Exception e) {
