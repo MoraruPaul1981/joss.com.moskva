@@ -129,9 +129,9 @@ public class ServiceControllerServer extends IntentService {
             executorServiceСканер = Executors.newCachedThreadPool();
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
+            bundleСервер=new Bundle();
             // TODO: 13.02.2023  ИНИЦИАЛИЗАЦИИ GPS
             МетодИнициализацииGPS();
-
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -270,15 +270,12 @@ public class ServiceControllerServer extends IntentService {
     @SuppressLint("MissingPermission")
     public void МетодГлавныйЗапускGattServer(@NonNull Handler handler, @NonNull Context context,
                                              @NonNull BluetoothManager bluetoothManager,
-                                             @NonNull MutableLiveData<Bundle>mutableLiveDataGATTServer,
-                                             @NonNull LocationManager locationManager ) {
+                                             @NonNull MutableLiveData<Bundle>mutableLiveDataGATTServer) {
         this.context = context;
         this.handler = handler;
         this.bluetoothManagerServer = bluetoothManager;
         this.mutableLiveDataGATTServer=mutableLiveDataGATTServer;
-        this.locationManager=locationManager;
         // TODO: 08.12.2022 уснатавливаем настройки Bluetooth
-        bundleСервер=new Bundle();
         Log.w(this.getClass().getName(), " SERVER  МетодГлавныйЗапускGattServer  bluetoothManager  " + bluetoothManager + "server "+server);
         try {
             if(server!=null){
@@ -310,10 +307,6 @@ public class ServiceControllerServer extends IntentService {
     private void МетодИнициализацииGPS() {
         try{
             // TODO: 13.02.2023
-            МетодПолучениеЛокацииGPS();
-                 bundleСервер.clear();
-                 bundleСервер.putString("Статус", "SERVER#SousAvtoStartingGPS");
-                 mutableLiveDataGATTServer.setValue(bundleСервер);
                  // TODO: 01.02.2023 Получение Новго Ключа Для Сканера
             ExecutorService executorServiceGPS=Executors.newCachedThreadPool();
             executorServiceGPS.submit(()->{
@@ -325,7 +318,7 @@ public class ServiceControllerServer extends IntentService {
                 Log.d(TAG, "lastLocation МетодИнициализацииGPS "+lastLocation );
                 return null;
             });
-            CancellationSignal signal = new CancellationSignal();
+                     CancellationSignal signal = new CancellationSignal();
                      locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
                      locationListener = new MyLocationListener(context);
                      locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 90000, 0.0F,executorServiceGPS, locationListener);
@@ -334,7 +327,15 @@ public class ServiceControllerServer extends IntentService {
                               executorServiceGetCurrent, new java.util.function.Consumer<Location>() {
                          @Override
                          public void accept(Location location) {
-                             Log.d(TAG, "lastLocation МетодИнициализацииGPS "+lastLocation );
+                             Log.d(TAG, "lastLocation location "+location );
+                             if (location!=null) {
+                                 lastLocation=location;
+                                 Log.d(TAG, "  SUCCESS lastLocation МетодИнициализацииGPS "+lastLocation );
+                                 МетодПолучениеЛокацииGPS();
+                                 bundleСервер.clear();
+                                 bundleСервер.putString("Статус", "SERVER#SousAvtoStartingGPS");
+                                 mutableLiveDataGATTServer.setValue(bundleСервер);
+                             }
                          }
                      });
                      Log.d(TAG, "lastLocation takeWhile CONNECT FOR FOR FOR GPS LOCATION   "+lastLocation+ " время  : " +new Date().toLocaleString() );
@@ -347,8 +348,6 @@ public class ServiceControllerServer extends IntentService {
                     Log.d(TAG, "lastLocation МетодИнициализацииGPS "+lastLocation );
                 }
             }, handler);//GnssNavigationMessage.Callback
-
-
 // create observable
             Log.d(TAG, "lastLocation takeWhile "+lastLocation );
         } catch (Exception e) {
