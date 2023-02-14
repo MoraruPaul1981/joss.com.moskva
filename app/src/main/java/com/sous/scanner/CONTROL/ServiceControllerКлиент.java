@@ -532,7 +532,7 @@ public class ServiceControllerКлиент extends IntentService {
                     gatt =      bluetoothDevice.connectGatt(context, false, bluetoothGattCallback, BluetoothDevice.TRANSPORT_AUTO,BluetoothDevice.PHY_LE_2M_MASK,handler);
                     Log.d(this.getClass().getName(), "\n" + " bluetoothDevice" + bluetoothDevice);
                     gatt.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH);
-                    gatt.setPreferredPhy(BluetoothDevice.PHY_LE_2M_MASK,BluetoothDevice.PHY_LE_2M_MASK,BluetoothDevice.PHY_LE_2M_MASK);
+                    gatt.setPreferredPhy(BluetoothDevice.PHY_LE_2M_MASK,BluetoothDevice.PHY_LE_2M_MASK,BluetoothDevice.PHY_OPTION_S2);
                     bluetoothDevice.createBond();
                     int bondstate = bluetoothDevice.getBondState();
                     Log.d(TAG, "Trying to write characteristic..., first bondstate " + bondstate);
