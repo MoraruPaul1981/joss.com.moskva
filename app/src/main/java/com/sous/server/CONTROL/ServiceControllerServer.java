@@ -279,6 +279,11 @@ public class ServiceControllerServer extends IntentService {
         Log.w(this.getClass().getName(), " SERVER  МетодГлавныйЗапускGattServer  bluetoothManager  " + bluetoothManager + "server "+server+ " lastLocation "+lastLocation);
         try {
             if(server!=null){
+                handler.post(()->{
+                    bundleСервер.clear();
+                    bundleСервер.putString("Статус","SERVERGATTRUNNIGReBOOT");
+                    mutableLiveDataGATTServer.setValue(bundleСервер);
+                });
                 server.close();
             }
             // TODO: 13.02.2023 Получаем GPS
@@ -384,12 +389,6 @@ public class ServiceControllerServer extends IntentService {
                     "\n" + " POOL " + Thread.currentThread().getName() +
                     "\n" + " ALL POOLS  " + Thread.getAllStackTraces().entrySet().size());
             // TODO: 07.02.2023  иницилизирем Запуск GPS
-                    handler.post(()->{
-                        bundleСервер.clear();
-                        bundleСервер.putString("Статус","SERVERGATTRUNNIGSTARTING");
-                        mutableLiveDataGATTServer.setValue(bundleСервер);
-                });
-
             // TODO: 26.01.2023 Сервер КОД
             server = bluetoothManagerServer.openGattServer(context, new BluetoothGattServerCallback() {
                 @Override
@@ -412,6 +411,7 @@ public class ServiceControllerServer extends IntentService {
                                 break;
                             case BluetoothProfile.STATE_DISCONNECTED:
                                 Log.i(TAG, "Connected to GATT server. BluetoothProfile.STATE_CONNECTING   device.getAddress() "+  device.getAddress());
+                                server.cancelConnection(device);
                                 break;
                         }
 
@@ -435,6 +435,11 @@ public class ServiceControllerServer extends IntentService {
                     super.onServiceAdded(status, service);
                     Vibrator v2 = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
                     v2.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+                    handler.post(()->{
+                        bundleСервер.clear();
+                        bundleСервер.putString("Статус","SERVERGATTRUNNIGSTARTING");
+                        mutableLiveDataGATTServer.setValue(bundleСервер);
+                    });
                 }
 
                 @SuppressLint("NewApi")
@@ -477,18 +482,19 @@ public class ServiceControllerServer extends IntentService {
                                                                      @NonNull  int offset,
                                                                      @NonNull   byte[] value,
                                                                      @NonNull BluetoothGattCharacteristic characteristicsServerОтКлиента) {
+                    String ПришлиДанныеОтКлиентаЗапрос = null;
+                    String ДанныеСодранныеОтКлиента = null;
                     try {
                         final Integer[] РезультатЗаписиДанныхПИнгаДвайсаВБАзу = {0};
-                        if (value != null) {
-                            String ПришлиДанныеОтКлиентаЗапрос = new String(value);
+
+                            ПришлиДанныеОтКлиентаЗапрос = new String(value);
                             Log.i(TAG, "Connected to GATT server  newValueПришлиДАнныеОтКлиента." + new String(value) +
                                     " value.length " + value.length );
                             // TODO: 13.02.2023
                             МетодПолучениеЛокацииGPS();
                             // TODO: 07.02.2023  Записываем ВБАзу Данные
-                            if (value.length > 0 &&   characteristicsServerОтКлиента != null) {
+                            if (value.length > 0 ) {
                                 // TODO: 13.02.2023
-                                String ДанныеСодранныеОтКлиента;
                                 if (addressesgetGPS!=null) {
                                     ДанныеСодранныеОтКлиента = "Девайс отмечен..." + "\n" + device.getName().toString() +
                                             "\n" + device.getAddress().toString() +
@@ -499,30 +505,35 @@ public class ServiceControllerServer extends IntentService {
                                             + "\n" + "адрес: " + addressesgetGPS.get(0).getAddressLine(0)
                                             + "\n" + "(корд1) " + addressesgetGPS.get(0).getLatitude()
                                             + "\n" + "(корд2) " + addressesgetGPS.get(0).getLongitude();
+                                    characteristicsServerОтКлиента.setValue("SERVER#SousAvtoSuccess");
+                                    Log.i(TAG, "SERVER#SousAvtoSuccess GPS" + " " + new Date().toLocaleString());
                                 } else {
                                     ДанныеСодранныеОтКлиента = "Девайс отмечен..." + "\n" + device.getName().toString() +
                                             "\n" + device.getAddress().toString() +
                                             "\n" + new Date().toLocaleString()
                                             + "\n" + ПришлиДанныеОтКлиентаЗапрос;
+                                    characteristicsServerОтКлиента.setValue("SERVER#SousAvtoSuccess");
+                                    Log.i(TAG, "SERVER#SousAvtoSuccess ---" + " " + new Date().toLocaleString());
                                 }
-                                // TODO: 13.02.2023  Метод Записи Девайса в базу
-                                МетодЗаписиДевайсавБазу(device, РезультатЗаписиДанныхПИнгаДвайсаВБАзу,
-                                        ПришлиДанныеОтКлиентаЗапрос, ДанныеСодранныеОтКлиента,characteristicsServerОтКлиента);
-                                Log.i(TAG, "SERVER#SousAvtoSuccess" + " " + new Date().toLocaleString());
-                                // TODO: 12.02.2023  ОТВЕТ !!!
-                                server.notifyCharacteristicChanged(device, characteristicsServerОтКлиента, true);
-
                             } else {
                                 Log.i(TAG, "SERVER#SousAvtoNULL" + " " + new Date().toLocaleString());
                                 characteristicsServerОтКлиента.setValue("SERVER#SousAvtoNULL");
                                 bundleСервер.clear();
                                 bundleСервер.putString("Статус", "SERVER#SousAvtoNULL");
                                 bundleСервер.putString("Дивайс", device.getName());
-                                mutableLiveDataGATTServer.setValue(bundleСервер);
+                                handler.post(()->{
+                                    mutableLiveDataGATTServer.setValue(bundleСервер);
+                                });
+
                             }
-                        }
                         // TODO: 12.02.2023  ОТВЕТ !!!
-                        server.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, new Date().toLocaleString().toString().getBytes(StandardCharsets.UTF_8));
+                        // TODO: 12.02.2023  ОТВЕТ !!!
+                        server.notifyCharacteristicChanged(device, characteristicsServerОтКлиента, true);
+                        server.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset,characteristicsServerОтКлиента.toString().getBytes(StandardCharsets.UTF_8));
+                        // TODO: 13.02.2023  Метод Записи Девайса в базу
+                        МетодЗаписиДевайсавБазу(device, РезультатЗаписиДанныхПИнгаДвайсаВБАзу,
+                                ПришлиДанныеОтКлиентаЗапрос, ДанныеСодранныеОтКлиента,characteristicsServerОтКлиента);
+                        Log.i(TAG, "SERVER#SousAvtoSuccess" + " " + new Date().toLocaleString());
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
