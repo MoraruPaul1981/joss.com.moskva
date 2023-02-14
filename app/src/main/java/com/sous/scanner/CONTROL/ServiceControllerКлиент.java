@@ -72,7 +72,7 @@ public class ServiceControllerКлиент extends IntentService {
     private Activity activity;
     private String TAG;
     private Handler handler;
-    private ExecutorService executorServiceСканер;
+
     private BluetoothManager bluetoothManager;
     private BluetoothAdapter bluetoothAdapter;
     public ServiceControllerКлиент() {
@@ -95,7 +95,6 @@ public class ServiceControllerКлиент extends IntentService {
             this.createDatabaseScanner = new CREATE_DATABASEScanner(context);
             this.sqLiteDatabase = createDatabaseScanner.getССылкаНаСозданнуюБазу();
             TAG = getClass().getName().toString();
-            executorServiceСканер = Executors.newCachedThreadPool();
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             version = pInfo.getLongVersionCode();
         } catch (Exception e) {
@@ -157,7 +156,6 @@ public class ServiceControllerКлиент extends IntentService {
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-                executorServiceСканер.shutdown();
                 stopSelf();
             }
         } catch (Exception e) {
@@ -183,6 +181,32 @@ public class ServiceControllerКлиент extends IntentService {
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+        // TODO: 13.02.2023  Разрываем сокедение с сервером
+        МетодРазрываСоедениесGAttServer();
+    }
+
+    @SuppressLint("MissingPermission")
+    private void МетодРазрываСоедениесGAttServer() {
+        try {
+            if (gatt!=null) {
+                gatt.disconnect();
+                gatt.close();
+            }
+            // TODO: 30.06.2022 сама не постредствено запуск метода
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ContentValues valuesЗаписываемОшибки = new ContentValues();
+        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+        final Object ТекущаяВерсияПрограммы = version;
+        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+    }
     }
 
     @Override
@@ -460,8 +484,6 @@ public class ServiceControllerКлиент extends IntentService {
                                         mediatorLiveDataGATT.setValue(ОтветОтСервераОбратно);
                                     });
                                 }
-                                // TODO: 13.02.2023  Разрываем сокедение с сервером
-                                МетодРазрываСоедениесGAttServer();
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -505,11 +527,6 @@ public class ServiceControllerКлиент extends IntentService {
                 }
                 }
 
-                private void МетодРазрываСоедениесGAttServer() {
-                    gatt.disconnect();
-                    gatt.close();
-                }
-
                 private void МетодЗапускаGATTКлиента(@NonNull BluetoothDevice bluetoothDevice, BluetoothGattCallback bluetoothGattCallback) {
                     gatt =      bluetoothDevice.connectGatt(context, false, bluetoothGattCallback, BluetoothDevice.TRANSPORT_AUTO,0,handler);
                     Log.d(this.getClass().getName(), "\n" + " bluetoothDevice" + bluetoothDevice);
@@ -546,9 +563,8 @@ public class ServiceControllerКлиент extends IntentService {
                                 new Date().toLocaleString() + ДействиеДляСервераGATTОТКлиента + " BluetoothGatt.GATT_SUCCESS "+BluetoothGatt.GATT_SUCCESS+ " services "+services);
                         if (services==null) {
                             mediatorLiveDataGATT.setValue("SERVER#SERVER#SousAvtoNULL");
-                            // TODO: 13.02.2023  Разрываем сокедение с сервером
-                            МетодРазрываСоедениесGAttServer();
                         }
+
                     },10000);
                 }
             });
