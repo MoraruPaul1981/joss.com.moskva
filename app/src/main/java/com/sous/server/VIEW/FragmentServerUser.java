@@ -798,7 +798,7 @@ public class FragmentServerUser extends Fragment {
                                                         "Девайс: "   +
                                                         "\n"  + bundleОтСервера.getString("Дивайс"));
                                                 // TODO: 09.02.2023 пинг
-                                                linkedКолПодкСерверу.add(СтатусОтСервера);
+                                                linkedКолПодкСерверу.add(bundleОтСервера.getString("ОтветКлиентуВсатвкаВБАзу"));
                                                 linkedКолПодкСерверу=  linkedКолПодкСерверу.stream().distinct().collect(Collectors.toList());
                                                 Log.i(this.getClass().getName(), "  Ошибка на ответ КЛИЕНТУ  " );
                                                 Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
@@ -817,7 +817,7 @@ public class FragmentServerUser extends Fragment {
                                             handler.post(()->{
                                                 holder.materialButtonСервер.setText(bundleОтСервера.getString("ОтветКлиентуВсатвкаВБАзу"));
                                                 // TODO: 09.02.2023 пинг
-                                                linkedКолПодкСерверу.add(СтатусОтСервера);
+                                                linkedКолПодкСерверу.add(bundleОтСервера.getString("ОтветКлиентуВсатвкаВБАзу"));
                                                 linkedКолПодкСерверу=  linkedКолПодкСерверу.stream().distinct().collect(Collectors.toList());
                                                 Log.i(this.getClass().getName(), "   Успех на сервере ответ КЛИЕНТУ  " );
                                                 Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
