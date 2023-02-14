@@ -50,6 +50,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.Action;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Predicate;
 
 
 public class FragmentScannerUser extends Fragment {
@@ -696,8 +703,8 @@ public class FragmentScannerUser extends Fragment {
                     @Override
                     public void onClick(View v) {
                         ДействиеДляСервераGATTОТКлиента= "на работу";
+                        МетодЗапускаGattСервера(v,holder,holder.materialButtonКотрольПриход);
                         Log.i(this.getClass().getName(), "  materialButtonКотрольПриход  создание МетодЗаполенияФрагмента1 v " + v );
-                        МетодРаботыСоСлужбойGATTОтСервера(v,holder,ДействиеДляСервераGATTОТКлиента,holder.materialButtonКотрольПриход);
                     }
                 });
                 Log.i(this.getClass().getName(), "   holder " + holder);
@@ -705,8 +712,8 @@ public class FragmentScannerUser extends Fragment {
                     @Override
                     public void onClick(View v) {
                         ДействиеДляСервераGATTОТКлиента= "с работы";
-                        Log.i(this.getClass().getName(), "    materialButtonКотрольВыход создание МетодЗаполенияФрагмента1 v " + v );
-                        МетодРаботыСоСлужбойGATTОтСервера(v,holder,ДействиеДляСервераGATTОТКлиента,holder.materialButtonКотрольВыход);
+                        МетодЗапускаGattСервера(v,holder,holder.materialButtonКотрольВыход);
+                        Log.i(this.getClass().getName(), "  materialButtonКотрольВыход  создание МетодЗаполенияФрагмента1 v " + v );
                     }
                 });
             } catch (Exception e) {
@@ -723,6 +730,38 @@ public class FragmentScannerUser extends Fragment {
                 valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
                 new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
             }
+        }
+        private void МетодЗапускаGattСервера(@NonNull View v,@NonNull MyViewHolder holder,MaterialButton materialButton) {
+            try {
+            Flowable.range(0,2)
+                    .timeout(3,TimeUnit.SECONDS)
+                    .forEachWhile(new Predicate<Integer>() {
+                        @Override
+                        public boolean test(Integer integer) throws Throwable {
+                            Log.i(this.getClass().getName(), "    materialButtonКотрольВыход создание МетодЗаполенияФрагмента1 v " + v);
+                            МетодРаботыСоСлужбойGATTОтСервера(v,holder,ДействиеДляСервераGATTОТКлиента,materialButton);
+                            if (mediatorLiveDataGATT.getValue().toString().equalsIgnoreCase("SERVER#SousAvtoERROR") ||
+                                    mediatorLiveDataGATT.getValue().toString().equalsIgnoreCase("SERVER#SousAvtoSuccess")  ) {
+                                return false;
+                            } else {
+                                return  true;
+                            }
+                        }
+                    }).dispose();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
         }
         private void МетодРаботыСоСлужбойGATTОтСервера( @NonNull View v,@NonNull MyViewHolder holder
                 ,@NonNull String ДействиеДляСервераGATTОТКлиента,@NonNull MaterialButton materialButtonКакоеДействие) {
