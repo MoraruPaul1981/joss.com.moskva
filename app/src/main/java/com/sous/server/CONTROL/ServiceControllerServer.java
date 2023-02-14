@@ -515,24 +515,19 @@ public class ServiceControllerServer extends IntentService {
                                     characteristicsServerОтКлиента.setValue("SERVER#SousAvtoSuccess");
                                     Log.i(TAG, "SERVER#SousAvtoSuccess ---" + " " + new Date().toLocaleString());
                                 }
-                            } else {
-                                Log.i(TAG, "SERVER#SousAvtoNULL" + " " + new Date().toLocaleString());
-                                characteristicsServerОтКлиента.setValue("SERVER#SousAvtoNULL");
-                                bundleСервер.clear();
-                                bundleСервер.putString("Статус", "SERVER#SousAvtoNULL");
-                                bundleСервер.putString("Дивайс", device.getName());
-                                handler.post(()->{
-                                    mutableLiveDataGATTServer.setValue(bundleСервер);
-                                });
 
+
+                                // TODO: 12.02.2023  ОТВЕТ !!!
+                                // TODO: 12.02.2023  ОТВЕТ !!!
+                                server.notifyCharacteristicChanged(device, characteristicsServerОтКлиента, true);
+                                server.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset,characteristicsServerОтКлиента.toString().getBytes(StandardCharsets.UTF_8));
+                                // TODO: 13.02.2023  Метод Записи Девайса в базу
+                                if (addressesgetGPS!=null) {
+                                  Integer РезультатЗаписиВБАзу=  МетодЗаписиДевайсавБазу(device, РезультатЗаписиДанныхПИнгаДвайсаВБАзу,
+                                            ПришлиДанныеОтКлиентаЗапрос, ДанныеСодранныеОтКлиента,characteristicsServerОтКлиента);
+                                    Log.i(TAG, "addressesgetGPS " + " " + addressesgetGPS+ " РезультатЗаписиВБАзу "+РезультатЗаписиВБАзу);
+                                }
                             }
-                        // TODO: 12.02.2023  ОТВЕТ !!!
-                        // TODO: 12.02.2023  ОТВЕТ !!!
-                        server.notifyCharacteristicChanged(device, characteristicsServerОтКлиента, true);
-                        server.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset,characteristicsServerОтКлиента.toString().getBytes(StandardCharsets.UTF_8));
-                        // TODO: 13.02.2023  Метод Записи Девайса в базу
-                        МетодЗаписиДевайсавБазу(device, РезультатЗаписиДанныхПИнгаДвайсаВБАзу,
-                                ПришлиДанныеОтКлиентаЗапрос, ДанныеСодранныеОтКлиента,characteristicsServerОтКлиента);
                         Log.i(TAG, "SERVER#SousAvtoSuccess" + " " + new Date().toLocaleString());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -550,7 +545,7 @@ public class ServiceControllerServer extends IntentService {
                 }
                 }
 
-                private void МетодЗаписиДевайсавБазу(@NonNull BluetoothDevice device,
+                private Integer МетодЗаписиДевайсавБазу(@NonNull BluetoothDevice device,
                                                      Integer[] РезультатЗаписиДанныхПИнгаДвайсаВБАзу,
                                                      String ПришлиДанныеОтКлиентаЗапрос,
                                                      String ДанныеСодранныеОтКлиента,
@@ -620,7 +615,6 @@ public class ServiceControllerServer extends IntentService {
                                             handler.post(()->{
                                                 mutableLiveDataGATTServer.setValue(bundleСервер);
                                             });
-                                            characteristicsServerОтКлиента.setValue("SERVER#SousAvtoSuccess");
                                     } else {
                                         // TODO: 09.02.2023 сам статус дляОтвета;
                                             Log.i(TAG, "SERVER#SousAvtoERROR РезультатЗаписиДанныхПИнгаДвайсаВБАзу " + " " +
@@ -633,7 +627,6 @@ public class ServiceControllerServer extends IntentService {
                                         handler.post(()->{
                                             mutableLiveDataGATTServer.setValue(bundleСервер);
                                                 });
-                                            characteristicsServerОтКлиента.setValue("SERVER#SousAvtoERROR");
                                     }
                                 }
                             });
@@ -652,6 +645,7 @@ public class ServiceControllerServer extends IntentService {
                     valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
                     new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
                 }
+                    return  РезультатЗаписиДанныхПИнгаДвайсаВБАзу[0];
                 }
 
                 @NonNull
