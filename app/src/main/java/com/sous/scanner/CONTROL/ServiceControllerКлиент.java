@@ -528,6 +528,7 @@ public class ServiceControllerКлиент extends IntentService {
                 }
 
                 private void МетодЗапускаGATTКлиента(@NonNull BluetoothDevice bluetoothDevice, BluetoothGattCallback bluetoothGattCallback) {
+                    try{
                     gatt =      bluetoothDevice.connectGatt(context, false, bluetoothGattCallback, BluetoothDevice.TRANSPORT_AUTO,0,handler);
                     Log.d(this.getClass().getName(), "\n" + " bluetoothDevice" + bluetoothDevice);
                     gatt.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH);
@@ -554,7 +555,48 @@ public class ServiceControllerКлиент extends IntentService {
                             Log.i(TAG, "BluetoothDevice.BOND_BONDED " + bondstate);
                             break;
                     }
+                    // TODO: 14.02.2023  Слушатель
+                    МетодСлушательGattКлиента();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    ContentValues valuesЗаписываемОшибки=new ContentValues();
+                    valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
+                    valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
+                    valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
+                    valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    final Object ТекущаяВерсияПрограммы = version;
+                    Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+                    valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
+                    new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
                 }
+                }
+                     private void МетодСлушательGattКлиента(){
+                          BluetoothProfile.ServiceListener listener= new BluetoothProfile.ServiceListener(){
+                             @Override
+                             public void onServiceConnected(int i, BluetoothProfile bluetoothProfile) {
+                                 // TODO Auto-generated method stub
+                                 Log.i(TAG, "BluetoothDevice.bluetoothProfile " + bluetoothProfile);
+                                 switch(i){
+                                     case BluetoothProfile.HEADSET:
+                                         Log.e("found","headset");
+                                         break;
+                                     case BluetoothProfile.A2DP:
+                                         Log.e("found","a2dp");
+                                         break;
+                                     case BluetoothProfile.HEALTH:
+                                         Log.e("found","HEALTH");
+                                         break;
+                                 }
+                             }
+                             @Override
+                             public void onServiceDisconnected(int i) {
+                                 Log.i(TAG, "BluetoothDevice.i " + i);
+                             }
+                         };
+                     }
+
 
                 private void МетодВыключениеКлиентаGatt() {
                     handler.postDelayed(()->{
