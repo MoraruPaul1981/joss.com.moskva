@@ -764,6 +764,11 @@ public class FragmentServerUser extends Fragment {
                                                     + "\n"+"пинг: " +linkedКолПодкСерверу.size());
                                             Log.i(this.getClass().getName(), "  Работает GPS ... на сервере ответ КЛИЕНТУ  "
                                                     +"\n"+"пинги: " +linkedКолПодкСерверу.size() );
+                                            handler.postDelayed(()-> {
+                                                holder.materialButtonСервер.setText("Работает..."
+                                                        + "\n"
+                                                        + "\n"+"пинг: " +linkedКолПодкСерверу.size());
+                                            },3000);
                                         });
                                         break;
                                     case "SERVERGATTRUNNIGERRORS" :

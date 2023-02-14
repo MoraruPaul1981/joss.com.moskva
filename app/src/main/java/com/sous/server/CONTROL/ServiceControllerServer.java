@@ -267,7 +267,7 @@ public class ServiceControllerServer extends IntentService {
     }
 
     // TODO: 30.11.2022 сервер СКАНИРОВАНИЯ
-    @SuppressLint("MissingPermission")
+    @SuppressLint({"MissingPermission", "NewApi"})
     public void МетодГлавныйЗапускGattServer(@NonNull Handler handler, @NonNull Context context,
                                              @NonNull BluetoothManager bluetoothManager,
                                              @NonNull MutableLiveData<Bundle>mutableLiveDataGATTServer) {
@@ -276,13 +276,17 @@ public class ServiceControllerServer extends IntentService {
         this.bluetoothManagerServer = bluetoothManager;
         this.mutableLiveDataGATTServer=mutableLiveDataGATTServer;
         // TODO: 08.12.2022 уснатавливаем настройки Bluetooth
-        Log.w(this.getClass().getName(), " SERVER  МетодГлавныйЗапускGattServer  bluetoothManager  " + bluetoothManager + "server "+server);
+        Log.w(this.getClass().getName(), " SERVER  МетодГлавныйЗапускGattServer  bluetoothManager  " + bluetoothManager + "server "+server+ " lastLocation "+lastLocation);
         try {
             if(server!=null){
                 server.close();
             }
-            // TODO: 13.02.2023
+            // TODO: 13.02.2023 Получаем GPS
+           /* if (lastLocation==null) {
+                МетодИнициализацииGPS();
+            }*/
             МетодПолучениеЛокацииGPS();
+            // TODO: 14.02.2023    ЗарускаемСамСервер
             МетодЗапускаСервера();
             Log.w(this.getClass().getName(), "   МетодГлавныйЗапускGattServer   ");
             Log.w(this.getClass().getName(), "   МетодГлавныйЗапускGattServer   ");
@@ -334,7 +338,10 @@ public class ServiceControllerServer extends IntentService {
                                  МетодПолучениеЛокацииGPS();
                                  bundleСервер.clear();
                                  bundleСервер.putString("Статус", "SERVER#SousAvtoStartingGPS");
-                                 mutableLiveDataGATTServer.setValue(bundleСервер);
+                                 handler.post (()->{
+                                     mutableLiveDataGATTServer.setValue(bundleСервер);
+                                 }) ;
+
                              }
                          }
                      });
@@ -345,7 +352,7 @@ public class ServiceControllerServer extends IntentService {
                 @Override
                 public void onGnssNavigationMessageReceived(GnssNavigationMessage event) {
                     super.onGnssNavigationMessageReceived(event);
-                    Log.d(TAG, "lastLocation МетодИнициализацииGPS "+lastLocation );
+                    Log.d(TAG, "lastLocation event "+event );
                 }
             }, handler);//GnssNavigationMessage.Callback
 // create observable
@@ -474,6 +481,8 @@ public class ServiceControllerServer extends IntentService {
                             String ПришлиДанныеОтКлиентаЗапрос = new String(value);
                             Log.i(TAG, "Connected to GATT server  newValueПришлиДАнныеОтКлиента." + new String(value) +
                                     " value.length " + value.length );
+                            // TODO: 13.02.2023
+                            МетодПолучениеЛокацииGPS();
                             // TODO: 07.02.2023  Записываем ВБАзу Данные
                             if (value.length > 0 &&   characteristicsServerОтКлиента != null) {
                                 // TODO: 13.02.2023
@@ -494,7 +503,6 @@ public class ServiceControllerServer extends IntentService {
                                             "\n" + new Date().toLocaleString()
                                             + "\n" + ПришлиДанныеОтКлиентаЗапрос;
                                 }
-
                                 // TODO: 13.02.2023  Метод Записи Девайса в базу
                                 МетодЗаписиДевайсавБазу(device, РезультатЗаписиДанныхПИнгаДвайсаВБАзу,
                                         ПришлиДанныеОтКлиентаЗапрос, ДанныеСодранныеОтКлиента,characteristicsServerОтКлиента);
