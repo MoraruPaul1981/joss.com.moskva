@@ -347,7 +347,7 @@ public class ServiceControllerServer extends IntentService {
                                      mutableLiveDataGATTServer.setValue(bundleСервер);
                                  }) ;
                                  // TODO: 14.02.2023  закрываем
-                                 executorServiceGetCurrent.shutdown();
+                                executorServiceGetCurrent.shutdown();
                                  executorServiceGPS.shutdown();
                              }
                          }
