@@ -415,22 +415,27 @@ public class ServiceControllerServer extends IntentService {
                 public void onConnectionStateChange(BluetoothDevice device, int status, int newState) {
                     super.onConnectionStateChange(device, status, newState);
                     try {
+                        Vibrator v2 = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
                         switch (newState) {
                             case BluetoothProfile.STATE_CONNECTED:
-                                Log.i(TAG, "Connected to GATT server. BluetoothProfile.STATE_CONNECTED device.getAddress()  " +   device.getAddress().toString());
-                                Vibrator v2 = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-                                v2.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+                                if (newState==2) {
+                                    server.connect(device,false);
+                                }
+                                Log.i(TAG, " onConnectionStateChange BluetoothProfile.STATE_CONNECTED " +   device.getAddress().toString()+
+                                        "\n"+ "newState " +newState +  "status "+status);
+                                v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
                                 handler.post(()->{
                                     bundleСервер.clear();
                                     bundleСервер.putString("Статус","SERVERGATTConnectiong");
                                     bundleСервер.putString("Дивайс",device.getName());
                                     mutableLiveDataGATTServer.setValue(bundleСервер);
                                 });
-                                server.connect(device,true);
                                 break;
                             case BluetoothProfile.STATE_DISCONNECTED:
-                                Log.i(TAG, "Connected to GATT server. BluetoothProfile.STATE_CONNECTING   device.getAddress() "+  device.getAddress());
+                                Log.i(TAG, " onConnectionStateChange BluetoothProfile.STATE_DISCONNECTED "+  device.getAddress()+
+                                        "\n"+ "newState " +newState +  "status "+status);
                                 server.cancelConnection(device);
+                                v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
                                 break;
                         }
 
