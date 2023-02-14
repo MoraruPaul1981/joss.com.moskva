@@ -733,21 +733,8 @@ public class FragmentScannerUser extends Fragment {
         }
         private void МетодЗапускаGattСервера(@NonNull View v,@NonNull MyViewHolder holder,MaterialButton materialButton) {
             try {
-            Flowable.range(0,2)
-                    .timeout(3,TimeUnit.SECONDS)
-                    .forEachWhile(new Predicate<Integer>() {
-                        @Override
-                        public boolean test(Integer integer) throws Throwable {
-                            Log.i(this.getClass().getName(), "    materialButtonКотрольВыход создание МетодЗаполенияФрагмента1 v " + v);
-                            МетодРаботыСоСлужбойGATTОтСервера(v,holder,ДействиеДляСервераGATTОТКлиента,materialButton);
-                            if (mediatorLiveDataGATT.getValue().toString().equalsIgnoreCase("SERVER#SousAvtoERROR") ||
-                                    mediatorLiveDataGATT.getValue().toString().equalsIgnoreCase("SERVER#SousAvtoSuccess")  ) {
-                                return false;
-                            } else {
-                                return  true;
-                            }
-                        }
-                    }).dispose();
+                Log.i(this.getClass().getName(), "    materialButtonКотрольВыход создание МетодЗаполенияФрагмента1 v " + v);
+                МетодРаботыСоСлужбойGATTОтСервера(v,holder,ДействиеДляСервераGATTОТКлиента,materialButton);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

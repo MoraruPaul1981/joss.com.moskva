@@ -529,16 +529,16 @@ public class ServiceControllerКлиент extends IntentService {
 
                 private void МетодЗапускаGATTКлиента(@NonNull BluetoothDevice bluetoothDevice, BluetoothGattCallback bluetoothGattCallback) {
                     try{
-                    gatt =      bluetoothDevice.connectGatt(context, false, bluetoothGattCallback, BluetoothDevice.TRANSPORT_AUTO,BluetoothDevice.PHY_LE_2M_MASK,handler);
+                    gatt =      bluetoothDevice.connectGatt(context, false, bluetoothGattCallback, BluetoothDevice.TRANSPORT_AUTO,BluetoothDevice.PHY_OPTION_S8,handler);
                     Log.d(this.getClass().getName(), "\n" + " bluetoothDevice" + bluetoothDevice);
                     gatt.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH);
-                    gatt.setPreferredPhy(BluetoothDevice.PHY_LE_2M_MASK,BluetoothDevice.PHY_LE_2M_MASK,BluetoothDevice.PHY_OPTION_S2);
-                    bluetoothDevice.createBond();
+                    //gatt.setPreferredPhy(BluetoothDevice.PHY_LE_2M_MASK,BluetoothDevice.PHY_LE_2M_MASK,BluetoothDevice.PHY_OPTION_S2);
                     int bondstate = bluetoothDevice.getBondState();
                     Log.d(TAG, "Trying to write characteristic..., first bondstate " + bondstate);
                     switch (bondstate) {
                         case BluetoothDevice.DEVICE_TYPE_UNKNOWN:
                             Log.i(TAG, "BluetoothDevice.DEVICE_TYPE_UNKNOWN" + bondstate);//Указывает, что удаленное устройство не связано (сопряжено).
+                            bluetoothDevice.createBond();
                             handler.post(()->{
                                 mediatorLiveDataGATT.setValue("SERVER#SousAvtoDONTDIVICE");
                             });
@@ -547,6 +547,7 @@ public class ServiceControllerКлиент extends IntentService {
                             Log.i(TAG, "BluetoothDevice.BOND_BONDING" + bondstate);//Указывает, что удаленное устройство не связано (сопряжено).
                             break;
                         case BluetoothDevice.BOND_NONE://Указывает, что удаленное устройство не связано (сопряжено).
+                            bluetoothDevice.createBond();
                             handler.post(()->{
                                 mediatorLiveDataGATT.setValue("SERVER#SousAvtoDONTDIVICE");
                             });
