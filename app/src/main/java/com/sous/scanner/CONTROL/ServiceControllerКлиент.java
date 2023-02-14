@@ -529,7 +529,7 @@ public class ServiceControllerКлиент extends IntentService {
 
                 private void МетодЗапускаGATTКлиента(@NonNull BluetoothDevice bluetoothDevice, BluetoothGattCallback bluetoothGattCallback) {
                     try{
-                    gatt =      bluetoothDevice.connectGatt(context, false, bluetoothGattCallback, BluetoothDevice.TRANSPORT_AUTO,0,handler);
+                    gatt =      bluetoothDevice.connectGatt(context, false, bluetoothGattCallback, BluetoothDevice.TRANSPORT_AUTO,BluetoothDevice.PHY_LE_2M_MASK,handler);
                     Log.d(this.getClass().getName(), "\n" + " bluetoothDevice" + bluetoothDevice);
                     gatt.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH);
                     bluetoothDevice.createBond();
