@@ -11,12 +11,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.transition.Transition;
 
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.textview.MaterialTextView;
@@ -34,6 +36,7 @@ public class FragmentBootScanner extends Fragment {
     private Handler handler;
     private MaterialTextView materialTextViewToolBar;
     private NavigationBarView bottomNavigationView;
+    private RelativeLayout relativeLayout;
     @SuppressLint("RestrictedApi")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -45,6 +48,7 @@ public class FragmentBootScanner extends Fragment {
                 Log.i(this.getClass().getName(),  "onViewCreated " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+viewАктивтиСканивраония);
                 bottomNavigationView = (NavigationBarView) viewАктивтиСканивраония.findViewById(R.id.BottomNavigationViewScanner);
                 materialTextViewToolBar=(MaterialTextView)  viewАктивтиСканивраония.findViewById(R.id.text_scanner_work);
+                relativeLayout = (RelativeLayout) viewАктивтиСканивраония.findViewById(R.id.activitynain_for_Taskslinelayoutrela3);
                 fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 // TODO: 19.02.2023  Методы Для Запуска Сканивраоние Фргамента
@@ -70,18 +74,26 @@ public class FragmentBootScanner extends Fragment {
 
     private void МетодЗапускаВторогоФрагментаСканивавания() {
         try {
+            fragment= fragmentManager.getFragments().get(0);
+            fragment.onDetach();
+            fragmentTransaction.remove(fragment);
+            fragmentTransaction.addToBackStack("");
+            relativeLayout.forceLayout();
+            relativeLayout.refreshDrawableState();
+            fragment=new FragmentScannerUser();
             handler.postDelayed(()->{
-                fragment= fragmentManager.getFragments().get(0);
-                fragment.onDetach();
-                fragmentTransaction.remove(fragment);
-                fragment=new FragmentScannerUser();
                 bottomNavigationView.setVisibility(View.VISIBLE);
                 materialTextViewToolBar.setVisibility(View.VISIBLE);
                 materialTextViewToolBar.setText("Клиент");
-                fragmentTransaction.replace(R.id.framelauoutScanner, fragment);//.layout.activity_for_fragemtb_history_tasks
+                Bundle bundle=new Bundle();
+                bundle.putInt("eeeeeee",1111);
+                fragmentTransaction.add(R.id.framelauoutScanner, fragment.getClass(),bundle);//.layout.activity_for_fragemtb_history_tasks
+               // fragmentTransaction.add(R.id.framelauoutScanner, fragment);//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
                 fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 fragmentTransaction.show(fragment);
+                relativeLayout.forceLayout();
+                relativeLayout.refreshDrawableState();
                 Log.i(this.getClass().getName(),  "МетодЗапускКлиентаИлиСервера " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
             },1000);
 

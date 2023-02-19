@@ -92,6 +92,7 @@ public class FragmentScannerUser extends Fragment {
             Log.d(this.getClass().getName(),  " recyclerView " + recyclerView);
             fragmentManager =  getActivity().getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setPrimaryNavigationFragment(fragment);
             Bundle bundle=     getArguments();
             bluetoothManager = (BluetoothManager) getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
             КлючДляFibaseOneSingnal="56bbe169-ea09-43de-a28c-9623058e43a2";
@@ -1010,8 +1011,8 @@ public class FragmentScannerUser extends Fragment {
                             binderСканнер.linkToDeath(new IBinder.DeathRecipient() {
                                 @Override
                                 public void binderDied() {
-                                    Log.i(getContext().getClass().getName(), "    onServiceConnected  binderСогласованияbinderМатериалы.isBinderAlive()"
-                                            + binderСканнер.isBinderAlive());
+                                    Log.i(this.getClass().getName(),  "linkToDeath" +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+
+                                            " binderСканнер.isBinderAlive() "+binderСканнер.isBinderAlive());
                                 }
                             });
                         }
