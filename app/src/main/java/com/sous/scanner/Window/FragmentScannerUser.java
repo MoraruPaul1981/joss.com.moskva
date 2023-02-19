@@ -1007,28 +1007,7 @@ class ТестКлассСканнер {
 
     public ТестКлассСканнер() {
 
-        Observable.fromArray(1, 2, 3, 5, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31)
-                .map(new Function<Integer, Object>() {
-                    @Override
-                    public Object apply(Integer integer) throws Throwable {
-                   Disposable y=    Observable.just(integer).  debounce(5,TimeUnit.SECONDS).subscribe();
-                        y.dispose();
-                        Log.d(this.getClass().getName(), "y " + y);
-                        return integer;
-                    }
-                })
-                .doOnError(new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Throwable {
-                        Log.d(this.getClass().getName(), "throwable " + throwable);
-                    }
-                })
 
-// apply operator
-
-
-// wait for it all
-                .blockingSubscribe(System.out::println);
     }
 }
 

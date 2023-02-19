@@ -47,6 +47,7 @@ import org.jetbrains.annotations.NotNull;
 
 
 
+
 public class MainActivityNewScanner extends AppCompatActivity  {
     private ServiceClientBLE.LocalBinderСканнер binderСканнер;
     private ServiceConnection connectionСканирование;
@@ -119,6 +120,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
 
     private void МетодРАзрешенияBlurtooTКлиент() {
         try{
+
 
       String[] PERMISSIONS_STORAGE = {
                 Manifest.permission.READ_EXTERNAL_STORAGE,

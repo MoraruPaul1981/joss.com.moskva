@@ -67,6 +67,8 @@ dependencies {
     ///TODO RXJAVA BLE
 
     implementation "com.polidea.rxandroidble3:rxandroidble:1.17.2"
+    //TODO ПОДКЛЮЧАЕМ МОДУЛЬ ВНЕШНИЙ
+    implementation files('//wifidirect-debug.aar')
 
 
 }
