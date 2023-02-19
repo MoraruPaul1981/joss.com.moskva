@@ -27,6 +27,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -50,6 +51,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
     private FragmentTransaction fragmentTransaction;
     private Fragment fragment;
     private LinearLayout linearLayou;
+    private RelativeLayout relativeLayout;
     private     Long version=0l;
     private  Message message;
     private MaterialTextView materialTextViewToolBar;
@@ -78,6 +80,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
             bottomNavigationItemViewВыход.setItemRippleColor(ColorStateList.valueOf(Color.RED));
             bottomNavigationItemViewИстория.setItemRippleColor(ColorStateList.valueOf(Color.RED));
             linearLayou = (LinearLayout) findViewById(R.id.activity_main_newscanner);
+            relativeLayout = (RelativeLayout) findViewById(R.id.activitynain_for_Taskslinelayoutrela3);
             Log.w(getApplicationContext().getClass().getName(), " MainActivityNewScanner onCreate  ");
             fragmentManager = getSupportFragmentManager();
             bottomNavigationView.setVisibility(View.INVISIBLE);
@@ -108,7 +111,6 @@ public class MainActivityNewScanner extends AppCompatActivity  {
     protected void onStart() {
         super.onStart();
         try {
-            МетодИницмиализацияHandker();
             // TODO: 19.02.2023 разрешает обновлени BLE
             МетодРАзрешенияBlurtooTКлиент();
             // TODO: 25.01.2023  подключение после получение BINDER
@@ -139,17 +141,6 @@ public class MainActivityNewScanner extends AppCompatActivity  {
         // TODO: 24.01.2023  переходят после получение binder
             fragment=new FragmentBootScanner();
             МетодЗапускКлиентаИлиСервера(fragment);//todo Запускам клиента или сервер фрагмент
-            handler.postDelayed(()->{
-                if (fragment!=null) {
-                    fragment.onDetach();
-                    fragmentTransaction.remove(fragment);
-                }
-                fragment=new FragmentScannerUser();
-                bottomNavigationView.setVisibility(View.VISIBLE);
-                materialTextViewToolBar.setVisibility(View.VISIBLE);
-                materialTextViewToolBar.setText("Клиент");
-                МетодЗапускКлиентаИлиСервера(fragment);//todo Запускам клиента или сервер фрагмент
-            },2000);
             Log.i(this.getClass().getName(),  "onResume " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
     } catch (Exception e) {
         e.printStackTrace();
@@ -179,30 +170,6 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                     }
                 }
             });
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-    }
-
-    public void МетодИницмиализацияHandker() {
-        try {
-        handler=new Handler(Looper.getMainLooper(), new Handler.Callback() {
-            @Override
-            public boolean handleMessage(@NonNull Message msg) {
-                return true;
-            }
-        });
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

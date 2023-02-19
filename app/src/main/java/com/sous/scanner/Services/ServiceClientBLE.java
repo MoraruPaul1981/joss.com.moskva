@@ -117,6 +117,7 @@ public class ServiceClientBLE extends IntentService {
         }
 
         public void linkToDeath(DeathRecipient deathRecipient) {
+            Log.i(this.getClass().getName(),  "deathRecipient " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
             deathRecipient.binderDied();
         }
     }

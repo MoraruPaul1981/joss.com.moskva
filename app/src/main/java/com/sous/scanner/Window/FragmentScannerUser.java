@@ -1012,7 +1012,6 @@ public class FragmentScannerUser extends Fragment {
                                 public void binderDied() {
                                     Log.i(getContext().getClass().getName(), "    onServiceConnected  binderСогласованияbinderМатериалы.isBinderAlive()"
                                             + binderСканнер.isBinderAlive());
-
                                 }
                             });
                         }
