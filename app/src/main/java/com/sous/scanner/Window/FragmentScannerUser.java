@@ -508,9 +508,10 @@ public class FragmentScannerUser extends Fragment {
                 // TODO: 08.02.2023 СТАТУС послдная задача
                 materialTextViewСтатусПоследнегоДействие = itemView.findViewById(R.id.textView5getstatus);
                 // TODO: 09.02.2023 данные из хранилища
-                String ПоследнийСтатусСканера=preferences.getString("СменаСтатусРАботыКлиентасGATT","Последний статус");
+                String ПоследнийСтатусСканера=preferences.getString("СменаСтатусРАботыКлиентасGATT","Последнее действие");
+                ПоследнийСтатусСканера=ПоследнийСтатусСканера.toUpperCase();
                 String ПоследнаяДатаСканера=preferences.getString("СменаДАтаРАботыGATT","");
-                materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера+"  ("+ПоследнаяДатаСканера+")");
+                materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера+": "+ПоследнаяДатаСканера);
                 materialTextViewСтатусПоследнегоДействие.setPaintFlags(materialTextViewСтатусПоследнегоДействие.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                 Log.d(this.getClass().getName(), " отработоатл  МетодИнициализацииСканера materialButtonКотроль " + materialButtonКотрольПриход);
             } catch (Exception e) {

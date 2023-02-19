@@ -85,10 +85,8 @@ public class FragmentBootScanner extends Fragment {
                 bottomNavigationView.setVisibility(View.VISIBLE);
                 materialTextViewToolBar.setVisibility(View.VISIBLE);
                 materialTextViewToolBar.setText("Клиент");
-                Bundle bundle=new Bundle();
-                bundle.putInt("eeeeeee",1111);
-                fragmentTransaction.add(R.id.framelauoutScanner, fragment.getClass(),bundle);//.layout.activity_for_fragemtb_history_tasks
-               // fragmentTransaction.add(R.id.framelauoutScanner, fragment);//.layout.activity_for_fragemtb_history_tasks
+                //fragmentTransaction.add(R.id.framelauoutScanner, fragment.getClass(),bundle);//.layout.activity_for_fragemtb_history_tasks
+                fragmentTransaction.add(R.id.framelauoutScanner, fragment);//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
                 fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 fragmentTransaction.show(fragment);
