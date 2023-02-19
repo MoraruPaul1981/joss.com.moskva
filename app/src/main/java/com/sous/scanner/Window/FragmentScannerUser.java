@@ -25,6 +25,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,6 +43,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
+import com.jakewharton.rxbinding4.view.RxView;
+import com.polidea.rxandroidble3.RxBleDevice;
 import com.sous.scanner.Services.ServiceClientBLE;
 import com.sous.scanner.Errors.SubClassErrors;
 import com.sous.scanner.R;
@@ -53,8 +56,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import com.sous.wifidirect.*;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
+import kotlin.Unit;
 
 
 public class FragmentScannerUser extends Fragment {
@@ -77,7 +87,6 @@ public class FragmentScannerUser extends Fragment {
     private     Long version=0l;
     private SharedPreferences preferences;
     private    String ДействиеДляСервераGATTОТКлиента;
-    private ServiceClientBLE serviceControllerКлиент;
 
 
     @SuppressLint({"RestrictedApi", "MissingPermission"})
@@ -221,7 +230,7 @@ public class FragmentScannerUser extends Fragment {
 
     private void МетодЗапускаемПолучениеКлючаOndeSignalFirebase(@NonNull String КлючДляFibaseOneSingnal) {
         try {
-            serviceControllerКлиент.МетодПолучениеНовогоДляСканеарКлюча_OndeSignal(КлючДляFibaseOneSingnal);
+            binderСканнер.getService().МетодПолучениеНовогоДляСканеарКлюча_OndeSignal(КлючДляFibaseOneSingnal);
             Log.i(this.getClass().getName(), "   создание МетодЗаполенияФрагмента1 mediatorLiveDataGATT " + mediatorLiveDataGATT+ " КлючДляFibaseOneSingnal " +КлючДляFibaseOneSingnal);
             //TODO
         } catch (Exception e) {
@@ -699,7 +708,41 @@ public class FragmentScannerUser extends Fragment {
         private void МетодЗапускаемСлужбуGATTCleintКлик(@NonNull MyViewHolder holder) {
             try {
                 Log.i(this.getClass().getName(), "   holder " + holder);
-                holder.materialButtonКотрольПриход.setOnClickListener(new View.OnClickListener() {
+                // TODO: 19.02.2023 Второе Действие
+                final Disposable[] disposable = new Disposable[1];
+                RxView.clicks(holder.materialButtonКотрольПриход).throttleFirst(30, TimeUnit.SECONDS)
+                                .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(new io.reactivex.rxjava3.core.Observer<Unit>() {
+                                            @Override
+                                            public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+
+                                                Log.i(this.getClass().getName(),  "  RxView.clicks " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                                                disposable[0] =d;
+                                            }
+
+                                            @Override
+                                            public void onNext(@io.reactivex.rxjava3.annotations.NonNull Unit unit) {
+
+                                                Log.i(this.getClass().getName(),  "  RxView.clicks " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() +
+                                                        " disposable[0] " +disposable[0].isDisposed());
+                                                Toast.makeText(getContext(), Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString(), Toast.LENGTH_SHORT).show();
+
+                                            }
+
+                                            @Override
+                                            public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+
+                                                Log.i(this.getClass().getName(),  "  RxView.clicks " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                                            }
+
+                                            @Override
+                                            public void onComplete() {
+
+                                                Log.i(this.getClass().getName(),  "  RxView.clicks " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                                                disposable[0].dispose();
+                                            }
+                                        });
+            /*    holder.materialButtonКотрольПриход.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ДействиеДляСервераGATTОТКлиента= "на работу";
@@ -708,6 +751,7 @@ public class FragmentScannerUser extends Fragment {
                     }
                 });
                 Log.i(this.getClass().getName(), "   holder " + holder);
+                // TODO: 19.02.2023 ВТорое действие 
                 holder.materialButtonКотрольВыход.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -715,7 +759,7 @@ public class FragmentScannerUser extends Fragment {
                         МетодЗапускаGattСервера(v,holder,holder.materialButtonКотрольВыход);
                         Log.i(this.getClass().getName(), "  materialButtonКотрольВыход  создание МетодЗаполенияФрагмента1 v " + v );
                     }
-                });
+                });*/
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -877,7 +921,7 @@ public class FragmentScannerUser extends Fragment {
                 });
 
                 // TODO: 06.12.2022 запускаем сканирование клиента
-                serviceControllerКлиент.МетодКлиентЗапускСканера(handler, getActivity(),bluetoothManager,mediatorLiveDataGATT,ДействиеДляСервераGATTОТКлиента);
+                binderСканнер.getService().МетодКлиентЗапускСканера(handler, getActivity(),bluetoothManager,mediatorLiveDataGATT,ДействиеДляСервераGATTОТКлиента);
                 Log.i(this.getClass().getName(), "   создание МетодЗаполенияФрагмента1 mediatorLiveDataGATT " + mediatorLiveDataGATT);
             } catch (Exception e) {
                 e.printStackTrace();

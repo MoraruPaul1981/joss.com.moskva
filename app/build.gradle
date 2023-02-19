@@ -69,6 +69,8 @@ dependencies {
 
     implementation "com.polidea.rxandroidble3:rxandroidble:1.17.2"
     //TODO ПОДКЛЮЧАЕМ МОДУЛЬ ВНЕШНИЙ
-
     implementation files('../libs/wifidirect')
+    //TODO binding
+
+    implementation 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
 }
