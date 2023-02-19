@@ -7,7 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.sous.scanner.Rasnoe.SubClassErrors;
+import com.sous.scanner.Errors.SubClassErrors;
 
 
 import java.util.Map;
@@ -109,22 +109,7 @@ public class MyFirebaseMessagingServiceScanner extends FirebaseMessagingService 
 
         try{
         /////
-
-/*        String КлючДляFirebaseNotification="2a1819db-60c8-4ca3-a752-1b6cd9cadfa1";
-
-   FirebaseMessaging.getInstance().subscribeToTopic("adroid");
-
-            RemoteMessage rm = new RemoteMessage.Builder(КлючДляFirebaseNotification)
-                    .setMessageId("myApp_" + + System.currentTimeMillis())
-                    .addData("action", "chat")
-                    .addData("destinataire", "ee")
-                    .addData("emetteur","ee")
-                    .setTtl(0)
-                    .build();
-            FirebaseMessaging.getInstance().send(rm);*/
-        ////
         Log.d(this.getClass().getName(), " onMessageSent ПРИШЛО СООБЩЕНИЕ УВЕДОМЛЕНИЯ  С САЙТА ONESIGNAL !!!!!!!!!!!!   MyFirebaseMessagingService   metod onNewToken "+s.toString() );
-
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

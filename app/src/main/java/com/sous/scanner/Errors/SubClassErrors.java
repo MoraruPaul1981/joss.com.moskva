@@ -1,4 +1,4 @@
-package com.sous.scanner.Rasnoe;
+package com.sous.scanner.Errors;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;

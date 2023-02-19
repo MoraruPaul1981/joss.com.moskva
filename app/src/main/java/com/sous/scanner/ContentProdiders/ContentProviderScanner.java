@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.loader.content.AsyncTaskLoader;
 
 import com.sous.scanner.Database.CREATE_DATABASEScanner;
-import com.sous.scanner.Rasnoe.SubClassErrors;
+import com.sous.scanner.Errors.SubClassErrors;
 
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;

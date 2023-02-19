@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.sous.scanner.Rasnoe.SubClassErrors;
+import com.sous.scanner.Errors.SubClassErrors;
 import com.sous.scanner.R;
 
 

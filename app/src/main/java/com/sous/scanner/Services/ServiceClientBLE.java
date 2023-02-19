@@ -33,7 +33,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.onesignal.OneSignal;
 import com.sous.scanner.Database.CREATE_DATABASEScanner;
 import com.sous.scanner.Firebase.MyFirebaseMessagingServiceScanner;
-import com.sous.scanner.Rasnoe.SubClassErrors;
+import com.sous.scanner.Errors.SubClassErrors;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -731,6 +731,8 @@ public class ServiceClientBLE extends IntentService {
             OneSignal.sendTag("android_background_data", "true");
             OneSignal.sendTag("content_available", "true");
             //TODO srating......  oneSignal
+          String  PushОнеСигнала = OneSignal.getDeviceState().getPushToken();
+
             ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal = OneSignal.getDeviceState().getUserId();
             // TODO: 15.12.2021
             Log.d(this.getClass().getName(), "  ПОСЛЕ КЛЮЧ ДЛЯ  OneSignal........  56bbe169-ea09-43de-a28c-9623058e43a2 "+"\n"+

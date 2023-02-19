@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 
-import com.sous.scanner.Rasnoe.SubClassErrors;
+import com.sous.scanner.Errors.SubClassErrors;
 
 import org.jetbrains.annotations.NotNull;
 import java.util.Date;

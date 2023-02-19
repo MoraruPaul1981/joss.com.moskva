@@ -2,15 +2,18 @@ package com.sous.scanner.Window;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothManager;
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -40,7 +43,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 import com.sous.scanner.Services.ServiceClientBLE;
-import com.sous.scanner.Rasnoe.SubClassErrors;
+import com.sous.scanner.Errors.SubClassErrors;
 import com.sous.scanner.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -49,12 +52,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Executors;
 
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.functions.Function;
 import com.sous.wifidirect.*;
 
 
@@ -94,7 +93,6 @@ public class FragmentScannerUser extends Fragment {
             fragmentManager =  getActivity().getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
             Bundle bundle=     getArguments();
-            binderСканнер = (ServiceClientBLE.LocalBinderСканнер) bundle.getBinder("binderСканнер");
             bluetoothManager = (BluetoothManager) getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
             КлючДляFibaseOneSingnal="56bbe169-ea09-43de-a28c-9623058e43a2";
             mediatorLiveDataGATT=new MediatorLiveData();
@@ -107,10 +105,8 @@ public class FragmentScannerUser extends Fragment {
             PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             preferences = getContext().getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
-            // TODO: 08.02.2023  службы кодключения к слубже сканированиея
-             serviceControllerКлиент=   binderСканнер.getService();
-            // TODO: 16.02.2023
-         //   new ТестКлассСканнер(getActivity());
+            // TODO: 08.02.2023  Биндинг службы
+            МетодБиндингаСканирование();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -181,7 +177,7 @@ public class FragmentScannerUser extends Fragment {
         super.onResume();
         try {
             Log.d(this.getClass().getName(), " отработоатл new SubClassBuccessLogin_ГлавныйКлассБизнесЛогикиФрагмент1 imageView  Fragment1_One_Tasks  onStart");
-            МетодЗапускаемПолучениеКлючаOndeSignalFirebase(КлючДляFibaseOneSingnal);
+        //    МетодЗапускаемПолучениеКлючаOndeSignalFirebase(КлючДляFibaseOneSingnal);
             МетодЗаполенияRecycleViewДляЗадач();
             МетодСлушательObserverДляRecycleView();
             МетодПерегрузкаRecyceView();
@@ -401,7 +397,7 @@ public class FragmentScannerUser extends Fragment {
             throws ExecutionException, InterruptedException {
         try {
             Log.d(this.getClass().getName(), "  выходим из задания МетодКпопкаВозвращениеBACK");
-            ((MainActivityNewScanner)getActivity()).МетодСобыытиеКнопокСканирования(new Intent("fragment"));
+            ((MainActivityNewScanner)getActivity()).МетодКнопкаBackExit(new Intent("fragment"));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -1000,7 +996,76 @@ public class FragmentScannerUser extends Fragment {
     }
 
 
+    // TODO: 29.11.2022 служба сканирования
+    private    void   МетодБиндингаСканирование(){
+        try {
+            ServiceConnection   connectionСканирование = new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    try{
+                        binderСканнер = ( ServiceClientBLE.LocalBinderСканнер) service;
+                        if(binderСканнер.isBinderAlive()){
+                            Log.i(getContext().getClass().getName(), "    onServiceConnected  binderСогласованияbinderМатериалы.isBinderAlive()"
+                                    + binderСканнер.isBinderAlive());
+                            binderСканнер.linkToDeath(new IBinder.DeathRecipient() {
+                                @Override
+                                public void binderDied() {
+                                    Log.i(getContext().getClass().getName(), "    onServiceConnected  binderСогласованияbinderМатериалы.isBinderAlive()"
+                                            + binderСканнер.isBinderAlive());
 
+                                }
+                            });
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        ContentValues valuesЗаписываемОшибки=new ContentValues();
+                        valuesЗаписываемОшибки.put("НазваниеОбрабоатываемойТаблицы","ErrorDSU1");
+                        valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
+                        valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
+                        valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
+                        valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        final Object ТекущаяВерсияПрограммы = version;
+                        Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+                        valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
+                        new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+                    }
+
+                }
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
+                    try{
+                        Log.i(getContext().getClass().getName(), "    onServiceDisconnected  binderСканнер.isBinderAlive()" + binderСканнер.isBinderAlive());
+                        binderСканнер =null;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
+                                + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
+                }
+            };
+            Intent intentБиндингсСлужбойСканирования =
+                    new Intent(getContext(), ServiceClientBLE.class);
+           getContext(). bindService(intentБиндингсСлужбойСканирования, Context.BIND_AUTO_CREATE, Executors.newSingleThreadExecutor(), connectionСканирование);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки=new ContentValues();
+            valuesЗаписываемОшибки.put("НазваниеОбрабоатываемойТаблицы","ErrorDSU1");
+            valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+
+    }
 }
 
 //todo тест
