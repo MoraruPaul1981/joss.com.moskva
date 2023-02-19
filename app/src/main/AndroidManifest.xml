@@ -89,9 +89,6 @@
         android:roundIcon="@mipmap/icon_scanner_new2_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DSU">
-        <service
-            android:name=".ServiceClientWifiDirect"
-            android:exported="false"></service>
 
         <activity
             android:name=".Window.MainActivityNewScanner"
