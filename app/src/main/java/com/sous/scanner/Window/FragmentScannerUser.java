@@ -110,7 +110,7 @@ public class FragmentScannerUser extends Fragment {
             // TODO: 08.02.2023  службы кодключения к слубже сканированиея
              serviceControllerКлиент=   binderСканнер.getService();
             // TODO: 16.02.2023
-            new ТестКлассСканнер(getActivity());
+         //   new ТестКлассСканнер(getActivity());
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -511,9 +511,9 @@ public class FragmentScannerUser extends Fragment {
                 // TODO: 08.02.2023 СТАТУС послдная задача
                 materialTextViewСтатусПоследнегоДействие = itemView.findViewById(R.id.textView5getstatus);
                 // TODO: 09.02.2023 данные из хранилища
-                String ПоследнийСтатусСканера=preferences.getString("СменаСтатусРАботыКлиентасGATT","нет");
+                String ПоследнийСтатусСканера=preferences.getString("СменаСтатусРАботыКлиентасGATT","Последний статус");
                 String ПоследнаяДатаСканера=preferences.getString("СменаДАтаРАботыGATT","");
-                materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера.toUpperCase()+"\n"+ПоследнаяДатаСканера);
+                materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера+"  ("+ПоследнаяДатаСканера+")");
                 materialTextViewСтатусПоследнегоДействие.setPaintFlags(materialTextViewСтатусПоследнегоДействие.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                 Log.d(this.getClass().getName(), " отработоатл  МетодИнициализацииСканера materialButtonКотроль " + materialButtonКотрольПриход);
             } catch (Exception e) {
@@ -841,7 +841,7 @@ public class FragmentScannerUser extends Fragment {
                                         // TODO: 08.02.2023 показыввем клиент смененый статус
                                         String ПоследнийСтатусСканера=preferences.getString("СменаСтатусРАботыКлиентасGATT","");
                                         String ПоследнаяДатаСканера=preferences.getString("СменаДАтаРАботыGATT","");
-                                        holder.   materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера.toUpperCase()+"\n"+ПоследнаяДатаСканера);
+                                        holder.   materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера+"\n"+ПоследнаяДатаСканера);
                                         holder.   materialTextViewСтатусПоследнегоДействие.setTextColor(Color.parseColor("#949796"));
                                         holder. materialTextViewСтатусПоследнегоДействие.forceLayout();
                                         holder. materialTextViewСтатусПоследнегоДействие.refreshDrawableState();
@@ -862,7 +862,7 @@ public class FragmentScannerUser extends Fragment {
                                         // TODO: 08.02.2023 показыввем клиент смененый статус
                                         String ПоследнийСтатусСканера=preferences.getString("СменаСтатусРАботыКлиентасGATT","");
                                         String ПоследнаяДатаСканера=preferences.getString("СменаДАтаРАботыGATT","");
-                                        holder.   materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера.toUpperCase()+"\n"+ПоследнаяДатаСканера);
+                                        holder.   materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера+"\n"+ПоследнаяДатаСканера);
                                         holder.   materialTextViewСтатусПоследнегоДействие.setTextColor(Color.RED);
                                         holder. materialTextViewСтатусПоследнегоДействие.forceLayout();
                                         holder. materialTextViewСтатусПоследнегоДействие.refreshDrawableState();
@@ -1009,7 +1009,8 @@ class ТестКлассСканнер {
 
     public ТестКлассСканнер(Context context) {
 WWIFI wwifi=new WWIFI(context);
-
+ String s=       wwifi.metodss();
+        System.out.printf(" WWIFI s "+s);
     }
 }
 
