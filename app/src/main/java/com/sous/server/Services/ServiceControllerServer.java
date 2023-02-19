@@ -83,9 +83,8 @@ public class ServiceControllerServer extends IntentService {
     private SQLiteDatabase sqLiteDatabase;
     private CREATE_DATABASEServer createDatabaseScanner;
     public LocalBinderСканнер binder = new LocalBinderСканнер();
-    private Context context;
+
     private String TAG;
-    private Handler handler;
     private BluetoothManager bluetoothManagerServer;
     private BluetoothAdapter bluetoothAdapter;
     private Set<BluetoothDevice> pairedDevices = new HashSet<>();
@@ -110,11 +109,11 @@ public class ServiceControllerServer extends IntentService {
     public void onCreate() {
         super.onCreate();
         try {
-            Log.d(context.getClass().getName(), "\n"
+            Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-            this.createDatabaseScanner = new CREATE_DATABASEServer(context);
+            this.createDatabaseScanner = new CREATE_DATABASEServer(getApplicationContext());
             this.sqLiteDatabase = createDatabaseScanner.getССылкаНаСозданнуюБазу();
             TAG = getClass().getName().toString();
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
@@ -155,7 +154,7 @@ public class ServiceControllerServer extends IntentService {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d(context.getClass().getName(), "\n"
+        Log.d(getApplicationContext().getClass().getName(), "\n"
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
@@ -179,7 +178,7 @@ public class ServiceControllerServer extends IntentService {
         super.onTaskRemoved(rootIntent);
         try {
             if (rootIntent.getAction().equalsIgnoreCase("КлиентЗакрываетСлужбу")) {
-                Log.d(context.getClass().getName(), "\n"
+                Log.d(getApplicationContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
@@ -206,7 +205,7 @@ public class ServiceControllerServer extends IntentService {
     public void onDestroy() {
         super.onDestroy();
         try{
-        Log.d(context.getClass().getName(), "\n"
+        Log.d(getApplicationContext().getClass().getName(), "\n"
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
@@ -238,7 +237,6 @@ public class ServiceControllerServer extends IntentService {
                     " УДАЛЕНИЕ СТАТУСА Удаленная !!!!! " + "\n" +
                     " УДАЛЕНИЕ СТАТУСА Удаленная !!!!!   Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-            this.context = getApplicationContext();
             // МетодЗапускаОбщиеКоды(getApplicationContext(),intent);
 // TODO: 30.06.2022 сама не постредствено запуск метода
         } catch (Exception e) {
@@ -270,7 +268,6 @@ public class ServiceControllerServer extends IntentService {
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + newBase.getClass().getName() + "\n" +
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-        this.context = newBase;
         super.attachBaseContext(newBase);
     }
 
@@ -279,8 +276,6 @@ public class ServiceControllerServer extends IntentService {
     public synchronized void МетодГлавныйЗапускGattServer(@NonNull Handler handler, @NonNull Context context,
                                              @NonNull BluetoothManager bluetoothManager,
                                              @NonNull MutableLiveData<Bundle>mutableLiveDataGATTServer) {
-        this.context = context;
-        this.handler = handler;
         this.bluetoothManagerServer = bluetoothManager;
         this.mutableLiveDataGATTServer=mutableLiveDataGATTServer;
         // TODO: 08.12.2022 уснатавливаем настройки Bluetooth
@@ -326,23 +321,13 @@ public class ServiceControllerServer extends IntentService {
         try{
             // TODO: 13.02.2023
                  // TODO: 01.02.2023 Получение Новго Ключа Для Сканера
-            ExecutorService executorServiceGPS=Executors.newCachedThreadPool();
-            executorServiceGPS.submit(()->{
-                Log.d(TAG, "lastLocation МетодИнициализацииGPS "+lastLocation );
-                return null;
-            });
-            ExecutorService executorServiceGetCurrent=Executors.newCachedThreadPool();
-            executorServiceGetCurrent.submit(()->{
-                Log.d(TAG, "lastLocation МетодИнициализацииGPS "+lastLocation );
-                return null;
-            });
                      CancellationSignal signal = new CancellationSignal();
-                     locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-                     locationListener = new MyLocationListener(context);
-                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 90000, 0.0F,executorServiceGPS, locationListener);
+                     locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+                     locationListener = new MyLocationListener(getApplicationContext());
+                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 90000, 0.0F,Executors.newCachedThreadPool(), locationListener);
                      //lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                       locationManager.getCurrentLocation(LocationManager.GPS_PROVIDER,signal,
-                              executorServiceGetCurrent, new java.util.function.Consumer<Location>() {
+                              Executors.newCachedThreadPool(), new java.util.function.Consumer<Location>() {
                          @Override
                          public void accept(Location location) {
                              Log.d(TAG, "lastLocation location "+location );
@@ -352,12 +337,10 @@ public class ServiceControllerServer extends IntentService {
                                  МетодПолучениеЛокацииGPS();
                                  bundleСервер.clear();
                                  bundleСервер.putString("Статус", "SERVER#SousAvtoStartingGPS");
-                                 handler.post (()->{
+                                 getApplicationContext().getMainExecutor().execute (()->{
                                      mutableLiveDataGATTServer.setValue(bundleСервер);
-                                 }) ;
+                                 }); ;
                                  // TODO: 14.02.2023  закрываем
-                                executorServiceGetCurrent.shutdown();
-                                 executorServiceGPS.shutdown();
                              }
                          }
                      });
@@ -370,7 +353,7 @@ public class ServiceControllerServer extends IntentService {
                     super.onGnssNavigationMessageReceived(event);
                     Log.d(TAG, "lastLocation event "+event );
                 }
-            }, handler);//GnssNavigationMessage.Callback
+            });//GnssNavigationMessage.Callback
 // create observable
             Log.d(TAG, "lastLocation takeWhile "+lastLocation );
         } catch (Exception e) {
@@ -385,7 +368,7 @@ public class ServiceControllerServer extends IntentService {
             final Object ТекущаяВерсияПрограммы = version;
             Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
             valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
     }
     // TODO: 08.12.2022 Метод Сервер
@@ -399,12 +382,12 @@ public class ServiceControllerServer extends IntentService {
                     "\n" + " ALL POOLS  " + Thread.getAllStackTraces().entrySet().size());
             // TODO: 07.02.2023  иницилизирем Запуск GPS
             // TODO: 26.01.2023 Сервер КОД
-            server = bluetoothManagerServer.openGattServer(context, new BluetoothGattServerCallback() {
+            server = bluetoothManagerServer.openGattServer(getApplicationContext(), new BluetoothGattServerCallback() {
                 @Override
                 public void onConnectionStateChange(BluetoothDevice device, int status, int newState) {
                     super.onConnectionStateChange(device, status, newState);
                     try {
-                        Vibrator v2 = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                        Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                         switch (newState) {
                             case BluetoothProfile.STATE_CONNECTED:
                                 if (newState==2) {
@@ -413,7 +396,7 @@ public class ServiceControllerServer extends IntentService {
                                 Log.i(TAG, " onConnectionStateChange BluetoothProfile.STATE_CONNECTED " +   device.getAddress().toString()+
                                         "\n"+ "newState " +newState +  "status "+status);
                                 v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
-                                handler.post(()->{
+                                getApplicationContext().getMainExecutor().execute(()->{
                                     bundleСервер.clear();
                                     bundleСервер.putString("Статус","SERVERGATTConnectiong");
                                     bundleСервер.putString("Дивайс",device.getName());
@@ -446,9 +429,9 @@ public class ServiceControllerServer extends IntentService {
                 @Override
                 public void onServiceAdded(int status, BluetoothGattService service) {
                     super.onServiceAdded(status, service);
-                    Vibrator v2 = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                    Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                     v2.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
-                    handler.post(()->{
+                    getApplicationContext().getMainExecutor().execute(()->{
                         bundleСервер.clear();
                         bundleСервер.putString("Статус","SERVERGATTRUNNIGSTARTING");
                         mutableLiveDataGATTServer.setValue(bundleСервер);
@@ -621,7 +604,7 @@ public class ServiceControllerServer extends IntentService {
                             .doOnComplete(new Action() {
                                 @Override
                                 public void run() throws Throwable {
-                                    Vibrator v2 = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                                    Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                                     v2.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
                                     if (РезультатЗаписиДанныхПИнгаДвайсаВБАзу[0] > 0) {
                                         // TODO: 09.02.2023 сам статус дляОтвета;
@@ -631,7 +614,7 @@ public class ServiceControllerServer extends IntentService {
                                             bundleСервер.putString("Статус","SERVER#SousAvtoSuccess");
                                             bundleСервер.putString("ОтветКлиентуВсатвкаВБАзу", ДанныеСодранныеОтКлиента);
                                             bundleСервер.putString("Дивайс", device.getName());
-                                            handler.post(()->{
+                                        getApplicationContext().getMainExecutor().execute(()->{
                                                 mutableLiveDataGATTServer.setValue(bundleСервер);
                                             });
                                     } else {
@@ -643,7 +626,7 @@ public class ServiceControllerServer extends IntentService {
                                             bundleСервер.putString("ОтветКлиентуВсатвкаВБАзу","Пинг прошел ," + "\n" +
                                                     "Без записи в базу !!!");
                                             bundleСервер.putString("Дивайс", device.getName());
-                                        handler.post(()->{
+                                        getApplicationContext().getMainExecutor().execute(()->{
                                             mutableLiveDataGATTServer.setValue(bundleСервер);
                                                 });
                                     }
@@ -726,7 +709,7 @@ public class ServiceControllerServer extends IntentService {
                                 .doOnComplete(new Action() {
                                     @Override
                                     public void run() throws Throwable {
-                                        Vibrator v2 = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                                        Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                                         v2.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
                                         if (РезультатЗаписиДанныхПИнгаДвайсаВБАзу[0] > 0) {
                                             // TODO: 09.02.2023 сам статус дляОтвета;
@@ -736,7 +719,7 @@ public class ServiceControllerServer extends IntentService {
                                             bundleСервер.putString("Статус","SERVER#SousAvtoSuccess");
                                             bundleСервер.putString("ОтветКлиентуВсатвкаВБАзу", ДанныеСодранныеОтКлиента);
                                             bundleСервер.putString("Дивайс", device.getName());
-                                            handler.post(()->{
+                                            getApplicationContext().getMainExecutor().execute(()->{
                                                 mutableLiveDataGATTServer.setValue(bundleСервер);
                                             });
                                         } else {
@@ -748,7 +731,7 @@ public class ServiceControllerServer extends IntentService {
                                             bundleСервер.putString("ОтветКлиентуВсатвкаВБАзу","Пинг прошел ," + "\n" +
                                                     "Без записи в базу !!!");
                                             bundleСервер.putString("Дивайс", device.getName());
-                                            handler.post(()->{
+                                            getApplicationContext().getMainExecutor().execute(()->{
                                                 mutableLiveDataGATTServer.setValue(bundleСервер);
                                             });
                                         }
@@ -866,7 +849,7 @@ public class ServiceControllerServer extends IntentService {
                     while (lastLocation.isComplete()==false);
                         Log.i(TAG, "MyLocationListener GPS longitude "+lastLocation);
                         String cityName = null;
-                        Geocoder gcd = new Geocoder(context, Locale.getDefault());
+                        Geocoder gcd = new Geocoder(getApplicationContext(), Locale.getDefault());
                         Log.i(TAG, "MyLocationListener GPS gcd "+gcd);
                         try {
                             addressesgetGPS = gcd.getFromLocation(lastLocation.getLatitude(),
@@ -922,9 +905,9 @@ public class ServiceControllerServer extends IntentService {
             // TODO: 01.02.2023 Получение Новго Ключа Для Сканера
             if ( ВозврящаетсяКлючScannerONESIGNAl.length()==0) {
                 ВозврящаетсяКлючScannerONESIGNAl =     МетодПолучениеКлючаОтСлужбыONESIGNALAndFirebase(КлючДляFirebaseNotification);
-                Log.d(context.getClass().getName(), "  Observable.interval    ВозврящаетсяКлючScannerONESIGNAl[0] " +   ВозврящаетсяКлючScannerONESIGNAl);
+                Log.d(getApplicationContext().getClass().getName(), "  Observable.interval    ВозврящаетсяКлючScannerONESIGNAl[0] " +   ВозврящаетсяКлючScannerONESIGNAl);
             }
-            Log.d(context.getClass().getName(), "  Observable.interval    ВозврящаетсяКлючScannerONESIGNAl[0] " +   ВозврящаетсяКлючScannerONESIGNAl);
+            Log.d(getApplicationContext().getClass().getName(), "  Observable.interval    ВозврящаетсяКлючScannerONESIGNAl[0] " +   ВозврящаетсяКлючScannerONESIGNAl);
             // TODO: 05.01.2022  ДЕЛАЕМ ПОДПИСКУ НА ОСУЩЕСТВЛЛЕНУЮ ДАННЫХ
         } catch (Exception e) {
             e.printStackTrace();
@@ -950,7 +933,7 @@ public class ServiceControllerServer extends IntentService {
             Log.d(this.getClass().getName(), "  КЛЮЧ ДЛЯ Scanner  OneSignal........ "+ КлючДляFirebaseNotification +"\n");
             OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
             // todo OneSignal Initialization
-            OneSignal.initWithContext(context);
+            OneSignal.initWithContext(getApplicationContext());
             ///////todo srating Google Notifications wits PUblic Key
             OneSignal.setAppId(КлючДляFirebaseNotification);
             OneSignal.disablePush(false);
@@ -1023,9 +1006,9 @@ public class ServiceControllerServer extends IntentService {
             Log.i(this.getClass().getName(), "запись сотрудника в базу"+ " linkedHashMapДанныеДляЗаписи) " + contentValues) ;
             String provider = "com.sous.server.providerserver";
             Uri uri = Uri.parse("content://"+provider+"/" +"scannerserversuccess" + "");
-            ContentResolver resolver = context.getContentResolver();
+            ContentResolver resolver = getApplicationContext().getContentResolver();
             РезульататЗАписиНовогоДивайса=   resolver.bulkInsert(uri, contentValues);
-            Log.w(context.getClass().getName(), " РЕЗУЛЬТАТ insertData  РезульататЗАписиНовогоДивайса ЗНАЧЕНИЯ  " +  РезульататЗАписиНовогоДивайса.toString() );
+            Log.w(getApplicationContext().getClass().getName(), " РЕЗУЛЬТАТ insertData  РезульататЗАписиНовогоДивайса ЗНАЧЕНИЯ  " +  РезульататЗАписиНовогоДивайса.toString() );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1050,7 +1033,7 @@ public class ServiceControllerServer extends IntentService {
             Log.i(this.getClass().getName(), "запись сотрудника в базу"+ " linkedHashMapДанныеДляЗаписи) " + СамЗапрос) ;
             String provider = "com.sous.server.providerserver";
             Uri uri = Uri.parse("content://"+provider+"/" +"scannerserversuccess" + "");
-            ContentResolver resolver = context.getContentResolver();
+            ContentResolver resolver = getApplicationContext().getContentResolver();
              Cursor cursorПолучаемДЛяСевреа=   resolver.query(uri,new String[]{СамЗапрос},null,null,null,null);
             cursorПолучаемДЛяСевреа.moveToFirst();
              if (cursorПолучаемДЛяСевреа.getCount()>0){
@@ -1058,7 +1041,7 @@ public class ServiceControllerServer extends IntentService {
                  Log.i(this.getClass().getName(), "ВерсияДАнных"+ ВерсияДАнных) ;
                  ВерсияДАнных++;
              }
-            Log.w(context.getClass().getName(), " РЕЗУЛЬТАТ insertData  cursorПолучаемДЛяСевреа  " +  cursorПолучаемДЛяСевреа.toString() );
+            Log.w(getApplicationContext().getClass().getName(), " РЕЗУЛЬТАТ insertData  cursorПолучаемДЛяСевреа  " +  cursorПолучаемДЛяСевреа.toString() );
             cursorПолучаемДЛяСевреа.close();
         } catch (Exception e) {
             e.printStackTrace();
