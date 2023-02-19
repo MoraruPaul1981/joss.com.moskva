@@ -62,6 +62,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -282,7 +283,7 @@ public class ServiceControllerServer extends IntentService {
         Log.w(this.getClass().getName(), " SERVER  МетодГлавныйЗапускGattServer  bluetoothManager  " + bluetoothManager + "server "+server+ " lastLocation "+lastLocation);
         try {
             if(server!=null){
-                handler.post(()->{
+                getApplicationContext().getMainExecutor().execute(()->{
                     bundleСервер.clear();
                     bundleСервер.putString("Статус","SERVERGATTRUNNIGReBOOT");
                     mutableLiveDataGATTServer.setValue(bundleСервер);
@@ -319,15 +320,22 @@ public class ServiceControllerServer extends IntentService {
     @SuppressLint("MissingPermission")
     private synchronized void МетодИнициализацииGPS() {
         try{
+            class  executors implements Executor{
+
+                @Override
+                public void execute(Runnable command) {
+                    command.run();
+                }
+            }
             // TODO: 13.02.2023
                  // TODO: 01.02.2023 Получение Новго Ключа Для Сканера
                      CancellationSignal signal = new CancellationSignal();
                      locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
                      locationListener = new MyLocationListener(getApplicationContext());
-                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 90000, 0.0F,Executors.newCachedThreadPool(), locationListener);
+                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 90000, 0.0F,new executors(), locationListener);
                      //lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                       locationManager.getCurrentLocation(LocationManager.GPS_PROVIDER,signal,
-                              Executors.newCachedThreadPool(), new java.util.function.Consumer<Location>() {
+                              new executors(), new java.util.function.Consumer<Location>() {
                          @Override
                          public void accept(Location location) {
                              Log.d(TAG, "lastLocation location "+location );
