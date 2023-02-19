@@ -1,18 +1,12 @@
-package com.sous.server.VIEW;
+package com.sous.server.Locations;
 
 import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 
 /*---------- Listener class to get coordinates ------------- */
 public class MyLocationListener implements LocationListener {

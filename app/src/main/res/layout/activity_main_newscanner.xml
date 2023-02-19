@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".VIEW.MainActivityNewServerScanner"
+    tools:context=".Windows.MainActivityNewServerScanner"
     android:orientation="vertical">
     <include layout="@layout/toolbar_laoytscanner"/>
     <RelativeLayout

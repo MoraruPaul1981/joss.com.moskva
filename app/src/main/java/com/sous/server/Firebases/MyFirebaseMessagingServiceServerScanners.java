@@ -1,23 +1,23 @@
-package com.sous.server.MODEL;
+package com.sous.server.Firebases;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.sous.server.Errors.SubClassErrors;
+
 import java.util.Map;
 
 public class MyFirebaseMessagingServiceServerScanners extends FirebaseMessagingService {
-    Context context;
+
     private Long version=0l;
     // TODO: 02.12.2021
-    public MyFirebaseMessagingServiceServerScanners(@NonNull Context context) {
+    public MyFirebaseMessagingServiceServerScanners() {
         super();
         try{
-            this.context=context;
         Log.w(this.getClass().getName(), " MyFirebaseMessagingServiceServerScanners " );
         } catch (Exception e) {
             e.printStackTrace();
@@ -31,7 +31,7 @@ public class MyFirebaseMessagingServiceServerScanners extends FirebaseMessagingS
             final Object ТекущаяВерсияПрограммы = version;
             Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
             valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
     }
 
@@ -53,7 +53,7 @@ public class MyFirebaseMessagingServiceServerScanners extends FirebaseMessagingS
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
       super.onMessageReceived(remoteMessage);
         try{
-            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
 
             Log.d(this.getClass().getName(), " onMessageReceived ПРИШЛО СООБЩЕНИЕ УВЕДОМЛЕНИЯ  SERVER BLE SCANNER  С САЙТА ONESIGNAL !!!!!!!!!!!!  " +
@@ -93,7 +93,7 @@ public class MyFirebaseMessagingServiceServerScanners extends FirebaseMessagingS
             final Object ТекущаяВерсияПрограммы = version;
             Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
             valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
     }
 
@@ -138,7 +138,7 @@ public class MyFirebaseMessagingServiceServerScanners extends FirebaseMessagingS
             final Object ТекущаяВерсияПрограммы = version;
             Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
             valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
     }
 

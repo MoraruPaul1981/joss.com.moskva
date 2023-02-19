@@ -1,4 +1,4 @@
-package com.sous.server.CONTROL;
+package com.sous.server.Workmanagers;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothManager;
@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -23,7 +22,8 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 
-import com.sous.server.MODEL.SubClassErrors;
+import com.sous.server.Errors.SubClassErrors;
+import com.sous.server.Services.ServiceControllerServer;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;

@@ -1,4 +1,4 @@
-package com.sous.server.MODEL;
+package com.sous.server.Databases;
 
 
 import android.content.ContentValues;
@@ -7,6 +7,9 @@ import android.content.pm.PackageInfo;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.sous.server.Errors.SubClassErrors;
+
 import org.jetbrains.annotations.NotNull;
 import java.util.Date;
 import java.util.concurrent.CopyOnWriteArrayList;

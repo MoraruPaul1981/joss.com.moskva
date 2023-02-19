@@ -1,4 +1,4 @@
-package com.sous.server.CONTROL;
+package com.sous.server.Services;
 
 import android.annotation.SuppressLint;
 import android.app.IntentService;
@@ -32,8 +32,6 @@ import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
-import android.os.Message;
 import android.os.ParcelUuid;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -48,10 +46,10 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.onesignal.OneSignal;
 
 
-import com.sous.server.MODEL.CREATE_DATABASEServer;
-import com.sous.server.MODEL.MyFirebaseMessagingServiceServerScanners;
-import com.sous.server.MODEL.SubClassErrors;
-import com.sous.server.VIEW.MyLocationListener;
+import com.sous.server.Databases.CREATE_DATABASEServer;
+import com.sous.server.Firebases.MyFirebaseMessagingServiceServerScanners;
+import com.sous.server.Errors.SubClassErrors;
+import com.sous.server.Locations.MyLocationListener;
 
 
 import java.io.IOException;
@@ -64,22 +62,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.CompletionService;
-import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.functions.Predicate;
 import io.reactivex.rxjava3.functions.Supplier;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 /**
@@ -287,7 +276,7 @@ public class ServiceControllerServer extends IntentService {
 
     // TODO: 30.11.2022 сервер СКАНИРОВАНИЯ
     @SuppressLint({"MissingPermission", "NewApi"})
-    public void МетодГлавныйЗапускGattServer(@NonNull Handler handler, @NonNull Context context,
+    public synchronized void МетодГлавныйЗапускGattServer(@NonNull Handler handler, @NonNull Context context,
                                              @NonNull BluetoothManager bluetoothManager,
                                              @NonNull MutableLiveData<Bundle>mutableLiveDataGATTServer) {
         this.context = context;
@@ -333,7 +322,7 @@ public class ServiceControllerServer extends IntentService {
     }
     @RequiresApi(api = Build.VERSION_CODES.R)
     @SuppressLint("MissingPermission")
-    private void МетодИнициализацииGPS() {
+    private synchronized void МетодИнициализацииGPS() {
         try{
             // TODO: 13.02.2023
                  // TODO: 01.02.2023 Получение Новго Ключа Для Сканера
@@ -401,7 +390,7 @@ public class ServiceControllerServer extends IntentService {
     }
     // TODO: 08.12.2022 Метод Сервер
     @SuppressLint("MissingPermission")
-    public void МетодЗапускаСервера() {
+    public synchronized void МетодЗапускаСервера() {
         try {
             Log.d(TAG, "МетодЗапускаСканированиеКлиент: Запускаем.... Метод Сканирования Для Android");
             Log.d(TAG, "1МетодЗапускаСканиваронияДляАндройд: Запускаем.... Метод Сканирования Для Android binder.isBinderAlive()  " + "\n+" +
@@ -501,7 +490,7 @@ public class ServiceControllerServer extends IntentService {
                 }
 
                 @SuppressLint({"NewApi", "SuspiciousIndentation"})
-                private void МетодОтветаОТGATTСеврераКлиентуДанныеми(@NonNull BluetoothDevice device,
+                private synchronized void МетодОтветаОТGATTСеврераКлиентуДанныеми(@NonNull BluetoothDevice device,
                                                                      @NonNull int requestId,
                                                                      @NonNull  int offset,
                                                                      @NonNull   byte[] value,
@@ -839,19 +828,16 @@ public class ServiceControllerServer extends IntentService {
             // TODO: 12.02.2023 первый сервер
             BluetoothGattCharacteristic characteristic = new BluetoothGattCharacteristic(uuidКлючСервераGATTЧтениеЗапись,
                     BluetoothGattCharacteristic.PROPERTY_READ |
-                            BluetoothGattCharacteristic.PROPERTY_WRITE |
-                            BluetoothGattCharacteristic.PROPERTY_NOTIFY,
+                            BluetoothGattCharacteristic.PROPERTY_WRITE|
+                            BluetoothGattCharacteristic.PROPERTY_EXTENDED_PROPS|
+                           BluetoothGattCharacteristic.PROPERTY_INDICATE |
+                            BluetoothGattCharacteristic.PROPERTY_BROADCAST,
                     BluetoothGattCharacteristic.PERMISSION_READ |
-                            BluetoothGattCharacteristic.PROPERTY_INDICATE |
-                            BluetoothGattCharacteristic.PROPERTY_BROADCAST |
                             BluetoothGattCharacteristic.PERMISSION_WRITE);
             characteristic.addDescriptor(new
                     BluetoothGattDescriptor(uuidКлючСервераGATTЧтениеЗапись,
-                    BluetoothGattCharacteristic.PERMISSION_WRITE | BluetoothGattCharacteristic.PERMISSION_READ
-                            | BluetoothGattCharacteristic.PROPERTY_READ | BluetoothGattCharacteristic.PROPERTY_WRITE |
-                            BluetoothGattCharacteristic.PROPERTY_INDICATE |
-                            BluetoothGattCharacteristic.PROPERTY_BROADCAST
-                            | BluetoothGattCharacteristic.PROPERTY_NOTIFY));
+                    BluetoothGattCharacteristic.PERMISSION_READ |
+                            BluetoothGattCharacteristic.PERMISSION_WRITE));
             service.addCharacteristic(characteristic);
             // TODO: 12.02.2023 добавлев в сервер
             server.addService(service);
@@ -873,7 +859,7 @@ public class ServiceControllerServer extends IntentService {
     }
 
     @SuppressLint({"NewApi", "SuspiciousIndentation", "MissingPermission"})
-    private void МетодПолучениеЛокацииGPS() {
+    private synchronized void МетодПолучениеЛокацииGPS() {
         try{
                 if (lastLocation != null) {
                     locationListener.onLocationChanged(lastLocation);
@@ -969,7 +955,7 @@ public class ServiceControllerServer extends IntentService {
             OneSignal.setAppId(КлючДляFirebaseNotification);
             OneSignal.disablePush(false);
             //TODO srating.......... firebase cloud --ПРИШЛО СООБЩЕНИЕ
-            FirebaseMessagingService firebaseMessagingService =new MyFirebaseMessagingServiceServerScanners(context);
+            FirebaseMessagingService firebaseMessagingService =new MyFirebaseMessagingServiceServerScanners();
             //TODO srating......  oneSignal
             Log.d(this.getClass().getName(), "  FirebaseMessagingService"  );
             // TODO: 07.12.2021
@@ -986,9 +972,7 @@ public class ServiceControllerServer extends IntentService {
          String tokenOneSignal=   OneSignal.getDeviceState().getPushToken();
             tokenOneSignal=   OneSignal.getDeviceState().getPushToken();
             //TODO srating......  oneSignal
-            if (tokenOneSignal!=null) {
                 ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal = OneSignal.getDeviceState().getUserId();
-            }
             // TODO: 15.12.2021
             Log.d(this.getClass().getName(), "  ПОСЛЕ КЛЮЧ ДЛЯ SERVER SCANNER  OneSignal........  220d6edf-2b29-453e-97a8-d2aefe4a9eb0  "+"\n"+
                     "   OneSignal.getTriggerValueForKey(\"GT_PLAYER_ID\"); " + OneSignal.getTriggerValueForKey("GT_PLAYER_ID")+

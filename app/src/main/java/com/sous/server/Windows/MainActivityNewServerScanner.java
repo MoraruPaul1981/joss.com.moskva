@@ -1,10 +1,8 @@
-package com.sous.server.VIEW;
+package com.sous.server.Windows;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -14,8 +12,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.net.Uri;
-import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -32,19 +28,15 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleEventObserver;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.MutableLiveData;
 import androidx.loader.content.AsyncTaskLoader;
 import androidx.loader.content.Loader;
 
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.textview.MaterialTextView;
-import com.sous.server.CONTROL.BroadcastReceiverWorkManagerScannersServer;
-import com.sous.server.CONTROL.ServiceControllerServer;
-import com.sous.server.MODEL.SubClassErrors;
+import com.sous.server.Brodcasters.BroadcastReceiverWorkManagerScannersServer;
+import com.sous.server.Services.ServiceControllerServer;
+import com.sous.server.Errors.SubClassErrors;
 import com.sous.server.R;
 
 

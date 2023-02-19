@@ -1,4 +1,4 @@
-package com.sous.server.MODEL;
+package com.sous.server.Errors;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -9,7 +9,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import java.util.Date;
-import java.util.Optional;
 
 public class SubClassErrors {
     Context context;

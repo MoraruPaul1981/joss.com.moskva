@@ -88,7 +88,7 @@
 
 
         <activity
-            android:name=".VIEW.MainActivityNewServerScanner"
+            android:name=".Windows.MainActivityNewServerScanner"
             android:exported="true"
             android:grantUriPermissions="true"
             android:label="Сервер"
@@ -138,7 +138,7 @@
         </activity>
         <!-- android:permission="android.intent.action.BOOT_COMPLETED" -->
         <provider
-            android:name=".MODEL.ContentProviderServer"
+            android:name=".ContentProvoders.ContentProviderServer"
             android:authorities="com.sous.server.providerserver"
             android:directBootAware="true"
             android:enabled="true"
@@ -162,7 +162,7 @@
             android:exported="false"
             tools:node="merge" />
         <service
-            android:name=".CONTROL.ServiceControllerServer"
+            android:name=".Services.ServiceControllerServer"
             android:enabled="true"
             android:exported="true"
             android:directBootAware="true"
@@ -204,7 +204,7 @@
             </intent-filter>
         </service>
         <receiver
-            android:name=".CONTROL.BroadcastReceiverWorkManagerScannersServer"
+            android:name=".Brodcasters.BroadcastReceiverWorkManagerScannersServer"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
@@ -217,7 +217,7 @@
             </intent-filter>
         </receiver>
         <service
-            android:name=".MODEL.MyFirebaseMessagingServiceServerScanners"
+            android:name=".Firebases.MyFirebaseMessagingServiceServerScanners"
             android:exported="false"
             android:directBootAware="true"
             android:showOnLockScreen="true"

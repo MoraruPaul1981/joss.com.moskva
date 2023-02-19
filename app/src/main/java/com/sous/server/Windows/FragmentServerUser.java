@@ -1,4 +1,4 @@
-package com.sous.server.VIEW;
+package com.sous.server.Windows;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
@@ -7,8 +7,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,7 +20,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,8 +35,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
-import com.sous.server.CONTROL.ServiceControllerServer;
-import com.sous.server.MODEL.SubClassErrors;
+import com.sous.server.Services.ServiceControllerServer;
+import com.sous.server.Errors.SubClassErrors;
 import com.sous.server.R;
 
 
@@ -96,10 +93,7 @@ public class FragmentServerUser extends Fragment {
             linkedКолПодкСерверу=new LinkedList<>();
             // TODO: 13.02.2023 разрешения
             // TODO: 30.01.2023  видимый
-            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION,0);
-            //startActivity(discoverableIntent);
-            startActivity(discoverableIntent);
+            МетодУстановкаБесконечнаяВидимсостиСервера();
             locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         } catch (Exception e) {
             e.printStackTrace();
@@ -116,6 +110,13 @@ public class FragmentServerUser extends Fragment {
             new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
 
         }
+    }
+
+    private void МетодУстановкаБесконечнаяВидимсостиСервера() {
+        Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION,0);
+        //startActivity(discoverableIntent);
+        startActivity(discoverableIntent);
     }
 
     @Override

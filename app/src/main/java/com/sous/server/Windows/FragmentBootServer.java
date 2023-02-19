@@ -1,4 +1,4 @@
-package com.sous.server.VIEW;
+package com.sous.server.Windows;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import com.sous.server.MODEL.SubClassErrors;
+import com.sous.server.Errors.SubClassErrors;
 import com.sous.server.R;
 
 

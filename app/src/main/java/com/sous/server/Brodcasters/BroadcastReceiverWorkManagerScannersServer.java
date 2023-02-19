@@ -1,4 +1,4 @@
-package com.sous.server.CONTROL;
+package com.sous.server.Brodcasters;
 
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -16,7 +16,9 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 
-import com.sous.server.MODEL.SubClassErrors;
+import com.sous.server.Workmanagers.MyWork_Async_Синхронизация_ScannerServer;
+import com.sous.server.Workmanagers.MyWork_Retry_ScannerServers;
+import com.sous.server.Errors.SubClassErrors;
 
 import java.util.Date;
 import java.util.concurrent.ExecutionException;

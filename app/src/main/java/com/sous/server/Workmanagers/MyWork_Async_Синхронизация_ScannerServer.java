@@ -1,4 +1,4 @@
-package com.sous.server.CONTROL;
+package com.sous.server.Workmanagers;
 
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
@@ -7,10 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
-import android.os.Build;
 import android.os.IBinder;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -20,11 +17,10 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 
-import com.sous.server.MODEL.SubClassErrors;
+import com.sous.server.Errors.SubClassErrors;
+import com.sous.server.Services.ServiceControllerServer;
 
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;

@@ -10,9 +10,7 @@ import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
-import com.sous.server.CONTROL.ServiceControllerServer;
-
-import java.util.Optional;
+import com.sous.server.Services.ServiceControllerServer;
 
 /**
  * Instrumented test, which will execute on an Android device.
