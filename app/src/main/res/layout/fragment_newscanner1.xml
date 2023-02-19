@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".VIEW.FragmentScannerUser"
+    tools:context=".Window.FragmentScannerUser"
     android:orientation="vertical">
     <ScrollView
         android:id="@+id/scrollview_new_materials"

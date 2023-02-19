@@ -8,7 +8,7 @@
     android:background="#FFFFFF"
     android:minHeight="600dp"
     android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
-    tools:context=".VIEW.FragmentScannerUser">
+    tools:context=".Window.FragmentScannerUser">
 
 
     <com.google.android.material.textview.MaterialTextView
