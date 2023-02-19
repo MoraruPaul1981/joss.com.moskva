@@ -55,6 +55,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
+import com.sous.wifidirect.*;
 
 
 public class FragmentScannerUser extends Fragment {
@@ -78,6 +79,7 @@ public class FragmentScannerUser extends Fragment {
     private SharedPreferences preferences;
     private    String ДействиеДляСервераGATTОТКлиента;
     private ServiceClientBLE serviceControllerКлиент;
+
 
     @SuppressLint({"RestrictedApi", "MissingPermission"})
     @Override
@@ -108,7 +110,7 @@ public class FragmentScannerUser extends Fragment {
             // TODO: 08.02.2023  службы кодключения к слубже сканированиея
              serviceControllerКлиент=   binderСканнер.getService();
             // TODO: 16.02.2023
-            new ТестКлассСканнер();
+            new ТестКлассСканнер(getActivity());
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1005,8 +1007,8 @@ public class FragmentScannerUser extends Fragment {
 class ТестКлассСканнер {
 
 
-    public ТестКлассСканнер() {
-
+    public ТестКлассСканнер(Context context) {
+WWIFI wwifi=new WWIFI(context);
 
     }
 }
