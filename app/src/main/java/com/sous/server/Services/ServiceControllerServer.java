@@ -290,6 +290,8 @@ public class ServiceControllerServer extends IntentService {
                     bundleСервер.clear();
                     bundleСервер.putString("Статус","SERVERGATTRUNNIGReBOOT");
                     mutableLiveDataGATTServer.setValue(bundleСервер);
+                    Log.i(this.getClass().getName(),  " МетодГлавныйЗапускGattServer SERVERGATTRUNNIGReBOOT" +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+
                 });
                 server.close();
             }
