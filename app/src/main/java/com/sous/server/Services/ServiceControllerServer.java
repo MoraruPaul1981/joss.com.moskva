@@ -693,6 +693,8 @@ public class ServiceControllerServer extends IntentService {
                                                                      @NonNull BluetoothGattCharacteristic characteristicsServerОтКлиента,
                                                                      @NonNull List<String>listПришлиДанныеОтКлиентаЗапрос) {
                     try{
+                        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
+                                +new Date().toLocaleString()+  " listПришлиДанныеОтКлиентаЗапрос " +listПришлиДанныеОтКлиентаЗапрос );
                         ContentValues[] contentValuesВставкаДанных = new ContentValues[1];
                         // TODO: 08.02.2023 методы после успешного получение данных от клиента
                         contentValuesВставкаДанных[0] = new ContentValues();
@@ -706,6 +708,10 @@ public class ServiceControllerServer extends IntentService {
                         contentValuesВставкаДанных[0].put("gps1", "без gps");
                         contentValuesВставкаДанных[0].put("gps2", "без gps");
                         contentValuesВставкаДанных[0].put("namedevice", device.getName().toString());
+                        // TODO: 20.02.2023 новые поля симки
+                        contentValuesВставкаДанных[0].put("sim1", listПришлиДанныеОтКлиентаЗапрос.get(1));
+                        contentValuesВставкаДанных[0].put("sim2", listПришлиДанныеОтКлиентаЗапрос.get(2));
+                        contentValuesВставкаДанных[0].put("iemi", listПришлиДанныеОтКлиентаЗапрос.get(3));
                         // TODO: 10.02.2023 версия данных
                         Integer current_table = МетодПоискДАнныхПоБазе("SELECT MAX ( current_table  ) AS MAX_R  FROM scannerserversuccess");
                         contentValuesВставкаДанных[0].put("current_table", current_table);
