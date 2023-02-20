@@ -390,7 +390,7 @@ public class ServiceControllerServer extends IntentService {
             // TODO: 26.01.2023 Сервер КОД
             server = bluetoothManagerServer.openGattServer(getApplicationContext(), new BluetoothGattServerCallback() {
                 @Override
-                public void onConnectionStateChange(BluetoothDevice device, int status, int newState) {
+                public synchronized void onConnectionStateChange(BluetoothDevice device, int status, int newState) {
                     super.onConnectionStateChange(device, status, newState);
                     try {
                         Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
@@ -433,7 +433,7 @@ public class ServiceControllerServer extends IntentService {
                     }
                 }
                 @Override
-                public void onServiceAdded(int status, BluetoothGattService service) {
+                public synchronized void onServiceAdded(int status, BluetoothGattService service) {
                     super.onServiceAdded(status, service);
                     Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                     v2.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
@@ -447,7 +447,7 @@ public class ServiceControllerServer extends IntentService {
 
                 @SuppressLint("NewApi")
                 @Override
-                public void onCharacteristicWriteRequest(BluetoothDevice device, int requestId, BluetoothGattCharacteristic characteristic,
+                public synchronized void onCharacteristicWriteRequest(BluetoothDevice device, int requestId, BluetoothGattCharacteristic characteristic,
                                                          boolean preparedWrite,
                                                          boolean responseNeeded, int offset, byte[] value) {
                     super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
@@ -554,7 +554,7 @@ public class ServiceControllerServer extends IntentService {
                 }
                 }
 
-                private Integer МетодЗаписиДевайсавБазу(@NonNull BluetoothDevice device,
+                private synchronized Integer МетодЗаписиДевайсавБазу(@NonNull BluetoothDevice device,
                                                      Integer[] РезультатЗаписиДанныхПИнгаДвайсаВБАзу,
                                                      String ПришлиДанныеОтКлиентаЗапрос,
                                                      String ДанныеСодранныеОтКлиента,
@@ -660,7 +660,7 @@ public class ServiceControllerServer extends IntentService {
 
 
                 // TODO: 14.02.2023 Второй Метод БЕз GPS
-                private Integer МетодЗаписиДевайсавБазу(@NonNull BluetoothDevice device,
+                private synchronized Integer МетодЗаписиДевайсавБазу(@NonNull BluetoothDevice device,
                                                         Integer[] РезультатЗаписиДанныхПИнгаДвайсаВБАзу,
                                                         String ПришлиДанныеОтКлиентаЗапрос,
                                                         String ДанныеСодранныеОтКлиента,
@@ -776,7 +776,7 @@ public class ServiceControllerServer extends IntentService {
 
 
                 @NonNull
-                private String МетодГенерацииUUID() {
+                private synchronized String МетодГенерацииUUID() {
                     String uuid=    UUID.randomUUID().toString().replace("-","").substring(0,20);
                     uuid=uuid.replaceAll("[a-zA-Z]","");
                     //uuid= CharMatcher.any().replaceFrom("[A-Za-z0-9]", "");
@@ -784,7 +784,7 @@ public class ServiceControllerServer extends IntentService {
                 }
 
                 @Override
-                public void onNotificationSent(BluetoothDevice device, int status) {
+                public synchronized void onNotificationSent(BluetoothDevice device, int status) {
                     super.onNotificationSent(device, status);
                     try{
                         Log.i(TAG, "Connected to GATT server  onNotificationSent status ."+status);
@@ -916,7 +916,7 @@ public class ServiceControllerServer extends IntentService {
 
 // TODO: 14.11.2021  ПОВТОРЫЙ ЗАПУСК ВОРК МЕНЕДЖЕР
 
-    public String МетодПолучениеServerСканеарКлюча_OndeSignal(@NonNull String КлючДляFirebaseNotification) {
+    public synchronized String МетодПолучениеServerСканеарКлюча_OndeSignal(@NonNull String КлючДляFirebaseNotification) {
         try {
             // TODO: 23.12.2021 ЧЕТЫРЕ ПОПЫТКИ ПОДКЛЮЧЕНИЕ В СЕВРЕРУONESIGNAL
             // TODO: 01.02.2023 Получение Новго Ключа Для Сканера
@@ -944,7 +944,7 @@ public class ServiceControllerServer extends IntentService {
         return ВозврящаетсяКлючScannerONESIGNAl;
     }
 
-    private String МетодПолучениеКлючаОтСлужбыONESIGNALAndFirebase(@NonNull String КлючДляFirebaseNotification) {
+    private  synchronized String МетодПолучениеКлючаОтСлужбыONESIGNALAndFirebase(@NonNull String КлючДляFirebaseNotification) {
         String ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal = null;
         try{
             //TODO srating......  oneSignal
@@ -997,7 +997,7 @@ public class ServiceControllerServer extends IntentService {
         }
         return ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal;
     }
-    public Integer МетодЗаписиОтмечаногоСотрудникаВБАзу(@NonNull Context appContext) {
+    public synchronized Integer МетодЗаписиОтмечаногоСотрудникаВБАзу(@NonNull Context appContext) {
         Integer РезульататЗАписиНовогоДивайса=0;
         try{
           Log.i(appContext.getClass().getName(), "запись сотрудника в базу"+ " " );
@@ -1018,7 +1018,7 @@ public class ServiceControllerServer extends IntentService {
         }
         return  0;
     }
-    public Integer МетодЗаписиОтмечаногоСотрудникаВБАзу(@NonNull ContentValues[] contentValues) {
+    public synchronized Integer МетодЗаписиОтмечаногоСотрудникаВБАзу(@NonNull ContentValues[] contentValues) {
         Integer РезульататЗАписиНовогоДивайса=0;
         try{
             Log.i(this.getClass().getName(), "запись сотрудника в базу"+ " linkedHashMapДанныеДляЗаписи) " + contentValues) ;
@@ -1045,7 +1045,7 @@ public class ServiceControllerServer extends IntentService {
     }
 
     // TODO: 10.02.2023 МЕТОД ВЫБОР ДАННЫХ
-    public Integer МетодПоискДАнныхПоБазе(@NonNull String СамЗапрос) {
+    public synchronized Integer МетодПоискДАнныхПоБазе(@NonNull String СамЗапрос) {
         Integer   ВерсияДАнных = 0;
         try{
             Log.i(this.getClass().getName(), "запись сотрудника в базу"+ " linkedHashMapДанныеДляЗаписи) " + СамЗапрос) ;
