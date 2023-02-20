@@ -98,6 +98,7 @@ public class FragmentScannerUser extends Fragment {
             recyclerView = (RecyclerView) view.findViewById(R.id.RecyclerViewNewScanner);
             linearLayou = (LinearLayout) view.findViewById(R.id.fragment1scanner);
             progressСканер = (ProgressBar)        view.findViewById(R.id.ProgressBarScannerfragment1);
+            progressСканер.setVisibility(View.INVISIBLE);
             Log.d(this.getClass().getName(),  " recyclerView " + recyclerView);
             fragmentManager =  getActivity().getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
@@ -797,7 +798,6 @@ public class FragmentScannerUser extends Fragment {
         private void МетодРаботыСоСлужбойGATTОтСервера( @NonNull View v,@NonNull MyViewHolder holder
                 ,@NonNull String ДействиеДляСервераGATTОТКлиента,@NonNull MaterialButton materialButtonКакоеДействие) {
             try {
-                progressСканер.setVisibility(View.VISIBLE);
                 v.startAnimation(animation);
                 mediatorLiveDataGATT = new MutableLiveData<>();
                 Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
@@ -824,6 +824,15 @@ public class FragmentScannerUser extends Fragment {
                                     handler.post(()-> {
                                         materialButtonКакоеДействие.setText("Коннект...");
                                         v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
+                                        progressСканер.setVisibility(View.VISIBLE);
+                                    });
+                                    Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
+                                    break;
+                                case "SERVER#SERVER#DISSouConnect" :
+                                    handler.post(()-> {
+                                        materialButtonКакоеДействие.setText("Конец Коннекта...");
+                                        v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
+                                        progressСканер.setVisibility(View.INVISIBLE);
                                     });
                                     Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                     break;
@@ -852,7 +861,6 @@ public class FragmentScannerUser extends Fragment {
                                         },3000);
                                     });
                                     Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
-                                    progressСканер.setVisibility(View.INVISIBLE);
                                     break;
 
                                 case "SERVER#SousAvtoDONTDIVICE" :
@@ -864,11 +872,6 @@ public class FragmentScannerUser extends Fragment {
                                         },3000);
                                     });
                                     Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
-                                    progressСканер.setVisibility(View.INVISIBLE);
-                                    break;
-                                default:
-                                    Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
-                                    progressСканер.setVisibility(View.INVISIBLE);
                                     break;
                                 case "SERVER#SousAvtoSuccess" :
                                     // TODO: 07.02.2023 Успешный статус
@@ -893,7 +896,6 @@ public class FragmentScannerUser extends Fragment {
                                         },3000);
                                     });
                                     Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
-                                    progressСканер.setVisibility(View.INVISIBLE);
                                     break;
                                 // TODO: 11.02.2023 ДРУГИЕ ОТВЕТЫ
                                 case "SERVER#SousAvtoERROR" :
@@ -913,7 +915,6 @@ public class FragmentScannerUser extends Fragment {
                                         },3000);
                                     });
                                     Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
-                                    progressСканер.setVisibility(View.INVISIBLE);
                                     break;
                             }
                         }

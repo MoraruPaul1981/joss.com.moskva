@@ -394,6 +394,9 @@ public class ServiceClientBLE extends IntentService {
                                     case BluetoothProfile.STATE_DISCONNECTED :
                                         Log.i(TAG, "Connected to GATT client. BluetoothProfile.STATE_DISCONNECTED ###2  onConnectionStateChange" +
                                                 "  "+new Date().toLocaleString());
+                                        handler.post(()->{
+                                            mediatorLiveDataGATT.setValue("SERVER#SERVER#DISSouConnect");
+                                        });
                                         break;
                                 }
                             } catch (Exception e) {
