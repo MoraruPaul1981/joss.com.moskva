@@ -1,5 +1,6 @@
 package com.sous.scanner.Window;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothManager;
 import android.content.ComponentName;
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +31,7 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -67,16 +71,16 @@ public class FragmentScannerUser extends Fragment {
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private Fragment fragment;
-    private  Handler handler;
+    private Handler handler;
     private ServiceClientBLE.LocalBinderСканнер binderСканнер;
-    private    ProgressBar     progressСканер;
+    private ProgressBar progressСканер;
 
     private BluetoothManager bluetoothManager;
-    private   MutableLiveData<String> mediatorLiveDataGATT;
-    private  String КлючДляFibaseOneSingnal;
-    private     Long version=0l;
+    private MutableLiveData<String> mediatorLiveDataGATT;
+    private String КлючДляFibaseOneSingnal;
+    private Long version = 0l;
     private SharedPreferences preferences;
-    private    String ДействиеДляСервераGATTОТКлиента;
+    private String ДействиеДляСервераGATTОТКлиента;
 
 
     @SuppressLint({"RestrictedApi", "MissingPermission"})
@@ -87,27 +91,30 @@ public class FragmentScannerUser extends Fragment {
             Log.d(this.getClass().getName(), "  onViewCreated  Fragment1_One_Tasks view   " + view);
             recyclerView = (RecyclerView) view.findViewById(R.id.RecyclerViewNewScanner);
             linearLayou = (LinearLayout) view.findViewById(R.id.fragment1scanner);
-            progressСканер = (ProgressBar)        view.findViewById(R.id.ProgressBarScannerfragment1);
+            progressСканер = (ProgressBar) view.findViewById(R.id.ProgressBarScannerfragment1);
             progressСканер.setVisibility(View.INVISIBLE);
-            Log.d(this.getClass().getName(),  " recyclerView " + recyclerView);
-            fragmentManager =  getActivity().getSupportFragmentManager();
+            Log.d(this.getClass().getName(), " recyclerView " + recyclerView);
+            fragmentManager = getActivity().getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setPrimaryNavigationFragment(fragment);
-            Bundle bundle=     getArguments();
+            Bundle bundle = getArguments();
             bluetoothManager = (BluetoothManager) getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
-            КлючДляFibaseOneSingnal="56bbe169-ea09-43de-a28c-9623058e43a2";
-            mediatorLiveDataGATT=new MediatorLiveData();
+            КлючДляFibaseOneSingnal = "56bbe169-ea09-43de-a28c-9623058e43a2";
+            mediatorLiveDataGATT = new MediatorLiveData();
             // TODO: 06.12.2022
             МетодИнициализацииRecycleViewДляЗадач();
             МетодКпопкаВозвращениеBACK();
             МетодHandler();
-            animation = AnimationUtils.loadAnimation(getContext(),R.anim.slide_in_row_vibrator2);
+            animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator2);
             МетодКпопкаВозвращениеBACK();
             PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             preferences = getContext().getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
             // TODO: 08.02.2023  Биндинг службы
             МетодБиндингаСканирование();
+
+            // TODO: 20.02.2023 ТЕКСТ КОД
+            МетодЗаполенияДаннымиКлиентаДЛяGAtt();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -178,7 +185,7 @@ public class FragmentScannerUser extends Fragment {
         super.onResume();
         try {
             Log.d(this.getClass().getName(), " отработоатл new SubClassBuccessLogin_ГлавныйКлассБизнесЛогикиФрагмент1 imageView  Fragment1_One_Tasks  onStart");
-        //    МетодЗапускаемПолучениеКлючаOndeSignalFirebase(КлючДляFibaseOneSingnal);
+            //    МетодЗапускаемПолучениеКлючаOndeSignalFirebase(КлючДляFibaseOneSingnal);
             МетодЗаполенияRecycleViewДляЗадач();
             МетодСлушательObserverДляRecycleView();
             МетодПерегрузкаRecyceView();
@@ -222,7 +229,7 @@ public class FragmentScannerUser extends Fragment {
     private void МетодЗапускаемПолучениеКлючаOndeSignalFirebase(@NonNull String КлючДляFibaseOneSingnal) {
         try {
             binderСканнер.getService().МетодПолучениеНовогоДляСканеарКлюча_OndeSignal(КлючДляFibaseOneSingnal);
-            Log.i(this.getClass().getName(), "   создание МетодЗаполенияФрагмента1 mediatorLiveDataGATT " + mediatorLiveDataGATT+ " КлючДляFibaseOneSingnal " +КлючДляFibaseOneSingnal);
+            Log.i(this.getClass().getName(), "   создание МетодЗаполенияФрагмента1 mediatorLiveDataGATT " + mediatorLiveDataGATT + " КлючДляFibaseOneSingnal " + КлючДляFibaseOneSingnal);
             //TODO
         } catch (Exception e) {
             e.printStackTrace();
@@ -239,6 +246,7 @@ public class FragmentScannerUser extends Fragment {
             new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
     }
+
     void МетодСлушательObserverДляRecycleView() {  // TODO: 04.03.2022  класс в котором находяться слушатели
         try {
             myRecycleViewAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
@@ -398,7 +406,7 @@ public class FragmentScannerUser extends Fragment {
             throws ExecutionException, InterruptedException {
         try {
             Log.d(this.getClass().getName(), "  выходим из задания МетодКпопкаВозвращениеBACK");
-            ((MainActivityNewScanner)getActivity()).МетодКнопкаBackExit(new Intent("fragment"));
+            ((MainActivityNewScanner) getActivity()).МетодКнопкаBackExit(new Intent("fragment"));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -416,6 +424,7 @@ public class FragmentScannerUser extends Fragment {
         }
 
     }
+
     // TODO: 04.03.2022 прозвомжность Заполения RecycleView
     void МетодЗаполенияRecycleViewДляЗадач() {
         try {
@@ -472,8 +481,9 @@ public class FragmentScannerUser extends Fragment {
 
     // TODO: 28.02.2022 начало  MyViewHolderДляЧата
     protected class MyViewHolder extends RecyclerView.ViewHolder {
-        private MaterialButton materialButtonКотрольПриход,materialButtonКотрольВыход;
+        private MaterialButton materialButtonКотрольПриход, materialButtonКотрольВыход;
         private MaterialTextView materialTextViewСтатусПоследнегоДействие;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             try {
@@ -508,10 +518,10 @@ public class FragmentScannerUser extends Fragment {
                 // TODO: 08.02.2023 СТАТУС послдная задача
                 materialTextViewСтатусПоследнегоДействие = itemView.findViewById(R.id.textView5getstatus);
                 // TODO: 09.02.2023 данные из хранилища
-                String ПоследнийСтатусСканера=preferences.getString("СменаСтатусРАботыКлиентасGATT","Последнее действие");
-                ПоследнийСтатусСканера=ПоследнийСтатусСканера.toUpperCase();
-                String ПоследнаяДатаСканера=preferences.getString("СменаДАтаРАботыGATT","");
-                materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера+": "+ПоследнаяДатаСканера);
+                String ПоследнийСтатусСканера = preferences.getString("СменаСтатусРАботыКлиентасGATT", "Последнее действие");
+                ПоследнийСтатусСканера = ПоследнийСтатусСканера.toUpperCase();
+                String ПоследнаяДатаСканера = preferences.getString("СменаДАтаРАботыGATT", "");
+                materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера + ": " + ПоследнаяДатаСканера);
                 materialTextViewСтатусПоследнегоДействие.setPaintFlags(materialTextViewСтатусПоследнегоДействие.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                 Log.d(this.getClass().getName(), " отработоатл  МетодИнициализацииСканера materialButtonКотроль " + materialButtonКотрольПриход);
             } catch (Exception e) {
@@ -546,7 +556,7 @@ public class FragmentScannerUser extends Fragment {
             Log.i(this.getClass().getName(), "   onBindViewHolder  position" + position + " ArrayListДанныеОтСканироваиниеДивайсов " + ArrayListДанныеОтСканироваиниеДивайсов);
             try {
                 ///todo ЩЕЛКАЕМ КАЖДУЮ СТРОЧКУ ОТДЕЛЬНО
-                Log.d(this.getClass().getName(),   " ArrayListДанныеОтСканироваиниеДивайсов " +ArrayListДанныеОтСканироваиниеДивайсов);
+                Log.d(this.getClass().getName(), " ArrayListДанныеОтСканироваиниеДивайсов " + ArrayListДанныеОтСканироваиниеДивайсов);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -632,7 +642,7 @@ public class FragmentScannerUser extends Fragment {
             try {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_scannerbuetoot_fragment1_bottom, parent, false);//todo old simple_for_takst_cardview1
                 myViewHolder = new MyViewHolder(view);
-                Log.i(this.getClass().getName(), "   myViewHolder" + myViewHolder );
+                Log.i(this.getClass().getName(), "   myViewHolder" + myViewHolder);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -653,7 +663,7 @@ public class FragmentScannerUser extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             try {
-                Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder );
+                Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder);
                 МетодЗапускаемСлужбуGATTCleintКлик(holder);
                 МетодАнимации(holder);
             } catch (Exception e) {
@@ -675,7 +685,7 @@ public class FragmentScannerUser extends Fragment {
         private void МетодАнимации(MyViewHolder holder) {
             try {
                 holder.materialButtonКотрольПриход.startAnimation(animation);
-                Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder );
+                Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder);
                 //TODO
             } catch (Exception e) {
                 e.printStackTrace();
@@ -692,7 +702,6 @@ public class FragmentScannerUser extends Fragment {
                 new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
             }
         }
-
 
 
         ///todo первый метод #1
@@ -736,11 +745,11 @@ public class FragmentScannerUser extends Fragment {
                 holder.materialButtonКотрольПриход.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ДействиеДляСервераGATTОТКлиента= "на работу";
-                        МетодЗапускаGattСервера(v,holder,holder.materialButtonКотрольПриход);
+                        ДействиеДляСервераGATTОТКлиента = "на работу";
+                        МетодЗапускаGattСервера(v, holder, holder.materialButtonКотрольПриход);
                         // TODO: 20.02.2023 Принудитльеное Разрыв Клиента с Сервом GATT
                         МетодПринудительноРазрываемвязисGatt(ДействиеДляСервераGATTОТКлиента);
-                        Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                        Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
                     }
                 });
                 Log.i(this.getClass().getName(), "   holder " + holder);
@@ -748,11 +757,11 @@ public class FragmentScannerUser extends Fragment {
                 holder.materialButtonКотрольВыход.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ДействиеДляСервераGATTОТКлиента= "с работы";
-                        МетодЗапускаGattСервера(v,holder,holder.materialButtonКотрольВыход);
+                        ДействиеДляСервераGATTОТКлиента = "с работы";
+                        МетодЗапускаGattСервера(v, holder, holder.materialButtonКотрольВыход);
                         // TODO: 20.02.2023 Принудитльеное Разрыв Клиента с Сервом GATT
                         МетодПринудительноРазрываемвязисGatt(ДействиеДляСервераGATTОТКлиента);
-                        Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                        Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
                     }
                 });
             } catch (Exception e) {
@@ -770,32 +779,34 @@ public class FragmentScannerUser extends Fragment {
                 new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
             }
         }
-        private void МетодЗапускаGattСервера(@NonNull View v,@NonNull MyViewHolder holder,MaterialButton materialButton) {
+
+        private void МетодЗапускаGattСервера(@NonNull View v, @NonNull MyViewHolder holder, MaterialButton materialButton) {
             try {
                 // TODO: 20.02.2023  слушатель Клиета GATT
-                МетодBackСлушательGATTОтСервера(v,holder,ДействиеДляСервераGATTОТКлиента,materialButton);
+                МетодBackСлушательGATTОтСервера(v, holder, ДействиеДляСервераGATTОТКлиента, materialButton);
 
                 // TODO: 20.02.2023 Запуск Клиента Gatt Сервреа Чрез БИндинг
 
                 МетодЗапускКлиентаGattЧерезБиндинг(ДействиеДляСервераGATTОТКлиента);
 
-                Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+  " mediatorLiveDataGATT " +mediatorLiveDataGATT );
+                Log.i(this.getClass().getName(), "onStart() " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString() + " mediatorLiveDataGATT " + mediatorLiveDataGATT);
 
             } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                ContentValues valuesЗаписываемОшибки = new ContentValues();
+                valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+                valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+                valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+                valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+                final Object ТекущаяВерсияПрограммы = version;
+                Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+                valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+                new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+            }
         }
-        }
+
         private void МетодBackСлушательGATTОтСервера(@NonNull View v, @NonNull MyViewHolder holder
                 , @NonNull String ДействиеДляСервераGATTОТКлиента, @NonNull MaterialButton materialButtonКакоеДействие) {
             try {
@@ -804,7 +815,7 @@ public class FragmentScannerUser extends Fragment {
                 Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
                 v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
                 // TODO: 30.01.2023 ВТОРАЯ ЧАСТЬ ОТВЕТ ПРОВЕТ GATT SERVER/CLIENT
-                LifecycleOwner lifecycleOwner =getActivity() ;
+                LifecycleOwner lifecycleOwner = getActivity();
                 lifecycleOwner.getLifecycle().addObserver(new LifecycleEventObserver() {
                     @Override
                     public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
@@ -816,120 +827,120 @@ public class FragmentScannerUser extends Fragment {
                 mediatorLiveDataGATT.observe(lifecycleOwner, new Observer<String>() {
                     @Override
                     public void onChanged(String ОтветОтСерврера) {
-                        if (mediatorLiveDataGATT.getValue()!=null) {
+                        if (mediatorLiveDataGATT.getValue() != null) {
                             Log.i(this.getClass().getName(), "   создание МетодЗаполенияФрагмента1 mediatorLiveDataGATT " + mediatorLiveDataGATT);
                             // TODO: 24.01.2023  показываем поозователю Статуса
                             Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
-                            switch (mediatorLiveDataGATT.getValue().toString()){
-                                case "SERVER#SERVER#SouConnect" :
-                                    handler.post(()-> {
+                            switch (mediatorLiveDataGATT.getValue().toString()) {
+                                case "SERVER#SERVER#SouConnect":
+                                    handler.post(() -> {
                                         materialButtonКакоеДействие.setText("Коннект...");
                                         v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
                                         progressСканер.setVisibility(View.VISIBLE);
                                     });
-                                    Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
-                                            +new Date().toLocaleString()+ " mediatorLiveDataGATT.getValue() "+mediatorLiveDataGATT.getValue() );
+                                    Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
+                                            + new Date().toLocaleString() + " mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
 
                                     break;
-                                case "SERVER#SERVER#DISSouConnect" :
-                                        materialButtonКакоеДействие.setText("Разрыв...");
-                                        v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
-                                    Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
-                                            +new Date().toLocaleString()+ " mediatorLiveDataGATT.getValue() "+mediatorLiveDataGATT.getValue() );
+                                case "SERVER#SERVER#DISSouConnect":
+                                    materialButtonКакоеДействие.setText("Разрыв...");
+                                    v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
+                                    Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
+                                            + new Date().toLocaleString() + " mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                     break;
-                                case "GATTCLIENTCALLBACK" :
-                                    handler.post(()-> {
+                                case "GATTCLIENTCALLBACK":
+                                    handler.post(() -> {
                                         materialButtonКакоеДействие.setText("Ответ...");
                                         v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
                                         progressСканер.setVisibility(View.INVISIBLE);
                                     });
-                                    Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
-                                            +new Date().toLocaleString()+ " mediatorLiveDataGATT.getValue() "+mediatorLiveDataGATT.getValue() );
+                                    Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
+                                            + new Date().toLocaleString() + " mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                     break;
-                                case "GATTCLIENTProccessing" :
-                                    handler.post(()->{
+                                case "GATTCLIENTProccessing":
+                                    handler.post(() -> {
                                         materialButtonКакоеДействие.setText("В процессе...");
                                         v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
                                     });
-                                    Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
-                                            +new Date().toLocaleString()+ " mediatorLiveDataGATT.getValue() "+mediatorLiveDataGATT.getValue() );
+                                    Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
+                                            + new Date().toLocaleString() + " mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                     break;
 
-                                case "SERVER#SERVER#SousAvtoNULL" :
-                                    handler.post(()->{
+                                case "SERVER#SERVER#SousAvtoNULL":
+                                    handler.post(() -> {
                                         materialButtonКакоеДействие.setText("Нет связи !!!");//
                                         v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
                                         Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
-                                        handler.postDelayed(()-> {
+                                        handler.postDelayed(() -> {
                                             materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
-                                        },3000);
+                                        }, 3000);
                                     });
-                                    Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
-                                            +new Date().toLocaleString()+ " mediatorLiveDataGATT.getValue() "+mediatorLiveDataGATT.getValue() );
+                                    Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
+                                            + new Date().toLocaleString() + " mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                     break;
 
-                                case "SERVER#SousAvtoDONTDIVICE" :
-                                    handler.post(()->{
+                                case "SERVER#SousAvtoDONTDIVICE":
+                                    handler.post(() -> {
                                         materialButtonКакоеДействие.setText("Нет  сопряжение !!!");
                                         v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
-                                        handler.postDelayed(()-> {
+                                        handler.postDelayed(() -> {
                                             materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
-                                        },3000);
+                                        }, 3000);
                                     });
-                                    Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
-                                            +new Date().toLocaleString()+ " mediatorLiveDataGATT.getValue() "+mediatorLiveDataGATT.getValue() );
+                                    Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
+                                            + new Date().toLocaleString() + " mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                     break;
-                                case "SERVER#SousAvtoSuccess" :
+                                case "SERVER#SousAvtoSuccess":
                                     // TODO: 07.02.2023 Успешный статус
-                                    handler.post(()->{
+                                    handler.post(() -> {
                                         materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
                                         materialButtonКакоеДействие.startAnimation(animation);
                                         materialButtonКакоеДействие.setText("Успешно !!!");
                                         v2.vibrate(VibrationEffect.createOneShot(250, VibrationEffect.DEFAULT_AMPLITUDE));
                                         // TODO: 07.02.2023
                                         // TODO: 07.02.2023  записываем смены статуса
-                                        МетодЗаписываемСтатусРаботысGATT(ДействиеДляСервераGATTОТКлиента,new Date().toLocaleString());
+                                        МетодЗаписываемСтатусРаботысGATT(ДействиеДляСервераGATTОТКлиента, new Date().toLocaleString());
                                         // TODO: 08.02.2023 показыввем клиент смененый статус
-                                        String ПоследнийСтатусСканера=preferences.getString("СменаСтатусРАботыКлиентасGATT","");
-                                        String ПоследнаяДатаСканера=preferences.getString("СменаДАтаРАботыGATT","");
-                                        holder.   materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера+"\n"+ПоследнаяДатаСканера);
-                                        holder.   materialTextViewСтатусПоследнегоДействие.setTextColor(Color.parseColor("#949796"));
-                                        holder. materialTextViewСтатусПоследнегоДействие.forceLayout();
-                                        holder. materialTextViewСтатусПоследнегоДействие.refreshDrawableState();
+                                        String ПоследнийСтатусСканера = preferences.getString("СменаСтатусРАботыКлиентасGATT", "");
+                                        String ПоследнаяДатаСканера = preferences.getString("СменаДАтаРАботыGATT", "");
+                                        holder.materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера + "\n" + ПоследнаяДатаСканера);
+                                        holder.materialTextViewСтатусПоследнегоДействие.setTextColor(Color.parseColor("#949796"));
+                                        holder.materialTextViewСтатусПоследнегоДействие.forceLayout();
+                                        holder.materialTextViewСтатусПоследнегоДействие.refreshDrawableState();
                                         // TODO: 11.02.2023  
-                                        handler.postDelayed(()-> {
+                                        handler.postDelayed(() -> {
                                             materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
-                                        },3000);
+                                        }, 3000);
                                     });
-                                    Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
-                                            +new Date().toLocaleString()+ " mediatorLiveDataGATT.getValue() "+mediatorLiveDataGATT.getValue() );
+                                    Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
+                                            + new Date().toLocaleString() + " mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                     break;
                                 // TODO: 11.02.2023 ДРУГИЕ ОТВЕТЫ
-                                case "SERVER#SousAvtoERROR" :
-                                    handler.post(()->{
+                                case "SERVER#SousAvtoERROR":
+                                    handler.post(() -> {
                                         v2.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
                                         materialButtonКакоеДействие.setText("Не Успешно !!!");
-                                        МетодЗаписываемСтатусРаботысGATT("Не Успешно !!!",new Date().toLocaleString());
+                                        МетодЗаписываемСтатусРаботысGATT("Не Успешно !!!", new Date().toLocaleString());
                                         // TODO: 08.02.2023 показыввем клиент смененый статус
-                                        String ПоследнийСтатусСканера=preferences.getString("СменаСтатусРАботыКлиентасGATT","");
-                                        String ПоследнаяДатаСканера=preferences.getString("СменаДАтаРАботыGATT","");
-                                        holder.   materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера+"\n"+ПоследнаяДатаСканера);
-                                        holder.   materialTextViewСтатусПоследнегоДействие.setTextColor(Color.RED);
-                                        holder. materialTextViewСтатусПоследнегоДействие.forceLayout();
-                                        holder. materialTextViewСтатусПоследнегоДействие.refreshDrawableState();
-                                        handler.postDelayed(()-> {
+                                        String ПоследнийСтатусСканера = preferences.getString("СменаСтатусРАботыКлиентасGATT", "");
+                                        String ПоследнаяДатаСканера = preferences.getString("СменаДАтаРАботыGATT", "");
+                                        holder.materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера + "\n" + ПоследнаяДатаСканера);
+                                        holder.materialTextViewСтатусПоследнегоДействие.setTextColor(Color.RED);
+                                        holder.materialTextViewСтатусПоследнегоДействие.forceLayout();
+                                        holder.materialTextViewСтатусПоследнегоДействие.refreshDrawableState();
+                                        handler.postDelayed(() -> {
                                             materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
-                                        },3000);
+                                        }, 3000);
                                     });
-                                    Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
-                                            +new Date().toLocaleString()+ " mediatorLiveDataGATT.getValue() "+mediatorLiveDataGATT.getValue() );
+                                    Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
+                                            + new Date().toLocaleString() + " mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                     break;
                             }
                         }
                     }
                 });
 
-                Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                Log.i(this.getClass().getName(), "onStart() " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -948,18 +959,18 @@ public class FragmentScannerUser extends Fragment {
 
         private void МетодЗапускКлиентаGattЧерезБиндинг(@NonNull String ДействиеДляСервераGATTОТКлиента) {
             // TODO: 06.12.2022 запускаем сканирование клиента
-            binderСканнер.getService().МетодКлиентЗапускСканера(handler, getActivity(),bluetoothManager,mediatorLiveDataGATT, ДействиеДляСервераGATTОТКлиента);
+            binderСканнер.getService().МетодКлиентЗапускСканера(handler, getActivity(), bluetoothManager, mediatorLiveDataGATT, ДействиеДляСервераGATTОТКлиента);
         }
 
         private void МетодПринудительноРазрываемвязисGatt(@NonNull String ДействиеДляСервераGATTОТКлиента) {
             try {
-                handler.postDelayed(()->{
+                handler.postDelayed(() -> {
                     mediatorLiveDataGATT.setValue(ДействиеДляСервераGATTОТКлиента);
                     binderСканнер.getService().МетодРазрываСоедениесGAttServer();
-                    Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
-                            + "ДействиеДляСервераGATTОТКлиента " +ДействиеДляСервераGATTОТКлиента);
+                    Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString()
+                            + "ДействиеДляСервераGATTОТКлиента " + ДействиеДляСервераGATTОТКлиента);
                     progressСканер.setVisibility(View.INVISIBLE);
-                },10000);
+                }, 10000);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -977,27 +988,27 @@ public class FragmentScannerUser extends Fragment {
             }
         }
 
-        private void МетодЗаписываемСтатусРаботысGATT(@NonNull String СтатусРаботыGatt ,@NonNull String ДатаСменыСтатуса) {
+        private void МетодЗаписываемСтатусРаботысGATT(@NonNull String СтатусРаботыGatt, @NonNull String ДатаСменыСтатуса) {
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("СменаСтатусРАботыКлиентасGATT",СтатусРаботыGatt);
-            editor.putString("СменаДАтаРАботыGATT",ДатаСменыСтатуса);
+            editor.putString("СменаСтатусРАботыКлиентасGATT", СтатусРаботыGatt);
+            editor.putString("СменаДАтаРАботыGATT", ДатаСменыСтатуса);
             editor.commit();
             Log.i(this.getClass().getName(), " смена статуса  создание МетодЗаписываемСтатусРаботысGATT " + mediatorLiveDataGATT);
-            try{
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
+            try {
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                ContentValues valuesЗаписываемОшибки = new ContentValues();
+                valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+                valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+                valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+                valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+                final Object ТекущаяВерсияПрограммы = version;
+                Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+                valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+                new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+            }
         }
 
         @Override
@@ -1007,10 +1018,11 @@ public class FragmentScannerUser extends Fragment {
             return super.getItemId(position);
 
         }
+
         @Override
         public int getItemCount() {
             try {
-                Log.d(this.getClass().getName(), "ArrayListДанныеОтСканироваиниеДивайсов " + ArrayListДанныеОтСканироваиниеДивайсов );
+                Log.d(this.getClass().getName(), "ArrayListДанныеОтСканироваиниеДивайсов " + ArrayListДанныеОтСканироваиниеДивайсов);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1025,7 +1037,7 @@ public class FragmentScannerUser extends Fragment {
                 valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
                 new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
             }
-            return  ArrayListДанныеОтСканироваиниеДивайсов.size();
+            return ArrayListДанныеОтСканироваиниеДивайсов.size();
         }
     }
 
@@ -1054,12 +1066,13 @@ public class FragmentScannerUser extends Fragment {
         }
 
     }
-    void МетодHandler(){
-        handler=          new Handler(Looper.getMainLooper(),new Handler.Callback(){
+
+    void МетодHandler() {
+        handler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
             @Override
-            public boolean handleMessage(@NonNull android.os.Message  msg) {
-                try{
-                    Bundle bundle=     msg.getData();
+            public boolean handleMessage(@NonNull android.os.Message msg) {
+                try {
+                    Bundle bundle = msg.getData();
                     Log.d(this.getClass().getName(), "msg " + msg);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -1082,21 +1095,21 @@ public class FragmentScannerUser extends Fragment {
 
 
     // TODO: 29.11.2022 служба сканирования
-    private    void   МетодБиндингаСканирование(){
+    private void МетодБиндингаСканирование() {
         try {
-            ServiceConnection   connectionСканирование = new ServiceConnection() {
+            ServiceConnection connectionСканирование = new ServiceConnection() {
                 @Override
                 public void onServiceConnected(ComponentName name, IBinder service) {
-                    try{
-                        binderСканнер = ( ServiceClientBLE.LocalBinderСканнер) service;
-                        if(binderСканнер.isBinderAlive()){
+                    try {
+                        binderСканнер = (ServiceClientBLE.LocalBinderСканнер) service;
+                        if (binderСканнер.isBinderAlive()) {
                             Log.i(getContext().getClass().getName(), "    onServiceConnected  binderСогласованияbinderМатериалы.isBinderAlive()"
                                     + binderСканнер.isBinderAlive());
                             binderСканнер.linkToDeath(new IBinder.DeathRecipient() {
                                 @Override
                                 public void binderDied() {
-                                    Log.i(this.getClass().getName(),  "linkToDeath" +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+
-                                            " binderСканнер.isBinderAlive() "+binderСканнер.isBinderAlive());
+                                    Log.i(this.getClass().getName(), "linkToDeath" + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString() +
+                                            " binderСканнер.isBinderAlive() " + binderСканнер.isBinderAlive());
                                 }
                             });
                         }
@@ -1104,24 +1117,25 @@ public class FragmentScannerUser extends Fragment {
                         e.printStackTrace();
                         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                                 + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        ContentValues valuesЗаписываемОшибки=new ContentValues();
-                        valuesЗаписываемОшибки.put("НазваниеОбрабоатываемойТаблицы","ErrorDSU1");
-                        valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
-                        valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
-                        valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
-                        valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        ContentValues valuesЗаписываемОшибки = new ContentValues();
+                        valuesЗаписываемОшибки.put("НазваниеОбрабоатываемойТаблицы", "ErrorDSU1");
+                        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+                        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+                        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+                        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
                         final Object ТекущаяВерсияПрограммы = version;
-                        Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                        valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
+                        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+                        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
                         new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
                     }
 
                 }
+
                 @Override
                 public void onServiceDisconnected(ComponentName name) {
-                    try{
+                    try {
                         Log.i(getContext().getClass().getName(), "    onServiceDisconnected  binderСканнер.isBinderAlive()" + binderСканнер.isBinderAlive());
-                        binderСканнер =null;
+                        binderСканнер = null;
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
@@ -1132,13 +1146,60 @@ public class FragmentScannerUser extends Fragment {
             };
             Intent intentБиндингсСлужбойСканирования = new Intent(getContext(), ServiceClientBLE.class);
             intentБиндингсСлужбойСканирования.setAction("com.scannerforble");
-           getContext(). bindService(intentБиндингсСлужбойСканирования, Context.BIND_AUTO_CREATE, Executors.newSingleThreadExecutor(), connectionСканирование);
+            getContext().bindService(intentБиндингсСлужбойСканирования, Context.BIND_AUTO_CREATE, Executors.newSingleThreadExecutor(), connectionСканирование);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("НазваниеОбрабоатываемойТаблицы", "ErrorDSU1");
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+
+    }
+
+    private ArrayList<String> МетодЗаполенияДаннымиКлиентаДЛяGAtt() {
+        ArrayList<String> linkedHashMapДанныеКлиентаДляGATT = null;
+        try {
+            linkedHashMapДанныеКлиентаДляGATT = new ArrayList<>();
+            linkedHashMapДанныеКлиентаДляGATT.add(ДействиеДляСервераGATTОТКлиента);
+
+            TelephonyManager tMgr = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_SMS) !=
+                    PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_NUMBERS) !=
+                    PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+
+
+                return linkedHashMapДанныеКлиентаДляGATT;
+            }
+            String mPhoneNumber1 = tMgr.getLine1Number();
+            String mPhoneNumber2 = tMgr.getGroupIdLevel1();
+            Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
+                    + " mPhoneNumber1 " +mPhoneNumber1);
+            linkedHashMapДанныеКлиентаДляGATT.add("89154578454545");
+            linkedHashMapДанныеКлиентаДляGATT.add("89104578454500");
+            linkedHashMapДанныеКлиентаДляGATT.add("00232000000000");
+            Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
+                    + " linkedHashMapДанныеКлиентаДляGATT " +linkedHashMapДанныеКлиентаДляGATT);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
             ContentValues valuesЗаписываемОшибки=new ContentValues();
-            valuesЗаписываемОшибки.put("НазваниеОбрабоатываемойТаблицы","ErrorDSU1");
             valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
             valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
             valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
@@ -1148,7 +1209,7 @@ public class FragmentScannerUser extends Fragment {
             valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
             new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
-
+        return linkedHashMapДанныеКлиентаДляGATT;
     }
 }
 
@@ -1161,6 +1222,7 @@ WWIFI wwifi=new WWIFI(context);
  String s=       wwifi.metodss();
         System.out.printf(" WWIFI s "+s);
     }
+
 }
 
 
