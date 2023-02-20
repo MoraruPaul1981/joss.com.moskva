@@ -32,6 +32,7 @@ import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Parcel;
 import android.os.ParcelUuid;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -54,6 +55,7 @@ import com.sous.server.Locations.MyLocationListener;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -498,10 +500,16 @@ public class ServiceControllerServer extends IntentService {
                     String ДанныеСодранныеОтКлиента = null;
                     try {
                         final Integer[] РезультатЗаписиДанныхПИнгаДвайсаВБАзу = {0};
-
+                        // TODO: 20.02.2023  Пришли ДАнные От Клиента  
                             ПришлиДанныеОтКлиентаЗапрос = new String(value);
-                            Log.i(TAG, "Connected to GATT server  newValueПришлиДАнныеОтКлиента." + new String(value) +
-                                    " value.length " + value.length );
+                        Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() 
+                                + " ПришлиДанныеОтКлиентаЗапрос " +ПришлиДанныеОтКлиентаЗапрос);
+                        String[] sArr = ПришлиДанныеОтКлиентаЗапрос.split(",");
+                        List<String> listПришлиДанныеОтКлиентаЗапрос = Arrays.asList(sArr);
+                        Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
+                                + " listПришлиДанныеОтКлиентаЗапрос " +listПришлиДанныеОтКлиентаЗапрос);
+
+                            Log.i(TAG, "Connected to GATT server  newValueПришлиДАнныеОтКлиента." + new String(value) + " value.length " + value.length );
                             // TODO: 13.02.2023
                             МетодПолучениеЛокацииGPS();
                             // TODO: 07.02.2023  Записываем ВБАзу Данные
@@ -1035,6 +1043,7 @@ public class ServiceControllerServer extends IntentService {
             ContentResolver resolver = getApplicationContext().getContentResolver();
             РезульататЗАписиНовогоДивайса=   resolver.bulkInsert(uri, contentValues);
             Log.w(getApplicationContext().getClass().getName(), " РЕЗУЛЬТАТ insertData  РезульататЗАписиНовогоДивайса ЗНАЧЕНИЯ  " +  РезульататЗАписиНовогоДивайса.toString() );
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1069,6 +1078,7 @@ public class ServiceControllerServer extends IntentService {
              }
             Log.w(getApplicationContext().getClass().getName(), " РЕЗУЛЬТАТ insertData  cursorПолучаемДЛяСевреа  " +  cursorПолучаемДЛяСевреа.toString() );
             cursorПолучаемДЛяСевреа.close();
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1085,4 +1095,6 @@ public class ServiceControllerServer extends IntentService {
         }
         return  ВерсияДАнных;
     }
+
+
 }
