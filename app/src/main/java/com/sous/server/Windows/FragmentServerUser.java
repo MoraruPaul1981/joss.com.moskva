@@ -51,6 +51,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 
@@ -69,9 +70,7 @@ public class FragmentServerUser extends Fragment {
     private BluetoothManager bluetoothManager;
     private MutableLiveData<Bundle> mutableLiveDataGATTServer;
     private List<String> linkedКолПодкСерверу;
-
     private Long version;
-    private ServiceControllerServer serviceControllerServer;
     private LocationManager locationManager;
     private ServiceControllerServer.LocalBinderСерверBLE binderСканнер;
     private Message message;
@@ -94,7 +93,6 @@ public class FragmentServerUser extends Fragment {
             ArrayListДанныеФрагмент1.add("Фрагмент Сервера");
             PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
-            serviceControllerServer = binderСканнерServer.getService();
             linkedКолПодкСерверу = new LinkedList<>();
             locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
 
@@ -234,7 +232,7 @@ public class FragmentServerUser extends Fragment {
                 }
                 if (bluetoothAdapter.isEnabled() == true) {
                     // TODO: 06.12.2022 запускаем GATT SERVER
-                    serviceControllerServer.МетодГлавныйЗапускGattServer(handler, getActivity(), bluetoothManager, mutableLiveDataGATTServer);
+                    binderСканнерServer.getService().МетодГлавныйЗапускGattServer(handler, getActivity(), bluetoothManager, mutableLiveDataGATTServer);
                     Log.d(getClass().getClass().getName(), "\n" + " МетодЗапускGattServer" + new Date());
                 }
             }
@@ -947,11 +945,12 @@ public class FragmentServerUser extends Fragment {
     }
 
     // TODO: 29.11.2022 служба сканирования
+    @SuppressLint("NewApi")
     private void МетодБиндингаСканирование() {
         try {
-            Intent intentБиндингсСлужбойСканирования =
-                    new Intent(getContext(), ServiceControllerServer.class);
-            getContext().bindService(intentБиндингсСлужбойСканирования, new ServiceConnection() {
+            Intent intentБиндингсСлужбойСканирования = new Intent(getContext(), ServiceControllerServer.class);
+            intentБиндингсСлужбойСканирования.setAction("com.serviceforble");
+            getContext().bindService(intentБиндингсСлужбойСканирования ,Context.BIND_AUTO_CREATE, Executors.newCachedThreadPool(), new ServiceConnection() {
                 @Override
                 public void onServiceConnected(ComponentName name, IBinder service) {
                     try {
@@ -962,7 +961,7 @@ public class FragmentServerUser extends Fragment {
                             binderСканнер.linkToDeath(new IBinder.DeathRecipient() {
                                 @Override
                                 public void binderDied() {
-                                    // TODO: 20.02.2023  back 
+                                    // TODO: 20.02.2023  back
                                     message.sendToTarget();
                                     Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+" "+
                                             binderСканнер.isBinderAlive());
@@ -1000,7 +999,7 @@ public class FragmentServerUser extends Fragment {
                                 " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
                     }
                 }
-            }, Context.BIND_AUTO_CREATE);
+            });
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

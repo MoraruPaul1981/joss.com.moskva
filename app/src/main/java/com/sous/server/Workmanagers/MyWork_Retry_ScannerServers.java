@@ -75,6 +75,7 @@ public class MyWork_Retry_ScannerServers extends Worker {
     private void МетодБиндингаОбщая() throws InterruptedException {
         try {
         Intent intentГлавнаяСинхрониазцияScanner = new Intent(context, ServiceControllerServer.class);
+            intentГлавнаяСинхрониазцияScanner.setAction("com.serviceforble");
         context.bindService(intentГлавнаяСинхрониазцияScanner,Context.BIND_AUTO_CREATE,
                 executorServiceServerScanner, new ServiceConnection() {
             @Override

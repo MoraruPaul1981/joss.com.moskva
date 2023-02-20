@@ -109,27 +109,6 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
             МетодРАзрешенияBlurtooTКлиент();
             ОтветныйHendlerОтСлужбы();
             МетодЗапускаетBroadcast();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        try {
             // TODO: 07.02.2023 запус самого СЕРВЕРА СКАНРРОВНИЕ..
             МетодЗапускBootФрагмента(new FragmentBootServer());//todo Запускам клиента или сервер фрагмент
         } catch (Exception e) {
@@ -148,7 +127,6 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
         }
 
     }
-
     public void МетодСобыытиеКнопокСканирования(@NotNull Intent intent) {
         try {
             bottomNavigationItemViewВыход.setOnClickListener(new View.OnClickListener() {
