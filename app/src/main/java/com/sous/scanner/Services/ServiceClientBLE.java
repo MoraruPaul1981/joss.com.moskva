@@ -475,16 +475,22 @@ public class ServiceClientBLE extends IntentService {
                         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
                             super.onCharacteristicChanged(gatt, characteristic);
                             try{
-                                byte[] newValueОтветОтСервера = characteristic.getValue();
-                                if (newValueОтветОтСервера!=null) {
-                                    String ОтветОтСервераОбратно=new String(newValueОтветОтСервера);
-                                    Log.i(TAG, "Connected to GATT server  ОтветОтСервераОбратно."+ОтветОтСервераОбратно);
-                                    // TODO: 30.01.2023  ПОСЫЛАЕМ ОТВЕТ ОТ СЕРВЕРА СТАТУСА
-                                    handler.post(()->{
-                                        mediatorLiveDataGATT.setValue(ОтветОтСервераОбратно);
-                                    });
+                                if (characteristic!=null) {
+                                    byte[] newValueОтветОтСервера = characteristic.getValue();
+                                    if (newValueОтветОтСервера!=null) {
+                                        String ОтветОтСервераОбратно=new String(newValueОтветОтСервера);
+                                        Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()
+                                                + " время " +new Date().toLocaleString()+ " ОтветОтСервераОбратно "+ОтветОтСервераОбратно );
+                                        // TODO: 30.01.2023  ПОСЫЛАЕМ ОТВЕТ ОТ СЕРВЕРА СТАТУСА
+                                        handler.post(()->{
+                                            mediatorLiveDataGATT.setValue(ОтветОтСервераОбратно);
+                                        });
+                                        // TODO: 20.02.2023 закрыаем сесию ссервром
+                                        gatt.close();
+                                    }
+                                    Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()
+                                            + " время " +new Date().toLocaleString()+ " characteristic "+characteristic );
                                 }
-                                // TODO: 20.02.2023 закрыаем сесию ссервром  
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
