@@ -106,7 +106,8 @@ public class ServiceControllerServer extends IntentService {
 
     private  String КлючДляServerFibaseOneSingnal="220d6edf-2b29-453e-97a8-d2aefe4a9eb0";
 
-    private  ExecutorService executorServiceLocation;
+    private  ExecutorService executorServiceLocationGPS;
+    private  ExecutorService executorServiceLocationLocali;
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     public void onCreate() {
@@ -122,9 +123,10 @@ public class ServiceControllerServer extends IntentService {
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             bundleСервер=new Bundle();
-            executorServiceLocation= Executors.newCachedThreadPool();
+            executorServiceLocationGPS= Executors.newCachedThreadPool();
+            executorServiceLocationLocali= Executors.newCachedThreadPool();
             // TODO: 13.02.2023  ИНИЦИАЛИЗАЦИИ GPS
-          //  МетодИнициализацииGPS();
+            МетодИнициализацииGPS();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -325,15 +327,21 @@ public class ServiceControllerServer extends IntentService {
     @SuppressLint("MissingPermission")
     private synchronized void МетодИнициализацииGPS() {
         try{
+            executorServiceLocationGPS.submit(()->{
+                return null;
+            });
+            executorServiceLocationLocali.submit(()->{
+                return null;
+            });
 
             // TODO: 13.02.2023
                  // TODO: 01.02.2023 Получение Новго Ключа Для Сканера
                      CancellationSignal signal = new CancellationSignal();
                      locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
                      locationListener = new MyLocationListener(getApplicationContext());
-                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 90000, 0.0F,executorServiceLocation, locationListener);
+                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 90000, 0.0F,executorServiceLocationGPS, locationListener);
                      //lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                      locationManager.getCurrentLocation(LocationManager.GPS_PROVIDER,signal, executorServiceLocation, new java.util.function.Consumer<Location>() {
+                      locationManager.getCurrentLocation(LocationManager.GPS_PROVIDER,signal, executorServiceLocationLocali, new java.util.function.Consumer<Location>() {
                          @Override
                          public void accept(Location location) {
                              Log.d(TAG, "lastLocation location "+location );
@@ -347,21 +355,21 @@ public class ServiceControllerServer extends IntentService {
                                      mutableLiveDataGATTServer.setValue(bundleСервер);
                                  }); ;
                                  // TODO: 14.02.2023  закрываем
+                                 Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + "  location " + location);
                              }
                          }
                      });
-                     Log.d(TAG, "lastLocation takeWhile CONNECT FOR FOR FOR GPS LOCATION   "+lastLocation+ " время  : " +new Date().toLocaleString() );
-                     Log.d(TAG, "lastLocation МетодИнициализацииGPS "+lastLocation );
+
 
             locationManager.registerGnssNavigationMessageCallback(new GnssNavigationMessage.Callback() {
                 @Override
                 public void onGnssNavigationMessageReceived(GnssNavigationMessage event) {
                     super.onGnssNavigationMessageReceived(event);
-                    Log.d(TAG, "lastLocation event "+event );
+                    Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+  " event " +event );
                 }
             });//GnssNavigationMessage.Callback
 // create observable
-            Log.d(TAG, "lastLocation takeWhile "+lastLocation );
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
