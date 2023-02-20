@@ -761,9 +761,7 @@ public class FragmentServerUser extends Fragment {
                                 case "SERVERGATTConnectiong":
                                     handler.post(() -> {
                                         holder.materialButtonСервер.setText("Коннект...");
-                                        Drawable progressDrawable = progressBarДЛяСервера.getProgressDrawable().mutate();
-                                        progressDrawable.setColorFilter(Color.RED, android.graphics.PorterDuff.Mode.SRC_IN);
-                                        progressBarДЛяСервера.setProgressDrawable(progressDrawable);
+                                        holder.materialButtonСервер.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
                                         Log.i(this.getClass().getName(), "  Коннект... на сервере ответ КЛИЕНТУ  ");//
                                     });
                                     break;
@@ -775,11 +773,9 @@ public class FragmentServerUser extends Fragment {
                                                 + "\n" + "пинг: " + linkedКолПодкСерверу.size());
                                         Log.i(this.getClass().getName(), "  Работает... на сервере ответ КЛИЕНТУ  "
                                                 + "\n" + "пинги: " + linkedКолПодкСерверу.size());
+                                        holder.materialButtonСервер.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#03A9F4")));
                                         handler.postDelayed(()->{
                                             progressBarДЛяСервера.setVisibility( View.VISIBLE);;
-                                            Drawable progressDrawable = progressBarДЛяСервера.getProgressDrawable().mutate();
-                                            progressDrawable.setColorFilter(Color.RED, android.graphics.PorterDuff.Mode.SRC_IN);
-                                            progressBarДЛяСервера.setProgressDrawable(progressDrawable);
                                         },1500);
 
                                     });
@@ -792,6 +788,7 @@ public class FragmentServerUser extends Fragment {
                                                 + "\n" + "пинг: " + linkedКолПодкСерверу.size());
                                         Log.i(this.getClass().getName(), "  Работает GPS ... на сервере ответ КЛИЕНТУ  "
                                                 + "\n" + "пинги: " + linkedКолПодкСерверу.size());
+                                        holder.materialButtonСервер.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#03A9F4")));
                                         handler.postDelayed(() -> {
                                             holder.materialButtonСервер.setText("Работает..."
                                                     + "\n"
@@ -803,6 +800,7 @@ public class FragmentServerUser extends Fragment {
                                     handler.post(() -> {
                                         holder.materialButtonСервер.setText("Не работает !!!");
                                         Log.i(this.getClass().getName(), "   Не работает на сервере ответ КЛИЕНТУ  ");
+                                        holder.materialButtonСервер.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#03A9F4")));
                                         progressBarДЛяСервера.setVisibility( View.INVISIBLE);
                                     });
                                     break;
@@ -810,12 +808,14 @@ public class FragmentServerUser extends Fragment {
                                     handler.post(() -> {
                                         holder.materialButtonСервер.setText("Ошибка нет данных !!!");
                                         Log.i(this.getClass().getName(), "    Ошибка нет данных !!! на сервере ответ КЛИЕНТУ  ");
+                                        holder.materialButtonСервер.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#03A9F4")));
                                     });
                                     break;
                                 case "SERVERGATTRUNNIGReBOOT":
                                     handler.post(() -> {
                                         holder.materialButtonСервер.setText("Перезапуск...");
                                         Log.i(this.getClass().getName(), "   Перезапуск на сервере ответ КЛИЕНТУ  ");
+                                        holder.materialButtonСервер.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#03A9F4")));
                                         progressBarДЛяСервера.setVisibility( View.INVISIBLE);
                                     });
                                     break;
@@ -833,6 +833,7 @@ public class FragmentServerUser extends Fragment {
                                             Log.i(this.getClass().getName(), "  Ошибка на ответ КЛИЕНТУ  ");
                                             Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
                                             v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
+                                            holder.materialButtonСервер.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#03A9F4")));
                                         });
                                         handler.postDelayed(() -> {
                                             holder.materialButtonСервер.setText("Работает..."
@@ -852,6 +853,7 @@ public class FragmentServerUser extends Fragment {
                                             Log.i(this.getClass().getName(), "   Успех на сервере ответ КЛИЕНТУ  ");
                                             Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
                                             v2.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+                                            holder.materialButtonСервер.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#03A9F4")));
                                         });
                                         handler.postDelayed(() -> {
                                             holder.materialButtonСервер.setText("Работает..."

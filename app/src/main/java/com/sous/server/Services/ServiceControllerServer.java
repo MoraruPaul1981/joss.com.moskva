@@ -420,8 +420,8 @@ public class ServiceControllerServer extends IntentService {
                             case BluetoothProfile.STATE_DISCONNECTED:
                                 Log.i(TAG, " onConnectionStateChange BluetoothProfile.STATE_DISCONNECTED "+  device.getAddress()+
                                         "\n"+ "newState " +newState +  "status "+status);
-                                server.cancelConnection(device);
-                                v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
+                               // server.cancelConnection(device);
+                                v2.vibrate(VibrationEffect.createOneShot(25, VibrationEffect.DEFAULT_AMPLITUDE));
                                 break;
                         }
 
