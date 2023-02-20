@@ -88,7 +88,7 @@ public class BroadcastReceiverWorkManagerScannersServer extends BroadcastReceive
             WorkManager.getInstance(context.getApplicationContext()).enqueueUniquePeriodicWork(ИмяСлужбыСинхронизации,
                     ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequestСинхронизация);
         }
-        Log.w(context.getClass().getName(), " ПОСЛЕ ОТРАБОТКИ BroadcastReceiverWorkManagerScannersServer ");
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -112,7 +112,7 @@ public class BroadcastReceiverWorkManagerScannersServer extends BroadcastReceive
                     .putInt("КтоЗапустилWorkManagerДляСинхронизации", 1)
                     .build();
             Constraints constraintsПовторныйЗапскСлужбыServerScanner = new Constraints.Builder()
-                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                    .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
                     .setRequiresBatteryNotLow(false)
                     .setRequiresStorageNotLow(false)
                     .build();
@@ -136,7 +136,7 @@ public class BroadcastReceiverWorkManagerScannersServer extends BroadcastReceive
                 WorkManager.getInstance(context.getApplicationContext()).enqueueUniquePeriodicWork(ИмяСлужбыСинхронизации,
                         ExistingPeriodicWorkPolicy.KEEP, periodicWorkRequestconstraintsПовторныйЗапскСлужбыServerScanner);
             }
-            Log.w(context.getClass().getName(), " ПОСЛЕ ОТРАБОТКИ BroadcastReceiverWorkManagerScannersServer ");
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
