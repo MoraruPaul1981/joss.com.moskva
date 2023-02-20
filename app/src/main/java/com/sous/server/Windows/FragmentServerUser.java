@@ -3,13 +3,16 @@ package com.sous.server.Windows;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -81,8 +84,6 @@ public class FragmentServerUser extends Fragment {
             Log.d(this.getClass().getName(),  " recyclerView " + recyclerView);
             fragmentManager =  getActivity().getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
-            Bundle bundle=     getArguments();
-            binderСканнерServer = (ServiceControllerServer.LocalBinderСканнер) bundle.getBinder("binderСканнер");
             bluetoothManager = (BluetoothManager) getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
             mutableLiveDataGATTServer=new MutableLiveData<>();
             animationServer = AnimationUtils.loadAnimation(getContext(),R.anim.slide_in_row_vibrator2);
@@ -91,10 +92,13 @@ public class FragmentServerUser extends Fragment {
             version = pInfo.getLongVersionCode();
             serviceControllerServer=     binderСканнерServer.getService();
             linkedКолПодкСерверу=new LinkedList<>();
+            locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+
+
             // TODO: 13.02.2023 разрешения
             // TODO: 30.01.2023  видимый
             МетодУстановкаБесконечнаяВидимсостиСервера();
-            locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -933,7 +937,76 @@ public class FragmentServerUser extends Fragment {
         });
     }
 
+    // TODO: 29.11.2022 служба сканирования
+    private    void   МетодБиндингаСканирование(){
+        try {
+            connectionСканирование = new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    try{
+                        binderСканнер = ( ServiceControllerServer.LocalBinderСканнер) service;
+                        if(binderСканнер.isBinderAlive()){
+                            Log.i(getApplicationContext().getClass().getName(), "  onServiceConnected  onServiceConnected  МетодБиндингаСканирование"
+                                    + binderСканнер.isBinderAlive());
+                            binderСканнер.linkToDeath(new IBinder.DeathRecipient() {
+                                @Override
+                                public void binderDied() {
+                                    Log.i(getApplicationContext().getClass().getName(), "   binderDied  onServiceConnected  МетодБиндингаСканирование"
+                                            + binderСканнер.isBinderAlive());
+                                    МетодЗапускаВторогоФрагментаСканирование();
+                                }
+                            });
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        ContentValues valuesЗаписываемОшибки=new ContentValues();
+                        valuesЗаписываемОшибки.put("НазваниеОбрабоатываемойТаблицы","ErrorDSU1");
+                        valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
+                        valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
+                        valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
+                        valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        final Object ТекущаяВерсияПрограммы = version;
+                        Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+                        valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
+                        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+                    }
 
+                }
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
+                    try{
+                        Log.i(getApplicationContext().getClass().getName(), "    onServiceDisconnected  binderСканнер.isBinderAlive()" + binderСканнер.isBinderAlive());
+                        binderСканнер =null;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
+                                + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
+                }
+            };
+            Intent intentБиндингсСлужбойСканирования =
+                    new Intent(getApplicationContext(), ServiceControllerServer.class);
+            bindService(intentБиндингсСлужбойСканирования, connectionСканирование, Context.BIND_AUTO_CREATE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки=new ContentValues();
+            valuesЗаписываемОшибки.put("НазваниеОбрабоатываемойТаблицы","ErrorDSU1");
+            valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+
+    }
 
     }
 

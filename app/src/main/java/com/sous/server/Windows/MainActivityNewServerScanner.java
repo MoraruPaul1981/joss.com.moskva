@@ -2,9 +2,7 @@ package com.sous.server.Windows;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.ComponentName;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
@@ -14,7 +12,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
@@ -22,14 +19,12 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.loader.content.AsyncTaskLoader;
-import androidx.loader.content.Loader;
 
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -42,8 +37,6 @@ import com.sous.server.R;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Random;
-
 
 public class MainActivityNewServerScanner extends AppCompatActivity  {
     private ServiceControllerServer.LocalBinderСканнер binderСканнер;
@@ -51,6 +44,7 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
     private String TAG;
     private Handler handler;
     private NavigationBarView bottomNavigationView;
+    private MaterialTextView materialTextViewToolBar;
     private BottomNavigationItemView bottomNavigationItemViewВыход;
     private BottomNavigationItemView bottomNavigationItemViewИстория;
     private FragmentManager fragmentManager;
@@ -58,7 +52,7 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
     private Fragment fragment;
     private LinearLayout linearLayou;
     private  Long version;
-    private MaterialTextView materialTextViewToolBar;
+
 
     private    AsyncTaskLoader asyncTaskLoader;
     @SuppressLint("RestrictedApi")
@@ -87,15 +81,12 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
             linearLayou = (LinearLayout) findViewById(R.id.activity_main_newscanner);
             Log.w(getApplicationContext().getClass().getName(), " MainActivityNewServerScanner onCreate  ");
             fragmentManager = getSupportFragmentManager();
-
             bottomNavigationView.setVisibility(View.INVISIBLE);
             materialTextViewToolBar.setText("");
             materialTextViewToolBar.setVisibility(View.INVISIBLE);
             Log.w(getApplicationContext().getClass().getName(), " MainActivityNewServerScanner onCreate  ");
             PackageInfo pInfo =getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
-            // TODO: 07.02.2023 дополнительное разрещения blutoon
-            МетодРАзрешенияBlurtooTКлиент();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
@@ -118,43 +109,11 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
     protected void onStart() {
         super.onStart();
         try {
-            ОтветныйHendlerОтСлужбы();
-            МетодПервыйЗапускПервогоФрагментаBoot();
+            // TODO: 07.02.2023 дополнительное разрещения blutoon
             МетодСобыытиеКнопокСканирования(new Intent("activity"));
-            МетодЗапускаетBroadcastReceiverWorkManagerScannersServer();
-            asyncTaskLoader=new AsyncTaskLoader(getApplicationContext()) {
-                @Nullable
-                @Override
-                public Object loadInBackground() {
-                    try {
-                    МетодБиндингаСканирование();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    ContentValues valuesЗаписываемОшибки = new ContentValues();
-                    valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-                    valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-                    valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-                    valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    final Object ТекущаяВерсияПрограммы = version;
-                    Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                    valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-                    new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-                }
-                    return null;
-                }
-            };
-
-            asyncTaskLoader.startLoading();
-            asyncTaskLoader.forceLoad();
-            asyncTaskLoader.registerListener(new Random().nextInt(), new Loader.OnLoadCompleteListener() {
-                @Override
-                public void onLoadComplete(@NonNull Loader loader, @Nullable Object data) {
-                    Log.d(this.getClass().getName(), " binderСканнер " + binderСканнер);
-                }
-            });
-            Log.d(this.getClass().getName(), " binderСканнер " + binderСканнер);
+            МетодРАзрешенияBlurtooTКлиент();
+            ОтветныйHendlerОтСлужбы();
+            МетодЗапускаетBroadcast();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -176,7 +135,8 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
     protected void onResume() {
         super.onResume();
         try {
-
+            // TODO: 07.02.2023 запус самого СЕРВЕРА СКАНРРОВНИЕ..
+            МетодЗапускBootФрагмента(new FragmentBootServer());//todo Запускам клиента или сервер фрагмент
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -192,58 +152,6 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
             new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
 
-    }
-
-    private void МетодПервыйЗапускПервогоФрагментаBoot() {
-        // TODO: 24.01.2023 методы для блютусаа
-        try{
-        fragment=      new FragmentBootServer();
-        // TODO: 07.02.2023 запус самого СЕРВЕРА СКАНРРОВНИЕ..
-        МетодЗапускКлиентаИлиСервера(fragment);//todo Запускам клиента или сервер фрагмент
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        ContentValues valuesЗаписываемОшибки = new ContentValues();
-        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-        final Object ТекущаяВерсияПрограммы = version;
-        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-    }
-    }
-
-    private void МетодЗапускаВторогоФрагментаСканирование() {
-        try {
-            // TODO: 24.01.2023  переходят после получение binder
-            bottomNavigationView.setVisibility(View.VISIBLE);
-            materialTextViewToolBar.setVisibility(View.VISIBLE);
-            materialTextViewToolBar.setText("Сервер");
-            // TODO: 25.01.2023  подключение после получение BINDER
-            // TODO: 07.02.2023  первый запуск сервер  ВТОРОЙ
-            if (fragment!=null) {
-                fragment.onDetach();
-                fragmentTransaction.remove(fragment);
-            }
-        fragment=      new FragmentServerUser();
-        МетодЗапускКлиентаИлиСервера(fragment);//todo Запускам клиента или сервер фрагмент
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        ContentValues valuesЗаписываемОшибки = new ContentValues();
-        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-        final Object ТекущаяВерсияПрограммы = version;
-        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-    }
     }
 
     public void МетодСобыытиеКнопокСканирования(@NotNull Intent intent) {
@@ -279,19 +187,15 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
 
     // TODO: 05.12.2022  запуск клиента
     @SuppressLint("SuspiciousIndentation")
-    protected void МетодЗапускКлиентаИлиСервера(@NonNull Fragment fragment) {
+    protected void МетодЗапускBootФрагмента(@NonNull Fragment fragment) {
         try {
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.framelauoutScanner, fragment);//.layout.activity_for_fragemtb_history_tasks
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
-            if (binderСканнер!=null) {
-                Bundle bundle=new Bundle();
-                bundle.putBinder("binderСканнер",binderСканнер);
-                fragment.setArguments(bundle);
-            }
+           // fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit();
             fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             fragmentTransaction.show(fragment);
-                Log.d(this.getClass().getName(), " fragment " + fragment+ " binderСканнер " +binderСканнер);
+            Log.d(this.getClass().getName(), " fragment " + fragment+ " binderСканнер " +binderСканнер);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -404,79 +308,10 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
             new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
     }
-    // TODO: 29.11.2022 служба сканирования
-    private    void   МетодБиндингаСканирование(){
-        try {
-                    connectionСканирование = new ServiceConnection() {
-                        @Override
-                        public void onServiceConnected(ComponentName name, IBinder service) {
-                            try{
-                                binderСканнер = ( ServiceControllerServer.LocalBinderСканнер) service;
-                                if(binderСканнер.isBinderAlive()){
-                                    Log.i(getApplicationContext().getClass().getName(), "  onServiceConnected  onServiceConnected  МетодБиндингаСканирование"
-                                            + binderСканнер.isBinderAlive());
-                                    binderСканнер.linkToDeath(new IBinder.DeathRecipient() {
-                                        @Override
-                                        public void binderDied() {
-                                            Log.i(getApplicationContext().getClass().getName(), "   binderDied  onServiceConnected  МетодБиндингаСканирование"
-                                                    + binderСканнер.isBinderAlive());
-                                            МетодЗапускаВторогоФрагментаСканирование();
-                                        }
-                                    });
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                ContentValues valuesЗаписываемОшибки=new ContentValues();
-                                valuesЗаписываемОшибки.put("НазваниеОбрабоатываемойТаблицы","ErrorDSU1");
-                                valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
-                                valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
-                                valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
-                                valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                final Object ТекущаяВерсияПрограммы = version;
-                                Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                                valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
-                                new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-                            }
-
-                        }
-                        @Override
-                        public void onServiceDisconnected(ComponentName name) {
-                            try{
-                                Log.i(getApplicationContext().getClass().getName(), "    onServiceDisconnected  binderСканнер.isBinderAlive()" + binderСканнер.isBinderAlive());
-                                binderСканнер =null;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
-                                        + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            }
-                        }
-                    };
-                    Intent intentБиндингсСлужбойСканирования =
-                            new Intent(getApplicationContext(), ServiceControllerServer.class);
-                    bindService(intentБиндингсСлужбойСканирования, connectionСканирование, Context.BIND_AUTO_CREATE);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки=new ContentValues();
-            valuesЗаписываемОшибки.put("НазваниеОбрабоатываемойТаблицы","ErrorDSU1");
-            valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-
-    }
 
 
-    public void МетодЗапускаетBroadcastReceiverWorkManagerScannersServer() {
+
+    public void МетодЗапускаетBroadcast() {
         try {
             BroadcastReceiverWorkManagerScannersServer broadcastReceiverWorkManagerScannersServer= new BroadcastReceiverWorkManagerScannersServer();
             Intent ИнтретПоЗапускуПовторноШироковещательногоСинхрониазции =
