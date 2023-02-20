@@ -21,7 +21,6 @@ import android.graphics.Color;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
@@ -32,7 +31,6 @@ import android.widget.RelativeLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.textview.MaterialTextView;
-import com.sous.scanner.Services.ServiceClientBLE;
 import com.sous.scanner.Errors.SubClassErrors;
 import com.sous.scanner.R;
 
@@ -89,16 +87,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
             Log.w(getApplicationContext().getClass().getName(), " MainActivityNewScanner onCreate  ");
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
-
-            // TODO: 19.02.2023 разрешает обновлени BLE
-            МетодРАзрешенияBlurtooTКлиент();
-            // TODO: 25.01.2023  подключение после получение BINDER
-            МетодКнопкаBackExit(new Intent("activity"));
-            // TODO: 24.01.2023  переходят после получение binder
-            fragment=new FragmentBootScanner();
-            МетодЗапускКлиентаИлиСервера(fragment);//todo Запускам клиента или сервер фрагмент
             Log.i(this.getClass().getName(),  "onResume " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-            Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -116,8 +105,52 @@ public class MainActivityNewScanner extends AppCompatActivity  {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        try{
+        // TODO: 19.02.2023 разрешает обновлени BLE
+        МетодРАзрешенияBlurtooTКлиент();
+        // TODO: 25.01.2023  подключение после получение BINDER
+        МетодКнопкаBackExit(new Intent("activity"));
 
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ContentValues valuesЗаписываемОшибки = new ContentValues();
+        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+        final Object ТекущаяВерсияПрограммы = version;
+        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+    }
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            // TODO: 24.01.2023  переходят после получение binder
+            МетодЗапускBootФрагмента(new FragmentBootScanner());//todo Запускам клиента или сервер фрагмент
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
 
     public void МетодКнопкаBackExit(@NotNull Intent intent) {
         try {
@@ -146,13 +179,23 @@ public class MainActivityNewScanner extends AppCompatActivity  {
         }
     }
 
+
+
+
+
+
+
+
+
+
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     // TODO: 05.12.2022  запуск клиента
     @SuppressLint("SuspiciousIndentation")
-    protected void МетодЗапускКлиентаИлиСервера(@NonNull Fragment fragment) {
+    protected void МетодЗапускBootФрагмента(@NonNull Fragment fragment) {
         try {
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.framelauoutScanner, fragment);//.layout.activity_for_fragemtb_history_tasks
