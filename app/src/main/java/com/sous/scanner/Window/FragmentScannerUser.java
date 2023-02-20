@@ -924,6 +924,9 @@ public class FragmentScannerUser extends Fragment {
                                             +new Date().toLocaleString()+ " mediatorLiveDataGATT.getValue() "+mediatorLiveDataGATT.getValue() );
                                     break;
                             }
+                            // TODO: 20.02.2023 Длеаем Через 10 Секунд РазрывСвязи
+
+                            МетодПринудительноРазрываемвязисGatt(ДействиеДляСервераGATTОТКлиента);
                         }
                     }
                 });
@@ -946,6 +949,32 @@ public class FragmentScannerUser extends Fragment {
                 new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
             }
         }
+
+        private void МетодПринудительноРазрываемвязисGatt(@NonNull String ДействиеДляСервераGATTОТКлиента) {
+            try {
+                handler.postDelayed(()->{
+                    mediatorLiveDataGATT.setValue(ДействиеДляСервераGATTОТКлиента);
+                    binderСканнер.getService().МетодРазрываСоедениесGAttServer();
+                    Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
+                            + "ДействиеДляСервераGATTОТКлиента " +ДействиеДляСервераGATTОТКлиента);
+                },10000);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                ContentValues valuesЗаписываемОшибки = new ContentValues();
+                valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+                valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+                valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+                valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+                final Object ТекущаяВерсияПрограммы = version;
+                Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+                valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+                new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+            }
+        }
+
         private void МетодЗаписываемСтатусРаботысGATT(@NonNull String СтатусРаботыGatt ,@NonNull String ДатаСменыСтатуса) {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString("СменаСтатусРАботыКлиентасGATT",СтатусРаботыGatt);

@@ -183,11 +183,11 @@ public class ServiceClientBLE extends IntentService {
     }
 
     @SuppressLint("MissingPermission")
-    private void МетодРазрываСоедениесGAttServer() {
+    public void МетодРазрываСоедениесGAttServer() {
         try {
             if (gatt!=null) {
-                gatt.disconnect();
                 gatt.close();
+                Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + " gatt " +gatt);
             }
             // TODO: 30.06.2022 сама не постредствено запуск метода
     } catch (Exception e) {
@@ -486,7 +486,7 @@ public class ServiceClientBLE extends IntentService {
                                             mediatorLiveDataGATT.setValue(ОтветОтСервераОбратно);
                                         });
                                         // TODO: 20.02.2023 закрыаем сесию ссервром
-                                        gatt.close();
+                                        МетодРазрываСоедениесGAttServer();
                                     }
                                     Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()
                                             + " время " +new Date().toLocaleString()+ " characteristic "+characteristic );
@@ -509,8 +509,8 @@ public class ServiceClientBLE extends IntentService {
 
                         @Override
                         public void onServiceChanged(@NonNull BluetoothGatt gatt) {
-                            Log.d(this.getClass().getName(), "\n" + " gatt" + gatt);
                             super.onServiceChanged(gatt);
+                            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + " gatt " +gatt);
                         }
                     };
                     // TODO: 26.01.2023  конец сервера GATT
@@ -533,6 +533,8 @@ public class ServiceClientBLE extends IntentService {
                     new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
                 }
                 }
+
+
 
                 private void МетодЗапускаGATTКлиента(@NonNull BluetoothDevice bluetoothDevice, BluetoothGattCallback bluetoothGattCallback) {
                     try{
