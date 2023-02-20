@@ -113,6 +113,8 @@ public class MainActivityNewScanner extends AppCompatActivity  {
         МетодРАзрешенияBlurtooTКлиент();
         // TODO: 25.01.2023  подключение после получение BINDER
         МетодКнопкаBackExit(new Intent("activity"));
+            // TODO: 24.01.2023  переходят после получение binder
+            МетодЗапускBootФрагмента(new FragmentBootScanner());//todo Запускам клиента или сервер фрагмент
 
     } catch (Exception e) {
         e.printStackTrace();
@@ -130,27 +132,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
     }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        try {
-            // TODO: 24.01.2023  переходят после получение binder
-            МетодЗапускBootФрагмента(new FragmentBootScanner());//todo Запускам клиента или сервер фрагмент
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-    }
+
 
     public void МетодКнопкаBackExit(@NotNull Intent intent) {
         try {
@@ -198,6 +180,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
     protected void МетодЗапускBootФрагмента(@NonNull Fragment fragment) {
         try {
             fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.addToBackStack("");
             fragmentTransaction.replace(R.id.framelauoutScanner, fragment);//.layout.activity_for_fragemtb_history_tasks
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit();
             fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);

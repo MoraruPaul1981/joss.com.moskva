@@ -77,7 +77,6 @@ public class FragmentBootScanner extends Fragment {
             fragment= fragmentManager.getFragments().get(0);
             fragment.onDetach();
             fragmentTransaction.remove(fragment);
-            fragmentTransaction.addToBackStack("");
             relativeLayout.forceLayout();
             relativeLayout.refreshDrawableState();
             fragment=new FragmentScannerUser();

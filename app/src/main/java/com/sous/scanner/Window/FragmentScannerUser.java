@@ -709,7 +709,7 @@ public class FragmentScannerUser extends Fragment {
             try {
                 Log.i(this.getClass().getName(), "   holder " + holder);
                 // TODO: 19.02.2023 Второе Действие
-                final Disposable[] disposable = new Disposable[1];
+             /*   final Disposable[] disposable = new Disposable[1];
                 RxView.clicks(holder.materialButtonКотрольПриход).throttleFirst(30, TimeUnit.SECONDS)
                                 .observeOn(AndroidSchedulers.mainThread())
                                         .subscribe(new io.reactivex.rxjava3.core.Observer<Unit>() {
@@ -741,8 +741,8 @@ public class FragmentScannerUser extends Fragment {
                                                 Log.i(this.getClass().getName(),  "  RxView.clicks " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
                                                 disposable[0].dispose();
                                             }
-                                        });
-            /*    holder.materialButtonКотрольПриход.setOnClickListener(new View.OnClickListener() {
+                                        });*/
+                holder.materialButtonКотрольПриход.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ДействиеДляСервераGATTОТКлиента= "на работу";
@@ -759,7 +759,7 @@ public class FragmentScannerUser extends Fragment {
                         МетодЗапускаGattСервера(v,holder,holder.materialButtonКотрольВыход);
                         Log.i(this.getClass().getName(), "  materialButtonКотрольВыход  создание МетодЗаполенияФрагмента1 v " + v );
                     }
-                });*/
+                });
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1091,8 +1091,8 @@ public class FragmentScannerUser extends Fragment {
                     }
                 }
             };
-            Intent intentБиндингсСлужбойСканирования =
-                    new Intent(getContext(), ServiceClientBLE.class);
+            Intent intentБиндингсСлужбойСканирования = new Intent(getContext(), ServiceClientBLE.class);
+            intentБиндингсСлужбойСканирования.setAction("com.scannerforble");
            getContext(). bindService(intentБиндингсСлужбойСканирования, Context.BIND_AUTO_CREATE, Executors.newSingleThreadExecutor(), connectionСканирование);
         } catch (Exception e) {
             e.printStackTrace();
