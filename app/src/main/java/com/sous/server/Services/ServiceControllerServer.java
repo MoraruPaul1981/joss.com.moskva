@@ -41,6 +41,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.annotation.RequiresPermission;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -497,24 +498,23 @@ public class ServiceControllerServer extends IntentService {
                                                                      @NonNull  int offset,
                                                                      @NonNull   byte[] value,
                                                                      @NonNull BluetoothGattCharacteristic characteristicsServerОтКлиента) {
-                    String ПришлиДанныеОтКлиентаЗапрос = null;
-                    String ДанныеСодранныеОтКлиента = null;
+                    String ПришлиДанныеОтКлиентаЗапрос = new String();
+                    String ДанныеСодранныеОтКлиента = new String();
                     try {
                         final Integer[] РезультатЗаписиДанныхПИнгаДвайсаВБАзу = {0};
                         // TODO: 20.02.2023  Пришли ДАнные От Клиента
+                        if (value.length > 0 ) {
                             ПришлиДанныеОтКлиентаЗапрос = new String(value);
                         Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() 
-                                + " ПришлиДанныеОтКлиентаЗапрос " +ПришлиДанныеОтКлиентаЗапрос);
+                                + " value " +value);
                         String[] sArr = ПришлиДанныеОтКлиентаЗапрос.split(",");
                         List<String> listПришлиДанныеОтКлиентаЗапрос = Arrays.asList(sArr);
-                        Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
-                                + " listПришлиДанныеОтКлиентаЗапрос " +listПришлиДанныеОтКлиентаЗапрос);
 
-                            Log.i(TAG, "Connected to GATT server  newValueПришлиДАнныеОтКлиента." + new String(value) + " value.length " + value.length );
+                            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+
+                                    " время " +new Date().toLocaleString() + " value " +value);
                             // TODO: 13.02.2023
                             МетодПолучениеЛокацииGPS();
-                            // TODO: 07.02.2023  Записываем ВБАзу Данные
-                            if (value.length > 0 ) {
+                            // TODO: 07.02.2023  Записываем ВБАзу Данные{
                                 // TODO: 13.02.2023
                                 if (addressesgetGPS!=null) {
                                     ДанныеСодранныеОтКлиента = "Девайс отмечен..." + "\n" + device.getName().toString() +
@@ -561,8 +561,12 @@ public class ServiceControllerServer extends IntentService {
                                             listПришлиДанныеОтКлиентаЗапрос );
                                     Log.i(TAG, "addressesgetGPS " + " " + addressesgetGPS+ " РезультатЗаписиВБАзу "+РезультатЗаписиВБАзу);
                                 }
-                            }
-                        Log.i(TAG, "SERVER#SousAvtoSuccess" + " " + new Date().toLocaleString());
+                            }else{
+                            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
+                                    +new Date().toLocaleString() + " value " +value);
+                        }
+                        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
+                                +new Date().toLocaleString() + " value " +value);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
