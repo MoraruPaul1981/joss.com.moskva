@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,23 @@ import com.google.android.material.textview.MaterialTextView;
 import com.sous.server.Errors.SubClassErrors;
 import com.sous.server.R;
 
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+
 import java.util.Date;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Action;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Predicate;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 public class FragmentBootServer extends Fragment {
@@ -44,7 +61,7 @@ public class FragmentBootServer extends Fragment {
             Log.d(this.getClass().getName(), "  onViewCreated  Fragment1_One_Tasks view   " + view);
             PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
-            View   viewАктивтиСканивраония = LayoutInflater.from(getContext()).inflate(R.layout.activity_main_newscanner, null, false);
+            View   viewАктивтиСканивраония = LayoutInflater.from(getContext()).inflate(R.layout.activity_main_newserverscanner, null, false);
             Log.i(this.getClass().getName(),  "onViewCreated " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+viewАктивтиСканивраония);
             bottomNavigationView = (NavigationBarView) viewАктивтиСканивраония.findViewById(R.id.BottomNavigationViewScanner);
             materialTextViewToolBar=(MaterialTextView)  viewАктивтиСканивраония.findViewById(R.id.text_scanner_work);
@@ -126,23 +143,30 @@ public class FragmentBootServer extends Fragment {
             fragment= fragmentManager.getFragments().get(0);
             fragment.onDetach();
             fragmentTransaction.remove(fragment);
-            fragmentTransaction.addToBackStack("");
             relativeLayout.forceLayout();
             relativeLayout.refreshDrawableState();
             fragment=new FragmentServerUser();
-            handler.postDelayed(()->{
-                bottomNavigationView.setVisibility(View.VISIBLE);
-                materialTextViewToolBar.setVisibility(View.VISIBLE);
-                materialTextViewToolBar.setText("Сервер");
-                //fragmentTransaction.add(R.id.framelauoutScanner, fragment.getClass(),bundle);//.layout.activity_for_fragemtb_history_tasks
-                fragmentTransaction.add(R.id.framelauoutScanner, fragment);//.layout.activity_for_fragemtb_history_tasks
-                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
-                fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                fragmentTransaction.show(fragment);
-                relativeLayout.forceLayout();
-                relativeLayout.refreshDrawableState();
-                Log.i(this.getClass().getName(),  "МетодЗапускКлиентаИлиСервера " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-            },1000);
+
+            handler.postAtTime(new Runnable() {
+                @Override
+                public void run() {
+                    bottomNavigationView.setVisibility(View.VISIBLE);
+                    materialTextViewToolBar.setVisibility(View.VISIBLE);
+                    materialTextViewToolBar.setText("Сервер");
+                    fragmentTransaction.addToBackStack("");
+                    //fragmentTransaction.add(R.id.framelauoutScanner, fragment.getClass(),bundle);//.layout.activity_for_fragemtb_history_tasks
+                    fragmentTransaction.replace(R.id.framelauoutScanner, fragment);//.layout.activity_for_fragemtb_history_tasks
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+                    fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                    fragmentTransaction.show(fragment);
+                    relativeLayout.forceLayout();
+                    relativeLayout.refreshDrawableState();
+                    Log.i(this.getClass().getName(),  "МетодЗапускКлиентаИлиСервера " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                }
+            }, SystemClock.uptimeMillis() + 4000);
+
+// TODO: 07.01.2022 GREAT OPERATIONS подпииска на данные
+            Log.i(this.getClass().getName(),  "МетодЗапускКлиентаИлиСервера " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

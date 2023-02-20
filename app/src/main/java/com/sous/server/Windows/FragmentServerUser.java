@@ -24,6 +24,8 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -73,7 +75,8 @@ public class FragmentServerUser extends Fragment {
     private LocationManager locationManager;
     private ServiceControllerServer.LocalBinderСерверBLE binderСерверBLE;
     private Message message;
-
+    private    ProgressBar progressBarДЛяСервера;
+    private    RelativeLayout relativeLayoutСервер;
 
     @SuppressLint({"RestrictedApi", "MissingPermission"})
     @Override
@@ -83,6 +86,8 @@ public class FragmentServerUser extends Fragment {
             Log.d(this.getClass().getName(), "  onViewCreated  Fragment1_One_Tasks view   " + view);
             recyclerView = (RecyclerView) view.findViewById(R.id.RecyclerViewNewScanner);
             linearLayou = (LinearLayout) view.findViewById(R.id.fragment1scanner);
+            progressBarДЛяСервера = (ProgressBar) view.findViewById(R.id.ProgressBarScannerfragment1);
+            relativeLayoutСервер = (RelativeLayout) view.findViewById(R.id.recyclerviewfragment1);
             Log.d(this.getClass().getName(), " recyclerView " + recyclerView);
             fragmentManager = getActivity().getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
@@ -763,6 +768,9 @@ public class FragmentServerUser extends Fragment {
                                                 + "\n" + "пинг: " + linkedКолПодкСерверу.size());
                                         Log.i(this.getClass().getName(), "  Работает... на сервере ответ КЛИЕНТУ  "
                                                 + "\n" + "пинги: " + linkedКолПодкСерверу.size());
+                                        progressBarДЛяСервера.setVisibility( View.VISIBLE);
+                                        relativeLayoutСервер.forceLayout();
+                                        relativeLayoutСервер.refreshDrawableState();
                                     });
                                     break;
                                 case "SERVER#SousAvtoStartingGPS":
@@ -784,6 +792,9 @@ public class FragmentServerUser extends Fragment {
                                     handler.post(() -> {
                                         holder.materialButtonСервер.setText("Не работает !!!");
                                         Log.i(this.getClass().getName(), "   Не работает на сервере ответ КЛИЕНТУ  ");
+                                        progressBarДЛяСервера.setVisibility( View.INVISIBLE);
+                                        relativeLayoutСервер.forceLayout();
+                                        relativeLayoutСервер.refreshDrawableState();
                                     });
                                     break;
                                 case "SERVER#SousAvtoNULL":
