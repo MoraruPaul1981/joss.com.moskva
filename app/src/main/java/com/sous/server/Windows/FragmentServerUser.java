@@ -9,6 +9,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -757,6 +761,7 @@ public class FragmentServerUser extends Fragment {
                                 case "SERVERGATTConnectiong":
                                     handler.post(() -> {
                                         holder.materialButtonСервер.setText("Коннект...");
+                                        progressBarДЛяСервера.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#D21414")));
                                         Log.i(this.getClass().getName(), "  Коннект... на сервере ответ КЛИЕНТУ  ");//
                                     });
                                     break;
@@ -770,6 +775,7 @@ public class FragmentServerUser extends Fragment {
                                                 + "\n" + "пинги: " + linkedКолПодкСерверу.size());
                                         handler.postDelayed(()->{
                                             progressBarДЛяСервера.setVisibility( View.VISIBLE);;
+                                            progressBarДЛяСервера.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#2196F3")));
                                         },1500);
 
                                     });
@@ -823,6 +829,7 @@ public class FragmentServerUser extends Fragment {
                                             Log.i(this.getClass().getName(), "  Ошибка на ответ КЛИЕНТУ  ");
                                             Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
                                             v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
+                                            progressBarДЛяСервера.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#2196F3")));
                                         });
                                         handler.postDelayed(() -> {
                                             holder.materialButtonСервер.setText("Работает..."
@@ -842,6 +849,7 @@ public class FragmentServerUser extends Fragment {
                                             Log.i(this.getClass().getName(), "   Успех на сервере ответ КЛИЕНТУ  ");
                                             Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
                                             v2.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+                                            progressBarДЛяСервера.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#2196F3")));
                                         });
                                         handler.postDelayed(() -> {
                                             holder.materialButtonСервер.setText("Работает..."

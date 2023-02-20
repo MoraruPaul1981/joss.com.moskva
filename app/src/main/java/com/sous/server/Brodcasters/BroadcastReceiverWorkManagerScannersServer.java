@@ -26,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 public class BroadcastReceiverWorkManagerScannersServer extends BroadcastReceiver {
     private Long version=0l;
+    private Context context;
     public BroadcastReceiverWorkManagerScannersServer() {
         super();
         Log.i(this.getClass().getName(), " ЗАПУСК  BroadcastReceiverWorkManagerScannersServer " + new Date().toLocaleString());
@@ -35,10 +36,11 @@ public class BroadcastReceiverWorkManagerScannersServer extends BroadcastReceive
         try {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             version = pInfo.getLongVersionCode();
+            this.context=context;
             // TODO: 01.02.2023 запуск workmanager синхронизации
-            МетодИнициализацийСинхронизацияДанныхWorkManager(context);
+            МетодИнициализацийСинхронизацияДанныхWorkManager();
             // TODO: 01.02.2023   повтореый запуск службы Server Scanner
-            МетодRetryServiseScannerWorkManager(context);
+            МетодRetryServiseScannerWorkManager();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -55,7 +57,7 @@ public class BroadcastReceiverWorkManagerScannersServer extends BroadcastReceive
         }
     }
 
-    private void МетодИнициализацийСинхронизацияДанныхWorkManager(Context context)
+    private void МетодИнициализацийСинхронизацияДанныхWorkManager()
             throws ExecutionException, InterruptedException {
         try {
         String ИмяСлужбыСинхронизации = "WorkManager Synchronizasiy_DataScanners";
@@ -102,7 +104,7 @@ public class BroadcastReceiverWorkManagerScannersServer extends BroadcastReceive
         new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
     }
     }
-    private void МетодRetryServiseScannerWorkManager(Context context)
+    private void МетодRetryServiseScannerWorkManager()
             throws ExecutionException, InterruptedException {
         try {
             String ИмяСлужбыСинхронизации = "WorkManager RetryServerScanners";
