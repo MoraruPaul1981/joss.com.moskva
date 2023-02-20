@@ -484,6 +484,7 @@ public class ServiceClientBLE extends IntentService {
                                         mediatorLiveDataGATT.setValue(ОтветОтСервераОбратно);
                                     });
                                 }
+                                // TODO: 20.02.2023 закрыаем сесию ссервром  
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
