@@ -55,6 +55,7 @@ import com.sous.server.Locations.MyLocationListener;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -500,7 +501,7 @@ public class ServiceControllerServer extends IntentService {
                     String ДанныеСодранныеОтКлиента = null;
                     try {
                         final Integer[] РезультатЗаписиДанныхПИнгаДвайсаВБАзу = {0};
-                        // TODO: 20.02.2023  Пришли ДАнные От Клиента  
+                        // TODO: 20.02.2023  Пришли ДАнные От Клиента
                             ПришлиДанныеОтКлиентаЗапрос = new String(value);
                         Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() 
                                 + " ПришлиДанныеОтКлиентаЗапрос " +ПришлиДанныеОтКлиентаЗапрос);
@@ -544,12 +545,20 @@ public class ServiceControllerServer extends IntentService {
                                 // TODO: 13.02.2023  Метод Записи Девайса в базу
                                 Integer РезультатЗаписиВБАзу=0;
                                 if (addressesgetGPS!=null) {
-                                  РезультатЗаписиВБАзу=  МетодЗаписиДевайсавБазу(device, РезультатЗаписиДанныхПИнгаДвайсаВБАзу,
-                                            ПришлиДанныеОтКлиентаЗапрос, ДанныеСодранныеОтКлиента,characteristicsServerОтКлиента,addressesgetGPS );
+                                  РезультатЗаписиВБАзу=  МетодЗаписиДевайсавБазу(device,
+                                          РезультатЗаписиДанныхПИнгаДвайсаВБАзу,
+                                            ПришлиДанныеОтКлиентаЗапрос,
+                                          ДанныеСодранныеОтКлиента,
+                                          characteristicsServerОтКлиента,
+                                          addressesgetGPS,listПришлиДанныеОтКлиентаЗапрос );
                                     Log.i(TAG, "addressesgetGPS " + " " + addressesgetGPS+ " РезультатЗаписиВБАзу "+РезультатЗаписиВБАзу);
                                 }else {
-                                    РезультатЗаписиВБАзу=  МетодЗаписиДевайсавБазу(device, РезультатЗаписиДанныхПИнгаДвайсаВБАзу,
-                                            ПришлиДанныеОтКлиентаЗапрос, ДанныеСодранныеОтКлиента,characteristicsServerОтКлиента );
+                                    РезультатЗаписиВБАзу=  МетодЗаписиДевайсавБазу(device,
+                                            РезультатЗаписиДанныхПИнгаДвайсаВБАзу,
+                                            ПришлиДанныеОтКлиентаЗапрос,
+                                            ДанныеСодранныеОтКлиента,
+                                            characteristicsServerОтКлиента,
+                                            listПришлиДанныеОтКлиентаЗапрос );
                                     Log.i(TAG, "addressesgetGPS " + " " + addressesgetGPS+ " РезультатЗаписиВБАзу "+РезультатЗаписиВБАзу);
                                 }
                             }
@@ -571,11 +580,12 @@ public class ServiceControllerServer extends IntentService {
                 }
 
                 private synchronized Integer МетодЗаписиДевайсавБазу(@NonNull BluetoothDevice device,
-                                                     Integer[] РезультатЗаписиДанныхПИнгаДвайсаВБАзу,
-                                                     String ПришлиДанныеОтКлиентаЗапрос,
-                                                     String ДанныеСодранныеОтКлиента,
-                                                     @NonNull BluetoothGattCharacteristic characteristicsServerОтКлиента,
-                                                      @NonNull   List<Address> addressesgetGPS     ) {
+                                                                     Integer[] РезультатЗаписиДанныхПИнгаДвайсаВБАзу,
+                                                                     String ПришлиДанныеОтКлиентаЗапрос,
+                                                                     String ДанныеСодранныеОтКлиента,
+                                                                     @NonNull BluetoothGattCharacteristic characteristicsServerОтКлиента,
+                                                                     @NonNull   List<Address> addressesgetGPS ,
+                                                                     @NonNull List<String> listПришлиДанныеОтКлиентаЗапрос) {
                     try{
                     ContentValues[] contentValuesВставкаДанных = new ContentValues[1];
                     // TODO: 08.02.2023 методы после успешного получение данных от клиента
@@ -677,10 +687,11 @@ public class ServiceControllerServer extends IntentService {
 
                 // TODO: 14.02.2023 Второй Метод БЕз GPS
                 private synchronized Integer МетодЗаписиДевайсавБазу(@NonNull BluetoothDevice device,
-                                                        Integer[] РезультатЗаписиДанныхПИнгаДвайсаВБАзу,
-                                                        String ПришлиДанныеОтКлиентаЗапрос,
-                                                        String ДанныеСодранныеОтКлиента,
-                                                        @NonNull BluetoothGattCharacteristic characteristicsServerОтКлиента) {
+                                                                     @NonNull   Integer[] РезультатЗаписиДанныхПИнгаДвайсаВБАзу,
+                                                                     @NonNull  String ПришлиДанныеОтКлиентаЗапрос,
+                                                                     @NonNull  String ДанныеСодранныеОтКлиента,
+                                                                     @NonNull BluetoothGattCharacteristic characteristicsServerОтКлиента,
+                                                                     @NonNull List<String>listПришлиДанныеОтКлиентаЗапрос) {
                     try{
                         ContentValues[] contentValuesВставкаДанных = new ContentValues[1];
                         // TODO: 08.02.2023 методы после успешного получение данных от клиента
