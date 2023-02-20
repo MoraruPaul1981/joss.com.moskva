@@ -958,6 +958,7 @@ public class FragmentScannerUser extends Fragment {
                     binderСканнер.getService().МетодРазрываСоедениесGAttServer();
                     Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
                             + "ДействиеДляСервераGATTОТКлиента " +ДействиеДляСервераGATTОТКлиента);
+                    progressСканер.setVisibility(View.INVISIBLE);
                 },10000);
 
             } catch (Exception e) {
