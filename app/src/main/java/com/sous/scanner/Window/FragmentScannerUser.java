@@ -25,7 +25,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,8 +42,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
-import com.jakewharton.rxbinding4.view.RxView;
-import com.polidea.rxandroidble3.RxBleDevice;
 import com.sous.scanner.Services.ServiceClientBLE;
 import com.sous.scanner.Errors.SubClassErrors;
 import com.sous.scanner.R;
@@ -56,15 +53,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import com.sous.wifidirect.*;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
-import kotlin.Unit;
 
 
 public class FragmentScannerUser extends Fragment {
@@ -748,7 +738,9 @@ public class FragmentScannerUser extends Fragment {
                     public void onClick(View v) {
                         ДействиеДляСервераGATTОТКлиента= "на работу";
                         МетодЗапускаGattСервера(v,holder,holder.materialButtonКотрольПриход);
-                        Log.i(this.getClass().getName(), "  materialButtonКотрольПриход  создание МетодЗаполенияФрагмента1 v " + v );
+                        // TODO: 20.02.2023 Принудитльеное Разрыв Клиента с Сервом GATT
+                        МетодПринудительноРазрываемвязисGatt(ДействиеДляСервераGATTОТКлиента);
+                        Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
                     }
                 });
                 Log.i(this.getClass().getName(), "   holder " + holder);
@@ -758,7 +750,9 @@ public class FragmentScannerUser extends Fragment {
                     public void onClick(View v) {
                         ДействиеДляСервераGATTОТКлиента= "с работы";
                         МетодЗапускаGattСервера(v,holder,holder.materialButtonКотрольВыход);
-                        Log.i(this.getClass().getName(), "  materialButtonКотрольВыход  создание МетодЗаполенияФрагмента1 v " + v );
+                        // TODO: 20.02.2023 Принудитльеное Разрыв Клиента с Сервом GATT
+                        МетодПринудительноРазрываемвязисGatt(ДействиеДляСервераGATTОТКлиента);
+                        Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
                     }
                 });
             } catch (Exception e) {
@@ -778,9 +772,16 @@ public class FragmentScannerUser extends Fragment {
         }
         private void МетодЗапускаGattСервера(@NonNull View v,@NonNull MyViewHolder holder,MaterialButton materialButton) {
             try {
-                Log.i(this.getClass().getName(), "    materialButtonКотрольВыход создание МетодЗаполенияФрагмента1 v " + v);
-                МетодРаботыСоСлужбойGATTОтСервера(v,holder,ДействиеДляСервераGATTОТКлиента,materialButton);
-        } catch (Exception e) {
+                // TODO: 20.02.2023  слушатель Клиета GATT
+                МетодBackСлушательGATTОтСервера(v,holder,ДействиеДляСервераGATTОТКлиента,materialButton);
+
+                // TODO: 20.02.2023 Запуск Клиента Gatt Сервреа Чрез БИндинг
+
+                МетодЗапускКлиентаGattЧерезБиндинг(ДействиеДляСервераGATTОТКлиента);
+
+                Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+  " mediatorLiveDataGATT " +mediatorLiveDataGATT );
+
+            } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
@@ -795,8 +796,8 @@ public class FragmentScannerUser extends Fragment {
             new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
         }
-        private void МетодРаботыСоСлужбойGATTОтСервера( @NonNull View v,@NonNull MyViewHolder holder
-                ,@NonNull String ДействиеДляСервераGATTОТКлиента,@NonNull MaterialButton materialButtonКакоеДействие) {
+        private void МетодBackСлушательGATTОтСервера(@NonNull View v, @NonNull MyViewHolder holder
+                , @NonNull String ДействиеДляСервераGATTОТКлиента, @NonNull MaterialButton materialButtonКакоеДействие) {
             try {
                 v.startAnimation(animation);
                 mediatorLiveDataGATT = new MutableLiveData<>();
@@ -924,16 +925,11 @@ public class FragmentScannerUser extends Fragment {
                                             +new Date().toLocaleString()+ " mediatorLiveDataGATT.getValue() "+mediatorLiveDataGATT.getValue() );
                                     break;
                             }
-                            // TODO: 20.02.2023 Длеаем Через 10 Секунд РазрывСвязи
-
-                            МетодПринудительноРазрываемвязисGatt(ДействиеДляСервераGATTОТКлиента);
                         }
                     }
                 });
 
-                // TODO: 06.12.2022 запускаем сканирование клиента
-                binderСканнер.getService().МетодКлиентЗапускСканера(handler, getActivity(),bluetoothManager,mediatorLiveDataGATT,ДействиеДляСервераGATTОТКлиента);
-                Log.i(this.getClass().getName(), "   создание МетодЗаполенияФрагмента1 mediatorLiveDataGATT " + mediatorLiveDataGATT);
+                Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -948,6 +944,11 @@ public class FragmentScannerUser extends Fragment {
                 valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
                 new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
             }
+        }
+
+        private void МетодЗапускКлиентаGattЧерезБиндинг(@NonNull String ДействиеДляСервераGATTОТКлиента) {
+            // TODO: 06.12.2022 запускаем сканирование клиента
+            binderСканнер.getService().МетодКлиентЗапускСканера(handler, getActivity(),bluetoothManager,mediatorLiveDataGATT, ДействиеДляСервераGATTОТКлиента);
         }
 
         private void МетодПринудительноРазрываемвязисGatt(@NonNull String ДействиеДляСервераGATTОТКлиента) {
