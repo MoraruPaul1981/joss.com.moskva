@@ -32,7 +32,7 @@ public class MyWork_Async_Синхронизация_ScannerServer extends Worke
     private String ИмяСлужбыСинхронизации="WorkManager Synchronizasiy_Data";
     private List<WorkInfo> WorkManagerScanner;
     private   ExecutorService executorServiceServerScanner =Executors.newSingleThreadExecutor();
-    private ServiceControllerServer.LocalBinderСканнер binderСканнерServer;
+    private ServiceControllerServer.LocalBinderСерверBLE binderСканнерServer;
     private Long version=0l;
     // TODO: 28.09.2022
     public MyWork_Async_Синхронизация_ScannerServer(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -72,7 +72,7 @@ public class MyWork_Async_Синхронизация_ScannerServer extends Worke
                 // TODO: 31.01.2023 код
                 Log.d(context.getClass().getName().toString(), "\n"
                         + "onServiceConnected  ОБЩАЯ messengerActivity  ");
-                binderСканнерServer = ( ServiceControllerServer.LocalBinderСканнер) service;
+                binderСканнерServer = (ServiceControllerServer.LocalBinderСерверBLE) service;
                 if(binderСканнерServer.isBinderAlive()){
                     Log.i(context.getClass().getName(), "    onServiceConnected  binderСканнерServer.isBinderAlive()"
                             + binderСканнерServer.isBinderAlive());

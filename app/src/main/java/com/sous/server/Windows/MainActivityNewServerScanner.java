@@ -30,7 +30,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.textview.MaterialTextView;
 import com.sous.server.Brodcasters.BroadcastReceiverWorkManagerScannersServer;
-import com.sous.server.Services.ServiceControllerServer;
 import com.sous.server.Errors.SubClassErrors;
 import com.sous.server.R;
 
@@ -39,8 +38,6 @@ import org.jetbrains.annotations.NotNull;
 
 
 public class MainActivityNewServerScanner extends AppCompatActivity  {
-    private ServiceControllerServer.LocalBinderСканнер binderСканнер;
-    private ServiceConnection connectionСканирование;
     private String TAG;
     private Handler handler;
     private NavigationBarView bottomNavigationView;
@@ -53,8 +50,6 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
     private LinearLayout linearLayou;
     private  Long version;
 
-
-    private    AsyncTaskLoader asyncTaskLoader;
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,7 +190,6 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit();
             fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             fragmentTransaction.show(fragment);
-            Log.d(this.getClass().getName(), " fragment " + fragment+ " binderСканнер " +binderСканнер);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

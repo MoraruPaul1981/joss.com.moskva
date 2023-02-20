@@ -83,7 +83,7 @@ import io.reactivex.rxjava3.functions.Supplier;
 public class ServiceControllerServer extends IntentService {
     private SQLiteDatabase sqLiteDatabase;
     private CREATE_DATABASEServer createDatabaseScanner;
-    public LocalBinderСканнер binder = new LocalBinderСканнер();
+    public LocalBinderСерверBLE binder = new LocalBinderСерверBLE();
 
     private String TAG;
     private BluetoothManager bluetoothManagerServer;
@@ -105,6 +105,8 @@ public class ServiceControllerServer extends IntentService {
     private  String ВозврящаетсяКлючScannerONESIGNAl = new String();
 
     private  String КлючДляServerFibaseOneSingnal="220d6edf-2b29-453e-97a8-d2aefe4a9eb0";
+
+    private  ExecutorService executorServiceLocation;
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     public void onCreate() {
@@ -120,8 +122,9 @@ public class ServiceControllerServer extends IntentService {
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             bundleСервер=new Bundle();
+            executorServiceLocation= Executors.newCachedThreadPool();
             // TODO: 13.02.2023  ИНИЦИАЛИЗАЦИИ GPS
-            МетодИнициализацииGPS();
+          //  МетодИнициализацииGPS();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -141,7 +144,7 @@ public class ServiceControllerServer extends IntentService {
 
 
 
-    public class LocalBinderСканнер extends Binder {
+    public class LocalBinderСерверBLE extends Binder {
         public ServiceControllerServer getService() {
             // Return this instance of LocalService so clients can call public methods
             return ServiceControllerServer.this;
@@ -320,22 +323,15 @@ public class ServiceControllerServer extends IntentService {
     @SuppressLint("MissingPermission")
     private synchronized void МетодИнициализацииGPS() {
         try{
-            class  executors implements Executor{
 
-                @Override
-                public void execute(Runnable command) {
-                    command.run();
-                }
-            }
             // TODO: 13.02.2023
                  // TODO: 01.02.2023 Получение Новго Ключа Для Сканера
                      CancellationSignal signal = new CancellationSignal();
                      locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
                      locationListener = new MyLocationListener(getApplicationContext());
-                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 90000, 0.0F,new executors(), locationListener);
+                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 90000, 0.0F,executorServiceLocation, locationListener);
                      //lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                      locationManager.getCurrentLocation(LocationManager.GPS_PROVIDER,signal,
-                              new executors(), new java.util.function.Consumer<Location>() {
+                      locationManager.getCurrentLocation(LocationManager.GPS_PROVIDER,signal, executorServiceLocation, new java.util.function.Consumer<Location>() {
                          @Override
                          public void accept(Location location) {
                              Log.d(TAG, "lastLocation location "+location );

@@ -49,6 +49,8 @@ public class FragmentBootServer extends Fragment {
             bottomNavigationView = (NavigationBarView) viewАктивтиСканивраония.findViewById(R.id.BottomNavigationViewScanner);
             materialTextViewToolBar=(MaterialTextView)  viewАктивтиСканивраония.findViewById(R.id.text_scanner_work);
             relativeLayout = (RelativeLayout) viewАктивтиСканивраония.findViewById(R.id.relativelayoutserverble);
+            fragmentManager =getActivity().getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -67,9 +69,35 @@ public class FragmentBootServer extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        try {
+            МетодHandler();
+            Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+
+        }
+
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         try {
+            // TODO: 20.02.2023 запучкаем фрагмент сканированеи
+            МетодЗапускаФрагментаСканирования();
             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
             e.printStackTrace();
@@ -112,7 +140,7 @@ public class FragmentBootServer extends Fragment {
         return view;
     }
 
-    private void МетодЗапускаВторогоФрагментаСканирование() {  ///new FragmentServerUser();
+    private void МетодЗапускаФрагментаСканирования() {  ///new FragmentServerUser();
         try {
             fragment= fragmentManager.getFragments().get(0);
             fragment.onDetach();
@@ -150,7 +178,7 @@ public class FragmentBootServer extends Fragment {
         }
     }
 
-    public void МетодИницмиализацияHandker() {
+    public void МетодHandler() {
         try {
             handler=new Handler(Looper.getMainLooper(), new Handler.Callback() {
                 @Override

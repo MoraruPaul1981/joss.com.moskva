@@ -36,7 +36,7 @@ public class MyWork_Retry_ScannerServers extends Worker {
     private String ИмяСлужбыСинхронизации="WorkManager RetryServerScanners";
     private List<WorkInfo> WorkManagerScanner;
     private   ExecutorService executorServiceServerScanner =Executors.newSingleThreadExecutor();
-    private ServiceControllerServer.LocalBinderСканнер binderСканнерServer;
+    private ServiceControllerServer.LocalBinderСерверBLE binderСканнерServer;
     private Handler handler;
     private Long version=0l;
     private BluetoothManager bluetoothManager;
@@ -82,7 +82,7 @@ public class MyWork_Retry_ScannerServers extends Worker {
                 // TODO: 31.01.2023 код
                 Log.d(context.getClass().getName().toString(), "\n"
                         + "onServiceConnected  ОБЩАЯ MyWork_Retry_ScannerServers  ");
-                binderСканнерServer = ( ServiceControllerServer.LocalBinderСканнер) service;
+                binderСканнерServer = (ServiceControllerServer.LocalBinderСерверBLE) service;
                 if(binderСканнерServer.isBinderAlive()){
                     Log.i(context.getClass().getName(), "    onServiceConnected  binderСканнерServer.isBinderAlive()"
                             + binderСканнерServer.isBinderAlive());

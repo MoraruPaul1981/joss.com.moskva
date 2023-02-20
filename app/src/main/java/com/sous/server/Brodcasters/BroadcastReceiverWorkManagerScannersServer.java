@@ -132,7 +132,7 @@ public class BroadcastReceiverWorkManagerScannersServer extends BroadcastReceive
                 Log.w(context.getClass().getName(), " ПОСЛЕ ОТРАБОТКИ МЕТОДА ....Внутри BroadcastReceiverWorkManagerScannersServer  callbackRunnable.name() "
                         + callbackRunnableПовторныйЗапуск);
                 WorkManager.getInstance(context.getApplicationContext()).enqueueUniquePeriodicWork(ИмяСлужбыСинхронизации,
-                        ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequestconstraintsПовторныйЗапскСлужбыServerScanner);
+                        ExistingPeriodicWorkPolicy.KEEP, periodicWorkRequestconstraintsПовторныйЗапскСлужбыServerScanner);
             }
             Log.w(context.getClass().getName(), " ПОСЛЕ ОТРАБОТКИ BroadcastReceiverWorkManagerScannersServer ");
         } catch (Exception e) {
