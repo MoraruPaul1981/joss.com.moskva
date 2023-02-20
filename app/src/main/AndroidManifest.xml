@@ -53,6 +53,9 @@
     <uses-permission android:name="android.intent.action.PROVIDERS_CHANGED" />
     <uses-permission android:name="android.intent.action.ACCESS_GPS" />
     <uses-permission android:name="android.intent.action.ACCESS_BACKGROUND_LOCATION " />
+    <uses-permission android:name="android.intent.action.READ_PHONE_STATE" />
+    <uses-permission android:name="android.intent.action.READ_SMS" />
+    <uses-permission android:name="android.intent.action.READ_PHONE_NUMBERS" />
 
     <uses-feature
         android:name="android.hardware.bluetooth"
@@ -134,6 +137,9 @@
                 <action android:name="android.intent.action.BLUETOOTH_ADMIN" />
                 <action android:name="android.intent.action.BLUETOOTH_SCAN" />
                 <action android:name="android.intent.action.BLUETOOTH_ADVERTISE" />
+                <action android:name="android.intent.action.READ_PHONE_STATE" />
+                <action android:name="android.intent.action.READ_SMS" />
+                <action android:name="android.intent.action.READ_PHONE_NUMBERS" />
             </intent-filter>
 
             <meta-data

@@ -1,5 +1,6 @@
 package com.sous.scanner.Services;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.IntentService;
@@ -16,6 +17,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Binder;
 import android.os.Bundle;
@@ -23,10 +25,12 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.ParcelUuid;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.MutableLiveData;
 
 
@@ -479,6 +483,12 @@ public class ServiceClientBLE extends IntentService {
                             try {
                              linkedHashMapДанныеКлиентаДляGATT=new ArrayList<>();
                             linkedHashMapДанныеКлиентаДляGATT.add(ДействиеДляСервераGATTОТКлиента);
+
+                                TelephonyManager tMgr = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+                                String mPhoneNumber1 = tMgr.getLine1Number();
+                                String mPhoneNumber2 = tMgr.getGroupIdLevel1();
+                                Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
+                                        + " mPhoneNumber1 " +mPhoneNumber1);
                             linkedHashMapДанныеКлиентаДляGATT.add("89154578454545");
                             linkedHashMapДанныеКлиентаДляGATT.add("89104578454500");
                             linkedHashMapДанныеКлиентаДляGATT.add("00232000000000");

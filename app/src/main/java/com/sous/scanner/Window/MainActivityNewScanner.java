@@ -213,7 +213,10 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                     Manifest.permission.BLUETOOTH_CONNECT,
                     Manifest.permission.BLUETOOTH_PRIVILEGED,
                     Manifest.permission.BLUETOOTH_ADVERTISE,
-                    Manifest.permission.BLUETOOTH_ADMIN
+                    Manifest.permission.BLUETOOTH_ADMIN,
+                    Manifest.permission.READ_PHONE_STATE,
+                    Manifest.permission.READ_SMS,
+                    Manifest.permission.READ_PHONE_NUMBERS
             };
             String[] PERMISSIONS_LOCATION = {
                     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -223,7 +226,10 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                     Manifest.permission.BLUETOOTH_CONNECT,
                     Manifest.permission.BLUETOOTH_PRIVILEGED,
                     Manifest.permission.BLUETOOTH_ADVERTISE,
-                    Manifest.permission.BLUETOOTH_ADMIN
+                    Manifest.permission.BLUETOOTH_ADMIN,
+                    Manifest.permission.READ_PHONE_STATE,
+                    Manifest.permission.READ_SMS,
+                    Manifest.permission.READ_PHONE_NUMBERS
             };
             int permission1 = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
             int permission2 = ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN);
@@ -246,12 +252,15 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                     Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.BLUETOOTH,
                     Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.BLUETOOTH_ADVERTISE,
                     Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_PRIVILEGED,
+                    Manifest.permission.READ_PHONE_STATE,
+                    Manifest.permission.READ_SMS,
+                    Manifest.permission.READ_PHONE_NUMBERS,
                     Manifest.permission.READ_EXTERNAL_STORAGE,}, PackageManager.PERMISSION_GRANTED);
             // TODO: 19.02.2023 Безконечное Посик Дивайсов РАзрешение
             Intent discoverableIntent = new Intent();
             discoverableIntent.setAction(BluetoothAdapter.ACTION_REQUEST_ENABLE);//BluetoothAdapter.ACTION_DISCOVERY_FINISHED
             discoverableIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivityForResult(discoverableIntent, 11);
+            startActivity(discoverableIntent);
 
             Log.i(this.getClass().getName(),  "НАстройки BLE " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
