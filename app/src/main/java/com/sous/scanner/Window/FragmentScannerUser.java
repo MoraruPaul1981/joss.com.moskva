@@ -1,5 +1,9 @@
 package com.sous.scanner.Window;
 
+import static android.telephony.SubscriptionManager.PHONE_NUMBER_SOURCE_CARRIER;
+import static android.telephony.SubscriptionManager.PHONE_NUMBER_SOURCE_IMS;
+import static android.telephony.SubscriptionManager.PHONE_NUMBER_SOURCE_UICC;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothManager;
@@ -13,12 +17,15 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +38,7 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -83,6 +91,7 @@ public class FragmentScannerUser extends Fragment {
     private String ДействиеДляСервераGATTОТКлиента;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @SuppressLint({"RestrictedApi", "MissingPermission"})
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -1165,14 +1174,30 @@ public class FragmentScannerUser extends Fragment {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+    @SuppressLint("MissingPermission")
     private ArrayList<String> МетодЗаполенияДаннымиКлиентаДЛяGAtt() {
         ArrayList<String> linkedHashMapДанныеКлиентаДляGATT = null;
         try {
             linkedHashMapДанныеКлиентаДляGATT = new ArrayList<>();
             linkedHashMapДанныеКлиентаДляGATT.add(ДействиеДляСервераGATTОТКлиента);
 
-            TelephonyManager tMgr = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_SMS) !=
+            SubscriptionManager tMgr = (SubscriptionManager) getActivity().getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
+
+            final SubscriptionManager subscriptionManager = SubscriptionManager.from(getContext());
+            final List<SubscriptionInfo> activeSubscriptionInfoList = tMgr.getActiveSubscriptionInfoList();
+            for (SubscriptionInfo subscriptionInfo : activeSubscriptionInfoList) {
+                final CharSequence carrierName = subscriptionInfo.getCarrierName();
+                final CharSequence displayName = subscriptionInfo.getDisplayName();
+                final int mcc = subscriptionInfo.getMcc();
+                final int mnc = subscriptionInfo.getMnc();
+                final String subscriptionInfoNumber = subscriptionInfo.getNumber();
+            }
+
+
+
+
+      /*      if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_SMS) !=
                     PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_NUMBERS) !=
                     PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
@@ -1185,11 +1210,32 @@ public class FragmentScannerUser extends Fragment {
 
 
                 return linkedHashMapДанныеКлиентаДляGATT;
-            }
-            String mPhoneNumber1 = tMgr.getLine1Number();
+            }*/
+          /*  String mPhoneNumber1 = tMgr.getLine1Number();
             String mPhoneNumber2 = tMgr.getGroupIdLevel1();
+            String getSimSerialNumber = tMgr.getSimSerialNumber();
+            String mPhoneNumbe3 = tMgr.getImei();
+            String mPhoneNumbe4= tMgr.getDeviceId();*/
+ /*           if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+
+
+                Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
+                        + " linkedHashMapДанныеКлиентаДляGATT " +linkedHashMapДанныеКлиентаДляGATT);
+                return null;
+            }*/
+
+            String mPhoneNumbe5 = tMgr.getPhoneNumber(PHONE_NUMBER_SOURCE_CARRIER);
+            String mPhoneNumbe6= tMgr.getPhoneNumber(PHONE_NUMBER_SOURCE_UICC);
+            String mPhoneNumbe7= tMgr.getPhoneNumber(PHONE_NUMBER_SOURCE_IMS);
             Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
-                    + " mPhoneNumber1 " +mPhoneNumber1);
+                    + " mPhoneNumbe5 " +mPhoneNumbe5+ " mPhoneNumbe6 "+mPhoneNumbe6+ " mPhoneNumbe7 " +mPhoneNumbe7);
             linkedHashMapДанныеКлиентаДляGATT.add("89154578454545");
             linkedHashMapДанныеКлиентаДляGATT.add("89104578454500");
             linkedHashMapДанныеКлиентаДляGATT.add("00232000000000");
