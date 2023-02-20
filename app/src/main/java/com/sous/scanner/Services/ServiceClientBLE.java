@@ -8,6 +8,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
@@ -29,12 +30,14 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
 
+import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.util.concurrent.AtomicDouble;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.onesignal.OneSignal;
 import com.sous.scanner.Database.CREATE_DATABASEScanner;
 import com.sous.scanner.Firebase.MyFirebaseMessagingServiceScanner;
 import com.sous.scanner.Errors.SubClassErrors;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -436,7 +439,12 @@ public class ServiceClientBLE extends IntentService {
                                             });
                                             // TODO: 01.02.2023 отправляем двннеы
                                             characteristics.setValue("действие:" + ДействиеДляСервераGATTОТКлиента);
+                                            // TODO: 20.02.2023  заполняем данными  клиента
+                                            ArrayList<String> linkedHashMapДанныеКлиентаДляGATT = МетодЗаполенияДаннымиКлиентаДЛяGAtt();
+                                            characteristics.setValue(linkedHashMapДанныеКлиентаДляGATT.toString());
+                                            // TODO: 20.02.2023  послылвем Сервреу Данные
                                             Boolean successОтправка = gatt.writeCharacteristic(characteristics);
+                                            Log.i(TAG, "successОтправка  "+successОтправка);
                                         } else {
                                             Log.i(TAG, "Error from GATT server. НЕт ДЕвайса НУжного ");
                                             handler.post(() -> {
@@ -462,6 +470,35 @@ public class ServiceClientBLE extends IntentService {
                                 valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
                                 new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
                             }
+                        }
+
+                        // TODO: 20.02.2023 Метод Вытаскиеваем ДАнные Симки пользователя  
+                        @NonNull
+                        private ArrayList<String> МетодЗаполенияДаннымиКлиентаДЛяGAtt() {
+                            ArrayList <String> linkedHashMapДанныеКлиентаДляGATT = null;
+                            try {
+                             linkedHashMapДанныеКлиентаДляGATT=new ArrayList<>();
+                            linkedHashMapДанныеКлиентаДляGATT.add(ДействиеДляСервераGATTОТКлиента);
+                            linkedHashMapДанныеКлиентаДляGATT.add("89154578454545");
+                            linkedHashMapДанныеКлиентаДляGATT.add("89104578454500");
+                            linkedHashMapДанныеКлиентаДляGATT.add("00232000000000");
+                                Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
+                                        + " linkedHashMapДанныеКлиентаДляGATT " +linkedHashMapДанныеКлиентаДляGATT);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            ContentValues valuesЗаписываемОшибки=new ContentValues();
+                            valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
+                            valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
+                            valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
+                            valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            final Object ТекущаяВерсияПрограммы = version;
+                            Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+                            valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
+                            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+                        }
+                            return linkedHashMapДанныеКлиентаДляGATT;
                         }
 
                         @Override
@@ -771,4 +808,27 @@ public class ServiceClientBLE extends IntentService {
         return ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal;
     }
 
+
+    // TODO: 20.02.2023 Вытаскиваем Из Телефона Информациюо СИМКЕ
+    public synchronized LinkedHashMap<String,String> МетодВытаскиваемИнформациюОСимкеКлиента() {
+        LinkedHashMap<String,String>   linkedHashMapДанныеСимки = new LinkedHashMap<>();
+        try{
+
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+        return  linkedHashMapДанныеСимки;
+    }
 }
