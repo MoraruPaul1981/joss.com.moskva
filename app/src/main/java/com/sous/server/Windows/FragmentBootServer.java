@@ -68,32 +68,11 @@ public class FragmentBootServer extends Fragment {
             relativeLayout = (RelativeLayout) viewАктивтиСканивраония.findViewById(R.id.relativelayoutserverble);
             fragmentManager =getActivity().getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        try {
+            // TODO: 20.02.2023
             МетодHandler();
             // TODO: 20.02.2023 запучкаем фрагмент сканированеи
             МетодЗапускаФрагментаСканирования();
             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-            Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -109,8 +88,8 @@ public class FragmentBootServer extends Fragment {
             new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
 
         }
-
     }
+
 
 
 
@@ -143,10 +122,7 @@ public class FragmentBootServer extends Fragment {
             fragment= fragmentManager.getFragments().get(0);
             fragment.onDetach();
             fragmentTransaction.remove(fragment);
-            relativeLayout.forceLayout();
-            relativeLayout.refreshDrawableState();
             fragment=new FragmentServerUser();
-
             handler.postAtTime(new Runnable() {
                 @Override
                 public void run() {
@@ -159,8 +135,6 @@ public class FragmentBootServer extends Fragment {
                     fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
                     fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                     fragmentTransaction.show(fragment);
-                    relativeLayout.forceLayout();
-                    relativeLayout.refreshDrawableState();
                     Log.i(this.getClass().getName(),  "МетодЗапускКлиентаИлиСервера " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
                 }
             }, SystemClock.uptimeMillis() + 4000);

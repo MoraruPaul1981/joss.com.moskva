@@ -849,6 +849,9 @@ public class ServiceControllerServer extends IntentService {
             Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
             valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
             new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+            bundleСервер.clear();
+            bundleСервер.putString("Статус","SERVERGATTRUNNIGERRORS");
+            mutableLiveDataGATTServer.setValue(bundleСервер);
         }
     }
 

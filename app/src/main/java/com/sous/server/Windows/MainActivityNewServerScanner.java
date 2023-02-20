@@ -170,7 +170,6 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
     @SuppressLint("SuspiciousIndentation")
     protected void МетодЗапускBootФрагмента(@NonNull Fragment fragment) {
         try {
-            handler.post(()->{
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.addToBackStack("");
                 fragmentTransaction.replace(R.id.framelauoutScanner, fragment);//.layout.activity_for_fragemtb_history_tasks
@@ -178,12 +177,7 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit();//FragmentTransaction.TRANSIT_FRAGMENT_CLOSE
                 fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 fragmentTransaction.show(fragment);
-            });
-// TODO: 07.01.2022 GREAT OPERATIONS подпииска на данные
-
-
-
-
+// TODO: 07.01.2022 GREAT OPERATIONS подпииска на данны
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

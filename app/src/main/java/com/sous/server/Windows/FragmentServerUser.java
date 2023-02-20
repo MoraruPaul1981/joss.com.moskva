@@ -768,9 +768,10 @@ public class FragmentServerUser extends Fragment {
                                                 + "\n" + "пинг: " + linkedКолПодкСерверу.size());
                                         Log.i(this.getClass().getName(), "  Работает... на сервере ответ КЛИЕНТУ  "
                                                 + "\n" + "пинги: " + linkedКолПодкСерверу.size());
-                                        progressBarДЛяСервера.setVisibility( View.VISIBLE);
-                                        relativeLayoutСервер.forceLayout();
-                                        relativeLayoutСервер.refreshDrawableState();
+                                        handler.postDelayed(()->{
+                                            progressBarДЛяСервера.setVisibility( View.VISIBLE);;
+                                        },1500);
+
                                     });
                                     break;
                                 case "SERVER#SousAvtoStartingGPS":
@@ -793,8 +794,6 @@ public class FragmentServerUser extends Fragment {
                                         holder.materialButtonСервер.setText("Не работает !!!");
                                         Log.i(this.getClass().getName(), "   Не работает на сервере ответ КЛИЕНТУ  ");
                                         progressBarДЛяСервера.setVisibility( View.INVISIBLE);
-                                        relativeLayoutСервер.forceLayout();
-                                        relativeLayoutСервер.refreshDrawableState();
                                     });
                                     break;
                                 case "SERVER#SousAvtoNULL":
@@ -807,6 +806,7 @@ public class FragmentServerUser extends Fragment {
                                     handler.post(() -> {
                                         holder.materialButtonСервер.setText("Перезапуск...");
                                         Log.i(this.getClass().getName(), "   Перезапуск на сервере ответ КЛИЕНТУ  ");
+                                        progressBarДЛяСервера.setVisibility( View.INVISIBLE);
                                     });
                                     break;
                                 case "SERVER#SousAvtoERROR":
@@ -851,6 +851,8 @@ public class FragmentServerUser extends Fragment {
                                     });
                                     break;
                             }
+                            relativeLayoutСервер.forceLayout();
+                            relativeLayoutСервер.refreshDrawableState();
                         }
                     }
                 });
