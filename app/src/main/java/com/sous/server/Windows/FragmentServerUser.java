@@ -66,13 +66,12 @@ public class FragmentServerUser extends Fragment {
     private FragmentTransaction fragmentTransaction;
     private Fragment fragment;
     private Handler handler;
-    private ServiceControllerServer.LocalBinderСерверBLE binderСканнерServer;
     private BluetoothManager bluetoothManager;
     private MutableLiveData<Bundle> mutableLiveDataGATTServer;
     private List<String> linkedКолПодкСерверу;
     private Long version;
     private LocationManager locationManager;
-    private ServiceControllerServer.LocalBinderСерверBLE binderСканнер;
+    private ServiceControllerServer.LocalBinderСерверBLE binderСерверBLE;
     private Message message;
 
 
@@ -232,7 +231,7 @@ public class FragmentServerUser extends Fragment {
                 }
                 if (bluetoothAdapter.isEnabled() == true) {
                     // TODO: 06.12.2022 запускаем GATT SERVER
-                    binderСканнерServer.getService().МетодГлавныйЗапускGattServer(handler, getActivity(), bluetoothManager, mutableLiveDataGATTServer);
+                    binderСерверBLE.getService().МетодГлавныйЗапускGattServer(handler, getActivity(), bluetoothManager, mutableLiveDataGATTServer);
                     Log.d(getClass().getClass().getName(), "\n" + " МетодЗапускGattServer" + new Date());
                 }
             }
@@ -954,17 +953,19 @@ public class FragmentServerUser extends Fragment {
                 @Override
                 public void onServiceConnected(ComponentName name, IBinder service) {
                     try {
-                        binderСканнер = (ServiceControllerServer.LocalBinderСерверBLE) service;
-                        if (binderСканнер.isBinderAlive()) {
+                        binderСерверBLE = (ServiceControllerServer.LocalBinderСерверBLE) service;
+                        if (binderСерверBLE.isBinderAlive()) {
                             Log.i(getContext().getClass().getName(), "  onServiceConnected  onServiceConnected  МетодБиндингаСканирование"
-                                    + binderСканнер.isBinderAlive());
-                            binderСканнер.linkToDeath(new IBinder.DeathRecipient() {
+                                    + binderСерверBLE.isBinderAlive());
+                            binderСерверBLE.linkToDeath(new IBinder.DeathRecipient() {
                                 @Override
                                 public void binderDied() {
                                     // TODO: 20.02.2023  back
+                                    Bundle bundle=new Bundle();
+                                    bundle.putBinder("binder", binderСерверBLE);
                                     message.sendToTarget();
                                     Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+" "+
-                                            binderСканнер.isBinderAlive());
+                                            binderСерверBLE.isBinderAlive());
 
                                 }
                             });
@@ -990,8 +991,8 @@ public class FragmentServerUser extends Fragment {
                 @Override
                 public void onServiceDisconnected(ComponentName name) {
                     try {
-                        Log.i(getContext().getClass().getName(), "    onServiceDisconnected  binderСканнер.isBinderAlive()" + binderСканнер.isBinderAlive());
-                        binderСканнер = null;
+                        Log.i(getContext().getClass().getName(), "    onServiceDisconnected  binderСканнер.isBinderAlive()" + binderСерверBLE.isBinderAlive());
+                        binderСерверBLE = null;
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
@@ -1023,9 +1024,10 @@ public class FragmentServerUser extends Fragment {
             message = Message.obtain(new Handler(Looper.getMainLooper()), new Runnable() {
                 @Override
                 public void run() {
+               Bundle bundle=     message.getData();
                     // TODO: 20.02.2023 Запукск Сервер из Биндинга
                     МетодЗапускGattServer();
-                    Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                    Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + "bundle "+bundle );
                 }
             });
             message.setAsynchronous(true);

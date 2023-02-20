@@ -302,7 +302,7 @@ public class ServiceControllerServer extends IntentService {
             // TODO: 14.02.2023    ЗарускаемСамСервер
             МетодЗапускаСервера();
             Log.w(this.getClass().getName(), "   МетодГлавныйЗапускGattServer   ");
-            Log.w(this.getClass().getName(), "   МетодГлавныйЗапускGattServer   ");
+            Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -439,6 +439,7 @@ public class ServiceControllerServer extends IntentService {
                         bundleСервер.clear();
                         bundleСервер.putString("Статус","SERVERGATTRUNNIGSTARTING");
                         mutableLiveDataGATTServer.setValue(bundleСервер);
+                        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
                     });
                 }
 
@@ -818,17 +819,23 @@ public class ServiceControllerServer extends IntentService {
                             BluetoothGattCharacteristic.PROPERTY_WRITE|
                             BluetoothGattCharacteristic.PROPERTY_EXTENDED_PROPS|
                            BluetoothGattCharacteristic.PROPERTY_INDICATE |
+                           BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT |
+                            BluetoothGattCharacteristic.PROPERTY_NOTIFY |
                             BluetoothGattCharacteristic.PROPERTY_BROADCAST,
                     BluetoothGattCharacteristic.PERMISSION_READ |
-                            BluetoothGattCharacteristic.PERMISSION_WRITE);
+                            BluetoothGattCharacteristic.PERMISSION_WRITE |
+                            BluetoothGattCharacteristic.PERMISSION_READ_ENCRYPTED|
+                            BluetoothGattCharacteristic.PERMISSION_WRITE_ENCRYPTED );
             characteristic.addDescriptor(new
                     BluetoothGattDescriptor(uuidКлючСервераGATTЧтениеЗапись,
                     BluetoothGattCharacteristic.PERMISSION_READ |
-                            BluetoothGattCharacteristic.PERMISSION_WRITE));
+                            BluetoothGattCharacteristic.PERMISSION_WRITE |
+                            BluetoothGattCharacteristic.PERMISSION_READ_ENCRYPTED|
+                            BluetoothGattCharacteristic.PERMISSION_WRITE_ENCRYPTED ));
             service.addCharacteristic(characteristic);
             // TODO: 12.02.2023 добавлев в сервер
             server.addService(service);
-            Log.d(this.getClass().getName(), "\n" + " pairedDevices.size() " + pairedDevices.size());
+            Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -911,7 +918,8 @@ public class ServiceControllerServer extends IntentService {
                 ВозврящаетсяКлючScannerONESIGNAl =     МетодПолучениеКлючаОтСлужбыONESIGNALAndFirebase(КлючДляFirebaseNotification);
                 Log.d(getApplicationContext().getClass().getName(), "  Observable.interval    ВозврящаетсяКлючScannerONESIGNAl[0] " +   ВозврящаетсяКлючScannerONESIGNAl);
             }
-            Log.d(getApplicationContext().getClass().getName(), "  Observable.interval    ВозврящаетсяКлючScannerONESIGNAl[0] " +   ВозврящаетсяКлючScannerONESIGNAl);
+            Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
+                    + " ВозврящаетсяКлючScannerONESIGNAl " +ВозврящаетсяКлючScannerONESIGNAl);
             // TODO: 05.01.2022  ДЕЛАЕМ ПОДПИСКУ НА ОСУЩЕСТВЛЛЕНУЮ ДАННЫХ
         } catch (Exception e) {
             e.printStackTrace();
