@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.sous.server"
-        minSdk 28
+        minSdk 29
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -35,7 +35,6 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
     /////TODO биботека для службы WOrk Manager
     implementation 'androidx.work:work-runtime:2.7.1'
     implementation 'androidx.work:work-runtime-ktx:2.7.1'
@@ -50,6 +49,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics-gradle:2.8.0'
     implementation 'com.google.firebase:firebase-messaging-directboot:23.0.0'
     implementation   'com.google.firebase:firebase-messaging:22.0.0'
+
     //TODO OneSignal
     implementation 'com.onesignal:OneSignal:4.8.3'
     ///TODO RXJAVA BLE
@@ -62,6 +62,11 @@ dependencies {
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.2'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.14.2'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.14.2'
+
+    //TODO Google Location
+
+    implementation group: 'com.google.android.gms', name: 'play-services-location', version: '21.0.1'
+
 
 
 

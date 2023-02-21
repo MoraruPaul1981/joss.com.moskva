@@ -1,5 +1,6 @@
 package com.sous.server.Services;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.IntentService;
 import android.bluetooth.BluetoothAdapter;
@@ -17,6 +18,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
@@ -40,8 +42,18 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
+import com.google.android.gms.tasks.CancellationToken;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnTokenCanceledListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.onesignal.OneSignal;
 
@@ -61,8 +73,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -90,25 +104,29 @@ public class ServiceGattServer extends IntentService {
     private BluetoothAdapter bluetoothAdapter;
     private Set<BluetoothDevice> pairedDevices = new HashSet<>();
     private BluetoothGattServer server;
-    private Long version=0l;
+    private Long version = 0l;
+
     public ServiceGattServer() {
         super("ServiceGattServer");
     }
+
     private MutableLiveData<Bundle> mutableLiveDataGATTServer;
 
-    private  List<Address> addressesgetGPS;
-    private  Location lastLocation;
-    private   UUID uuidКлючСервераGATTЧтениеЗапись;
-    private  Bundle bundleСервер;
-    private        LocationManager locationManager ;
-    private  LocationListener locationListener;
-    private  String ВозврящаетсяКлючScannerONESIGNAl = new String();
+    private List<Address> addressesgetGPS;
+    private Location lastLocation;
+    private UUID uuidКлючСервераGATTЧтениеЗапись;
+    private Bundle bundleСервер;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    private String ВозврящаетсяКлючScannerONESIGNAl = new String();
 
-    private  String КлючДляServerFibaseOneSingnal="220d6edf-2b29-453e-97a8-d2aefe4a9eb0";
+    private String КлючДляServerFibaseOneSingnal = "220d6edf-2b29-453e-97a8-d2aefe4a9eb0";
 
-    private  ExecutorService executorServiceLocationGPS;
-    private  ExecutorService executorServiceLocationLocali;
-    @RequiresApi(api = Build.VERSION_CODES.R)
+    private ExecutorService executorServiceLocationGPS;
+    private ExecutorService executorServiceLocationLocali;
+
+    private FusedLocationProviderClient fusedLocationClientGoogle;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -122,11 +140,16 @@ public class ServiceGattServer extends IntentService {
             TAG = getClass().getName().toString();
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
-            bundleСервер=new Bundle();
-            executorServiceLocationGPS= Executors.newCachedThreadPool();
-            executorServiceLocationLocali= Executors.newCachedThreadPool();
+            bundleСервер = new Bundle();
+            executorServiceLocationGPS = Executors.newCachedThreadPool();
+            executorServiceLocationLocali = Executors.newCachedThreadPool();
             // TODO: 13.02.2023  ИНИЦИАЛИЗАЦИИ GPS
-            МетодИнициализацииGPS();
+
+
+            МетодИницилиазцииGpsGoogle();
+
+
+            //  МетодИнициализацииGPS();
             // TODO: 14.02.2023 Firebase
             МетодПолучениеServerСканеарКлюча_OndeSignal(КлючДляServerFibaseOneSingnal);
         } catch (Exception e) {
@@ -146,6 +169,59 @@ public class ServiceGattServer extends IntentService {
 
     }
 
+    @SuppressLint("MissingPermission")
+    private void МетодИницилиазцииGpsGoogle() {
+        try {
+            fusedLocationClientGoogle = LocationServices.getFusedLocationProviderClient(this);
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                Task<Location> locationResult = fusedLocationClientGoogle.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, new CancellationToken() {
+                    @NonNull
+                    @Override
+                    public CancellationToken onCanceledRequested(@NonNull OnTokenCanceledListener onTokenCanceledListener) {
+                        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                        return null;
+                    }
+
+                    @Override
+                    public boolean isCancellationRequested() {
+                        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                        return false;
+                    }
+                });
+            locationResult.addOnCompleteListener( new OnCompleteListener<Location>() {
+                @Override
+                public void onComplete(@NonNull Task<Location> task) {
+                    if (task.isSuccessful()==true && task.isComplete() ==true) {
+                        lastLocation=task.getResult();
+                        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                    }
+                    Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                }
+            });
+
+            locationResult.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                }
+            });
+
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ContentValues valuesЗаписываемОшибки = new ContentValues();
+        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+        final Object ТекущаяВерсияПрограммы = version;
+        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+    }
+    }
 
 
     public class LocalBinderСерверBLE extends Binder {
@@ -281,7 +357,7 @@ public class ServiceGattServer extends IntentService {
 
     // TODO: 30.11.2022 сервер СКАНИРОВАНИЯ
     @SuppressLint({"MissingPermission", "NewApi"})
-    public synchronized void МетодГлавныйЗапускGattServer(@NonNull Handler handler, @NonNull Context context,
+    public  void МетодГлавныйЗапускGattServer(@NonNull Handler handler, @NonNull Context context,
                                              @NonNull BluetoothManager bluetoothManager,
                                              @NonNull MutableLiveData<Bundle>mutableLiveDataGATTServer) {
         this.bluetoothManagerServer = bluetoothManager;
@@ -344,7 +420,6 @@ public class ServiceGattServer extends IntentService {
     }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.R)
     @SuppressLint("MissingPermission")
     private  void МетодИнициализацииGPS() {
         try{
@@ -354,32 +429,63 @@ public class ServiceGattServer extends IntentService {
             executorServiceLocationLocali.submit(()->{
                 return null;
             });
+            class DirectExecutor1 implements Executor {
+                public void execute(Runnable r) {
+                    r.run();
+                }
+            }
+            class DirectExecutor2 implements Executor {
+                public void execute(Runnable r) {
+                    r.run();
+                }
+            }
+
+
 
             // TODO: 13.02.2023
                  // TODO: 01.02.2023 Получение Новго Ключа Для Сканера
                      CancellationSignal signal = new CancellationSignal();
                      locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
                      locationListener = new MyLocationListener(getApplicationContext());
-                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 90000, 0.0F,executorServiceLocationGPS, locationListener);
-                     //lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                      locationManager.getCurrentLocation(LocationManager.GPS_PROVIDER,signal, executorServiceLocationLocali, new java.util.function.Consumer<Location>() {
-                         @Override
-                         public void accept(Location location) {
-                             Log.d(TAG, "lastLocation location "+location );
-                             if (location!=null) {
-                                 lastLocation=location;
-                                 Log.d(TAG, "  SUCCESS lastLocation МетодИнициализацииGPS "+lastLocation );
-                                 МетодПолучениеЛокацииGPS();
-                                 bundleСервер.clear();
-                                 bundleСервер.putString("Статус", "SERVER#SousAvtoStartingGPS");
-                                 getApplicationContext().getMainExecutor().execute (()->{
-                                     mutableLiveDataGATTServer.setValue(bundleСервер);
-                                 }); ;
-                                 // TODO: 14.02.2023  закрываем
-                                 Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + "  location " + location);
-                             }
-                         }
-                     });
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 90000, 0.0F,new DirectExecutor2(), locationListener);
+            }
+            //lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                locationManager.getCurrentLocation(LocationManager.GPS_PROVIDER,signal, new DirectExecutor1(), new java.util.function.Consumer<Location>() {
+                   @Override
+                   public void accept(Location location) {
+                       try {
+                       Log.d(TAG, "lastLocation location "+location );
+                       if (location!=null) {
+                           lastLocation=location;
+                           // TODO: 21.02.2023 получаем Сами ДАнные от Location  полученого
+                           МетодПолучениеЛокацииGPS();
+                           bundleСервер.clear();
+                           bundleСервер.putString("Статус", "SERVER#SousAvtoStartingGPS");
+                           getApplicationContext().getMainExecutor().execute (()->{
+                               mutableLiveDataGATTServer.setValue(bundleСервер);
+                           }); ;
+                           // TODO: 14.02.2023  закрываем
+                           Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + "  location " + location);
+                       }
+                   } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        ContentValues valuesЗаписываемОшибки = new ContentValues();
+                        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+                        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+                        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+                        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        final Object ТекущаяВерсияПрограммы = version;
+                        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+                        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+                        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+                    }
+                   }
+               });
+            }
 
 
             locationManager.registerGnssNavigationMessageCallback(new GnssNavigationMessage.Callback() {
