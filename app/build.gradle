@@ -1,9 +1,11 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
+
 }
 
 android {
+
     signingConfigs {
         debug {
             storeFile file('C:\\Users\\moraru_pi\\AndroidStudioProjectsBLE\\scanner\\dsu1\\dsu1_keys.jks')
@@ -17,6 +19,7 @@ android {
             keyAlias 'tabels_releases'
             keyPassword 'dsu1dsu1down'
         }
+        
     }
     namespace 'com.sous.scanner'
     compileSdk 33
@@ -27,6 +30,7 @@ android {
         targetSdk 33
         versionCode 18
         versionName "1.0"
+
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -42,6 +46,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
+
 }
 
 dependencies {

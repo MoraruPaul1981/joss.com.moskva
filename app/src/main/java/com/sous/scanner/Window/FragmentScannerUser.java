@@ -6,6 +6,8 @@ import static android.telephony.SubscriptionManager.PHONE_NUMBER_SOURCE_UICC;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.admin.DeviceAdminReceiver;
+import android.app.admin.DevicePolicyManager;
 import android.bluetooth.BluetoothManager;
 import android.content.ComponentName;
 import android.content.ContentValues;
@@ -69,9 +71,11 @@ import com.sous.scanner.R;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -167,11 +171,8 @@ public class FragmentScannerUser extends Fragment {
         return view;
     }
 
-    @RequiresPermission(anyOf = {
-            Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.READ_SMS,
-            Manifest.permission.READ_PHONE_NUMBERS,
-            Manifest.permission.READ_BASIC_PHONE_STATE})
+
+    @SuppressLint("MissingPermission")
     @Override
     public void onStart() {
         super.onStart();
@@ -1189,6 +1190,11 @@ public class FragmentScannerUser extends Fragment {
 
 
     @SuppressLint("MissingPermission")
+    @RequiresPermission(anyOf = {
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.READ_SMS,
+            Manifest.permission.READ_PHONE_NUMBERS,
+            Manifest.permission.READ_BASIC_PHONE_STATE})
     private ArrayList<String> МетодЗаполенияДаннымиКлиентаДЛяGAtt() {
         ArrayList<String> linkedHashMapДанныеКлиентаДляGATT = null;
         try {
@@ -1207,58 +1213,12 @@ public class FragmentScannerUser extends Fragment {
                     }
                 });
             }
-            TelephonyManager phoneMgr = (TelephonyManager)getActivity(). getSystemService(Context.TELEPHONY_SERVICE);
-         String ff=  phoneMgr.getLine1Number();
-            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
-                    +new Date().toLocaleString()+  "ff "+ff );
 
+            DevicePolicyManager dpm = (DevicePolicyManager) getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
+            ComponentName admin = new ComponentName(getActivity(), DeviceAdminReceiver.class);
+            //dpm.setUninstallBlocked(admin, "com.sous.scanner", true);
 
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-
-                return null;
-            }
-
-
-            String simID = tm.getSimSerialNumber();
-            if (simID != null) {
-               Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
-                        +new Date().toLocaleString()+  "ff "+ff );
-            }
-
-            String telNumber = tm.getLine1Number();
-            if (telNumber != null) {
-                Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
-                        +new Date().toLocaleString()+  "ff "+ff );
-            }
-
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                List<SubscriptionInfo> subscription = SubscriptionManager.from(getContext()).getActiveSubscriptionInfoList();
-                for (int i = 0; i < subscription.size(); i++) {
-                    SubscriptionInfo info = subscription.get(i);
-                    Log.d(this.getClass().getName(), "number " + info.getNumber());
-                    Log.d(this.getClass().getName(), "network name : " + info.getCarrierName());
-                    Log.d(this.getClass().getName(), "country iso " + info.getCountryIso());
-                }
-            }
-
-            String deviceId;
-            String deviceId2;
-            deviceId = Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-            deviceId2=     Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
-                    +new Date().toLocaleString()+  "deviceId "+deviceId+ " deviceId2 " +deviceId2 );
-
+          //  dpm.setDelegatedScopes(admin,"com.sous.scanner",list);
 
             SubscriptionManager tMgr = (SubscriptionManager) getActivity().getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
             tMgr.addOnSubscriptionsChangedListener(new SubscriptionManager.OnSubscriptionsChangedListener());
@@ -1283,9 +1243,7 @@ public class FragmentScannerUser extends Fragment {
                 Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
                         +new Date().toLocaleString()+  "subscriptionInfoNumber "+subscriptionInfoNumber + "incard "+incard+ " inuuidcard " +inuuidcard+ " mmccadrd " +mmccadrd+ " parcel " +parcel);
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                subscriptionManager.setCarrierPhoneNumber(subId,"89154478596");
-            }
+
             /*String mPhoneNumbe5 = tMgr.getPhoneNumber(PHONE_NUMBER_SOURCE_CARRIER);
             String mPhoneNumbe6= tMgr.getPhoneNumber(PHONE_NUMBER_SOURCE_IMS);
             String mPhoneNumbe7= tMgr.getPhoneNumber(PHONE_NUMBER_SOURCE_IMS);

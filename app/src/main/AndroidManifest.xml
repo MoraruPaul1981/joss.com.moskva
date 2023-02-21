@@ -59,7 +59,6 @@
     <uses-permission android:name="android.intent.action.READ_PHONE_STATE" />
     <uses-permission android:name="android.intent.action.READ_SMS" />
     <uses-permission android:name="android.intent.action.READ_PHONE_NUMBERS" />
-    <uses-permission android:name="android.intent.action.READ_PRIVILEGED_PHONE_STATE" />
     <uses-permission android:name="android.intent.action.READ_BASIC_PHONE_STATE" />
 
     <uses-feature
