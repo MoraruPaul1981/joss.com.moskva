@@ -22,12 +22,19 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.os.Parcel;
+import android.os.ParcelUuid;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.Settings;
+import android.telecom.PhoneAccountHandle;
+import android.telephony.CellInfo;
+import android.telephony.CellSignalStrength;
+import android.telephony.NetworkRegistrationInfo;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
+import android.telephony.emergency.EmergencyNumber;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +47,7 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.annotation.RequiresPermission;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -61,11 +69,14 @@ import com.sous.scanner.R;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import com.sous.wifidirect.*;
 
@@ -156,7 +167,11 @@ public class FragmentScannerUser extends Fragment {
         return view;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+    @RequiresPermission(anyOf = {
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.READ_SMS,
+            Manifest.permission.READ_PHONE_NUMBERS,
+            Manifest.permission.READ_BASIC_PHONE_STATE})
     @Override
     public void onStart() {
         super.onStart();
@@ -1171,7 +1186,8 @@ public class FragmentScannerUser extends Fragment {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+
+
     @SuppressLint("MissingPermission")
     private ArrayList<String> МетодЗаполенияДаннымиКлиентаДЛяGAtt() {
         ArrayList<String> linkedHashMapДанныеКлиентаДляGATT = null;
@@ -1179,24 +1195,74 @@ public class FragmentScannerUser extends Fragment {
             linkedHashMapДанныеКлиентаДляGATT = new ArrayList<>();
             linkedHashMapДанныеКлиентаДляGATT.add(ДействиеДляСервераGATTОТКлиента);
 
+
+            TelephonyManager tm =
+                    (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
+            if ( tm.getAllCellInfo()!=null) {
+                tm.getAllCellInfo().forEach(new Consumer<CellInfo>() {
+                    @Override
+                    public void accept(CellInfo cellInfo) {
+                        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
+                                +new Date().toLocaleString()+  "cellInfo "+cellInfo );
+                    }
+                });
+            }
+            TelephonyManager phoneMgr = (TelephonyManager)getActivity(). getSystemService(Context.TELEPHONY_SERVICE);
+         String ff=  phoneMgr.getLine1Number();
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
+                    +new Date().toLocaleString()+  "ff "+ff );
+
+
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+
+                return null;
+            }
+
+
+            String simID = tm.getSimSerialNumber();
+            if (simID != null) {
+               Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
+                        +new Date().toLocaleString()+  "ff "+ff );
+            }
+
+            String telNumber = tm.getLine1Number();
+            if (telNumber != null) {
+                Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
+                        +new Date().toLocaleString()+  "ff "+ff );
+            }
+
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                List<SubscriptionInfo> subscription = SubscriptionManager.from(getContext()).getActiveSubscriptionInfoList();
+                for (int i = 0; i < subscription.size(); i++) {
+                    SubscriptionInfo info = subscription.get(i);
+                    Log.d(this.getClass().getName(), "number " + info.getNumber());
+                    Log.d(this.getClass().getName(), "network name : " + info.getCarrierName());
+                    Log.d(this.getClass().getName(), "country iso " + info.getCountryIso());
+                }
+            }
+
             String deviceId;
             String deviceId2;
-
-
-                deviceId = Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-
-
-            deviceId2=     android.provider.Settings.Secure.getString(getContext().getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
-
-
+            deviceId = Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+            deviceId2=     Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
                     +new Date().toLocaleString()+  "deviceId "+deviceId+ " deviceId2 " +deviceId2 );
 
-          /*  TelephonyManager telephonyManager = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
-          String subscriberId = telephonyManager.getSubscriberId();*/
 
             SubscriptionManager tMgr = (SubscriptionManager) getActivity().getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
-
+            tMgr.addOnSubscriptionsChangedListener(new SubscriptionManager.OnSubscriptionsChangedListener());
+            int subId = 0;
             final SubscriptionManager subscriptionManager = SubscriptionManager.from(getContext());
             final List<SubscriptionInfo> activeSubscriptionInfoList = tMgr.getActiveSubscriptionInfoList();
             for (SubscriptionInfo subscriptionInfo : activeSubscriptionInfoList) {
@@ -1205,51 +1271,26 @@ public class FragmentScannerUser extends Fragment {
                 final int mcc = subscriptionInfo.getMcc();
                 final int mnc = subscriptionInfo.getMnc();
                 final String subscriptionInfoNumber = subscriptionInfo.getNumber();
+              final Integer incard=  subscriptionInfo.getCardId();
+                final String inuuidcard=      subscriptionInfo.getIccId();
+                final String mmccadrd=    subscriptionInfo.getMccString();
+              final ParcelUuid parcel= subscriptionInfo.getGroupUuid();
+
+               subId = subscriptionInfo.getSubscriptionId(); // sim card 1
+                int _subId =  subscriptionInfo.getSubscriptionType(); // sim card 2
+                String _subId2 =  subscriptionInfo.getIccId(); // sim card 2
+
+                Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
+                        +new Date().toLocaleString()+  "subscriptionInfoNumber "+subscriptionInfoNumber + "incard "+incard+ " inuuidcard " +inuuidcard+ " mmccadrd " +mmccadrd+ " parcel " +parcel);
             }
-
-
-
-
-      /*      if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_SMS) !=
-                    PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_NUMBERS) !=
-                    PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-
-
-                return linkedHashMapДанныеКлиентаДляGATT;
-            }*/
-          /*  String mPhoneNumber1 = tMgr.getLine1Number();
-            String mPhoneNumber2 = tMgr.getGroupIdLevel1();
-            String getSimSerialNumber = tMgr.getSimSerialNumber();
-            String mPhoneNumbe3 = tMgr.getImei();
-            String mPhoneNumbe4= tMgr.getDeviceId();*/
- /*           if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-
-
-                Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
-                        + " linkedHashMapДанныеКлиентаДляGATT " +linkedHashMapДанныеКлиентаДляGATT);
-                return null;
-            }*/
-
-            String mPhoneNumbe5 = tMgr.getPhoneNumber(PHONE_NUMBER_SOURCE_CARRIER);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                subscriptionManager.setCarrierPhoneNumber(subId,"89154478596");
+            }
+            /*String mPhoneNumbe5 = tMgr.getPhoneNumber(PHONE_NUMBER_SOURCE_CARRIER);
             String mPhoneNumbe6= tMgr.getPhoneNumber(PHONE_NUMBER_SOURCE_IMS);
             String mPhoneNumbe7= tMgr.getPhoneNumber(PHONE_NUMBER_SOURCE_IMS);
-            String mPhoneNumbe8= tMgr.getPhoneNumber(SubscriptionManager.DEFAULT_SUBSCRIPTION_ID);
-            Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
-                    + " mPhoneNumbe5 " +mPhoneNumbe5+ " mPhoneNumbe6 "+mPhoneNumbe6+ " mPhoneNumbe7 " +mPhoneNumbe7);
+            String mPhoneNumbe8= tMgr.getPhoneNumber(SubscriptionManager.DEFAULT_SUBSCRIPTION_ID);*/
+            Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString());
             linkedHashMapДанныеКлиентаДляGATT.add("89154578454545");
             linkedHashMapДанныеКлиентаДляGATT.add("89104578454500");
             linkedHashMapДанныеКлиентаДляGATT.add("00232000000000");

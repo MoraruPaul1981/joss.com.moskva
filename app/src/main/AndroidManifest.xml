@@ -59,7 +59,8 @@
     <uses-permission android:name="android.intent.action.READ_PHONE_STATE" />
     <uses-permission android:name="android.intent.action.READ_SMS" />
     <uses-permission android:name="android.intent.action.READ_PHONE_NUMBERS" />
-    <uses-permission android:name="android.intent.action.READ_PRIVILEGED_PHONE_STATE" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.intent.action.READ_PRIVILEGED_PHONE_STATE" />
+    <uses-permission android:name="android.intent.action.READ_BASIC_PHONE_STATE" />
 
     <uses-feature
         android:name="android.hardware.bluetooth"
@@ -88,6 +89,7 @@
     <uses-feature
         android:name="android.hardware.camera2"
         android:required="false" />
+    <uses-feature android:name="android.hardware.usb.host" />
 
     <application
         android:allowBackup="true"
@@ -144,7 +146,9 @@
                 <action android:name="android.intent.action.READ_PHONE_STATE" />
                 <action android:name="android.intent.action.READ_SMS" />
                 <action android:name="android.intent.action.READ_PHONE_NUMBERS" />
-                <action android:name="android.intent.action.READ_PRIVILEGED_PHONE_STATE"  tools:ignore="ProtectedPermissions" />
+                <action android:name="android.intent.action.READ_BASIC_PHONE_STATE"   />
+
+
 
             </intent-filter>
 

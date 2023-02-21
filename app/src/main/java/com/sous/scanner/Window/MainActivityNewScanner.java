@@ -229,6 +229,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                     Manifest.permission.READ_PHONE_STATE,
                     Manifest.permission.READ_SMS,
                     Manifest.permission.READ_PHONE_NUMBERS,
+                    Manifest.permission.READ_BASIC_PHONE_STATE,
                     Manifest.permission.READ_PRECISE_PHONE_STATE,
             };
             String[] PERMISSIONS_LOCATION = {
@@ -243,7 +244,8 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                     Manifest.permission.READ_PHONE_STATE,
                     Manifest.permission.READ_SMS,
                     Manifest.permission.READ_PRECISE_PHONE_STATE,
-                    Manifest.permission.READ_PHONE_NUMBERS
+                    Manifest.permission.READ_PHONE_NUMBERS,
+                    Manifest.permission.READ_BASIC_PHONE_STATE
             };
             int permission1 = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
             int permission2 = ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN);
