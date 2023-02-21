@@ -80,9 +80,6 @@ public class FragmentBootScanner extends Fragment {
             fragmentTransaction.show(fragment);
             fragment=new FragmentScannerUser();
             handler.postDelayed(()->{
-                bottomNavigationView.setVisibility(View.VISIBLE);
-                materialTextViewToolBar.setVisibility(View.VISIBLE);
-                materialTextViewToolBar.setText("Клиент");
                 //fragmentTransaction.add(R.id.framelauoutScanner, fragment.getClass(),bundle);//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.add(R.id.framelauoutScanner, fragment).setPrimaryNavigationFragment(fragment);//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();

@@ -24,6 +24,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.provider.Settings;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
@@ -155,6 +156,7 @@ public class FragmentScannerUser extends Fragment {
         return view;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     public void onStart() {
         super.onStart();
@@ -171,7 +173,7 @@ public class FragmentScannerUser extends Fragment {
             МетодСлушательObserverДляRecycleView();
             МетодПерегрузкаRecyceView();
             // TODO: 20.02.2023 ТЕКСТ КОД
-            //МетодЗаполенияДаннымиКлиентаДЛяGAtt();
+            МетодЗаполенияДаннымиКлиентаДЛяGAtt();
             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
             e.printStackTrace();
@@ -1177,10 +1179,21 @@ public class FragmentScannerUser extends Fragment {
             linkedHashMapДанныеКлиентаДляGATT = new ArrayList<>();
             linkedHashMapДанныеКлиентаДляGATT.add(ДействиеДляСервераGATTОТКлиента);
 
+            String deviceId;
+            String deviceId2;
 
 
-            TelephonyManager telephonyManager = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
-          String subscriberId = telephonyManager.getSubscriberId();
+                deviceId = Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+
+
+            deviceId2=     android.provider.Settings.Secure.getString(getContext().getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
+
+
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
+                    +new Date().toLocaleString()+  "deviceId "+deviceId+ " deviceId2 " +deviceId2 );
+
+          /*  TelephonyManager telephonyManager = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+          String subscriberId = telephonyManager.getSubscriberId();*/
 
             SubscriptionManager tMgr = (SubscriptionManager) getActivity().getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
 
