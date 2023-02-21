@@ -22,11 +22,11 @@
             android:gravity="center"
             android:minWidth="200dp"
             android:minHeight="40dp"
-            android:text="Название Фрагмента"
+            android:text="Клиент"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="#0A524B"
 
+            android:textColor="#0A524B"
             android:textSize="16sp"
             android:textStyle="bold"
             android:translationZ="150dp"

@@ -79,12 +79,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
             bottomNavigationItemViewИстория.setItemRippleColor(ColorStateList.valueOf(Color.RED));
             linearLayou = (LinearLayout) findViewById(R.id.activity_main_newscanner);
             relativeLayout = (RelativeLayout) findViewById(R.id.activitynain_for_Taskslinelayoutrela3);
-            Log.w(getApplicationContext().getClass().getName(), " MainActivityNewScanner onCreate  ");
             fragmentManager = getSupportFragmentManager();
-            bottomNavigationView.setVisibility(View.INVISIBLE);
-            materialTextViewToolBar.setText("");
-            materialTextViewToolBar.setVisibility(View.INVISIBLE);
-            Log.w(getApplicationContext().getClass().getName(), " MainActivityNewScanner onCreate  ");
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             Log.i(this.getClass().getName(),  "onResume " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
@@ -109,6 +104,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
     protected void onStart() {
         super.onStart();
         try{
+            МетодПрячемБарИКнопки();
         // TODO: 19.02.2023 разрешает обновлени BLE
         МетодРАзрешенияBlurtooTКлиент();
         // TODO: 25.01.2023  подключение после получение BINDER
@@ -132,6 +128,22 @@ public class MainActivityNewScanner extends AppCompatActivity  {
     }
     }
 
+
+    public void МетодПрячемБарИКнопки() {
+        bottomNavigationView.setVisibility(View.INVISIBLE);
+        materialTextViewToolBar.setVisibility(View.INVISIBLE);
+        relativeLayout.refreshDrawableState();
+        relativeLayout.forceLayout();
+        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+    }
+
+    public void МетодВидимыеПрограссБарИКнопки() {
+        bottomNavigationView.setVisibility(View.VISIBLE);
+        materialTextViewToolBar.setVisibility(View.VISIBLE);
+        relativeLayout.refreshDrawableState();
+        relativeLayout.forceLayout();
+        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+    }
 
 
     public void МетодКнопкаBackExit(@NotNull Intent intent) {

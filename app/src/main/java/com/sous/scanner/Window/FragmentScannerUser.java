@@ -110,20 +110,10 @@ public class FragmentScannerUser extends Fragment {
             bluetoothManager = (BluetoothManager) getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
             КлючДляFibaseOneSingnal = "56bbe169-ea09-43de-a28c-9623058e43a2";
             mediatorLiveDataGATT = new MediatorLiveData();
-            // TODO: 06.12.2022
-            МетодИнициализацииRecycleViewДляЗадач();
-            МетодКпопкаВозвращениеBACK();
-            МетодHandler();
             animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator2);
-            МетодКпопкаВозвращениеBACK();
             PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             preferences = getContext().getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
-            // TODO: 08.02.2023  Биндинг службы
-            МетодБиндингаСканирование();
-
-            // TODO: 20.02.2023 ТЕКСТ КОД
-            МетодЗаполенияДаннымиКлиентаДЛяGAtt();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -169,35 +159,20 @@ public class FragmentScannerUser extends Fragment {
     public void onStart() {
         super.onStart();
         try {
+            МетодВизуализацииКнопокИБар();
             ArrayListДанныеФрагмент1.add("Фрагмент Клиента");
-            Log.d(this.getClass().getName(), "ArrayListДанныеОтСканироваиниеДивайсов " + ArrayListДанныеФрагмент1);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-
-    }
-
-    // TODO: 12.03.2022  метод с бизнес логикой
-    @Override
-    public void onResume() {
-        super.onResume();
-        try {
-            Log.d(this.getClass().getName(), " отработоатл new SubClassBuccessLogin_ГлавныйКлассБизнесЛогикиФрагмент1 imageView  Fragment1_One_Tasks  onStart");
-            //    МетодЗапускаемПолучениеКлючаOndeSignalFirebase(КлючДляFibaseOneSingnal);
+            // TODO: 08.02.2023  Биндинг службы
+            МетодБиндингаСканирование();
+            МетодИнициализацииRecycleViewДляЗадач();
+            МетодКпопкаВозвращениеBACK();
+            МетодHandler();
+            МетодКпопкаВозвращениеBACK();
             МетодЗаполенияRecycleViewДляЗадач();
             МетодСлушательObserverДляRecycleView();
             МетодПерегрузкаRecyceView();
+            // TODO: 20.02.2023 ТЕКСТ КОД
+            //МетодЗаполенияДаннымиКлиентаДЛяGAtt();
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -212,7 +187,9 @@ public class FragmentScannerUser extends Fragment {
             valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
             new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
+
     }
+
 
     @Override
     public void onDestroy() {
@@ -234,7 +211,25 @@ public class FragmentScannerUser extends Fragment {
         }
     }
 
-
+    private void МетодВизуализацииКнопокИБар() {
+        try {
+            ((MainActivityNewScanner) getActivity()).МетодВидимыеПрограссБарИКнопки();
+            Log.i(this.getClass().getName(), "onStart() " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
     private void МетодЗапускаемПолучениеКлючаOndeSignalFirebase(@NonNull String КлючДляFibaseOneSingnal) {
         try {
             binderСканнер.getService().МетодПолучениеНовогоДляСканеарКлюча_OndeSignal(КлючДляFibaseOneSingnal);
@@ -1182,6 +1177,11 @@ public class FragmentScannerUser extends Fragment {
             linkedHashMapДанныеКлиентаДляGATT = new ArrayList<>();
             linkedHashMapДанныеКлиентаДляGATT.add(ДействиеДляСервераGATTОТКлиента);
 
+
+
+            TelephonyManager telephonyManager = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+          String subscriberId = telephonyManager.getSubscriberId();
+
             SubscriptionManager tMgr = (SubscriptionManager) getActivity().getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
 
             final SubscriptionManager subscriptionManager = SubscriptionManager.from(getContext());
@@ -1232,8 +1232,9 @@ public class FragmentScannerUser extends Fragment {
             }*/
 
             String mPhoneNumbe5 = tMgr.getPhoneNumber(PHONE_NUMBER_SOURCE_CARRIER);
-            String mPhoneNumbe6= tMgr.getPhoneNumber(PHONE_NUMBER_SOURCE_UICC);
+            String mPhoneNumbe6= tMgr.getPhoneNumber(PHONE_NUMBER_SOURCE_IMS);
             String mPhoneNumbe7= tMgr.getPhoneNumber(PHONE_NUMBER_SOURCE_IMS);
+            String mPhoneNumbe8= tMgr.getPhoneNumber(SubscriptionManager.DEFAULT_SUBSCRIPTION_ID);
             Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
                     + " mPhoneNumbe5 " +mPhoneNumbe5+ " mPhoneNumbe6 "+mPhoneNumbe6+ " mPhoneNumbe7 " +mPhoneNumbe7);
             linkedHashMapДанныеКлиентаДляGATT.add("89154578454545");
