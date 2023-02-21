@@ -77,20 +77,17 @@ public class FragmentBootScanner extends Fragment {
             fragment= fragmentManager.getFragments().get(0);
             fragment.onDetach();
             fragmentTransaction.remove(fragment);
-            relativeLayout.forceLayout();
-            relativeLayout.refreshDrawableState();
+            fragmentTransaction.show(fragment);
             fragment=new FragmentScannerUser();
             handler.postDelayed(()->{
                 bottomNavigationView.setVisibility(View.VISIBLE);
                 materialTextViewToolBar.setVisibility(View.VISIBLE);
                 materialTextViewToolBar.setText("Клиент");
                 //fragmentTransaction.add(R.id.framelauoutScanner, fragment.getClass(),bundle);//.layout.activity_for_fragemtb_history_tasks
-                fragmentTransaction.add(R.id.framelauoutScanner, fragment);//.layout.activity_for_fragemtb_history_tasks
+                fragmentTransaction.add(R.id.framelauoutScanner, fragment).setPrimaryNavigationFragment(fragment);//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
                 fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 fragmentTransaction.show(fragment);
-                relativeLayout.forceLayout();
-                relativeLayout.refreshDrawableState();
                 Log.i(this.getClass().getName(),  "МетодЗапускКлиентаИлиСервера " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
             },1000);
 
