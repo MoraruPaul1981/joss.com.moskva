@@ -11,8 +11,6 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -45,7 +43,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
-import com.sous.server.Services.ServiceControllerServer;
+import com.sous.server.Services.ServiceGattServer;
 import com.sous.server.Errors.SubClassErrors;
 import com.sous.server.R;
 
@@ -77,7 +75,7 @@ public class FragmentServerUser extends Fragment {
     private List<String> linkedКолПодкСерверу;
     private Long version;
     private LocationManager locationManager;
-    private ServiceControllerServer.LocalBinderСерверBLE binderСерверBLE;
+    private ServiceGattServer.LocalBinderСерверBLE binderСерверBLE;
     private Message message;
     private    ProgressBar progressBarДЛяСервера;
     private    RelativeLayout relativeLayoutСервер;
@@ -972,13 +970,13 @@ public class FragmentServerUser extends Fragment {
     @SuppressLint("NewApi")
     private void МетодБиндингаСканирование() {
         try {
-            Intent intentБиндингсСлужбойСканирования = new Intent(getContext(), ServiceControllerServer.class);
+            Intent intentБиндингсСлужбойСканирования = new Intent(getContext(), ServiceGattServer.class);
             intentБиндингсСлужбойСканирования.setAction("com.serviceforble");
             getContext().bindService(intentБиндингсСлужбойСканирования ,Context.BIND_AUTO_CREATE, Executors.newCachedThreadPool(), new ServiceConnection() {
                 @Override
                 public void onServiceConnected(ComponentName name, IBinder service) {
                     try {
-                        binderСерверBLE = (ServiceControllerServer.LocalBinderСерверBLE) service;
+                        binderСерверBLE = (ServiceGattServer.LocalBinderСерверBLE) service;
                         if (binderСерверBLE.isBinderAlive()) {
                             Log.i(getContext().getClass().getName(), "  onServiceConnected  onServiceConnected  МетодБиндингаСканирование"
                                     + binderСерверBLE.isBinderAlive());

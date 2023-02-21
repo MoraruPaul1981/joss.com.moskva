@@ -18,7 +18,7 @@ import androidx.work.WorkerParameters;
 
 
 import com.sous.server.Errors.SubClassErrors;
-import com.sous.server.Services.ServiceControllerServer;
+import com.sous.server.Services.ServiceGattServer;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -32,7 +32,7 @@ public class MyWork_Async_Синхронизация_ScannerServer extends Worke
     private String ИмяСлужбыСинхронизации="WorkManager Synchronizasiy_Data";
     private List<WorkInfo> WorkManagerScanner;
     private   ExecutorService executorServiceServerScanner =Executors.newSingleThreadExecutor();
-    private ServiceControllerServer.LocalBinderСерверBLE binderСканнерServer;
+    private ServiceGattServer.LocalBinderСерверBLE binderСканнерServer;
     private Long version=0l;
     // TODO: 28.09.2022
     public MyWork_Async_Синхронизация_ScannerServer(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -64,7 +64,7 @@ public class MyWork_Async_Синхронизация_ScannerServer extends Worke
     @SuppressLint("NewApi")
     private void МетодБиндингаОбщая() throws InterruptedException {
         try {
-        Intent intentГлавнаяСинхрониазцияScanner = new Intent(context, ServiceControllerServer.class);
+        Intent intentГлавнаяСинхрониазцияScanner = new Intent(context, ServiceGattServer.class);
         context.bindService(intentГлавнаяСинхрониазцияScanner,Context.BIND_AUTO_CREATE,
                 executorServiceServerScanner, new ServiceConnection() {
             @Override
@@ -72,7 +72,7 @@ public class MyWork_Async_Синхронизация_ScannerServer extends Worke
                 // TODO: 31.01.2023 код
                 Log.d(context.getClass().getName().toString(), "\n"
                         + "onServiceConnected  ОБЩАЯ messengerActivity  ");
-                binderСканнерServer = (ServiceControllerServer.LocalBinderСерверBLE) service;
+                binderСканнерServer = (ServiceGattServer.LocalBinderСерверBLE) service;
                 if(binderСканнерServer.isBinderAlive()){
                     Log.i(context.getClass().getName(), "    onServiceConnected  binderСканнерServer.isBinderAlive()"
                             + binderСканнерServer.isBinderAlive());

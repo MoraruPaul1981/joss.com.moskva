@@ -23,7 +23,7 @@ import androidx.work.WorkerParameters;
 
 
 import com.sous.server.Errors.SubClassErrors;
-import com.sous.server.Services.ServiceControllerServer;
+import com.sous.server.Services.ServiceGattServer;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -36,7 +36,7 @@ public class MyWork_Retry_ScannerServers extends Worker {
     private String ИмяСлужбыСинхронизации="WorkManager RetryServerScanners";
     private List<WorkInfo> WorkManagerScanner;
     private   ExecutorService executorServiceServerScanner =Executors.newSingleThreadExecutor();
-    private ServiceControllerServer.LocalBinderСерверBLE binderСканнерServer;
+    private ServiceGattServer.LocalBinderСерверBLE binderСканнерServer;
     private Handler handler;
     private Long version=0l;
     private BluetoothManager bluetoothManager;
@@ -74,7 +74,7 @@ public class MyWork_Retry_ScannerServers extends Worker {
     @SuppressLint("NewApi")
     private void МетодБиндингаОбщая() throws InterruptedException {
         try {
-        Intent intentГлавнаяСинхрониазцияScanner = new Intent(context, ServiceControllerServer.class);
+        Intent intentГлавнаяСинхрониазцияScanner = new Intent(context, ServiceGattServer.class);
             intentГлавнаяСинхрониазцияScanner.setAction("com.serviceforble");
         context.bindService(intentГлавнаяСинхрониазцияScanner,Context.BIND_AUTO_CREATE,
                 executorServiceServerScanner, new ServiceConnection() {
@@ -83,7 +83,7 @@ public class MyWork_Retry_ScannerServers extends Worker {
                 // TODO: 31.01.2023 код
                 Log.d(context.getClass().getName().toString(), "\n"
                         + "onServiceConnected  ОБЩАЯ MyWork_Retry_ScannerServers  ");
-                binderСканнерServer = (ServiceControllerServer.LocalBinderСерверBLE) service;
+                binderСканнерServer = (ServiceGattServer.LocalBinderСерверBLE) service;
                 if(binderСканнерServer.isBinderAlive()){
                     Log.i(context.getClass().getName(), "    onServiceConnected  binderСканнерServer.isBinderAlive()"
                             + binderСканнерServer.isBinderAlive());

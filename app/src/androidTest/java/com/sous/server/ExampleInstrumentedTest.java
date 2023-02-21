@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
-import com.sous.server.Services.ServiceControllerServer;
+import com.sous.server.Services.ServiceGattServer;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -33,8 +33,8 @@ public class ExampleInstrumentedTest {
     public void name() {
         appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         System.out.println("testМетодЗаписиОтмечаногоСотрудникаВБАзу");
-        ServiceControllerServer serviceControllerServertest=new ServiceControllerServer();
-        Integer РезультатЗаписиGATTTEst= serviceControllerServertest.МетодЗаписиОтмечаногоСотрудникаВБАзу(appContext);
+        ServiceGattServer serviceGattServertest =new ServiceGattServer();
+        Integer РезультатЗаписиGATTTEst= serviceGattServertest.МетодЗаписиОтмечаногоСотрудникаВБАзу(appContext);
         System.out.println(" re"+РезультатЗаписиGATTTEst);
         assertNotNull(РезультатЗаписиGATTTEst);
     }

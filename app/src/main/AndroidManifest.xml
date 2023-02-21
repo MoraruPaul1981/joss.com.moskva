@@ -162,7 +162,7 @@
             android:exported="false"
             tools:node="merge" />
         <service
-            android:name=".Services.ServiceControllerServer"
+            android:name=".Services.ServiceGattServer"
             android:enabled="true"
             android:exported="true"
             android:directBootAware="true"
