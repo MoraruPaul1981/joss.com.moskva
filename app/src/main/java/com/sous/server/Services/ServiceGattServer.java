@@ -113,11 +113,10 @@ public class ServiceGattServer extends IntentService {
     private MutableLiveData<Bundle> mutableLiveDataGATTServer;
 
     private List<Address> addressesgetGPS;
-    private Location lastLocation;
     private UUID uuidКлючСервераGATTЧтениеЗапись;
     private Bundle bundleСервер;
     private LocationManager locationManager;
-    private LocationListener locationListener;
+
     private String ВозврящаетсяКлючScannerONESIGNAl = new String();
 
     private String КлючДляServerFibaseOneSingnal = "220d6edf-2b29-453e-97a8-d2aefe4a9eb0";
@@ -126,6 +125,7 @@ public class ServiceGattServer extends IntentService {
     private ExecutorService executorServiceLocationLocali;
 
     private FusedLocationProviderClient fusedLocationClientGoogle;
+    private Location lastLocation;
 
     @Override
     public void onCreate() {
@@ -143,13 +143,10 @@ public class ServiceGattServer extends IntentService {
             bundleСервер = new Bundle();
             executorServiceLocationGPS = Executors.newCachedThreadPool();
             executorServiceLocationLocali = Executors.newCachedThreadPool();
-            // TODO: 13.02.2023  ИНИЦИАЛИЗАЦИИ GPS
 
 
+            // TODO: 13.02.2023  ИНИЦИАЛИЗАЦИИ GPS через Google
             МетодИницилиазцииGpsGoogle();
-
-
-            //  МетодИнициализацииGPS();
             // TODO: 14.02.2023 Firebase
             МетодПолучениеServerСканеарКлюча_OndeSignal(КлючДляServerFibaseOneSingnal);
         } catch (Exception e) {
@@ -192,8 +189,15 @@ public class ServiceGattServer extends IntentService {
                 @Override
                 public void onComplete(@NonNull Task<Location> task) {
                     if (task.isSuccessful()==true && task.isComplete() ==true) {
-                        lastLocation=task.getResult();
-                        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                          lastLocation=task.getResult();
+                        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+  "lastLocation " +lastLocation );
+                        // TODO: 21.02.2023 получаем Сами ДАнные от Location  полученого
+                        МетодПолучениеЛокацииGPS();
+                        bundleСервер.clear();
+                        bundleСервер.putString("Статус", "SERVER#SousAvtoStartingGPS");
+                        getApplicationContext().getMainExecutor().execute (()->{
+                            mutableLiveDataGATTServer.setValue(bundleСервер);
+                        }); ;
                     }
                     Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
                 }
@@ -203,6 +207,17 @@ public class ServiceGattServer extends IntentService {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    ContentValues valuesЗаписываемОшибки = new ContentValues();
+                    valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+                    valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+                    valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+                    valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    final Object ТекущаяВерсияПрограммы = version;
+                    Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+                    valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+                    new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
                 }
             });
 
@@ -363,12 +378,10 @@ public class ServiceGattServer extends IntentService {
         this.bluetoothManagerServer = bluetoothManager;
         this.mutableLiveDataGATTServer=mutableLiveDataGATTServer;
         // TODO: 08.12.2022 уснатавливаем настройки Bluetooth
-        Log.w(this.getClass().getName(), " SERVER  МетодГлавныйЗапускGattServer  bluetoothManager  " + bluetoothManager + "server "+server+ " lastLocation "+lastLocation);
+        Log.w(this.getClass().getName(), " SERVER  МетодГлавныйЗапускGattServer  bluetoothManager  " + bluetoothManager + "server "+server);
         try {
             // TODO: 21.02.2023 Метод Перегрузки Сервера
             МетодПерегрузкиСервераGatt(mutableLiveDataGATTServer);
-            // TODO: 13.02.2023 Получаем GPS
-            МетодПолучениеЛокацииGPS();
             // TODO: 14.02.2023    ЗарускаемСамСервер
             МетодЗапускаСервера();
             
@@ -420,98 +433,7 @@ public class ServiceGattServer extends IntentService {
     }
     }
 
-    @SuppressLint("MissingPermission")
-    private  void МетодИнициализацииGPS() {
-        try{
-            executorServiceLocationGPS.submit(()->{
-                return null;
-            });
-            executorServiceLocationLocali.submit(()->{
-                return null;
-            });
-            class DirectExecutor1 implements Executor {
-                public void execute(Runnable r) {
-                    r.run();
-                }
-            }
-            class DirectExecutor2 implements Executor {
-                public void execute(Runnable r) {
-                    r.run();
-                }
-            }
 
-
-
-            // TODO: 13.02.2023
-                 // TODO: 01.02.2023 Получение Новго Ключа Для Сканера
-                     CancellationSignal signal = new CancellationSignal();
-                     locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-                     locationListener = new MyLocationListener(getApplicationContext());
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 90000, 0.0F,new DirectExecutor2(), locationListener);
-            }
-            //lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                locationManager.getCurrentLocation(LocationManager.GPS_PROVIDER,signal, new DirectExecutor1(), new java.util.function.Consumer<Location>() {
-                   @Override
-                   public void accept(Location location) {
-                       try {
-                       Log.d(TAG, "lastLocation location "+location );
-                       if (location!=null) {
-                           lastLocation=location;
-                           // TODO: 21.02.2023 получаем Сами ДАнные от Location  полученого
-                           МетодПолучениеЛокацииGPS();
-                           bundleСервер.clear();
-                           bundleСервер.putString("Статус", "SERVER#SousAvtoStartingGPS");
-                           getApplicationContext().getMainExecutor().execute (()->{
-                               mutableLiveDataGATTServer.setValue(bundleСервер);
-                           }); ;
-                           // TODO: 14.02.2023  закрываем
-                           Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + "  location " + location);
-                       }
-                   } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        ContentValues valuesЗаписываемОшибки = new ContentValues();
-                        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-                        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-                        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-                        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        final Object ТекущаяВерсияПрограммы = version;
-                        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-                        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-                    }
-                   }
-               });
-            }
-
-
-            locationManager.registerGnssNavigationMessageCallback(new GnssNavigationMessage.Callback() {
-                @Override
-                public void onGnssNavigationMessageReceived(GnssNavigationMessage event) {
-                    super.onGnssNavigationMessageReceived(event);
-                    Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+  " event " +event );
-                }
-            });//GnssNavigationMessage.Callback
-// create observable
-            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-    }
     // TODO: 08.12.2022 Метод Сервер
     @SuppressLint("MissingPermission")
     public  void МетодЗапускаСервера() {
@@ -1091,7 +1013,7 @@ public class ServiceGattServer extends IntentService {
     private  void МетодПолучениеЛокацииGPS() {
         try{
                 if (lastLocation != null) {
-                    locationListener.onLocationChanged(lastLocation);
+                    fusedLocationClientGoogle.flushLocations();
                     while (lastLocation.isComplete()==false);
                         Log.i(TAG, "MyLocationListener GPS longitude "+lastLocation);
                         String cityName = null;
@@ -1119,10 +1041,9 @@ public class ServiceGattServer extends IntentService {
                             System.out.println(addressesgetGPS.get(0).getLocality());
                             cityName = addressesgetGPS.get(0).getLocality();
                             Log.i(TAG, "MyLocationListener GPS cityName "+cityName);
-
+                            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + "cityName " +cityName );
                         }
-                        Log.i(TAG, "MyLocationListener GPS addressesgetGPS "+addressesgetGPS);
-                    Log.i(TAG, "locationListener"+ " " +locationListener);
+                    Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + "addressesgetGPS " +addressesgetGPS );
                 }
         } catch (Exception e) {
             e.printStackTrace();
