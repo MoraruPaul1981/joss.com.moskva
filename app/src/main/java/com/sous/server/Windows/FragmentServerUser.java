@@ -43,6 +43,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textview.MaterialTextView;
 import com.sous.server.Services.ServiceGattServer;
 import com.sous.server.Errors.SubClassErrors;
 import com.sous.server.R;
@@ -79,6 +80,7 @@ public class FragmentServerUser extends Fragment {
     private Message message;
     private    ProgressBar progressBarДЛяСервера;
     private    RelativeLayout relativeLayoutСервер;
+    private MaterialTextView materialTextViewToolBar;
 
     @SuppressLint({"RestrictedApi", "MissingPermission"})
     @Override
@@ -149,6 +151,7 @@ public class FragmentServerUser extends Fragment {
     public void onStart() {
         super.onStart();
         try {
+            МетодВизуализацииКнопокИБар();
             МетодBackBindind();
             МетодHandler();
             МетодУстановкаБесконечнаяВидимсостиСервера();
@@ -172,6 +175,26 @@ public class FragmentServerUser extends Fragment {
             new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
 
+    }
+
+    private void МетодВизуализацииКнопокИБар() {
+        try {
+            ((MainActivityNewServerScanner) getActivity()).МетодВидимыеПрограссБарИКнопки();
+            Log.i(this.getClass().getName(), "onStart() " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
     }
 
     // TODO: 12.03.2022  метод с бизнес логикой

@@ -177,7 +177,8 @@ public class ServiceGattServer extends IntentService {
                 public void onComplete(@NonNull Task<Location> task) {
                     if (task.isSuccessful()==true && task.isComplete() ==true) {
                           lastLocation=task.getResult();
-                        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+  "lastLocation " +lastLocation );
+                        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+  "lastLocation " +lastLocation +
+                                " task.isSuccessful() " +task.isSuccessful()+  "task.isComplete() "+task.isComplete());
                         // TODO: 21.02.2023 получаем Сами ДАнные от Location  полученого
                         МетодПолучениеЛокацииGPS();
                         bundleСервер.clear();
@@ -359,7 +360,7 @@ public class ServiceGattServer extends IntentService {
 
     // TODO: 30.11.2022 сервер СКАНИРОВАНИЯ
     @SuppressLint({"MissingPermission", "NewApi"})
-    public  void МетодГлавныйЗапускGattServer(@NonNull Handler handler, @NonNull Context context,
+    public synchronized   void МетодГлавныйЗапускGattServer(@NonNull Handler handler, @NonNull Context context,
                                              @NonNull BluetoothManager bluetoothManager,
                                              @NonNull MutableLiveData<Bundle>mutableLiveDataGATTServer) {
         this.bluetoothManagerServer = bluetoothManager;

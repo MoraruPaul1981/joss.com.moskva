@@ -61,11 +61,6 @@ public class FragmentBootServer extends Fragment {
             Log.d(this.getClass().getName(), "  onViewCreated  Fragment1_One_Tasks view   " + view);
             PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
-            View   viewАктивтиСканивраония = LayoutInflater.from(getContext()).inflate(R.layout.activity_main_newserverscanner, null, false);
-            Log.i(this.getClass().getName(),  "onViewCreated " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+viewАктивтиСканивраония);
-            bottomNavigationView = (NavigationBarView) viewАктивтиСканивраония.findViewById(R.id.BottomNavigationViewScanner);
-            materialTextViewToolBar=(MaterialTextView)  viewАктивтиСканивраония.findViewById(R.id.text_scanner_work);
-            relativeLayout = (RelativeLayout) viewАктивтиСканивраония.findViewById(R.id.relativelayoutserverble);
             fragmentManager =getActivity().getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
             // TODO: 20.02.2023
@@ -122,13 +117,11 @@ public class FragmentBootServer extends Fragment {
             fragment= fragmentManager.getFragments().get(0);
             fragment.onDetach();
             fragmentTransaction.remove(fragment);
+            fragmentTransaction.show(fragment);
             fragment=new FragmentServerUser();
             handler.postAtTime(new Runnable() {
                 @Override
                 public void run() {
-                    bottomNavigationView.setVisibility(View.VISIBLE);
-                    materialTextViewToolBar.setVisibility(View.VISIBLE);
-                    materialTextViewToolBar.setText("Сервер");
                     fragmentTransaction.addToBackStack("");
                     //fragmentTransaction.add(R.id.framelauoutScanner, fragment.getClass(),bundle);//.layout.activity_for_fragemtb_history_tasks
                     fragmentTransaction.replace(R.id.framelauoutScanner, fragment);//.layout.activity_for_fragemtb_history_tasks

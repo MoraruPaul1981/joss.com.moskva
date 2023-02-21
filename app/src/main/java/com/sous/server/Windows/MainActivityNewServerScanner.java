@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,6 +58,7 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
     private Fragment fragment;
     private LinearLayout linearLayou;
     private  Long version;
+    private RelativeLayout relativeLayout;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -82,14 +84,11 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
             bottomNavigationItemViewВыход.setItemRippleColor(ColorStateList.valueOf(Color.RED));
             bottomNavigationItemViewИстория.setItemRippleColor(ColorStateList.valueOf(Color.RED));
             linearLayou = (LinearLayout) findViewById(R.id.activity_main_newscanner);
-            Log.w(getApplicationContext().getClass().getName(), " MainActivityNewServerScanner onCreate  ");
+            relativeLayout = (RelativeLayout) findViewById(R.id.relativelayoutserverble);
             fragmentManager = getSupportFragmentManager();
-            bottomNavigationView.setVisibility(View.INVISIBLE);
-            materialTextViewToolBar.setText("");
-            materialTextViewToolBar.setVisibility(View.INVISIBLE);
-            Log.w(getApplicationContext().getClass().getName(), " MainActivityNewServerScanner onCreate  ");
             PackageInfo pInfo =getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
@@ -107,12 +106,14 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
         }
 
     }
+
     @SuppressLint("RestrictedApi")
     @Override
     protected void onStart() {
         super.onStart();
         try {
             // TODO: 07.02.2023 дополнительное разрещения blutoon
+            МетодПрячемБарИКнопки();
             МетодСобыытиеКнопокСканирования(new Intent("activity"));
             МетодРАзрешенияBlurtooTКлиент();
             ОтветныйHendlerОтСлужбы();
@@ -135,6 +136,22 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
         }
 
     }
+    public void МетодПрячемБарИКнопки() {
+        bottomNavigationView.setVisibility(View.INVISIBLE);
+        materialTextViewToolBar.setVisibility(View.INVISIBLE);
+        relativeLayout.refreshDrawableState();
+        relativeLayout.forceLayout();
+        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+    }
+
+    public void МетодВидимыеПрограссБарИКнопки() {
+        bottomNavigationView.setVisibility(View.VISIBLE);
+        materialTextViewToolBar.setVisibility(View.VISIBLE);
+        relativeLayout.refreshDrawableState();
+        relativeLayout.forceLayout();
+        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+    }
+
     public void МетодСобыытиеКнопокСканирования(@NotNull Intent intent) {
         try {
             bottomNavigationItemViewВыход.setOnClickListener(new View.OnClickListener() {
