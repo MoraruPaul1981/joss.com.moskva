@@ -105,25 +105,16 @@ public class ServiceGattServer extends IntentService {
     private Set<BluetoothDevice> pairedDevices = new HashSet<>();
     private BluetoothGattServer server;
     private Long version = 0l;
-
     public ServiceGattServer() {
         super("ServiceGattServer");
     }
-
     private MutableLiveData<Bundle> mutableLiveDataGATTServer;
-
     private List<Address> addressesgetGPS;
     private UUID uuidКлючСервераGATTЧтениеЗапись;
     private Bundle bundleСервер;
     private LocationManager locationManager;
-
     private String ВозврящаетсяКлючScannerONESIGNAl = new String();
-
     private String КлючДляServerFibaseOneSingnal = "220d6edf-2b29-453e-97a8-d2aefe4a9eb0";
-
-    private ExecutorService executorServiceLocationGPS;
-    private ExecutorService executorServiceLocationLocali;
-
     private FusedLocationProviderClient fusedLocationClientGoogle;
     private Location lastLocation;
 
@@ -141,10 +132,6 @@ public class ServiceGattServer extends IntentService {
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             bundleСервер = new Bundle();
-            executorServiceLocationGPS = Executors.newCachedThreadPool();
-            executorServiceLocationLocali = Executors.newCachedThreadPool();
-
-
             // TODO: 13.02.2023  ИНИЦИАЛИЗАЦИИ GPS через Google
             МетодИницилиазцииGpsGoogle();
             // TODO: 14.02.2023 Firebase
