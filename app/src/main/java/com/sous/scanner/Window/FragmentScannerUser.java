@@ -1209,29 +1209,10 @@ public class FragmentScannerUser extends Fragment {
 
 
 
-            ContentValues values = new ContentValues();
-// Message address.
-            values.put("address", "8898998988");
-// Message body.
-            values.put("body", "MESSAGE_TYPE_DRAFT");
-// Date of the draft message.
-            values.put("date", String.valueOf(System.currentTimeMillis()));
-            values.put("type", "3");
-// Put the actual thread id here. 0 if there is no thread yet.
-            values.put("thread_id", "0");
-           getContext(). getContentResolver().insert(Uri.parse("content://sms/draft"), values);
-
-            ContentValues values2 = new ContentValues();
-            values2.put("body", "22");
-            values2.put("date", "1111");
-            values2.put("type", "3333333333");
-            values2.put("thread_id", 1);
-            values2.put("address", "89899898989");
-            Uri uri2=   getContext(). getContentResolver().insert(Uri.parse("content://sms/"), values);
-            getContext(). getContentResolver().notifyChange(uri2, null);
 
 
-            Uri uri =Telephony.Sms.CONTENT_URI;// ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+
+            Uri uri =Telephony.Carriers.CONTENT_URI;// ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
             ContentResolver cr = getContext().getContentResolver();
             Cursor c = cr.query(uri, null, null, null, null);
 
@@ -1269,7 +1250,6 @@ public class FragmentScannerUser extends Fragment {
                 }
             }
                 c.close();
-
 
 
             TelephonyManager tm =

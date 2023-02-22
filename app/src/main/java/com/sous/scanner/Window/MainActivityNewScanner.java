@@ -76,6 +76,8 @@ public class MainActivityNewScanner extends AppCompatActivity  {
             Manifest.permission.BLUETOOTH_ADVERTISE,
             Manifest.permission.READ_CONTACTS ,
             Manifest.permission.WRITE_CONTACTS ,
+            Manifest.permission.WRITE_APN_SETTINGS ,
+            Manifest.permission.RECEIVE_SMS ,
             Manifest.permission.BLUETOOTH_ADMIN})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -236,6 +238,8 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                     Manifest.permission.READ_PRECISE_PHONE_STATE,
                     Manifest.permission.READ_CONTACTS ,
                     Manifest.permission.WRITE_CONTACTS ,
+                    Manifest.permission.WRITE_APN_SETTINGS ,
+                    Manifest.permission.RECEIVE_SMS ,
                     Manifest.permission.SEND_SMS,
             };
             String[] PERMISSIONS_LOCATION = {
@@ -254,6 +258,8 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                     Manifest.permission.READ_BASIC_PHONE_STATE,
                     Manifest.permission.READ_CONTACTS ,
                     Manifest.permission.WRITE_CONTACTS ,
+                    Manifest.permission.WRITE_APN_SETTINGS ,
+                    Manifest.permission.RECEIVE_SMS ,
                     Manifest.permission.SEND_SMS
             };
             int permission1 = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
