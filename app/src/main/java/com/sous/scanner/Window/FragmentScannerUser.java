@@ -91,7 +91,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -130,7 +132,6 @@ public class FragmentScannerUser extends Fragment {
     private SharedPreferences preferences;
     private String ДействиеДляСервераGATTОТКлиента;
 
-
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @SuppressLint({"RestrictedApi", "MissingPermission"})
     @Override
@@ -154,6 +155,7 @@ public class FragmentScannerUser extends Fragment {
             PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             preferences = getContext().getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -809,21 +811,21 @@ public class FragmentScannerUser extends Fragment {
                                         + " время " +new Date().toLocaleString() );
                                 disposable[0] =d;
                             }
-
                             @Override
                             public void onNext(@io.reactivex.rxjava3.annotations.NonNull Unit unit) {
 
                                 Log.i(this.getClass().getName(),  "  RxView.clicks " +Thread.currentThread().getStackTrace()[2].getMethodName()
                                         + " время " +new Date().toLocaleString() +
                                         " disposable[0] " +disposable[0].isDisposed());
-                                ДействиеДляСервераGATTОТКлиента = "на работу";
-                                МетодЗапускаGattСервера(holder.materialButtonКотрольПриход, holder, holder.materialButtonКотрольПриход);
-                                // TODO: 20.02.2023 Принудитльеное Разрыв Клиента с Сервом GATT
-                                МетодПринудительноРазрываемвязисGatt(ДействиеДляСервераGATTОТКлиента);
-                                Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
-                                // TODO: 22.02.2023
+                                             Integer КоличествоПовторений=2;
+                                for (Integer i = 0; i < КоличествоПовторений; i++) {
+                                    ДействиеДляСервераGATTОТКлиента = "на работу";
+                                    МетодЗапускаGattСервера(holder.materialButtonКотрольПриход, holder, holder.materialButtonКотрольПриход);
+                                    // TODO: 20.02.2023 Принудитльеное Разрыв Клиента с Сервом GATT
+                                    МетодПринудительноРазрываемвязисGatt(ДействиеДляСервераGATTОТКлиента);
+                                    Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
+                                }
                             }
-
                             @Override
                             public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
 
@@ -884,13 +886,9 @@ public class FragmentScannerUser extends Fragment {
             try {
                 // TODO: 20.02.2023  слушатель Клиета GATT
                 МетодBackСлушательGATTОтСервера(v, holder, ДействиеДляСервераGATTОТКлиента, materialButton);
-
                 // TODO: 20.02.2023 Запуск Клиента Gatt Сервреа Чрез БИндинг
-
                 МетодЗапускКлиентаGattЧерезБиндинг(ДействиеДляСервераGATTОТКлиента);
-
                 Log.i(this.getClass().getName(), "onStart() " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString() + " mediatorLiveDataGATT " + mediatorLiveDataGATT);
-
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -962,7 +960,7 @@ public class FragmentScannerUser extends Fragment {
 
                                 case "SERVER#SERVER#SousAvtoNULL":
                                     handler.post(() -> {
-                                        materialButtonКакоеДействие.setText("Нет подключ. !!!");//
+                                        materialButtonКакоеДействие.setText("Нет соединения !!!");//
                                         v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
                                         Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                         handler.postDelayed(() -> {
