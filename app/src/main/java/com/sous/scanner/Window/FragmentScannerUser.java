@@ -6,6 +6,7 @@ import static android.telephony.SubscriptionManager.PHONE_NUMBER_SOURCE_UICC;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.PendingIntent;
 import android.app.admin.DeviceAdminReceiver;
 import android.app.admin.DevicePolicyManager;
 import android.bluetooth.BluetoothManager;
@@ -36,6 +37,7 @@ import android.telecom.PhoneAccountHandle;
 import android.telephony.CellInfo;
 import android.telephony.CellSignalStrength;
 import android.telephony.NetworkRegistrationInfo;
+import android.telephony.SmsManager;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
@@ -1193,37 +1195,34 @@ public class FragmentScannerUser extends Fragment {
 
 
     @SuppressLint("MissingPermission")
-    @RequiresPermission(anyOf = {
-            Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.READ_SMS,
-            Manifest.permission.READ_PHONE_NUMBERS,
-            Manifest.permission.READ_BASIC_PHONE_STATE})
     private ArrayList<String> МетодЗаполенияДаннымиКлиентаДЛяGAtt() {
         ArrayList<String> linkedHashMapДанныеКлиентаДляGATT = null;
         try {
             linkedHashMapДанныеКлиентаДляGATT = new ArrayList<>();
             linkedHashMapДанныеКлиентаДляGATT.add(ДействиеДляСервераGATTОТКлиента);
 
-            final PackageManager manager = getContext().getPackageManager();
-            Intent smsIntent = new Intent(Intent.ACTION_VIEW);
-            smsIntent.setType("vnd.android-dir/mms-sms");
-            List<ResolveInfo> infos = manager.queryIntentActivities(smsIntent, 0);
-            final String phoneNumber = "1234567890";
-            final String msg = "Hello!";
-            if (infos.size() <1) {
-                //No Application can handle your intent
-                //try in a another way ...
-                Uri uri = Uri.parse("smsto:"+phoneNumber);
-                smsIntent = new Intent(Intent.ACTION_SENDTO, uri);
-                smsIntent.putExtra("sms_body", msg);
-                infos = manager.queryIntentActivities(smsIntent, 0);
-            }
+            Intent intent=new Intent(getContext(),MainActivityNewScanner.class);
+            PendingIntent pi=PendingIntent.getActivity(getActivity(),  0 , intent,PendingIntent.FLAG_IMMUTABLE );
+            SmsManager sms= SmsManager.getDefault();
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED
+            ) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
 
-            if (infos.size() <1) {
-                //No Application can handle your intent
-                Log.e("SendMessage","No Application can handle your SMS intent");
+                return null;
             }
-            startActivity(smsIntent);
+            sms.sendTextMessage ( "+79158111806" ,  null ,  "привет, javatpoint" , pi, null );
+
+
             TelephonyManager tm =
                     (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
             if ( tm.getAllCellInfo()!=null) {
@@ -1236,49 +1235,7 @@ public class FragmentScannerUser extends Fragment {
                 });
             }
 
-            DevicePolicyManager dpm = (DevicePolicyManager) getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
-            ComponentName admin = new ComponentName(getActivity(), DeviceAdminReceiver.class);
-            //dpm.setUninstallBlocked(admin, "com.sous.scanner", true);
 
-          // dpm.setDelegatedScopes(admin,"com.sous.scanner",list);
-
-
-
-            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
-                    +new Date().toLocaleString() );
-
-            SubscriptionManager tMgr = (SubscriptionManager) getActivity().getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
-            tMgr.addOnSubscriptionsChangedListener(new SubscriptionManager.OnSubscriptionsChangedListener());
-            int subId = 0;
-            final SubscriptionManager subscriptionManager = SubscriptionManager.from(getContext());
-            final List<SubscriptionInfo> activeSubscriptionInfoList = tMgr.getActiveSubscriptionInfoList();
-            for (SubscriptionInfo subscriptionInfo : activeSubscriptionInfoList) {
-                final CharSequence carrierName = subscriptionInfo.getCarrierName();
-                final CharSequence displayName = subscriptionInfo.getDisplayName();
-                final int mcc = subscriptionInfo.getMcc();
-                final int mnc = subscriptionInfo.getMnc();
-                final String subscriptionInfoNumber = subscriptionInfo.getNumber();
-              final Integer incard=  subscriptionInfo.getCardId();
-                final String inuuidcard=      subscriptionInfo.getIccId();
-                final String mmccadrd=    subscriptionInfo.getMccString();
-              final ParcelUuid parcel= subscriptionInfo.getGroupUuid();
-
-               subId = subscriptionInfo.getSubscriptionId(); // sim card 1
-                int _subId =  subscriptionInfo.getSubscriptionType(); // sim card 2
-                String _subId2 =  subscriptionInfo.getIccId(); // sim card 2
-
-                Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
-                        +new Date().toLocaleString()+  "subscriptionInfoNumber "+subscriptionInfoNumber + "incard "+incard+ " inuuidcard " +inuuidcard+ " mmccadrd " +mmccadrd+ " parcel " +parcel);
-            }
-
-            /*String mPhoneNumbe5 = tMgr.getPhoneNumber(PHONE_NUMBER_SOURCE_CARRIER);
-            String mPhoneNumbe6= tMgr.getPhoneNumber(PHONE_NUMBER_SOURCE_IMS);
-            String mPhoneNumbe7= tMgr.getPhoneNumber(PHONE_NUMBER_SOURCE_IMS);
-            String mPhoneNumbe8= tMgr.getPhoneNumber(SubscriptionManager.DEFAULT_SUBSCRIPTION_ID);*/
-            Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString());
-            linkedHashMapДанныеКлиентаДляGATT.add("89154578454545");
-            linkedHashMapДанныеКлиентаДляGATT.add("89104578454500");
-            linkedHashMapДанныеКлиентаДляGATT.add("00232000000000");
             Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
                     + " linkedHashMapДанныеКлиентаДляGATT " +linkedHashMapДанныеКлиентаДляGATT);
         } catch (Exception e) {

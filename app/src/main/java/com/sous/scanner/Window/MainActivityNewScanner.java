@@ -1,6 +1,7 @@
 package com.sous.scanner.Window;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -55,6 +56,20 @@ public class MainActivityNewScanner extends AppCompatActivity  {
     private MaterialTextView materialTextViewToolBar;
     private  MutableLiveData<Binder> event;
     @SuppressLint("RestrictedApi")
+    @RequiresPermission(anyOf = {
+            Manifest.permission.SEND_SMS,
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.READ_SMS,
+            Manifest.permission.READ_PHONE_NUMBERS,
+            Manifest.permission.READ_BASIC_PHONE_STATE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.BLUETOOTH_SCAN,
+            Manifest.permission.BLUETOOTH_CONNECT,
+            Manifest.permission.BLUETOOTH_PRIVILEGED,
+            Manifest.permission.BLUETOOTH_ADVERTISE,
+            Manifest.permission.BLUETOOTH_ADMIN})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -231,6 +246,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                     Manifest.permission.READ_PHONE_NUMBERS,
                     Manifest.permission.READ_BASIC_PHONE_STATE,
                     Manifest.permission.READ_PRECISE_PHONE_STATE,
+                    Manifest.permission.SEND_SMS,
             };
             String[] PERMISSIONS_LOCATION = {
                     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -245,7 +261,8 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                     Manifest.permission.READ_SMS,
                     Manifest.permission.READ_PRECISE_PHONE_STATE,
                     Manifest.permission.READ_PHONE_NUMBERS,
-                    Manifest.permission.READ_BASIC_PHONE_STATE
+                    Manifest.permission.READ_BASIC_PHONE_STATE,
+                    Manifest.permission.SEND_SMS
             };
             int permission1 = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
             int permission2 = ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN);
