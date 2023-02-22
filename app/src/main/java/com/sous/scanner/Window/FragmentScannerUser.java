@@ -758,8 +758,8 @@ public class FragmentScannerUser extends Fragment {
                         +new Date().toLocaleString() + " holder " +holder);
                 // TODO: 19.02.2023 Второе Действие
                 final Disposable[] disposable = new Disposable[1];
-                RxView.clicks(holder.materialButtonКотрольПриход)
-                        .throttleFirst(1, TimeUnit.SECONDS)
+                RxView.clicks(holder.materialButtonКотрольВыход)
+                        .throttleFirst(10, TimeUnit.SECONDS)
                                 .observeOn(AndroidSchedulers.mainThread())
                                         .subscribe(new io.reactivex.rxjava3.core.Observer<Unit>() {
                                             @Override
@@ -799,8 +799,8 @@ public class FragmentScannerUser extends Fragment {
                                             }
                                         });
                 // TODO: 22.02.2023 для второй кнопки
-                RxView.clicks(holder.materialButtonКотрольВыход)
-                        .throttleFirst(1, TimeUnit.SECONDS)
+                RxView.clicks(holder.materialButtonКотрольПриход)
+                        .throttleFirst(10, TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new io.reactivex.rxjava3.core.Observer<Unit>() {
                             @Override
@@ -926,7 +926,7 @@ public class FragmentScannerUser extends Fragment {
                 mediatorLiveDataGATT.setValue("GATTCLIENTProccessing");
                 mediatorLiveDataGATT.observe(lifecycleOwner, new Observer<String>() {
                     @Override
-                    public void onChanged(String ОтветОтСерврера) {
+                    public void onChanged(@NonNull  String ОтветОтСерврера) {
                         if (mediatorLiveDataGATT.getValue() != null) {
                             Log.i(this.getClass().getName(), "   создание МетодЗаполенияФрагмента1 mediatorLiveDataGATT " + mediatorLiveDataGATT);
                             // TODO: 24.01.2023  показываем поозователю Статуса
@@ -941,12 +941,6 @@ public class FragmentScannerUser extends Fragment {
                                     Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                             + new Date().toLocaleString() + " mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
 
-                                    break;
-                                case "SERVER#SERVER#DISSouConnect":
-                                    materialButtonКакоеДействие.setText("Разрыв...");
-                                    v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
-                                    Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
-                                            + new Date().toLocaleString() + " mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                     break;
                                 case "GATTCLIENTCALLBACK":
                                     handler.post(() -> {
@@ -968,7 +962,7 @@ public class FragmentScannerUser extends Fragment {
 
                                 case "SERVER#SERVER#SousAvtoNULL":
                                     handler.post(() -> {
-                                        materialButtonКакоеДействие.setText("Нет связи !!!");//
+                                        materialButtonКакоеДействие.setText("Нет подключ. !!!");//
                                         v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
                                         Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                         handler.postDelayed(() -> {
@@ -1058,14 +1052,30 @@ public class FragmentScannerUser extends Fragment {
         }
 
         private void МетодЗапускКлиентаGattЧерезБиндинг(@NonNull String ДействиеДляСервераGATTОТКлиента) {
+            try {
             // TODO: 06.12.2022 запускаем сканирование клиента
             binderСканнер.getService().МетодКлиентЗапускСканера(handler, getActivity(), bluetoothManager, mediatorLiveDataGATT, ДействиеДляСервераGATTОТКлиента);
+                Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
         }
 
         private void МетодПринудительноРазрываемвязисGatt(@NonNull String ДействиеДляСервераGATTОТКлиента) {
             try {
                 handler.postDelayed(() -> {
-                    mediatorLiveDataGATT.setValue(ДействиеДляСервераGATTОТКлиента);
+                    mediatorLiveDataGATT.setValue("SERVER#SERVER#SousAvtoNULL");
                     binderСканнер.getService().МетодРазрываСоедениесGAttServer();
                     Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString()
                             + "ДействиеДляСервераGATTОТКлиента " + ДействиеДляСервераGATTОТКлиента);
