@@ -761,7 +761,7 @@ public class FragmentScannerUser extends Fragment {
                 // TODO: 19.02.2023 Второе Действие
                 final Disposable[] disposable = new Disposable[1];
                 RxView.clicks(holder.materialButtonКотрольВыход)
-                        .throttleFirst(10, TimeUnit.SECONDS)
+                        .throttleFirst(1, TimeUnit.MINUTES)
                                 .observeOn(AndroidSchedulers.mainThread())
                                         .subscribe(new io.reactivex.rxjava3.core.Observer<Unit>() {
                                             @Override
@@ -777,12 +777,16 @@ public class FragmentScannerUser extends Fragment {
                                                 Log.i(this.getClass().getName(),  "  RxView.clicks " +Thread.currentThread().getStackTrace()[2].getMethodName()
                                                         + " время " +new Date().toLocaleString() +
                                                         " disposable[0] " +disposable[0].isDisposed());
-                                                ДействиеДляСервераGATTОТКлиента = "с работы";
-                                                МетодЗапускаGattСервера(holder.materialButtonКотрольВыход, holder, holder.materialButtonКотрольВыход);
-                                                // TODO: 20.02.2023 Принудитльеное Разрыв Клиента с Сервом GATT
-                                                МетодПринудительноРазрываемвязисGatt(ДействиеДляСервераGATTОТКлиента);
-                                                Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
-                                                // TODO: 22.02.2023
+                                                Integer КоличествоПовторений=2;
+                                                for (Integer i = 0; i < КоличествоПовторений; i++) {
+                                                    ДействиеДляСервераGATTОТКлиента = "с работы";
+                                                    МетодЗапускаGattСервера(holder.materialButtonКотрольВыход, holder, holder.materialButtonКотрольВыход);
+                                                    // TODO: 20.02.2023 Принудитльеное Разрыв Клиента с Сервом GATT
+                                                    МетодПринудительноРазрываемвязисGatt(ДействиеДляСервераGATTОТКлиента);
+                                                    Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
+                                                    // TODO: 22.02.2023
+                                                }
+                                                disposable[0].dispose();
                                             }
 
                                             @Override
@@ -802,7 +806,7 @@ public class FragmentScannerUser extends Fragment {
                                         });
                 // TODO: 22.02.2023 для второй кнопки
                 RxView.clicks(holder.materialButtonКотрольПриход)
-                        .throttleFirst(10, TimeUnit.SECONDS)
+                        .throttleFirst(1, TimeUnit.MINUTES)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new io.reactivex.rxjava3.core.Observer<Unit>() {
                             @Override
@@ -825,6 +829,7 @@ public class FragmentScannerUser extends Fragment {
                                     МетодПринудительноРазрываемвязисGatt(ДействиеДляСервераGATTОТКлиента);
                                     Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
                                 }
+                                disposable[0].dispose();
                             }
                             @Override
                             public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
