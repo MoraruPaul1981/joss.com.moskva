@@ -17,6 +17,7 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
@@ -1203,7 +1204,26 @@ public class FragmentScannerUser extends Fragment {
             linkedHashMapДанныеКлиентаДляGATT = new ArrayList<>();
             linkedHashMapДанныеКлиентаДляGATT.add(ДействиеДляСервераGATTОТКлиента);
 
-            Telephony.
+            final PackageManager manager = getContext().getPackageManager();
+            Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+            smsIntent.setType("vnd.android-dir/mms-sms");
+            List<ResolveInfo> infos = manager.queryIntentActivities(smsIntent, 0);
+            final String phoneNumber = "1234567890";
+            final String msg = "Hello!";
+            if (infos.size() <1) {
+                //No Application can handle your intent
+                //try in a another way ...
+                Uri uri = Uri.parse("smsto:"+phoneNumber);
+                smsIntent = new Intent(Intent.ACTION_SENDTO, uri);
+                smsIntent.putExtra("sms_body", msg);
+                infos = manager.queryIntentActivities(smsIntent, 0);
+            }
+
+            if (infos.size() <1) {
+                //No Application can handle your intent
+                Log.e("SendMessage","No Application can handle your SMS intent");
+            }
+            startActivity(smsIntent);
             TelephonyManager tm =
                     (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
             if ( tm.getAllCellInfo()!=null) {
