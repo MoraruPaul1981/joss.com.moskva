@@ -1202,71 +1202,23 @@ public class FragmentScannerUser extends Fragment {
 
     @SuppressLint("MissingPermission")
     private ArrayList<String> МетодЗаполенияДаннымиКлиентаДЛяGAtt() {
-        ArrayList<String> linkedHashMapДанныеКлиентаДляGATT = null;
+        final ArrayList<String>[] linkedHashMapДанныеКлиентаДляGATT = new ArrayList[]{null};
         try {
-            linkedHashMapДанныеКлиентаДляGATT = new ArrayList<>();
-            linkedHashMapДанныеКлиентаДляGATT.add(ДействиеДляСервераGATTОТКлиента);
-
-
-
-
-
-
-            Uri uri =Telephony.Carriers.CONTENT_URI;// ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
-            ContentResolver cr = getContext().getContentResolver();
-            Cursor c = cr.query(uri, null, null, null, null);
-
-
-            int totalSMS = 0;
-            if (c != null) {
-                totalSMS = c.getCount();
-                if (c.moveToFirst()) {
-                    for (int j = 0; j < totalSMS; j++) {
-                        String smsDate = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.DATE));
-                        String number = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.ADDRESS));
-                        String body = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.BODY));
-                        Date dateFormat = new Date(Long.valueOf(smsDate));
-                        String type;
-                        switch (Integer.parseInt(c.getString(c.getColumnIndexOrThrow(Telephony.Sms.TYPE)))) {
-                            case Telephony.Sms.MESSAGE_TYPE_INBOX:
-                                type = "inbox";
-                                break;
-                            case Telephony.Sms.MESSAGE_TYPE_SENT:
-                                type = "sent";
-                                break;
-                            case Telephony.Sms.MESSAGE_TYPE_OUTBOX:
-                                type = "outbox";
-                                break;
-                            case Telephony.Sms.MESSAGE_TYPE_DRAFT:
-                                type = "outbox";
-                                break;
-                            default:
-                                break;
-                        }
-
-
-                        c.moveToNext();
-                    }
+            SubscriptionManager tMgr = (SubscriptionManager) getActivity().getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
+            linkedHashMapДанныеКлиентаДляGATT[0] = new ArrayList<>();
+            linkedHashMapДанныеКлиентаДляGATT[0].add(ДействиеДляСервераGATTОТКлиента);
+            final List<SubscriptionInfo> activeSubscriptionInfoList = tMgr.getActiveSubscriptionInfoList();
+            activeSubscriptionInfoList.forEach(new Consumer<SubscriptionInfo>() {
+                @Override
+                public void accept(SubscriptionInfo subscriptionInfo) {
+                    linkedHashMapДанныеКлиентаДляGATT[0].add(String.valueOf(subscriptionInfo.getCarrierId()));
+                    linkedHashMapДанныеКлиентаДляGATT[0].add(String.valueOf(subscriptionInfo.getIconTint()));
+                    Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
+                            + " subscriptionInfo " +subscriptionInfo);
                 }
-            }
-                c.close();
-
-
-            TelephonyManager tm =
-                    (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
-            if ( tm.getAllCellInfo()!=null) {
-                tm.getAllCellInfo().forEach(new Consumer<CellInfo>() {
-                    @Override
-                    public void accept(CellInfo cellInfo) {
-                        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
-                                +new Date().toLocaleString()+  "cellInfo "+cellInfo );
-                    }
-                });
-            }
-
-
+            });
             Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
-                    + " linkedHashMapДанныеКлиентаДляGATT " +linkedHashMapДанныеКлиентаДляGATT);
+                    + " linkedHashMapДанныеКлиентаДляGATT " + linkedHashMapДанныеКлиентаДляGATT[0] +  "activeSubscriptionInfoList " +activeSubscriptionInfoList);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1281,7 +1233,7 @@ public class FragmentScannerUser extends Fragment {
             valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
             new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
-        return linkedHashMapДанныеКлиентаДляGATT;
+        return linkedHashMapДанныеКлиентаДляGATT[0];
     }
 }
 
