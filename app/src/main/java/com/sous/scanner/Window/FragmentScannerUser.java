@@ -19,6 +19,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,6 +30,7 @@ import android.os.ParcelUuid;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.Settings;
+import android.provider.Telephony;
 import android.telecom.PhoneAccountHandle;
 import android.telephony.CellInfo;
 import android.telephony.CellSignalStrength;
@@ -1201,7 +1203,7 @@ public class FragmentScannerUser extends Fragment {
             linkedHashMapДанныеКлиентаДляGATT = new ArrayList<>();
             linkedHashMapДанныеКлиентаДляGATT.add(ДействиеДляСервераGATTОТКлиента);
 
-
+            Telephony.
             TelephonyManager tm =
                     (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
             if ( tm.getAllCellInfo()!=null) {
@@ -1218,7 +1220,12 @@ public class FragmentScannerUser extends Fragment {
             ComponentName admin = new ComponentName(getActivity(), DeviceAdminReceiver.class);
             //dpm.setUninstallBlocked(admin, "com.sous.scanner", true);
 
-          //  dpm.setDelegatedScopes(admin,"com.sous.scanner",list);
+          // dpm.setDelegatedScopes(admin,"com.sous.scanner",list);
+
+
+
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
+                    +new Date().toLocaleString() );
 
             SubscriptionManager tMgr = (SubscriptionManager) getActivity().getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
             tMgr.addOnSubscriptionsChangedListener(new SubscriptionManager.OnSubscriptionsChangedListener());
