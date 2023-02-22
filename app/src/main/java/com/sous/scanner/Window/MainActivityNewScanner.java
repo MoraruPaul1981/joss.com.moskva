@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -18,11 +19,15 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -69,6 +74,8 @@ public class MainActivityNewScanner extends AppCompatActivity  {
             Manifest.permission.BLUETOOTH_CONNECT,
             Manifest.permission.BLUETOOTH_PRIVILEGED,
             Manifest.permission.BLUETOOTH_ADVERTISE,
+            Manifest.permission.READ_CONTACTS ,
+            Manifest.permission.WRITE_CONTACTS ,
             Manifest.permission.BLUETOOTH_ADMIN})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -246,6 +253,8 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                     Manifest.permission.READ_PHONE_NUMBERS,
                     Manifest.permission.READ_BASIC_PHONE_STATE,
                     Manifest.permission.READ_PRECISE_PHONE_STATE,
+                    Manifest.permission.READ_CONTACTS ,
+                    Manifest.permission.WRITE_CONTACTS ,
                     Manifest.permission.SEND_SMS,
             };
             String[] PERMISSIONS_LOCATION = {
@@ -262,6 +271,8 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                     Manifest.permission.READ_PRECISE_PHONE_STATE,
                     Manifest.permission.READ_PHONE_NUMBERS,
                     Manifest.permission.READ_BASIC_PHONE_STATE,
+                    Manifest.permission.READ_CONTACTS ,
+                    Manifest.permission.WRITE_CONTACTS ,
                     Manifest.permission.SEND_SMS
             };
             int permission1 = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);

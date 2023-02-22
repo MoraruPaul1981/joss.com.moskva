@@ -11,6 +11,7 @@ import android.app.admin.DeviceAdminReceiver;
 import android.app.admin.DevicePolicyManager;
 import android.bluetooth.BluetoothManager;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
@@ -31,6 +33,7 @@ import android.os.Parcel;
 import android.os.ParcelUuid;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.provider.Telephony;
 import android.telecom.PhoneAccountHandle;
@@ -40,6 +43,7 @@ import android.telephony.NetworkRegistrationInfo;
 import android.telephony.SmsManager;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
+import android.telephony.TelephonyDisplayInfo;
 import android.telephony.TelephonyManager;
 import android.telephony.emergency.EmergencyNumber;
 import android.util.Log;
@@ -56,6 +60,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RequiresPermission;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -1200,27 +1205,42 @@ public class FragmentScannerUser extends Fragment {
         try {
             linkedHashMapДанныеКлиентаДляGATT = new ArrayList<>();
             linkedHashMapДанныеКлиентаДляGATT.add(ДействиеДляСервераGATTОТКлиента);
+            Uri uri =Telephony.Sms.CONTENT_URI;// ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+            ContentResolver cr = getContext().getContentResolver();
+            Cursor c = cr.query(uri, null, null, null, null);
 
-            Intent intent=new Intent(getContext(),MainActivityNewScanner.class);
-            PendingIntent pi=PendingIntent.getActivity(getActivity(),  0 , intent,PendingIntent.FLAG_IMMUTABLE );
-            SmsManager sms= SmsManager.getDefault();
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED
-            ) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
 
-                return null;
+            int totalSMS = 0;
+            if (c != null) {
+                totalSMS = c.getCount();
+                if (c.moveToFirst()) {
+                    for (int j = 0; j < totalSMS; j++) {
+                        String smsDate = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.DATE));
+                        String number = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.ADDRESS));
+                        String body = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.BODY));
+                        Date dateFormat = new Date(Long.valueOf(smsDate));
+                        String type;
+                        switch (Integer.parseInt(c.getString(c.getColumnIndexOrThrow(Telephony.Sms.TYPE)))) {
+                            case Telephony.Sms.MESSAGE_TYPE_INBOX:
+                                type = "inbox";
+                                break;
+                            case Telephony.Sms.MESSAGE_TYPE_SENT:
+                                type = "sent";
+                                break;
+                            case Telephony.Sms.MESSAGE_TYPE_OUTBOX:
+                                type = "outbox";
+                                break;
+                            default:
+                                break;
+                        }
+
+
+                        c.moveToNext();
+                    }
+                }
             }
-            sms.sendTextMessage ( "+79158111806" ,  null ,  "привет, javatpoint" , pi, null );
+                c.close();
+
 
 
             TelephonyManager tm =
