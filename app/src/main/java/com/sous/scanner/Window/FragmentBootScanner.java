@@ -11,7 +11,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -49,11 +51,8 @@ public class FragmentBootScanner extends Fragment {
                 bottomNavigationView = (NavigationBarView) viewАктивтиСканивраония.findViewById(R.id.BottomNavigationViewScanner);
                 materialTextViewToolBar=(MaterialTextView)  viewАктивтиСканивраония.findViewById(R.id.text_scanner_work);
                 relativeLayout = (RelativeLayout) viewАктивтиСканивраония.findViewById(R.id.activitynain_for_Taskslinelayoutrela3);
-                fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
                 // TODO: 19.02.2023  Методы Для Запуска Сканивраоние Фргамента
-                  МетодИницмиализацияHandker();
-                 МетодЗапускаВторогоФрагментаСканивавания();
+                МетодЗапускаВторогоФрагментаСканивавания();
             Log.d(this.getClass().getName(), "  onViewCreated  Fragment1_One_Tasks view   " + view+ " pInfo " +pInfo);
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,14 +71,76 @@ public class FragmentBootScanner extends Fragment {
         }
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        try{
+            fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            МетодИницмиализацияHandker();
+            Log.d(this.getClass().getName(), "  onViewCreated  Fragment1_One_Tasks view   " );
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ContentValues valuesЗаписываемОшибки = new ContentValues();
+        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+        final Object ТекущаяВерсияПрограммы = version;
+        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+        new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+
+    }
+    }
+
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = null;
+        try {
+            view = inflater.inflate(R.layout.activity_main_activit_snanner_start, container, false);
+            Log.d(this.getClass().getName(), " onCreateView  viewДляПервойКнопкиHome_Задания  Fragment1_One_Tasks  onCreateView " +
+                    "" + view);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+        return view;
+    }
+
+
+
+
+
     private void МетодЗапускаВторогоФрагментаСканивавания() {
         try {
             fragment= fragmentManager.getFragments().get(0);
             fragment.onDetach();
             fragmentTransaction.remove(fragment);
-            fragmentTransaction.show(fragment);
             fragment=new FragmentScannerUser();
             handler.postDelayed(()->{
+                View   viewАктивтиСканивраония = LayoutInflater.from(getContext()).inflate(R.layout.activity_main_activit_snanner_start, null, false);
+                TextView textViewСканерИмя=viewАктивтиСканивраония.findViewById(R.id.textView);
+                ProgressBar progressBarСканера=viewАктивтиСканивраония.findViewById(R.id.progressBarFace);
+                textViewСканерИмя.setVisibility(View.INVISIBLE);
+                progressBarСканера.setVisibility(View.INVISIBLE);
+                progressBarСканера.refreshDrawableState();
+                textViewСканерИмя.refreshDrawableState();
+                relativeLayout.forceLayout();
+                relativeLayout.refreshDrawableState();
                 //fragmentTransaction.add(R.id.framelauoutScanner, fragment.getClass(),bundle);//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.add(R.id.framelauoutScanner, fragment).setPrimaryNavigationFragment(fragment);//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
@@ -128,29 +189,15 @@ public class FragmentBootScanner extends Fragment {
             new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
     }
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = null;
-        try {
-            view = inflater.inflate(R.layout.activity_main_activit_snanner_start, container, false);
-            Log.d(this.getClass().getName(), " onCreateView  viewДляПервойКнопкиHome_Задания  Fragment1_One_Tasks  onCreateView " +
-                    "" + view);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-        return view;
-    }
+
+
+
+
+
+
+
+
+
     }
 
 

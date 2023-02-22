@@ -105,6 +105,16 @@ public class MainActivityNewScanner extends AppCompatActivity  {
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             Log.i(this.getClass().getName(),  "onResume " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+
+
+            МетодПрячемБарИКнопки();
+            // TODO: 19.02.2023 разрешает обновлени BLE
+            МетодРАзрешенияBlurtooTКлиент();
+            // TODO: 25.01.2023  подключение после получение BINDER
+            МетодКнопкаBackExit(new Intent("activity"));
+            // TODO: 24.01.2023  переходят после получение binder
+            МетодЗапускBootФрагмента(new FragmentBootScanner());//todo Запускам клиента или сервер фрагмент
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -121,35 +131,6 @@ public class MainActivityNewScanner extends AppCompatActivity  {
         }
 
     }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        try{
-            МетодПрячемБарИКнопки();
-        // TODO: 19.02.2023 разрешает обновлени BLE
-        МетодРАзрешенияBlurtooTКлиент();
-        // TODO: 25.01.2023  подключение после получение BINDER
-        МетодКнопкаBackExit(new Intent("activity"));
-            // TODO: 24.01.2023  переходят после получение binder
-            МетодЗапускBootФрагмента(new FragmentBootScanner());//todo Запускам клиента или сервер фрагмент
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        ContentValues valuesЗаписываемОшибки = new ContentValues();
-        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-        final Object ТекущаяВерсияПрограммы = version;
-        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-    }
-    }
-
 
     public void МетодПрячемБарИКнопки() {
         bottomNavigationView.setVisibility(View.INVISIBLE);
