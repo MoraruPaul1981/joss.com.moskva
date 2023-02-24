@@ -31,6 +31,7 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -53,7 +54,7 @@ import java.util.Date;
 
 public class MainActivityNewScanner extends AppCompatActivity  {
     private String TAG;
-    private Handler handler;
+    private Message handler;
     private NavigationBarView bottomNavigationView;
     private BottomNavigationItemView bottomNavigationItemViewВыход;
     private BottomNavigationItemView bottomNavigationItemViewИстория;
@@ -115,7 +116,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
             version = pInfo.getLongVersionCode();
             Log.i(this.getClass().getName(),  "onResume " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
 
-
+            МетодHandles();
             МетодПрячемБарИКнопки();
             // TODO: 19.02.2023 разрешает обновлени BLE
             МетодРАзрешенияBlurtooTКлиент();
@@ -151,7 +152,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
             if ( devicePolicyManager.isAdminActive(componentName)==false) {
                 MyDeviceAdminReceiver myDeviceAdminReceiver=new MyDeviceAdminReceiver();
                 Intent broadcastReceiver_sous_notificatioons = new Intent(this, MyDeviceAdminReceiver.class);
-                registerReceiver(myDeviceAdminReceiver,new IntentFilter());
+                registerReceiver(myDeviceAdminReceiver,new IntentFilter(),DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN, handler.getTarget());
                    /*   broadcastReceiver_sous_notificatioons.setAction(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
             broadcastReceiver_sous_notificatioons.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, 1);
                     broadcastReceiver_sous_notificatioons.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "Additional text explaining why this needs to be added.");
@@ -214,7 +215,15 @@ public class MainActivityNewScanner extends AppCompatActivity  {
         Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
     }
 
-
+    public void МетодHandles() {
+       handler=new Handler(Looper.getMainLooper(), new Handler.Callback() {
+           @Override
+           public boolean handleMessage(@NonNull Message msg) {
+               return true;
+           }
+       }).obtainMessage();
+        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+    }
     public void МетодКнопкаBackExit(@NotNull Intent intent) {
         try {
             bottomNavigationItemViewВыход.setOnClickListener(new View.OnClickListener() {
