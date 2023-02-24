@@ -19,6 +19,7 @@ import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -41,6 +42,7 @@ import android.widget.RelativeLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.textview.MaterialTextView;
+import com.sous.scanner.Broadcastreceiver.MyDeviceAdminReceiver;
 import com.sous.scanner.Errors.SubClassErrors;
 import com.sous.scanner.R;
 
@@ -143,7 +145,33 @@ public class MainActivityNewScanner extends AppCompatActivity  {
 
     private void МетодРазрешенияДополнительное() {
         try {
+
             DevicePolicyManager devicePolicyManager=(DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
+            ComponentName componentName = new ComponentName(this, MyDeviceAdminReceiver.class);
+            if ( devicePolicyManager.isAdminActive(componentName)==false) {
+                MyDeviceAdminReceiver myDeviceAdminReceiver=new MyDeviceAdminReceiver();
+                Intent broadcastReceiver_sous_notificatioons = new Intent(this, MyDeviceAdminReceiver.class);
+                registerReceiver(myDeviceAdminReceiver,new IntentFilter());
+                   /*   broadcastReceiver_sous_notificatioons.setAction(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+            broadcastReceiver_sous_notificatioons.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, 1);
+                    broadcastReceiver_sous_notificatioons.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "Additional text explaining why this needs to be added.");
+             sendBroadcast(broadcastReceiver_sous_notificatioons);*/
+                Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+                intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,
+                        componentName);
+                intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,componentName);
+                startActivity(intent);
+                Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
+                        +" devicePolicyManager.isAdminActive(componentName) "+devicePolicyManager.isAdminActive(componentName));
+            } else {
+                Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
+                        +" devicePolicyManager.isAdminActive(componentName) "+devicePolicyManager.isAdminActive(componentName));
+            }
+
+
+
+
+    /*       DevicePolicyManager devicePolicyManager=(DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
             ComponentName componentName = new ComponentName(this, DeviceAdminReceiver.class);
             devicePolicyManager.setPermissionGrantState(componentName, this.getPackageName(), Manifest.permission.READ_PHONE_STATE, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);
             devicePolicyManager.setPermissionGrantState(componentName, this.getPackageName(), Manifest.permission.ACCESS_FINE_LOCATION, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);
@@ -151,7 +179,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
             devicePolicyManager.setPermissionGrantState(componentName, this.getPackageName(), Manifest.permission.ACCESS_FINE_LOCATION, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);
             devicePolicyManager.setPermissionGrantState(componentName, this.getPackageName(), Manifest.permission.ACCESS_FINE_LOCATION, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);
 
-
+*/
 
             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
