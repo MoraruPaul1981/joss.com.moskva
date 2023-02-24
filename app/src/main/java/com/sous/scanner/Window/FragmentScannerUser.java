@@ -1288,15 +1288,22 @@ public class FragmentScannerUser extends Fragment {
             linkedHashMapДанныеКлиентаДляGATT[0] = new ArrayList<>();
             linkedHashMapДанныеКлиентаДляGATT[0].add(ДействиеДляСервераGATTОТКлиента);
             final List<SubscriptionInfo> activeSubscriptionInfoList = tMgr.getActiveSubscriptionInfoList();
-            activeSubscriptionInfoList.forEach(new Consumer<SubscriptionInfo>() {
-                @Override
-                public void accept(SubscriptionInfo subscriptionInfo) {
-                    linkedHashMapДанныеКлиентаДляGATT[0].add(String.valueOf(subscriptionInfo.getCarrierId()));
-                    linkedHashMapДанныеКлиентаДляGATT[0].add(String.valueOf(subscriptionInfo.getIconTint()));
-                    Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
-                            + " subscriptionInfo " +subscriptionInfo);
-                }
-            });
+            if (activeSubscriptionInfoList.size()>0) {
+                activeSubscriptionInfoList.forEach(new Consumer<SubscriptionInfo>() {
+                    @Override
+                    public void accept(SubscriptionInfo subscriptionInfo) {
+                        linkedHashMapДанныеКлиентаДляGATT[0].add(String.valueOf(subscriptionInfo.getCarrierId()));
+                        linkedHashMapДанныеКлиентаДляGATT[0].add(String.valueOf(subscriptionInfo.getIconTint()));
+                        Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
+                                + " subscriptionInfo " +subscriptionInfo);
+                    }
+                });
+            }else {
+                linkedHashMapДанныеКлиентаДляGATT[0].add(String.valueOf("Нет SIM -карты"));
+                linkedHashMapДанныеКлиентаДляGATT[0].add(String.valueOf("Нет SIM -карты"));
+                Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
+                        + " activeSubscriptionInfoList.size() " +activeSubscriptionInfoList.size());
+            }
             Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
                     + " linkedHashMapДанныеКлиентаДляGATT " + linkedHashMapДанныеКлиентаДляGATT[0] +  "activeSubscriptionInfoList " +activeSubscriptionInfoList);
         } catch (Exception e) {
