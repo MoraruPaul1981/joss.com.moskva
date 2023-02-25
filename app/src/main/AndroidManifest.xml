@@ -130,7 +130,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="android.permission.BIND_DEVICE_ADMIN" />
                 <action android:name="android.permission.GET_PROVISIONING_MODE" />
-                <action android:name="android.permission.ACTION_ADMIN_POLICY_COMPLIANCE" />
+                <action android:name="android.permission.PROFILE_PROVISIONING_COMPLETE" />
+                <action android:name="android.permission.ADMIN_POLICY_COMPLIANCE" />
                 <action android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
                 <action android:name="android.permission.READ_EXTERNAL_STORAGE" />
                 <action android:name="android.intent.action.EDIT" />

@@ -37,11 +37,11 @@ public class MyDeviceAdminReceiver extends DeviceAdminReceiver {
     @Override
     public void onProfileProvisioningComplete(@NonNull Context context, @NonNull Intent intent) {
         super.onProfileProvisioningComplete(context, intent);
-        DevicePolicyManager devicePolicyManager= getManager(context.getApplicationContext());
+      /*  DevicePolicyManager devicePolicyManager= getManager(context.getApplicationContext());
         ComponentName componentactivity = new ComponentName(context, MainActivityNewScanner.class);
         Intent intentPro = new Intent(context,MainActivityNewScanner.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        context.startActivity(intent);*/
         Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
 
 
