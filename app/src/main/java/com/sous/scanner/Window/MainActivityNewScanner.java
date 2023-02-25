@@ -154,15 +154,18 @@ public class MainActivityNewScanner extends AppCompatActivity  {
             Intent broadcastReceiver_sous_notificatioons = new Intent(this, MyDeviceAdminReceiver.class);
             registerReceiver(myDeviceAdminReceiver,new IntentFilter(),DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN, handler.getTarget());
             DevicePolicyManager  devicePolicyManager=  myDeviceAdminReceiver.getManager(getApplication());
+    /*        devicePolicyManager.setProfileEnabled(componentName);
+            devicePolicyManager.setProfileName(componentName,componentName.getPackageName());*/
+
             if ( devicePolicyManager.isAdminActive(componentName)==false) {
                    /*   broadcastReceiver_sous_notificatioons.setAction(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
             broadcastReceiver_sous_notificatioons.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, 1);
                     broadcastReceiver_sous_notificatioons.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "Additional text explaining why this needs to be added.");
              sendBroadcast(broadcastReceiver_sous_notificatioons);*/
                 Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-                intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,
-                        componentName);
+                intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName);
                 intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,componentName);
+                intent.putExtra(DevicePolicyManager.EXTRA_PROVISIONING_MODE,1);
                 startActivity(intent);
                 Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
                         +" devicePolicyManager.isAdminActive(componentName) "+devicePolicyManager.isAdminActive(componentName));
@@ -170,6 +173,20 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                 Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
                         +" devicePolicyManager.isAdminActive(componentName) "+devicePolicyManager.isAdminActive(componentName));
             }
+        /*   // TODO: 24.02.2023
+            if (  devicePolicyManager.isProfileOwnerApp( this.getPackageName())==false) {
+                Intent intentProfile = new Intent(DevicePolicyManager.ACTION_PROVISION_MANAGED_PROFILE);
+                intentProfile.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName);
+                startActivity(intentProfile);
+
+                Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
+                        +" devicePolicyManager.isAdminActive(componentName) "+devicePolicyManager.isManagedProfile(componentactivity));
+            } else {
+                Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
+                        +" devicePolicyManager.isAdminActive(componentName) "+devicePolicyManager.isManagedProfile(componentactivity));
+            }*/
+            // TODO: 24.02.2023
+
 
            // devicePolicyManager.setPermissionGrantState(componentName, this.getPackageName(), Manifest.permission.READ_PHONE_STATE, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);
       /*      devicePolicyManager.setPermissionGrantState(componentName, this.getPackageName(), Manifest.permission.ACCESS_FINE_LOCATION, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);
