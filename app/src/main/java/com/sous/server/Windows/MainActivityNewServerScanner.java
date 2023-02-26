@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -11,6 +12,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
@@ -48,7 +50,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainActivityNewServerScanner extends AppCompatActivity  {
     private String TAG;
-    private Handler handler;
+    private Message handler;
     private NavigationBarView bottomNavigationView;
     private MaterialTextView materialTextViewToolBar;
     private BottomNavigationItemView bottomNavigationItemViewВыход;
@@ -285,13 +287,13 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
 
     private void ОтветныйHendlerОтСлужбы() {
         try {
-            handler = new Handler(getMainLooper(), new Handler.Callback() {
+            handler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
                 @Override
                 public boolean handleMessage(@NonNull Message msg) {
                     Log.d(TAG, "onCreate: msg " + msg);
                     return true;
                 }
-            });
+            }).obtainMessage();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -318,6 +320,7 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
                     , BroadcastReceiverWorkManagerScannersServer.class);
             ИнтретПоЗапускуПовторноШироковещательногоСинхрониазции.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             ИнтретПоЗапускуПовторноШироковещательногоСинхрониазции.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+            registerReceiver(broadcastReceiverWorkManagerScannersServer,new IntentFilter(), "android.intent.category.DEFAULT",handler.getTarget());
             getApplicationContext().sendBroadcast(ИнтретПоЗапускуПовторноШироковещательногоСинхрониазции);
             Log.d(getApplicationContext().getClass().getName(), " ПРОШЕЛ ЗАПУСК     " +
                     " BroadcastReceiver_Sous_Asyns_Glassfish  broadcastReceiver_sous_asyns_glassfish= new BroadcastReceiver_Sous_Asyns_Glassfish(); " );
