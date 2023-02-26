@@ -330,8 +330,10 @@ public class ServiceClientBLE extends IntentService {
                     "\n" + " ALL POOLS  " +Thread.getAllStackTraces().entrySet().size());//
             // TODO: 08.12.2022 сканирование Bluetooth
             bluetoothAdapter = bluetoothManager.getAdapter();
-            while (bluetoothAdapter.isEnabled()==false){
-                bluetoothAdapter.enable();
+            if (bluetoothAdapter!=null) {
+                while (bluetoothAdapter.isEnabled()==false){
+                    bluetoothAdapter.enable();
+                }
             }
 
             // TODO: 12.02.2023 адреса разыне колиентов
