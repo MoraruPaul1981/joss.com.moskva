@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,10 +21,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.transition.Transition;
 
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.android.material.textview.MaterialTextView;
 import com.sous.scanner.Errors.SubClassErrors;
 import com.sous.scanner.R;
 
@@ -36,7 +35,7 @@ public class FragmentBootScanner extends Fragment {
     private FragmentTransaction fragmentTransaction;
     private Fragment fragment;
     private Handler handler;
-    private MaterialTextView materialTextViewToolBar;
+    private ImageView materialTextViewToolBar;
     private NavigationBarView bottomNavigationView;
     private RelativeLayout relativeLayout;
     @SuppressLint("RestrictedApi")
@@ -49,7 +48,7 @@ public class FragmentBootScanner extends Fragment {
                  View   viewАктивтиСканивраония = LayoutInflater.from(getContext()).inflate(R.layout.activity_main_newscanner, null, false);
                 Log.i(this.getClass().getName(),  "onViewCreated " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+viewАктивтиСканивраония);
                 bottomNavigationView = (NavigationBarView) viewАктивтиСканивраония.findViewById(R.id.BottomNavigationViewScanner);
-                materialTextViewToolBar=(MaterialTextView)  viewАктивтиСканивраония.findViewById(R.id.text_scanner_work);
+                materialTextViewToolBar=(ImageView)  viewАктивтиСканивраония.findViewById(R.id.textViewZnak);
                 relativeLayout = (RelativeLayout) viewАктивтиСканивраония.findViewById(R.id.activitynain_for_Taskslinelayoutrela3);
                 // TODO: 19.02.2023  Методы Для Запуска Сканивраоние Фргамента
                 МетодЗапускаВторогоФрагментаСканивавания();
@@ -132,9 +131,10 @@ public class FragmentBootScanner extends Fragment {
             fragmentTransaction.remove(fragment);
             fragment=new FragmentScannerUser();
             handler.postDelayed(()->{
-                View   viewАктивтиСканивраония = LayoutInflater.from(getContext()).inflate(R.layout.activity_main_activit_snanner_start, null, false);
-                TextView textViewСканерИмя=viewАктивтиСканивраония.findViewById(R.id.textView);
-                ProgressBar progressBarСканера=viewАктивтиСканивраония.findViewById(R.id.progressBarFace);
+                View   viewАктивтиСканивраония = LayoutInflater.from(getContext()).inflate(R.layout.toolbar_laoytscanner, null, false);
+                 TextView textViewСканерИмя=viewАктивтиСканивраония.findViewById(R.id.text_scanner_work);
+                View   viewАктивтиСканивраонияПрограсс = LayoutInflater.from(getContext()).inflate(R.layout.activity_main_activit_snanner_start, null, false);
+                ProgressBar progressBarСканера=viewАктивтиСканивраонияПрограсс.findViewById(R.id.progressBarFace);
                 textViewСканерИмя.setVisibility(View.INVISIBLE);
                 progressBarСканера.setVisibility(View.INVISIBLE);
                 progressBarСканера.refreshDrawableState();

@@ -117,7 +117,7 @@ public class FragmentScannerUser extends Fragment {
     private RecyclerView recyclerView;
     private LinearLayout linearLayou;
     private Animation animation;
-    private ArrayList<String> ArrayListДанныеФрагмент1 = new ArrayList();
+
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private Fragment fragment;
@@ -204,7 +204,6 @@ public class FragmentScannerUser extends Fragment {
         super.onStart();
         try {
             МетодВизуализацииКнопокИБар();
-            ArrayListДанныеФрагмент1.add("Фрагмент Клиента");
             // TODO: 08.02.2023  Биндинг службы
             МетодБиндингаСканирование();
             МетодИнициализацииRecycleViewДляЗадач();
@@ -477,9 +476,9 @@ public class FragmentScannerUser extends Fragment {
     // TODO: 04.03.2022 прозвомжность Заполения RecycleView
     void МетодЗаполенияRecycleViewДляЗадач() {
         try {
-            Log.d(this.getClass().getName(), " отработоатл new SubClassBuccessLogin_ГлавныйКлассБизнесЛогикиФрагмент1  ARRAYJSONПолучениеДанныхОт1с  "
-                    + ArrayListДанныеФрагмент1);
-            myRecycleViewAdapter = new MyRecycleViewAdapter(ArrayListДанныеФрагмент1);
+           ArrayList<String> ArrayListСканер = new ArrayList();
+            ArrayListСканер.add("Фрагмент Клиента");
+            myRecycleViewAdapter = new MyRecycleViewAdapter(ArrayListСканер);
             recyclerView.setAdapter(myRecycleViewAdapter);
             Log.d(this.getClass().getName(), " отработоатл new SubClassBuccessLogin_ГлавныйКлассБизнесЛогикиФрагмент1 recyclerView   " + recyclerView);
             //TODO
@@ -503,8 +502,6 @@ public class FragmentScannerUser extends Fragment {
     // TODO: 04.03.2022 прозвомжность инициализации RecycleView
     void МетодИнициализацииRecycleViewДляЗадач() {
         try {
-            Log.d(this.getClass().getName(), " отработоатл new SubClassBuccessLogin_ГлавныйКлассБизнесЛогикиФрагмент1  БуферПолучениеДанныхОт1с  "
-                    + ArrayListДанныеФрагмент1);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
             linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(linearLayoutManager);//TODO new LinearLayoutManager(getContext())

@@ -24,8 +24,8 @@
             android:minHeight="40dp"
             android:text="Клиент"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
 
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="#0A524B"
             android:textSize="16sp"
             android:textStyle="bold"
