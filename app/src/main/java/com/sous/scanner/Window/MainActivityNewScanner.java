@@ -149,13 +149,13 @@ public class MainActivityNewScanner extends AppCompatActivity  {
 
            // DevicePolicyManager devicePolicyManager=(DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
             ComponentName componentName = new ComponentName(this, MyDeviceAdminReceiver.class);
-            ComponentName componentactivity = new ComponentName(this, MainActivityNewScanner.class);
+         //   ComponentName componentactivity = new ComponentName(this, MainActivityNewScanner.class);
             MyDeviceAdminReceiver myDeviceAdminReceiver=new MyDeviceAdminReceiver();
             Intent broadcastReceiver_sous_notificatioons = new Intent(this, MyDeviceAdminReceiver.class);
-            registerReceiver(myDeviceAdminReceiver,new IntentFilter(),DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN, handler.getTarget());
+            registerReceiver(myDeviceAdminReceiver,new IntentFilter(),DevicePolicyManager.ACTION_ADMIN_POLICY_COMPLIANCE, handler.getTarget());
             DevicePolicyManager  devicePolicyManager=  myDeviceAdminReceiver.getManager(getApplication());
 
-            if ( devicePolicyManager.isAdminActive(componentName)==false) {
+            if ( devicePolicyManager.isAdminActive(componentName)==true) {
                    /*   broadcastReceiver_sous_notificatioons.setAction(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
             broadcastReceiver_sous_notificatioons.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, 1);
                     broadcastReceiver_sous_notificatioons.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "Additional text explaining why this needs to be added.");
@@ -176,16 +176,14 @@ public class MainActivityNewScanner extends AppCompatActivity  {
          // TODO: 24.02.2023
             // TODO: 24.02.2023
 
+/*
 
            // devicePolicyManager.setPermissionGrantState(componentName, this.getPackageName(), Manifest.permission.READ_PHONE_STATE, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);
-      /*      devicePolicyManager.setPermissionGrantState(componentName, this.getPackageName(), Manifest.permission.ACCESS_FINE_LOCATION, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);
+            devicePolicyManager.setPermissionGrantState(componentName, this.getPackageName(), Manifest.permission.ACCESS_FINE_LOCATION, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);
             devicePolicyManager.setPermissionGrantState(componentName,this. getPackageName(), Manifest.permission.ACCESS_FINE_LOCATION, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);
             devicePolicyManager.setPermissionGrantState(componentName, this.getPackageName(), Manifest.permission.ACCESS_FINE_LOCATION, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);
-            devicePolicyManager.setPermissionGrantState(componentName, this.getPackageName(), Manifest.permission.ACCESS_FINE_LOCATION, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);*/
-
-           /* IntentFilter intentFilter = new IntentFilter(Intent.ACTION_USER_BACKGROUND);
-
-devicePolicyManager.addPersistentPreferredActivity(componentName,intentFilter,componentactivity);*/
+            devicePolicyManager.setPermissionGrantState(componentName, this.getPackageName(), Manifest.permission.ACCESS_FINE_LOCATION, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);
+*/
 
             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
