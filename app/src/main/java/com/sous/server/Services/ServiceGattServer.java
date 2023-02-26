@@ -101,7 +101,6 @@ public class ServiceGattServer extends IntentService {
 
     private String TAG;
     private BluetoothManager bluetoothManagerServer;
-    private BluetoothAdapter bluetoothAdapter;
     private Set<BluetoothDevice> pairedDevices = new HashSet<>();
     private BluetoothGattServer server;
     private Long version = 0l;
