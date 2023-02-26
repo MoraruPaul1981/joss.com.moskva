@@ -41,6 +41,8 @@ import com.sous.scanner.Database.CREATE_DATABASEScanner;
 import com.sous.scanner.Firebase.MyFirebaseMessagingServiceScanner;
 import com.sous.scanner.Errors.SubClassErrors;
 
+import org.reactivestreams.Publisher;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -358,6 +360,7 @@ public class ServiceClientBLE extends IntentService {
                         Flowable.fromIterable(BluetoothСерверов.entrySet())
                                 .onBackpressureBuffer(true)
                                 .subscribeOn(Schedulers.newThread())
+                                .repeatWhen(repeat->repeat.delay(5,TimeUnit.SECONDS))
                                 .map(new Function<Map.Entry<String, UUID>, Object>() {
                                     @Override
                                     public Object apply(Map.Entry<String, UUID> stringUUIDEntry) throws Throwable {

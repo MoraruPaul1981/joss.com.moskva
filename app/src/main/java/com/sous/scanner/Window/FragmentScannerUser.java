@@ -774,15 +774,14 @@ public class FragmentScannerUser extends Fragment {
                                                 Log.i(this.getClass().getName(),  "  RxView.clicks " +Thread.currentThread().getStackTrace()[2].getMethodName()
                                                         + " время " +new Date().toLocaleString() +
                                                         " disposable[0] " +disposable[0].isDisposed());
-                                                Integer КоличествоПовторений=2;
-                                                for (Integer i = 0; i < КоличествоПовторений; i++) {
+
                                                     ДействиеДляСервераGATTОТКлиента = "с работы";
                                                     МетодЗапускаGattСервера(holder.materialButtonКотрольВыход, holder, holder.materialButtonКотрольВыход);
                                                     // TODO: 20.02.2023 Принудитльеное Разрыв Клиента с Сервом GATT
                                                     МетодПринудительноРазрываемвязисGatt(ДействиеДляСервераGATTОТКлиента);
                                                     Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
                                                     // TODO: 22.02.2023
-                                                }
+
                                                 disposable[0].dispose();
                                             }
 
@@ -818,14 +817,13 @@ public class FragmentScannerUser extends Fragment {
                                 Log.i(this.getClass().getName(),  "  RxView.clicks " +Thread.currentThread().getStackTrace()[2].getMethodName()
                                         + " время " +new Date().toLocaleString() +
                                         " disposable[0] " +disposable[0].isDisposed());
-                                             Integer КоличествоПовторений=2;
-                                for (Integer i = 0; i < КоличествоПовторений; i++) {
+
                                     ДействиеДляСервераGATTОТКлиента = "на работу";
                                     МетодЗапускаGattСервера(holder.materialButtonКотрольПриход, holder, holder.materialButtonКотрольПриход);
                                     // TODO: 20.02.2023 Принудитльеное Разрыв Клиента с Сервом GATT
                                     МетодПринудительноРазрываемвязисGatt(ДействиеДляСервераGATTОТКлиента);
                                     Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
-                                }
+
                                 disposable[0].dispose();
                             }
                             @Override
