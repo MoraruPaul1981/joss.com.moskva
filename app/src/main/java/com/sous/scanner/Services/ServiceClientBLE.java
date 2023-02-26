@@ -92,7 +92,6 @@ public class ServiceClientBLE extends IntentService {
     private  String ДействиеДляСервераGATTОТКлиента;
     private  UUID uuidКлючСервераGATTЧтениеЗапись;
     private  BluetoothGatt gatt;
-    private Flowable flowableЦиклСервера;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -359,11 +358,11 @@ public class ServiceClientBLE extends IntentService {
 
             Log.d(this.getClass().getName(), "\n" + " pairedDevices.size() " + BluetoothСерверов.size());
                     // TODO: 26.01.2023 начало сервера GATT
-                   flowableЦиклСервера=     Flowable.fromIterable(BluetoothСерверов.entrySet())
+            Flowable   flowableЦиклСервера=     Flowable.fromIterable(BluetoothСерверов.entrySet())
                                 .onBackpressureBuffer(true)
                                 .subscribeOn(Schedulers.newThread())
-                                .repeatWhen(repeat->repeat.delay(5,TimeUnit.SECONDS))
-                           .take(20,TimeUnit.SECONDS)
+                                .repeatWhen(repeat->repeat.delay(3,TimeUnit.SECONDS))
+                           .take(15,TimeUnit.SECONDS)
                                 .map(new Function<Map.Entry<String, UUID>, Object>() {
                                     @Override
                                     public Object apply(Map.Entry<String, UUID> stringUUIDEntry) throws Throwable {
