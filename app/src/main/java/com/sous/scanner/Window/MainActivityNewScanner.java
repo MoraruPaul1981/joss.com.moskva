@@ -146,12 +146,10 @@ public class MainActivityNewScanner extends AppCompatActivity  {
 
     private void МетодРазрешенияДополнительное() {
         try {
-
-
             ComponentName componentName = new ComponentName(this, MyDeviceAdminReceiver.class);
             MyDeviceAdminReceiver myDeviceAdminReceiver=new MyDeviceAdminReceiver();
             Intent broadcastReceiver_sous_notificatioons = new Intent(this, MyDeviceAdminReceiver.class);
-            registerReceiver(myDeviceAdminReceiver,new IntentFilter(),DevicePolicyManager.ACTION_ADMIN_POLICY_COMPLIANCE, handler.getTarget());
+            registerReceiver(myDeviceAdminReceiver,new IntentFilter(),DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN, handler.getTarget());
             DevicePolicyManager  devicePolicyManager=  myDeviceAdminReceiver.getManager(getApplication());
 
             if ( devicePolicyManager.isAdminActive(componentName)==false) {

@@ -53,8 +53,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 
+import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Action;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.functions.Predicate;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -349,39 +352,69 @@ public class ServiceClientBLE extends IntentService {
             /*         BluetoothСерверов.offer("FC:19:99:79:D6:D4");//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  XIAOMI 9NTC*/
             /// BluetoothСерверов.offer("48:59:A4:5B:C1:F5");//48:59:A4:5B:C1:F5  //  BC:61:93:E6:F2:EB   //  FC:19:99:79:D6:D4  ZTE
             //ExecutorService esМенеджерПотоковСканер=Executors.newFixedThreadPool(BluetoothСерверов.size());
-            CompletionService esМенеджерПотоковСканер= new ExecutorCompletionService<>(Executors.newFixedThreadPool(BluetoothСерверов.size()) );
+
             Log.d(this.getClass().getName(), "\n" + " pairedDevices.size() " + BluetoothСерверов.size());
-            BluetoothСерверов.forEach(new BiConsumer<String, UUID>() {
-                @Override
-                public void accept(String АдресаBluetoothСерверов, UUID UuidГлавныйКлючСерверGATT) {
-                    try{
                     // TODO: 26.01.2023 начало сервера GATT
-                        esМенеджерПотоковСканер.submit(()->{
-                        BluetoothDevice bluetoothDevice=bluetoothAdapter.getRemoteDevice(АдресаBluetoothСерверов);
-                        Log.d(this.getClass().getName()," bluetoothDevice " +bluetoothDevice  );
-                            // TODO: 12.02.2023  запускаем задачу в потоке
-                            МетодРаботыСТекущийСерверомGATT(bluetoothDevice, UuidГлавныйКлючСерверGATT);
-                            Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT()....  UuidГлавныйКлючСерверGATT "+ UuidГлавныйКлючСерверGATT
-                                    +"uuidКлючСервераGATTЧтениеЗапись " +uuidКлючСервераGATTЧтениеЗапись);
-                            return UuidГлавныйКлючСерверGATT;
-                        });
-                    } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    ContentValues valuesЗаписываемОшибки=new ContentValues();
-                    valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
-                    valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
-                    valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
-                    valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    final Object ТекущаяВерсияПрограммы = version;
-                    Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                    valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
-                    new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-                }
+                        Flowable.fromIterable(BluetoothСерверов.entrySet())
+                                .onBackpressureBuffer(true)
+                                .subscribeOn(Schedulers.newThread())
+                                .map(new Function<Map.Entry<String, UUID>, Object>() {
+                                    @Override
+                                    public Object apply(Map.Entry<String, UUID> stringUUIDEntry) throws Throwable {
+                                        if (bluetoothAdapter!=null &&  bluetoothAdapter.isEnabled()==true){
+                                            BluetoothDevice bluetoothDevice=bluetoothAdapter.getRemoteDevice(stringUUIDEntry.getKey());
+                                            Log.d(this.getClass().getName()," bluetoothDevice " +bluetoothDevice  );
+                                            // TODO: 12.02.2023  запускаем задачу в потоке
+                                            МетодРаботыСТекущийСерверомGATT(bluetoothDevice, stringUUIDEntry.getValue());
+                                            Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT()....  UuidГлавныйКлючСерверGATT "+ UuidГлавныйКлючСерверGATT
+                                                    +"uuidКлючСервераGATTЧтениеЗапись " +uuidКлючСервераGATTЧтениеЗапись);
+                                        }
+                                        return stringUUIDEntry;
+                                    }
+                                })
+                                .doOnError(new Consumer<Throwable>() {
+                                    @Override
+                                    public void accept(Throwable throwable) throws Throwable {
+                                        Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                        ContentValues valuesЗаписываемОшибки=new ContentValues();
+                                        valuesЗаписываемОшибки.put("Error",throwable.toString().toLowerCase());
+                                        valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
+                                        valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
+                                        valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                        final Object ТекущаяВерсияПрограммы = version;
+                                        Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+                                        valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
+                                        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+                                    }
+                                })
+                                .doOnComplete(new Action() {
+                                    @Override
+                                    public void run() throws Throwable {
+                                        Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT()....  UuidГлавныйКлючСерверGATT "+ UuidГлавныйКлючСерверGATT
+                                                +"uuidКлючСервераGATTЧтениеЗапись " +uuidКлючСервераGATTЧтениеЗапись);
+                                    }
+                                }).subscribe();
+            Log.i(TAG, " ОтветОтGattServer  " +new Date().toLocaleString());
+            /// mediatorLiveDataGATT
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки=new ContentValues();
+            valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
 
-                }
 
+    @SuppressLint("MissingPermission")
                 private void МетодРаботыСТекущийСерверомGATT(@NonNull  BluetoothDevice bluetoothDevice,@NonNull  UUID UuidГлавныйКлючСерверGATT) {
                     // TODO: 25.01.2023 ПЕРВЫЙ ВАРИАНТ СЕРВЕР gatt
                     try{
@@ -397,7 +430,7 @@ public class ServiceClientBLE extends IntentService {
                                         handler.post(()->{
                                             mediatorLiveDataGATT.setValue("SERVER#SERVER#SouConnect");
                                         });
-                                        Boolean ДанныеОТGATTССевромGATT=         gatt.discoverServices();
+                                        @SuppressLint("MissingPermission") Boolean ДанныеОТGATTССевромGATT=         gatt.discoverServices();
                                         Log.d(TAG, "Trying to ДанныеОТGATTССевромGATT " + ДанныеОТGATTССевромGATT);
                                         break;
                                     case BluetoothProfile.STATE_DISCONNECTED :
@@ -584,7 +617,7 @@ public class ServiceClientBLE extends IntentService {
                 }
 
 
-
+    @SuppressLint("MissingPermission")
                 private void МетодЗапускаGATTКлиента(@NonNull BluetoothDevice bluetoothDevice, BluetoothGattCallback bluetoothGattCallback) {
                     try{
                     gatt =      bluetoothDevice.connectGatt(context, false, bluetoothGattCallback, BluetoothDevice.TRANSPORT_AUTO,BluetoothDevice.PHY_OPTION_S8,handler);
@@ -660,35 +693,15 @@ public class ServiceClientBLE extends IntentService {
 
                 private void МетодВыключениеКлиентаGatt() {
                     handler.postDelayed(()->{
-                        BluetoothGattService services = gatt.getService(UuidГлавныйКлючСерверGATT);
+                        МетодРазрываСоедениесGAttServer();
                         Log.i(TAG, "GATT CLIENT Proccessing from GATT server.SERVER#SousAvtoEXIT " +
-                                new Date().toLocaleString() + ДействиеДляСервераGATTОТКлиента + " BluetoothGatt.GATT_SUCCESS "+BluetoothGatt.GATT_SUCCESS+ " services "+services);
-                        if (services==null) {
+                                new Date().toLocaleString() + ДействиеДляСервераGATTОТКлиента + " BluetoothGatt.GATT_SUCCESS "+BluetoothGatt.GATT_SUCCESS);
                             mediatorLiveDataGATT.setValue("SERVER#SERVER#SousAvtoNULL");
-                        }
+
 
                     },10000);
                 }
-            });
-            // TODO: 11.02.2023
-                esМенеджерПотоковСканер.poll();
-            Log.i(TAG, " ОтветОтGattServer  " +new Date().toLocaleString());
-           /// mediatorLiveDataGATT
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки=new ContentValues();
-            valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-    }
+
 
 
     // TODO: 01.02.2023  класс Запуск OneSignala
