@@ -55,6 +55,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Action;
@@ -91,6 +92,7 @@ public class ServiceClientBLE extends IntentService {
     private  String ДействиеДляСервераGATTОТКлиента;
     private  UUID uuidКлючСервераGATTЧтениеЗапись;
     private  BluetoothGatt gatt;
+    private Flowable flowableЦиклСервера;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -357,10 +359,11 @@ public class ServiceClientBLE extends IntentService {
 
             Log.d(this.getClass().getName(), "\n" + " pairedDevices.size() " + BluetoothСерверов.size());
                     // TODO: 26.01.2023 начало сервера GATT
-                        Flowable.fromIterable(BluetoothСерверов.entrySet())
+                   flowableЦиклСервера=     Flowable.fromIterable(BluetoothСерверов.entrySet())
                                 .onBackpressureBuffer(true)
                                 .subscribeOn(Schedulers.newThread())
                                 .repeatWhen(repeat->repeat.delay(5,TimeUnit.SECONDS))
+                           .take(20,TimeUnit.SECONDS)
                                 .map(new Function<Map.Entry<String, UUID>, Object>() {
                                     @Override
                                     public Object apply(Map.Entry<String, UUID> stringUUIDEntry) throws Throwable {
@@ -397,7 +400,8 @@ public class ServiceClientBLE extends IntentService {
                                         Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT()....  UuidГлавныйКлючСерверGATT "+ UuidГлавныйКлючСерверGATT
                                                 +"uuidКлючСервераGATTЧтениеЗапись " +uuidКлючСервераGATTЧтениеЗапись);
                                     }
-                                }).subscribe();
+                                });
+                   flowableЦиклСервера.subscribe();
             Log.i(TAG, " ОтветОтGattServer  " +new Date().toLocaleString());
             /// mediatorLiveDataGATT
         } catch (Exception e) {
