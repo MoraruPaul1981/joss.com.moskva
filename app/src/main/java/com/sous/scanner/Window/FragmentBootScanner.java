@@ -46,9 +46,6 @@ public class FragmentBootScanner extends Fragment {
                 PackageInfo     pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
                  version = pInfo.getLongVersionCode();
                  View   viewАктивтиСканивраония = LayoutInflater.from(getContext()).inflate(R.layout.activity_main_newscanner, null, false);
-                Log.i(this.getClass().getName(),  "onViewCreated " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+viewАктивтиСканивраония);
-                bottomNavigationView = (NavigationBarView) viewАктивтиСканивраония.findViewById(R.id.BottomNavigationViewScanner);
-                materialTextViewToolBar=(ImageView)  viewАктивтиСканивраония.findViewById(R.id.textViewZnak);
                 relativeLayout = (RelativeLayout) viewАктивтиСканивраония.findViewById(R.id.activitynain_for_Taskslinelayoutrela3);
                 // TODO: 19.02.2023  Методы Для Запуска Сканивраоние Фргамента
                 МетодЗапускаВторогоФрагментаСканивавания();
