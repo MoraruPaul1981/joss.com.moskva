@@ -71,7 +71,7 @@ public class FragmentServerUser extends Fragment {
     private FragmentTransaction fragmentTransaction;
     private Fragment fragment;
     private Handler handler;
-    private BluetoothManager bluetoothManager;
+
     private MutableLiveData<Bundle> mutableLiveDataGATTServer;
     private List<String> linkedКолПодкСерверу;
     private Long version;
@@ -93,7 +93,6 @@ public class FragmentServerUser extends Fragment {
             Log.d(this.getClass().getName(), " recyclerView " + recyclerView);
             fragmentManager = getActivity().getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
-            bluetoothManager = (BluetoothManager) getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
             mutableLiveDataGATTServer = new MutableLiveData<>();
             animationServer = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator2);
             ArrayListДанныеФрагмент1.add("Фрагмент Сервера");
@@ -252,17 +251,9 @@ public class FragmentServerUser extends Fragment {
     @SuppressLint("MissingPermission")
     private void МетодЗапускGattServer() {
         try {
-            BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
-            if (bluetoothAdapter != null) {
-                while (bluetoothAdapter.isEnabled() == false) {
-                    bluetoothAdapter.enable();
-                }
-                if (bluetoothAdapter.isEnabled() == true) {
                     // TODO: 06.12.2022 запускаем GATT SERVER
-                    binderСерверBLE.getService().МетодГлавныйЗапускGattServer(handler, getActivity(), bluetoothManager, mutableLiveDataGATTServer);
+                    binderСерверBLE.getService().МетодГлавныйЗапускGattServer(handler, getActivity(), mutableLiveDataGATTServer);
                     Log.d(getClass().getClass().getName(), "\n" + " МетодЗапускGattServer" + new Date());
-                }
-            }
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
