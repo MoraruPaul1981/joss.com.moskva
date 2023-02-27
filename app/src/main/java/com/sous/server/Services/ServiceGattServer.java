@@ -85,6 +85,7 @@ public class ServiceGattServer extends IntentService {
     private  Activity activity;
 
     private  BluetoothManager bluetoothManagerServer;
+    private  BluetoothAdapter bluetoothAdapter ;
     public ServiceGattServer() {
         super(
                 "ServiceGattServer");
@@ -111,8 +112,6 @@ public class ServiceGattServer extends IntentService {
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             bundleСервер = new Bundle();
-            // TODO: 13.02.2023  ИНИЦИАЛИЗАЦИИ GPS через Google
-            МетодИницилиазцииGpsGoogle();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -343,11 +342,19 @@ public class ServiceGattServer extends IntentService {
         Log.w(this.getClass().getName(), " SERVER  МетодГлавныйЗапускGattServer  bluetoothManager  " + "server "+server);
         try {
             МетодПереполучениеBlutoochМенеджера();
-            // TODO: 21.02.2023 Метод Перегрузки Сервера
-            МетодПерегрузкиСервераGatt(mutableLiveDataGATTServer);
-            // TODO: 14.02.2023    ЗарускаемСамСервер
-            МетодЗапускаСервера();
-            
+            if (bluetoothAdapter!=null) {
+                // TODO: 21.02.2023 Метод Перегрузки Сервера
+                МетодПерегрузкиСервераGatt(mutableLiveDataGATTServer);
+                // TODO: 14.02.2023    ЗарускаемСамСервер
+                МетодЗапускаСервера();
+                Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+
+                         " bluetoothManagerServer " +bluetoothManagerServer);
+            }else
+            {
+                Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() +
+                         "bluetoothManagerServer " +bluetoothManagerServer);
+            }
+
             Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
             e.printStackTrace();
@@ -370,16 +377,23 @@ public class ServiceGattServer extends IntentService {
     private void МетодПереполучениеBlutoochМенеджера() {
         try{
         bluetoothManagerServer = (BluetoothManager) activity.getSystemService(Context.BLUETOOTH_SERVICE);
-            BluetoothAdapter bluetoothAdapter = null;
             if (bluetoothManagerServer!=null) {
                 bluetoothAdapter = bluetoothManagerServer.getAdapter();
+                Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
             }
             if (bluetoothAdapter != null) {
             if (bluetoothAdapter.isEnabled() == false) {
                 bluetoothAdapter.enable();
             }
+
+                // TODO: 13.02.2023  ИНИЦИАЛИЗАЦИИ GPS через Google
+                МетодИницилиазцииGpsGoogle();
+                List<BluetoothDevice>   bluetoothDeviceListGattServer=    bluetoothManagerServer.getConnectedDevices(BluetoothProfile.GATT_SERVER);
+                Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() +
+                        " bluetoothDeviceListGattServer "+bluetoothDeviceListGattServer);
         }
-            Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+            Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() +
+                     " bluetoothAdapter "+bluetoothAdapter);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -436,10 +450,6 @@ public class ServiceGattServer extends IntentService {
                     "" + binder.isBinderAlive() + " date " + new Date().toString().toString() + "" +
                     "\n" + " POOL " + Thread.currentThread().getName() +
                     "\n" + " ALL POOLS  " + Thread.getAllStackTraces().entrySet().size());
-            // TODO: 07.02.2023  иницилизирем Запуск GPS
-
-                List<BluetoothDevice>   bluetoothDeviceList=    bluetoothManagerServer.getConnectedDevices(BluetoothProfile.GATT_SERVER);
-            Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString() );
             // TODO: 26.01.2023 Сервер КОД
             server = bluetoothManagerServer.openGattServer(getApplicationContext(), new BluetoothGattServerCallback() {
                 @Override
@@ -958,8 +968,7 @@ public class ServiceGattServer extends IntentService {
     private synchronized void МетодКоннектаДеконнектасКлиентамиGatt(BluetoothDevice device, int status, int newState) {
         try{
         Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-            // TODO: 27.02.2023 Переопреляем Адамтер Bluetooth 
-        МетодПереполучениеBlutoochМенеджера();
+            // TODO: 27.02.2023 Переопреляем Адамтер Bluetooth
         switch (newState) {
             case BluetoothProfile.STATE_CONNECTED:
                     server.connect(device,false);

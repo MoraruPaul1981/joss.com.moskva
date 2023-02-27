@@ -722,9 +722,6 @@ public class FragmentServerUser extends Fragment {
                     @Override
                     public void onClick(View v) {
                         Log.i(this.getClass().getName(), "   запуск сервера МетодЗапускGattServer " + v);
-                        Bundle bundleСервер = new Bundle();
-                        bundleСервер.putString("Статус", "SERVERGATTRUNNIGSTARTING");
-                        mutableLiveDataGATTServer.setValue(bundleСервер);
                         // Snackbar.make(v, "Сервер  Bluetooth ....",Snackbar.LENGTH_LONG).setAction("Action",null).show();
                         Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
                         v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
@@ -807,7 +804,7 @@ public class FragmentServerUser extends Fragment {
                                             holder.materialButtonСервер.setText("Работает..."
                                                     + "\n"
                                                     + "\n" + "пинг: " + linkedКолПодкСерверу.size());
-                                        }, 3000);
+                                        },1500 );
                                     });
                                     break;
                                 case "SERVERGATTRUNNIGERRORS":
@@ -855,7 +852,7 @@ public class FragmentServerUser extends Fragment {
                                             holder.materialButtonСервер.setText("Работает..."
                                                     + "\n"
                                                     + "\n" + "пинг: " + linkedКолПодкСерверу.size());
-                                        }, 5000);
+                                        }, 1500);
                                     });
                                     break;
                                 case "SERVER#SousAvtoSuccess":
@@ -874,7 +871,7 @@ public class FragmentServerUser extends Fragment {
                                             holder.materialButtonСервер.setText("Работает..."
                                                     + "\n"
                                                     + "\n" + "пинг: " + linkedКолПодкСерверу.size());
-                                        }, 5000);
+                                        }, 1500);
                                     });
                                     break;
                             }
