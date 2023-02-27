@@ -623,7 +623,7 @@ public class ServiceGattServer extends IntentService {
                     // TODO: 08.02.2023 методы после успешного получение данных от клиента
                     contentValuesВставкаДанных[0] = new ContentValues();
                     contentValuesВставкаДанных[0].put("operations", "Девайс отмечен");
-                    ПришлиДанныеОтКлиентаЗапрос = ПришлиДанныеОтКлиентаЗапрос.replaceAll("действие:", "");
+                    ПришлиДанныеОтКлиентаЗапрос = listПришлиДанныеОтКлиентаЗапрос.get(0).substring(1,listПришлиДанныеОтКлиентаЗапрос.get(0).length());
                     contentValuesВставкаДанных[0].put("completedwork", ПришлиДанныеОтКлиентаЗапрос);
                     contentValuesВставкаДанных[0].put("macdevice", device.getAddress().toString());
                     contentValuesВставкаДанных[0].put("date_update", new Date().toLocaleString());
@@ -632,6 +632,7 @@ public class ServiceGattServer extends IntentService {
                     contentValuesВставкаДанных[0].put("gps1", String.valueOf(addressesgetGPS.get(0).getLatitude()));
                     contentValuesВставкаДанных[0].put("gps2", String.valueOf(addressesgetGPS.get(0).getLongitude()));
                     contentValuesВставкаДанных[0].put("namedevice", device.getName().toString());
+                    contentValuesВставкаДанных[0].put("iemi", listПришлиДанныеОтКлиентаЗапрос.get(1).substring(0,listПришлиДанныеОтКлиентаЗапрос.get(1).length()-1));
                     // TODO: 10.02.2023 версия данных
                     Integer current_table = МетодПоискДАнныхПоБазе("SELECT MAX ( current_table  ) AS MAX_R  FROM scannerserversuccess");
                     contentValuesВставкаДанных[0].put("current_table", current_table);
