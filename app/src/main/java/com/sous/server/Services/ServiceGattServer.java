@@ -354,7 +354,6 @@ public class ServiceGattServer extends IntentService {
                 Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() +
                          "bluetoothManagerServer " +bluetoothManagerServer);
             }
-
             Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
             e.printStackTrace();
@@ -969,6 +968,7 @@ public class ServiceGattServer extends IntentService {
         try{
         Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
             // TODO: 27.02.2023 Переопреляем Адамтер Bluetooth
+            List<BluetoothDevice> bluetoothDeviceListGattServer=   server.getConnectedDevices();
         switch (newState) {
             case BluetoothProfile.STATE_CONNECTED:
                     server.connect(device,false);
@@ -995,7 +995,8 @@ public class ServiceGattServer extends IntentService {
                 v2.vibrate(VibrationEffect.createOneShot(25, VibrationEffect.DEFAULT_AMPLITUDE));
                 break;
         }
-            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString());
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+
+                    "  bluetoothDeviceListGattServer " +bluetoothDeviceListGattServer.size());
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
