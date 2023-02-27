@@ -127,7 +127,7 @@ public class FragmentScannerUser extends Fragment {
     private ServiceClientBLE.LocalBinderСканнер binderСканнер;
     private ProgressBar progressСканер;
 
-    private BluetoothManager bluetoothManager;
+
     private MutableLiveData<String> mediatorLiveDataGATT;
     private String КлючДляFibaseOneSingnal;
     private Long version = 0l;
@@ -150,7 +150,6 @@ public class FragmentScannerUser extends Fragment {
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setPrimaryNavigationFragment(fragment);
             Bundle bundle = getArguments();
-            bluetoothManager = (BluetoothManager) getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
             КлючДляFibaseOneSingnal = "56bbe169-ea09-43de-a28c-9623058e43a2";
             mediatorLiveDataGATT = new MediatorLiveData();
             animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator2);
@@ -217,7 +216,6 @@ public class FragmentScannerUser extends Fragment {
             МетодПерегрузкаRecyceView();
 
             // TODO: 20.02.2023 ТЕКСТ КОД
-           /// МетодЗаполенияДаннымиКлиентаДЛяGAtt();
             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
             e.printStackTrace();
@@ -1054,7 +1052,7 @@ public class FragmentScannerUser extends Fragment {
         private void МетодЗапускКлиентаGattЧерезБиндинг(@NonNull String ДействиеДляСервераGATTОТКлиента) {
             try {
             // TODO: 06.12.2022 запускаем сканирование клиента
-            binderСканнер.getService().МетодКлиентЗапускСканера(handler.getTarget(), getActivity(), bluetoothManager, mediatorLiveDataGATT, ДействиеДляСервераGATTОТКлиента);
+            binderСканнер.getService().МетодКлиентЗапускСканера(handler.getTarget(), getActivity(),  mediatorLiveDataGATT, ДействиеДляСервераGATTОТКлиента);
                 Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
         } catch (Exception e) {
             e.printStackTrace();

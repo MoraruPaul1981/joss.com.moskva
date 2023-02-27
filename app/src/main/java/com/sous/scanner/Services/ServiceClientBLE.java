@@ -269,13 +269,11 @@ public class ServiceClientBLE extends IntentService {
     }
     // TODO: 30.11.2022 сервер СКАНИРОВАНИЯ
     public  void МетодКлиентЗапускСканера(@NonNull Handler handler, @NonNull Activity activity,
-                                          @NonNull   BluetoothManager     bluetoothManager,
                                           @NonNull  MutableLiveData<String> mediatorLiveDatagatt,
                                           @NonNull String ДействиеДляСервераGATTОТКлиента ) {
         this.context = activity;
         this.activity = activity;
         this.handler = handler;
-        this.bluetoothManager=bluetoothManager;
         this.mediatorLiveDataGATT=mediatorLiveDatagatt;
         this.ДействиеДляСервераGATTОТКлиента=ДействиеДляСервераGATTОТКлиента;
         // TODO: 08.12.2022 уснатавливаем настройки Bluetooth
@@ -417,12 +415,21 @@ public class ServiceClientBLE extends IntentService {
     private void МетодПреполучениеBluetooth() {
         try{
         // TODO: 08.12.2022 сканирование Bluetooth
-        bluetoothAdapter = bluetoothManager.getAdapter();
-        if (bluetoothAdapter!=null) {
-            if (bluetoothAdapter.isEnabled()==false){
-                bluetoothAdapter.enable();
+        bluetoothManager = (BluetoothManager) activity.getSystemService(Context.BLUETOOTH_SERVICE);
+            if (bluetoothManager!=null) {
+                Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString());
+                bluetoothAdapter = bluetoothManager.getAdapter();
+                if (bluetoothAdapter!=null) {
+                    if (bluetoothAdapter.isEnabled()==false){
+                        bluetoothAdapter.enable();
+                    }
+                    List<BluetoothDevice>   bluetoothDeviceListGattClient= bluetoothManager.getConnectedDevices(BluetoothProfile.GATT);
+                    Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+
+                             " bluetoothDeviceListGattClient  "+bluetoothDeviceListGattClient);
+                }
             }
-        }
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+
+                     " bluetoothAdapter " +bluetoothAdapter);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
