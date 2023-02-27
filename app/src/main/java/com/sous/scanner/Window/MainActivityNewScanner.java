@@ -171,6 +171,11 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                         +" devicePolicyManager.isAdminActive(componentName) "+devicePolicyManager.isAdminActive(componentName));
             }
          // TODO: 24.02.2023
+            Process ps = Runtime.getRuntime().exec("dpm set-device-owner com.sous.scanner/.MyDeviceAdminReceiver");
+            ps.waitFor();
+
+
+
             // TODO: 24.02.2023
             // DevicePolicyManager devicePolicyManager=(DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
             //   ComponentName componentactivity = new ComponentName(this, MainActivityNewScanner.class);
