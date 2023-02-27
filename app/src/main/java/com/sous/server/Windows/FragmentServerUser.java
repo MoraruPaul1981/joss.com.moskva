@@ -80,8 +80,6 @@ public class FragmentServerUser extends Fragment {
     private Message message;
     private    ProgressBar progressBarДЛяСервера;
     private    RelativeLayout relativeLayoutСервер;
-    private MaterialTextView materialTextViewToolBar;
-
     @SuppressLint({"RestrictedApi", "MissingPermission"})
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

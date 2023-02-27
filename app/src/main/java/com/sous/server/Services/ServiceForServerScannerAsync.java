@@ -11,14 +11,10 @@ import android.os.IBinder;
 import android.os.Parcel;
 import android.os.RemoteException;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.sous.server.Errors.SubClassErrors;
-
 import java.util.Date;
-
 public class ServiceForServerScannerAsync extends IntentService {
     public LocalBinderAsyncServer binder = new LocalBinderAsyncServer();
     private Integer МаксималноеКоличествоСтрочекJSON;
@@ -26,7 +22,6 @@ public class ServiceForServerScannerAsync extends IntentService {
     private String Проценты;
     private Integer ИндексВизуальнойДляPrograssBar = 0;
     private Long version = 0l;
-
     public ServiceForServerScannerAsync() {
         super("ServiceForServerScannerAsync");
     }
@@ -58,7 +53,6 @@ public class ServiceForServerScannerAsync extends IntentService {
             new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
     }
-
 
     public class LocalBinderAsyncServer extends Binder {
         public ServiceForServerScannerAsync getService() {
