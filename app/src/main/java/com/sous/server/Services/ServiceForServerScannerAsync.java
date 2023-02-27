@@ -1,146 +1,68 @@
-/*
-package com.sous.server.CONTROL;
+package com.sous.server.Services;
 
 import android.app.IntentService;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteCursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
+import android.content.pm.PackageInfo;
 import android.os.Binder;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
-import android.os.Messenger;
 import android.os.Parcel;
 import android.os.RemoteException;
 import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.loader.content.AsyncTaskLoader;
-import androidx.loader.content.Loader;
 
+import com.sous.server.Errors.SubClassErrors;
 
-
-
-import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
-import java.util.Spliterator;
-import java.util.concurrent.CompletionService;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.function.Consumer;
-import java.util.stream.Stream;
 
-import javax.crypto.NoSuchPaddingException;
-
-import io.reactivex.rxjava3.core.BackpressureStrategy;
-import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Action;
-import io.reactivex.rxjava3.functions.Function;
-import io.reactivex.rxjava3.functions.Predicate;
-import io.reactivex.rxjava3.parallel.ParallelFlowable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
-
-
-*/
-/**
- * An {@link IntentService} subclass for handling asynchronous task requests in
- * a service on a separate handler thread.
- * <p>
- * <p>
- * TODO: Customize class - update intent actions, extra parameters and static
- * helper methods.
- *//*
-
-public class Service_For_Remote_Async extends IntentService {
-    public LocalBinderДляТабеля binder = new LocalBinderДляТабеля();
-    private Context context;
-    private    Messenger messengerCallBacks;
-    private AsyncTaskLoader<Integer> asyncTaskLoaderВизуальнаяСинхронизация;
-    private  Integer МаксималноеКоличествоСтрочекJSON;
+public class ServiceForServerScannerAsync extends IntentService {
+    public LocalBinderAsyncServer binder = new LocalBinderAsyncServer();
+    private Integer МаксималноеКоличествоСтрочекJSON;
     private SharedPreferences preferences;
-    private   String Проценты;
-    private Integer ИндексВизуальнойДляPrograssBar=0;
-    public Service_For_Remote_Async() {
-        super("Service_For_Remote_Async");
+    private String Проценты;
+    private Integer ИндексВизуальнойДляPrograssBar = 0;
+    private Long version = 0l;
+
+    public ServiceForServerScannerAsync() {
+        super("ServiceForServerScannerAsync");
     }
+
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d(context.getClass().getName(), "\n"
+        Log.d(getApplicationContext().getClass().getName(), "\n"
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-     context .getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
-    }
-
-    class IncomingHandler extends Handler{
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            super.handleMessage(msg);
-            try{
-                  Bundle data =msg.getData();
-                  messengerCallBacks=msg.replyTo;
-                  Intent intentДляФоновойСинхронизации=new Intent("ЗапусAsyncBackground");
-                  intentДляФоновойСинхронизации.putExtras(data);
-                  onHandleIntent(intentДляФоновойСинхронизации);
-            Log.d(context.getClass().getName(), "\n"
-                    + " время: " + new Date() + "\n+" +
-                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+        PackageInfo pInfo = null;
+        try {
+            pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
+            version = pInfo.getLongVersionCode();
+            getApplicationContext().getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-            Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
-        }
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
     }
 
-    */
-/**
-     * Class used for the client Binder.  Because we know this service always
-     * runs in the same process as its clients, we don't need to deal with IPC.
-     *//*
 
-   public class LocalBinderДляТабеля extends Binder {
-        public Service_For_Remote_Async getService() {
-            // Return this instance of LocalService so clients can call public methods
-            //   return Service_For_Remote_Async.this;
-            return Service_For_Remote_Async.this;
+    public class LocalBinderAsyncServer extends Binder {
+        public ServiceForServerScannerAsync getService() {
+            return ServiceForServerScannerAsync.this;
         }
 
         @Override
@@ -158,34 +80,23 @@ public class Service_For_Remote_Async extends IntentService {
             return super.unlinkToDeath(recipient, flags);
         }
     }
-    final Messenger messenger = new Messenger(new IncomingHandler());
-*/
-/*
+
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d(context.getClass().getName(), "\n"
+        Log.d(getApplicationContext().getClass().getName(), "\n"
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
         //   return super.onBind(intent);
         return binder;
-    }*//*
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        Log.d(context.getClass().getName(), "\n"
-                + " время: " + new Date() + "\n+" +
-                " Класс в процессе... " + this.getClass().getName() + "\n" +
-                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-        //   return super.onBind(intent);
-        return messenger.getBinder();
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(context.getClass().getName(), "\n"
+        Log.d(getApplicationContext().getClass().getName(), "\n"
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
@@ -198,7 +109,6 @@ public class Service_For_Remote_Async extends IntentService {
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + newBase.getClass().getName() + "\n" +
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-        this.context = newBase;
         super.attachBaseContext(newBase);
     }
 
@@ -208,163 +118,34 @@ public class Service_For_Remote_Async extends IntentService {
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-        this.context =getApplicationContext();
-        // TODO: 28.09.2022  запускаем службу табелей
-            МетодAsyncИзСлужбы(context, intent);
+        //   МетодAsyncИзСлужбы(context, intent);
 // TODO: 30.06.2022 сама не постредствено запуск метода
     }
 
 
-
     public Integer МетодAsyncИзСлужбы(@NonNull Context context, @NonNull Intent intent) {
-        Integer ФинальныйРезультатAsyncBackgroud=0;
+        Integer ФинальныйРезультатAsyncBackgroud = 0;
         try {
-            if( this.context==null){
-                this.context=context;
-            }
-                    // TODO: 05.11.2022 запуск синхрониазции 
-                          ФинальныйРезультатAsyncBackgroud=       МетодЗапускаAsyncBackgronud(context);
-                          Log.w(this.getClass().getName(), "   ФинальныйРезультатAsyncBackgroud " + ФинальныйРезультатAsyncBackgroud);
+            // TODO: 05.11.2022 запуск синхрониазции
+            Log.w(this.getClass().getName(), "   ФинальныйРезультатAsyncBackgroud " + ФинальныйРезультатAsyncBackgroud);
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-            Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
         return ФинальныйРезультатAsyncBackgroud;
     }
-
-    // TODO: 22.12.2022  запск СИНХРОНИЗАЦИИ АСИНХРОНННО
-    public Integer МетодЗапускаAsyncBackgronud(@NonNull Context context)
-            throws NoSuchPaddingException, NoSuchAlgorithmException, RemoteException, InvalidKeyException {
-        Integer РезультатAsyncTaskСинхронизации=0;
-        try{
-        // TODO: 11.10.2022  запускаем главную фоновую синхрониазцию
-            asyncTaskLoaderВизуальнаяСинхронизация =new AsyncTaskLoader(context) {
-               @Override
-               public void commitContentChanged() {
-                   super.commitContentChanged();
-               }
-               @Nullable
-                @Override
-                public Integer loadInBackground() {
-                Integer  ФинальныйРезультатAsyncBackgroud=0;
-                    try{
-                        ФинальныйРезультатAsyncBackgroud = new Class_Engine_SQL(context).МетодЗАпускаФоновойСинхронизации(context);
-                        Log.d(context.getClass().getName(), "\n"
-                                + "   ФинальныйРезультатAsyncBackgroud " +   ФинальныйРезультатAsyncBackgroud);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
-                }
-                    commitContentChanged();
-                    return   ФинальныйРезультатAsyncBackgroud;
-                }
-            };
-                asyncTaskLoaderВизуальнаяСинхронизация.startLoading();
-                asyncTaskLoaderВизуальнаяСинхронизация.forceLoad();
-                asyncTaskLoaderВизуальнаяСинхронизация.registerListener(new Random().nextInt(), new Loader.OnLoadCompleteListener<Integer>() {
-                    @Override
-                    public void onLoadComplete(@NonNull Loader<Integer> loader, @Nullable Integer РезультатAsyncTaskСинхронизации) {
-                        try{
-                        МетодПослеAsyncTaskЗавершающий(РезультатAsyncTaskСинхронизации, context);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
-                    }
-                    }
-                });
-        } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
-    }*/
-/*finally {
-            РезультатAsyncTaskСинхронизации=asyncTaskLoaderВизуальнаяСинхронизация.loadInBackground();
-            // TODO: 08.11.2022 запускаем как синхрониазция прошла
-            МетодПослеAsyncTaskЗавершающий(РезультатAsyncTaskСинхронизации, context);
-        }*//*
-
-        return РезультатAsyncTaskСинхронизации;
-    }
-    // TODO: 22.12.2022  запск СИНХРОНИЗАЦИИ сИНХРОННО длЯ WORK MANAGER
-    public Integer МетодЗапускаAsyncBackgronudДляWorkManager(@NonNull Context context)
-            throws NoSuchPaddingException, NoSuchAlgorithmException, RemoteException, InvalidKeyException {
-        Integer РезультатAsyncTaskСинхронизации=0;
-        try{
-            // TODO: 11.10.2022  запускаем главную фоновую синхрониазцию
-            asyncTaskLoaderВизуальнаяСинхронизация =new AsyncTaskLoader(context) {
-                @Override
-                public void commitContentChanged() {
-                    super.commitContentChanged();
-                }
-                @Nullable
-                @Override
-                public Integer loadInBackground() {
-                    Integer  ФинальныйРезультатAsyncBackgroud=0;
-                    try{
-                        ФинальныйРезультатAsyncBackgroud = new Class_Engine_SQL(context).МетодЗАпускаФоновойСинхронизации(context);
-                        Log.d(context.getClass().getName(), "\n"
-                                + "   ФинальныйРезультатAsyncBackgroud " +   ФинальныйРезультатAsyncBackgroud);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
-                    }
-                    return   ФинальныйРезультатAsyncBackgroud;
-                }
-            };
-            asyncTaskLoaderВизуальнаяСинхронизация.startLoading();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-            Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
-        }finally {
-            РезультатAsyncTaskСинхронизации=asyncTaskLoaderВизуальнаяСинхронизация.loadInBackground();
-            // TODO: 08.11.2022 запускаем как синхрониазция прошла
-            МетодПослеAsyncTaskЗавершающий(РезультатAsyncTaskСинхронизации, context);
-        }
-        return РезультатAsyncTaskСинхронизации;
-    }
-
-    private void МетодПослеAsyncTaskЗавершающий(@Nullable Integer data, @NonNull Context context)
-            throws RemoteException, NoSuchPaddingException,
-            NoSuchAlgorithmException, InvalidKeyException {
-        try{
-        asyncTaskLoaderВизуальнаяСинхронизация.reset();
-        // TODO: 05.11.2022  после  ВЫПОЛЕНИЯ СИНЗХРОНИАЗИИ СООБЩАЕМ ОБ ОКОНЧАТИИ СИХРОНИАЗЦИИ ВИЗУАЛЬТА
-        new Class_Engine_SQL(context).МетодCallBasksВизуальноИзСлужбы(МаксималноеКоличествоСтрочекJSON,МаксималноеКоличествоСтрочекJSON,
-                Проценты,null,"ФинишВыходИзAsyncBackground",false,false);
-        Log.d(context.getClass().getName(), "\n" + " МаксималноеКоличествоСтрочекJSON: " +МаксималноеКоличествоСтрочекJSON );
-        // TODO: 25.09.2022  Удаление удаленного статуса записейdata;
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
-    }
-    }
+    // TODO: 27.02.2023  конец службы синхронизации для Сервер Сканера
+}
 
 
 
@@ -394,8 +175,7 @@ public class Service_For_Remote_Async extends IntentService {
 
 
 
-
-
+/*
 
 
 
@@ -810,7 +590,7 @@ public class Service_For_Remote_Async extends IntentService {
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
             return РезультаУспешнойВсатвкиИлиобвнлденияДаннымиССервера;
-        }
+        }*/
 
 
 
@@ -835,7 +615,7 @@ public class Service_For_Remote_Async extends IntentService {
 
 
 
-*/
+
 /*
         // TODO: 12.08.2021  метода повышает ВЕРСИЮ ДАННЫ Х ПОСЛЕ УСПЕШНОЙ СИНХРОНИАЗЦИИ ТАБЛИЦЫ
 

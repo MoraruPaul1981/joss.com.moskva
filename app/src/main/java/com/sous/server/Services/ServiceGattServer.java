@@ -105,7 +105,8 @@ public class ServiceGattServer extends IntentService {
     private BluetoothGattServer server;
     private Long version = 0l;
     public ServiceGattServer() {
-        super("ServiceGattServer");
+        super(
+                "ServiceGattServer");
     }
     private MutableLiveData<Bundle> mutableLiveDataGATTServer;
     private List<Address> addressesgetGPS;
@@ -291,9 +292,6 @@ public class ServiceGattServer extends IntentService {
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-        if (server!=null) {
-            server.close();
-        }
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
