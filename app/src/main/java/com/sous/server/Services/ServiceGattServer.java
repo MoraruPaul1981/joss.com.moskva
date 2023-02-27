@@ -986,13 +986,11 @@ public class ServiceGattServer extends IntentService {
                 Log.i(TAG, " onConnectionStateChange BluetoothProfile.STATE_DISCONNECTED "+  device.getAddress()+
                         "\n"+ "newState " + newState +  "status "+ status);
                // server.cancelConnection(device);
-                v2.vibrate(VibrationEffect.createOneShot(25, VibrationEffect.DEFAULT_AMPLITUDE));
                 break;
-            case BluetoothProfile.STATE_CONNECTING:
+            case BluetoothGatt.GATT_CONNECTION_CONGESTED:
                 Log.i(TAG, " onConnectionStateChange BluetoothProfile.STATE_DISCONNECTED "+  device.getAddress()+
                         "\n"+ "newState " + newState +  "status "+ status);
                 // server.cancelConnection(device);
-                v2.vibrate(VibrationEffect.createOneShot(25, VibrationEffect.DEFAULT_AMPLITUDE));
                 break;
         }
             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+
