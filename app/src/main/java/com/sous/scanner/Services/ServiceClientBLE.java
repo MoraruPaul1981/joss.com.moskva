@@ -652,7 +652,10 @@ public class ServiceClientBLE extends IntentService {
                 private void МетодЗапускаGATTКлиента(@NonNull BluetoothDevice bluetoothDevice,
                                                      BluetoothGattCallback bluetoothGattCallback) {
                     try{
-                    gatt =      bluetoothDevice.connectGatt(context, false, bluetoothGattCallback, BluetoothDevice.TRANSPORT_AUTO,BluetoothDevice.PHY_OPTION_S8,handler);
+                    gatt =      bluetoothDevice.connectGatt(context, false,
+                            bluetoothGattCallback,
+                            BluetoothDevice.TRANSPORT_AUTO,
+                            BluetoothDevice.PHY_OPTION_S8,handler);
                     Log.d(this.getClass().getName(), "\n" + " bluetoothDevice" + bluetoothDevice);
                     gatt.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH);
                     //gatt.setPreferredPhy(BluetoothDevice.PHY_LE_2M_MASK,BluetoothDevice.PHY_LE_2M_MASK,BluetoothDevice.PHY_OPTION_S2);
@@ -660,28 +663,21 @@ public class ServiceClientBLE extends IntentService {
                     Log.d(TAG, "Trying to write characteristic..., first bondstate " + bondstate);
                     switch (bondstate) {
                         case BluetoothDevice.DEVICE_TYPE_UNKNOWN:
-                            Log.i(TAG, "BluetoothDevice.DEVICE_TYPE_UNKNOWN" + bondstate);//Указывает, что удаленное устройство не связано (сопряжено).
-                            bluetoothDevice.createBond();
-                            handler.post(()->{
-                                mediatorLiveDataGATT.setValue("SERVER#SousAvtoDONTDIVICE");
-                            });
-                            break;
-                        case BluetoothDevice.BOND_BONDING:
-                            Log.i(TAG, "BluetoothDevice.BOND_BONDING" + bondstate);//Указывает, что удаленное устройство не связано (сопряжено).
-                            break;
-                        case BluetoothDevice.BOND_NONE://Указывает, что удаленное устройство не связано (сопряжено).
+                        case BluetoothDevice.BOND_NONE:
                             bluetoothDevice.createBond();
                             handler.post(()->{
                                 mediatorLiveDataGATT.setValue("SERVER#SousAvtoDONTDIVICE");
                             });
                             Log.i(TAG, "BluetoothDevice.BOND_NONE" + bondstate);//Указывает, что удаленное устройство не связано (сопряжено).
                             break;
-                        case BluetoothDevice.BOND_BONDED://Указывает, что удаленное устройство связано (сопряжено).
-                            Log.i(TAG, "BluetoothDevice.BOND_BONDED " + bondstate);
+                        case BluetoothDevice.BOND_BONDING:
+                        case BluetoothDevice.BOND_BONDED:
+                            handler.post(()->{
+                                mediatorLiveDataGATT.setValue("SERVER#SousAvtoBOND_BONDING");
+                            });
+                            Log.i(TAG, "BluetoothDevice.BOND_BONDING" + bondstate);//Указывает, что удаленное устройство не связано (сопряжено).
                             break;
                     }
-                    // TODO: 14.02.2023  Слушатель
-                    МетодСлушательGattКлиента();
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -697,31 +693,6 @@ public class ServiceClientBLE extends IntentService {
                     new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
                 }
                 }
-                     private void МетодСлушательGattКлиента(){
-                          BluetoothProfile.ServiceListener listener= new BluetoothProfile.ServiceListener(){
-                             @Override
-                             public void onServiceConnected(int i, BluetoothProfile bluetoothProfile) {
-                                 // TODO Auto-generated method stub
-                                 Log.i(TAG, "BluetoothDevice.bluetoothProfile " + bluetoothProfile);
-                                 switch(i){
-                                     case BluetoothProfile.HEADSET:
-                                         Log.e("found","headset");
-                                         break;
-                                     case BluetoothProfile.A2DP:
-                                         Log.e("found","a2dp");
-                                         break;
-                                     case BluetoothProfile.HEALTH:
-                                         Log.e("found","HEALTH");
-                                         break;
-                                 }
-                             }
-                             @Override
-                             public void onServiceDisconnected(int i) {
-                                 Log.i(TAG, "BluetoothDevice.i " + i);
-                             }
-                         };
-                     }
-
 
                 @SuppressLint("MissingPermission")
                 public void МетодВыключениеКлиентаGatt() {

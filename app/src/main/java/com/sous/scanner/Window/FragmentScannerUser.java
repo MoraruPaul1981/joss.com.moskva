@@ -931,6 +931,15 @@ public class FragmentScannerUser extends Fragment {
                                     Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                             + new Date().toLocaleString() + " mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                     break;
+                                case "SERVER#SousAvtoBOND_BONDING":
+                                    handler.getTarget().post(() -> {
+                                        materialButtonКакоеДействие.setText("Сопрящение...");
+                                        v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
+                                        progressСканер.setVisibility(View.INVISIBLE);
+                                    });
+                                    Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
+                                            + new Date().toLocaleString() + " mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
+                                    break;
                                 case "GATTCLIENTProccessing":
                                     handler.getTarget().post(() -> {
                                         materialButtonКакоеДействие.setText("В процессе...");
@@ -1071,7 +1080,6 @@ public class FragmentScannerUser extends Fragment {
                             + "ДействиеДляСервераGATTОТКлиента " + ДействиеДляСервераGATTОТКлиента);
                     progressСканер.setVisibility(View.INVISIBLE);
                 }, 10000);
-
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
