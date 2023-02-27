@@ -756,7 +756,6 @@ public class FragmentScannerUser extends Fragment {
                 Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
                         +new Date().toLocaleString() + " holder " +holder);
                 // TODO: 19.02.2023 Второе Действие
-                final Disposable[] disposable = new Disposable[1];
                 RxView.clicks(holder.materialButtonКотрольВыход)
                         .throttleFirst(1, TimeUnit.MINUTES)
                                 .observeOn(AndroidSchedulers.mainThread())
@@ -765,39 +764,31 @@ public class FragmentScannerUser extends Fragment {
                                             public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
                                                 Log.i(this.getClass().getName(),  "  RxView.clicks " +Thread.currentThread().getStackTrace()[2].getMethodName()
                                                         + " время " +new Date().toLocaleString() );
-                                                disposable[0] =d;
                                             }
-
                                             @Override
                                             public void onNext(@io.reactivex.rxjava3.annotations.NonNull Unit unit) {
 
                                                 Log.i(this.getClass().getName(),  "  RxView.clicks " +Thread.currentThread().getStackTrace()[2].getMethodName()
                                                         + " время " +new Date().toLocaleString() +
-                                                        " disposable[0] " +disposable[0].isDisposed());
-
+                                                        " disposable[0] " );
                                                     ДействиеДляСервераGATTОТКлиента = "с работы";
                                                     МетодЗапускаGattСервера(holder.materialButtonКотрольВыход, holder, holder.materialButtonКотрольВыход);
                                                     // TODO: 20.02.2023 Принудитльеное Разрыв Клиента с Сервом GATT
                                                     МетодПринудительноРазрываемвязисGatt(ДействиеДляСервераGATTОТКлиента);
                                                     Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
                                                     // TODO: 22.02.2023
-
-                                                disposable[0].dispose();
                                             }
-
                                             @Override
                                             public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
 
                                                 Log.i(this.getClass().getName(),  "  RxView.clicks " +Thread.currentThread().getStackTrace()[2].getMethodName()
                                                         + " время " +new Date().toLocaleString() );
                                             }
-
                                             @Override
                                             public void onComplete() {
 
                                                 Log.i(this.getClass().getName(),  "  RxView.clicks " +Thread.currentThread().getStackTrace()[2].getMethodName()
                                                         + " время " +new Date().toLocaleString() );
-                                                disposable[0].dispose();
                                             }
                                         });
                 // TODO: 22.02.2023 для второй кнопки
@@ -809,22 +800,16 @@ public class FragmentScannerUser extends Fragment {
                             public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
                                 Log.i(this.getClass().getName(),  "  RxView.clicks " +Thread.currentThread().getStackTrace()[2].getMethodName()
                                         + " время " +new Date().toLocaleString() );
-                                disposable[0] =d;
                             }
                             @Override
                             public void onNext(@io.reactivex.rxjava3.annotations.NonNull Unit unit) {
-
                                 Log.i(this.getClass().getName(),  "  RxView.clicks " +Thread.currentThread().getStackTrace()[2].getMethodName()
-                                        + " время " +new Date().toLocaleString() +
-                                        " disposable[0] " +disposable[0].isDisposed());
-
+                                        + " время " +new Date().toLocaleString() );
                                     ДействиеДляСервераGATTОТКлиента = "на работу";
                                     МетодЗапускаGattСервера(holder.materialButtonКотрольПриход, holder, holder.materialButtonКотрольПриход);
                                     // TODO: 20.02.2023 Принудитльеное Разрыв Клиента с Сервом GATT
                                     МетодПринудительноРазрываемвязисGatt(ДействиеДляСервераGATTОТКлиента);
                                     Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
-
-                                disposable[0].dispose();
                             }
                             @Override
                             public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
@@ -835,15 +820,10 @@ public class FragmentScannerUser extends Fragment {
 
                             @Override
                             public void onComplete() {
-
                                 Log.i(this.getClass().getName(),  "  RxView.clicks " +Thread.currentThread().getStackTrace()[2].getMethodName()
                                         + " время " +new Date().toLocaleString() );
-                                disposable[0].dispose();
                             }
                         });
-
-
-
       /*          holder.materialButtonКотрольПриход.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
