@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.app.admin.DeviceAdminReceiver;
 import android.app.admin.DevicePolicyManager;
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.ComponentName;
 import android.content.ContentResolver;
@@ -810,7 +811,8 @@ public class FragmentScannerUser extends Fragment {
                                     МетодЗапускаGattСервера(holder.materialButtonКотрольПриход, holder, holder.materialButtonКотрольПриход);
                                     // TODO: 20.02.2023 Принудитльеное Разрыв Клиента с Сервом GATT
                                     МетодПринудительноРазрываемвязисGatt(ДействиеДляСервераGATTОТКлиента);
-                                    Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
+                                    Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                            + " время " + new Date().toLocaleString());
                             }
                             @Override
                             public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
@@ -902,7 +904,6 @@ public class FragmentScannerUser extends Fragment {
                         event.getTargetState().name();
                     }
                 });
-                mediatorLiveDataGATT.setValue("GATTCLIENTProccessing");
                 mediatorLiveDataGATT.observe(lifecycleOwner, new Observer<String>() {
                     @Override
                     public void onChanged(@NonNull  String ОтветОтСерврера) {
@@ -955,6 +956,17 @@ public class FragmentScannerUser extends Fragment {
                                 case "SERVER#SousAvtoDONTDIVICE":
                                     handler.getTarget().post(() -> {
                                         materialButtonКакоеДействие.setText("Нет  сопряжение !!!");
+                                        v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
+                                        handler.getTarget().postDelayed(() -> {
+                                            materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
+                                        }, 3000);
+                                    });
+                                    Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
+                                            + new Date().toLocaleString() + " mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
+                                    break;
+                                case "SERVER#SousAvtoDONTBLEManager":
+                                    handler.getTarget().post(() -> {
+                                        materialButtonКакоеДействие.setText("Нет Bluetooth  !!!");
                                         v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
                                         handler.getTarget().postDelayed(() -> {
                                             materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
@@ -1054,7 +1066,6 @@ public class FragmentScannerUser extends Fragment {
         private void МетодПринудительноРазрываемвязисGatt(@NonNull String ДействиеДляСервераGATTОТКлиента) {
             try {
                 handler.getTarget().postDelayed(() -> {
-                    mediatorLiveDataGATT.setValue("SERVER#SERVER#SousAvtoNULL");
                     binderСканнер.getService().МетодВыключениеКлиентаGatt();
                     Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString()
                             + "ДействиеДляСервераGATTОТКлиента " + ДействиеДляСервераGATTОТКлиента);

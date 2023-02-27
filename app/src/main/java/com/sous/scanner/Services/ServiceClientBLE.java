@@ -197,8 +197,6 @@ public class ServiceClientBLE extends IntentService {
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-        // TODO: 13.02.2023  Разрываем сокедение с сервером
-        МетодВыключениеКлиентаGatt();
     }
 
 
@@ -291,6 +289,7 @@ public class ServiceClientBLE extends IntentService {
             }else{
                 Log.w(this.getClass().getName(), "   bluetoothManager  "+bluetoothManager+ " bluetoothAdapter "
                         +bluetoothAdapter + "mediatorLiveDataGATT " +mediatorLiveDataGATT);
+                mediatorLiveDataGATT.setValue("SERVER#SousAvtoDONTBLEManager");
             }
             Log.w(this.getClass().getName(), "   bluetoothManager  "+bluetoothManager+ " bluetoothAdapter "
                     +bluetoothAdapter + "mediatorLiveDataGATT " +mediatorLiveDataGATT);
@@ -315,6 +314,7 @@ public class ServiceClientBLE extends IntentService {
     private void  МетодЗапускаСканированиеКлиент(){
         try{
             Log.d(TAG, "МетодЗапускаСканированиеКлиент: Запускаем.... Метод Сканирования Для Android");
+            mediatorLiveDataGATT.setValue("GATTCLIENTProccessing");
             Log.d(TAG, "1МетодЗапускаСканиваронияДляАндройд: Запускаем.... Метод Сканирования Для Android binder.isBinderAlive()  "+"\n+" +
                     ""+binder.isBinderAlive()+ " date "+new Date().toString().toString()+"" +
                     "\n"+" POOL "+Thread.currentThread().getName() +
@@ -731,7 +731,8 @@ public class ServiceClientBLE extends IntentService {
                             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + " gatt " +gatt);
                         }
                         Log.i(TAG, "GATT CLIENT Proccessing from GATT server.SERVER#SousAvtoEXIT " +
-                                new Date().toLocaleString() + ДействиеДляСервераGATTОТКлиента + " BluetoothGatt.GATT_SUCCESS "+BluetoothGatt.GATT_SUCCESS);
+                                new Date().toLocaleString() + ДействиеДляСервераGATTОТКлиента
+                                + " gatt "+gatt);
                     //TODO
                 } catch (Exception e) {
         e.printStackTrace();
