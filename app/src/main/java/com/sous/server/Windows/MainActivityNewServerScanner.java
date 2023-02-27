@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -63,6 +64,25 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
     private RelativeLayout relativeLayout;
 
     @SuppressLint("RestrictedApi")
+    @RequiresPermission(anyOf = {
+            Manifest.permission.SEND_SMS,
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.READ_SMS,
+            Manifest.permission.READ_PHONE_NUMBERS,
+            Manifest.permission.READ_BASIC_PHONE_STATE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.BLUETOOTH_SCAN,
+            Manifest.permission.BLUETOOTH_CONNECT,
+            Manifest.permission.BLUETOOTH_PRIVILEGED,
+            Manifest.permission.BLUETOOTH_ADVERTISE,
+            Manifest.permission.READ_CONTACTS ,
+            Manifest.permission.WRITE_CONTACTS ,
+            Manifest.permission.WRITE_APN_SETTINGS ,
+            Manifest.permission.RECEIVE_SMS ,
+            Manifest.permission.MODIFY_PHONE_STATE ,
+            Manifest.permission.BLUETOOTH_ADMIN})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -90,6 +110,7 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
             fragmentManager = getSupportFragmentManager();
             PackageInfo pInfo =getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
+            МетодРАзрешенияBlurtooTКлиент();
             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
             e.printStackTrace();
@@ -117,7 +138,6 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
             // TODO: 07.02.2023 дополнительное разрещения blutoon
             МетодПрячемБарИКнопки();
             МетодСобыытиеКнопокСканирования(new Intent("activity"));
-            МетодРАзрешенияBlurtooTКлиент();
             ОтветныйHendlerОтСлужбы();
             МетодЗапускаетBroadcast();
             // TODO: 07.02.2023 запус самого СЕРВЕРА СКАНРРОВНИЕ..
@@ -215,41 +235,49 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
 
     private void МетодРАзрешенияBlurtooTКлиент() {
         try{
-
             String[] PERMISSIONS_STORAGE = {
                     Manifest.permission.READ_EXTERNAL_STORAGE,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
+                    /*  Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,*/
                     Manifest.permission.BLUETOOTH_SCAN,
                     Manifest.permission.BLUETOOTH_CONNECT,
                     Manifest.permission.BLUETOOTH_PRIVILEGED,
                     Manifest.permission.BLUETOOTH_ADVERTISE,
                     Manifest.permission.BLUETOOTH_ADMIN,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.INTERNET,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_NETWORK_STATE,
-                    Manifest.permission.ACCESS_BACKGROUND_LOCATION
-
+                    Manifest.permission.READ_PHONE_STATE,
+                    Manifest.permission.READ_SMS,
+                    Manifest.permission.READ_PHONE_NUMBERS,
+                    Manifest.permission.READ_BASIC_PHONE_STATE,
+                    Manifest.permission.READ_PRECISE_PHONE_STATE,
+                    Manifest.permission.READ_CONTACTS ,
+                    Manifest.permission.WRITE_CONTACTS ,
+                    Manifest.permission.WRITE_APN_SETTINGS ,
+                    Manifest.permission.RECEIVE_SMS ,
+                    Manifest.permission.SEND_SMS,
+                    Manifest.permission.MODIFY_PHONE_STATE,
             };
             String[] PERMISSIONS_LOCATION = {
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
+                    /*    Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,*/
                     Manifest.permission.BLUETOOTH_SCAN,
                     Manifest.permission.BLUETOOTH_CONNECT,
                     Manifest.permission.BLUETOOTH_PRIVILEGED,
                     Manifest.permission.BLUETOOTH_ADVERTISE,
                     Manifest.permission.BLUETOOTH_ADMIN,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.INTERNET,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_NETWORK_STATE,
-                    Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                    Manifest.permission.READ_PHONE_STATE,
+                    Manifest.permission.READ_SMS,
+                    Manifest.permission.READ_PRECISE_PHONE_STATE,
+                    Manifest.permission.READ_PHONE_NUMBERS,
+                    Manifest.permission.READ_BASIC_PHONE_STATE,
+                    Manifest.permission.READ_CONTACTS ,
+                    Manifest.permission.WRITE_CONTACTS ,
+                    Manifest.permission.WRITE_APN_SETTINGS ,
+                    Manifest.permission.RECEIVE_SMS ,
+                    Manifest.permission.MODIFY_PHONE_STATE ,
+                    Manifest.permission.SEND_SMS
             };
             int permission1 = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
             int permission2 = ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN);
