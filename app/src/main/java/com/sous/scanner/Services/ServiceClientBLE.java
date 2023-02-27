@@ -1,5 +1,7 @@
 package com.sous.scanner.Services;
 
+import static java.util.stream.Collectors.groupingBy;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -25,6 +27,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.ParcelUuid;
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
@@ -47,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletionService;
@@ -54,6 +59,7 @@ import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Flowable;
@@ -515,19 +521,26 @@ public class ServiceClientBLE extends IntentService {
                         // TODO: 20.02.2023 Метод Вытаскиеваем ДАнные Симки пользователя  
                         @NonNull
                         private ArrayList<String> МетодЗаполенияДаннымиКлиентаДЛяGAtt() {
-                            ArrayList <String> linkedHashMapДанныеКлиентаДляGATT = null;
+                            ArrayList <String> linkedHashMapДанныеКлиентаДляGATT = new ArrayList<>();
                             try {
-                             linkedHashMapДанныеКлиентаДляGATT=new ArrayList<>();
                             linkedHashMapДанныеКлиентаДляGATT.add(ДействиеДляСервераGATTОТКлиента);
-
-                                TelephonyManager tMgr = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-                                String mPhoneNumber1 = tMgr.getLine1Number();
-                                String mPhoneNumber2 = tMgr.getGroupIdLevel1();
-                                Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
-                                        + " mPhoneNumber1 " +mPhoneNumber1);
-                            linkedHashMapДанныеКлиентаДляGATT.add("89154578454545");
-                            linkedHashMapДанныеКлиентаДляGATT.add("89104578454500");
-                            linkedHashMapДанныеКлиентаДляGATT.add("00232000000000");
+                                // TODO: 27.02.2023  дполенилтельаня информация для вставки
+                                SubscriptionManager tMgr = (SubscriptionManager) getApplicationContext().getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
+                                final List<SubscriptionInfo> activeSubscriptionInfoList = tMgr.getActiveSubscriptionInfoList();
+                                if (activeSubscriptionInfoList.size()>0) {
+                                    activeSubscriptionInfoList.forEach(new java.util.function.Consumer<SubscriptionInfo>() {
+                                        @Override
+                                        public void accept(SubscriptionInfo subscriptionInfo) {
+                                            linkedHashMapДанныеКлиентаДляGATT.add(String.valueOf(subscriptionInfo.getCarrierId()));
+                                            Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
+                                                    + "subscriptionInfo" +subscriptionInfo);
+                                        }
+                                    });
+                                } else {
+                                    linkedHashMapДанныеКлиентаДляGATT.add(String.valueOf("Без Симки"));
+                                    Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString());
+                                }
+                                 linkedHashMapДанныеКлиентаДляGATT.stream().distinct().collect(Collectors.toList());
                                 Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
                                         + " linkedHashMapДанныеКлиентаДляGATT " +linkedHashMapДанныеКлиентаДляGATT);
                         } catch (Exception e) {
@@ -544,7 +557,7 @@ public class ServiceClientBLE extends IntentService {
                             valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
                             new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
                         }
-                            return linkedHashMapДанныеКлиентаДляGATT;
+                            return (ArrayList<String>) linkedHashMapДанныеКлиентаДляGATT.stream().distinct().collect(Collectors.toList());
                         }
 
                         @Override
