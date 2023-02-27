@@ -361,9 +361,11 @@ public class ServiceClientBLE extends IntentService {
                                             BluetoothDevice bluetoothDevice=bluetoothAdapter.getRemoteDevice(stringUUIDEntry.getKey());
                                             Log.d(this.getClass().getName()," bluetoothDevice " +bluetoothDevice  );
                                             // TODO: 12.02.2023  запускаем задачу в потоке
-                                            МетодРаботыСТекущийСерверомGATT(bluetoothDevice, stringUUIDEntry.getValue());
+                                            BluetoothGattCallback bluetoothGattCallback=       МетодРаботыСТекущийСерверомGATT(bluetoothDevice, stringUUIDEntry.getValue());
+                                            // TODO: 26.01.2023  конец сервера GATT
+                                            МетодЗапускаGATTКлиента(bluetoothDevice, bluetoothGattCallback);
                                             Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT()....  UuidГлавныйКлючСерверGATT "+ UuidГлавныйКлючСерверGATT
-                                                    +"uuidКлючСервераGATTЧтениеЗапись " +uuidКлючСервераGATTЧтениеЗапись);
+                                                    +"uuidКлючСервераGATTЧтениеЗапись " +uuidКлючСервераGATTЧтениеЗапись+ " bluetoothGattCallback " +bluetoothGattCallback);
                                         }
                                         return stringUUIDEntry;
                                     }
@@ -412,10 +414,11 @@ public class ServiceClientBLE extends IntentService {
 
 
     @SuppressLint("MissingPermission")
-                private void МетодРаботыСТекущийСерверомGATT(@NonNull  BluetoothDevice bluetoothDevice,@NonNull  UUID UuidГлавныйКлючСерверGATT) {
+                private BluetoothGattCallback МетодРаботыСТекущийСерверомGATT(@NonNull  BluetoothDevice bluetoothDevice,@NonNull  UUID UuidГлавныйКлючСерверGATT) {
                     // TODO: 25.01.2023 ПЕРВЫЙ ВАРИАНТ СЕРВЕР gatt
+                 BluetoothGattCallback bluetoothGattCallback = null;
                     try{
-                    BluetoothGattCallback bluetoothGattCallback = new BluetoothGattCallback() {
+                   bluetoothGattCallback = new BluetoothGattCallback() {
                         @Override
                         public void onConnectionStateChange(BluetoothGatt gatt, int status,
                                                             int newState) {
@@ -592,10 +595,6 @@ public class ServiceClientBLE extends IntentService {
                             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + " gatt " +gatt);
                         }
                     };
-                    // TODO: 26.01.2023  конец сервера GATT
-                        МетодЗапускаGATTКлиента(bluetoothDevice, bluetoothGattCallback);
-                        // TODO: 13.02.2023  делаем принудительный таймант по выключение сервервер через 10 секунд
-                        МетодВыключениеКлиентаGatt();
                     } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -610,11 +609,13 @@ public class ServiceClientBLE extends IntentService {
                     valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
                     new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
                 }
+                    return  bluetoothGattCallback;
                 }
 
 
     @SuppressLint("MissingPermission")
-                private void МетодЗапускаGATTКлиента(@NonNull BluetoothDevice bluetoothDevice, BluetoothGattCallback bluetoothGattCallback) {
+                private void МетодЗапускаGATTКлиента(@NonNull BluetoothDevice bluetoothDevice,
+                                                     BluetoothGattCallback bluetoothGattCallback) {
                     try{
                     gatt =      bluetoothDevice.connectGatt(context, false, bluetoothGattCallback, BluetoothDevice.TRANSPORT_AUTO,BluetoothDevice.PHY_OPTION_S8,handler);
                     Log.d(this.getClass().getName(), "\n" + " bluetoothDevice" + bluetoothDevice);
