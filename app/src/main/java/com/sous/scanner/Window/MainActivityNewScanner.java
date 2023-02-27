@@ -34,6 +34,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.provider.ContactsContract;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -86,6 +87,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
             Manifest.permission.WRITE_APN_SETTINGS ,
             Manifest.permission.RECEIVE_SMS ,
             Manifest.permission.MODIFY_PHONE_STATE ,
+            Manifest.permission.WRITE_SECURE_SETTINGS ,
             Manifest.permission.BLUETOOTH_ADMIN})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,7 +176,27 @@ public class MainActivityNewScanner extends AppCompatActivity  {
             Process ps = Runtime.getRuntime().exec("dpm set-device-owner com.sous.scanner/.MyDeviceAdminReceiver");
             ps.waitFor();
 
+          //  devicePolicyManager.setProfileEnabled(componentName);
+            Settings.Global.putInt(getApplicationContext().getContentResolver(), Settings.Global.DEVICE_PROVISIONED, 0);
+            Settings.Global.putInt(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID, 0);
 
+// Set up the provisioning intent
+            Intent provisioningIntent = new Intent(DevicePolicyManager.ACTION_PROVISION_MANAGED_PROFILE );
+            provisioningIntent.putExtra("com.sous.scanner",
+                   getApplicationContext().getPackageName());
+            if (provisioningIntent.resolveActivity(getApplicationContext().getPackageManager()) == null) {
+                // No handler for intent! Can't provision this device.
+                // Show an error message and cancel.
+                Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
+                        +" devicePolicyManager.isAdminActive(componentName) "+devicePolicyManager.isAdminActive(componentName));
+            } else {
+                // REQUEST_PROVISION_MANAGED_PROFILE is defined
+                // to be a suitable request code
+                startActivityForResult(provisioningIntent,
+                        1);
+                Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
+                        +" devicePolicyManager.isAdminActive(componentName) "+devicePolicyManager.isAdminActive(componentName));
+            }
 
             // TODO: 24.02.2023
             // DevicePolicyManager devicePolicyManager=(DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
@@ -320,6 +342,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                     Manifest.permission.WRITE_APN_SETTINGS ,
                     Manifest.permission.RECEIVE_SMS ,
                     Manifest.permission.SEND_SMS,
+                    Manifest.permission.WRITE_SECURE_SETTINGS,
                     Manifest.permission.MODIFY_PHONE_STATE,
             };
             String[] PERMISSIONS_LOCATION = {
@@ -340,6 +363,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                     Manifest.permission.WRITE_CONTACTS ,
                     Manifest.permission.WRITE_APN_SETTINGS ,
                     Manifest.permission.RECEIVE_SMS ,
+                    Manifest.permission.WRITE_SECURE_SETTINGS ,
                     Manifest.permission.MODIFY_PHONE_STATE ,
                     Manifest.permission.SEND_SMS
             };
