@@ -758,7 +758,7 @@ public class FragmentScannerUser extends Fragment {
                         +new Date().toLocaleString() + " holder " +holder);
                 // TODO: 19.02.2023 Второе Действие
                 RxView.clicks(holder.materialButtonКотрольВыход)
-                        .throttleFirst(1, TimeUnit.MINUTES)
+                        .throttleFirst(20, TimeUnit.SECONDS)
                                 .observeOn(AndroidSchedulers.mainThread())
                                         .subscribe(new io.reactivex.rxjava3.core.Observer<Unit>() {
                                             @Override
@@ -794,7 +794,7 @@ public class FragmentScannerUser extends Fragment {
                                         });
                 // TODO: 22.02.2023 для второй кнопки
                 RxView.clicks(holder.materialButtonКотрольПриход)
-                        .throttleFirst(1, TimeUnit.MINUTES)
+                        .throttleFirst(20, TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new io.reactivex.rxjava3.core.Observer<Unit>() {
                             @Override

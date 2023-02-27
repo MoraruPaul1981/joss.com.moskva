@@ -304,15 +304,9 @@ public class ServiceClientBLE extends IntentService {
     }
     // TODO: 08.12.2022 Метод Сервер
 
-    @SuppressLint("MissingPermission")
+    @SuppressLint({"MissingPermission"})
     private void  МетодЗапускаСканированиеКлиент(){
         try{
-            Message message = Message.obtain(handler);
-            Bundle bundle=new Bundle();
-            bundle.putString("КакоеДейтвие","ВыключаемPrograssbar");
-            message.setData(bundle);
-            message.setAsynchronous(true);
-            handler.sendMessageDelayed(message,1000);
             Log.d(TAG, "МетодЗапускаСканированиеКлиент: Запускаем.... Метод Сканирования Для Android");
             Log.d(TAG, "1МетодЗапускаСканиваронияДляАндройд: Запускаем.... Метод Сканирования Для Android binder.isBinderAlive()  "+"\n+" +
                     ""+binder.isBinderAlive()+ " date "+new Date().toString().toString()+"" +
@@ -321,7 +315,7 @@ public class ServiceClientBLE extends IntentService {
             // TODO: 08.12.2022 сканирование Bluetooth
             bluetoothAdapter = bluetoothManager.getAdapter();
             if (bluetoothAdapter!=null) {
-                while (bluetoothAdapter.isEnabled()==false){
+                if (bluetoothAdapter.isEnabled()==false){
                     bluetoothAdapter.enable();
                 }
             }
@@ -365,7 +359,8 @@ public class ServiceClientBLE extends IntentService {
                                     @Override
                                     public Object apply(Map.Entry<String, UUID> stringUUIDEntry) throws Throwable {
                                         if (bluetoothAdapter!=null &&  bluetoothAdapter.isEnabled()==true){
-                                            BluetoothDevice bluetoothDevice=bluetoothAdapter.getRemoteDevice(stringUUIDEntry.getKey());
+                                            // TODO: 27.02.2023  сам адрес уваленого дивайса
+                                         BluetoothDevice bluetoothDevice=bluetoothAdapter.getRemoteDevice(stringUUIDEntry.getKey());
                                             Log.d(this.getClass().getName()," bluetoothDevice " +bluetoothDevice  );
                                             // TODO: 12.02.2023  запускаем задачу в потоке
                                             BluetoothGattCallback bluetoothGattCallback=       МетодРаботыСТекущийСерверомGATT(bluetoothDevice, stringUUIDEntry.getValue());
