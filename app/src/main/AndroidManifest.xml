@@ -111,7 +111,7 @@
             android:exported="true">
             <meta-data
                 android:name="android.app.device_admin"
-                android:resource="@xml/device_owner_receiver" />
+                android:resource="@xml/device_device_receiver" />
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
                 <action android:name="android.app.action.PROFILE_PROVISIONING_COMPLETE" />

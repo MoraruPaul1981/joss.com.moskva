@@ -33,6 +33,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.UserHandle;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.util.Log;
@@ -155,10 +156,6 @@ public class MainActivityNewScanner extends AppCompatActivity  {
             DevicePolicyManager  devicePolicyManager=  myDeviceAdminReceiver.getManager(getApplication());
 
             if ( devicePolicyManager.isAdminActive(componentName)==false) {
-                   /*   broadcastReceiver_sous_notificatioons.setAction(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-            broadcastReceiver_sous_notificatioons.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, 1);
-                    broadcastReceiver_sous_notificatioons.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "Additional text explaining why this needs to be added.");
-             sendBroadcast(broadcastReceiver_sous_notificatioons);*/
                 Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN );
                 intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName);
                 intent.putExtra(DevicePolicyManager.EXTRA_DELEGATION_SCOPES,componentName);
@@ -173,34 +170,22 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                         +" devicePolicyManager.isAdminActive(componentName) "+devicePolicyManager.isAdminActive(componentName));
             }
          // TODO: 24.02.2023
-            Process ps = Runtime.getRuntime().exec("dpm set-device-owner com.sous.scanner/.MyDeviceAdminReceiver");
-            ps.waitFor();
 
-          //  devicePolicyManager.setProfileEnabled(componentName);
-            Settings.Global.putInt(getApplicationContext().getContentResolver(), Settings.Global.DEVICE_PROVISIONED, 0);
-            Settings.Global.putInt(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID, 0);
+         Process process=   Runtime.getRuntime().exec("dpm set-device-owner com.sous.scanner/.MyDeviceAdminReceiver");
 
-// Set up the provisioning intent
-            Intent provisioningIntent = new Intent(DevicePolicyManager.ACTION_PROVISION_MANAGED_PROFILE );
-            provisioningIntent.putExtra("com.sous.scanner",
-                   getApplicationContext().getPackageName());
-            if (provisioningIntent.resolveActivity(getApplicationContext().getPackageManager()) == null) {
-                // No handler for intent! Can't provision this device.
-                // Show an error message and cancel.
-                Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
-                        +" devicePolicyManager.isAdminActive(componentName) "+devicePolicyManager.isAdminActive(componentName));
-            } else {
-                // REQUEST_PROVISION_MANAGED_PROFILE is defined
-                // to be a suitable request code
-                startActivityForResult(provisioningIntent,
-                        1);
-                Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
-                        +" devicePolicyManager.isAdminActive(componentName) "+devicePolicyManager.isAdminActive(componentName));
-            }
-
+            process.waitFor();
             // TODO: 24.02.2023
-            // DevicePolicyManager devicePolicyManager=(DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
-            //   ComponentName componentactivity = new ComponentName(this, MainActivityNewScanner.class);
+
+           if(devicePolicyManager.isDeviceOwnerApp(componentName.getPackageName())){
+               Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
+                       +" devicePolicyManager.isAdminActive(componentName) "+devicePolicyManager.isAdminActive(componentName));
+            }else{
+               Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
+                       +" devicePolicyManager.isAdminActive(componentName) "+devicePolicyManager.isAdminActive(componentName));
+           }
+
+         //   devicePolicyManager.setDelegatedScopes();
+
 /*
 
            // devicePolicyManager.setPermissionGrantState(componentName, this.getPackageName(), Manifest.permission.READ_PHONE_STATE, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);
