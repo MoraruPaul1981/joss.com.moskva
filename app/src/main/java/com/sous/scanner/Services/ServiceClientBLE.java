@@ -606,6 +606,7 @@ public class ServiceClientBLE extends IntentService {
                         @Override
                         public void onServiceChanged(@NonNull BluetoothGatt gatt) {
                             super.onServiceChanged(gatt);
+                            mediatorLiveDataGATT.setValue("SERVER#SERVER#SousAvtoNULL");
                             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + " gatt " +gatt);
                         }
                     };
@@ -711,7 +712,6 @@ public class ServiceClientBLE extends IntentService {
                         }
                         Log.i(TAG, "GATT CLIENT Proccessing from GATT server.SERVER#SousAvtoEXIT " +
                                 new Date().toLocaleString() + ДействиеДляСервераGATTОТКлиента + " BluetoothGatt.GATT_SUCCESS "+BluetoothGatt.GATT_SUCCESS);
-                            mediatorLiveDataGATT.setValue("SERVER#SERVER#SousAvtoNULL");
                     //TODO
                 } catch (Exception e) {
         e.printStackTrace();

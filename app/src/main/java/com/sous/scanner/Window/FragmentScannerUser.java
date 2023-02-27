@@ -941,7 +941,7 @@ public class FragmentScannerUser extends Fragment {
 
                                 case "SERVER#SERVER#SousAvtoNULL":
                                     handler.getTarget().post(() -> {
-                                        materialButtonКакоеДействие.setText("Нет соединения !!!");//
+                                        materialButtonКакоеДействие.setText("Конец обмена !!!");//
                                         v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
                                         Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                         handler.getTarget().postDelayed(() -> {
