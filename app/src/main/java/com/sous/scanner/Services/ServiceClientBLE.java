@@ -192,32 +192,10 @@ public class ServiceClientBLE extends IntentService {
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
         // TODO: 13.02.2023  Разрываем сокедение с сервером
-        МетодРазрываСоедениесGAttServer();
+        МетодВыключениеКлиентаGatt();
     }
 
-    @SuppressLint("MissingPermission")
-    public void МетодРазрываСоедениесGAttServer() {
-        try {
-            if (gatt!=null) {
-                gatt.close();
-                Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + " gatt " +gatt);
-            }
-            // TODO: 30.06.2022 сама не постредствено запуск метода
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        ContentValues valuesЗаписываемОшибки = new ContentValues();
-        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-        final Object ТекущаяВерсияПрограммы = version;
-        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-    }
-    }
+
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -587,7 +565,7 @@ public class ServiceClientBLE extends IntentService {
                                             mediatorLiveDataGATT.setValue(ОтветОтСервераОбратно);
                                         });
                                         // TODO: 20.02.2023 закрыаем сесию ссервром
-                                        МетодРазрываСоедениесGAttServer();
+                                        МетодВыключениеКлиентаGatt();
                                     }
                                     Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()
                                             + " время " +new Date().toLocaleString()+ " characteristic "+characteristic );
@@ -618,7 +596,6 @@ public class ServiceClientBLE extends IntentService {
                         МетодЗапускаGATTКлиента(bluetoothDevice, bluetoothGattCallback);
                         // TODO: 13.02.2023  делаем принудительный таймант по выключение сервервер через 10 секунд
                         МетодВыключениеКлиентаGatt();
-
                     } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -710,15 +687,31 @@ public class ServiceClientBLE extends IntentService {
                      }
 
 
-                private void МетодВыключениеКлиентаGatt() {
-                    handler.postDelayed(()->{
-                        МетодРазрываСоедениесGAttServer();
+                @SuppressLint("MissingPermission")
+                public void МетодВыключениеКлиентаGatt() {
+        try{
+                        if (gatt!=null) {
+                            gatt.close();
+                            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + " gatt " +gatt);
+                        }
                         Log.i(TAG, "GATT CLIENT Proccessing from GATT server.SERVER#SousAvtoEXIT " +
                                 new Date().toLocaleString() + ДействиеДляСервераGATTОТКлиента + " BluetoothGatt.GATT_SUCCESS "+BluetoothGatt.GATT_SUCCESS);
                             mediatorLiveDataGATT.setValue("SERVER#SERVER#SousAvtoNULL");
-
-
-                    },10000);
+                    //TODO
+                } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ContentValues valuesЗаписываемОшибки = new ContentValues();
+        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+        final Object ТекущаяВерсияПрограммы = version;
+        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+    }
                 }
 
 

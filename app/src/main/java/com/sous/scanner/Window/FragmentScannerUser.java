@@ -1074,7 +1074,7 @@ public class FragmentScannerUser extends Fragment {
             try {
                 handler.postDelayed(() -> {
                     mediatorLiveDataGATT.setValue("SERVER#SERVER#SousAvtoNULL");
-                    binderСканнер.getService().МетодРазрываСоедениесGAttServer();
+                    binderСканнер.getService().МетодВыключениеКлиентаGatt();
                     Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString()
                             + "ДействиеДляСервераGATTОТКлиента " + ДействиеДляСервераGATTОТКлиента);
                     progressСканер.setVisibility(View.INVISIBLE);
