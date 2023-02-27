@@ -34,6 +34,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.UserHandle;
+import android.os.UserManager;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.util.Log;
@@ -127,7 +128,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
             // TODO: 19.02.2023 разрешает обновлени BLE
             МетодРАзрешенияBlurtooTКлиент();
             // TODO: 24.02.2023 advens
-            МетодРазрешенияДополнительное();
+            //МетодРазрешенияДополнительное();
             // TODO: 25.01.2023  подключение после получение BINDER
             МетодКнопкаBackExit(new Intent("activity"));
             // TODO: 24.01.2023  переходят после получение binder
@@ -158,12 +159,14 @@ public class MainActivityNewScanner extends AppCompatActivity  {
             registerReceiver(myDeviceAdminReceiver,new IntentFilter(),DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN, handler.getTarget());
             DevicePolicyManager  devicePolicyManager=  myDeviceAdminReceiver.getManager(getApplication());
 
-            if ( devicePolicyManager.isAdminActive(componentName)==false) {
-                Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN );
+            if ( devicePolicyManager.isAdminActive(componentName)==true) {
+                Intent intent = new Intent(DevicePolicyManager.ACTION_PROVISION_MANAGED_PROFILE);//DevicePolicyManager.ACTION_PROVISION_MANAGED_PROFILE
                 intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName);
                 intent.putExtra(DevicePolicyManager.EXTRA_DELEGATION_SCOPES,componentName);
                 intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,componentName);
                 intent.putExtra(DevicePolicyManager.EXTRA_PROVISIONING_ALLOWED_PROVISIONING_MODES,componentName);
+                intent.putExtra(DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME,componentName);
+                intent.putExtra(DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME,componentName);
                 intent.putExtra(DevicePolicyManager.EXTRA_PROVISIONING_MODE,1);
                 startActivity(intent);
                 Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
@@ -181,27 +184,15 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                        +" devicePolicyManager.isAdminActive(componentName) "+devicePolicyManager.isAdminActive(componentName));
            }
 
-
-
-            List scopess = new ArrayList<>();
+            devicePolicyManager.setProfileEnabled(componentName);
+         /*   List scopess = new ArrayList<>();
             scopess.add(DevicePolicyManager.DELEGATION_CERT_INSTALL);
             scopess.add(DevicePolicyManager.DELEGATION_APP_RESTRICTIONS);
             scopess.add(DevicePolicyManager.DELEGATION_BLOCK_UNINSTALL);
             scopess.add(DevicePolicyManager.DELEGATION_PERMISSION_GRANT);
             scopess.add(DevicePolicyManager.DELEGATION_PACKAGE_ACCESS);
             scopess.add(DevicePolicyManager.DELEGATION_ENABLE_SYSTEM_APP);
-
-           devicePolicyManager.setDelegatedScopes(componentName,componentName.getPackageName(),scopess);
-
-/*
-
-           // devicePolicyManager.setPermissionGrantState(componentName, this.getPackageName(), Manifest.permission.READ_PHONE_STATE, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);
-            devicePolicyManager.setPermissionGrantState(componentName, this.getPackageName(), Manifest.permission.ACCESS_FINE_LOCATION, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);
-            devicePolicyManager.setPermissionGrantState(componentName,this. getPackageName(), Manifest.permission.ACCESS_FINE_LOCATION, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);
-            devicePolicyManager.setPermissionGrantState(componentName, this.getPackageName(), Manifest.permission.ACCESS_FINE_LOCATION, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);
-            devicePolicyManager.setPermissionGrantState(componentName, this.getPackageName(), Manifest.permission.ACCESS_FINE_LOCATION, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);
-*/
-
+           devicePolicyManager.setDelegatedScopes(componentName,componentName.getPackageName(),scopess);*/
             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
             e.printStackTrace();
