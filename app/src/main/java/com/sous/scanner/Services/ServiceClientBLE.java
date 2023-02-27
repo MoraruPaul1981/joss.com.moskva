@@ -350,8 +350,8 @@ public class ServiceClientBLE extends IntentService {
                         @Override
                         public boolean test(Map.Entry<String, UUID> stringUUIDEntry) throws Throwable {
                             if (mediatorLiveDataGATT.getValue().equalsIgnoreCase("SERVER#SousAvtoSuccess")
-                                    || mediatorLiveDataGATT.getValue().equalsIgnoreCase("SERVER#SousAvtoERROR")
-                                    || mediatorLiveDataGATT.getValue().equalsIgnoreCase("SERVER#SERVER#SousAvtoNULL")  ) {
+                                    || mediatorLiveDataGATT.getValue().equalsIgnoreCase("SERVER#SERVER#SousAvtoNULL")
+                                    || mediatorLiveDataGATT.getValue().equalsIgnoreCase("SERVER#SousAvtoDONTDIVICE")  ) {
                                 Log.i(TAG, " mediatorLiveDataGATT.getValue() "+mediatorLiveDataGATT.getValue() +new Date().toLocaleString());
                                 return false;
                             } else {
