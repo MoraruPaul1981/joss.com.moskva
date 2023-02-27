@@ -361,8 +361,21 @@ public class ServiceClientBLE extends IntentService {
             Flowable   flowableЦиклСервера=     Flowable.fromIterable(BluetoothСерверов.entrySet())
                                 .onBackpressureBuffer(true)
                                 .subscribeOn(Schedulers.newThread())
-                                .repeatWhen(repeat->repeat.delay(3,TimeUnit.SECONDS))
-                           .take(15,TimeUnit.SECONDS)
+                                .repeatWhen(repeat->repeat.delay(2,TimeUnit.SECONDS))
+                    .takeWhile(new Predicate<Map.Entry<String, UUID>>() {
+                        @Override
+                        public boolean test(Map.Entry<String, UUID> stringUUIDEntry) throws Throwable {
+                            if (mediatorLiveDataGATT.getValue().equalsIgnoreCase("SERVER#SousAvtoSuccess")
+                                    || mediatorLiveDataGATT.getValue().equalsIgnoreCase("SERVER#SousAvtoERROR")  ) {
+                                Log.i(TAG, " mediatorLiveDataGATT.getValue() "+mediatorLiveDataGATT.getValue() +new Date().toLocaleString());
+                                return false;
+                            } else {
+                                Log.i(TAG, " mediatorLiveDataGATT.getValue()  " +mediatorLiveDataGATT.getValue()+new Date().toLocaleString());
+                                return true;
+                            }
+                        }
+                    })
+                           .take(10,TimeUnit.SECONDS)
                                 .map(new Function<Map.Entry<String, UUID>, Object>() {
                                     @Override
                                     public Object apply(Map.Entry<String, UUID> stringUUIDEntry) throws Throwable {
