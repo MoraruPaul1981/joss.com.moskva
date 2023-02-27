@@ -41,6 +41,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -51,7 +52,9 @@ import com.sous.scanner.R;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 public class MainActivityNewScanner extends AppCompatActivity  {
@@ -170,12 +173,6 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                         +" devicePolicyManager.isAdminActive(componentName) "+devicePolicyManager.isAdminActive(componentName));
             }
          // TODO: 24.02.2023
-
-         Process process=   Runtime.getRuntime().exec("dpm set-device-owner com.sous.scanner/.MyDeviceAdminReceiver");
-
-            process.waitFor();
-            // TODO: 24.02.2023
-
            if(devicePolicyManager.isDeviceOwnerApp(componentName.getPackageName())){
                Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
                        +" devicePolicyManager.isAdminActive(componentName) "+devicePolicyManager.isAdminActive(componentName));
@@ -184,7 +181,17 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                        +" devicePolicyManager.isAdminActive(componentName) "+devicePolicyManager.isAdminActive(componentName));
            }
 
-         //   devicePolicyManager.setDelegatedScopes();
+
+
+            List scopess = new ArrayList<>();
+            scopess.add(DevicePolicyManager.DELEGATION_CERT_INSTALL);
+            scopess.add(DevicePolicyManager.DELEGATION_APP_RESTRICTIONS);
+            scopess.add(DevicePolicyManager.DELEGATION_BLOCK_UNINSTALL);
+            scopess.add(DevicePolicyManager.DELEGATION_PERMISSION_GRANT);
+            scopess.add(DevicePolicyManager.DELEGATION_PACKAGE_ACCESS);
+            scopess.add(DevicePolicyManager.DELEGATION_ENABLE_SYSTEM_APP);
+
+           devicePolicyManager.setDelegatedScopes(componentName,componentName.getPackageName(),scopess);
 
 /*
 

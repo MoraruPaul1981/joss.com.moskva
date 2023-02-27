@@ -9,5 +9,8 @@
         <expire-password />
         <encrypted-storage />
         <disable-camera />
+        <disable-keyguard-features />
+        <set-global-proxy />
+        <expire-password />
     </uses-policies>
 </device-admin>
