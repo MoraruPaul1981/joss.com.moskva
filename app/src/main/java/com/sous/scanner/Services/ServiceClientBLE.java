@@ -281,12 +281,19 @@ public class ServiceClientBLE extends IntentService {
         this.mediatorLiveDataGATT=mediatorLiveDatagatt;
         this.ДействиеДляСервераGATTОТКлиента=ДействиеДляСервераGATTОТКлиента;
         // TODO: 08.12.2022 уснатавливаем настройки Bluetooth
-        Log.w(this.getClass().getName(), "   bluetoothManager  "+bluetoothManager+ " bluetoothAdapter " +bluetoothAdapter + "mediatorLiveDataGATT " +mediatorLiveDataGATT);
         try{
-
-            МетодЗапускаСканированиеКлиент();
-            Log.w(this.getClass().getName(), "   МетодКлиент  characteristics  ");
-            Log.w(this.getClass().getName(), "   МетодКлиент  characteristics  ");
+            // TODO: 27.02.2023 Переплучние Bluettoth
+            МетодПреполучениеBluetooth();
+            if (bluetoothAdapter!=null) {
+                МетодЗапускаСканированиеКлиент();
+                Log.w(this.getClass().getName(), "   bluetoothManager  "+bluetoothManager+ " bluetoothAdapter "
+                        +bluetoothAdapter + "mediatorLiveDataGATT " +mediatorLiveDataGATT);
+            }else{
+                Log.w(this.getClass().getName(), "   bluetoothManager  "+bluetoothManager+ " bluetoothAdapter "
+                        +bluetoothAdapter + "mediatorLiveDataGATT " +mediatorLiveDataGATT);
+            }
+            Log.w(this.getClass().getName(), "   bluetoothManager  "+bluetoothManager+ " bluetoothAdapter "
+                    +bluetoothAdapter + "mediatorLiveDataGATT " +mediatorLiveDataGATT);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -312,14 +319,6 @@ public class ServiceClientBLE extends IntentService {
                     ""+binder.isBinderAlive()+ " date "+new Date().toString().toString()+"" +
                     "\n"+" POOL "+Thread.currentThread().getName() +
                     "\n" + " ALL POOLS  " +Thread.getAllStackTraces().entrySet().size());//
-            // TODO: 08.12.2022 сканирование Bluetooth
-            bluetoothAdapter = bluetoothManager.getAdapter();
-            if (bluetoothAdapter!=null) {
-                if (bluetoothAdapter.isEnabled()==false){
-                    bluetoothAdapter.enable();
-                }
-            }
-
             // TODO: 12.02.2023 адреса разыне колиентов
             uuidКлючСервераGATTЧтениеЗапись =        ParcelUuid.fromString("20000000-0000-1000-8000-00805f9b34fb").getUuid();
             LinkedHashMap<String,UUID> BluetoothСерверов =new LinkedHashMap<>() ;///TODO  служебный xiaomi "BC:61:93:E6:F2:EB", МОЙ XIAOMI FC:19:99:79:D6:D4  //////      "BC:61:93:E6:E2:63","FF:19:99:79:D6:D4"
@@ -412,6 +411,32 @@ public class ServiceClientBLE extends IntentService {
             valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
             new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void МетодПреполучениеBluetooth() {
+        try{
+        // TODO: 08.12.2022 сканирование Bluetooth
+        bluetoothAdapter = bluetoothManager.getAdapter();
+        if (bluetoothAdapter!=null) {
+            if (bluetoothAdapter.isEnabled()==false){
+                bluetoothAdapter.enable();
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ContentValues valuesЗаписываемОшибки=new ContentValues();
+        valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
+        valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
+        valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
+        valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
+        final Object ТекущаяВерсияПрограммы = version;
+        Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+        valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
+        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+    }
     }
 
 
