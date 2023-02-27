@@ -464,15 +464,26 @@ public class ServiceClientBLE extends IntentService {
                                         handler.post(()->{
                                             mediatorLiveDataGATT.setValue("SERVER#SERVER#SouConnect");
                                         });
-                                        @SuppressLint("MissingPermission") Boolean ДанныеОТGATTССевромGATT=         gatt.discoverServices();
+                                         Boolean ДанныеОТGATTССевромGATT=         gatt.discoverServices();
                                         Log.d(TAG, "Trying to ДанныеОТGATTССевромGATT " + ДанныеОТGATTССевромGATT);
                                         break;
                                     case BluetoothProfile.STATE_DISCONNECTED :
+                                    case BluetoothGatt.GATT_FAILURE:
+                                    case 133 :
                                         Log.i(TAG, "Connected to GATT client. BluetoothProfile.STATE_DISCONNECTED ###2  onConnectionStateChange" +
                                                 "  "+new Date().toLocaleString());
                                         handler.post(()->{
-                                            mediatorLiveDataGATT.setValue("SERVER#SERVER#DISSouConnect");
+                                            mediatorLiveDataGATT.setValue("SERVER#SERVER#SousAvtoNULL");
                                         });
+                                        МетодВыключениеКлиентаGatt();
+                                        break;
+                                    case BluetoothGatt.GATT_CONNECTION_CONGESTED :
+                                        Log.i(TAG, "Connected to GATT client. BluetoothProfile.STATE_DISCONNECTED ###2  onConnectionStateChange" +
+                                                "  "+new Date().toLocaleString());
+                                        handler.post(()->{
+                                            mediatorLiveDataGATT.setValue("SERVER#SERVER#SousAvtoReetBoot");
+                                        });
+                                        МетодВыключениеКлиентаGatt();
                                         break;
                                 }
                             } catch (Exception e) {

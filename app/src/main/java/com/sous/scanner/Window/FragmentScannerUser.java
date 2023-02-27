@@ -950,7 +950,17 @@ public class FragmentScannerUser extends Fragment {
                                 case "SERVER#SERVER#SousAvtoNULL":
                                     handler.getTarget().post(() -> {
                                         materialButtonКакоеДействие.setText("Конец обмена !!!");//
-                                        v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
+                                        Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
+                                        handler.getTarget().postDelayed(() -> {
+                                            materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
+                                        }, 3000);
+                                    });
+                                    Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
+                                            + new Date().toLocaleString() + " mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
+                                    break;
+                                case "SERVER#SERVER#SousAvtoReetBoot":
+                                    handler.getTarget().post(() -> {
+                                        materialButtonКакоеДействие.setText("Соед. перегружено !!!");//
                                         Log.i(this.getClass().getName(), "   mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
                                         handler.getTarget().postDelayed(() -> {
                                             materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
