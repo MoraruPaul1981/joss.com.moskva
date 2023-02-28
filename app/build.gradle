@@ -67,7 +67,11 @@ dependencies {
 
     implementation group: 'com.google.android.gms', name: 'play-services-location', version: '21.0.1'
 
+//TODO dagger2
 
+    implementation 'com.google.dagger:dagger-android:2.45'
+    implementation 'com.google.dagger:dagger-android-support:2.45' // if you use the support libraries
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.45'
 
 
 

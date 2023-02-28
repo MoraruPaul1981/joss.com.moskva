@@ -41,6 +41,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import dagger.android.DaggerApplication;
+import dagger.android.DaggerIntentService;
+import dagger.android.support.DaggerAppCompatActivity;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Action;
@@ -142,6 +145,7 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
             МетодЗапускаетBroadcast();
             // TODO: 07.02.2023 запус самого СЕРВЕРА СКАНРРОВНИЕ..
              МетодЗапускBootФрагмента(new FragmentBootServer());//todo Запускам клиента или сервер фрагмент
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
