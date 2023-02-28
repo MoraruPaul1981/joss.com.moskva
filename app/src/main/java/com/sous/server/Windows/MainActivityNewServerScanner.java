@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -31,7 +32,10 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.textview.MaterialTextView;
+import com.sous.server.App;
+import com.sous.server.AppModule;
 import com.sous.server.Brodcasters.BroadcastReceiverWorkManagerScannersServer;
+import com.sous.server.DaggerAppComponent;
 import com.sous.server.Errors.SubClassErrors;
 import com.sous.server.R;
 
@@ -39,17 +43,8 @@ import com.sous.server.R;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
-import dagger.android.DaggerApplication;
-import dagger.android.DaggerIntentService;
-import dagger.android.support.DaggerAppCompatActivity;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.functions.Action;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.functions.Predicate;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import javax.inject.Inject;
 
 
 public class MainActivityNewServerScanner extends AppCompatActivity  {
@@ -65,6 +60,11 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
     private LinearLayout linearLayou;
     private  Long version;
     private RelativeLayout relativeLayout;
+
+    @Inject
+    SharedPreferences providesSharedPreferences;
+    @Inject
+    String ggga;
 
     @SuppressLint("RestrictedApi")
     @RequiresPermission(anyOf = {
@@ -114,7 +114,17 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
             PackageInfo pInfo =getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             МетодРАзрешенияBlurtooTКлиент();
-            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+
+            App app = new App();
+            DaggerAppComponent.builder().appModule(new AppModule(app)).build().inject(app);
+
+            Log.i(this.getClass().getName(),  "  "
+                    +Thread.currentThread().getStackTrace()[2].getMethodName()+
+                    " время " +new Date().toLocaleString()+ "   providesSharedPreferences " +  providesSharedPreferences+
+            " ggga "+ ggga) ;
+
+
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()) ;
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
