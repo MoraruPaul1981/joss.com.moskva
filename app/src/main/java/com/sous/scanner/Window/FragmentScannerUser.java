@@ -972,7 +972,8 @@ public class FragmentScannerUser extends Fragment {
                                         // TODO: 08.02.2023 показыввем клиент смененый статус
                                         String ПоследнийСтатусСканера = preferences.getString("СменаСтатусРАботыКлиентасGATT", "");
                                         String ПоследнаяДатаСканера = preferences.getString("СменаДАтаРАботыGATT", "");
-                                        holder.materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера + "\n" + ПоследнаяДатаСканера);
+                                        holder.materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера
+                                                + "\n" + ПоследнаяДатаСканера);
                                         holder.materialTextViewСтатусПоследнегоДействие.setTextColor(Color.parseColor("#949796"));
                                         holder.materialTextViewСтатусПоследнегоДействие.forceLayout();
                                         holder.materialTextViewСтатусПоследнегоДействие.refreshDrawableState();
@@ -991,9 +992,11 @@ public class FragmentScannerUser extends Fragment {
                                         materialButtonКакоеДействие.setText("Не Успешно !!!");
                                         МетодЗаписываемСтатусРаботысGATT(ДействиеДляСервераGATTОТКлиента, new Date().toLocaleString());
                                         // TODO: 08.02.2023 показыввем клиент смененый статус
-                                        String ПоследнийСтатусСканера = preferences.getString("СменаСтатусРАботыКлиентасGATT", "");
+                                        String ПоследнийСтатусСканера = preferences.getString("СменаСтатусРАботыКлиентасGATT",
+                                                "");
                                         String ПоследнаяДатаСканера = preferences.getString("СменаДАтаРАботыGATT", "");
-                                        holder.materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера + "\n" + ПоследнаяДатаСканера);
+                                        holder.materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера
+                                                + "\n" + ПоследнаяДатаСканера);
                                         holder.materialTextViewСтатусПоследнегоДействие.setTextColor(Color.RED);
                                         holder.materialTextViewСтатусПоследнегоДействие.forceLayout();
                                         holder.materialTextViewСтатусПоследнегоДействие.refreshDrawableState();

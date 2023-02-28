@@ -341,7 +341,6 @@ public class ServiceClientBLE extends IntentService {
                         @Override
                         public boolean test(Map.Entry<String, UUID> stringUUIDEntry) throws Throwable {
                             if (mediatorLiveDataGATT.getValue().equalsIgnoreCase("SERVER#SousAvtoSuccess")
-                                    || mediatorLiveDataGATT.getValue().equalsIgnoreCase("SERVER#SERVER#SousAvtoNULL")
                                     || mediatorLiveDataGATT.getValue().equalsIgnoreCase("SERVER#SousAvtoDONTDIVICE")  ) {
                                 Log.i(TAG, " mediatorLiveDataGATT.getValue() "+mediatorLiveDataGATT.getValue() +new Date().toLocaleString());
                                 return false;
@@ -472,9 +471,6 @@ public class ServiceClientBLE extends IntentService {
                                     case 133 :
                                         Log.i(TAG, "Connected to GATT client. BluetoothProfile.STATE_DISCONNECTED ###2  onConnectionStateChange" +
                                                 "  "+new Date().toLocaleString());
-                                        handler.post(()->{
-                                            mediatorLiveDataGATT.setValue("SERVER#SERVER#SousAvtoNULL");
-                                        });
                                         МетодВыключениеКлиентаGatt();
                                         break;
                                     case BluetoothGatt.GATT_CONNECTION_CONGESTED :
@@ -514,30 +510,20 @@ public class ServiceClientBLE extends IntentService {
                                         BluetoothGattCharacteristic characteristics = services.getCharacteristic(uuidКлючСервераGATTЧтениеЗапись);
                                         gatt.setCharacteristicNotification(characteristics, true);
                                         characteristics.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
-                                        ///Once you have a characteristic object, you can perform read/write
-                                        Log.i(TAG, "GATT CLIENT Proccessing from GATT server.");
                                         if (characteristics != null) {
-                                            handler.post(() -> {
-                                                mediatorLiveDataGATT.setValue("GATTCLIENTCALLBACK");
-                                                Log.i(TAG, "GATT CLIENT Proccessing from GATT server.GATTCLIENTProccessing " + new Date().toLocaleString());
-                                            });
-                                            // TODO: 01.02.2023 отправляем двннеы
                                             characteristics.setValue("действие:" + ДействиеДляСервераGATTОТКлиента);
                                             // TODO: 20.02.2023  заполняем данными  клиента
                                             ArrayList<String> linkedHashMapДанныеКлиентаДляGATT = МетодЗаполенияДаннымиКлиентаДЛяGAtt();
                                             characteristics.setValue(linkedHashMapДанныеКлиентаДляGATT.toString());
                                             // TODO: 20.02.2023  послылвем Сервреу Данные
                                             Boolean successОтправка = gatt.writeCharacteristic(characteristics);
-                                            Log.i(TAG, "successОтправка  "+successОтправка);
-                                        } else {
-                                            Log.i(TAG, "Error from GATT server. НЕт ДЕвайса НУжного ");
-                                            handler.post(() -> {
-                                                mediatorLiveDataGATT.setValue("SERVER#SousAvtoDONTDIVICE");
-                                            });
+                                            Log.i(TAG, "characteristics" + new Date().toLocaleString()+  " characteristics "
+                                                    +characteristics+ " successОтправка " +successОтправка+
+                                                    " ДействиеДляСервераGATTОТКлиента "+ДействиеДляСервераGATTОТКлиента);
                                         }
                                     }
-
                                 }else{
+                                    mediatorLiveDataGATT.setValue("SERVER#SousAvtoERROR");
                                     Log.i(TAG, "GATT CLIENT Proccessing from GATT server.GATTCLIENTProccessing " + new Date().toLocaleString());
                                 }
                             } catch (Exception e) {
@@ -644,7 +630,6 @@ public class ServiceClientBLE extends IntentService {
                         @Override
                         public void onServiceChanged(@NonNull BluetoothGatt gatt) {
                             super.onServiceChanged(gatt);
-                            mediatorLiveDataGATT.setValue("SERVER#SERVER#SousAvtoNULL");
                             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + " gatt " +gatt);
                         }
                     };
