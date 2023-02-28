@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.os.Binder;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.Parcel;
 import android.os.RemoteException;
 import android.util.Log;
@@ -17,15 +18,13 @@ import com.sous.server.Errors.SubClassErrors;
 import java.util.Date;
 public class ServiceForServerScannerAsync extends IntentService {
     public LocalBinderAsyncServer binder = new LocalBinderAsyncServer();
-    private Integer МаксималноеКоличествоСтрочекJSON;
     private SharedPreferences preferences;
-    private String Проценты;
-    private Integer ИндексВизуальнойДляPrograssBar = 0;
     private Long version = 0l;
+
+    private Message message;
     public ServiceForServerScannerAsync() {
         super("ServiceForServerScannerAsync");
     }
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -38,6 +37,8 @@ public class ServiceForServerScannerAsync extends IntentService {
             pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             getApplicationContext().getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
+            // TODO: 28.02.2023 Метод Создание Сокета
+            МетодСозданиеСокета();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -52,6 +53,29 @@ public class ServiceForServerScannerAsync extends IntentService {
             valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
             new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
+    }
+
+    private void МетодСозданиеСокета() {
+        try{
+
+            Log.d(getApplicationContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+ "  " );
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ContentValues valuesЗаписываемОшибки = new ContentValues();
+        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+        final Object ТекущаяВерсияПрограммы = version;
+        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+    }
     }
 
     public class LocalBinderAsyncServer extends Binder {
