@@ -44,7 +44,8 @@ public class MyWorkAsyncScannerServer extends Worker {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             МетодинициализацииHandler();
-
+            // TODO: 22.12.2022
+            МетодБиндингаОбщая();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -168,9 +169,8 @@ public class MyWorkAsyncScannerServer extends Worker {
     public Result doWork() {
         try {
                 WorkManagerScanner = WorkManager.getInstance(context).getWorkInfosByTag(ИмяСлужбыСинхронизации).get();
-            Log.i(context.getClass().getName(), "СИНХРОНИЗАЦИЯ WorkManagerScanner  SERVER  "+WorkManagerScanner );
-            // TODO: 22.12.2022
-            МетодБиндингаОбщая();
+            Log.i(context.getClass().getName(), "СИНХРОНИЗАЦИЯ WorkManagerScanner  SERVER  "+WorkManagerScanner+" binderСканнерServer " +binderСканнерServer );
+
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -32,12 +31,11 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.textview.MaterialTextView;
-import com.sous.server.App;
-import com.sous.server.AppModule;
 import com.sous.server.Brodcasters.BroadcastReceiverWorkManagerScannersServer;
-import com.sous.server.DaggerAppComponent;
 import com.sous.server.Errors.SubClassErrors;
 import com.sous.server.R;
+import com.sous.server.ServiceModule;
+import com.sous.server.Services.ServiceForServerScannerAsync;
 
 
 import org.jetbrains.annotations.NotNull;
@@ -60,12 +58,11 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
     private LinearLayout linearLayou;
     private  Long version;
     private RelativeLayout relativeLayout;
+    @Inject
+    ServiceModule alarm;
 
     @Inject
-    SharedPreferences providesSharedPreferences;
-    @Inject
-    String ggga;
-
+    ServiceForServerScannerAsync mService;
     @SuppressLint("RestrictedApi")
     @RequiresPermission(anyOf = {
             Manifest.permission.SEND_SMS,
@@ -115,15 +112,9 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
             version = pInfo.getLongVersionCode();
             МетодРАзрешенияBlurtooTКлиент();
 
-            App app = new App();
-            DaggerAppComponent.builder().appModule(new AppModule(app)).build().inject(app);
-
             Log.i(this.getClass().getName(),  "  "
                     +Thread.currentThread().getStackTrace()[2].getMethodName()+
-                    " время " +new Date().toLocaleString()+ "   providesSharedPreferences " +  providesSharedPreferences+
-            " ggga "+ ggga) ;
-
-
+                    " время " +new Date().toLocaleString()+ " alarm " +alarm) ;
             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()) ;
         } catch (Exception e) {
             e.printStackTrace();
