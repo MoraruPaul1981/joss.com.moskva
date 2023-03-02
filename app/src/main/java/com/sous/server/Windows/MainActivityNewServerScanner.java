@@ -40,6 +40,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 
+import javax.inject.Inject;
+
+import toothpick.Toothpick;
+
 
 public class MainActivityNewServerScanner extends AppCompatActivity  {
     private String TAG;
@@ -54,7 +58,6 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
     private LinearLayout linearLayou;
     private  Long version;
     private RelativeLayout relativeLayout;
-
 
     @SuppressLint("RestrictedApi")
     @RequiresPermission(anyOf = {
@@ -104,9 +107,7 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
             PackageInfo pInfo =getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             МетодРАзрешенияBlurtooTКлиент();
-
-
-        
+// после вызова этого метода UserRepository будет инициализирован
 
             Log.i(this.getClass().getName(),  "  "
                     +Thread.currentThread().getStackTrace()[2].getMethodName()+
