@@ -16,12 +16,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.sous.server.Errors.SubClassErrors;
 import java.util.Date;
+
+import javax.inject.Inject;
+
+
 public class ServiceForServerScannerAsync extends IntentService {
     public LocalBinderAsyncServer binder = new LocalBinderAsyncServer();
     private SharedPreferences preferences;
     private Long version = 0l;
 
     private Message message;
+    @Inject
     public ServiceForServerScannerAsync() {
         super("ServiceForServerScannerAsync");
     }

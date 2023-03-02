@@ -34,15 +34,11 @@ import com.google.android.material.textview.MaterialTextView;
 import com.sous.server.Brodcasters.BroadcastReceiverWorkManagerScannersServer;
 import com.sous.server.Errors.SubClassErrors;
 import com.sous.server.R;
-import com.sous.server.ServiceModule;
-import com.sous.server.Services.ServiceForServerScannerAsync;
 
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
-
-import javax.inject.Inject;
 
 
 public class MainActivityNewServerScanner extends AppCompatActivity  {
@@ -58,11 +54,8 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
     private LinearLayout linearLayou;
     private  Long version;
     private RelativeLayout relativeLayout;
-    @Inject
-    ServiceModule alarm;
 
-    @Inject
-    ServiceForServerScannerAsync mService;
+
     @SuppressLint("RestrictedApi")
     @RequiresPermission(anyOf = {
             Manifest.permission.SEND_SMS,
@@ -112,9 +105,12 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
             version = pInfo.getLongVersionCode();
             МетодРАзрешенияBlurtooTКлиент();
 
+
+        
+
             Log.i(this.getClass().getName(),  "  "
                     +Thread.currentThread().getStackTrace()[2].getMethodName()+
-                    " время " +new Date().toLocaleString()+ " alarm " +alarm) ;
+                    " время " +new Date().toLocaleString()) ;
             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()) ;
         } catch (Exception e) {
             e.printStackTrace();

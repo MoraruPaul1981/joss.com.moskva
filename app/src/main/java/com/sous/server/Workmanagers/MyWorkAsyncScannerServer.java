@@ -1,5 +1,7 @@
 package com.sous.server.Workmanagers;
 
+import static com.google.android.gms.common.util.CollectionUtils.listOf;
+
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.ContentValues;
@@ -14,23 +16,31 @@ import android.os.Message;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.ForegroundInfo;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
+import androidx.work.WorkQuery;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
+import androidx.work.impl.utils.futures.SettableFuture;
 
 
+import com.google.common.util.concurrent.ListenableFuture;
 import com.sous.server.Errors.SubClassErrors;
 import com.sous.server.Services.ServiceGattServer;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 
 public class MyWorkAsyncScannerServer extends Worker {
     private Context context;
     private String ИмяСлужбыСинхронизации="WorkManager Synchronizasiy_Data";
-    private List<WorkInfo> WorkManagerScanner;
+
     private ServiceGattServer.LocalBinderСерверBLE binderСканнерServer;
     private Long version=0l;
     private Message messenger;
@@ -168,10 +178,7 @@ public class MyWorkAsyncScannerServer extends Worker {
     @Override
     public Result doWork() {
         try {
-                WorkManagerScanner = WorkManager.getInstance(context).getWorkInfosByTag(ИмяСлужбыСинхронизации).get();
-            Log.i(context.getClass().getName(), "СИНХРОНИЗАЦИЯ WorkManagerScanner  SERVER  "+WorkManagerScanner+" binderСканнерServer " +binderСканнерServer );
-
-
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

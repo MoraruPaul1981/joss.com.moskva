@@ -11,15 +11,21 @@ import android.os.Message;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+
+
+import androidx.lifecycle.LiveData;
 import androidx.work.BackoffPolicy;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
+import androidx.work.multiprocess.ListenableCallback;
 
 
+import com.google.common.util.concurrent.ListenableFuture;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.onesignal.OneSignal;
 import com.sous.server.Firebases.MyFirebaseMessagingServiceServerScanners;
@@ -28,9 +34,11 @@ import com.sous.server.Errors.SubClassErrors;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 public class BroadcastReceiverWorkManagerScannersServer extends BroadcastReceiver {
     private Long version=0l;
@@ -90,10 +98,11 @@ public class BroadcastReceiverWorkManagerScannersServer extends BroadcastReceive
                 .build();
 
 
-        Integer callbackRunnable = WorkManager.getInstance(context).getWorkInfosByTag(ИмяСлужбыСинхронизации).get().size();
-        if (callbackRunnable >=0) {
-            Log.w(context.getClass().getName(), " ПОСЛЕ ОТРАБОТКИ МЕТОДА ....Внутри BroadcastReceiverWorkManagerScannersServer  callbackRunnable.name() "
-                    + callbackRunnable);
+            List<WorkInfo> workInfo = WorkManager.getInstance(context).getWorkInfosByTag(ИмяСлужбыСинхронизации).get();
+        if (  workInfo.size()>0){
+            Log.w(context.getClass().getName(), " ПОСЛЕ ОТРАБОТКИ МЕТОДА ..." +
+                    ".Внутри BroadcastReceiverWorkManagerScannersServer  callbackRunnable.name() "
+                    + "  workInfo " +workInfo+  "   workInfo.hasObservers() " +  workInfo + "  workInfo.getState() " +workInfo.get(0).getState());
             WorkManager.getInstance(context.getApplicationContext()).enqueueUniquePeriodicWork(ИмяСлужбыСинхронизации,
                     ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequestСинхронизация);
         }
