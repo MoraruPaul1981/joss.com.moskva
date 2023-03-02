@@ -99,7 +99,7 @@ public class BroadcastReceiverWorkManagerScannersServer extends BroadcastReceive
 
 
             List<WorkInfo> workInfo = WorkManager.getInstance(context).getWorkInfosByTag(ИмяСлужбыСинхронизации).get();
-        if (  workInfo.size()>0){
+        if (  workInfo.size()==0){
             Log.w(context.getClass().getName(), " ПОСЛЕ ОТРАБОТКИ МЕТОДА ..." +
                     ".Внутри BroadcastReceiverWorkManagerScannersServer  callbackRunnable.name() "
                     + "  workInfo " +workInfo+  "   workInfo.hasObservers() " +  workInfo + "  workInfo.getState() " +workInfo.get(0).getState());
