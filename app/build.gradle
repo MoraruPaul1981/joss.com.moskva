@@ -74,11 +74,11 @@ dependencies {
 
 
     // ядро библиотеки
-    implementation 'com.github.stephanenicolas.toothpick:toothpick-runtime:3.1.0'
-    // плюшки для Android
-    implementation 'com.github.stephanenicolas.toothpick:smoothie-androidx:3.1.0'
-    // процессор аннотаций для генерации кода
-    annotationProcessor 'com.github.stephanenicolas.toothpick:toothpick-compiler:3.1.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+
+    implementation 'com.squareup.okhttp:okhttp-ws:2.7.5'
+
+   // implementation 'com.squareup.okhttp3:okhttp-ws:3.4.1'
 
 
 

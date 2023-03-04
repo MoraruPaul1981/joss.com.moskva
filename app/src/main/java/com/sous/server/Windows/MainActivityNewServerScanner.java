@@ -2,6 +2,7 @@ package com.sous.server.Windows;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.VoiceInteractor;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -38,11 +39,26 @@ import com.sous.server.R;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+import java.net.Socket;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Date;
 
 import javax.inject.Inject;
+import javax.net.SocketFactory;
 
-import toothpick.Toothpick;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
+import okio.Buffer;
+import okio.ByteString;
 
 
 public class MainActivityNewServerScanner extends AppCompatActivity  {
@@ -58,7 +74,7 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
     private LinearLayout linearLayou;
     private  Long version;
     private RelativeLayout relativeLayout;
-
+    private OkHttpClient okHttpClient;
     @SuppressLint("RestrictedApi")
     @RequiresPermission(anyOf = {
             Manifest.permission.SEND_SMS,
@@ -108,6 +124,11 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
             version = pInfo.getLongVersionCode();
             МетодРАзрешенияBlurtooTКлиент();
 // после вызова этого метода UserRepository будет инициализирован
+            /* class web extends WebSocketListener {
+
+            }*/
+
+            МетодВызовИСозданиеClentSocket();
 
             Log.i(this.getClass().getName(),  "  "
                     +Thread.currentThread().getStackTrace()[2].getMethodName()+
@@ -129,6 +150,69 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
             new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
 
+    }
+
+    private void МетодВызовИСозданиеClentSocket() throws URISyntaxException, IOException {
+        Log.i(this.getClass().getName(),  "  "
+                +Thread.currentThread().getStackTrace()[2].getMethodName()+
+                " время " +new Date().toLocaleString());
+        okHttpClient = new OkHttpClient();
+         final class SocketClients extends okhttp3.WebSocketListener implements WebSocketListener {
+
+             @Override
+             public void onOpen(WebSocket webSocket, Response response) {
+                 RequestBody formBody = new FormBody.Builder()
+                         .add("message", "Your message")
+                         .build();
+                 try {
+                     webSocket.sendMessage(formBody);
+                 } catch (IOException e) {
+                     throw new RuntimeException(e);
+                 }
+                 Log.i(this.getClass().getName(),  "  "
+                         +Thread.currentThread().getStackTrace()[2].getMethodName()+
+                         " время " +new Date().toLocaleString());
+             }
+
+             @Override
+             public void onFailure(IOException e, Response response) {
+                 Log.i(this.getClass().getName(),  "  "
+                         +Thread.currentThread().getStackTrace()[2].getMethodName()+
+                         " время " +new Date().toLocaleString());
+             }
+
+             @Override
+             public void onMessage(ResponseBody message) throws IOException {
+                 Log.i(this.getClass().getName(),  "  "
+                         +Thread.currentThread().getStackTrace()[2].getMethodName()+
+                         " время " +new Date().toLocaleString());
+             }
+
+             @Override
+             public void onPong(Buffer payload) {
+                 Log.i(this.getClass().getName(),  "  "
+                         +Thread.currentThread().getStackTrace()[2].getMethodName()+
+                         " время " +new Date().toLocaleString());
+             }
+
+             @Override
+             public void onClose(int code, String reason) {
+                 Log.i(this.getClass().getName(),  "  "
+                         +Thread.currentThread().getStackTrace()[2].getMethodName()+
+                         " время " +new Date().toLocaleString());
+             }
+         }
+        // TODO: 04.03.2023 второй вариант
+       /* URI url = new URI("ws://192.168.207.84:8080/");
+        SocketFactory webSocket=okHttpClient.socketFactory();
+        Socket socket=webSocket.createSocket("",8000);
+        socket.*/
+        // TODO: 04.03.2023 wesocket
+
+        Request request=new Request.Builder().url("ws://websocket.org").build();
+        SocketClients socketClients=new SocketClients();
+      okhttp3.WebSocket webSocket= okHttpClient.newWebSocket(request,new SocketClients());
+       // WebSocket webSocketandroid=okHttpClient.n;
     }
 
     @SuppressLint("RestrictedApi")
