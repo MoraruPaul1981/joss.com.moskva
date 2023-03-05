@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -157,49 +158,41 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
                 +Thread.currentThread().getStackTrace()[2].getMethodName()+
                 " время " +new Date().toLocaleString());
         okHttpClient = new OkHttpClient();
-         final class SocketClients extends okhttp3.WebSocketListener implements WebSocketListener {
+         final class SocketClients extends WebSocketListener {
 
-             @Override
-             public void onOpen(WebSocket webSocket, Response response) {
-                 RequestBody formBody = new FormBody.Builder()
-                         .add("message", "Your message")
-                         .build();
-                 try {
-                     webSocket.sendMessage(formBody);
-                 } catch (IOException e) {
-                     throw new RuntimeException(e);
-                 }
-                 Log.i(this.getClass().getName(),  "  "
-                         +Thread.currentThread().getStackTrace()[2].getMethodName()+
-                         " время " +new Date().toLocaleString());
+             public SocketClients() {
+                 super();
              }
 
              @Override
-             public void onFailure(IOException e, Response response) {
-                 Log.i(this.getClass().getName(),  "  "
-                         +Thread.currentThread().getStackTrace()[2].getMethodName()+
-                         " время " +new Date().toLocaleString());
+             public void onClosed(@NonNull WebSocket webSocket, int code, @NonNull String reason) {
+                 super.onClosed(webSocket, code, reason);
              }
 
              @Override
-             public void onMessage(ResponseBody message) throws IOException {
-                 Log.i(this.getClass().getName(),  "  "
-                         +Thread.currentThread().getStackTrace()[2].getMethodName()+
-                         " время " +new Date().toLocaleString());
+             public void onClosing(@NonNull WebSocket webSocket, int code, @NonNull String reason) {
+                 super.onClosing(webSocket, code, reason);
              }
 
              @Override
-             public void onPong(Buffer payload) {
-                 Log.i(this.getClass().getName(),  "  "
-                         +Thread.currentThread().getStackTrace()[2].getMethodName()+
-                         " время " +new Date().toLocaleString());
+             public void onFailure(@NonNull WebSocket webSocket, @NonNull Throwable t, @Nullable Response response) {
+                 super.onFailure(webSocket, t, response);
              }
 
              @Override
-             public void onClose(int code, String reason) {
-                 Log.i(this.getClass().getName(),  "  "
-                         +Thread.currentThread().getStackTrace()[2].getMethodName()+
-                         " время " +new Date().toLocaleString());
+             public void onMessage(@NonNull WebSocket webSocket, @NonNull String text) {
+                 super.onMessage(webSocket, text);
+             }
+
+             @Override
+             public void onMessage(@NonNull WebSocket webSocket, @NonNull ByteString bytes) {
+                 super.onMessage(webSocket, bytes);
+             }
+
+             @Override
+             public void onOpen(@NonNull WebSocket webSocket, @NonNull Response response) {
+                 super.onOpen(webSocket, response);
+                 webSocket.send("ddd");
              }
          }
         // TODO: 04.03.2023 второй вариант
@@ -209,9 +202,10 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
         socket.*/
         // TODO: 04.03.2023 wesocket
 
-        Request request=new Request.Builder().url("ws://websocket.org").build();
+       Request request=new Request.Builder().url("ws://websocket.org").build();
         SocketClients socketClients=new SocketClients();
       okhttp3.WebSocket webSocket= okHttpClient.newWebSocket(request,new SocketClients());
+        okHttpClient.dispatcher().executorService().shutdown();
        // WebSocket webSocketandroid=okHttpClient.n;
     }
 

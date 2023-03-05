@@ -76,7 +76,7 @@ dependencies {
     // ядро библиотеки
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
 
-    implementation 'com.squareup.okhttp:okhttp-ws:2.7.5'
+   // implementation 'com.squareup.okhttp:okhttp-ws:2.7.5'
 
    // implementation 'com.squareup.okhttp3:okhttp-ws:3.4.1'
 
