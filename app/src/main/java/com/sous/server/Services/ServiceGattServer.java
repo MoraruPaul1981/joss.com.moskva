@@ -1106,6 +1106,7 @@ public class ServiceGattServer extends IntentService {
         }
         return  ВерсияДАнных;
     }
+// TODO: 15.03.2023 синхрониазция КЛАсс
 
 
 }

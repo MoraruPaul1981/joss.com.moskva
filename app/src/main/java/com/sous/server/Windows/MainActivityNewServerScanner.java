@@ -13,6 +13,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
@@ -21,6 +22,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.ContentView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
@@ -33,9 +35,12 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.inject.Inject;
 import com.sous.server.Brodcasters.BroadcastReceiverWorkManagerScannersServer;
 import com.sous.server.Errors.SubClassErrors;
 import com.sous.server.R;
+import com.sous.server.Services.BindingServices;
+import com.sous.server.Services.ServiceForServerScannerAsync;
 
 
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +51,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
 
-import javax.inject.Inject;
 import javax.net.SocketFactory;
 
 import okhttp3.FormBody;
@@ -76,6 +80,7 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
     private  Long version;
     private RelativeLayout relativeLayout;
     private OkHttpClient okHttpClient;
+
     @SuppressLint("RestrictedApi")
     @RequiresPermission(anyOf = {
             Manifest.permission.SEND_SMS,
@@ -96,6 +101,7 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
             Manifest.permission.RECEIVE_SMS ,
             Manifest.permission.MODIFY_PHONE_STATE ,
             Manifest.permission.BLUETOOTH_ADMIN})
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -123,14 +129,6 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
             fragmentManager = getSupportFragmentManager();
             PackageInfo pInfo =getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
-            МетодРАзрешенияBlurtooTКлиент();
-// после вызова этого метода UserRepository будет инициализирован
-            /* class web extends WebSocketListener {
-
-            }*/
-
-            МетодВызовИСозданиеClentSocket();
-
             Log.i(this.getClass().getName(),  "  "
                     +Thread.currentThread().getStackTrace()[2].getMethodName()+
                     " время " +new Date().toLocaleString()) ;
@@ -153,6 +151,39 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
 
     }
 
+
+    @SuppressLint("RestrictedApi")
+    @Override
+    protected void onStart() {
+        super.onStart();
+        try {
+            // TODO: 15.03.2023
+            МетодРАзрешенияBlurtooTКлиент();
+            МетодВызовИСозданиеClentSocket();
+            // TODO: 07.02.2023 дополнительное разрещения blutoon
+            МетодПрячемБарИКнопки();
+            МетодСобыытиеКнопокСканирования(new Intent("activity"));
+            ОтветныйHendlerОтСлужбы();
+            МетодЗапускаетBroadcast();
+            // TODO: 07.02.2023 запус самого СЕРВЕРА СКАНРРОВНИЕ..
+            МетодЗапускBootФрагмента(new FragmentBootServer());//todo Запускам клиента или сервер фрагмент
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+
+    }
     private void МетодВызовИСозданиеClentSocket() throws URISyntaxException, IOException {
         Log.i(this.getClass().getName(),  "  "
                 +Thread.currentThread().getStackTrace()[2].getMethodName()+
@@ -203,41 +234,12 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
         // TODO: 04.03.2023 wesocket
 
        Request request=new Request.Builder().url("ws://websocket.org").build();
-        SocketClients socketClients=new SocketClients();
-      okhttp3.WebSocket webSocket= okHttpClient.newWebSocket(request,new SocketClients());
+      WebSocket webSocket= okHttpClient.newWebSocket(request,new SocketClients());
         okHttpClient.dispatcher().executorService().shutdown();
        // WebSocket webSocketandroid=okHttpClient.n;
     }
 
-    @SuppressLint("RestrictedApi")
-    @Override
-    protected void onStart() {
-        super.onStart();
-        try {
-            // TODO: 07.02.2023 дополнительное разрещения blutoon
-            МетодПрячемБарИКнопки();
-            МетодСобыытиеКнопокСканирования(new Intent("activity"));
-            ОтветныйHendlerОтСлужбы();
-            МетодЗапускаетBroadcast();
-            // TODO: 07.02.2023 запус самого СЕРВЕРА СКАНРРОВНИЕ..
-             МетодЗапускBootФрагмента(new FragmentBootServer());//todo Запускам клиента или сервер фрагмент
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-
-    }
     public void МетодПрячемБарИКнопки() {
         bottomNavigationView.setVisibility(View.INVISIBLE);
         materialTextViewToolBar.setVisibility(View.INVISIBLE);

@@ -15,6 +15,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
+import androidx.annotation.ContentView;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.work.ExistingPeriodicWorkPolicy;
@@ -29,12 +30,17 @@ import androidx.work.impl.utils.futures.SettableFuture;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import com.sous.server.Errors.SubClassErrors;
+import com.sous.server.R;
+import com.sous.server.Services.BindingServices;
+import com.sous.server.Services.ServiceForServerScannerAsync;
 import com.sous.server.Services.ServiceGattServer;
 
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
+
+import javax.inject.Inject;
 
 
 public class MyWorkAsyncScannerServer extends Worker {
@@ -56,7 +62,6 @@ public class MyWorkAsyncScannerServer extends Worker {
             МетодинициализацииHandler();
             // TODO: 22.12.2022
             МетодБиндингаОбщая();
-
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -76,37 +81,12 @@ public class MyWorkAsyncScannerServer extends Worker {
     @SuppressLint("NewApi")
     private void МетодБиндингаОбщая() throws InterruptedException {
         try {
-        Intent intentГлавнаяСинхрониазцияScanner = new Intent(context, ServiceGattServer.class);
-        context.bindService(intentГлавнаяСинхрониазцияScanner, new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                // TODO: 31.01.2023 код
-                Log.d(context.getClass().getName().toString(), "\n"
-                        + "onServiceConnected  ОБЩАЯ messengerActivity  ");
-                binderСканнерServer = (ServiceGattServer.LocalBinderСерверBLE) service;
-                if(binderСканнерServer.isBinderAlive()){
-                    Log.i(context.getClass().getName(), "    onServiceConnected  binderСканнерServer.isBinderAlive()"
-                            + binderСканнерServer.isBinderAlive());
-                    binderСканнерServer.linkToDeath(new IBinder.DeathRecipient() {
-                        @Override
-                        public void binderDied() {
-                            Log.i(context.getClass().getName(), "    onServiceConnected  binderСканнерServer.isBinderAlive()"
-                                    + binderСканнерServer.isBinderAlive());
-                            Log.d(getApplicationContext().getClass().getName(), "\n"
-                                    + " время: " + new Date() + "\n+" +
-                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+ "  " );
-                        }
-                    });
-                }
-            }
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-                Log.d(context.getClass().getName().toString(), "\n"
-                        + "onServiceConnected  ОБЩАЯ messengerActivity  ");
-            }
-        },Context.BIND_AUTO_CREATE);
-            // TODO: 31.01.2023 конец work manger
+            new BindingServices().МетодБиндингаСинхронизации(getApplicationContext(),messenger);
+///16,20  ЛОГ ЛОГ ЛОГ  1
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " ((HttpServletRequest) req).getPathInfo() " );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -127,7 +107,7 @@ public class MyWorkAsyncScannerServer extends Worker {
     @SuppressLint("RestrictedApi")
     void МетодинициализацииHandler(){
         try{
-            messenger= Message.obtain(new Handler(Looper.getMainLooper(), new Handler.Callback() {
+            messenger= new Handler(Looper.getMainLooper(), new Handler.Callback() {
                 @Override
                 public boolean handleMessage(@NonNull Message msg) {
                     Log.d(getApplicationContext().getClass().getName(), "\n"
@@ -136,7 +116,7 @@ public class MyWorkAsyncScannerServer extends Worker {
                             " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+ "  " );
                     return true;
                 }
-            }));
+            }).obtainMessage();
 
     } catch (Exception e) {
         e.printStackTrace();
@@ -178,7 +158,11 @@ public class MyWorkAsyncScannerServer extends Worker {
     @Override
     public Result doWork() {
         try {
-            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+           while (messenger.getData().isEmpty());
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " ((HttpServletRequest) req).getPathInfo() messenger.getData().isEmpty() " +messenger.getData().isEmpty() );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
