@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+        <welcome-file>index.htm</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>default.html</welcome-file>
+        <welcome-file>default.htm</welcome-file>
+        <welcome-file>default.jsp</welcome-file>
+    </welcome-file-list>
+
+
+    <servlet>
+        <servlet-name>DSU1JsonServlet</servlet-name>
+        <servlet-class>dsu1glassfishatomic.DSU1JsonServlet</servlet-class>
+        <async-supported>true</async-supported>
+    </servlet>
+<servlet-mapping>
+    <servlet-name>DSU1JsonServlet</servlet-name>
+    <url-pattern>/sous.jboss.tabel</url-pattern>
+</servlet-mapping>
+
+
+
+
+
+
+    <servlet>
+        <servlet-name>DSU1DonwloadsServlet</servlet-name>
+        <servlet-class>dowsloadpojboss.DSU1DonwloadsServlet</servlet-class>
+        <async-supported>true</async-supported>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DSU1DonwloadsServlet</servlet-name>
+        <url-pattern>/sous.jboss.download</url-pattern>
+    </servlet-mapping>
+
+
+
+    <servlet>
+        <servlet-name>DSU1ScannerServlet</servlet-name>
+        <servlet-class>serverscanners.DSU1ScannerServlet</servlet-class>
+        <async-supported>true</async-supported>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DSU1ScannerServlet</servlet-name>
+        <url-pattern>/sous.jboss.scanner</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DSU1ServletRuntimeJboss</servlet-name>
+        <servlet-class>runtimes.DSU1ServletRuntimeJboss</servlet-class>
+        <async-supported>true</async-supported>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DSU1ServletRuntimeJboss</servlet-name>
+        <url-pattern>/sous.jboss.runtimejboss</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DSU1ServletAuthentication</servlet-name>
+        <servlet-class>authentication.DSU1ServletAuthentication</servlet-class>
+        <async-supported>true</async-supported>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DSU1ServletAuthentication</servlet-name>
+        <url-pattern>/sous.jboss.authentication</url-pattern>
+    </servlet-mapping>
+
+
+
+
+
+
+    <filter>
+        <filter-name>FilterForGET</filter-name>
+        <filter-class>dsu1glassfishatomic.FilterPublic</filter-class>
+        <async-supported>true</async-supported>
+    </filter>
+    <filter-mapping>
+        <filter-name>FilterForGET</filter-name>
+        <url-pattern>/DSU1JsonServlet</url-pattern>
+        <url-pattern>/DSU1DonwloadsServlet</url-pattern>
+        <url-pattern>/DSU1ScannerServlet</url-pattern>
+        <url-pattern>/DSU1ServletAuthentication</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>ASYNC</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+
+
+    <filter>
+        <filter-name>FilterForGETRuntimeJboss</filter-name>
+        <filter-class>runtimes.FilterRuntime</filter-class>
+        <async-supported>true</async-supported>
+    </filter>
+    <filter-mapping>
+        <filter-name>FilterForGETRuntimeJboss</filter-name>
+        <url-pattern>/DSU1ServletRuntimeJboss</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>ASYNC</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+
+
+</web-app>

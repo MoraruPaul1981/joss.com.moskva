@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+
+
+
+  <session-factory>  <!--РЕЛИЗ-->
+    <property name="connection.url">jdbc:sqlserver://11.11.11.12:1433;databaseName=storage</property>
+    <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+    <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+    <property name="hibernate.connection.password">4321Qwer</property>
+    <property name="hibernate.connection.username">obmen</property>
+    <property name="hibernate.show_sql">true</property>
+    <property name="hibernate.hbm2ddl.auto">update</property>
+    <property name="hibernate.format_sql">true</property>
+    <property name="hibernate.current_session_context_class">thread</property>
+    <property name="hibernate.transaction.jta.platform">org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform</property>
+    <property name="hibernate.connection.isolation">4</property>
+
+    <mapping class="model.Fio"/>
+    <mapping class="model.Organization"/>
+    <mapping class="model.Depatment"/>
+    <mapping class="model.Region"/>
+    <mapping class="model.Cfo"/>
+    <mapping class="model.Notification"/>
+    <mapping class="model.Template"/>
+    <mapping class="model.FioTemplate"/>
+    <mapping class="model.Chat"/>
+    <mapping class="model.DataChat"/>
+    <mapping class="model.Tabel"/>
+    <mapping class="model.DataTabel"/>
+    <mapping class="model.DataNotification"/>
+    <mapping class="model.TypeMaterial"/>
+    <mapping class="model.Company"/>
+    <mapping class="model.Track"/>
+    <mapping class="model.ChatUser"/>
+    <mapping class="model.ViewOnesignal"/>
+    <mapping class="model.NomenVesov"/>
+    <mapping class="model.Settingtab"/>
+    <mapping class="model.GetMaterialsData"/>
+
+  </session-factory>
+
+
+
+
+
+<!--
+  <session-factory> &lt;!&ndash;ДЕБАГ&ndash;&gt;
+    <property name="connection.url">jdbc:sqlserver://localhost:1433;databaseName=storage</property>
+    <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+    <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+    <property name="hibernate.connection.password">Superndroiddsu1</property>
+    <property name="hibernate.connection.username">sa</property>
+    <property name="hibernate.show_sql">true</property>
+    <property name="hibernate.hbm2ddl.auto">update</property>
+    <property name="hibernate.format_sql">true</property>
+    <property name="hibernate.current_session_context_class">thread</property>
+    <property name="hibernate.transaction.jta.platform">org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform</property>
+    <property name="hibernate.connection.isolation">4</property>
+
+    <mapping class="model.Fio"/>
+    <mapping class="model.Organization"/>
+    <mapping class="model.Depatment"/>
+    <mapping class="model.Region"/>
+    <mapping class="model.Cfo"/>
+    <mapping class="model.Notification"/>
+    <mapping class="model.Template"/>
+    <mapping class="model.FioTemplate"/>
+    <mapping class="model.Chat"/>
+    <mapping class="model.DataChat"/>
+    <mapping class="model.Tabel"/>
+    <mapping class="model.DataTabel"/>
+    <mapping class="model.DataNotification"/>
+    <mapping class="model.TypeMaterial"/>
+    <mapping class="model.Company"/>
+    <mapping class="model.Track"/>
+    <mapping class="model.ChatUser"/>
+    <mapping class="model.ViewOnesignal"/>
+    <mapping class="model.NomenVesov"/>
+    <mapping class="model.Settingtab"/>
+    <mapping class="model.GetMaterialsData"/>
+
+  </session-factory>-->
+
+
+
+
+
+</hibernate-configuration>
