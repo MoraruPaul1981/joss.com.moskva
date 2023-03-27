@@ -1,5 +1,6 @@
 package com.dsy.dsu.Code_For_Services;
 
+import android.app.IntentService;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.JobIntentService;
 
 import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
@@ -41,10 +43,10 @@ import java.util.concurrent.TimeoutException;
 import javax.crypto.NoSuchPaddingException;
 
 
-public class Service_Для_ЧатаСменаСтатусаПрочитаноИлиНет extends JobIntentService {
+public class Service_Для_ЧатаСменаСтатусаПрочитаноИлиНет extends IntentService {
 
     // Binder given to clients
-    private LocalBinderДляЧата binder = new LocalBinderДляЧата();
+    public LocalBinderДляЧата binderЧАТ = new LocalBinderДляЧата();
     // Random number generator
     private Context context;
 
@@ -53,6 +55,12 @@ public class Service_Для_ЧатаСменаСтатусаПрочитаноИ
     private  Class_MODEL_synchronized  modelДляФрагментаДляОперацииЗаписиНовгоСтатусаПрочитанного ;
     private PUBLIC_CONTENT   Class_Engine_SQLГдеНаходитьсяМенеджерПотоков ;
     private Class_Generation_Errors class_generation_errors;
+
+
+    public Service_Для_ЧатаСменаСтатусаПрочитаноИлиНет() {
+        super("Service_Для_ЧатаСменаСтатусаПрочитаноИлиНет");
+    }
+
     /**
      * Class used for the client Binder.  Because we know this service always
      * runs in the same process as its clients, we don't need to deal with IPC.
@@ -63,28 +71,28 @@ public class Service_Для_ЧатаСменаСтатусаПрочитаноИ
             return Service_Для_ЧатаСменаСтатусаПрочитаноИлиНет.this;
         }
     }
-    public static void enqueueWork(Context context, Intent work) {
 
-        enqueueWork(context, Service_Для_ЧатаСменаСтатусаПрочитаноИлиНет.class, 103, work);
-
-        System.out.println("     public static void enqueueWork(Context context, Intent work) {" + new Date()+"\n"+
-                " Thread.currentThread().getName()  " +Thread.currentThread().getName());
-    }
 
     @Override
     public IBinder onBind(@NonNull Intent intent) {
         Log.i(getApplicationContext().getClass().getName(), "     public IBinder onBind(@NonNull Intent intent) { " + new Date()+"\n"+
                 " Thread.currentThread().getName()  " +Thread.currentThread().getName());//todo super.onBind(intent)
-        return  binder ;
+        return  binderЧАТ ;
+    }
+
+    @Override
+    protected void onHandleIntent(@Nullable Intent intent) {
+        System.out.println("     public static void enqueueWork(Context context, Intent work) {" + new Date()+"\n"+
+                " Thread.currentThread().getName()  " +Thread.currentThread().getName());
     }
 
 
- /*   @Override
+   @Override
     public void onCreate() {
         super.onCreate();
         Log.i(getApplicationContext().getClass().getName(), " public class Service_Для_ЧатаСменаСтатусаПрочитаноИлиНет extends JobIntentService { " + new Date()+"\n"+
                 " Thread.currentThread().getName()  " +Thread.currentThread().getName());
-    }*/
+    }
 
 
 
@@ -146,28 +154,6 @@ public class Service_Для_ЧатаСменаСтатусаПрочитаноИ
                 " Thread.currentThread().getName()  " +Thread.currentThread().getName());
         this.context=newBase;
     }
-
-    @Override
-    protected void onHandleWork(@NonNull Intent intent) {
-        Log.i(getApplicationContext().getClass().getName(), "    protected void onHandleWork(@NonNull Intent intent) { " + new Date()+ " intent " +intent+"\n"+
-                " Thread.currentThread().getName()  " +Thread.currentThread().getName());
-
-    }
-
-    @Override
-    public boolean isStopped() {
-        Log.i(getApplicationContext().getClass().getName(), "     public boolean isStopped() {" + new Date()+"\n"+
-                " Thread.currentThread().getName()  " +Thread.currentThread().getName());
-        return super.isStopped();
-    }
-
-    @Override
-    public boolean onStopCurrentWork() {
-        Log.i(getApplicationContext().getClass().getName(), "     public boolean onStopCurrentWork() {" + new Date()+"\n"+
-                " Thread.currentThread().getName()  " +Thread.currentThread().getName());
-        return super.onStopCurrentWork();
-    }
-
 
 // TODO: 15.07.2022  пользовательский код
     /** method for clients */
