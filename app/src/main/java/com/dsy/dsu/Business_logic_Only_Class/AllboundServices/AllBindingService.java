@@ -31,15 +31,11 @@ Context context;
     public AllBindingService(@NonNull  Context context,@NonNull Message message) {
         this.context = context;
         this.message = message;
-        ВиндингСлужбы1С();
-        МетодБиндингаОбновлениеПО();
-        МетодБиндингМатериалы();
-        МетодБиндингаСогласования();
     }
     // TODO: 27.03.2023 BINDING#1
     @Provides
     @Singleton
-  public   Binder ВиндингСлужбы1С() {
+  public   void ВиндингСлужбы1С() {
       final Service_Async_1C.LocalBinderGET1С[] service_Async_СинхронизацияОБЩАЯ1С =
               new Service_Async_1C.LocalBinderGET1С[1];
         try {
@@ -51,9 +47,8 @@ Context context;
                         if (service.isBinderAlive() == true) {
                             Log.i(context.getClass().getName(), "    onServiceConnected  " +
                                     "service_Async_СинхронизацияОБЩАЯ1С.getService()" + service.isBinderAlive());
-
                             Bundle bundle=new Bundle();
-                            bundle.putBinder("localBinderОбновлениеПО",  service_Async_СинхронизацияОБЩАЯ1С[0]);
+                            bundle.putBinder("allbinders",  service_Async_СинхронизацияОБЩАЯ1С[0]);
                             message.setData(bundle);
                             message.getTarget().dispatchMessage(message);
                            // message.sendToTarget();
@@ -98,7 +93,6 @@ Context context;
                     this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-        return service_Async_СинхронизацияОБЩАЯ1С[0];
     }
 
 
@@ -111,7 +105,7 @@ Context context;
     // TODO: 27.03.2023 BINDING#2
     @Provides
     @Singleton
-    public   Binder МетодБиндингаОбновлениеПО() {
+    public   void МетодБиндингаОбновлениеПО() {
         final ServiceUpdatePoОбновлениеПО.localBinderОбновлениеПО[] serviceUpdatePoОбновлениеПО =
                 new ServiceUpdatePoОбновлениеПО.localBinderОбновлениеПО[1];
         try {
@@ -123,6 +117,10 @@ Context context;
                         if (service.isBinderAlive()) {
                             Log.i(context.getClass().getName(), "    onServiceConnected  service)"
                                     + service.isBinderAlive());
+                            Bundle bundle=new Bundle();
+                            bundle.putBinder("allbinders",  serviceUpdatePoОбновлениеПО[0]);
+                            message.setData(bundle);
+                            message.getTarget().dispatchMessage(message);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -158,7 +156,6 @@ Context context;
                     this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-        return  serviceUpdatePoОбновлениеПО[0];
     }
 
     // TODO: 27.03.2023 BINDING#3
@@ -167,7 +164,7 @@ Context context;
     // TODO: 02.08.2022  код ля биндинга службы одноразовой синхронизации
     @Provides
     @Singleton
-    public Binder  МетодБиндингМатериалы() {
+    public void   МетодБиндингМатериалы() {
         final Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов[] binderМатериалы =
                 new Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов[1];
         try {
@@ -222,7 +219,6 @@ Context context;
                     Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-        return   binderМатериалы[0];
     }
 
 
@@ -231,7 +227,7 @@ Context context;
     // TODO: 27.03.2023 BINDING#4
     @Provides
     @Singleton
-    private Binder МетодБиндингаСогласования() {
+    private void МетодБиндингаСогласования() {
         final Service_Notificatios_Для_Согласования.LocalBinderДляСогласования[] binderСогласования1C
                 = new Service_Notificatios_Для_Согласования.LocalBinderДляСогласования[1];
         try {
@@ -278,7 +274,6 @@ Context context;
                     this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-        return  binderСогласования1C[0];
     }
 
 

@@ -141,19 +141,8 @@ public class MainActivity_Face_App extends AppCompatActivity {
             // TODO: 16.11.2022  ПОСЛЕ УСТАНОВКИ РАБОТАЕТ ОДИН РАЗ ПРИ СТАРТЕ ЗАРУСК ОБЩЕГО WORK MANAGER
             new Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal(getApplicationContext()).МетодЗапускаетОБЩУЮСинхронизацию();
             МетодFaceApp_СлушательПриНажатииНаКнопки();
-
-
-            message=Message.obtain(new Handler(Looper.myLooper()),()->{
-                Bundle bundle=   message.getData();
-                // localBinderОбновлениеПО.getService().  МетодЗапускАнализаПО(false,0,activity);
-                Log.i(this.getClass().getName(),  " Атоманически установкаОбновление ПО "+
-                        Thread.currentThread().getStackTrace()[2].getMethodName()+
-                        " время " +new Date().toLocaleString() );
-                Log.i(this.getClass().getName(), "bundle " +bundle);
-                message.recycle();
-            });
-            // TODO: 27.03.2023 биндинг службы
-            new AllBindingService(context, message);
+            // TODO: 27.03.2023 Бинлинг Обновление ПО
+            МетодБиндингаОбновлениеПО();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -162,6 +151,30 @@ public class MainActivity_Face_App extends AppCompatActivity {
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
             Log.d(this.getClass().getName(), "  Полусаем Ошибку e.toString() " + e.toString());
         }
+    }
+
+    private void МетодБиндингаОбновлениеПО() {
+        try {
+        message=Message.obtain(new Handler(Looper.myLooper()),()->{
+               Bundle bundle=   message.getData();
+               localBinderОбновлениеПО= (ServiceUpdatePoОбновлениеПО.localBinderОбновлениеПО)  bundle.getBinder("allbinders")  ;
+               Log.i(this.getClass().getName(),  " Атоманически установкаОбновление ПО "+
+                       Thread.currentThread().getStackTrace()[2].getMethodName()+
+                       " время " +new Date().toLocaleString() + " localBinderОбновлениеПО " +localBinderОбновлениеПО );
+               Log.i(this.getClass().getName(), "bundle " +bundle);
+               message.recycle();
+           });
+        // TODO: 27.03.2023 биндинг службы
+        new AllBindingService(context, message).МетодБиндингаОбновлениеПО();
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+        Log.d(this.getClass().getName(), "  Полусаем Ошибку e.toString() " + e.toString());
+    }
+
     }
 
     @Override
