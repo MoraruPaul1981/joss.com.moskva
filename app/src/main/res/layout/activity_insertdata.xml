@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scro"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:nestedScrollingEnabled="false"
+    android:visibility="visible"
+    tools:context=".For_Code_Settings_DSU1.MainActivity_Face_App"
+    tools:visibility="visible">
+
+
+    <ProgressBar
+        android:id="@+id/prograssbarupdatepo"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="11dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:indeterminateTint="#009688"
+        android:indeterminateTintMode="src_in"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+</LinearLayout>
+
