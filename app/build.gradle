@@ -186,10 +186,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-core:2.10.3'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.10.3'
 
-    // https://mvnrepository.com/artifact/com.google.dagger/dagger
-    implementation group: 'com.google.dagger', name: 'dagger', version: '2.45'
-    // https://mvnrepository.com/artifact/com.google.dagger/dagger-producers
-    implementation group: 'com.google.dagger', name: 'dagger-producers', version: '2.45'
+
 
 
 }

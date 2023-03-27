@@ -40,6 +40,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 
+import com.dsy.dsu.Business_logic_Only_Class.AllboundServices.AllBindingService;
 import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Clears_Tables;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Connections_Server;
@@ -90,12 +91,12 @@ public class MainActivity_Face_App extends AppCompatActivity {
     @Inject
     private Service_Notificatios_Для_Согласования.LocalBinderДляСогласования binderСогласования1C;
     private Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binderМатериалы;
-    private ServiceUpdatePoОбновлениеПО.localBinderОбновлениеПО localBinderОбновлениеПО;
+
     private Animation animation;
     protected SharedPreferences preferences;
-    private Service_Async_1C service_Async_СинхронизацияОБЩАЯ1С;
-
     private   Message message;
+
+    private  ServiceUpdatePoОбновлениеПО.localBinderОбновлениеПО localBinderОбновлениеПО;//TODO новаЯ
 
     // TODO: 03.11.2022 FaceApp
     @Override
@@ -146,10 +147,12 @@ public class MainActivity_Face_App extends AppCompatActivity {
             // TODO: 03.11.2022 биндинг служб
               МетодБиндингМатериалы();
             МетодБиндингаСогласования();
-           МетодБиндингаОбновлениеПО();
             // TODO: 16.11.2022  ПОСЛЕ УСТАНОВКИ РАБОТАЕТ ОДИН РАЗ ПРИ СТАРТЕ ЗАРУСК ОБЩЕГО WORK MANAGER
             new Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal(getApplicationContext()).МетодЗапускаетОБЩУЮСинхронизацию();
             МетодFaceApp_СлушательПриНажатииНаКнопки();
+
+            // TODO: 27.03.2023 биндинг службы
+            localBinderОбновлениеПО= (ServiceUpdatePoОбновлениеПО.localBinderОбновлениеПО) new AllBindingService(context).МетодБиндингаОбновлениеПО();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -373,7 +376,7 @@ public class MainActivity_Face_App extends AppCompatActivity {
                             item.setChecked(true);
                             Log.w(getPackageName().getClass().getName(), "item.getItemId() МЕНЮ ОБНОВЛЕНИЕ ПО    " + item.getItemId() + "\n"+item);/////////
                             try {
-                                // localBinderОбновлениеПО.getService().  МетодЗапускАнализаПО(false,0,activity);
+                                while (localBinderОбновлениеПО==null);
                                 localBinderОбновлениеПО.getService().МетодГлавныйОбновленияПО(true,activity);
                                 Log.i(this.getClass().getName(),  " Из меню установкаОбновление ПО "+ Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
                             } catch (Exception e) {
@@ -469,64 +472,6 @@ public class MainActivity_Face_App extends AppCompatActivity {
                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
             new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
-    // TODO: 03.11.2022  1c
-    // TODO: 29.03.2022  метод регмстарцмии локального брод кастера доля смен задачи
-    private void МетодБиндингаОбновлениеПО() {
-        try {
-            ServiceConnection   connectionСогласования = new ServiceConnection() {
-                @Override
-                public void onServiceConnected(ComponentName name, IBinder service) {
-                    try {
-                      localBinderОбновлениеПО = (ServiceUpdatePoОбновлениеПО.localBinderОбновлениеПО) service;
-                        if (localBinderОбновлениеПО.isBinderAlive()) {
-                            Log.i(getApplicationContext().getClass().getName(), "    onServiceConnected  localBinderОбновлениеПО)"
-                                    + localBinderОбновлениеПО.isBinderAlive());
-                            Bundle bundle=new Bundle();
-                            bundle.putBinder("localBinderОбновлениеПО",localBinderОбновлениеПО);
-                            message.setData(bundle);
-                            message.sendToTarget();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName(),
-                                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                }
-                @Override
-                public void onServiceDisconnected(ComponentName name) {
-                    try {
-                        Log.i(getApplicationContext().getClass().getName(), "    onServiceDisconnected  binder.isBinderAlive()" + binderСогласования1C.isBinderAlive());
-                        localBinderОбновлениеПО = null;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName(),
-                                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                }
-            };
-            /*Intent intentЗапускСлужбыОбновлениеПО = new Intent(getApplicationContext(), ServiceUpdatePoОбновлениеПО.class);
-            bindService(intentЗапускСлужбыОбновлениеПО, connectionСогласования,Context.BIND_AUTO_CREATE );*/
-            Intent intentЗапускСлужбыОбновлениеПО = new Intent(getApplicationContext(), ServiceUpdatePoОбновлениеПО.class);
-            intentЗапускСлужбыОбновлениеПО.setAction("com.ServiceUpdatePoОбновлениеПО");
-            bindService(intentЗапускСлужбыОбновлениеПО,Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT
-                    | Context.BIND_INCLUDE_CAPABILITIES,Executors.newCachedThreadPool(), connectionСогласования );
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
 
