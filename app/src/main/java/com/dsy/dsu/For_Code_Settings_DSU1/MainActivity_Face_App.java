@@ -881,51 +881,6 @@ public class MainActivity_Face_App extends AppCompatActivity {
 
     }
 
-    void ВиндингСлужбы1С() {
-        try {
-            ServiceConnection connectionОБЩЕЙ1СGet = new ServiceConnection() {
-                @Override
-                public void onServiceConnected(ComponentName name, IBinder service) {
-                    try {
-                        Service_Async_1C.LocalBinderGET1С binder = (Service_Async_1C.LocalBinderGET1С) service;
-                        if (binder.isBinderAlive() == true) {
-                            Log.i(context.getClass().getName(), "    onServiceConnected  " +
-                                    "service_Async_СинхронизацияОБЩАЯ1С" + service_Async_СинхронизацияОБЩАЯ1С);
-                            service_Async_СинхронизацияОБЩАЯ1С = binder.getService();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName(),
-                                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                }
-
-                @Override
-                public void onServiceDisconnected(ComponentName name) {
-                    try {
-                        Log.i(getApplicationContext().getClass().getName(), "    onServiceDisconnected  " +
-                                "service_Async_СинхронизацияОБЩАЯ1С" + service_Async_СинхронизацияОБЩАЯ1С);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName(),
-                                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                }
-            };
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
     protected void МетодЗапускаИзМенюНастроек() {
         try{
             Intent      Интент_Меню = new Intent(context, MainActivity_Settings.class);

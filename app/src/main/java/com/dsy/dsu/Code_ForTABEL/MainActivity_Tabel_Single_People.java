@@ -4,12 +4,10 @@ package com.dsy.dsu.Code_ForTABEL;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -20,7 +18,6 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.text.Editable;
@@ -78,7 +75,6 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_MODEL_synchronized;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
-import com.dsy.dsu.Code_For_Services.Service_for_AdminissionMaterial;
 import com.dsy.dsu.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -110,12 +106,12 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 
 import javax.crypto.NoSuchPaddingException;
+import javax.inject.Inject;
 
 
 public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
@@ -200,7 +196,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private      Message message;
     private Animation animation;
     private    SQLiteCursor ГлавныйКурсорДанныеSwipes;
-    private   ServiceConnection serviceConnectionМатериалы;
 
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
     @Override
