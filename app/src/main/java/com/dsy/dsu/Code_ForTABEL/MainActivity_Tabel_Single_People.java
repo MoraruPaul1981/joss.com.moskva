@@ -18,6 +18,8 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -30,16 +32,22 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.FilterQueryProvider;
 import android.widget.GridLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +57,8 @@ import androidx.annotation.UiThread;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.cursoradapter.widget.CursorAdapter;
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
@@ -58,6 +68,7 @@ import androidx.work.WorkManager;
 
 import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
+import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.Class_Generation_Data;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_MODEL_synchronized;
@@ -66,11 +77,16 @@ import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.dsy.dsu.Code_For_Services.Service_for_AdminissionMaterial;
 import com.dsy.dsu.R;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textview.MaterialTextView;
+import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.util.concurrent.AtomicDouble;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 
 import java.security.InvalidKeyException;
@@ -179,6 +195,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     final private   String ИмяСлужбыОбщейСинхронизацииДляЗадачи = "WorkManager Synchronizasiy_Data";
     private  long РодительскийUUDТаблицыТабель=0l;
     private  Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binder;
+    private      Message message;
+    private Animation animation;
+    private    SQLiteCursor ГлавныйКурсорДанныеSwipes;
 
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
     @Override
@@ -240,6 +259,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ЛимитСоСмещениемДанных="0";
             КнопкаНазад=(Button) findViewById(R.id.imageViewСтрелкаВнутриТабеля);
             view2Линия=(View) findViewById(R.id.view2Линия);
+            animation= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row_newscanner1);
             Bundle data=     getIntent().getExtras();
             if (data!=null) {
                 binder=  (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) data.getBinder("binder");
@@ -249,7 +269,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             МетодПриИзмениеДанныхВБазеМенемВнешнийВидТабеляObserver();
 //TODO #1
             МетодПришлиПараметрыОтДругихАктивитиДляРаботыТабеля();
-
+            МетодGetmessage();
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -268,11 +288,16 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     protected void onStop() {
         super.onStop();
         try{
-////TODO после как прошла СИНХРОНИЗАЦИЯ В ФОНЕ  ПЕЕРРИСОВЫВАЕМ КОМПОНЕТЫ РОБОЧЕГО СТОЛА
         WorkManager.getInstance(getApplicationContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОдноразовая).removeObservers(null);
+            // TODO: 17.08.2022  after peossesuinbg
+            if (ГлавныйКурсорДанныеSwipes!=null) {
+                ГлавныйКурсорДанныеSwipes.close();
+            }
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
     } catch (Exception e) {
         e.printStackTrace();
-        ///метод запись ошибок в таблицу
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                 " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
         new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
@@ -963,7 +988,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     private void МетодЗаполненияАлайЛИстаНовымМЕсцевНовогоТабеля(String  МесяцТабеляФинал ,int ЕслиСмещениеВдАнныхДляСкрола) {
         try{
-            SQLiteCursor ГлавныйКурсорДанныеSwipes=null;
             Log.d(this.getClass().getName(), " МесяцТабеляФинал " + МесяцТабеляФинал);
             МесяцДляЗагрузкиТабелей= String.valueOf(МетодПоказатьМесяцДляЗАписивОднуКолонку(МесяцТабеляФинал));
             ГодДляЗагрузкиТабелей= String.valueOf(МетодПоказатьГодДляЗАписивОднуКолонку(МесяцТабеляФинал));
@@ -1016,7 +1040,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     " ПроизошелЛиСфайпПоДаннымСингТабеля " +ПроизошелЛиСфайпПоДаннымСингТабеля);
 
             // TODO: 24.09.2021  При первом старте цифра 1 ровно
-            МетодАнализДанныхSwipes(ЕслиСмещениеВдАнныхДляСкрола, ГлавныйКурсорДанныеSwipes);
+            МетодАнализДанныхSwipes(ЕслиСмещениеВдАнныхДляСкрола);
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1031,8 +1055,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         }
     }
 
-    private void МетодАнализДанныхSwipes(int ЕслиСмещениеВдАнныхДляСкрола,
-                                         SQLiteCursor ГлавныйКурсорДанныеSwipes)
+    private void МетодАнализДанныхSwipes(int ЕслиСмещениеВдАнныхДляСкрола)
             throws ParseException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, ExecutionException, InterruptedException {
         try{
         if  (  ПроизошелЛиСфайпПоДаннымСингТабеля==true ){
@@ -1046,7 +1069,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                       UUIDТабеляПослеУспешногоСозданиеСотрудникаВсехСотридников=     ГлавныйКурсорДанныеSwipes.getLong(ИНдексГдеНаходитсьяКолонкаUUIDТабеляПриСфайпе);
                       Log.d(this.getClass().getName(), "UUIDТабеляПослеУспешногоСозданиеСотрудникаВсехСотридников  " +UUIDТабеляПослеУспешногоСозданиеСотрудникаВсехСотридников);
                       // TODO: 23.03.2023 заполяем
-                      МетодЗаполенияДаннымиСотрудника(ЕслиСмещениеВдАнныхДляСкрола, ГлавныйКурсорДанныеSwipes, ЦифровоеИмяНовгоТабеля);
+                      МетодЗаполенияДаннымиСотрудника(ЕслиСмещениеВдАнныхДляСкрола,  ЦифровоеИмяНовгоТабеля);
                   }else{
                       МетодКогдаНетЗаписейВКурсоре();
                   }
@@ -1069,7 +1092,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             if (  ГлавныйКурсорДанныеSwipes.getCount()==0) {
                 МетодКогдаНетЗаписейВКурсоре();
             }else{
-                МетодЗаполенияДаннымиСотрудника(ЕслиСмещениеВдАнныхДляСкрола, ГлавныйКурсорДанныеSwipes, ЦифровоеИмяНовгоТабеля);
+                МетодЗаполенияДаннымиСотрудника(ЕслиСмещениеВдАнныхДляСкрола,  ЦифровоеИмяНовгоТабеля);
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1092,7 +1115,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
 
     private void МетодЗаполенияДаннымиСотрудника(@NonNull  int еслиСмещениеВдАнныхДляСкрола,
-                                                 @NonNull  SQLiteCursor ГлавныйКурсорДанныеSwipes,
                                                  @NonNull   int ЦифровоеИмяНовгоТабеля)
             throws ParseException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, ExecutionException, InterruptedException {
         try{
@@ -1185,9 +1207,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.moveToFirst();
 
                 // TODO: 24.03.2023  Получаем ФИо и ПРОФЕСИЮ
-                МетодПолучениеФИОиПрофессия(ГлавныйКурсорДанныеSwipes, Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО);
+                МетодПолучениеФИОиПрофессия(Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО);
                 // TODO: 23.03.2023  метод заполенния данными по циклу после анализа swipe
-                МетодПослеАнализаSwipesЗаполненияЦиклом(еслиСмещениеВдАнныхДляСкрола, ГлавныйКурсорДанныеSwipes, ИндексСтрокКомпонентовТабеля);
+                МетодПослеАнализаSwipesЗаполненияЦиклом(еслиСмещениеВдАнныхДляСкрола, ИндексСтрокКомпонентовТабеля);
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1205,8 +1227,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         }
     }
 
-    private void МетодПолучениеФИОиПрофессия(@NonNull SQLiteCursor ГлавныйКурсорДанныеSwipes,
-                                             SQLiteCursor Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО) {
+    private void МетодПолучениеФИОиПрофессия(@NonNull  SQLiteCursor Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО) {
         try{
         ФИОТекущегоСотрудника = Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.getString(0);
         Log.d(  this.getClass().getName(), "ФИОСледующий " +"uuid"+ ФИОТекущегоСотрудника);
@@ -1242,8 +1263,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     }
 
     private void МетодПослеАнализаSwipesЗаполненияЦиклом(@NonNull int еслиСмещениеВдАнныхДляСкрола,
-                                                         @NonNull SQLiteCursor ГлавныйКурсорДанныеSwipes,
-                                                         int[] ИндексСтрокКомпонентовТабеля) {
+                                                         @NonNull  int[] ИндексСтрокКомпонентовТабеля) {
 
         try{
             НазваниеДанныхВТабелеФИО.setText("");
@@ -1265,8 +1285,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 ПосикДня = ГлавныйКурсорДанныеSwipes.getColumnIndex("uuid"); ////TODO СЮДА ПОЛЕ UUID
                 НазваниеСтолбикаДляЛобкальногоОбноления = ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
                 НазваниеДанныхВТабелеФИО.setTag(ГлавныйКурсорДанныеSwipes.getString(ПосикДня));
-                Log.d(this.getClass().getName(), " UUID пристваем Внутри ФИО  " + ГлавныйКурсорДанныеSwipes.getString(ПосикДня));
                 НазваниеДанныхВТабелеФИО.setOnClickListener(СлушательИнформацияОСотрудника);
+                Log.d(this.getClass().getName(), " UUID пристваем Внутри ФИО  " + ГлавныйКурсорДанныеSwipes.getString(ПосикДня));
                 /////TODO     ПЕРВАЯ СТРОКА
                 ///todo главный МЕТОД ОФОРМЛЕНИЯ ТАБЕЛЯ ДАННЫМИ И ДНЯМИ
                 МетодГлавныйОрмленияТабеляДнямиИЗначениямиДляЭтиДней(ГлавныйКурсорДанныеSwipes,
@@ -1281,9 +1301,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 }
             }
             while (ГлавныйКурсорДанныеSwipes.moveToNext()) ;
-            // TODO: 17.08.2022  after peossesuinbg
-            ГлавныйКурсорДанныеSwipes.close();
-
             // TODO: 23.03.2023 ПОДСЧИТИВАЕМ ОБЩЕЕГО КОЛИЧЕСТВО СОТУРДНИКОВ
             МетодПодсчетОбщегоКОличествоСотрудников();
 
@@ -2069,199 +2086,87 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
         private void МетодГлавныйЛокальноеОбновлениеЯчейки(int СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов, boolean ФлагЗапускатьллкальноеОбновлениеИлинет) {
             try{
-
-
-      /*      Log.d(this.getClass().getName(),"  afterTextChanged " +s.toString());
-            СамоЗначениеЯчейкиТабеля=new String();
-
-            СамоЗначениеЯчейкиТабеля= s.toString();*/
-
-
-
             Log.d(this.getClass().getName(), " СамоЗначениеЯчейкиТабеля" +  СамоЗначениеЯчейкиТабеля);
-
-
-
-////TODO запускаем запу запуси даных локально
-
-
             if (СамоЗначениеЯчейкиТабеля!=null) {
                 if (СамоЗначениеЯчейкиТабеля.length()>0 ) {
-
                     Log.d(this.getClass().getName(), " СамоЗначениеЯчейкиТабеля.length()" +  СамоЗначениеЯчейкиТабеля.length());
                     /////////todo получем значение И СТАВИМ УСЛОВИЕ НЕ БОЕЛЕЕ 24 ЧИЛСА КАК КАК В СУТКА ТОЛЬКО 24 ЧАСА
-
-
                     boolean ПереводимВЦифруТОлькоЕслиИзначальноНетБУквыВнутри=         СамоЗначениеЯчейкиТабеля.matches("(.*)[^0-9](.*)");
-                    //////
                     if (ПереводимВЦифруТОлькоЕслиИзначальноНетБУквыВнутри==false) {
                         СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов = Integer.parseInt(СамоЗначениеЯчейкиТабеля);
                     }
-
                     Log.d(this.getClass().getName(), " СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов " + СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов);
-
                     if (СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов <= 24) {
-
-                        ////TODO саомЗначение
-                        // СамоЗначениеЯчейкиТабеля = s.toString();
-
                         Log.d(this.getClass().getName(), "  СамоЗначениеЯчейкиТабеля " +  СамоЗначениеЯчейкиТабеля);
-
                         ФлагЗапускатьллкальноеОбновлениеИлинет =true;
-
-
                         /////TODO  НЕ НАДЛО ЗАПУСКАТЬ ЛОКАЛЬНЕО ОБНОВЛЕНИЕ
                     } else {
-
                         ФлагЗапускатьллкальноеОбновлениеИлинет =false;
-                        ////
-                        // СамоЗначениеЯчейкиТабеля =new String();
-
                         Toast aa = Toast.makeText(getBaseContext(), "OPEN", Toast.LENGTH_LONG);
                         ImageView cc = new ImageView(getBaseContext());
                         cc.setImageResource(R.drawable.icon_dsu1_add_organisazio_error);//icon_dsu1_synchronisazia_dsu1_success
                         aa.setView(cc);
                         aa.show();
-                        ///
                         Toast.makeText(getBaseContext(), "Нет сохранилось"+
                                 "\n"+" (Значение не может быть более 24 (часы).) :" +СамоЗначениеЯчейкиТабеля, Toast.LENGTH_SHORT).show();
                     }
-
-
-
-
-                    //////todo МОЖНО ЗАПУСКАТЬ ЛОКЛАЬНЕО ОБНЛВЛДЕНИ
-
                 }else{
-                    ////TODO саомЗначение
-                    // СамоЗначениеЯчейкиТабеля = s.toString();
-
                     Log.d(this.getClass().getName(), "  СамоЗначениеЯчейкиТабеля " +  СамоЗначениеЯчейкиТабеля);
-
-                    //////todo МОЖНО ЗАПУСКАТЬ ЛОКЛАЬНЕО ОБНОВЛЕНИЕ
                     ФлагЗапускатьллкальноеОбновлениеИлинет =true;
                 }
             }
-
-
             Log.d(this.getClass().getName(), " СамоЗначениеЯчейкиТабеля" +СамоЗначениеЯчейкиТабеля + "  ФлагЗапускатьллкальноеОбновлениеИлинет " + ФлагЗапускатьллкальноеОбновлениеИлинет);
-
-
-
 //TODO запускаем локальное обновдене если есть на это все условия
-
             if( ФлагЗапускатьллкальноеОбновлениеИлинет ==true){
-
-///TODOобнуляем akfu
-
                 ФлагЗапускатьллкальноеОбновлениеИлинет =false;
-
-
-
                 Log.d(this.getClass().getName(), "  СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов" + СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов);
-
                 ////// TODO: 20.01.2021 полученое занчение пытаемся обрезать
                 Log.d(this.getClass().getName(),"  СамоЗначениеЯчейкиТабеля " +СамоЗначениеЯчейкиТабеля);
-
                 //TODO ограниваем количество символом не более 3 символом не сохраняет
                 if (СамоЗначениеЯчейкиТабеля.length()>=3){
                     СамоЗначениеЯчейкиТабеля = СамоЗначениеЯчейкиТабеля.substring(0, 2);
                 }
-
-
                 Log.d(this.getClass().getName(),"  СамоЗначениеЯчейкиТабеля " +СамоЗначениеЯчейкиТабеля + " ХэшЛовимUUIDIDНазваниеСтолбика.size() " +ХэшЛовимUUIDIDНазваниеСтолбика.values());
-
                 ///todo получаем хэш с название стольика и uuid
-                try {
                     Log.d(this.getClass().getName(), "  ХэшЛовимUUIDIDНазваниеСтолбика.size()  " + ХэшЛовимUUIDIDНазваниеСтолбика.size());
-                    ////todo проверка ПЕРЕД ЛОКАЛЬНЫЙ ОБНОВЛЕНИЕМ ПРОВЕРМЯЕМ ЕСЛИ ТАМО ЗНАЧЕНИЕ НЕ 0 ОН НЕ ЕСТЬ РАЗМЕР А ХЭША условия начало локального обоновления
-                    //if (ХэшЛовимUUIDIDНазваниеСтолбика.size() > 0  && СамоЗначениеЯчейкиТабеля!=null && !СамоЗначениеЯчейкиТабеля.equalsIgnoreCase("0") && СамоЗначениеЯчейкиТабеля.length()<5){
-
-
-                    ///TODO ОЦЕНИВАЕМ ЗНАЧЕНИЕ ТЕКУЩЕЕ ЗНАЧЕНИЕ ЯЧЕЙКИ СТОИТ ЛИ ЕГО ОБНОВЛЕЯТЬ ИЛИ НЕТ if (ХэшЛовимUUIDIDНазваниеСтолбика.size() > 0  && СамоЗначениеЯчейкиТабеля!=null
-                    //                        && СамоЗначениеЯчейкиТабеля.length()<=2 && !СамоЗначениеЯчейкиТабеля.equalsIgnoreCase("0")){
-
-
-
                     Log.d(this.getClass().getName(), " Локальное Обновление ХэшЛовимUUIDIDНазваниеСтолбика" + ХэшЛовимUUIDIDНазваниеСтолбика+
                             " СамоЗначениеЯчейкиТабеля " +СамоЗначениеЯчейкиТабеля);
-// TODO: 03.06.2021  если вставдяем значене нул то всталвяем в него O
-
                     if (СамоЗначениеЯчейкиТабеля.length()==0 || СамоЗначениеЯчейкиТабеля==null) {
-                        ///////
                         СамоЗначениеЯчейкиТабеля="0";
                     }
-
-
-
-
                     Log.d(this.getClass().getName(), " Локальное Обновление ХэшЛовимUUIDIDНазваниеСтолбика" + ХэшЛовимUUIDIDНазваниеСтолбика+
                             " СамоЗначениеЯчейкиТабеля " +СамоЗначениеЯчейкиТабеля);
-
-
 // TODO: 03.06.2021  елси значение нул то мимы из него делаем ноль  ВАЖНО ТУТ УКАЗАНЫ УСЛОВИЯ ПО КОТОРЫМ ПРОИЗВХОДТИ ЛОКАЛЬНОЕ ОБНОВЛЕНИЕ
-
                     ArrayList<Integer> ЛистСДопустипыЗначениямиДляЛокальноСохранения=new ArrayList();
-                    ////
                     for (int ДниДопустимые=0;ДниДопустимые<=24;ДниДопустимые++) {
-                        // TODO: 03.06.2021
                         ЛистСДопустипыЗначениямиДляЛокальноСохранения.add(ДниДопустимые);
-
                     }
-
                     Log.d(this.getClass().getName(), " ЛистСДопустипыЗначениямиДляЛокальноСохранения" + ЛистСДопустипыЗначениямиДляЛокальноСохранения.toString());
-
                     boolean РезультатПроверкиЕслиТАкоеЧислоВАрайлистеВставлятьИлиНет=     ЛистСДопустипыЗначениямиДляЛокальноСохранения.contains(Integer.parseInt(СамоЗначениеЯчейкиТабеля));
-
-                    ///
                     Log.d(this.getClass().getName(), " РезультатПроверкиЕслиТАкоеЧислоВАрайлистеВставлятьИлиНет" + РезультатПроверкиЕслиТАкоеЧислоВАрайлистеВставлятьИлиНет);
-
-                    /////
                     if (ХэшЛовимUUIDIDНазваниеСтолбика.size() ==1 && СамоЗначениеЯчейкиТабеля.length()>0
                             && СамоЗначениеЯчейкиТабеля.length() <= 2 && РезультатПроверкиЕслиТАкоеЧислоВАрайлистеВставлятьИлиНет==true) {
 
-
-                        try {
-
-                            ///todo контейнер
                             ContentValues КонтейнерЗаполненияДаннымиПриЛокальномОбновлении = new     ContentValues();
-                            // For each loop
                             Log.d(this.getClass().getName(), "  ХэшЛовимUUIDIDНазваниеСтолбика " + ХэшЛовимUUIDIDНазваниеСтолбика.toString());
-                            // Iterator
                             Iterator iterator = ХэшЛовимUUIDIDНазваниеСтолбика.entrySet().iterator();
-
                             // TODO: 20.05.2021  начинаем обновлять только по одну запись если более одной пропускаем
-
                             if (ХэшЛовимUUIDIDНазваниеСтолбика.size()==1) {
-                                ////
                                 while (iterator.hasNext()) {
-                                    ////
-                                    // TODO: 21.05.2021  локальное обновление записи
-
                                     Map.Entry entry = (Map.Entry) iterator.next();
-                                    ///
                                     System.out.println(String.format("(%s, %s)", entry.getKey(), entry.getValue()));
-
-
                                     String КлючПоляДляЛокальноОбновление=String.valueOf(entry.getKey());
-
                                     /////todo заполегния контейнера
                                     if (СамоЗначениеЯчейкиТабеля.length()>0) {
                                         КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.put(КлючПоляДляЛокальноОбновление, СамоЗначениеЯчейкиТабеля);
-                                        ////
                                         КлючПоляДляЛокальноОбновление=null;
                                         СамоЗначениеЯчейкиТабеля=null;
-
                                     }else if (СамоЗначениеЯчейкиТабеля.length()==0){
                                         КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.put(КлючПоляДляЛокальноОбновление, 0);
-                                        ////
                                         КлючПоляДляЛокальноОбновление=null;
 
                                     }
                                     Log.d(this.getClass().getName(), " СамоЗначениеЯчейкиТабеля" + СамоЗначениеЯчейкиТабеля+ " КонтейнерЗаполненияДаннымиПриЛокальномОбновлении " +КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.toString());
-
-
-
                                     //TODO заполение КОНТЕНЕР для локального обновления--дАТА оПЕРАЦИИ
                                     ////TODO ДАТА
                                     String СгенерированованныйДатаДляВставки=     new Class_Generation_Data(getApplicationContext()).ГлавнаяДатаИВремяОперацийСБазойДанных();
@@ -2274,104 +2179,44 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                     РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудника =
                                             new SubClassUpVersionDATA().МетодПовышаемВерсииCurrentTable(    "data_tabels",getApplicationContext(),Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
                                     Log.d(this.getClass().getName(), " РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудника  " + РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудника);
-
                                     КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.put("current_table", РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудника);
-
                                     Log.d(this.getClass().getName(), "  РезультатУвеличинаяВерсияДАныхЧата " + РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудника);
-
-                                    ///////////
                                     System.out.println(String.format("(%s, %s)", entry.getKey(), entry.getValue()));
                                     Log.d(this.getClass().getName(), "  СамоЗначениеЯчейкиТабеля " + СамоЗначениеЯчейкиТабеля+
                                             "  РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудника " +РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудника);
-
                                     String СодержимоеДляЛокальногоОбновленияВременный = String.valueOf(entry.getValue());
-
                                     Long СодержимоеДляЛокальногоОбновления = Long.parseLong(СодержимоеДляЛокальногоОбновленияВременный);
 
                                     Log.d(this.getClass().getName(), "  СодержимоеДляЛокальногоОбновления " + СодержимоеДляЛокальногоОбновления);
-
-
                                     if (СодержимоеДляЛокальногоОбновления > 0){
-
-
                                         String СодержимоеДляЛокальногоОбновленияФинал=String.valueOf(СодержимоеДляЛокальногоОбновления);
-
                                         Log.d(this.getClass().getName(), "КонтейнерЗаполненияДаннымиПриЛокальномОбновлении " + КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.toString() +
                                                 "СодержимоеДляЛокальногоОбновленияФинал " + СодержимоеДляЛокальногоОбновленияФинал);
-
-
-
-
                                         Log.d(this.getClass().getName(), "  КонтейнерЗаполненияДаннымиПриЛокальномОбновлении " + КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.valueSet() + "\n" +
                                                 "  String.valueOf(entry.getValue()) " + entry.getValue());
-
-
-
                                         ///TODO ЗАПУСКАЕМ  МЕТОД ЛОКАЛЬНОГО ОБНОВЛЕНИЯ ВНУТИ ТАБЕЛЯ с самого активти
                                         try {
-
                                             Long РезультатЛокальногоОбновлениеНаТабеле= null;
-
-
-                                            // TODO: 27.05.2021
-
                                             if (СодержимоеДляЛокальногоОбновленияФинал.length()>0 && КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.size()>0 ) {
-
-
                                                 // TODO: 13.01.2022  ГЛАВНЫЙ МЕТОД ЗАПУСКА ЛОКАЛЬНОГО ОБНОВЛЕНИЯ
-
                                                 РезультатЛокальногоОбновлениеНаТабеле =
                                                         МетодЛокальногоОбновлениеЧерезКликвТабеле(КонтейнерЗаполненияДаннымиПриЛокальномОбновлении, СодержимоеДляЛокальногоОбновленияФинал);
                                             }
-
-
                                             Log.d(this.getClass().getName(), "  РезультатЛокальногоОбновлениеНаТабеле" + РезультатЛокальногоОбновлениеНаТабеле);
-                                            ////////
-                                            // TODO: 21.05.2021 Обнуляем после успешной локально вставки
-
                                             if (РезультатЛокальногоОбновлениеНаТабеле>0) {
-
                                                 КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.clear();
-
-
                                                 СодержимоеДляЛокальногоОбновленияФинал=null;
-
                                                 ПолучениеЗначениеДоИзменения= null;
-
                                                 СамоЗначениеЯчейкиТабеля=null;
-
-
-
-                                                // TODO: 08.09.2021  ПОСЛЕ УСПЕШНОЙ  ВСТАВКИ  ДЕЛАЕМ ВИБРАЦИЮ
-
-
-                                                // TODO: 01.07.2021  после локальной обнолвения поробуем вотрунть синхронизацию локальную  в фоне и порстмортрим что будет
-
-
                                                 Class_GRUD_SQL_Operations  classGrudSqlOperationsПовышаемВерсиюДАнныхПриЛокальноОбновлениеииДанныхВнутриТабеля;
-                                                // TODO: 30.08.2021    КОД ОБНОВЛЕНИЕ   ДАННЫХ   ЧЕРЕЗ
-                                                //////
                                                 classGrudSqlOperationsПовышаемВерсиюДАнныхПриЛокальноОбновлениеииДанныхВнутриТабеля=new Class_GRUD_SQL_Operations(getApplicationContext());
-
-
                                                 classGrudSqlOperationsПовышаемВерсиюДАнныхПриЛокальноОбновлениеииДанныхВнутриТабеля.
                                                         concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","data_tabels");
-                                                ///
                                                 classGrudSqlOperationsПовышаемВерсиюДАнныхПриЛокальноОбновлениеииДанныхВнутриТабеля.
                                                         concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФлагТипИзменениеВерсииДанныхЛокальнаяСервернаяИлиОба","Локальное");///  "ЛокальныйСерверныйОба"    ПОСЛЕ КАК ПРИШЛИ ВНЕШНИЕ ДАННЫЕ
-                                                ///
-                                                ///
                                                 classGrudSqlOperationsПовышаемВерсиюДАнныхПриЛокальноОбновлениеииДанныхВнутриТабеля.
                                                         concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put(" " +
                                                         "ПередоваемоеЗначенияДляТаблицы_MODIFITATION_Client_КотороеНадоЗаписать",РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудника);///  "ЛокальныйСерверныйОба"    ПОСЛЕ КАК ПРИШЛИ ВНЕШНИЕ ДАННЫЕ
-                                                ///
-
-
-
-
-
-
-
                                                 ///TODO РЕЗУЛЬТА изменения версии данных
                                                 Integer        Результат_ПриписиИзменнийВерсииДанныхВФонеПослеОбработкиТекущийТаблицы=
                                                         (Integer)  classGrudSqlOperationsПовышаемВерсиюДАнныхПриЛокальноОбновлениеииДанныхВнутриТабеля.
@@ -2383,98 +2228,26 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 //
                                                 Log.d(getApplicationContext().getClass().getName(), "Результат_ПриписиИзменнийВерсииДанныхВФонеПриСменеОрганизации "
                                                         +Результат_ПриписиИзменнийВерсииДанныхВФонеПослеОбработкиТекущийТаблицы );
-                                                ////
-
-
-
-
-
-
-
-
-
-
-
                                             }else {
-                                                ///
-
-                                                // TODO: 24.09.2021
-
                                                 Toast.makeText(getApplicationContext(), " Ошибка  в добавление данных !!! " , Toast.LENGTH_SHORT).show();
-
                                             }
-
-
-
-
-
-
                                             break;
-                                            /////////
                                         } catch (Exception e) {
                                             e.printStackTrace();
-                                            ///метод запись ошибок в таблицу
                                             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
                                             new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
 
                                                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                                         }
-
-
-
-
-
-
-
-                                        //////
-
-
                                     }
-
-
-
-
-
                                 }//todo end while()
-/////////
                             }
                             Log.d(getApplicationContext().getClass().getName(), "  Конец ЛОкальному ОБновлению  внутри табеля  " );
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            ///метод запись ошибок в таблицу
-                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-
-
                     }///TODO END IF  ПЕРЕД ЛОКАЛЬЫМ ОБНОВЛЕНИЕМ
-
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    ///метод запись ошибок в таблицу
-                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
-
-                ////todo calabel end
-
             }
-
-
-
-
-
         } catch (Exception e) {
             e.printStackTrace();
-            ///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
             new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
@@ -2488,65 +2261,55 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     View.OnClickListener СлушательИнформацияОСотрудника = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            SQLiteCursor Курсор_ЗагружаемИнформациюПоФИО = null;
             // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
-            SQLiteCursor    Курсор_ЗагружаемИнформациюПоФИОПолучениеДанныхИзФИО=null;/////
             Class_GRUD_SQL_Operations class_grud_sql_operationsСлушательИнформацияОСотрудника=new Class_GRUD_SQL_Operations(getApplicationContext());
             try{
+                НазваниеДанныхВТабелеФИО.setBackgroundColor(Color.GRAY);
+                Long ФИО=0l;
                 if (МыУжеВКодеУденияСотрудника==false) {
                     TextView ФИОДляУдаление = (TextView) v;
                     Log.d(this.getClass().getName(), " v " + v.getTag() + " ФИОДляУдаление.getText() " + ФИОДляУдаление.getText() +
                             "  ФИОДляУдаление.getTag() " +ФИОДляУдаление.getTag());
                     //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
-                    // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
-                    ((TextView) v).setBackgroundColor(Color.GRAY);
-                    class_grud_sql_operationsСлушательИнформацияОСотрудника. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","viewtabel");
-                    class_grud_sql_operationsСлушательИнформацияОСотрудника. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","fio");//name ,BirthDate ,snils
-                    class_grud_sql_operationsСлушательИнформацияОСотрудника. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика","uuid=? ");
-                    ///"_id > ?   AND _id< ?"
-                    Long ФИОЧТОБЫПОКАЗАТЬВтруриТАбеля=Long.parseLong(ФИОДляУдаление.getTag().toString());
-                    Log.d(this.getClass().getName(), " ФИОЧТОБЫПОКАЗАТЬВтруриТАбеля" +ФИОЧТОБЫПОКАЗАТЬВтруриТАбеля);
-                    class_grud_sql_operationsСлушательИнформацияОСотрудника. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1",ФИОЧТОБЫПОКАЗАТЬВтруриТАбеля);
-                    class_grud_sql_operationsСлушательИнформацияОСотрудника. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки","date_update desc");
-                    // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
-                    Курсор_ЗагружаемИнформациюПоФИО= (SQLiteCursor)  class_grud_sql_operationsСлушательИнформацияОСотрудника.
-                            new GetData(getApplicationContext()).getdata(class_grud_sql_operationsСлушательИнформацияОСотрудника.
-                                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
-                            Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков
-                            ,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
-                    Log.d(this.getClass().getName(), "GetData "  +Курсор_ЗагружаемИнформациюПоФИО);
-                    if (Курсор_ЗагружаемИнформациюПоФИО.getCount()>0){
-                        Курсор_ЗагружаемИнформациюПоФИО.moveToFirst();
-                        Long UUIDИзТаблицыФИОфинал= Курсор_ЗагружаемИнформациюПоФИО.getLong(0);
-                        Log.d(this.getClass().getName(), " UUIDИзТаблицыФИОфинал " + UUIDИзТаблицыФИОфинал);
-                        Class_GRUD_SQL_Operations     class_grud_sql_operatioСлушатель=new Class_GRUD_SQL_Operations(getApplicationContext());
-                        class_grud_sql_operatioСлушатель. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","fio");
-                        class_grud_sql_operatioСлушатель. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","name ,BirthDate ,snils");//name ,BirthDate ,snils
-                        class_grud_sql_operatioСлушатель. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика","uuid=? ");
-                        Log.d(this.getClass().getName(), " UUIDИзТаблицыФИО" +UUIDИзТаблицыФИОфинал);
-                        class_grud_sql_operatioСлушатель. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1",UUIDИзТаблицыФИОфинал);
-                        class_grud_sql_operatioСлушатель. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки","date_update desc");
-                        Курсор_ЗагружаемИнформациюПоФИОПолучениеДанныхИзФИО= (SQLiteCursor)  class_grud_sql_operatioСлушатель.
-                                new GetData(getApplicationContext()).getdata(class_grud_sql_operatioСлушатель.
-                                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
-                                Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков
-                                ,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
-                        Log.d(this.getClass().getName(), "GetData "  +Курсор_ЗагружаемИнформациюПоФИОПолучениеДанныхИзФИО);
-                    }
+                    Long UUIDИзTabelView=Long.parseLong(ФИОДляУдаление.getTag().toString());
+                    Bundle bundleTabelView=new Bundle();
+                    bundleTabelView.putString("СамЗапрос","  SELECT fio FROM  viewtabel WHERE uuid=? ");
+                    bundleTabelView.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(UUIDИзTabelView)});
+                    bundleTabelView.putString("Таблица","viewtabel");
+                    Cursor  КурсорТаблицаViewtabel=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleTabelView);
+                    Log.d(this.getClass().getName(), " КурсорТаблицаViewtabel" + КурсорТаблицаViewtabel);
+                    Log.d(this.getClass().getName(), "КурсорТаблицаViewtabel "  +КурсорТаблицаViewtabel);
                     //TODO  ОЧИЩАЕМ ПАМТЬ Результат Курсора
-                    if (Курсор_ЗагружаемИнформациюПоФИОПолучениеДанныхИзФИО.getCount()>0){
-                        Курсор_ЗагружаемИнформациюПоФИОПолучениеДанныхИзФИО.moveToFirst();
-                        String ФИОИнфо= Курсор_ЗагружаемИнформациюПоФИОПолучениеДанныхИзФИО.getString(0);
-                        String ДеньРОжденияИНФО= Курсор_ЗагружаемИнформациюПоФИОПолучениеДанныхИзФИО.getString(1);
-                        String СНИЛСИНфо= Курсор_ЗагружаемИнформациюПоФИОПолучениеДанныхИзФИО.getString(2);
+                    if (КурсорТаблицаViewtabel.getCount()>0){
+                        КурсорТаблицаViewtabel.moveToFirst();
+                        ФИО=      КурсорТаблицаViewtabel.getLong(0);
+                        Log.d(this.getClass().getName(), "ФИО "  +ФИО);
+                    }
+                    Bundle bundleФио=new Bundle();
+                    bundleФио.putString("СамЗапрос","  SELECT * FROM  fio WHERE uuid=? ");
+                    bundleФио.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(ФИО)});
+                    bundleФио.putString("Таблица","fio");
+                    Cursor    КурсорТаблицаФИО=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleФио);
+                    Log.d(this.getClass().getName(), " КурсорТаблицаФИО" + КурсорТаблицаФИО);
+                    if (КурсорТаблицаФИО.getCount()>0) {
+                        String ФИОИнфо= КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("name"));
+                        String ДеньРОжденияИНФО= КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("BirthDate"));
+                        Long СНИЛСИНфо= КурсорТаблицаФИО.getLong(КурсорТаблицаФИО.getColumnIndex("snils"));
+                        String ПрофессияИзФИо= КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("prof"));
                         // TODO: 20.03.2023  ПОказываем Данные Для Обзора
-                        СообщениеИнформацияОФИО("Информация о сотруднике",  "ФИО: " +ФИОИнфо+
+                        СообщениеИнформацияОСотруднике("Данные",  "ФИО: " +ФИОИнфо+
                                 "\n"+"День рождения: " +ДеньРОжденияИНФО+
-                                "\n"+"СНИЛС: " +СНИЛСИНфо+"\n");
+                                "\n"+"СНИЛС: " +СНИЛСИНфо+
+                                "\n" +"Должость: " + "( "+Профессия.trim()+ " )");
+
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                + " КурсорТаблицаФИО "+КурсорТаблицаФИО.getCount() );
                     }
                 }
-                Курсор_ЗагружаемИнформациюПоФИО.close();
-                Курсор_ЗагружаемИнформациюПоФИОПолучениеДанныхИзФИО.close();
+               /* КурсорТаблицаФИО.close();
+                КурсорТаблицаViewtabel.close();*/
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -3239,7 +3002,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     ///todo сообщение информация о ФИО
     @UiThread
-    protected void СообщениеИнформацияОФИО(String ШабкаДиалога,  String СообщениеДиалога) {
+    protected void СообщениеИнформацияОСотруднике(@NonNull String ШабкаДиалога,
+                                                  @NonNull String СообщениеДиалога) {
         ///////СОЗДАЕМ ДИАЛОГ ДА ИЛИ НЕТ///////СОЗДАЕМ ДИАЛОГ ДА ИЛИ НЕТ
         try{
 //////сам вид
@@ -3249,22 +3013,49 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 .setPositiveButton("Закрыть", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        try {
+                        НазваниеДанныхВТабелеФИО.setBackgroundColor(Color.WHITE);
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
                                 " НазваниеДанныхВТабелеФИО  " + НазваниеДанныхВТабелеФИО);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
                     }
                 })
                 .setNegativeButton("Изменить", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        try {
+                        НазваниеДанныхВТабелеФИО.setBackgroundColor(Color.WHITE);
+                            Bundle bundleПрофесии=new Bundle();
+                            bundleПрофесии.putString("СамЗапрос","  SELECT * FROM  prof WHERE uuid!=? ");
+                            bundleПрофесии.putStringArray("УсловияВыборки" ,new String[]{"0"});
+                            bundleПрофесии.putString("Таблица","prof");
+                            Cursor    КурсорТаблицаПрофесии=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleПрофесии);
+                            Log.d(this.getClass().getName(), " КурсорТаблицаПрофесии" + КурсорТаблицаПрофесии);
+                            // TODO: 27.03.2023 Новый ПОсик
+                        new SubClassNewSearchAlertDialogНовыйПосик().МетодСообщениеНовыйПоиска(activity,КурсорТаблицаПрофесии,НазваниеДанныхВТабелеФИО,message,"prof");
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
                                 " НазваниеДанныхВТабелеФИО  " + НазваниеДанныхВТабелеФИО);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
                     }
                 })
                 .setIcon(R.drawable.icon_dsu1_info_customer)
+                .setCancelable(true)
                 .show();
     } catch (Exception e) {
         e.printStackTrace();
@@ -5583,8 +5374,325 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
+    //TODO метод делает callback с ответом на экран
+    private  void  МетодGetmessage(){
+        try{
+           message=new Handler(Looper.getMainLooper(), new Handler.Callback() {
+                @Override
+                public boolean handleMessage(@NonNull Message msg) {
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    return true;
+                }
+            }).obtainMessage();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
+
+
+
+    class SubClassNewSearchAlertDialogНовыйПосик{
+        Cursor cursorДанные;
+        @UiThread
+        private void МетодСообщениеНовыйПоиска(@NonNull Activity activity
+                ,@NonNull Cursor cursorДанные
+                ,@NonNull TextView materialTextViewДляКого,
+                                               @NonNull Message message,@NonNull String ТаблицаПосика) {
+            try{
+                this.cursorДанные=cursorДанные;
+                final ListView[] listViewДляНовыйПосик = new ListView[1];
+                final MaterialButton[] alertDialogНовыйПосикКнопкаЗакрыть = new MaterialButton[1];
+                AlertDialog      alertDialogНовыйПосик= new MaterialAlertDialogBuilder(activity){
+                    @NonNull
+                    @Override
+                    public MaterialAlertDialogBuilder setView(View view) {
+                        listViewДляНовыйПосик[0] =    (ListView) view.findViewById(R.id.SearchViewList);
+                        listViewДляНовыйПосик[0].setTextFilterEnabled(true);
+                        SearchView searchViewДляНовогоПоиска=    (SearchView) view.findViewById(R.id.searchview_newscanner);
+                        searchViewДляНовогоПоиска.setQueryHint("Поиск");
+                        // TODO: 14.12.2022
+                        searchViewДляНовогоПоиска.setDrawingCacheBackgroundColor(Color.GRAY);
+                        searchViewДляНовогоПоиска.setDrawingCacheEnabled(true);
+                        int id = searchViewДляНовогоПоиска.getContext()
+                                .getResources()
+                                .getIdentifier("android:id/search_src_text", null, null);
+                        TextView textView = (TextView) searchViewДляНовогоПоиска.findViewById(id);
+                        textView.setTextColor(Color.rgb(0,102,102));
+                        textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                        // TODO: 14.12.2022
+                           alertDialogНовыйПосикКнопкаЗакрыть[0] =    (MaterialButton) view.findViewById(R.id.bottom_newscanner1);
+                        ///TODO ГЛАВНЫЙ АДАПТЕР чата
+                        SimpleCursorAdapter simpleCursorAdapterЦФО= new SimpleCursorAdapter(getApplicationContext(),   R.layout.simple_newspinner_dwonload_newfiltersearch, cursorДанные,
+                                new String[]{ "name","_id"},
+                                new int[]{android.R.id.text1,android.R.id.text1}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);//R.layout.simple_newspinner_dwonload_cfo2
+                        SimpleCursorAdapter.ViewBinder БиндингДляНовогоПоиска = new SimpleCursorAdapter.ViewBinder(){
+                            @Override
+                            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+                                switch (view.getId()) {
+                                    case android.R.id.text1:
+                                        Log.d(this.getClass().getName()," position");
+                                        if (cursor.getCount()>0) {
+                                            try{
+                                                Integer ИндексНазваниеЦФО = cursor.getColumnIndex("name");///user_update  --old/// uuid
+                                                String НазваниеЦФО = cursor.getString(ИндексНазваниеЦФО);
+                                                // TODO: 13.12.2022  производим состыковку
+                                                Integer ИндексНазваниеЦфоID = cursor.getColumnIndex("_id");///user_update  --old/// uuid
+                                                Integer ПолучаемIDЦфо = cursor.getInt(ИндексНазваниеЦфоID);
+                                                if (ПолучаемIDЦфо>0) {
+                                                    Integer UUIDНазваниеЦФО = cursor.getColumnIndex("uuid");///user_update  --old/// uuid
+                                                    Long UUIDЦФО = cursor.getLong(UUIDНазваниеЦФО);
+                                                    Bundle bundle=new Bundle();
+                                                    bundle.putInt("ПолучаемIDЦфо",ПолучаемIDЦфо);
+                                                    bundle.putString("НазваниеЦФО",НазваниеЦФО);
+                                                    bundle.putLong("UUIDНазваниеЦФО",UUIDНазваниеЦФО);
+                                                    ((MaterialTextView)view).setTag(bundle);
+                                                }
+                                                Log.d(this.getClass().getName()," НазваниеЦФО"+ НазваниеЦФО+
+                                                        " ПолучаемIDЦфо "+ПолучаемIDЦфо);
+                                                // TODO: 20.01.2022
+                                                Log.d(this.getClass().getName()," НазваниеЦФО "+НазваниеЦФО);
+                                                boolean ДлинаСтрокивСпиноре = НазваниеЦФО.length() >40;
+                                                if (ДлинаСтрокивСпиноре) {
+                                                    StringBuffer sb = new StringBuffer(НазваниеЦФО);
+                                                    sb.insert(40, System.lineSeparator());
+                                                    НазваниеЦФО = sb.toString();
+                                                    Log.d(getApplicationContext().getClass().getName(), " НазваниеЦФО " + "--" + НазваниеЦФО);/////
+                                                }
+                                                ((MaterialTextView)view).setText(НазваниеЦФО);
+                                                // TODO: 13.12.2022 слушатель
+                                                ((MaterialTextView)view).setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        ((MaterialTextView)view).startAnimation(animation);
+                                                        Bundle bundle=(Bundle)   ((MaterialTextView)view).getTag();
+                                                        Integer IDЦфоДЛяПередачи=      bundle.getInt("ПолучаемIDЦфо",0);
+                                                        String НазваниеЦФО=   bundle.getString("НазваниеЦФО","");
+                                                        Long UUIDНазваниеЦФО =   bundle.getLong("UUIDНазваниеЦФО",0l);
+                                                        materialTextViewДляКого.setTag(bundle);
+                                                        materialTextViewДляКого.setText(НазваниеЦФО);
+                                                        materialTextViewДляКого.refreshDrawableState();
+                                                        materialTextViewДляКого.forceLayout();
+
+                                                        if (  materialTextViewДляКого.getText().toString().length()==0) {
+                                                            Snackbar.make(view, " Вы не выбрали  !!! "
+                                                                    , Snackbar.LENGTH_LONG).show();
+                                                            materialTextViewДляКого.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                                                            materialTextViewДляКого.setTextColor(Color.GRAY);
+                                                            Log.d(this.getClass().getName()," bundle.keySet().size() "+bundle.keySet().size());
+                                                        } else {
+                                                            materialTextViewДляКого.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                                                            materialTextViewДляКого.setTextColor(Color.BLACK);
+                                                            Log.d(this.getClass().getName()," bundle.keySet().size() "+bundle.keySet().size());
+                                                        }
+                                                        Log.d(this.getClass().getName()," position");
+                                                    }
+                                                });
+                                                // TODO: 13.12.2022 филь
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                                        this.getClass().getName(),
+                                                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                            }
+                                            return true;
+                                        } else {
+                                            Log.d(this.getClass().getName()," position");
+                                            return false;
+                                        }
+                                }
+                                return false;
+                            }
+                        };
+                        simpleCursorAdapterЦФО.setViewBinder(БиндингДляНовогоПоиска);
+                        listViewДляНовыйПосик[0].setAdapter(simpleCursorAdapterЦФО);
+                        simpleCursorAdapterЦФО.notifyDataSetChanged();
+                        listViewДляНовыйПосик[0].startAnimation(animation);
+                        listViewДляНовыйПосик[0].setSelection(0);
+                        listViewДляНовыйПосик[0].forceLayout();
+
+                        // TODO: 13.12.2022  Поиск и его слушель
+                        МетодПоискаФильтрНовыйПосик(searchViewДляНовогоПоиска,simpleCursorAdapterЦФО,message,listViewДляНовыйПосик[0],ТаблицаПосика);
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                        + " listViewДляНовыйПосик[0] "+listViewДляНовыйПосик[0]+"\n+"+
+                                " cursorДанные " +cursorДанные+"\n"+
+                                        " cursorДанные " +cursorДанные+"\n" );
+                        return super.setView(view);
+                    }
+                }
+                        .setTitle("ЦФО")
+                        .setCancelable(false)
+                        .setIcon( R.drawable.icon_newscannertwo)
+                        .setView(getLayoutInflater().inflate( R.layout.simple_for_new_spinner_searchview, null ))
+                        .show();
+                WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+                layoutParams.copyFrom(   alertDialogНовыйПосик.getWindow().getAttributes());
+                layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+                layoutParams.height =WindowManager.LayoutParams.MATCH_PARENT;
+                layoutParams.gravity = Gravity.CENTER;
+                alertDialogНовыйПосик.getWindow().setAttributes(layoutParams);
+                // TODO: 13.12.2022 ВТОРОЙ СЛУШАТЕЛЬ НА КНОПКУ
+                alertDialogНовыйПосикКнопкаЗакрыть[0].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            Log.d(this.getClass().getName(), " position");
+                            Log.d(this.getClass().getName(), "МетодСозданиеТабеля  v " + v);
+                            alertDialogНовыйПосикКнопкаЗакрыть[0].setText("");
+                            alertDialogНовыйПосикКнопкаЗакрыть[0].refreshDrawableState();
+                            alertDialogНовыйПосикКнопкаЗакрыть[0].forceLayout();
+                            alertDialogНовыйПосик.dismiss();
+                            alertDialogНовыйПосик.cancel();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName(),
+                                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+        // TODO: 27.03.2023  ВТОРОЙ МЕТОД ПОИСККА ПО БАЗЕ
+
+        private void МетодПоискаФильтрНовыйПосик(@NonNull   SearchView searchViewДляНовогоЦФО,
+                                                 @NonNull SimpleCursorAdapter simpleCursorAdapterЦФО,
+                                                 @NonNull Message message,
+                                                 @NonNull ListView listViewДляНовыйПосик
+                                                 ,@NonNull String ТаблицаПосика) {
+            try{
+                searchViewДляНовогоЦФО.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        Log.d(this.getClass().getName()," position");
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        Log.d(this.getClass().getName()," position");
+                        Filter filter= simpleCursorAdapterЦФО.getFilter();
+                        filter.filter(newText);
+                        return true;
+                    }
+                });
+                simpleCursorAdapterЦФО.setFilterQueryProvider(new FilterQueryProvider() {
+                    @Override
+                    public Cursor runQuery(CharSequence constraint) {
+                        Log.d(this.getClass().getName()," position");
+                        try{
+                            cursorДанные=      МетодКурсорДляНовогоПосика(ТаблицаПосика,constraint.toString());
+                            message.getTarget().post(()->{
+                                simpleCursorAdapterЦФО.swapCursor(cursorДанные);
+                                simpleCursorAdapterЦФО.notifyDataSetChanged();
+                                listViewДляНовыйПосик.setSelection(0);
+                                if (cursorДанные.getCount()==0) {
+                                    searchViewДляНовогоЦФО.setBackgroundColor(Color.RED);
+                                    message.getTarget().postDelayed(() -> {
+                                        searchViewДляНовогоЦФО.setBackgroundColor(Color.parseColor("#F2F5F5"));
+                                    }, 500);
+                                }
+                            });
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" cursorДанные " +cursorДанные+"\n" );
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName(),
+                                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
+                        return cursorДанные;
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+        // TODO: 02.08.2022
+        protected  Cursor МетодКурсорДляНовогоПосика(@NonNull String  ФлагКакаяТаблицаОбработки, @NotNull String Фильтр){
+            Cursor cursor = null;
+            try{
+                Integer   ПубличныйIDДляФрагмента     = new Class_Generations_PUBLIC_CURRENT_ID().
+                        ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
+                Log.d(getApplicationContext().getClass().getName(), "\n"
+                        + " ПубличныйIDДляФрагмента: " + ПубличныйIDДляФрагмента);
+                Bundle bundleДляПЕредачи=new Bundle();
+                bundleДляПЕредачи.putString("Таблица",ФлагКакаяТаблицаОбработки);
+                bundleДляПЕредачи.putString("ФильтрДляПоиска",Фильтр);
+                Intent intentПолучениеМатериалов = new Intent(getApplicationContext(), Service_for_AdminissionMaterial.class);
+                intentПолучениеМатериалов.setAction("ПолучениеМатериалоИзНовгоПоиска");
+                intentПолучениеМатериалов.putExtras(bundleДляПЕредачи);
+                if (binder!=null) {
+                    cursor = (Cursor) binder.getService().МетодCлужбыПолучениеМатериалов(getApplicationContext(), intentПолучениеМатериалов);
+                    Log.d(this.getClass().getName(), "   cursor " + cursor);
+                    Log.d(this.getClass().getName(), "   cursor " + cursor);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+            return  cursor;
+        }
+
+    }
+
+
+
+
+
+
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

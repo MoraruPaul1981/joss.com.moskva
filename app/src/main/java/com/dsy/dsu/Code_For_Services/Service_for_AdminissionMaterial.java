@@ -980,6 +980,12 @@ private class SubClassGetDataAdmissionMaterial_Автомобили {
                             data.putStringArray("selectionArgs",new String[]{"%"+ФильтрДляПоиска+"%",""});
                         }
                         break;
+                    case "prof":
+                        if (ФильтрДляПоиска.length() > 0 ) {
+                            data.putString("selection"," name  LIKE  ?  ");
+                            data.putStringArray("selectionArgs",new String[]{"%"+ФильтрДляПоиска+"%",""});
+                        }
+                        break;
                 }
                 // TODO: 16.12.2022 ПОЛУЧАЕМ ДАННЫЕ
                 курсорДляНовогоПосика = resolver.query(uri, new String[]{"*"}, data, null);// TODO: 13.10.2022 ,"Удаленная"

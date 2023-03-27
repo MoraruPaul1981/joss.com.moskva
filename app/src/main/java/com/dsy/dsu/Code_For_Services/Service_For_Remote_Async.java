@@ -1062,7 +1062,7 @@ public class Service_For_Remote_Async extends IntentService {
                                 // TODO: 19.11.2022 ПОДНИМАЕМ ВЕРИСЮ ДАННЫХ
                                 Integer РезультатПовышенииВерсииДанных = subClassUpVersionDATA.МетодVesrionUPMODIFITATION_Client(ИмяТаблицыОтАндройда_Локальноая,context,getССылкаНаСозданнуюБазу());
                                 Log.d(this.getClass().getName(), " РезультатПовышенииВерсииДанных  " + РезультатПовышенииВерсииДанных);
-                                // TODO: 27.03.2023  Удаление И Смена Статуса Когда НА сервере Поментили Удаление////
+                                // TODO: 27.03.2023  Удаление И Смена Статуса Когда НА сервере Поментили Удаление
                                 МетодСерверноеУдаление(ИмяТаблицыОтАндройда_Локальноая);
                             }
 
@@ -1096,9 +1096,11 @@ public class Service_For_Remote_Async extends IntentService {
             try{
             if (ТекущийАдаптерДляВсего!=null) {
                 ТекущийАдаптерДляВсего.clear();
+                ТекущийАдаптерДляВсего=null;
             }
             if (АдаптерДляВставкиИОбновления!=null){
                 АдаптерДляВставкиИОбновления.clear();
+                ТекущийАдаптерДляВсего=null;
             }
                 // TODO: 26.03.2023
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1484,7 +1486,7 @@ public class Service_For_Remote_Async extends IntentService {
                                     + АдаптерДляВставкиИОбновления.size() + " РезультатРаботыСинхрониазциии "+РезультатРаботыСинхрониазциии[0]);
 
                         }
-                    }).blockingSubscribe();
+                    }).subscribe();
                 Log.d(this.getClass().getName(),  " date "+ "jsonObjects "  +new Date().toGMTString().toString());
             } catch (Exception e) {
                 e.printStackTrace();
