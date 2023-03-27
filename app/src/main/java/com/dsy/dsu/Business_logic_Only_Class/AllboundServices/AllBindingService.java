@@ -27,8 +27,14 @@ import javax.inject.Singleton;
 
 public class AllBindingService {
 Context context;
-    public AllBindingService(Context context) {
+    Message message;
+    public AllBindingService(@NonNull  Context context,@NonNull Message message) {
         this.context = context;
+        this.message = message;
+        ВиндингСлужбы1С();
+        МетодБиндингаОбновлениеПО();
+        МетодБиндингМатериалы();
+        МетодБиндингаСогласования();
     }
     // TODO: 27.03.2023 BINDING#1
     @Provides
@@ -42,9 +48,15 @@ Context context;
                 public void onServiceConnected(ComponentName name, IBinder service) {
                     try {
                            service_Async_СинхронизацияОБЩАЯ1С[0] = (Service_Async_1C.LocalBinderGET1С) service;
-                        if (service_Async_СинхронизацияОБЩАЯ1С[0].isBinderAlive() == true) {
+                        if (service.isBinderAlive() == true) {
                             Log.i(context.getClass().getName(), "    onServiceConnected  " +
-                                    "service_Async_СинхронизацияОБЩАЯ1С.getService()" + service_Async_СинхронизацияОБЩАЯ1С[0].getService());
+                                    "service_Async_СинхронизацияОБЩАЯ1С.getService()" + service.isBinderAlive());
+
+                            Bundle bundle=new Bundle();
+                            bundle.putBinder("localBinderОбновлениеПО",  service_Async_СинхронизацияОБЩАЯ1С[0]);
+                            message.setData(bundle);
+                            message.getTarget().dispatchMessage(message);
+                           // message.sendToTarget();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

@@ -90,9 +90,9 @@ public class MainActivity_Face_App extends AppCompatActivity {
     private ConstraintLayout constraintLayoutFaceApp;
     private Animation animation;
     protected SharedPreferences preferences;
-    private   Message message;
+    private Message message;
 
-    private  ServiceUpdatePoОбновлениеПО.localBinderОбновлениеПО localBinderОбновлениеПО;//TODO новаЯ
+    private ServiceUpdatePoОбновлениеПО.localBinderОбновлениеПО localBinderОбновлениеПО;//TODO новаЯ
 
     // TODO: 03.11.2022 FaceApp
     @Override
@@ -126,14 +126,12 @@ public class MainActivity_Face_App extends AppCompatActivity {
             constraintLayoutFaceApp.setBackgroundColor(Color.WHITE);
             drawerLayoutFaceApp.setBackgroundColor(Color.WHITE);
             drawerLayoutFaceApp.setDrawingCacheBackgroundColor(Color.RED);//todo
-        //    animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_row_tabel);//TODO animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_row_vibrator1);
+            //    animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_row_tabel);//TODO animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_row_vibrator1);
             animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_row);//TODO animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_row_vibrator1);
             preferences = getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
             progressBarTabel.setVisibility(View.INVISIBLE);
             progressCommitpay.setVisibility(View.INVISIBLE);
-
-         // TODO: 18.02.2023 инициализвции message
-            МетодИнициализацииMessage();
+            // TODO: 27.03.2023 inisial message
             // TODO: 18.02.2023   Инициализация Хандлера
             HadlerИнициализация();
             // TODO: 18.02.2023 установки для Обновленеи ПО
@@ -144,8 +142,18 @@ public class MainActivity_Face_App extends AppCompatActivity {
             new Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal(getApplicationContext()).МетодЗапускаетОБЩУЮСинхронизацию();
             МетодFaceApp_СлушательПриНажатииНаКнопки();
 
+
+            message=Message.obtain(new Handler(Looper.myLooper()),()->{
+                Bundle bundle=   message.getData();
+                // localBinderОбновлениеПО.getService().  МетодЗапускАнализаПО(false,0,activity);
+                Log.i(this.getClass().getName(),  " Атоманически установкаОбновление ПО "+
+                        Thread.currentThread().getStackTrace()[2].getMethodName()+
+                        " время " +new Date().toLocaleString() );
+                Log.i(this.getClass().getName(), "bundle " +bundle);
+                message.recycle();
+            });
             // TODO: 27.03.2023 биндинг службы
-            localBinderОбновлениеПО= (ServiceUpdatePoОбновлениеПО.localBinderОбновлениеПО) new AllBindingService(context).МетодБиндингаОбновлениеПО();
+            new AllBindingService(context, message);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -174,6 +182,7 @@ public class MainActivity_Face_App extends AppCompatActivity {
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -315,28 +324,28 @@ public class MainActivity_Face_App extends AppCompatActivity {
                             try {
                                 Boolean ЕслиСвязьсСервером =
                                         new Class_Connections_Server(getApplicationContext()).МетодПингаСервераРаботаетИлиНет(getApplicationContext());
-                                      if(ЕслиСвязьсСервером==true){
-                                          // TODO: 28.09.2022 ЗАпускаем синхронизацию
-                                          МетодЗапускаСинихрниазцииИзМенюНаАктивтиFACEAPP();
-                                          Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                  " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                  " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                  + " ЕслиСвязьсСервером "+ЕслиСвязьсСервером );
-                                      }else {
-                                          activity.runOnUiThread(new Runnable() {
-                                              @Override
-                                              public void run() {
-                                                      Toast toast = Toast.makeText(  getApplicationContext(), "Нет связи c Cервером !!!", Toast.LENGTH_LONG);
-                                                      toast.setGravity(Gravity.BOTTOM, 0, 40);
-                                                      toast.show();
-                                                      Log.i(this.getClass().getName(),  Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-                                              }
-                                          });
-                                          Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                  " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                  " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                  + " ЕслиСвязьсСервером "+ЕслиСвязьсСервером );
-                                      }
+                                if (ЕслиСвязьсСервером == true) {
+                                    // TODO: 28.09.2022 ЗАпускаем синхронизацию
+                                    МетодЗапускаСинихрниазцииИзМенюНаАктивтиFACEAPP();
+                                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                            + " ЕслиСвязьсСервером " + ЕслиСвязьсСервером);
+                                } else {
+                                    activity.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast toast = Toast.makeText(getApplicationContext(), "Нет связи c Cервером !!!", Toast.LENGTH_LONG);
+                                            toast.setGravity(Gravity.BOTTOM, 0, 40);
+                                            toast.show();
+                                            Log.i(this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
+                                        }
+                                    });
+                                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                            + " ЕслиСвязьсСервером " + ЕслиСвязьсСервером);
+                                }
                                 Log.d(this.getClass().getName(), "Отработала синх.. Из Меню Активти FACEAPP Синхронизация Данных с Web-сервера ДСУ-1 ?");
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -367,11 +376,10 @@ public class MainActivity_Face_App extends AppCompatActivity {
                             break;
                         case R.id.sedmoy:
                             item.setChecked(true);
-                            Log.w(getPackageName().getClass().getName(), "item.getItemId() МЕНЮ ОБНОВЛЕНИЕ ПО    " + item.getItemId() + "\n"+item);/////////
+                            Log.w(getPackageName().getClass().getName(), "item.getItemId() МЕНЮ ОБНОВЛЕНИЕ ПО    " + item.getItemId() + "\n" + item);/////////
                             try {
-                                while (localBinderОбновлениеПО==null);
-                                localBinderОбновлениеПО.getService().МетодГлавныйОбновленияПО(true,activity);
-                                Log.i(this.getClass().getName(),  " Из меню установкаОбновление ПО "+ Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                                localBinderОбновлениеПО.getService().МетодГлавныйОбновленияПО(true, activity);
+                                Log.i(this.getClass().getName(), " Из меню установкаОбновление ПО " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -401,28 +409,6 @@ public class MainActivity_Face_App extends AppCompatActivity {
         // TODO: 04.04.2022
     }
 
-    private void МетодИнициализацииMessage() {
-        try{
-        message=Message.obtain(new Handler(Looper.myLooper()),()->{
-            Bundle bundle=   message.getData();
-            // localBinderОбновлениеПО.getService().  МетодЗапускАнализаПО(false,0,activity);
-            localBinderОбновлениеПО.getService().МетодГлавныйОбновленияПО(false,activity);
-            Log.i(this.getClass().getName(),  " Атоманически установкаОбновление ПО "+ Thread.currentThread().getStackTrace()[2].getMethodName()+
-                    " время " +new Date().toLocaleString() );
-            Log.i(this.getClass().getName(), "bundle " +bundle);
-        });
-        message.setAsynchronous(true);
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                this.getClass().getName(),
-                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-    }
-    }
-
-
 
     private void МетодПовторныйЗапускУведомений() {
         try {
@@ -439,7 +425,7 @@ public class MainActivity_Face_App extends AppCompatActivity {
         }
     }
 
-    
+
     void МетодFaceApp_СлушательПриНажатииНаКнопки() {
         try {
             КнопкаТабель.setOnClickListener(new View.OnClickListener() {
@@ -527,52 +513,52 @@ public class MainActivity_Face_App extends AppCompatActivity {
             progressDialogДляСинхронизации.setMessage("Обмен данными ....");
             progressDialogДляСинхронизации.show();
 
-                            handlerFaceAPP.post(()->{
-                                boolean СтатусСетиВыбранныйПользователем =
-                                        new Class_Find_Setting_User_Network(getApplicationContext()).МетодПроветяетКакуюУстановкуВыбралПользовательСети();
-                                Log.d(this.getClass().getName(), "  РезультатПроВеркиУстановкиПользователяРежимРаботыСети "
-                                        + СтатусСетиВыбранныйПользователем);
-                                Class_Connections_Server class_connections_serverПингаСерераИзАктивтиМеню = new Class_Connections_Server(getApplicationContext());
-                                PUBLIC_CONTENT public_contentЗапусСинхрониазцииИМеню = new PUBLIC_CONTENT(getApplicationContext());
+            handlerFaceAPP.post(() -> {
+                boolean СтатусСетиВыбранныйПользователем =
+                        new Class_Find_Setting_User_Network(getApplicationContext()).МетодПроветяетКакуюУстановкуВыбралПользовательСети();
+                Log.d(this.getClass().getName(), "  РезультатПроВеркиУстановкиПользователяРежимРаботыСети "
+                        + СтатусСетиВыбранныйПользователем);
+                Class_Connections_Server class_connections_serverПингаСерераИзАктивтиМеню = new Class_Connections_Server(getApplicationContext());
+                PUBLIC_CONTENT public_contentЗапусСинхрониазцииИМеню = new PUBLIC_CONTENT(getApplicationContext());
 
-                                if (СтатусСетиВыбранныйПользователем == true) {
-                                   Boolean СтатусСервераСоюзаВключенИлиНЕт =
-                                           class_connections_serverПингаСерераИзАктивтиМеню.МетодПингаСервераРаботаетИлиНет(getApplicationContext());
-                                    if (СтатусСервераСоюзаВключенИлиНЕт== true) {
-                                        Integer ПубличныйIDДляОдноразовойСинхрониазции =
-                                                new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
+                if (СтатусСетиВыбранныйПользователем == true) {
+                    Boolean СтатусСервераСоюзаВключенИлиНЕт =
+                            class_connections_serverПингаСерераИзАктивтиМеню.МетодПингаСервераРаботаетИлиНет(getApplicationContext());
+                    if (СтатусСервераСоюзаВключенИлиНЕт == true) {
+                        Integer ПубличныйIDДляОдноразовойСинхрониазции =
+                                new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
 
-                                        Bundle bundleДляПЕредачи=new Bundle();
-                                        bundleДляПЕредачи.putInt("IDПубличныйНеМойАСкемБылаПереписака", ПубличныйIDДляОдноразовойСинхрониазции);
-                                        bundleДляПЕредачи.putBoolean("StatusOneWokManagers", true);
-                                        Intent  intentЗапускОднорworkanager=new Intent();
-                                        intentЗапускОднорworkanager.putExtras(bundleДляПЕредачи);
-                                        // TODO: 02.08.2022
-                                        new Class_Generator_One_WORK_MANAGER(getApplicationContext()).
-                                                МетодИзFaceAppОдноразовыйЗапускВоерМенеджера(getApplicationContext(),intentЗапускОднорworkanager);
-                                        // TODO: 26.06.2022
-                                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                + " ПубличныйIDДляОдноразовойСинхрониазции "+ПубличныйIDДляОдноразовойСинхрониазции );
-                                        handlerFaceAPP.postDelayed(() -> {
-                                            progressDialogДляСинхронизации.dismiss();
-                                            progressDialogДляСинхронизации.cancel();
-                                        }, 3000);
+                        Bundle bundleДляПЕредачи = new Bundle();
+                        bundleДляПЕредачи.putInt("IDПубличныйНеМойАСкемБылаПереписака", ПубличныйIDДляОдноразовойСинхрониазции);
+                        bundleДляПЕредачи.putBoolean("StatusOneWokManagers", true);
+                        Intent intentЗапускОднорworkanager = new Intent();
+                        intentЗапускОднорworkanager.putExtras(bundleДляПЕредачи);
+                        // TODO: 02.08.2022
+                        new Class_Generator_One_WORK_MANAGER(getApplicationContext()).
+                                МетодИзFaceAppОдноразовыйЗапускВоерМенеджера(getApplicationContext(), intentЗапускОднорworkanager);
+                        // TODO: 26.06.2022
+                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                + " ПубличныйIDДляОдноразовойСинхрониазции " + ПубличныйIDДляОдноразовойСинхрониазции);
+                        handlerFaceAPP.postDelayed(() -> {
+                            progressDialogДляСинхронизации.dismiss();
+                            progressDialogДляСинхронизации.cancel();
+                        }, 3000);
 
 
-                                    }else {
-                                        activity.runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                Toast toast = Toast.makeText(getApplicationContext(), "Сервер выкл. !!!", Toast.LENGTH_LONG);
-                                                toast.setGravity(Gravity.BOTTOM, 0, 40);
-                                                toast.show();
-                                            }
-                                        });
-                                    }
-                                }
-                            });
+                    } else {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast toast = Toast.makeText(getApplicationContext(), "Сервер выкл. !!!", Toast.LENGTH_LONG);
+                                toast.setGravity(Gravity.BOTTOM, 0, 40);
+                                toast.show();
+                            }
+                        });
+                    }
+                }
+            });
 
 
         } catch (Exception e) {
@@ -702,17 +688,17 @@ public class MainActivity_Face_App extends AppCompatActivity {
     }
 
     protected void МетодЗапускаИзМенюНастроек() {
-        try{
-            Intent      Интент_Меню = new Intent(context, MainActivity_Settings.class);
+        try {
+            Intent Интент_Меню = new Intent(context, MainActivity_Settings.class);
             Интент_Меню.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//////FLAG_ACTIVITY_SINGLE_TOP
             Log.d(this.getClass().getName(), "" +
                     "          case R.id.ПунктМенюВторой:");
-            context.      startActivity(Интент_Меню);
+            context.startActivity(Интент_Меню);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
@@ -750,15 +736,14 @@ public class MainActivity_Face_App extends AppCompatActivity {
         }
     }
 
-    void HadlerИнициализация(){
-        handlerFaceAPP=new Handler(Looper.myLooper(), new Handler.Callback() {
+    void HadlerИнициализация() {
+        handlerFaceAPP = new Handler(Looper.myLooper(), new Handler.Callback() {
             @Override
             public boolean handleMessage(@NonNull Message msg) {
                 return true;
             }
-        }){
+        });
 
-        };
     }
 
 }
