@@ -197,7 +197,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private    String ИмяСлужбыСинхронизацииОдноразовая = "WorkManager Synchronizasiy_Data Disposable";//
     final private   String ИмяСлужбыОбщейСинхронизацииДляЗадачи = "WorkManager Synchronizasiy_Data";
     private  long РодительскийUUDТаблицыТабель=0l;
-    private  Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binderМатериалы;
     private      Message message;
     private Animation animation;
     private    SQLiteCursor ГлавныйКурсорДанныеSwipes;
@@ -270,7 +269,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 //TODO #1
             МетодПришлиПараметрыОтДругихАктивитиДляРаботыТабеля();
             МетодGetmessage();
-            МетодБиндингМатериалы();
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -1267,7 +1265,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
         try{
             НазваниеДанныхВТабелеФИО.setText("");
-            НазваниеДанныхВТабелеФИО.setText(ФИОТекущегоСотрудника.trim() + " \n"+ "( "+Профессия.trim()+ " )"); ///строго имя
+            НазваниеДанныхВТабелеФИО.setText(ФИОТекущегоСотрудника.trim() + "\n"+ "( "+Профессия.trim()+ " )"); ///строго имя
             Log.d(this.getClass().getName(), " ФИО " + ФИОТекущегоСотрудника + " Профессия " +Профессия);
             // TODO проверяем если в столбике Табеля Есть id поле если поле NULL  значит отн небыло на сервера
             Integer ПроверкаЕсливСтолбикеID_NULLзначения= ГлавныйКурсорДанныеSwipes.getInt(0);
@@ -3040,7 +3038,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                             Cursor    КурсорТаблицаПрофесии=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleПрофесии);
                             Log.d(this.getClass().getName(), " КурсорТаблицаПрофесии" + КурсорТаблицаПрофесии);
                             // TODO: 27.03.2023 Новый ПОсик
-                        new SubClassNewSearchAlertDialogНовыйПосик().МетодСообщениеНовыйПоиска(activity,КурсорТаблицаПрофесии,НазваниеДанныхВТабелеФИО,message,"prof", binderМатериалы);
+                        new SubClassNewSearchAlertDialogНовыйПосик().МетодСообщениеНовыйПоиска(activity,КурсорТаблицаПрофесии,НазваниеДанныхВТабелеФИО,message,"prof");
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
@@ -3103,7 +3101,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             IntentЗапускаемСправочникДЛяСловТабеля.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 ////todo запускаем активти
             Bundle data=new Bundle();
-            data.putBinder("binder", binderМатериалы);
             IntentЗапускаемСправочникДЛяСловТабеля.putExtras(data);
             startActivity( IntentЗапускаемСправочникДЛяСловТабеля);
             ХэшЛовимUUIDIDНазваниеСтолбика=null;
@@ -3198,7 +3195,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             Log.d(this.getClass().getName(), "  ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре " + ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре);
             Интент_ЗапускСозданиеНовогоСотрудника.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             Bundle data=new Bundle();
-            data.putBinder("binder", binderМатериалы);
             Интент_ЗапускСозданиеНовогоСотрудника.putExtras(data);
             startActivity(Интент_ЗапускСозданиеНовогоСотрудника);
         } catch (Exception e) {
@@ -5405,8 +5401,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 ,@NonNull Cursor cursorДанные
                 ,@NonNull TextView materialTextViewДляКого,
                                                @NonNull Message message
-                ,@NonNull String ТаблицаПосика,
-                                               @NonNull         Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binderМатериалы) {
+                ,@NonNull String ТаблицаПосика) {
             try{
                 this.cursorДанные=cursorДанные;
                 final ListView[] listViewДляНовыйПосик = new ListView[1];
@@ -5522,7 +5517,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                         listViewДляНовыйПосик[0].forceLayout();
 
                         // TODO: 13.12.2022  Поиск и его слушель
-                        МетодПоискаФильтрНовыйПосик(searchViewДляНовогоПоиска,simpleCursorAdapterЦФО,message,listViewДляНовыйПосик[0],ТаблицаПосика,binderМатериалы);
+                        МетодПоискаФильтрНовыйПосик(searchViewДляНовогоПоиска,simpleCursorAdapterЦФО,message,listViewДляНовыйПосик[0],ТаблицаПосика);
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -5580,8 +5575,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                                  @NonNull SimpleCursorAdapter simpleCursorAdapterЦФО,
                                                  @NonNull Message message,
                                                  @NonNull ListView listViewДляНовыйПосик
-                                                 ,@NonNull String ТаблицаПосика,
-                                                 @NonNull  Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binderМатериалы ) {
+                                                 ,@NonNull String ТаблицаПосика) {
             try{
                 searchViewДляНовогоЦФО.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
@@ -5607,7 +5601,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     public Cursor runQuery(CharSequence constraint) {
                         Log.d(this.getClass().getName()," constraint"  +constraint);
                         try{
-                            cursorДанные=      МетодКурсорДляНовогоПосика(ТаблицаПосика,constraint.toString(),binderМатериалы);
+                            cursorДанные=      МетодКурсорДляНовогоПосика(ТаблицаПосика,constraint.toString());
                             message.getTarget().post(()->{
                                 if (cursorДанные.getCount()>0 && cursorДанные!=null) {
                                     simpleCursorAdapterЦФО.swapCursor(cursorДанные);
@@ -5647,14 +5641,13 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             }
         }
         // TODO: 02.08.2022
-        protected  Cursor МетодКурсорДляНовогоПосика(@NonNull String  ФлагКакаяТаблицаОбработки, @NotNull String Фильтр,
-                                                     @NonNull Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов   binderМатериалы){
+        protected  Cursor МетодКурсорДляНовогоПосика(@NonNull String  ФлагКакаяТаблицаОбработки, @NotNull String Фильтр){
             Cursor КурсорТаблицаПрофесииLike = null;
             try{
                 Integer   ПубличныйIDДляФрагмента     = new Class_Generations_PUBLIC_CURRENT_ID().
                         ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
                 Log.d(getApplicationContext().getClass().getName(), "\n"
-                        + " ПубличныйIDДляФрагмента: " + ПубличныйIDДляФрагмента + " binderМатериалы " +binderМатериалы);
+                        + " ПубличныйIDДляФрагмента: " + ПубличныйIDДляФрагмента + " Фильтр " +Фильтр);
                 Bundle bundleНовыйПоиск=new Bundle();
                 bundleНовыйПоиск.putString("СамЗапрос","  SELECT * FROM  prof WHERE name  LIKE  ?  ");
                 bundleНовыйПоиск.putStringArray("УсловияВыборки" ,new String[]{"%"+Фильтр+"%"});
@@ -5672,64 +5665,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             return  КурсорТаблицаПрофесииLike;
         }
 
-    }
-
-
-    // TODO: 02.08.2022  код ля биндинга службы одноразовой синхронизации
-    public void МетодБиндингМатериалы() {
-        try {
-             serviceConnectionМатериалы = new ServiceConnection() {
-                @Override
-                public void onServiceConnected(ComponentName name, IBinder service) {
-                    try {
-                        binderМатериалы = (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) service;
-                        if (service.isBinderAlive()) {
-                            Log.d(getApplicationContext().getClass().getName(), "\n"
-                                    + " время: " + new Date() + "\n+" +
-                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                    " onServiceConnected  метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                    + "    onServiceDisconnected  Service_for_AdminissionMaterial" + " binderСогласованияbinderМатериалы.isBinderAlive() "
-                                    + service.isBinderAlive());
-                            ;
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        // TODO: 11.05.2021 запись ошибок
-                    }
-                }
-                @Override
-                public void onServiceDisconnected(ComponentName name) {
-                    try {
-                        Log.d(getApplicationContext().getClass().getName(), "\n"
-                                + " время: " + new Date() + "\n+" +
-                                " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                "  onServiceDisconnected метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                + "    onServiceDisconnected  bibinderСогласованияbinderМатериалыnder" + binderМатериалы);
-                        binderМатериалы = null;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        // TODO: 11.05.2021 запись ошибок
-                    }
-                }
-            };
-            Intent intentЗапускСлужюыыСинхрониазцииБиндинг = new Intent(getApplicationContext(), Service_for_AdminissionMaterial.class);
-            intentЗапускСлужюыыСинхрониазцииБиндинг.setAction("com.Service_for_AdminissionMaterial");
-            bindService(intentЗапускСлужюыыСинхрониазцииБиндинг ,serviceConnectionМатериалы ,Context.BIND_AUTO_CREATE );
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
     }
 
 
