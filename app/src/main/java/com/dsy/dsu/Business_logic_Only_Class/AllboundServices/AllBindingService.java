@@ -1,5 +1,6 @@
 package com.dsy.dsu.Business_logic_Only_Class.AllboundServices;
 
+import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.Messenger;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -15,10 +17,12 @@ import androidx.annotation.NonNull;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Code_For_Services.ServiceUpdatePoОбновлениеПО;
 import com.dsy.dsu.Code_For_Services.Service_Async_1C;
+import com.dsy.dsu.Code_For_Services.Service_For_Remote_Async;
 import com.dsy.dsu.Code_For_Services.Service_Notificatios_Для_Согласования;
 import com.dsy.dsu.Code_For_Services.Service_for_AdminissionMaterial;
 import com.google.android.datatransport.runtime.dagger.Provides;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.concurrent.Executors;
 
@@ -174,6 +178,10 @@ Context context;
                     try {
                            binderМатериалы[0] = (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) service;
                         if (binderМатериалы[0].isBinderAlive()) {
+                            Bundle bundle=new Bundle();
+                            bundle.putBinder("allbinders",  binderМатериалы[0]);
+                            message.setData(bundle);
+                            message.getTarget().dispatchMessage(message);
                             Log.d(context.getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
                                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -237,6 +245,10 @@ Context context;
                     try {
                         binderСогласования1C[0] = (Service_Notificatios_Для_Согласования.LocalBinderДляСогласования) service;
                         if (service.isBinderAlive()) {
+                            Bundle bundle=new Bundle();
+                            bundle.putBinder("allbinders",  binderСогласования1C[0]);
+                            message.setData(bundle);
+                            message.getTarget().dispatchMessage(message);
                             Log.i(context.getClass().getName(), "    onServiceConnected  service.isBinderAlive()"
                                     + service.isBinderAlive());
                         }
@@ -276,7 +288,4 @@ Context context;
         }
     }
 
-
-    
-    
 }

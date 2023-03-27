@@ -409,7 +409,7 @@ public class Fragment_Writer_Read_ЧитатьПисатьЧата extends Fragm
 
             Intent intentЗапускДжоп = new Intent(getContext(), Service_Для_ЧатаСменаСтатусаПрочитаноИлиНет.class);
             //  Service_Для_ЧатаСменаСтатусаПрочитаноИлиНет.enqueueWork(getContext(), intentЗапускДжоп);
-            getContext(). bindService(intentЗапускДжоп, connectionДляЧата, Context.BIND_AUTO_CREATE);
+            //getContext(). bindService(intentЗапускДжоп, connectionДляЧата, Context.BIND_AUTO_CREATE);
             // int num = service_smenaStatusMessageChat.getRandomNumber();
 
             Log.i( getContext().getClass().getName(),
@@ -432,39 +432,7 @@ public class Fragment_Writer_Read_ЧитатьПисатьЧата extends Fragm
 
 
 
-    private ServiceConnection connectionДляЧата = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            try{
-                // We've bound to LocalService, cast the IBinder and get LocalService instance
-                Service_Для_ЧатаСменаСтатусаПрочитаноИлиНет.LocalBinderДляЧата binder = (Service_Для_ЧатаСменаСтатусаПрочитаноИлиНет.LocalBinderДляЧата) service;
-                СсылкаНаСлужбуЧата = binder.getService();
-                Log.i(getContext().getClass().getName(), "    onServiceConnected  СсылкаНаСлужбуЧата" +СсылкаНаСлужбуЧата);
 
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(getContext().getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                class_generation_errors.МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                        this.getClass().getName(),
-                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            try{
-                Log.i(getContext().getClass().getName(), "    onServiceDisconnected  СсылкаНаСлужбуЧата" +СсылкаНаСлужбуЧата);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(getContext().getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                class_generation_errors.МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                        getContext().getClass().getName(),
-                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
-    };
 
 // TODO: 15.07.2022 инициализация Круглой Зеленой Кнопки Создание Нового сообщение или запуск холостой синхронизации
     void МетодКруглаяКнопкаНаФрагментеЧитатьПисать() {
