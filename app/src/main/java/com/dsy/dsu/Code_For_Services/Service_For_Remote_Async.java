@@ -42,6 +42,7 @@ import com.dsy.dsu.Business_logic_Only_Class.SubClass_Connection_BroadcastReceiv
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.util.concurrent.AtomicDouble;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -1061,9 +1062,10 @@ public class Service_For_Remote_Async extends IntentService {
                                 // TODO: 19.11.2022 ПОДНИМАЕМ ВЕРИСЮ ДАННЫХ
                                 Integer РезультатПовышенииВерсииДанных = subClassUpVersionDATA.МетодVesrionUPMODIFITATION_Client(ИмяТаблицыОтАндройда_Локальноая,context,getССылкаНаСозданнуюБазу());
                                 Log.d(this.getClass().getName(), " РезультатПовышенииВерсииДанных  " + РезультатПовышенииВерсииДанных);
+                                // TODO: 27.03.2023  Удаление И Смена Статуса Когда НА сервере Поментили Удаление
+                                МетодСерверноеУдаление(ИмяТаблицыОтАндройда_Локальноая);
                             }
-                            // TODO: 20.03.2023  Запуск Метода Смены Статуса Удаление на Сервера
-                            МетодОчисткаПеременныхПослеСинх();
+
 
                         }
                     }
@@ -1072,6 +1074,8 @@ public class Service_For_Remote_Async extends IntentService {
                             ИндексВизуальнойДляPrograssBar,ИмяТаблицыОтАндройда_Локальноая,
                             Проценты,"ПроцессеAsyncBackground",
                             true,false);
+                    // TODO: 20.03.2023  Запуск Метода Смены Статуса Удаление на Сервера
+                    МетодОчисткаПеременныхПослеСинх();
                 }
                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1108,6 +1112,46 @@ public class Service_For_Remote_Async extends IntentService {
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
         }
+
+
+        // TODO: 20.03.2023  метод смены статуса при удаление на СЕРВРЕРЕ
+        private void МетодСерверноеУдаление(@NonNull String имяТаблицыОтАндройда_локальноая ) {
+            Long результат_ОбновлениенымисСервераСменаСтатусаУдаления=0l;
+            try{
+                switch (имяТаблицыОтАндройда_локальноая) {
+                    case "data_tabels":
+                    case "tabel":
+                    case  "get_materials_data" :
+                        Uri uri = Uri.parse("content://com.dsy.dsu.providerdatachangedeleting/" + имяТаблицыОтАндройда_локальноая + "");
+                        //   Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabase/" + имяТаблицыОтАндройда_локальноая + "");
+                        if (АдаптерДляВставкиИОбновления.size()>0) {
+                            //TODO  ПОСЛЕ ОБРАБОТКИ ВСЕЙ ТАБЛИЦЫ ТЕСТОВО ЗАПУСКАЕМ ЕТОД МАССОВОЙ ВСТАВКИ ЧЕРЕЗ КОНТЕНТ ПРОВАЙДЕР МЕТОД BurkInset
+                            Log.w(context.getClass().getName(), " АдаптерДляВставкиИОбновления.size()  " + АдаптерДляВставкиИОбновления.size()+
+                                    "\n" + " АдаптерПриОбновленияДанныхсСервера.size()  " + ТекущийАдаптерДляВсего.size()+" uri  " + uri);/////
+                            ContentResolver contentResolver  = context.getContentResolver();
+
+                            ContentValues[] contentValuesМассив=new ContentValues[АдаптерДляВставкиИОбновления.size()];
+                            contentValuesМассив=АдаптерДляВставкиИОбновления.toArray(contentValuesМассив);
+                            int РезультатОбновлениеМассовой = contentResolver.bulkInsert(uri, contentValuesМассив);
+                            // TODO: 27.10.2021
+                            результат_ОбновлениенымисСервераСменаСтатусаУдаления = Long.valueOf(РезультатОбновлениеМассовой);
+                            Log.d(this.getClass().getName(), " РезультатОбновлениеМассовой :::  "
+                                    + РезультатОбновлениеМассовой+"\n"+
+                                    "  имяТаблицыОтАндройда_локальноая " +имяТаблицыОтАндройда_локальноая);
+                        }
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+
+
+        
 
 
         private Integer МетодОбменаЗаданиеДляСервера_ПосылаемНа_Сервер(String ИмяТаблицыОтАндройда_Локальноая,
