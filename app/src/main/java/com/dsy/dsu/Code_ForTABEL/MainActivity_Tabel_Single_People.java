@@ -5385,17 +5385,17 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
-    private void МетодСообщениеНовыйПоискПрофессий(@NonNull Activity activity ,@NonNull Cursor cursorДанные ) {
+    private void МетодСообщениеНовыйПоискПрофессий(@NonNull Activity activity ,@NonNull Cursor cursorДанные ,@NonNull MaterialTextView materialTextViewДляКого) {
         try{
-            ListView    listViewДляНовыйПосик;
-           1AlertDialog      alertDialogНовыйПосикПрофессий = new MaterialAlertDialogBuilder(activity){
+            final ListView[] listViewДляНовыйПосик = new ListView[1];
+           AlertDialog      alertDialogНовыйПосик= new MaterialAlertDialogBuilder(activity){
                         @NonNull
                         @Override
                         public MaterialAlertDialogBuilder setView(View view) {
-                            listViewДляНовыйПосик =    (ListView) view.findViewById(R.id.SearchViewList);
-                            listViewДляНовыйПосик.setTextFilterEnabled(true);
+                            listViewДляНовыйПосик[0] =    (ListView) view.findViewById(R.id.SearchViewList);
+                            listViewДляНовыйПосик[0].setTextFilterEnabled(true);
                             SearchView searchViewДляНовогоЦФО=    (SearchView) view.findViewById(R.id.searchview_newscanner);
-                            searchViewДляНовогоЦФО.setQueryHint("Поиск цфо");
+                            searchViewДляНовогоЦФО.setQueryHint("Поиск");
                             // TODO: 14.12.2022
                             searchViewДляНовогоЦФО.setDrawingCacheBackgroundColor(Color.GRAY);
                             searchViewДляНовогоЦФО.setDrawingCacheEnabled(true);
@@ -5455,22 +5455,22 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                                             Integer IDЦфоДЛяПередачи=      bundle.getInt("ПолучаемIDЦфо",0);
                                                             String НазваниеЦФО=   bundle.getString("НазваниеЦФО","");
                                                             Long UUIDНазваниеЦФО =   bundle.getLong("UUIDНазваниеЦФО",0l);
-                                                            СпинерВыборЦФО.setTag(bundle);
-                                                            СпинерВыборЦФО.setText(НазваниеЦФО);
-                                                            СпинерВыборЦФО.refreshDrawableState();
-                                                            СпинерВыборЦФО.forceLayout();
+                                                            materialTextViewДляКого.setTag(bundle);
+                                                            materialTextViewДляКого.setText(НазваниеЦФО);
+                                                            materialTextViewДляКого.refreshDrawableState();
+                                                            materialTextViewДляКого.forceLayout();
 
-                                                            if (  СпинерВыборЦФО.getText().toString().length()==0) {
+                                                            if (  materialTextViewДляКого.getText().toString().length()==0) {
                                                                 Snackbar.make(view, " Вы не выбрали цфо !!! "
                                                                         , Snackbar.LENGTH_LONG).show();
-                                                                СпинерВыборЦФО.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-                                                                СпинерВыборЦФО.setTextColor(Color.GRAY);
+                                                                materialTextViewДляКого.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                                                                materialTextViewДляКого.setTextColor(Color.GRAY);
                                                                 Log.d(this.getClass().getName()," bundle.keySet().size() "+bundle.keySet().size());
                                                             } else {
-                                                                СпинерВыборЦФО.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-                                                                СпинерВыборЦФО.setTextColor(Color.BLACK);
-                                                                alertDialog.dismiss();
-                                                                alertDialog.cancel();
+                                                                materialTextViewДляКого.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                                                                materialTextViewДляКого.setTextColor(Color.BLACK);
+                                                                alertDialogНовыйПосик.dismiss();
+                                                                alertDialogНовыйПосик.cancel();
                                                                 Log.d(this.getClass().getName()," bundle.keySet().size() "+bundle.keySet().size());
                                                             }
                                                             Log.d(this.getClass().getName()," position");
@@ -5495,11 +5495,11 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                 }
                             };
                             simpleCursorAdapterЦФО.setViewBinder(БиндингДляЦФО);
-                            listViewДляНовыйПосик.setAdapter(simpleCursorAdapterЦФО);
+                            listViewДляНовыйПосик[0].setAdapter(simpleCursorAdapterЦФО);
                             simpleCursorAdapterЦФО.notifyDataSetChanged();
-                            listViewДляНовыйПосик.startAnimation(animation);
-                            listViewДляНовыйПосик.setSelection(0);
-                            listViewДляНовыйПосик.forceLayout();
+                            listViewДляНовыйПосик[0].startAnimation(animation);
+                            listViewДляНовыйПосик[0].setSelection(0);
+                            listViewДляНовыйПосик[0].forceLayout();
                             // TODO: 13.12.2022  Поиск и его слушель
                             МетодПоискаФильтр(searchViewДляНовогоЦФО,simpleCursorAdapterЦФО);
                             return super.setView(view);
@@ -5511,91 +5511,33 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                             .setView(getLayoutInflater().inflate( R.layout.simple_for_new_spinner_searchview, null ))
                             .show();
                     WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-                    layoutParams.copyFrom(   alertDialog.getWindow().getAttributes());
+                    layoutParams.copyFrom(   alertDialogНовыйПосик.getWindow().getAttributes());
                     layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
                     layoutParams.height =WindowManager.LayoutParams.MATCH_PARENT;
                     layoutParams.gravity = Gravity.CENTER;
-                    alertDialog.getWindow().setAttributes(layoutParams);
+                    alertDialogНовыйПосик.getWindow().setAttributes(layoutParams);
                     // TODO: 13.12.2022 ВТОРОЙ СЛУШАТЕЛЬ НА КНОПКУ
-                    materialButtonЗакрытьДиалог[0].setOnClickListener(new View.OnClickListener() {
+                    materialTextViewДляКого.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            try{
-                                Log.d(this.getClass().getName()," position");
-                                Log.d(this.getClass().getName(),"МетодСозданиеТабеля  v "+v);
-                                СпинерВыборЦФО.setText("");
-                                СпинерВыборЦФО.refreshDrawableState();
-                                СпинерВыборЦФО.forceLayout();
-                                alertDialog.dismiss();
-                                alertDialog.cancel();
+                            try {
+                                Log.d(this.getClass().getName(), " position");
+                                Log.d(this.getClass().getName(), "МетодСозданиеТабеля  v " + v);
+                                materialTextViewДляКого.setText("");
+                                materialTextViewДляКого.refreshDrawableState();
+                                materialTextViewДляКого.forceLayout();
+                                alertDialogНовыйПосик.dismiss();
+                                alertDialogНовыйПосик.cancel();
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                         " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                                         this.getClass().getName(),
                                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                             }
                         }
-
-
-
-                private void МетодПоискаФильтр(@NonNull   SearchView searchViewДляНовогоЦФО,
-                                               @NonNull SimpleCursorAdapter simpleCursorAdapterЦФО) {
-                    try{
-                        searchViewДляНовогоЦФО.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                            @Override
-                            public boolean onQueryTextSubmit(String query) {
-                                Log.d(this.getClass().getName()," position");
-                                return false;
-                            }
-
-                            @Override
-                            public boolean onQueryTextChange(String newText) {
-                                Log.d(this.getClass().getName()," position");
-                                Filter filter= simpleCursorAdapterЦФО.getFilter();
-                                filter.filter(newText);
-                                return true;
-                            }
-                        });
-                        simpleCursorAdapterЦФО.setFilterQueryProvider(new FilterQueryProvider() {
-                            @Override
-                            public Cursor runQuery(CharSequence constraint) {
-                                Log.d(this.getClass().getName()," position");
-                                try{
-                                    CursorДляСпиноровЦФО=      МетодДляНовогоТабеляПолучаемДанныеИзНовогоПоиска("cfo",constraint.toString());
-                                    handler.post(()->{
-                                        simpleCursorAdapterЦФО.swapCursor(CursorДляСпиноровЦФО);
-                                        simpleCursorAdapterЦФО.notifyDataSetChanged();
-                                        listViewДляНовыйПосик[0].setSelection(0);
-                                        if (CursorДляСпиноровЦФО.getCount()==0) {
-                                            searchViewДляНовогоЦФО.setBackgroundColor(Color.RED);
-                                            handler.postDelayed(() -> {
-                                                searchViewДляНовогоЦФО.setBackgroundColor(Color.parseColor("#F2F5F5"));
-                                            }, 500);
-                                        }
-                                    });
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                            this.getClass().getName(),
-                                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                }
-                                return CursorДляСпиноровЦФО;
-                            }
-                        });
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName(),
-                                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                }
+                    });
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -5606,6 +5548,25 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
