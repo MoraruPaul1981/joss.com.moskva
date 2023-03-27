@@ -2302,16 +2302,15 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                         СообщениеИнформацияОСотруднике("Данные",  "ФИО: " +ФИОИнфо+
                                 "\n"+"День рождения: " +ДеньРОжденияИНФО+
                                 "\n"+"СНИЛС: " +СНИЛСИНфо+
-                                "\n" +"Должость: " + "( "+Профессия.trim()+ " )");
+                                "\n" +"Должость: " + "( "+Профессия.trim()+ " )", КурсорТаблицаViewtabel);
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                 + " КурсорТаблицаФИО "+КурсорТаблицаФИО.getCount() );
                     }
-                    КурсорТаблицаФИО.close();
-                    КурсорТаблицаViewtabel.close();
                 }
-
+               /* КурсорТаблицаФИО.close();
+                КурсорТаблицаViewtabel.close();*/
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -3004,7 +3003,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     ///todo сообщение информация о ФИО
     @UiThread
-    protected void СообщениеИнформацияОСотруднике(String ШабкаДиалога, String СообщениеДиалога) {
+    protected void СообщениеИнформацияОСотруднике(@NonNull String ШабкаДиалога,
+                                                  @NonNull String СообщениеДиалога,
+                                                  @NonNull Cursor  КурсорТаблицаViewtabel) {
         ///////СОЗДАЕМ ДИАЛОГ ДА ИЛИ НЕТ///////СОЗДАЕМ ДИАЛОГ ДА ИЛИ НЕТ
         try{
 //////сам вид
@@ -3034,6 +3035,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     public void onClick(DialogInterface dialog, int which) {
                         try {
                         НазваниеДанныхВТабелеФИО.setBackgroundColor(Color.WHITE);
+
+                        new SubClassNewSearchAlertDialogНовыйПосик().МетодСообщениеНовыйПоиска(activity,КурсорТаблицаViewtabel,НазваниеДанныхВТабелеФИО,message,"viewtabel");
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
@@ -5396,9 +5399,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         @UiThread
         private void МетодСообщениеНовыйПоиска(@NonNull Activity activity
                 ,@NonNull Cursor cursorДанные
-                ,@NonNull MaterialTextView materialTextViewДляКого,
-                                               @NonNull Message message,
-                ,@NonNull String ТаблицаПосика) {
+                ,@NonNull TextView materialTextViewДляКого,
+                                               @NonNull Message message,@NonNull String ТаблицаПосика) {
             try{
                 this.cursorДанные=cursorДанные;
                 final ListView[] listViewДляНовыйПосик = new ListView[1];
@@ -5517,7 +5519,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                        + " listViewДляНовыйПосик[0] "+listViewДляНовыйПосик[0]+"\n+"
+                                        + " listViewДляНовыйПосик[0] "+listViewДляНовыйПосик[0]+"\n+"+
                                 " cursorДанные " +cursorДанные+"\n"+
                                         " cursorДанные " +cursorДанные+"\n" );
                         return super.setView(view);
