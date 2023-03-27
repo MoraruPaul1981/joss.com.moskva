@@ -88,10 +88,6 @@ public class MainActivity_Face_App extends AppCompatActivity {
     private DrawerLayout drawerLayoutFaceApp;
     private NavigationView navigationViewFaceApp;
     private ConstraintLayout constraintLayoutFaceApp;
-    @Inject
-    private Service_Notificatios_Для_Согласования.LocalBinderДляСогласования binderСогласования1C;
-    private Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binderМатериалы;
-
     private Animation animation;
     protected SharedPreferences preferences;
     private   Message message;
@@ -144,9 +140,6 @@ public class MainActivity_Face_App extends AppCompatActivity {
             МЕтодУстанавливаемРазрешенияДляОновлениеПО();
             // TODO: 06.04.2022
             МетодДляСлушательБоковойПанелиFaceApp();
-            // TODO: 03.11.2022 биндинг служб
-              МетодБиндингМатериалы();
-            МетодБиндингаСогласования();
             // TODO: 16.11.2022  ПОСЛЕ УСТАНОВКИ РАБОТАЕТ ОДИН РАЗ ПРИ СТАРТЕ ЗАРУСК ОБЩЕГО WORK MANAGER
             new Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal(getApplicationContext()).МетодЗапускаетОБЩУЮСинхронизацию();
             МетодFaceApp_СлушательПриНажатииНаКнопки();
@@ -408,73 +401,6 @@ public class MainActivity_Face_App extends AppCompatActivity {
         // TODO: 04.04.2022
     }
 
-
-    // TODO: 02.08.2022  код ля биндинга службы одноразовой синхронизации
-    public void МетодБиндингМатериалы() {
-        try {
-            ServiceConnection    serviceConnectionМатериалы = new ServiceConnection() {
-                    @Override
-                    public void onServiceConnected(ComponentName name, IBinder service) {
-                        try {
-                            binderМатериалы = (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) service;
-                            if (binderМатериалы.isBinderAlive()) {
-                                Log.d(getApplicationContext().getClass().getName(), "\n"
-                                        + " время: " + new Date() + "\n+" +
-                                        " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                        " onServiceConnected  метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                        + "    onServiceDisconnected  Service_for_AdminissionMaterial" + " binderСогласованияbinderМатериалы.isBinderAlive() "
-                                        + binderМатериалы.isBinderAlive());
-                                ;
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            // TODO: 11.05.2021 запись ошибок
-                        }
-                    }
-                    @Override
-                    public void onServiceDisconnected(ComponentName name) {
-                        try {
-                            Log.d(getApplicationContext().getClass().getName(), "\n"
-                                    + " время: " + new Date() + "\n+" +
-                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                    "  onServiceDisconnected метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                    + "    onServiceDisconnected  bibinderСогласованияbinderМатериалыnder" + binderМатериалы);
-                            binderМатериалы = null;
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            // TODO: 11.05.2021 запись ошибок
-                        }
-                    }
-                };
-
-               /*    Intent intentЗапускСлужюыыСинхрониазцииБиндинг = new Intent(context, Service_for_AdminissionMaterial.class);
-                    context. bindService(intentЗапускСлужюыыСинхрониазцииБиндинг, serviceConnection, Context.BIND_AUTO_CREATE |
-                            Context.BIND_ALLOW_OOM_MANAGEMENT |
-                            Context.BIND_ADJUST_WITH_ACTIVITY | Context.BIND_IMPORTANT );*/
-            Intent intentЗапускСлужюыыСинхрониазцииБиндинг = new Intent(getApplicationContext(), Service_for_AdminissionMaterial.class);
-            intentЗапускСлужюыыСинхрониазцииБиндинг.setAction("com.Service_for_AdminissionMaterial");
-            bindService(intentЗапускСлужюыыСинхрониазцииБиндинг,Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT | Context.BIND_INCLUDE_CAPABILITIES
-                    , Executors.newCachedThreadPool(), serviceConnectionМатериалы);
-
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
-
     private void МетодИнициализацииMessage() {
         try{
         message=Message.obtain(new Handler(Looper.myLooper()),()->{
@@ -496,58 +422,9 @@ public class MainActivity_Face_App extends AppCompatActivity {
     }
     }
 
-    private void МетодБиндингаСогласования() {
-        try {
-            ServiceConnection       connectionСогласования = new ServiceConnection() {
-                    @Override
-                    public void onServiceConnected(ComponentName name, IBinder service) {
-                        try {
-                            binderСогласования1C = (Service_Notificatios_Для_Согласования.LocalBinderДляСогласования) service;
-                            if (binderСогласования1C.isBinderAlive()) {
-                                Log.i(getApplicationContext().getClass().getName(), "    onServiceConnected  binderСогласованияbinderМатериалы.isBinderAlive()"
-                                        + binderСогласования1C.isBinderAlive());
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                    this.getClass().getName(),
-                                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    }
-                    @Override
-                    public void onServiceDisconnected(ComponentName name) {
-                        try {
-                            Log.i(getApplicationContext().getClass().getName(), "    onServiceDisconnected  binder.isBinderAlive()" + binderСогласования1C.isBinderAlive());
-                            binderСогласования1C = null;
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                    this.getClass().getName(),
-                                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    }
-                };
-                Intent intentЗапускСлужюыыСинхрониазцииБиндинг1C = new Intent(getApplicationContext(), Service_Notificatios_Для_Согласования.class);
-                intentЗапускСлужюыыСинхрониазцииБиндинг1C.setAction("com.Service_Notificatios_Для_Согласования");
-                bindService(intentЗапускСлужюыыСинхрониазцииБиндинг1C, Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT
-                        | Context.BIND_INCLUDE_CAPABILITIES,Executors.newCachedThreadPool(), connectionСогласования);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
 
     private void МетодПовторныйЗапускУведомений() {
-
         try {
             new Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal(getApplicationContext()).МетодЗапускаУведомленияДляЗАДАЧ();
             new Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal(getApplicationContext()).МетодЗапускаУведомленияЧАТА();
@@ -575,7 +452,6 @@ public class MainActivity_Face_App extends AppCompatActivity {
                         КнопкаТабель.setBackgroundColor(Color.GRAY);
                         Intent Интент_ЗапускТабельногоУчётаПервыйШаг = new Intent();
                         Bundle data = new Bundle();
-                        data.putBinder("binder", binderМатериалы);
                         Интент_ЗапускТабельногоУчётаПервыйШаг.putExtras(data);
                         Интент_ЗапускТабельногоУчётаПервыйШаг.setClass(getApplication(), MainActivity_List_Tabels.class); //  ТЕСТ КОД КОТОРЫЙ ЗАПУСКАЕТ ACTIVITY VIEWDATA  ПРОВЕРИТЬ ОБМЕН
                         Интент_ЗапускТабельногоУчётаПервыйШаг.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -607,7 +483,6 @@ public class MainActivity_Face_App extends AppCompatActivity {
                         Log.d(this.getClass().getName(), "Запускает Согласния   ");
                         Intent intentЗапускСогласования1C = new Intent();
                         Bundle data = new Bundle();
-                        data.putBinder("binderСогласования1C", binderСогласования1C);
                         intentЗапускСогласования1C.putExtras(data);
                         intentЗапускСогласования1C.setClass(getApplicationContext(), MainActivity_CommitPay.class);//рабочий
                         intentЗапускСогласования1C.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
