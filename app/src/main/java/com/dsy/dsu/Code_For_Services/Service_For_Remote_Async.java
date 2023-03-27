@@ -1096,9 +1096,11 @@ public class Service_For_Remote_Async extends IntentService {
             try{
             if (ТекущийАдаптерДляВсего!=null) {
                 ТекущийАдаптерДляВсего.clear();
+                ТекущийАдаптерДляВсего=null;
             }
             if (АдаптерДляВставкиИОбновления!=null){
                 АдаптерДляВставкиИОбновления.clear();
+                ТекущийАдаптерДляВсего=null;
             }
                 // TODO: 26.03.2023
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

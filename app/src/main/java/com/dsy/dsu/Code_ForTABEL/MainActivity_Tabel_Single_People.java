@@ -18,6 +18,8 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -179,6 +181,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     final private   String ИмяСлужбыОбщейСинхронизацииДляЗадачи = "WorkManager Synchronizasiy_Data";
     private  long РодительскийUUDТаблицыТабель=0l;
     private  Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binder;
+    private      Message message;
 
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
     @Override
@@ -249,7 +252,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             МетодПриИзмениеДанныхВБазеМенемВнешнийВидТабеляObserver();
 //TODO #1
             МетодПришлиПараметрыОтДругихАктивитиДляРаботыТабеля();
-
+            МетодGetmessage();
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -1265,8 +1268,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 ПосикДня = ГлавныйКурсорДанныеSwipes.getColumnIndex("uuid"); ////TODO СЮДА ПОЛЕ UUID
                 НазваниеСтолбикаДляЛобкальногоОбноления = ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
                 НазваниеДанныхВТабелеФИО.setTag(ГлавныйКурсорДанныеSwipes.getString(ПосикДня));
-                Log.d(this.getClass().getName(), " UUID пристваем Внутри ФИО  " + ГлавныйКурсорДанныеSwipes.getString(ПосикДня));
                 НазваниеДанныхВТабелеФИО.setOnClickListener(СлушательИнформацияОСотрудника);
+                Log.d(this.getClass().getName(), " UUID пристваем Внутри ФИО  " + ГлавныйКурсорДанныеSwipes.getString(ПосикДня));
                 /////TODO     ПЕРВАЯ СТРОКА
                 ///todo главный МЕТОД ОФОРМЛЕНИЯ ТАБЕЛЯ ДАННЫМИ И ДНЯМИ
                 МетодГлавныйОрмленияТабеляДнямиИЗначениямиДляЭтиДней(ГлавныйКурсорДанныеSwipes,
@@ -2540,9 +2543,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                         String ДеньРОжденияИНФО= Курсор_ЗагружаемИнформациюПоФИОПолучениеДанныхИзФИО.getString(1);
                         String СНИЛСИНфо= Курсор_ЗагружаемИнформациюПоФИОПолучениеДанныхИзФИО.getString(2);
                         // TODO: 20.03.2023  ПОказываем Данные Для Обзора
-                        СообщениеИнформацияОФИО("Информация о сотруднике",  "ФИО: " +ФИОИнфо+
+                        СообщениеИнформацияОФИО("Данные",  "ФИО: " +ФИОИнфо+
                                 "\n"+"День рождения: " +ДеньРОжденияИНФО+
-                                "\n"+"СНИЛС: " +СНИЛСИНфо+"\n");
+                                "\n"+"СНИЛС: " +СНИЛСИНфо+"\n" +"Должость: " + "( "+Профессия.trim()+ " )");
                     }
                 }
                 Курсор_ЗагружаемИнформациюПоФИО.close();
@@ -3249,19 +3252,37 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 .setPositiveButton("Закрыть", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        try {
+                        НазваниеДанныхВТабелеФИО.setBackgroundColor(Color.WHITE);
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
                                 " НазваниеДанныхВТабелеФИО  " + НазваниеДанныхВТабелеФИО);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
                     }
                 })
                 .setNegativeButton("Изменить", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        try {
+                        НазваниеДанныхВТабелеФИО.setBackgroundColor(Color.WHITE);
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
                                 " НазваниеДанныхВТабелеФИО  " + НазваниеДанныхВТабелеФИО);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
                     }
                 })
                 .setIcon(R.drawable.icon_dsu1_info_customer)
@@ -5583,7 +5604,27 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
-
+    //TODO метод делает callback с ответом на экран
+    private  void  МетодGetmessage(){
+        try{
+           message=new Handler(Looper.getMainLooper(), new Handler.Callback() {
+                @Override
+                public boolean handleMessage(@NonNull Message msg) {
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    return true;
+                }
+            }).obtainMessage();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
 }
 
 
