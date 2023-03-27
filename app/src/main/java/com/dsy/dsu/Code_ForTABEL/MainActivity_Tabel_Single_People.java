@@ -55,6 +55,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.loader.content.CursorLoader;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
@@ -2491,65 +2492,53 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     View.OnClickListener СлушательИнформацияОСотрудника = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            SQLiteCursor Курсор_ЗагружаемИнформациюПоФИО = null;
             // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
-            SQLiteCursor    Курсор_ЗагружаемИнформациюПоФИОПолучениеДанныхИзФИО=null;/////
             Class_GRUD_SQL_Operations class_grud_sql_operationsСлушательИнформацияОСотрудника=new Class_GRUD_SQL_Operations(getApplicationContext());
             try{
+                Long ФИО=0l;
                 if (МыУжеВКодеУденияСотрудника==false) {
                     TextView ФИОДляУдаление = (TextView) v;
                     Log.d(this.getClass().getName(), " v " + v.getTag() + " ФИОДляУдаление.getText() " + ФИОДляУдаление.getText() +
                             "  ФИОДляУдаление.getTag() " +ФИОДляУдаление.getTag());
                     //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
-                    // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
-                    ((TextView) v).setBackgroundColor(Color.GRAY);
-                    class_grud_sql_operationsСлушательИнформацияОСотрудника. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","viewtabel");
-                    class_grud_sql_operationsСлушательИнформацияОСотрудника. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","fio");//name ,BirthDate ,snils
-                    class_grud_sql_operationsСлушательИнформацияОСотрудника. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика","uuid=? ");
-                    ///"_id > ?   AND _id< ?"
-                    Long ФИОЧТОБЫПОКАЗАТЬВтруриТАбеля=Long.parseLong(ФИОДляУдаление.getTag().toString());
-                    Log.d(this.getClass().getName(), " ФИОЧТОБЫПОКАЗАТЬВтруриТАбеля" +ФИОЧТОБЫПОКАЗАТЬВтруриТАбеля);
-                    class_grud_sql_operationsСлушательИнформацияОСотрудника. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1",ФИОЧТОБЫПОКАЗАТЬВтруриТАбеля);
-                    class_grud_sql_operationsСлушательИнформацияОСотрудника. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки","date_update desc");
-                    // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
-                    Курсор_ЗагружаемИнформациюПоФИО= (SQLiteCursor)  class_grud_sql_operationsСлушательИнформацияОСотрудника.
-                            new GetData(getApplicationContext()).getdata(class_grud_sql_operationsСлушательИнформацияОСотрудника.
-                                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
-                            Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков
-                            ,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
-                    Log.d(this.getClass().getName(), "GetData "  +Курсор_ЗагружаемИнформациюПоФИО);
-                    if (Курсор_ЗагружаемИнформациюПоФИО.getCount()>0){
-                        Курсор_ЗагружаемИнформациюПоФИО.moveToFirst();
-                        Long UUIDИзТаблицыФИОфинал= Курсор_ЗагружаемИнформациюПоФИО.getLong(0);
-                        Log.d(this.getClass().getName(), " UUIDИзТаблицыФИОфинал " + UUIDИзТаблицыФИОфинал);
-                        Class_GRUD_SQL_Operations     class_grud_sql_operatioСлушатель=new Class_GRUD_SQL_Operations(getApplicationContext());
-                        class_grud_sql_operatioСлушатель. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","fio");
-                        class_grud_sql_operatioСлушатель. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","name ,BirthDate ,snils");//name ,BirthDate ,snils
-                        class_grud_sql_operatioСлушатель. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика","uuid=? ");
-                        Log.d(this.getClass().getName(), " UUIDИзТаблицыФИО" +UUIDИзТаблицыФИОфинал);
-                        class_grud_sql_operatioСлушатель. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1",UUIDИзТаблицыФИОфинал);
-                        class_grud_sql_operatioСлушатель. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки","date_update desc");
-                        Курсор_ЗагружаемИнформациюПоФИОПолучениеДанныхИзФИО= (SQLiteCursor)  class_grud_sql_operatioСлушатель.
-                                new GetData(getApplicationContext()).getdata(class_grud_sql_operatioСлушатель.
-                                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
-                                Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков
-                                ,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
-                        Log.d(this.getClass().getName(), "GetData "  +Курсор_ЗагружаемИнформациюПоФИОПолучениеДанныхИзФИО);
-                    }
+                    Long UUIDИзTabelView=Long.parseLong(ФИОДляУдаление.getTag().toString());
+                    Bundle bundleTabelView=new Bundle();
+                    bundleTabelView.putString("СамЗапрос","  SELECT fio FROM  viewtabel WHERE uuid=? ");
+                    bundleTabelView.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(UUIDИзTabelView)});
+                    bundleTabelView.putString("Таблица","viewtabel");
+                    Cursor  КурсорТаблицаViewtabel=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleTabelView);
+                    Log.d(this.getClass().getName(), " КурсорТаблицаViewtabel" + КурсорТаблицаViewtabel);
+                    Log.d(this.getClass().getName(), "КурсорТаблицаViewtabel "  +КурсорТаблицаViewtabel);
                     //TODO  ОЧИЩАЕМ ПАМТЬ Результат Курсора
-                    if (Курсор_ЗагружаемИнформациюПоФИОПолучениеДанныхИзФИО.getCount()>0){
-                        Курсор_ЗагружаемИнформациюПоФИОПолучениеДанныхИзФИО.moveToFirst();
-                        String ФИОИнфо= Курсор_ЗагружаемИнформациюПоФИОПолучениеДанныхИзФИО.getString(0);
-                        String ДеньРОжденияИНФО= Курсор_ЗагружаемИнформациюПоФИОПолучениеДанныхИзФИО.getString(1);
-                        String СНИЛСИНфо= Курсор_ЗагружаемИнформациюПоФИОПолучениеДанныхИзФИО.getString(2);
+                    if (КурсорТаблицаViewtabel.getCount()>0){
+                        КурсорТаблицаViewtabel.moveToFirst();
+                        ФИО=      КурсорТаблицаViewtabel.getLong(0);
+                        Log.d(this.getClass().getName(), "ФИО "  +ФИО);
+                    }
+                    Bundle bundleФио=new Bundle();
+                    bundleФио.putString("СамЗапрос","  SELECT * FROM  fio WHERE uuid=? ");
+                    bundleФио.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(ФИО)});
+                    bundleФио.putString("Таблица","fio");
+                    Cursor    КурсорТаблицаФИО=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleФио);
+                    Log.d(this.getClass().getName(), " КурсорТаблицаФИО" + КурсорТаблицаФИО);
+                    if (КурсорТаблицаФИО.getCount()>0) {
+                        String ФИОИнфо= КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("name"));
+                        String ДеньРОжденияИНФО= КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("BirthDate"));
+                        Integer СНИЛСИНфо= КурсорТаблицаФИО.getInt(КурсорТаблицаФИО.getColumnIndex("snils"));
+                        String ПрофессияИзФИо= КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("prof"));
                         // TODO: 20.03.2023  ПОказываем Данные Для Обзора
                         СообщениеИнформацияОФИО("Данные",  "ФИО: " +ФИОИнфо+
                                 "\n"+"День рождения: " +ДеньРОжденияИНФО+
                                 "\n"+"СНИЛС: " +СНИЛСИНфо+"\n" +"Должость: " + "( "+Профессия.trim()+ " )");
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                + " КурсорТаблицаФИО "+КурсорТаблицаФИО.getCount() );
                     }
+                    КурсорТаблицаФИО.close();
+                    КурсорТаблицаViewtabel.close();
                 }
-                Курсор_ЗагружаемИнформациюПоФИО.close();
-                Курсор_ЗагружаемИнформациюПоФИОПолучениеДанныхИзФИО.close();
+
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
