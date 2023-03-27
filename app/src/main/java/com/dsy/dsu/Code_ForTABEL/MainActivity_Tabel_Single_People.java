@@ -2495,6 +2495,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
             Class_GRUD_SQL_Operations class_grud_sql_operationsСлушательИнформацияОСотрудника=new Class_GRUD_SQL_Operations(getApplicationContext());
             try{
+                НазваниеДанныхВТабелеФИО.setBackgroundColor(Color.GRAY);
                 Long ФИО=0l;
                 if (МыУжеВКодеУденияСотрудника==false) {
                     TextView ФИОДляУдаление = (TextView) v;
@@ -2524,12 +2525,13 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     if (КурсорТаблицаФИО.getCount()>0) {
                         String ФИОИнфо= КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("name"));
                         String ДеньРОжденияИНФО= КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("BirthDate"));
-                        Integer СНИЛСИНфо= КурсорТаблицаФИО.getInt(КурсорТаблицаФИО.getColumnIndex("snils"));
+                        Long СНИЛСИНфо= КурсорТаблицаФИО.getLong(КурсорТаблицаФИО.getColumnIndex("snils"));
                         String ПрофессияИзФИо= КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("prof"));
                         // TODO: 20.03.2023  ПОказываем Данные Для Обзора
                         СообщениеИнформацияОФИО("Данные",  "ФИО: " +ФИОИнфо+
                                 "\n"+"День рождения: " +ДеньРОжденияИНФО+
-                                "\n"+"СНИЛС: " +СНИЛСИНфо+"\n" +"Должость: " + "( "+Профессия.trim()+ " )");
+                                "\n"+"СНИЛС: " +СНИЛСИНфо+
+                                "\n" +"Должость: " + "( "+Профессия.trim()+ " )");
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
