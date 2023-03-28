@@ -287,7 +287,7 @@ public class Service_For_Remote_Async extends IntentService {
             ФинальныйРезультатAsyncBackgroud  = new Class_Engine_SQL(context).МетодЗАпускаФоновойСинхронизации(context);
             Log.d(context.getClass().getName(), "\n"
                     + "   ФинальныйРезультатAsyncBackgroud " + ФинальныйРезультатAsyncBackgroud);
-            МетодПослеAsyncTaskЗавершающий( context);
+            МетодПослеAsyncTaskЗавершающий( context,ФинальныйРезультатAsyncBackgroud+2);
             // TODO: 26.03.2023 дополнительное удаление после Удаление статсу удалнеенон
             if (ФинальныйРезультатAsyncBackgroud>0) {
                 МетодПослеСинхрониазцииУдалениеСтатусаУдаленный();
@@ -330,11 +330,13 @@ public class Service_For_Remote_Async extends IntentService {
     }
     }
 
-    private void МетодПослеAsyncTaskЗавершающий( @NonNull Context context) {
+    private void МетодПослеAsyncTaskЗавершающий( @NonNull Context context,@NonNull Integer ФинальныйРезультатAsyncBackgroud) {
         try{
         // TODO: 05.11.2022  после  ВЫПОЛЕНИЯ СИНЗХРОНИАЗИИ СООБЩАЕМ ОБ ОКОНЧАТИИ СИХРОНИАЗЦИИ ВИЗУАЛЬТА
         new Class_Engine_SQL(context).МетодCallBasksВизуальноИзСлужбы(МаксималноеКоличествоСтрочекJSON,МаксималноеКоличествоСтрочекJSON,
-                Проценты,null,"ФинишВыходИзAsyncBackground",false,false);
+                Проценты,null,"ФинишВыходИзAsyncBackground",false,false,
+                ФинальныйРезультатAsyncBackgroud);
+            // TODO: 28.03.2023
         Log.d(context.getClass().getName(), "\n" + " МаксималноеКоличествоСтрочекJSON: " +МаксималноеКоличествоСтрочекJSON );
             // TODO: 28.03.2023 Выключаем СЛужбу
         onDestroy();
@@ -1076,7 +1078,7 @@ public class Service_For_Remote_Async extends IntentService {
                     МетодCallBasksВизуальноИзСлужбы(МаксималноеКоличествоСтрочекJSON,
                             ИндексВизуальнойДляPrograssBar,ИмяТаблицыОтАндройда_Локальноая,
                             Проценты,"ПроцессеAsyncBackground",
-                            true,false);
+                            true,false,0);
                     // TODO: 20.03.2023  Запуск Метода Смены Статуса Удаление на Сервера
                     МетодОчисткаПеременныхПослеСинх();
                 }
@@ -1240,7 +1242,7 @@ public class Service_For_Remote_Async extends IntentService {
                 StringBuffer БуферПолучениеДанных = new StringBuffer();
                     МетодCallBasksВизуальноИзСлужбы(МаксималноеКоличествоСтрочекJSON,
                             ИндексВизуальнойДляPrograssBar,имяТаблицыОтАндройда_локальноая,
-                            Проценты,"ПроцессеAsyncBackground",false,false);
+                            Проценты,"ПроцессеAsyncBackground",false,false,0);
                     PUBLIC_CONTENT public_content=   new PUBLIC_CONTENT(context);
                     String   ИмяСерверИзХранилица = preferences.getString("ИмяСервера","");
                     Integer    ПортСерверИзХранилица = preferences.getInt("ИмяПорта",0);
@@ -1317,7 +1319,7 @@ public class Service_For_Remote_Async extends IntentService {
                 
                 // TODO: 11.10.2022 callback метод обратно в актвити #1
                 МетодCallBasksВизуальноИзСлужбы(МаксималноеКоличествоСтрочекJSON, ИндексВизуальнойДляPrograssBar, имяТаблицыОтАндройда_локальноая,
-                        Проценты, "ПроцессеAsyncBackground",false,false);
+                        Проценты, "ПроцессеAsyncBackground",false,false,0);
                 ИндексВизуальнойДляPrograssBar=0;
                 // TODO: 04.12.2022 ПАРСИНГ ПО НОВОМУ ОТ JAKSON
             Flowable.fromIterable(БуферJsonОтСервера)
@@ -1483,7 +1485,7 @@ public class Service_For_Remote_Async extends IntentService {
                         public void run() throws Throwable {
                             // TODO: 11.10.2022 ПОСЛЕ ОПЕРАЦИИ ВИЗАУЛИЗИРУЕМ КОНЕЦ ОПЕРАЦИИ ПОЛЬЗОВАТЕЛЮ
                             МетодCallBasksВизуальноИзСлужбы(МаксималноеКоличествоСтрочекJSON,ИндексВизуальнойДляPrograssBar,имяТаблицыОтАндройда_локальноая,
-                                    Проценты,"ПроцессеAsyncBackground",false,false);
+                                    Проценты,"ПроцессеAsyncBackground",false,false,0);
                             Log.d(this.getClass().getName(), " Конец  ПАРСИНГА ОБРАБОАТЫВАЕМОМЙ ТАБЛИЦЫ МетодBulkUPDATE   ::::: "
                                     + имяТаблицыОтАндройда_локальноая+" АдаптерДляВставкиИОбновления.size() "
                                     + АдаптерДляВставкиИОбновления.size() + " РезультатРаботыСинхрониазциии "+РезультатРаботыСинхрониазциии[0]);
@@ -1509,7 +1511,8 @@ public class Service_For_Remote_Async extends IntentService {
                                                      String ПроцентыВерхнегоПрограссбара,
                                                      String СтатусAsyncBackground,
                                                      Boolean РеальнаяРаботаВставкаОбновиеContProver,
-                                                     Boolean ЧтоДелаемПолучаемДанныеИлиОтправляем)  {
+                                                     Boolean ЧтоДелаемПолучаемДанныеИлиОтправляем,
+                                                     Integer ФинальныйРезультатAsyncBackgroud)  {
             try {
             Message lMsg = new Message();
             Bundle bundleОтправкаОбратноActivity=new Bundle();
@@ -1533,6 +1536,9 @@ public class Service_For_Remote_Async extends IntentService {
                 }
                 if (ЧтоДелаемПолучаемДанныеИлиОтправляем!=null) {
                     bundleОтправкаОбратноActivity.putBoolean("ЧтоДелаемПолучаемДанныеИлиОтправляем",ЧтоДелаемПолучаемДанныеИлиОтправляем);
+                }
+                if (ФинальныйРезультатAsyncBackgroud!=null) {
+                    bundleОтправкаОбратноActivity.putInt("ФинальныйРезультатAsyncBackgroud",ФинальныйРезультатAsyncBackgroud);
                 }
                 lMsg.setData(bundleОтправкаОбратноActivity);
 
@@ -1562,7 +1568,7 @@ public class Service_For_Remote_Async extends IntentService {
                         МетодCallBasksВизуальноИзСлужбы(МаксималноеКоличествоСтрочекJSON,
                                 ИндексВизуальнойДляPrograssBar,имяТаблицыОтАндройда_локальноая,
                                 Проценты,"ПроцессеAsyncBackground",
-                                true,false);
+                                true,false,0);
                         ContentValues[] contentValuesМассив=new ContentValues[АдаптерДляВставкиИОбновления.size()];
                         contentValuesМассив=АдаптерДляВставкиИОбновления.toArray(contentValuesМассив);
                         int РезультатОбновлениеМассовой = contentResolver.bulkInsert(uri, contentValuesМассив);
@@ -1903,7 +1909,7 @@ public class Service_For_Remote_Async extends IntentService {
                                                     // TODO: 09.11.2022 визуальна часть синхрониазции по таблице
                                                     МетодCallBasksВизуальноИзСлужбы(МаксималноеКоличествоСтрочекJSON,
                                                             ИндексВизуальнойДляPrograssBar,ТекущаяТаблицаИзПотока,
-                                                            Проценты,"ПроцессеAsyncBackground",false,false);
+                                                            Проценты,"ПроцессеAsyncBackground",false,false,0);
                                                     // TODO: 24.01.2022 сама операция синхрониазции по таблице
                                                     ПубличныйРезультатОтветаОтСерврераУспешно= МетодЗапускаСинхрониазцииПоАТблицам(ДанныеПришёлЛиIDДЛяГенерацииUUID,
                                                             ТекущаяТаблицаИзПотока,
@@ -1972,7 +1978,7 @@ public class Service_For_Remote_Async extends IntentService {
                 try {
                     МетодCallBasksВизуальноИзСлужбы(МаксималноеКоличествоСтрочекJSON,
                             ИндексВизуальнойДляPrograssBar,имяТаблицыОтАндройда_локальноая,
-                            Проценты,"ПроцессеAsyncBackground",false,true);
+                            Проценты,"ПроцессеAsyncBackground",false,true,0);
                     Log.d(this.getClass().getName(), "  МЕТОД НЕПОСТРЕДСТВЕННО ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР МЕТОД POST ");
                     // TODO: 15.06.2021 проверяем если таблица табель то еси в нутри потока отпралеемого хоть один день d1,d2,d3 защита от пустого траыфика\
                     Log.d(this.getClass().getName(), " ГенерацияJSONполейФиналДляОтправкиНаСеврерОтАндройда.toString() "
