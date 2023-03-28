@@ -339,8 +339,6 @@ public class Service_For_Remote_Async extends IntentService {
             // TODO: 28.03.2023
         Log.d(context.getClass().getName(), "\n" + " МаксималноеКоличествоСтрочекJSON: " +МаксималноеКоличествоСтрочекJSON );
             // TODO: 28.03.2023 Выключаем СЛужбу
-        onDestroy();
-        
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +

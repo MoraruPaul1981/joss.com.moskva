@@ -7,15 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
-import android.os.Message;
 import android.os.Messenger;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
 import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.work.Data;
 import androidx.work.Worker;
@@ -41,10 +36,10 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
  @Inject
    private Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal  class_generation_sendBroadcastReceiver_and_firebase_oneSignallass ;
     private Service_For_Remote_Async locaBinderAsync;
-    private  Messenger           messengerWorkManager;
+
     private  ServiceConnection serviceConnection;
-    private  Integer ФинальныйРезультатAsyncBackgroud =0;
-    private   Data    myDataОтветОдноразовойСлужбы=null;
+
+    private Service_For_Remote_Async service_for_remote_async;
 
     // TODO: 28.09.2022
     public MyWork_Async_Синхронизация_Одноразовая(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -69,36 +64,40 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
         try{
 
         Intent intentОбноразоваяСинхронизациия = new Intent(context, Service_For_Remote_Async.class);
-             serviceConnection=         new ServiceConnection() {
-                @Override
-                public void onServiceConnected(ComponentName name, IBinder service) {
-                    try{
-                        messengerWorkManager =new Messenger(service);
-                        Log.d(context.getClass().getName().toString(), "\n"
-                                + "onServiceConnected  одноразовая messengerActivity  " + messengerWorkManager.getBinder().pingBinder());
-                        if (service.isBinderAlive()) {
-                            //TODO СИНХРОНИАЗЦИЯ ГЛАВНАЯ
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                    + "МетодПодключениекСлубе service.isBinderAlive() "+service.isBinderAlive());
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                }
-                @Override
-                public void onServiceDisconnected(ComponentName name) {
-                    Log.d(context.getClass().getName().toString(), "\n"
-                            + "onServiceConnected  одноразовая  messengerActivity  " );
-                }
-            };
-        context.    bindService(intentОбноразоваяСинхронизациия,serviceConnection,Context.BIND_AUTO_CREATE);
-    } catch (Exception e) {
+            Boolean РешениеЗапускатьWorkManagerИлиНетАктивтиКакое=   МетодОценкаЗапускатьWorkMangerИзАктивтитиИлиНет();
+            if (РешениеЗапускатьWorkManagerИлиНетАктивтиКакое==true) {
+                serviceConnection=         new ServiceConnection() {
+                   @Override
+                   public void onServiceConnected(ComponentName name, IBinder service) {
+                       try{
+                           Messenger messengerWorkManager =new Messenger(service);
+                           Log.d(context.getClass().getName().toString(), "\n"
+                                   + "onServiceConnected  одноразовая messengerActivity  " + messengerWorkManager.getBinder().pingBinder());
+                           if (service.isBinderAlive()) {
+                               //TODO СИНХРОНИАЗЦИЯ ГЛАВНАЯ
+                               service_for_remote_async=new Service_For_Remote_Async();
+                               Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                       " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                       " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                       + "МетодПодключениекСлубе service.isBinderAlive() "+service.isBinderAlive());
+                           }
+                       } catch (Exception e) {
+                           e.printStackTrace();
+                           Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                   + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                           new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                   Thread.currentThread().getStackTrace()[2].getLineNumber());
+                       }
+                   }
+                   @Override
+                   public void onServiceDisconnected(ComponentName name) {
+                       Log.d(context.getClass().getName().toString(), "\n"
+                               + "onServiceConnected  одноразовая  messengerActivity  " );
+                   }
+               };
+                context.    bindService(intentОбноразоваяСинхронизациия,serviceConnection,Context.BIND_AUTO_CREATE);
+            }
+        } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                 " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
@@ -128,7 +127,9 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
     @NonNull
     @Override
     public Result doWork() {
- try{
+        Integer     ФинальныйРезультатAsyncBackgroud = 0;
+        Data   myDataОтветОдноразовойСлужбы=null;
+        try{
      class_generation_sendBroadcastReceiver_and_firebase_oneSignallass=
              new Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal(context);
      // TODO: 12.10.2022  КТО ЗАПУСТИЛ
@@ -136,66 +137,26 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
       Boolean СтатусЗапускаОдноразованаяWorkManger= getInputData().getBoolean("StatusOneWokManagers",false);
      Log.i(context.getClass().getName(), "ПубличныйID"+"\n" + ПубличныйID  + " СтатусЗапускаОдноразованаяWorkManger "+СтатусЗапускаОдноразованаяWorkManger);
      if (ПубличныйID>0 && СтатусЗапускаОдноразованаяWorkManger==true) {
-         ActivityManager ЗапущенныйПроуессыДляОбщейСинхрониазации =
-                 (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
-         String АктивностьЕслиЕстьTOP =null;
-         // TODO: 03.02.2022
-         List<ActivityManager.AppTask> КоличествоЗапущенныйПроуессы=null;
-         Integer ПубличныйIDДляФрагмента = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(context);
-         if (ПубличныйIDДляФрагмента == null) {
-             ПубличныйIDДляФрагмента = 0;
-         }
-         Log.i(context.getClass().getName(), "ЗАПУСК   зПубличныйIDДляФрагмента "+"\n" + ПубличныйIDДляФрагмента);
-         if (ЗапущенныйПроуессыДляОбщейСинхрониазации!=null) {
-             КоличествоЗапущенныйПроуессы = ЗапущенныйПроуессыДляОбщейСинхрониазации.getAppTasks();
-         if (КоличествоЗапущенныйПроуессы.size() > 0) {
-             for (ActivityManager.AppTask ТекущаяАктивти : КоличествоЗапущенныйПроуессы) {
-                 if (ТекущаяАктивти!=null) {
-                     Log.i(context.getClass().getName(), "ЗАПУСК    ВНУТРИ метода         " +
-                             "ТекущаяАктивти.getTaskInfo().numActivities  " + "\n"
-                             + ТекущаяАктивти.getTaskInfo().numActivities);
-                     // TODO: 20.02.2022
-                     if (ТекущаяАктивти.getTaskInfo().numActivities>0) {
-                         АктивностьЕслиЕстьTOP = ТекущаяАктивти.getTaskInfo().topActivity.getClassName().toString();
-                     }
-                     Log.i(context.getClass().getName(), "ТекущаяАктивти " + ТекущаяАктивти +
-                             " АктивностьЕслиЕстьTOP  " + АктивностьЕслиЕстьTOP +
-                             "ТекущаяАктивти.getTaskInfo().numActivities  " + "\n"
-                             + ТекущаяАктивти.getTaskInfo().numActivities);////   case "com.dsy.dsu.Code_For_Chats_КодДля_Чата.MainActivity_List_Chats" :
-                 }
-                 if (АктивностьЕслиЕстьTOP!=null ) {
-                     switch (АктивностьЕслиЕстьTOP) {// case "com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_App" :
-                    //     case "com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Visible_Async":
-                         case "com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Tabels_Users_And_Passwords":
-                         case "com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_Start":
-                         case "com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Visible_Async":
-                             Log.i(context.getClass().getName(), " ВЫХОД  .....ТекущаяАктивтиАктивностьЕслиЕстьTOP" + ТекущаяАктивти +
-                                     " АктивностьЕслиЕстьTOP  " + АктивностьЕслиЕстьTOP);////   case "com.dsy.dsu.Code_For_Chats_КодДля_Чата.MainActivity_List_Chats" :
-                             break;
-                         // TODO: 01.12.2021 САМ ЗАПУСК WORK MANAGER  СИНХРОНИАЗЦИИ ПРИ ВКЛЮЧЕННОЙ АКТИВТИ
-                         default:
-                             ФинальныйРезультатAsyncBackgroud=
-                                     МетодЗапускаОднаразовая(ПубличныйID,
-                                             ПубличныйIDДляФрагмента, КоличествоЗапущенныйПроуессы,
-                                             АктивностьЕслиЕстьTOP);
-                             // TODO: 26.03.2023
-                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                     + " ФинальныйРезультатAsyncBackgroud "+ФинальныйРезультатAsyncBackgroud );
-                             break;
-                     }
-                 }
-             }
-         }
-     }
-     }
+       Boolean РешениеЗапускатьWorkManagerИлиНетАктивтиКакое=   МетодОценкаЗапускатьWorkMangerИзАктивтитиИлиНет();
+         if(РешениеЗапускатьWorkManagerИлиНетАктивтиКакое==true) {
 
-     myDataОтветОдноразовойСлужбы = new Data.Builder()
+          ФинальныйРезультатAsyncBackgroud= МетодЗапускаОднаразовая();
+         }
+         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                 + " РешениеЗапускатьWorkManagerИлиНетАктивтиКакое "+РешениеЗапускатьWorkManagerИлиНетАктивтиКакое  + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
+     }
+       myDataОтветОдноразовойСлужбы = new Data.Builder()
              .putLong("ОтветПослеВыполения_MyWork_Async_Синхронизация_Одноразовая",
                      ФинальныйРезультатAsyncBackgroud)
            .putBoolean("Proccesing_MyWork_Async_Синхронизация_Одноразовая",true)
              .build();
+     if (serviceConnection!=null) {
+         context.unbindService(serviceConnection);
+         service_for_remote_async=null;
+         serviceConnection=null;
+     }
 // TODO: 26.03.2023
      Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
              " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -218,74 +179,92 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
         }
     }
 
-    private Integer МетодЗапускаОднаразовая
-            (Integer ПубличныйIDКомуНАдоОтправитьСообщениеЧерезOneSingle,
-             Integer ПубличныйIDДляФрагмента,
-             List<ActivityManager.AppTask> КоличествоЗапущенныйПроуессы, String АктивностьЕслиЕстьTOP) {
+
+
+
+
+
+
+
+
+    private Boolean МетодОценкаЗапускатьWorkMangerИзАктивтитиИлиНет() {
+        Boolean РешениеЗапускатьWorkManagerИлиНетАктивтиКакое=false;
         try{
-
-            boolean ВыбранныйРежимСети =
-                    new Class_Find_Setting_User_Network(getApplicationContext()).МетодПроветяетКакуюУстановкуВыбралПользовательСети();
-            Log.d(this.getClass().getName(), "  ВыбранныйРежимСети ВыбранныйРежимСети "
-                    + ВыбранныйРежимСети);
-
-            if (ВыбранныйРежимСети == true) {
-                Messenger mMessenger = new Messenger(new Handler(Looper.getMainLooper(), new Handler.Callback() {
-                    @Override
-                    public boolean handleMessage(@NonNull Message msg) {
-                        try {
-                            Bundle data =msg.getData();
-                            Integer dataSring=data.getInt("RemoteService");
-                            String СтатусРаботыСлужбыСинхронизации =data.getString("СтатусРаботыСлужбыСинхронизации");
-                            Integer МаксимальнеоКоличествоСтрок =data.getInt("МаксималноеКоличествоСтрочекJSON");
-                            ФинальныйРезультатAsyncBackgroud =data.getInt("ФинальныйРезультатAsyncBackgroud");
-                            // TODO: 11.10.2022
-                            switch (СтатусРаботыСлужбыСинхронизации.trim()){
-                                case "ФинишВыходИзAsyncBackground" :
-                                    if(ФинальныйРезультатAsyncBackgroud>0){
-                                        Log.w(this.getClass().getName(), "СтатусРаботыСлужбыСинхронизации  "+ СтатусРаботыСлужбыСинхронизации);
-                                        Vibrator v2 = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-                                        v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.EFFECT_HEAVY_CLICK));
-// TODO: 26.06.2022  ПОСЛЕ УСПЕШНОЙ СИНХРОНИАЗЦИИ ЗАПУСКАМ ONE SIGNAL  И УВЕДОМЛЕНИЯ
-                                        МетодЗапускаПослеУспешнойСтинхронизацииOneSignalИУведомления
-                                                (ПубличныйIDКомуНАдоОтправитьСообщениеЧерезOneSingle, ПубличныйIDДляФрагмента);
-                                        // TODO: 27.06.2022
-                                        Log.i(context.getClass().getName(), " observableДляWorkmanagerОдноразовойСинхрогнизации doOnComplete  выход "
-                                                + " ФинальныйРезультатAsyncBackgroud " +ПубличныйIDКомуНАдоОтправитьСообщениеЧерезOneSingle
-                                                + " ПубличныйIDКомуНАдоОтправитьСообщениеЧерезOneSingle " +ПубличныйIDКомуНАдоОтправитьСообщениеЧерезOneSingle);
-                                    }
-
-                                    Log.w(this.getClass().getName(), "СтатусРаботыСлужбыСинхронизации  "+ СтатусРаботыСлужбыСинхронизации);
-
-                                    break;
-                            }
+        ActivityManager ЗапущенныйПроуессыДляОбщейСинхрониазации =
+                (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+        String АктивностьЕслиЕстьTOP =null;
+        List<ActivityManager.AppTask> КоличествоЗапущенныйПроуессы=null;
+        if (ЗапущенныйПроуессыДляОбщейСинхрониазации!=null) {
+            КоличествоЗапущенныйПроуессы = ЗапущенныйПроуессыДляОбщейСинхрониазации.getAppTasks();
+        if (КоличествоЗапущенныйПроуессы.size() > 0) {
+            for (ActivityManager.AppTask ТекущаяАктивти : КоличествоЗапущенныйПроуессы) {
+                if (ТекущаяАктивти!=null) {
+                    Log.i(context.getClass().getName(), "ЗАПУСК    ВНУТРИ метода         " +
+                            "ТекущаяАктивти.getTaskInfo().numActivities  " + "\n"
+                            + ТекущаяАктивти.getTaskInfo().numActivities);
+                    // TODO: 20.02.2022
+                    if (ТекущаяАктивти.getTaskInfo().numActivities>0) {
+                        АктивностьЕслиЕстьTOP = ТекущаяАктивти.getTaskInfo().topActivity.getClassName().toString();
+                    }
+                    Log.i(context.getClass().getName(), "ТекущаяАктивти " + ТекущаяАктивти +
+                            " АктивностьЕслиЕстьTOP  " + АктивностьЕслиЕстьTOP +
+                            "ТекущаяАктивти.getTaskInfo().numActivities  " + "\n"
+                            + ТекущаяАктивти.getTaskInfo().numActivities);////   case "com.dsy.dsu.Code_For_Chats_КодДля_Чата.MainActivity_List_Chats" :
+                }
+                if (АктивностьЕслиЕстьTOP!=null ) {
+                    switch (АктивностьЕслиЕстьTOP) {// case "com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_App" :
+                   //     case "com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Visible_Async":
+                        case "com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Tabels_Users_And_Passwords":
+                        case "com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_Start":
+                        case "com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Visible_Async":
+                            Log.i(context.getClass().getName(), " ВЫХОД  .....ТекущаяАктивтиАктивностьЕслиЕстьTOP" + ТекущаяАктивти +
+                                    " АктивностьЕслиЕстьTOP  " + АктивностьЕслиЕстьTOP);////   case "com.dsy.dsu.Code_For_Chats_КодДля_Чата.MainActivity_List_Chats" :
+                            // TODO: 26.03.2023
+                            РешениеЗапускатьWorkManagerИлиНетАктивтиКакое=false;
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                    + " ФинальныйРезультатAsyncBackgroud "+ФинальныйРезультатAsyncBackgroud
-                                    + " МаксимальнеоКоличествоСтрок " +МаксимальнеоКоличествоСтрок
-                                    + " СтатусРаботыСлужбыСинхронизации"+СтатусРаботыСлужбыСинхронизации);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                        Log.i(this.getClass().getName(), " public  " +
-                                "MyWork_Async_Синхронизация_Одноразовая(@NonNull Context context, @NonNull WorkerParameters workerParams) " );
-                        return true;
+                                    + " АктивностьЕслиЕстьTOP "+АктивностьЕслиЕстьTOP   + " РешениеЗапускатьWorkManagerИлиНетАктивтиКакое " +РешениеЗапускатьWorkManagerИлиНетАктивтиКакое);
+                            break;
+                        // TODO: 01.12.2021 САМ ЗАПУСК WORK MANAGER  СИНХРОНИАЗЦИИ ПРИ ВКЛЮЧЕННОЙ АКТИВТИ
+                        default:
+                            // TODO: 26.03.2023
+                            // TODO: 26.03.2023
+                            РешениеЗапускатьWorkManagerИлиНетАктивтиКакое=true;
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                    + " АктивностьЕслиЕстьTOP "+АктивностьЕслиЕстьTOP  + " РешениеЗапускатьWorkManagerИлиНетАктивтиКакое " +РешениеЗапускатьWorkManagerИлиНетАктивтиКакое );
+                            break;
                     }
-                }));
-                Message msg = Message.obtain();
-                Bundle bundle = new Bundle();
-                bundle.putString("СтатусРаботыСлужбыСинхронизации", "ЗапускаемAsyncBackground");
-                msg.setData(bundle);
-                if ( messengerWorkManager!=null) {
-                    msg.replyTo = mMessenger;
-                    messengerWorkManager.send(msg);
                 }
+            }
+        }
+    }
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+        Log.e(context.getClass().getName(), " ОШИБКА В WORK MANAGER  MyWork_Async_Синхронизация_Одноразовая из FaceApp в  MyWork_Async_Синхронизация_Одноразовая Exception  ошибка в классе  MyWork_Async_Синхронизация_Одноразовая" + e.toString());
+    }
+        return РешениеЗапускатьWorkManagerИлиНетАктивтиКакое;
+    }
+
+    private Integer МетодЗапускаОднаразовая() {
+        Integer ФинальныйРезультатAsyncBackgroud=0;
+        try{
+            boolean ВыбранныйРежимСети = new Class_Find_Setting_User_Network(getApplicationContext()).МетодПроветяетКакуюУстановкуВыбралПользовательСети();
+            Log.d(this.getClass().getName(), "  ВыбранныйРежимСети ВыбранныйРежимСети "
+                    + ВыбранныйРежимСети);
+            if (ВыбранныйРежимСети == true && service_for_remote_async!=null ) {
+              ФинальныйРезультатAsyncBackgroud = service_for_remote_async.МетодAsyncИзСлужбы(getApplicationContext());
+                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " ФинальныйРезультатAsyncBackgroud " + " service_for_remote_async " + service_for_remote_async.binderBinderRemoteAsync);
             }
     } catch (Exception e) {
         e.printStackTrace();
