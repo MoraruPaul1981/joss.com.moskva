@@ -50,7 +50,7 @@ public class ContentProviderForDataBaseCurrentOperations extends ContentProvider
             ИменаТаблицыОтАндройда.forEach(new Consumer<String>() {
                 @Override
                 public void accept(String ЭлементТаблица) {
-                    uriMatcherДЛяПровайдераКонтентБазаДанных.addURI("com.dsy.dsu.providerdatabasecursorloader",ЭлементТаблица.toString(),ТекущаяСтрокаПриДОбавлениииURL);
+                    uriMatcherДЛяПровайдераКонтентБазаДанных.addURI("com.dsy.dsu.providerdatabasecurrentoperations",ЭлементТаблица.toString(),ТекущаяСтрокаПриДОбавлениииURL);
                     Log.d(this.getClass().getName(), " ЭлементТаблица "+ЭлементТаблица + " ТекущаяСтрокаПриДОбавлениииURL " +ТекущаяСтрокаПриДОбавлениииURL);
                     ТекущаяСтрокаПриДОбавлениииURL++;
                 }
@@ -173,7 +173,7 @@ public class ContentProviderForDataBaseCurrentOperations extends ContentProvider
         String table = new String();
         try{
             Log.d(this.getClass().getName(), " uri"+ uri);
-            table=    Optional.ofNullable(uri).map(Emmeter->Emmeter.toString().replace("content://com.dsy.dsu.providerdatabasecursorloader/","")).get();
+            table=    Optional.ofNullable(uri).map(Emmeter->Emmeter.toString().replace("content://com.dsy.dsu.providerdatabasecurrentoperations/","")).get();
             Log.w(getContext().getClass().getName(),
                     " defaluit table  " + table  + " uri " + uri);/////
             Log.d(this.getClass().getName(), " table"+ table);

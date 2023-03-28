@@ -965,14 +965,14 @@
 
         <provider
             android:name=".Code_For_Firebase_And_Provader.ContentProviderForDataBaseCurrentOperations"
-            android:authorities="com.dsy.dsu.providerdatabasecursorloader"
+            android:authorities="com.dsy.dsu.providerdatabasecurrentoperations"
             android:directBootAware="true"
             android:enabled="true"
             android:excludeFromRecents="true"
 
             android:exported="true"
             android:grantUriPermissions="true"
-            android:permission="com.dsy.dsu.providerdatabasecursorloader.pemission"
+            android:permission="com.dsy.dsu.providerdatabasecurrentoperations.pemission"
             android:readPermission="true"
             android:writePermission="true"
             />

@@ -21,7 +21,7 @@ public class SubClassCursorLoader {
             String[] УсловияВыборки=      bundle.getStringArray("УсловияВыборки");
             String  СамЗапрос=      bundle.getString("СамЗапрос");
             String  Таблица=      bundle.getString("Таблица");
-            Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecursorloader/" + Таблица + "");
+            Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" + Таблица + "");
             cursorLoader.setUri(uri);
             cursorLoader.setSelection(СамЗапрос);
             cursorLoader.setSelectionArgs(УсловияВыборки);//МесяцПростоАнализа
