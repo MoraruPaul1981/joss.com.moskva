@@ -5602,7 +5602,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                             message.getTarget().post(()->{
                                 if (cursorДанные.getCount()>0 && cursorДанные!=null) {
                                     simpleCursorAdapterЦФО.swapCursor(cursorДанные);
-                                    simpleCursorAdapterЦФО.notifyDataSetChanged();
                                     listViewДляНовыйПосик.setSelection(0);
                                 }
                                 if (cursorДанные.getCount()==0 && cursorДанные!=null) {
@@ -5611,7 +5610,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                         searchViewДляНовогоЦФО.setBackgroundColor(Color.parseColor("#F2F5F5"));
                                     }, 500);
                                 }
+                                simpleCursorAdapterЦФО.notifyDataSetChanged();
                                 searchViewДляНовогоЦФО.refreshDrawableState();
+                                listViewДляНовыйПосик.deferNotifyDataSetChanged();
                                 listViewДляНовыйПосик.refreshDrawableState();
                                 listViewДляНовыйПосик.forceLayout();
                             });
