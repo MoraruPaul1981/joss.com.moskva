@@ -5705,7 +5705,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" +"prof" + "");
         ContentResolver resolver = context.getContentResolver();
      // Integer  insertData=   resolver.bulkInsert(uri, new ContentValues[]{});
-        Integer insertData=   resolver.update(uri,new ContentValues(),new String(),new String[]{});
+        //Integer insertData=   resolver.update(uri,new ContentValues(),new String(),new String[]{});
+        Bundle insertData=   resolver.call(uri, new String(),new String(),new Bundle());
         Log.w(context.getClass().getName(), " РЕЗУЛЬТАТ insertData  ВСТАВКИ ЗНАЧЕНИЯ  " +  insertData.toString() );
 
 

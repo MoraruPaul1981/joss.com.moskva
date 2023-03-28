@@ -39,6 +39,7 @@ public class ContentProviderForDataBaseCurrentOperations extends ContentProvider
     private AsyncTaskLoader<?> asyncTaskLoader;
     private Handler handler;
     private Integer ТекущаяСтрокаПриДОбавлениииURL=0;
+    private     ContentResolvers contentResolvers;
     public ContentProviderForDataBaseCurrentOperations() throws InterruptedException {
         try{
 
@@ -75,6 +76,7 @@ public class ContentProviderForDataBaseCurrentOperations extends ContentProvider
                 }
             });
             // TODO: 04.10.2022
+            contentResolvers=new ContentResolvers(getContext());
         } catch (Exception e) {
             e.printStackTrace();
             Create_Database_СамаБАзаSQLite.endTransaction();
@@ -361,13 +363,6 @@ public class ContentProviderForDataBaseCurrentOperations extends ContentProvider
         return super.applyBatch(authority, operations);
     }
 
-    @Nullable
-    @Override
-    public Bundle call(@NonNull String authority, @NonNull String method, @Nullable String arg, @Nullable Bundle extras) {
-        Uri uri = Uri.parse(authority);
-        update(uri,null,null,null);
-        return super.call(authority, method, arg, extras);
-    }
 
     @Override
     public void shutdown() {
@@ -377,6 +372,17 @@ public class ContentProviderForDataBaseCurrentOperations extends ContentProvider
     @Nullable
     @Override
     public Bundle call(@NonNull String method, @Nullable String arg, @Nullable Bundle extras) {
+        Uri uri = Uri.parse(arg);
+        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
+        operations.
+        try {
+            contentResolvers.applyBatch("fsf",operations );
+        } catch (OperationApplicationException e) {
+            throw new RuntimeException(e);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+        update(uri,null,null);
         return super.call(method, arg, extras);
     }
 
@@ -421,5 +427,27 @@ public class ContentProviderForDataBaseCurrentOperations extends ContentProvider
         return РезультатСменыСтатусаВыбраногоМатериала;
     }
 
+    @Override
+    public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable Bundle extras) {
+        return 111111222;
+    }
+    class ContentResolvers extends  ContentResolver{
+
+        /**
+         * Note: passing a {@code null} context here could lead to unexpected behavior in certain
+         * ContentResolver APIs so it is highly recommended to pass a non-null context here.
+         *
+         * @param context
+         */
+        public ContentResolvers(@Nullable Context context) {
+            super(context);
+        }
+
+        @NonNull
+        @Override
+        public ContentProviderResult[] applyBatch(@NonNull String authority, @NonNull ArrayList<ContentProviderOperation> operations) throws OperationApplicationException, RemoteException {
+            return new ContentProviderResult[]{};
+        }
+    }
 }
 
