@@ -196,10 +196,6 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
                      ФинальныйРезультатAsyncBackgroud)
            .putBoolean("Proccesing_MyWork_Async_Синхронизация_Одноразовая",true)
              .build();
-     // TODO: 28.03.2023 disebler
-     if (serviceConnection!=null) {
-         context.unbindService(serviceConnection);
-     }
 // TODO: 26.03.2023
      Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
              " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

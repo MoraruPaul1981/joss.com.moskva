@@ -187,7 +187,7 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
                                 case "com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Tabels_Users_And_Passwords":
                                 case "com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_Start":
                                 case "com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Visible_Async":
-                              /*  case "com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_App":*/
+                                case "com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_App":
                                     Log.i(getApplicationContext().getClass().getName(), " ВЫХОД  .....ТекущаяАктивтиАктивностьЕслиЕстьTOP" + ТекущаяАктивти +
                                             " АктивностьЕслиЕстьTOP  " + АктивностьЕслиЕстьTOP);////   case "com.dsy.dsu.Code_For_Chats_КодДля_Чата.MainActivity_List_Chats" :
                                     break;
@@ -235,11 +235,6 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
                     .putLong("WorkManangerVipolil",
                            Long.parseLong(ФинальныйРезультатAsyncBackgroud.toString()))
                     .build();
-
-            // TODO: 28.03.2023 diseble
-            if (serviceConnection!=null) {
-                getApplicationContext().unbindService(serviceConnection);
-            }
 // TODO: 25.03.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

@@ -56,7 +56,7 @@ public class Class_Generation_WORK_MANGER_DIRECT {
                         .build();
 
          Integer callbackRunnable= WorkManager.getInstance(context).getWorkInfosByTag(ИмяСлужбыСинхронизации).get().size();
-            if (callbackRunnable>=0) {
+            if (callbackRunnable==0) {
                 Log.w(context.getClass().getName(), " ПОСЛЕ ОТРАБОТКИ МЕТОДА ....Внутри MyWork_Async_Синхронизация_Общая  callbackRunnable.name() " + callbackRunnable);
                 WorkManager.getInstance(context.getApplicationContext()).enqueueUniquePeriodicWork(ИмяСлужбыСинхронизации,
                         ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequestСинхронизация);
