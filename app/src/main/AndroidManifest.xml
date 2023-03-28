@@ -963,10 +963,8 @@
             android:readPermission="true"
             android:writePermission="true" />
 
-
-
         <provider
-            android:name=".Code_For_Firebase_And_Provader.ContentProviderForDataBaseCursorLoader"
+            android:name=".Code_For_Firebase_And_Provader.ContentProviderForDataBaseCurrentOperations"
             android:authorities="com.dsy.dsu.providerdatabasecursorloader"
             android:directBootAware="true"
             android:enabled="true"
@@ -976,7 +974,8 @@
             android:grantUriPermissions="true"
             android:permission="com.dsy.dsu.providerdatabasecursorloader.pemission"
             android:readPermission="true"
-            android:writePermission="true" />
+            android:writePermission="true"
+            />
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"

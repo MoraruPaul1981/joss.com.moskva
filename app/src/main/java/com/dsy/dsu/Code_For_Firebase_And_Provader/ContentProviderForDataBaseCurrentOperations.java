@@ -3,17 +3,18 @@ package com.dsy.dsu.Code_For_Firebase_And_Provader;
 import android.content.ContentProvider;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
+import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.OperationApplicationException;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.CancellationSignal;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.RemoteException;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -31,14 +32,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-public class ContentProviderForDataBaseCursorLoader extends ContentProvider {
+public class ContentProviderForDataBaseCurrentOperations extends ContentProvider  {
     private   UriMatcher uriMatcherДЛяПровайдераКонтентБазаДанных;
     private SQLiteDatabase Create_Database_СамаБАзаSQLite;
     private  PUBLIC_CONTENT public_contentМенеджерПотоковМассвойОперацииВставки;
     private AsyncTaskLoader<?> asyncTaskLoader;
     private Handler handler;
     private Integer ТекущаяСтрокаПриДОбавлениииURL=0;
-    public ContentProviderForDataBaseCursorLoader() throws InterruptedException {
+    public ContentProviderForDataBaseCurrentOperations() throws InterruptedException {
         try{
 
             CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда=
@@ -49,7 +50,7 @@ public class ContentProviderForDataBaseCursorLoader extends ContentProvider {
             ИменаТаблицыОтАндройда.forEach(new Consumer<String>() {
                 @Override
                 public void accept(String ЭлементТаблица) {
-                    uriMatcherДЛяПровайдераКонтентБазаДанных.addURI("com.dsy.dsu.providerdatabase",ЭлементТаблица.toString(),ТекущаяСтрокаПриДОбавлениииURL);
+                    uriMatcherДЛяПровайдераКонтентБазаДанных.addURI("com.dsy.dsu.providerdatabasecursorloader",ЭлементТаблица.toString(),ТекущаяСтрокаПриДОбавлениииURL);
                     Log.d(this.getClass().getName(), " ЭлементТаблица "+ЭлементТаблица + " ТекущаяСтрокаПриДОбавлениииURL " +ТекущаяСтрокаПриДОбавлениииURL);
                     ТекущаяСтрокаПриДОбавлениииURL++;
                 }
@@ -371,6 +372,12 @@ public class ContentProviderForDataBaseCursorLoader extends ContentProvider {
     @Override
     public void shutdown() {
         super.shutdown();
+    }
+
+    @Nullable
+    @Override
+    public Bundle call(@NonNull String method, @Nullable String arg, @Nullable Bundle extras) {
+        return super.call(method, arg, extras);
     }
 
     @Override

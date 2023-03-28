@@ -4,6 +4,9 @@ package com.dsy.dsu.Code_ForTABEL;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +18,7 @@ import android.database.sqlite.SQLiteCursor;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -68,6 +72,7 @@ import androidx.work.WorkManager;
 
 import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
+import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Weekend_For_Tabels;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.Class_Generation_Data;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
@@ -103,6 +108,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TimeZone;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
@@ -5687,6 +5693,19 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                 + " materialTextViewНоваяПрофессия "+materialTextViewНоваяПрофессия);
+
+       /* ContentResolver contentResolver = getContentResolver();
+        Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecursorloader/" + "prof" + "");*/
+
+      //  contentResolver.update(uri,new ContentValues(),new Bundle());
+     /*   ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
+              ContentProviderResult[] contentProviderResults= contentResolver.applyBatch("prof",operations);*/
+
+        Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecursorloader/" +"prof" + "");
+        ContentResolver resolver = context.getContentResolver();
+      Integer  insertData=   resolver.bulkInsert(uri, new ContentValues[]{});
+        Log.w(context.getClass().getName(), " РЕЗУЛЬТАТ insertData  ВСТАВКИ ЗНАЧЕНИЯ  " +  insertData.toString() );
+
 
 
 
