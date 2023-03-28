@@ -3033,7 +3033,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                             Cursor    КурсорТаблицаПрофесии=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleПрофесии);
                             Log.d(this.getClass().getName(), " КурсорТаблицаПрофесии" + КурсорТаблицаПрофесии);
                             // TODO: 27.03.2023 Новый ПОсик
-                        new SubClassNewSearchAlertDialogНовыйПосик().МетодСообщениеНовыйПоиска(activity,КурсорТаблицаПрофесии,НазваниеДанныхВТабелеФИО,message,"prof");
+                        new SubClassNewSearchAlertDialogНовыйПосик().МетодСообщениеНовыйПоиска(activity,КурсорТаблицаПрофесии ,message,"prof");
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
@@ -5393,8 +5393,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         Cursor cursorДанные;
         @UiThread
         private void МетодСообщениеНовыйПоиска(@NonNull Activity activity
-                ,@NonNull Cursor cursorДанные
-                ,@NonNull TextView materialTextViewДляКого,
+                ,@NonNull Cursor cursorДанные,
                                                @NonNull Message message
                 ,@NonNull String ТаблицаПосика) {
             try{
@@ -5407,7 +5406,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     public MaterialAlertDialogBuilder setView(View view) {
                         listViewДляНовыйПосик[0] =    (ListView) view.findViewById(R.id.SearchViewList);
                         listViewДляНовыйПосик[0].setTextFilterEnabled(true);
-                        SearchView searchViewДляНовогоПоиска=    (SearchView) view.findViewById(R.id.searchview_newscanner);
+                        SearchView    searchViewДляНовогоПоиска=    (SearchView) view.findViewById(R.id.searchview_newscanner);
                         searchViewДляНовогоПоиска.setQueryHint("Поиск");
                         // TODO: 14.12.2022
                         searchViewДляНовогоПоиска.setDrawingCacheBackgroundColor(Color.GRAY);
@@ -5467,23 +5466,26 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                                         Integer IDЦфоДЛяПередачи=      bundle.getInt("ПолучаемIDЦфо",0);
                                                         String НазваниеЦФО=   bundle.getString("НазваниеЦФО","");
                                                         Long UUIDНазваниеЦФО =   bundle.getLong("UUIDНазваниеЦФО",0l);
-                                                        materialTextViewДляКого.setTag(bundle);
-                                                        materialTextViewДляКого.setText(НазваниеЦФО);
-                                                        materialTextViewДляКого.refreshDrawableState();
-                                                        materialTextViewДляКого.forceLayout();
-
-                                                        if (  materialTextViewДляКого.getText().toString().length()==0) {
+                                                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                                                + " IDЦфоДЛяПередачи "+IDЦфоДЛяПередачи + " НазваниеЦФО " +НазваниеЦФО + " UUIDНазваниеЦФО " +UUIDНазваниеЦФО);
+                                                        searchViewДляНовогоПоиска.setTag(bundle);
+                                                        searchViewДляНовогоПоиска.setQueryHint("");
+                                                        searchViewДляНовогоПоиска.setQuery(НазваниеЦФО,true);
+                                                        if (  searchViewДляНовогоПоиска.getQuery().toString().length()==0) {
                                                             Snackbar.make(view, " Вы не выбрали  !!! "
                                                                     , Snackbar.LENGTH_LONG).show();
-                                                            materialTextViewДляКого.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-                                                            materialTextViewДляКого.setTextColor(Color.GRAY);
+                                                            ((MaterialTextView)view).setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                                                            ((MaterialTextView)view).setTextColor(Color.GRAY);
                                                             Log.d(this.getClass().getName()," bundle.keySet().size() "+bundle.keySet().size());
                                                         } else {
-                                                            materialTextViewДляКого.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-                                                            materialTextViewДляКого.setTextColor(Color.BLACK);
+                                                            ((MaterialTextView)view).setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                                                            ((MaterialTextView)view).setTextColor(Color.BLACK);
                                                             Log.d(this.getClass().getName()," bundle.keySet().size() "+bundle.keySet().size());
                                                         }
-                                                        Log.d(this.getClass().getName()," position");
+                                                        searchViewДляНовогоПоиска.refreshDrawableState();
+                                                        searchViewДляНовогоПоиска.forceLayout();
                                                     }
                                                 });
                                                 // TODO: 13.12.2022 филь
