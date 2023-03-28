@@ -261,7 +261,21 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
                             }
                         }
                     }
+                }else {
+                    // TODO: 26.03.2023  только для ОБЩЕЙ Work Manager
+                    РешениеЗапускатьWorkManagerИлиНетАктивтиКакое=true;
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                            + " АктивностьЕслиЕстьTOP "+АктивностьЕслиЕстьTOP  + " РешениеЗапускатьWorkManagerИлиНетАктивтиКакое " +РешениеЗапускатьWorkManagerИлиНетАктивтиКакое );
                 }
+            }else {
+                // TODO: 26.03.2023  только для ОБЩЕЙ Work Manager
+                РешениеЗапускатьWorkManagerИлиНетАктивтиКакое=true;
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " АктивностьЕслиЕстьTOP "+АктивностьЕслиЕстьTOP  + " РешениеЗапускатьWorkManagerИлиНетАктивтиКакое " +РешениеЗапускатьWorkManagerИлиНетАктивтиКакое );
             }
         } catch (Exception e) {
             e.printStackTrace();
