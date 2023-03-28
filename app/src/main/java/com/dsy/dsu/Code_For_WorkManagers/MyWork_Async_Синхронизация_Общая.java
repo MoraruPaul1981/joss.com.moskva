@@ -39,6 +39,7 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
     private Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal class_generation_sendBroadcastReceiver_and_firebase_oneSignal;
     private Service_For_Remote_Async localBinderAsync;
     private  Messenger           messengerWorkManager;
+    private      ServiceConnection serviceConnection;
     private  String КлючДляFirebaseNotification = "2a1819db-60c8-4ca3-a752-1b6cd9cadfa1";
     // TODO: 28.09.2022
     public MyWork_Async_Синхронизация_Общая(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -60,27 +61,28 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
     private void МетодБиндингаОбщая() throws InterruptedException {
         try {
         Intent intentГлавнаяСинхрониазция = new Intent(getApplicationContext(), Service_For_Remote_Async.class);
-        getApplicationContext().bindService(intentГлавнаяСинхрониазция, new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                messengerWorkManager = new Messenger(service);
-                Log.d(getApplicationContext().getClass().getName().toString(), "\n"
-                        + "onServiceConnected  ОБЩАЯ messengerActivity  " + messengerWorkManager.getBinder().pingBinder());
-                IBinder binder = messengerWorkManager.getBinder();
-                if (binder.isBinderAlive()) {
-                    getTaskExecutor().postToMainThread(()->{
-                        localBinderAsync = new Service_For_Remote_Async();
-                        Log.d(getApplicationContext().getClass().getName().toString(), "\n"
-                                + " МетодБиндингасМессажером onServiceConnected  binder.isBinderAlive()  " + binder.isBinderAlive());
-                    });
+           serviceConnection=  new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    messengerWorkManager = new Messenger(service);
+                    Log.d(getApplicationContext().getClass().getName().toString(), "\n"
+                            + "onServiceConnected  ОБЩАЯ messengerActivity  " + messengerWorkManager.getBinder().pingBinder());
+                    IBinder binder = messengerWorkManager.getBinder();
+                    if (binder.isBinderAlive()) {
+                        getTaskExecutor().postToMainThread(()->{
+                            localBinderAsync = new Service_For_Remote_Async();
+                            Log.d(getApplicationContext().getClass().getName().toString(), "\n"
+                                    + " МетодБиндингасМессажером onServiceConnected  binder.isBinderAlive()  " + binder.isBinderAlive());
+                        });
+                    }
                 }
-            }
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-                Log.d(getApplicationContext().getClass().getName().toString(), "\n"
-                        + "onServiceConnected  ОБЩАЯ messengerActivity  ");
-            }
-        },Context.BIND_AUTO_CREATE);
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
+                    Log.d(getApplicationContext().getClass().getName().toString(), "\n"
+                            + "onServiceConnected  ОБЩАЯ messengerActivity  ");
+                }
+            };
+        getApplicationContext().bindService(intentГлавнаяСинхрониазция,serviceConnection,Context.BIND_AUTO_CREATE);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -231,6 +233,11 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
                     .putLong("WorkManangerVipolil",
                            Long.parseLong(РезультатЗапускаОбщейСинх.toString()))
                     .build();
+
+            // TODO: 28.03.2023 diseble
+            if (serviceConnection!=null) {
+                getApplicationContext().unbindService(serviceConnection);
+            }
 // TODO: 25.03.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

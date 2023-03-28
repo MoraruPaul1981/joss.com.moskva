@@ -42,6 +42,7 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
    private Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal  class_generation_sendBroadcastReceiver_and_firebase_oneSignallass ;
     private Service_For_Remote_Async locaBinderAsync;
     private  Messenger           messengerWorkManager;
+    private  ServiceConnection serviceConnection;
 
     // TODO: 28.09.2022
     public MyWork_Async_Синхронизация_Одноразовая(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -65,34 +66,35 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
     private void МетодПодключениекСлубе() {
         try{
         Intent intentОбноразоваяСинхронизациия = new Intent(context, Service_For_Remote_Async.class);
-        context.    bindService(intentОбноразоваяСинхронизациия, new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                try{
-                    messengerWorkManager =new Messenger(service);
-                    Log.d(context.getClass().getName().toString(), "\n"
-                            + "onServiceConnected  одноразовая messengerActivity  " + messengerWorkManager.getBinder().pingBinder());
-                    if (service.isBinderAlive()) {
-                        getTaskExecutor().postToMainThread(()->{
-                            locaBinderAsync = new Service_For_Remote_Async();
-                            Log.d(getApplicationContext().getClass().getName().toString(), "\n"
-                                    + " МетодБиндингасМессажером onServiceConnected  binder.isBinderAlive()  " + locaBinderAsync.binderBinderRemoteAsync.isBinderAlive());
-                        });
+             serviceConnection=         new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    try{
+                        messengerWorkManager =new Messenger(service);
+                        Log.d(context.getClass().getName().toString(), "\n"
+                                + "onServiceConnected  одноразовая messengerActivity  " + messengerWorkManager.getBinder().pingBinder());
+                        if (service.isBinderAlive()) {
+                            getTaskExecutor().postToMainThread(()->{
+                                locaBinderAsync = new Service_For_Remote_Async();
+                                Log.d(getApplicationContext().getClass().getName().toString(), "\n"
+                                        + " МетодБиндингасМессажером onServiceConnected  binder.isBinderAlive()  " + locaBinderAsync.binderBinderRemoteAsync.isBinderAlive());
+                            });
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
-            }
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-                Log.d(context.getClass().getName().toString(), "\n"
-                        + "onServiceConnected  одноразовая  messengerActivity  " );
-            }
-        },Context.BIND_AUTO_CREATE);
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
+                    Log.d(context.getClass().getName().toString(), "\n"
+                            + "onServiceConnected  одноразовая  messengerActivity  " );
+                }
+            };
+        context.    bindService(intentОбноразоваяСинхронизациия,serviceConnection,Context.BIND_AUTO_CREATE);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -195,6 +197,10 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
                      РезультатЗапускаСинх)
            .putBoolean("Proccesing_MyWork_Async_Синхронизация_Одноразовая",true)
              .build();
+     // TODO: 28.03.2023 disebler
+     if (serviceConnection!=null) {
+         context.unbindService(serviceConnection);
+     }
 // TODO: 26.03.2023
      Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
              " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
