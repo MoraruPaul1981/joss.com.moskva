@@ -4,6 +4,7 @@ package com.dsy.dsu.Code_ForTABEL;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ContentProvider;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
 import android.content.ContentResolver;
@@ -5693,25 +5694,10 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                 + " materialTextViewНоваяПрофессия "+materialTextViewНоваяПрофессия);
-
-       /* ContentResolver contentResolver = getContentResolver();
-        Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecursorloader/" + "prof" + "");*/
-
-      //  contentResolver.update(uri,new ContentValues(),new Bundle());
-     /*   ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
-              ContentProviderResult[] contentProviderResults= contentResolver.applyBatch("prof",operations);*/
-        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
-
         Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" +"prof" + "");
-        ContentResolver resolver = context.getContentResolver();
-     // Integer  insertData=   resolver.bulkInsert(uri, new ContentValues[]{});
-        //Integer insertData=   resolver.update(uri,new ContentValues(),new String(),new String[]{});
-        Bundle insertData=   resolver.call(uri, new String(),new String(),new Bundle());
-        Log.w(context.getClass().getName(), " РЕЗУЛЬТАТ insertData  ВСТАВКИ ЗНАЧЕНИЯ  " +  insertData.toString() );
-
-
-
-
+        ContentResolver contentResolver=getContentResolver();
+        Bundle bundleОбновлениеПрофесии=  contentResolver.call(uri,"prof","prof",new Bundle());
+        Log.w(context.getClass().getName(), " РЕЗУЛЬТАТ bundleОбновлениеПрофесии  " +  bundleОбновлениеПрофесии);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
