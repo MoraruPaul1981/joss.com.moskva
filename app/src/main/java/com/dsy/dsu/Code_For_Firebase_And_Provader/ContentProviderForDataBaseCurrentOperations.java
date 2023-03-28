@@ -23,8 +23,10 @@ import androidx.loader.content.AsyncTaskLoader;
 
 import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
+import com.dsy.dsu.Business_logic_Only_Class.DATE.Class_Generation_Data;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassCreatingMainAllTables;
+import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -468,7 +470,35 @@ public class ContentProviderForDataBaseCurrentOperations extends ContentProvider
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable Bundle extras) {
-        return 111111222;
+        Integer РезультатСменыПрофесии=0;
+        try{
+       String table = МетодОпределяемТаблицу(uri);
+            values=new ContentValues();
+            Integer IDЦфоДЛяПередачи=      extras.getInt("ПолучаемIDЦфо",0);
+            values.put("prof",IDЦфоДЛяПередачи);
+            String НазваниеЦФО=   extras.getString("НазваниеЦФО","");
+            Long UUIDНазваниеЦФО =   extras.getLong("UUIDНазваниеЦФО",0l);
+            Long ВерсияДанныхUp = new SubClassUpVersionDATA().МетодПовышаемВерсииCurrentTable(table,getContext(),Create_Database_СамаБАзаSQLite);
+            values.put("current_table",IDЦфоДЛяПередачи);
+            String ДатаОбновления=     new Class_Generation_Data(getContext()).ГлавнаяДатаИВремяОперацийСБазойДанных();
+            values.put("date_update",ДатаОбновления);
+            // TODO: 28.03.2023 Само Обновление Профессии 
+            РезультатСменыПрофесии  = Create_Database_СамаБАзаSQLite.update(table,values, "uuid=?", new String[]{UUIDНазваниеЦФО.toString()});
+       // TODO: 30.10.2021
+       Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+               " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+               " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+               + " РезультатСменыПрофесии "+РезультатСменыПрофесии+ " table "+table );
+    } catch (Exception e) {
+        e.printStackTrace();
+        Create_Database_СамаБАзаSQLite.endTransaction();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName()
+                + " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+        return РезультатСменыПрофесии;
     }
     class ContentResolvers extends  ContentResolver{
 

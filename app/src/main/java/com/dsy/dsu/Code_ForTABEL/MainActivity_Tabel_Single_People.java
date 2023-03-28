@@ -5690,13 +5690,15 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
   private   Integer МетодЗаписиСменыПрофесии(@NonNull MaterialTextView materialTextViewНоваяПрофессия){ //TODO метод записи СМЕНЫ ПРОФЕСИИ
         Integer РезультатИзмененияПрофессии=0;
     try{
+        String ТаблицаОбработки="data_tabels";
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                + " materialTextViewНоваяПрофессия "+materialTextViewНоваяПрофессия);
-        Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" +"prof" + "");
+                + " materialTextViewНоваяПрофессия "+materialTextViewНоваяПрофессия+ " ТаблицаОбработки "+ТаблицаОбработки);
+        Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" +ТаблицаОбработки + "");
+        Bundle bundleСменаПрофессии= (Bundle) materialTextViewНоваяПрофессия.getTag();
         ContentResolver contentResolver=getContentResolver();
-        Bundle bundleОбновлениеПрофесии=  contentResolver.call(uri,"prof","prof",new Bundle());
+        Bundle bundleОбновлениеПрофесии=  contentResolver.call(uri,ТаблицаОбработки,ТаблицаОбработки,bundleСменаПрофессии);
         Log.w(context.getClass().getName(), " РЕЗУЛЬТАТ bundleОбновлениеПрофесии  " +  bundleОбновлениеПрофесии);
     } catch (Exception e) {
         e.printStackTrace();
