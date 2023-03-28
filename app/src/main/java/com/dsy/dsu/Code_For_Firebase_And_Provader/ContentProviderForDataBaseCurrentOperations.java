@@ -28,8 +28,11 @@ import com.dsy.dsu.Business_logic_Only_Class.SubClassCreatingMainAllTables;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public class ContentProviderForDataBaseCurrentOperations extends ContentProvider  {
@@ -373,26 +376,42 @@ public class ContentProviderForDataBaseCurrentOperations extends ContentProvider
     @Override
     public Bundle call(@NonNull String authority, @NonNull String method, @Nullable String arg, @Nullable Bundle extras) {
         // TODO: 28.03.2023
-
-        try{
-            if (!Create_Database_СамаБАзаSQLite.inTransaction()) {
-                Create_Database_СамаБАзаSQLite.beginTransaction();
-            }
-            Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" +arg + "");
-            String table = МетодОпределяемТаблицу(uri);
-         Integer СтатусОбновления=   update(uri,null,extras);
-          extras.putInt("СтатусОбновления",СтатусОбновления);
-            if (СтатусОбновления>0) {
-                if (Create_Database_СамаБАзаSQLite.inTransaction()) {
-                    Create_Database_СамаБАзаSQLite.setTransactionSuccessful();
+        try {
+            CompletableFuture.supplyAsync(new Supplier<Object>() {
+                @Override
+                public Object get() {
+                    if (!Create_Database_СамаБАзаSQLite.inTransaction()) {
+                        Create_Database_СамаБАзаSQLite.beginTransaction();
+                    }
+                    Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" +arg + "");
+                    String table = МетодОпределяемТаблицу(uri);
+                    Integer СтатусОбновления=   update(uri,null,extras);
+                    extras.putInt("СтатусОбновления",СтатусОбновления);
+                    if (СтатусОбновления>0) {
+                        if (Create_Database_СамаБАзаSQLite.inTransaction()) {
+                            Create_Database_СамаБАзаSQLite.setTransactionSuccessful();
+                        }
+                    }
+                    if (Create_Database_СамаБАзаSQLite.inTransaction()) {
+                        Create_Database_СамаБАзаSQLite.endTransaction();
+                    }
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    return null;
                 }
-            }
-            if (Create_Database_СамаБАзаSQLite.inTransaction()) {
-                Create_Database_СамаБАзаSQLite.endTransaction();
-            }
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+            }).exceptionally(e -> {
+                System.out.println(e.getClass());
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
+                        Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+                return e;
+            }).get();
         } catch (Exception e) {
             e.printStackTrace();
             Create_Database_СамаБАзаSQLite.endTransaction();
