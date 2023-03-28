@@ -5611,8 +5611,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                         searchViewДляНовогоЦФО.setBackgroundColor(Color.parseColor("#F2F5F5"));
                                     }, 500);
                                 }
-                                НазваниеДанныхВТабелеФИО.refreshDrawableState();
-                                НазваниеДанныхВТабелеФИО.forceLayout();
+                                searchViewДляНовогоЦФО.refreshDrawableState();
+                                listViewДляНовыйПосик.refreshDrawableState();
+                                listViewДляНовыйПосик.forceLayout();
                             });
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
