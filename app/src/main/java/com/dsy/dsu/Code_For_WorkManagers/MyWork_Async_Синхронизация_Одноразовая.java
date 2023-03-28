@@ -8,7 +8,10 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
+import android.os.Message;
 import android.os.Messenger;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -40,7 +43,7 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
     private  String ИмяСлужбыСинхронизации="WorkManager Synchronizasiy_Data Disposable";
  @Inject
    private Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal  class_generation_sendBroadcastReceiver_and_firebase_oneSignallass ;
-    private Service_For_Remote_Async locaBinderAsync;
+    private Service_For_Remote_Async.LocalBinderДляТабеля locaBinderAsync;
     private  Messenger           messengerWorkManager;
     private  ServiceConnection serviceConnection;
 
@@ -65,6 +68,7 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
 
     private void МетодПодключениекСлубе() {
         try{
+
         Intent intentОбноразоваяСинхронизациия = new Intent(context, Service_For_Remote_Async.class);
              serviceConnection=         new ServiceConnection() {
                 @Override
@@ -74,11 +78,16 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
                         Log.d(context.getClass().getName().toString(), "\n"
                                 + "onServiceConnected  одноразовая messengerActivity  " + messengerWorkManager.getBinder().pingBinder());
                         if (service.isBinderAlive()) {
-                            getTaskExecutor().postToMainThread(()->{
-                                locaBinderAsync = new Service_For_Remote_Async();
-                                Log.d(getApplicationContext().getClass().getName().toString(), "\n"
-                                        + " МетодБиндингасМессажером onServiceConnected  binder.isBinderAlive()  " + locaBinderAsync.binderBinderRemoteAsync.isBinderAlive());
-                            });
+                            //TODO СИНХРОНИАЗЦИЯ ГЛАВНАЯ
+                            Message msg = Message.obtain();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("СтатусРаботыСлужбыСинхронизации", "ЗапускаемAsyncBackground");
+                            msg.setData(bundle);
+                            if ( messengerWorkManager!=null) {
+                                msg.replyTo = messengerWorkManager;
+                                messengerWorkManager.send(msg);
+                            }
+
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -198,9 +207,9 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
            .putBoolean("Proccesing_MyWork_Async_Синхронизация_Одноразовая",true)
              .build();
      // TODO: 28.03.2023 disebler
-     if (serviceConnection!=null) {
+     /*if (serviceConnection!=null) {
          context.unbindService(serviceConnection);
-     }
+     }*/
 // TODO: 26.03.2023
      Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
              " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -374,7 +383,7 @@ return  РезультатЗапускаФоновойСинхронизации
          boolean ФлагРазрешениеРаботысСетьюПользователем = new Class_Find_Setting_User_Network(context).МетодПроветяетКакуюУстановкуВыбралПользовательСети();
          if (ФлагРазрешениеРаботысСетьюПользователем==true) {
                  ///////todo запускем синхронизации ОДНОРАЗОВАНАЯ
-                       РезультатЗапускаСинхОдно = locaBinderAsync.МетодAsyncИзСлужбы(context);
+                       РезультатЗапускаСинхОдно = locaBinderAsync.getService().МетодAsyncИзСлужбы(context);
                                  Log.d(context.getClass().getName().toString(), "\n"
                                          + "        MyWork_Async_Синхронизация_Одноразовая     РезультатЗапускаСинхОдно   "
                                          + РезультатЗапускаСинхОдно+
