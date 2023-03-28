@@ -5486,6 +5486,21 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                                         }
                                                         searchViewДляНовогоПоиска.refreshDrawableState();
                                                         searchViewДляНовогоПоиска.forceLayout();
+                                                        ((MaterialTextView)view).refreshDrawableState();
+                                                        ((MaterialTextView)view).forceLayout();
+                                                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                                                + "  ((MaterialTextView)view) "+ ((MaterialTextView)view).getTag());
+                                                        // TODO: 28.03.2023 ЗАПИСЫВАЕМ НОВУЮ ПРОФЕССИЮ В БАЗУ
+                                                        if (  searchViewДляНовогоПоиска.getQuery().toString().length()>0 ) {
+                                                            МетодЗаписиСменыПрофесии(((MaterialTextView)view));
+
+
+
+
+                                                            МетодПерегрузкаВидаЭкрана();
+                                                        }
                                                     }
                                                 });
                                                 // TODO: 13.12.2022 филь
@@ -5665,10 +5680,42 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         }
 
     }
+  private   Integer МетодЗаписиСменыПрофесии(@NonNull MaterialTextView materialTextViewНоваяПрофессия){ //TODO метод записи СМЕНЫ ПРОФЕСИИ
+        Integer РезультатИзмененияПрофессии=0;
+    try{
+        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                + " materialTextViewНоваяПрофессия "+materialTextViewНоваяПрофессия);
 
 
 
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+   return  РезультатИзмененияПрофессии;
+    }
 
+    private void МетодПерегрузкаВидаЭкрана() {
+        try {
+        НазваниеДанныхВТабелеФИО.refreshDrawableState();
+        НазваниеДанныхВТабелеФИО.forceLayout();
+        ГлавныйКонтейнерТабель.refreshDrawableState();
+        ГлавныйКонтейнерТабель.forceLayout();
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+    }
 }
 
 
