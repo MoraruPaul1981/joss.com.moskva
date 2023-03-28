@@ -45,6 +45,8 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
     private  Messenger           messengerWorkManager;
     private      ServiceConnection serviceConnection;
     private  String КлючДляFirebaseNotification = "2a1819db-60c8-4ca3-a752-1b6cd9cadfa1";
+    private    String СтатусРаботыСлужбыСинхронизации;
+    Integer          ФинальныйРезультатAsyncBackgroud =0;
     // TODO: 28.09.2022
     public MyWork_Async_Синхронизация_Общая(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -144,7 +146,6 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
     @Override
     public Result doWork() {
            Data myDataОтветОБЩЕЙСИНХРОНИЗАЦИИСлужбы = null;
-        Integer    РезультатЗапускаОбщейСинх=0;
         try {
             // TODO: 25.03.2023  ждем биндинга с службой синхронизации
             class_generation_sendBroadcastReceiver_and_firebase_oneSignal =
@@ -186,20 +187,20 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
                                 case "com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Tabels_Users_And_Passwords":
                                 case "com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_Start":
                                 case "com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Visible_Async":
-                                case "com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_App":
+                              /*  case "com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_App":*/
                                     Log.i(getApplicationContext().getClass().getName(), " ВЫХОД  .....ТекущаяАктивтиАктивностьЕслиЕстьTOP" + ТекущаяАктивти +
                                             " АктивностьЕслиЕстьTOP  " + АктивностьЕслиЕстьTOP);////   case "com.dsy.dsu.Code_For_Chats_КодДля_Чата.MainActivity_List_Chats" :
                                     break;
                                 // TODO: 01.12.2021 САМ ЗАПУСК WORK MANAGER  СИНХРОНИАЗЦИИ ПРИ ВКЛЮЧЕННОЙ АКТИВТИ
                                 default:
                                     // TODO: 26.03.2023
-                                    РезультатЗапускаОбщейСинх=     МетодЗапускаОбщей();
+                                    ФинальныйРезультатAsyncBackgroud=     МетодЗапускаОбщей();
                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() +
                                             "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                             + " КоличествоЗапущенныйПроуессы.size() " +КоличествоЗапущенныйПроуессы.size()
-                                            +  "РезультатЗапускаОбщейСинх " +РезультатЗапускаОбщейСинх);
+                                            +  "ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
                                     break;
                             }
                         }
@@ -211,30 +212,28 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
                           + " КоличествоЗапущенныйПроуессы.size() " +КоличествоЗапущенныйПроуессы.size());
                 }else {
                     // TODO: 26.03.2023
-                 РезультатЗапускаОбщейСинх=     МетодЗапускаОбщей();
+                    ФинальныйРезультатAsyncBackgroud=     МетодЗапускаОбщей();
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() +
                             "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                             + " КоличествоЗапущенныйПроуессы.size() " +КоличествоЗапущенныйПроуессы.size()
-                            +  "РезультатЗапускаОбщейСинх " +РезультатЗапускаОбщейСинх);
+                            +  "ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
                 }
             } else {
                 // TODO: 26.03.2023
-                РезультатЗапускаОбщейСинх=     МетодЗапускаОбщей();
+                ФинальныйРезультатAsyncBackgroud=     МетодЗапускаОбщей();
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                         + " ЗапущенныйПроуессыДляОбщейСинхрониазации" +ЗапущенныйПроуессыДляОбщейСинхрониазации
-                        +  "РезультатЗапускаОбщейСинх " +РезультатЗапускаОбщейСинх);
+                        +  "ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
             }
-
-
             myDataОтветОБЩЕЙСИНХРОНИЗАЦИИСлужбы = new Data.Builder()
                     .putInt("ReturnPublicAsyncWorkMananger",
-                            РезультатЗапускаОбщейСинх)
+                            ФинальныйРезультатAsyncBackgroud)
                     .putLong("WorkManangerVipolil",
-                           Long.parseLong(РезультатЗапускаОбщейСинх.toString()))
+                           Long.parseLong(ФинальныйРезультатAsyncBackgroud.toString()))
                     .build();
 
             // TODO: 28.03.2023 diseble
@@ -245,7 +244,7 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " РезультатЗапускаОбщейСинх "+РезультатЗапускаОбщейСинх );
+                    + " ФинальныйРезультатAsyncBackgroud "+ФинальныйРезультатAsyncBackgroud );
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -256,7 +255,7 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
             Log.e(getApplicationContext().getClass().getName(), " ОШИБКА В WORK MANAGER MyWork_Async_Синхронизация_Общая из FaceApp в MyWork_Async_Синхронизация_Общая Exception  ошибка в классе MyWork_Async_Синхронизация_Общая"
                     + e.toString());
         }
-        if (РезультатЗапускаОбщейСинх>0 ) {
+        if (ФинальныйРезультатAsyncBackgroud>0 ) {
             return Result.success(myDataОтветОБЩЕЙСИНХРОНИЗАЦИИСлужбы);
        /*    if (WorkManagerОБЩИЙ.getRunAttemptCount()<2) {
                 return Result.retry();
@@ -270,7 +269,6 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
 
     // TODO: 16.12.2021 МЕтод ЗАпуска  Сихрониазации Чисто В форне без актвтити
     private Integer    МетодЗапускаОбщей() {
-        Integer РезультатЗапускаОбщейСинх=0;
         try {
             // TODO: 22.12.2022  сама запуска синхронищации из workmanager ОБЩЕГО
             boolean ВыбранныйРежимСети =
@@ -286,7 +284,7 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
                             Integer dataSring=data.getInt("RemoteService");
                             String СтатусРаботыСлужбыСинхронизации =data.getString("СтатусРаботыСлужбыСинхронизации");
                             Integer МаксимальнеоКоличествоСтрок =data.getInt("МаксималноеКоличествоСтрочекJSON");
-                            Integer ФинальныйРезультатAsyncBackgroud =data.getInt("ФинальныйРезультатAsyncBackgroud");
+                             ФинальныйРезультатAsyncBackgroud =data.getInt("ФинальныйРезультатAsyncBackgroud");
                             // TODO: 11.10.2022
                             switch (СтатусРаботыСлужбыСинхронизации.trim()){
                                 case "ФинишВыходИзAsyncBackground" :
@@ -337,7 +335,7 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
                    Thread.currentThread().getStackTrace()[2].getMethodName(),
                    Thread.currentThread().getStackTrace()[2].getLineNumber());
        }
-        return РезультатЗапускаОбщейСинх;
+        return ФинальныйРезультатAsyncBackgroud;
     }
 
 

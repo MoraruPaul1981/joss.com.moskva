@@ -43,6 +43,8 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
     private Service_For_Remote_Async locaBinderAsync;
     private  Messenger           messengerWorkManager;
     private  ServiceConnection serviceConnection;
+    private  Integer ФинальныйРезультатAsyncBackgroud =0;
+    private   Data    myDataОтветОдноразовойСлужбы=null;
 
     // TODO: 28.09.2022
     public MyWork_Async_Синхронизация_Одноразовая(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -126,8 +128,6 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
     @NonNull
     @Override
     public Result doWork() {
-        Integer РезультатЗапускаСинх =0;
-        Data    myDataОтветОдноразовойСлужбы=null;
  try{
      class_generation_sendBroadcastReceiver_and_firebase_oneSignallass=
              new Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal(context);
@@ -174,7 +174,7 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
                              break;
                          // TODO: 01.12.2021 САМ ЗАПУСК WORK MANAGER  СИНХРОНИАЗЦИИ ПРИ ВКЛЮЧЕННОЙ АКТИВТИ
                          default:
-                             РезультатЗапускаСинх=
+                             ФинальныйРезультатAsyncBackgroud=
                                      МетодЗапускаОднаразовая(ПубличныйID,
                                              ПубличныйIDДляФрагмента, КоличествоЗапущенныйПроуессы,
                                              АктивностьЕслиЕстьTOP);
@@ -182,7 +182,7 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
                              Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                      " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                      " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                     + " РезультатЗапускаСинх "+РезультатЗапускаСинх );
+                                     + " ФинальныйРезультатAsyncBackgroud "+ФинальныйРезультатAsyncBackgroud );
                              break;
                      }
                  }
@@ -190,23 +190,21 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
          }
      }
      }
-     if(РезультатЗапускаСинх ==null){
-         РезультатЗапускаСинх =0;
-     }
+
      myDataОтветОдноразовойСлужбы = new Data.Builder()
              .putLong("ОтветПослеВыполения_MyWork_Async_Синхронизация_Одноразовая",
-                     РезультатЗапускаСинх)
+                     ФинальныйРезультатAsyncBackgroud)
            .putBoolean("Proccesing_MyWork_Async_Синхронизация_Одноразовая",true)
              .build();
      // TODO: 28.03.2023 disebler
-     /*if (serviceConnection!=null) {
+     if (serviceConnection!=null) {
          context.unbindService(serviceConnection);
-     }*/
+     }
 // TODO: 26.03.2023
      Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
              " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
              " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-             + " РезультатЗапускаСинх "+РезультатЗапускаСинх );
+             + " ФинальныйРезультатAsyncBackgroud "+ФинальныйРезультатAsyncBackgroud );
 
  } catch (Exception e) {
         e.printStackTrace();
@@ -217,7 +215,7 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
                 Thread.currentThread().getStackTrace()[2].getLineNumber());
         Log.e(context.getClass().getName(), " ОШИБКА В WORK MANAGER  MyWork_Async_Синхронизация_Одноразовая из FaceApp в  MyWork_Async_Синхронизация_Одноразовая Exception  ошибка в классе  MyWork_Async_Синхронизация_Одноразовая" + e.toString());
     }
-        if (РезультатЗапускаСинх > 0) {
+        if (ФинальныйРезультатAsyncBackgroud > 0) {
             return Result.success(myDataОтветОдноразовойСлужбы);
         }else {
                return Result.failure(myDataОтветОдноразовойСлужбы);
@@ -228,7 +226,6 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
             (Integer ПубличныйIDКомуНАдоОтправитьСообщениеЧерезOneSingle,
              Integer ПубличныйIDДляФрагмента,
              List<ActivityManager.AppTask> КоличествоЗапущенныйПроуессы, String АктивностьЕслиЕстьTOP) {
-        Integer   РезультатЗапускаСинх=0;
         try{
 
             boolean ВыбранныйРежимСети =
@@ -245,7 +242,7 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
                             Integer dataSring=data.getInt("RemoteService");
                             String СтатусРаботыСлужбыСинхронизации =data.getString("СтатусРаботыСлужбыСинхронизации");
                             Integer МаксимальнеоКоличествоСтрок =data.getInt("МаксималноеКоличествоСтрочекJSON");
-                            Integer ФинальныйРезультатAsyncBackgroud =data.getInt("ФинальныйРезультатAsyncBackgroud");
+                            ФинальныйРезультатAsyncBackgroud =data.getInt("ФинальныйРезультатAsyncBackgroud");
                             // TODO: 11.10.2022
                             switch (СтатусРаботыСлужбыСинхронизации.trim()){
                                 case "ФинишВыходИзAsyncBackground" :
@@ -263,6 +260,7 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
                                     }
 
                                     Log.w(this.getClass().getName(), "СтатусРаботыСлужбыСинхронизации  "+ СтатусРаботыСлужбыСинхронизации);
+
                                     break;
                             }
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -301,7 +299,7 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
                 this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                 Thread.currentThread().getStackTrace()[2].getLineNumber());
     }
- return РезультатЗапускаСинх;
+ return ФинальныйРезультатAsyncBackgroud;
 
     }
 
