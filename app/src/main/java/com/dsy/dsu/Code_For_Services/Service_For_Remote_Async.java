@@ -287,7 +287,7 @@ public class Service_For_Remote_Async extends IntentService {
             ФинальныйРезультатAsyncBackgroud  = new Class_Engine_SQL(context).МетодЗАпускаФоновойСинхронизации(context);
             Log.d(context.getClass().getName(), "\n"
                     + "   ФинальныйРезультатAsyncBackgroud " + ФинальныйРезультатAsyncBackgroud);
-            МетодПослеAsyncTaskЗавершающий( context,ФинальныйРезультатAsyncBackgroud+2);
+            МетодПослеAsyncTaskЗавершающий( context,ФинальныйРезультатAsyncBackgroud);
             // TODO: 26.03.2023 дополнительное удаление после Удаление статсу удалнеенон
             if (ФинальныйРезультатAsyncBackgroud>0) {
                 МетодПослеСинхрониазцииУдалениеСтатусаУдаленный();

@@ -7,7 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
+import android.os.Message;
 import android.os.Messenger;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -67,13 +71,12 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
                     messengerWorkManager = new Messenger(service);
                     Log.d(getApplicationContext().getClass().getName().toString(), "\n"
                             + "onServiceConnected  ОБЩАЯ messengerActivity  " + messengerWorkManager.getBinder().pingBinder());
-                    IBinder binder = messengerWorkManager.getBinder();
-                    if (binder.isBinderAlive()) {
-                        getTaskExecutor().postToMainThread(()->{
-                            localBinderAsync = new Service_For_Remote_Async();
-                            Log.d(getApplicationContext().getClass().getName().toString(), "\n"
-                                    + " МетодБиндингасМессажером onServiceConnected  binder.isBinderAlive()  " + binder.isBinderAlive());
-                        });
+                    if (service.isBinderAlive()) {
+                        //TODO СИНХРОНИАЗЦИЯ ГЛАВНАЯ
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                + " МетодБиндингаОбщая service.isBinderAlive() "+service.isBinderAlive());
                     }
                 }
                 @Override
@@ -274,19 +277,57 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
                     new Class_Find_Setting_User_Network(getApplicationContext()).МетодПроветяетКакуюУстановкуВыбралПользовательСети();
             Log.d(this.getClass().getName(), "  ВыбранныйРежимСети ВыбранныйРежимСети "
                     + ВыбранныйРежимСети);
-
             if (ВыбранныйРежимСети == true) {
-                // TODO: 21.11.2021  НАЧАЛО СИХРОНИЗХАЦИИИ общая
-                РезультатЗапускаОбщейСинх = localBinderAsync.МетодAsyncИзСлужбы(getApplicationContext());
-                Log.d(getApplicationContext().getClass().getName().toString(),
-                        "\n" + "      MyWork_Async_Синхронизация_Общая       РезультатЗапускаОбщейСинх[0]   " + РезультатЗапускаОбщейСинх);
-                Log.d(this.getClass().getName(), "  serviceForTabelAsync " + localBinderAsync);
-            }
-            if (РезультатЗапускаОбщейСинх>0 ) {
-                Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                    v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.EFFECT_HEAVY_CLICK));
-                // TODO: 16.11.2022 запускаем ondesingle FIREBASE
-                МетодЗапускаПослеУспешнойСтинхронизацииOneSignalИУведомления();
+                Messenger mMessenger = new Messenger(new Handler(Looper.getMainLooper(), new Handler.Callback() {
+                    @Override
+                    public boolean handleMessage(@NonNull Message msg) {
+                        try {
+                            Bundle data =msg.getData();
+                            Integer dataSring=data.getInt("RemoteService");
+                            String СтатусРаботыСлужбыСинхронизации =data.getString("СтатусРаботыСлужбыСинхронизации");
+                            Integer МаксимальнеоКоличествоСтрок =data.getInt("МаксималноеКоличествоСтрочекJSON");
+                            Integer ФинальныйРезультатAsyncBackgroud =data.getInt("ФинальныйРезультатAsyncBackgroud");
+                            // TODO: 11.10.2022
+                            switch (СтатусРаботыСлужбыСинхронизации.trim()){
+                                case "ФинишВыходИзAsyncBackground" :
+                                    if(ФинальныйРезультатAsyncBackgroud>0){
+                                        Log.w(this.getClass().getName(), "СтатусРаботыСлужбыСинхронизации  "+ СтатусРаботыСлужбыСинхронизации);
+                                        Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+                                        v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.EFFECT_HEAVY_CLICK));
+// TODO: 26.06.2022  ПОСЛЕ УСПЕШНОЙ СИНХРОНИАЗЦИИ ЗАПУСКАМ ONE SIGNAL  И УВЕДОМЛЕНИЯ
+                                            // TODO: 16.11.2022 запускаем ondesingle FIREBASE
+                                            МетодЗапускаПослеУспешнойСтинхронизацииOneSignalИУведомления();
+                                    }
+                                    Log.w(this.getClass().getName(), "СтатусРаботыСлужбыСинхронизации  "+ СтатусРаботыСлужбыСинхронизации);
+                                    break;
+                            }
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                    + " ФинальныйРезультатAsyncBackgroud "+ФинальныйРезультатAsyncBackgroud
+                                    + " МаксимальнеоКоличествоСтрок " +МаксимальнеоКоличествоСтрок
+                                    + " СтатусРаботыСлужбыСинхронизации"+СтатусРаботыСлужбыСинхронизации);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
+                        Log.i(this.getClass().getName(), " public  " +
+                                "MyWork_Async_Синхронизация_Одноразовая(@NonNull Context context, @NonNull WorkerParameters workerParams) " );
+                        return true;
+                    }
+                }));
+                Message msg = Message.obtain();
+                Bundle bundle = new Bundle();
+                bundle.putString("СтатусРаботыСлужбыСинхронизации", "ЗапускаемAsyncBackground");
+                msg.setData(bundle);
+                if ( messengerWorkManager!=null) {
+                    msg.replyTo = mMessenger;
+                    messengerWorkManager.send(msg);
+                }
             }
        } catch (Exception e) {
            e.printStackTrace();
