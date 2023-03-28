@@ -336,6 +336,9 @@ public class Service_For_Remote_Async extends IntentService {
         new Class_Engine_SQL(context).МетодCallBasksВизуальноИзСлужбы(МаксималноеКоличествоСтрочекJSON,МаксималноеКоличествоСтрочекJSON,
                 Проценты,null,"ФинишВыходИзAsyncBackground",false,false);
         Log.d(context.getClass().getName(), "\n" + " МаксималноеКоличествоСтрочекJSON: " +МаксималноеКоличествоСтрочекJSON );
+            // TODO: 28.03.2023 Выключаем СЛужбу
+        onDestroy();
+        
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
