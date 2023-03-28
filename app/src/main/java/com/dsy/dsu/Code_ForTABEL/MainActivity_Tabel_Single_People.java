@@ -5700,10 +5700,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
       //  contentResolver.update(uri,new ContentValues(),new Bundle());
      /*   ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
               ContentProviderResult[] contentProviderResults= contentResolver.applyBatch("prof",operations);*/
+        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
 
         Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" +"prof" + "");
         ContentResolver resolver = context.getContentResolver();
-      Integer  insertData=   resolver.bulkInsert(uri, new ContentValues[]{});
+     // Integer  insertData=   resolver.bulkInsert(uri, new ContentValues[]{});
+        Integer insertData=   resolver.update(uri,new ContentValues(),new String(),new String[]{});
         Log.w(context.getClass().getName(), " РЕЗУЛЬТАТ insertData  ВСТАВКИ ЗНАЧЕНИЯ  " +  insertData.toString() );
 
 
