@@ -479,10 +479,10 @@ public class ContentProviderForDataBaseCurrentOperations extends ContentProvider
             String НазваниеЦФО=   extras.getString("НазваниеЦФО","");
             Long UUIDНазваниеЦФО =   extras.getLong("UUIDНазваниеЦФО",0l);
             Long ВерсияДанныхUp = new SubClassUpVersionDATA().МетодПовышаемВерсииCurrentTable(table,getContext(),Create_Database_СамаБАзаSQLite);
-            values.put("current_table",IDЦфоДЛяПередачи);
+            values.put("current_table",ВерсияДанныхUp);
             String ДатаОбновления=     new Class_Generation_Data(getContext()).ГлавнаяДатаИВремяОперацийСБазойДанных();
             values.put("date_update",ДатаОбновления);
-            // TODO: 28.03.2023 Само Обновление Профессии 
+            // TODO: 28.03.2023 Само Обновление Профессии
             РезультатСменыПрофесии  = Create_Database_СамаБАзаSQLite.update(table,values, "uuid=?", new String[]{UUIDНазваниеЦФО.toString()});
        // TODO: 30.10.2021
        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
