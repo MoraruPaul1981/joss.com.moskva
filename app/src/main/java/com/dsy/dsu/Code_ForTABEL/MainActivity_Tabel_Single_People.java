@@ -110,6 +110,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.crypto.NoSuchPaddingException;
 
@@ -1742,10 +1744,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         //Задаем действия для TextView после смены введенных в EditText символов:
         public void afterTextChanged(Editable s) {
             //TODO ДАННЫЙ КОД НЕПОСТРЕДСТВЕННО ЗАРУСКАЕТ ОБНОВЛЕНИЕ ЛОКАЛЬНОЕ С АКТИВТИИ
-            int СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов = 0;
-            boolean ФлагЗапускатьллкальноеОбновлениеИлинет=false;
             try{
-            МетодГлавныйЛокальноеОбновлениеЯчейки(СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов, ФлагЗапускатьллкальноеОбновлениеИлинет);
+            МетодГлавныйЛокальноеОбновлениеЯчейки(s);
                     Log.d(this.getClass().getName(), " МетодГлавныйЛокальноеОбновлениеЯчейки () Save.. СамоЗначениеЯчейкиТабеля" +  СамоЗначениеЯчейкиТабеля + " s "+s.toString());
         } catch (Exception e) {
             e.printStackTrace();
@@ -1759,70 +1759,48 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         }
         }//TODO НАДО ЛИ ЗАПУСКАТЬ ЛОКАЛЬНОЕ ОБНОВЛЕНИЕ И ЛИ НЕТ
 
-        private void МетодГлавныйЛокальноеОбновлениеЯчейки(int СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов, boolean ФлагЗапускатьллкальноеОбновлениеИлинет) {
+        private void МетодГлавныйЛокальноеОбновлениеЯчейки(Editable s) {
             try{
             Log.d(this.getClass().getName(), " СамоЗначениеЯчейкиТабеля" +  СамоЗначениеЯчейкиТабеля);
-            if (СамоЗначениеЯчейкиТабеля!=null) {
-                if (СамоЗначениеЯчейкиТабеля.length()>0 ) {
-                    Log.d(this.getClass().getName(), " СамоЗначениеЯчейкиТабеля.length()" +  СамоЗначениеЯчейкиТабеля.length());
-                    /////////todo получем значение И СТАВИМ УСЛОВИЕ НЕ БОЕЛЕЕ 24 ЧИЛСА КАК КАК В СУТКА ТОЛЬКО 24 ЧАСА
-                    boolean ПереводимВЦифруТОлькоЕслиИзначальноНетБУквыВнутри=         СамоЗначениеЯчейкиТабеля.matches("(.*)[^0-9](.*)");
-                    if (ПереводимВЦифруТОлькоЕслиИзначальноНетБУквыВнутри==false) {
-                        СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов = Integer.parseInt(СамоЗначениеЯчейкиТабеля);
-                    }
-                    Log.d(this.getClass().getName(), " СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов " + СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов);
-                    if (СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов <= 24) {
-                        Log.d(this.getClass().getName(), "  СамоЗначениеЯчейкиТабеля " +  СамоЗначениеЯчейкиТабеля);
-                        ФлагЗапускатьллкальноеОбновлениеИлинет =true;
-                        /////TODO  НЕ НАДЛО ЗАПУСКАТЬ ЛОКАЛЬНЕО ОБНОВЛЕНИЕ
-                    } else {
-                        ФлагЗапускатьллкальноеОбновлениеИлинет =false;
-                        Toast aa = Toast.makeText(getBaseContext(), "OPEN", Toast.LENGTH_LONG);
-                        ImageView cc = new ImageView(getBaseContext());
-                        cc.setImageResource(R.drawable.icon_dsu1_add_organisazio_error);//icon_dsu1_synchronisazia_dsu1_success
-                        aa.setView(cc);
-                        aa.show();
-                        Toast.makeText(getBaseContext(), "Нет сохранилось"+
-                                "\n"+" (Значение не может быть более 24 (часы).) :" +СамоЗначениеЯчейкиТабеля, Toast.LENGTH_SHORT).show();
-                    }
-                }else{
-                    Log.d(this.getClass().getName(), "  СамоЗначениеЯчейкиТабеля " +  СамоЗначениеЯчейкиТабеля);
-                    ФлагЗапускатьллкальноеОбновлениеИлинет =true;
-                }
-            }
-            Log.d(this.getClass().getName(), " СамоЗначениеЯчейкиТабеля" +СамоЗначениеЯчейкиТабеля + "  ФлагЗапускатьллкальноеОбновлениеИлинет " + ФлагЗапускатьллкальноеОбновлениеИлинет);
-//TODO запускаем локальное обновдене если есть на это все условия
-            if( ФлагЗапускатьллкальноеОбновлениеИлинет ==true){
-                ФлагЗапускатьллкальноеОбновлениеИлинет =false;
-                Log.d(this.getClass().getName(), "  СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов" + СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов);
-                ////// TODO: 20.01.2021 полученое занчение пытаемся обрезать
-                Log.d(this.getClass().getName(),"  СамоЗначениеЯчейкиТабеля " +СамоЗначениеЯчейкиТабеля);
-                //TODO ограниваем количество символом не более 3 символом не сохраняет
+            if (СамоЗначениеЯчейкиТабеля!=null && СамоЗначениеЯчейкиТабеля.length()>0) {
+
                 if (СамоЗначениеЯчейкиТабеля.length()>=3){
                     СамоЗначениеЯчейкиТабеля = СамоЗначениеЯчейкиТабеля.substring(0, 2);
                 }
-                Log.d(this.getClass().getName(),"  СамоЗначениеЯчейкиТабеля " +СамоЗначениеЯчейкиТабеля + " ХэшЛовимUUIDIDНазваниеСтолбика.size() " +ХэшЛовимUUIDIDНазваниеСтолбика.values());
-                ///todo получаем хэш с название стольика и uuid
-                    Log.d(this.getClass().getName(), "  ХэшЛовимUUIDIDНазваниеСтолбика.size()  " + ХэшЛовимUUIDIDНазваниеСтолбика.size());
-                    Log.d(this.getClass().getName(), " Локальное Обновление ХэшЛовимUUIDIDНазваниеСтолбика" + ХэшЛовимUUIDIDНазваниеСтолбика+
-                            " СамоЗначениеЯчейкиТабеля " +СамоЗначениеЯчейкиТабеля);
-                    if (СамоЗначениеЯчейкиТабеля.length()==0 || СамоЗначениеЯчейкиТабеля==null) {
-                        СамоЗначениеЯчейкиТабеля="0";
+                if (СамоЗначениеЯчейкиТабеля.length()==0 || СамоЗначениеЯчейкиТабеля==null) {
+                    СамоЗначениеЯчейкиТабеля="0";
+                }
+                    Boolean ПереводимВЦифруТОлькоЕслиИзначальноНетБУквыВнутри=         СамоЗначениеЯчейкиТабеля.matches("(.*)[0-9](.*)");
+                    if (ПереводимВЦифруТОлькоЕслиИзначальноНетБУквыВнутри==true) {
+                        Integer    ЗначениеЦифраНеБольнеЧем24 = Integer.parseInt(СамоЗначениеЯчейкиТабеля);
+                        if (ЗначениеЦифраНеБольнеЧем24> 24) {
+                            Toast aa = Toast.makeText(getBaseContext(), "OPEN", Toast.LENGTH_LONG);
+                            ImageView cc = new ImageView(getBaseContext());
+                            cc.setImageResource(R.drawable.icon_dsu1_add_organisazio_error);//icon_dsu1_synchronisazia_dsu1_success
+                            aa.setView(cc);
+                            aa.show();
+                            Toast.makeText(getBaseContext(), "Ошибка значение > 24"+СамоЗначениеЯчейкиТабеля, Toast.LENGTH_SHORT).show();
+                        }
                     }
-                    Log.d(this.getClass().getName(), " Локальное Обновление ХэшЛовимUUIDIDНазваниеСтолбика" + ХэшЛовимUUIDIDНазваниеСтолбика+
-                            " СамоЗначениеЯчейкиТабеля " +СамоЗначениеЯчейкиТабеля);
-// TODO: 03.06.2021  елси значение нул то мимы из него делаем ноль  ВАЖНО ТУТ УКАЗАНЫ УСЛОВИЯ ПО КОТОРЫМ ПРОИЗВХОДТИ ЛОКАЛЬНОЕ ОБНОВЛЕНИЕ
-                    ArrayList<Integer> ЛистСДопустипыЗначениямиДляЛокальноСохранения=new ArrayList();
-                    for (int ДниДопустимые=0;ДниДопустимые<=24;ДниДопустимые++) {
-                        ЛистСДопустипыЗначениямиДляЛокальноСохранения.add(ДниДопустимые);
-                    }
-                    Log.d(this.getClass().getName(), " ЛистСДопустипыЗначениямиДляЛокальноСохранения" + ЛистСДопустипыЗначениямиДляЛокальноСохранения.toString());
-                    boolean РезультатПроверкиЕслиТАкоеЧислоВАрайлистеВставлятьИлиНет=     ЛистСДопустипыЗначениямиДляЛокальноСохранения.contains(Integer.parseInt(СамоЗначениеЯчейкиТабеля));
-                    Log.d(this.getClass().getName(), " РезультатПроверкиЕслиТАкоеЧислоВАрайлистеВставлятьИлиНет" + РезультатПроверкиЕслиТАкоеЧислоВАрайлистеВставлятьИлиНет);
-                    if (ХэшЛовимUUIDIDНазваниеСтолбика.size() ==1 && СамоЗначениеЯчейкиТабеля.length()>0
-                            && СамоЗначениеЯчейкиТабеля.length() <= 2 && РезультатПроверкиЕслиТАкоеЧислоВАрайлистеВставлятьИлиНет==true) {
 
-                            ContentValues КонтейнерЗаполненияДаннымиПриЛокальномОбновлении = new     ContentValues();
+
+            }
+
+                  ArrayList<Integer> ЛистСДопустипыЗначениямиДляЛокальноСохранения=new ArrayList();
+                 IntStream .iterate(1, i -> i + 1).limit(24).mapToObj(ДниДопустимые-> ЛистСДопустипыЗначениямиДляЛокальноСохранения.add(ДниДопустимые)).collect(Collectors.toList());
+
+                List<String> source = null;
+                List<Integer> target = null;
+
+                IntStream.iterate(1, i -> i + 1).limit(24)
+                        .forEachOrdered(target::add);
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " target "+target);
+
+
+                ContentValues КонтейнерЗаполненияДаннымиПриЛокальномОбновлении = new     ContentValues();
                             Log.d(this.getClass().getName(), "  ХэшЛовимUUIDIDНазваниеСтолбика " + ХэшЛовимUUIDIDНазваниеСтолбика.toString());
                             Iterator iterator = ХэшЛовимUUIDIDНазваниеСтолбика.entrySet().iterator();
                             // TODO: 20.05.2021  начинаем обновлять только по одну запись если более одной пропускаем
@@ -1910,9 +1888,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                     }
                                 }//todo end while()
                             }
-                            Log.d(getApplicationContext().getClass().getName(), "  Конец ЛОкальному ОБновлению  внутри табеля  " );
-                    }///TODO END IF  ПЕРЕД ЛОКАЛЬЫМ ОБНОВЛЕНИЕМ
-            }
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
