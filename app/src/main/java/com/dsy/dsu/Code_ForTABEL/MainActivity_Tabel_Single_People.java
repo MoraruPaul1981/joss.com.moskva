@@ -1224,11 +1224,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 final int[] ИндексСтрокКомпонентовТабеля = {0};
                 int ИндексКолонокКомпонентовТабеля = 0;
                 МетодСозданиеМесяцыСокращенно();
-                try{
-                    ГлавныйКонтейнерТабель.removeAllViews();
-                    ГлавныйКонтейнерТабель.removeAllViewsInLayout();
-                } catch (Exception e) {
-                }
                 Log.d(this.getClass().getName(), " ХЭШНазваниеДнейНедели.get(1) " + ХЭШНазваниеДнейНедели.get(1));
                 /////TODO ТАБЕЛЬ ФИО создаем textview названия дней понелельник вторик среда четеварг
                 НазваниеДанныхВТабелеФИО = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.КонтейнерКудаЗагружаетьсяФИО);
@@ -1360,6 +1355,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.refreshDrawableState();
                 КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.forceLayout();
                 КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.requestLayout();
+                КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.requestApplyInsets();
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1378,8 +1374,11 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private void МетодПергрузкиДизайнаЭкрана() {
         ScrollСамогоТабеля.requestLayout();
         ScrollСамогоТабеля.pageScroll(View.FOCUS_BACKWARD);
+        ScrollСамогоТабеля.refreshDrawableState();
         ГлавныйКонтейнерТабель.requestLayout();
         ГлавныйКонтейнерТабель.forceLayout();
+        ГлавныйКонтейнерТабель.refreshDrawableState();
+        ГлавныйКонтейнерТабель.requestApplyInsets();
     }
 
     private void МетодЗаполениеЭкранНАзваниеФИоИПрофесиии() {
@@ -1492,11 +1491,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     ///TODO Когда в  КУРСОРЕ ВООБЩЕ НЕТ ДАННЫХ НА УКАЗАННЫЙ МЕСЯЦ
     private void МетодКогдаНетЗаписейВКурсоре() {
-        try{
-            ГлавныйКонтейнерТабель.removeAllViews();
-            ГлавныйКонтейнерТабель.removeAllViewsInLayout();
-        } catch (Exception e) {
-        }
         /////TODO создавние строк из linerlouyto в табеле сколько сткром в базе данных андройда столлько на активити строк
         LayoutInflater МеханизмЗагрузкиОдногЛайАутавДругой = getLayoutInflater();
         //КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла = new View(this);//activity_main_find_customer_for_tables // activity_main_grid_for_tables
