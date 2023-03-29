@@ -47,7 +47,6 @@ public class ContentProviderForDataBaseCurrentOperations extends ContentProvider
     private     ContentResolvers contentResolvers;
     public ContentProviderForDataBaseCurrentOperations() throws InterruptedException {
         try{
-
             CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда=
                     new SubClassCreatingMainAllTables(getContext()).
                             МетодТОлькоЗаполенияНазваниямиТаблицДляОмена(getContext());
@@ -397,6 +396,7 @@ public class ContentProviderForDataBaseCurrentOperations extends ContentProvider
                     if (Create_Database_СамаБАзаSQLite.inTransaction()) {
                         Create_Database_СамаБАзаSQLite.endTransaction();
                     }
+                    shutdown();
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");

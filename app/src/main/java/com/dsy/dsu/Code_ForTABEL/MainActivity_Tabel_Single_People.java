@@ -198,6 +198,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private Animation animation;
     private    SQLiteCursor ГлавныйКурсорДанныеSwipes;
     private  Long UUIDТекущегоВыбраногоСотрудника=0l;
+    private         Long ПолученыйUUIDФИОСледующий=0l;
+    private   Animation  animationRow;
 
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
     @Override
@@ -260,6 +262,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             КнопкаНазад=(Button) findViewById(R.id.imageViewСтрелкаВнутриТабеля);
             view2Линия=(View) findViewById(R.id.view2Линия);
             animation= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row_newscanner1);
+            // animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator1);
+            // animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_tabellist);
+               animationRow= AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_row);
             Bundle data=     getIntent().getExtras();
             // TODO: 29.01.2022 ПРИ ИЗМЕНЕНИ МЕНЯЕМ ДАННЫЕ В БАЗЕ В ТАБЕЛЕ
             МетодПриИзмениеДанныхВБазеМенемВнешнийВидТабеляObserver();
@@ -1183,28 +1188,17 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 НазваниеДанныхВТабелеФИО.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
                 ///toDO ПОСИК И ВСТАВКИ ИМСЯ ТАБЕЛЯ
                 int РасположениеИмениСотркдника = ГлавныйКурсорДанныеSwipes.getColumnIndex("fio");//name
-                Long ПолученыйUUIDФИОСледующий=     ГлавныйКурсорДанныеSwipes.getLong(РасположениеИмениСотркдника);////  String ФИОСледующий
+                 ПолученыйUUIDФИОСледующий=     ГлавныйКурсорДанныеSwipes.getLong(РасположениеИмениСотркдника);////  String ФИОСледующий
 
                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                        " РасположениеИмениСотркдника  " + РасположениеИмениСотркдника + "  НазваниеДанныхВТабелеФИО " + НазваниеДанныхВТабелеФИО);
-
-                Log.d(this.getClass().getName(), "ПолученыйUUIDФИОСледующий " + ПолученыйUUIDФИОСледующий);
-                Class_GRUD_SQL_Operations classGrudSqlOperations= new Class_GRUD_SQL_Operations(getApplicationContext());
-                classGrudSqlOperations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СамFreeSQLКОд",
-                        " SELECT name,prof  FROM fio  WHERE  uuid = '" + ПолученыйUUIDФИОСледующий + "' ;");
-                ///////
-                SQLiteCursor            Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО= (SQLiteCursor) classGrudSqlOperations.
-                        new GetаFreeData(getApplicationContext()).getfreedata(classGrudSqlOperations.
-                                concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
-                        Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков
-                        ,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
-                Log.d(this.getClass().getName(), "Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО "  +Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.getCount());
-                Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.moveToFirst();
+                        " РасположениеИмениСотркдника  " + РасположениеИмениСотркдника + "  НазваниеДанныхВТабелеФИО " + НазваниеДанныхВТабелеФИО  + " ПолученыйUUIDФИОСледующий " +ПолученыйUUIDФИОСледующий);
 
                 // TODO: 24.03.2023  Получаем ФИо и ПРОФЕСИЮ
-                МетодПолучениеФИОиПрофессия(Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО);
+                МетодПолучениеФИОиПрофессия( );
+                // TODO: 24.03.2023  Получаем ФИо и ПРОФЕСИЮ
+                МетодЗаполениеЭкранНАзваниеФИоИПрофесиии();
                 // TODO: 23.03.2023  метод заполенния данными по циклу после анализа swipe
                 МетодПослеАнализаSwipesЗаполненияЦиклом(еслиСмещениеВдАнныхДляСкрола, ИндексСтрокКомпонентовТабеля);
 
@@ -1224,8 +1218,21 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         }
     }
 
-    private void МетодПолучениеФИОиПрофессия(@NonNull  SQLiteCursor Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО) {
+    private void МетодПолучениеФИОиПрофессия( ) {
         try{
+            Log.d(this.getClass().getName(), "ПолученыйUUIDФИОСледующий " + ПолученыйUUIDФИОСледующий);
+            Class_GRUD_SQL_Operations classGrudSqlOperations= new Class_GRUD_SQL_Operations(getApplicationContext());
+            classGrudSqlOperations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СамFreeSQLКОд",
+                    " SELECT name,prof  FROM fio  WHERE  uuid = '" + ПолученыйUUIDФИОСледующий + "' ;");
+            ///////
+            SQLiteCursor            Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО= (SQLiteCursor) classGrudSqlOperations.
+                    new GetаFreeData(getApplicationContext()).getfreedata(classGrudSqlOperations.
+                            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                    Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков
+                    ,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
+            Log.d(this.getClass().getName(), "Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО "  +Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.getCount());
+            Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.moveToFirst();
+
         ФИОТекущегоСотрудника = Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.getString(0);
         Log.d(  this.getClass().getName(), "ФИОСледующий " +"uuid"+ ФИОТекущегоСотрудника);
         int ИндексПрофесииdata_tabels = ГлавныйКурсорДанныеSwipes.getColumnIndex("dt_prof");//name
@@ -1262,10 +1269,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private void МетодПослеАнализаSwipesЗаполненияЦиклом(@NonNull int еслиСмещениеВдАнныхДляСкрола,
                                                          @NonNull  int[] ИндексСтрокКомпонентовТабеля) {
         try{
-            НазваниеДанныхВТабелеФИО.setText("");
-            НазваниеДанныхВТабелеФИО.setText(ФИОТекущегоСотрудника.trim() + "\n"+ "( "+Профессия.trim()+ " )"); ///строго имя
-            Log.d(this.getClass().getName(), " ФИО " + ФИОТекущегоСотрудника + " Профессия " +Профессия);
-        if (ГлавныйКурсорДанныеSwipes.getCount()>0){
+            if (ГлавныйКурсорДанныеSwipes.getCount()>0){
             ГлавныйКурсорДанныеSwipes.moveToFirst();
             Log.d(this.getClass().getName(), " ГлавныйКурсорДанныеSwipes.getCount() " + ГлавныйКурсорДанныеSwipes.getCount());
             ///todo ПРИСВАИВАЕМ UUID НАЗВАНИЮ ФИО
@@ -1303,6 +1307,20 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
 
         } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " +e + " Метод :"+Thread.currentThread().getStackTrace()[2].getMethodName()
+                + " Линия  :"+Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),  this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+    }
+
+    private void МетодЗаполениеЭкранНАзваниеФИоИПрофесиии() {
+        try{
+        НазваниеДанныхВТабелеФИО.setText("");
+        НазваниеДанныхВТабелеФИО.setText(ФИОТекущегоСотрудника.trim() + "\n"+ "( "+Профессия.trim()+ " )"); ///строго имя
+        Log.d(this.getClass().getName(), " ФИО " + ФИОТекущегоСотрудника + " Профессия " +Профессия);
+    } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " +e + " Метод :"+Thread.currentThread().getStackTrace()[2].getMethodName()
                 + " Линия  :"+Thread.currentThread().getStackTrace()[2].getLineNumber());
@@ -4953,13 +4971,13 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                                     bundle.putString("НазваниеПрофесии",НазваниеПрофесии);
                                                     bundle.putLong("UUIDПрофесиии",UUIDПрофесиии);
                                                     bundle.putLong("РодительскийUUDТаблицыТабель",РодительскийUUDТаблицыТабель);
-
-
-
-
-
+                                                    UUIDТекущегоВыбраногоСотрудника=      ГлавныйКурсорДанныеSwipes.getLong(ГлавныйКурсорДанныеSwipes.getColumnIndex("uuid"));
                                                     bundle.putLong("UUIDТекущегоВыбраногоСотрудника",UUIDТекущегоВыбраногоСотрудника);
                                                     ((MaterialTextView)view).setTag(bundle);
+                                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                                            + " bundle"+bundle  + " UUIDТекущегоВыбраногоСотрудника " +UUIDТекущегоВыбраногоСотрудника);
                                                 }
                                                 Log.d(this.getClass().getName()," НазваниеПрофесии"+ НазваниеПрофесии+
                                                         " ПолучаемIDПрофессии "+ПолучаемIDПрофессии + " ХэшЛовимUUIDIDНазваниеСтолбика.size() " +ХэшЛовимUUIDIDНазваниеСтолбика.size());
@@ -5077,6 +5095,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                 searchViewДляНовогоПоиска.refreshDrawableState();
                                 Integer ПровйдерСменаПрофесии=      МетодЗаписиСменыПрофесии(searchViewДляНовогоПоиска);
                                 if (ПровйдерСменаПрофесии>0) {
+                                    // TODO: 29.03.2023 Методы ПОсле усМешного Смены Професиии
+                                    МетодПереопределенияНазваниеПрофесии();
                                     МетодПерегрузкаВидаЭкрана();
                                 }else {
                                     Toast.makeText(MainActivity_Tabel_Single_People.this, "Профессия не сменилась !!! ", Toast.LENGTH_SHORT).show();
@@ -5205,7 +5225,27 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         }
 
     }
-  private   Integer МетодЗаписиСменыПрофесии(@NonNull SearchView searchViewДляНовогоПоиска){ //TODO метод записи СМЕНЫ ПРОФЕСИИ
+
+    private void МетодПереопределенияНазваниеПрофесии() {
+        try {
+            МетодАнализДанныхSwipes(0);
+            МетодПолучениеФИОиПрофессия( );
+            //НазваниеДанныхВТабелеФИО=      ГлавныйКурсорДанныеSwipes.getLong(ГлавныйКурсорДанныеSwipes.getColumnIndex("uuid"));
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+            
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+    }
+
+    private   Integer МетодЗаписиСменыПрофесии(@NonNull SearchView searchViewДляНовогоПоиска){ //TODO метод записи СМЕНЫ ПРОФЕСИИ
         Integer ПровйдерСменаПрофесии=0;
     try{
         String ТаблицаОбработки="data_tabels";
@@ -5234,6 +5274,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     private void МетодПерегрузкаВидаЭкрана() {
         try {
+        НазваниеДанныхВТабелеФИО.startAnimation(animationRow);
         НазваниеДанныхВТабелеФИО.refreshDrawableState();
         НазваниеДанныхВТабелеФИО.forceLayout();
         ГлавныйКонтейнерТабель.refreshDrawableState();
