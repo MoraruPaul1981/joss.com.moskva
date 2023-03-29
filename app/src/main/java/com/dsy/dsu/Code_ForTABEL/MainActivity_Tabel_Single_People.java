@@ -119,7 +119,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private Spinner СпинерТАбельМЕсяцФинал;/////спинеры для создание табеля
     private Spinner СпинерТАбельДепартаментФинал;/////спинеры для создание табеля
     private ScrollView ScrollСамогоТабеля;
-    private  boolean РежимыПросмотраДанныхЭкрана;
+
     private LinearLayout ГлавныйКонтейнерТабель; ////главный linelayuout
     private  Activity activity;
     private ConstraintLayout ГлавныйВерхнийКонтейнер;
@@ -139,7 +139,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private  String  ДепартаментТабеляФинал= "";
     private  String UUIDCтарыйУжеСозданногоТабеляВКоторыйИНужноДобавитьНовгоПользователя;
     private   TextView НазваниеДанныхВТабелеДниНедели;
-    private   TextView НазваниеДанныхВТабелеСНИЛС;
     private TextView НазваниеДанныхВТабелеФИО;
     private  EditText СамиДанныеТабеля;
     private int ПосикДня;
@@ -283,14 +282,15 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             //TODO #5
             ВсеСтрокиТабеля=   МетодЗаполненияАлайЛИстаНовымМЕсцевНовогоТабеля(МесяцТабеляФинал);   ////раньше стояло 0
             // TODO: 29.03.2023
-            ///TODO   #6   запускаем метод ПОСЛЕ УСПЕШНОЙ ГЕНЕРАЦИИ ТАБЕЛЯ
-            МетодПослеУспешнойГенерацииТабеля();
             ///TODO   #7  запускаем метод ПОСЛЕ УСПЕШНОЙ ГЕНЕРАЦИИ ТАБЕЛЯ
             МетодОбработкиСвайповНаЭкране();
             ///TODO   #8 запускаем метод отработки поднятие клавиатур
             МетодОтработкиПоднятияКлавиатуры();
             // TODO: 24.09.2021  Сама Загрзка ДАнных  на Экран
             МетодАнализДанныхSwipes(ТекущееПоложенияВТабелеДляСкрола);
+            ///TODO   #6   запускаем метод ПОСЛЕ УСПЕШНОЙ ГЕНЕРАЦИИ ТАБЕЛЯ
+            МетодПослеУспешнойГенерацииТабеля();
+            МетодПергрузкиДизайнаЭкрана();
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1139,6 +1139,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                       Log.d(this.getClass().getName(), " UUIDТекущегоВыбраногоСотрудника  " +UUIDТекущегоВыбраногоСотрудника );
                       // TODO: 23.03.2023 заполяем
                       МетодЗаполенияДаннымиСотрудника(ЕслиСмещениеВдАнныхДляСкрола,  ЦифровоеИмяНовгоТабеля);
+                      ///TODO   #6   запускаем метод ПОСЛЕ УСПЕШНОЙ ГЕНЕРАЦИИ ТАБЕЛЯ
+                      МетодПослеУспешнойГенерацииТабеля();
                   }else{
                       МетодКогдаНетЗаписейВКурсоре();
                   }
@@ -1165,6 +1167,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             if (  ГлавныйКурсорДанныеSwipes.getCount()>0) {
 
                 МетодЗаполенияДаннымиСотрудника(ЕслиСмещениеВдАнныхДляСкрола,  ЦифровоеИмяНовгоТабеля);
+                ///TODO   #6   запускаем метод ПОСЛЕ УСПЕШНОЙ ГЕНЕРАЦИИ ТАБЕЛЯ
+                МетодПослеУспешнойГенерацииТабеля();
             }else{
                 МетодКогдаНетЗаписейВКурсоре();
             }
@@ -1173,7 +1177,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                     + " ГлавныйКурсорДанныеSwipes "+ ГлавныйКурсорДанныеSwipes);
           }
-
+            МетодПергрузкиДизайнаЭкрана();
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -1245,6 +1249,10 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 МетодЗаполениеЭкранНАзваниеФИоИПрофесиии();
                 // TODO: 23.03.2023  метод заполенния данными по циклу после анализа swipe
                 МетодПослеАнализаSwipesЗаполненияЦиклом(еслиСмещениеВдАнныхДляСкрола, ИндексСтрокКомпонентовТабеля);
+
+                МетодПодсчетОбщегоКОличествоСотрудников();
+
+                МетодПергрузкиДизайнаЭкрана();
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1332,13 +1340,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ГлавныйКонтейнерТабель.addView(КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла);
             // TODO: 29.04.2021 если то оди
             // TODO: 23.03.2023 ПОДСЧИТИВАЕМ ОБЩЕЕГО КОЛИЧЕСТВО СОТУРДНИКОВ
-            МетодПодсчетОбщегоКОличествоСотрудников();
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                    " ОбщееКоличествоЛюдейВТабелеТекущем  "+ОбщееКоличествоЛюдейВТабелеТекущем  +
-                    "  ТекущееПоложенияВТабелеДляСкрола "  +ТекущееПоложенияВТабелеДляСкрола);
-                МетодПергрузкиДизайнаЭкрана();
 
             }else {
 
