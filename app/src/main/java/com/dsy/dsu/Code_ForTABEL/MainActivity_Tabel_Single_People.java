@@ -4,9 +4,6 @@ package com.dsy.dsu.Code_ForTABEL;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ContentProvider;
-import android.content.ContentProviderOperation;
-import android.content.ContentProviderResult;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -73,7 +70,6 @@ import androidx.work.WorkManager;
 
 import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
-import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Weekend_For_Tabels;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.Class_Generation_Data;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
@@ -109,7 +105,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Optional;
 import java.util.TimeZone;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
@@ -118,7 +113,6 @@ import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 
 import javax.crypto.NoSuchPaddingException;
-import javax.inject.Inject;
 
 
 public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
@@ -156,7 +150,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private  Boolean    СтаттусТабеля= false;
     private   String ДробимДляТабеляГод,ДробимДляТебеляМесяц;
     private  View КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла;
-    private Map< Integer,String> ХЭШНазваниеДнейНедели = Collections.synchronizedMap(new LinkedHashMap<>());
+    private Map< Integer,String> ХЭШНазваниеДнейНедели ;
     private String СамиДанныеКурсораДляДней;
     private  int ТекущееПоложенияВТабелеДляСкрола;
     private CREATE_DATABASE Create_Database_СсылкаНАБазовыйКласс;
@@ -203,6 +197,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private      Message message;
     private Animation animation;
     private    SQLiteCursor ГлавныйКурсорДанныеSwipes;
+    private  Long UUIDТекущегоВыбраногоСотрудника=0l;
 
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
     @Override
@@ -1124,6 +1119,10 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                         + " ГлавныйКурсорДанныеSwipes "+ГлавныйКурсорДанныеSwipes.getCount() );
+                        if(ХЭШНазваниеДнейНедели!=null){
+                            ХЭШНазваниеДнейНедели.clear();
+                        }
+                ХЭШНазваниеДнейНедели = Collections.synchronizedMap(new LinkedHashMap<>());
 
                 String УниверсальноеИмяТабеля= "";
                 if (ПолноеИмяТабеляПослеСозданиеНовогоСотрудника!=null) {
@@ -1133,9 +1132,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 } else if (ДепартаментПришелПослеСоздангоНового !=null){
                     УниверсальноеИмяТабеля=     ДепартаментПришелПослеСоздангоНового;
                 }
-
-                    НазваниеЗагруженногТАбеля =
-                            new Class_MODEL_synchronized(this).  МетодПолучениеНазваниеТабеляНаОснованииСФО(this,ЦифровоеИмяНовгоТабеля);
+                    НазваниеЗагруженногТАбеля = new Class_MODEL_synchronized(this).  МетодПолучениеНазваниеТабеляНаОснованииСФО(this,ЦифровоеИмяНовгоТабеля);
                 Log.d(this.getClass().getName(), " НазваниеЗагруженногТАбеля" + НазваниеЗагруженногТАбеля);
                 int ИндексГдеНаходитьсяСтутсПроведенных = ГлавныйКурсорДанныеSwipes.getColumnIndex("status_carried_out");
                 СтаттусТабеля =Boolean.parseBoolean( ГлавныйКурсорДанныеSwipes.getString(ИндексГдеНаходитьсяСтутсПроведенных)); ///строго имя
@@ -1153,7 +1150,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 }
                 Log.d(this.getClass().getName(), " ХЭШНазваниеДнейНедели.get(1) " + ХЭШНазваниеДнейНедели.get(1));
                 LayoutInflater МеханизмЗагрузкиОдногЛайАутавДругой = getLayoutInflater();
-//todo ВЫБИРАЕМ ВЗАВИСИСМОСТИ КАКОЙ ЭКРАН БУДЕТ ЗАГРУЖАТЬСЯ ПОЛЬЗОВАТЕЛЮ В ОДИНОЧНОМ тАБЕЛЕ
+               //todo ВЫБИРАЕМ ВЗАВИСИСМОСТИ КАКОЙ ЭКРАН БУДЕТ ЗАГРУЖАТЬСЯ ПОЛЬЗОВАТЕЛЮ В ОДИНОЧНОМ тАБЕЛЕ
                 if (Build.BRAND.toString().contains("Samsung") ||Build.BRAND.toString().contains("Galaxy")
                         || Build.BRAND.toString().contains("samsung") ||Build.BRAND.toString().contains("galaxy") ) {
                     Log.d(this.getClass().getName(), "Внешний вид САМСУНГА  "  +Build.BRAND.toString() );
@@ -1264,57 +1261,47 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     private void МетодПослеАнализаSwipesЗаполненияЦиклом(@NonNull int еслиСмещениеВдАнныхДляСкрола,
                                                          @NonNull  int[] ИндексСтрокКомпонентовТабеля) {
-
         try{
             НазваниеДанныхВТабелеФИО.setText("");
             НазваниеДанныхВТабелеФИО.setText(ФИОТекущегоСотрудника.trim() + "\n"+ "( "+Профессия.trim()+ " )"); ///строго имя
             Log.d(this.getClass().getName(), " ФИО " + ФИОТекущегоСотрудника + " Профессия " +Профессия);
-            // TODO проверяем если в столбике Табеля Есть id поле если поле NULL  значит отн небыло на сервера
-            Integer ПроверкаЕсливСтолбикеID_NULLзначения= ГлавныйКурсорДанныеSwipes.getInt(0);
-            if(ПроверкаЕсливСтолбикеID_NULLзначения==null){
-                // TODO: 15.11.2021
-                ПроверкаЕсливСтолбикеID_NULLзначения=0;
-            }
-            /////TODO создавние строк из linerlouyto в табеле сколько сткром в базе данных андройда столлько на активити строк
-            Log.d(this.getClass().getName(), " ПроверкаЕсливСтолбикеID_NULLзначения " + ПроверкаЕсливСтолбикеID_NULLзначения);
-            ///TODO ГЛАВНЫЙ ЦИКЛ ЗАПОЛЕНИЕНИ ТАБЕЛЕМ СОТРУДНИКАМИ
-            do {
-                /////TODO создавние строк из linerlouyto в табеле сколько сткром в базе данных андройда столлько на активити строк
-                Log.d(this.getClass().getName(), " ГлавныйКурсорДанныеSwipes.getCount() " + ГлавныйКурсорДанныеSwipes.getCount());
-                ///todo ПРИСВАИВАЕМ UUID НАЗВАНИЮ ФИО
-                ПосикДня = ГлавныйКурсорДанныеSwipes.getColumnIndex("uuid"); ////TODO СЮДА ПОЛЕ UUID
-                НазваниеСтолбикаДляЛобкальногоОбноления = ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
-                НазваниеДанныхВТабелеФИО.setTag(ГлавныйКурсорДанныеSwipes.getString(ПосикДня));
-                НазваниеДанныхВТабелеФИО.setOnClickListener(СлушательИнформацияОСотрудника);
-                Log.d(this.getClass().getName(), " UUID пристваем Внутри ФИО  " + ГлавныйКурсорДанныеSwipes.getString(ПосикДня));
-                /////TODO     ПЕРВАЯ СТРОКА
-                ///todo главный МЕТОД ОФОРМЛЕНИЯ ТАБЕЛЯ ДАННЫМИ И ДНЯМИ
-                МетодГлавныйОрмленияТабеляДнямиИЗначениямиДляЭтиДней(ГлавныйКурсорДанныеSwipes,
-                        ИндексСтрокКомпонентовТабеля,
-                        ХЭШНазваниеДнейНедели,НазваниеДанныхВТабелеДниНедели
-                        ,СамиДанныеТабеля,КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла );
+        if (ГлавныйКурсорДанныеSwipes.getCount()>0){
+            ГлавныйКурсорДанныеSwipes.moveToFirst();
+            Log.d(this.getClass().getName(), " ГлавныйКурсорДанныеSwipes.getCount() " + ГлавныйКурсорДанныеSwipes.getCount());
+            ///todo ПРИСВАИВАЕМ UUID НАЗВАНИЮ ФИО
+            ПосикДня = ГлавныйКурсорДанныеSwipes.getColumnIndex("uuid"); ////TODO СЮДА ПОЛЕ UUID
+            НазваниеСтолбикаДляЛобкальногоОбноления = ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            НазваниеДанныхВТабелеФИО.setTag(ГлавныйКурсорДанныеSwipes.getString(ПосикДня));
+            НазваниеДанныхВТабелеФИО.setOnClickListener(СлушательИнформацияОСотрудника);
+            Log.d(this.getClass().getName(), " UUID пристваем Внутри ФИО  " + ГлавныйКурсорДанныеSwipes.getString(ПосикДня));
+            /////TODO     ПЕРВАЯ СТРОКА
+            ///todo главный МЕТОД ОФОРМЛЕНИЯ ТАБЕЛЯ ДАННЫМИ И ДНЯМИ
+            МетодГлавныйДанныеСотрудника(ГлавныйКурсорДанныеSwipes,
+                    ИндексСтрокКомпонентовТабеля,
+                    ХЭШНазваниеДнейНедели,НазваниеДанныхВТабелеДниНедели
+                    ,СамиДанныеТабеля,КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла );
 /////TODO ФИНАЛ ЗАПОЛЕНИЕ ДАННЫМИ АКТИВИТИ ЧЕРЕЗ ДРУГОЕ АКТВИТИ
-                ГлавныйКонтейнерТабель.addView(КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла);
-                // TODO: 29.04.2021 если то оди
-                if( еслиСмещениеВдАнныхДляСкрола >0){
-                    break;
-                }
-            }
-            while (ГлавныйКурсорДанныеSwipes.moveToNext()) ;
+            ГлавныйКонтейнерТабель.addView(КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла);
+            // TODO: 29.04.2021 если то оди
             // TODO: 23.03.2023 ПОДСЧИТИВАЕМ ОБЩЕЕГО КОЛИЧЕСТВО СОТУРДНИКОВ
             МетодПодсчетОбщегоКОличествоСотрудников();
-
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
                     " ОбщееКоличествоЛюдейВТабелеТекущем  "+ОбщееКоличествоЛюдейВТабелеТекущем  +
                     "  ТекущееПоложенияВТабелеДляСкрола "  +ТекущееПоложенияВТабелеДляСкрола);
-
             ScrollСамогоТабеля.setBackgroundResource(R.drawable.textlines_tabel_row_color_green_mini);
             ScrollСамогоТабеля.requestLayout();
             ScrollСамогоТабеля.pageScroll(View.FOCUS_BACKWARD);
             ГлавныйКонтейнерТабель.requestLayout();
             ГлавныйКонтейнерТабель.forceLayout();
+
+        }else {
+
+            Toast.makeText(activity, "Данных нет !!!!!!", Toast.LENGTH_SHORT).show();
+        }
+
+
         } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " +e + " Метод :"+Thread.currentThread().getStackTrace()[2].getMethodName()
@@ -1422,25 +1409,15 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private void МетодКогдаНетЗаписейВКурсоре() {
         try{
             ГлавныйКонтейнерТабель.removeAllViews();
-            ///
             ГлавныйКонтейнерТабель.removeAllViewsInLayout();
         } catch (Exception e) {
-            /// e.printStackTrace();
-            ///метод запись ошибок в таблицу
-/*     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());*/
         }
-
-
-
         /////TODO создавние строк из linerlouyto в табеле сколько сткром в базе данных андройда столлько на активити строк
         LayoutInflater МеханизмЗагрузкиОдногЛайАутавДругой = getLayoutInflater();
         //КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла = new View(this);//activity_main_find_customer_for_tables // activity_main_grid_for_tables
         КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла = МеханизмЗагрузкиОдногЛайАутавДругой.inflate(R.layout.activity_main_grid_for_tables_four_columns,
                 ГлавныйКонтейнерТабель, false);
-        //   НазваниеДанныхВТабелеФИО=new TextView(this);
         НазваниеДанныхВТабелеФИО = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.КонтейнерКудаЗагружаетьсяФИО);
-
         /////TODO ТАБЕЛЬ ФИО создаем textview названия дней понелельник вторик среда четеварг
         ///////// todo фио
         ///TODO ЕСЛИ ИМЕНИ НЕТ ПО НА АКТИВИТИ ПОКАЗЫВАЕМТ ЧТО ТАБЕЛЬ ПУСТОЙ
@@ -1449,69 +1426,24 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         Log.d(this.getClass().getName(), " ФИО " + "*Пустой табель (заполните)*");
         /////TODO ФИНАЛ ЗАПОЛЕНИЕ ДАННЫМИ АКТИВИТИ ЧЕРЕЗ ДРУГОЕ АКТВИТИ
         ГлавныйКонтейнерТабель.addView(КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла);
-
-
-////todo удаление из памяти
-        КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.invalidate();
-        ГлавныйКонтейнерТабель.invalidate();
-        ScrollСамогоТабеля.invalidate();
         КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.requestLayout();
         ГлавныйКонтейнерТабель.requestLayout();
         ScrollСамогоТабеля.requestLayout();
-        //ScrollСамогоТабеля.fullScroll(View.FOCUS_UP);
-
-
-        ///todo
     }
-
-
-
-
-
-///TODO   КОНЕЦ ScrollView
-
-
-
-
-
-
-    ///todo коды ЛОКАЛЬНОГО ОБНОВЛЕНИЕ И УДАЛЕНИЕ СОТРУДНИКА
-
-
     /////View/////TODO ТУТ ПЕРЕРХОДИМ НА КОД КОТОРЫЙ ДОБАВЛЯЕТ В ТАБЕЛЬ СЛОВА НЕ ЦИФРЫ ВИДЫ В-О-С
     View.OnLongClickListener СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления= new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
-
             /////todo ПЕРЕХОДИМ НА МЕТКИ ТАБЕЛЯ
             Log.d(this.getClass().getName(), " View.OnLongClickListener ");
             HashMap<String,Long> ХэшЛовимUUIDIDНазваниеСтолбикаЛокальныйСловоВставитьТабель= МетодЛовимЗначениеВТАбелеДляДобавленияСловВТабель(v);
-
             Log.d(this.getClass().getName(), "ХэшЛовимUUIDIDНазваниеСтолбикаЛокальный  " + ХэшЛовимUUIDIDНазваниеСтолбикаЛокальныйСловоВставитьТабель.values());
-
-
-
             ((TextView) v).setBackgroundColor(Color.GRAY);
-
-
-
-
             Log.d(this.getClass().getName(), "ХэшЛовимUUIDIDНазваниеСтолбикаЛокальныйСловоВставитьТабель.values()  " +ХэшЛовимUUIDIDНазваниеСтолбикаЛокальныйСловоВставитьТабель.values());
-            /////TODO запускаем сообщение которые справишает О ПЕРЕХОДЕ НА АКТИВТИ МЕТЫКИ ТАБЕЛЯ
-
             МетодПереходаНаМеткиТабеля(ХэшЛовимUUIDIDНазваниеСтолбикаЛокальныйСловоВставитьТабель);
-            /////
             return false;
         }
-
     };
-
-
-
-
-
-
-
 
     /////View/////TODO ТУТ ПОЛУЧАЕМ КУДА ОБНОВЛЯТЬ ДНИ  D1,D2,D3
     View.OnClickListener СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления= new View.OnClickListener() {
@@ -1522,8 +1454,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             МетодЛовимЗначениеВТАбелеUUIDиIDиНазваниеСтоблиув(v);
         }
     };
-
-
     //TODO второй long клик на прозопас
     /////View/////TODO ТУТ ПОЛУЧАЕМ КУДА ОБНОВЛЯТЬ ДНИ  D1,D2,D3
     View.OnFocusChangeListener СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления= new View.OnFocusChangeListener() {
@@ -1531,211 +1461,76 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         public void onFocusChange(View v, boolean hasFocus) {
             if (!hasFocus) {
                 Log.d("focus", "focus loosed");
-                // Do whatever you want here
             } else {
-
-
                 Log.d("focus", "focused");
-
-
                 Log.d(this.getClass().getName(), "  View.OnLongClickListener");
                 МетодЛовимЗначениеВТАбелеUUIDиIDиНазваниеСтоблиув(v);
 
             }
         }
     };
-
-
-
-
-
-
-
-
-
-
-
     /////View/////TODO метод uuid id названеи стоблика
     public  HashMap МетодЛовимЗначениеВТАбелеUUIDиIDиНазваниеСтоблиув(View v) {
-        //////todo заполение
         String СамоЗначениеСтолбикаТабеляДляЛокальногоОбновления = null;//
-
         String ПолучениеЗначениеСтолбикID= null;//;
-
         String ПолучениеЗначениеСтолбикUUID= null;//;
-
-        /////TODO  главная очистка перед новой вставкой  в табель АЧИЩАЕМ ПЕРЕРД ЗАПОЛЕНЕНИЕМ
-
-
-
         try{
-            /////todo определяем хэшмап для uuid и знпчения для
             Log.d(this.getClass().getName(), "  MotionEvent СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления ");
-
-
             EditText ВытаскиваемЗначениеСтолбикаТабеля=null;
-
-
-
             ВытаскиваемЗначениеСтолбикаТабеля = (EditText) v;
-
-
-            ///////
             String ВытаскиваемЗначениеСтолбикаТабеляДва=null;
-
-
-            /////todo писваесмиаем d1,d,2,d4
             ВытаскиваемЗначениеСтолбикаТабеляДва = (String) ВытаскиваемЗначениеСтолбикаТабеля.getTag();
-
-
-            ////todo верхнене значение локального обновления пример D1 , d2
             Log.d(this.getClass().getName(), " ВытаскиваемЗначениеСтолбикаТабеляДва " + ВытаскиваемЗначениеСтолбикаТабеляДва);
-
-
-
-            ///todo обнуляем
-            //////TODO ВАЖНО ЕСЛИ  не равно ЗНАЧЕНИЕ ДЛЯ НАПРИМЕР D1<>D2 РАЗНЫЕ ПОЛУЧЕН ПРИ КЛИСЕ ТО ТОГДА И ОБНУЛЕМ И ИЗМЕНЯЕМ ЗНАЧЕНИЯ NULLL !!!!!!!!!!!!!!!!!!!!!
-            /////todo присваемваем значения новое
             if (ВытаскиваемЗначениеСтолбикаТабеляДва.length()>0) {
-                ///////////
                 СамоЗначениеСтолбикаТабеляДляЛокальногоОбновления = ВытаскиваемЗначениеСтолбикаТабеляДва.trim();
             }
-
-////////////////////////////////////////
             Log.d(this.getClass().getName(), " charSequenceвторойстолбик: " + СамоЗначениеСтолбикаТабеляДляЛокальногоОбновления);
-
-            //TODO залезаем в обьект на активти где находяться данные табеля
             GridLayout GridRow = (GridLayout) v.getParent();
-
             Log.d(this.getClass().getName(), " GridRow" + GridRow);
-
-            ///TODO UUID и ID ПОСИК ЕГО ВНУТРИ GRIDLAUTY
-
             int КоличествоСтобиков = GridRow.getChildCount();
-
-            ///////
-
             for (int ИндексПоВытаскиваниюUUIDИID = 0; ИндексПоВытаскиваниюUUIDИID < КоличествоСтобиков; ИндексПоВытаскиваниюUUIDИID++) {
-
-////TODO сами столбиков
                 TextView СтолбикGridRow = (TextView) GridRow.getChildAt(ИндексПоВытаскиваниюUUIDИID);
-
-                //TODO название столбиков uuid id
                 String НазваниеКолонкиGridRow = null;
-
                 НазваниеКолонкиGridRow = String.valueOf(СтолбикGridRow.getTag());
-
-                /////TODO ОПРЕДЕЛЯЕМ КАКАЯ СЕЙЧАС ЯЧЕЙКА В ОБОРАБТКИ ID ИЛИ UUID
                 Log.d(this.getClass().getName(), " НазваниеКолонкиGridRow " + НазваниеКолонкиGridRow);
-
-
-                //todo выбор
                 switch (НазваниеКолонкиGridRow.trim()) {
-
-
-                    //todo fio какой стодик
                     case "uuid":
-
-                        //TODO получение знчение  UUID
                         Log.d(this.getClass().getName(), "  ПолучениеЗначениеСтолбикUUID " + ПолучениеЗначениеСтолбикUUID);
-                        ////
                         ПолучениеЗначениеСтолбикUUID = String.valueOf(СтолбикGridRow.getText());
-
                         Log.d(this.getClass().getName(), " ПолучениеЗначениеСтолбикUUID " + ПолучениеЗначениеСтолбикUUID +"\n"
                                 + " ВытаскиваемЗначениеСтолбикаТабеляДва " +ВытаскиваемЗначениеСтолбикаТабеляДва +
                                 " СамоЗначениеЯчейкиТабеля " +СамоЗначениеЯчейкиТабеля);
-
-
-
-                        //TODO при если нет UUID  то цепляемся локльное обновление через ID
-
-
-                        ////
                         if(ПолучениеЗначениеСтолбикUUID !=null  && ВытаскиваемЗначениеСтолбикаТабеляДва!=null) {
-
-                            // TODO: 21.05.2021 перед вставка очищаем ХЭШ
-
                             ХэшЛовимUUIDIDНазваниеСтолбика=new HashMap<>();
-
-                            /////TODO ЗАПОЛЯЕМ uuid
                             ХэшЛовимUUIDIDНазваниеСтолбика.put(ВытаскиваемЗначениеСтолбикаТабеляДва, Long.parseLong(ПолучениеЗначениеСтолбикUUID));
-
-
-
                             Log.d(this.getClass().getName(), " ВытаскиваемЗначениеСтолбикаТабеляДва " + ВытаскиваемЗначениеСтолбикаТабеляДва+
                                     " ПолучениеЗначениеСтолбикUUID " +ПолучениеЗначениеСтолбикUUID);
-
-                            // TODO: 21.05.2021
                             ВытаскиваемЗначениеСтолбикаТабеляДва=null;
                             ПолучениеЗначениеСтолбикUUID=null;
-
-
-                            //////
                         }
-
-
-
-
                         break;
-
-
-
-
-
-
-
                     //todo id какой стодик
                     case "_id":
-
                         //TODO получение знчение ID
                         Log.d(this.getClass().getName(), " ПолучениеЗначениеСтолбикID " + ПолучениеЗначениеСтолбикID);
-                        /////
                         ПолучениеЗначениеСтолбикID = String.valueOf(СтолбикGridRow.getText());
-
                         Log.d(this.getClass().getName(), " ПолучениеЗначениеСтолбикID " + ПолучениеЗначениеСтолбикID);
-
-
                         // TODO: 21.05.2021 обновление только через ID
                         if (ПолучениеЗначениеСтолбикID!=null  && ВытаскиваемЗначениеСтолбикаТабеляДва!=null){
-
-                            // TODO: 21.05.2021 перед вставка очищаем ХЭШ
-
                             ХэшЛовимUUIDIDНазваниеСтолбика=new HashMap<>();
-
-                            /////TODO ЗАПОЛЯЕМ id
                             ХэшЛовимUUIDIDНазваниеСтолбика.put(ВытаскиваемЗначениеСтолбикаТабеляДва, Long.parseLong(ПолучениеЗначениеСтолбикID));
-
-
                             Log.d(this.getClass().getName(), "ПолучениеЗначениеСтолбикUUID" + ПолучениеЗначениеСтолбикUUID
                                     + " ПолучениеЗначениеСтолбикID "+ПолучениеЗначениеСтолбикID);
-
-
-                            // TODO: 21.05.2021
                             ВытаскиваемЗначениеСтолбикаТабеляДва=null;
-
-                            ////////
                             ПолучениеЗначениеСтолбикUUID=null;
-
 ///TODO как получили значение выходим BREAK;
                             Log.d(this.getClass().getName(), " ХэшЛовимUUIDIDНазваниеСтолбика.values() " + ХэшЛовимUUIDIDНазваниеСтолбика.values()+"ХэшЛовимUUIDIDНазваниеСтолбика.keySet()  "
                                     +ХэшЛовимUUIDIDНазваниеСтолбика.keySet());
-
                         }
-
                         break;
-
-
-
                     default:
-
                         Log.d(this.getClass().getName(), " NULL значение НазваниеКолонкиGridRow " + НазваниеКолонкиGridRow);
-
-
-
-
                 }
-
-
             }
             Log.d(this.getClass().getName(), " ПолучениеЗначениеСтолбикID " + ПолучениеЗначениеСтолбикID);
         } catch (Exception e) {
@@ -1745,17 +1540,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),  this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-        /////////
         return  ХэшЛовимUUIDIDНазваниеСтолбика;
     }
-
-    // TODO  конец КОД СЛУШАТЕЛЬ ПРИ НАЖАТИИ НА ТАБЕЛЬ Создаем экземпляр TextWatcher:
-
-
-
-
-    /////TODO метод который добавляетв  табель прокме цифр и буквы
-
     /////View/////TODO метод uuid id названеи стоблика
     public  HashMap МетодЛовимЗначениеВТАбелеДляДобавленияСловВТабель(View v) {
         //////todo заполение
@@ -1767,122 +1553,62 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             Log.d(this.getClass().getName(), "  MotionEvent СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления ");
             EditText ВытаскиваемЗначениеСтолбикаТабеля=null;
             ВытаскиваемЗначениеСтолбикаТабеля = (EditText) v;
-            ///////
             String ВытаскиваемЗначениеСтолбикаТабеляДва=null;
             /////todo писваесмиаем d1,d,2,d4
             ВытаскиваемЗначениеСтолбикаТабеляДва = (String) ВытаскиваемЗначениеСтолбикаТабеля.getTag();
-            ////todo верхнене значение локального обновления пример D1 , d2
             Log.d(this.getClass().getName(), " ВытаскиваемЗначениеСтолбикаТабеляДва " + ВытаскиваемЗначениеСтолбикаТабеляДва);
-            ///todo обнуляем
-            //////TODO ВАЖНО ЕСЛИ  не равно ЗНАЧЕНИЕ ДЛЯ НАПРИМЕР D1<>D2 РАЗНЫЕ ПОЛУЧЕН ПРИ КЛИСЕ ТО ТОГДА И ОБНУЛЕМ И ИЗМЕНЯЕМ ЗНАЧЕНИЯ NULLL !!!!!!!!!!!!!!!!!!!!!
-            /////todo присваемваем значения новое
             СамоЗначениеСтолбикаТабеляДляЛокальногоОбновления = ВытаскиваемЗначениеСтолбикаТабеляДва;
-
-////////////////////////////////////////
             Log.d(this.getClass().getName(), " charSequenceвторойстолбик: " + СамоЗначениеСтолбикаТабеляДляЛокальногоОбновления);
-
-            //TODO залезаем в обьект на активти где находяться данные табеля
             GridLayout GridRow = (GridLayout) v.getParent();
             Log.d(this.getClass().getName(), " GridRow" + GridRow);
-            ///TODO UUID и ID ПОСИК ЕГО ВНУТРИ GRIDLAUTY
             int КоличествоСтобиков = GridRow.getChildCount();
-
             for (int ИндексПоВытаскиваниюUUIDИID = 0; ИндексПоВытаскиваниюUUIDИID < КоличествоСтобиков; ИндексПоВытаскиваниюUUIDИID++) {
-////TODO сами столбиков
                 TextView СтолбикGridRow = (TextView) GridRow.getChildAt(ИндексПоВытаскиваниюUUIDИID);
-                //TODO название столбиков uuid id
                 String НазваниеКолонкиGridRow = "";
                 НазваниеКолонкиGridRow = String.valueOf(СтолбикGridRow.getTag());
-
                 /////TODO ОПРЕДЕЛЯЕМ КАКАЯ СЕЙЧАС ЯЧЕЙКА В ОБОРАБТКИ ID ИЛИ UUID
                 Log.d(this.getClass().getName(), " НазваниеКолонкиGridRow " + НазваниеКолонкиGridRow);
-
-
                 //todo выбор
                 switch (НазваниеКолонкиGridRow.trim()) {
-                    //todo id какой стодик
                     case "_id":
-                        //TODO получение знчение ID
                         Log.d(this.getClass().getName(), " ПолучениеЗначениеСтолбикID " + ПолучениеЗначениеСтолбикID);
-                        /////
                         ПолучениеЗначениеСтолбикID = String.valueOf(СтолбикGridRow.getText());
-
                         Log.d(this.getClass().getName(), " ПолучениеЗначениеСтолбикID " + ПолучениеЗначениеСтолбикID);
-
-
-                        ///todo заполения Hasmap uuid and id
                         if (ВытаскиваемЗначениеСтолбикаТабеляДва!=null  && ПолучениеЗначениеСтолбикID!=null) {
-                            ////
                             Log.d(this.getClass().getName(), "      ХэшЛовимUUIDIDНазваниеСтолбика" + ХэшЛовимUUIDIDНазваниеСтолбика.toString());
-
                             // TODO: 21.05.2021 перед вставка очищаем ХЭШ
-
                             ХэшЛовимUUIDIDНазваниеСтолбика.clear();
-
                             /////TODO ЗАПОЛЯЕМ
                             ХэшЛовимUUIDIDНазваниеСтолбика.put(ВытаскиваемЗначениеСтолбикаТабеляДва, Long.parseLong(ПолучениеЗначениеСтолбикID));
-
                             //////todo обнуляем переменные
                             ВытаскиваемЗначениеСтолбикаТабеляДва = null;
                             ПолучениеЗначениеСтолбикID = null;
                             ///////
-
                             Log.d(this.getClass().getName(), " ХэшЛовимUUIDIDНазваниеСтолбика " + ХэшЛовимUUIDIDНазваниеСтолбика.toString());
-
                         }
-
-
                         break;
-
-
-
-
-
-
-
                     //todo fio какой стодик
                     case "uuid":
-
                         //TODO получение знчение  UUID
-
                         Log.d(this.getClass().getName(), "  ПолучениеЗначениеСтолбикUUID " + ПолучениеЗначениеСтолбикUUID);
-                        ////
                         ПолучениеЗначениеСтолбикUUID = String.valueOf(СтолбикGridRow.getText());
-
-
-
                         Log.d(this.getClass().getName(), " ПолучениеЗначениеСтолбикUUID " + ПолучениеЗначениеСтолбикUUID +"\n"
                                 + " ВытаскиваемЗначениеСтолбикаТабеляДва " +ВытаскиваемЗначениеСтолбикаТабеляДва +
                                 " СамоЗначениеЯчейкиТабеля " +СамоЗначениеЯчейкиТабеля);
                         ///todo заполения Hasmap uuid and id
                         if (ВытаскиваемЗначениеСтолбикаТабеляДва!=null  && ПолучениеЗначениеСтолбикUUID!=null){
                             Log.d(this.getClass().getName(), "      ХэшЛовимUUIDIDНазваниеСтолбика" +    ХэшЛовимUUIDIDНазваниеСтолбика.toString());
-
                             // TODO: 21.05.2021 перед вставка очищаем ХЭШ
-
                             ХэшЛовимUUIDIDНазваниеСтолбика.clear();
-
                             /////TODO ЗАПОЛЯЕМ
                             ХэшЛовимUUIDIDНазваниеСтолбика.put(ВытаскиваемЗначениеСтолбикаТабеляДва ,Long.parseLong(ПолучениеЗначениеСтолбикUUID ));
-
                             //////todo обнуляем переменные
                             ВытаскиваемЗначениеСтолбикаТабеляДва=null;
                             ПолучениеЗначениеСтолбикUUID=null;
-                            ///////
-
-
-
                             Log.d(this.getClass().getName(), " ХэшЛовимUUIDIDНазваниеСтолбика " + ХэшЛовимUUIDIDНазваниеСтолбика.toString());
-
-
                         }
-
                         break;
-
-
                 }
-
-
             }
             Log.d(this.getClass().getName(), " ПолучениеЗначениеСтолбикID " + ПолучениеЗначениеСтолбикID);
         } catch (Exception e) {
@@ -1893,67 +1619,17 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
         return  ХэшЛовимUUIDIDНазваниеСтолбика;
-
-
-
-
     }
-
-    // TODO  конец КОД СЛУШАТЕЛЬ ПРИ НАЖАТИИ НА ТАБЕЛЬ Создаем экземпляр TextWatcher:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // TODO КОД СЛУШАТЕЛЬ ПРИ НАЖАТИИ НА ТАБЕЛЬ Создаем экземпляр TextWatcher:
     private final TextWatcher СлушательПолученияДанных = new TextWatcher() {
-
-
-
-
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             try{
-
             Log.d(this.getClass().getName(), "  beforeTextChanged  " + s.toString());
             ПолучениеЗначениеДоИзменения= "";
-
             ПолучениеЗначениеДоИзменения=s.toString();
-
             Log.d(this.getClass().getName()," ПолучениеЗначениеДоИзменения  " +ПолучениеЗначениеДоИзменения);
-
         } catch (Exception e) {
             e.printStackTrace();
-            ///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
             new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
@@ -1963,115 +1639,47 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
         }
         }
-
-
-
-
-
-
-
-
-
-        //TODO второй метод
-
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-
             // TODO: 08.02.2022
-
             try{
-
             Log.d(this.getClass().getName(),"  onTextChanged  " +s.toString());
-
-
-
 // TODO: 08.02.2022  получаем само значениеит новое которое и надо ВСАТВКИТЬ
-
                     Log.d(this.getClass().getName(),"  afterTextChanged " +s.toString());
-
                     СамоЗначениеЯчейкиТабеля= null;
-
                     СамоЗначениеЯчейкиТабеля= s.toString();
-
                     Log.d(this.getClass().getName(), "  СамоЗначениеЯчейкиТабеля " +  СамоЗначениеЯчейкиТабеля);
-
-
-
                     //TODO ОЦЕНКА ЧТО С ДАННЫМИ
-
                     if (ПолучениеЗначениеДоИзменения.matches("(.*)[^0-9](.*)" )) {
-
                         Log.d(this.getClass().getName()," ПолучениеЗначениеДоИзменения " +ПолучениеЗначениеДоИзменения);
-
                         Log.d(this.getClass().getName(), "  СамоЗначениеЯчейкиТабеля " +  СамоЗначениеЯчейкиТабеля);
-                        //////
                         if (СамоЗначениеЯчейкиТабеля.matches("(.*)[0-9](.*)" )) {
-
                             СамоЗначениеЯчейкиТабеля = СамоЗначениеЯчейкиТабеля.replaceAll("[^0-9]", "");
                         }
                         Log.d(this.getClass().getName(), "  СамоЗначениеЯчейкиТабеля " +  СамоЗначениеЯчейкиТабеля);
-
-
                     }
                     Log.d(this.getClass().getName()," ПолучениеЗначениеДоИзменения " +ПолучениеЗначениеДоИзменения);
-
-
-
                     Log.d(this.getClass().getName(), " СамоЗначениеЯчейкиТабеля.length()" +  СамоЗначениеЯчейкиТабеля.length());
-
-
-
-
 
         } catch (Exception e) {
             e.printStackTrace();
-            ///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
             new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             //   mNotificationManagerДляЧАТА.cancel(1);///.cancelAll();
             Log.e(getApplicationContext().getClass().getName(), "С ОШИБКОЙ  Стоп СЛУЖБА СЛУЖБАService_Notifications  ДЛЯ ЧАТА   ДЛЯ ЧАТА onDestroy() время "+new Date());
-
         }
-
         }
-
-
-
-
         //Задаем действия для TextView после смены введенных в EditText символов:
         public void afterTextChanged(Editable s) {
             //TODO ДАННЫЙ КОД НЕПОСТРЕДСТВЕННО ЗАРУСКАЕТ ОБНОВЛЕНИЕ ЛОКАЛЬНОЕ С АКТИВТИИ
-
             int СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов = 0;
-
             boolean ФлагЗапускатьллкальноеОбновлениеИлинет=false;
-
             try{
-
-            // TODO: 08.02.2022  записЬ НОВОГО ЗНАЧЕНИЕ В ЯЧЕЙКУ ПРОИЗВОДИМ С ЗАДЕРЖСКОЙ И С ПРОПУСКАИИ ДАННЫХ В МЕРЕМЕННОЙ ДО ЭТОГО
-        /*    Observable observableаЗАПИСЫВАЕМнОВУЮвЕРИСЮдАННЫХвяЧЕЙКУсзАДЕРЖКОЙ=Observable.fromAction(new Action() {
-                @Override
-                public void run() throws Throwable {*/
-
             МетодГлавныйЛокальноеОбновлениеЯчейки(СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов, ФлагЗапускатьллкальноеОбновлениеИлинет);
-
-
                     Log.d(this.getClass().getName(), " МетодГлавныйЛокальноеОбновлениеЯчейки () Save.. СамоЗначениеЯчейкиТабеля" +  СамоЗначениеЯчейкиТабеля + " s "+s.toString());
-
-          /*      }
-            })
-                    .subscribeOn(AndroidSchedulers.mainThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .delaySubscription(1,TimeUnit.SECONDS);
-
-            observableаЗАПИСЫВАЕМнОВУЮвЕРИСЮдАННЫХвяЧЕЙКУсзАДЕРЖКОЙ.subscribe(System.out::println);*/
-
-
         } catch (Exception e) {
             e.printStackTrace();
-            ///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
             new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
@@ -2080,8 +1688,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             Log.e(getApplicationContext().getClass().getName(), "С ОШИБКОЙ  Стоп СЛУЖБА СЛУЖБАService_Notifications  ДЛЯ ЧАТА   ДЛЯ ЧАТА onDestroy() время "+new Date());
 
         }
-
-
         }//TODO НАДО ЛИ ЗАПУСКАТЬ ЛОКАЛЬНОЕ ОБНОВЛЕНИЕ И ЛИ НЕТ
 
         private void МетодГлавныйЛокальноеОбновлениеЯчейки(int СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов, boolean ФлагЗапускатьллкальноеОбновлениеИлинет) {
@@ -2185,27 +1791,19 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                     Log.d(this.getClass().getName(), "  СамоЗначениеЯчейкиТабеля " + СамоЗначениеЯчейкиТабеля+
                                             "  РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудника " +РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудника);
                                     String СодержимоеДляЛокальногоОбновленияВременный = String.valueOf(entry.getValue());
-                                    Long СодержимоеДляЛокальногоОбновления = Long.parseLong(СодержимоеДляЛокальногоОбновленияВременный);
-
-                                    Log.d(this.getClass().getName(), "  СодержимоеДляЛокальногоОбновления " + СодержимоеДляЛокальногоОбновления);
-                                    if (СодержимоеДляЛокальногоОбновления > 0){
-                                        String СодержимоеДляЛокальногоОбновленияФинал=String.valueOf(СодержимоеДляЛокальногоОбновления);
-                                        Log.d(this.getClass().getName(), "КонтейнерЗаполненияДаннымиПриЛокальномОбновлении " + КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.toString() +
-                                                "СодержимоеДляЛокальногоОбновленияФинал " + СодержимоеДляЛокальногоОбновленияФинал);
-                                        Log.d(this.getClass().getName(), "  КонтейнерЗаполненияДаннымиПриЛокальномОбновлении " + КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.valueSet() + "\n" +
-                                                "  String.valueOf(entry.getValue()) " + entry.getValue());
-                                        ///TODO ЗАПУСКАЕМ  МЕТОД ЛОКАЛЬНОГО ОБНОВЛЕНИЯ ВНУТИ ТАБЕЛЯ с самого активти
+                                   UUIDТекущегоВыбраногоСотрудника = Long.parseLong(СодержимоеДляЛокальногоОбновленияВременный);
+                                    Log.d(this.getClass().getName(), "  UUIDТекущегоВыбраногоСотрудника " + UUIDТекущегоВыбраногоСотрудника);
+                                    if (UUIDТекущегоВыбраногоСотрудника > 0){
                                         try {
                                             Long РезультатЛокальногоОбновлениеНаТабеле= null;
-                                            if (СодержимоеДляЛокальногоОбновленияФинал.length()>0 && КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.size()>0 ) {
+                                            if (UUIDТекущегоВыбраногоСотрудника>0 && КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.size()>0 ) {
                                                 // TODO: 13.01.2022  ГЛАВНЫЙ МЕТОД ЗАПУСКА ЛОКАЛЬНОГО ОБНОВЛЕНИЯ
                                                 РезультатЛокальногоОбновлениеНаТабеле =
-                                                        МетодЛокальногоОбновлениеЧерезКликвТабеле(КонтейнерЗаполненияДаннымиПриЛокальномОбновлении, СодержимоеДляЛокальногоОбновленияФинал);
+                                                        МетодЛокальногоОбновлениеЧерезКликвТабеле(КонтейнерЗаполненияДаннымиПриЛокальномОбновлении, UUIDТекущегоВыбраногоСотрудника.toString());
                                             }
                                             Log.d(this.getClass().getName(), "  РезультатЛокальногоОбновлениеНаТабеле" + РезультатЛокальногоОбновлениеНаТабеле);
                                             if (РезультатЛокальногоОбновлениеНаТабеле>0) {
                                                 КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.clear();
-                                                СодержимоеДляЛокальногоОбновленияФинал=null;
                                                 ПолучениеЗначениеДоИзменения= null;
                                                 СамоЗначениеЯчейкиТабеля=null;
                                                 Class_GRUD_SQL_Operations  classGrudSqlOperationsПовышаемВерсиюДАнныхПриЛокальноОбновлениеииДанныхВнутриТабеля;
@@ -2324,39 +1922,25 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             throws InterruptedException, ExecutionException,
             NoSuchMethodException, TimeoutException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, JSONException {
         String таблицаДляЛокальногоОбонвления="data_tabels";
-
         Long РезультатЛокальногоОбновления = null;
-
         try {
-
             Log.d(this.getClass().getName(), " ПолучениеЗначениеСтолбикUUID " + ПолучениеЗначениеСтолбикUUID +
                     " КонтейнерЗаполненияДаннымиПриЛокальномОбновлении  " + КонтейнерЗаполненияДаннымиПриЛокальномОбновлении);
             ///TOdo универсальное значение или uuid или id КАКОЕ НЕ NULL
             String УниверсальныйИнлификаторЛокальногоОбновлениеиIDиUUID = "";
-
-
 ////TODO сам метод запуска обновления
             if (КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.size() > 0) {///если в контенер заполнилься то начинаем обновление
-
-
                 //TODO принимеем решение через чего БУДЕМ ОБНОВЛЯТЬ ЧЕРЕЗ ID ИЛИ UUID, ПРИОРИТЕТ ID ,НО ЕЛСИ ЕГО НЕТ ТО UUID
                 /////TODO  локальное ОБНОВЛЕНИЕ ЧЕРЕЗ UUID ПОЛЕ
                 if (ПолучениеЗначениеСтолбикUUID != null) {
-
                     Log.d(this.getClass().getName(), " ПолучениеЗначениеСтолбикUUID " + ПолучениеЗначениеСтолбикUUID);
-
-
                     boolean РузультатМетодОпределяемуЗаписиКакойСтатусУдаленныйИлиНет =
                             МетодОпределяемуЗаписиКакойСтатусУдаленныйИлиНет(ПолучениеЗначениеСтолбикUUID, "uuid");
-
-                    ////
                     Log.d(this.getClass().getName(), " РузультатМетодОпределяемуЗаписиКакойСтатусУдаленныйИлиНет " + РузультатМетодОпределяемуЗаписиКакойСтатусУдаленныйИлиНет +
                             " КонтейнерЗаполненияДаннымиПриЛокальномОбновлении " + КонтейнерЗаполненияДаннымиПриЛокальномОбновлении);
 
-
                     ///todo ПРОИЗВОДИМ ЛОКАЛЬНОЕ ОБНОВЛЕНИЕ ,ЕСЛИ В СТАТУСЕ ОТПРАВИК НЕ СТОИТЬ СТАТУС УДАЛЕННЫЙ
                     //////todo производим локальное обновлени когда статус false --, это значит статуса Уданненый нет
-
                     try {
                         // TODO: 22.03.2021  вставка только если false запись не Имеет статус Удаленная
                         if (РузультатМетодОпределяемуЗаписиКакойСтатусУдаленныйИлиНет == false) {
@@ -2376,15 +1960,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                         new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                                 Thread.currentThread().getStackTrace()[2].getLineNumber());
                     }
-
-
                 }
-
-
                 /// //TODO РЕЗУЛЬТАТ ФИНАЛЬНЫЙ ПОСЛЕ ЛОКАЛЬНОГО ОБНОВЛЕНИЕ ЕСОИ ВСЕ ХОРОШО ТО ОБНУЛЯЕМ ПЕРЕМЕННЫЕ И НЕТ СООБЩЕНИЙ
-
                 Log.d(this.getClass().getName(), " РезультатЛокальногоОбновления" + РезультатЛокальногоОбновления);
-
                 //TODO ЕЛИ РЕЗУЛЬТАТ ЛОКАЛЬНОГО ОБНОВЛЕНИЯ СРАБОТАЛ ТО И ПОКАЗЫВАЕМ ИЗМЕННЕЯ ЧАСЫ
                 if (РезультатЛокальногоОбновления > 0 ) {
                     ///todo после заполнения табелями обнуляем куросры
@@ -2395,103 +1973,25 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     // TODO: 07.05.2021 обнуляем UUID после созданеия подтчета часов
                     Log.d(Class_MODEL_synchronized.class.getName()," ОбщееКоличествоЛюдейВТабелеТекущем  "+ОбщееКоличествоЛюдейВТабелеТекущем  +
                             "  ТекущееПоложенияВТабелеДляСкрола "  +ТекущееПоложенияВТабелеДляСкрола);
-
-                    //TODO ЗАПОЛЯНЕМ ПОЛУЧЕННЫЙ МЕСЯ Ц ПЛУС КОЛИЧЕСТВО ЧАСОВ СОТРУДНИКА КОНКРЕТНОГО
-                    //TODO ЗАПОЛЯНЕМ ПОЛУЧЕННЫЙ МЕСЯ Ц ПЛУС КОЛИЧЕСТВО ЧАСОВ СОТРУДНИКА КОНКРЕТНОГО
                     ОбщееКоличествоЧасовСотрудникаВТабелеСотудников.setText(" (" + " " + ОбщееКоличествоЛюдейВТабелеТекущем + "/часы)  #"+ТекущееПоложенияВТабелеДляСкрола+"");
-
 
                     // TODO: 25.09.2021
                     Log.d(Class_MODEL_synchronized.class.getName()," ОбщееКоличествоЛюдейВТабелеТекущем  "+ОбщееКоличествоЛюдейВТабелеТекущем  +
                             "  ТекущееПоложенияВТабелеДляСкрола "  +ТекущееПоложенияВТабелеДляСкрола);
-
-
-
-
-
-
-                    Log.d(this.getClass().getName(), " ПолучениеЗначениеСтолбикUUID " + ПолучениеЗначениеСтолбикUUID
-                            + " ХэшЛовимUUIDIDНазваниеСтолбика.values() " + ХэшЛовимUUIDIDНазваниеСтолбика.values() + " СамоЗначениеЯчейкиТабеля " + СамоЗначениеЯчейкиТабеля);
-
-
-                    ///todo ДОБАЯЛЕМ ПОЛСЕ УСПЕШНОЙ ЛОКАЛЬНОГО ОБНОЛЕНИЕ
-
-                    //todo после ЛОКАЛЬНОГО ОБНОВЛЕНИЯ ОБНУЛЯЕМ
-                    Log.d(this.getClass().getName(), " ПолучениеЗначениеСтолбикUUID " + ПолучениеЗначениеСтолбикUUID
-                            + " ХэшЛовимUUIDIDНазваниеСтолбика.values() " + ХэшЛовимUUIDIDНазваниеСтолбика.values() + " СамоЗначениеЯчейкиТабеля " + СамоЗначениеЯчейкиТабеля);
-                    ////TODO сообщаем пользователю при успепешном обньвении
-                /*Toast.makeText(this, " Успех локальное обновление  Табеля (новое значение:) " +СамоЗначениеЯчейкиТабеля +"\n"+
-                        " Описание : "+ХэшЛовимUUIDIDНазваниеСтолбика.keySet()+" / " +ХэшЛовимUUIDIDНазваниеСтолбика.values() , Toast.LENGTH_SHORT).show();*/
-                    /*Toast.makeText(this, " Успех обновление  Табеля"+"\n"+
-                            "(новое значение:) " +СамоЗначениеЯчейкиТабеля+"\n"+
-                            " кол об/вс: "+PUBLIC_CONTENT.КоличествоУспешныхОбновлений, Toast.LENGTH_SHORT).show()*/
-                    ////TODO ПОСЛЕ ЛОКАЛЬНОГО ОБНОВЛЕНИЯ ЗАПУСКАЕМ СИНХРОНИЗАЦИЮ ДАННЫХ
-
-
-
-
                     /////TODO ОБНУЛЯЕМ ЗНАЧЕНИЕ ID AND UUID ЧТОБЫ НЕ БЫЛО ПОВТОРОНОГО ОБНОЛЕНИЕ НЕ СВОЕГО ХОЗЯИНА UUID
                     КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.clear();
-
-
                     СамоЗначениеЯчейкиТабеля = null;
-
                     ПолучениеЗначениеДоИзменения = null;
-                    ////todo УДАЛЕНИЕ ИЗ ПАМЯТИ КУРСОРА
-                    ////todo удалем из памяти
-
-                    ///TODO  ОБНУЛЯЕМ ПОСЛЕ УСПЕШНОЕ ОБНОВЛЕНОЕ
-
-                    // ХэшЛовимUUIDIDНазваниеСтолбика.clear();
-
-
                     ScrollСамогоТабеля.requestLayout();
-                    // TODO: 31.01.2022
-
                     ГлавныйКонтейнерТабель.requestLayout();
-
-
-                    ГлавныйКонтейнерТабель.invalidate();
-
-                    // TODO: 31.01.2022
-                    ScrollСамогоТабеля.invalidate();
-
-
-
-                    ////todo УДАЛЕНИЕ ИЗ ПАМЯТИ КУРСОРА
-                    Toast aa = Toast.makeText(context, "OPEN", Toast.LENGTH_SHORT);
-                    ImageView cc = new ImageView(getBaseContext());
-                    // cc.setImageResource(R.drawable.icon_dsu1_add_organisazio_success);
-                    aa.setView(cc);
-                    aa.show();
-
-
-
-//////////todo ошибка нет локального обновления
                 } else {
-                    //TODO сообщаем пользователю об не успешном локальном обновленеии на активти
-                    /*  Toast.makeText(this, "Ошибка локальное обновление Табеля " +ХэшЛовимUUIDIDНазваниеСтолбика.size()  , Toast.LENGTH_SHORT).show();*/
-
-
-
-            /*                Toast aa = Toast.makeText(КонтекстОдногоСотрудикаВТабеле, "OPEN", Toast.LENGTH_SHORT);
-                            ImageView cc = new ImageView(getBaseContext());
-                            cc.setImageResource(R.drawable.icon_dsu1_add_organisazio_error);
-                            aa.setView(cc);
-                            aa.show();*/
-
                     Toast.makeText(getApplicationContext(), " Ошибка обновление ячейки не произошло !!!!! " , Toast.LENGTH_SHORT).show();
-
                     КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.clear();
                     СамоЗначениеЯчейкиТабеля = null;
                     ПолучениеЗначениеДоИзменения = null;
                     ХэшЛовимUUIDIDНазваниеСтолбика.clear();
-
                 }
-
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName()
@@ -2706,10 +2206,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///todo вычисляем сколько дней в месяце текущем
             КоличествоДнейвЗагружаемойМесяце=МетодПолучениеКоличествоДнейвЗагружаемомМесяце(МЕсяцДЛяПоказатаВТАбле ,ГодДЛяПоказатаВТАбле);
             Log.d(this.getClass().getName()," КоличествоДнейвЗагружаемойМесяце " +КоличествоДнейвЗагружаемойМесяце);
-            ////
         } catch (Exception e) {
             e.printStackTrace();
-            ///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
             new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
@@ -3040,7 +2538,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                             Cursor    КурсорТаблицаПрофесии=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleПрофесии);
                             Log.d(this.getClass().getName(), " КурсорТаблицаПрофесии" + КурсорТаблицаПрофесии);
                             // TODO: 27.03.2023 Новый ПОсик
-                        new SubClassNewSearchAlertDialogНовыйПосик().МетодСообщениеНовыйПоиска(activity,КурсорТаблицаПрофесии ,message,"prof");
+                        new SubClassNewSearchAlertDialogНовыйПосик().МетодСообщениеНовыйПоиска(activity,КурсорТаблицаПрофесии ,message,"prof",РодительскийUUDТаблицыТабель);
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
@@ -3353,11 +2851,11 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 //TODO SUB CLASS с ГЛАВНЫМ МЕПТОДОМ ОФОРМЛЕНИЯ ТАБЕЛЯ
 
 
-    private void МетодГлавныйОрмленияТабеляДнямиИЗначениямиДляЭтиДней(SQLiteCursor ГлавныйКурсорКогдаМыКликаемПоСпискуТабелейИлиСфайп, int[] ИндексСтрокКомпонентовТабеля
+    private void МетодГлавныйДанныеСотрудника(SQLiteCursor ГлавныйКурсорКогдаМыКликаемПоСпискуТабелейИлиСфайп, int[] ИндексСтрокКомпонентовТабеля
             , Map<Integer, String> ХЭШНазваниеДнейНедели,
-                                                                      TextView НазваниеДанныхВТабелеДниНедели,
-                                                                      EditText СамиДанныеТабеля
-            ,View КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла) {
+                                              TextView НазваниеДанныхВТабелеДниНедели,
+                                              EditText СамиДанныеТабеля
+            , View КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла) {
         /////todo ПЕРВАЯ СТРОКА НАЗВАНИЯ
 
         try{
@@ -5405,7 +4903,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         private void МетодСообщениеНовыйПоиска(@NonNull Activity activity
                 ,@NonNull Cursor cursorДанные,
                                                @NonNull Message message
-                ,@NonNull String ТаблицаПосика) {
+                ,@NonNull String ТаблицаПосика,
+                                               @NonNull Long РодительскийUUDТаблицыТабель) {
             try{
                 this.cursorДанные=cursorДанные;
                 final ListView[] listViewДляНовыйПосик = new ListView[1];
@@ -5442,47 +4941,61 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                         if (cursor.getCount()>0) {
                                             try{
                                                 Integer ИндексНазваниеЦФО = cursor.getColumnIndex("name");///user_update  --old/// uuid
-                                                String НазваниеЦФО = cursor.getString(ИндексНазваниеЦФО);
+                                                String НазваниеПрофесии = cursor.getString(ИндексНазваниеЦФО);
                                                 // TODO: 13.12.2022  производим состыковку
-                                                Integer ИндексНазваниеЦфоID = cursor.getColumnIndex("_id");///user_update  --old/// uuid
-                                                Integer ПолучаемIDЦфо = cursor.getInt(ИндексНазваниеЦфоID);
-                                                if (ПолучаемIDЦфо>0) {
-                                                    Integer UUIDНазваниеЦФО = cursor.getColumnIndex("uuid");///user_update  --old/// uuid
-                                                    Long UUIDЦФО = cursor.getLong(UUIDНазваниеЦФО);
+                                                Integer ИндексНазваниеПрофесииID = cursor.getColumnIndex("_id");///user_update  --old/// uuid
+                                                Integer ПолучаемIDПрофессии = cursor.getInt(ИндексНазваниеПрофесииID);
+                                                if (ПолучаемIDПрофессии>0) {
+                                                    Integer UUIDПрофессии = cursor.getColumnIndex("uuid");///user_update  --old/// uuid
+                                                    Long UUIDПрофесиии = cursor.getLong(UUIDПрофессии);
                                                     Bundle bundle=new Bundle();
-                                                    bundle.putInt("ПолучаемIDЦфо",ПолучаемIDЦфо);
-                                                    bundle.putString("НазваниеЦФО",НазваниеЦФО);
-                                                    bundle.putLong("UUIDНазваниеЦФО",UUIDНазваниеЦФО);
+                                                    bundle.putInt("ПолучаемIDПрофессии",ПолучаемIDПрофессии);
+                                                    bundle.putString("НазваниеПрофесии",НазваниеПрофесии);
+                                                    bundle.putLong("UUIDПрофесиии",UUIDПрофесиии);
+                                                    bundle.putLong("РодительскийUUDТаблицыТабель",РодительскийUUDТаблицыТабель);
+
+
+
+
+
+                                                    bundle.putLong("UUIDТекущегоВыбраногоСотрудника",UUIDТекущегоВыбраногоСотрудника);
                                                     ((MaterialTextView)view).setTag(bundle);
                                                 }
-                                                Log.d(this.getClass().getName()," НазваниеЦФО"+ НазваниеЦФО+
-                                                        " ПолучаемIDЦфо "+ПолучаемIDЦфо);
+                                                Log.d(this.getClass().getName()," НазваниеПрофесии"+ НазваниеПрофесии+
+                                                        " ПолучаемIDПрофессии "+ПолучаемIDПрофессии + " ХэшЛовимUUIDIDНазваниеСтолбика.size() " +ХэшЛовимUUIDIDНазваниеСтолбика.size());
                                                 // TODO: 20.01.2022
-                                                Log.d(this.getClass().getName()," НазваниеЦФО "+НазваниеЦФО);
-                                                boolean ДлинаСтрокивСпиноре = НазваниеЦФО.length() >40;
+                                                Log.d(this.getClass().getName()," НазваниеЦФО "+НазваниеПрофесии);
+                                                boolean ДлинаСтрокивСпиноре = НазваниеПрофесии.length() >40;
                                                 if (ДлинаСтрокивСпиноре) {
-                                                    StringBuffer sb = new StringBuffer(НазваниеЦФО);
+                                                    StringBuffer sb = new StringBuffer(НазваниеПрофесии.trim());
                                                     sb.insert(40, System.lineSeparator());
-                                                    НазваниеЦФО = sb.toString();
-                                                    Log.d(getApplicationContext().getClass().getName(), " НазваниеЦФО " + "--" + НазваниеЦФО);/////
+                                                    НазваниеПрофесии = sb.toString();
+                                                    Log.d(getApplicationContext().getClass().getName(), " НазваниеПрофесии " + "--" + НазваниеПрофесии);/////
                                                 }
-                                                ((MaterialTextView)view).setText(НазваниеЦФО);
+                                                ((MaterialTextView)view).setText(НазваниеПрофесии);
+                                                // TODO: 29.03.2023
+                                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                                        + " НазваниеПрофесии"+НазваниеПрофесии);
                                                 // TODO: 13.12.2022 слушатель
                                                 ((MaterialTextView)view).setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
                                                         ((MaterialTextView)view).startAnimation(animation);
                                                         Bundle bundle=(Bundle)   ((MaterialTextView)view).getTag();
-                                                        Integer IDЦфоДЛяПередачи=      bundle.getInt("ПолучаемIDЦфо",0);
-                                                        String НазваниеЦФО=   bundle.getString("НазваниеЦФО","");
-                                                        Long UUIDНазваниеЦФО =   bundle.getLong("UUIDНазваниеЦФО",0l);
+                                                        Integer ПолучаемIDПрофессии=      bundle.getInt("ПолучаемIDПрофессии",0);
+                                                        String НазваниеПрофесии=   bundle.getString("НазваниеПрофесии","");
+                                                        Long UUIDПрофесиии =   bundle.getLong("UUIDПрофесиии",0l);
+                                                        Long РодительскийUUDТаблицыТабель =   bundle.getLong("РодительскийUUDТаблицыТабель",0l);
                                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                                + " IDЦфоДЛяПередачи "+IDЦфоДЛяПередачи + " НазваниеЦФО " +НазваниеЦФО + " UUIDНазваниеЦФО " +UUIDНазваниеЦФО);
+                                                                + " ПолучаемIDПрофессии "+ПолучаемIDПрофессии + " НазваниеЦФО " +НазваниеПрофесии + " UUIDПрофесиии " +UUIDПрофесиии+
+                                                                " РодительскийUUDТаблицыТабель " +РодительскийUUDТаблицыТабель);
                                                         searchViewДляНовогоПоиска.setTag(bundle);
                                                         searchViewДляНовогоПоиска.setQueryHint("");
-                                                        searchViewДляНовогоПоиска.setQuery(НазваниеЦФО,true);
+                                                        searchViewДляНовогоПоиска.setQuery(НазваниеПрофесии,true);
                                                         if (  searchViewДляНовогоПоиска.getQuery().toString().length()==0) {
                                                             Snackbar.make(view, " Вы не выбрали  !!! "
                                                                     , Snackbar.LENGTH_LONG).show();

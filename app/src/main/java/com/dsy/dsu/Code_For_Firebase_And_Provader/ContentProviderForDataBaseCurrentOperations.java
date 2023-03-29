@@ -474,16 +474,18 @@ public class ContentProviderForDataBaseCurrentOperations extends ContentProvider
         try{
        String table = МетодОпределяемТаблицу(uri);
             values=new ContentValues();
-            Integer IDЦфоДЛяПередачи=      extras.getInt("ПолучаемIDЦфо",0);
-            values.put("prof",IDЦфоДЛяПередачи);
-            String НазваниеЦФО=   extras.getString("НазваниеЦФО","");
-            Long UUIDНазваниеЦФО =   extras.getLong("UUIDНазваниеЦФО",0l);
+            Integer ПолучаемIDПрофессии=      extras.getInt("ПолучаемIDПрофессии",0);
+            values.put("prof",ПолучаемIDПрофессии);
+            String НазваниеПрофесии=   extras.getString("НазваниеПрофесии","");
+            Long UUIDПрофесиии =   extras.getLong("UUIDПрофесиии",0l);
+            Long РодительскийUUDТаблицыТабель =   extras.getLong("РодительскийUUDТаблицыТабель",0l);
+            Long UUIDТекущегоВыбраногоСотрудника =   extras.getLong("UUIDТекущегоВыбраногоСотрудника",0l);
             Long ВерсияДанныхUp = new SubClassUpVersionDATA().МетодПовышаемВерсииCurrentTable(table,getContext(),Create_Database_СамаБАзаSQLite);
             values.put("current_table",ВерсияДанныхUp);
             String ДатаОбновления=     new Class_Generation_Data(getContext()).ГлавнаяДатаИВремяОперацийСБазойДанных();
             values.put("date_update",ДатаОбновления);
             // TODO: 28.03.2023 Само Обновление Профессии
-            РезультатСменыПрофесии  = Create_Database_СамаБАзаSQLite.update(table,values, "uuid=?", new String[]{UUIDНазваниеЦФО.toString()});
+            РезультатСменыПрофесии  = Create_Database_СамаБАзаSQLite.update(table,values, "uuid=?", new String[]{UUIDТекущегоВыбраногоСотрудника.toString()});
        // TODO: 30.10.2021
        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
