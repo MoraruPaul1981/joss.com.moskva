@@ -5398,6 +5398,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     class SubClassNewSearchAlertDialogНовыйПосик{
         Cursor cursorДанные;
+        MaterialButton   alertDialogНовыйПосикКнопкаЗакрыть;
+
+        SearchView    searchViewДляНовогоПоиска;
         @UiThread
         private void МетодСообщениеНовыйПоиска(@NonNull Activity activity
                 ,@NonNull Cursor cursorДанные,
@@ -5406,14 +5409,13 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             try{
                 this.cursorДанные=cursorДанные;
                 final ListView[] listViewДляНовыйПосик = new ListView[1];
-                final MaterialButton[] alertDialogНовыйПосикКнопкаЗакрыть = new MaterialButton[1];
                 AlertDialog      alertDialogНовыйПосик= new MaterialAlertDialogBuilder(activity){
                     @NonNull
                     @Override
                     public MaterialAlertDialogBuilder setView(View view) {
                         listViewДляНовыйПосик[0] =    (ListView) view.findViewById(R.id.SearchViewList);
                         listViewДляНовыйПосик[0].setTextFilterEnabled(true);
-                        SearchView    searchViewДляНовогоПоиска=    (SearchView) view.findViewById(R.id.searchview_newscanner);
+                        searchViewДляНовогоПоиска=    (SearchView) view.findViewById(R.id.searchview_newscanner);
                         searchViewДляНовогоПоиска.setQueryHint("Поиск");
                         // TODO: 14.12.2022
                         searchViewДляНовогоПоиска.setDrawingCacheBackgroundColor(Color.GRAY);
@@ -5425,7 +5427,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                         textView.setTextColor(Color.rgb(0,102,102));
                         textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                         // TODO: 14.12.2022
-                           alertDialogНовыйПосикКнопкаЗакрыть[0] =    (MaterialButton) view.findViewById(R.id.bottom_newscanner1);
+                           alertDialogНовыйПосикКнопкаЗакрыть =    (MaterialButton) view.findViewById(R.id.bottom_newscanner1);
+                        alertDialogНовыйПосикКнопкаЗакрыть.setText("Закрыть");
                         ///TODO ГЛАВНЫЙ АДАПТЕР чата
                         SimpleCursorAdapter simpleCursorAdapterЦФО= new SimpleCursorAdapter(getApplicationContext(),   R.layout.simple_newspinner_dwonload_newfiltersearch, cursorДанные,
                                 new String[]{ "name","_id"},
@@ -5499,15 +5502,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                                                 + "  ((MaterialTextView)view) "+ ((MaterialTextView)view).getTag());
-                                                        // TODO: 28.03.2023 ЗАПИСЫВАЕМ НОВУЮ ПРОФЕССИЮ В БАЗУ
-                                                        if (  searchViewДляНовогоПоиска.getQuery().toString().length()>0 ) {
-                                                            МетодЗаписиСменыПрофесии(((MaterialTextView)view));
-
-
-
-
-                                                            МетодПерегрузкаВидаЭкрана();
-                                                        }
                                                     }
                                                 });
                                                 // TODO: 13.12.2022 филь
@@ -5558,15 +5552,24 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 layoutParams.gravity = Gravity.CENTER;
                 alertDialogНовыйПосик.getWindow().setAttributes(layoutParams);
                 // TODO: 13.12.2022 ВТОРОЙ СЛУШАТЕЛЬ НА КНОПКУ
-                alertDialogНовыйПосикКнопкаЗакрыть[0].setOnClickListener(new View.OnClickListener() {
+                alertDialogНовыйПосикКнопкаЗакрыть.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         try {
                             Log.d(this.getClass().getName(), " position");
                             Log.d(this.getClass().getName(), "МетодСозданиеТабеля  v " + v);
-                            alertDialogНовыйПосикКнопкаЗакрыть[0].setText("");
-                            alertDialogНовыйПосикКнопкаЗакрыть[0].refreshDrawableState();
-                            alertDialogНовыйПосикКнопкаЗакрыть[0].forceLayout();
+                            // TODO: 28.03.2023 ЗАПИСЫВАЕМ НОВУЮ ПРОФЕССИЮ В БАЗУ
+                            if (  searchViewДляНовогоПоиска.getQuery().toString().length()>5 ) {
+                                searchViewДляНовогоПоиска.setQuery("",true);
+                                searchViewДляНовогоПоиска.refreshDrawableState();
+                                Integer ПровйдерСменаПрофесии=      МетодЗаписиСменыПрофесии(searchViewДляНовогоПоиска);
+                                if (ПровйдерСменаПрофесии>0) {
+                                    МетодПерегрузкаВидаЭкрана();
+                                }else {
+                                    Toast.makeText(MainActivity_Tabel_Single_People.this, "Профессия не сменилась !!! ", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            alertDialogНовыйПосикКнопкаЗакрыть.forceLayout();
                             alertDialogНовыйПосик.dismiss();
                             alertDialogНовыйПосик.cancel();
                         } catch (Exception e) {
@@ -5625,8 +5628,10 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                 if (cursorДанные.getCount()>0 && cursorДанные!=null) {
                                     simpleCursorAdapterЦФО.swapCursor(cursorДанные);
                                     listViewДляНовыйПосик.setSelection(0);
+                                    alertDialogНовыйПосикКнопкаЗакрыть.setText("Сохранить");
                                 }
                                 if (cursorДанные.getCount()==0 && cursorДанные!=null) {
+                                    alertDialogНовыйПосикКнопкаЗакрыть.setText("Закрыть");
                                     searchViewДляНовогоЦФО.setBackgroundColor(Color.RED);
                                     message.getTarget().postDelayed(() -> {
                                         searchViewДляНовогоЦФО.setBackgroundColor(Color.parseColor("#F2F5F5"));
@@ -5687,19 +5692,22 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         }
 
     }
-  private   Integer МетодЗаписиСменыПрофесии(@NonNull MaterialTextView materialTextViewНоваяПрофессия){ //TODO метод записи СМЕНЫ ПРОФЕСИИ
-        Integer РезультатИзмененияПрофессии=0;
+  private   Integer МетодЗаписиСменыПрофесии(@NonNull SearchView searchViewДляНовогоПоиска){ //TODO метод записи СМЕНЫ ПРОФЕСИИ
+        Integer ПровйдерСменаПрофесии=0;
     try{
         String ТаблицаОбработки="data_tabels";
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                + " materialTextViewНоваяПрофессия "+materialTextViewНоваяПрофессия+ " ТаблицаОбработки "+ТаблицаОбработки);
+                + " searchViewДляНовогоПоиска "+searchViewДляНовогоПоиска+ " ТаблицаОбработки "+ТаблицаОбработки);
         Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" +ТаблицаОбработки + "");
-        Bundle bundleСменаПрофессии= (Bundle) materialTextViewНоваяПрофессия.getTag();
+        Bundle bundleСменаПрофессии= (Bundle) searchViewДляНовогоПоиска.getTag();
         ContentResolver contentResolver=getContentResolver();
         Bundle bundleОбновлениеПрофесии=  contentResolver.call(uri,ТаблицаОбработки,ТаблицаОбработки,bundleСменаПрофессии);
-        Log.w(context.getClass().getName(), " РЕЗУЛЬТАТ bundleОбновлениеПрофесии  " +  bundleОбновлениеПрофесии);
+        ПровйдерСменаПрофесии=  bundleОбновлениеПрофесии.getInt(    "СтатусОбновления",0);
+        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" РЕЗУЛЬТАТ ПровйдерСменаПрофесии  " +  ПровйдерСменаПрофесии);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -5708,7 +5716,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 Thread.currentThread().getStackTrace()[2].getMethodName(),
                 Thread.currentThread().getStackTrace()[2].getLineNumber());
     }
-   return  РезультатИзмененияПрофессии;
+   return  ПровйдерСменаПрофесии;
     }
 
     private void МетодПерегрузкаВидаЭкрана() {

@@ -400,7 +400,7 @@ public class ContentProviderForDataBaseCurrentOperations extends ContentProvider
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                    return null;
+                    return extras;
                 }
             }).exceptionally(e -> {
                 System.out.println(e.getClass());
