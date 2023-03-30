@@ -51,6 +51,7 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -111,6 +112,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 import java.util.function.IntUnaryOperator;
+import java.util.stream.IntStream;
 
 import javax.crypto.NoSuchPaddingException;
 
@@ -2856,6 +2858,57 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         String НазваниеДней= "";
         Bundle bundleДляОбновление=new Bundle();
         try{
+
+            List<Integer> ЛистСДопустипыЗначениямиДляЛокальноСохранения = new ArrayList();
+            ЛистСДопустипыЗначениямиДляЛокальноСохранения.add(R.id.ПерваяСтрочкаНазваниеДень1);
+/*
+            IntStream.iterate(1, i -> i + 1).limit(24).forEachOrdered(ЛистСДопустипыЗначениямиДляЛокальноСохранения::add);
+IntStream intStreamШабка=IntStream.of(
+        R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень2,R.id.ПерваяСтрочкаНазваниеДень3,R.id.ПерваяСтрочкаНазваниеДень4,
+        R.id.ПерваяСтрочкаНазваниеДень5,R.id.ПерваяСтрочкаНазваниеДень6,R.id.ПерваяСтрочкаНазваниеДень7,R.id.ПерваяСтрочкаНазваниеДень8,
+        R.id.ПерваяСтрочкаНазваниеДень9,R.id.ПерваяСтрочкаНазваниеДень10,R.id.ПерваяСтрочкаНазваниеДень11,R.id.ПерваяСтрочкаНазваниеДень12,
+        R.id.ПерваяСтрочкаНазваниеДень13,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень16,R.id.ПерваяСтрочкаНазваниеДень17,
+        R.id.ПерваяСтрочкаНазваниеДень18,R.id.ПерваяСтрочкаНазваниеДень19,R.id.ПерваяСтрочкаНазваниеДень20,R.id.ПерваяСтрочкаНазваниеДень1,
+        R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,
+        R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,
+        R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,
+        R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,
+        R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,
+        R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,
+        R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,
+        R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,
+        R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,
+);*/
+
+            LinearLayout lr =(LinearLayout)    КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла;
+            GridLayout cr =(GridLayout)   lr.findViewById(R.id.КонтейнерДляТабеляГрид);
+            GridLayout cr2 =(GridLayout)   lr.findViewById(R.id.GridLayoutВнутриСамТабель);
+            int count = cr .getChildCount();
+            for(int i = 0 ; i <count ; i++){
+                View child = cr.getChildAt(i);
+                Log.d(this.getClass().getName(), " child " + child);
+            }
+
+            for(int i = 0 ; i <cr2 .getRowCount() ; i++) {
+                TableRow child2 = (TableRow) cr2.getChildAt(i);
+                for (int j = 0; j < child2.getChildCount(); j++) {
+                 View view=   child2.getChildAt(j);
+                        Log.d(this.getClass().getName(), " view " + view);
+                        Log.d(this.getClass().getName(), " child " + child2);
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
             /////TODO ДЕНЬ ПЕРВЫЙ
             this.НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаНазваниеДень1);
             this.НазваниеДанныхВТабелеДниНедели.setText(ХЭШНазваниеДнейНедели.get(1));
@@ -3138,8 +3191,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             }
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
-
-
             /////TODO ТАБЕЛЬ вторая строчка вторник
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень2);
             ПосикДня = sqLiteCursor.getColumnIndex("d2");
