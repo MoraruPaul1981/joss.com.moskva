@@ -198,7 +198,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     private  Long UUIDТекущегоВыбраногоСотрудника=0l;
     private         Long ПолученыйUUIDФИОСледующий=0l;
-    private   Animation  animationRow;
+    private   Animation animationRich;
+    private   Animation animationLesft;
     private String  МесяциГодТабеляПолностью;
     private Integer ВсеСтрокиТабеля=0;
 
@@ -268,7 +269,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             animation= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row_newscanner1);
             // animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator1);
             // animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_tabellist);
-            animationRow= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row_tabellist);//R.anim.slide_in_row)
+            animationRich = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_swipe_r);//R.anim.slide_in_row)
+            animationLesft = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_swipe_l);//R.anim.slide_in_row)
             Bundle data=     getIntent().getExtras();
             // TODO: 29.03.2023  Метод Какая марка телфона из за этого загрудаем вид
             МетодВыбораВнешнегоВидаИзВидаТелефона();
@@ -2767,17 +2769,13 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private void МетодСвайпВпередПоДАнным() {
         try {
             if (ГлавныйКурсорДанныеSwipes.getCount() >0) {
-                if (ГлавныйКурсорДанныеSwipes.getPosition() == ГлавныйКурсорДанныеSwipes.getCount()-1) {
-                    ГлавныйКурсорДанныеSwipes.moveToFirst();
-                } else {
-                    if (ГлавныйКурсорДанныеSwipes.getPosition() <= ГлавныйКурсорДанныеSwipes.getCount()-1) {
+                    if (ГлавныйКурсорДанныеSwipes.getPosition()<ГлавныйКурсорДанныеSwipes.getCount()-1) {
                         ГлавныйКурсорДанныеSwipes.moveToNext();
+                    }else {
+                        ГлавныйКурсорДанныеSwipes.moveToFirst();
                     }
-                }
-                if (ГлавныйКурсорДанныеSwipes.getPosition() <= ГлавныйКурсорДанныеSwipes.getCount()-1) {
-                    ScrollСамогоТабеля.startAnimation(animationRow);
-                    МетодАнализДанныхSwipes( );
-                }
+                ScrollСамогоТабеля.startAnimation(animationRich);
+                МетодАнализДанныхSwipes( );
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2799,14 +2797,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     void МетодСвайпНазаПоДанным() {
         try{
             if (ГлавныйКурсорДанныеSwipes.getCount() >0) {
-                if (ГлавныйКурсорДанныеSwipes.getPosition() == 1) {
+                if (ГлавныйКурсорДанныеSwipes.getPosition() == 0) {
                     ГлавныйКурсорДанныеSwipes.moveToLast();
                 }else{
-                    if (ГлавныйКурсорДанныеSwipes.getPosition()  >1) {
-                        ГлавныйКурсорДанныеSwipes.moveToPrevious();
-                    }
+                    ГлавныйКурсорДанныеSwipes.moveToPrevious();
                 }
-                ScrollСамогоТабеля.startAnimation(animationRow);
+                ScrollСамогоТабеля.startAnimation(animationLesft);
                 МетодАнализДанныхSwipes( );
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -5245,7 +5241,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     private void МетодПерегрузкаВидаЭкрана() {
         try {
-            НазваниеДанныхВТабелеФИО.startAnimation(animationRow);
+            НазваниеДанныхВТабелеФИО.startAnimation(animationRich);
             НазваниеДанныхВТабелеФИО.refreshDrawableState();
             НазваниеДанныхВТабелеФИО.forceLayout();
             ГлавныйКонтейнерТабель.refreshDrawableState();
