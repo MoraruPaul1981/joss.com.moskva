@@ -161,7 +161,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private Button КнопкаНазад;
     private Button КнопкаЛеваяПередвиженияПоДанным;
     private Button КнопкаПраваяПередвиженияПоДанным;
-    private  TextView ОбщееКоличествоЧасовСотрудникаВТабелеСотудников;
+    private  TextView TextViewЧасовСотрудникаВТабелеСотудников;
     private   int КоличествоДнейвЗагружаемойМесяце;
     private boolean МыУжеВКодеУденияСотрудника=false;
     private  String ЛимитСоСмещениемДанных= "";
@@ -254,12 +254,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ГлавныйВерхнийКонтейнер=(ConstraintLayout) findViewById(R.id.ГлавныйВерхнийКонтейнер);
             КнопкаЛеваяПередвиженияПоДанным=(Button) findViewById(R.id.imageViewВСамомТабелеЛеваяСтрелка);
             КнопкаПраваяПередвиженияПоДанным=(Button) findViewById(R.id.imageViewВСамомТабелеТабельПраваяСтрелка);
-            ОбщееКоличествоЧасовСотрудникаВТабелеСотудников=(TextView) findViewById(R.id.textViewJОбщееКоличествоСотрудниковВТабеле);
+            TextViewЧасовСотрудникаВТабелеСотудников =(TextView) findViewById(R.id.textViewJОбщееКоличествоСотрудниковВТабеле);
             imageButtonДвижениеПоСотрудникамВТАбеле=(ImageButton) findViewById(R.id.imageButtonДвижениеПоСотрудникамВТАбеле);
             imageButtonНазадПоСотрудникамВТАбеле=(ImageButton) findViewById(R.id.imageButtonНазадПоСотрудникамВТАбеле);
-            ОбщееКоличествоЧасовСотрудникаВТабелеСотудников.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
-            ОбщееКоличествоЧасовСотрудникаВТабелеСотудников.setTypeface(Typeface.SANS_SERIF,Typeface.BOLD);
-            ОбщееКоличествоЧасовСотрудникаВТабелеСотудников.setPaintFlags( (ОбщееКоличествоЧасовСотрудникаВТабелеСотудников.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG));
+            TextViewЧасовСотрудникаВТабелеСотудников.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+            TextViewЧасовСотрудникаВТабелеСотудников.setTypeface(Typeface.SANS_SERIF,Typeface.BOLD);
+            TextViewЧасовСотрудникаВТабелеСотудников.setPaintFlags( (TextViewЧасовСотрудникаВТабелеСотудников.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG));
             СловоТабель=(TextView) findViewById(R.id.textView3СловоТабель);
             СловоТабель.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
             ЛимитСоСмещениемДанных="0";
@@ -1362,10 +1362,11 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     void МетодСуммаЧасовВТабеле(@NonNull SQLiteCursor sqLiteCursor) {
         try{
         Integer ПозицияКурсораДО=    sqLiteCursor.getPosition();
+            Integer ПозицияВизуальция=    ПозицияКурсораДО+1;
             //TODO ЗАПОЛЯНЕМ ПОЛУЧЕННЫЙ МЕСЯ Ц ПЛУС КОЛИЧЕСТВО ЧАСОВ СОТРУДНИКА КОНКРЕТНОГО
          Integer   ЧасыТекущегоСОтрудника = new Class_MODEL_synchronized(getApplicationContext()).МетодПосчётаЧасовПоСотруднику(sqLiteCursor);
             Log.d(this.getClass().getName(), "  ЧасыТекущегоСОтрудника " + ЧасыТекущегоСОтрудника);
-            ОбщееКоличествоЧасовСотрудникаВТабелеСотудников.setText(" (" + " " + ЧасыТекущегоСОтрудника + "/часы)  "+ПозицияКурсораДО+1+" из "+ГлавныйКурсорДанныеSwipes.getCount()+"");
+            TextViewЧасовСотрудникаВТабелеСотудников.setText(" (" + " " + ЧасыТекущегоСОтрудника + "/часы)  "+ПозицияВизуальция+" из "+ГлавныйКурсорДанныеSwipes.getCount()+"");
             sqLiteCursor.moveToPosition(ПозицияКурсораДО);
             Log.d(Class_MODEL_synchronized.class.getName()," ОбщееКоличествоЛюдейВТабелеТекущем  "+ОбщееКоличествоЛюдейВТабелеТекущем + " sqLiteCursor " +sqLiteCursor.getPosition()  );
         } catch (Exception e) {
@@ -1990,7 +1991,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     ///todo после заполнения табелями обнуляем куросры
                     ////////// TODO ПОДСЧЁТ ЧАСОВ ПОСЛЕ ЛОКАЛЬНОГО ОБНОВЛЕНИЯ
                     ОбщееКоличествоЛюдейВТабелеТекущем = new Class_MODEL_synchronized(getApplicationContext()).МетодПосчётаЧасовПоСотруднику(ГлавныйКурсорДанныеSwipes);
-                    Log.d(this.getClass().getName(), "  ОбщееКоличествоЧасовСотрудникаВТабелеСотудников " + ОбщееКоличествоЧасовСотрудникаВТабелеСотудников);
+                    Log.d(this.getClass().getName(), "  ОбщееКоличествоЧасовСотрудникаВТабелеСотудников " + TextViewЧасовСотрудникаВТабелеСотудников);
                     МетодСуммаЧасовВТабеле(ГлавныйКурсорДанныеSwipes);
                     // TODO: 07.05.2021 обнуляем UUID после созданеия подтчета часов
                     Log.d(Class_MODEL_synchronized.class.getName()," ОбщееКоличествоЛюдейВТабелеТекущем  "+ОбщееКоличествоЛюдейВТабелеТекущем );
