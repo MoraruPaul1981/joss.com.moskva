@@ -283,11 +283,11 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ВсеСтрокиТабеля=   МетодЗаполненияАлайЛИстаНовымМЕсцевНовогоТабеля(МесяцТабеляФинал);   ////раньше стояло 0
             // TODO: 29.03.2023
             ///TODO   #7  запускаем метод ПОСЛЕ УСПЕШНОЙ ГЕНЕРАЦИИ ТАБЕЛЯ
-            МетодОбработкиСвайповНаЭкране();
+            МетодСлушательСвайпов();
             ///TODO   #8 запускаем метод отработки поднятие клавиатур
             МетодОтработкиПоднятияКлавиатуры();
             // TODO: 29.01.2022 ПРИ ИЗМЕНЕНИ МЕНЯЕМ ДАННЫЕ В БАЗЕ В ТАБЕЛЕ
-            МетодАнализДанныхSwipes(ТекущееПоложенияВТабелеДляСкрола);
+            МетодАнализДанныхSwipes( );
             ///TODO   #6   запускаем метод ПОСЛЕ УСПЕШНОЙ ГЕНЕРАЦИИ ТАБЕЛЯ
             МетодСуммаЧасовВТабеле();
 
@@ -495,7 +495,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     }
 
     // TODO: 28.04.2021 обработка свайпов
-    private void МетодОбработкиСвайповНаЭкране() {
+    private void МетодСлушательСвайпов() {
         try{
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -512,6 +512,10 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                         if (downx[0]==0l){
                             downx[0]=event.getX();
                         }
+                        if (downy[0]==0l){
+                            downy[0]=event.getY();
+                        }
+
                         if (getDownTime==0) {
                             getDownTime = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
                         }
@@ -1130,11 +1134,11 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         return ОбщееКоличествоСОтрудниковДляСкролаПотабелю;
     }
 
-    private void МетодАнализДанныхSwipes(int ЕслиСмещениеВдАнныхДляСкрола)
+    private void МетодАнализДанныхSwipes( )
             throws ParseException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, ExecutionException, InterruptedException {
         try{
             if  (  ПроизошелЛиСфайпПоДаннымСингТабеля==true ){
-                if (ЕслиСмещениеВдАнныхДляСкрола <= ВсеСтрокиТабеля) {
+                if (ТекущееПоложенияВТабелеДляСкрола <= ВсеСтрокиТабеля) {
                     МетодSwipeКурсор();
                     if (  ГлавныйКурсорДанныеSwipes.getCount()>0) {
                         ГлавныйКурсорДанныеSwipes.move(ТекущееПоложенияВТабелеДляСкрола);  //ТекущееПоложенияВТабелеДляСкрола
@@ -1144,8 +1148,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                         // TODO: 23.03.2023 заполяем
                         ///TODO   #6   запускаем метод ПОСЛЕ УСПЕШНОЙ ГЕНЕРАЦИИ ТАБЕЛЯ
                         МетодСуммаЧасовВТабеле();
-                        МетодЗаполенияДаннымиСотрудника(ЕслиСмещениеВдАнныхДляСкрола,  ЦифровоеИмяНовгоТабеля);
+                        МетодЗаполенияДаннымиСотрудника(ТекущееПоложенияВТабелеДляСкрола,  ЦифровоеИмяНовгоТабеля);
                         МетодСлушательДанных();
+                        МетодСлушательСвайпов();
                     }else{
                         МетодКогдаНетЗаписейВКурсоре();
                     }
@@ -1172,8 +1177,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 if (  ГлавныйКурсорДанныеSwipes.getCount()>0) {
                     ///TODO   #6   запускаем метод ПОСЛЕ УСПЕШНОЙ ГЕНЕРАЦИИ ТАБЕЛЯ
                     МетодСуммаЧасовВТабеле();
-                    МетодЗаполенияДаннымиСотрудника(ЕслиСмещениеВдАнныхДляСкрола,  ЦифровоеИмяНовгоТабеля);
+                    МетодЗаполенияДаннымиСотрудника(ТекущееПоложенияВТабелеДляСкрола,  ЦифровоеИмяНовгоТабеля);
                     МетодСлушательДанных();
+                    МетодСлушательСвайпов();
 
                 }else{
                     МетодКогдаНетЗаписейВКурсоре();
@@ -2872,7 +2878,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     ПроизошелЛиСфайпПоДаннымСингТабеля=true;
                     ScrollСамогоТабеля.startAnimation(animationRow);
                     Log.d(  getApplicationContext().getClass().getName(), " ТекущееПоложенияВТабелеДляСкрола  "+ТекущееПоложенияВТабелеДляСкрола);
-                    МетодАнализДанныхSwipes(ТекущееПоложенияВТабелеДляСкрола);
+                    МетодАнализДанныхSwipes( );
                 }
             }
             //////////20.15
@@ -2907,7 +2913,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 ПроизошелЛиСфайпПоДаннымСингТабеля=true;
                 ScrollСамогоТабеля.startAnimation(animationRow);
                 Log.d(  getApplicationContext().getClass().getName(), " ТекущееПоложенияВТабелеДляСкрола  "+ТекущееПоложенияВТабелеДляСкрола);
-                МетодАнализДанныхSwipes(ТекущееПоложенияВТабелеДляСкрола);
+                МетодАнализДанныхSwipes( );
             }
 
             //////////20.15
@@ -5293,7 +5299,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     private void МетодПереопределенияНазваниеПрофесии() {
         try {
-            МетодАнализДанныхSwipes(0);
+            МетодАнализДанныхSwipes( );
             МетодПолучениеФИОиПрофессия( );
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
