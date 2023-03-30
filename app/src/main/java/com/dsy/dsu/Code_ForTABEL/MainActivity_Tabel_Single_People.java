@@ -143,14 +143,13 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private TextView НазваниеДанныхВТабелеФИО;
     private  EditText СамиДанныеТабеля;
     private int ПосикДня;
-    private String НазваниеСтолбикаДляЛобкальногоОбноления= "";
     private   String НазваниеТабеля= "";
     private  String НазваниеЗагруженногТАбеля= "";
     private  Boolean    СтаттусТабеля= false;
     private   String ДробимДляТабеляГод,ДробимДляТебеляМесяц;
     private  View КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла;
     private Map< Integer,String> ХЭШНазваниеДнейНедели ;
-    private String СамиДанныеКурсораДляДней;
+    private String ДанныеДней;
 
     private CREATE_DATABASE Create_Database_СсылкаНАБазовыйКласс;
     private  String МесяцДляЗагрузкиТабелей= "";
@@ -206,6 +205,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private  TextWatcher  СлушательПолученияДанных;
 
 
+    private   View.OnLongClickListener СлушательДляПереходаНаМеткиТабеля;
+
+    private  View.OnClickListener СлушательДанныеДляОбновления;
 
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
     @Override
@@ -276,7 +278,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             МетодВыбораВнешнегоВидаИзВидаТелефона();
             МетодПриИзмениеДанныхВБазеМенемВнешнийВидТабеляObserver();
             МетодПришлиПараметрыОтДругихАктивитиДляРаботыТабеля();
+            // TODO: 30.03.2023 CЛУШАТЕЛИ ДВА ДАННЫХ
             МетодСлушательДанных();
+            МетодСлушателиДляТекущегоТабеля();
             МетодGetmessage();
             // TODO: 30.03.2023 Курсор ALL Date
             МетодSwipeALLКурсор();
@@ -1258,16 +1262,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     private void МетодПослеАнализаSwipesЗаполненияЦиклом(@NonNull  int[] ИндексСтрокКомпонентовТабеля ,@NonNull SQLiteCursor sqLiteCursor ) {
         try{
-                Log.d(this.getClass().getName(), " ГлавныйКурсорДанныеSwipes.getCount() " + sqLiteCursor.getCount());
-                ///todo ПРИСВАИВАЕМ UUID НАЗВАНИЮ ФИО
-                ПосикДня = sqLiteCursor.getColumnIndex("uuid"); ////TODO СЮДА ПОЛЕ UUID
-                НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-                НазваниеДанныхВТабелеФИО.setTag(sqLiteCursor.getString(ПосикДня));
-                НазваниеДанныхВТабелеФИО.setOnClickListener(СлушательИнформацияОСотрудника);
-                Log.d(this.getClass().getName(), " UUID пристваем Внутри ФИО   sqLiteCursor " + sqLiteCursor.getString(ПосикДня));
                 /////TODO     ПЕРВАЯ СТРОКА
                 ///todo главный МЕТОД ОФОРМЛЕНИЯ ТАБЕЛЯ ДАННЫМИ И ДНЯМИ
-                МетодГлавныйДанныеСотрудника(ИндексСтрокКомпонентовТабеля,
+                МетодГлавныеДанныеLayoutInflater(ИндексСтрокКомпонентовТабеля,
                         ХЭШНазваниеДнейНедели,
                         НазваниеДанныхВТабелеДниНедели,
                         СамиДанныеТабеля,
@@ -1397,36 +1394,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         }
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     ///TODO Когда в  КУРСОРЕ ВООБЩЕ НЕТ ДАННЫХ НА УКАЗАННЫЙ МЕСЯЦ
     private void МетодКогдаНетЗаписейВКурсоре() {
+        try{
         /////TODO создавние строк из linerlouyto в табеле сколько сткром в базе данных андройда столлько на активити строк
         LayoutInflater МеханизмЗагрузкиОдногЛайАутавДругой = getLayoutInflater();
         //КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла = new View(this);//activity_main_find_customer_for_tables // activity_main_grid_for_tables
@@ -1442,47 +1412,75 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
         /////TODO ФИНАЛ ЗАПОЛЕНИЕ ДАННЫМИ АКТИВИТИ ЧЕРЕЗ ДРУГОЕ АКТВИТИ
         МетодПерегрузкаГлавногоLaouyout();
-
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " +e + " Метод :"+Thread.currentThread().getStackTrace()[2].getMethodName()
+                + " Линия  :"+Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),  this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
     }
-    /////View/////TODO ТУТ ПЕРЕРХОДИМ НА КОД КОТОРЫЙ ДОБАВЛЯЕТ В ТАБЕЛЬ СЛОВА НЕ ЦИФРЫ ВИДЫ В-О-С
-    View.OnLongClickListener СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления= new View.OnLongClickListener() {
-        @Override
-        public boolean onLongClick(View v) {
-            /////todo ПЕРЕХОДИМ НА МЕТКИ ТАБЕЛЯ
-            Log.d(this.getClass().getName(), " View.OnLongClickListener ");
-            HashMap<String,Long> ХэшЛовимUUIDIDНазваниеСтолбикаЛокальныйСловоВставитьТабель= МетодЛовимЗначениеВТАбелеДляДобавленияСловВТабель(v);
-            Log.d(this.getClass().getName(), "ХэшЛовимUUIDIDНазваниеСтолбикаЛокальный  " + ХэшЛовимUUIDIDНазваниеСтолбикаЛокальныйСловоВставитьТабель.values());
-            ((TextView) v).setBackgroundColor(Color.GRAY);
-            Log.d(this.getClass().getName(), "ХэшЛовимUUIDIDНазваниеСтолбикаЛокальныйСловоВставитьТабель.values()  " +ХэшЛовимUUIDIDНазваниеСтолбикаЛокальныйСловоВставитьТабель.values());
-            МетодПереходаНаМеткиТабеля(ХэшЛовимUUIDIDНазваниеСтолбикаЛокальныйСловоВставитьТабель);
-            return false;
-        }
-    };
+    }
 
-    /////View/////TODO ТУТ ПОЛУЧАЕМ КУДА ОБНОВЛЯТЬ ДНИ  D1,D2,D3
-    View.OnClickListener СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления= new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            /////todo полученине данных uuid id
-            Log.d(this.getClass().getName(), " View.OnClickListener");
-            МетодЛовимЗначениеВТАбелеUUIDиIDиНазваниеСтоблиув(v);
-        }
-    };
-    //TODO второй long клик на прозопас
-    /////View/////TODO ТУТ ПОЛУЧАЕМ КУДА ОБНОВЛЯТЬ ДНИ  D1,D2,D3
-    View.OnFocusChangeListener СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления= new View.OnFocusChangeListener() {
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (!hasFocus) {
-                Log.d("focus", "focus loosed");
-            } else {
-                Log.d("focus", "focused");
-                Log.d(this.getClass().getName(), "  View.OnLongClickListener");
-                МетодЛовимЗначениеВТАбелеUUIDиIDиНазваниеСтоблиув(v);
 
-            }
-        }
-    };
+    void МетодСлушателиДляТекущегоТабеля(){
+        try{
+            /////View/////TODO ТУТ ПЕРЕРХОДИМ НА МЕТКИ ТАБЕЛЯ
+             СлушательДляПереходаНаМеткиТабеля= new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    /////todo ПЕРЕХОДИМ НА МЕТКИ ТАБЕЛЯ
+                    Log.d(this.getClass().getName(), " View.OnLongClickListener ");
+                    HashMap<String,Long> ХэшЛовимUUIDIDНазваниеСтолбикаЛокальныйСловоВставитьТабель= МетодЛовимЗначениеВТАбелеДляДобавленияСловВТабель(v);
+                    Log.d(this.getClass().getName(), "ХэшЛовимUUIDIDНазваниеСтолбикаЛокальный  " + ХэшЛовимUUIDIDНазваниеСтолбикаЛокальныйСловоВставитьТабель.values());
+                    ((TextView) v).setBackgroundColor(Color.GRAY);
+                    Log.d(this.getClass().getName(), "ХэшЛовимUUIDIDНазваниеСтолбикаЛокальныйСловоВставитьТабель.values()  " +ХэшЛовимUUIDIDНазваниеСтолбикаЛокальныйСловоВставитьТабель.values());
+                    МетодПереходаНаМеткиТабеля(ХэшЛовимUUIDIDНазваниеСтолбикаЛокальныйСловоВставитьТабель);
+
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                            + " ХэшЛовимUUIDIDНазваниеСтолбикаЛокальныйСловоВставитьТабель "+ХэшЛовимUUIDIDНазваниеСтолбикаЛокальныйСловоВставитьТабель);
+
+                    return true;
+                }
+            };
+            /////View/////TODO ТУТ ПОЛУЧАЕМ КУДА ОБНОВЛЯТЬ ДНИ  D1,D2,D3
+            СлушательДанныеДляОбновления= new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    /////todo полученине данных uuid id
+                    Log.d(this.getClass().getName(), " View.OnClickListener");
+                    МетодЛовимЗначениеВТАбелеUUIDиIDиНазваниеСтоблиув(v);
+                }
+            };
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+        } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " +e + " Метод :"+Thread.currentThread().getStackTrace()[2].getMethodName()
+                + " Линия  :"+Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),  this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /////View/////TODO метод uuid id названеи стоблика
     public  HashMap МетодЛовимЗначениеВТАбелеUUIDиIDиНазваниеСтоблиув(View v) {
         String СамоЗначениеСтолбикаТабеляДляЛокальногоОбновления = null;//
@@ -2645,7 +2643,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ХэшЛовимUUIDIDНазваниеСтолбика=null;
         } catch (Exception e) {
             e.printStackTrace();
-            ///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
             new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
@@ -2849,14 +2846,15 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 //TODO SUB CLASS с ГЛАВНЫМ МЕПТОДОМ ОФОРМЛЕНИЯ ТАБЕЛЯ
 
 
-    private void МетодГлавныйДанныеСотрудника(@NonNull int[] ИндексСтрокКомпонентовТабеля
-            ,@NonNull Map<Integer, String> ХЭШНазваниеДнейНедели,
-                                              @NonNull  TextView НазваниеДанныхВТабелеДниНедели,
-                                              @NonNull  EditText СамиДанныеТабеля
+    private void МетодГлавныеДанныеLayoutInflater(@NonNull int[] ИндексСтрокКомпонентовТабеля
+            , @NonNull Map<Integer, String> ХЭШНазваниеДнейНедели,
+                                                  @NonNull  TextView НазваниеДанныхВТабелеДниНедели,
+                                                  @NonNull  EditText СамиДанныеТабеля
             , @NonNull View КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла
             , @NonNull SQLiteCursor sqLiteCursor) {
         /////todo ПЕРВАЯ СТРОКА НАЗВАНИЯ
-
+        String НазваниеДней= "";
+        Bundle bundleДляОбновление=new Bundle();
         try{
             /////TODO ДЕНЬ ПЕРВЫЙ
             this.НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаНазваниеДень1);
@@ -3081,22 +3079,31 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень1);
             ПосикДня = sqLiteCursor.getColumnIndex("d1");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            // TODO: 30.03.2023 новый код сохраняем в сам обьект uuid и день
+            Integer ID = sqLiteCursor.getInt(sqLiteCursor.getColumnIndex("_id"));
+            Long UUID = sqLiteCursor.getLong(sqLiteCursor.getColumnIndex("uuid_tabel"));
+            Long UUID_Tabel = sqLiteCursor.getLong(sqLiteCursor.getColumnIndex("uuid"));
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            bundleДляОбновление.putInt("ID",ID );
+            bundleДляОбновление.putLong("UUID",UUID);
+            bundleДляОбновление.putLong("UUID_Tabel",UUID_Tabel);
+            bundleДляОбновление.putInt("ПосикДня",ПосикДня);
+            bundleДляОбновление.putString("ДанныеДней", ДанныеДней);
+            bundleДляОбновление.putString("НазваниеДней",НазваниеДней);
+            this.СамиДанныеТабеля.setTag(bundleДляОбновление);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней = "";
-            СамиДанныеКурсораДляДней = sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" + СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней != null) {
-                СамиДанныеКурсораДляДней = СамиДанныеКурсораДляДней.replaceAll("\\s+", "");
-                // СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней != null) {
+                ДанныеДней = ДанныеДней.replaceAll("\\s+", "");
+                // ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")) {
-                    СамиДанныеКурсораДляДней = "";
+                if (ДанныеДней.equals("0")) {
+                    ДанныеДней = "";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
 
@@ -3107,20 +3114,20 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             //////
 
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener(СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener(СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener(СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////////
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(СлушательДляПереходаНаМеткиТабеля);
 
 
             ///todo  установка только чтение данных с табеля без редактирования
@@ -3136,24 +3143,24 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             /////TODO ТАБЕЛЬ вторая строчка вторник
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень2);
             ПосикДня = sqLiteCursor.getColumnIndex("d2");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
 
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
 
@@ -3163,20 +3170,20 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
 
             //TODO подключаем слушатели
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
             ///todo  установка только чтение данных с табеля без редактирования
 
@@ -3190,28 +3197,28 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             /////TODO ТАБЕЛЬ вторая строчка среда
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень3);
             ПосикДня = sqLiteCursor.getColumnIndex("d3");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
 
@@ -3219,14 +3226,14 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////////
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
 
             ///todo  установка только чтение данных с табеля без редактирования
@@ -3242,29 +3249,29 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень4);
             ПосикДня = sqLiteCursor.getColumnIndex("d4");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
 
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
 
@@ -3272,13 +3279,13 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
             ////////
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
 
             ///todo  установка только чтение данных с табеля без редактирования
@@ -3293,41 +3300,41 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             /////TODO ТАБЕЛЬ третья строчка пятница
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень5);
             ПосикДня = sqLiteCursor.getColumnIndex("d5");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////////
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
 
             ///todo  установка только чтение данных с табеля без редактирования
@@ -3345,41 +3352,41 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             /////TODO ТАБЕЛЬ третья строчка суббота
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень6);
             ПосикДня = sqLiteCursor.getColumnIndex("d6");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////////
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
 
             ///todo  установка только чтение данных с табеля без редактирования
@@ -3395,41 +3402,41 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             /////TODO ТАБЕЛЬ третья строчка воскресенье
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень7);
             ПосикДня = sqLiteCursor.getColumnIndex("d7");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////////
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
 
             ///todo  установка только чтение данных с табеля без редактирования
@@ -3445,41 +3452,41 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             /////TODO ТАБЕЛЬ третья строчка воскресенье
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень8);
             ПосикДня = sqLiteCursor.getColumnIndex("d8");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////////
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
 
             ///todo  установка только чтение данных с табеля без редактирования
@@ -3495,41 +3502,41 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень9);
             ПосикДня = sqLiteCursor.getColumnIndex("d9");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////////
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
 
             ///todo  установка только чтение данных с табеля без редактирования
@@ -3545,41 +3552,41 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень10);
             ПосикДня = sqLiteCursor.getColumnIndex("d10");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             // TODO подключаем слушатели
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////////
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
 
             ///todo  установка только чтение данных с табеля без редактирования
@@ -3595,40 +3602,40 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень11);
             ПосикДня = sqLiteCursor.getColumnIndex("d11");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
             ////////
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
 
             ///todo  установка только чтение данных с табеля без редактирования
@@ -3644,42 +3651,42 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень12);
             ПосикДня = sqLiteCursor.getColumnIndex("d12");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
 
             //TODO подключаем слушатели
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////////
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
             ///todo  установка только чтение данных с табеля без редактирования
 
@@ -3692,42 +3699,42 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень13);
             ПосикДня = sqLiteCursor.getColumnIndex("d13");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
 
             ////////////////////////
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////////
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
             ///todo  установка только чтение данных с табеля без редактирования
 
@@ -3741,42 +3748,42 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень14);
             ПосикДня = sqLiteCursor.getColumnIndex("d14");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
 
             ////////////////////////
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////////
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
 
             ///todo  установка только чтение данных с табеля без редактирования
@@ -3795,41 +3802,41 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень15);
             ПосикДня = sqLiteCursor.getColumnIndex("d15");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////////
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
 
             ///todo  установка только чтение данных с табеля без редактирования
@@ -3845,41 +3852,41 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень16);
             ПосикДня = sqLiteCursor.getColumnIndex("d16");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////////
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
             //TODO  КОНЕЦ Сами Данных Табеля (1,2,3,4,5,6)-->
 
@@ -4120,41 +4127,41 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень17);
             ПосикДня = sqLiteCursor.getColumnIndex("d17");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////////
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
 
             ///todo  установка только чтение данных с табеля без редактирования
@@ -4168,40 +4175,40 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             /////TODO ТАБЕЛЬ вторая строчка вторник
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень18);
             ПосикДня = sqLiteCursor.getColumnIndex("d18");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
             ////////
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
 
             ///todo  установка только чтение данных с табеля без редактирования
@@ -4216,40 +4223,40 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             /////TODO ТАБЕЛЬ вторая строчка среда
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень19);
             ПосикДня = sqLiteCursor.getColumnIndex("d19");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
             ///todo  установка только чтение данных с табеля без редактирования
 
@@ -4263,39 +4270,39 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень20);
             ПосикДня = sqLiteCursor.getColumnIndex("d20");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
             ///todo  установка только чтение данных с табеля без редактирования
 
@@ -4309,39 +4316,39 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             /////TODO ТАБЕЛЬ третья строчка пятница
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень21);
             ПосикДня = sqLiteCursor.getColumnIndex("d21");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
             ///todo  установка только чтение данных с табеля без редактирования
 
             if(СтаттусТабеля==true){
@@ -4353,40 +4360,40 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             /////TODO ТАБЕЛЬ третья строчка суббота
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень22);
             ПосикДня = sqLiteCursor.getColumnIndex("d22");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
 
             ///todo  установка только чтение данных с табеля без редактирования
@@ -4400,40 +4407,40 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             /////TODO ТАБЕЛЬ третья строчка воскресенье
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень23);
             ПосикДня = sqLiteCursor.getColumnIndex("d23");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
             ///todo  установка только чтение данных с табеля без редактирования
 
@@ -4448,40 +4455,40 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             /////TODO ТАБЕЛЬ третья строчка воскресенье
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень24);
             ПосикДня = sqLiteCursor.getColumnIndex("d24");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
             ///todo  установка только чтение данных с табеля без редактирования
 
@@ -4493,40 +4500,40 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень25);
             ПосикДня = sqLiteCursor.getColumnIndex("d25");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
             ///todo  установка только чтение данных с табеля без редактирования
 
@@ -4540,40 +4547,40 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень26);
             ПосикДня = sqLiteCursor.getColumnIndex("d26");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
             ///todo  установка только чтение данных с табеля без редактирования
 
@@ -4588,40 +4595,40 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень27);
             ПосикДня = sqLiteCursor.getColumnIndex("d27");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
             ///todo  установка только чтение данных с табеля без редактирования
 
@@ -4635,40 +4642,40 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень28);
             ПосикДня = sqLiteCursor.getColumnIndex("d28");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
             ///todo  установка только чтение данных с табеля без редактирования
 
@@ -4682,38 +4689,38 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень29);
             ПосикДня = sqLiteCursor.getColumnIndex("d29");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
 
             ///todo  УБИРАЕМ С ЭКРАНА ЕСЛИ ДАННОГО ДНЯ НЕТ В КАЛЕНДАРЕ (ЯРКИЙ ПРИМЕР МЕСЯЦ ФЕВРАЛЬ)
@@ -4726,40 +4733,40 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень30);
             ПосикДня = sqLiteCursor.getColumnIndex("d30");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
 
 
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
 
             //////
@@ -4776,51 +4783,50 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 this.СамиДанныеТабеля.setLongClickable(false);
 
             }
-
             ////////////////////////
             ///todo загружем если данные дни есть в календаре
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень31);
             ПосикДня = sqLiteCursor.getColumnIndex("d31");
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             /////todo обработка значения для дней
-            СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
-            Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
-            if (СамиДанныеКурсораДляДней!=null){
-                СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
-                ////  СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("[^0-9]","");
+            ДанныеДней = "";
+            ДанныеДней = sqLiteCursor.getString(ПосикДня);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            if (ДанныеДней !=null){
+                ДанныеДней =    ДанныеДней.replaceAll("\\s+","");
+                ////  ДанныеДней=    ДанныеДней.replaceAll("[^0-9]","");
                 ////TODO МЕНЯЕМ ЦВЕТ ЕСЛИ НОЛЬ ДАННЫЕ
-                if (СамиДанныеКурсораДляДней.equals("0")){
-                    СамиДанныеКурсораДляДней="";
+                if (ДанныеДней.equals("0")){
+                    ДанныеДней ="";
                 }
                 // TODO: 19.05.2021 для букв окраиваем в сервый цвет
 
-                if (СамиДанныеКурсораДляДней.matches("[А-Я]")) {
+                if (ДанныеДней.matches("[А-Я]")) {
                     this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
 
             //////
-            this.СамиДанныеТабеля.setText(СамиДанныеКурсораДляДней); ///replace("[^0-9]"));
+            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
             /////todo обработка значения для дней
             //TODO подключаем слушатели
 
             ///TODO слушатели ячеек
             this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
 
-            this.СамиДанныеТабеля.setOnClickListener( СлушательТачПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+            this.СамиДанныеТабеля.setOnClickListener( СлушательДанныеДляОбновления);
             ////////////////////////
-            this.СамиДанныеТабеля.setOnFocusChangeListener( СлушательLONGПолученияНазваниеСтолбикаДляЛокальногоОбновления);
+
             ///todo  УБИРАЕМ С ЭКРАНА ЕСЛИ ДАННОГО ДНЯ НЕТ В КАЛЕНДАРЕ (ЯРКИЙ ПРИМЕР МЕСЯЦ ФЕВРАЛЬ)
             if (КоличествоДнейвЗагружаемойМесяце<31) {
                 this.СамиДанныеТабеля.setVisibility(View.INVISIBLE);
             }
             ///////////////////////
-
             ////todo клик который переходит на выбор слов для вставки в  Метка табель
-            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляДобавленияСловВТабельначениеСтолбикаДляЛокальногоОбновления);
+
+            this.СамиДанныеТабеля.setOnLongClickListener(   СлушательДляПереходаНаМеткиТабеля);
 
 
             ///todo  установка только чтение данных с табеля без редактирования
@@ -4837,8 +4843,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO uuid не видивая EDITTEXT понадобиться для обновления UUID
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.СтрочкаНевидимаяUUID);
             ПосикДня = sqLiteCursor.getColumnIndex("uuid"); ////TODO СЮДА ПОЛЕ UUID
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             this.СамиДанныеТабеля.setText(sqLiteCursor.getString(ПосикДня));
             Log.d(this.getClass().getName(), " ВтораяСтрочкаНевидимаяUUID " + sqLiteCursor.getString(ПосикДня));
             this.СамиДанныеТабеля.setVisibility(View.GONE);
@@ -4846,8 +4852,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO uuid не видивая EDITTEXT понадобиться для обновления ID
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.СтрочкаНевидимаяID);
             ПосикДня = sqLiteCursor.getColumnIndex("_id"); ////TODO СЮДА ПОЛЕ ID
-            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
-            this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
+            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
+            this.СамиДанныеТабеля.setTag(НазваниеДней);
             this.СамиДанныеТабеля.setText(sqLiteCursor.getString(ПосикДня));
             Log.d(this.getClass().getName(), " ВтораяСтрочкаНевидимаяID " + sqLiteCursor.getString(ПосикДня));
             this.СамиДанныеТабеля.setVisibility(View.GONE);
