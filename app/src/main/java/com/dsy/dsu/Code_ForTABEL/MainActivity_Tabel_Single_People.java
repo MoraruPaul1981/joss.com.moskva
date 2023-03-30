@@ -193,7 +193,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     final private   String ИмяСлужбыОбщейСинхронизацииДляЗадачи = "WorkManager Synchronizasiy_Data";
     private  long РодительскийUUDТаблицыТабель=0l;
     private      Message message;
-    private Animation animation;
+    private Animation animationПрофессия;
     private    SQLiteCursor ГлавныйКурсорДанныеSwipes;
 
     private  Long UUIDТекущегоВыбраногоСотрудника=0l;
@@ -266,11 +266,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ЛимитСоСмещениемДанных="0";
             КнопкаНазад=(Button) findViewById(R.id.imageViewСтрелкаВнутриТабеля);
             view2Линия=(View) findViewById(R.id.view2Линия);
-            animation= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row_newscanner1);
-            // animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator1);
-            // animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_tabellist);
-            animationRich = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_swipe_r);//R.anim.slide_in_row)
-            animationLesft = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_swipe_l);//R.anim.slide_in_row)
+            animationПрофессия = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row);
+          //  animationRich = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_swipe_r);//R.anim.slide_in_row)
+            animationLesft = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_swipe_l);//R.anim.slide_in_row)R.anim.slide_in_row_newscanner1
             Bundle data=     getIntent().getExtras();
             // TODO: 29.03.2023  Метод Какая марка телфона из за этого загрудаем вид
             МетодВыбораВнешнегоВидаИзВидаТелефона();
@@ -2774,7 +2772,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     }else {
                         ГлавныйКурсорДанныеSwipes.moveToFirst();
                     }
-                ScrollСамогоТабеля.startAnimation(animationRich);
+               // ScrollСамогоТабеля.startAnimation(animationRich);
                 МетодАнализДанныхSwipes( );
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -2803,6 +2801,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     ГлавныйКурсорДанныеSwipes.moveToPrevious();
                 }
                 ScrollСамогоТабеля.startAnimation(animationLesft);
+                НазваниеДанныхВТабелеФИО.startAnimation(animationПрофессия);
                 МетодАнализДанныхSwipes( );
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -4969,7 +4968,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                                 ((MaterialTextView)view).setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
-                                                        ((MaterialTextView)view).startAnimation(animation);
+                                                        ((MaterialTextView)view).startAnimation(animationПрофессия);
                                                         Bundle bundle=(Bundle)   ((MaterialTextView)view).getTag();
                                                         Integer ПолучаемIDПрофессии=      bundle.getInt("ПолучаемIDПрофессии",0);
                                                         String НазваниеПрофесии=   bundle.getString("НазваниеПрофесии","");
@@ -5025,7 +5024,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                         simpleCursorAdapterЦФО.setViewBinder(БиндингДляНовогоПоиска);
                         listViewДляНовыйПосик[0].setAdapter(simpleCursorAdapterЦФО);
                         simpleCursorAdapterЦФО.notifyDataSetChanged();
-                        listViewДляНовыйПосик[0].startAnimation(animation);
+                        listViewДляНовыйПосик[0].startAnimation(animationПрофессия);
                         listViewДляНовыйПосик[0].setSelection(0);
                         listViewДляНовыйПосик[0].forceLayout();
 
@@ -5064,8 +5063,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                 searchViewДляНовогоПоиска.refreshDrawableState();
                                 Integer ПровйдерСменаПрофесии=      МетодЗаписиСменыПрофесии(searchViewДляНовогоПоиска);
                                 if (ПровйдерСменаПрофесии>0) {
+                                    ПроизошелЛиСфайпПоДаннымСингТабеля=true;
                                     // TODO: 29.03.2023 Методы ПОсле усМешного Смены Професиии
-                                    МетодПереопределенияНазваниеПрофесии();
+                                  МетодПереопределенияНазваниеПрофесии();
                                     МетодПерегрузкаВидаЭкрана();
                                 }else {
                                     Toast.makeText(MainActivity_Tabel_Single_People.this, "Профессия не сменилась !!! ", Toast.LENGTH_SHORT).show();
@@ -5241,7 +5241,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     private void МетодПерегрузкаВидаЭкрана() {
         try {
-            НазваниеДанныхВТабелеФИО.startAnimation(animationRich);
+            НазваниеДанныхВТабелеФИО.startAnimation(animationПрофессия);
             НазваниеДанныхВТабелеФИО.refreshDrawableState();
             НазваниеДанныхВТабелеФИО.forceLayout();
             ГлавныйКонтейнерТабель.refreshDrawableState();
