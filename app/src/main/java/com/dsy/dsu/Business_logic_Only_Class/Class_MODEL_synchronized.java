@@ -3524,8 +3524,7 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                 Log.d(this.getClass().getName(), "    СуммаЧасов " + СуммаЧасов);
             }///TODO END FOR  ПО СТОЛБЦАМ БЕЖИМ
         } while (курсор_ЗагружаемТабеляСозданный.moveToNext());
-        ////TODO ПРИСВАИВАЕМ ПОЛУЧЕННЫЕ ЧАСЫ ИЗ БАЗЫ УЖЕ ПЕРЕДЕМ ЕЕ НА АКТИВТИ
-            курсор_ЗагружаемТабеляСозданный.close();
+            курсор_ЗагружаемТабеляСозданный.moveToFirst();
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName()

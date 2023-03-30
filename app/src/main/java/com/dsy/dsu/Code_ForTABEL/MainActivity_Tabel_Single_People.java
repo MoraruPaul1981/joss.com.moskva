@@ -1361,9 +1361,13 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     void МетодСуммаЧасовВТабеле(@NonNull SQLiteCursor sqLiteCursor) {
         try{
+        Integer ПозицияКурсораДО=    sqLiteCursor.getPosition();
             //TODO ЗАПОЛЯНЕМ ПОЛУЧЕННЫЙ МЕСЯ Ц ПЛУС КОЛИЧЕСТВО ЧАСОВ СОТРУДНИКА КОНКРЕТНОГО
-            ОбщееКоличествоЧасовСотрудникаВТабелеСотудников.setText(" (" + " " + ОбщееКоличествоЛюдейВТабелеТекущем + "/часы)  #"+sqLiteCursor.getCount()+"");
-            Log.d(Class_MODEL_synchronized.class.getName()," ОбщееКоличествоЛюдейВТабелеТекущем  "+ОбщееКоличествоЛюдейВТабелеТекущем + " sqLiteCursor " +sqLiteCursor  );
+         Integer   ЧасыТекущегоСОтрудника = new Class_MODEL_synchronized(getApplicationContext()).МетодПосчётаЧасовПоСотруднику(sqLiteCursor);
+            Log.d(this.getClass().getName(), "  ЧасыТекущегоСОтрудника " + ЧасыТекущегоСОтрудника);
+            ОбщееКоличествоЧасовСотрудникаВТабелеСотудников.setText(" (" + " " + ЧасыТекущегоСОтрудника + "/часы)  "+ПозицияКурсораДО+1+" из "+ГлавныйКурсорДанныеSwipes.getCount()+"");
+            sqLiteCursor.moveToPosition(ПозицияКурсораДО);
+            Log.d(Class_MODEL_synchronized.class.getName()," ОбщееКоличествоЛюдейВТабелеТекущем  "+ОбщееКоличествоЛюдейВТабелеТекущем + " sqLiteCursor " +sqLiteCursor.getPosition()  );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " +e + " Метод :"+Thread.currentThread().getStackTrace()[2].getMethodName()
@@ -2762,14 +2766,14 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private void МетодСвайпВпередПоДАнным() {
         try {
             if (ГлавныйКурсорДанныеSwipes.getCount() >0) {
-                if (ГлавныйКурсорДанныеSwipes.getPosition() == ГлавныйКурсорДанныеSwipes.getCount()) {
+                if (ГлавныйКурсорДанныеSwipes.getPosition() == ГлавныйКурсорДанныеSwipes.getCount()-1) {
                     ГлавныйКурсорДанныеSwipes.moveToFirst();
                 } else {
-                    if (ГлавныйКурсорДанныеSwipes.getPosition() <= ГлавныйКурсорДанныеSwipes.getCount()) {
+                    if (ГлавныйКурсорДанныеSwipes.getPosition() <= ГлавныйКурсорДанныеSwipes.getCount()-1) {
                         ГлавныйКурсорДанныеSwipes.moveToNext();
                     }
                 }
-                if (ГлавныйКурсорДанныеSwipes.getPosition() <= ГлавныйКурсорДанныеSwipes.getCount()) {
+                if (ГлавныйКурсорДанныеSwipes.getPosition() <= ГлавныйКурсорДанныеSwipes.getCount()-1) {
                     ScrollСамогоТабеля.startAnimation(animationRow);
                     МетодАнализДанныхSwipes( );
                 }
