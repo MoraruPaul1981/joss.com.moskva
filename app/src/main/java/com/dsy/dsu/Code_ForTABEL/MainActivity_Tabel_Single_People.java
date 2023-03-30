@@ -5084,8 +5084,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                 Integer ПровйдерСменаПрофесии=      МетодЗаписиСменыПрофесии(searchViewДляНовогоПоиска);
                                 if (ПровйдерСменаПрофесии>0) {
                                     ПроизошелЛиСфайпПоДаннымСингТабеля=true;
+                                    // TODO: 30.03.2023 Курсор ALL Date
+                                     Integer ПолощениеДАнных=            ГлавныйКурсорДанныеSwipes.getPosition();
+                                    МетодSwipeALLКурсор();
+                                         ГлавныйКурсорДанныеSwipes.moveToPosition(ПолощениеДАнных);
                                     // TODO: 29.03.2023 Методы ПОсле усМешного Смены Професиии
-                                  МетодПереопределенияНазваниеПрофесии();
+                                    МетодПереопределенияНазваниеПрофесии();
                                     МетодПерегрузкаВидаЭкрана();
                                 }else {
                                     Toast.makeText(MainActivity_Tabel_Single_People.this, "Профессия не сменилась !!! ", Toast.LENGTH_SHORT).show();
