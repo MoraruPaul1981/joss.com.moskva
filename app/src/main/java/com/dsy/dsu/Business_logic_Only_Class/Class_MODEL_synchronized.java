@@ -2739,7 +2739,10 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
 
 
     //todo загружет уже готовые созданные табеля
-    public SQLiteCursor МетодЗагружетУжеготовыеТабеля(Context КонтекстДляЗагружемыхТАбелей, Long UUIDТабеляПослеУспешногоСозданиеСотрудникаВсехСотридников, int месяцДляПермещенияПоТабелю, int годДляПермещенияПоТабелю) {
+    public SQLiteCursor МетодЗагружетУжеготовыеТабеля(Context КонтекстДляЗагружемыхТАбелей,
+                                                      Long UUIDТабеляПослеУспешногоСозданиеСотрудникаВсехСотридников,
+                                                      int месяцДляПермещенияПоТабелю,
+                                                      int годДляПермещенияПоТабелю) {
 
 
         //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
@@ -3507,64 +3510,38 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
     }
 
 
-
-
-    ///todo метод подсчёта сотрудниколв их ЧАСЫ
-    public String МетодПосчётаЧасовСотрудниковВТабеле(Context КонтекстДляЧасов, long UUIDТабеляПослеУспешногоСозданиеСотрудникаВсехСотридников, int месяцДляПермещенияПоТабелю, int годДляПермещенияПоТабелю) {
-        ///////
-
-        String ОбщееКоличествоЛюдейВТабелеТекущемВнутри = null;
-
-
-        try {
-            Cursor Курсор_ЗагружаемТабеляДляПодсчетаЧасов = new Class_MODEL_synchronized(КонтекстДляЧасов).
-                    МетодЗагружетУжеготовыеТабеля(КонтекстДляЧасов, UUIDТабеляПослеУспешногоСозданиеСотрудникаВсехСотридников, месяцДляПермещенияПоТабелю, годДляПермещенияПоТабелю);
-
-
-            //TODO цикл ПЕРЕБОРКИ ДАННЫХ
-            ОбщееКоличествоЛюдейВТабелеТекущемВнутри = String.valueOf(МетодПосчётаЧасовПоСотруднику(Курсор_ЗагружаемТабеляДляПодсчетаЧасов));
-
-            Log.d(this.getClass().getName(), "  ОбщееКоличествоЛюдейВТабелеТекущемВнутри " + ОбщееКоличествоЛюдейВТабелеТекущемВнутри);
-
-            Курсор_ЗагружаемТабеляДляПодсчетаЧасов.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName()
-                    + " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            // TODO: 01.09.2021 метод вызова
-            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-
-        return ОбщееКоличествоЛюдейВТабелеТекущемВнутри;
-    }
-
-    protected int МетодПосчётаЧасовПоСотруднику(Cursor курсор_ЗагружаемТабеляСозданный) {
-        int СуммаЧасов = 0;
+    public Integer МетодПосчётаЧасовПоСотруднику(Cursor курсор_ЗагружаемТабеляСозданный) {
+        Integer СуммаЧасов = 0;
+        try{
         if (курсор_ЗагружаемТабеляСозданный.getCount() > 0) {
             курсор_ЗагружаемТабеляСозданный.moveToFirst();
         }
         do {
-
             for (int ИндексДляИзмененияДней = 1; ИндексДляИзмененияДней < 32; ИндексДляИзмененияДней++) {
-
                 int ИндексЧассыСотрудника = курсор_ЗагружаемТабеляСозданный.getColumnIndex("d" + ИндексДляИзмененияДней);
-
                 int ЧассыСотрудника = курсор_ЗагружаемТабеляСозданный.getInt(ИндексЧассыСотрудника);
-
                 СуммаЧасов = СуммаЧасов + ЧассыСотрудника;
-
                 Log.d(this.getClass().getName(), "    СуммаЧасов " + СуммаЧасов);
-
             }///TODO END FOR  ПО СТОЛБЦАМ БЕЖИМ
-
         } while (курсор_ЗагружаемТабеляСозданный.moveToNext());
         ////TODO ПРИСВАИВАЕМ ПОЛУЧЕННЫЕ ЧАСЫ ИЗ БАЗЫ УЖЕ ПЕРЕДЕМ ЕЕ НА АКТИВТИ
-        ////todo и ставим курсор на место на первое
-        курсор_ЗагружаемТабеляСозданный.moveToFirst();
+            курсор_ЗагружаемТабеляСозданный.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName()
+                + " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
         return СуммаЧасов;
     }
+
+
+
+
+
+
 
     ///todo являеться ли весь текст числом
     public boolean МетодОпределениеВселиЦифрыВстроке(String ВселиЦифрыВтексе) {

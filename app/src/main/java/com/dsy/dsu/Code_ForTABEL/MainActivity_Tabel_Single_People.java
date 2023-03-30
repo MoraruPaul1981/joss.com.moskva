@@ -167,7 +167,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private  String ЛимитСоСмещениемДанных= "";
     private int ИндексДвижениеТабеляСкролл=0;
     private int ИндексДвижениеТабеляКнопки=0;
-    private  String ОбщееКоличествоЛюдейВТабелеТекущем;
+    private  Integer ОбщееКоличествоЛюдейВТабелеТекущем;
     private   HashMap<String,Long> ХэшЛовимUUIDIDНазваниеСтолбика        =new HashMap<>();;
     private   String ПолучениеЗначениеДоИзменения;
     private   String СамоЗначениеЯчейкиТабеля;
@@ -276,6 +276,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             МетодПришлиПараметрыОтДругихАктивитиДляРаботыТабеля();
             МетодСлушательДанных();
             МетодGetmessage();
+            // TODO: 30.03.2023 Курсор ALL Date
+            МетодSwipeALLКурсор();
             //TODO #2
             МетодПриНАжатииНаКнопкуBACK();
             //TODO #4
@@ -344,7 +346,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         }
     }
 
-    private void МетодSwipeКурсор() {
+    private void МетодSwipeALLКурсор() {
         try{
             ГлавныйКурсорДанныеSwipes =
                     new Class_MODEL_synchronized(getApplicationContext()).
@@ -354,6 +356,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             if (ПроизошелЛиСфайпПоДаннымСингТабеля==false) {
                 if (ГлавныйКурсорДанныеSwipes.getCount() > 0) {
                     ГлавныйКурсорДанныеSwipes.moveToFirst();
+                    ОбщееКоличествоЛюдейВТабелеТекущем= ГлавныйКурсорДанныеSwipes.getCount();
                 }
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -364,7 +367,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     " ГодДляКурсораТабелей "+ ГодДляТабелей +
                     " МЕсяцДляКурсораТабелейДЛяПермещения " + МесяцТабеля+
                     " ГлавныйКурсорДанныеSwipes " +ГлавныйКурсорДанныеSwipes+
-                    " ПроизошелЛиСфайпПоДаннымСингТабеля " +ПроизошелЛиСфайпПоДаннымСингТабеля);
+                    " ПроизошелЛиСфайпПоДаннымСингТабеля " +ПроизошелЛиСфайпПоДаннымСингТабеля +
+                    " ОбщееКоличествоЛюдейВТабелеТекущем " +ОбщееКоличествоЛюдейВТабелеТекущем);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -1067,7 +1071,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             throws ParseException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, ExecutionException, InterruptedException {
         try{
             if  (  ПроизошелЛиСфайпПоДаннымСингТабеля==true ){
-                МетодSwipeКурсор();
                     if (  ГлавныйКурсорДанныеSwipes.getCount()>0) {
                         int ИНдексГдеНаходитсьяКолонкаUUIDТабеляПриСфайпе= ГлавныйКурсорДанныеSwipes.getColumnIndex("uuid");
                         UUIDТекущегоВыбраногоСотрудника=     ГлавныйКурсорДанныеSwipes.getLong(ИНдексГдеНаходитсьяКолонкаUUIDТабеляПриСфайпе);
@@ -1090,7 +1093,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             }else{
                 SQLiteCursor     ГлавныйКурсорSingleSwipe=null;
                 if (UUIDТекущегоВыбраногоСотрудника ==0) {
-                  ГлавныйКурсорSingleSwipe =
+                    ГлавныйКурсорДанныеSwipes =
                             new Class_MODEL_synchronized(getApplicationContext()).
                                     МетодЗагружетУжеготовыеТабеляПриСмещенииДанныхСкроллПоДАнным(context,
                                             ЦифровоеИмяНовгоТабеля, МесяцТабеля, ГодДляТабелей);
@@ -1263,8 +1266,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                         КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла,sqLiteCursor );
                 МетодПерегрузкаГлавногоLaouyout();
                 // TODO: 29.04.2021 если то оди
-                // TODO: 23.03.2023 ПОДСЧИТИВАЕМ ОБЩЕЕГО КОЛИЧЕСТВО СОТУРДНИКОВ
-                МетодПодсчетОбщегоКОличествоСотрудников();
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
@@ -1357,25 +1358,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         return  Професия;
 
     }
-
-    private void МетодПодсчетОбщегоКОличествоСотрудников() {
-        try {
-            ОбщееКоличествоЛюдейВТабелеТекущем = new Class_MODEL_synchronized(getApplicationContext()).
-                    МетодПосчётаЧасовСотрудниковВТабеле(getApplicationContext(),UUIDТекущегоВыбраногоСотрудника
-                            , МесяцТабеля, ГодДляТабелей);
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                    " ОбщееКоличествоЛюдейВТабелеТекущем  "+ОбщееКоличествоЛюдейВТабелеТекущем  );
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " +e + " Метод :"+Thread.currentThread().getStackTrace()[2].getMethodName()
-                    + " Линия  :"+Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),  this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
-
 
     void МетодСуммаЧасовВТабеле(@NonNull SQLiteCursor sqLiteCursor) {
         try{
@@ -1690,8 +1672,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 int СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов = 0;
                 boolean ФлагЗапускатьллкальноеОбновлениеИлинет=false;
                 try{
-               МетодГлавныйЛокальноеОбновлениеЯчейки(СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов, ФлагЗапускатьллкальноеОбновлениеИлинет);
-                Log.d(this.getClass().getName(), " МетодГлавныйЛокальноеОбновлениеЯчейки () Save.. СамоЗначениеЯчейкиТабеля" +  СамоЗначениеЯчейкиТабеля + " s "+s.toString());
+         /*      МетодГлавныйЛокальноеОбновлениеЯчейки(СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов, ФлагЗапускатьллкальноеОбновлениеИлинет);
+                Log.d(this.getClass().getName(), " МетодГлавныйЛокальноеОбновлениеЯчейки () Save.. СамоЗначениеЯчейкиТабеля" +  СамоЗначениеЯчейкиТабеля + " s "+s.toString());*/
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -2003,9 +1985,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 if (РезультатЛокальногоОбновления > 0 ) {
                     ///todo после заполнения табелями обнуляем куросры
                     ////////// TODO ПОДСЧЁТ ЧАСОВ ПОСЛЕ ЛОКАЛЬНОГО ОБНОВЛЕНИЯ
-                    ОбщееКоличествоЛюдейВТабелеТекущем = new Class_MODEL_synchronized(getApplicationContext()).
-                            МетодПосчётаЧасовСотрудниковВТабеле(context,UUIDТекущегоВыбраногоСотрудника
-                                    , МесяцТабеля, ГодДляТабелей);
+                    ОбщееКоличествоЛюдейВТабелеТекущем = new Class_MODEL_synchronized(getApplicationContext()).МетодПосчётаЧасовПоСотруднику(ГлавныйКурсорДанныеSwipes);
+                    Log.d(this.getClass().getName(), "  ОбщееКоличествоЧасовСотрудникаВТабелеСотудников " + ОбщееКоличествоЧасовСотрудникаВТабелеСотудников);
+                    МетодСуммаЧасовВТабеле(ГлавныйКурсорДанныеSwipes);
                     // TODO: 07.05.2021 обнуляем UUID после созданеия подтчета часов
                     Log.d(Class_MODEL_synchronized.class.getName()," ОбщееКоличествоЛюдейВТабелеТекущем  "+ОбщееКоличествоЛюдейВТабелеТекущем );
                     МетодСуммаЧасовВТабеле(ГлавныйКурсорДанныеSwipes);
