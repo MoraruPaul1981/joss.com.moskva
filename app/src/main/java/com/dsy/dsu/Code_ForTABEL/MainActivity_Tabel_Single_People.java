@@ -195,6 +195,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private      Message message;
     private Animation animation;
     private    SQLiteCursor ГлавныйКурсорДанныеSwipes;
+
     private  Long UUIDТекущегоВыбраногоСотрудника=0l;
     private         Long ПолученыйUUIDФИОСледующий=0l;
     private   Animation  animationRow;
@@ -288,9 +289,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             МетодОтработкиПоднятияКлавиатуры();
             // TODO: 29.01.2022 ПРИ ИЗМЕНЕНИ МЕНЯЕМ ДАННЫЕ В БАЗЕ В ТАБЕЛЕ
             МетодАнализДанныхSwipes( );
-            ///TODO   #6   запускаем метод ПОСЛЕ УСПЕШНОЙ ГЕНЕРАЦИИ ТАБЕЛЯ
-            МетодСуммаЧасовВТабеле();
-
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -352,8 +350,11 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     new Class_MODEL_synchronized(getApplicationContext()).
                             МетодЗагружетУжеготовыеТабеляПриСмещенииДанныхСкроллПоДАнным(context,
                                     ЦифровоеИмяНовгоТабеля, МесяцТабеля, ГодДляТабелей);
-            if(ГлавныйКурсорДанныеSwipes.getCount()>0){
-                ГлавныйКурсорДанныеSwipes.moveToFirst();
+
+            if (ПроизошелЛиСфайпПоДаннымСингТабеля==false) {
+                if (ГлавныйКурсорДанныеSwipes.getCount() > 0) {
+                    ГлавныйКурсорДанныеSwipes.moveToFirst();
+                }
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -362,7 +363,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     " ЦифровоеИмяНовгоТабеля " +ЦифровоеИмяНовгоТабеля+
                     " ГодДляКурсораТабелей "+ ГодДляТабелей +
                     " МЕсяцДляКурсораТабелейДЛяПермещения " + МесяцТабеля+
-                    " ГлавныйКурсорДанныеSwipes " +ГлавныйКурсорДанныеSwipes);
+                    " ГлавныйКурсорДанныеSwipes " +ГлавныйКурсорДанныеSwipes+
+                    " ПроизошелЛиСфайпПоДаннымСингТабеля " +ПроизошелЛиСфайпПоДаннымСингТабеля);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -557,6 +559,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                         HorizontalScrollViewВТабелеОдинСотрудник.scrollTo(scrollX,0);
                                         HorizontalScrollViewВТабелеОдинСотрудник.smoothScrollTo(scrollX,0);
                                         // TODO: 24.09.2021 двигаемся вперед
+                                        ПроизошелЛиСфайпПоДаннымСингТабеля=true;
                                         МетодСвайпНазаПоДанным();
                                         Log.d(getApplicationContext().getClass().getName(), " МетодСвайпНазаПоДанным ");/////
                                         // TODO: 09.05.2021  при успешном срабоатывании true
@@ -566,6 +569,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                         HorizontalScrollViewВТабелеОдинСотрудник.scrollTo(scrollX,0);
                                         HorizontalScrollViewВТабелеОдинСотрудник.smoothScrollTo(scrollX,0);
                                         // TODO: 24.09.2021 двигаемся назад
+                                        ПроизошелЛиСфайпПоДаннымСингТабеля=true;
                                         МетодСвайпВпередПоДАнным();
                                         Log.d(getApplicationContext().getClass().getName(), " МетодСвайпВпередПоДАнным ");/////
                                         // TODO: 07.05.2021  обработка горизонта X
@@ -1063,16 +1067,18 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             throws ParseException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, ExecutionException, InterruptedException {
         try{
             if  (  ПроизошелЛиСфайпПоДаннымСингТабеля==true ){
+                МетодSwipeКурсор();
                     if (  ГлавныйКурсорДанныеSwipes.getCount()>0) {
                         int ИНдексГдеНаходитсьяКолонкаUUIDТабеляПриСфайпе= ГлавныйКурсорДанныеSwipes.getColumnIndex("uuid");
                         UUIDТекущегоВыбраногоСотрудника=     ГлавныйКурсорДанныеSwipes.getLong(ИНдексГдеНаходитсьяКолонкаUUIDТабеляПриСфайпе);
                         Log.d(this.getClass().getName(), " UUIDТекущегоВыбраногоСотрудника  " +UUIDТекущегоВыбраногоСотрудника );
                         // TODO: 23.03.2023 заполяем
                         ///TODO   #6   запускаем метод ПОСЛЕ УСПЕШНОЙ ГЕНЕРАЦИИ ТАБЕЛЯ
-                        МетодСуммаЧасовВТабеле();
-                        МетодЗаполенияДаннымиСотрудника(  ЦифровоеИмяНовгоТабеля);
+                        МетодСуммаЧасовВТабеле(ГлавныйКурсорДанныеSwipes);
+                        МетодЗаполенияДаннымиСотрудника(  ЦифровоеИмяНовгоТабеля,ГлавныйКурсорДанныеSwipes);
                         МетодСлушательДанных();
                         МетодСлушательСвайпов();
+                        МетодПолучениеФИОиПрофессия(ГлавныйКурсорДанныеSwipes );
                     }else{
                         МетодКогдаНетЗаписейВКурсоре();
                     }
@@ -1082,26 +1088,28 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                         + " ГлавныйКурсорДанныеSwipes "+ ГлавныйКурсорДанныеSwipes + " ОбщееКоличествоСОтрудниковДляСкролаПотабелю " + ВсеСтрокиТабеля);
             }else{
+                SQLiteCursor     ГлавныйКурсорSingleSwipe=null;
                 if (UUIDТекущегоВыбраногоСотрудника ==0) {
-                    ГлавныйКурсорДанныеSwipes =
+                  ГлавныйКурсорSingleSwipe =
                             new Class_MODEL_synchronized(getApplicationContext()).
                                     МетодЗагружетУжеготовыеТабеляПриСмещенииДанныхСкроллПоДАнным(context,
                                             ЦифровоеИмяНовгоТабеля, МесяцТабеля, ГодДляТабелей);
                 }else{
-                    ГлавныйКурсорДанныеSwipes = new Class_MODEL_synchronized(getApplicationContext()).МетодЗагружетУжеготовыеТабеля(context,UUIDТекущегоВыбраногоСотрудника
+                    ГлавныйКурсорSingleSwipe = new Class_MODEL_synchronized(getApplicationContext()).МетодЗагружетУжеготовыеТабеля(context,UUIDТекущегоВыбраногоСотрудника
                             , МесяцТабеля, ГодДляТабелей);
                 }
-                if(ГлавныйКурсорДанныеSwipes.getCount()>0){
-                    ГлавныйКурсорДанныеSwipes.moveToFirst();
+                if(ГлавныйКурсорSingleSwipe.getCount()>0){
+                    ГлавныйКурсорSingleSwipe.moveToFirst();
                 }
 
 
-                if (  ГлавныйКурсорДанныеSwipes.getCount()>0) {
+                if (  ГлавныйКурсорSingleSwipe.getCount()>0) {
                     ///TODO   #6   запускаем метод ПОСЛЕ УСПЕШНОЙ ГЕНЕРАЦИИ ТАБЕЛЯ
-                    МетодСуммаЧасовВТабеле();
-                    МетодЗаполенияДаннымиСотрудника(   ЦифровоеИмяНовгоТабеля);
+                    МетодСуммаЧасовВТабеле(ГлавныйКурсорSingleSwipe);
+                    МетодЗаполенияДаннымиСотрудника(   ЦифровоеИмяНовгоТабеля,ГлавныйКурсорSingleSwipe);
                     МетодСлушательДанных();
                     МетодСлушательСвайпов();
+                    МетодПолучениеФИОиПрофессия(ГлавныйКурсорSingleSwipe );
 
                 }else{
                     МетодКогдаНетЗаписейВКурсоре();
@@ -1109,13 +1117,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " ГлавныйКурсорДанныеSwipes "+ ГлавныйКурсорДанныеSwipes);
+                        + " ГлавныйКурсорSingleSwipe "+ ГлавныйКурсорSingleSwipe);
             }
-
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " ГлавныйКурсорДанныеSwipes "+ ГлавныйКурсорДанныеSwipes);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -1126,14 +1129,14 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     }
 
 
-    private void МетодЗаполенияДаннымиСотрудника(@NonNull   int ЦифровоеИмяНовгоТабеля)
+    private void МетодЗаполенияДаннымиСотрудника(@NonNull   int ЦифровоеИмяНовгоТабеля,@NonNull SQLiteCursor sqLiteCursor)
             throws ParseException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, ExecutionException, InterruptedException {
         try{
-            if (ГлавныйКурсорДанныеSwipes.getCount()>0) {
+            if (sqLiteCursor.getCount()>0) {
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " ГлавныйКурсорДанныеSwipes "+ГлавныйКурсорДанныеSwipes.getCount() );
+                        + " sqLiteCursor "+sqLiteCursor.getCount() );
                 if(ХЭШНазваниеДнейНедели!=null){
                     ХЭШНазваниеДнейНедели.clear();
                 }
@@ -1149,8 +1152,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 }
                 НазваниеЗагруженногТАбеля = new Class_MODEL_synchronized(this).  МетодПолучениеНазваниеТабеляНаОснованииСФО(this,ЦифровоеИмяНовгоТабеля);
                 Log.d(this.getClass().getName(), " НазваниеЗагруженногТАбеля" + НазваниеЗагруженногТАбеля);
-                int ИндексГдеНаходитьсяСтутсПроведенных = ГлавныйКурсорДанныеSwipes.getColumnIndex("status_carried_out");
-                СтаттусТабеля =Boolean.parseBoolean( ГлавныйКурсорДанныеSwipes.getString(ИндексГдеНаходитьсяСтутсПроведенных)); ///строго имя
+                int ИндексГдеНаходитьсяСтутсПроведенных = sqLiteCursor.getColumnIndex("status_carried_out");
+                СтаттусТабеля =Boolean.parseBoolean( sqLiteCursor.getString(ИндексГдеНаходитьсяСтутсПроведенных)); ///строго имя
                 Log.d(this.getClass().getName(), " СтаттусТабеля" + СтаттусТабеля);
                 if (СтаттусТабеля==true) {
                     Toast.makeText(getApplicationContext(), " Табель Проведен !!!. " + "\n" + "(редактирование запрещено).", Toast.LENGTH_SHORT).show();
@@ -1163,8 +1166,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 НазваниеДанныхВТабелеФИО = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.КонтейнерКудаЗагружаетьсяФИО);
                 НазваниеДанныхВТабелеФИО.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
                 ///toDO ПОСИК И ВСТАВКИ ИМСЯ ТАБЕЛЯ
-                int РасположениеИмениСотркдника = ГлавныйКурсорДанныеSwipes.getColumnIndex("fio");//name
-                ПолученыйUUIDФИОСледующий=     ГлавныйКурсорДанныеSwipes.getLong(РасположениеИмениСотркдника);////  String ФИОСледующий
+                int РасположениеИмениСотркдника = sqLiteCursor.getColumnIndex("fio");//name
+                ПолученыйUUIDФИОСледующий=     sqLiteCursor.getLong(РасположениеИмениСотркдника);////  String ФИОСледующий
 
                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1172,15 +1175,15 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                         " РасположениеИмениСотркдника  " + РасположениеИмениСотркдника + "  НазваниеДанныхВТабелеФИО " + НазваниеДанныхВТабелеФИО  + " ПолученыйUUIDФИОСледующий " +ПолученыйUUIDФИОСледующий);
 
                 // TODO: 24.03.2023  Получаем ФИо и ПРОФЕСИЮ
-                МетодПолучениеФИОиПрофессия( );
+                МетодПолучениеФИОиПрофессия( sqLiteCursor);
                 // TODO: 24.03.2023  Получаем ФИо и ПРОФЕСИЮ
                 МетодЗаполениеЭкранНАзваниеФИоИПрофесиии();
                 // TODO: 23.03.2023  метод заполенния данными по циклу после анализа swipe
-                МетодПослеАнализаSwipesЗаполненияЦиклом(  ИндексСтрокКомпонентовТабеля);
+                МетодПослеАнализаSwipesЗаполненияЦиклом(  ИндексСтрокКомпонентовТабеля,sqLiteCursor);
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " sqLiteCursor " +sqLiteCursor.getPosition());
             }else{
                 ///TODO В УКАЗАНОМ ТАБЕЛЕ НЕТ НИОДНОГО СОТРУДНИКА СТОРОЧЕК COUNT()* 0 НЕТ СТРОЧЕК В ТАБЕЛЕ
                 МетодКогдаНетЗаписейВКурсоре();
@@ -1194,7 +1197,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         }
     }
 
-    private void МетодПолучениеФИОиПрофессия( ) {
+    private void МетодПолучениеФИОиПрофессия( @NonNull SQLiteCursor sqLiteCursor) {
         try{
             Log.d(this.getClass().getName(), "ПолученыйUUIDФИОСледующий " + ПолученыйUUIDФИОСледующий);
             Class_GRUD_SQL_Operations classGrudSqlOperations= new Class_GRUD_SQL_Operations(getApplicationContext());
@@ -1211,12 +1214,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             ФИОТекущегоСотрудника = Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.getString(0);
             Log.d(  this.getClass().getName(), "ФИОСледующий " +"uuid"+ ФИОТекущегоСотрудника);
-            int ИндексПрофесииdata_tabels = ГлавныйКурсорДанныеSwipes.getColumnIndex("dt_prof");//name
-            ПолученаяПрофесииdata_tabels=     ГлавныйКурсорДанныеSwipes.getInt(ИндексПрофесииdata_tabels);////  String ФИОСледующий
+            int ИндексПрофесииdata_tabels = sqLiteCursor.getColumnIndex("dt_prof");//name
+            ПолученаяПрофесииdata_tabels=     sqLiteCursor.getInt(ИндексПрофесииdata_tabels);////  String ФИОСледующий
             Log.d(this.getClass().getName(), " ПолученаяПрофесииdata_tabels " + ПолученаяПрофесииdata_tabels);
             // TODO: 23.03.2023 по таблиуе ФИо
-            int ИндексПрофесииFio = ГлавныйКурсорДанныеSwipes.getColumnIndex("fio_prof");//name
-            ПолученаяПрофесииFio=     ГлавныйКурсорДанныеSwipes.getInt(ИндексПрофесииFio);////  String ФИОСледующий
+            int ИндексПрофесииFio = sqLiteCursor.getColumnIndex("fio_prof");//name
+            ПолученаяПрофесииFio=     sqLiteCursor.getInt(ИндексПрофесииFio);////  String ФИОСледующий
             Log.d(this.getClass().getName(), " ПолученаяПрофесииFio " + ПолученаяПрофесииFio);
             // TODO: 24.03.2023 ВЫЧИСЛЯКЕМ ТЕКУЩАЮ ПРОФЕСИЮ
             if (ПолученаяПрофесииdata_tabels>0) {
@@ -1242,20 +1245,22 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         }
     }
 
-    private void МетодПослеАнализаSwipesЗаполненияЦиклом(@NonNull  int[] ИндексСтрокКомпонентовТабеля) {
+    private void МетодПослеАнализаSwipesЗаполненияЦиклом(@NonNull  int[] ИндексСтрокКомпонентовТабеля ,@NonNull SQLiteCursor sqLiteCursor ) {
         try{
-                Log.d(this.getClass().getName(), " ГлавныйКурсорДанныеSwipes.getCount() " + ГлавныйКурсорДанныеSwipes.getCount());
+                Log.d(this.getClass().getName(), " ГлавныйКурсорДанныеSwipes.getCount() " + sqLiteCursor.getCount());
                 ///todo ПРИСВАИВАЕМ UUID НАЗВАНИЮ ФИО
-                ПосикДня = ГлавныйКурсорДанныеSwipes.getColumnIndex("uuid"); ////TODO СЮДА ПОЛЕ UUID
-                НазваниеСтолбикаДляЛобкальногоОбноления = ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
-                НазваниеДанныхВТабелеФИО.setTag(ГлавныйКурсорДанныеSwipes.getString(ПосикДня));
+                ПосикДня = sqLiteCursor.getColumnIndex("uuid"); ////TODO СЮДА ПОЛЕ UUID
+                НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
+                НазваниеДанныхВТабелеФИО.setTag(sqLiteCursor.getString(ПосикДня));
                 НазваниеДанныхВТабелеФИО.setOnClickListener(СлушательИнформацияОСотрудника);
-                Log.d(this.getClass().getName(), " UUID пристваем Внутри ФИО  " + ГлавныйКурсорДанныеSwipes.getString(ПосикДня));
+                Log.d(this.getClass().getName(), " UUID пристваем Внутри ФИО   sqLiteCursor " + sqLiteCursor.getString(ПосикДня));
                 /////TODO     ПЕРВАЯ СТРОКА
                 ///todo главный МЕТОД ОФОРМЛЕНИЯ ТАБЕЛЯ ДАННЫМИ И ДНЯМИ
                 МетодГлавныйДанныеСотрудника(ИндексСтрокКомпонентовТабеля,
-                        ХЭШНазваниеДнейНедели,НазваниеДанныхВТабелеДниНедели
-                        ,СамиДанныеТабеля,КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла );
+                        ХЭШНазваниеДнейНедели,
+                        НазваниеДанныхВТабелеДниНедели,
+                        СамиДанныеТабеля,
+                        КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла,sqLiteCursor );
                 МетодПерегрузкаГлавногоLaouyout();
                 // TODO: 29.04.2021 если то оди
                 // TODO: 23.03.2023 ПОДСЧИТИВАЕМ ОБЩЕЕГО КОЛИЧЕСТВО СОТУРДНИКОВ
@@ -1372,13 +1377,11 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     }
 
 
-    void МетодСуммаЧасовВТабеле() {
-
+    void МетодСуммаЧасовВТабеле(@NonNull SQLiteCursor sqLiteCursor) {
         try{
             //TODO ЗАПОЛЯНЕМ ПОЛУЧЕННЫЙ МЕСЯ Ц ПЛУС КОЛИЧЕСТВО ЧАСОВ СОТРУДНИКА КОНКРЕТНОГО
-            ОбщееКоличествоЧасовСотрудникаВТабелеСотудников.setText(" (" + " " + ОбщееКоличествоЛюдейВТабелеТекущем + "/часы)  #"+ГлавныйКурсорДанныеSwipes.getCount()+"");
-            // TODO: 25.09.2021
-            Log.d(Class_MODEL_synchronized.class.getName()," ОбщееКоличествоЛюдейВТабелеТекущем  "+ОбщееКоличествоЛюдейВТабелеТекущем  );
+            ОбщееКоличествоЧасовСотрудникаВТабелеСотудников.setText(" (" + " " + ОбщееКоличествоЛюдейВТабелеТекущем + "/часы)  #"+sqLiteCursor.getCount()+"");
+            Log.d(Class_MODEL_synchronized.class.getName()," ОбщееКоличествоЛюдейВТабелеТекущем  "+ОбщееКоличествоЛюдейВТабелеТекущем + " sqLiteCursor " +sqLiteCursor  );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " +e + " Метод :"+Thread.currentThread().getStackTrace()[2].getMethodName()
@@ -1687,8 +1690,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 int СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов = 0;
                 boolean ФлагЗапускатьллкальноеОбновлениеИлинет=false;
                 try{
-             /*   МетодГлавныйЛокальноеОбновлениеЯчейки(СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов, ФлагЗапускатьллкальноеОбновлениеИлинет);
-                Log.d(this.getClass().getName(), " МетодГлавныйЛокальноеОбновлениеЯчейки () Save.. СамоЗначениеЯчейкиТабеля" +  СамоЗначениеЯчейкиТабеля + " s "+s.toString());*/
+               МетодГлавныйЛокальноеОбновлениеЯчейки(СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов, ФлагЗапускатьллкальноеОбновлениеИлинет);
+                Log.d(this.getClass().getName(), " МетодГлавныйЛокальноеОбновлениеЯчейки () Save.. СамоЗначениеЯчейкиТабеля" +  СамоЗначениеЯчейкиТабеля + " s "+s.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -2005,7 +2008,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                     , МесяцТабеля, ГодДляТабелей);
                     // TODO: 07.05.2021 обнуляем UUID после созданеия подтчета часов
                     Log.d(Class_MODEL_synchronized.class.getName()," ОбщееКоличествоЛюдейВТабелеТекущем  "+ОбщееКоличествоЛюдейВТабелеТекущем );
-                    МетодСуммаЧасовВТабеле();
+                    МетодСуммаЧасовВТабеле(ГлавныйКурсорДанныеSwipes);
                     // TODO: 25.09.2021
                     Log.d(Class_MODEL_synchronized.class.getName()," ОбщееКоличествоЛюдейВТабелеТекущем  "+ОбщееКоличествоЛюдейВТабелеТекущем);
                     /////TODO ОБНУЛЯЕМ ЗНАЧЕНИЕ ID AND UUID ЧТОБЫ НЕ БЫЛО ПОВТОРОНОГО ОБНОЛЕНИЕ НЕ СВОЕГО ХОЗЯИНА UUID
@@ -2777,7 +2780,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private void МетодСвайпВпередПоДАнным() {
         try {
             if (ГлавныйКурсорДанныеSwipes.getCount() >0) {
-                МетодSwipeКурсор();
                 if (ГлавныйКурсорДанныеSwipes.getPosition() == ГлавныйКурсорДанныеSwipes.getCount()) {
                     ГлавныйКурсорДанныеSwipes.moveToFirst();
                 } else {
@@ -2786,7 +2788,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     }
                 }
                 if (ГлавныйКурсорДанныеSwipes.getPosition() <= ГлавныйКурсорДанныеSwipes.getCount()) {
-                    ПроизошелЛиСфайпПоДаннымСингТабеля=true;
                     ScrollСамогоТабеля.startAnimation(animationRow);
                     МетодАнализДанныхSwipes( );
                 }
@@ -2795,7 +2796,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                     + " ГлавныйКурсорДанныеSwipes.getCount() "+ГлавныйКурсорДанныеSwipes.getCount()+
-                    "ГлавныйКурсорДанныеSwipes.getPosition()  " + ГлавныйКурсорДанныеSwipes.getPosition());
+                    "ГлавныйКурсорДанныеSwipes.getPosition()  " + ГлавныйКурсорДанныеSwipes.getPosition() +
+                     " ПроизошелЛиСфайпПоДаннымСингТабеля " +ПроизошелЛиСфайпПоДаннымСингТабеля);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -2810,7 +2812,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     void МетодСвайпНазаПоДанным() {
         try{
             if (ГлавныйКурсорДанныеSwipes.getCount() >0) {
-                МетодSwipeКурсор();
                 if (ГлавныйКурсорДанныеSwipes.getPosition() == 1) {
                     ГлавныйКурсорДанныеSwipes.moveToLast();
                 }else{
@@ -2818,7 +2819,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                         ГлавныйКурсорДанныеSwipes.moveToPrevious();
                     }
                 }
-                ПроизошелЛиСфайпПоДаннымСингТабеля=true;
                 ScrollСамогоТабеля.startAnimation(animationRow);
                 МетодАнализДанныхSwipes( );
             }
@@ -2826,7 +2826,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                     + " ГлавныйКурсорДанныеSwipes.getCount() "+ГлавныйКурсорДанныеSwipes.getCount()+
-                     "ГлавныйКурсорДанныеSwipes.getPosition()  " + ГлавныйКурсорДанныеSwipes.getPosition());
+                     "ГлавныйКурсорДанныеSwipes.getPosition()  " + ГлавныйКурсорДанныеSwipes.getPosition()+
+                     " ПроизошелЛиСфайпПоДаннымСингТабеля " +ПроизошелЛиСфайпПоДаннымСингТабеля);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -2846,11 +2847,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 //TODO SUB CLASS с ГЛАВНЫМ МЕПТОДОМ ОФОРМЛЕНИЯ ТАБЕЛЯ
 
 
-    private void МетодГлавныйДанныеСотрудника( int[] ИндексСтрокКомпонентовТабеля
-            , Map<Integer, String> ХЭШНазваниеДнейНедели,
-                                              TextView НазваниеДанныхВТабелеДниНедели,
-                                              EditText СамиДанныеТабеля
-            , View КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла) {
+    private void МетодГлавныйДанныеСотрудника(@NonNull int[] ИндексСтрокКомпонентовТабеля
+            ,@NonNull Map<Integer, String> ХЭШНазваниеДнейНедели,
+                                              @NonNull  TextView НазваниеДанныхВТабелеДниНедели,
+                                              @NonNull  EditText СамиДанныеТабеля
+            , @NonNull View КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла
+            , @NonNull SQLiteCursor sqLiteCursor) {
         /////todo ПЕРВАЯ СТРОКА НАЗВАНИЯ
 
         try{
@@ -3076,12 +3078,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO  НАЧАЛО САМИ ДАННЫЕ ПЕРВОЙ СТРОКИ(1,2,3,4,6,7,8,9)
 
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень1);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d1");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d1");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней = "";
-            СамиДанныеКурсораДляДней =  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней = sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" + СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней != null) {
                 СамиДанныеКурсораДляДней = СамиДанныеКурсораДляДней.replaceAll("\\s+", "");
@@ -3131,13 +3133,13 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             /////TODO ТАБЕЛЬ вторая строчка вторник
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень2);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d2");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d2");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -3185,12 +3187,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             /////TODO ТАБЕЛЬ вторая строчка среда
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень3);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d3");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d3");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -3237,12 +3239,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             /////TODO ТАБЕЛЬ вторая строчка четверг
 
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень4);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d4");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d4");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -3288,12 +3290,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             /////TODO ТАБЕЛЬ третья строчка пятница
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень5);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d5");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d5");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -3340,12 +3342,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             /////TODO ТАБЕЛЬ третья строчка суббота
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень6);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d6");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d6");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -3390,12 +3392,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             /////TODO ТАБЕЛЬ третья строчка воскресенье
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень7);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d7");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d7");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -3440,12 +3442,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             /////TODO ТАБЕЛЬ третья строчка воскресенье
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень8);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d8");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d8");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -3490,12 +3492,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ////////////////////////
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень9);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d9");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d9");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -3540,12 +3542,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень10);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d10");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d10");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -3590,12 +3592,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень11);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d11");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d11");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -3639,12 +3641,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ////////////////////////
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень12);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d12");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d12");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -3687,12 +3689,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень13);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d13");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d13");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -3736,12 +3738,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень14);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d14");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d14");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -3790,12 +3792,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень15);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d15");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d15");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -3840,12 +3842,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ////////////////////////
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаДанныеДень16);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d16");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d16");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -4115,12 +4117,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO  НАЧАЛО САМИ ДАННЫЕ ВТОРОЙ СТРОКИ(10,11,12,13,14,15)
 
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень17);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d17");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d17");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -4163,12 +4165,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             /////TODO ТАБЕЛЬ вторая строчка вторник
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень18);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d18");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d18");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -4211,12 +4213,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             /////TODO ТАБЕЛЬ вторая строчка среда
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень19);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d19");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d19");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -4258,12 +4260,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             /////TODO ТАБЕЛЬ вторая строчка четверг
 
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень20);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d20");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d20");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -4304,12 +4306,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             /////TODO ТАБЕЛЬ третья строчка пятница
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень21);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d21");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d21");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -4348,12 +4350,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             /////TODO ТАБЕЛЬ третья строчка суббота
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень22);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d22");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d22");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -4395,12 +4397,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             /////TODO ТАБЕЛЬ третья строчка воскресенье
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень23);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d23");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d23");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -4443,12 +4445,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             /////TODO ТАБЕЛЬ третья строчка воскресенье
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень24);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d24");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d24");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -4488,12 +4490,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             }
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень25);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d25");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d25");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -4535,12 +4537,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень26);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d26");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d26");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -4583,12 +4585,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень27);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d27");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d27");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -4630,12 +4632,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень28);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d28");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d28");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -4677,12 +4679,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///todo загружем если данные дни есть в календаре
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень29);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d29");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d29");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -4721,12 +4723,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///todo загружем если данные дни есть в календаре
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень30);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d30");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d30");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -4777,12 +4779,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ///todo загружем если данные дни есть в календаре
             ///TODO заполняем массив данных из табеля из вертуальныйх данных запоминаем их в масиив для дальнейшего о брашени для обновления
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ВтораяСтрочкаДанныеДень31);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("d31");
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("d31");
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
             /////todo обработка значения для дней
             СамиДанныеКурсораДляДней= "";
-            СамиДанныеКурсораДляДней=  ГлавныйКурсорДанныеSwipes.getString(ПосикДня);
+            СамиДанныеКурсораДляДней= sqLiteCursor.getString(ПосикДня);
             Log.d(this.getClass().getName(), " СамиДанныеКурсораДляДней" +СамиДанныеКурсораДляДней);
             if (СамиДанныеКурсораДляДней!=null){
                 СамиДанныеКурсораДляДней=    СамиДанныеКурсораДляДней.replaceAll("\\s+","");
@@ -4832,20 +4834,20 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             //TODO ТЕХНИЧЕСКИЙ  БЛОК ВЕРХНЕМ СТРОЧКИ ID И UUID-->
             ///TODO uuid не видивая EDITTEXT понадобиться для обновления UUID
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.СтрочкаНевидимаяUUID);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("uuid"); ////TODO СЮДА ПОЛЕ UUID
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("uuid"); ////TODO СЮДА ПОЛЕ UUID
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
-            this.СамиДанныеТабеля.setText( ГлавныйКурсорДанныеSwipes.getString(ПосикДня));
-            Log.d(this.getClass().getName(), " ВтораяСтрочкаНевидимаяUUID " +  ГлавныйКурсорДанныеSwipes.getString(ПосикДня));
+            this.СамиДанныеТабеля.setText(sqLiteCursor.getString(ПосикДня));
+            Log.d(this.getClass().getName(), " ВтораяСтрочкаНевидимаяUUID " + sqLiteCursor.getString(ПосикДня));
             this.СамиДанныеТабеля.setVisibility(View.GONE);
             ///TODO вытаскиваем UUID
             ///TODO uuid не видивая EDITTEXT понадобиться для обновления ID
             this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.СтрочкаНевидимаяID);
-            ПосикДня =  ГлавныйКурсорДанныеSwipes.getColumnIndex("_id"); ////TODO СЮДА ПОЛЕ ID
-            НазваниеСтолбикаДляЛобкальногоОбноления =  ГлавныйКурсорДанныеSwipes.getColumnName(ПосикДня);
+            ПосикДня = sqLiteCursor.getColumnIndex("_id"); ////TODO СЮДА ПОЛЕ ID
+            НазваниеСтолбикаДляЛобкальногоОбноления = sqLiteCursor.getColumnName(ПосикДня);
             this.СамиДанныеТабеля.setTag(НазваниеСтолбикаДляЛобкальногоОбноления);
-            this.СамиДанныеТабеля.setText( ГлавныйКурсорДанныеSwipes.getString(ПосикДня));
-            Log.d(this.getClass().getName(), " ВтораяСтрочкаНевидимаяID " +  ГлавныйКурсорДанныеSwipes.getString(ПосикДня));
+            this.СамиДанныеТабеля.setText(sqLiteCursor.getString(ПосикДня));
+            Log.d(this.getClass().getName(), " ВтораяСтрочкаНевидимаяID " + sqLiteCursor.getString(ПосикДня));
             this.СамиДанныеТабеля.setVisibility(View.GONE);
 
             Log.d(this.getClass().getName(), " ИндексСтрокКомпонентовТабеля " + ИндексСтрокКомпонентовТабеля[0]);
@@ -4856,15 +4858,22 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
         } catch (Exception e) {
             e.printStackTrace();
-            ///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            // TODO: 01.09.2021 метод вызова
             new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                     this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
+
+
+
+
+
+
+
+
+
     //TODO метод делает callback с ответом на экран
     private  void  МетодGetmessage(){
         try{
@@ -5206,7 +5215,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private void МетодПереопределенияНазваниеПрофесии() {
         try {
             МетодАнализДанныхSwipes( );
-            МетодПолучениеФИОиПрофессия( );
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
