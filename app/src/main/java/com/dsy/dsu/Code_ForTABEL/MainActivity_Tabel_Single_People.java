@@ -205,6 +205,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     private  TextWatcher  СлушательПолученияДанных;
 
+
+
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -267,7 +269,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             КнопкаНазад=(Button) findViewById(R.id.imageViewСтрелкаВнутриТабеля);
             view2Линия=(View) findViewById(R.id.view2Линия);
             animationПрофессия = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row);
-          //  animationRich = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_swipe_r);//R.anim.slide_in_row)
+            animationRich = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_swipe_r);//R.anim.slide_in_row)
             animationLesft = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_swipe_l);//R.anim.slide_in_row)R.anim.slide_in_row_newscanner1
             Bundle data=     getIntent().getExtras();
             // TODO: 29.03.2023  Метод Какая марка телфона из за этого загрудаем вид
@@ -564,6 +566,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                         HorizontalScrollViewВТабелеОдинСотрудник.smoothScrollTo(scrollX,0);
                                         // TODO: 24.09.2021 двигаемся вперед
                                         ПроизошелЛиСфайпПоДаннымСингТабеля=true;
+                                        ГлавныйКонтейнерТабель.setFocusable(false);
+                                        ГлавныйКонтейнерТабель.setClickable(false);
+                                        // TODO: 30.03.2023  перехехлд по ажнным  
                                         МетодСвайпНазаПоДанным();
                                         Log.d(getApplicationContext().getClass().getName(), " МетодСвайпНазаПоДанным ");/////
                                         // TODO: 09.05.2021  при успешном срабоатывании true
@@ -574,6 +579,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                         HorizontalScrollViewВТабелеОдинСотрудник.smoothScrollTo(scrollX,0);
                                         // TODO: 24.09.2021 двигаемся назад
                                         ПроизошелЛиСфайпПоДаннымСингТабеля=true;
+                                        ГлавныйКонтейнерТабель.setFocusable(false);
+                                        ГлавныйКонтейнерТабель.setClickable(false);
+                                        // TODO: 30.03.2023  перехехлд по ажнным
                                         МетодСвайпВпередПоДАнным();
                                         Log.d(getApplicationContext().getClass().getName(), " МетодСвайпВпередПоДАнным ");/////
                                         // TODO: 07.05.2021  обработка горизонта X
@@ -1307,13 +1315,24 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     }
 
     private void МетодПергрузкиДизайнаЭкрана() {
+    try{
+          message.getTarget().postDelayed(()->{
+              ГлавныйКонтейнерТабель.setFocusable(true);
+              ГлавныйКонтейнерТабель.setClickable(true);
+          },1000);
         ScrollСамогоТабеля.requestLayout();
         ScrollСамогоТабеля.pageScroll(View.FOCUS_UP);
         ScrollСамогоТабеля.refreshDrawableState();
         ГлавныйКонтейнерТабель.requestLayout();
         ГлавныйКонтейнерТабель.forceLayout();
         ГлавныйКонтейнерТабель.refreshDrawableState();
-        ГлавныйКонтейнерТабель.dispatchWindowVisibilityChanged(1);
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " +e + " Метод :"+Thread.currentThread().getStackTrace()[2].getMethodName()
+                + " Линия  :"+Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),  this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
     }
 
     private void МетодЗаполениеЭкранНАзваниеФИоИПрофесиии() {
@@ -2772,7 +2791,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     }else {
                         ГлавныйКурсорДанныеSwipes.moveToFirst();
                     }
-               // ScrollСамогоТабеля.startAnimation(animationRich);
+                ScrollСамогоТабеля.startAnimation(animationRich);
+                НазваниеДанныхВТабелеФИО.startAnimation(animationПрофессия);
                 МетодАнализДанныхSwipes( );
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

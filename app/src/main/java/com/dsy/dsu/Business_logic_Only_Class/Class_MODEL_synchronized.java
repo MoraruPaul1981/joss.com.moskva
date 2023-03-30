@@ -3513,19 +3513,18 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
     public Integer МетодПосчётаЧасовПоСотруднику(Cursor курсор_ЗагружаемТабеляСозданный) {
         Integer СуммаЧасов = 0;
         try{
-        if (курсор_ЗагружаемТабеляСозданный.getCount() > 0) {
-            курсор_ЗагружаемТабеляСозданный.moveToFirst();
-        }
-        do {
             for (int ИндексДляИзмененияДней = 1; ИндексДляИзмененияДней < 32; ИндексДляИзмененияДней++) {
                 int ИндексЧассыСотрудника = курсор_ЗагружаемТабеляСозданный.getColumnIndex("d" + ИндексДляИзмененияДней);
                 int ЧассыСотрудника = курсор_ЗагружаемТабеляСозданный.getInt(ИндексЧассыСотрудника);
                 СуммаЧасов = СуммаЧасов + ЧассыСотрудника;
                 Log.d(this.getClass().getName(), "    СуммаЧасов " + СуммаЧасов);
             }///TODO END FOR  ПО СТОЛБЦАМ БЕЖИМ
-        } while (курсор_ЗагружаемТабеляСозданный.moveToNext());
-            курсор_ЗагружаемТабеляСозданный.moveToFirst();
-    } catch (Exception e) {
+            //////////20.15
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " СуммаЧасов "+СуммаЧасов );
+        } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName()
                 + " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
