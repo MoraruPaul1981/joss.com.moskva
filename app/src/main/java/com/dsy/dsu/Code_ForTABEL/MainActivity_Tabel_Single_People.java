@@ -267,7 +267,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             // TODO: 29.03.2023  Метод Какая марка телфона из за этого загрудаем вид
             МетодВыбораВнешнегоВидаИзВидаТелефона();
 
-            МетодОбновлениеПрофесиии();
+        //    МетодОбновлениеПрофесиии();
 
             МетодПриИзмениеДанныхВБазеМенемВнешнийВидТабеляObserver();
 
@@ -390,7 +390,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             HorizontalScrollViewВТабелеОдинСотрудник =(HorizontalScrollView)     ГлавныйКонтентТабеляИнфлейтер.findViewById(R.id.ГоризонтльнаяПрокруткаВнутриСамТабель);
 
 
-            КонтейнерКудаЗагружаетьсяФИО =(TextView)     ГлавныйКонтентТабеляИнфлейтер.findViewById(R.id.КонтейнерКудаЗагружаетьсяФИО);
+         //   КонтейнерКудаЗагружаетьсяФИО =(TextView)     ГлавныйКонтентТабеляИнфлейтер.findViewById(R.id.КонтейнерКудаЗагружаетьсяФИО);
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2502,18 +2502,18 @@ try{
            Integer  ПосикДня = sqLiteCursor.getColumnIndex("d"+ИндексИтерации.toString());
             НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
             // TODO: 30.03.2023 новый код сохраняем в сам обьект uuid и день
-            Integer ID = sqLiteCursor.getInt(sqLiteCursor.getColumnIndex("_id"));
+        /*    Integer ID = sqLiteCursor.getInt(sqLiteCursor.getColumnIndex("_id"));
             Long UUID = sqLiteCursor.getLong(sqLiteCursor.getColumnIndex("uuid_tabel"));
             Long UUID_Tabel = sqLiteCursor.getLong(sqLiteCursor.getColumnIndex("uuid"));
-            Long FIO = sqLiteCursor.getLong(sqLiteCursor.getColumnIndex("fio"));
+            Long FIO = sqLiteCursor.getLong(sqLiteCursor.getColumnIndex("fio"));*/
             String ДанныеДней = sqLiteCursor.getString(ПосикДня);
-            bundleДляОбновление.putInt("ID",ID );
+/*            bundleДляОбновление.putInt("ID",ID );
             bundleДляОбновление.putLong("UUID",UUID);
             bundleДляОбновление.putLong("FIO",FIO);
             bundleДляОбновление.putLong("UUID_Tabel",UUID_Tabel);
             bundleДляОбновление.putInt("ПосикДня",ПосикДня);
             bundleДляОбновление.putString("ДанныеДней", ДанныеДней);
-            bundleДляОбновление.putString("НазваниеДней",НазваниеДней);
+            bundleДляОбновление.putString("НазваниеДней",НазваниеДней);*/
             // TODO: 31.03.2023 ЗАПОМИНАЕМ ДАнные Д1
              СамиДанныеТабеля.setTag(bundleДляОбновление);
             Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней + " СамиДанныеТабеля " +СамиДанныеТабеля  + " НазваниеДанныхВТабелеФИО " +НазваниеДанныхВТабелеФИО);
@@ -2582,7 +2582,7 @@ try{
             СамиДанныеТабеля.startAnimation(animationПрофессия);
         }
             // TODO: 31.03.2023  Запоминаем ФИО
-            НазваниеДанныхВТабелеФИО.setTag(bundleДляОбновление);
+          //  НазваниеДанныхВТабелеФИО.setTag(bundleДляОбновление);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
