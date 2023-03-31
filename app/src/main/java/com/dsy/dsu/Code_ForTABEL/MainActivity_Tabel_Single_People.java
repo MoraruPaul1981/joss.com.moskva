@@ -28,6 +28,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -197,14 +198,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private String  МесяциГодТабеляПолностью;
     private Integer ВсеСтрокиТабеля=0;
 
-    private  TextWatcher  СлушательПолученияДанных;
-
-
-    private   View.OnLongClickListener СлушательДляПереходаНаМеткиТабеля;
-
-    private  View.OnClickListener СлушательДанныеДляОбновления;
-
-
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -276,8 +269,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             МетодПриИзмениеДанныхВБазеМенемВнешнийВидТабеляObserver();
             МетодПришлиПараметрыОтДругихАктивитиДляРаботыТабеля();
             // TODO: 30.03.2023 CЛУШАТЕЛИ ДВА ДАННЫХ
-            МетодСлушательДанных();
-            МетодСлушателиДляТекущегоТабеля();
             МетодGetmessage();
             // TODO: 30.03.2023 Курсор ALL Date
             МетодSwipeALLКурсор();
@@ -1088,7 +1079,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                         ///TODO   #6   запускаем метод ПОСЛЕ УСПЕШНОЙ ГЕНЕРАЦИИ ТАБЕЛЯ
                         МетодСуммаЧасовВТабеле(ГлавныйКурсорДанныеSwipes);
                         МетодЗаполенияДаннымиСотрудника(  ЦифровоеИмяНовгоТабеля,ГлавныйКурсорДанныеSwipes);
-                        МетодСлушательДанных();
                         МетодСлушательСвайпов();
                         МетодПолучениеФИОиПрофессия(ГлавныйКурсорДанныеSwipes );
                     }else{
@@ -1119,7 +1109,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     ///TODO   #6   запускаем метод ПОСЛЕ УСПЕШНОЙ ГЕНЕРАЦИИ ТАБЕЛЯ
                     МетодСуммаЧасовВТабеле(ГлавныйКурсорSingleSwipe);
                     МетодЗаполенияДаннымиСотрудника(   ЦифровоеИмяНовгоТабеля,ГлавныйКурсорSingleSwipe);
-                    МетодСлушательДанных();
                     МетодСлушательСвайпов();
                     МетодПолучениеФИОиПрофессия(ГлавныйКурсорSingleSwipe );
 
@@ -1417,57 +1406,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     }
 
 
-    void МетодСлушателиДляТекущегоТабеля(){
-        try{
-            /////View/////TODO ТУТ ПЕРЕРХОДИМ НА МЕТКИ ТАБЕЛЯ
-             СлушательДляПереходаНаМеткиТабеля= new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-
-                    МетодПереходаНаМеткиТабеля();
-
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-                    return true;
-                }
-            };
-            /////View/////TODO ТУТ ПОЛУЧАЕМ КУДА ОБНОВЛЯТЬ ДНИ  D1,D2,D3
-            СлушательДанныеДляОбновления= new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    МетодПередНаМеткиТАбеля(v);
-                }
-            };
-
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-        } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " +e + " Метод :"+Thread.currentThread().getStackTrace()[2].getMethodName()
-                + " Линия  :"+Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),  this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                Thread.currentThread().getStackTrace()[2].getLineNumber());
-    }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /////View/////TODO метод uuid id названеи стоблика
     public  void МетодПередНаМеткиТАбеля(View v) {
 
@@ -1484,84 +1422,20 @@ try{
                 Thread.currentThread().getStackTrace()[2].getLineNumber());
     }
     }
-    /////View/////TODO метод uuid id названеи стоблика
-    void МетодСлушательДанных(){
-        СлушательПолученияДанных=new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                try{
-                    Log.d(this.getClass().getName(), "  beforeTextChanged  " + s.toString());
-                    ПолучениеЗначениеДоИзменения= "";
-                    ПолучениеЗначениеДоИзменения=s.toString();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    //   mNotificationManagerДляЧАТА.cancel(1);///.cancelAll();
-                    Log.e(getApplicationContext().getClass().getName(), "С ОШИБКОЙ  Стоп СЛУЖБА СЛУЖБАService_Notifications  ДЛЯ ЧАТА   ДЛЯ ЧАТА onDestroy() время "+new Date());
 
-                }
-            }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                try{
-                    Log.d(this.getClass().getName(),"  onTextChanged  " +s.toString());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    //   mNotificationManagerДляЧАТА.cancel(1);///.cancelAll();
-                    Log.e(getApplicationContext().getClass().getName(), "С ОШИБКОЙ  Стоп СЛУЖБА СЛУЖБАService_Notifications  ДЛЯ ЧАТА   ДЛЯ ЧАТА onDestroy() время "+new Date());
-                }
-            }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                //TODO ДАННЫЙ КОД НЕПОСТРЕДСТВЕННО ЗАРУСКАЕТ ОБНОВЛЕНИЕ ЛОКАЛЬНОЕ С АКТИВТИИ
-                int СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов = 0;
-                boolean ФлагЗапускатьллкальноеОбновлениеИлинет=false;
-                try{
-         /*      МетодГлавныйЛокальноеОбновлениеЯчейки(СамоЗначениеЯчейкиТабеляЗначениеНЕБольше24Часов, ФлагЗапускатьллкальноеОбновлениеИлинет);
-                Log.d(this.getClass().getName(), " МетодГлавныйЛокальноеОбновлениеЯчейки () Save.. СамоЗначениеЯчейкиТабеля" +  СамоЗначениеЯчейкиТабеля + " s "+s.toString());*/
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    //   mNotificationManagerДляЧАТА.cancel(1);///.cancelAll();
-                    Log.e(getApplicationContext().getClass().getName(), "С ОШИБКОЙ  Стоп СЛУЖБА СЛУЖБАService_Notifications  ДЛЯ ЧАТА   ДЛЯ ЧАТА onDestroy() время "+new Date());
-
-                }
-            }
-        };
-
-    }
-
-    private void МетодОбновлениеЯчеек(@NonNull TextView viewДанные) {
+    private void МетодОбновлениеЯчеек(@NonNull Editable НовоеЗначение,TextView viewДанные) {
         try{
             if (viewДанные!=null) {
                 Log.d(this.getClass().getName(), " viewДанные" +  viewДанные);
                 List<Integer> ЛистДопустимоеСодержание = new ArrayList();
                 IntStream.iterate(1, i -> i + 1).limit(24).forEachOrdered(ЛистДопустимоеСодержание::add);
-                    boolean ФлагТолькоЦифры=         viewДанные.toString().matches("(.*)[0-9](.*)");
-                    boolean ФлагТолькоБуквы=         viewДанные.toString().matches("(.*)[^0-9](.*)");
+                    boolean ФлагНовоеЗначение=         viewДанные.toString().matches("(.*)[0-9](.*)");/////TODO   viewДанные.toString().matches("(.*)[^0-9](.*)");
                 String ЗначениеДляВставкиФинальное =null;
-                if(ФлагТолькоЦифры==true){
+                if(ФлагНовоеЗначение==true){
                         viewДанные.toString().replaceAll("[^0-9]","");
                     ЗначениеДляВставкиФинальное =  viewДанные.toString().substring(0, 1);
-
-                    }else {
-                        viewДанные.toString().replaceAll("[0-9]","");
-                            ЗначениеДляВставкиФинальное =  viewДанные.toString().substring(0, 2);
-                    }
-                Log.d(this.getClass().getName(), " viewДанные.toString()" +  viewДанные.toString());
-
                     if (   Integer.parseInt(viewДанные.getText().toString())>24) {
                         Toast aa = Toast.makeText(getBaseContext(), "OPEN", Toast.LENGTH_LONG);
                         ImageView cc = new ImageView(getBaseContext());
@@ -1571,94 +1445,36 @@ try{
                         Toast.makeText(getBaseContext(), "Нет сохранилось !!!"+
                                 "\n"+" (Часы больше 24 ) :" +viewДанные.getText().toString(), Toast.LENGTH_SHORT).show();
                     }
+                    }else {
+                        viewДанные.toString().replaceAll("[0-9]","");
+                            ЗначениеДляВставкиФинальное =  viewДанные.toString().substring(0, 2);
+                    }
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + " ФлагНовоеЗначение " +ФлагНовоеЗначение+
+                        " viewДанные.toString()" +  viewДанные.toString());
 
             }
 
-
-
-
-
-                    ContentValues КонтейнерЗаполненияДаннымиПриЛокальномОбновлении = new     ContentValues();
-
-                        while (iterator.hasNext()) {
-                            Map.Entry entry = (Map.Entry) iterator.next();
-                            System.out.println(String.format("(%s, %s)", entry.getKey(), entry.getValue()));
-                            String КлючПоляДляЛокальноОбновление=String.valueOf(entry.getKey());
-                            /////todo заполегния контейнера
-                            if (СамоЗначениеЯчейкиТабеля.length()>0) {
-                                КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.put(КлючПоляДляЛокальноОбновление, СамоЗначениеЯчейкиТабеля);
-                                КлючПоляДляЛокальноОбновление=null;
-                                СамоЗначениеЯчейкиТабеля=null;
-                            }else if (СамоЗначениеЯчейкиТабеля.length()==0){
-                                КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.put(КлючПоляДляЛокальноОбновление, 0);
-                                КлючПоляДляЛокальноОбновление=null;
-
-                            }
-                            Log.d(this.getClass().getName(), " СамоЗначениеЯчейкиТабеля" + СамоЗначениеЯчейкиТабеля+ " КонтейнерЗаполненияДаннымиПриЛокальномОбновлении " +КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.toString());
-                            //TODO заполение КОНТЕНЕР для локального обновления--дАТА оПЕРАЦИИ
-                            ////TODO ДАТА
-                            String СгенерированованныйДатаДляВставки=     new Class_Generation_Data(getApplicationContext()).ГлавнаяДатаИВремяОперацийСБазойДанных();
-                            КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.put("date_update", СгенерированованныйДатаДляВставки);
-                            // TODO: 21.05.2021
-                            Long РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудника=0L;
-                            Class_GRUD_SQL_Operations        class_grud_sql_operationsПовышаемВерсиюДляЛокальногоОбволенияТабеля=new Class_GRUD_SQL_Operations(getApplicationContext());
-
+            // TODO: 31.03.2023 САМА ОПЕРАЦИЯ ОБНОЫВЛЕНИЕ ЯЧЕЕК
+                    ContentValues КонтейнерДляЛокальноеОбновлениеЯчеек = new     ContentValues();
+            // TODO: 31.03.2023 ДАТА
+            String НоваяДата=     new Class_Generation_Data(getApplicationContext()).ГлавнаяДатаИВремяОперацийСБазойДанных();
+            КонтейнерДляЛокальноеОбновлениеЯчеек.put("date_update", НоваяДата);
                             // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ
-                            РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудника =
-                                    new SubClassUpVersionDATA().МетодПовышаемВерсииCurrentTable(    "data_tabels",getApplicationContext(),Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
+            Long        УвеличинаяВерсияДанных = new SubClassUpVersionDATA().МетодПовышаемВерсииCurrentTable(    "data_tabels"
+                                                    ,getApplicationContext(),Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
+            КонтейнерДляЛокальноеОбновлениеЯчеек.put("current_table", УвеличинаяВерсияДанных);
 
-                            КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.put("current_table", РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудника);
+            Long РезультатЛокальногоОбновлениеНаТабеле =
+                                                МетодЛокальногоОбновлениеЧерезКликвТабеле(КонтейнерДляЛокальноеОбновлениеЯчеек, UUIDТекущегоВыбраногоСотрудника.toString());
 
-                            String СодержимоеДляЛокальногоОбновленияВременный = String.valueOf(entry.getValue());
-                            UUIDТекущегоВыбраногоСотрудника = Long.parseLong(СодержимоеДляЛокальногоОбновленияВременный);
-                            Log.d(this.getClass().getName(), "  UUIDТекущегоВыбраногоСотрудника " + UUIDТекущегоВыбраногоСотрудника);
-                            if (UUIDТекущегоВыбраногоСотрудника > 0){
-                                try {
-                                    Long РезультатЛокальногоОбновлениеНаТабеле= null;
-                                    if (UUIDТекущегоВыбраногоСотрудника>0 && КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.size()>0 ) {
-                                        // TODO: 13.01.2022  ГЛАВНЫЙ МЕТОД ЗАПУСКА ЛОКАЛЬНОГО ОБНОВЛЕНИЯ
-                                        РезультатЛокальногоОбновлениеНаТабеле =
-                                                МетодЛокальногоОбновлениеЧерезКликвТабеле(КонтейнерЗаполненияДаннымиПриЛокальномОбновлении, UUIDТекущегоВыбраногоСотрудника.toString());
-                                    }
                                     Log.d(this.getClass().getName(), "  РезультатЛокальногоОбновлениеНаТабеле" + РезультатЛокальногоОбновлениеНаТабеле);
                                     if (РезультатЛокальногоОбновлениеНаТабеле>0) {
-                                        КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.clear();
-                                        ПолучениеЗначениеДоИзменения= null;
-                                        СамоЗначениеЯчейкиТабеля=null;
-                                        Class_GRUD_SQL_Operations  classGrudSqlOperationsПовышаемВерсиюДАнныхПриЛокальноОбновлениеииДанныхВнутриТабеля;
-                                        classGrudSqlOperationsПовышаемВерсиюДАнныхПриЛокальноОбновлениеииДанныхВнутриТабеля=new Class_GRUD_SQL_Operations(getApplicationContext());
-                                        classGrudSqlOperationsПовышаемВерсиюДАнныхПриЛокальноОбновлениеииДанныхВнутриТабеля.
-                                                concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","data_tabels");
-                                        classGrudSqlOperationsПовышаемВерсиюДАнныхПриЛокальноОбновлениеииДанныхВнутриТабеля.
-                                                concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФлагТипИзменениеВерсииДанныхЛокальнаяСервернаяИлиОба","Локальное");///  "ЛокальныйСерверныйОба"    ПОСЛЕ КАК ПРИШЛИ ВНЕШНИЕ ДАННЫЕ
-                                        classGrudSqlOperationsПовышаемВерсиюДАнныхПриЛокальноОбновлениеииДанныхВнутриТабеля.
-                                                concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put(" " +
-                                                        "ПередоваемоеЗначенияДляТаблицы_MODIFITATION_Client_КотороеНадоЗаписать",РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудника);///  "ЛокальныйСерверныйОба"    ПОСЛЕ КАК ПРИШЛИ ВНЕШНИЕ ДАННЫЕ
-                                        ///TODO РЕЗУЛЬТА изменения версии данных
-                                        Integer        Результат_ПриписиИзменнийВерсииДанныхВФонеПослеОбработкиТекущийТаблицы=
-                                                (Integer)  classGrudSqlOperationsПовышаемВерсиюДАнныхПриЛокальноОбновлениеииДанныхВнутриТабеля.
-                                                        new ChangesVesionData(getApplicationContext()).
-                                                        changesvesiondata(classGrudSqlOperationsПовышаемВерсиюДАнныхПриЛокальноОбновлениеииДанныхВнутриТабеля.
-                                                                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
-                                                                Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков
-                                                                ,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
-//
-                                        Log.d(getApplicationContext().getClass().getName(), "Результат_ПриписиИзменнийВерсииДанныхВФонеПриСменеОрганизации "
-                                                +Результат_ПриписиИзменнийВерсииДанныхВФонеПослеОбработкиТекущийТаблицы );
-                                    }else {
-                                        Toast.makeText(getApplicationContext(), " Ошибка  в добавление данных !!! " , Toast.LENGTH_SHORT).show();
-                                    }
-                                    break;
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
 
-                                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                }
-                            }
-                        }//todo end while()
+                                    }else {
+                                        Toast.makeText(getApplicationContext(), " Ошибка  в добавление данных !!! ", Toast.LENGTH_SHORT).show();
+                                    }
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -1791,16 +1607,11 @@ try{
                     Log.d(Class_MODEL_synchronized.class.getName()," ОбщееКоличествоЛюдейВТабелеТекущем  "+ОбщееКоличествоЛюдейВТабелеТекущем);
                     /////TODO ОБНУЛЯЕМ ЗНАЧЕНИЕ ID AND UUID ЧТОБЫ НЕ БЫЛО ПОВТОРОНОГО ОБНОЛЕНИЕ НЕ СВОЕГО ХОЗЯИНА UUID
                     КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.clear();
-                    СамоЗначениеЯчейкиТабеля = null;
-                    ПолучениеЗначениеДоИзменения = null;
                     ScrollСамогоТабеля.requestLayout();
                     ГлавныйКонтейнерТабель.requestLayout();
                 } else {
                     Toast.makeText(getApplicationContext(), " Ошибка обновление ячейки не произошло !!!!! " , Toast.LENGTH_SHORT).show();
                     КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.clear();
-                    СамоЗначениеЯчейкиТабеля = null;
-                    ПолучениеЗначениеДоИзменения = null;
-                    ХэшЛовимUUIDIDНазваниеСтолбика.clear();
                 }
             }
         } catch (Exception e) {
@@ -2413,7 +2224,6 @@ try{
             Bundle data=new Bundle();
             IntentПереХодНаМеткиТабеля.putExtras(data);
             startActivity( IntentПереХодНаМеткиТабеля);
-            ХэшЛовимUUIDIDНазваниеСтолбика=null;
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -2720,9 +2530,36 @@ try{
                 }
             }
               СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
-              СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
-             СамиДанныеТабеля.setOnClickListener(СлушательДанныеДляОбновления);
-             СамиДанныеТабеля.setOnLongClickListener(СлушательДляПереходаНаМеткиТабеля);
+
+
+
+              СамиДанныеТабеля.addOnUnhandledKeyEventListener(new View.OnUnhandledKeyEventListener() {
+                  @Override
+                  public boolean onUnhandledKeyEvent(View v, KeyEvent event) {
+                      Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                              " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                              " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                      return false;
+                  }
+              });
+             СамиДанныеТабеля.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View v) {
+                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                 }
+             });
+             СамиДанныеТабеля.setOnLongClickListener(new View.OnLongClickListener() {
+                 @Override
+                 public boolean onLongClick(View v) {
+                     МетодПереходаНаМеткиТабеля();
+                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                     return false;
+                 }
+             });
             if(СтаттусТабеля==true){
                  СамиДанныеТабеля.setInputType(InputType.TYPE_NULL);
                 СамиДанныеТабеля.setLongClickable(false);
@@ -2737,6 +2574,7 @@ try{
             // TODO: 31.03.2023  анимация для данных
             СамиДанныеТабеля.startAnimation(animationПрофессия);
         }
+            МетодПерегрузкаВидаЭкрана();
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -2779,6 +2617,8 @@ try{
             // TODO: 31.03.2023
             ИндексMergeДаты++;
         }
+            КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.refreshDrawableState();
+            КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.forceLayout();
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -2881,8 +2721,6 @@ try{
                                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                                             + " bundle"+bundle  + " UUIDТекущегоВыбраногоСотрудника " +UUIDТекущегоВыбраногоСотрудника);
                                                 }
-                                                Log.d(this.getClass().getName()," НазваниеПрофесии"+ НазваниеПрофесии+
-                                                        " ПолучаемIDПрофессии "+ПолучаемIDПрофессии + " ХэшЛовимUUIDIDНазваниеСтолбика.size() " +ХэшЛовимUUIDIDНазваниеСтолбика.size());
                                                 // TODO: 20.01.2022
                                                 Log.d(this.getClass().getName()," НазваниеЦФО "+НазваниеПрофесии);
                                                 boolean ДлинаСтрокивСпиноре = НазваниеПрофесии.length() >40;
