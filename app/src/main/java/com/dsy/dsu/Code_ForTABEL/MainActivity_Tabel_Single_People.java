@@ -140,10 +140,10 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private  String ИмяТабеляФинал= "";
     private  String  ДепартаментТабеляФинал= "";
     private  String UUIDCтарыйУжеСозданногоТабеляВКоторыйИНужноДобавитьНовгоПользователя;
-    private   TextView НазваниеДанныхВТабелеДниНедели;
+
     private   TextView НазваниеДанныхВТабелеСНИЛС;
     private TextView НазваниеДанныхВТабелеФИО;
-    private  EditText СамиДанныеТабеля;
+
     private   String НазваниеТабеля= "";
     private  String НазваниеЗагруженногТАбеля= "";
     private  Boolean    СтаттусТабеля= false;
@@ -1270,8 +1270,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 ///todo главный МЕТОД ОФОРМЛЕНИЯ ТАБЕЛЯ ДАННЫМИ И ДНЯМИ
                 МетодГлавныеДанныеLayoutInflater(ИндексСтрокКомпонентовТабеля,
                         ХЭШНазваниеДнейНедели,
-                        НазваниеДанныхВТабелеДниНедели,
-                        СамиДанныеТабеля,
                         КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла,sqLiteCursor );
                 МетодПерегрузкаГлавногоLaouyout();
                 // TODO: 29.04.2021 если то оди
@@ -2851,9 +2849,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
 
     private void МетодГлавныеДанныеLayoutInflater(@NonNull int[] ИндексСтрокКомпонентовТабеля
-            , @NonNull Map<Integer, String> ХЭШНазваниеДнейНедели,
-                                                  @NonNull  TextView НазваниеДанныхВТабелеДниНедели,
-                                                  @NonNull  EditText СамиДанныеТабеля
+            , @NonNull Map<Integer, String> ХЭШНазваниеДнейНедели
             , @NonNull View КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла
             , @NonNull SQLiteCursor sqLiteCursor) {
         /////todo ПЕРВАЯ СТРОКА НАЗВАНИЯ
@@ -2919,6 +2915,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         try{
         Bundle bundleДляОбновление;
         String НазваниеДней;
+        EditText  СамиДанныеТабеля = null;
 // TODO: 31.03.2023 Данные Перво1 СТрочки 
         PrimitiveIterator.OfInt iteratorIteratorПерваяСтрочкаСамиДанные= intStreamПерваяСтрочкаСамиДанные.iterator();
         Integer ИндексMergeДаты=1;
@@ -2926,8 +2923,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         while (iteratorIteratorПерваяСтрочкаСамиДанные.hasNext()) {
             /////TODO НАЧАЛО САМИ ДАННЫЕ ПЕРВОЙ СТРОКИ
             Integer ТекущийЭлементДанные=     iteratorIteratorПерваяСтрочкаСамиДанные.nextInt();
-            this.СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(ТекущийЭлементДанные);
-          Integer  ПосикДня = sqLiteCursor.getColumnIndex("d"+ИндексMergeДаты.toString());
+           СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(ТекущийЭлементДанные);
+           Integer  ПосикДня = sqLiteCursor.getColumnIndex("d"+ИндексMergeДаты.toString());
             НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
             // TODO: 30.03.2023 новый код сохраняем в сам обьект uuid и день
             Integer ID = sqLiteCursor.getInt(sqLiteCursor.getColumnIndex("_id"));
@@ -2940,7 +2937,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             bundleДляОбновление.putInt("ПосикДня",ПосикДня);
             bundleДляОбновление.putString("ДанныеДней", ДанныеДней);
             bundleДляОбновление.putString("НазваниеДней",НазваниеДней);
-            this.СамиДанныеТабеля.setTag(bundleДляОбновление);
+             СамиДанныеТабеля.setTag(bundleДляОбновление);
             Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
             if (ДанныеДней != null) {
                 ДанныеДней = ДанныеДней.replaceAll("\\s+", "");
@@ -2948,25 +2945,26 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     ДанныеДней = "";
                 }
                 if (ДанныеДней.matches("[А-Я]")) {
-                    this.СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
+                    СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
                 }
             }
-            this.СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
-            this.СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
-            this.СамиДанныеТабеля.setOnClickListener(СлушательДанныеДляОбновления);
-            this.СамиДанныеТабеля.setOnLongClickListener(СлушательДляПереходаНаМеткиТабеля);
+              СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
+              СамиДанныеТабеля.addTextChangedListener(СлушательПолученияДанных);
+             СамиДанныеТабеля.setOnClickListener(СлушательДанныеДляОбновления);
+             СамиДанныеТабеля.setOnLongClickListener(СлушательДляПереходаНаМеткиТабеля);
             if(СтаттусТабеля==true){
-                this.СамиДанныеТабеля.setInputType(InputType.TYPE_NULL);
-                this.СамиДанныеТабеля.setLongClickable(false);
+                 СамиДанныеТабеля.setInputType(InputType.TYPE_NULL);
+                СамиДанныеТабеля.setLongClickable(false);
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                     + " ХЭШНазваниеДнейНедели.get(ИндексMergeДаты) "+ ХЭШНазваниеДнейНедели.get(ИндексMergeДаты)+
-                    "  this.НазваниеДанныхВТабелеДниНедели " + this.НазваниеДанныхВТабелеДниНедели.getText().toString()+ " ТекущийЭлементДанные " +ТекущийЭлементДанные);
+                    "  СамиДанныеТабеля " + СамиДанныеТабеля.getText().toString()+ " ТекущийЭлементДанные " +ТекущийЭлементДанные);
             // TODO: 31.03.2023 Увеличинваем День
             ИндексMergeДаты++;
-            this.СамиДанныеТабеля.startAnimation(animationПрофессия);
+            // TODO: 31.03.2023  анимация для данных  
+            СамиДанныеТабеля.startAnimation(animationПрофессия);
         }
     } catch (Exception e) {
         e.printStackTrace();
@@ -2985,27 +2983,28 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                                    @NonNull View КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла,
                                                    @NonNull String regex, @NonNull String regex1, @NonNull   IntStream intStreamПерваяСтрочкаНазвание) {
         try {
+            TextView    НазваниеДанныхВТабелеДниНедели;
         Integer ИндексMergeДаты=1;
         // TODO: 31.03.2023 Первая СТРОЧКА данных НА ЭКРАНЕ SIGLE
         PrimitiveIterator.OfInt iteratorIteratorПерваяСтрочкаНазвание= intStreamПерваяСтрочкаНазвание.iterator();
         while (iteratorIteratorПерваяСтрочкаНазвание.hasNext()){
             /////TODO ДЕНЬ ПЕРВЫЙ
         Integer ТекущийЭлементНазвания=     iteratorIteratorПерваяСтрочкаНазвание.nextInt();
-            this.НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(ТекущийЭлементНазвания);
-            this.НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(ТекущийЭлементНазвания);
-            this.НазваниеДанныхВТабелеДниНедели.setText(ХЭШНазваниеДнейНедели.get(ИндексMergeДаты).trim());
+             НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(ТекущийЭлементНазвания);
+            НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(ТекущийЭлементНазвания);
+            НазваниеДанныхВТабелеДниНедели.setText(ХЭШНазваниеДнейНедели.get(ИндексMergeДаты).trim());
             if (ХЭШНазваниеДнейНедели.get(ИндексMergeДаты).matches(regex) || ХЭШНазваниеДнейНедели.get(ИндексMergeДаты).matches(regex1)) {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#DC143C"));
+                 НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
+                 НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#DC143C"));
             } else {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#008080"));
+                 НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
+                 НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#008080"));
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                     + " ХЭШНазваниеДнейНедели.get(ИндексMergeДаты) "+ ХЭШНазваниеДнейНедели.get(ИндексMergeДаты)+
-                    "  this.НазваниеДанныхВТабелеДниНедели " + this.НазваниеДанныхВТабелеДниНедели.getText().toString()+ " ТекущийЭлементНазвания " +ТекущийЭлементНазвания);
+                    "  this.НазваниеДанныхВТабелеДниНедели " +  НазваниеДанныхВТабелеДниНедели.getText().toString()+ " ТекущийЭлементНазвания " +ТекущийЭлементНазвания);
             // TODO: 31.03.2023
             ИндексMergeДаты++;
         }
