@@ -196,6 +196,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private   Animation animationLesft;
     private String  МесяциГодТабеляПолностью;
     private Integer ВсеСтрокиТабеля=0;
+    private  TextView    КонтейнерКудаЗагружаетьсяФИО;
 
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
     @Override
@@ -265,7 +266,11 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             Bundle data=     getIntent().getExtras();
             // TODO: 29.03.2023  Метод Какая марка телфона из за этого загрудаем вид
             МетодВыбораВнешнегоВидаИзВидаТелефона();
+
+            МетодОбновлениеПрофесиии();
+
             МетодПриИзмениеДанныхВБазеМенемВнешнийВидТабеляObserver();
+
             МетодПришлиПараметрыОтДругихАктивитиДляРаботыТабеля();
             // TODO: 30.03.2023 CЛУШАТЕЛИ ДВА ДАННЫХ
             МетодGetmessage();
@@ -297,6 +302,63 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         }
     }
 
+    private void МетодОбновлениеПрофесиии() {
+        КонтейнерКудаЗагружаетьсяФИО.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
+                Class_GRUD_SQL_Operations class_grud_sql_operationsСлушательИнформацияОСотрудника=new Class_GRUD_SQL_Operations(getApplicationContext());
+                try{
+                    НазваниеДанныхВТабелеФИО.setBackgroundColor(Color.GRAY);
+                    Long ФИО=0l;
+                    if (МыУжеВКодеУденияСотрудника==false) {
+                        TextView ФИОДляУдаление = (TextView) v;
+                        Log.d(this.getClass().getName(), " v " + v.getTag() + " ФИОДляУдаление.getText() " + ФИОДляУдаление.getText() +
+                                "  ФИОДляУдаление.getTag() " +ФИОДляУдаление.getTag());
+                        //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
+                        Bundle bundleTabelView= (Bundle) ФИОДляУдаление.getTag();
+                        Long UUIDИзTabelView=bundleTabelView.getLong("UUID",0l);
+                        Long FIOИзTabelView=bundleTabelView.getLong("FIO",0l);
+                        Bundle bundleФио=new Bundle();
+                        bundleФио.putString("СамЗапрос","  SELECT * FROM  fio WHERE uuid=? ");
+                        bundleФио.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(FIOИзTabelView)});
+                        bundleФио.putString("Таблица","fio");
+                        Cursor    КурсорТаблицаФИО=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleФио);
+                        Log.d(this.getClass().getName(), " КурсорТаблицаФИО" + КурсорТаблицаФИО);
+                        if (КурсорТаблицаФИО.getCount()>0) {
+                            String ФИОИнфо= КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("name"));
+                            String ДеньРОжденияИНФО= КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("BirthDate"));
+                            Long СНИЛСИНфо= КурсорТаблицаФИО.getLong(КурсорТаблицаФИО.getColumnIndex("snils"));
+                            String ПрофессияИзФИо= КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("prof"));
+                            // TODO: 20.03.2023  ПОказываем Данные Для Обзора
+                            СообщениеИнформацияОСотруднике("Данные",  "ФИО: " +ФИОИнфо+
+                                    "\n"+"День рождения: " +ДеньРОжденияИНФО+
+                                    "\n"+"СНИЛС: " +СНИЛСИНфо+
+                                    "\n" +"Должость: " + "( "+Профессия.trim()+ " )");
+
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                    + " КурсорТаблицаФИО "+КурсорТаблицаФИО.getCount() );
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
+            }});
+
+    }
+
+
+
+
+
+
+
     private void МетодВыбораВнешнегоВидаИзВидаТелефона() {
         try{
             LayoutInflater МеханизмЗагрузкиОдногЛайАутавДругой = getLayoutInflater();
@@ -326,6 +388,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 ViewGroup.LayoutParams ПараментыКонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла = ГлавныйКонтентТабеляИнфлейтер.getLayoutParams();
             }
             HorizontalScrollViewВТабелеОдинСотрудник =(HorizontalScrollView)     ГлавныйКонтентТабеляИнфлейтер.findViewById(R.id.ГоризонтльнаяПрокруткаВнутриСамТабель);
+
+
+            КонтейнерКудаЗагружаетьсяФИО =(TextView)     ГлавныйКонтентТабеляИнфлейтер.findViewById(R.id.КонтейнерКудаЗагружаетьсяФИО);
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1382,7 +1447,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         try{
         /////TODO создавние строк из linerlouyto в табеле сколько сткром в базе данных андройда столлько на активити строк
         LayoutInflater МеханизмЗагрузкиОдногЛайАутавДругой = getLayoutInflater();
-        //ГлавныйКонтентТабеляИнфлейтер = new View(this);//activity_main_find_customer_for_tables // activity_main_grid_for_tables
         ГлавныйКонтентТабеляИнфлейтер = МеханизмЗагрузкиОдногЛайАутавДругой.inflate(R.layout.activity_main_grid_for_tables_four_columns,
                 ГлавныйКонтейнерТабель, false);
         НазваниеДанныхВТабелеФИО = ГлавныйКонтентТабеляИнфлейтер.findViewById(R.id.КонтейнерКудаЗагружаетьсяФИО);
@@ -1485,66 +1549,7 @@ try{
 
         }
     }
-    View.OnClickListener СлушательИнформацияОСотрудника = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
-            Class_GRUD_SQL_Operations class_grud_sql_operationsСлушательИнформацияОСотрудника=new Class_GRUD_SQL_Operations(getApplicationContext());
-            try{
-                НазваниеДанныхВТабелеФИО.setBackgroundColor(Color.GRAY);
-                Long ФИО=0l;
-                if (МыУжеВКодеУденияСотрудника==false) {
-                    TextView ФИОДляУдаление = (TextView) v;
-                    Log.d(this.getClass().getName(), " v " + v.getTag() + " ФИОДляУдаление.getText() " + ФИОДляУдаление.getText() +
-                            "  ФИОДляУдаление.getTag() " +ФИОДляУдаление.getTag());
-                    //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
-                    Long UUIDИзTabelView=Long.parseLong(ФИОДляУдаление.getTag().toString());
-                    Bundle bundleTabelView=new Bundle();
-                    bundleTabelView.putString("СамЗапрос","  SELECT fio FROM  viewtabel WHERE uuid=? ");
-                    bundleTabelView.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(UUIDИзTabelView)});
-                    bundleTabelView.putString("Таблица","viewtabel");
-                    Cursor  КурсорТаблицаViewtabel=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleTabelView);
-                    Log.d(this.getClass().getName(), " КурсорТаблицаViewtabel" + КурсорТаблицаViewtabel);
-                    Log.d(this.getClass().getName(), "КурсорТаблицаViewtabel "  +КурсорТаблицаViewtabel);
-                    //TODO  ОЧИЩАЕМ ПАМТЬ Результат Курсора
-                    if (КурсорТаблицаViewtabel.getCount()>0){
-                        КурсорТаблицаViewtabel.moveToFirst();
-                        ФИО=      КурсорТаблицаViewtabel.getLong(0);
-                        Log.d(this.getClass().getName(), "ФИО "  +ФИО);
-                    }
-                    Bundle bundleФио=new Bundle();
-                    bundleФио.putString("СамЗапрос","  SELECT * FROM  fio WHERE uuid=? ");
-                    bundleФио.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(ФИО)});
-                    bundleФио.putString("Таблица","fio");
-                    Cursor    КурсорТаблицаФИО=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleФио);
-                    Log.d(this.getClass().getName(), " КурсорТаблицаФИО" + КурсорТаблицаФИО);
-                    if (КурсорТаблицаФИО.getCount()>0) {
-                        String ФИОИнфо= КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("name"));
-                        String ДеньРОжденияИНФО= КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("BirthDate"));
-                        Long СНИЛСИНфо= КурсорТаблицаФИО.getLong(КурсорТаблицаФИО.getColumnIndex("snils"));
-                        String ПрофессияИзФИо= КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("prof"));
-                        // TODO: 20.03.2023  ПОказываем Данные Для Обзора
-                        СообщениеИнформацияОСотруднике("Данные",  "ФИО: " +ФИОИнфо+
-                                "\n"+"День рождения: " +ДеньРОжденияИНФО+
-                                "\n"+"СНИЛС: " +СНИЛСИНфо+
-                                "\n" +"Должость: " + "( "+Профессия.trim()+ " )");
 
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                + " КурсорТаблицаФИО "+КурсорТаблицаФИО.getCount() );
-                    }
-                }
-               /* КурсорТаблицаФИО.close();
-                КурсорТаблицаViewtabel.close();*/
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }};
     ///todo  конец метода удаления третий обработчки нажатия
     //////TODO локального обнвлени с Активити в базу
     private Long МетодЛокальногоОбновлениеЧерезКликвТабеле(ContentValues КонтейнерЗаполненияДаннымиПриЛокальномОбновлении ,String ПолучениеЗначениеСтолбикUUID)
@@ -2440,9 +2445,6 @@ try{
         try{
             final Integer[] ИндексНазвания = {0};
             final Integer[] ИндексЗначения = {0};
-
-
-
             // TODO: 31.03.2023 НАЗВАНИЕ ROW 1
       message.getTarget().post(()->{
           IntStream intStreamOneName =IntStream.of(
@@ -2461,9 +2463,6 @@ try{
           ИндексНазвания[0]=
                   МетодНазваниеЯчеек(ХЭШНазваниеДнейНедели, КонтентТабеляИнфлейтер, regex, regex1,intStreamOneValues, ИндексНазвания[0]);
       });
-
-
-
             // TODO: 31.03.2023 ДАННЫЕ ROW 1
             message.getTarget().post(()->{
           IntStream intStreamTwoName=IntStream.of(
@@ -2482,7 +2481,6 @@ try{
                 ИндексЗначения[0] =
                         МетодДанныеЯчеек(ХЭШНазваниеДнейНедели, КонтентТабеляИнфлейтер, sqLiteCursor,intStreamTwoValues, ИндексЗначения[0]);
             });
-
             // TODO: 31.03.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2522,15 +2520,20 @@ try{
             Integer ID = sqLiteCursor.getInt(sqLiteCursor.getColumnIndex("_id"));
             Long UUID = sqLiteCursor.getLong(sqLiteCursor.getColumnIndex("uuid_tabel"));
             Long UUID_Tabel = sqLiteCursor.getLong(sqLiteCursor.getColumnIndex("uuid"));
+            Long FIO = sqLiteCursor.getLong(sqLiteCursor.getColumnIndex("fio"));
             String ДанныеДней = sqLiteCursor.getString(ПосикДня);
             bundleДляОбновление.putInt("ID",ID );
             bundleДляОбновление.putLong("UUID",UUID);
+            bundleДляОбновление.putLong("FIO",FIO);
             bundleДляОбновление.putLong("UUID_Tabel",UUID_Tabel);
             bundleДляОбновление.putInt("ПосикДня",ПосикДня);
             bundleДляОбновление.putString("ДанныеДней", ДанныеДней);
             bundleДляОбновление.putString("НазваниеДней",НазваниеДней);
+            // TODO: 31.03.2023 ЗАПОМИНАЕМ ДАнные Д1
              СамиДанныеТабеля.setTag(bundleДляОбновление);
-            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней);
+            // TODO: 31.03.2023  Запоминаем ФИО
+            НазваниеДанныхВТабелеФИО.setTag(bundleДляОбновление);
+            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней + " СамиДанныеТабеля " +СамиДанныеТабеля  + " НазваниеДанныхВТабелеФИО " +НазваниеДанныхВТабелеФИО);
             if (ДанныеДней != null) {
                 ДанныеДней = ДанныеДней.replaceAll("\\s+", "");
                 if (ДанныеДней.equals("0")) {
@@ -2990,7 +2993,7 @@ try{
         }
     }
 
-    private   Integer МетодЗаписиСменыПрофесии(@NonNull SearchView searchViewДляНовогоПоиска){ //TODO метод записи СМЕНЫ ПРОФЕСИИ
+       Integer МетодЗаписиСменыПрофесии(@NonNull SearchView searchViewДляНовогоПоиска){ //TODO метод записи СМЕНЫ ПРОФЕСИИ
         Integer ПровйдерСменаПрофесии=0;
         try{
             String ТаблицаОбработки="data_tabels";
