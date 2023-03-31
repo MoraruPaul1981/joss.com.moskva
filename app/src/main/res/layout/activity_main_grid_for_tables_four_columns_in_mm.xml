@@ -1340,58 +1340,7 @@
                 android:textColorHint="#00ACC1"
                 android:textSize="24sp"
                 android:textStyle="bold" />
-
-
-            <!--    //TODO ТЕХНИЧЕСКИЙ  БЛОК ВЕРХНЕМ СТРОЧКИ ID И UUID перовй строчки-->
-
-            <EditText
-                android:id="@+id/СтрочкаНевидимаяUUID"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_row="16"
-                android:layout_column="0"
-                android:layout_columnWeight="1"
-                android:layout_gravity="fill_horizontal"
-                android:layout_marginStart="1dp"
-                android:layout_marginTop="1dp"
-                android:layout_marginEnd="1dp"
-                android:layout_marginBottom="1dp"
-                android:background="@android:color/transparent"
-                android:gravity="center"
-                android:inputType="number"
-                android:padding="0dp"
-                android:textAlignment="center"
-                android:textSize="0sp"
-                android:textStyle="bold"
-                android:visibility="invisible" />
-
-            <EditText
-                android:id="@+id/СтрочкаНевидимаяID"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_row="16"
-                android:layout_column="1"
-                android:layout_columnWeight="1"
-                android:layout_gravity="fill_horizontal"
-                android:layout_marginStart="1dp"
-                android:layout_marginTop="1dp"
-                android:layout_marginEnd="1dp"
-                android:layout_marginBottom="1dp"
-                android:background="@android:color/transparent"
-                android:gravity="center"
-                android:inputType="number"
-                android:padding="0dp"
-                android:textAlignment="center"
-                android:textSize="0sp"
-                android:textStyle="bold"
-                android:visibility="invisible" />
-
-            <!--    //TODO  КОНЕЦ ТЕХНИЧЕСКИЙ  БЛОК ВЕРХНЕМ СТРОЧКИ ID И UUID-->
-
-
             <!--TODO  КОНЕЦ Сами Данных Табеля (1,2,3,4,5,6)-->
-
-
             <!--   TODO ИМИТИРУЕМ ПУТОЕ ПОЛЯ БЕЗ ДАННЫХ-->
             <TextView
                 android:layout_width="match_parent"
