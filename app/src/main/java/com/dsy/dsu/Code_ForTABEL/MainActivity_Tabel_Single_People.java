@@ -105,17 +105,23 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.PrimitiveIterator;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 import java.util.function.IntUnaryOperator;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import javax.crypto.NoSuchPaddingException;
+
+import io.reactivex.rxjava3.core.Flowable;
 
 
 public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
@@ -211,6 +217,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private   View.OnLongClickListener СлушательДляПереходаНаМеткиТабеля;
 
     private  View.OnClickListener СлушательДанныеДляОбновления;
+    private PrimitiveIterator.OfInt iteratorIteratorПерваяСтрочка;
 
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
     @Override
@@ -2857,390 +2864,44 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             , @NonNull SQLiteCursor sqLiteCursor) {
         /////todo ПЕРВАЯ СТРОКА НАЗВАНИЯ
         String НазваниеДней= "";
-        Bundle bundleДляОбновление=new Bundle();
+        Bundle bundleДляОбновление=null;
+        Integer ИндексMergeДаты=0;
+          String regex = "Сб ,(.*)";
+          String regex1 = "Вс ,(.*)";
         try{
-
-            List<Integer> ЛистСДопустипыЗначениямиДляЛокальноСохранения = new ArrayList();
-            ЛистСДопустипыЗначениямиДляЛокальноСохранения.add(R.id.ПерваяСтрочкаНазваниеДень1);
-/*
-            IntStream.iterate(1, i -> i + 1).limit(24).forEachOrdered(ЛистСДопустипыЗначениямиДляЛокальноСохранения::add);
-IntStream intStreamШабка=IntStream.of(
+            // TODO: 31.03.2023 Первая СТРОЧКА данных НА ЭКРАНЕ SIGLE
+        IntStream intStreamПерваяСтрочка=IntStream.of(
         R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень2,R.id.ПерваяСтрочкаНазваниеДень3,R.id.ПерваяСтрочкаНазваниеДень4,
         R.id.ПерваяСтрочкаНазваниеДень5,R.id.ПерваяСтрочкаНазваниеДень6,R.id.ПерваяСтрочкаНазваниеДень7,R.id.ПерваяСтрочкаНазваниеДень8,
         R.id.ПерваяСтрочкаНазваниеДень9,R.id.ПерваяСтрочкаНазваниеДень10,R.id.ПерваяСтрочкаНазваниеДень11,R.id.ПерваяСтрочкаНазваниеДень12,
-        R.id.ПерваяСтрочкаНазваниеДень13,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень16,R.id.ПерваяСтрочкаНазваниеДень17,
-        R.id.ПерваяСтрочкаНазваниеДень18,R.id.ПерваяСтрочкаНазваниеДень19,R.id.ПерваяСтрочкаНазваниеДень20,R.id.ПерваяСтрочкаНазваниеДень1,
-        R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,
-        R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,
-        R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,
-        R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,
-        R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,
-        R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,
-        R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,
-        R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,
-        R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень1,
-);*/
+        R.id.ПерваяСтрочкаНазваниеДень13,R.id.ПерваяСтрочкаНазваниеДень14,R.id.ПерваяСтрочкаНазваниеДень15,R.id.ПерваяСтрочкаНазваниеДень16);
 
-            LinearLayout lr =(LinearLayout)    КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла;
-            GridLayout cr =(GridLayout)   lr.findViewById(R.id.КонтейнерДляТабеляГрид);
-            GridView cr2 =(GridView)   lr.findViewById(R.id.GridLayoutВнутриСамТабель);
-
-            cr2.set
-            int count = cr .getChildCount();
-            for(int i = 0 ; i <count ; i++){
-                View child = cr.getChildAt(i);
-                Log.d(this.getClass().getName(), " child " + child);
-            }
-
-            for(int i = 0 ; i <cr2 .getRowCount() ; i++) {
-                TableRow child2 = (TableRow) cr2.getChildAt(i);
-                for (int j = 0; j < child2.getChildCount(); j++) {
-                 View view=   child2.getChildAt(j);
-                        Log.d(this.getClass().getName(), " view " + view);
-                        Log.d(this.getClass().getName(), " child " + child2);
+          PrimitiveIterator.OfInt iteratorIteratorПерваяСтрочка= intStreamПерваяСтрочка.iterator();
+            ИндексMergeДаты=1;
+            while (iteratorIteratorПерваяСтрочка.hasNext()){
+                /////TODO ДЕНЬ ПЕРВЫЙ
+            Integer ТекущийЭлемент=     iteratorIteratorПерваяСтрочка.nextInt();
+                this.НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(ТекущийЭлемент);
+                this.НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(ТекущийЭлемент);
+                this.НазваниеДанныхВТабелеДниНедели.setText(ХЭШНазваниеДнейНедели.get(ИндексMergeДаты).trim());
+                if (ХЭШНазваниеДнейНедели.get(ИндексMergeДаты).matches(regex) || ХЭШНазваниеДнейНедели.get(ИндексMergeДаты).matches(regex1)) {
+                    this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
+                    this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#DC143C"));
+                } else {
+                    this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
+                    this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#008080"));
                 }
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " ХЭШНазваниеДнейНедели.get(ИндексMergeДаты) "+ХЭШНазваниеДнейНедели.get(ИндексMergeДаты)+
+                        "  this.НазваниеДанныхВТабелеДниНедели " + this.НазваниеДанныхВТабелеДниНедели.getText().toString());
+
+                // TODO: 31.03.2023
+                ИндексMergeДаты++;
+                ////////TODO  конец ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
             }
 
-            ///TODO ГЛАВНЫЙ АДАПТЕР чата
-            SimpleCursorAdapter simpleCursorAdapterЦФО= new SimpleCursorAdapter(getApplicationContext(),
-                    R.layout.simple_newspinner_dwonload_newfiltersearch, cursorДанные,
-                    new String[]{ "name","_id"},
-                    new int[]{android.R.id.text1,android.R.id.text1}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);//R.layout.simple_newspinner_dwonload_cfo2
-            SimpleCursorAdapter.ViewBinder БиндингДляНовогоПоиска = new SimpleCursorAdapter.ViewBinder(){
-                @Override
-                public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-                    switch (view.getId()) {
-                        case android.R.id.text1:
-                            Log.d(this.getClass().getName()," position");
-                            if (cursor.getCount()>0) {
-                                try{
-                                    Integer ИндексНазваниеЦФО = cursor.getColumnIndex("name");///user_update  --old/// uuid
-                                    String НазваниеПрофесии = cursor.getString(ИндексНазваниеЦФО);
-                                    // TODO: 13.12.2022  производим состыковку
-                                    Integer ИндексНазваниеПрофесииID = cursor.getColumnIndex("_id");///user_update  --old/// uuid
-                                    Integer ПолучаемIDПрофессии = cursor.getInt(ИндексНазваниеПрофесииID);
-                                    if (ПолучаемIDПрофессии>0) {
-                                        Integer UUIDПрофессии = cursor.getColumnIndex("uuid");///user_update  --old/// uuid
-                                        Long UUIDПрофесиии = cursor.getLong(UUIDПрофессии);
-                                        Bundle bundle=new Bundle();
-                                        bundle.putInt("ПолучаемIDПрофессии",ПолучаемIDПрофессии);
-                                        bundle.putString("НазваниеПрофесии",НазваниеПрофесии);
-                                        bundle.putLong("UUIDПрофесиии",UUIDПрофесиии);
-                                        bundle.putLong("РодительскийUUDТаблицыТабель",РодительскийUUDТаблицыТабель);
-                                        UUIDТекущегоВыбраногоСотрудника=      ГлавныйКурсорДанныеSwipes.getLong(ГлавныйКурсорДанныеSwipes.getColumnIndex("uuid"));
-                                        bundle.putLong("UUIDТекущегоВыбраногоСотрудника",UUIDТекущегоВыбраногоСотрудника);
-                                        ((MaterialTextView)view).setTag(bundle);
-                                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                + " bundle"+bundle  + " UUIDТекущегоВыбраногоСотрудника " +UUIDТекущегоВыбраногоСотрудника);
-                                    }
-                                    Log.d(this.getClass().getName()," НазваниеПрофесии"+ НазваниеПрофесии+
-                                            " ПолучаемIDПрофессии "+ПолучаемIDПрофессии + " ХэшЛовимUUIDIDНазваниеСтолбика.size() " +ХэшЛовимUUIDIDНазваниеСтолбика.size());
-                                    // TODO: 20.01.2022
-                                    Log.d(this.getClass().getName()," НазваниеЦФО "+НазваниеПрофесии);
-                                    boolean ДлинаСтрокивСпиноре = НазваниеПрофесии.length() >40;
-                                    if (ДлинаСтрокивСпиноре) {
-                                        StringBuffer sb = new StringBuffer(НазваниеПрофесии.trim());
-                                        sb.insert(40, System.lineSeparator());
-                                        НазваниеПрофесии = sb.toString();
-                                        Log.d(getApplicationContext().getClass().getName(), " НазваниеПрофесии " + "--" + НазваниеПрофесии);/////
-                                    }
-                                    ((MaterialTextView)view).setText(НазваниеПрофесии);
-                                    // TODO: 29.03.2023
-                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                            + " НазваниеПрофесии"+НазваниеПрофесии);
-                                    // TODO: 13.12.2022 слушатель
-                                    ((MaterialTextView)view).setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            ((MaterialTextView)view).startAnimation(animationПрофессия);
-                                            Bundle bundle=(Bundle)   ((MaterialTextView)view).getTag();
-                                            Integer ПолучаемIDПрофессии=      bundle.getInt("ПолучаемIDПрофессии",0);
-                                            String НазваниеПрофесии=   bundle.getString("НазваниеПрофесии","");
-                                            Long UUIDПрофесиии =   bundle.getLong("UUIDПрофесиии",0l);
-                                            Long РодительскийUUDТаблицыТабель =   bundle.getLong("РодительскийUUDТаблицыТабель",0l);
-                                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                    + " ПолучаемIDПрофессии "+ПолучаемIDПрофессии + " НазваниеЦФО " +НазваниеПрофесии + " UUIDПрофесиии " +UUIDПрофесиии+
-                                                    " РодительскийUUDТаблицыТабель " +РодительскийUUDТаблицыТабель);
-                                            searchViewДляНовогоПоиска.setTag(bundle);
-                                            searchViewДляНовогоПоиска.setQueryHint("");
-                                            searchViewДляНовогоПоиска.setQuery(НазваниеПрофесии,true);
-                                            if (  searchViewДляНовогоПоиска.getQuery().toString().length()==0) {
-                                                Snackbar.make(view, " Вы не выбрали  !!! "
-                                                        , Snackbar.LENGTH_LONG).show();
-                                                ((MaterialTextView)view).setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-                                                ((MaterialTextView)view).setTextColor(Color.GRAY);
-                                                Log.d(this.getClass().getName()," bundle.keySet().size() "+bundle.keySet().size());
-                                            } else {
-                                                ((MaterialTextView)view).setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-                                                ((MaterialTextView)view).setTextColor(Color.BLACK);
-                                                Log.d(this.getClass().getName()," bundle.keySet().size() "+bundle.keySet().size());
-                                            }
-                                            searchViewДляНовогоПоиска.refreshDrawableState();
-                                            searchViewДляНовогоПоиска.forceLayout();
-                                            ((MaterialTextView)view).refreshDrawableState();
-                                            ((MaterialTextView)view).forceLayout();
-                                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                    + "  ((MaterialTextView)view) "+ ((MaterialTextView)view).getTag());
-                                        }
-                                    });
-                                    // TODO: 13.12.2022 филь
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                            this.getClass().getName(),
-                                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                }
-                                return true;
-                            } else {
-                                Log.d(this.getClass().getName()," position");
-                                return false;
-                            }
-                    }
-                    return false;
-                }
-            };
-            simpleCursorAdapterЦФО.setViewBinder(БиндингДляНовогоПоиска);
-            listViewДляНовыйПосик[0].setAdapter(simpleCursorAdapterЦФО);
-            simpleCursorAdapterЦФО.notifyDataSetChanged();
-            listViewДляНовыйПосик[0].startAnimation(animationПрофессия);
-            listViewДляНовыйПосик[0].setSelection(0);
-            listViewДляНовыйПосик[0].forceLayout();
-
-
-
-
-
-
-
-
-
-
-
-            /////TODO ДЕНЬ ПЕРВЫЙ
-            this.НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаНазваниеДень1);
-            this.НазваниеДанныхВТабелеДниНедели.setText(ХЭШНазваниеДнейНедели.get(1));
-            ////////TODO ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            Log.d(this.getClass().getName(), " ХЭШНазваниеДнейНедели.get(1)  " + ХЭШНазваниеДнейНедели.get(1));
-            ////////TODO ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            Log.d(this.getClass().getName(), " ХЭШНазваниеДнейНедели.get(1)  " + ХЭШНазваниеДнейНедели.get(1));
-            String regex = "Сб ,(.*)";
-            String regex1 = "Вс ,(.*)";
-            if (ХЭШНазваниеДнейНедели.get(1).matches(regex) || ХЭШНазваниеДнейНедели.get(1).matches(regex1)) {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#DC143C"));
-            } else {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#008080"));
-            }
-            ////////TODO  конец ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-
-            /////TODO ДЕНЬ ВТОРОЙ
-            this.НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаНазваниеДень2);
-            this.НазваниеДанныхВТабелеДниНедели.setText(ХЭШНазваниеДнейНедели.get(2));
-            ////////TODO ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            Log.d(this.getClass().getName(), " ХЭШНазваниеДнейНедели.get(1)  " + ХЭШНазваниеДнейНедели.get(2));
-            ////////TODO ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            Log.d(this.getClass().getName(), " ХЭШНазваниеДнейНедели.get(1)  " + ХЭШНазваниеДнейНедели.get(2));
-            if (ХЭШНазваниеДнейНедели.get(2).matches(regex) || ХЭШНазваниеДнейНедели.get(2).matches(regex1)) {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#DC143C"));
-            } else {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#008080"));
-            }
-            ////////TODO  конец ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            /////TODO ДЕНЬ СРЕДА
-            this.НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаНазваниеДень3);
-            this.НазваниеДанныхВТабелеДниНедели.setText(ХЭШНазваниеДнейНедели.get(3));
-            ////////TODO ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            Log.d(this.getClass().getName(), " ХЭШНазваниеДнейНедели.get(1)  " + ХЭШНазваниеДнейНедели.get(1));
-            if (ХЭШНазваниеДнейНедели.get(3).matches(regex) || ХЭШНазваниеДнейНедели.get(3).matches(regex1)) {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#DC143C"));
-            } else {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#008080"));
-            }
-            ////////TODO  конец ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            /////TODO ДЕНЬ ЧЕТВЕРЫЙ
-            this.НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаНазваниеДень4);
-            this.НазваниеДанныхВТабелеДниНедели.setText(ХЭШНазваниеДнейНедели.get(4));
-            ////////TODO ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            Log.d(this.getClass().getName(), " ХЭШНазваниеДнейНедели.get(1)  " + ХЭШНазваниеДнейНедели.get(1));
-            if (ХЭШНазваниеДнейНедели.get(4).matches(regex) || ХЭШНазваниеДнейНедели.get(4).matches(regex1)) {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#DC143C"));
-            } else {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#008080"));
-            }
-            ////////TODO  конец ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            /////TODO ДЕНЬ ПЯТЫЙ
-            this.НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаНазваниеДень5);
-            this.НазваниеДанныхВТабелеДниНедели.setText(ХЭШНазваниеДнейНедели.get(5));
-            ////////TODO ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            Log.d(this.getClass().getName(), " ХЭШНазваниеДнейНедели.get(1)  " + ХЭШНазваниеДнейНедели.get(1));
-            if (ХЭШНазваниеДнейНедели.get(5).matches(regex) || ХЭШНазваниеДнейНедели.get(5).matches(regex1)) {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#DC143C"));
-            } else {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#008080"));
-            }
-            ////////TODO  конец ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            /////TODO ДЕНЬ ШЕСТРОЙ
-            this.НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаНазваниеДень6);
-            this.НазваниеДанныхВТабелеДниНедели.setText(ХЭШНазваниеДнейНедели.get(6));
-            ////////TODO ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            Log.d(this.getClass().getName(), " ХЭШНазваниеДнейНедели.get(1)  " + ХЭШНазваниеДнейНедели.get(1));
-            if (ХЭШНазваниеДнейНедели.get(6).matches(regex) || ХЭШНазваниеДнейНедели.get(6).matches(regex1)) {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#DC143C"));
-            } else {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#008080"));
-            }
-            ////////TODO  конец ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            /////TODO ДЕНЬ СЕДЬМОЙ
-            this.НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаНазваниеДень7);
-            this.НазваниеДанныхВТабелеДниНедели.setText(ХЭШНазваниеДнейНедели.get(7));
-            ////////TODO ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            Log.d(this.getClass().getName(), " ХЭШНазваниеДнейНедели.get(1)  " + ХЭШНазваниеДнейНедели.get(1));
-            if (ХЭШНазваниеДнейНедели.get(7).matches(regex) || ХЭШНазваниеДнейНедели.get(7).matches(regex1)) {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#DC143C"));
-            } else {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#008080"));
-            }
-            ////////TODO  конец ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            /////TODO ДЕНЬ ВОСЬМОЙ
-            this.НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаНазваниеДень8);
-            this.НазваниеДанныхВТабелеДниНедели.setText(ХЭШНазваниеДнейНедели.get(8));
-            ////////TODO ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            Log.d(this.getClass().getName(), " ХЭШНазваниеДнейНедели.get(1)  " + ХЭШНазваниеДнейНедели.get(1));
-            if (ХЭШНазваниеДнейНедели.get(8).matches(regex) || ХЭШНазваниеДнейНедели.get(8).matches(regex1)) {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#DC143C"));
-            } else {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#008080"));
-            }
-            ////////TODO  конец ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            /////TODO ДЕНЬ ДЕВЯТЫЙ
-            this.НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаНазваниеДень9);
-            this.НазваниеДанныхВТабелеДниНедели.setText(ХЭШНазваниеДнейНедели.get(9));
-            ////////TODO ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            Log.d(this.getClass().getName(), " ХЭШНазваниеДнейНедели.get(1)  " + ХЭШНазваниеДнейНедели.get(1));
-            if (ХЭШНазваниеДнейНедели.get(9).matches(regex) || ХЭШНазваниеДнейНедели.get(9).matches(regex1)) {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#DC143C"));
-            } else {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#008080"));
-            }
-            ////////TODO  конец ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            /////TODO ДЕНЬ ДЕСЯТЫЙ
-            this.НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаНазваниеДень10);
-            this.НазваниеДанныхВТабелеДниНедели.setText(ХЭШНазваниеДнейНедели.get(10));
-            ////////TODO ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            Log.d(this.getClass().getName(), " ХЭШНазваниеДнейНедели.get(1)  " + ХЭШНазваниеДнейНедели.get(1));
-            if (ХЭШНазваниеДнейНедели.get(10).matches(regex) || ХЭШНазваниеДнейНедели.get(10).matches(regex1)) {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#DC143C"));
-            } else {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#008080"));
-            }
-            ////////TODO  конец ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            /////TODO ДЕНЬ ОДИНАЦАТЫЕ
-            this.НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаНазваниеДень11);
-            this.НазваниеДанныхВТабелеДниНедели.setText(ХЭШНазваниеДнейНедели.get(11));
-            ////////TODO ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            Log.d(this.getClass().getName(), " ХЭШНазваниеДнейНедели.get(1)  " + ХЭШНазваниеДнейНедели.get(1));
-            if (ХЭШНазваниеДнейНедели.get(11).matches(regex) || ХЭШНазваниеДнейНедели.get(11).matches(regex1)) {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#DC143C"));
-            } else {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#008080"));
-            }
-            ////////TODO  конец ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            /////TODO ДЕНЬ ДВЕНАЦАТЫЕ
-            this.НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаНазваниеДень12);
-            this.НазваниеДанныхВТабелеДниНедели.setText(ХЭШНазваниеДнейНедели.get(12));
-            ////////TODO ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            Log.d(this.getClass().getName(), " ХЭШНазваниеДнейНедели.get(1)  " + ХЭШНазваниеДнейНедели.get(1));
-            if (ХЭШНазваниеДнейНедели.get(12).matches(regex) || ХЭШНазваниеДнейНедели.get(12).matches(regex1)) {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#DC143C"));
-            } else {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#008080"));
-            }
-            ////////TODO  конец ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            /////TODO ДЕНЬ ТРЕНАЦАТЫЙ
-            this.НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаНазваниеДень13);
-            this.НазваниеДанныхВТабелеДниНедели.setText(ХЭШНазваниеДнейНедели.get(13));
-            ////////TODO ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            Log.d(this.getClass().getName(), " ХЭШНазваниеДнейНедели.get(1)  " + ХЭШНазваниеДнейНедели.get(1));
-            if (ХЭШНазваниеДнейНедели.get(13).matches(regex) || ХЭШНазваниеДнейНедели.get(13).matches(regex1)) {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#DC143C"));
-            } else {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#008080"));
-            }
-            ////////TODO  конец ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            /////TODO ДЕНЬ ЧЕТЫРНАЦАТЫЕ
-            this.НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаНазваниеДень14);
-            this.НазваниеДанныхВТабелеДниНедели.setText(ХЭШНазваниеДнейНедели.get(14));
-            ////////TODO ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            Log.d(this.getClass().getName(), " ХЭШНазваниеДнейНедели.get(1)  " + ХЭШНазваниеДнейНедели.get(1));
-            if (ХЭШНазваниеДнейНедели.get(14).matches(regex) || ХЭШНазваниеДнейНедели.get(14).matches(regex1)) {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#DC143C"));
-            } else {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#008080"));
-            }
-            ////////TODO  конец ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            /////TODO ДЕНЬ ПЕТНАЦАТЫЙ
-            this.НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаНазваниеДень15);
-            this.НазваниеДанныхВТабелеДниНедели.setText(ХЭШНазваниеДнейНедели.get(15));
-            ////////TODO ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            Log.d(this.getClass().getName(), " ХЭШНазваниеДнейНедели.get(1)  " + ХЭШНазваниеДнейНедели.get(1));
-            if (ХЭШНазваниеДнейНедели.get(15).matches(regex) || ХЭШНазваниеДнейНедели.get(15).matches(regex1)) {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#DC143C"));
-            } else {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#008080"));
-            }
-            ////////TODO  конец ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            /////TODO ДЕНЬ ШЕСТНАЦАТЫЙ
-            this.НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ПерваяСтрочкаНазваниеДень16);
-            this.НазваниеДанныхВТабелеДниНедели.setText(ХЭШНазваниеДнейНедели.get(16));
-            ////////TODO ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
-            Log.d(this.getClass().getName(), " ХЭШНазваниеДнейНедели.get(1)  " + ХЭШНазваниеДнейНедели.get(1));
-            if (ХЭШНазваниеДнейНедели.get(16).matches(regex) || ХЭШНазваниеДнейНедели.get(16).matches(regex1)) {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#DC143C"));
-            } else {
-                this.НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                this.НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#008080"));
-            }
-            ////////TODO  конец ВЫХОДНЫЕ ДНИ ДЕЛАЕМ ДРГИМ ДИЗАЙНОМ
 
             ///TODO  КОНЕЦ ПЕРВОЙ СТРОКИ НАЗВАНИЯ ДАННЫХ (вТ,01,Ср,02)
 
