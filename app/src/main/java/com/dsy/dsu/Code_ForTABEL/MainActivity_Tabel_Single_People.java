@@ -24,7 +24,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -145,7 +144,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private  String НазваниеЗагруженногТАбеля= "";
     private  Boolean    СтаттусТабеля= false;
     private   String ДробимДляТабеляГод,ДробимДляТебеляМесяц;
-    private  View КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла;
+    private  View ГлавныйКонтентТабеляИнфлейтер;
     private Map< Integer,String> ХЭШНазваниеДнейНедели ;
 
 
@@ -305,28 +304,28 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             if (Build.BRAND.toString().contains("Samsung") ||Build.BRAND.toString().contains("Galaxy")
                     || Build.BRAND.toString().contains("samsung") ||Build.BRAND.toString().contains("galaxy") ) {
                 Log.d(this.getClass().getName(), "Внешний вид САМСУНГА  "  +Build.BRAND.toString() );
-                КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла =
+                ГлавныйКонтентТабеляИнфлейтер =
                         МеханизмЗагрузкиОдногЛайАутавДругой.inflate(R.layout.activity_main_grid_for_tables_four_columns_samsung,//activity_main_find_customer_for_tables // activity_main_grid_for_tables
                                 ГлавныйКонтейнерТабель, false);
-                ViewGroup.LayoutParams ПараментыКонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.getLayoutParams();
+                ViewGroup.LayoutParams ПараментыКонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла = ГлавныйКонтентТабеляИнфлейтер.getLayoutParams();
 
                 // TODO: 24.05.2021 ВЫБОР КАКОЙ АКТИВТИ МАКЕТ ЗАГРУЗАТЬ НА HTC
             } else if (Build.BRAND.toString().contains("HTC") ){
                 Log.d(this.getClass().getName(), "Внешний вид HTC "  +Build.BRAND.toString() );
-                КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла =
+                ГлавныйКонтентТабеляИнфлейтер =
                         МеханизмЗагрузкиОдногЛайАутавДругой.inflate(R.layout.activity_main_grid_for_tables_four_columns_in_mm_htc,//activity_main_find_customer_for_tables // activity_main_grid_for_tables
                                 ГлавныйКонтейнерТабель, false);
                 ViewGroup.LayoutParams ПараментыКонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла =
-                        КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.getLayoutParams();
+                        ГлавныйКонтентТабеляИнфлейтер.getLayoutParams();
                 // TODO: 24.05.2021 ВЫБОР КАКОЙ АКТИВТИ МАКЕТ ЗАГРУЗАТЬ ВСЕ ОСТАЛЬНЫЕ ТЕЛЕФОНЫ
             } else {
                 Log.d(this.getClass().getName(), "Внешний вид ДЛЯ ВСЕХ ОСТАЛЬНЫХ "  +Build.BRAND.toString() );
-                КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла =
+                ГлавныйКонтентТабеляИнфлейтер =
                         МеханизмЗагрузкиОдногЛайАутавДругой.inflate(R.layout.activity_main_grid_for_tables_four_columns_in_mm,//activity_main_find_customer_for_tables // activity_main_grid_for_tables
                                 ГлавныйКонтейнерТабель, false);
-                ViewGroup.LayoutParams ПараментыКонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.getLayoutParams();
+                ViewGroup.LayoutParams ПараментыКонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла = ГлавныйКонтентТабеляИнфлейтер.getLayoutParams();
             }
-            HorizontalScrollViewВТабелеОдинСотрудник =(HorizontalScrollView)     КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.ГоризонтльнаяПрокруткаВнутриСамТабель);
+            HorizontalScrollViewВТабелеОдинСотрудник =(HorizontalScrollView)     ГлавныйКонтентТабеляИнфлейтер.findViewById(R.id.ГоризонтльнаяПрокруткаВнутриСамТабель);
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1164,7 +1163,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 МетодСозданиеМесяцыСокращенно();
                 Log.d(this.getClass().getName(), " ХЭШНазваниеДнейНедели.get(1) " + ХЭШНазваниеДнейНедели.get(1));
                 /////TODO ТАБЕЛЬ ФИО создаем textview названия дней понелельник вторик среда четеварг
-                НазваниеДанныхВТабелеФИО = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.КонтейнерКудаЗагружаетьсяФИО);
+                НазваниеДанныхВТабелеФИО = ГлавныйКонтентТабеляИнфлейтер.findViewById(R.id.КонтейнерКудаЗагружаетьсяФИО);
                 НазваниеДанныхВТабелеФИО.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
                 ///toDO ПОСИК И ВСТАВКИ ИМСЯ ТАБЕЛЯ
                 int РасположениеИмениСотркдника = sqLiteCursor.getColumnIndex("fio");//name
@@ -1252,7 +1251,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 ///todo главный МЕТОД ОФОРМЛЕНИЯ ТАБЕЛЯ ДАННЫМИ И ДНЯМИ
                 МетодГлавныеДанныеLayoutInflater(ИндексСтрокКомпонентовТабеля,
                         ХЭШНазваниеДнейНедели,
-                        КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла,sqLiteCursor );
+                        ГлавныйКонтентТабеляИнфлейтер,sqLiteCursor );
                 МетодПерегрузкаГлавногоLaouyout();
                 // TODO: 29.04.2021 если то оди
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1274,18 +1273,18 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         try{
             if  (  ПроизошелЛиСфайпПоДаннымСингТабеля==false ) {
                 /////TODO ФИНАЛ ЗАПОЛЕНИЕ ДАННЫМИ АКТИВИТИ ЧЕРЕЗ ДРУГОЕ АКТВИТИ
-                ГлавныйКонтейнерТабель.addView(КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла);
+                ГлавныйКонтейнерТабель.addView(ГлавныйКонтентТабеляИнфлейтер);
             }else {
-                КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.refreshDrawableState();
-                КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.forceLayout();
-                КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.requestLayout();
-                КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.dispatchWindowVisibilityChanged(1);
+                ГлавныйКонтентТабеляИнфлейтер.refreshDrawableState();
+                ГлавныйКонтентТабеляИнфлейтер.forceLayout();
+                ГлавныйКонтентТабеляИнфлейтер.requestLayout();
+                ГлавныйКонтентТабеляИнфлейтер.dispatchWindowVisibilityChanged(1);
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                     + " ГлавныйКонтейнерТабель "+ ГлавныйКонтейнерТабель
-                    + " КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла " +КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла);
+                    + " ГлавныйКонтентТабеляИнфлейтер " + ГлавныйКонтентТабеляИнфлейтер);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " +e + " Метод :"+Thread.currentThread().getStackTrace()[2].getMethodName()
@@ -1383,10 +1382,10 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         try{
         /////TODO создавние строк из linerlouyto в табеле сколько сткром в базе данных андройда столлько на активити строк
         LayoutInflater МеханизмЗагрузкиОдногЛайАутавДругой = getLayoutInflater();
-        //КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла = new View(this);//activity_main_find_customer_for_tables // activity_main_grid_for_tables
-        КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла = МеханизмЗагрузкиОдногЛайАутавДругой.inflate(R.layout.activity_main_grid_for_tables_four_columns,
+        //ГлавныйКонтентТабеляИнфлейтер = new View(this);//activity_main_find_customer_for_tables // activity_main_grid_for_tables
+        ГлавныйКонтентТабеляИнфлейтер = МеханизмЗагрузкиОдногЛайАутавДругой.inflate(R.layout.activity_main_grid_for_tables_four_columns,
                 ГлавныйКонтейнерТабель, false);
-        НазваниеДанныхВТабелеФИО = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(R.id.КонтейнерКудаЗагружаетьсяФИО);
+        НазваниеДанныхВТабелеФИО = ГлавныйКонтентТабеляИнфлейтер.findViewById(R.id.КонтейнерКудаЗагружаетьсяФИО);
         /////TODO ТАБЕЛЬ ФИО создаем textview названия дней понелельник вторик среда четеварг
         ///////// todo фио
         ///TODO ЕСЛИ ИМЕНИ НЕТ ПО НА АКТИВИТИ ПОКАЗЫВАЕМТ ЧТО ТАБЕЛЬ ПУСТОЙ
@@ -2431,7 +2430,7 @@ try{
 
     private void МетодГлавныеДанныеLayoutInflater(@NonNull int[] ИндексСтрокКомпонентовТабеля
             , @NonNull Map<Integer, String> ХЭШНазваниеДнейНедели
-            , @NonNull View КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла
+            , @NonNull View КонтентТабеляИнфлейтер
             , @NonNull SQLiteCursor sqLiteCursor) {
         /////todo ПЕРВАЯ СТРОКА НАЗВАНИЯ
         String НазваниеДней= "";
@@ -2439,68 +2438,56 @@ try{
           String regex = "Сб ,(.*)";
           String regex1 = "Вс ,(.*)";
         try{
-            final Integer[] ИндексMergeДатыНазвания = {1};
-            final Integer[] ИндексMergeДатыЗначения = {1};
-            // TODO: 31.03.2023
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + "  ИндексMergeДатыНазвания[0] "+  ИндексMergeДатыНазвания[0]+ "  ИндексMergeДатыЗначения[0] " +    ИндексMergeДатыЗначения[0]);
+            final Integer[] ИндексНазвания = {0};
+            final Integer[] ИндексЗначения = {0};
+
+
+
             // TODO: 31.03.2023 НАЗВАНИЕ ROW 1
       message.getTarget().post(()->{
-          IntStream intStreamПерваяСтрочкаНазвание=IntStream.of(
+          IntStream intStreamOneName =IntStream.of(
                   R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень2,R.id.ПерваяСтрочкаНазваниеДень3,R.id.ПерваяСтрочкаНазваниеДень4,
                   R.id.ПерваяСтрочкаНазваниеДень5,R.id.ПерваяСтрочкаНазваниеДень6,R.id.ПерваяСтрочкаНазваниеДень7,R.id.ПерваяСтрочкаНазваниеДень8,
                   R.id.ПерваяСтрочкаНазваниеДень9,R.id.ПерваяСтрочкаНазваниеДень10,R.id.ПерваяСтрочкаНазваниеДень11,R.id.ПерваяСтрочкаНазваниеДень12,
                   R.id.ПерваяСтрочкаНазваниеДень13,R.id.ПерваяСтрочкаНазваниеДень14,R.id.ПерваяСтрочкаНазваниеДень15,R.id.ПерваяСтрочкаНазваниеДень16);
-          ИндексMergeДатыНазвания[0]=
-                  МетодЗагрузкаНазвнаниеSingleTabel(ХЭШНазваниеДнейНедели, КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла, regex, regex1,intStreamПерваяСтрочкаНазвание, ИндексMergeДатыНазвания[0]);
-            // TODO: 31.03.2023
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + "  ИндексMergeДатыНазвания[0] "+  ИндексMergeДатыНазвания[0]+ "  ИндексMergeДатыЗначения[0] " +    ИндексMergeДатыЗначения[0]);
+          ИндексНазвания[0]=
+                  МетодНазваниеЯчеек(ХЭШНазваниеДнейНедели, КонтентТабеляИнфлейтер, regex, regex1,intStreamOneName, ИндексНазвания[0]);
+          // TODO: 31.03.2023 НАЗВАНИЕ ROW 2
+          IntStream intStreamOneValues=IntStream.of(
+                  R.id.ВтораяСтрочкаНазваниеДень17, R.id.ВтораяСтрочкаНазваниеДень18, R.id.ВтораяСтрочкаНазваниеДень19, R.id.ВтораяСтрочкаНазваниеДень20
+                  , R.id.ВтораяСтрочкаНазваниеДень21, R.id.ВтораяСтрочкаНазваниеДень22, R.id.ВтораяСтрочкаНазваниеДень23, R.id.ВтораяСтрочкаНазваниеДень24
+                  , R.id.ВтораяСтрочкаНазваниеДень25, R.id.ВтораяСтрочкаНазваниеДень26, R.id.ВтораяСтрочкаНазваниеДень27, R.id.ВтораяСтрочкаНазваниеДень28
+                  , R.id.ВтораяСтрочкаНазваниеДень29 , R.id.ВтораяСтрочкаНазваниеДень30, R.id.ВтораяСтрочкаНазваниеДень31);
+          ИндексНазвания[0]=
+                  МетодНазваниеЯчеек(ХЭШНазваниеДнейНедели, КонтентТабеляИнфлейтер, regex, regex1,intStreamOneValues, ИндексНазвания[0]);
+      });
+
+
+
             // TODO: 31.03.2023 ДАННЫЕ ROW 1
-          IntStream intStreamПерваяСтрочкаСамиДанные=IntStream.of(
+            message.getTarget().post(()->{
+          IntStream intStreamTwoName=IntStream.of(
                   R.id.ПерваяСтрочкаДанныеДень1,  R.id.ПерваяСтрочкаДанныеДень2,  R.id.ПерваяСтрочкаДанныеДень3,  R.id.ПерваяСтрочкаДанныеДень4,
                   R.id.ПерваяСтрочкаДанныеДень5,  R.id.ПерваяСтрочкаДанныеДень6,  R.id.ПерваяСтрочкаДанныеДень7,  R.id.ПерваяСтрочкаДанныеДень8,
                   R.id.ПерваяСтрочкаДанныеДень9, R.id.ПерваяСтрочкаДанныеДень10,  R.id.ПерваяСтрочкаДанныеДень11,  R.id.ПерваяСтрочкаДанныеДень12,  R.id.ПерваяСтрочкаДанныеДень13,
                   R.id.ПерваяСтрочкаДанныеДень14,  R.id.ПерваяСтрочкаДанныеДень15,  R.id.ПерваяСтрочкаДанныеДень16);
-          ИндексMergeДатыЗначения[0] =
-                  МетодЗагрузкаДАнныхSingleTabel(ХЭШНазваниеДнейНедели, КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла, sqLiteCursor,intStreamПерваяСтрочкаСамиДанные, ИндексMergeДатыЗначения[0]);
+          ИндексЗначения[0] =
+                  МетодДанныеЯчеек(ХЭШНазваниеДнейНедели, КонтентТабеляИнфлейтер, sqLiteCursor,intStreamTwoName, ИндексЗначения[0]);
+            // TODO: 31.03.2023 ДАННЫЕ ROW 2
+                IntStream intStreamTwoValues=IntStream.of(
+                        R.id.ВтораяСтрочкаДанныеДень17,R.id.ВтораяСтрочкаДанныеДень18,R.id.ВтораяСтрочкаДанныеДень19,R.id.ВтораяСтрочкаДанныеДень20,
+                        R.id.ВтораяСтрочкаДанныеДень21,R.id.ВтораяСтрочкаДанныеДень22,R.id.ВтораяСтрочкаДанныеДень23,R.id.ВтораяСтрочкаДанныеДень24,
+                        R.id.ВтораяСтрочкаДанныеДень25,R.id.ВтораяСтрочкаДанныеДень26,R.id.ВтораяСтрочкаДанныеДень27,R.id.ВтораяСтрочкаДанныеДень28
+                ,R.id.ВтораяСтрочкаДанныеДень29,R.id.ВтораяСтрочкаДанныеДень30,R.id.ВтораяСтрочкаДанныеДень31);
+                ИндексЗначения[0] =
+                        МетодДанныеЯчеек(ХЭШНазваниеДнейНедели, КонтентТабеляИнфлейтер, sqLiteCursor,intStreamTwoValues, ИндексЗначения[0]);
+            });
 
             // TODO: 31.03.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + "  ИндексMergeДатыНазвания[0] "+  ИндексMergeДатыНазвания[0]+ "  ИндексMergeДатыЗначения[0] " +    ИндексMergeДатыЗначения[0]);
-            // TODO: 31.03.2023 НАЗВАНИЕ ROW 2
-                IntStream intStreamВтораяСтрочкаНазвание=IntStream.of(
-                        R.id.ВтораяСтрочкаНазваниеДень17, R.id.ВтораяСтрочкаНазваниеДень18, R.id.ВтораяСтрочкаНазваниеДень19, R.id.ВтораяСтрочкаНазваниеДень20
-                , R.id.ВтораяСтрочкаНазваниеДень21, R.id.ВтораяСтрочкаНазваниеДень22, R.id.ВтораяСтрочкаНазваниеДень23, R.id.ВтораяСтрочкаНазваниеДень24
-                , R.id.ВтораяСтрочкаНазваниеДень25, R.id.ВтораяСтрочкаНазваниеДень26, R.id.ВтораяСтрочкаНазваниеДень27, R.id.ВтораяСтрочкаНазваниеДень28
-                , R.id.ВтораяСтрочкаНазваниеДень30, R.id.ВтораяСтрочкаНазваниеДень31);
-                ИндексMergeДатыНазвания[0]=
-                        МетодЗагрузкаНазвнаниеSingleTabel(ХЭШНазваниеДнейНедели, КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла, regex, regex1,intStreamВтораяСтрочкаНазвание, ИндексMergeДатыНазвания[0]);
-            // TODO: 31.03.2023
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + "  ИндексMergeДатыНазвания[0] "+  ИндексMergeДатыНазвания[0]+ "  ИндексMergeДатыЗначения[0] " +    ИндексMergeДатыЗначения[0]);
-            // TODO: 31.03.2023 ДАННЫЕ ROW 2
-                IntStream intStreamВтораяСтрочкаСамиДанные=IntStream.of(
-                        R.id.ВтораяСтрочкаДанныеДень17,R.id.ВтораяСтрочкаДанныеДень18,R.id.ВтораяСтрочкаДанныеДень19,R.id.ВтораяСтрочкаДанныеДень20,
-                        R.id.ВтораяСтрочкаДанныеДень21,R.id.ВтораяСтрочкаДанныеДень22,R.id.ВтораяСтрочкаДанныеДень23,R.id.ВтораяСтрочкаДанныеДень24,
-                        R.id.ВтораяСтрочкаДанныеДень25,R.id.ВтораяСтрочкаДанныеДень26,R.id.ВтораяСтрочкаДанныеДень27,R.id.ВтораяСтрочкаДанныеДень28
-                ,R.id.ВтораяСтрочкаДанныеДень29,R.id.ВтораяСтрочкаДанныеДень30,R.id.ВтораяСтрочкаДанныеДень31);
-                ИндексMergeДатыЗначения[0] =
-                        МетодЗагрузкаДАнныхSingleTabel(ХЭШНазваниеДнейНедели, КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла, sqLiteCursor,intStreamВтораяСтрочкаСамиДанные, ИндексMergeДатыЗначения[0]);
-            });
-            // TODO: 31.03.2023
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + "  ИндексMergeДатыНазвания[0] "+  ИндексMergeДатыНазвания[0]+ "  ИндексMergeДатыЗначения[0] " +    ИндексMergeДатыЗначения[0]);
+                    + "  ИндексНазвания[0] "+  ИндексНазвания[0]+ "  ИндексЗначения[0] " +    ИндексЗначения[0]);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -2511,11 +2498,11 @@ try{
         }
     }
 
-    private Integer МетодЗагрузкаДАнныхSingleTabel(@NonNull Map<Integer, String> ХЭШНазваниеДнейНедели,
-                                                @NonNull View КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла,
-                                                @NonNull SQLiteCursor sqLiteCursor,
-                                                @NonNull    IntStream intStreamПерваяСтрочкаСамиДанные,
-                                                @NonNull      Integer ИндексMergeДаты) {
+    private Integer МетодДанныеЯчеек(@NonNull Map<Integer, String> ХЭШНазваниеДнейНедели,
+                                     @NonNull View КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла,
+                                     @NonNull SQLiteCursor sqLiteCursor,
+                                     @NonNull    IntStream intStreamПерваяСтрочкаСамиДанные,
+                                     @NonNull      Integer ИндексИтерации) {
         try{
         Bundle bundleДляОбновление;
         String НазваниеДней;
@@ -2524,10 +2511,12 @@ try{
         PrimitiveIterator.OfInt iteratorIteratorПерваяСтрочкаСамиДанные= intStreamПерваяСтрочкаСамиДанные.iterator();
         bundleДляОбновление=new Bundle();
         while (iteratorIteratorПерваяСтрочкаСамиДанные.hasNext()) {
+            // TODO: 31.03.2023 поднимаем версию
+            ИндексИтерации++;
             /////TODO НАЧАЛО САМИ ДАННЫЕ ПЕРВОЙ СТРОКИ
             Integer ТекущийЭлементДанные=     iteratorIteratorПерваяСтрочкаСамиДанные.nextInt();
            СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(ТекущийЭлементДанные);
-           Integer  ПосикДня = sqLiteCursor.getColumnIndex("d"+ИндексMergeДаты.toString());
+           Integer  ПосикДня = sqLiteCursor.getColumnIndex("d"+ИндексИтерации.toString());
             НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
             // TODO: 30.03.2023 новый код сохраняем в сам обьект uuid и день
             Integer ID = sqLiteCursor.getInt(sqLiteCursor.getColumnIndex("_id"));
@@ -2582,15 +2571,11 @@ try{
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " ХЭШНазваниеДнейНедели.get(ИндексMergeДаты) "+ ХЭШНазваниеДнейНедели.get(ИндексMergeДаты)+
+                    + " ХЭШНазваниеДнейНедели.get(ИндексИтерации) "+ ХЭШНазваниеДнейНедели.get(ИндексИтерации)+
                     "  СамиДанныеТабеля " + СамиДанныеТабеля.getText().toString()+ " ТекущийЭлементДанные " +ТекущийЭлементДанные);
             // TODO: 31.03.2023  анимация для данных
             СамиДанныеТабеля.startAnimation(animationПрофессия);
-            // TODO: 31.03.2023 поднимаем день до нужного
-            ИндексMergeДаты++;
         }
-            // TODO: 31.03.2023  перегрузка экрана
-            МетодПерегрузкаВидаЭкрана();
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -2600,27 +2585,29 @@ try{
 
 
     }
-        return  ИндексMergeДаты;
+        return  ИндексИтерации;
     }
 
 
     //TODO Первый МЕТОД заполения строчки
-    private Integer МетодЗагрузкаНазвнаниеSingleTabel(@NonNull Map<Integer, String> ХЭШНазваниеДнейНедели,
-                                                   @NonNull View КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла,
-                                                   @NonNull String regex, @NonNull String regex1,
-                                                   @NonNull   IntStream intStreamПерваяСтрочкаНазвание,
-                                                   @NonNull      Integer ИндексMergeДаты) {
+    private Integer МетодНазваниеЯчеек(@NonNull Map<Integer, String> ХЭШНазваниеДнейНедели,
+                                       @NonNull View КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла,
+                                       @NonNull String regex, @NonNull String regex1,
+                                       @NonNull   IntStream intStreamИтератор,
+                                       @NonNull      Integer ИндексИтерации) {
         try {
             TextView    НазваниеДанныхВТабелеДниНедели;
         // TODO: 31.03.2023 Первая СТРОЧКА данных НА ЭКРАНЕ SIGLE
-        PrimitiveIterator.OfInt iteratorIteratorПерваяСтрочкаНазвание= intStreamПерваяСтрочкаНазвание.iterator();
+        PrimitiveIterator.OfInt iteratorIteratorПерваяСтрочкаНазвание= intStreamИтератор.iterator();
         while (iteratorIteratorПерваяСтрочкаНазвание.hasNext()){
+            // TODO: 31.03.2023 поднимаем версию
+            ИндексИтерации++;
             /////TODO ДЕНЬ ПЕРВЫЙ
         Integer ТекущийЭлементНазвания=     iteratorIteratorПерваяСтрочкаНазвание.nextInt();
              НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(ТекущийЭлементНазвания);
             НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(ТекущийЭлементНазвания);
-            НазваниеДанныхВТабелеДниНедели.setText(ХЭШНазваниеДнейНедели.get(ИндексMergeДаты).trim());
-            if (ХЭШНазваниеДнейНедели.get(ИндексMergeДаты).matches(regex) || ХЭШНазваниеДнейНедели.get(ИндексMergeДаты).matches(regex1)) {
+            НазваниеДанныхВТабелеДниНедели.setText(ХЭШНазваниеДнейНедели.get(ИндексИтерации).trim());
+            if (ХЭШНазваниеДнейНедели.get(ИндексИтерации).matches(regex) || ХЭШНазваниеДнейНедели.get(ИндексИтерации).matches(regex1)) {
                  НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
                  НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#DC143C"));
             } else {
@@ -2630,10 +2617,8 @@ try{
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " ХЭШНазваниеДнейНедели.get(ИндексMergeДаты) "+ ХЭШНазваниеДнейНедели.get(ИндексMergeДаты)+
+                    + " ХЭШНазваниеДнейНедели.get(ИндексИтерации) "+ ХЭШНазваниеДнейНедели.get(ИндексИтерации)+
                     "  this.НазваниеДанныхВТабелеДниНедели " +  НазваниеДанныхВТабелеДниНедели.getText().toString()+ " ТекущийЭлементНазвания " +ТекущийЭлементНазвания);
-            // TODO: 31.03.2023
-            ИндексMergeДаты++;
         }
     } catch (Exception e) {
         e.printStackTrace();
@@ -2643,7 +2628,7 @@ try{
                 this.getClass().getName(),
                 Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
     }
-        return  ИндексMergeДаты;
+        return  ИндексИтерации;
     }
 
 
