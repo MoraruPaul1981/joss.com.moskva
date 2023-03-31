@@ -2143,6 +2143,8 @@ try{
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
                                         " НазваниеДанныхВТабелеФИО  " + НазваниеДанныхВТабелеФИО);
+                                dialog.dismiss();
+                                dialog.cancel();
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
