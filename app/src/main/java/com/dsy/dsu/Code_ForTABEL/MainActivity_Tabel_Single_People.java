@@ -43,7 +43,6 @@ import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.FilterQueryProvider;
 import android.widget.GridLayout;
-import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -52,7 +51,6 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.Spinner;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -105,7 +103,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.PrimitiveIterator;
@@ -114,14 +111,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
-import java.util.function.IntConsumer;
 import java.util.function.IntUnaryOperator;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import javax.crypto.NoSuchPaddingException;
-
-import io.reactivex.rxjava3.core.Flowable;
 
 
 public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
@@ -2867,11 +2860,31 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
           String regex = "Сб ,(.*)";
           String regex1 = "Вс ,(.*)";
         try{
-            // TODO: 31.03.2023  Метод Первый На Экран Оформаляем Название Первой СТрочки
-            МетодЗагрузкаПерваяСтрочкаНазвания(ХЭШНазваниеДнейНедели, КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла, regex, regex1);
 
-            // TODO: 31.03.2023 Метод Загружаем ДАнные на первую СТЧРОКУ Single Tabel
-            МетодЗагрузкаДанныхНаПервуюСтрочку(ХЭШНазваниеДнейНедели, КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла, sqLiteCursor);
+      message.getTarget().post(()->{
+
+          IntStream intStreamПерваяСтрочкаНазвание=IntStream.of(
+                  R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень2,R.id.ПерваяСтрочкаНазваниеДень3,R.id.ПерваяСтрочкаНазваниеДень4,
+                  R.id.ПерваяСтрочкаНазваниеДень5,R.id.ПерваяСтрочкаНазваниеДень6,R.id.ПерваяСтрочкаНазваниеДень7,R.id.ПерваяСтрочкаНазваниеДень8,
+                  R.id.ПерваяСтрочкаНазваниеДень9,R.id.ПерваяСтрочкаНазваниеДень10,R.id.ПерваяСтрочкаНазваниеДень11,R.id.ПерваяСтрочкаНазваниеДень12,
+                  R.id.ПерваяСтрочкаНазваниеДень13,R.id.ПерваяСтрочкаНазваниеДень14,R.id.ПерваяСтрочкаНазваниеДень15,R.id.ПерваяСтрочкаНазваниеДень16);
+          // TODO: 31.03.2023  Метод Первый На Экран Оформаляем Название Первой СТрочки
+          МетодЗагрузкаSingleTabelСтрочкаНазвания(ХЭШНазваниеДнейНедели, КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла, regex, regex1,intStreamПерваяСтрочкаНазвание);
+
+      });
+      message.getTarget().post(()->{
+          IntStream intStreamПерваяСтрочкаСамиДанные=IntStream.of(
+                  R.id.ПерваяСтрочкаДанныеДень1,  R.id.ПерваяСтрочкаДанныеДень2,  R.id.ПерваяСтрочкаДанныеДень3,  R.id.ПерваяСтрочкаДанныеДень4,
+                  R.id.ПерваяСтрочкаДанныеДень5,  R.id.ПерваяСтрочкаДанныеДень6,  R.id.ПерваяСтрочкаДанныеДень7,  R.id.ПерваяСтрочкаДанныеДень8,
+                  R.id.ПерваяСтрочкаДанныеДень10,  R.id.ПерваяСтрочкаДанныеДень11,  R.id.ПерваяСтрочкаДанныеДень12,  R.id.ПерваяСтрочкаДанныеДень13,
+                  R.id.ПерваяСтрочкаДанныеДень14,  R.id.ПерваяСтрочкаДанныеДень15,  R.id.ПерваяСтрочкаДанныеДень16);
+
+          // TODO: 31.03.2023 Метод Загружаем ДАнные на первую СТЧРОКУ Single Tabel
+          МетодЗагрузкаSingletabelНаПервуюСтрочку(ХЭШНазваниеДнейНедели, КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла, sqLiteCursor,intStreamПерваяСтрочкаСамиДанные);
+
+      });
+
+
 
 
 
@@ -3851,17 +3864,13 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         }
     }
 
-    private void МетодЗагрузкаДанныхНаПервуюСтрочку(@NonNull Map<Integer, String> ХЭШНазваниеДнейНедели,
-                                                    @NonNull View КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла,
-                                                    @NonNull SQLiteCursor sqLiteCursor) {
+    private void МетодЗагрузкаSingletabelНаПервуюСтрочку(@NonNull Map<Integer, String> ХЭШНазваниеДнейНедели,
+                                                         @NonNull View КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла,
+                                                         @NonNull SQLiteCursor sqLiteCursor,
+                                                         @NonNull    IntStream intStreamПерваяСтрочкаСамиДанные) {
         try{
         Bundle bundleДляОбновление;
         String НазваниеДней;
-        IntStream intStreamПерваяСтрочкаСамиДанные=IntStream.of(
-                R.id.ПерваяСтрочкаДанныеДень1,  R.id.ПерваяСтрочкаДанныеДень2,  R.id.ПерваяСтрочкаДанныеДень3,  R.id.ПерваяСтрочкаДанныеДень4,
-                R.id.ПерваяСтрочкаДанныеДень5,  R.id.ПерваяСтрочкаДанныеДень6,  R.id.ПерваяСтрочкаДанныеДень7,  R.id.ПерваяСтрочкаДанныеДень8,
-                R.id.ПерваяСтрочкаДанныеДень10,  R.id.ПерваяСтрочкаДанныеДень11,  R.id.ПерваяСтрочкаДанныеДень12,  R.id.ПерваяСтрочкаДанныеДень13,
-                R.id.ПерваяСтрочкаДанныеДень14,  R.id.ПерваяСтрочкаДанныеДень15,  R.id.ПерваяСтрочкаДанныеДень16);
 // TODO: 31.03.2023 Данные Перво1 СТрочки 
         PrimitiveIterator.OfInt iteratorIteratorПерваяСтрочкаСамиДанные= intStreamПерваяСтрочкаСамиДанные.iterator();
         Integer ИндексMergeДаты=1;
@@ -3923,18 +3932,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
 
     //TODO Первый МЕТОД заполения строчки
-    private void МетодЗагрузкаПерваяСтрочкаНазвания(@NonNull Map<Integer, String> ХЭШНазваниеДнейНедели,
-                                                    @NonNull View КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла,
-                                                    @NonNull String regex,  @NonNull String regex1) {
+    private void МетодЗагрузкаSingleTabelСтрочкаНазвания(@NonNull Map<Integer, String> ХЭШНазваниеДнейНедели,
+                                                         @NonNull View КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла,
+                                                         @NonNull String regex, @NonNull String regex1,@NonNull   IntStream intStreamПерваяСтрочкаНазвание) {
         try {
         Integer ИндексMergeДаты=1;
         // TODO: 31.03.2023 Первая СТРОЧКА данных НА ЭКРАНЕ SIGLE
-        IntStream intStreamПерваяСтрочкаНазвание=IntStream.of(
-        R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень2,R.id.ПерваяСтрочкаНазваниеДень3,R.id.ПерваяСтрочкаНазваниеДень4,
-        R.id.ПерваяСтрочкаНазваниеДень5,R.id.ПерваяСтрочкаНазваниеДень6,R.id.ПерваяСтрочкаНазваниеДень7,R.id.ПерваяСтрочкаНазваниеДень8,
-        R.id.ПерваяСтрочкаНазваниеДень9,R.id.ПерваяСтрочкаНазваниеДень10,R.id.ПерваяСтрочкаНазваниеДень11,R.id.ПерваяСтрочкаНазваниеДень12,
-        R.id.ПерваяСтрочкаНазваниеДень13,R.id.ПерваяСтрочкаНазваниеДень14,R.id.ПерваяСтрочкаНазваниеДень15,R.id.ПерваяСтрочкаНазваниеДень16);
-
         PrimitiveIterator.OfInt iteratorIteratorПерваяСтрочкаНазвание= intStreamПерваяСтрочкаНазвание.iterator();
         while (iteratorIteratorПерваяСтрочкаНазвание.hasNext()){
             /////TODO ДЕНЬ ПЕРВЫЙ
