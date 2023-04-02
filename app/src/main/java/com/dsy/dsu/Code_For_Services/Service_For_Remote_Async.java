@@ -668,6 +668,11 @@ public class Service_For_Remote_Async extends IntentService {
                     if (БуферModification_server.toString().toCharArray().length > 3) {
                         Log.d(this.getClass().getName(), "  ПубличноеIDПолученныйИзСервлетаДляUUID  " + ПубличноеIDПолученныйИзСервлетаДляUUID +
                                 " БуферModification_server " + БуферModification_server.toString());
+
+                        //TODO БУфер JSON от Сервера
+                        CopyOnWriteArrayList<Map<String,String>>  БуферJsonОтСервера= new PUBLIC_CONTENT(context).getGeneratorJackson().readValue(БуферModification_server.toString(),
+                                new TypeReference<   CopyOnWriteArrayList<Map<String,String>>>() {});
+
                         JSONObject ОбьектыJSONТаблицыПришлиКонктетоНаЭтогоКлиента = new JSONObject(БуферModification_server.toString());///упаковываем в j
                         Log.d(this.getClass().getName(), "  ОбьектыJSONТаблицыПришлиКонктетоНаЭтогоКлиента  " +
                                 ОбьектыJSONТаблицыПришлиКонктетоНаЭтогоКлиента);

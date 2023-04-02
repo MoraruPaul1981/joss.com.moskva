@@ -295,8 +295,8 @@ import okio.BufferedSink;
                             Request newRequest = builder.build();
                             return chain.proceed(newRequest);
                         }
-                    }).connectTimeout(2, TimeUnit.SECONDS)
-                    .readTimeout(5, TimeUnit.SECONDS).build();
+                    }).connectTimeout(20, TimeUnit.SECONDS)
+                    .readTimeout(50, TimeUnit.SECONDS).build();
             ///  MediaType JSON = MediaType.parse("application/json; charset=utf-16");
             Request requestGET = new Request.Builder().get().url(Adress).build();
             Log.d(this.getClass().getName(), "  request  " + requestGET);
@@ -329,7 +329,7 @@ import okio.BufferedSink;
                     }
                 }
             });
-            dispatcherПинг.executorService().awaitTermination(20,TimeUnit.SECONDS);
+            dispatcherПинг.executorService().awaitTermination(50,TimeUnit.SECONDS);
             Log.i(context.getClass().getName(), "БуферРезультатПингасСервером" + БуферРезультатПингасСервером);
         } catch (IOException ex) {
             ex.printStackTrace();
