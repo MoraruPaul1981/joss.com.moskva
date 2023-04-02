@@ -42,10 +42,8 @@ import com.dsy.dsu.Business_logic_Only_Class.SubClass_Connection_BroadcastReceiv
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.util.concurrent.AtomicDouble;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -675,7 +673,7 @@ public class Service_For_Remote_Async extends IntentService {
                                 });
                         ///упаковываем в j
                         Log.d(this.getClass().getName(), "  БуферJsonОтСервераmodification_server  " + БуферJsonОтСервераmodification_server);
-                        public_contentДатыДляГлавныхТаблицСинхронизации.ДатыТаблицыВерсииДанныхОтСервера = Collections.synchronizedMap(new LinkedHashMap<String, Long>());
+                        public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц = Collections.synchronizedMap(new LinkedHashMap<String, Long>());
                         public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.clear();
                         // TODO: 02.04.2023 версия данных
                         final String[] НазваниеСервернойТаблицы = new String[1];
@@ -692,7 +690,7 @@ public class Service_For_Remote_Async extends IntentService {
                                                      НазваниеСервернойТаблицы[0] =ВерсияДанныхСервернойТаблицы.trim();
                                                 }
                                                 if (НазваниеТаблицыСервера.equalsIgnoreCase("versionserverversion")) {
-                                                    public_contentДатыДляГлавныхТаблицСинхронизации.ДатыТаблицыВерсииДанныхОтСервера.put(НазваниеСервернойТаблицы[0].trim(),
+                                                    public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.put(НазваниеСервернойТаблицы[0].trim(),
                                                             Long.valueOf(ВерсияДанныхСервернойТаблицы));
                                                 }
                                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -743,7 +741,7 @@ public class Service_For_Remote_Async extends IntentService {
 
                         Log.i(this.getClass().getName(), " ИменаТаблицыОтАндройда "
                                 + public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.toString() +
-                                " ДатыТаблицыВерсииДанныхОтСервера " + public_contentДатыДляГлавныхТаблицСинхронизации.toString() +
+                                " ВерсииВсехСерверныхТаблиц " + public_contentДатыДляГлавныхТаблицСинхронизации.toString() +
                                 "  ДанныеПришлаСпискаТаблицДляОбмена " + ДанныеПришлаСпискаТаблицДляОбмена);
                     }
                 }else {
@@ -823,10 +821,10 @@ public class Service_For_Remote_Async extends IntentService {
 ///TODO принудительн устанвливаем редим работы синхронизации
             Log.d(this.getClass().getName(), " ДанныеПришёлЛиIDДЛяГенерацииUUID  " + ДанныеПришёлЛиIDДЛяГенерацииUUID + " ТекущаяТаблицаДляОБменаДанными "
                     + ТекущаяТаблицаДляОБменаДанными +
-                    " public_contentДатыДляГлавныхТаблицСинхронизации.ДатыТаблицыВерсииДанныхОтСервера " + public_contentДатыДляГлавныхТаблицСинхронизации.ДатыТаблицыВерсииДанныхОтСервера);
+                    " public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц " + public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц);
             try {
 /////ТУТ -- КОД АНАЛИЗА ДАННЫХ SQL SERVER  ПРИШЕДШЕЙ ТЕКУЩЕЙ ТАБЛИЦЕ ПОЛУЧАЕМ НАЗВАНИЕ БАЗЫ И К НЕЙ ПОЛУЧАЕМ ДАТУ Е НЕЙ
-                public_contentДатыДляГлавныхТаблицСинхронизации.ДатыТаблицыВерсииДанныхОтСервера.entrySet().forEach(new Consumer<Map.Entry<String, Long>>() {
+                public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.entrySet().forEach(new Consumer<Map.Entry<String, Long>>() {
                     @Override
                     public void accept(Map.Entry<String, Long> ХэшДляАнализаТекущейТаблицыВерсииДанных) {
                         try{
@@ -1884,8 +1882,8 @@ public class Service_For_Remote_Async extends IntentService {
                     ArrayList<Integer>  ЛистТаблицыОбмена = new ArrayList<>();
                     Log.i(this.getClass().getName(), " ИменаТаблицыОтАндройда "
                             + public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.toString()
-                            + " ДатыТаблицыВерсииДанныхОтСервера "
-                            + public_contentДатыДляГлавныхТаблицСинхронизации.ДатыТаблицыВерсииДанныхОтСервера.toString());
+                            + " ВерсииВсехСерверныхТаблиц "
+                            + public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.toString());
                     ПубличныйРезультатОтветаОтСерврераУспешно = 0;
                     // TODO: 01.12.2022  еще один тест
                     // TODO: 09.11.2022  НАЧИНАЕМ ГЛАВНЫЙ ЦИКЛ СИНХРОНИАЩЗЦИИ ПО ТАБЛИЦАМ

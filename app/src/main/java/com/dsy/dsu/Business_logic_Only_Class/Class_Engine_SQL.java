@@ -376,7 +376,7 @@ public class Class_Engine_SQL extends Class_MODEL_synchronized {
                     String JSONНазваниеСтолбика;
                     String JSONСодержимоеСтолика;
                     Long JSONСодержимоеСтоликаДляХэша=0l;
-                    public_contentДатыДляГлавныхТаблицСинхронизации.     ДатыТаблицыВерсииДанныхОтСервера=Collections.synchronizedMap(new LinkedHashMap<String, Long>());
+                    public_contentДатыДляГлавныхТаблицСинхронизации.     ВерсииВсехСерверныхТаблиц=Collections.synchronizedMap(new LinkedHashMap<String, Long>());
                     public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.clear();
                     for (int ИндексТаблицыДляДанногоКлиента = 0; ИндексТаблицыДляДанногоКлиента < ОбьектыJSONТаблицыПришлиКонктетоНаЭтогоКлиента.names().length(); ИндексТаблицыДляДанногоКлиента++) {
                         НазваниеИзПришедшихТаблицДляКлиента = МассивJSONТаблиц.getString(ИндексТаблицыДляДанногоКлиента);
@@ -394,9 +394,9 @@ public class Class_Engine_SQL extends Class_MODEL_synchronized {
                             /////А ТУТ МЫ ПРОСТО ЗАПОМИНАЕМ НАЗВАНИЕ ТАБЛИЦ С СЕРВЕРА  И ПЛЮС ИХ ДАТЫ ПОСЛЕДНЕГО ИЗМЕНЕНИЕ ДАННЫХ НА ДАННЫХ ТАБЛИЦАХ НА СЕРВЕРЕ
                             if (JSONНазваниеСтолбика.equalsIgnoreCase("ИМЯ ИЗ МОДИФИКАЦИИ СЕРВЕР")) {
                                 JSONСодержимоеСтоликаДляХэша = ОбьектJSON.getLong("ТЕКУЩАЯ ВЕРСИЯ  ТАБЛИЦЫ");/////ТОЛЬКО ДЛЯ HSMAP///"ДАТА ВЕРСИИ СЕРВЕРА"
-                                public_contentДатыДляГлавныхТаблицСинхронизации.ДатыТаблицыВерсииДанныхОтСервера.put(JSONСодержимоеСтолика,JSONСодержимоеСтоликаДляХэша); ///// ЗАПОЛНЯЕМ ХЭШМАП ДЛЯ КРНКРЕТНОГО ПОЛЬЗОВАТЕЛЯ ТАБЛИЦ ДЛЯ ТОЛЬКО СЕСИИ
+                                public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.put(JSONСодержимоеСтолика,JSONСодержимоеСтоликаДляХэша); ///// ЗАПОЛНЯЕМ ХЭШМАП ДЛЯ КРНКРЕТНОГО ПОЛЬЗОВАТЕЛЯ ТАБЛИЦ ДЛЯ ТОЛЬКО СЕСИИ
                                 Log.d(this.getClass().getName(), " JSONСодержимоеСтолика " + JSONСодержимоеСтолика + "  JSONСодержимоеСтоликаДляХэша  " + JSONСодержимоеСтоликаДляХэша+
-                                        "   PUBLIC_CONTENT.ДатыТаблицыВерсииДанныхОтСервера.size() " + public_contentДатыДляГлавныхТаблицСинхронизации.ДатыТаблицыВерсииДанныхОтСервера.size());
+                                        "   PUBLIC_CONTENT.ВерсииВсехСерверныхТаблиц.size() " + public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.size());
                             }
                             if (JSONНазваниеСтолбика.equalsIgnoreCase("ПРОЕКТЫ")) {
                                 public_contentДатыДляГлавныхТаблицСинхронизации.ИменаПроектовОтСервера.add(JSONСодержимоеСтолика); //////ЗАПОЛЯНЕМ АРАЙЛИСТ НАЗВАНИЕМ ТОЛЬКО ТАБЛИЦ КОТОРЫ ПРИШИ ДЛЯ КОНКТНОГО ПОЛЬЗОВАТЕЛЯ
@@ -413,13 +413,13 @@ public class Class_Engine_SQL extends Class_MODEL_synchronized {
             }
             Log.i(this.getClass().getName(), " ИменаТаблицыОтАндройда "
                     + public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.toString() +
-                    " ДатыТаблицыВерсииДанныхОтСервера " +public_contentДатыДляГлавныхТаблицСинхронизации.toString() +
+                    " ВерсииВсехСерверныхТаблиц " +public_contentДатыДляГлавныхТаблицСинхронизации.toString() +
                     "  ДанныеПришлаСпискаТаблицДляОбмена " +ДанныеПришлаСпискаТаблицДляОбмена);
-            if ( public_contentДатыДляГлавныхТаблицСинхронизации.ДатыТаблицыВерсииДанныхОтСервера.size() > 0
+            if ( public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.size() > 0
                     && public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.size()>0) {//ЕСЛИ МЫ ПОЛУЧИЛИ ID  и СОЗДАЛИ НА ЕГО БАЗЕ UUID ТО ПРОХОДИИМ К СЛЕДУЮЩЕМУ КОДУ ПОЛУЧАЕМ ВЕРСИЮ ДАННЫХ СЕРВВЕРА
                 //// TODO запускам если ОТ СЕРВЕРА ПРИШЛИ  ДАННЫЕ СПИСОК ТАБЛИЦ ДЛЯ СОЗДАНИЕ СПИСК ДЛЯ ПОЛЬЗОВАТЕЯД
-                Log.i(this.getClass().getName(), " ДанныеПришлаСпискаТаблицДляОбмена " + ДанныеПришлаСпискаТаблицДляОбмена+ "  PUBLIC_CONTENT.ДатыТаблицыВерсииДанныхОтСервера.size() " +
-                        public_contentДатыДляГлавныхТаблицСинхронизации.ДатыТаблицыВерсииДанныхОтСервера.size());
+                Log.i(this.getClass().getName(), " ДанныеПришлаСпискаТаблицДляОбмена " + ДанныеПришлаСпискаТаблицДляОбмена+ "  PUBLIC_CONTENT.ВерсииВсехСерверныхТаблиц.size() " +
+                        public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.size());
                 Log.i(this.getClass().getName(), "  ГЛАВНЫЙ ЦИКЛ НАЧИНАЕТСЯ.............. РЕЗУЛЬТАТГЛАВНОЙСИНХРОНИАЗЦИИПОТАБЛИЦАМ " + РЕЗУЛЬТАТГЛАВНОЙСИНХРОНИАЗЦИИПОТАБЛИЦАМ);
                 Class_Engine_SQL_SubClassMainLoopAsyncTables_КлассСГлавнымЦикломСинхрониазцииТАблиц
                         Class_Engine_SQL_subClassMainLoopAsyncTables_классСГлавнымЦикломСинхрониазцииТАблиц
@@ -1102,12 +1102,12 @@ public class Class_Engine_SQL extends Class_MODEL_synchronized {
 
         Log.d(this.getClass().getName(), " ДанныеПришёлЛиIDДЛяГенерацииUUID  " + ДанныеПришёлЛиIDДЛяГенерацииUUID + " ТекущаяТаблицаДляОБменаДанными "
                 + ТекущаяТаблицаДляОБменаДанными +
-                " public_contentДатыДляГлавныхТаблицСинхронизации.ДатыТаблицыВерсииДанныхОтСервера " +public_contentДатыДляГлавныхТаблицСинхронизации.ДатыТаблицыВерсииДанныхОтСервера);
+                " public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц " +public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц);
 
 
         try {
 /////ТУТ -- КОД АНАЛИЗА ДАННЫХ SQL SERVER  ПРИШЕДШЕЙ ТЕКУЩЕЙ ТАБЛИЦЕ ПОЛУЧАЕМ НАЗВАНИЕ БАЗЫ И К НЕЙ ПОЛУЧАЕМ ДАТУ Е НЕЙ
-            Observable observableшДляАнализаТекущейТаблицыВерсииДанных=Observable.fromIterable(public_contentДатыДляГлавныхТаблицСинхронизации.ДатыТаблицыВерсииДанныхОтСервера.entrySet())
+            Observable observableшДляАнализаТекущейТаблицыВерсииДанных=Observable.fromIterable(public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.entrySet())
                     .subscribeOn(Schedulers.trampoline())
                     .flatMapStream(new Function<Map.Entry<String, Long>, Stream<?>>() {
                         @Override
@@ -1170,14 +1170,14 @@ public class Class_Engine_SQL extends Class_MODEL_synchronized {
                     .doOnError(new Consumer<Throwable>() {
                         @Override
                         public void accept(Throwable throwable) throws Throwable {
-                            Log.e(this.getClass().getName(), "   doOnError  ОШИБКА В  цикле ublic_contentДатыДляГлавныхТаблицСинхронизации.ДатыТаблицыВерсииДанныхОтСервера.entrySet() "
+                            Log.e(this.getClass().getName(), "   doOnError  ОШИБКА В  цикле ublic_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.entrySet() "
                                     + throwable.getStackTrace().toString());
                         }
                     })
                     .onErrorComplete(new Predicate<Throwable>() {
                         @Override
                         public boolean test(Throwable throwable) throws Throwable {
-                            Log.e(this.getClass().getName(), "   onErrorComplete  ОШИБКА В  цикле ublic_contentДатыДляГлавныхТаблицСинхронизации.ДатыТаблицыВерсииДанныхОтСервера.entrySet() "
+                            Log.e(this.getClass().getName(), "   onErrorComplete  ОШИБКА В  цикле ublic_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.entrySet() "
                                     + throwable.getStackTrace().toString());
                             return false;
                         }
@@ -4653,8 +4653,8 @@ public class Class_Engine_SQL extends Class_MODEL_synchronized {
             final Integer[] РезультатОбработкиТекущейтаблицыСинхрониазцииВнутриЦиклаВнутри = {0};
             try {
                 Log.i(this.getClass().getName(), " ИменаТаблицыОтАндройда " + public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.toString()
-                        + " ДатыТаблицыВерсииДанныхОтСервера "
-                        + public_contentДатыДляГлавныхТаблицСинхронизации.ДатыТаблицыВерсииДанныхОтСервера.toString()
+                        + " ВерсииВсехСерверныхТаблиц "
+                        + public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.toString()
                         + " СколькоСтрочекJSON " + ГлавноеКоличествоОбрабоатываемыхТаблицОбменаССервером);
                 final Integer[] КоличествоТаблицВОбработке = {1};//
                 ПубличныйРезультатОтветаОтСерврераУспешно = 0;

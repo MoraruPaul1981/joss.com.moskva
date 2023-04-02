@@ -5,11 +5,8 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -20,8 +17,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-import java.io.IOException;
-import java.io.StringWriter;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -50,7 +45,7 @@ public  class PUBLIC_CONTENT extends SubClassCreatingMainAllTables {
                 public CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда = new CopyOnWriteArrayList();
     public ArrayList<String> ИменаПроектовОтСервера = new ArrayList<String>(); ////список проектов
     ////ГЛАВНЫЙ СПИСОК ТАБЛИЦ ДЛЯ  ОБМЕНАМИ ДАННЫМИ ИЗ НЕГО БУДЕТ БРАТЬСЯ СПИСКО ТАБЛИЦ
-    public Map<String, Long> ДатыТаблицыВерсииДанныхОтСервера = Collections.synchronizedMap(new LinkedHashMap<String, Long>());
+    public Map<String, Long> ВерсииВсехСерверныхТаблиц = Collections.synchronizedMap(new LinkedHashMap<String, Long>());
            public    CompletionService МенеджерПотоков;
            public    CompletionService МенеджерМногоПотоков;
            public ExecutorService МенеджерПотоковСервис;
