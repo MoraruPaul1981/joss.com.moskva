@@ -2901,6 +2901,7 @@ try{
         }
     }
 
+    //TODO класс обновление Ячеек
     class SubClassUpdateSingletabel{
         Integer МетодЗаписиСменыПрофесии(@NonNull View searchViewДляНовогоПоиска,@NonNull Context context){ //TODO метод записи СМЕНЫ ПРОФЕСИИ
             Integer ПровйдерСменаПрофесии=0;
@@ -2973,6 +2974,16 @@ try{
             }
             return null;
         }
+
+
+    }
+
+
+
+    //TODO класс визуализации внешнего вида
+   class  SubClassRebootScreen{
+
+
 
 
     }
