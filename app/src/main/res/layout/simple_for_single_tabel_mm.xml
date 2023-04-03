@@ -492,7 +492,7 @@
 
     <!--  //TODO НАЧАЛО БЛОКА И NAME  И ДАННЫЕ #3 -->
     <TableRow
-        android:id="@+id/TableRow2Name"
+        android:id="@+id/TableRow3Name"
         android:layout_width="match_parent"
         android:layout_marginStart="1dp"
         android:layout_marginEnd="1dp"
@@ -692,6 +692,621 @@
     <!--  //TODO конец БЛОКА И NAME  И ДАННЫЕ #3 -->
 
 
+
+
+
+
+    <!--  //TODO НАЧАЛО БЛОКА И NAME  И ДАННЫЕ #4 -->
+    <TableRow
+        android:id="@+id/TableRow4Name"
+        android:layout_width="match_parent"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="2dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp">
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_column="0"
+            android:id="@+id/d13"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_margin="2dp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            android:hint="d13"
+            android:layout_width="80dp"
+            android:layout_height="6mm"
+            android:textSize="18sp"
+            android:background="#FFFFFF"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_column="1"
+            android:id="@+id/d14"
+            android:gravity="center_vertical|center_horizontal"
+            android:textStyle="bold"
+            android:padding="2dp"
+            android:visibility="visible"
+            android:hint="d14"
+            android:layout_width="80dp"
+            android:layout_height="6mm"
+            android:textSize="18sp"
+            android:background="#FFFFFF" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_column="2"
+            android:id="@+id/d15"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_margin="2dp"
+            android:textStyle="bold"
+            android:padding="2dp"
+            android:visibility="visible"
+            android:hint="d15"
+            android:layout_width="80dp"
+            android:layout_height="6mm"
+            android:textSize="18sp"
+            android:background="#FFFFFF" />
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_column="3"
+            android:id="@+id/d16"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_margin="2dp"
+            android:textStyle="bold"
+            android:padding="2dp"
+            android:visibility="visible"
+            android:hint="d16"
+            android:layout_width="80dp"
+            android:layout_height="6mm"
+            android:textSize="18sp"
+            android:background="#FFFFFF" />
+    </TableRow>
+    <!--//TODO конец ВТОРОЙ  строки Названия -->
+
+
+    <!--
+        //TODO НАЧАЛО ТРЕТЬЕЙ ЛИНИИ ЦВЕТА &ndash;&gt;-->
+    <TableRow android:id="@+id/TableFiveLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:gravity="center_vertical|center_horizontal">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/line5singletabel"
+            android:layout_span="5"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:minWidth="100dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:clickable="true"
+            android:focusable="auto"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_horizontal|center_vertical"
+            android:textStyle="bold"
+            android:typeface="normal"
+            android:visibility="visible"
+            app:cornerRadius='150dp'
+            app:cardElevation="5dp"
+            tools:visibility="visible"
+            android:translationZ="100dp"
+            android:background="@drawable/textlines_tabel_row_name_value"
+            android:animateLayoutChanges="true" />
+    </TableRow>
+
+
+
+
+
+
+    <!--//TODO НАчало Второй ЛИНИИ ДАННЫХ-->
+    <TableRow
+        android:id="@+id/TableData4Row"
+        android:layout_width="match_parent"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="1dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp">
+
+
+        <EditText
+            android:id="@+id/v13"
+            android:layout_column="0"
+            android:layout_width="87dp"
+            android:layout_height="6mm"
+            android:foregroundGravity="center"
+            android:hint="V13"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
+            android:background="@android:color/transparent"
+            android:inputType="number"
+            android:padding="0dp"
+            android:textAlignment="center"
+            android:textColorHint="#00ACC1"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/v14"
+            android:layout_column="1"
+            android:layout_width="87dp"
+            android:layout_height="6mm"
+            android:foregroundGravity="center"
+            android:hint="V14"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
+            android:background="@android:color/transparent"
+            android:inputType="number"
+            android:padding="0dp"
+            android:textAlignment="center"
+            android:textColorHint="#00ACC1"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/v15"
+            android:layout_column="2"
+            android:layout_width="87dp"
+            android:layout_height="6mm"
+            android:foregroundGravity="center"
+            android:hint="V15"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
+            android:background="@android:color/transparent"
+            android:inputType="number"
+            android:padding="0dp"
+            android:textAlignment="center"
+            android:textColorHint="#00ACC1"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/v16"
+            android:layout_column="3"
+            android:layout_width="87dp"
+            android:layout_height="6mm"
+            android:foregroundGravity="center"
+            android:hint="V16"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
+            android:background="@android:color/transparent"
+            android:inputType="number"
+            android:padding="0dp"
+            android:textAlignment="center"
+            android:textColorHint="#00ACC1"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </TableRow>
+    <!--  //TODO конец Данных на ВТОРОЙ строчки -->
+    <!--  //TODO конец БЛОКА И NAME  И ДАННЫЕ #4 -->
+
+
+
+
+
+    <!--  //TODO НАЧАЛО БЛОКА И NAME  И ДАННЫЕ #5 -->
+    <TableRow
+        android:id="@+id/TableRow5Name"
+        android:layout_width="match_parent"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="2dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp">
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_column="0"
+            android:id="@+id/d17"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_margin="2dp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            android:hint="d17"
+            android:layout_width="80dp"
+            android:layout_height="6mm"
+            android:textSize="18sp"
+            android:background="#FFFFFF"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_column="1"
+            android:id="@+id/d18"
+            android:gravity="center_vertical|center_horizontal"
+            android:textStyle="bold"
+            android:padding="2dp"
+            android:visibility="visible"
+            android:hint="d18"
+            android:layout_width="80dp"
+            android:layout_height="6mm"
+            android:textSize="18sp"
+            android:background="#FFFFFF" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_column="2"
+            android:id="@+id/d19"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_margin="2dp"
+            android:textStyle="bold"
+            android:padding="2dp"
+            android:visibility="visible"
+            android:hint="d19"
+            android:layout_width="80dp"
+            android:layout_height="6mm"
+            android:textSize="18sp"
+            android:background="#FFFFFF" />
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_column="3"
+            android:id="@+id/d20"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_margin="2dp"
+            android:textStyle="bold"
+            android:padding="2dp"
+            android:visibility="visible"
+            android:hint="d20"
+            android:layout_width="80dp"
+            android:layout_height="6mm"
+            android:textSize="18sp"
+            android:background="#FFFFFF" />
+    </TableRow>
+    <!--//TODO конец ВТОРОЙ  строки Названия -->
+
+
+    <!--
+        //TODO НАЧАЛО ТРЕТЬЕЙ ЛИНИИ ЦВЕТА &ndash;&gt;-->
+    <TableRow android:id="@+id/TableSixLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:gravity="center_vertical|center_horizontal">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/line6singletabel"
+            android:layout_span="5"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:minWidth="100dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:clickable="true"
+            android:focusable="auto"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_horizontal|center_vertical"
+            android:textStyle="bold"
+            android:typeface="normal"
+            android:visibility="visible"
+            app:cornerRadius='150dp'
+            app:cardElevation="5dp"
+            tools:visibility="visible"
+            android:translationZ="100dp"
+            android:background="@drawable/textlines_tabel_row_name_value"
+            android:animateLayoutChanges="true" />
+    </TableRow>
+
+
+
+
+
+
+    <!--//TODO НАчало Второй ЛИНИИ ДАННЫХ-->
+    <TableRow
+        android:id="@+id/TableData5Row"
+        android:layout_width="match_parent"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="1dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp">
+
+
+        <EditText
+            android:id="@+id/v17"
+            android:layout_column="0"
+            android:layout_width="87dp"
+            android:layout_height="6mm"
+            android:foregroundGravity="center"
+            android:hint="V17"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
+            android:background="@android:color/transparent"
+            android:inputType="number"
+            android:padding="0dp"
+            android:textAlignment="center"
+            android:textColorHint="#00ACC1"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/v18"
+            android:layout_column="1"
+            android:layout_width="87dp"
+            android:layout_height="6mm"
+            android:foregroundGravity="center"
+            android:hint="V18"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
+            android:background="@android:color/transparent"
+            android:inputType="number"
+            android:padding="0dp"
+            android:textAlignment="center"
+            android:textColorHint="#00ACC1"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/v19"
+            android:layout_column="2"
+            android:layout_width="87dp"
+            android:layout_height="6mm"
+            android:foregroundGravity="center"
+            android:hint="V19"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
+            android:background="@android:color/transparent"
+            android:inputType="number"
+            android:padding="0dp"
+            android:textAlignment="center"
+            android:textColorHint="#00ACC1"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/v20"
+            android:layout_column="3"
+            android:layout_width="87dp"
+            android:layout_height="6mm"
+            android:foregroundGravity="center"
+            android:hint="V20"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
+            android:background="@android:color/transparent"
+            android:inputType="number"
+            android:padding="0dp"
+            android:textAlignment="center"
+            android:textColorHint="#00ACC1"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </TableRow>
+    <!--  //TODO конец Данных на ВТОРОЙ строчки -->
+    <!--  //TODO конец БЛОКА И NAME  И ДАННЫЕ #5 -->
+
+
+
+
+
+
+    <!--  //TODO НАЧАЛО БЛОКА И NAME  И ДАННЫЕ #6 -->
+    <TableRow
+        android:id="@+id/TableRow6Name"
+        android:layout_width="match_parent"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="2dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp">
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_column="0"
+            android:id="@+id/d21"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_margin="2dp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            android:hint="d21"
+            android:layout_width="80dp"
+            android:layout_height="6mm"
+            android:textSize="18sp"
+            android:background="#FFFFFF"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_column="1"
+            android:id="@+id/d22"
+            android:gravity="center_vertical|center_horizontal"
+            android:textStyle="bold"
+            android:padding="2dp"
+            android:visibility="visible"
+            android:hint="d22"
+            android:layout_width="80dp"
+            android:layout_height="6mm"
+            android:textSize="18sp"
+            android:background="#FFFFFF" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_column="2"
+            android:id="@+id/d23"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_margin="2dp"
+            android:textStyle="bold"
+            android:padding="2dp"
+            android:visibility="visible"
+            android:hint="d23"
+            android:layout_width="80dp"
+            android:layout_height="6mm"
+            android:textSize="18sp"
+            android:background="#FFFFFF" />
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_column="3"
+            android:id="@+id/d24"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_margin="2dp"
+            android:textStyle="bold"
+            android:padding="2dp"
+            android:visibility="visible"
+            android:hint="d24"
+            android:layout_width="80dp"
+            android:layout_height="6mm"
+            android:textSize="18sp"
+            android:background="#FFFFFF" />
+    </TableRow>
+    <!--//TODO конец ВТОРОЙ  строки Названия -->
+
+
+    <!--
+        //TODO НАЧАЛО ТРЕТЬЕЙ ЛИНИИ ЦВЕТА &ndash;&gt;-->
+    <TableRow android:id="@+id/TableSevenLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:gravity="center_vertical|center_horizontal">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/line7singletabel"
+            android:layout_span="5"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:minWidth="100dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:clickable="true"
+            android:focusable="auto"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_horizontal|center_vertical"
+            android:textStyle="bold"
+            android:typeface="normal"
+            android:visibility="visible"
+            app:cornerRadius='150dp'
+            app:cardElevation="5dp"
+            tools:visibility="visible"
+            android:translationZ="100dp"
+            android:background="@drawable/textlines_tabel_row_name_value"
+            android:animateLayoutChanges="true" />
+    </TableRow>
+
+
+
+
+
+
+    <!--//TODO НАчало Второй ЛИНИИ ДАННЫХ-->
+    <TableRow
+        android:id="@+id/TableData6Row"
+        android:layout_width="match_parent"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="1dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp">
+
+
+        <EditText
+            android:id="@+id/v21"
+            android:layout_column="0"
+            android:layout_width="87dp"
+            android:layout_height="6mm"
+            android:foregroundGravity="center"
+            android:hint="V21"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
+            android:background="@android:color/transparent"
+            android:inputType="number"
+            android:padding="0dp"
+            android:textAlignment="center"
+            android:textColorHint="#00ACC1"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/v22"
+            android:layout_column="1"
+            android:layout_width="87dp"
+            android:layout_height="6mm"
+            android:foregroundGravity="center"
+            android:hint="V22"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
+            android:background="@android:color/transparent"
+            android:inputType="number"
+            android:padding="0dp"
+            android:textAlignment="center"
+            android:textColorHint="#00ACC1"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/v23"
+            android:layout_column="2"
+            android:layout_width="87dp"
+            android:layout_height="6mm"
+            android:foregroundGravity="center"
+            android:hint="V23"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
+            android:background="@android:color/transparent"
+            android:inputType="number"
+            android:padding="0dp"
+            android:textAlignment="center"
+            android:textColorHint="#00ACC1"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/v24"
+            android:layout_column="3"
+            android:layout_width="87dp"
+            android:layout_height="6mm"
+            android:foregroundGravity="center"
+            android:hint="V24"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
+            android:background="@android:color/transparent"
+            android:inputType="number"
+            android:padding="0dp"
+            android:textAlignment="center"
+            android:textColorHint="#00ACC1"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </TableRow>
+    <!--  //TODO конец Данных на ВТОРОЙ строчки -->
+    <!--  //TODO конец БЛОКА И NAME  И ДАННЫЕ #6 -->
 
 
 
