@@ -3509,8 +3509,9 @@ try{
                         viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main_grid_for_tables_four_columns_in_mm_htc, parent, false);
                     } else {
                         // TODO: 03.04.2023 для MM
-                        viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main_grid_for_tables_four_columns_in_mm, parent, false);
-                    }      
+                     ///   viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main_grid_for_tables_four_columns_in_mm, parent, false);
+                        viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm, parent, false);
+                    }
                     
                     
                     

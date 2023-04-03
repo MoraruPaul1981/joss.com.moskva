@@ -14,7 +14,7 @@
     <ScrollView
         android:id="@+id/scrollview_new_materials"
         android:layout_width="match_parent"
-        android:layout_height="631dp"
+        android:layout_height="wrap_content"
         android:fillViewport="true"
         android:scrollbars="horizontal|vertical"
         android:stackFromBottom="true"
@@ -23,7 +23,7 @@
     <HorizontalScrollView
         android:id="@+id/ГоризонтльнаяПрокруткаВнутриСамТабель_mm"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center|center_horizontal"
         android:fadingEdge="horizontal|vertical"
         android:visibility="visible"
