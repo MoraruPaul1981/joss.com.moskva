@@ -22,7 +22,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.text.Editable;
 import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
@@ -70,12 +69,10 @@ import androidx.work.WorkManager;
 import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
-import com.dsy.dsu.Business_logic_Only_Class.DATE.Class_Generation_Data;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_MODEL_synchronized;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
-import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.dsy.dsu.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -145,7 +142,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private  Boolean    СтаттусТабеля= false;
     private   String ДробимДляТабеляГод,ДробимДляТебеляМесяц;
     private  View ГлавныйКонтентТабеляИнфлейтер;
-    private Map< Integer,String> ХЭШНазваниеДнейНедели ;
+    private Map< Integer,String> ХЭШНазваниеДнейНедели = Collections.synchronizedMap(new LinkedHashMap<>());;
 
 
     private CREATE_DATABASE Create_Database_СсылкаНАБазовыйКласс;
@@ -205,15 +202,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             super.onCreate(savedInstanceState);
             ////todo запрещает поворот экрана
             setContentView(R.layout.activity_main__tabel_four_colums);
-            //     getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION  );
-            //////todo настрока экрана
-        /*    getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);*/
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
                     | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                     | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -267,11 +255,11 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             // TODO: 29.03.2023  Метод Какая марка телфона из за этого загрудаем вид
             МетодВыбораВнешнегоВидаИзВидаТелефона();
 
-        //    МетодОбновлениеПрофесиии();
+           // МетодОбновлениеПрофесиии();
 
             МетодПриИзмениеДанныхВБазеМенемВнешнийВидТабеляObserver();
 
-            МетодПришлиПараметрыОтДругихАктивитиДляРаботыТабеля();
+            методДанныеИзДругихАктивити();
             // TODO: 30.03.2023 CЛУШАТЕЛИ ДВА ДАННЫХ
             МетодGetmessage();
             // TODO: 30.03.2023 Курсор ALL Date
@@ -279,7 +267,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             //TODO #2
             МетодПриНАжатииНаКнопкуBACK();
             //TODO #4
-            МетолСозданиеТабеляФинал(ПолноеИмяТабеляПослеСозданиеНовогоСотрудника);//запускаем метод создание табеля
+            методСпинерМесяцы(ПолноеИмяТабеляПослеСозданиеНовогоСотрудника);//запускаем метод создание табеля
             //TODO #5
             ВсеСтрокиТабеля=   МетодЗаполненияАлайЛИстаНовымМЕсцевНовогоТабеля(МесяцТабеляФинал);   ////раньше стояло 0
             // TODO: 29.03.2023
@@ -289,6 +277,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             МетодОтработкиПоднятияКлавиатуры();
             // TODO: 29.01.2022 ПРИ ИЗМЕНЕНИ МЕНЯЕМ ДАННЫЕ В БАЗЕ В ТАБЕЛЕ
             МетодАнализДанныхSwipes( );
+            // TODO: 03.04.2023 Создание  Дней Недели Вс, Пон, Ср,Черт
+            методПолучениеДнейНеделиЧерезКалендарь();
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -476,22 +466,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        try {
 
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-
-        }
-    }
 
 // TODO: 24.05.2021  метд обоработки поднятия и апускания клавиатуры
 
@@ -500,55 +475,20 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             KeyboardVisibilityEvent.setEventListener(this, new KeyboardVisibilityEventListener() {
                 @Override
                 public void onVisibilityChanged(boolean isOpen) {
-                    ///
                     if (isOpen) {
-                  /*  Toast.makeText(getApplicationContext(),
-                            " Клавиатур поднялась !!!!!!! "    , Toast.LENGTH_SHORT).show();
-*/
-
-
-
-                        ///////
-
                         Log.d(this.getClass().getName(), " ПолноеИмяТабеляПослеСозданиеНовогоСотрудника "+ПолноеИмяТабеляПослеСозданиеНовогоСотрудника+"\n"+
                                 " ФИОДляТабеляНаАктивти " + ФИОТекущегоСотрудника);
-
-
-
-
-
-                        МетолСозданиеТабеляФинал(ФИОТекущегоСотрудника);
-
-
-
+                        методСпинерМесяцы(ФИОТекущегоСотрудника);
                     }else{
-                    /*Toast.makeText(getApplicationContext(),
-                            " Клавиатур опусталась  "    , Toast.LENGTH_SHORT).show();*/
-
-
-
-
-                        ///////
-
                         Log.d(this.getClass().getName(), " ПолноеИмяТабеляПослеСозданиеНовогоСотрудника "+ПолноеИмяТабеляПослеСозданиеНовогоСотрудника+"\n"+
                                 " ФИОДляТабеляНаАктивти " + ФИОТекущегоСотрудника);
-
-                        МетолСозданиеТабеляФинал(ПолноеИмяТабеляПослеСозданиеНовогоСотрудника);
-
-
+                        методСпинерМесяцы(ПолноеИмяТабеляПослеСозданиеНовогоСотрудника);
                     }
-
                 }
             });
 
-
-
-
-            /////////
         } catch (Exception e) {
-            //  Block of code to handle errors
             e.printStackTrace();
-            ///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
             new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
@@ -745,7 +685,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
 
 
-    private void МетодПришлиПараметрыОтДругихАктивитиДляРаботыТабеля() {
+    private void методДанныеИзДругихАктивити() {
         try {
             Intent ИнтентПришелПараметрыДЛяSingleТАБЕЛЬ =  getIntent();
             РодительскийUUDТаблицыТабель = ИнтентПришелПараметрыДЛяSingleТАБЕЛЬ.getLongExtra("РодительскийUUDТаблицыТабель", 0);
@@ -957,7 +897,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
 
     //TODO хдесь мы запускаем метод создание и обработка самого табеля
-    private void МетолСозданиеТабеляФинал( @NonNull  String ВнутрениеЗначениеСФОилиПриСменеФИОсотрудника) {
+    private void методСпинерМесяцы(@NonNull  String ВнутрениеЗначениеСФОилиПриСменеФИОсотрудника) {
         try{
             МассивДляВыбораСпинераДаты.clear();
             МассивДляВыбораСпинераДаты=new ArrayList<>();
@@ -1202,10 +1142,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                         + " sqLiteCursor "+sqLiteCursor.getCount() );
-                if(ХЭШНазваниеДнейНедели!=null){
-                    ХЭШНазваниеДнейНедели.clear();
-                }
-                ХЭШНазваниеДнейНедели = Collections.synchronizedMap(new LinkedHashMap<>());
 
                 String УниверсальноеИмяТабеля= "";
                 if (ПолноеИмяТабеляПослеСозданиеНовогоСотрудника!=null) {
@@ -1223,9 +1159,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 if (СтаттусТабеля==true) {
                     Toast.makeText(getApplicationContext(), " Табель Проведен !!!. " + "\n" + "(редактирование запрещено).", Toast.LENGTH_SHORT).show();
                 }
-                final int[] ИндексСтрокКомпонентовТабеля = {0};
+
                 int ИндексКолонокКомпонентовТабеля = 0;
-                МетодСозданиеМесяцыСокращенно();
                 Log.d(this.getClass().getName(), " ХЭШНазваниеДнейНедели.get(1) " + ХЭШНазваниеДнейНедели.get(1));
                 /////TODO ТАБЕЛЬ ФИО создаем textview названия дней понелельник вторик среда четеварг
                 НазваниеДанныхВТабелеФИО = ГлавныйКонтентТабеляИнфлейтер.findViewById(R.id.КонтейнерКудаЗагружаетьсяФИО);
@@ -1244,7 +1179,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 // TODO: 24.03.2023  Получаем ФИо и ПРОФЕСИЮ
                 МетодЗаполениеЭкранНАзваниеФИоИПрофесиии();
                 // TODO: 23.03.2023  метод заполенния данными по циклу после анализа swipe
-                МетодПослеАнализаSwipesЗаполненияЦиклом(  ИндексСтрокКомпонентовТабеля,sqLiteCursor);
+                МетодПослеАнализаSwipesЗаполненияЦиклом(  sqLiteCursor);
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1310,12 +1245,11 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         }
     }
 
-    private void МетодПослеАнализаSwipesЗаполненияЦиклом(@NonNull  int[] ИндексСтрокКомпонентовТабеля ,@NonNull SQLiteCursor sqLiteCursor ) {
+    private void МетодПослеАнализаSwipesЗаполненияЦиклом( @NonNull SQLiteCursor sqLiteCursor ) {
         try{
                 /////TODO     ПЕРВАЯ СТРОКА
                 ///todo главный МЕТОД ОФОРМЛЕНИЯ ТАБЕЛЯ ДАННЫМИ И ДНЯМИ
-                МетодГлавныеДанныеLayoutInflater(ИндексСтрокКомпонентовТабеля,
-                        ХЭШНазваниеДнейНедели,
+                МетодГлавныеДанныеLayoutInflater(ХЭШНазваниеДнейНедели,
                         ГлавныйКонтентТабеляИнфлейтер,sqLiteCursor );
                 МетодПерегрузкаГлавногоLaouyout();
                 // TODO: 29.04.2021 если то оди
@@ -1488,50 +1422,6 @@ try{
 
 
 
-    private View МетодОбновлениеЯчеек(View viewДанные) {
-        try{
-            if (viewДанные!=null) {
-                Log.d(this.getClass().getName(), " viewДанные" +  viewДанные);
-            TextView textViewЯчейкаОбновление=(TextView)    viewДанные;
-
-                List<Integer> ЛистДопустимоеСодержание = new ArrayList();
-                IntStream.iterate(1, i -> i + 1).limit(24).forEachOrdered(ЛистДопустимоеСодержание::add);
-                    boolean ФлагНовоеЗначение=         textViewЯчейкаОбновление.toString().matches("(.*)[0-9](.*)");/////TODO   viewДанные.toString().matches("(.*)[^0-9](.*)");
-                String ЗначениеДляВставкиФинальное =null;
-                if(ФлагНовоеЗначение==true){
-                        viewДанные.toString().replaceAll("[^0-9]","");
-                    ЗначениеДляВставкиФинальное =  textViewЯчейкаОбновление.toString().substring(0, 1);
-                    if (   Integer.parseInt(textViewЯчейкаОбновление.getText().toString())>24) {
-                        Toast aa = Toast.makeText(getBaseContext(), "OPEN", Toast.LENGTH_LONG);
-                        ImageView cc = new ImageView(getBaseContext());
-                        cc.setImageResource(R.drawable.icon_dsu1_add_organisazio_error);//icon_dsu1_synchronisazia_dsu1_success
-                        aa.setView(cc);
-                        aa.show();
-                        Toast.makeText(getBaseContext(), "Нет сохранилось !!!"+
-                                "\n"+" (Часы больше 24 ) :" +textViewЯчейкаОбновление.getText().toString(), Toast.LENGTH_SHORT).show();
-                    }
-                    }else {
-                        viewДанные.toString().replaceAll("[0-9]","");
-                            ЗначениеДляВставкиФинальное =  textViewЯчейкаОбновление.toString().substring(0, 2);
-                    }
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + " ФлагНовоеЗначение " +ФлагНовоеЗначение+
-                        " textViewЯчейкаОбновление.toString()" +  textViewЯчейкаОбновление.toString());
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-            //   mNotificationManagerДляЧАТА.cancel(1);///.cancelAll();
-            Log.e(getApplicationContext().getClass().getName(), "С ОШИБКОЙ  Стоп СЛУЖБА СЛУЖБАService_Notifications  ДЛЯ ЧАТА   ДЛЯ ЧАТА onDestroy() время "+new Date());
-
-        }
-        return null;
-    }
 
     ///todo  конец метода удаления третий обработчки нажатия
     //////TODO локального обнвлени с Активити в базу
@@ -1777,8 +1667,8 @@ try{
 
 
 
-    ///todo Метод Который Содаенм НАзвание дней недели сокращенно Пн,01,ВТ,03
-    private  void МетодСозданиеМесяцыСокращенно() throws ParseException {
+    // TODO: 03.04.2023 Создание  Дней Недели Вс, Пон, Ср,Черт
+    private  void методПолучениеДнейНеделиЧерезКалендарь() throws ParseException {
         try {
             int МЕсяцДЛяПоказатаВТАбле=   МетодПоказатьМесяцДляЗАписивОднуКолонку(МесяцТабеляФинал);
             int ГодДЛяПоказатаВТАбле=    МетодПоказатьГодДляЗАписивОднуКолонку(МесяцТабеляФинал);
@@ -2418,8 +2308,7 @@ try{
 //TODO SUB CLASS с ГЛАВНЫМ МЕПТОДОМ ОФОРМЛЕНИЯ ТАБЕЛЯ
 
 
-    private void МетодГлавныеДанныеLayoutInflater(@NonNull int[] ИндексСтрокКомпонентовТабеля
-            , @NonNull Map<Integer, String> ХЭШНазваниеДнейНедели
+    private void МетодГлавныеДанныеLayoutInflater(@NonNull Map<Integer, String> ХЭШНазваниеДнейНедели
             , @NonNull View КонтентТабеляИнфлейтер
             , @NonNull SQLiteCursor sqLiteCursor) {
         /////todo ПЕРВАЯ СТРОКА НАЗВАНИЯ
@@ -2536,9 +2425,6 @@ try{
                      if (event.getAction()==KeyEvent.ACTION_UP) {
 
 
-                         View viewОбновениеЯчеек=       МетодОбновлениеЯчеек(v);
-
-
                          // TODO: 31.03.2023
                          class SubClassОбнолениеЯчеек extends SubClassUpdateSingletabel{
                              @Override
@@ -2553,7 +2439,7 @@ try{
                          Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                  " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                  " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                 + " viewОбновениеЯчеек " +viewОбновениеЯчеек  + "ОбновлениеЯчеекДанных " +ОбновлениеЯчеекДанных);
+                                   + "ОбновлениеЯчеекДанных " +ОбновлениеЯчеекДанных);
                          return true;
                       }
                       return false;
@@ -3042,6 +2928,52 @@ try{
             }
             return  ПровйдерСменаПрофесии;
         }
+
+        private View МетодОбновлениеЯчеек(View viewДанные) {
+            try{
+                if (viewДанные!=null) {
+                    Log.d(this.getClass().getName(), " viewДанные" +  viewДанные);
+                    TextView textViewЯчейкаОбновление=(TextView)    viewДанные;
+
+                    List<Integer> ЛистДопустимоеСодержание = new ArrayList();
+                    IntStream.iterate(1, i -> i + 1).limit(24).forEachOrdered(ЛистДопустимоеСодержание::add);
+                    boolean ФлагНовоеЗначение=         textViewЯчейкаОбновление.toString().matches("(.*)[0-9](.*)");/////TODO   viewДанные.toString().matches("(.*)[^0-9](.*)");
+                    String ЗначениеДляВставкиФинальное =null;
+                    if(ФлагНовоеЗначение==true){
+                        viewДанные.toString().replaceAll("[^0-9]","");
+                        ЗначениеДляВставкиФинальное =  textViewЯчейкаОбновление.toString().substring(0, 1);
+                        if (   Integer.parseInt(textViewЯчейкаОбновление.getText().toString())>24) {
+                            Toast aa = Toast.makeText(getBaseContext(), "OPEN", Toast.LENGTH_LONG);
+                            ImageView cc = new ImageView(getBaseContext());
+                            cc.setImageResource(R.drawable.icon_dsu1_add_organisazio_error);//icon_dsu1_synchronisazia_dsu1_success
+                            aa.setView(cc);
+                            aa.show();
+                            Toast.makeText(getBaseContext(), "Нет сохранилось !!!"+
+                                    "\n"+" (Часы больше 24 ) :" +textViewЯчейкаОбновление.getText().toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        viewДанные.toString().replaceAll("[0-9]","");
+                        ЗначениеДляВставкиФинальное =  textViewЯчейкаОбновление.toString().substring(0, 2);
+                    }
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + " ФлагНовоеЗначение " +ФлагНовоеЗначение+
+                            " textViewЯчейкаОбновление.toString()" +  textViewЯчейкаОбновление.toString());
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                //   mNotificationManagerДляЧАТА.cancel(1);///.cancelAll();
+                Log.e(getApplicationContext().getClass().getName(), "С ОШИБКОЙ  Стоп СЛУЖБА СЛУЖБАService_Notifications  ДЛЯ ЧАТА   ДЛЯ ЧАТА onDestroy() время "+new Date());
+
+            }
+            return null;
+        }
+
 
     }
 }
