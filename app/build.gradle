@@ -108,7 +108,6 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     implementation 'org.chromium.net:cronet-embedded:106.5249.126'
-    implementation 'androidx.gridlayout:gridlayout:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
 
@@ -186,7 +185,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-core:2.14.2'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.14.2'
 
-
-
+// https://mvnrepository.com/artifact/androidx.gridlayout/gridlayout
+    implementation 'androidx.gridlayout:gridlayout:1.0.0-rc01'
 
 }
