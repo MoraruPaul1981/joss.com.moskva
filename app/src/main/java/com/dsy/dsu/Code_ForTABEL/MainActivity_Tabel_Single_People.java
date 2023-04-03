@@ -66,7 +66,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
@@ -83,8 +82,6 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_MODEL_synchronized;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
-import com.dsy.dsu.Code_For_AdmissionMaterials_ПоступлениеМатериалов.FragmentAdmissionMaterials;
-import com.dsy.dsu.Code_For_AdmissionMaterials_ПоступлениеМатериалов.FragmentAdmissionMaterialsDetailing;
 import com.dsy.dsu.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
@@ -3000,8 +2997,19 @@ try{
 
     //TODO класс визуализации внешнего вида
 
-    class SubClassSingleTabelRecycreView extends  MainActivity_Tabel_Single_People{
+    class SubClassSingleTabelRecycreView  {
+        private     Cursor ГлавныйКурсорДанныеSwipes;
+        private   LifecycleOwner lifecycleOwner;
+        private   LifecycleOwner  lifecycleOwnerОбщая;
+        public SubClassSingleTabelRecycreView(@NonNull  Cursor ГлавныйКурсорДанныеSwipes,
+                                              @NonNull  Activity activity,
+                                              @NonNull  LifecycleOwner lifecycleOwner,
+                                              @NonNull  LifecycleOwner  lifecycleOwnerОбщая ) {
+            this.ГлавныйКурсорДанныеSwipes= ГлавныйКурсорДанныеSwipes;
+            this.lifecycleOwner=lifecycleOwner;
+            this.lifecycleOwnerОбщая=lifecycleOwnerОбщая;
 
+        }
 
         private void МетодИнициализацииRecycreView() {
             try{
@@ -3077,7 +3085,7 @@ try{
         protected class MyViewHolder extends RecyclerView.ViewHolder {
             private TableLayout tableLayoutМатериалРодительная;
             private MaterialCardView cardViewМатериалРодительная;
-            public MyViewHolder(@NonNull View itemView) {
+            public MyViewHolder(@NonNull View itemView ) {
                 super(itemView);
                 try {
                     МетодИнициализацииКомпонетовЗаданияCardView(itemView);
@@ -3123,10 +3131,10 @@ try{
                             //TODO
                         } catch (Exception e) {
                             e.printStackTrace();
-                            Log.e(getContext().getClass().getName(),
+                            Log.e(getApplicationContext().getClass().getName(),
                                     "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                             " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                                     this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                                     Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
@@ -3141,10 +3149,10 @@ try{
                             //TODO
                         } catch (Exception e) {
                             e.printStackTrace();
-                            Log.e(getContext().getClass().getName(),
+                            Log.e(getApplicationContext().getClass().getName(),
                                     "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                             " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                                     this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                                     Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
@@ -3155,13 +3163,12 @@ try{
                         super.onItemRangeChanged(positionStart, itemCount, payload);
                         try {
                             Log.d(this.getClass().getName(), "onItemRangeChanged ");
-                            //TODO
                         } catch (Exception e) {
                             e.printStackTrace();
-                            Log.e(getContext().getClass().getName(),
+                            Log.e(getApplicationContext().getClass().getName(),
                                     "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                             " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                                     this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                                     Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
@@ -3172,13 +3179,12 @@ try{
                         super.onItemRangeInserted(positionStart, itemCount);
                         try {
                             Log.d(this.getClass().getName(), "onItemRangeInserted ");
-                            //TODO
                         } catch (Exception e) {
                             e.printStackTrace();
-                            Log.e(getContext().getClass().getName(),
+                            Log.e(getApplicationContext().getClass().getName(),
                                     "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                             " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                                     this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                                     Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
@@ -3192,10 +3198,10 @@ try{
                             //TODO
                         } catch (Exception e) {
                             e.printStackTrace();
-                            Log.e(getContext().getClass().getName(),
+                            Log.e(getApplicationContext().getClass().getName(),
                                     "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                             " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                                     this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                                     Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
@@ -3212,10 +3218,10 @@ try{
                             //TODO
                         } catch (Exception e) {
                             e.printStackTrace();
-                            Log.e(getContext().getClass().getName(),
+                            Log.e(getApplicationContext().getClass().getName(),
                                     "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                             " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                                     this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                                     Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
@@ -3225,7 +3231,6 @@ try{
                     @Override
                     public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
                         Log.d(this.getClass().getName(), "     holder "+holder);
-                        //   ContentProviderOperation.Builder builder = null;
                     }
                 });
                 // TODO: 15.10.2022  дополнительные слушатели
@@ -3246,10 +3251,10 @@ try{
 
                         } catch (Exception e) {
                             e.printStackTrace();
-                            Log.e(getContext().getClass().getName(),
+                            Log.e(getApplicationContext().getClass().getName(),
                                     "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                             " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                                     this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                                     Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
@@ -3260,10 +3265,10 @@ try{
                         try {
                         } catch (Exception e) {
                             e.printStackTrace();
-                            Log.e(getContext().getClass().getName(),
+                            Log.e(getApplicationContext().getClass().getName(),
                                     "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                             " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                                     this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                                     Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
@@ -3286,10 +3291,10 @@ try{
                 //TODO
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.e(getContext().getClass().getName(),
+                Log.e(getApplicationContext().getClass().getName(),
                         "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                 " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                         this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
@@ -3297,13 +3302,11 @@ try{
 
         // TODO: 18.10.2021  СИНХРОНИАЗЦИЯ ЧАТА ПО РАСПИСАНИЮ ЧАТ
         @SuppressLint("FragmentLiveDataObserve")
-        void МетодСоздаенияСлушателяДляПолучениеМатериалаWorkMAnager() throws ExecutionException, InterruptedException {
+        void методWorkMAnager() throws ExecutionException, InterruptedException {
 // TODO: 11.05.2021 ЗПУСКАЕМ СЛУЖБУ через брдкастер синхронизхации и уведомления
             try {
                 String ИмяСлужбыСинхронизациОдноразовая="WorkManager Synchronizasiy_Data Disposable";
                 String ИмяСлужбыСинхронизацииОбщая="WorkManager Synchronizasiy_Data";
-                LifecycleOwner lifecycleOwner =this ;
-                LifecycleOwner lifecycleOwnerОбщая =this ;
                 lifecycleOwner.getLifecycle().addObserver(new LifecycleEventObserver() {
                     @Override
                     public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
@@ -3319,37 +3322,27 @@ try{
                     }
                 });
 
-                WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).observe(lifecycleOwner, new Observer<List<WorkInfo>>() {
+                WorkManager.getInstance(getApplicationContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).observe(lifecycleOwner, new Observer<List<WorkInfo>>() {
                     @Override
                     public void onChanged(List<WorkInfo> workInfos) {
                         workInfos.forEach((СтастусWorkMangerДляФрагментаЧитатьИПисать) -> {
                             try {
                                 if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.SUCCEEDED) == 0)         {
                                     Long CallBaskОтWorkManagerОдноразового =
-                                            СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getLong("ОтветПослеВыполения_MyWork_Async_Синхронизация_Одноразовая",
-                                                    0l);
-                                    long end = Calendar.getInstance().getTimeInMillis();
-                                    long РазницаВоврмени=end-startДляОбноразвовной;
-                                    if (РазницаВоврмени>5000) {
-                                        if (CallBaskОтWorkManagerОдноразового>0) {
-                                            onStart();
-                                            onResume();
-                                            // TODO: 21.11.2022  запускаем удаление
-                                        }
-                                    }
+                                            СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getLong("ОтветПослеВыполения_MyWork_Async_Синхронизация_Одноразовая", 0l);
                                 }
-                                progressBarСканирование.setVisibility(View.INVISIBLE);
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                         " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                             }
                         });
                     }
                 });
-                WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая).observe(lifecycleOwnerОбщая, new Observer<List<WorkInfo>>() {
+                WorkManager.getInstance(getApplicationContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая)
+                        .observe(lifecycleOwnerОбщая, new Observer<List<WorkInfo>>() {
                     @Override
                     public void onChanged(List<WorkInfo> workInfos) {
                         workInfos.forEach((СтастусWorkMangerДляФрагментаЧитатьИПисать) -> {
@@ -3360,19 +3353,13 @@ try{
                                             СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnPublicAsyncWorkMananger", 0);
                                     Long РелультатОбщеегоWorkMAnger =
                                             СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getLong("WorkManangerVipolil", 0l);
-                                    long РазницаВоврмени=end-start;
-                                    if (РазницаВоврмени>6000) {
-                                        onStart();
-                                        onResume();
-                                    }
+
                                 }
-                                // WorkManager.getInstance(getContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая).getResult();
-                                progressBarСканирование.setVisibility(View.INVISIBLE);
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                         " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                             }
                         });
@@ -3383,7 +3370,7 @@ try{
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                         " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
@@ -3484,19 +3471,28 @@ try{
             public  MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View viewПолучениеМатериалов = null;
                 try {
-                    if(asyncTaskLoader.isStarted()){
-                        viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov, parent, false);//todo old simple_for_takst_cardview1
-                        Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов);
-                    }else {
-                        if (cursor.getCount() > 0) {
-                            viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_assionamaterial, parent, false);//todo old  simple_for_assionamaterial
-                            Log.i(this.getClass().getName(), "   viewПолучениеМатериалов" + viewПолучениеМатериалов+ "  sqLiteCursor.getCount()  " + cursor.getCount());
-                        } else {
-                            viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_isnull_actimavmaretisl, parent, false);//todo old simple_for_takst_cardview1
-                            Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов+ "  sqLiteCursor.getCount()  " + cursor.getCount() );
-                        }
-                    }
-                    // TODO: 13.10.2022  добавляем новый компонент в Нащ RecycreView
+                   viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov, parent, false);//todo old simple_for_takst_cardview1
+                    Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов);
+                    if (Build.BRAND.toString().contains("Samsung") ||Build.BRAND.toString().contains("Galaxy")
+                            || Build.BRAND.toString().contains("samsung") ||Build.BRAND.toString().contains("galaxy") ) {
+                        // TODO: 03.04.2023  для Sansung
+                        viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main_grid_for_tables_four_columns_samsung, parent, false);
+                    } else if (Build.BRAND.toString().contains("HTC") ){
+                        // TODO: 03.04.2023    для HTC
+                        viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main_grid_for_tables_four_columns_in_mm_htc, parent, false);
+                    } else {
+                        // TODO: 03.04.2023 для MM
+                        viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main_grid_for_tables_four_columns_in_mm, parent, false);
+                    }      
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                     myViewHolder = new  MyViewHolder(viewПолучениеМатериалов);
                     Log.i(this.getClass().getName(), "   myViewHolder" + myViewHolder  );
                 } catch (Exception e) {
@@ -3554,15 +3550,15 @@ try{
                 }
             }
 
-            private void МетодАнимации(FragmentAdmissionMaterials.MyViewHolder holder) {
+            private void МетодАнимации( MyViewHolder holder) {
                 try {
                     //   holder.cardViewМатериалРодительная.startAnimation(animation);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Log.e(getContext().getClass().getName(),
+                    Log.e(getApplicationContext().getClass().getName(),
                             "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                             this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
@@ -3587,41 +3583,13 @@ try{
 
             private void МетодДобавленеиЕлементоввRecycreView(@NonNull TableLayout tableLayoutРодительская) {
                 try {
-                    // TODO: 07.11.2022   ВТОРОЙ ЭТАП ПОЛУЧАЕМ НОМЕР ЦФО
-                    if (binder!=null && cursor!=null && ТекущаяЦФО>0) {
-                        // TODO: 03.11.2022 Второй Запрос Получем САМО Цифра Полученого Материла
-                        МетодПолучениеДанныхДЛяПолучениеМатериалов("ПолучениеНомерМатериала",ТекущаяЦФО);
-                    }
-                    Log.i(this.getClass().getName(), "  ТекущаяЦФО " + ТекущаяЦФО + " cursorЦФО " + cursorНомерМатериала + " ТекущаяЦФО " +ТекущаяЦФО);
-
-                    // TODO: 18.10.2022 название ЦФО
-                    МетодДанныеНазваниеЦФО(tableLayoutРодительская);
-                    // TODO: 18.10.2022 дял линии
-                    МетодДанныеЛиния(tableLayoutРодительская);
-                    // TODO: 18.10.2022 Добавяем Названием Столбиков
-                    МетодДанныеНазваниеСтолбиков(tableLayoutРодительская);
-                    // TODO: 07.11.2022 сами данные
-                    do{
-                        // TODO: 07.11.2022  ТРЕТИЙ ЭТАП ПОЛУЧАЕМ  НОМЕР ДОКУМЕНТА
-                        Integer ИндексМатериала=  cursorНомерМатериала.getColumnIndex("nomenvesov_zifra");
-                        // Integer ИндексМатериала=  cursorНомерМатериала.getColumnIndex("nomen_vesov");
-                        ТекущаяНомерМатериала=      cursorНомерМатериала.getInt(ИндексМатериала);
-                        Log.i(this.getClass().getName(), "  ТекущаяЦФО " + ТекущаяЦФО + " cursorЦФО " + cursor
-                                + " ТекущаяЦФО " +ТекущаяЦФО+ " ТекущаяНомерМатериала " +ТекущаяНомерМатериала);
-                        // TODO: 07.11.2022 И ЗАПУСКАМ ФИЛЬНАЙ ТРЕИЙ ЭТАП ПОЛУЧЕНИЕ СГРУПИРОВАННЫХ ДАННЫХ
-                        МетодПолучениеДанныхДЛяПолучениеМатериалов("ПолучениеСгрупированныеСамиДанные",ТекущаяЦФО);
-                        Log.i(this.getClass().getName(), "  ТекущаяЦФО " + ТекущаяЦФО + " cursorСамиДанныеGroupBy " + cursorСамиДанныеGroupBy
-                                + " ТекущаяЦФО " +ТекущаяЦФО+ " ТекущаяНомерМатериала " +ТекущаяНомерМатериала);
-                        // TODO: 18.10.2022 Добавяем Сами Данные Получение материалов
-                        МетодДанныеПолучениеМатериалов(tableLayoutРодительская,cursorСамиДанныеGroupBy);
-                        // TODO: 09.12.2022 делалем дополнительно движение
-                    }while (cursorНомерМатериала.moveToNext());
+                    Log.i(this.getClass().getName(), "");
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Log.e(getContext().getClass().getName(),
+                    Log.e(getApplicationContext().getClass().getName(),
                             "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                             this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
@@ -3664,12 +3632,7 @@ try{
                     rowПервыеДанные.setId(new Random().nextInt());
                     tableLayout.recomputeViewAttributes(rowПервыеДанные);
                     rowПервыеДанные.startAnimation(animationLesft);
-                    // TODO: 18.10.2022 добавляем  сами данные
-                    МетодДобаленияНовыхСтрокДанных(rowПервыеДанные, tableLayoutРодительская);
                     // TODO: 19.10.2022
-                    // TODO: 08.11.2022 метод клика по строке Row
-                    Log.d(this.getClass().getName(), "МетодаКликаПоtableRow cursorСамиДанныеGroupBy  "+cursorСамиДанныеGroupBy );
-                    МетодаКликаПоtableRow(rowПервыеДанные);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getApplicationContext().getClass().getName(),
