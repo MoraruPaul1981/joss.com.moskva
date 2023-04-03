@@ -70,6 +70,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.WorkInfo;
@@ -82,6 +83,7 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_MODEL_synchronized;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
+import com.dsy.dsu.Code_For_AdmissionMaterials_ПоступлениеМатериалов.FragmentAdmissionMaterials;
 import com.dsy.dsu.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
@@ -219,6 +221,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             super.onCreate(savedInstanceState);
             ////todo запрещает поворот экрана
             setContentView(R.layout.activity_main__tabel_four_colums);
+            recyclerView =  (RecyclerView) findViewById(R.id.RecyclerViewSingleTabel);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
                     | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                     | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -241,16 +244,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             СпинерТАбельМЕсяцФинал = (Spinner) findViewById(R.id.СпинерТабельМесяц);
             СпинерТАбельДепартаментФинал = (Spinner) findViewById(R.id.СпинерТабельДепратамент);
             ГлавныйКонтейнерТабель = (LinearLayout) findViewById(R.id.ГлавныйКонтейнерТабель);
-            try {
-                ГлавныйКонтейнерТабель.removeAllViewsInLayout();
-            } catch (Exception e) {
-                //  e.printStackTrace();
-            }
-            /////TODO Скоролл Вид
-            ScrollСамогоТабеля=(ScrollView) findViewById(R.id.ScrollViewСамТабеля);
-            ScrollСамогоТабеля.setBackgroundResource(R.drawable.textlines_tabel_row_color_green_mini);
             ///TODO на данной КНОПКЕ МЫ МОЖЕМ ДОБАВИТЬ СОТРУДНИКА К ТАБЕЛЮ ИЛИ СОЗДАТЬ НОВОГО СОТРУДНИКА
-            ГлавныйВерхнийКонтейнер=(ConstraintLayout) findViewById(R.id.ГлавныйВерхнийКонтейнер);
+
             КнопкаЛеваяПередвиженияПоДанным=(Button) findViewById(R.id.imageViewВСамомТабелеЛеваяСтрелка);
             КнопкаПраваяПередвиженияПоДанным=(Button) findViewById(R.id.imageViewВСамомТабелеТабельПраваяСтрелка);
             TextViewЧасовСотрудникаВТабелеСотудников =(TextView) findViewById(R.id.textViewJОбщееКоличествоСотрудниковВТабеле);
@@ -271,8 +266,20 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             Bundle data=     getIntent().getExtras();
             // TODO: 29.03.2023  Метод Какая марка телфона из за этого загрудаем вид
 
-            // TODO: 30.03.2023 Новые Методы
+
+            методДанныеИзДругихАктивити();
             МетодSwipeALLКурсор();
+
+            SubClassSingleTabelRecycreView subClassSingleTabelRecycreView= new SubClassSingleTabelRecycreView(ГлавныйКурсорДанныеSwipes,
+                    this,this,this);
+
+            subClassSingleTabelRecycreView.МетодИнициализацииRecycreView();
+
+                    subClassSingleTabelRecycreView.МетодЗаполенияRecycleViewДляЗадач();
+
+
+            // TODO: 30.03.2023 Новые Методы
+      /*      МетодSwipeALLКурсор();
             МетодВыбораВнешнегоВидаИзВидаТелефона();
 
            // МетодОбновлениеПрофесиии();
@@ -297,7 +304,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             // TODO: 29.01.2022 ПРИ ИЗМЕНЕНИ МЕНЯЕМ ДАННЫЕ В БАЗЕ В ТАБЕЛЕ
             МетодАнализДанныхSwipes( );
             // TODO: 03.04.2023 Создание  Дней Недели Вс, Пон, Ср,Черт
-            методПолучениеДнейНеделиЧерезКалендарь();
+            методПолучениеДнейНеделиЧерезКалендарь();*/
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -431,7 +438,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                    "  ГлавныйКурсорДанныеSwipes " +ГлавныйКурсорДанныеSwipes);
+                    "  ГлавныйКурсорДанныеSwipes " +ГлавныйКурсорДанныеSwipes+
+                    " ОбщееКоличествоЛюдейВТабелеТекущем " +ОбщееКоличествоЛюдейВТабелеТекущем);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -3002,9 +3010,9 @@ try{
         private   LifecycleOwner lifecycleOwner;
         private   LifecycleOwner  lifecycleOwnerОбщая;
         public SubClassSingleTabelRecycreView(@NonNull  Cursor ГлавныйКурсорДанныеSwipes,
-                                              @NonNull  Activity activity,
                                               @NonNull  LifecycleOwner lifecycleOwner,
-                                              @NonNull  LifecycleOwner  lifecycleOwnerОбщая ) {
+                                              @NonNull  LifecycleOwner  lifecycleOwnerОбщая,
+                                              @NonNull Activity activity) {
             this.ГлавныйКурсорДанныеSwipes= ГлавныйКурсорДанныеSwipes;
             this.lifecycleOwner=lifecycleOwner;
             this.lifecycleOwnerОбщая=lifecycleOwnerОбщая;
@@ -3015,12 +3023,31 @@ try{
             try{
                 recyclerView.setVisibility(View.VISIBLE);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-                linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                recyclerView.addItemDecoration(new DividerItemDecoration(activity,LinearLayoutManager.HORIZONTAL));
                 recyclerView.setLayoutManager(linearLayoutManager);
-                recyclerView.startAnimation(animationLesft);
+              //  recyclerView.startAnimation(animationLesft);
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getApplicationContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+
+        // TODO: 04.03.2022 прозвомжность Заполения RecycleView
+        void МетодЗаполенияRecycleViewДляЗадач() {
+            try {
+                Log.d(this.getClass().getName(), "ГлавныйКурсорДанныеSwipes  " + ГлавныйКурсорДанныеSwipes);
+                myRecycleViewAdapter = new  MyRecycleViewAdapter(ГлавныйКурсорДанныеSwipes);
+                recyclerView.setAdapter(myRecycleViewAdapter);
+                Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getApplicationContext().getClass().getName(),
