@@ -63,6 +63,8 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
@@ -73,6 +75,7 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_MODEL_synchronized;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
+import com.dsy.dsu.Code_For_AdmissionMaterials_ПоступлениеМатериалов.FragmentAdmissionMaterials;
 import com.dsy.dsu.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -194,6 +197,10 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private String  МесяциГодТабеляПолностью;
     private Integer ВсеСтрокиТабеля=0;
     private  TextView    КонтейнерКудаЗагружаетьсяФИО;
+/*
+    private FragmentAdmissionMaterials.MyRecycleViewAdapter myRecycleViewAdapter;
+    private FragmentAdmissionMaterials.MyViewHolder myViewHolder;*/
+    private RecyclerView recyclerView;
 
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
     @Override
@@ -253,6 +260,16 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             animationLesft = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_swipe_l);//R.anim.slide_in_row)R.anim.slide_in_row_newscanner1
             Bundle data=     getIntent().getExtras();
             // TODO: 29.03.2023  Метод Какая марка телфона из за этого загрудаем вид
+
+
+
+            // TODO: 30.03.2023 Новые Методы
+            МетодSwipeALLКурсор();
+
+            МетодИнициализацииRecycreView();
+
+            МетодЗаполенияRecycleViewДляЗадач();
+
             МетодВыбораВнешнегоВидаИзВидаТелефона();
 
            // МетодОбновлениеПрофесиии();
@@ -262,8 +279,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             методДанныеИзДругихАктивити();
             // TODO: 30.03.2023 CЛУШАТЕЛИ ДВА ДАННЫХ
             МетодGetmessage();
-            // TODO: 30.03.2023 Курсор ALL Date
-            МетодSwipeALLКурсор();
+
             //TODO #2
             МетодПриНАжатииНаКнопкуBACK();
             //TODO #4
@@ -289,6 +305,46 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
             new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
+
+    private void МетодИнициализацииRecycreView() {
+        try{
+            recyclerView.setVisibility(View.VISIBLE);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.startAnimation(animationLesft);
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(getApplicationContext().getClass().getName(),
+                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
+
+    void МетодЗаполенияRecycleViewДляЗадач() {
+        try {
+            Log.d(this.getClass().getName(), "ГлавныйКурсорДанныеSwipes  " + ГлавныйКурсорДанныеSwipes);
+            myRecycleViewAdapter = new FragmentAdmissionMaterials.MyRecycleViewAdapter(cursorНомерЦФО);
+            recyclerView.setAdapter(myRecycleViewAdapter);
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " recyclerView " +recyclerView);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(getApplicationContext().getClass().getName(),
+                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
 
@@ -410,13 +466,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                    "  ГлавныйКурсорДанныеSwipes " +ГлавныйКурсорДанныеSwipes+
-                    " ЦифровоеИмяНовгоТабеля " +ЦифровоеИмяНовгоТабеля+
-                    " ГодДляКурсораТабелей "+ ГодДляТабелей +
-                    " МЕсяцДляКурсораТабелейДЛяПермещения " + МесяцТабеля+
-                    " ГлавныйКурсорДанныеSwipes " +ГлавныйКурсорДанныеSwipes+
-                    " ПроизошелЛиСфайпПоДаннымСингТабеля " +ПроизошелЛиСфайпПоДаннымСингТабеля +
-                    " ОбщееКоличествоЛюдейВТабелеТекущем " +ОбщееКоличествоЛюдейВТабелеТекущем);
+                    "  ГлавныйКурсорДанныеSwipes " +ГлавныйКурсорДанныеSwipes);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -2981,12 +3031,7 @@ try{
 
 
     //TODO класс визуализации внешнего вида
-   class  SubClassRebootScreen{
 
-
-
-
-    }
 }
 
 

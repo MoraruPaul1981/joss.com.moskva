@@ -51,12 +51,12 @@
         android:layout_height="50dp"
         android:layout_marginStart="1dp"
         android:layout_marginBottom="1dp"
+        android:background="#FFFFFF"
         android:backgroundTint="#FFFFFF"
         android:backgroundTintMode="screen"
         android:stateListAnimator="@drawable/icon_dsu1_exit3_foreground"
         android:textAlignment="center"
         android:visibility="visible"
-        android:background="#FFFFFF"
         app:icon="@drawable/icon_dsu1_exit3_foreground"
         app:iconGravity="textEnd"
         app:iconSize="40dp"
@@ -166,44 +166,30 @@
         app:layout_constraintTop_toBottomOf="@id/textView3СловоТабель"
         tools:visibility="visible" />
 
-    <ScrollView
-        android:id="@+id/ScrollViewСамТабеля"
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecyclerViewSingleTabel"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#FFFFFF"
-        android:drawingCacheQuality="auto"
-        android:foregroundGravity="center_horizontal"
-        android:orientation="horizontal"
-        android:overScrollMode="always"
-        android:scrollbarAlwaysDrawHorizontalTrack="true"
-        android:scrollbarAlwaysDrawVerticalTrack="true"
-        android:scrollbarStyle="outsideInset"
-        android:scrollbars="horizontal|vertical"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="3dp"
+        android:background="#520F0F"
+        android:minHeight="500dp"
         android:visibility="visible"
-        app:layout_collapseMode="pin"
-        app:layout_constraintBottom_toTopOf="@id/СпинерТабельДепратамент"
+        app:layout_constraintBottom_toTopOf="@+id/СпинерТабельДепратамент"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view2Линия"
-        app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+        app:layout_constraintTop_toBottomOf="@+id/view2Линия"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="MissingConstraints" />
 
 
-        <LinearLayout
-            android:id="@+id/ГлавныйКонтейнерТабель"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#F5FFFA"
-            android:gravity="fill"
-            android:orientation="vertical"
-            android:visibility="visible"
-            app:layout_collapseMode="pin"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
-
-            <!--  СЮДА ВСТАВЛЯЕМ ЦИКЛОМ СГЕНЕРИРОВАНЫЙ ВНЕШНИЙ ВИД В ЦИКЛЕ DO WHILE-->
-        </LinearLayout>
 
 
-    </ScrollView>
 
     <ImageButton
         android:id="@+id/imageButtonДвижениеПоСотрудникамВТАбеле"
