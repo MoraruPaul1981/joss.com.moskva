@@ -108,7 +108,7 @@
             app:cardElevation="5dp"
             tools:visibility="visible"
             android:translationZ="100dp"
-            android:background="@drawable/StyleSingleTableRowLIne2"
+            android:background="@drawable/textlines_tabel_row_name_value"
             android:animateLayoutChanges="true" />
     </TableRow>
 
@@ -1567,12 +1567,12 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_column="0"
-                android:id="@+id/d25"
+                android:id="@+id/d29"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_margin="2dp"
                 android:textStyle="bold"
                 android:visibility="visible"
-                android:hint="d25"
+                android:hint="d29"
                 android:layout_width="80dp"
                 android:layout_height="6mm"
                 android:textSize="18sp"
@@ -1580,12 +1580,12 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_column="1"
-                android:id="@+id/d26"
+                android:id="@+id/d30"
                 android:gravity="center_vertical|center_horizontal"
                 android:textStyle="bold"
                 android:padding="2dp"
                 android:visibility="visible"
-                android:hint="d26"
+                android:hint="d30"
                 android:layout_width="80dp"
                 android:layout_height="6mm"
                 android:textSize="18sp"
@@ -1593,37 +1593,38 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_column="2"
-                android:id="@+id/d27"
+                android:id="@+id/d31"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_margin="2dp"
                 android:textStyle="bold"
                 android:padding="2dp"
                 android:visibility="visible"
-                android:hint="d27"
+                android:hint="d31"
                 android:layout_width="80dp"
                 android:layout_height="6mm"
                 android:textSize="18sp"
                 android:background="#FFFFFF" />
             <com.google.android.material.textview.MaterialTextView
                 android:layout_column="3"
-                android:id="@+id/d28"
+                android:id="@+id/d32"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_margin="2dp"
                 android:textStyle="bold"
                 android:padding="2dp"
                 android:visibility="visible"
-                android:hint="d28"
+                android:hint="d32"
                 android:layout_width="80dp"
                 android:layout_height="6mm"
                 android:textSize="18sp"
                 android:background="#FFFFFF" />
+
         </TableRow>
         <!--//TODO конец ВТОРОЙ  строки Названия -->
 
 
         <!--
             //TODO НАЧАЛО ТРЕТЬЕЙ ЛИНИИ ЦВЕТА &ndash;&gt;-->
-        <TableRow android:id="@+id/TableNineLine"
+        <TableRow android:id="@+id/TableTenLine"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
@@ -1631,7 +1632,7 @@
             android:gravity="center_vertical|center_horizontal">
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/line8singletabel"
+                android:id="@+id/line9singletabel"
                 android:layout_span="5"
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
@@ -1660,7 +1661,7 @@
 
         <!--//TODO НАчало Второй ЛИНИИ ДАННЫХ-->
         <TableRow
-            android:id="@+id/TableData7Row"
+            android:id="@+id/TableData8Row"
             android:layout_width="match_parent"
             android:layout_marginStart="1dp"
             android:layout_marginEnd="1dp"
@@ -1672,12 +1673,12 @@
 
 
             <EditText
-                android:id="@+id/v25"
+                android:id="@+id/v29"
                 android:layout_column="0"
                 android:layout_width="87dp"
                 android:layout_height="6mm"
                 android:foregroundGravity="center"
-                android:hint="V25"
+                android:hint="V29"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_marginStart="1dp"
                 android:layout_marginTop="1dp"
@@ -1692,12 +1693,12 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/v26"
+                android:id="@+id/v30"
                 android:layout_column="1"
                 android:layout_width="87dp"
                 android:layout_height="6mm"
                 android:foregroundGravity="center"
-                android:hint="V26"
+                android:hint="V30"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_marginStart="1dp"
                 android:layout_marginTop="1dp"
@@ -1712,12 +1713,12 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/v27"
+                android:id="@+id/v31"
                 android:layout_column="2"
                 android:layout_width="87dp"
                 android:layout_height="6mm"
                 android:foregroundGravity="center"
-                android:hint="V27"
+                android:hint="V31"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_marginStart="1dp"
                 android:layout_marginTop="1dp"
@@ -1732,12 +1733,12 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/v28"
+                android:id="@+id/v32"
                 android:layout_column="3"
                 android:layout_width="87dp"
                 android:layout_height="6mm"
                 android:foregroundGravity="center"
-                android:hint="V28"
+                android:hint="V32"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_marginStart="1dp"
                 android:layout_marginTop="1dp"
@@ -1752,7 +1753,7 @@
                 android:textStyle="bold" />
         </TableRow>
         <!--  //TODO конец Данных на ВТОРОЙ строчки -->
-        <!--  //TODO конец БЛОКА И NAME  И ДАННЫЕ #8 -->
+        <!--  //TODO конец БЛОКА И NAME  И ДАННЫЕ #9 -->
 
 
 
