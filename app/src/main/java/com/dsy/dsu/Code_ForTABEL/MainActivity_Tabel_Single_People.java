@@ -19,7 +19,6 @@ import android.database.sqlite.SQLiteCursor;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.media.browse.MediaBrowser;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -71,9 +70,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.WorkInfo;
@@ -86,10 +83,8 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_MODEL_synchronized;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
-import com.dsy.dsu.Code_For_AdmissionMaterials_ПоступлениеМатериалов.FragmentAdmissionMaterials;
 import com.dsy.dsu.R;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
@@ -3032,62 +3027,7 @@ try{
                 dividerItemDecoration.setDrawable(getDrawable(R.drawable.divider_for_single_tabel));
                 recyclerView.addItemDecoration(dividerItemDecoration);
                 recyclerView.setLayoutManager(linearLayoutManager);
-              //  recyclerView.startAnimation(animationLesft);
-
-ItemTouchHelper.Callback itemcallback2=new ItemTouchHelper.Callback() {
-    @Override
-    public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-        Toast.makeText(activity, "direction 13", Toast.LENGTH_SHORT).show();
-        return recyclerView.getChildCount();
-    }
-
-    @Override
-    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-        Toast.makeText(activity, "direction 13", Toast.LENGTH_SHORT).show();
-        return false;
-    }
-
-    @Override
-    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-        Toast.makeText(activity, "direction 11", Toast.LENGTH_SHORT).show();
-    }
-};
-                ItemTouchHelper.SimpleCallback itemcallback=new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT |
-                        ItemTouchHelper.DOWN | ItemTouchHelper.UP | ItemTouchHelper.START | ItemTouchHelper.END ) {
-
-                    @Override
-                    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                        Toast.makeText(activity, "direction 13", Toast.LENGTH_SHORT).show();
-                        return false;
-                    }
-
-                    @Override
-                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                        Toast.makeText(activity, "direction 13", Toast.LENGTH_SHORT).show();
-
-                    }
-                };
-                ItemTouchHelper itemTouchHelper=new ItemTouchHelper(itemcallback);
-                itemTouchHelper.attachToRecyclerView(recyclerView);
-                ItemTouchHelper itemTouchHelper2=new ItemTouchHelper(itemcallback2);
-                itemTouchHelper2.attachToRecyclerView(recyclerView);
-
+               ///  recyclerView.startAnimation(animationПрофессия);
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -3109,6 +3049,8 @@ ItemTouchHelper.Callback itemcallback2=new ItemTouchHelper.Callback() {
                 Log.d(this.getClass().getName(), "ГлавныйКурсорДанныеSwipes  " + ГлавныйКурсорДанныеSwipes);
                 myRecycleViewAdapter = new  MyRecycleViewAdapter(ГлавныйКурсорДанныеSwipes);
                 recyclerView.setAdapter(myRecycleViewAdapter);
+                recyclerView.getAdapter().notifyDataSetChanged();
+                recyclerView.requestLayout();
                 Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -3172,12 +3114,12 @@ ItemTouchHelper.Callback itemcallback2=new ItemTouchHelper.Callback() {
 
         // TODO: 28.02.2022 начало  MyViewHolderДляЧата
         protected class MyViewHolder extends RecyclerView.ViewHolder {
-            private TableLayout tableLayoutМатериалРодительная;
-            private MaterialCardView cardViewМатериалРодительная;
+            private TableLayout TableLayoutSingleTabel;
+            private MaterialTextView RowКонтейнерКудаЗагружаетьсяФИО;
             public MyViewHolder(@NonNull View itemView ) {
                 super(itemView);
                 try {
-                    МетодИнициализацииКомпонетовЗаданияCardView(itemView);
+                    МетодИнициализацииRecycreViewSingleTabel(itemView);
                     Log.d(this.getClass().getName(), "   itemView   " + itemView);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -3189,12 +3131,16 @@ ItemTouchHelper.Callback itemcallback2=new ItemTouchHelper.Callback() {
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
             }
-            private void МетодИнициализацииКомпонетовЗаданияCardView(@NonNull View itemView) {
+            private void МетодИнициализацииRecycreViewSingleTabel(@NonNull View itemView) {
                 try {
-                    Log.d(this.getClass().getName(), " отработоатл new SubClassBuccessLogin_ГлавныйКлассБизнесЛогикиФрагмент1 itemView   " + itemView);
-                    tableLayoutМатериалРодительная = itemView.findViewById(R.id.TableLayoutAdmissionLayoutInflater);
-                    cardViewМатериалРодительная = itemView.findViewById(R.id.CardviewassibAmaterial);
-                    Log.d(this.getClass().getName(), " cardViewМатериал   " + cardViewМатериалРодительная);
+                    // TODO: 04.04.2023  Иниуциализация Комепонетов
+                    TableLayoutSingleTabel = itemView.findViewById(R.id.TableLayoutSingleTabel);
+                    RowКонтейнерКудаЗагружаетьсяФИО = itemView.findViewById(R.id.RowКонтейнерКудаЗагружаетьсяФИО);
+                    
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" TableLayoutSingleTabel   " + TableLayoutSingleTabel+ 
+                            " RowКонтейнерКудаЗагружаетьсяФИО " +RowКонтейнерКудаЗагружаетьсяФИО);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getApplicationContext().getClass().getName(),
@@ -3301,57 +3247,7 @@ ItemTouchHelper.Callback itemcallback2=new ItemTouchHelper.Callback() {
                         super.onItemRangeMoved(fromPosition, toPosition, itemCount);
                         try {
                             Log.d(this.getClass().getName(), "     onItemRangeMoved ");
-         /*                   recyclerView.getRecycledViewPool().clear();
-                            recyclerView.getAdapter().notifyDataSetChanged();
-                            recyclerView.refreshDrawableState();*/
-                            //TODO
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(getApplicationContext().getClass().getName(),
-                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    }
-                });
-                recyclerView.setRecyclerListener(new RecyclerView.RecyclerListener() {
-                    @Override
-                    public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
-                        Log.d(this.getClass().getName(), "     holder "+holder);
-                    }
-                });
-                // TODO: 15.10.2022  дополнительные слушатели
 
-                recyclerView.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
-                    @Override
-                    public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
-                        Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
-                        return null;
-                    }
-                });
-                // TODO: 17.10.2022 метод внешний вид нижних строчек
-                recyclerView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
-                    @Override
-                    public void onChildViewAttachedToWindow(@NonNull View view) {
-                        Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
-                        try {
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(getApplicationContext().getClass().getName(),
-                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    }
-                    @Override
-                    public void onChildViewDetachedFromWindow(@NonNull View view) {
-                        Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
-                        try {
                         } catch (Exception e) {
                             e.printStackTrace();
                             Log.e(getApplicationContext().getClass().getName(),
@@ -3364,20 +3260,6 @@ ItemTouchHelper.Callback itemcallback2=new ItemTouchHelper.Callback() {
                     }
                 });
 
-                recyclerView.setRecyclerListener(new RecyclerView.RecyclerListener() {
-                    @Override
-                    public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
-                        Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
-                    }
-                });
-                recyclerView.setOnFlingListener(new RecyclerView.OnFlingListener() {
-                    @Override
-                    public boolean onFling(int velocityX, int velocityY) {
-                        Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
-                        return false;
-                    }
-                });
-                //TODO
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getApplicationContext().getClass().getName(),
@@ -3416,10 +3298,19 @@ ItemTouchHelper.Callback itemcallback2=new ItemTouchHelper.Callback() {
                     public void onChanged(List<WorkInfo> workInfos) {
                         workInfos.forEach((СтастусWorkMangerДляФрагментаЧитатьИПисать) -> {
                             try {
+                                Long CallBaskОтWorkManagerОдноразового=0l;
                                 if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.SUCCEEDED) == 0)         {
-                                    Long CallBaskОтWorkManagerОдноразового =
+                                   CallBaskОтWorkManagerОдноразового =
                                             СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getLong("ОтветПослеВыполения_MyWork_Async_Синхронизация_Одноразовая", 0l);
+                                    if (CallBaskОтWorkManagerОдноразового>0) {
+                                        recyclerView.setAdapter(myRecycleViewAdapter);
+                                        recyclerView.getAdapter().notifyDataSetChanged();
+                                        recyclerView.requestLayout();
+                                    }
                                 }
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "CallBaskОтWorkManagerОдноразового " +CallBaskОтWorkManagerОдноразового);
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -3436,14 +3327,20 @@ ItemTouchHelper.Callback itemcallback2=new ItemTouchHelper.Callback() {
                     public void onChanged(List<WorkInfo> workInfos) {
                         workInfos.forEach((СтастусWorkMangerДляФрагментаЧитатьИПисать) -> {
                             try {
+                                Integer CallBaskОтWorkManageОбщая=0;
                                 if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.RUNNING) != 0) {
                                     long end = Calendar.getInstance().getTimeInMillis();
-                                    Integer CallBaskОтWorkManageОбщая =
+                                     CallBaskОтWorkManageОбщая =
                                             СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnPublicAsyncWorkMananger", 0);
-                                    Long РелультатОбщеегоWorkMAnger =
-                                            СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getLong("WorkManangerVipolil", 0l);
-
+                                    if (CallBaskОтWorkManageОбщая>0) {
+                                        recyclerView.setAdapter(myRecycleViewAdapter);
+                                        recyclerView.getAdapter().notifyDataSetChanged();
+                                        recyclerView.requestLayout();
+                                    }
                                 }
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "CallBaskОтWorkManageОбщая " +CallBaskОтWorkManageОбщая);
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -3454,7 +3351,6 @@ ItemTouchHelper.Callback itemcallback2=new ItemTouchHelper.Callback() {
                         });
                     }
                 });
-                // TODO: 29.09.2021  конец синхрониазции по раписанию
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -3467,12 +3363,22 @@ ItemTouchHelper.Callback itemcallback2=new ItemTouchHelper.Callback() {
         class MyRecycleViewAdapter extends RecyclerView.Adapter< MyViewHolder> {
             private Cursor cursor;
             public MyRecycleViewAdapter(@NotNull Cursor cursor) {
+                try{
                 this.cursor = cursor;
                 if ( cursor!=null) {
                     if (cursor.getCount() > 0 ) {
-                        Log.i(this.getClass().getName(), " cursor  " + cursor.getCount());
                     }
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " cursor  " + cursor.getCount());
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
             }
 
             @Override
@@ -3482,9 +3388,10 @@ ItemTouchHelper.Callback itemcallback2=new ItemTouchHelper.Callback() {
                     if (cursor!=null) {
                         if (cursor.getCount() > 0) {
                             cursor.moveToPosition(position);
-                           //// ТекущаяЦФО=        МетодВытаскиваемТекущийЦФО(cursor);    // TODO: 17.10.2022  метод который вытаскиваем Текущее Значение ЦФО для получение дальнейших данных
-                            //  ХэшДааныеСтрока = (ConcurrentSkipListMap<String, String>) ArrayListДанныеОтСканироваиниеДивайсов.get(position);
-                            Log.i(this.getClass().getName(), "   onBindViewHolder  position" + position + " cursor " + cursor);
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " cursor  " + cursor.getCount()+
+                                    " position " +position);
                         }
                     }
                 } catch (Exception e) {
@@ -3526,11 +3433,19 @@ ItemTouchHelper.Callback itemcallback2=new ItemTouchHelper.Callback() {
 
             @Override
             public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-
+                try{
                 recyclerView.removeAllViews();
-
                 recyclerView.getRecycledViewPool().clear();
                 super.onAttachedToRecyclerView(recyclerView);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getApplicationContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
             }
 
             @Override
@@ -3659,7 +3574,7 @@ ItemTouchHelper.Callback itemcallback2=new ItemTouchHelper.Callback() {
             private void МетодЗаполняемДаннымиПолучениеМАтериалов(@NonNull  MyViewHolder holder, @NonNull Cursor cursor) {
                 try {
                     if (cursor != null && holder.cardViewМатериалРодительная != null) {
-                        МетодДобавленеиЕлементоввRecycreView(holder.tableLayoutМатериалРодительная);
+                        МетодДобавленеиЕлементоввRecycreView(holder.tableLayoutSingleTabel);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
