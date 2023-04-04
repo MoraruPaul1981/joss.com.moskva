@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =      1013;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+     static final int VERSION =      1014;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
     private      SQLiteDatabase ССылкаНаСозданнуюБазу;
     private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
@@ -629,7 +629,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
                 "year_tabels NUMERIC," +
                 "date_update  NUMERIC   ," +
                 " uuid  NUMERIC UNIQUE ," +
-                " status_send  TEXT  DEFAULT 0   ," +
+                " status_send  TEXT  DEFAULT 'Локальные'   ," +
                 " user_update INTEGER ," +
                 "current_table  NUMERIC  UNIQUE     ,"+
                 " UNIQUE (user_update, month_tabels,year_tabels,cfo),"+
@@ -702,7 +702,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
                 " current_table  NUMERIC    UNIQUE  ," +
                 " uuid NUMERIC UNIQUE ," +
                 " user_update INTEGER  ," +
-                "status_send TEXT DEFAULT 0  ," +
+                "status_send TEXT DEFAULT 'Локальные'  ," +
                 "status_carried_out   INTEGER DEFAULT 0   ,"+
                 " prof   INTEGER    ,"+
                 " UNIQUE (fio,user_update,uuid_tabel,prof,uuid),"+
