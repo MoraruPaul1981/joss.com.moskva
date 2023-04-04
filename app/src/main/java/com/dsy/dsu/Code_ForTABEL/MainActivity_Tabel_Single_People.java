@@ -35,7 +35,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -109,9 +108,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Optional;
 import java.util.PrimitiveIterator;
-import java.util.Random;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -3115,7 +3112,25 @@ try{
         // TODO: 28.02.2022 начало  MyViewHolderДляЧата
         protected class MyViewHolder extends RecyclerView.ViewHolder {
             private TableLayout TableLayoutSingleTabel;
-            private MaterialTextView RowКонтейнерКудаЗагружаетьсяФИО;
+            private   TableRow rowФИО;
+            // TODO: 04.04.2023   NAME
+            private   TableRow rowName1;
+            private   TableRow rowName2;
+            private   TableRow rowName3;
+            private   TableRow rowName4;
+            private   TableRow rowName5;
+            private   TableRow rowName6;
+            private   TableRow rowName7;
+            private   TableRow rowName8;
+            // TODO: 04.04.2023   Data
+            private   TableRow rowData1;
+            private   TableRow rowData2;
+            private   TableRow rowData3;
+            private   TableRow rowData4;
+            private   TableRow rowData5;
+            private   TableRow rowData6;
+            private   TableRow rowData7;
+            private   TableRow rowData8;
             public MyViewHolder(@NonNull View itemView ) {
                 super(itemView);
                 try {
@@ -3135,12 +3150,29 @@ try{
                 try {
                     // TODO: 04.04.2023  Иниуциализация Комепонетов
                     TableLayoutSingleTabel = itemView.findViewById(R.id.TableLayoutSingleTabel);
-                    RowКонтейнерКудаЗагружаетьсяФИО = itemView.findViewById(R.id.RowКонтейнерКудаЗагружаетьсяФИО);
-                    
+                    rowФИО = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableRowsFIO);
+                    // TODO: 04.04.2023   NAME
+                    rowName1 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableRow1Name);
+                    rowName2 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableRow2Name);
+                    rowName3 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableRow3Name);
+                    rowName4 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableRow4Name);
+                    rowName5 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableRow5Name);
+                    rowName7 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableRow7Name);
+                    rowName8 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableRow8Name);
+                    // TODO: 04.04.2023   Data
+                    rowData1 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.v1);
+                    rowData2 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.v2);
+                    rowData3 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.v3);
+                    rowData4 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.v4);
+                    rowData5 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.v5);
+                    rowData6 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.v6);
+                    rowData7 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.v7);
+                    rowData8 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.v8);
+
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" TableLayoutSingleTabel   " + TableLayoutSingleTabel+ 
-                            " RowКонтейнерКудаЗагружаетьсяФИО " +RowКонтейнерКудаЗагружаетьсяФИО);
+                            " TableLayoutSingleTabel " +TableLayoutSingleTabel);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getApplicationContext().getClass().getName(),
@@ -3540,7 +3572,8 @@ try{
                     if (cursor!=null) {
                         if (cursor.getCount() > 0) {
                             cursor.moveToPosition(position);
-                            МетодЗаполняемДаннымиПолучениеМАтериалов(holder, cursor);
+                            // TODO: 04.04.2023 ЗАПОЛЕНИЯ НОВЫМИ ДАННЫМИ ПОСЛЕ СМЕЩЕНИЕ ДАННЫХ ВНУТРИ  
+                            МетодЗаполняемДаннымиRecycreView(holder, cursor);
                             Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
                         } else {
                             Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
@@ -3571,11 +3604,14 @@ try{
                 }
             }
             ///todo первый метод #1
-            private void МетодЗаполняемДаннымиПолучениеМАтериалов(@NonNull  MyViewHolder holder, @NonNull Cursor cursor) {
+            private void МетодЗаполняемДаннымиRecycreView(@NonNull  MyViewHolder holder, @NonNull Cursor cursor) {
                 try {
-                    if (cursor != null && holder.cardViewМатериалРодительная != null) {
-                        МетодДобавленеиЕлементоввRecycreView(holder.tableLayoutSingleTabel);
+                    if (cursor != null && holder.TableLayoutSingleTabel != null) {
+                        МетодЗаполняем1TableRow();
                     }
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getApplicationContext().getClass().getName(),
@@ -3588,27 +3624,13 @@ try{
             }
 
 
-            private void МетодДобавленеиЕлементоввRecycreView(@NonNull TableLayout tableLayoutРодительская) {
+            private void МетодЗаполняем1TableRow( ) {
                 try {
-                    Log.i(this.getClass().getName(), "");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(getApplicationContext().getClass().getName(),
-                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
-            }
 
 
-            private void МетодВнутриСпинера(@NonNull TableLayout tableLayout ,@NonNull TableLayout tableLayoutРодительская, @NonNull Cursor cursorСамиДанныеGroupBy) {
-                try{
-                    Log.d(this.getClass().getName(), "  выходим из задания МетодКпопкаВозвращениеНазадИзСогласованиии" + " cursorСамиДанныеGroupBy " +cursorСамиДанныеGroupBy);
-                    tableLayout= (TableLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.simple_for_assionamaterial_row,null);//todo old  simple_for_assionamaterial
-                    // tableLayout.setAnimation(animation);
-                    TableRow rowПервыеДанные = (TableRow)   tableLayout.findViewById(R.id.TableData);
+
+
+               /*     TableRow rowПервыеДанные = (TableRow)   TableLayoutSingleTabel.findViewById(R.id.TableData);
                     TextView textView=  rowПервыеДанные.findViewById(R.id.textview1);
                     String Материал= Optional.ofNullable(cursorСамиДанныеGroupBy.getString(cursorСамиДанныеGroupBy.getColumnIndex("typematerial"))).orElse("");
                     textView.setText(Материал.trim());
@@ -3631,15 +3653,12 @@ try{
                     data.putString("ВыбранныйМатериал",ВыбранныйМатериал);
                     data.putFloat("Сумма",Сумма);
                     rowПервыеДанные.setTag(data);
+*/
 
-                    // TODO: 06.11.2022 удаление
-                    tableLayout.recomputeViewAttributes(rowПервыеДанные);
-                    tableLayout.removeViewInLayout(rowПервыеДанные);
-                    tableLayout.removeView(rowПервыеДанные);
-                    rowПервыеДанные.setId(new Random().nextInt());
-                    tableLayout.recomputeViewAttributes(rowПервыеДанные);
-                    rowПервыеДанные.startAnimation(animationLesft);
                     // TODO: 19.10.2022
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cursor  " +cursor);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getApplicationContext().getClass().getName(),
@@ -3650,6 +3669,8 @@ try{
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
             }
+
+
 
             // TODO: 08.11.2022 метод перехода на дитализацию
             private void МетодаКликаПоtableRow(TableRow rowПервыеДанные) {
