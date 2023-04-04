@@ -19,6 +19,7 @@ import android.database.sqlite.SQLiteCursor;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.media.browse.MediaBrowser;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -70,6 +71,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -3038,7 +3040,8 @@ ItemTouchHelper.Callback itemcallback2=new ItemTouchHelper.Callback() {
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-        return 0;
+        Toast.makeText(activity, "direction 13", Toast.LENGTH_SHORT).show();
+        return recyclerView.getChildCount();
     }
 
     @Override
@@ -3046,6 +3049,7 @@ ItemTouchHelper.Callback itemcallback2=new ItemTouchHelper.Callback() {
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+        Toast.makeText(activity, "direction 13", Toast.LENGTH_SHORT).show();
         return false;
     }
 
@@ -3054,15 +3058,19 @@ ItemTouchHelper.Callback itemcallback2=new ItemTouchHelper.Callback() {
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
+        Toast.makeText(activity, "direction 11", Toast.LENGTH_SHORT).show();
     }
 };
-                ItemTouchHelper.SimpleCallback itemcallback=new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.DOWN) {
+                ItemTouchHelper.SimpleCallback itemcallback=new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT |
+                        ItemTouchHelper.DOWN | ItemTouchHelper.UP | ItemTouchHelper.START | ItemTouchHelper.END ) {
 
                     @Override
                     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                        Toast.makeText(activity, "direction 13", Toast.LENGTH_SHORT).show();
                         return false;
                     }
 
@@ -3071,45 +3079,16 @@ ItemTouchHelper.Callback itemcallback2=new ItemTouchHelper.Callback() {
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                        Toast.makeText(activity, "direction 13", Toast.LENGTH_SHORT).show();
 
                     }
                 };
                 ItemTouchHelper itemTouchHelper=new ItemTouchHelper(itemcallback);
                 itemTouchHelper.attachToRecyclerView(recyclerView);
-                itemcallback2.onSwiped(myViewHolder,2);
-                recyclerView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
-                    @Override
-                    public void onChildViewAttachedToWindow(@NonNull View view) {
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                        view.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                            }
-                        });
-                    }
+                ItemTouchHelper itemTouchHelper2=new ItemTouchHelper(itemcallback2);
+                itemTouchHelper2.attachToRecyclerView(recyclerView);
 
-                    @Override
-                    public void onChildViewDetachedFromWindow(@NonNull View view) {
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                    }
-                });
 
-                recyclerView.addOnUnhandledKeyEventListener(new View.OnUnhandledKeyEventListener() {
-                    @Override
-                    public boolean onUnhandledKeyEvent(View v, KeyEvent event) {
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                        return false;
-                    }
-                });
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
