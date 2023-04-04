@@ -264,6 +264,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             методДанныеИзДругихАктивити();
             МетодSwipeALLКурсор();
+            МетодGetmessage();
 
             SubClassSingleTabelRecycreView subClassSingleTabelRecycreView= new SubClassSingleTabelRecycreView(ГлавныйКурсорДанныеSwipes,
                     this,this,this);
@@ -272,11 +273,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
                     subClassSingleTabelRecycreView.МетодЗаполенияRecycleViewДляЗадач();
 
-                  subClassSingleTabelRecycreView.  МетодСлушательRecycleView();
+                    message.getTarget().postDelayed(()->{
+                        subClassSingleTabelRecycreView.  МетодСлушательRecycleView();
+                        subClassSingleTabelRecycreView.  МетодСлушательКурсора();
+                        subClassSingleTabelRecycreView.  методWorkMAnagerReycreVIew();
+                    },2000);
 
-                  subClassSingleTabelRecycreView.  МетодСлушательКурсора();
-
-                  subClassSingleTabelRecycreView.  методWorkMAnagerReycreVIew();
 
             // TODO: 30.03.2023 Новые Методы
       /*      МетодSwipeALLКурсор();
@@ -3053,6 +3055,7 @@ try{
                 myRecycleViewAdapter = new  MyRecycleViewAdapter(ГлавныйКурсорДанныеSwipes);
                 recyclerView.setAdapter(myRecycleViewAdapter);
                 recyclerView.getAdapter().notifyDataSetChanged();
+                myRecycleViewAdapter.notifyDataSetChanged();
                 recyclerView.requestLayout();
                 Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
             } catch (Exception e) {
@@ -3141,8 +3144,13 @@ try{
             public MyViewHolder(@NonNull View itemView ) {
                 super(itemView);
                 try {
+                    // TODO: 04.04.2023 Метод Иинициализации RecycreVIEW ALL ELEMENT
                     МетодИнициализацииRecycreViewSingleTabel(itemView);
-                    Log.d(this.getClass().getName(), "   itemView   " + itemView);
+                    // TODO: 04.04.2023 RecycreVIEW Child
+                    методПосикДОчернихЭлемента(itemView);
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " itemView "+itemView);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getApplicationContext().getClass().getName(),
@@ -3181,6 +3189,62 @@ try{
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" TableLayoutSingleTabel   " + TableLayoutSingleTabel+ 
                             " TableLayoutSingleTabel " +TableLayoutSingleTabel);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(getApplicationContext().getClass().getName(),
+                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
+            }
+            private void методПосикДОчернихЭлемента(@NonNull View itemView) {
+                try{
+                    recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+                        @Override
+                        public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                            return false;
+                        }
+
+                        @Override
+                        public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                        }
+
+                        @Override
+                        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                        }
+                    });
+
+                    recyclerView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
+                        @Override
+                        public void onChildViewAttachedToWindow(@NonNull View view) {
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                        }
+
+                        @Override
+                        public void onChildViewDetachedFromWindow(@NonNull View view) {
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                        }
+                    });
+
+
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getApplicationContext().getClass().getName(),
@@ -3313,7 +3377,7 @@ try{
 
         // TODO: 18.10.2021  СИНХРОНИАЗЦИЯ ЧАТА ПО РАСПИСАНИЮ ЧАТ
         @SuppressLint("FragmentLiveDataObserve")
-        void методWorkMAnagerReycreVIew() throws ExecutionException, InterruptedException {
+        void методWorkMAnagerReycreVIew() {
 // TODO: 11.05.2021 ЗПУСКАЕМ СЛУЖБУ через брдкастер синхронизхации и уведомления
             try {
                 String ИмяСлужбыСинхронизациОдноразовая="WorkManager Synchronizasiy_Data Disposable";
@@ -3343,7 +3407,6 @@ try{
                                    CallBaskОтWorkManagerОдноразового =
                                             СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getLong("ОтветПослеВыполения_MyWork_Async_Синхронизация_Одноразовая", 0l);
                                     if (CallBaskОтWorkManagerОдноразового>0) {
-                                        recyclerView.setAdapter(myRecycleViewAdapter);
                                         recyclerView.getAdapter().notifyDataSetChanged();
                                         recyclerView.requestLayout();
                                     }
@@ -3373,7 +3436,6 @@ try{
                                      CallBaskОтWorkManageОбщая =
                                             СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnPublicAsyncWorkMananger", 0);
                                     if (CallBaskОтWorkManageОбщая>0) {
-                                        recyclerView.setAdapter(myRecycleViewAdapter);
                                         recyclerView.getAdapter().notifyDataSetChanged();
                                         recyclerView.requestLayout();
                                     }
