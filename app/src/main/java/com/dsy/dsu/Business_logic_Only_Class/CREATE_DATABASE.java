@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =      1011;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+     static final int VERSION =      1013;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
     private      SQLiteDatabase ССылкаНаСозданнуюБазу;
     private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
@@ -622,14 +622,14 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
     private void МетодСоздания_ТаблицыТабель(SQLiteDatabase ССылкаНаСозданнуюБазу) {
         ССылкаНаСозданнуюБазу.execSQL("drop table  if exists tabel");//test
         ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'tabel'");//test
-        ССылкаНаСозданнуюБазу.execSQL("Create table if not exists tabel(" +
+       ССылкаНаСозданнуюБазу.execSQL("Create table if not exists tabel(" +
                 "_id  INTEGER  PRIMARY KEY  ," +
                 "cfo NUMERIC ," +
                 " month_tabels TEXT check(length(month_tabels) <13 ) ," +
                 "year_tabels NUMERIC," +
                 "date_update  NUMERIC   ," +
                 " uuid  NUMERIC UNIQUE ," +
-                " status_send  TEXT ," +
+                " status_send  TEXT  DEFAULT 0   ," +
                 " user_update INTEGER ," +
                 "current_table  NUMERIC  UNIQUE     ,"+
                 " UNIQUE (user_update, month_tabels,year_tabels,cfo),"+
@@ -702,7 +702,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
                 " current_table  NUMERIC    UNIQUE  ," +
                 " uuid NUMERIC UNIQUE ," +
                 " user_update INTEGER  ," +
-                "status_send TEXT ," +
+                "status_send TEXT DEFAULT 0  ," +
                 "status_carried_out   INTEGER DEFAULT 0   ,"+
                 " prof   INTEGER    ,"+
                 " UNIQUE (fio,user_update,uuid_tabel,prof,uuid),"+
