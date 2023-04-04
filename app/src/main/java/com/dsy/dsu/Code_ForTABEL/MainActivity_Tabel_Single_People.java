@@ -3605,7 +3605,8 @@ ItemTouchHelper.Callback itemcallback2=new ItemTouchHelper.Callback() {
                     
                     
                     myViewHolder = new  MyViewHolder(viewПолучениеМатериалов);
-                    Log.i(this.getClass().getName(), "   myViewHolder" + myViewHolder  );
+                    Log.i(this.getClass().getName(), "   myViewHolder" + myViewHolder +cursor.getString(0) );
+                    Log.i(this.getClass().getName(), "   myViewHolder" + myViewHolder +cursor.getString(0) );
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getApplicationContext().getClass().getName(),
@@ -3644,6 +3645,7 @@ ItemTouchHelper.Callback itemcallback2=new ItemTouchHelper.Callback() {
                     Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor);
                     if (cursor!=null) {
                         if (cursor.getCount() > 0) {
+                            cursor.moveToPosition(position);
                             МетодЗаполняемДаннымиПолучениеМАтериалов(holder, cursor);
                             Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
                         } else {
