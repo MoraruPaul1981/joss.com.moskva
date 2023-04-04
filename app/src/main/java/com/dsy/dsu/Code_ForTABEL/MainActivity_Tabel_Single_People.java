@@ -3146,8 +3146,6 @@ try{
                 try {
                     // TODO: 04.04.2023 Метод Иинициализации RecycreVIEW ALL ELEMENT
                     МетодИнициализацииRecycreViewSingleTabel(itemView);
-                    // TODO: 04.04.2023 RecycreVIEW Child
-                    методПосикДОчернихЭлемента(itemView);
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " itemView "+itemView);
@@ -3199,62 +3197,7 @@ try{
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
             }
-            private void методПосикДОчернихЭлемента(@NonNull View itemView) {
-                try{
-                    recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-                        @Override
-                        public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-                            return false;
-                        }
 
-                        @Override
-                        public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                        }
-
-                        @Override
-                        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                        }
-                    });
-
-                    recyclerView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
-                        @Override
-                        public void onChildViewAttachedToWindow(@NonNull View view) {
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-                        }
-
-                        @Override
-                        public void onChildViewDetachedFromWindow(@NonNull View view) {
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-                        }
-                    });
-
-
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(getApplicationContext().getClass().getName(),
-                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
-            }
         }
 
         // TODO: 10.03.2022 БИЗНЕС-КОД для ФРАГМЕНТА ПОСТУПЛЕНИЯ МАТЕРИАЛА
@@ -3686,6 +3629,7 @@ try{
                         МетодЗаполняем1TableRow(holder.rowName7,holder.rowData7 );
                         МетодЗаполняем1TableRow(holder.rowName8,holder.rowData8 );
 
+
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -3725,7 +3669,8 @@ try{
                     data.putFloat("Сумма",Сумма);
                     rowПервыеДанные.setTag(data);
 */
-
+                   // TODO: 04.04.20223 КЛИК ПО ДАННЫМ
+                    МетодаКликаПоtableRow(tableRowФио);
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -3771,6 +3716,9 @@ try{
                     data.putFloat("Сумма",Сумма);
                     rowПервыеДанные.setTag(data);
 */
+// TODO: 04.04.20223 КЛИК ПО ДАННЫМ
+                    МетодаКликаПоtableRow(rowData1);
+
 
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -3790,19 +3738,23 @@ try{
 
 
             // TODO: 08.11.2022 метод перехода на дитализацию
-            private void МетодаКликаПоtableRow(TableRow rowПервыеДанные) {
+            private void МетодаКликаПоtableRow(TableRow tableRowКликПоДАнными) {
                 try{
-                    rowПервыеДанные.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Bundle bundleПереходДетализацию=(Bundle) v.getTag();
-                            Log.d(this.getClass().getName(), "МетодаКликаПоtableRow v  " + v+ " bundleПереходДетализацию "+bundleПереходДетализацию);
-                            if (bundleПереходДетализацию != null) {
-                                Log.d(this.getClass().getName(), " fragmentAdmissionMaterialsDetailing " +"  v  " + v );
+                 EditText editTextD1=   tableRowКликПоДАнными.findViewById(R.id.v1);
+                    if (editTextD1!=null) {
+                        editTextD1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Bundle bundleПереходДетализацию=(Bundle) v.getTag();
+                                Log.d(this.getClass().getName(), "МетодаКликаПоtableRow v  " +
+                                        v+ " bundleПереходДетализацию "+bundleПереходДетализацию);
+                                if (bundleПереходДетализацию != null) {
+                                    Log.d(this.getClass().getName(), " fragmentAdmissionMaterialsDetailing " +"  v  " + v );
 
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getApplicationContext().getClass().getName(),
