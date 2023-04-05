@@ -276,11 +276,11 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
                     subClassSingleTabelRecycreView.МетодЗаполенияRecycleViewДляЗадач();
 
-                    message.getTarget().postDelayed(()->{
+               /*     message.getTarget().postDelayed(()->{
                         subClassSingleTabelRecycreView.  МетодСлушательRecycleView();
                         subClassSingleTabelRecycreView.  МетодСлушательКурсора();
                         subClassSingleTabelRecycreView.  методWorkMAnagerReycreVIew();
-                    },2000);
+                    },2000);*/
 
 
             // TODO: 30.03.2023 Новые Методы
@@ -3034,7 +3034,7 @@ try{
                 dividerItemDecoration.setDrawable(getDrawable(R.drawable.divider_for_single_tabel));
                 recyclerView.addItemDecoration(dividerItemDecoration);
                 recyclerView.setLayoutManager(linearLayoutManager);
-                recyclerView.setHasFixedSize(true);
+             //  recyclerView.setHasFixedSize(true);
                ///  recyclerView.startAnimation(animationПрофессия);
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -3144,6 +3144,9 @@ try{
             private   TableRow rowData6;
             private   TableRow rowData7;
             private   TableRow rowData8;
+
+            // TODO: 05.04.2023 Слушатель Long
+            View.OnLongClickListener[] longClickListenerRowData=new View.OnLongClickListener[ГлавныйКурсорДанныеSwipes.getCount()];
             public MyViewHolder(@NonNull View itemView ) {
                 super(itemView);
                 try {
@@ -3459,25 +3462,8 @@ try{
                 super.setHasStableIds(hasStableIds);
             }
 
-            @Override
-            public void onViewRecycled(@NonNull MyViewHolder holder) {
-                super.onViewRecycled(holder);
-            }
 
-            @Override
-            public boolean onFailedToRecycleView(@NonNull  MyViewHolder holder) {
-                return super.onFailedToRecycleView(holder);
-            }
 
-            @Override
-            public void onViewAttachedToWindow(@NonNull  MyViewHolder holder) {
-                super.onViewAttachedToWindow(holder);
-            }
-
-            @Override
-            public void onViewDetachedFromWindow(@NonNull  MyViewHolder holder) {
-                super.onViewDetachedFromWindow(holder);
-            }
 
             @Override
             public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -3501,22 +3487,7 @@ try{
                 super.onDetachedFromRecyclerView(recyclerView);
             }
 
-            @Override
-            public int getItemViewType(int position) {
-                Log.i(this.getClass().getName(), "      holder.textView1  position " + position);
-                try {
-                    Log.i(this.getClass().getName(), "   getItemViewType  position" + position);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(getApplicationContext().getClass().getName(),
-                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
-                return super.getItemViewType(position);
-            }
+
 
             @NonNull
             @Override
@@ -3564,7 +3535,7 @@ try{
                             // TODO: 04.04.2023 ЗАПОЛЕНИЯ НОВЫМИ ДАННЫМИ ПОСЛЕ СМЕЩЕНИЕ ДАННЫХ ВНУТРИ
                             МетодЗаполняемДаннымиRecycreViewSingleTable(holder, cursor);
                             // TODO: 04.04.2023 перегрузкка внешнего вида RecyrView
-                            МетодПерегурзкиВнешнегоВида(holder);
+                          ///  МетодПерегурзкиВнешнегоВида(holder);
                             Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
                         } else {
                             Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
@@ -3623,7 +3594,7 @@ try{
                     // TODO: 04.04.2023  ФИО 
                         МетодЗаполняемФИОRow(holder.rowФИО);
                     // TODO: 04.04.2023  NAME and DATA
-                        МетодЗаполняем1TableRow(holder.rowName1,holder.rowData1,cursor );
+                        МетодЗаполняем1TableRow(holder.rowName1,holder.rowData1,cursor ,holder);
                  /*       МетодЗаполняем1TableRow(holder.rowName2,holder.rowData2,cursor );
                         МетодЗаполняем1TableRow(holder.rowName3,holder.rowData3,cursor );
                         МетодЗаполняем1TableRow(holder.rowName4,holder.rowData4,cursor );
@@ -3687,7 +3658,7 @@ try{
                 }
             }
 
-            private void МетодЗаполняем1TableRow(@NonNull  TableRow rowName1, @NonNull  TableRow rowData1, @NonNull Cursor cursor ) {
+            private void МетодЗаполняем1TableRow(@NonNull  TableRow rowName1, @NonNull  TableRow rowData1, @NonNull Cursor cursor ,@NonNull  MyViewHolder holder) {
                 try {
                    // TableRow rowПервыеДанные = (TableRow)   TableLayoutSingleTabel.findViewById(R.id.TableData);
                     for (int ИндексСтрочкиДней = 0; ИндексСтрочкиДней < rowData1.getChildCount(); ИндексСтрочкиДней++) {
@@ -3696,7 +3667,7 @@ try{
                             // TODO: 05.04.2023  ЗАПОЛЯНИЕМ ДНЯМИ ROWS
                             МетодЗаполяемДнямиTowData(editTextRowКликПоДАнными,cursor,ИндексСтрочкиДней);
                             // TODO: 05.04.2023 Вешаем на Ячекку ДАнных Слушатель
-                            МетодаКликаПоtableRow(editTextRowКликПоДАнными);
+                            МетодаКликаПоtableRow(editTextRowКликПоДАнными,cursor,holder);
 
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -3730,7 +3701,7 @@ try{
                     data.putLong("uuid",uuid);
                     editTextRowКликПоДАнными.setTag(data);
                     editTextRowКликПоДАнными.setText(День.trim());
-                    editTextRowКликПоДАнными.startAnimation(animationПрофессия);
+                   //editTextRowКликПоДАнными.startAnimation(animationПрофессия);
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -3748,42 +3719,30 @@ try{
 
 
             // TODO: 08.11.2022 метод КЛИК ПО ДАННЫМ
-            private void МетодаКликаПоtableRow(@NonNull   EditText editTextRowКликПоДАнными) {
+            private void МетодаКликаПоtableRow(@NonNull   EditText editTextRowКликПоДАнными, @NonNull Cursor cursor,@NonNull  MyViewHolder holder) {
                 try{
                  //EditText editTextD1=   tableRowКликПоДАнными.findViewById(R.id.v1);
                         if (editTextRowКликПоДАнными!=null) {
-                            editTextRowКликПоДАнными.addOnUnhandledKeyEventListener(new View.OnUnhandledKeyEventListener() {
-                                @Override
-                                public boolean onUnhandledKeyEvent(View v, KeyEvent event) {
-                                    Bundle bundleПереходДетализацию=(Bundle) v.getTag();
-                                    if (bundleПереходДетализацию != null) {
-                                        Toast.makeText(activity, " onUnhandledKeyEvent bundleПереходДетализацию "+ bundleПереходДетализацию.getLong("uuid"), Toast.LENGTH_SHORT).show();
-                                    }
-                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                            + " v "+v );
-                                    return true;
-                                }
-                            });
-                            editTextRowКликПоДАнными.setOnLongClickListener(new View.OnLongClickListener() {
+
+                            holder.longClickListenerRowData[cursor.getPosition()]=            new View.OnLongClickListener() {
                                 @Override
                                 public boolean onLongClick(View v) {
-                                    Bundle bundleПереходДетализацию=(Bundle) v.getTag();
-                                    Log.d(this.getClass().getName(), "МетодаКликаПоtableRow v  " +
-                                            v+ " onLongClick bundleПереходДетализацию "+bundleПереходДетализацию);
-                                    if (bundleПереходДетализацию != null) {
-                                        Toast.makeText(activity, " setOnLongClickListener bundleПереходДетализацию "+ bundleПереходДетализацию.getLong("uuid"), Toast.LENGTH_SHORT).show();
-                                    }
                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                            + " v "+v );
+                                            + " v "+v+myViewHolder.getAbsoluteAdapterPosition()+ myViewHolder.getBindingAdapterPosition()+myViewHolder.getLayoutPosition()+
+                                            "" +myRecycleViewAdapter.cursor.getPosition());
+                                  //  recyclerView.getLayoutManager().scrollToPosition(myRecycleViewAdapter.cursor.getPosition());
+
+                            RecyclerView.Adapter m=       myViewHolder.getBindingAdapter();
+                            m.notifyItemMoved(myRecycleViewAdapter.cursor.getCount(),5);
+                                    //m.bindViewHolder(holder,myRecycleViewAdapter.cursor.getPosition());
                                     return true;
                                 }
-                            });
-                        }
+                            };
 
+                            editTextRowКликПоДАнными.setOnLongClickListener(holder.longClickListenerRowData[cursor.getPosition()]);
+                        }
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getApplicationContext().getClass().getName(),
@@ -3805,7 +3764,7 @@ try{
                                     Bundle bundleПереходДетализацию=(Bundle) v.getTag();
                                     if (bundleПереходДетализацию != null) {
                                     }
-                                    Toast.makeText(activity, "МетодаКликаTableRowФИО "+ bundleПереходДетализацию.getLong("uuid"), Toast.LENGTH_SHORT).show();
+                                   // Toast.makeText(activity, "МетодаКликаTableRowФИО "+ bundleПереходДетализацию.getLong("uuid"), Toast.LENGTH_SHORT).show();
                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
