@@ -3147,6 +3147,7 @@ try{
 
             // TODO: 05.04.2023 Слушатель Long
             View.OnLongClickListener[] longClickListenerRowData=new View.OnLongClickListener[ГлавныйКурсорДанныеSwipes.getCount()];
+            View.OnClickListener[] clickListenerRowData=new View.OnClickListener[ГлавныйКурсорДанныеSwipes.getCount()];
             public MyViewHolder(@NonNull View itemView ) {
                 super(itemView);
                 try {
@@ -3698,7 +3699,7 @@ try{
                             // TODO: 05.04.2023  ЗАПОЛЯНИЕМ ДНЯМИ ROWS
                             МетодЗаполяемДнямиTowData(editTextRowКликПоДАнными,cursor,ИндексСтрочкиДней);
                             // TODO: 05.04.2023 Вешаем на Ячекку ДАнных Слушатель
-                           // МетодаКликаПоtableRow(editTextRowКликПоДАнными,cursor,holder);
+                            МетодаКликаПоtableRow(editTextRowКликПоДАнными,cursor,holder);
 
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -3755,20 +3756,38 @@ try{
                  //EditText editTextD1=   tableRowКликПоДАнными.findViewById(R.id.v1);
                         if (editTextRowКликПоДАнными!=null) {
 
-                            // TODO: 19.10.2022
+                            // TODO: 19.10.2022  ЛОНГ КЛИК
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
 
-     /*                       holder.longClickListenerRowData[cursor.getPosition()]=            new View.OnLongClickListener() {
+                            holder.longClickListenerRowData[cursor.getPosition()]=            new View.OnLongClickListener() {
                                 @Override
                                 public boolean onLongClick(View v) {
-
+                                    // TODO: 19.10.2022
+                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                                     return true;
                                 }
                             };
+                            editTextRowКликПоДАнными.setOnLongClickListener(holder.longClickListenerRowData[cursor.getPosition()]);
 
-                            editTextRowКликПоДАнными.setOnLongClickListener(holder.longClickListenerRowData[cursor.getPosition()]);*/
+                            // TODO: 05.04.2023 ПРОСТОЙ КЛИК
+                            holder.clickListenerRowData[cursor.getPosition()]=         new View.OnClickListener(){
+                                @Override
+                                public void onClick(View v) {
+                                    // TODO: 19.10.2022
+                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                                }
+                            };
+                            editTextRowКликПоДАнными.setOnClickListener(holder.clickListenerRowData[cursor.getPosition()]);
+                            // TODO: 19.10.2022  ПРОСТОЙ КЛИК
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                         }
                 } catch (Exception e) {
                     e.printStackTrace();
