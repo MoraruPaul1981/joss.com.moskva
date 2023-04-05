@@ -3689,9 +3689,17 @@ try{
             private void МетодЗаполняем1TableRow(@NonNull  TableRow rowName1, @NonNull  TableRow rowData1 ) {
                 try {
                    // TableRow rowПервыеДанные = (TableRow)   TableLayoutSingleTabel.findViewById(R.id.TableData);
-
-
-
+                    for (int i = 0; i < rowData1.getChildCount(); i++) {
+                        EditText editTextRowКликПоДАнными = (EditText) rowData1.getChildAt(i);
+                        if (editTextRowКликПоДАнными != null) {
+                            // TODO: 05.04.2023 Вешаем на Ячекку ДАнных Слушатель
+                            МетодаКликаПоtableRow(editTextRowКликПоДАнными);
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                    + " editTextRowКликПоДАнными "+editTextRowКликПоДАнными );
+                        }
+                    }
                /*     TableRow rowПервыеДанные = (TableRow)   TableLayoutSingleTabel.findViewById(R.id.TableData);
                     TextView textView=  rowПервыеДанные.findViewById(R.id.textview1);
                     String Материал= Optional.ofNullable(cursorСамиДанныеGroupBy.getString(cursorСамиДанныеGroupBy.getColumnIndex("typematerial"))).orElse("");
@@ -3716,9 +3724,6 @@ try{
                     data.putFloat("Сумма",Сумма);
                     rowПервыеДанные.setTag(data);
 */
-// TODO: 04.04.20223 КЛИК ПО ДАННЫМ
-                    МетодаКликаПоtableRow(rowData1);
-
 
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -3738,22 +3743,20 @@ try{
 
 
             // TODO: 08.11.2022 метод КЛИК ПО ДАННЫМ
-            private void МетодаКликаПоtableRow(TableRow tableRowКликПоДАнными) {
+            private void МетодаКликаПоtableRow(@NonNull   EditText editTextRowКликПоДАнными) {
                 try{
                  //EditText editTextD1=   tableRowКликПоДАнными.findViewById(R.id.v1);
-                    for (int i = 0; i < tableRowКликПоДАнными.getChildCount(); i++) {
-                       EditText editTextRowКликПоДАнными=(EditText) tableRowКликПоДАнными.getChildAt(i);
                         if (editTextRowКликПоДАнными!=null) {
                             editTextRowКликПоДАнными.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     Bundle bundleПереходДетализацию=(Bundle) v.getTag();
-                                    Log.d(this.getClass().getName(), "МетодаКликаПоtableRow v  " +
-                                            v+ " onClick bundleПереходДетализацию "+bundleПереходДетализацию);
                                     if (bundleПереходДетализацию != null) {
-                                        Log.d(this.getClass().getName(), " fragmentAdmissionMaterialsDetailing " +"  v  " + v );
-
                                     }
+                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                            + " v "+v );
                                 }
                             });
                             editTextRowКликПоДАнными.setOnLongClickListener(new View.OnLongClickListener() {
@@ -3763,14 +3766,15 @@ try{
                                     Log.d(this.getClass().getName(), "МетодаКликаПоtableRow v  " +
                                             v+ " onLongClick bundleПереходДетализацию "+bundleПереходДетализацию);
                                     if (bundleПереходДетализацию != null) {
-                                        Log.d(this.getClass().getName(), " fragmentAdmissionMaterialsDetailing " +"  v  " + v );
-
                                     }
+                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                            + " v "+v );
                                     return false;
                                 }
                             });
                         }
-                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -3791,30 +3795,31 @@ try{
                                 @Override
                                 public void onClick(View v) {
                                     Bundle bundleПереходДетализацию=(Bundle) v.getTag();
-                                    Log.d(this.getClass().getName(), "МетодаКликаПоtableRow v  " +
-                                            v+ " onClick bundleПереходДетализацию "+bundleПереходДетализацию);
                                     if (bundleПереходДетализацию != null) {
-                                        Log.d(this.getClass().getName(), " fragmentAdmissionMaterialsDetailing " +"  v  " + v );
-
                                     }
+                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                            + " v "+v );
                                 }
                             });
                             editTextRowКликПоФио.setOnLongClickListener(new View.OnLongClickListener() {
                                 @Override
                                 public boolean onLongClick(View v) {
                                     Bundle bundleПереходДетализацию=(Bundle) v.getTag();
-                                    Log.d(this.getClass().getName(), "МетодаКликаПоtableRow v  " +
-                                            v+ " onLongClick bundleПереходДетализацию "+bundleПереходДетализацию);
                                     if (bundleПереходДетализацию != null) {
-                                        Log.d(this.getClass().getName(), " fragmentAdmissionMaterialsDetailing " +"  v  " + v );
-
                                     }
+                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                            + " v "+v );
                                     return false;
                                 }
                             });
                         }
-
-
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getApplicationContext().getClass().getName(),
