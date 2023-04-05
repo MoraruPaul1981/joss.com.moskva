@@ -3670,7 +3670,7 @@ try{
                     rowПервыеДанные.setTag(data);
 */
                    // TODO: 04.04.20223 КЛИК ПО ДАННЫМ
-               //     МетодаКликаПоtableRow(tableRowФио);
+                    МетодаКликаTableRowФИО(tableRowФио);
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -3737,14 +3737,14 @@ try{
 
 
 
-            // TODO: 08.11.2022 метод перехода на дитализацию
+            // TODO: 08.11.2022 метод КЛИК ПО ДАННЫМ
             private void МетодаКликаПоtableRow(TableRow tableRowКликПоДАнными) {
                 try{
                  //EditText editTextD1=   tableRowКликПоДАнными.findViewById(R.id.v1);
                     for (int i = 0; i < tableRowКликПоДАнными.getChildCount(); i++) {
-                       EditText editTextD1=(EditText) tableRowКликПоДАнными.getChildAt(i);
-                        if (editTextD1!=null) {
-                            editTextD1.setOnClickListener(new View.OnClickListener() {
+                       EditText editTextRowКликПоДАнными=(EditText) tableRowКликПоДАнными.getChildAt(i);
+                        if (editTextRowКликПоДАнными!=null) {
+                            editTextRowКликПоДАнными.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     Bundle bundleПереходДетализацию=(Bundle) v.getTag();
@@ -3756,7 +3756,7 @@ try{
                                     }
                                 }
                             });
-                            editTextD1.setOnLongClickListener(new View.OnLongClickListener() {
+                            editTextRowКликПоДАнными.setOnLongClickListener(new View.OnLongClickListener() {
                                 @Override
                                 public boolean onLongClick(View v) {
                                     Bundle bundleПереходДетализацию=(Bundle) v.getTag();
@@ -3771,6 +3771,49 @@ try{
                             });
                         }
                     }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(getApplicationContext().getClass().getName(),
+                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
+            }
+            // TODO: 08.11.2022 КЛИК ПО ФИО
+            private void МетодаКликаTableRowФИО(TableRow tableRowКликПоДАнными) {
+                try{
+                        TextView editTextRowКликПоФио=(TextView) tableRowКликПоДАнными.findViewById(R.id.RowКонтейнерКудаЗагружаетьсяФИО);
+                        if (editTextRowКликПоФио!=null) {
+                            editTextRowКликПоФио.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Bundle bundleПереходДетализацию=(Bundle) v.getTag();
+                                    Log.d(this.getClass().getName(), "МетодаКликаПоtableRow v  " +
+                                            v+ " onClick bundleПереходДетализацию "+bundleПереходДетализацию);
+                                    if (bundleПереходДетализацию != null) {
+                                        Log.d(this.getClass().getName(), " fragmentAdmissionMaterialsDetailing " +"  v  " + v );
+
+                                    }
+                                }
+                            });
+                            editTextRowКликПоФио.setOnLongClickListener(new View.OnLongClickListener() {
+                                @Override
+                                public boolean onLongClick(View v) {
+                                    Bundle bundleПереходДетализацию=(Bundle) v.getTag();
+                                    Log.d(this.getClass().getName(), "МетодаКликаПоtableRow v  " +
+                                            v+ " onLongClick bundleПереходДетализацию "+bundleПереходДетализацию);
+                                    if (bundleПереходДетализацию != null) {
+                                        Log.d(this.getClass().getName(), " fragmentAdmissionMaterialsDetailing " +"  v  " + v );
+
+                                    }
+                                    return false;
+                                }
+                            });
+                        }
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
