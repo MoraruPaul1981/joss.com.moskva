@@ -108,6 +108,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.PrimitiveIterator;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
@@ -3720,36 +3721,19 @@ try{
 
             private void МетодЗаполяемДнямиTowData(@NonNull  EditText editTextRowКликПоДАнными, @NonNull Cursor cursor,@NonNull int ИндексСтрочкиДней ) {
                 try {
-
-                                   /*     TableRow rowПервыеДанные = (TableRow)   TableLayoutSingleTabel.findViewById(R.id.TableData);
-                    TextView textView=  rowПервыеДанные.findViewById(R.id.textview1);
-                    String Материал= Optional.ofNullable(cursorСамиДанныеGroupBy.getString(cursorСамиДанныеGroupBy.getColumnIndex("typematerial"))).orElse("");
-                    textView.setText(Материал.trim());
-                    TextView textView2=  rowПервыеДанные.findViewById(R.id.textview2);
-                    String Весовая= Optional.ofNullable(cursorСамиДанныеGroupBy.getString(cursorСамиДанныеGroupBy.getColumnIndex("nomenvesov"))).orElse("");
-                    textView2.setText(Весовая.trim());
-                    Float Сумма= Optional.ofNullable(cursorСамиДанныеGroupBy.getFloat(cursorСамиДанныеGroupBy.getColumnIndex("moneys"))).orElse(0f);
-                    TextView textView3=  rowПервыеДанные.findViewById(R.id.textview3);
-                    textView3.setText(Сумма.toString());
-                    // TODO: 08.11.2022  заполеним данными Строчку ДляДальнейшего Использование
+                    ИндексСтрочкиДней=ИндексСтрочкиДней+1;
+                    String НазваниеДляДень=new String("d"+ИндексСтрочкиДней);
+                    String День= Optional.ofNullable(cursor.getString(cursor.getColumnIndex( НазваниеДляДень))).orElse("0");
+                    Long uuid= Optional.ofNullable(cursor.getLong(cursor.getColumnIndex( "uuid"))).orElse(0l);
                     Bundle data=new Bundle();
-                    data.putString("Материал",Материал);
-                    Integer Цфо= Optional.ofNullable(cursorСамиДанныеGroupBy.getInt(cursorСамиДанныеGroupBy.getColumnIndex("cfo"))).orElse(0);
-                    data.putInt("Цфо",Цфо);
-                    Integer НомерВыбраногоМатериала=
-                            Optional.ofNullable(cursorСамиДанныеGroupBy.getInt(cursorСамиДанныеGroupBy.getColumnIndex("nomenvesov_zifra"))).orElse(0);
-                    data.putInt("НомерВыбраногоМатериала",НомерВыбраногоМатериала);
-                    String ВыбранныйМатериал=
-                            Optional.ofNullable(cursorСамиДанныеGroupBy.getString(cursorСамиДанныеGroupBy.getColumnIndex("nomenvesov"))).orElse("");
-                    data.putString("ВыбранныйМатериал",ВыбранныйМатериал);
-                    data.putFloat("Сумма",Сумма);
-                    rowПервыеДанные.setTag(data);
-*/
-
+                    data.putString("День",День);
+                    data.putLong("uuid",uuid);
+                    editTextRowКликПоДАнными.setTag(data);
+                    editTextRowКликПоДАнными.setText(День.trim());
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " ИндексСтрочкиДней " +ИндексСтрочкиДней );
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " ИндексСтрочкиДней " +ИндексСтрочкиДней  + "data " +data);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getApplicationContext().getClass().getName(),
