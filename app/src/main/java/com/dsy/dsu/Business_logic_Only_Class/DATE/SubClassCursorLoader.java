@@ -26,7 +26,7 @@ public class SubClassCursorLoader {
             cursorLoader.setSelection(СамЗапрос);
             cursorLoader.setSelectionArgs(УсловияВыборки);//МесяцПростоАнализа
             cursor=    cursorLoader.loadInBackground();
-            if (cursor.getCount() > 0) {
+            if (cursor.getCount() > 0 && cursor!=null) {
                 cursor.moveToFirst();
                 Log.d(this.getClass().getName(), "cursor.getCount() "
                         + cursor.getCount());

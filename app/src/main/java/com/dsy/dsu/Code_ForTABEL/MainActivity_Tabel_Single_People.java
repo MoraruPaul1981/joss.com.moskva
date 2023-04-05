@@ -71,6 +71,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.loader.content.CursorLoader;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -90,6 +91,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
+import com.jakewharton.rxbinding4.view.RxView;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
@@ -121,6 +123,8 @@ import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 import javax.crypto.NoSuchPaddingException;
+
+import io.reactivex.rxjava3.core.Observable;
 
 
 public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
@@ -197,7 +201,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private      Message message;
     private Animation animationПрофессия;
     private Animation animationRows;
-    private    SQLiteCursor ГлавныйКурсорДанныеSwipes;
+    private Cursor ГлавныйКурсорДанныеSwipes;
 
     private  Long UUIDТекущегоВыбраногоСотрудника=0l;
     private         Long ПолученыйUUIDФИОСледующий=0l;
@@ -430,17 +434,23 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     private void МетодSwipeALLКурсор() {
         try{
-            ГлавныйКурсорДанныеSwipes =
+           /* ГлавныйКурсорДанныеSwipes =
                     new Class_MODEL_synchronized(getApplicationContext()).
                             МетодЗагружетУжеготовыеТабеляПриСмещенииДанныхСкроллПоДАнным(context,
-                                    ЦифровоеИмяНовгоТабеля, МесяцТабеля, ГодДляТабелей);
+                                    ЦифровоеИмяНовгоТабеля, МесяцТабеля, ГодДляТабелей);*/
 
-            if (ПроизошелЛиСфайпПоДаннымСингТабеля==false) {
-                if (ГлавныйКурсорДанныеSwipes.getCount() > 0) {
-                    ГлавныйКурсорДанныеSwipes.moveToFirst();
+            //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
+            Bundle bundleГлавныйКурсорДанныеSwipes= new Bundle();
+            bundleГлавныйКурсорДанныеSwipes.putString("СамЗапрос","  SELECT * FROM viewtabel WHERE cfo=? " +
+                    "AND month_tabels  =?  AND year_tabels = ?  AND status_send !=?  AND fio IS NOT NULL  ORDER BY uuid " );
+            bundleГлавныйКурсорДанныеSwipes.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(ЦифровоеИмяНовгоТабеля),
+                    String.valueOf(МесяцТабеля),String.valueOf(ГодДляТабелей),"Удаленная" });
+            bundleГлавныйКурсорДанныеSwipes.putString("Таблица","viewtabel");
+            ГлавныйКурсорДанныеSwipes=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleГлавныйКурсорДанныеSwipes);
+
                     ОбщееКоличествоЛюдейВТабелеТекущем= ГлавныйКурсорДанныеSwipes.getCount();
-                }
-            }
+
+
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
@@ -1163,7 +1173,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     }
 
 
-    private void МетодЗаполенияДаннымиСотрудника(@NonNull   int ЦифровоеИмяНовгоТабеля,@NonNull SQLiteCursor sqLiteCursor)
+    private void МетодЗаполенияДаннымиСотрудника(@NonNull   int ЦифровоеИмяНовгоТабеля,@NonNull  Cursor sqLiteCursor)
             throws ParseException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, ExecutionException, InterruptedException {
         try{
             if (sqLiteCursor.getCount()>0) {
@@ -1226,14 +1236,14 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         }
     }
 
-    private void МетодПолучениеФИОиПрофессия( @NonNull SQLiteCursor sqLiteCursor) {
+    private void МетодПолучениеФИОиПрофессия( @NonNull  Cursor sqLiteCursor) {
         try{
             Log.d(this.getClass().getName(), "ПолученыйUUIDФИОСледующий " + ПолученыйUUIDФИОСледующий);
             Class_GRUD_SQL_Operations classGrudSqlOperations= new Class_GRUD_SQL_Operations(getApplicationContext());
             classGrudSqlOperations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СамFreeSQLКОд",
                     " SELECT name,prof  FROM fio  WHERE  uuid = '" + ПолученыйUUIDФИОСледующий + "' ;");
             ///////
-            SQLiteCursor            Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО= (SQLiteCursor) classGrudSqlOperations.
+             Cursor            Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО= (SQLiteCursor) classGrudSqlOperations.
                     new GetаFreeData(getApplicationContext()).getfreedata(classGrudSqlOperations.
                             concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
                     Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков
@@ -1274,7 +1284,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         }
     }
 
-    private void МетодПослеАнализаSwipesЗаполненияЦиклом( @NonNull SQLiteCursor sqLiteCursor ) {
+    private void МетодПослеАнализаSwipesЗаполненияЦиклом( @NonNull  Cursor sqLiteCursor ) {
         try{
                 /////TODO     ПЕРВАЯ СТРОКА
                 ///todo главный МЕТОД ОФОРМЛЕНИЯ ТАБЕЛЯ ДАННЫМИ И ДНЯМИ
@@ -1386,7 +1396,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     }
 
-    void МетодСуммаЧасовВТабеле(@NonNull SQLiteCursor sqLiteCursor) {
+    void МетодСуммаЧасовВТабеле(@NonNull  Cursor sqLiteCursor) {
         try{
         Integer ПозицияКурсораДО=    sqLiteCursor.getPosition();
             Integer ПозицияВизуальция=    ПозицияКурсораДО+1;
@@ -2339,7 +2349,7 @@ try{
 
     private void МетодГлавныеДанныеLayoutInflater(@NonNull Map<Integer, String> ХЭШНазваниеДнейНедели
             , @NonNull View КонтентТабеляИнфлейтер
-            , @NonNull SQLiteCursor sqLiteCursor) {
+            , @NonNull  Cursor sqLiteCursor) {
         /////todo ПЕРВАЯ СТРОКА НАЗВАНИЯ
         String НазваниеДней= "";
         Bundle bundleДляОбновление=null;
@@ -2401,7 +2411,7 @@ try{
 
     private Integer МетодДанныеЯчеек(@NonNull Map<Integer, String> ХЭШНазваниеДнейНедели,
                                      @NonNull View КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла,
-                                     @NonNull SQLiteCursor sqLiteCursor,
+                                     @NonNull  Cursor sqLiteCursor,
                                      @NonNull    IntStream intStreamПерваяСтрочкаСамиДанные,
                                      @NonNull      Integer ИндексИтерации) {
         try{
@@ -3696,7 +3706,7 @@ try{
                     for (int ИндексСтрочкиДней = 0; ИндексСтрочкиДней < rowData1.getChildCount(); ИндексСтрочкиДней++) {
                         EditText editTextRowКликПоДАнными = (EditText) rowData1.getChildAt(ИндексСтрочкиДней);
                         if (editTextRowКликПоДАнными != null) {
-                            // TODO: 05.04.2023  ЗАПОЛЯНИЕМ ДНЯМИ ROWS
+                            // TODO: 05.04.2023  ЗАПОЛЯНИЕМ ДНЯМИ ROW 1
                             МетодЗаполяемДнямиTowData(editTextRowКликПоДАнными,cursor,ИндексСтрочкиДней);
                             // TODO: 05.04.2023 Вешаем на Ячекку ДАнных Слушатель
                             МетодаКликаПоtableRow(editTextRowКликПоДАнными,cursor,holder);
@@ -3778,6 +3788,16 @@ try{
                                 @Override
                                 public void onClick(View v) {
                                     // TODO: 19.10.2022
+                                    RxView.clicks(v)
+                                            .throttleLast(3, TimeUnit.SECONDS)
+                                            .subscribe(s -> {
+                                                // perform some actions
+                                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                                            });
+
+
                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");

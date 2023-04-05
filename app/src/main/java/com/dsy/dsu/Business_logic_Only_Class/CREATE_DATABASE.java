@@ -593,7 +593,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         // TODO: 26.08.2021 старый view табель
         ССылкаНаСозданнуюБазу.execSQL("drop view  if exists viewtabel");//test
         //ВИД View_TABEL
-        ССылкаНаСозданнуюБазу.execSQL("CREATE VIEW if not exists viewtabel AS  SELECT DISTINCT \n" +
+        ССылкаНаСозданнуюБазу.execSQL("CREATE VIEW if not exists viewtabel AS  SELECT DISTINCT     \n" +
                 "                          data_tabels. _id,  fio.name,  tabel.cfo,  tabel.month_tabels, " +
                 " tabel.year_tabels,  data_tabels.fio,  data_tabels.d1,  data_tabels.d2,  data_tabels.d3,  data_tabels.d4,  data_tabels.d5, \n" +
                 "                          data_tabels.d6,  data_tabels.d7,  data_tabels.d8," +

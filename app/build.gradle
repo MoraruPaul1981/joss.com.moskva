@@ -188,4 +188,10 @@ dependencies {
 // https://mvnrepository.com/artifact/androidx.gridlayout/gridlayout
     implementation 'androidx.gridlayout:gridlayout:1.0.0-rc01'
 
+
+    implementation 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
+
+
+
+
 }
