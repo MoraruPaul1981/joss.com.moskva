@@ -25,7 +25,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -3622,15 +3624,13 @@ try{
                         МетодЗаполняемФИОRow(holder.rowФИО);
                     // TODO: 04.04.2023  NAME and DATA
                         МетодЗаполняем1TableRow(holder.rowName1,holder.rowData1,cursor );
-                        МетодЗаполняем1TableRow(holder.rowName2,holder.rowData2,cursor );
+                 /*       МетодЗаполняем1TableRow(holder.rowName2,holder.rowData2,cursor );
                         МетодЗаполняем1TableRow(holder.rowName3,holder.rowData3,cursor );
                         МетодЗаполняем1TableRow(holder.rowName4,holder.rowData4,cursor );
                         МетодЗаполняем1TableRow(holder.rowName5,holder.rowData5,cursor );
                         МетодЗаполняем1TableRow(holder.rowName6,holder.rowData6,cursor );
                         МетодЗаполняем1TableRow(holder.rowName7,holder.rowData7,cursor );
-                        МетодЗаполняем1TableRow(holder.rowName8,holder.rowData8,cursor );
-
-
+                        МетодЗаполняем1TableRow(holder.rowName8,holder.rowData8,cursor );*/
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -3693,10 +3693,10 @@ try{
                     for (int ИндексСтрочкиДней = 0; ИндексСтрочкиДней < rowData1.getChildCount(); ИндексСтрочкиДней++) {
                         EditText editTextRowКликПоДАнными = (EditText) rowData1.getChildAt(ИндексСтрочкиДней);
                         if (editTextRowКликПоДАнными != null) {
-                            // TODO: 05.04.2023 Вешаем на Ячекку ДАнных Слушатель
-                            МетодаКликаПоtableRow(editTextRowКликПоДАнными);
                             // TODO: 05.04.2023  ЗАПОЛЯНИЕМ ДНЯМИ ROWS
                             МетодЗаполяемДнямиTowData(editTextRowКликПоДАнными,cursor,ИндексСтрочкиДней);
+                            // TODO: 05.04.2023 Вешаем на Ячекку ДАнных Слушатель
+                            МетодаКликаПоtableRow(editTextRowКликПоДАнными);
 
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -3730,6 +3730,7 @@ try{
                     data.putLong("uuid",uuid);
                     editTextRowКликПоДАнными.setTag(data);
                     editTextRowКликПоДАнными.setText(День.trim());
+                    editTextRowКликПоДАнными.startAnimation(animationПрофессия);
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -3751,16 +3752,18 @@ try{
                 try{
                  //EditText editTextD1=   tableRowКликПоДАнными.findViewById(R.id.v1);
                         if (editTextRowКликПоДАнными!=null) {
-                            editTextRowКликПоДАнными.setOnClickListener(new View.OnClickListener() {
+                            editTextRowКликПоДАнными.addOnUnhandledKeyEventListener(new View.OnUnhandledKeyEventListener() {
                                 @Override
-                                public void onClick(View v) {
+                                public boolean onUnhandledKeyEvent(View v, KeyEvent event) {
                                     Bundle bundleПереходДетализацию=(Bundle) v.getTag();
                                     if (bundleПереходДетализацию != null) {
+                                        Toast.makeText(activity, " onUnhandledKeyEvent bundleПереходДетализацию "+ bundleПереходДетализацию.getLong("uuid"), Toast.LENGTH_SHORT).show();
                                     }
                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                             + " v "+v );
+                                    return true;
                                 }
                             });
                             editTextRowКликПоДАнными.setOnLongClickListener(new View.OnLongClickListener() {
@@ -3770,12 +3773,13 @@ try{
                                     Log.d(this.getClass().getName(), "МетодаКликаПоtableRow v  " +
                                             v+ " onLongClick bundleПереходДетализацию "+bundleПереходДетализацию);
                                     if (bundleПереходДетализацию != null) {
+                                        Toast.makeText(activity, " setOnLongClickListener bundleПереходДетализацию "+ bundleПереходДетализацию.getLong("uuid"), Toast.LENGTH_SHORT).show();
                                     }
                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                             + " v "+v );
-                                    return false;
+                                    return true;
                                 }
                             });
                         }
@@ -3801,6 +3805,7 @@ try{
                                     Bundle bundleПереходДетализацию=(Bundle) v.getTag();
                                     if (bundleПереходДетализацию != null) {
                                     }
+                                    Toast.makeText(activity, "МетодаКликаTableRowФИО "+ bundleПереходДетализацию.getLong("uuid"), Toast.LENGTH_SHORT).show();
                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
