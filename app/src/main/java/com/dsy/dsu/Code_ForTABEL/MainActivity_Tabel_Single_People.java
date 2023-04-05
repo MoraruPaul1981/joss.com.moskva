@@ -3029,13 +3029,11 @@ try{
             try{
                 StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(ГлавныйКурсорДанныеSwipes.getCount(),StaggeredGridLayoutManager.HORIZONTAL);
                 DividerItemDecoration dividerItemDecoration=
-                        new DividerItemDecoration(activity,LinearLayoutManager.HORIZONTAL);
+                        new DividerItemDecoration(activity,StaggeredGridLayoutManager.VERTICAL);
                 dividerItemDecoration.setDrawable(getDrawable(R.drawable.divider_for_single_tabel));
                recyclerView.addItemDecoration(dividerItemDecoration);
                 recyclerView.setLayoutManager(staggeredGridLayoutManager);
                recyclerView.setHasFixedSize(true);
-               ///  recyclerView.startAnimation(animationПрофессия);
-
                 staggeredGridLayoutManager.    invalidateSpanAssignments();
                 staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
 
