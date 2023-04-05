@@ -1,11 +1,11 @@
-package model;
 
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.OptimisticLockType;
-import org.hibernate.annotations.OptimisticLocking;
+package com.dsy.dsu.model;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 import java.io.Serializable;
-import javax.persistence.*;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -14,29 +14,26 @@ import java.util.Date;
  * The persistent class for the type_materials database table.
  *
  */
-@Entity
-@Table(name="type_materials",catalog="storage",schema="dbo")
-@NamedQuery(name="TypeMaterial.findAll", query="SELECT t FROM TypeMaterial t")
-@DynamicUpdate
-@OptimisticLocking(type=OptimisticLockType.DIRTY)
+
 
 
 public class TypeMaterial implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
+
     private Integer id;
 
-    @Column(name="current_table")
+
+    @JsonProperty("current_table")
     private BigDecimal currentTable;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="date_update")
+
+    @JsonProperty("date_update")
     private Date dateUpdate;
 
     private String name;
 
-    @Column(name="user_update")
+    @JsonProperty("user_update")
     private int userUpdate;
 
     private BigDecimal uuid;

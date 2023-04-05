@@ -1,41 +1,37 @@
-package model;
+package com.dsy.dsu.model;
 
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.OptimisticLockType;
-import org.hibernate.annotations.OptimisticLocking;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 import java.io.Serializable;
-import javax.persistence.*;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Entity
-@Table(name = "prof", schema = "dbo", catalog = "storage")
-@NamedQuery(name="Prof.findAll", query="SELECT pr FROM Prof pr")
-@DynamicUpdate
-@OptimisticLocking(type=OptimisticLockType.DIRTY)
+
 
 
 public class Prof implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
-    @Column(name = "id", nullable = false)
+
     private int id;
 
-    @Column(name = "name", nullable = false, length = 50)
+
     private String name;
 
-    @Column(name = "user_update", nullable = false)
+
+    @JsonProperty("user_update")
     private int userUpdate;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "date_update", nullable = false)
+
+    @JsonProperty("date_update")
     private Date dateUpdate;
 
-    @Column(name = "current_table", nullable = true, precision = 0)
+
+    @JsonProperty("current_table")
     private BigDecimal currentTable;
 
-    @Column(name = "uuid", nullable = true, precision = 0)
+
     private BigDecimal uuid;
 
     public int getId() {

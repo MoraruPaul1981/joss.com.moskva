@@ -1,11 +1,11 @@
-package model;
+package com.dsy.dsu.model;
 
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.OptimisticLockType;
-import org.hibernate.annotations.OptimisticLocking;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+
 
 import java.io.Serializable;
-import javax.persistence.*;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -14,40 +14,41 @@ import java.util.Date;
  * The persistent class for the tabel database table.
  *
  */
-@Entity
-@Table(name="tabel",catalog="storage",schema="dbo")
-@NamedQuery(name="Tabel.findAll", query="SELECT t FROM Tabel t")
-@DynamicUpdate
-@OptimisticLocking(type=OptimisticLockType.DIRTY)
+
 
 
 public class Tabel implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
+
     private Integer id;
 
     private int cfo;
 
-    @Column(name="current_table")
+
+    @JsonProperty("current_table")
     private BigDecimal currentTable;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="date_update")
+
+    @JsonProperty("date_update")
     private Date dateUpdate;
 
-    @Column(name="month_tabels")
+
+    @JsonProperty("month_tabels")
     private int monthTabels;
 
-    @Column(name="status_send")
+
+    @JsonProperty("status_send")
     private String statusSend;
 
-    @Column(name="user_update")
+
+    @JsonProperty("user_update")
     private int userUpdate;
 
     private BigDecimal uuid;
 
-    @Column(name="year_tabels")
+
+    @JsonProperty("year_tabels")
     private int yearTabels;
 
     public Tabel() {

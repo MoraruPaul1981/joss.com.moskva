@@ -1,11 +1,11 @@
-package model;
+package com.dsy.dsu.model;
 
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.OptimisticLockType;
-import org.hibernate.annotations.OptimisticLocking;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+
 
 import java.io.Serializable;
-import javax.persistence.*;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -14,35 +14,34 @@ import java.util.Date;
  * The persistent class for the settings_tabels database table.
  *
  */
-@Entity
-@Table(name="settings_tabels",catalog="storage",schema="dbo")
-@NamedQuery(name="Settingtab.findAll", query="SELECT s FROM Settingtab s")
-@DynamicUpdate
-@OptimisticLocking(type=OptimisticLockType.DIRTY)
+
 
 public class Settingtab implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
+
     private int id;
 
-    @Column(name="current_table")
+
+    @JsonProperty("current_table")
     private BigDecimal currentTable;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="date_update")
+
+    @JsonProperty("date_update")
     private Date dateUpdate;
 
     private String onesignal;
 
     private Integer organizations;
 
-    @Column(name="user_update")
+
+    @JsonProperty("user_update")
     private Integer userUpdate;
 
     private BigDecimal uuid;
 
-    @Column(name="version_dsu1")
+
+    @JsonProperty("version_dsu1")
     private Integer versionDsu1;
 
     public Settingtab() {
