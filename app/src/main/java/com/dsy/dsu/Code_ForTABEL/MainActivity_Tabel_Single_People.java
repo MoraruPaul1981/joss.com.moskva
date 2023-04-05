@@ -74,6 +74,7 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
@@ -3026,16 +3027,17 @@ try{
 
         private void МетодИнициализацииRecycreView() {
             try{
-                recyclerView.setVisibility(View.VISIBLE);
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-                linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(ГлавныйКурсорДанныеSwipes.getCount(),StaggeredGridLayoutManager.HORIZONTAL);
                 DividerItemDecoration dividerItemDecoration=
                         new DividerItemDecoration(activity,LinearLayoutManager.HORIZONTAL);
                 dividerItemDecoration.setDrawable(getDrawable(R.drawable.divider_for_single_tabel));
-                recyclerView.addItemDecoration(dividerItemDecoration);
-                recyclerView.setLayoutManager(linearLayoutManager);
-             //  recyclerView.setHasFixedSize(true);
+               recyclerView.addItemDecoration(dividerItemDecoration);
+                recyclerView.setLayoutManager(staggeredGridLayoutManager);
+               recyclerView.setHasFixedSize(true);
                ///  recyclerView.startAnimation(animationПрофессия);
+
+                staggeredGridLayoutManager.    invalidateSpanAssignments();
+                staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -3462,8 +3464,25 @@ try{
                 super.setHasStableIds(hasStableIds);
             }
 
+            @Override
+            public void onViewRecycled(@NonNull MyViewHolder holder) {
+                super.onViewRecycled(holder);
+            }
 
+            @Override
+            public boolean onFailedToRecycleView(@NonNull  MyViewHolder holder) {
+                return super.onFailedToRecycleView(holder);
+            }
 
+            @Override
+            public void onViewAttachedToWindow(@NonNull  MyViewHolder holder) {
+                super.onViewAttachedToWindow(holder);
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(@NonNull  MyViewHolder holder) {
+                super.onViewDetachedFromWindow(holder);
+            }
 
             @Override
             public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -3487,7 +3506,21 @@ try{
                 super.onDetachedFromRecyclerView(recyclerView);
             }
 
-
+            @Override
+            public int getItemViewType(int position) {
+                try {
+                    Log.i(this.getClass().getName(), "   getItemViewType  position" + position);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(getApplicationContext().getClass().getName(),
+                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
+                return super.getItemViewType(position);
+            }
 
             @NonNull
             @Override
@@ -3667,7 +3700,7 @@ try{
                             // TODO: 05.04.2023  ЗАПОЛЯНИЕМ ДНЯМИ ROWS
                             МетодЗаполяемДнямиTowData(editTextRowКликПоДАнными,cursor,ИндексСтрочкиДней);
                             // TODO: 05.04.2023 Вешаем на Ячекку ДАнных Слушатель
-                            МетодаКликаПоtableRow(editTextRowКликПоДАнными,cursor,holder);
+                           // МетодаКликаПоtableRow(editTextRowКликПоДАнными,cursor,holder);
 
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -3724,24 +3757,20 @@ try{
                  //EditText editTextD1=   tableRowКликПоДАнными.findViewById(R.id.v1);
                         if (editTextRowКликПоДАнными!=null) {
 
-                            holder.longClickListenerRowData[cursor.getPosition()]=            new View.OnLongClickListener() {
+                            // TODO: 19.10.2022
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
+     /*                       holder.longClickListenerRowData[cursor.getPosition()]=            new View.OnLongClickListener() {
                                 @Override
                                 public boolean onLongClick(View v) {
-                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                            + " v "+v+myViewHolder.getAbsoluteAdapterPosition()+ myViewHolder.getBindingAdapterPosition()+myViewHolder.getLayoutPosition()+
-                                            "" +myRecycleViewAdapter.cursor.getPosition());
-                                  //  recyclerView.getLayoutManager().scrollToPosition(myRecycleViewAdapter.cursor.getPosition());
 
-                            RecyclerView.Adapter m=       myViewHolder.getBindingAdapter();
-                            m.notifyItemMoved(myRecycleViewAdapter.cursor.getCount(),5);
-                                    //m.bindViewHolder(holder,myRecycleViewAdapter.cursor.getPosition());
                                     return true;
                                 }
                             };
 
-                            editTextRowКликПоДАнными.setOnLongClickListener(holder.longClickListenerRowData[cursor.getPosition()]);
+                            editTextRowКликПоДАнными.setOnLongClickListener(holder.longClickListenerRowData[cursor.getPosition()]);*/
                         }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -3764,7 +3793,7 @@ try{
                                     Bundle bundleПереходДетализацию=(Bundle) v.getTag();
                                     if (bundleПереходДетализацию != null) {
                                     }
-                                   // Toast.makeText(activity, "МетодаКликаTableRowФИО "+ bundleПереходДетализацию.getLong("uuid"), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(activity, "МетодаКликаTableRowФИО "+ bundleПереходДетализацию.getLong("uuid"), Toast.LENGTH_SHORT).show();
                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
