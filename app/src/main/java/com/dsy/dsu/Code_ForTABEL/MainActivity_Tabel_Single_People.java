@@ -3707,15 +3707,13 @@ try{
                                                  @NonNull  MyViewHolder holder) {
                 try {
 
-                    holder.rowData.listIterator().forEachRemaining(new Consumer<TableRow>() {
+                    holder.rowData.spliterator().forEachRemaining(new Consumer<TableRow>() {
                         @Override
                         public void accept(TableRow tableRow) {
                             // TableRow rowПервыеДанные = (TableRow)   TableLayoutSingleTabel.findViewById(R.id.TableData);
                             for (int ИндексСтрочкиДней = 0; ИндексСтрочкиДней < tableRow.getChildCount(); ИндексСтрочкиДней++) {
                                 EditText editTextRowКликПоДАнными = (EditText) tableRow.getChildAt(ИндексСтрочкиДней);
                         String Дней=        editTextRowКликПоДАнными.getHint().toString().replaceAll("V","d");
-
-                                String Дней2= String.valueOf(editTextRowКликПоДАнными.getTooltipText());
                                 if (editTextRowКликПоДАнными != null) {
                                     // TODO: 05.04.2023  ЗАПОЛЯНИЕМ ДНЯМИ ROW 1
                                     МетодЗаполяемДнямиTowData(editTextRowКликПоДАнными,cursor,Дней);
