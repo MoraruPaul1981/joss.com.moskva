@@ -71,9 +71,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
-import androidx.loader.content.CursorLoader;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.work.WorkInfo;
@@ -125,10 +123,6 @@ import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 import javax.crypto.NoSuchPaddingException;
-
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.functions.Function;
-import kotlin.Unit;
 
 
 public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
@@ -203,6 +197,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     final private   String ИмяСлужбыОбщейСинхронизацииДляЗадачи = "WorkManager Synchronizasiy_Data";
     private  long РодительскийUUDТаблицыТабель=0l;
     private      Message message;
+    private      Message messageRows;
     private Animation animationПрофессия;
     private Animation animationRows;
     private Cursor ГлавныйКурсорДанныеSwipes;
@@ -272,8 +267,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             animationLesft = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_swipe_l);//R.anim.slide_in_row)R.anim.slide_in_row_newscanner1
             Bundle data=     getIntent().getExtras();
             // TODO: 29.03.2023  Метод Какая марка телфона из за этого загрудаем вид
-
-
             методДанныеИзДругихАктивити();
             МетодSwipeALLКурсор();
             МетодGetmessage();
@@ -2571,15 +2564,42 @@ try{
     //TODO метод делает callback с ответом на экран
     private  void  МетодGetmessage(){
         try{
-            message=new Handler(Looper.getMainLooper(), new Handler.Callback() {
+      message=new Handler(Looper.getMainLooper(), new Handler.Callback() {
                 @Override
                 public boolean handleMessage(@NonNull Message msg) {
+                    try{
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                } catch (Exception e) {
+              e.printStackTrace();
+              Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                      " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+              new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                      this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                      Thread.currentThread().getStackTrace()[2].getLineNumber());
+          }
                     return true;
                 }
             }).obtainMessage();
+
+            messageRows=Message.obtain(new Handler(Looper.myLooper()),()->{
+                try{
+                Bundle bundle=   messageRows.getData();
+                Log.i(this.getClass().getName(),  " Атоманически установкаОбновление ПО "+
+                        Thread.currentThread().getStackTrace()[2].getMethodName()+
+                        " время " +new Date().toLocaleString() + " bundle " +bundle );
+                Log.i(this.getClass().getName(), "bundle " +bundle);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+            });
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -3139,31 +3159,11 @@ try{
         protected class MyViewHolder extends RecyclerView.ViewHolder {
             private TableLayout TableLayoutSingleTabel;
             private   TableRow rowФИО;
+
             // TODO: 04.04.2023   NAME
-            private   TableRow rowName1;
-            private   TableRow rowName2;
-            private   TableRow rowName3;
-            private   TableRow rowName4;
-            private   TableRow rowName5;
-
-            private   TableRow rowName6;
-            private   TableRow rowName7;
-            private   TableRow rowName8;
-
-
-
+            private CopyOnWriteArrayList<TableRow> rowName =new CopyOnWriteArrayList<>();
             // TODO: 04.04.2023   Data
             private CopyOnWriteArrayList<TableRow> rowData=new CopyOnWriteArrayList<>();
-            private   TableRow rowData1;
-
-            private   TableRow rowData2;
-            private   TableRow rowData3;
-            private   TableRow rowData4;
-            private   TableRow rowData5;
-            private   TableRow rowData6;
-            private   TableRow rowData7;
-            private   TableRow rowData8;
-
             // TODO: 05.04.2023 Слушатель Long
             public MyViewHolder(@NonNull View itemView ) {
                 super(itemView);
@@ -3189,14 +3189,16 @@ try{
                     TableLayoutSingleTabel = itemView.findViewById(R.id.TableLayoutSingleTabel);
                     rowФИО = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableRowsFIO);
                     // TODO: 04.04.2023   NAME
-                    rowName1 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableRow1Name);
-                    rowName2 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableRow2Name);
-                    rowName3 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableRow3Name);
-                    rowName4 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableRow4Name);
-                    rowName5 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableRow5Name);
-                    rowName6 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableRow6Name);
-                    rowName7 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableRow7Name);
-                    rowName8 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableRow8Name);
+                    rowName.add(TableLayoutSingleTabel.findViewById(R.id.TableRow1Name));
+                    rowName.add(TableLayoutSingleTabel.findViewById(R.id.TableRow2Name));
+                    rowName.add(TableLayoutSingleTabel.findViewById(R.id.TableRow2Name));
+                    rowName.add(TableLayoutSingleTabel.findViewById(R.id.TableRow3Name));
+                    rowName.add(TableLayoutSingleTabel.findViewById(R.id.TableRow4Name));
+                    rowName.add(TableLayoutSingleTabel.findViewById(R.id.TableRow5Name));
+                    rowName.add(TableLayoutSingleTabel.findViewById(R.id.TableRow6Name));
+                    rowName.add(TableLayoutSingleTabel.findViewById(R.id.TableRow7Name));
+                    rowName.add(TableLayoutSingleTabel.findViewById(R.id.TableRow8Name));
+
                     // TODO: 04.04.2023   Data
                     rowData.add(TableLayoutSingleTabel.findViewById(R.id.TableData1Row));
                     rowData.add(TableLayoutSingleTabel.findViewById(R.id.TableData2Row));
@@ -3576,19 +3578,22 @@ try{
             public void onBindViewHolder(@NonNull  MyViewHolder holder, int position) {
                 try {
                     Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor);
-                    if (cursor!=null) {
-                        if (cursor.getCount() > 0 && holder.TableLayoutSingleTabel != null) {
-                            // TODO: 04.04.2023 переходим на данне через Смежение
-                            cursor.moveToPosition(position);
-                            // TODO: 04.04.2023 ЗАПОЛЕНИЯ НОВЫМИ ДАННЫМИ ПОСЛЕ СМЕЩЕНИЕ ДАННЫХ ВНУТРИ
-                            МетодЗаполняемДаннымиRecycreViewSingleTable(holder, cursor);
-                            // TODO: 04.04.2023 перегрузкка внешнего вида RecyrView
-                          ///  МетодПерегурзкиВнешнегоВида(holder);
-                            Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
-                        } else {
-                            Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
+
+                    messageRows.getTarget().post(()->{
+
+                        if (cursor!=null) {
+                            if (cursor.getCount() > 0 && holder.TableLayoutSingleTabel != null) {
+                                // TODO: 04.04.2023 переходим на данне через Смежение
+                                cursor.moveToPosition(position);
+                                // TODO: 04.04.2023 ЗАПОЛЕНИЯ НОВЫМИ ДАННЫМИ ПОСЛЕ СМЕЩЕНИЕ ДАННЫХ ВНУТРИ
+                                МетодЗаполняемДаннымиRecycreViewSingleTable(holder, cursor);
+                                // TODO: 04.04.2023 перегрузкка внешнего вида RecyrView
+                                Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
+                            } else {
+                                Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
+                            }
                         }
-                    }
+                    });
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cursor " +cursor);
@@ -3707,27 +3712,32 @@ try{
                                                  @NonNull  MyViewHolder holder) {
                 try {
 
-                    holder.rowData.spliterator().forEachRemaining(new Consumer<TableRow>() {
-                        @Override
-                        public void accept(TableRow tableRow) {
-                            // TableRow rowПервыеДанные = (TableRow)   TableLayoutSingleTabel.findViewById(R.id.TableData);
-                            for (int ИндексСтрочкиДней = 0; ИндексСтрочкиДней < tableRow.getChildCount(); ИндексСтрочкиДней++) {
-                                EditText editTextRowКликПоДАнными = (EditText) tableRow.getChildAt(ИндексСтрочкиДней);
-                        String Дней=        editTextRowКликПоДАнными.getHint().toString().replaceAll("V","d");
-                                if (editTextRowКликПоДАнными != null) {
-                                    // TODO: 05.04.2023  ЗАПОЛЯНИЕМ ДНЯМИ ROW 1
-                                    МетодЗаполяемДнямиTowData(editTextRowКликПоДАнными,cursor,Дней);
-                                    // TODO: 05.04.2023 Вешаем на Ячекку ДАнных Слушатель
-                                    МетодаКликаПоtableRow(editTextRowКликПоДАнными,cursor,holder);
-
-                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                            + " editTextRowКликПоДАнными "+editTextRowКликПоДАнными+" Дней " +Дней );
-                                }
-                            }
-                        }
-                    });
+           ListIterator< TableRow> listIterator= holder.rowData.listIterator();
+           while (listIterator.hasNext()){
+               // TODO: 06.04.2023
+            TableRow tableRowДАнные=   listIterator.next();
+               for (int ИндексСтрочкиДней = 0; ИндексСтрочкиДней < tableRowДАнные.getChildCount(); ИндексСтрочкиДней++) {
+                   // TODO: 06.04.2023  СОДЕРДИМОЕ ROW
+                   EditText editTextRowКликПоДАнными = (EditText) tableRowДАнные.getChildAt(ИндексСтрочкиДней);
+                   String ДнейСодержимое=        editTextRowКликПоДАнными.getHint().toString().replaceAll("V","d");
+                   // TODO: 06.04.2023  НАЗВАНИЕ ROW
+                   TableRow tableRowНазвания=          holder.rowName.get(listIterator.nextIndex()-1);
+                   TextView TextМшуцRowНазвание = (TextView) tableRowНазвания.getChildAt(ИндексСтрочкиДней);
+                   String ДнейНазвание=        TextМшуцRowНазвание.getHint().toString().replaceAll("d","ddd");
+                   if (editTextRowКликПоДАнными != null) {
+                       // TODO: 05.04.2023  ЗАПОЛЯНИЕМ ДНЯМИ ROW 1
+                       методЗаполениеСодеримомRowData(editTextRowКликПоДАнными, cursor, ДнейСодержимое);
+                       // TODO: 05.04.2023 Вешаем на Ячекку ДАнных Слушатель
+                       МетодаКликаПоtableRow(editTextRowКликПоДАнными,cursor,holder);
+                       // TODO: 06.04.2023 Названия
+                       методЗаполениеНазванияRowData(TextМшуцRowНазвание, ДнейНазвание);
+                       Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                               " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                               " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                               + " editTextRowКликПоДАнными "+editTextRowКликПоДАнными+" ДнейСодержимое " +ДнейСодержимое );
+                   }
+               }
+           }
 
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -3744,21 +3754,40 @@ try{
                 }
             }
 
-            private void МетодЗаполяемДнямиTowData(@NonNull  EditText editTextRowКликПоДАнными, @NonNull Cursor cursor,@NonNull String НазваниеДляДень) {
+            private void методЗаполениеСодеримомRowData(@NonNull  EditText editTextRowКликПоДАнными,
+                                                        @NonNull Cursor cursor,
+                                                        @NonNull String НазваниеДляДень) {
                 try {
-                    String День= Optional.ofNullable(cursor.getString(cursor.getColumnIndex( НазваниеДляДень))).orElse("0");
-                    Long uuid= Optional.ofNullable(cursor.getLong(cursor.getColumnIndex( "uuid"))).orElse(0l);
-                    Bundle data=new Bundle();
-                    data.putString("ЗначениеДня",День);
-                    data.putLong("uuid",uuid);
-                    data.putString("День",НазваниеДляДень);
-                    editTextRowКликПоДАнными.setTag(data);
-                    editTextRowКликПоДАнными.setText(День.trim());
-                   //editTextRowКликПоДАнными.startAnimation(animationПрофессия);
+                        String День = Optional.ofNullable(cursor.getString(cursor.getColumnIndex(НазваниеДляДень))).orElse("0");
+                        Long uuid = Optional.ofNullable(cursor.getLong(cursor.getColumnIndex("uuid"))).orElse(0l);
+                        Bundle data = new Bundle();
+                        data.putString("ЗначениеДня", День);
+                        data.putLong("uuid", uuid);
+                        data.putString("День", НазваниеДляДень);
+                        editTextRowКликПоДАнными.setTag(data);
+                        editTextRowКликПоДАнными.setText(День.trim());
+                        // TODO: 19.10.2022
+                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " НазваниеДляДень " + НазваниеДляДень + "data " + data);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(getApplicationContext().getClass().getName(),
+                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
+            }
+            private void методЗаполениеНазванияRowData(@NonNull  TextView editTextRowКликПоНазваниям,String s) {
+                try {
+                                editTextRowКликПоНазваниям.setText(s.trim());
+                        editTextRowКликПоНазваниям.startAnimation(animationПрофессия);
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " НазваниеДляДень " +НазваниеДляДень  + "data " +data);
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " editTextRowКликПоНазваниям " +editTextRowКликПоНазваниям);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getApplicationContext().getClass().getName(),
@@ -3770,7 +3799,6 @@ try{
                 }
             }
 
-
             // TODO: 08.11.2022 метод КЛИК ПО ДАННЫМ
             private void МетодаКликаПоtableRow(@NonNull   EditText editTextRowКликПоДАнными, @NonNull Cursor cursor,@NonNull  MyViewHolder holder) {
                 try{
@@ -3780,8 +3808,6 @@ try{
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-
                             editTextRowКликПоДАнными.addTextChangedListener(new TextWatcher() {
 
                                 public void afterTextChanged(Editable s) {
@@ -3806,10 +3832,6 @@ try{
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                                 }
                             });
-
-
-
-
 
                             editTextRowКликПоДАнными.setOnLongClickListener(new View.OnLongClickListener() {
                                 @Override
