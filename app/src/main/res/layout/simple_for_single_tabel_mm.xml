@@ -251,6 +251,7 @@
             android:textAlignment="center"
             android:textColorHint="#00ACC1"
             android:textSize="24sp"
+            android:tooltipText="V1"
             android:textStyle="bold" />
 
         <EditText
@@ -1727,30 +1728,13 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:padding="0dp"
+                android:tooltipText="V31"
                 android:textAlignment="center"
                 android:textColorHint="#00ACC1"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/v32"
-                android:layout_column="3"
-                android:layout_width="87dp"
-                android:layout_height="6mm"
-                android:foregroundGravity="center"
-                android:visibility="invisible"
-                android:gravity="center_vertical|center_horizontal"
-                android:layout_marginStart="1dp"
-                android:layout_marginTop="1dp"
-                android:layout_marginEnd="1dp"
-                android:layout_marginBottom="1dp"
-                android:background="@android:color/transparent"
-                android:inputType="number"
-                android:padding="0dp"
-                android:textAlignment="center"
-                android:textColorHint="#00ACC1"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+
         </TableRow>
         <!--  //TODO конец Данных на ВТОРОЙ строчки -->
         <!--  //TODO конец БЛОКА И NAME  И ДАННЫЕ #9 -->

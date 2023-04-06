@@ -3206,7 +3206,6 @@ try{
                     rowData.add(TableLayoutSingleTabel.findViewById(R.id.TableData6Row));
                     rowData.add(TableLayoutSingleTabel.findViewById(R.id.TableData7Row));
                     rowData.add(TableLayoutSingleTabel.findViewById(R.id.TableData8Row));
-                    rowData.add(TableLayoutSingleTabel.findViewById(R.id.TableData1Row));
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" TableLayoutSingleTabel   " + TableLayoutSingleTabel+ 
@@ -3643,18 +3642,14 @@ try{
                     // TODO: 04.04.2023  ФИО 
                         МетодЗаполняемФИОRow(holder.rowФИО);
                     // TODO: 04.04.2023  NAME and DATA
-               ListIterator<TableRow> listIterator= holder.rowData.listIterator();
-                    while (listIterator.hasNext()){
-                        TableRow tableRow=    listIterator.next();
-                        МетодЗаполняем1TableRow(holder.rowName1,tableRow,cursor ,holder,   listIterator.nextIndex());
+                        МетодЗаполняем1TableRow(cursor ,holder  );
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                    }
-
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " myViewHolder.getLayoutPosition() " +
+                            myViewHolder.getLayoutPosition());
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getApplicationContext().getClass().getName(),
@@ -3708,73 +3703,34 @@ try{
                 }
             }
 
-            private void МетодЗаполняем1TableRow(@NonNull  TableRow rowName1,
-                                                 @NonNull TableRow rowData1,
-                                                 @NonNull Cursor cursor
-                    ,@NonNull  MyViewHolder holder,
-                                                 @NonNull Integer ДвиженияИндексаDataRow) {
+            private void МетодЗаполняем1TableRow(@NonNull Cursor cursor,
+                                                 @NonNull  MyViewHolder holder) {
                 try {
-                   // TableRow rowПервыеДанные = (TableRow)   TableLayoutSingleTabel.findViewById(R.id.TableData);
-                    for (int ИндексСтрочкиДней = 0; ИндексСтрочкиДней < rowData1.getChildCount(); ИндексСтрочкиДней++) {
-                        EditText editTextRowКликПоДАнными = (EditText) rowData1.getChildAt(ИндексСтрочкиДней);
-                        if (editTextRowКликПоДАнными != null) {
 
-                                switch ( ДвиженияИндексаDataRow){
-                                    case  1:
-                                        if (ИндексСтрочкиДней==0) {
-                                            ИндексСтрочкиДней=ИндексСтрочкиДней+1;
-                                        }
-                                        break;
-                                    case  2:
-                                        if (ИндексСтрочкиДней==0) {
-                                            ИндексСтрочкиДней=ИндексСтрочкиДней+5;
-                                        }
-                                        break;
-                                    case  3:
-                                        if (ИндексСтрочкиДней==0) {
-                                            ИндексСтрочкиДней=ИндексСтрочкиДней+9;
-                                        }
-                                        break;
-                                    case  4:
-                                        if (ИндексСтрочкиДней==0) {
-                                            ИндексСтрочкиДней=ИндексСтрочкиДней+13;
-                                        }
-                                        break;
-                                    case  5:
-                                        if (ИндексСтрочкиДней==0) {
-                                            ИндексСтрочкиДней=ИндексСтрочкиДней+17;
-                                        }
-                                        break;
-                                        case  6:
-                                        if (ИндексСтрочкиДней==0) {
-                                            ИндексСтрочкиДней=ИндексСтрочкиДней+21;
-                                        }
-                                        break;
-                                    case  7:
-                                        if (ИндексСтрочкиДней==0) {
-                                            ИндексСтрочкиДней=ИндексСтрочкиДней+25;
-                                        }
-                                        break;
-                                    case  8:
-                                        if (ИндексСтрочкиДней==0) {
-                                            ИндексСтрочкиДней=ИндексСтрочкиДней+29;
-                                        }
-                                        break;
+                    holder.rowData.listIterator().forEachRemaining(new Consumer<TableRow>() {
+                        @Override
+                        public void accept(TableRow tableRow) {
+                            // TableRow rowПервыеДанные = (TableRow)   TableLayoutSingleTabel.findViewById(R.id.TableData);
+                            for (int ИндексСтрочкиДней = 0; ИндексСтрочкиДней < tableRow.getChildCount(); ИндексСтрочкиДней++) {
+                                EditText editTextRowКликПоДАнными = (EditText) tableRow.getChildAt(ИндексСтрочкиДней);
+                        String Дней=        editTextRowКликПоДАнными.getHint().toString().replaceAll("V","d");
 
+                                String Дней2= String.valueOf(editTextRowКликПоДАнными.getTooltipText());
+                                if (editTextRowКликПоДАнными != null) {
+                                    // TODO: 05.04.2023  ЗАПОЛЯНИЕМ ДНЯМИ ROW 1
+                                    МетодЗаполяемДнямиTowData(editTextRowКликПоДАнными,cursor,Дней);
+                                    // TODO: 05.04.2023 Вешаем на Ячекку ДАнных Слушатель
+                                    МетодаКликаПоtableRow(editTextRowКликПоДАнными,cursor,holder);
 
+                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                            + " editTextRowКликПоДАнными "+editTextRowКликПоДАнными+" Дней " +Дней );
                                 }
-
-                            // TODO: 05.04.2023  ЗАПОЛЯНИЕМ ДНЯМИ ROW 1
-                            МетодЗаполяемДнямиTowData(editTextRowКликПоДАнными,cursor,ИндексСтрочкиДней);
-                            // TODO: 05.04.2023 Вешаем на Ячекку ДАнных Слушатель
-                            МетодаКликаПоtableRow(editTextRowКликПоДАнными,cursor,holder);
-
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                    + " editTextRowКликПоДАнными "+editTextRowКликПоДАнными );
+                            }
                         }
-                    }
+                    });
+
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -3790,9 +3746,8 @@ try{
                 }
             }
 
-            private void МетодЗаполяемДнямиTowData(@NonNull  EditText editTextRowКликПоДАнными, @NonNull Cursor cursor,@NonNull int ИндексСтрочкиДней ) {
+            private void МетодЗаполяемДнямиTowData(@NonNull  EditText editTextRowКликПоДАнными, @NonNull Cursor cursor,@NonNull String НазваниеДляДень) {
                 try {
-                    String НазваниеДляДень=new String("d"+ИндексСтрочкиДней);
                     String День= Optional.ofNullable(cursor.getString(cursor.getColumnIndex( НазваниеДляДень))).orElse("0");
                     Long uuid= Optional.ofNullable(cursor.getLong(cursor.getColumnIndex( "uuid"))).orElse(0l);
                     Bundle data=new Bundle();
@@ -3805,7 +3760,7 @@ try{
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " ИндексСтрочкиДней " +ИндексСтрочкиДней  + "data " +data);
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " НазваниеДляДень " +НазваниеДляДень  + "data " +data);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getApplicationContext().getClass().getName(),
@@ -3827,6 +3782,37 @@ try{
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
+
+                            editTextRowКликПоДАнными.addTextChangedListener(new TextWatcher() {
+
+                                public void afterTextChanged(Editable s) {
+
+                                    методЛовимПустоеЗначениеEditTExt(editTextRowКликПоДАнными);
+                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " s " +s);
+                                }
+
+                                public void beforeTextChanged(CharSequence s, int start,
+                                                              int count, int after) {
+                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                                }
+
+                                public void onTextChanged(CharSequence s, int start,
+                                                          int before, int count) {
+                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                                }
+                            });
+
+
+
+
+
                             editTextRowКликПоДАнными.setOnLongClickListener(new View.OnLongClickListener() {
                                 @Override
                                 public boolean onLongClick(View v) {
@@ -3844,7 +3830,7 @@ try{
                                 public void onFocusChange(View v, boolean hasFocus) {
                                     // TODO: 19.10.2022
                                     RxView.focusChanges(v)
-                                            .throttleLast(1000, TimeUnit.MILLISECONDS)
+                                            .throttleLast(250, TimeUnit.MILLISECONDS)
                                             .subscribe(new io.reactivex.rxjava3.functions.Consumer<Boolean>() {
                                                 @Override
                                                 public void accept(Boolean aBoolean) throws Throwable {
@@ -3864,18 +3850,22 @@ try{
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +" hasFocus " +hasFocus + " v"+v+
                                 " bundleДанныеTag " +bundleДанныеTag + " EditTextДАнные " +EditTextДАнные);
                     }
+                                                    }else{
 
+                                                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +" hasFocus " +hasFocus + " v"+v);
                                                     }
-                                                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +" hasFocus " +hasFocus + " v"+v);
+
                                                 }
                                             });
                                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                                 }
+
                             });
+
                             // TODO: 19.10.2022  ПРОСТОЙ КЛИК
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -3890,6 +3880,26 @@ try{
                             this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
+            }
+
+            private void методЛовимПустоеЗначениеEditTExt(View v) {
+                try{
+                String EditTextДАнныеФокус=       ((EditText) v).getText().toString().trim();
+                if (EditTextДАнныеФокус.length()==0) {
+                    ((EditText) v).setText("0");
+                    ((EditText) v).setTextColor(Color.parseColor("#00ACC1"));
+                    ((EditText) v).refreshDrawableState();
+                    ((EditText) v).forceLayout();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getApplicationContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
             }
             // TODO: 08.11.2022 КЛИК ПО ФИО
             private void МетодаКликаTableRowФИО(TableRow tableRowКликПоДАнными) {
