@@ -125,6 +125,8 @@ import java.util.stream.IntStream;
 import javax.crypto.NoSuchPaddingException;
 
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.Function;
+import kotlin.Unit;
 
 
 public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
@@ -3156,8 +3158,6 @@ try{
             private   TableRow rowData8;
 
             // TODO: 05.04.2023 Слушатель Long
-            View.OnLongClickListener[] longClickListenerRowData=new View.OnLongClickListener[ГлавныйКурсорДанныеSwipes.getCount()];
-            View.OnClickListener[] clickListenerRowData=new View.OnClickListener[ГлавныйКурсорДанныеSwipes.getCount()];
             public MyViewHolder(@NonNull View itemView ) {
                 super(itemView);
                 try {
@@ -3765,13 +3765,11 @@ try{
                 try{
                  //EditText editTextD1=   tableRowКликПоДАнными.findViewById(R.id.v1);
                         if (editTextRowКликПоДАнными!=null) {
-
                             // TODO: 19.10.2022  ЛОНГ КЛИК
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-                            holder.longClickListenerRowData[cursor.getPosition()]=            new View.OnLongClickListener() {
+                            editTextRowКликПоДАнными.setOnLongClickListener(new View.OnLongClickListener() {
                                 @Override
                                 public boolean onLongClick(View v) {
                                     // TODO: 19.10.2022
@@ -3780,30 +3778,31 @@ try{
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                                     return true;
                                 }
-                            };
-                            editTextRowКликПоДАнными.setOnLongClickListener(holder.longClickListenerRowData[cursor.getPosition()]);
+                            });
 
                             // TODO: 05.04.2023 ПРОСТОЙ КЛИК
-                            holder.clickListenerRowData[cursor.getPosition()]=         new View.OnClickListener(){
+                            editTextRowКликПоДАнными.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     // TODO: 19.10.2022
-                                    RxView.clicks(v)
+                                    RxView.focusChanges(editTextRowКликПоДАнными)
                                             .throttleLast(3, TimeUnit.SECONDS)
-                                            .subscribe(s -> {
-                                                // perform some actions
-                                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                                            .skip(1)
+                                            .subscribe(new io.reactivex.rxjava3.functions.Consumer<Boolean>() {
+                                                @Override
+                                                public void accept(Boolean aBoolean) throws Throwable {
+                                                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                                                }
                                             });
 
 
-                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                                                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                                 }
-                            };
-                            editTextRowКликПоДАнными.setOnClickListener(holder.clickListenerRowData[cursor.getPosition()]);
+                            });
                             // TODO: 19.10.2022  ПРОСТОЙ КЛИК
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -3830,7 +3829,7 @@ try{
                                     Bundle bundleПереходДетализацию=(Bundle) v.getTag();
                                     if (bundleПереходДетализацию != null) {
                                     }
-                                    Toast.makeText(activity, "МетодаКликаTableRowФИО "+ bundleПереходДетализацию.getLong("uuid"), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(activity, "onClick МетодаКликаTableRowФИО ", Toast.LENGTH_SHORT).show();
                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -3843,6 +3842,7 @@ try{
                                     Bundle bundleПереходДетализацию=(Bundle) v.getTag();
                                     if (bundleПереходДетализацию != null) {
                                     }
+                                    Toast.makeText(activity, " onLongClick МетодаКликаTableRowФИО ", Toast.LENGTH_SHORT).show();
                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
