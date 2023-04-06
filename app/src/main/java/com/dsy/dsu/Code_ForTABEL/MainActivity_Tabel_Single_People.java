@@ -265,7 +265,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ЛимитСоСмещениемДанных="0";
             КнопкаНазад=(Button) findViewById(R.id.imageViewСтрелкаВнутриТабеля);
             view2Линия=(View) findViewById(R.id.view2Линия);
-            recyclerView.setVisibility(View.INVISIBLE);
             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
             animationПрофессия = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row);
             animationRows = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row_scroll_for_singletabel);
@@ -3603,7 +3602,6 @@ try{
                   if(position==ГлавныйКурсорДанныеSwipes.getCount()-1){
                       messageRows.getTarget().post(()-> {
                           ProgressBarSingleTabel.setVisibility(View.INVISIBLE);
-                          recyclerView.setVisibility(View.VISIBLE);
                           recyclerView.requestLayout();
                       });
                         }
