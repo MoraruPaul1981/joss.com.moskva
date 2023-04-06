@@ -111,6 +111,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
@@ -3642,16 +3643,15 @@ try{
                     // TODO: 04.04.2023  ФИО 
                         МетодЗаполняемФИОRow(holder.rowФИО);
                     // TODO: 04.04.2023  NAME and DATA
+               ListIterator<TableRow> listIterator= holder.rowData.listIterator();
+                    while (listIterator.hasNext()){
+                        TableRow tableRow=    listIterator.next();
+                        МетодЗаполняем1TableRow(holder.rowName1,tableRow,cursor ,holder,   listIterator.nextIndex());
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    }
 
-                    holder.rowData.stream().parallel().forEachOrdered(new Consumer<TableRow>() {
-                        @Override
-                        public void accept(TableRow tableRow) {
-                            МетодЗаполняем1TableRow(holder.rowName1,tableRow,cursor ,holder);
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                        }
-                    });
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -3708,12 +3708,62 @@ try{
                 }
             }
 
-            private void МетодЗаполняем1TableRow(@NonNull  TableRow rowName1, @NonNull  TableRow rowData1, @NonNull Cursor cursor ,@NonNull  MyViewHolder holder) {
+            private void МетодЗаполняем1TableRow(@NonNull  TableRow rowName1,
+                                                 @NonNull TableRow rowData1,
+                                                 @NonNull Cursor cursor
+                    ,@NonNull  MyViewHolder holder,
+                                                 @NonNull Integer ДвиженияИндексаDataRow) {
                 try {
                    // TableRow rowПервыеДанные = (TableRow)   TableLayoutSingleTabel.findViewById(R.id.TableData);
                     for (int ИндексСтрочкиДней = 0; ИндексСтрочкиДней < rowData1.getChildCount(); ИндексСтрочкиДней++) {
                         EditText editTextRowКликПоДАнными = (EditText) rowData1.getChildAt(ИндексСтрочкиДней);
                         if (editTextRowКликПоДАнными != null) {
+
+                                switch ( ДвиженияИндексаDataRow){
+                                    case  1:
+                                        if (ИндексСтрочкиДней==0) {
+                                            ИндексСтрочкиДней=ИндексСтрочкиДней+1;
+                                        }
+                                        break;
+                                    case  2:
+                                        if (ИндексСтрочкиДней==0) {
+                                            ИндексСтрочкиДней=ИндексСтрочкиДней+5;
+                                        }
+                                        break;
+                                    case  3:
+                                        if (ИндексСтрочкиДней==0) {
+                                            ИндексСтрочкиДней=ИндексСтрочкиДней+9;
+                                        }
+                                        break;
+                                    case  4:
+                                        if (ИндексСтрочкиДней==0) {
+                                            ИндексСтрочкиДней=ИндексСтрочкиДней+13;
+                                        }
+                                        break;
+                                    case  5:
+                                        if (ИндексСтрочкиДней==0) {
+                                            ИндексСтрочкиДней=ИндексСтрочкиДней+17;
+                                        }
+                                        break;
+                                        case  6:
+                                        if (ИндексСтрочкиДней==0) {
+                                            ИндексСтрочкиДней=ИндексСтрочкиДней+21;
+                                        }
+                                        break;
+                                    case  7:
+                                        if (ИндексСтрочкиДней==0) {
+                                            ИндексСтрочкиДней=ИндексСтрочкиДней+25;
+                                        }
+                                        break;
+                                    case  8:
+                                        if (ИндексСтрочкиДней==0) {
+                                            ИндексСтрочкиДней=ИндексСтрочкиДней+29;
+                                        }
+                                        break;
+
+
+                                }
+
                             // TODO: 05.04.2023  ЗАПОЛЯНИЕМ ДНЯМИ ROW 1
                             МетодЗаполяемДнямиTowData(editTextRowКликПоДАнными,cursor,ИндексСтрочкиДней);
                             // TODO: 05.04.2023 Вешаем на Ячекку ДАнных Слушатель
@@ -3742,7 +3792,6 @@ try{
 
             private void МетодЗаполяемДнямиTowData(@NonNull  EditText editTextRowКликПоДАнными, @NonNull Cursor cursor,@NonNull int ИндексСтрочкиДней ) {
                 try {
-                    ИндексСтрочкиДней=ИндексСтрочкиДней+1;
                     String НазваниеДляДень=new String("d"+ИндексСтрочкиДней);
                     String День= Optional.ofNullable(cursor.getString(cursor.getColumnIndex( НазваниеДляДень))).orElse("0");
                     Long uuid= Optional.ofNullable(cursor.getLong(cursor.getColumnIndex( "uuid"))).orElse(0l);
