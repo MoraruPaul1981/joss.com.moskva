@@ -202,33 +202,21 @@
 
     </ScrollView>
 
+    <ProgressBar
+        android:id="@+id/ProgressBarSingleTabel"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_centerHorizontal="true"
+        android:background="#FFFFFF"
+        android:indeterminate="true"
+        android:scaleX="1"
+        android:scaleY="3"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/СпинерТабельДепратамент"
+        tools:ignore="MissingConstraints" />
 
 
-    <ImageButton
-        android:id="@+id/imageButtonДвижениеПоСотрудникамВТАбеле"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
-        android:background="#F5FFFA"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ScrollViewСамТабеля"
-        app:srcCompat="@drawable/icon_dsu1_singlescroll_forfartbest" />
-
-    <ImageButton
-        android:id="@+id/imageButtonНазадПоСотрудникамВТАбеле"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="1dp"
-        android:background="#F5FFFA"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ScrollViewСамТабеля"
-        app:srcCompat="@drawable/icon_dsu1_singlescroll_tbest" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

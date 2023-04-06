@@ -252,6 +252,7 @@
             android:textColorHint="#00ACC1"
             android:textSize="24sp"
             android:tooltipText="V1"
+            android:visibility="visible"
             android:textStyle="bold" />
 
         <EditText
@@ -272,6 +273,7 @@
             android:textAlignment="center"
             android:textColorHint="#00ACC1"
             android:textSize="24sp"
+            android:visibility="visible"
             android:textStyle="bold" />
 
         <EditText
@@ -292,6 +294,7 @@
             android:textAlignment="center"
             android:textColorHint="#00ACC1"
             android:textSize="24sp"
+            android:visibility="visible"
             android:textStyle="bold" />
 
         <EditText
@@ -312,6 +315,7 @@
             android:textAlignment="center"
             android:textColorHint="#00ACC1"
             android:textSize="24sp"
+            android:visibility="visible"
             android:textStyle="bold" />
     </TableRow>
   <!--  //TODO конец Данных на первой строчки -->
@@ -446,6 +450,7 @@
             android:layout_width="87dp"
             android:layout_height="6mm"
             android:foregroundGravity="center"
+            android:visibility="visible"
             android:hint="V5"
             android:gravity="center_vertical|center_horizontal"
             android:layout_marginStart="1dp"
@@ -466,6 +471,7 @@
             android:layout_width="87dp"
             android:layout_height="6mm"
             android:foregroundGravity="center"
+            android:visibility="visible"
             android:hint="V6"
             android:gravity="center_vertical|center_horizontal"
             android:layout_marginStart="1dp"
@@ -486,6 +492,7 @@
             android:layout_width="87dp"
             android:layout_height="6mm"
             android:foregroundGravity="center"
+            android:visibility="visible"
             android:hint="V7"
             android:gravity="center_vertical|center_horizontal"
             android:layout_marginStart="1dp"
@@ -506,6 +513,7 @@
             android:layout_width="87dp"
             android:layout_height="6mm"
             android:foregroundGravity="center"
+            android:visibility="visible"
             android:hint="V8"
             android:gravity="center_vertical|center_horizontal"
             android:layout_marginStart="1dp"
@@ -663,6 +671,7 @@
             android:padding="0dp"
             android:textAlignment="center"
             android:textColorHint="#00ACC1"
+            android:visibility="visible"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -673,6 +682,7 @@
             android:layout_height="6mm"
             android:foregroundGravity="center"
             android:hint="V10"
+            android:visibility="visible"
             android:gravity="center_vertical|center_horizontal"
             android:layout_marginStart="1dp"
             android:layout_marginTop="1dp"
@@ -693,6 +703,7 @@
             android:layout_height="6mm"
             android:foregroundGravity="center"
             android:hint="V11"
+            android:visibility="visible"
             android:gravity="center_vertical|center_horizontal"
             android:layout_marginStart="1dp"
             android:layout_marginTop="1dp"
@@ -713,6 +724,7 @@
             android:layout_height="6mm"
             android:foregroundGravity="center"
             android:hint="V12"
+            android:visibility="visible"
             android:gravity="center_vertical|center_horizontal"
             android:layout_marginStart="1dp"
             android:layout_marginTop="1dp"

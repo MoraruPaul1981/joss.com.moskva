@@ -51,6 +51,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.Spinner;
@@ -209,6 +210,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private String  МесяциГодТабеляПолностью;
     private Integer ВсеСтрокиТабеля=0;
     private  TextView    КонтейнерКудаЗагружаетьсяФИО;
+    private ProgressBar ProgressBarSingleTabel;
 
 
     private RecyclerView recyclerView;
@@ -246,6 +248,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             СпинерТАбельМЕсяцФинал = (Spinner) findViewById(R.id.СпинерТабельМесяц);
             СпинерТАбельДепартаментФинал = (Spinner) findViewById(R.id.СпинерТабельДепратамент);
             ГлавныйКонтейнерТабель = (LinearLayout) findViewById(R.id.ГлавныйКонтейнерТабель);
+            ProgressBarSingleTabel = (ProgressBar) findViewById(R.id.ProgressBarSingleTabel);
+
             ///TODO на данной КНОПКЕ МЫ МОЖЕМ ДОБАВИТЬ СОТРУДНИКА К ТАБЕЛЮ ИЛИ СОЗДАТЬ НОВОГО СОТРУДНИКА
 
             КнопкаЛеваяПередвиженияПоДанным=(Button) findViewById(R.id.imageViewВСамомТабелеЛеваяСтрелка);
@@ -261,6 +265,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ЛимитСоСмещениемДанных="0";
             КнопкаНазад=(Button) findViewById(R.id.imageViewСтрелкаВнутриТабеля);
             view2Линия=(View) findViewById(R.id.view2Линия);
+            recyclerView.setVisibility(View.INVISIBLE);
+            ProgressBarSingleTabel.setVisibility(View.VISIBLE);
             animationПрофессия = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row);
             animationRows = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row_scroll_for_singletabel);
             animationRich = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_swipe_r);//R.anim.slide_in_row)
@@ -270,6 +276,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             методДанныеИзДругихАктивити();
             МетодSwipeALLКурсор();
             МетодGetmessage();
+
 
             SubClassSingleTabelRecycreView subClassSingleTabelRecycreView= new SubClassSingleTabelRecycreView(ГлавныйКурсорДанныеSwipes,
                     this,this,this);
@@ -3578,9 +3585,7 @@ try{
             public void onBindViewHolder(@NonNull  MyViewHolder holder, int position) {
                 try {
                     Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor);
-
                     messageRows.getTarget().post(()->{
-
                         if (cursor!=null) {
                             if (cursor.getCount() > 0 && holder.TableLayoutSingleTabel != null) {
                                 // TODO: 04.04.2023 переходим на данне через Смежение
@@ -3593,10 +3598,20 @@ try{
                                 Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
                             }
                         }
+
+                        // TODO: 06.04.2023
+                  if(position==ГлавныйКурсорДанныеSwipes.getCount()-1){
+                      messageRows.getTarget().post(()-> {
+                          ProgressBarSingleTabel.setVisibility(View.INVISIBLE);
+                          recyclerView.setVisibility(View.VISIBLE);
+                          recyclerView.requestLayout();
+                      });
+                        }
                     });
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cursor " +cursor);
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cursor " +cursor +
+                             " myViewHolder.getLayoutPosition() " +myViewHolder.getLayoutPosition());
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getApplicationContext().getClass().getName(),
@@ -3738,7 +3753,6 @@ try{
                    }
                }
            }
-
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -3765,6 +3779,7 @@ try{
                         data.putLong("uuid", uuid);
                         data.putString("День", НазваниеДляДень);
                         editTextRowКликПоДАнными.setTag(data);
+                       editTextRowКликПоДАнными.setVisibility(View.VISIBLE);
                         editTextRowКликПоДАнными.setText(День.trim());
                         // TODO: 19.10.2022
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -3782,8 +3797,9 @@ try{
             }
             private void методЗаполениеНазванияRowData(@NonNull  TextView editTextRowКликПоНазваниям,String s) {
                 try {
+                            editTextRowКликПоНазваниям.setVisibility(View.VISIBLE);
                                 editTextRowКликПоНазваниям.setText(s.trim());
-                        editTextRowКликПоНазваниям.startAnimation(animationПрофессия);
+                             editTextRowКликПоНазваниям.startAnimation(animationПрофессия);
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
