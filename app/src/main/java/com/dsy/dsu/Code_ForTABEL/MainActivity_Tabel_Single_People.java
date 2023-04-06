@@ -3781,26 +3781,34 @@ try{
                             });
 
                             // TODO: 05.04.2023 ПРОСТОЙ КЛИК
-                            editTextRowКликПоДАнными.setOnClickListener(new View.OnClickListener() {
+                            editTextRowКликПоДАнными.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                                 @Override
-                                public void onClick(View v) {
+                                public void onFocusChange(View v, boolean hasFocus) {
                                     // TODO: 19.10.2022
-                                    RxView.focusChanges(editTextRowКликПоДАнными)
-                                            .throttleLast(3, TimeUnit.SECONDS)
-                                            .skip(1)
+                                    RxView.focusChanges(v)
+                                            .throttleLast(1000, TimeUnit.MILLISECONDS)
                                             .subscribe(new io.reactivex.rxjava3.functions.Consumer<Boolean>() {
                                                 @Override
                                                 public void accept(Boolean aBoolean) throws Throwable {
+                                                    if(aBoolean==false){
+                                          Bundle bundleДанныеTag=        (Bundle)      v.getTag();
+                                        String EditTextДАнные=       ((EditText) v).getText().toString();
+
+                                                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +" hasFocus " +hasFocus + " v"+v+
+                                                                " bundleДанныеTag " +bundleДанныеTag + " EditTextДАнные " +EditTextДАнные);
+                                                    }
                                                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +" hasFocus " +hasFocus + " v"+v);
                                                 }
                                             });
 
 
-                                                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                                 }
                             });
                             // TODO: 19.10.2022  ПРОСТОЙ КЛИК
