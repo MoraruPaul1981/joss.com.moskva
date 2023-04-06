@@ -6,25 +6,29 @@ import android.database.Cursor;
 import android.util.Log;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
+import com.dsy.dsu.model.Organization;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
 import java.io.IOException;
 import java.util.Optional;
 
-public class GeneratorJSONDeserializer extends JsonDeserializer<Object> {
+public class GeneratorJSONDeserializer extends JsonDeserializer<Organization> {
     Context context;
     public GeneratorJSONDeserializer(Context context) {
+
         this.context=context;
     }
     @Override
-    public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public Organization deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         try{
+            JsonNode node = p.readValueAsTree();
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");

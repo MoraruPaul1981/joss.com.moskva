@@ -21,6 +21,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.Parcel;
 import android.os.RemoteException;
+import android.util.JsonReader;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -35,22 +36,36 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID
 import com.dsy.dsu.Business_logic_Only_Class.Class_MODEL_synchronized;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Visible_Processing_Async;
 import com.dsy.dsu.Business_logic_Only_Class.Class__Generation_Genetal_Tables;
+import com.dsy.dsu.Business_logic_Only_Class.Jakson.GeneratorJSONDeserializer;
 import com.dsy.dsu.Business_logic_Only_Class.Jakson.GeneratorJSONSerializer;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.dsy.dsu.Business_logic_Only_Class.SubClass_Connection_BroadcastReceiver_Sous_Asyns_Glassfish;
+import com.dsy.dsu.model.Depatment;
+import com.dsy.dsu.model.Fio;
+import com.dsy.dsu.model.Organization;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -1306,23 +1321,10 @@ public class Service_For_Remote_Async extends IntentService {
             final Long[] РезультатРаботыСинхрониазциии = {0l};
             try {
                 Log.d(this.getClass().getName(), " БуферПолученныйJSON " + БуферПолученныйJSON.toString());
-              //  JsonObject     БуферJsonОтСервера = new PUBLIC_CONTENT(context).gson.fromJson(БуферПолученныйJSON.toString(), JsonObject.class);
-        /*        JsonArray     БуферJsonОтСервера = new PUBLIC_CONTENT(context).gson.fromJson(БуферПолученныйJSON.toString(), JsonArray.class);
-                        МаксималноеКоличествоСтрочекJSON = БуферJsonОтСервера.size();*/
-            /*    Log.d(this.getClass().getName(), " МаксималноеКоличествоСтрочекJSON:::  "
-                        + МаксималноеКоличествоСтрочекJSON+ " БуферJsonОтСервера " +БуферJsonОтСервера);*/
-/*
-
-                //TODO БУфер JSON от Сервера
-                if (имяТаблицыОтАндройда_локальноая.equalsIgnoreCase("fio")) {
-                    CopyOnWriteArrayList<?>  БуферJsonОтСервера2= new PUBLIC_CONTENT(context).getGeneratorJackson().readValue(БуферПолученныйJSON.toString(),
-                            new TypeReference<   CopyOnWriteArrayList<Fio>>() {});
-                    Log.d(this.getClass().getName(), " БуферJsonОтСервера2:::  " + БуферJsonОтСервера2+ " БуферJsonОтСервера " +БуферJsonОтСервера);
-                }
-*/
-
+// TODO: 05.04.2023 старый код END
                     //TODO БУфер JSON от Сервера
-                CopyOnWriteArrayList<Map<String,String>>  БуферJsonОтСервера= new PUBLIC_CONTENT(context).getGeneratorJackson().readValue(БуферПолученныйJSON.toString(),
+                CopyOnWriteArrayList<Map<String,String>>  БуферJsonОтСервера= new PUBLIC_CONTENT(context).getGeneratorJackson()
+                .readValue(БуферПолученныйJSON.toString(),
                                 new TypeReference<   CopyOnWriteArrayList<Map<String,String>>>() {});
                 // TODO: 26.03.2023  Количество Максимальное СТРОК
                 МаксималноеКоличествоСтрочекJSON = БуферJsonОтСервера.size();
