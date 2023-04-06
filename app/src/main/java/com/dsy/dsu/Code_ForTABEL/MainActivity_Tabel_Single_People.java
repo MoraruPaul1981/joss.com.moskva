@@ -3739,8 +3739,9 @@ try{
                     String День= Optional.ofNullable(cursor.getString(cursor.getColumnIndex( НазваниеДляДень))).orElse("0");
                     Long uuid= Optional.ofNullable(cursor.getLong(cursor.getColumnIndex( "uuid"))).orElse(0l);
                     Bundle data=new Bundle();
-                    data.putString("День",День);
+                    data.putString("ЗначениеДня",День);
                     data.putLong("uuid",uuid);
+                    data.putString("День",НазваниеДляДень);
                     editTextRowКликПоДАнными.setTag(data);
                     editTextRowКликПоДАнными.setText(День.trim());
                    //editTextRowКликПоДАнными.startAnimation(animationПрофессия);
@@ -3792,20 +3793,27 @@ try{
                                                 public void accept(Boolean aBoolean) throws Throwable {
                                                     if(aBoolean==false){
                                           Bundle bundleДанныеTag=        (Bundle)      v.getTag();
-                                        String EditTextДАнные=       ((EditText) v).getText().toString();
+                                          String ЗначениеДняTag=       bundleДанныеTag.getString("ЗначениеДня").trim();
+                                        String EditTextДАнные=       ((EditText) v).getText().toString().trim();
+                   // TODO: 06.04.2023 Принимаем Решение Если ДАные РАзные ЗАпускаем Обновление
+                    if (      !EditTextДАнные.equalsIgnoreCase(ЗначениеДняTag)) {
+                        Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +" hasFocus " +hasFocus + " v"+v+
+                                " bundleДанныеTag " +bundleДанныеTag + " EditTextДАнные " +EditTextДАнные+  "ЗначениеДняTag " +ЗначениеДняTag);
+                    } else {
+                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +" hasFocus " +hasFocus + " v"+v+
+                                " bundleДанныеTag " +bundleДанныеTag + " EditTextДАнные " +EditTextДАнные);
+                    }
 
-                                                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +" hasFocus " +hasFocus + " v"+v+
-                                                                " bundleДанныеTag " +bundleДанныеTag + " EditTextДАнные " +EditTextДАнные);
                                                     }
                                                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +" hasFocus " +hasFocus + " v"+v);
                                                 }
                                             });
-
-
                                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
