@@ -116,6 +116,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.PrimitiveIterator;
 import java.util.TimeZone;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -3147,8 +3148,13 @@ try{
             private   TableRow rowName6;
             private   TableRow rowName7;
             private   TableRow rowName8;
+
+
+
             // TODO: 04.04.2023   Data
+            private CopyOnWriteArrayList<TableRow> rowData=new CopyOnWriteArrayList<>();
             private   TableRow rowData1;
+
             private   TableRow rowData2;
             private   TableRow rowData3;
             private   TableRow rowData4;
@@ -3191,15 +3197,15 @@ try{
                     rowName7 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableRow7Name);
                     rowName8 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableRow8Name);
                     // TODO: 04.04.2023   Data
-                    rowData1 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableData1Row);
-                    rowData2 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableData2Row);
-                    rowData3 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableData3Row);
-                    rowData4 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableData4Row);
-                    rowData5 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableData5Row);
-                    rowData6 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableData6Row);
-                    rowData7 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableData7Row);
-                    rowData8 = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableData8Row);
-
+                    rowData.add(TableLayoutSingleTabel.findViewById(R.id.TableData1Row));
+                    rowData.add(TableLayoutSingleTabel.findViewById(R.id.TableData2Row));
+                    rowData.add(TableLayoutSingleTabel.findViewById(R.id.TableData3Row));
+                    rowData.add(TableLayoutSingleTabel.findViewById(R.id.TableData4Row));
+                    rowData.add(TableLayoutSingleTabel.findViewById(R.id.TableData5Row));
+                    rowData.add(TableLayoutSingleTabel.findViewById(R.id.TableData6Row));
+                    rowData.add(TableLayoutSingleTabel.findViewById(R.id.TableData7Row));
+                    rowData.add(TableLayoutSingleTabel.findViewById(R.id.TableData8Row));
+                    rowData.add(TableLayoutSingleTabel.findViewById(R.id.TableData1Row));
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" TableLayoutSingleTabel   " + TableLayoutSingleTabel+ 
@@ -3636,14 +3642,16 @@ try{
                     // TODO: 04.04.2023  ФИО 
                         МетодЗаполняемФИОRow(holder.rowФИО);
                     // TODO: 04.04.2023  NAME and DATA
-                        МетодЗаполняем1TableRow(holder.rowName1,holder.rowData1,cursor ,holder);
-                 /*       МетодЗаполняем1TableRow(holder.rowName2,holder.rowData2,cursor );
-                        МетодЗаполняем1TableRow(holder.rowName3,holder.rowData3,cursor );
-                        МетодЗаполняем1TableRow(holder.rowName4,holder.rowData4,cursor );
-                        МетодЗаполняем1TableRow(holder.rowName5,holder.rowData5,cursor );
-                        МетодЗаполняем1TableRow(holder.rowName6,holder.rowData6,cursor );
-                        МетодЗаполняем1TableRow(holder.rowName7,holder.rowData7,cursor );
-                        МетодЗаполняем1TableRow(holder.rowName8,holder.rowData8,cursor );*/
+
+                    holder.rowData.stream().parallel().forEachOrdered(new Consumer<TableRow>() {
+                        @Override
+                        public void accept(TableRow tableRow) {
+                            МетодЗаполняем1TableRow(holder.rowName1,tableRow,cursor ,holder);
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                        }
+                    });
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
