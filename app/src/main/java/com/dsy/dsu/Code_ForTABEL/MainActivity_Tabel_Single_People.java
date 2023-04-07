@@ -176,7 +176,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private  String ЛимитСоСмещениемДанных= "";
     private int ИндексДвижениеТабеляСкролл=0;
     private int ИндексДвижениеТабеляКнопки=0;
-    private  Integer ОбщееКоличествоЛюдейВТабелеТекущем;
+    private  Integer RowNumber;
     private   Context context;
     private    int IDЧьиДанныеДляСотрудников;
     private int ЦифровоеИмяНовгоТабеля;
@@ -456,22 +456,19 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
             Bundle bundleГлавныйКурсорMultiДанныеSwipes= new Bundle();
-            bundleГлавныйКурсорMultiДанныеSwipes.putString("СамЗапрос","  SELECT * FROM viewtabel WHERE cfo=? " +
-                    "AND month_tabels  =?  AND year_tabels = ?  AND status_send !=?  AND fio IS NOT NULL  ORDER BY uuid " );
+           /* bundleГлавныйКурсорMultiДанныеSwipes.putString("СамЗапрос","  SELECT * FROM viewtabel WHERE cfo=? " +
+                    "AND month_tabels  =?  AND year_tabels = ?  AND status_send !=?  AND fio IS NOT NULL  ORDER BY uuid " );*/
+            bundleГлавныйКурсорMultiДанныеSwipes.putString("СамЗапрос"," SELECT t.*, (SELECT COUNT(*) FROM viewtabel WHERE _id <= t._id  ) AS RowNumber  FROM viewtabel AS t" +
+                    " WHERE t.cfo=? AND t.month_tabels  =?  AND t.year_tabels = ?  AND t.status_send !=?  AND t.fio IS NOT NULL  ORDER BY t.uuid" );
             bundleГлавныйКурсорMultiДанныеSwipes.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(ЦифровоеИмяНовгоТабеля),
                     String.valueOf(МесяцТабеля),String.valueOf(ГодДляТабелей),"Удаленная" });
             bundleГлавныйКурсорMultiДанныеSwipes.putString("Таблица","viewtabel");
             ГлавныйКурсорALLДанныеSwipes =      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleГлавныйКурсорMultiДанныеSwipes);
 
-                    ОбщееКоличествоЛюдейВТабелеТекущем= ГлавныйКурсорALLДанныеSwipes.getCount();
-
-
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                    "  ГлавныйALLКурсорДанныеSwipes " + ГлавныйКурсорALLДанныеSwipes +
-                    " ОбщееКоличествоЛюдейВТабелеТекущем " +ОбщееКоличествоЛюдейВТабелеТекущем);
-
+                    "  ГлавныйALLКурсорДанныеSwipes " + ГлавныйКурсорALLДанныеSwipes );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -489,23 +486,26 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
       /*   Cursor ГлавныйКурсорSingleSwipe =
                     new Class_MODEL_synchronized(getApplicationContext()).МетодЗагружетУжеготовыеТабеля(context,UUIDТекущегоВыбраногоСотрудника
                             , МесяцТабеля, ГодДляТабелей);*/
-
+        /*    bundleГлавныйКурсорSingleДанныеSwipes.putString("СамЗапрос","  SELECT * FROM viewtabel WHERE uuid=? " +
+                    "  AND status_send !=?  AND fio IS NOT NULL  ORDER BY uuid LIMIT 1 " );*/
             //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
             Bundle bundleГлавныйКурсорSingleДанныеSwipes= new Bundle();
-            bundleГлавныйКурсорSingleДанныеSwipes.putString("СамЗапрос","  SELECT * FROM viewtabel WHERE uuid=? " +
-                    "  AND status_send !=?  AND fio IS NOT NULL  ORDER BY uuid LIMIT 1 " );
+            bundleГлавныйКурсорSingleДанныеSwipes.putString("СамЗапрос"," SELECT t.*, (SELECT COUNT(*) FROM viewtabel WHERE _id <= t._id  ) AS RowNumber  FROM viewtabel AS t" +
+                    " WHERE t.uuid=?   AND t.status_send !=?  AND t.fio IS NOT NULL  ORDER BY t.uuid LIMIT 1 " );
             bundleГлавныйКурсорSingleДанныеSwipes.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(UUIDКонктетногоПользователя) ,"Удаленная" });
             bundleГлавныйКурсорSingleДанныеSwipes.putString("Таблица","viewtabel");
             ГлавныйКурсорSingleДанныеSwipes =      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleГлавныйКурсорSingleДанныеSwipes);
 
-            ОбщееКоличествоЛюдейВТабелеТекущем= ГлавныйКурсорSingleДанныеSwipes.getCount();
+            if (ГлавныйКурсорSingleДанныеSwipes.getCount()>0) {
+                RowNumber = ГлавныйКурсорSingleДанныеSwipes.getInt(ГлавныйКурсорSingleДанныеSwipes.getColumnIndex("RowNumber"));
+            }
 
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
                     "  ГлавныйКурсорSingleДанныеSwipes " + ГлавныйКурсорSingleДанныеSwipes +
-                    " ОбщееКоличествоЛюдейВТабелеТекущем " +ОбщееКоличествоЛюдейВТабелеТекущем);
+                    " RowNumber " + RowNumber);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -1353,7 +1353,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                        " ОбщееКоличествоЛюдейВТабелеТекущем  "+ОбщееКоличествоЛюдейВТабелеТекущем );
+                        " RowNumber  "+ RowNumber);
                 МетодПергрузкиДизайнаЭкрана();
 
         } catch (Exception e) {
@@ -1463,7 +1463,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             Log.d(this.getClass().getName(), "  ЧасыТекущегоСОтрудника " + ЧасыТекущегоСОтрудника);
             TextViewЧасовСотрудникаВТабелеСотудников.setText(" (" + " " + ЧасыТекущегоСОтрудника + "/часы)  "+ПозицияВизуальция+" из "+ ГлавныйКурсорALLДанныеSwipes.getCount()+"");
             sqLiteCursor.moveToPosition(ПозицияКурсораДО);
-            Log.d(Class_MODEL_synchronized.class.getName()," ОбщееКоличествоЛюдейВТабелеТекущем  "+ОбщееКоличествоЛюдейВТабелеТекущем + " sqLiteCursor " +sqLiteCursor.getPosition()  );
+            Log.d(Class_MODEL_synchronized.class.getName()," RowNumber  "+ RowNumber + " sqLiteCursor " +sqLiteCursor.getPosition()  );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " +e + " Метод :"+Thread.currentThread().getStackTrace()[2].getMethodName()
@@ -1571,14 +1571,14 @@ try{
                 if (РезультатЛокальногоОбновления > 0 ) {
                     ///todo после заполнения табелями обнуляем куросры
                     ////////// TODO ПОДСЧЁТ ЧАСОВ ПОСЛЕ ЛОКАЛЬНОГО ОБНОВЛЕНИЯ
-                    ОбщееКоличествоЛюдейВТабелеТекущем = new Class_MODEL_synchronized(getApplicationContext()).МетодПосчётаЧасовПоСотруднику(ГлавныйКурсорALLДанныеSwipes);
+                    RowNumber = new Class_MODEL_synchronized(getApplicationContext()).МетодПосчётаЧасовПоСотруднику(ГлавныйКурсорALLДанныеSwipes);
                     Log.d(this.getClass().getName(), "  ОбщееКоличествоЧасовСотрудникаВТабелеСотудников " + TextViewЧасовСотрудникаВТабелеСотудников);
                     МетодСуммаЧасовВТабеле(ГлавныйКурсорALLДанныеSwipes);
                     // TODO: 07.05.2021 обнуляем UUID после созданеия подтчета часов
-                    Log.d(Class_MODEL_synchronized.class.getName()," ОбщееКоличествоЛюдейВТабелеТекущем  "+ОбщееКоличествоЛюдейВТабелеТекущем );
+                    Log.d(Class_MODEL_synchronized.class.getName()," RowNumber  "+ RowNumber);
                     МетодСуммаЧасовВТабеле(ГлавныйКурсорALLДанныеSwipes);
                     // TODO: 25.09.2021
-                    Log.d(Class_MODEL_synchronized.class.getName()," ОбщееКоличествоЛюдейВТабелеТекущем  "+ОбщееКоличествоЛюдейВТабелеТекущем);
+                    Log.d(Class_MODEL_synchronized.class.getName()," RowNumber  "+ RowNumber);
                     /////TODO ОБНУЛЯЕМ ЗНАЧЕНИЕ ID AND UUID ЧТОБЫ НЕ БЫЛО ПОВТОРОНОГО ОБНОЛЕНИЕ НЕ СВОЕГО ХОЗЯИНА UUID
                     КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.clear();
                     ScrollСамогоТабеля.requestLayout();
@@ -3202,8 +3202,8 @@ try{
         void МетодЗаполенияRecycleViewДляЗадач() {
             try {
                 // remove item from adapter
-                Log.d(this.getClass().getName(), "ГлавныйALLКурсорДанныеSwipes  " + ГлавныйALLКурсорДанныеSwipes);
-                myRecycleViewAdapter = new  MyRecycleViewAdapter(ГлавныйALLКурсорДанныеSwipes,0);
+                Log.d(this.getClass().getName(), "ГлавныйКурсорSingleДанныеSwipes  " + ГлавныйКурсорSingleДанныеSwipes);
+                myRecycleViewAdapter = new  MyRecycleViewAdapter(ГлавныйКурсорSingleДанныеSwipes,0);
                 recyclerView.setAdapter(myRecycleViewAdapter);
                 recyclerView.requestLayout();
             } catch (Exception e) {
@@ -4080,9 +4080,9 @@ try{
             public int getItemCount() {
                 int КоличесвоСтрок = 0;
                 try {
-                    if (ГлавныйALLКурсорДанныеSwipes !=null) {
-                        if (ГлавныйALLКурсорДанныеSwipes.getCount() > 0) {
-                            КоличесвоСтрок = ГлавныйALLКурсорДанныеSwipes.getCount();
+                    if (ГлавныйКурсорSingleДанныеSwipes !=null) {
+                        if (ГлавныйКурсорSingleДанныеSwipes.getCount() > 0) {
+                            КоличесвоСтрок = ГлавныйКурсорSingleДанныеSwipes.getCount();
                             Log.d(this.getClass().getName(), "sqLiteCursor.getCount()  " + cursor.getCount());
                         } else {
                             КоличесвоСтрок = 1;

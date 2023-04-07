@@ -2,6 +2,7 @@ package com.dsy.dsu.Business_logic_Only_Class.DATE;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +14,7 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 
 public class SubClassCursorLoader {
     // TODO: 25.11.2022 новы метод получение данных для всех
-    public Cursor CursorLoaders(@NonNull Context context, @NonNull Bundle bundle) {
+    public Cursor CursorLoaders(@NonNull Context context, @NonNull Bundle bundle) throws  SQLException {
         Cursor cursor=null;
         CursorLoader cursorLoader=null;
         try{
@@ -32,7 +33,7 @@ public class SubClassCursorLoader {
                         + cursor.getCount());
                 cursorLoader.reset();
             }
-        } catch (Exception e) {
+        } catch ( Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
