@@ -203,6 +203,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private      Message message;
     private      Message messageRows;
     private Animation animationПрофессия;
+
+    private Animation animationПрофессия300;
     private Animation animationRows;
     private Cursor ГлавныйALLКурсорДанныеSwipes;
 
@@ -274,6 +276,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             view2Линия=(View) findViewById(R.id.view2Линия);
             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
             animationПрофессия = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row);
+            animationПрофессия300 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row2);
             animationVibr1 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_singletable);
             animationVibr2 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_singletable2);
             animationRows = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row_scroll_for_singletabel);
@@ -3573,10 +3576,8 @@ try{
                                         МетодЗаполняемДаннымиRecycreViewSingleTable(holder, cursor);
                                         // TODO: 04.04.2023 перегрузкка внешнего вида RecyrView
                                         Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
-                                        messageRows.getTarget().postDelayed(()-> {
-                                            ProgressBarSingleTabel.setVisibility(View.INVISIBLE);
-                                            recyclerView.requestLayout();
-                                        },1000);
+                                        // TODO: 07.04.2023 переопрелделния Вида Табеля
+                                        МетодПерегрузкаSingletabel();
                                     } else {
                                         Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
                                     }
@@ -3599,6 +3600,26 @@ try{
                 }
                 super.onBindViewHolder(holder, position, payloads);
             }
+
+
+            private void МетодПерегрузкаSingletabel() {
+                try {
+                    messageRows.getTarget().postDelayed(()-> {
+                        ProgressBarSingleTabel.setVisibility(View.INVISIBLE);
+                        recyclerView.requestLayout();
+                    },1000);
+                    recyclerView.refreshDrawableState();
+                    recyclerView.forceLayout();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                            Thread.currentThread().getStackTrace()[2].getMethodName(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
+            }
+
 
             @Override
             public void setHasStableIds(boolean hasStableIds) {
@@ -3775,6 +3796,17 @@ try{
             }
             private void МетодЗаполняемФИОRow( @NonNull  TableRow tableRowФио) {
                 try {
+                    messageRows.getTarget().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            TextView textViewФИо = (TextView) tableRowФио.findViewById(R.id.RowКонтейнерКудаЗагружаетьсяФИО);
+                            String ФИОСодержимое =                Optional.ofNullable(textViewФИо.getHint()).map(Objects::toString).orElse("");
+                            textViewФИо.startAnimation(animationПрофессия) ;
+                            textViewФИо.setVisibility(View.VISIBLE);
+                            textViewФИо.setText("Новая Должность !!! ");
+
+                        }
+                    },150);
                         // TODO: 04.04.20223 КЛИК ПО ДАННЫМ
                         МетодаКликаTableRowФИО(tableRowФио);
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -3899,7 +3931,7 @@ try{
                     messageRows.getTarget().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            TextViewRowКликПоНазваниям.startAnimation(animationПрофессия) ;
+                            TextViewRowКликПоНазваниям.startAnimation(animationПрофессия300) ;
                             TextViewRowКликПоНазваниям.setVisibility(View.VISIBLE);
                             TextViewRowКликПоНазваниям.setText(s.trim());
                         }
