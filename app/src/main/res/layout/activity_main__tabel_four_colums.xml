@@ -190,7 +190,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginStart="3dp"
             android:layout_marginEnd="3dp"
-            android:background="#FAF7F7"
+            android:background="#C8C3C3"
             android:minHeight="500dp"
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/СпинерТабельДепратамент"

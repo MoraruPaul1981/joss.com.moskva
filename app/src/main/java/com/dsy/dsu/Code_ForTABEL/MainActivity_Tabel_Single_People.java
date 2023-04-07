@@ -304,7 +304,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
                     subClassSingleTabelRecycreView.МетодЗаполениеRecycleView(ГлавныйКурсорSingleДанные);
 
-
+                  subClassSingleTabelRecycreView. методДляSimpeCallbacks();
 
 
 
@@ -3128,49 +3128,6 @@ try{
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 staggeredGridLayoutManager.    invalidateSpanAssignments();
                 staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
-
-
-                ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0,
-                        ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT  | ItemTouchHelper.DOWN | ItemTouchHelper.END) {
-                    @Override
-                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-
-                        Integer posio= myViewHolder.getAbsoluteAdapterPosition();
-                        // remove item from adapter
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"recyclerView   " + recyclerView+ " cursor " +cursor);
-
-                        myRecycleViewAdapter = new  MyRecycleViewAdapter(cursor);
-                        recyclerView.setAdapter(myRecycleViewAdapter);
-
-                        myRecycleViewAdapter.onBindViewHolder(myViewHolder,3,new ArrayList<>());
-
-                      //  recyclerView.setAdapter(myRecycleViewAdapter);
-                        myRecycleViewAdapter.notifyDataSetChanged();
-                        recyclerView.requestLayout();
-
-                    //МетодЗаполенияRecycleViewДляЗадач();
-
-                    }
-                    @Override
-                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                                          RecyclerView.ViewHolder target) {
-                        final int fromPos = viewHolder.getAdapterPosition();
-                        final int toPos = target.getAdapterPosition();
-                        // move item in `fromPos` to `toPos` in adapter.
-                        return true;// true if moved, false otherwise
-                    }
-
-                };
-                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-                itemTouchHelper.attachToRecyclerView(recyclerView);
-
-
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"recyclerView   " + recyclerView);
-
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -3185,6 +3142,53 @@ try{
             }
         }
 
+        private void методДляSimpeCallbacks() {
+            try{
+            ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(10,
+                    ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT  | ItemTouchHelper.DOWN | ItemTouchHelper.END) {
+                @Override
+                public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                    Integer posio= myViewHolder.getAbsoluteAdapterPosition();
+                    // remove item from adapter
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"recyclerView   " + recyclerView+ " cursor " +cursor);
+
+                    myRecycleViewAdapter = new  MyRecycleViewAdapter(cursor);
+                    recyclerView.setAdapter(myRecycleViewAdapter);
+
+                    myRecycleViewAdapter.onBindViewHolder(myViewHolder,3,new ArrayList<>());
+                  //  recyclerView.setAdapter(myRecycleViewAdapter);
+                    myRecycleViewAdapter.notifyDataSetChanged();
+                    recyclerView.requestLayout();
+                }
+                @Override
+                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                      RecyclerView.ViewHolder target) {
+                    final int fromPos = viewHolder.getAdapterPosition();
+                    final int toPos = target.getAdapterPosition();
+                    // move item in `fromPos` to `toPos` in adapter.
+                    return true;// true if moved, false otherwise
+                }
+
+            };
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+            itemTouchHelper.attachToRecyclerView(recyclerView);
+
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"recyclerView   " + recyclerView);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(getApplicationContext().getClass().getName(),
+                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        }
 
 
         // TODO: 04.03.2022 прозвомжность Заполения RecycleView
