@@ -72,6 +72,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -202,9 +203,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private      Message messageRows;
     private Animation animationПрофессия;
     private Animation animationRows;
-    private Cursor ГлавныйКурсорALLДанныеSwipes;
+    private Cursor ГлавныйALLКурсорДанныеSwipes;
 
-    private Cursor ГлавныйКурсорSingleДанныеSwipes;
+    private Cursor  ГлавныйКурсорSingleДанные;
 
     private  Long UUIDТекущегоВыбраногоСотрудника=0l;
     private         Long ПолученыйUUIDФИОСледующий=0l;
@@ -288,13 +289,11 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             МетодGetmessage();
 
-
-            SubClassSingleTabelRecycreView subClassSingleTabelRecycreView= new SubClassSingleTabelRecycreView(ГлавныйКурсорALLДанныеSwipes,
-                    this,this,this);
+            SubClassSingleTabelRecycreView subClassSingleTabelRecycreView= new SubClassSingleTabelRecycreView(this,this,this);
 
             subClassSingleTabelRecycreView.МетодИнициализацииRecycreView();
 
-                    subClassSingleTabelRecycreView.МетодЗаполенияRecycleViewДляЗадач();
+                    subClassSingleTabelRecycreView.МетодЗаполениеRecycleView(ГлавныйКурсорSingleДанные);
 
                /*     message.getTarget().postDelayed(()->{
                         subClassSingleTabelRecycreView.  МетодСлушательRecycleView();
@@ -449,26 +448,21 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     private void МетодSwipesКурсор() {
         try{
-           /* ГлавныйALLКурсорДанныеSwipes =
-                    new Class_MODEL_synchronized(getApplicationContext()).
-                            МетодЗагружетУжеготовыеТабеляПриСмещенииДанныхСкроллПоДАнным(context,
-                                    ЦифровоеИмяНовгоТабеля, МесяцТабеля, ГодДляТабелей);*/
-
             //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
             Bundle bundleГлавныйКурсорMultiДанныеSwipes= new Bundle();
            /* bundleГлавныйКурсорMultiДанныеSwipes.putString("СамЗапрос","  SELECT * FROM viewtabel WHERE cfo=? " +
                     "AND month_tabels  =?  AND year_tabels = ?  AND status_send !=?  AND fio IS NOT NULL  ORDER BY uuid " );*/
-            bundleГлавныйКурсорMultiДанныеSwipes.putString("СамЗапрос"," SELECT t.*, (SELECT COUNT(*) FROM viewtabel WHERE _id <= t._id  ) AS RowNumber  FROM viewtabel AS t" +
-                    " WHERE t.cfo=? AND t.month_tabels  =?  AND t.year_tabels = ?  AND t.status_send !=?  AND t.fio IS NOT NULL  ORDER BY t.uuid" );
+            bundleГлавныйКурсорMultiДанныеSwipes.putString("СамЗапрос"," SELECT  *   FROM viewtabel AS t" +
+                    " WHERE t.cfo=? AND t.month_tabels  =?  AND t.year_tabels = ?  AND t.status_send !=?  AND t.fio IS NOT NULL  ORDER BY   t._id  " );
             bundleГлавныйКурсорMultiДанныеSwipes.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(ЦифровоеИмяНовгоТабеля),
                     String.valueOf(МесяцТабеля),String.valueOf(ГодДляТабелей),"Удаленная" });
             bundleГлавныйКурсорMultiДанныеSwipes.putString("Таблица","viewtabel");
-            ГлавныйКурсорALLДанныеSwipes =      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleГлавныйКурсорMultiДанныеSwipes);
+            ГлавныйALLКурсорДанныеSwipes =      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleГлавныйКурсорMultiДанныеSwipes);
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                    "  ГлавныйALLКурсорДанныеSwipes " + ГлавныйКурсорALLДанныеSwipes );
+                    "  ГлавныйALLКурсорДанныеSwipes " + ГлавныйALLКурсорДанныеSwipes );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -483,30 +477,21 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private void МетодSwipesКурсор(@NonNull Long UUIDКонктетногоПользователя) {
         try{
             // TODO: 07.04.2023 Второй Вид Курсора ТОлько ПО Обнолмк UUID
-      /*   Cursor ГлавныйКурсорSingleSwipe =
-                    new Class_MODEL_synchronized(getApplicationContext()).МетодЗагружетУжеготовыеТабеля(context,UUIDТекущегоВыбраногоСотрудника
-                            , МесяцТабеля, ГодДляТабелей);*/
-        /*    bundleГлавныйКурсорSingleДанныеSwipes.putString("СамЗапрос","  SELECT * FROM viewtabel WHERE uuid=? " +
-                    "  AND status_send !=?  AND fio IS NOT NULL  ORDER BY uuid LIMIT 1 " );*/
             //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
             Bundle bundleГлавныйКурсорSingleДанныеSwipes= new Bundle();
-            bundleГлавныйКурсорSingleДанныеSwipes.putString("СамЗапрос"," SELECT t.*, (SELECT COUNT(*) FROM viewtabel WHERE _id <= t._id  ) AS RowNumber  FROM viewtabel AS t" +
+            bundleГлавныйКурсорSingleДанныеSwipes.putString("СамЗапрос"," SELECT *  FROM viewtabel AS t" +
                     " WHERE t.uuid=?   AND t.status_send !=?  AND t.fio IS NOT NULL  ORDER BY t.uuid LIMIT 1 " );
             bundleГлавныйКурсорSingleДанныеSwipes.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(UUIDКонктетногоПользователя) ,"Удаленная" });
             bundleГлавныйКурсорSingleДанныеSwipes.putString("Таблица","viewtabel");
-            ГлавныйКурсорSingleДанныеSwipes =      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleГлавныйКурсорSingleДанныеSwipes);
-
-            if (ГлавныйКурсорSingleДанныеSwipes.getCount()>0) {
-                RowNumber = ГлавныйКурсорSingleДанныеSwipes.getInt(ГлавныйКурсорSingleДанныеSwipes.getColumnIndex("RowNumber"));
-            }
-
-
+            ГлавныйКурсорSingleДанные =      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleГлавныйКурсорSingleДанныеSwipes);
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                    "  ГлавныйКурсорSingleДанныеSwipes " + ГлавныйКурсорSingleДанныеSwipes +
+                    "  ГлавныйКурсорSingleДанные " + ГлавныйКурсорSingleДанные +
                     " RowNumber " + RowNumber);
-
+            Bundle bundle=       new Bundle();
+            bundle  .putLong("UUIDКонктетногоПользователя",UUIDКонктетногоПользователя);
+            ГлавныйКурсорSingleДанные.setExtras(bundle);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -660,7 +645,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                                         ПроизошелЛиСфайпПоДаннымСингТабеля=true;
                                         ГлавныйКонтейнерТабель.setFocusable(false);
                                         ГлавныйКонтейнерТабель.setClickable(false);
-                                        // TODO: 30.03.2023  перехехлд по ажнным  
+                                        // TODO: 30.03.2023  перехехлд по ажнным
                                         МетодСвайпНазаПоДанным();
                                         Log.d(getApplicationContext().getClass().getName(), " МетодСвайпНазаПоДанным ");/////
                                         // TODO: 09.05.2021  при успешном срабоатывании true
@@ -1156,7 +1141,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " ГлавныйALLКурсорДанныеSwipes "+ ГлавныйКурсорALLДанныеSwipes + " ОбщееКоличествоСОтрудниковДляСкролаПотабелю " +ОбщееКоличествоСОтрудниковДляСкролаПотабелю);
+                    + " ГлавныйALLКурсорДанныеSwipes "+ ГлавныйALLКурсорДанныеSwipes + " ОбщееКоличествоСОтрудниковДляСкролаПотабелю " +ОбщееКоличествоСОтрудниковДляСкролаПотабелю);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -1171,16 +1156,16 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             throws ParseException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, ExecutionException, InterruptedException {
         try{
             if  (  ПроизошелЛиСфайпПоДаннымСингТабеля==true ){
-                    if (  ГлавныйКурсорALLДанныеSwipes.getCount()>0) {
-                        int ИНдексГдеНаходитсьяКолонкаUUIDТабеляПриСфайпе= ГлавныйКурсорALLДанныеSwipes.getColumnIndex("uuid");
-                        UUIDТекущегоВыбраногоСотрудника=     ГлавныйКурсорALLДанныеSwipes.getLong(ИНдексГдеНаходитсьяКолонкаUUIDТабеляПриСфайпе);
+                    if (  ГлавныйALLКурсорДанныеSwipes.getCount()>0) {
+                        int ИНдексГдеНаходитсьяКолонкаUUIDТабеляПриСфайпе= ГлавныйALLКурсорДанныеSwipes.getColumnIndex("uuid");
+                        UUIDТекущегоВыбраногоСотрудника=     ГлавныйALLКурсорДанныеSwipes.getLong(ИНдексГдеНаходитсьяКолонкаUUIDТабеляПриСфайпе);
                         Log.d(this.getClass().getName(), " UUIDТекущегоВыбраногоСотрудника  " +UUIDТекущегоВыбраногоСотрудника );
                         // TODO: 23.03.2023 заполяем
                         ///TODO   #6   запускаем метод ПОСЛЕ УСПЕШНОЙ ГЕНЕРАЦИИ ТАБЕЛЯ
-                        МетодСуммаЧасовВТабеле(ГлавныйКурсорALLДанныеSwipes);
-                        МетодЗаполенияДаннымиСотрудника(  ЦифровоеИмяНовгоТабеля, ГлавныйКурсорALLДанныеSwipes);
+                        МетодСуммаЧасовВТабеле(ГлавныйALLКурсорДанныеSwipes);
+                        МетодЗаполенияДаннымиСотрудника(  ЦифровоеИмяНовгоТабеля, ГлавныйALLКурсорДанныеSwipes);
                         МетодСлушательСвайпов();
-                        МетодПолучениеФИОиПрофессия(ГлавныйКурсорALLДанныеSwipes);
+                        МетодПолучениеФИОиПрофессия(ГлавныйALLКурсорДанныеSwipes);
                     }else{
                         МетодКогдаНетЗаписейВКурсоре();
                     }
@@ -1188,11 +1173,11 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " ГлавныйALLКурсорДанныеSwipes "+ ГлавныйКурсорALLДанныеSwipes + " ОбщееКоличествоСОтрудниковДляСкролаПотабелю " + ВсеСтрокиТабеля);
+                        + " ГлавныйALLКурсорДанныеSwipes "+ ГлавныйALLКурсорДанныеSwipes + " ОбщееКоличествоСОтрудниковДляСкролаПотабелю " + ВсеСтрокиТабеля);
             }else{
                 SQLiteCursor     ГлавныйКурсорSingleSwipe=null;
                 if (UUIDТекущегоВыбраногоСотрудника ==0) {
-                    ГлавныйКурсорALLДанныеSwipes =
+                    ГлавныйALLКурсорДанныеSwipes =
                             new Class_MODEL_synchronized(getApplicationContext()).
                                     МетодЗагружетУжеготовыеТабеляПриСмещенииДанныхСкроллПоДАнным(context,
                                             ЦифровоеИмяНовгоТабеля, МесяцТабеля, ГодДляТабелей);
@@ -1461,7 +1446,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             //TODO ЗАПОЛЯНЕМ ПОЛУЧЕННЫЙ МЕСЯ Ц ПЛУС КОЛИЧЕСТВО ЧАСОВ СОТРУДНИКА КОНКРЕТНОГО
          Integer   ЧасыТекущегоСОтрудника = new Class_MODEL_synchronized(getApplicationContext()).МетодПосчётаЧасовПоСотруднику(sqLiteCursor);
             Log.d(this.getClass().getName(), "  ЧасыТекущегоСОтрудника " + ЧасыТекущегоСОтрудника);
-            TextViewЧасовСотрудникаВТабелеСотудников.setText(" (" + " " + ЧасыТекущегоСОтрудника + "/часы)  "+ПозицияВизуальция+" из "+ ГлавныйКурсорALLДанныеSwipes.getCount()+"");
+            TextViewЧасовСотрудникаВТабелеСотудников.setText(" (" + " " + ЧасыТекущегоСОтрудника + "/часы)  "+ПозицияВизуальция+" из "+ ГлавныйALLКурсорДанныеSwipes.getCount()+"");
             sqLiteCursor.moveToPosition(ПозицияКурсораДО);
             Log.d(Class_MODEL_synchronized.class.getName()," RowNumber  "+ RowNumber + " sqLiteCursor " +sqLiteCursor.getPosition()  );
         } catch (Exception e) {
@@ -1571,12 +1556,12 @@ try{
                 if (РезультатЛокальногоОбновления > 0 ) {
                     ///todo после заполнения табелями обнуляем куросры
                     ////////// TODO ПОДСЧЁТ ЧАСОВ ПОСЛЕ ЛОКАЛЬНОГО ОБНОВЛЕНИЯ
-                    RowNumber = new Class_MODEL_synchronized(getApplicationContext()).МетодПосчётаЧасовПоСотруднику(ГлавныйКурсорALLДанныеSwipes);
+                    RowNumber = new Class_MODEL_synchronized(getApplicationContext()).МетодПосчётаЧасовПоСотруднику(ГлавныйALLКурсорДанныеSwipes);
                     Log.d(this.getClass().getName(), "  ОбщееКоличествоЧасовСотрудникаВТабелеСотудников " + TextViewЧасовСотрудникаВТабелеСотудников);
-                    МетодСуммаЧасовВТабеле(ГлавныйКурсорALLДанныеSwipes);
+                    МетодСуммаЧасовВТабеле(ГлавныйALLКурсорДанныеSwipes);
                     // TODO: 07.05.2021 обнуляем UUID после созданеия подтчета часов
                     Log.d(Class_MODEL_synchronized.class.getName()," RowNumber  "+ RowNumber);
-                    МетодСуммаЧасовВТабеле(ГлавныйКурсорALLДанныеSwipes);
+                    МетодСуммаЧасовВТабеле(ГлавныйALLКурсорДанныеSwipes);
                     // TODO: 25.09.2021
                     Log.d(Class_MODEL_synchronized.class.getName()," RowNumber  "+ RowNumber);
                     /////TODO ОБНУЛЯЕМ ЗНАЧЕНИЕ ID AND UUID ЧТОБЫ НЕ БЫЛО ПОВТОРОНОГО ОБНОЛЕНИЕ НЕ СВОЕГО ХОЗЯИНА UUID
@@ -2341,11 +2326,11 @@ try{
 
     private void МетодСвайпВпередПоДАнным() {
         try {
-            if (ГлавныйКурсорALLДанныеSwipes.getCount() >0) {
-                    if (ГлавныйКурсорALLДанныеSwipes.getPosition()< ГлавныйКурсорALLДанныеSwipes.getCount()-1) {
-                        ГлавныйКурсорALLДанныеSwipes.moveToNext();
+            if (ГлавныйALLКурсорДанныеSwipes.getCount() >0) {
+                    if (ГлавныйALLКурсорДанныеSwipes.getPosition()< ГлавныйALLКурсорДанныеSwipes.getCount()-1) {
+                        ГлавныйALLКурсорДанныеSwipes.moveToNext();
                     }else {
-                        ГлавныйКурсорALLДанныеSwipes.moveToFirst();
+                        ГлавныйALLКурсорДанныеSwipes.moveToFirst();
                     }
                 ScrollСамогоТабеля.startAnimation(animationRich);
                 НазваниеДанныхВТабелеФИО.startAnimation(animationПрофессия);
@@ -2354,8 +2339,8 @@ try{
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " ГлавныйALLКурсорДанныеSwipes.getCount() "+ ГлавныйКурсорALLДанныеSwipes.getCount()+
-                    "ГлавныйALLКурсорДанныеSwipes.getPosition()  " + ГлавныйКурсорALLДанныеSwipes.getPosition() +
+                    + " ГлавныйALLКурсорДанныеSwipes.getCount() "+ ГлавныйALLКурсорДанныеSwipes.getCount()+
+                    "ГлавныйALLКурсорДанныеSwipes.getPosition()  " + ГлавныйALLКурсорДанныеSwipes.getPosition() +
                      " ПроизошелЛиСфайпПоДаннымСингТабеля " +ПроизошелЛиСфайпПоДаннымСингТабеля);
         } catch (Exception e) {
             e.printStackTrace();
@@ -2370,11 +2355,11 @@ try{
 
     void МетодСвайпНазаПоДанным() {
         try{
-            if (ГлавныйКурсорALLДанныеSwipes.getCount() >0) {
-                if (ГлавныйКурсорALLДанныеSwipes.getPosition() == 0) {
-                    ГлавныйКурсорALLДанныеSwipes.moveToLast();
+            if (ГлавныйALLКурсорДанныеSwipes.getCount() >0) {
+                if (ГлавныйALLКурсорДанныеSwipes.getPosition() == 0) {
+                    ГлавныйALLКурсорДанныеSwipes.moveToLast();
                 }else{
-                    ГлавныйКурсорALLДанныеSwipes.moveToPrevious();
+                    ГлавныйALLКурсорДанныеSwipes.moveToPrevious();
                 }
                 ScrollСамогоТабеля.startAnimation(animationLesft);
                 НазваниеДанныхВТабелеФИО.startAnimation(animationПрофессия);
@@ -2383,8 +2368,8 @@ try{
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " ГлавныйALLКурсорДанныеSwipes.getCount() "+ ГлавныйКурсорALLДанныеSwipes.getCount()+
-                     "ГлавныйALLКурсорДанныеSwipes.getPosition()  " + ГлавныйКурсорALLДанныеSwipes.getPosition()+
+                    + " ГлавныйALLКурсорДанныеSwipes.getCount() "+ ГлавныйALLКурсорДанныеSwipes.getCount()+
+                     "ГлавныйALLКурсорДанныеSwipes.getPosition()  " + ГлавныйALLКурсорДанныеSwipes.getPosition()+
                      " ПроизошелЛиСфайпПоДаннымСингТабеля " +ПроизошелЛиСфайпПоДаннымСингТабеля);
         } catch (Exception e) {
             e.printStackTrace();
@@ -2476,7 +2461,7 @@ try{
         Bundle bundleДляОбновление;
         String НазваниеДней;
         EditText  СамиДанныеТабеля = null;
-// TODO: 31.03.2023 Данные Перво1 СТрочки 
+// TODO: 31.03.2023 Данные Перво1 СТрочки
         PrimitiveIterator.OfInt iteratorIteratorПерваяСтрочкаСамиДанные= intStreamПерваяСтрочкаСамиДанные.iterator();
         bundleДляОбновление=new Bundle();
         while (iteratorIteratorПерваяСтрочкаСамиДанные.hasNext()) {
@@ -2732,7 +2717,7 @@ try{
                                                     bundle.putString("НазваниеПрофесии",НазваниеПрофесии);
                                                     bundle.putLong("UUIDПрофесиии",UUIDПрофесиии);
                                                     bundle.putLong("РодительскийUUDТаблицыТабель",РодительскийUUDТаблицыТабель);
-                                                    UUIDТекущегоВыбраногоСотрудника=      ГлавныйКурсорALLДанныеSwipes.getLong(ГлавныйКурсорALLДанныеSwipes.getColumnIndex("uuid"));
+                                                    UUIDТекущегоВыбраногоСотрудника=      ГлавныйALLКурсорДанныеSwipes.getLong(ГлавныйALLКурсорДанныеSwipes.getColumnIndex("uuid"));
                                                     bundle.putLong("UUIDТекущегоВыбраногоСотрудника",UUIDТекущегоВыбраногоСотрудника);
                                                     ((MaterialTextView)view).setTag(bundle);
                                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -2856,9 +2841,9 @@ try{
                                 if (ПровйдерСменаПрофесии>0) {
                                     ПроизошелЛиСфайпПоДаннымСингТабеля=true;
                                     // TODO: 30.03.2023 Курсор ALL Date
-                                     Integer ПолощениеДАнных=            ГлавныйКурсорALLДанныеSwipes.getPosition();
+                                     Integer ПолощениеДАнных=            ГлавныйALLКурсорДанныеSwipes.getPosition();
                                     //МетодSwipeALLКурсор();
-                                         ГлавныйКурсорALLДанныеSwipes.moveToPosition(ПолощениеДАнных);
+                                         ГлавныйALLКурсорДанныеSwipes.moveToPosition(ПолощениеДАнных);
                                     // TODO: 29.03.2023 Методы ПОсле усМешного Смены Професиии
                                     МетодПереопределенияНазваниеПрофесии();
                                     МетодПерегрузкаВидаЭкрана();
@@ -3107,14 +3092,12 @@ try{
     //TODO класс визуализации внешнего вида
 
     class SubClassSingleTabelRecycreView  {
-        private     Cursor ГлавныйALLКурсорДанныеSwipes;
+         private     Cursor cursor;
         private   LifecycleOwner lifecycleOwner;
         private   LifecycleOwner  lifecycleOwnerОбщая;
-        public SubClassSingleTabelRecycreView(@NonNull  Cursor ГлавныйALLКурсорДанныеSwipes,
-                                              @NonNull  LifecycleOwner lifecycleOwner,
+        public SubClassSingleTabelRecycreView(@NonNull  LifecycleOwner lifecycleOwner,
                                               @NonNull  LifecycleOwner  lifecycleOwnerОбщая,
                                               @NonNull Activity activity) {
-            this.ГлавныйALLКурсорДанныеSwipes = ГлавныйALLКурсорДанныеSwipes;
             this.lifecycleOwner=lifecycleOwner;
             this.lifecycleOwnerОбщая=lifecycleOwnerОбщая;
 
@@ -3129,12 +3112,9 @@ try{
                recyclerView.addItemDecoration(dividerItemDecoration);
                 recyclerView.setLayoutManager(staggeredGridLayoutManager);
                recyclerView.setHasFixedSize(true);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
                 staggeredGridLayoutManager.    invalidateSpanAssignments();
                 staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
-
-
-
-
 
 
                 ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0,
@@ -3146,9 +3126,9 @@ try{
                         // remove item from adapter
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"recyclerView   " + recyclerView);
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"recyclerView   " + recyclerView+ " cursor " +cursor);
 
-                        myRecycleViewAdapter = new  MyRecycleViewAdapter(ГлавныйALLКурсорДанныеSwipes,0);
+                        myRecycleViewAdapter = new  MyRecycleViewAdapter(cursor);
                         recyclerView.setAdapter(myRecycleViewAdapter);
 
                         myRecycleViewAdapter.onBindViewHolder(myViewHolder,3,new ArrayList<>());
@@ -3178,12 +3158,6 @@ try{
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"recyclerView   " + recyclerView);
 
-
-                recyclerView.getAdapter().notifyDataSetChanged();
-                myRecycleViewAdapter.notifyDataSetChanged();
-
-
-
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -3198,14 +3172,19 @@ try{
             }
         }
 
+
+
         // TODO: 04.03.2022 прозвомжность Заполения RecycleView
-        void МетодЗаполенияRecycleViewДляЗадач() {
+        void МетодЗаполениеRecycleView(@NonNull Cursor cursor) {
             try {
                 // remove item from adapter
-                Log.d(this.getClass().getName(), "ГлавныйКурсорSingleДанныеSwipes  " + ГлавныйКурсорSingleДанныеSwipes);
-                myRecycleViewAdapter = new  MyRecycleViewAdapter(ГлавныйКурсорSingleДанныеSwipes,0);
+                myRecycleViewAdapter = new  MyRecycleViewAdapter(cursor );
                 recyclerView.setAdapter(myRecycleViewAdapter);
                 recyclerView.requestLayout();
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                        "cursor  " + cursor + " RowNumber " +RowNumber);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getApplicationContext().getClass().getName(),
@@ -3217,13 +3196,21 @@ try{
             }
         }
 
+
+
+
+
+
+
+
+
 // TODO: 03.04.2023 перенесеный RecycreView
 
         private void МетодСлушательКурсора() {
             // TODO: 15.10.2022  слушатиель для курсора
             try {
-                if (ГлавныйALLКурсорДанныеSwipes !=null) {
-                    ГлавныйALLКурсорДанныеSwipes.registerDataSetObserver(new DataSetObserver() {
+                if (cursor !=null) {
+                    cursor.registerDataSetObserver(new DataSetObserver() {
                         @Override
                         public void onChanged() {
                             super.onChanged();
@@ -3237,7 +3224,7 @@ try{
                         }
                     });
                     // TODO: 15.10.2022
-                    ГлавныйALLКурсорДанныеSwipes.registerContentObserver(new ContentObserver(message.getTarget()) {
+                    cursor.registerContentObserver(new ContentObserver(message.getTarget()) {
                         @Override
                         public boolean deliverSelfNotifications() {
                             Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
@@ -3321,7 +3308,7 @@ try{
                     rowData.add(TableLayoutSingleTabel.findViewById(R.id.TableData8Row));
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" TableLayoutSingleTabel   " + TableLayoutSingleTabel+ 
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" TableLayoutSingleTabel   " + TableLayoutSingleTabel+
                             " TableLayoutSingleTabel " +TableLayoutSingleTabel);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -3543,18 +3530,16 @@ try{
 
         class MyRecycleViewAdapter extends RecyclerView.Adapter< MyViewHolder> {
             private Cursor cursor;
-            private  Integer Position;
-            public MyRecycleViewAdapter(@NotNull Cursor cursor,@NonNull Integer Position) {
+            public MyRecycleViewAdapter(@NotNull Cursor cursor) {
                 try{
                 this.cursor = cursor;
-                this.Position=Position;
+
                 if ( cursor!=null) {
                     if (cursor.getCount() > 0 ) {
                     }
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " cursor  " + cursor.getCount()+
-                            " Position" +Position);
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " cursor  " + cursor.getCount());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -3580,18 +3565,16 @@ try{
                                         МетодЗаполняемДаннымиRecycreViewSingleTable(holder, cursor);
                                         // TODO: 04.04.2023 перегрузкка внешнего вида RecyrView
                                         Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
+                                        messageRows.getTarget().postDelayed(()-> {
+                                            ProgressBarSingleTabel.setVisibility(View.INVISIBLE);
+                                            recyclerView.requestLayout();
+                                        },1000);
                                     } else {
                                         Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
                                     }
                                 }
                             });
                             // TODO: 06.04.2023
-                            if(position== ГлавныйALLКурсорДанныеSwipes.getCount()-1){
-                                messageRows.getTarget().post(()-> {
-                                    ProgressBarSingleTabel.setVisibility(View.INVISIBLE);
-                                    recyclerView.requestLayout();
-                                });
-                            }
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cursor " +cursor +
@@ -4078,20 +4061,11 @@ try{
             }
             @Override
             public int getItemCount() {
-                int КоличесвоСтрок = 0;
+                int КоличесвоСтрок = 1;
                 try {
-                    if (ГлавныйКурсорSingleДанныеSwipes !=null) {
-                        if (ГлавныйКурсорSingleДанныеSwipes.getCount() > 0) {
-                            КоличесвоСтрок = ГлавныйКурсорSingleДанныеSwipes.getCount();
-                            Log.d(this.getClass().getName(), "sqLiteCursor.getCount()  " + cursor.getCount());
-                        } else {
-                            КоличесвоСтрок = 1;
-                            Log.d(this.getClass().getName(), "sqLiteCursor.getCount()  " + cursor.getCount());
-                        }
-                    }else {
-                        КоличесвоСтрок = 1;
-                        Log.d(this.getClass().getName(), "sqLiteCursor.getCount()  " + cursor);
-                    }
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " КоличесвоСтрок "+КоличесвоСтрок);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getApplicationContext().getClass().getName(),
