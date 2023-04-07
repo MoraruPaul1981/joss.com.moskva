@@ -117,7 +117,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/imageButtonНазадПоСотрудникамВТАбеле"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@id/imageButtonДвижениеПоСотрудникамВТАбеле" />
+        app:layout_constraintStart_toEndOf="@id/imageButtonДвижениеПоСотрудникамВТАбеле"
+        tools:ignore="NotSibling" />
 
     <TextView
         android:id="@+id/textView3СловоТабель"
@@ -189,7 +190,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginStart="3dp"
             android:layout_marginEnd="3dp"
-            android:background="#520F0F"
+            android:background="#FAF7F7"
             android:minHeight="500dp"
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/СпинерТабельДепратамент"
@@ -210,8 +211,9 @@
         android:layout_centerHorizontal="true"
         android:background="#FFFFFF"
         android:indeterminate="true"
-        android:scaleX="1"
-        android:scaleY="3"
+        android:scrollIndicators="top"
+        android:scaleX="5"
+        android:scaleY="2"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/СпинерТабельДепратамент"
         tools:ignore="MissingConstraints" />
