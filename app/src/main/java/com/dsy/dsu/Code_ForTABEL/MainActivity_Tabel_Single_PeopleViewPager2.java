@@ -82,8 +82,8 @@ import androidx.work.WorkManager;
 
 import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
-import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
+import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_MODEL_synchronized;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
@@ -129,7 +129,7 @@ import java.util.stream.IntStream;
 import javax.crypto.NoSuchPaddingException;
 
 
-public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
+public class MainActivity_Tabel_Single_PeopleViewPager2 extends AppCompatActivity  {
     private Spinner СпинерТАбельМЕсяцФинал;/////спинеры для создание табеля
     private Spinner СпинерТАбельДепартаментФинал;/////спинеры для создание табеля
     private ScrollView ScrollСамогоТабеля;
@@ -1779,7 +1779,7 @@ try{
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     СозданияВычисляемВыходные = new SimpleDateFormat("yyyy-MM-dd",new Locale("rus"));
                 }else {
-                    СозданияВычисляемВыходные = new java.text.SimpleDateFormat("yyyy-MM-dd",new Locale("rus"));
+                    СозданияВычисляемВыходные = new SimpleDateFormat("yyyy-MM-dd",new Locale("rus"));
                 }
                 Date   ДатаПосикаВыходныеДней       = СозданияВычисляемВыходные.parse (ГодДЛяПоказатаВТАбле+"-"+МЕсяцДЛяПоказатаВТАбле+"-"+ИндексДней );
                 String РезультатДатыДляКонктетногоТабеляТолькоЗанвание = new SimpleDateFormat("EEE", new Locale("ru")).format(ДатаПосикаВыходныеДней );
@@ -2865,7 +2865,7 @@ try{
                                     МетодПереопределенияНазваниеПрофесии();
                                     МетодПерегрузкаВидаЭкрана();
                                 }else {
-                                    Toast.makeText(MainActivity_Tabel_Single_People.this, "Профессия не сменилась !!! ", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MainActivity_Tabel_Single_PeopleViewPager2.this, "Профессия не сменилась !!! ", Toast.LENGTH_SHORT).show();
                                 }
                             }
                             alertDialogНовыйПосикКнопкаЗакрыть.forceLayout();
