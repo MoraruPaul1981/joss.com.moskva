@@ -579,7 +579,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
     private void МетодаСозданиеТабеляИзБазы()  {
         SQLiteCursor            Курсор_ПолучаемПубличныйID= null;
-        SQLiteCursor Курсор_КоторыйЗагружаетГотовыеТабеля = null;
+        SQLiteCursor Курсор_Main_ListTabels = null;
         SQLiteCursor         Курсор_КоторыйЗагружаетГотовыеТабеляМаксимальнаяДата= null;
       String МесяцМаскимальнаяДатавТабеляхПоМесецям = null;
         try{
@@ -650,17 +650,17 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                             class_grud_sql_operationsДляАктивтиТабель. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска3","Удаленная");////УсловиеПоискаv4,........УсловиеПоискаv5 .......
                             class_grud_sql_operationsДляАктивтиТабель. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки","date_update");
                             // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
-                             Курсор_КоторыйЗагружаетГотовыеТабеля= (SQLiteCursor)  class_grud_sql_operationsДляАктивтиТабель.
+                             Курсор_Main_ListTabels= (SQLiteCursor)  class_grud_sql_operationsДляАктивтиТабель.
                                     new GetData(getApplicationContext()).getdata(class_grud_sql_operationsДляАктивтиТабель. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
                                      Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
-                            Log.d(this.getClass().getName(), "GetData "+Курсор_КоторыйЗагружаетГотовыеТабеля  );
+                            Log.d(this.getClass().getName(), "GetData "+Курсор_Main_ListTabels  );
                                     //////todo работающий NULL в query
-                                    Log.d(this.getClass().getName(), " Курсор_КоторыйЗагружаетГотовыеТабеля.getCount() " +    Курсор_КоторыйЗагружаетГотовыеТабеля.getCount());
+                                    Log.d(this.getClass().getName(), " Курсор_Main_ListTabels.getCount() " +    Курсор_Main_ListTabels.getCount());
                                     ////todo получаем значение ищем
-                              Log.d(this.getClass().getName(), "ЗАГРУЗИЛИ ДАННЫЕ НА АКТИВТИ ИСТОРИЯ ТАБЕЛЯЕЙ  Курсор_КоторыйЗагружаетГотовыеТабеля.getCount() "
-                                      + Курсор_КоторыйЗагружаетГотовыеТабеля.getCount());
-                                  if (   Курсор_КоторыйЗагружаетГотовыеТабеля.getCount()>0) {
-                                         textViewКоличествоТабелей.setText(" ("+СпинерВыборДату.getCount()+" м) "+ " ("+ String.valueOf(Курсор_КоторыйЗагружаетГотовыеТабеля.getCount())+" т)")  ;
+                              Log.d(this.getClass().getName(), "ЗАГРУЗИЛИ ДАННЫЕ НА АКТИВТИ ИСТОРИЯ ТАБЕЛЯЕЙ  Курсор_Main_ListTabels.getCount() "
+                                      + Курсор_Main_ListTabels.getCount());
+                                  if (   Курсор_Main_ListTabels.getCount()>0) {
+                                         textViewКоличествоТабелей.setText(" ("+СпинерВыборДату.getCount()+" м) "+ " ("+ String.valueOf(Курсор_Main_ListTabels.getCount())+" т)")  ;
                                      } else {
                                          textViewКоличествоТабелей.setText("("+"0"+")");
                                      }
@@ -699,9 +699,9 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                             Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
 
-                if (Курсор_КоторыйЗагружаетГотовыеТабеля.getCount() > 0) {/////ЕСЛИ ЕСТЬХОТЯБЫ ОДИН ТАБЕЛЬ
-                    Курсор_КоторыйЗагружаетГотовыеТабеля.moveToFirst();
-                    Log.d(this.getClass().getName(), " Курсор_КоторыйЗагружаетГотовыеТабеля " + Курсор_КоторыйЗагружаетГотовыеТабеля.getCount());
+                if (Курсор_Main_ListTabels.getCount() > 0) {/////ЕСЛИ ЕСТЬХОТЯБЫ ОДИН ТАБЕЛЬ
+                    Курсор_Main_ListTabels.moveToFirst();
+                    Log.d(this.getClass().getName(), " Курсор_Main_ListTabels " + Курсор_Main_ListTabels.getCount());
                     final int[] ИндексДляСозданныхОбьектовНаАктивитиТАбель = {0};
                     ///todo удалчем элемены перед новой вставкой обтьектов на активти
                     try{
@@ -712,15 +712,15 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
 
                     // TODO: 15.12.2022  ПОЛУЧАЕМ ДАННЫМ ИДЕМ ПО ЦИКЛУ
-
+                  Integer Position=0;
                     do {
-                        int ИндексГдеНаходитьсяЭлектронноеИмяВТАБЕЛЕ= Курсор_КоторыйЗагружаетГотовыеТабеля.getColumnIndex("cfo");
+                        int ИндексГдеНаходитьсяЭлектронноеИмяВТАБЕЛЕ= Курсор_Main_ListTabels.getColumnIndex("cfo");
                         // TODO: 10.06.2021
-                       ПолучеаемЦифруСФО= Курсор_КоторыйЗагружаетГотовыеТабеля.getInt(ИндексГдеНаходитьсяЭлектронноеИмяВТАБЕЛЕ);
+                       ПолучеаемЦифруСФО= Курсор_Main_ListTabels.getInt(ИндексГдеНаходитьсяЭлектронноеИмяВТАБЕЛЕ);
                         Log.d(this.getClass().getName()," ИндексГдеНаходитьсяЭлектронноеИмяВТАБЕЛЕ  "+ИндексГдеНаходитьсяЭлектронноеИмяВТАБЕЛЕ+" ПолучеаемЦифруСФО " +ПолучеаемЦифруСФО);
 
-                        String    НазваниеТабеля=        new Class_MODEL_synchronized(context).МетодПолучениеНазваниеТабеляНаОснованииСФО(context,ПолучеаемЦифруСФО);
-                            Log.d(context.getClass().getName(), "    НазваниеТабеля[0] " +   НазваниеТабеля);
+                        String    FullNameCFO=        new Class_MODEL_synchronized(context).МетодПолучениеНазваниеТабеляНаОснованииСФО(context,ПолучеаемЦифруСФО);
+                            Log.d(context.getClass().getName(), "   FullNameCFO " +   FullNameCFO);
 
 
                             МесяцМаскимальнаяДатавТабеляхПоМесецям =     new Class_MODEL_synchronized(context).
@@ -728,41 +728,50 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                             Log.d(context.getClass().getName(), "   МесяцМаскимальнаяДатавТабеляхПоМесецям " +     ////////
                                     МесяцМаскимальнаяДатавТабеляхПоМесецям);
 
-                        int ИндексДата= Курсор_КоторыйЗагружаетГотовыеТабеля.getColumnIndex("date_update");
-                       String ДатаТабеляИзБАзы= Курсор_КоторыйЗагружаетГотовыеТабеля.getString(ИндексДата);
+                        int ИндексДата= Курсор_Main_ListTabels.getColumnIndex("date_update");
+                       String ДатаТабеляИзБАзы= Курсор_Main_ListTabels.getString(ИндексДата);
                         //todo перерводим в дату для СРАВНЕНИЯ
                         //TODO статус табеля
                         Integer   СамСтатусАтбеля =     МетодВЫчиляемСтатусТабеляПроведенИлиНет(МЕсяцТабелей, ГодТабелей,ПолучеаемЦифруСФО);
-                        Log.d(this.getClass().getName(), " НазваниеТабеля " + НазваниеТабеля + " ДатаТабеляИзБАзы " + ДатаТабеляИзБАзы + " СамСтатусАтбеля " +СамСтатусАтбеля);
+                        Log.d(this.getClass().getName(), " FullNameCFO " + FullNameCFO + " ДатаТабеляИзБАзы " + ДатаТабеляИзБАзы + " СамСтатусАтбеля " +СамСтатусАтбеля);
                         ТабелявВидеКнопок = new Button(this);////СОЗДАЕМ НОВЫЕ КНОПКИ НА АКТИВТИ
                         ТабелявВидеКнопок.setAnimation(animation);
                         // TODO: 15.12.2022  UUID
-                        int ИндексГотовогоUUID= Курсор_КоторыйЗагружаетГотовыеТабеля.getColumnIndex("uuid");
-                        Long    НепостредственоеЗначениеUUIDСозданогоТАбеля = Курсор_КоторыйЗагружаетГотовыеТабеля.getLong(ИндексГотовогоUUID);
+                        Long    MainParentUUID = Курсор_Main_ListTabels.getLong(Курсор_Main_ListTabels.getColumnIndex("uuid"));
                         // TODO: 15.12.2022
-                        ИндексГдеНаходитьсяЭлектронноеИмяВТАБЕЛЕ= Курсор_КоторыйЗагружаетГотовыеТабеля.getColumnIndex("cfo");
-                        int НепостредственоеЗначениеИндексГдеНаходитьсяЭлектронноеИмяВТАБЕЛЕ = 0;
-                        ///////TODO вычисляем
-                        if (ИндексГдеНаходитьсяЭлектронноеИмяВТАБЕЛЕ>=0){
-                            НепостредственоеЗначениеИндексГдеНаходитьсяЭлектронноеИмяВТАБЕЛЕ = Курсор_КоторыйЗагружаетГотовыеТабеля.getInt(ИндексГдеНаходитьсяЭлектронноеИмяВТАБЕЛЕ);
-                            DigitalNameCFO =НепостредственоеЗначениеИндексГдеНаходитьсяЭлектронноеИмяВТАБЕЛЕ;
-                        }
+                        DigitalNameCFO = Курсор_Main_ListTabels.getInt(Курсор_Main_ListTabels.getColumnIndex("cfo"));
+                        // TODO: 15.12.2022  МЕсяц и ГОД
+                        МЕсяцТабелей = Курсор_Main_ListTabels.getInt(Курсор_Main_ListTabels.getColumnIndex("month_tabels"));
+                        ГодТабелей= Курсор_Main_ListTabels.getInt(Курсор_Main_ListTabels.getColumnIndex("year_tabels"));
+                        Bundle bundleДЛяListTabels=new Bundle();
+                        bundleДЛяListTabels.putLong("MainParentUUID", MainParentUUID);
+                        bundleДЛяListTabels.putLong("Position", Position);
+                        bundleДЛяListTabels.putInt("ГодТабелей", ГодТабелей);
+                        bundleДЛяListTabels.putInt("МЕсяцТабелей",МЕсяцТабелей);
+                        bundleДЛяListTabels.putInt("DigitalNameCFO", DigitalNameCFO);
+                        bundleДЛяListTabels.putString("FullNameCFO", FullNameCFO.trim());
+                        bundleДЛяListTabels.putString("ИмесяцИГодСразу", ИмесяцИГодСразу.trim());
+
                         ////todo когда данные в табелй есть  САМИ ДАННЫЕ ТАБЕЛЕЙ ЗАГРУЖАЮТЬСЯ
                         //ТабелявВидеКнопок.setHint(НепостредственоеЗначениеИндексГдеНаходитьсяЭлектронноеИмяВТАБЕЛЕ);
-                        ТабелявВидеКнопок.setTag(НепостредственоеЗначениеUUIDСозданогоТАбеля.toString());
-                        ТабелявВидеКнопок.setId(НепостредственоеЗначениеИндексГдеНаходитьсяЭлектронноеИмяВТАБЕЛЕ);
+                        ТабелявВидеКнопок.setTag(bundleДЛяListTabels);
+                        ТабелявВидеКнопок.setId(Position);
                         ТабелявВидеКнопок.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
                         ТабелявВидеКнопок.setMinLines(8);
                         ТабелявВидеКнопок.setTextSize(13);
                         ТабелявВидеКнопок.setHintTextColor(Color.RED);
-                        ТабелявВидеКнопок.setText(НазваниеТабеля);
+                        ТабелявВидеКнопок.setText(FullNameCFO);
                         ТабелявВидеКнопок.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
                         ТабелявВидеКнопок.setTextColor(Color.BLACK);
                         ТабелявВидеКнопок.setHintTextColor(Color.RED);
 
-                       
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                + " bundleДЛяListTabels "+bundleДЛяListTabels+  "Курсор_Main_ListTabels "+ Курсор_Main_ListTabels);
 
-    //TODO добвлем галочку
+
+                        //TODO добвлем галочку
                         Log.d(this.getClass().getName(), " СамСтатусАтбеля "+СамСтатусАтбеля);
                             if (СамСтатусАтбеля>0){ ///"пр"
                                 Drawable icon = getResources().getDrawable(R.mipmap.icon_dsu1_tabels_provedennye);
@@ -773,24 +782,22 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                             }
                         ТабелявВидеКнопок.setBackground(getApplication().getResources().getDrawable(R.drawable.textlines_tabel_row_color_green_mini));
 
-                        if (  МесяцМаскимальнаяДатавТабеляхПоМесецям.trim().equals(НазваниеТабеля.trim())) {
+                        if (  МесяцМаскимальнаяДатавТабеляхПоМесецям.trim().equals(FullNameCFO.trim())) {
                             LinearLayoutСозданныхТабелей.addView(ТабелявВидеКнопок, 0); /////СОЗДАЕМ НАКШИ КНОПКИ ВНУРИ СКРОЛБАР
                         }else{
                             //TODO  ОЧИЩАЕМ ПАМТЬ
                             LinearLayoutСозданныхТабелей.addView(ТабелявВидеКнопок, ИндексДляСозданныхОбьектовНаАктивитиТАбель[0]); /////СОЗДАЕМ НАКШИ КНОПКИ ВНУРИ СКРОЛБАР
                         }
 
-
-
                         // TODO: 16.02.2023 Слушатели Табелей
                         МетодыСлушателиТабелей();
 
-                        ИндексДляСозданныхОбьектовНаАктивитиТАбель[0]++;///увеличиваем
+                        Position++;
                         /////odo ЦИКЛ ЗАГРУЗКИ ТОЛЬКО НАЗВАНИЙ ТАБЕЛЯ
-                    } while (Курсор_КоторыйЗагружаетГотовыеТабеля.moveToNext());
+                    } while (Курсор_Main_ListTabels.moveToNext());
                     /////toto ПОСЛЕ ВСТАВКИ ДАННЫХ ПЕРЕОПРЕДЕЛЯЕМ ВНЕГНИЙ ВИДЖ
-                    if(!Курсор_КоторыйЗагружаетГотовыеТабеля.isClosed()) {
-                        Курсор_КоторыйЗагружаетГотовыеТабеля.close();
+                    if(!Курсор_Main_ListTabels.isClosed()) {
+                        Курсор_Main_ListTabels.close();
                     }
 ///todo  когда в табеле нет сотрудников ПУСТОЙ ТАБЕЛЬ
                 }
@@ -801,7 +808,6 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            ///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
@@ -814,17 +820,18 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             @Override
             public boolean onLongClick(View v) {
                 try{
-                    Log.d(this.getClass().getName(), "   ТабелявВидеКнопок.setOnLongClickListener "+v);
-                     String UUIDТабеляВременный=v.getTag().toString();
-                    Long СамUUIDТабеля= Long.parseLong(UUIDТабеляВременный);
-                    String НазваниеУдаляемогоТабеля= ((TextView)v).getText().toString().trim();
-                    Log.d(this.getClass().getName(), "   ТабелявВидеКнопок.setOnLongClickListener "+v);
-                    ///
-                    МетодУдалениеТАбеляСообщениеПередЭтим(СамUUIDТабеля, НазваниеУдаляемогоТабеля,v);
+               Bundle bundleДЛяListTabels=(Bundle)           v.getTag();
+                Long    MainParentUUID=      bundleДЛяListTabels.getLong("MainParentUUID");
+                String    FullNameCFO=      bundleДЛяListTabels.getString("FullNameCFO");
+                    ///todo удвление
+                    МетодУдалениеТАбеляСообщениеПередЭтим(MainParentUUID, FullNameCFO,v);
 
-            } catch (Exception e) {
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                            + " bundleДЛяListTabels "+bundleДЛяListTabels );
+                } catch (Exception e) {
                 e.printStackTrace();
-                ///метод запись ошибок в таблицу
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                         + Thread.currentThread().getStackTrace()[2].getLineNumber());
                 new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
@@ -840,7 +847,8 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                 try{
                     Log.d(this.getClass().getName(), "     ТабелявВидеКнопок.setOnClickListener ");
                     ((Button) v).setBackgroundColor(Color.GRAY);
-                    МетодПереходимВТабельСотрудники((Button) v);
+                    // TODO: 09.04.2023  перехеод после клика Items
+                    МетодПереходMainActivity_List_Peoples((Button) v);
 /////TODO одинатрный клик для загрузки в этот табель всех сотрудников
             } catch (Exception e) {
                     e.printStackTrace();
@@ -855,7 +863,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
     }
 
     /////TODO метод запуска кода при однократорм нажатии просто загузка сотрудников табель
-    private void МетодПереходимВТабельСотрудники(Button v) {
+    private void МетодПереходMainActivity_List_Peoples(Button v) {
         try{
             Object ПолучениеДанныеИзСпинера   =   СпинерВыборДату.getSelectedItem();
             TextView textView   =  (TextView) СпинерВыборДату.getChildAt(0);
