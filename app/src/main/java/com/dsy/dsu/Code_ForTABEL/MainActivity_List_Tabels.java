@@ -118,7 +118,6 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
     private   PUBLIC_CONTENT  Class_Engine_SQLГдеНаходитьсяМенеджерПотоков ;
     private Long MainParentUUID =0l;
     private SharedPreferences sharedPreferencesХранилище;
-    private  Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binder;
     private  Animation     animation;
   private    Cursor     Курсор_ДанныеДляСпинераДаты;
     private   int МЕсяцТабелей;
@@ -159,8 +158,6 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
         createConfigurationContext(config);
               // animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_row_tabel);
                animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_row_tabellist);
-
-
          КруглаяКнопкаСозданиеНовогоТабеля = findViewById(R.id.КруглаяКнопкаСамТабель);//////КНОПКА СОЗДАНИЕ НОВГО ТАБЕЛЯ ИЗ ИСТОРИИ ВТОРОЙ ШАГ СОЗДАНИЯ ТАБЕЛЯ СНАЧАЛА ИСТРОИЯ ПОТОМ НА БАЗЕ ЕГО СОЗЗДАНИЕ
             // TODO: 14.10.2022 настйрока хранилища
             sharedPreferencesХранилище=   getApplicationContext().getSharedPreferences("sharedPreferencesХранилище",
@@ -168,10 +165,6 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             SharedPreferences.Editor editor = sharedPreferencesХранилище.edit();
             editor.putString( "sharedPreferencesХранилищеkey", "sharedPreferencesХранилищеvalue" );
             editor.commit();
-            Bundle data=     getIntent().getExtras();
-            if (data!=null) {
-                binder=  (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) data.getBinder("binder");
-            }
             // TODO: 06.11.2022 методы после создание
             МетодКруглаяКнопка();
             МетодНазадBACKНААктивти();
@@ -213,7 +206,6 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                     ///todo код которыц возврящет предыдущий актвитики кнопка back
                     Intent Интент_BackВозвращаемАктивти = new Intent();
                     Bundle data=new Bundle();
-                    data.putBinder("binder", binder);
                     Интент_BackВозвращаемАктивти.putExtras(data);
                     Интент_BackВозвращаемАктивти.setClass(getApplication(), MainActivity_Face_App.class); // Т
                     Интент_BackВозвращаемАктивти.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -238,13 +230,17 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
         try{
         Intent Интент_Back_MAinActivity_List_peole = getIntent();
             Bundle bundleДЛяListTabels=Интент_Back_MAinActivity_List_peole.getExtras();
-            bundleДЛяListTabels.putLong("MainParentUUID", MainParentUUID);
-            bundleДЛяListTabels.putLong("Position", Position);
-            bundleДЛяListTabels.putInt("ГодТабелей", ГодТабелей);
-            bundleДЛяListTabels.putInt("МЕсяцТабелей",МЕсяцТабелей);
-            bundleДЛяListTabels.putInt("DigitalNameCFO", DigitalNameCFO);
-            bundleДЛяListTabels.putString("FullNameCFO", FullNameCFO.trim());
-            bundleДЛяListTabels.putString("ИмесяцИГодСразу", ИмесяцИГодСразу.trim());
+            MainParentUUID=      bundleДЛяListTabels.getLong("MainParentUUID", MainParentUUID);
+            Position=   bundleДЛяListTabels.getInt("Position", Position);
+            bundleДЛяListTabels.getInt("ГодТабелей", ГодТабелей);
+            bundleДЛяListTabels.getInt("МЕсяцТабелей",МЕсяцТабелей);
+            bundleДЛяListTabels.getInt("DigitalNameCFO", DigitalNameCFO);
+            bundleДЛяListTabels.getString("FullNameCFO", FullNameCFO.trim());
+            bundleДЛяListTabels.getString("ИмесяцвИГодСразу", ИмесяцвИГодСразу.trim());
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " Интент_Back_MAinActivity_List_peole " +Интент_Back_MAinActivity_List_peole);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -707,7 +703,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                     do {
                         // TODO: 10.06.2021
                         DigitalNameCFO= Курсор_Main_ListTabels.getInt(Курсор_Main_ListTabels.getColumnIndex("cfo"));
-                        Log.d(this.getClass().getName()," ИндексГдеНаходитьсяЭлектронноеИмяВТАБЕЛЕ  "+ИндексГдеНаходитьсяЭлектронноеИмяВТАБЕЛЕ+" DigitalNameCFO " +DigitalNameCFO);
+                        Log.d(this.getClass().getName()," ИндексГдеНаходитьсяЭлектронноеИмяВТАБЕЛЕ  " +" DigitalNameCFO " +DigitalNameCFO);
 
                         FullNameCFO=        new Class_MODEL_synchronized(context).МетодПолучениеНазваниеТабеляНаОснованииСФО(context,DigitalNameCFO);
                             Log.d(context.getClass().getName(), "   FullNameCFO " +   FullNameCFO);
@@ -734,7 +730,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                         // TODO: 09.04.2023 set TABEL MAinActivbity_List_Tabels
                         Bundle bundleДЛяListTabels=new Bundle();
                         bundleДЛяListTabels.putLong("MainParentUUID", MainParentUUID);
-                        bundleДЛяListTabels.putLong("Position", Position);
+                        bundleДЛяListTabels.putInt("Position", Position);
                         bundleДЛяListTabels.putInt("ГодТабелей", ГодТабелей);
                         bundleДЛяListTabels.putInt("МЕсяцТабелей",МЕсяцТабелей);
                         bundleДЛяListTabels.putInt("DigitalNameCFO", DigitalNameCFO);
@@ -1368,9 +1364,6 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             int ДляВставкиНовогоГодНазвание = МетодПолучениниеНовыйГодДляЗАписивОднуКолонку(ПолученныйГодДляНовогоТабеля);
             ///TODO  ПОСЛЕ ВСТАКИ ПЕРЕХОДИМ НА АКТИВТИ С ВЫБОРО И СОЗДАНИЕМ САМОГО ТАБЕЛЯ НОВОГО
             Intent Интент_ЗапускСозданиеНовогоТабельногоУчетавТаблицуИстория = new Intent();
-            Bundle data=new Bundle();
-            data.putBinder("binder", binder);
-            Интент_ЗапускСозданиеНовогоТабельногоУчетавТаблицуИстория.putExtras(data);
             Интент_ЗапускСозданиеНовогоТабельногоУчетавТаблицуИстория.setClass(getApplicationContext(), MainActivity_New_Tabely.class); // ТУТ ЗАПВСКАЕТЬСЯ ВЫБОР ПРИЛОЖЕНИЯ
             Интент_ЗапускСозданиеНовогоТабельногоУчетавТаблицуИстория.putExtra("ПолученноеЗначениеИзСпинераДата", ПолученноеЗначениеИзТолькоСпинераДата);
             Интент_ЗапускСозданиеНовогоТабельногоУчетавТаблицуИстория.putExtra("ПолученныйГодДляНовогоТабеля", ДляВставкиНовогоГодНазвание);
