@@ -879,12 +879,12 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             String FullNameCFO = БуферДляПоискаФлешаДляГотовогоТабеля.substring(ПоискФлеша, БуферДляПоискаФлешаДляГотовогоТабеля.length());
             МесяцТабеляФиналИзВсехСотрудниковВТАбеле  =МассивДляВыбораВСпинерДата.get(0);
             Bundle bundleИзListTabels=new Bundle();
-            bundleИзListTabels.putString("FullNameCFO", FullNameCFO);
+            bundleИзListTabels.putString("FullNameCFO", FullNameCFO.trim());
             bundleИзListTabels.putLong("MainParentUUID", MainParentUUID);
             bundleИзListTabels.putInt("ГодТабелей", ГодТабелей);
             bundleИзListTabels.putInt("МЕсяцТабелей",МЕсяцТабелей);
             bundleИзListTabels.putInt("DigitalNameCFO", DigitalNameCFO);
-            bundleИзListTabels.putString("ИмесяцИГодСразу", ИмесяцИГодСразу);
+            bundleИзListTabels.putString("ИмесяцИГодСразу", ИмесяцИГодСразу.trim());
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
