@@ -71,11 +71,13 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -128,7 +130,8 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
     private  int Position;
     private String FullNameCFO;
 
-    LinkedHashMap<Long,String> МассивДляВыбораВСпинерДата=new LinkedHashMap<Long,String>();
+    LinkedList< String> МассивДляВыбораВСпинерДатаArray=new  LinkedList< String>();
+    LinkedHashMap<Long,String> МассивДляВыбораВСпинерДатаUUID=new LinkedHashMap<Long,String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try{
@@ -171,7 +174,8 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             // TODO: 06.11.2022 методы после создание
             МетодКруглаяКнопка();
             МетодНазадBACKНААктивти();
-            // TODO: 09.04.2023
+            // TODO: 09.04.2023  ТЕСТ КОД
+
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -424,29 +428,27 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
     private void МетодСозданиеСпинераДляДатыНаАктивитиСозданиеИВыборТабеля() {
         try {
             ////TODO сортируем дату на ПОСЛЕДНКЮ
-            List<String> МассивДляВыбораВСпинерArray =  (List<String>)   МассивДляВыбораВСпинерДата.values();
-            Log.d(  getApplicationContext().getClass().getName(), " сработала ... ВСТАВКА МассивДляВыбораВСпинерДата В БАЗУ"+МассивДляВыбораВСпинерДата);
+            Log.d(  getApplicationContext().getClass().getName(), " сработала ... ВСТАВКА МассивДляВыбораВСпинерДатаArray"+МассивДляВыбораВСпинерДатаArray);
             if (Курсор_ДанныеДляСпинераДаты.getCount()>0) {/// && МассивДляВыбораВСпинерДата.size()>0
                 if (ИмесяцвИГодСразу !=null) {
-                 Integer ИндексНахождение=   МассивДляВыбораВСпинерArray.indexOf(ИмесяцвИГодСразу);
+                 Integer ИндексНахождение=   МассивДляВыбораВСпинерДатаArray.indexOf(ИмесяцвИГодСразу);
                     Log.d(  getApplicationContext().getClass().getName(), " ИндексНахождение "+ИндексНахождение);
                     if (ИндексНахождение>=0) {
-                        Collections.swap(МассивДляВыбораВСпинерArray,0,ИндексНахождение);
+                        Collections.swap(МассивДляВыбораВСпинерДатаArray,0,ИндексНахождение);
                     }
                 }
-
                 Log.d(this.getClass().getName(), "  FullNameCFO  " +FullNameCFO);
             }else{
-                Log.d(this.getClass().getName(), " МассивДляВыбораВСпинерДата.size()  " + МассивДляВыбораВСпинерДата.size());
+                Log.d(this.getClass().getName(), " МассивДляВыбораВСпинерДатаArray.size()  " + МассивДляВыбораВСпинерДатаArray.size());
                 // TODO: 21.09.2021  НЕТ ДАННЫХ  НЕТ ТАБЕЛЬ
-                МассивДляВыбораВСпинерArray.add("Не созданно");
-                МетодКогдаДанныхСамихТабелйНет(МассивДляВыбораВСпинерArray);
-                FullNameCFO=null;
+                МассивДляВыбораВСпинерДатаArray.add("Не созданно");
+                МетодКогдаДанныхСамихТабелйНет(МассивДляВыбораВСпинерДатаArray);
+
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " МассивДляВыбораВСпинерArray " +МассивДляВыбораВСпинерArray);
+                    + " МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray);
         } catch (Exception e) {
             e.printStackTrace();
             ///метод запись ошибок в таблицу
@@ -467,9 +469,8 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
     private void МетодДанныеСпинераДаты( ) {
         try{
-            List<String> МассивДляВыбораВСпинерArray =  (List<String>)   МассивДляВыбораВСпинерДата.values();
             ArrayAdapter<String>           АдаптерДляСпинераДата = new ArrayAdapter<String>(this,
-                    R.layout.simple_for_create_new_assintionmaterila_spinner_main, МассивДляВыбораВСпинерArray);
+                    R.layout.simple_for_create_new_assintionmaterila_spinner_main, МассивДляВыбораВСпинерДатаArray);
             АдаптерДляСпинераДата.setDropDownViewResource(R.layout.simple_for_create_new_assintionmaterila_spinner);
         СпинерВыборДату.setAdapter(АдаптерДляСпинераДата);
         СпинерВыборДату.setSelected(true);
@@ -490,10 +491,20 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                             ((TextView) parent.getChildAt(0)).setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
                             ((TextView) parent.getChildAt(0)).setTypeface(((TextView) parent.getChildAt(0)).getTypeface(), Typeface.BOLD);//////ВЫДЕЛЕМ ЖИРНЫМ ЦВЕТОМ ДАТЫ
                             Log.d(this.getClass().getName(), " ((TextView) parent.getChildAt(0)).getText()  " + LinearLayoutСозданныхТабелей.getChildAt(0));
+
+                            Bundle bundle=new Bundle();
+                            bundle.putString("ИмесяцвИГодСразу",ИмесяцвИГодСразу);
+                            Optional<Long> gggg=
+                            МассивДляВыбораВСпинерДатаUUID.entrySet().stream()
+                                    .filter(e -> e.getValue() == ИмесяцвИГодСразу).map(Map.Entry::getKey).findFirst();
+                            bundle.putLong("UUIDSpinner",gggg.get() );
                             ((TextView) parent.getChildAt(0)).setTag(MainParentUUID);
 
                         }
-                        Log.d(this.getClass().getName(), " КакойКонтекст" + ИмесяцвИГодСразу + " ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре " + ИмесяцвИГодСразу);////заполянеться если новыйтабель создан и на при запуске встать на попределнный табель
+                        Log.d(this.getClass().getName(), " КакойКонтекст" + ИмесяцвИГодСразу +
+                                " ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре " + ИмесяцвИГодСразу+
+                                " МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray  +
+                                " МассивДляВыбораВСпинерДатаUUID " + МассивДляВыбораВСпинерДатаUUID);////заполянеться если новыйтабель создан и на при запуске встать на попределнный табель
                             ((TextView) parent.getChildAt(0)).setText(ИмесяцвИГодСразу);//// ЗАПИСЫВАЕМ ЗНАЧЕНИЕ В СПИПЕР
 
                     }
@@ -1448,14 +1459,12 @@ try{
     private void МетодЗаполенияТабелямиАктивти()
             throws ExecutionException, InterruptedException, ParseException {
         try {
-            List<String> МассивДляВыбораВСпинерArray =  (List<String>)   МассивДляВыбораВСпинерДата.values();
-            Set<Long> МассивДляВыбораВСпинерUUID =     МассивДляВыбораВСпинерДата.keySet();
         if ( Курсор_ДанныеДляСпинераДаты.getCount()>0) {/////ЗАГРУЖАЕМ ДАННЫЕ ИЗ ТАБЛИЦЫ CFO ДЛЯ СПИНЕРА И СОЗДАНИЯ ТАБЕЛЯ
                 Log.d(this.getClass().getName()," Курсор_ДанныеДляСпинераДаты.getCount() " + Курсор_ДанныеДляСпинераДаты.getCount());
             //////TODO ЗАПОЛЯЕМ СПИНЕР ЧЕРЕЗ АРАЙЛИСТ ПОСЛЕДНИМИ ДАТАМИ
             Курсор_ДанныеДляСпинераДаты.moveToLast();
-            МассивДляВыбораВСпинерArray.clear();
-            МассивДляВыбораВСпинерUUID.clear();
+            МассивДляВыбораВСпинерДатаArray.clear();
+            МассивДляВыбораВСпинерДатаUUID.clear();
             do{
                 String     ЗнаениеИзБазыНовыеТабеляМесяц = Курсор_ДанныеДляСпинераДаты.getString(0).trim();
                 String     ЗнаениеИзБазыНовыеТабеляГод = Курсор_ДанныеДляСпинераДаты.getString(1).trim();
@@ -1486,24 +1495,25 @@ try{
                 ФиналВставкаМЕсяцаИгода=ПреобразованоеИмяМесяца+ "  "+ЗнаениеИзБазыНовыеТабеляГод;
                 Log.d(this.getClass().getName()," ФиналВставкаМЕсяцаИгода "+ФиналВставкаМЕсяцаИгода);
                 ///todo заполяем Название СФО
-                МассивДляВыбораВСпинерArray.add(ФиналВставкаМЕсяцаИгода.trim());
+                МассивДляВыбораВСпинерДатаArray.add(ФиналВставкаМЕсяцаИгода.trim());
                 // TODO: 09.04.2023 заполяем СФО
-                МассивДляВыбораВСпинерUUID.add(ЗнаениеИзБазыНовыеТабеляUUID);
+                МассивДляВыбораВСпинерДатаUUID.put(ЗнаениеИзБазыНовыеТабеляUUID,ФиналВставкаМЕсяцаИгода.trim());
                 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " МассивДляВыбораВСпинерArray " +МассивДляВыбораВСпинерArray + 
-                        " МассивДляВыбораВСпинерUUID " +МассивДляВыбораВСпинерUUID+
-                        " МассивДляВыбораВСпинерДата " +МассивДляВыбораВСпинерДата);
+                        + " МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray +
+                        " МассивДляВыбораВСпинерДатаUUID " +МассивДляВыбораВСпинерДатаUUID);
 
 
             }while (Курсор_ДанныеДляСпинераДаты.moveToPrevious());
             // TODO: 14.11.2022
-            Log.d(this.getClass().getName(),"    МассивДляВыбораВСпинерДата " +МассивДляВыбораВСпинерДата);
+            Log.d(this.getClass().getName(),"    МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray  +
+                     "МассивДляВыбораВСпинерДатаUUID "+МассивДляВыбораВСпинерДатаUUID);
             Курсор_ДанныеДляСпинераДаты.close();
         }else {
-            Log.d(this.getClass().getName(),"  Нет двнных    МассивДляВыбораВСпинерДата " +МассивДляВыбораВСпинерДата);
+            Log.d(this.getClass().getName(),"    МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray  +
+                    "МассивДляВыбораВСпинерДатаUUID "+МассивДляВыбораВСпинерДатаUUID);
         }
         } catch (Exception e) {///////ошибки
             e.printStackTrace();
