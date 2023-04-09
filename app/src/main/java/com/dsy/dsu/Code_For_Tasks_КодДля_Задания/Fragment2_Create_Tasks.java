@@ -1698,8 +1698,7 @@ public class Fragment2_Create_Tasks extends Fragment {
                                         try {
                                             РезультатУдаленияСозданныйЗадач = new Class_MODEL_synchronized(getContext())
                                                     .УдалениеДанныхЧерезКонтейнерУниверсальная("data_notification",
-                                                            "uuid",
-                                                            String.valueOf(ПолучаемUUIDТекущйПозицииВRecyreView), "status_write", "5");
+                                                            "uuid", ПолучаемUUIDТекущйПозицииВRecyreView, "status_write", "5");
 
                                             // TODO: 25.03.2022
                                             // TODO: 13.03.2022
