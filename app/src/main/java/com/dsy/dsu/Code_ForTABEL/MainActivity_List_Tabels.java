@@ -496,14 +496,12 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
                             Bundle bundleInsertSpinerDate=new Bundle();
                             bundleInsertSpinerDate.putString("ИмесяцвИГодСразу",ИмесяцвИГодСразу);
-                            Long UUIDMotchSpinner= МассивДляВыбораВСпинерДатаUUID.entrySet().stream()
+                            MainParentUUID= МассивДляВыбораВСпинерДатаUUID.entrySet().stream()
                                     .filter(f->f.getValue().equalsIgnoreCase(ИмесяцвИГодСразу))
                                     .map(Map.Entry::getKey).findFirst().orElse(0l);
-                            bundleInsertSpinerDate.putLong("UUIDSpinner",UUIDMotchSpinner);
+                            bundleInsertSpinerDate.putLong("UUIDSpinner",MainParentUUID);
                             ((TextView) parent.getChildAt(0)).setTag(bundleInsertSpinerDate);
                             ((TextView) parent.getChildAt(0)).setText(ИмесяцвИГодСразу);//// ЗАПИСЫВАЕМ ЗНАЧЕНИЕ В СПИПЕР
-
-
                             // TODO: 09.04.2023  set Позиция после инициализации Scinner
                    МетодСозданиеСпинераДляДатыНаАктивитиСозданиеИВыборТабеля();
                    // TODO: 09.04.2023  Главный Код создаем ТАбеля
@@ -512,7 +510,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                                     " ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре " + ИмесяцвИГодСразу+
                                     " МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray  +
                                     " МассивДляВыбораВСпинерДатаUUID " + МассивДляВыбораВСпинерДатаUUID+
-                                    "  ((TextView) parent.getChildAt(0)) " +((TextView) parent.getChildAt(0)).getTag());
+                                    "  ((TextView) parent.getChildAt(0)) " +((TextView) parent.getChildAt(0)).getTag()  + " MainParentUUID " +MainParentUUID);
                         }else {
                             ((TextView) parent.getChildAt(0)).setText("Не созданно");
                             ((TextView) parent.getChildAt(0)).forceLayout();
@@ -723,8 +721,10 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                         if ( МЕсяцТабелейВнут.compareTo(МЕсяцТабелей )==0
                                 && ГодТабелейВнут.compareTo(ГодТабелей)==0) {
                             LinearLayoutСозданныхТабелей.addView(ТабелявВидеКнопок,0); /////СОЗДАЕМ НАКШИ КНОПКИ ВНУРИ СКРОЛБАР
+                            СпинерВыборДату.setSelection(0,true);
                         } else {
                             LinearLayoutСозданныхТабелей.addView(ТабелявВидеКнопок,Position); /////СОЗДАЕМ НАКШИ КНОПКИ ВНУРИ СКРОЛБАР
+                            СпинерВыборДату.setSelection(Position,true);
                         }
                         // TODO: 16.02.2023 Слушатели Табелей
                         МетодыСлушателиТабелей();
