@@ -721,11 +721,13 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                         if ( МЕсяцТабелейВнут.compareTo(МЕсяцТабелей )==0
                                 && ГодТабелейВнут.compareTo(ГодТабелей)==0) {
                             LinearLayoutСозданныхТабелей.addView(ТабелявВидеКнопок,0); /////СОЗДАЕМ НАКШИ КНОПКИ ВНУРИ СКРОЛБАР
-                            СпинерВыборДату.setSelection(0,true);
+                            СпинерВыборДату.setSelection(СпинерВыборДату.getSelectedItemPosition(),true);
                         } else {
                             LinearLayoutСозданныхТабелей.addView(ТабелявВидеКнопок,Position); /////СОЗДАЕМ НАКШИ КНОПКИ ВНУРИ СКРОЛБАР
-                            СпинерВыборДату.setSelection(Position,true);
+                            СпинерВыборДату.setSelection(СпинерВыборДату.getSelectedItemPosition(),true);
                         }
+                        СпинерВыборДату.refreshDrawableState();
+                        СпинерВыборДату.forceLayout();
                         // TODO: 16.02.2023 Слушатели Табелей
                         МетодыСлушателиТабелей();
 
