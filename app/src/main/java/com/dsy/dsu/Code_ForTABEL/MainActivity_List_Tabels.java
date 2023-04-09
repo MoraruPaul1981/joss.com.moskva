@@ -279,10 +279,12 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
             МетодЗаполенияТабелямиАктивти();
 
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
             ////todo заполение спинера
             МетодДанныеСпинераДаты();
-
-
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -492,57 +494,42 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                             ((TextView) parent.getChildAt(0)).setTypeface(((TextView) parent.getChildAt(0)).getTypeface(), Typeface.BOLD);//////ВЫДЕЛЕМ ЖИРНЫМ ЦВЕТОМ ДАТЫ
                             Log.d(this.getClass().getName(), " ((TextView) parent.getChildAt(0)).getText()  " + LinearLayoutСозданныхТабелей.getChildAt(0));
 
-                            Bundle bundle=new Bundle();
-                            bundle.putString("ИмесяцвИГодСразу",ИмесяцвИГодСразу);
-                            Optional<Long> gggg=
-                            МассивДляВыбораВСпинерДатаUUID.entrySet().stream()
-                                    .filter(e -> e.getValue() == ИмесяцвИГодСразу).map(Map.Entry::getKey).findFirst();
-                            bundle.putLong("UUIDSpinner",gggg.get() );
-                            ((TextView) parent.getChildAt(0)).setTag(MainParentUUID);
-
-                        }
-                        Log.d(this.getClass().getName(), " КакойКонтекст" + ИмесяцвИГодСразу +
-                                " ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре " + ИмесяцвИГодСразу+
-                                " МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray  +
-                                " МассивДляВыбораВСпинерДатаUUID " + МассивДляВыбораВСпинерДатаUUID);////заполянеться если новыйтабель создан и на при запуске встать на попределнный табель
+                            Bundle bundleInsertSpinerDate=new Bundle();
+                            bundleInsertSpinerDate.putString("ИмесяцвИГодСразу",ИмесяцвИГодСразу);
+                            Long UUIDMotchSpinner= МассивДляВыбораВСпинерДатаUUID.entrySet().stream()
+                                    .filter(f->f.getValue().equalsIgnoreCase(ИмесяцвИГодСразу))
+                                    .map(Map.Entry::getKey).findFirst().orElse(0l);
+                            bundleInsertSpinerDate.putLong("UUIDSpinner",UUIDMotchSpinner);
+                            ((TextView) parent.getChildAt(0)).setTag(bundleInsertSpinerDate);
                             ((TextView) parent.getChildAt(0)).setText(ИмесяцвИГодСразу);//// ЗАПИСЫВАЕМ ЗНАЧЕНИЕ В СПИПЕР
 
-                    }
-                }
-                if (view!=null) {
-                    ИмесяцвИГодСразу = (String) Optional.ofNullable(String.valueOf(((TextView) parent.getChildAt(0)).getText())).map(String::new).orElse(" ");
-                    if(position==0){
-                        ((TextView) parent.getChildAt(0)).setTypeface(null,Typeface.BOLD);
-                    }
-                }
 
-               if (      view !=null && Курсор_ДанныеДляСпинераДаты.getCount()>0) {
-                   Log.d(this.getClass().getName(), " ((TextView) parent.getChildAt(0)).getText()  " + ((TextView) parent.getChildAt(0)).getText()+
-                            "  FullNameCFO "+ FullNameCFO);
-
-                   // TODO: 09.04.2023  set Позиция после инициализации Scinner
+                            // TODO: 09.04.2023  set Позиция после инициализации Scinner
                    МетодСозданиеСпинераДляДатыНаАктивитиСозданиеИВыборТабеля();
                    // TODO: 09.04.2023  Главный Код создаем ТАбеля
                    МетодаСозданиеТабеляИзБазы(); /////МЕТОД ЗАГРУЗКИ СОЗДАННЫХ ТАБЕЛЕЙ ИЗ БАЗ
-
-
-                   }else{
-                   ((TextView) parent.getChildAt(0)).setText("Не созданно");
-                   ((TextView) parent.getChildAt(0)).forceLayout();
-                   ((TextView) parent.getChildAt(0)).refreshDrawableState();
-                   Log.d(this.getClass().getName(), " ((TextView) parent.getChildAt(0)).getText()  " + ((TextView) parent.getChildAt(0)).getText()+
-                           "  FullNameCFO "+ FullNameCFO);
-
-               }
-
+                            Log.d(this.getClass().getName(), " КакойКонтекст" + ИмесяцвИГодСразу +
+                                    " ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре " + ИмесяцвИГодСразу+
+                                    " МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray  +
+                                    " МассивДляВыбораВСпинерДатаUUID " + МассивДляВыбораВСпинерДатаUUID+
+                                    "  ((TextView) parent.getChildAt(0)) " +((TextView) parent.getChildAt(0)).getTag());
+                        }else {
+                            ((TextView) parent.getChildAt(0)).setText("Не созданно");
+                            ((TextView) parent.getChildAt(0)).forceLayout();
+                            ((TextView) parent.getChildAt(0)).refreshDrawableState();
+                            Log.d(this.getClass().getName(), " КакойКонтекст" + ИмесяцвИГодСразу +
+                                    " ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре " + ИмесяцвИГодСразу+
+                                    " МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray  +
+                                    " МассивДляВыбораВСпинерДатаUUID " + МассивДляВыбораВСпинерДатаUUID);
+                        }
+                    }
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 Log.d(this.getClass().getName(), "  FullNameCFO  " + FullNameCFO);
             }
         });
-            СпинерВыборДату.refreshDrawableState();
-            СпинерВыборДату.forceLayout();
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -594,7 +581,9 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
     private void МетодаСозданиеТабеляИзБазы()  {
         Cursor Курсор_Main_ListTabels = null;
         try{
-            Log.d(this.getClass().getName(), "  FullNameCFO" +  FullNameCFO);
+       TextView ДанныеСпинера=(TextView) СпинерВыборДату.getSelectedView();
+       Bundle bundleДанныеИзСпинераДАт=(Bundle) ДанныеСпинера.getTag();
+            Log.d(this.getClass().getName(), "  FullNameCFO" +  FullNameCFO  + "ДанныеСпинера " +ДанныеСпинера  + " bundleДанныеИзСпинераДАт " +bundleДанныеИзСпинераДАт);
                 try{
                     LinearLayoutСозданныхТабелей.removeAllViews();
                     LinearLayoutСозданныхТабелей.forceLayout();
@@ -620,13 +609,37 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                         }
 
 
-            // TODO: 09.04.2023  курсор самим создаваемых табеля
+            // TODO: 09.04.2023  курсор самим создаваемых табеляПОСИК ДАННЫХ ЧЕРЕЗ UUID
             Bundle bundleListTabels=new Bundle();
-            bundleListTabels.putString("СамЗапрос","  SELECT * FROM  tabel WHERE status_send!=?  AND month_tabels IS NOT NULL " +
-                    " AND year_tabels IS NOT NULL ORDER BY year_tabels DESC ,month_tabels DESC LIMIT 6  ");
-            bundleListTabels.putStringArray("УсловияВыборки" ,new String[]{String.valueOf("Удаленная")});
+            bundleListTabels.putString("СамЗапрос","  SELECT * FROM  tabel WHERE status_send!=? AND uuid=?" +
+                    "  AND month_tabels IS NOT NULL " +
+                    " AND year_tabels IS NOT NULL" +
+                    " ORDER BY year_tabels DESC ,month_tabels DESC LIMIT 6  ");
+            bundleListTabels.putStringArray("УсловияВыборки" ,new String[]{String.valueOf("Удаленная"),String.valueOf(bundleДанныеИзСпинераДАт.getLong("UUIDSpinner"))});
             bundleListTabels.putString("Таблица","tabel");
             Курсор_Main_ListTabels=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleListTabels);
+            Log.d(this.getClass().getName(), "GetData "+Курсор_Main_ListTabels  );
+
+            if(Курсор_Main_ListTabels.getCount()>0){
+
+             Integer МесяцИЗПОсикаUUID=   Курсор_Main_ListTabels.getInt(Курсор_Main_ListTabels.getColumnIndex("month_tabels"));
+             Integer ГОДИЗПОсикаUUID=   Курсор_Main_ListTabels.getInt(Курсор_Main_ListTabels.getColumnIndex("year_tabels"));
+             Курсор_Main_ListTabels.close();
+
+                // TODO: 09.04.2023  курсор самим создаваемых табеляПОСИК ДАННЫХ ПолучаемРЕальные ДАнные
+                bundleListTabels=new Bundle();
+                bundleListTabels.putString("СамЗапрос","  SELECT * FROM  tabel WHERE status_send!=?  " +
+                        "  AND month_tabels=? " +
+                        " AND year_tabels =?" +
+                        " ORDER BY year_tabels DESC ,month_tabels DESC LIMIT 6  ");
+                bundleListTabels.putStringArray("УсловияВыборки" ,new String[]{String.valueOf("Удаленная"),
+                        String.valueOf(МесяцИЗПОсикаUUID),
+                        String.valueOf(ГОДИЗПОсикаUUID) });
+                bundleListTabels.putString("Таблица","tabel");
+                Курсор_Main_ListTabels=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleListTabels);
+                Log.d(this.getClass().getName(), "GetData "+Курсор_Main_ListTabels  );
+
+            }
 
                             Log.d(this.getClass().getName(), "GetData "+Курсор_Main_ListTabels  );
                                     //////todo работающий NULL в query
