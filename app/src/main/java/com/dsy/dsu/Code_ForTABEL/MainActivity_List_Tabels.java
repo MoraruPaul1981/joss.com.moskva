@@ -39,7 +39,6 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.UiThread;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.loader.content.CursorLoader;
 
 import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
@@ -50,13 +49,11 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_MODEL_synchronized;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Code_For_Services.Service_For_Public;
-import com.dsy.dsu.Code_For_Services.Service_for_AdminissionMaterial;
 import com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_App;
 import com.dsy.dsu.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.common.util.concurrent.AtomicDouble;
 
 
 import org.jetbrains.annotations.NotNull;
@@ -66,12 +63,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -101,7 +102,8 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
     private   Button ТабелявВидеКнопок=null;
     private     String ПолученныйГодДляНовогоТабеля= "";
     private   String ФинальнаяМЕсяцДляНовогоТабеля= "";
-    private    LinkedList<String> МассивДляВыбораВСпинерДата = new LinkedList<>(); //////АКАРЛИСТ ДЛЯ ПОЛУЧЕНЫЙ НОВЫХ ДАТ
+   // private    LinkedList<String> МассивДляВыбораВСпинерДата = new LinkedList<>(); //////АКАРЛИСТ ДЛЯ ПОЛУЧЕНЫЙ НОВЫХ ДАТ
+
 
     private   Context context;
     private  String  МесяцТабеляФиналИзВсехСотрудниковВТАбеле;
@@ -125,6 +127,8 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
     private  String ИмесяцвИГодСразу;
     private  int Position;
     private String FullNameCFO;
+
+    LinkedHashMap<Long,String> МассивДляВыбораВСпинерДата=new LinkedHashMap<Long,String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try{
@@ -167,6 +171,10 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             // TODO: 06.11.2022 методы после создание
             МетодКруглаяКнопка();
             МетодНазадBACKНААктивти();
+            // TODO: 09.04.2023
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
         } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -416,13 +424,14 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
     private void МетодСозданиеСпинераДляДатыНаАктивитиСозданиеИВыборТабеля() {
         try {
             ////TODO сортируем дату на ПОСЛЕДНКЮ
+            List<String> МассивДляВыбораВСпинерArray =  (List<String>)   МассивДляВыбораВСпинерДата.values();
             Log.d(  getApplicationContext().getClass().getName(), " сработала ... ВСТАВКА МассивДляВыбораВСпинерДата В БАЗУ"+МассивДляВыбораВСпинерДата);
             if (Курсор_ДанныеДляСпинераДаты.getCount()>0) {/// && МассивДляВыбораВСпинерДата.size()>0
                 if (ИмесяцвИГодСразу !=null) {
-                 Integer ИндексНахождение=   МассивДляВыбораВСпинерДата.indexOf(ИмесяцвИГодСразу);
+                 Integer ИндексНахождение=   МассивДляВыбораВСпинерArray.indexOf(ИмесяцвИГодСразу);
                     Log.d(  getApplicationContext().getClass().getName(), " ИндексНахождение "+ИндексНахождение);
                     if (ИндексНахождение>=0) {
-                        Collections.swap(МассивДляВыбораВСпинерДата,0,ИндексНахождение);
+                        Collections.swap(МассивДляВыбораВСпинерArray,0,ИндексНахождение);
                     }
                 }
 
@@ -430,10 +439,14 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             }else{
                 Log.d(this.getClass().getName(), " МассивДляВыбораВСпинерДата.size()  " + МассивДляВыбораВСпинерДата.size());
                 // TODO: 21.09.2021  НЕТ ДАННЫХ  НЕТ ТАБЕЛЬ
-                МассивДляВыбораВСпинерДата.add("Не созданно");
-                МетодКогдаДанныхСамихТабелйНет(МассивДляВыбораВСпинерДата);
+                МассивДляВыбораВСпинерArray.add("Не созданно");
+                МетодКогдаДанныхСамихТабелйНет(МассивДляВыбораВСпинерArray);
                 FullNameCFO=null;
             }
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " МассивДляВыбораВСпинерArray " +МассивДляВыбораВСпинерArray);
         } catch (Exception e) {
             e.printStackTrace();
             ///метод запись ошибок в таблицу
@@ -454,8 +467,9 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
     private void МетодДанныеСпинераДаты( ) {
         try{
+            List<String> МассивДляВыбораВСпинерArray =  (List<String>)   МассивДляВыбораВСпинерДата.values();
             ArrayAdapter<String>           АдаптерДляСпинераДата = new ArrayAdapter<String>(this,
-                    R.layout.simple_for_create_new_assintionmaterila_spinner_main, МассивДляВыбораВСпинерДата);
+                    R.layout.simple_for_create_new_assintionmaterila_spinner_main, МассивДляВыбораВСпинерArray);
             АдаптерДляСпинераДата.setDropDownViewResource(R.layout.simple_for_create_new_assintionmaterila_spinner);
         СпинерВыборДату.setAdapter(АдаптерДляСпинераДата);
         СпинерВыборДату.setSelected(true);
@@ -859,7 +873,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                 }
         return Курсор_КоторыйЗагружаетГотовыеТабеляМаксимальнаяДатаДляСпинера;
     }
-     void МетодКогдаДанныхСамихТабелйНет( @NotNull LinkedList<String> МассивДляВыбораВСпинерДата) {
+     void МетодКогдаДанныхСамихТабелйНет( @NotNull List<String> МассивДляВыбораВСпинерДата) {
         try{
             ТабелявВидеКнопок = new Button(this);////СОЗДАЕМ НОВЫЕ КНОПКИ НА АКТИВТИ
             try {
@@ -1434,14 +1448,18 @@ try{
     private void МетодЗаполенияТабелямиАктивти()
             throws ExecutionException, InterruptedException, ParseException {
         try {
+            List<String> МассивДляВыбораВСпинерArray =  (List<String>)   МассивДляВыбораВСпинерДата.values();
+            Set<Long> МассивДляВыбораВСпинерUUID =     МассивДляВыбораВСпинерДата.keySet();
         if ( Курсор_ДанныеДляСпинераДаты.getCount()>0) {/////ЗАГРУЖАЕМ ДАННЫЕ ИЗ ТАБЛИЦЫ CFO ДЛЯ СПИНЕРА И СОЗДАНИЯ ТАБЕЛЯ
                 Log.d(this.getClass().getName()," Курсор_ДанныеДляСпинераДаты.getCount() " + Курсор_ДанныеДляСпинераДаты.getCount());
             //////TODO ЗАПОЛЯЕМ СПИНЕР ЧЕРЕЗ АРАЙЛИСТ ПОСЛЕДНИМИ ДАТАМИ
             Курсор_ДанныеДляСпинераДаты.moveToLast();
-            МассивДляВыбораВСпинерДата.clear();
+            МассивДляВыбораВСпинерArray.clear();
+            МассивДляВыбораВСпинерUUID.clear();
             do{
                 String     ЗнаениеИзБазыНовыеТабеляМесяц = Курсор_ДанныеДляСпинераДаты.getString(0).trim();
                 String     ЗнаениеИзБазыНовыеТабеляГод = Курсор_ДанныеДляСпинераДаты.getString(1).trim();
+                Long     ЗнаениеИзБазыНовыеТабеляUUID = Курсор_ДанныеДляСпинераДаты.getLong(Курсор_ДанныеДляСпинераДаты.getColumnIndex("uuid"));
                 String     ЗнаениеИзБазыНовыеТабеляНазваниеТабеля = null;
                 int ИндексСФО=Курсор_ДанныеДляСпинераДаты.getColumnIndex("cfo");
                 int     ЗнаениеИзБазыНовыеТабеляIDСфо = Курсор_ДанныеДляСпинераДаты.getInt(ИндексСФО);
@@ -1467,11 +1485,19 @@ try{
                 ////TODO ПОКАЗЫВВАЕТ ПОЛЬЗОВАТЛЕЛЮ МЕСЯЦ И ГОДВ ВИДЕ СЛОВ ИЗ ЦИФРЫ 11 МЕНЯЕ НА НОЯБРЬ 2020 НАПРИМЕР
                 ФиналВставкаМЕсяцаИгода=ПреобразованоеИмяМесяца+ "  "+ЗнаениеИзБазыНовыеТабеляГод;
                 Log.d(this.getClass().getName()," ФиналВставкаМЕсяцаИгода "+ФиналВставкаМЕсяцаИгода);
-                ///todo ТОЛЬКО ДЛЯ ПРОСМОТРА ДАННЫХ ПОЛЬЗОВТЕЛЯ ЗАГРУАЕТЬСЯ ИЗ БАЗЫ
-                МассивДляВыбораВСпинерДата.add(ФиналВставкаМЕсяцаИгода);
+                ///todo заполяем Название СФО
+                МассивДляВыбораВСпинерArray.add(ФиналВставкаМЕсяцаИгода.trim());
+                // TODO: 09.04.2023 заполяем СФО
+                МассивДляВыбораВСпинерUUID.add(ЗнаениеИзБазыНовыеТабеляUUID);
+                
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " МассивДляВыбораВСпинерArray " +МассивДляВыбораВСпинерArray + 
+                        " МассивДляВыбораВСпинерUUID " +МассивДляВыбораВСпинерUUID+
+                        " МассивДляВыбораВСпинерДата " +МассивДляВыбораВСпинерДата);
 
-                Log.d(this.getClass().getName(),"  МассивДляВыбораВСпинерДата " + МассивДляВыбораВСпинерДата.toString() +"  МассивДляВыбораВСпинерДата " +МассивДляВыбораВСпинерДата.size());
-                ////////
+
             }while (Курсор_ДанныеДляСпинераДаты.moveToPrevious());
             // TODO: 14.11.2022
             Log.d(this.getClass().getName(),"    МассивДляВыбораВСпинерДата " +МассивДляВыбораВСпинерДата);

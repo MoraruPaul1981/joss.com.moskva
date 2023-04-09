@@ -2618,7 +2618,7 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                     try {
                         Class_GRUD_SQL_Operations    class_grud_sql_operationsЗначенияНовгоСотрудник=new Class_GRUD_SQL_Operations(context);
                             class_grud_sql_operationsЗначенияНовгоСотрудник. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","tabel");
-                            class_grud_sql_operationsЗначенияНовгоСотрудник. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","month_tabels,year_tabels,cfo");
+                            class_grud_sql_operationsЗначенияНовгоСотрудник. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","month_tabels,year_tabels,cfo,uuid");
                             class_grud_sql_operationsЗначенияНовгоСотрудник. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика","status_send!=?  " +
                                     " AND month_tabels IS NOT NULL  AND year_tabels IS NOT NULL");
                             class_grud_sql_operationsЗначенияНовгоСотрудник. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1","Удаленная");
