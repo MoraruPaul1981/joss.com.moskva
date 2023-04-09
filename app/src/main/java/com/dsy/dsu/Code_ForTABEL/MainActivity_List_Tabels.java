@@ -268,8 +268,9 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             МетодЗаполенияТабелямиАктивти();
 
             ////todo заполение спинера
-            МетодСозданиеСпинераДляДатыНаАктивитиСозданиеИВыборТабеля();
             МетодДанныеСпинераДаты();
+
+
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -493,8 +494,13 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                if (      view !=null && Курсор_ДанныеДляСпинераДаты.getCount()>0) {
                    Log.d(this.getClass().getName(), " ((TextView) parent.getChildAt(0)).getText()  " + ((TextView) parent.getChildAt(0)).getText()+
                             "  FullNameCFO "+ FullNameCFO);
+
+                   // TODO: 09.04.2023  set Позиция после инициализации Scinner
+                   МетодСозданиеСпинераДляДатыНаАктивитиСозданиеИВыборТабеля();
                    // TODO: 09.04.2023  Главный Код создаем ТАбеля
-                       МетодаСозданиеТабеляИзБазы(); /////МЕТОД ЗАГРУЗКИ СОЗДАННЫХ ТАБЕЛЕЙ ИЗ БАЗ
+                   МетодаСозданиеТабеляИзБазы(); /////МЕТОД ЗАГРУЗКИ СОЗДАННЫХ ТАБЕЛЕЙ ИЗ БАЗ
+
+
                    }else{
                    ((TextView) parent.getChildAt(0)).setText("Не созданно");
                    ((TextView) parent.getChildAt(0)).forceLayout();
@@ -639,8 +645,8 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                         Bundle bundleДЛяListTabels=new Bundle();
                         bundleДЛяListTabels.putLong("MainParentUUID", MainParentUUID);
                         bundleДЛяListTabels.putInt("Position", Position);
-                        bundleДЛяListTabels.putInt("ГодТабелей", ГодТабелей);
-                        bundleДЛяListTabels.putInt("МЕсяцТабелей",МЕсяцТабелей);
+                        bundleДЛяListTabels.putInt("ГодТабелей", ГодТабелейВнут);
+                        bundleДЛяListTabels.putInt("МЕсяцТабелей",МЕсяцТабелейВнут);
                         bundleДЛяListTabels.putInt("DigitalNameCFO", DigitalNameCFO);
                         bundleДЛяListTabels.putString("FullNameCFO", FullNameCFO.trim());
                         bundleДЛяListTabels.putString("ИмесяцвИГодСразу", ИмесяцвИГодСразу.trim());

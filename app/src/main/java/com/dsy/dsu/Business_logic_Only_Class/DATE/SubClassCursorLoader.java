@@ -12,6 +12,9 @@ import androidx.loader.content.CursorLoader;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class SubClassCursorLoader {
     // TODO: 25.11.2022 новы метод получение данных для всех
     public Cursor CursorLoaders(@NonNull Context context, @NonNull Bundle bundle) throws  SQLException {
