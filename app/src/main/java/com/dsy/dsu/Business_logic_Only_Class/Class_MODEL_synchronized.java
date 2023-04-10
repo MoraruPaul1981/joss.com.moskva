@@ -3518,8 +3518,7 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                 int ЧассыСотрудника = курсор_ЗагружаемТабеляСозданный.getInt(ИндексЧассыСотрудника);
                 СуммаЧасов = СуммаЧасов + ЧассыСотрудника;
                 Log.d(this.getClass().getName(), "    СуммаЧасов " + СуммаЧасов);
-            }///TODO END FOR  ПО СТОЛБЦАМ БЕЖИМ
-            //////////20.15
+            }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
