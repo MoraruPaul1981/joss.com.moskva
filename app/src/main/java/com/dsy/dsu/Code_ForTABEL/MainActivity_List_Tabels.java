@@ -237,13 +237,15 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
         try{
         Intent Интент_Back_MAinActivity_List_peole = getIntent();
             Bundle bundleДЛяListTabels=Интент_Back_MAinActivity_List_peole.getExtras();
-            MainParentUUID=      bundleДЛяListTabels.getLong("MainParentUUID", 0l);
-            Position=   bundleДЛяListTabels.getInt("Position", 0);
-            ГодТабелей=  bundleДЛяListTabels.getInt("ГодТабелей", 0);
-            МЕсяцТабелей=  bundleДЛяListTabels.getInt("МЕсяцТабелей",0);
-            DigitalNameCFO= bundleДЛяListTabels.getInt("DigitalNameCFO", 0);
-            FullNameCFO=    bundleДЛяListTabels.getString("FullNameCFO", "" );
-            ИмесяцвИГодСразу= bundleДЛяListTabels.getString("ИмесяцвИГодСразу", "" );
+            if (bundleДЛяListTabels!=null) {
+                MainParentUUID=      bundleДЛяListTabels.getLong("MainParentUUID", 0l);
+                Position=   bundleДЛяListTabels.getInt("Position", 0);
+                ГодТабелей=  bundleДЛяListTabels.getInt("ГодТабелей", 0);
+                МЕсяцТабелей=  bundleДЛяListTabels.getInt("МЕсяцТабелей",0);
+                DigitalNameCFO= bundleДЛяListTabels.getInt("DigitalNameCFO", 0);
+                FullNameCFO=    bundleДЛяListTabels.getString("FullNameCFO", "" );
+                ИмесяцвИГодСразу= bundleДЛяListTabels.getString("ИмесяцвИГодСразу", "" );
+            }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -497,6 +499,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                             bundleInsertSpinerDate.putLong("UUIDSpinner",MainParentUUID);
                             ((TextView) parent.getChildAt(0)).setTag(bundleInsertSpinerDate);
                             ((TextView) parent.getChildAt(0)).setText(ИмесяцвИГодСразу);//// ЗАПИСЫВАЕМ ЗНАЧЕНИЕ В СПИПЕР
+                            СпинерВыборДату.startAnimation(animation);
                             // TODO: 09.04.2023  set Позиция после инициализации Scinner
                    МетодСозданиеСпинераДляДатыНаАктивитиСозданиеИВыборТабеля();
                    // TODO: 09.04.2023  Главный Код создаем ТАбеля
@@ -1476,8 +1479,6 @@ try{
         try {
         if ( Курсор_ДанныеДляСпинераДаты.getCount()>0) {/////ЗАГРУЖАЕМ ДАННЫЕ ИЗ ТАБЛИЦЫ CFO ДЛЯ СПИНЕРА И СОЗДАНИЯ ТАБЕЛЯ
                 Log.d(this.getClass().getName()," Курсор_ДанныеДляСпинераДаты.getCount() " + Курсор_ДанныеДляСпинераДаты.getCount());
-            //////TODO ЗАПОЛЯЕМ СПИНЕР ЧЕРЕЗ АРАЙЛИСТ ПОСЛЕДНИМИ ДАТАМИ
-            Курсор_ДанныеДляСпинераДаты.moveToLast();
             МассивДляВыбораВСпинерДатаArray.clear();
             МассивДляВыбораВСпинерДатаUUID.clear();
             do{
@@ -1521,7 +1522,7 @@ try{
                         " МассивДляВыбораВСпинерДатаUUID " +МассивДляВыбораВСпинерДатаUUID);
 
 
-            }while (Курсор_ДанныеДляСпинераДаты.moveToPrevious());
+            }while (Курсор_ДанныеДляСпинераДаты.moveToNext());
             // TODO: 14.11.2022
             Log.d(this.getClass().getName(),"    МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray  +
                      "МассивДляВыбораВСпинерДатаUUID "+МассивДляВыбораВСпинерДатаUUID);
