@@ -5,7 +5,6 @@ import static java.util.Locale.setDefault;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -63,7 +62,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -73,11 +71,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -274,7 +270,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             //TODO МЕТОД ПОЛУЧЕНИЕ ДАННЫХ ДЛЯ ДАННОГО АКВТИВИ
             МетодПолучениеДанныхДляДаногоАктивтиИсторияТАбеля();
             ////todo заполение спинера
-            МетодЗаполненияАлайЛИстаНовымМЕсцевНовогоТабеля();////метод вызаваем все созжданные ТАБЕДЯ ИЗ БАПЗЫ И ДАЛЕЕ ИХ ЗАПИСЫВАЕМ В ОБМЕН
+            МетодЗаполненияСпинераДат();////метод вызаваем все созжданные ТАБЕДЯ ИЗ БАПЗЫ И ДАЛЕЕ ИХ ЗАПИСЫВАЕМ В ОБМЕН
 
             МетодЗаполенияТабелямиАктивти();
 
@@ -1248,7 +1244,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             int НовыйМесяц = МетодПолучениниеНовогоМесяцДляЗАписивОднуКолонку(ФинальнаяМЕсяцДляНовогоТабеля);
             int НовыйГод = МетодПолучениниеНовыйГодДляЗАписивОднуКолонку(ПолученныйГодДляНовогоТабеля);
             ///TODO  ПОСЛЕ ВСТАКИ ПЕРЕХОДИМ НА АКТИВТИ С ВЫБОРО И СОЗДАНИЕМ САМОГО ТАБЕЛЯ НОВОГО
-            Intent Интент_НовыйТабель = new Intent();
+            Intent Интент_НовыйТабель = new Intent(getApplicationContext(),MainActivity_New_Tabely.class);
             Bundle     bundleСозданиеНовогоТабеля=new Bundle();
             bundleСозданиеНовогоТабеля.putString("ИмесяцвИГодСразу", ИмесяцвИГодСразу);
             bundleСозданиеНовогоТабеля.putInt("ГодТабелей", НовыйГод);
@@ -1447,16 +1443,24 @@ try{
 
 
     // TODO вытасиваем даные из базы чтобы ЗАполнить спирер готовыми табелями Датами НАПРИМЕР ОКТЯРЬ 2020  ДЕКАБРЬ 2019
-    private void МетодЗаполненияАлайЛИстаНовымМЕсцевНовогоТабеля() throws InterruptedException, ExecutionException, TimeoutException, ParseException {
+    private void МетодЗаполненияСпинераДат() throws InterruptedException, ExecutionException, TimeoutException, ParseException {
         try{
-           Курсор_ДанныеДляСпинераДаты = new Class_MODEL_synchronized(context).МетодДанныеДЛяСпинераТАбеля();
+         ////  Курсор_ДанныеДляСпинераДаты = new Class_MODEL_synchronized(context).МетодДанныеДЛяСпинераТАбеля();
+            // TODO: 09.04.2023  курсор самим создаваемых табеляПОСИК ДАННЫХ ЧЕРЕЗ UUID
+            Bundle bundleListTabelsДАты=new Bundle();
+            bundleListTabelsДАты.putString("СамЗапрос","  SELECT month_tabels,year_tabels,cfo,uuid FROM  tabel WHERE status_send!=?  " +
+                    "  AND month_tabels IS NOT NULL " +
+                    " AND year_tabels IS NOT NULL" +
+                    " ORDER BY year_tabels DESC ,month_tabels DESC LIMIT 6  ");
+            bundleListTabelsДАты.putStringArray("УсловияВыборки" ,new String[]{String.valueOf("Удаленная")});
+            bundleListTabelsДАты.putString("Таблица","tabel");
+            Курсор_ДанныеДляСпинераДаты=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleListTabelsДАты);
+            Log.d(this.getClass().getName(), "Курсор_ДанныеДляСпинераДаты "+Курсор_ДанныеДляСпинераДаты  );
             Log.d(this.getClass().getName(), " Курсор_ДанныеДляСпинераДаты" +" время: " +Курсор_ДанныеДляСпинераДаты);
         } catch (Exception e) {
             e.printStackTrace();
-
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            // TODO: 01.09.2021 метод вызова
         new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), 
        this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());

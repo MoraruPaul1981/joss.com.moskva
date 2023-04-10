@@ -13,6 +13,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -38,6 +39,7 @@ import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.loader.content.AsyncTaskLoader;
 import androidx.loader.content.Loader;
 
+import com.dsy.dsu.Business_logic_Only_Class.AllboundServices.AllBindingService;
 import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
@@ -77,7 +79,7 @@ public class MainActivity_New_Tabely extends AppCompatActivity {
     private  CREATE_DATABASE Create_Database_СсылкаНАБазовыйКласс;
     private  PUBLIC_CONTENT Class_Engine_SQLГдеНаходитьсяМенеджерПотоков = null;
    private ArrayAdapter<String> АдаптерДляСпинераЦФО;
-    private  Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binder;
+    private  Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binderДляПолучениеМатериалов;
     private   Cursor CursorДляСпиноровЦФО;
     private  Handler handler;
     private ProgressBar progressBar;
@@ -91,6 +93,7 @@ public class MainActivity_New_Tabely extends AppCompatActivity {
  private  String ИмесяцвИГодСразу;
  private  Integer НовыйГод;
  private  Integer НовыйМесяц;
+    private Message message;
     // TODO: 15.12.2022 методы
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,12 +119,9 @@ public class MainActivity_New_Tabely extends AppCompatActivity {
             progressBar.setVisibility(View.VISIBLE);
             // TODO: 01.11.2022 методы до начало запуска
             Create_Database_СсылкаНАБазовыйКласс = new CREATE_DATABASE(getApplicationContext());
-            Bundle data=     getIntent().getExtras();
-            if (data!=null) {
-                binder=  (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) data.getBinder("binder");
-            }
             МетодHandlerCallBack();
             МетодСозданиеКодBACK();
+            МетодБиндингаПолучениеМатериалов();
             preferences = getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
             animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_row_newscanner1);
             animation= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row_newscanner1);
@@ -140,11 +140,11 @@ public class MainActivity_New_Tabely extends AppCompatActivity {
 
   void  МетодПришлиПеременныеИзMainActivityListtabel(){
         try{
-            Intent intentПришелСДанными=      intentПришелСДанными=getIntent();
-            Bundle     bundleСозданиеНовогоТабеля=intentПришелСДанными.getExtras();
-            bundleСозданиеНовогоТабеля.getString("ИмесяцвИГодСразу", ИмесяцвИГодСразу);
-            bundleСозданиеНовогоТабеля.getInt("ГодТабелей", НовыйГод);
-            bundleСозданиеНовогоТабеля.getInt("МЕсяцТабелей", НовыйМесяц);
+            Intent Интент_FromMainActivityTaberl = getIntent();
+            Bundle     bundleСозданиеНовогоТабеля=Интент_FromMainActivityTaberl.getExtras();
+            ИмесяцвИГодСразу=  bundleСозданиеНовогоТабеля.getString("ИмесяцвИГодСразу", "");
+            НовыйГод=    bundleСозданиеНовогоТабеля.getInt("ГодТабелей",0 );
+            НовыйМесяц=  bundleСозданиеНовогоТабеля.getInt("МЕсяцТабелей", 0);
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -161,13 +161,55 @@ public class MainActivity_New_Tabely extends AppCompatActivity {
         ///////
     }
     }
+    private void МетодБиндингаПолучениеМатериалов() {
+        try {
+            if (binderДляПолучениеМатериалов==null) {
+                message=Message.obtain(new Handler(Looper.myLooper()),()->{
+                    Bundle bundle=   message.getData();
+                    binderДляПолучениеМатериалов= (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов)  bundle.getBinder("allbinders")  ;
+                    Log.i(this.getClass().getName(),  " Атоманически установкаОбновление ПО "+
+                            Thread.currentThread().getStackTrace()[2].getMethodName()+
+                            " время " +new Date().toLocaleString() + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов );
+                    Log.i(this.getClass().getName(), "bundle " +bundle);
+                    onStart();
+                    message.recycle();
+                });
+                // TODO: 27.03.2023 биндинг службы
+                new AllBindingService(getApplicationContext(), message). МетодБиндингМатериалы() ;
+            }
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+            Log.d(this.getClass().getName(), "  Полусаем Ошибку e.toString() " + e.toString());
+        }
+
+    }
 
 
     @Override
     protected void onStart() {
         super.onStart();
         try{
-               МетодПолучениеМатериала("");
+            if (binderДляПолучениеМатериалов!=null) {
+                МетодПолучениеМатериала("");
+                МетодСпинерЦФО();
+                МетодСпинерДаты();
+                МетодСозданиеТабеля();
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
         } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -183,12 +225,7 @@ public class MainActivity_New_Tabely extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         try{
-            if (!asyncTaskLoader.isStarted()) {
-                МетодСпинерЦФО();
-                МетодСпинерДаты();
-               МетодСозданиеТабеля();
-                progressBar.setVisibility(View.INVISIBLE);
-            }
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -229,9 +266,6 @@ public class MainActivity_New_Tabely extends AppCompatActivity {
                 public void onClick(View v) {
                     Log.d(this.getClass().getName(), " кликнем для созданни новго сотрдника при нажатии  ");
                     Intent ИнтентВозврящемсяНазад = new Intent();
-                    Bundle data=new Bundle();
-                    data.putBinder("binder", binder);
-                    ИнтентВозврящемсяНазад.putExtras(data);
                     ИнтентВозврящемсяНазад.setClass(getApplication(), MainActivity_List_Tabels.class); // Т
                     ИнтентВозврящемсяНазад.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(ИнтентВозврящемсяНазад);
@@ -686,9 +720,6 @@ public class MainActivity_New_Tabely extends AppCompatActivity {
             Интент_ПослеСозданиеНовогоТабеля.putExtra("ПолученноеТекущееЗначениеСпинераДата", Название_ЦФО);
             Интент_ПослеСозданиеНовогоТабеля.putExtra("СгенерированныйНазваниеНовогоТабеля", Название_ЦФО);
             Log.d(this.getClass().getName(), " Название_ЦФО"+Название_ЦФО);
-            Bundle data=new Bundle();
-            data.putBinder("binder", binder);
-            Интент_ПослеСозданиеНовогоТабеля.putExtras(data);
         startActivity(Интент_ПослеСозданиеНовогоТабеля);
     } catch (Exception e) {
         e.printStackTrace();
@@ -960,8 +991,8 @@ while(iterator.hasNext()){
             Intent intentПолучениеМатериалов = new Intent(getApplicationContext(), Service_for_AdminissionMaterial.class);
             intentПолучениеМатериалов.setAction("ПолучениеМатериалоСозданиеНового");
             intentПолучениеМатериалов.putExtras(bundleДляПЕредачи);
-            if (binder!=null) {
-                cursor = (Cursor) binder.getService().МетодCлужбыПолучениеМатериалов(getApplicationContext(), intentПолучениеМатериалов);
+            if (binderДляПолучениеМатериалов!=null) {
+                cursor = (Cursor) binderДляПолучениеМатериалов.getService().МетодCлужбыПолучениеМатериалов(getApplicationContext(), intentПолучениеМатериалов);
                 Log.d(this.getClass().getName(), "   cursor " + cursor);
                 if (cursor.getCount() > 0) {
                     cursor.moveToFirst();
@@ -993,8 +1024,8 @@ while(iterator.hasNext()){
             Intent intentПолучениеМатериалов = new Intent(getApplicationContext(), Service_for_AdminissionMaterial.class);
             intentПолучениеМатериалов.setAction("ПолучениеМатериалоСозданиеНового");
             intentПолучениеМатериалов.putExtras(bundleДляПЕредачи);
-            if (binder!=null) {
-                cursor = (Cursor) binder.getService().МетодCлужбыПолучениеМатериалов(getApplicationContext(), intentПолучениеМатериалов);
+            if (binderДляПолучениеМатериалов!=null) {
+                cursor = (Cursor) binderДляПолучениеМатериалов.getService().МетодCлужбыПолучениеМатериалов(getApplicationContext(), intentПолучениеМатериалов);
                 Log.d(this.getClass().getName(), "   cursor " + cursor);
                     Log.d(this.getClass().getName(), "   cursor " + cursor);
                // }
@@ -1023,8 +1054,8 @@ while(iterator.hasNext()){
             Intent intentПолучениеМатериалов = new Intent(getApplicationContext(), Service_for_AdminissionMaterial.class);
             intentПолучениеМатериалов.setAction("ПолучениеМатериалоИзНовгоПоиска");
             intentПолучениеМатериалов.putExtras(bundleДляПЕредачи);
-            if (binder!=null) {
-                cursor = (Cursor) binder.getService().МетодCлужбыПолучениеМатериалов(getApplicationContext(), intentПолучениеМатериалов);
+            if (binderДляПолучениеМатериалов!=null) {
+                cursor = (Cursor) binderДляПолучениеМатериалов.getService().МетодCлужбыПолучениеМатериалов(getApplicationContext(), intentПолучениеМатериалов);
                 Log.d(this.getClass().getName(), "   cursor " + cursor);
                 Log.d(this.getClass().getName(), "   cursor " + cursor);
                 // }
