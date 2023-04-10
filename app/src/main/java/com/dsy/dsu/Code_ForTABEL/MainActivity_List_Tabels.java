@@ -17,6 +17,9 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -127,6 +130,8 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
     LinkedList< String> МассивДляВыбораВСпинерДатаArray=new  LinkedList< String>();
     LinkedHashMap<Long,String> МассивДляВыбораВСпинерДатаUUID=new LinkedHashMap<Long,String>();
+
+    Message message;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try{
@@ -169,6 +174,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             // TODO: 06.11.2022 методы после создание
             МетодКруглаяКнопка();
             МетодНазадBACKНААктивти();
+            МетодMessage();
             // TODO: 09.04.2023  ТЕСТ КОД
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -500,6 +506,8 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                             ((TextView) parent.getChildAt(0)).setTag(bundleInsertSpinerDate);
                             ((TextView) parent.getChildAt(0)).setText(ИмесяцвИГодСразу);//// ЗАПИСЫВАЕМ ЗНАЧЕНИЕ В СПИПЕР
                             СпинерВыборДату.startAnimation(animation);
+                            TextView textViewspiner=(TextView)   СпинерВыборДату.getSelectedView();
+                                textViewspiner.setTextColor(Color.BLACK);
                             // TODO: 09.04.2023  set Позиция после инициализации Scinner
                    МетодСозданиеСпинераДляДатыНаАктивитиСозданиеИВыборТабеля();
                    // TODO: 09.04.2023  Главный Код создаем ТАбеля
@@ -801,7 +809,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
     }
 
     /////TODO метод запуска кода при однократорм нажатии просто загузка сотрудников табель
-    private void МетодПереходMainActivity_List_Peoples(Button v) {
+    private void МетодПереходMainActivity_List_Peoples(@NonNull  Button v) {
         try{
             Intent    ИнтентпереходВMainActivityList_Peoples=new Intent(getApplicationContext(),MainActivity_List_Peoples.class);
             Bundle bundleИзMAinActivbity_List_Tabels=(Bundle) v.getTag();
@@ -2096,5 +2104,30 @@ try{
         }
     }
 
+    private void МетодMessage() {
+        try {
+                message=Message.obtain(new Handler(Looper.myLooper()),()->{
+                    Bundle bundle=   message.getData();
+                    Log.i(this.getClass().getName(),  " Атоманически установкаОбновление ПО "+
+                            Thread.currentThread().getStackTrace()[2].getMethodName()+
+                            " время " +new Date().toLocaleString() + " message " +message );
+                    Log.i(this.getClass().getName(), "bundle " +bundle);
+                    //message.recycle();
+                });
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " message " +message);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+            Log.d(this.getClass().getName(), "  Полусаем Ошибку e.toString() " + e.toString());
+        }
+
+    }
 
 }
