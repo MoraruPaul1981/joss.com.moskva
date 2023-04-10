@@ -96,7 +96,6 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
     private  boolean РежимыПросмотраДанныхЭкрана;
     private  EditText ПрослойкаМеждуТабелей;
     private    Configuration config;
-    private   String ПолученноеЗначениеИзТолькоСпинераДата= "";
     private    String  ПослеСозданияНовогоТабеляЕгоUUID;
     private    String   ПослеСозданияНовогоТабеляЕгоПолноеНазвание= "";
     private   String ПубличноеИмяКнопкиТабеля;
@@ -742,8 +741,8 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                 }
                 ////TODO ПОСЛЕ ЗАПОЛЕНЕИЯ ТАБЕЛЯ В АКТИВИТИ
                 LinearLayoutСозданныхТабелей.forceLayout();
-                ScrollНаАктивтиСозданныхТабелей.forceLayout();
                 ScrollНаАктивтиСозданныхТабелей.fullScroll(View.FOCUS_UP);
+                ScrollНаАктивтиСозданныхТабелей.forceLayout();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -1001,7 +1000,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                     new DatePickerDialog(this, android.R.style.Theme_Holo_InputMethod , new DatePickerDialog.OnDateSetListener() {////Theme_Holo_Dialog_MinWidth  //Theme_Holo_Panel
                 public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                     newDate.set(year, monthOfYear, dayOfMonth);
-                    Log.d(this.getClass().getName(), " ПолученноеЗначениеИзТолькоСпинераДата " + ПолученноеЗначениеИзТолькоСпинераДата + " view "+view);
+                    Log.d(this.getClass().getName(), " ИмесяцвИГодСразу " + ИмесяцвИГодСразу + " view "+view);
                     try {
                         view.setBackgroundColor(Color.RED);
                         view.animate().rotationXBy(5);
@@ -1027,8 +1026,8 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                             }
                             Log.d(this.getClass().getName()," ПрасингДаты " +ПрасингДаты.toString());
                             ///////получаем значение месца на руском через метод дата
-                            ПолученноеЗначениеИзТолькоСпинераДата = МетодПереводаНазваниеМесяцаСАнглискогоНаРУсский(ПрасингДаты);
-                            Log.d(this.getClass().getName(), " ПолученноеЗначениеИзТолькоСпинераДата " + ПолученноеЗначениеИзТолькоСпинераДата);
+                            ИмесяцвИГодСразу = МетодПереводаНазваниеМесяцаСАнглискогоНаРУсский(ПрасингДаты);
+                            Log.d(this.getClass().getName(), " ИмесяцвИГодСразу " + ИмесяцвИГодСразу);
                             /////вАЖНО ЗАПИСЫВАЕМ ОБРАТНО В СПИНЕР НА РАБОЧИЙ СТОЛ АКТИВТИ НАПРИМЕР НОВЫЙ МЕСЯЦ  ОКТЯБРЬ 2020 ГОДА НАПРИМЕР
                             Log.d(this.getClass().getName(),"   FullNameCFO" +  FullNameCFO);
                         }
@@ -1042,14 +1041,14 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                                 Log.d(this.getClass().getName()," ИщемУжеСозданныйМЕсяц " +ИщемУжеСозданныйМЕсяц.toString()+"\n");
                             }
                         }else{
-                               if(ПолученноеЗначениеИзТолькоСпинераДата!=null){
-                                   ИщемУжеСозданныйМЕсяц.append(ПолученноеЗначениеИзТолькоСпинераДата)  ;
+                               if(ИмесяцвИГодСразу!=null){
+                                   ИщемУжеСозданныйМЕсяц.append(ИмесяцвИГодСразу)  ;
                                }else {
                                    Toast.makeText(getApplicationContext(), " Нет месяца для создание Табеля !!! ", Toast.LENGTH_LONG).show();
                                }
                         }
                         ///// todo ТУТ ВСТАВЛЯЕМ ММЕСЯЦА УКТОРГНО НЕТ ЕШЕ
-                        Log.d(this.getClass().getName()," ИщемУжеСозданныйМЕсяц " +ИщемУжеСозданныйМЕсяц.toString()+"\n"+ " ПолученноеЗначениеИзТолькоСпинераДата " +ПолученноеЗначениеИзТолькоСпинераДата);
+                        Log.d(this.getClass().getName()," ИщемУжеСозданныйМЕсяц " +ИщемУжеСозданныйМЕсяц.toString()+"\n"+ " ИмесяцвИГодСразу " +ИмесяцвИГодСразу);
                         // TODO: 26.10.2021 метод создания новго табеля
                        МетодВставкиНовогоМесяцавТабельКоторогоНет(ИщемУжеСозданныйМЕсяц);
                     ////
@@ -1075,7 +1074,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_POSITIVE).setBackgroundColor(Color.WHITE);
             ///ДатаДляКалендаря.getActionBar().setDisplayHomeAsUpEnabled(true);
         //////////////////////
-            Log.d(this.getClass().getName(), " ПолученноеЗначениеИзТолькоСпинераДата " + ПолученноеЗначениеИзТолькоСпинераДата);
+            Log.d(this.getClass().getName(), " ИмесяцвИГодСразу " + ИмесяцвИГодСразу);
         ////
     } catch (Exception e) {
         e.printStackTrace();
@@ -1178,9 +1177,9 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
 
                 ///////получаем значение месца на руском через метод дата
-                ПолученноеЗначениеИзТолькоСпинераДата = МетодПереводаНазваниеМесяцаСАнглискогоНаРУсский(ПрасингДаты);
+                ИмесяцвИГодСразу = МетодПереводаНазваниеМесяцаСАнглискогоНаРУсский(ПрасингДаты);
 
-                Log.d(this.getClass().getName(), " ПолученноеЗначениеИзТолькоСпинераДата " + ПолученноеЗначениеИзТолькоСпинераДата);
+                Log.d(this.getClass().getName(), " ИмесяцвИГодСразу " + ИмесяцвИГодСразу);
 
                 /////вАЖНО ЗАПИСЫВАЕМ ОБРАТНО В СПИНЕР НА РАБОЧИЙ СТОЛ АКТИВТИ НАПРИМЕР НОВЫЙ МЕСЯЦ  ОКТЯБРЬ 2020 ГОДА НАПРИМЕР
 
@@ -1242,29 +1241,26 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 ////TODO СОЗДАНИЯ КАЛЕНДАРЯ С ПОЛУЧЕННЫМИ УЖЕ ДАННЫМИ
     private void МетодВставкиНовогоМесяцавТабельКоторогоНет(StringBuffer ищемУжеСозданныйМЕсяц) throws ParseException {
         try{
-        Log.d(this.getClass().getName()," ПолученноеЗначениеИзТолькоСпинераДата " +ПолученноеЗначениеИзТолькоСпинераДата);
-        StringBuffer МЕсяцСЗакглавнойБуквы =new StringBuffer(ПолученноеЗначениеИзТолькоСпинераДата.toLowerCase());
-        ПолученноеЗначениеИзТолькоСпинераДата= МЕсяцСЗакглавнойБуквы.substring(0, 1).toUpperCase() + МЕсяцСЗакглавнойБуквы .substring(1).toLowerCase();
-        Log.d(this.getClass().getName()," МЕсяцСЗакглавнойБуквы " +ПолученноеЗначениеИзТолькоСпинераДата);
-
-            ContentValues АдаптерВставкаНовогоМЕсяцаИзКалендаря = new ContentValues();////контрейнер для нового табеля
-            int ДляВставкиНовогоМесяцаНазвание = МетодПолучениниеНовогоМесяцДляЗАписивОднуКолонку(ФинальнаяМЕсяцДляНовогоТабеля);
-            int ДляВставкиНовогоГодНазвание = МетодПолучениниеНовыйГодДляЗАписивОднуКолонку(ПолученныйГодДляНовогоТабеля);
+        Log.d(this.getClass().getName()," ИмесяцвИГодСразу " +ИмесяцвИГодСразу);
+        StringBuffer МЕсяцСЗакглавнойБуквы =new StringBuffer(ИмесяцвИГодСразу.toLowerCase());
+        ИмесяцвИГодСразу= МЕсяцСЗакглавнойБуквы.substring(0, 1).toUpperCase() + МЕсяцСЗакглавнойБуквы .substring(1).toLowerCase();
+        Log.d(this.getClass().getName()," МЕсяцСЗакглавнойБуквы " +ИмесяцвИГодСразу);
+            int НовыйМесяц = МетодПолучениниеНовогоМесяцДляЗАписивОднуКолонку(ФинальнаяМЕсяцДляНовогоТабеля);
+            int НовыйГод = МетодПолучениниеНовыйГодДляЗАписивОднуКолонку(ПолученныйГодДляНовогоТабеля);
             ///TODO  ПОСЛЕ ВСТАКИ ПЕРЕХОДИМ НА АКТИВТИ С ВЫБОРО И СОЗДАНИЕМ САМОГО ТАБЕЛЯ НОВОГО
-            Intent Интент_ЗапускСозданиеНовогоТабельногоУчетавТаблицуИстория = new Intent();
-            Интент_ЗапускСозданиеНовогоТабельногоУчетавТаблицуИстория.setClass(getApplicationContext(), MainActivity_New_Tabely.class); // ТУТ ЗАПВСКАЕТЬСЯ ВЫБОР ПРИЛОЖЕНИЯ
-            Интент_ЗапускСозданиеНовогоТабельногоУчетавТаблицуИстория.putExtra(" FullNameCFO", ПолученноеЗначениеИзТолькоСпинераДата);
-            Интент_ЗапускСозданиеНовогоТабельногоУчетавТаблицуИстория.putExtra("ПолученныйГодДляНовогоТабеля", ДляВставкиНовогоГодНазвание);
-            Интент_ЗапускСозданиеНовогоТабельногоУчетавТаблицуИстория.putExtra("ФинальнаяМЕсяцДляНовогоТабеля",ДляВставкиНовогоМесяцаНазвание);
-            Интент_ЗапускСозданиеНовогоТабельногоУчетавТаблицуИстория.putExtra("ДепартаментТабеляПослеПодбораBACK", ПолученноеЗначениеИзТолькоСпинераДата);
-            // /TODO перердаваемые три згначение в следующее активти // -- ФинальнаяМЕсяцДляНовогоТабеля // ПолученныйГодДляНовогоТабеля // -ПолученноеЗначениеИзТолькоСпинераДата
-            Log.d(this.getClass().getName(), "  ПолученноеЗначениеИзТолькоСпинераДата " + ПолученноеЗначениеИзТолькоСпинераДата +
-                    " ПолученныйГодДляНовогоТабеля " + ПолученныйГодДляНовогоТабеля
-                    + " ФинальнаяМЕсяцДляНовогоТабеля " + ФинальнаяМЕсяцДляНовогоТабеля);
-            ///TODO ПОСЛЕ ОТПРОВКИ ДАННЫХ ЧИСТИМ ПЕРЕМЕНЕЫ
-        Интент_ЗапускСозданиеНовогоТабельногоУчетавТаблицуИстория.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(Интент_ЗапускСозданиеНовогоТабельногоУчетавТаблицуИстория);
-    } catch (Exception e) {
+            Intent Интент_НовыйТабель = new Intent();
+            Bundle     bundleСозданиеНовогоТабеля=new Bundle();
+            bundleСозданиеНовогоТабеля.putString("ИмесяцвИГодСразу", ИмесяцвИГодСразу);
+            bundleСозданиеНовогоТабеля.putInt("ГодТабелей", НовыйГод);
+            bundleСозданиеНовогоТабеля.putInt("МЕсяцТабелей", НовыйМесяц);
+            Интент_НовыйТабель.putExtras(bundleСозданиеНовогоТабеля);
+             Интент_НовыйТабель.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(Интент_НовыйТабель);
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " bundleСозданиеНовогоТабеля "+bundleСозданиеНовогоТабеля );
+        } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                 " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());

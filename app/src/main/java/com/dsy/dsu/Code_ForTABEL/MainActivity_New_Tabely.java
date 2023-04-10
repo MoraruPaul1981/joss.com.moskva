@@ -71,7 +71,6 @@ import java.util.concurrent.TimeoutException;
 //класс активити MainActivity_New_Tabely
 public class MainActivity_New_Tabely extends AppCompatActivity {
     private MaterialTextView СпинерВыборЦФО,СпинерВыборДата;
-    private   String  ПолученноеЗначениеИзСпинераРаздел; ///результат полученный из спенров
     private Button КнопкаСозданиеТабеля;
     private  Button КнопкаНазадПриСозданииНовогоТабеля;
     private  Context Контекст;
@@ -88,8 +87,10 @@ public class MainActivity_New_Tabely extends AppCompatActivity {
     private Animation animation;
     private  final ListView[] listViewДляЦФО = new ListView[1];
     private  AlertDialog alertDialog;
-    private Intent intentПришелСДанными;
 
+ private  String ИмесяцвИГодСразу;
+ private  Integer НовыйГод;
+ private  Integer НовыйМесяц;
     // TODO: 15.12.2022 методы
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,8 +124,8 @@ public class MainActivity_New_Tabely extends AppCompatActivity {
             МетодСозданиеКодBACK();
             preferences = getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
             animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_row_newscanner1);
-            intentПришелСДанными=getIntent();
             animation= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row_newscanner1);
+            МетодПришлиПеременныеИзMainActivityListtabel();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -135,6 +136,30 @@ public class MainActivity_New_Tabely extends AppCompatActivity {
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             ///////
         }
+    }
+
+  void  МетодПришлиПеременныеИзMainActivityListtabel(){
+        try{
+            Intent intentПришелСДанными=      intentПришелСДанными=getIntent();
+            Bundle     bundleСозданиеНовогоТабеля=intentПришелСДанными.getExtras();
+            bundleСозданиеНовогоТабеля.getString("ИмесяцвИГодСразу", ИмесяцвИГодСразу);
+            bundleСозданиеНовогоТабеля.getInt("ГодТабелей", НовыйГод);
+            bundleСозданиеНовогоТабеля.getInt("МЕсяцТабелей", НовыйМесяц);
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " bundleСозданиеНовогоТабеля "+bundleСозданиеНовогоТабеля);
+        } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        // TODO: 01.09.2021 метод вызова
+        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ///////
+    }
     }
 
 
@@ -590,10 +615,10 @@ public class MainActivity_New_Tabely extends AppCompatActivity {
 
     private void МетодСпинерДаты() {
         try{
-            СпинерВыборДата.setText(intentПришелСДанными.getStringExtra("ПолученноеЗначениеИзСпинераДата"));
+            СпинерВыборДата.setText(ИмесяцвИГодСразу);
             СпинерВыборДата.forceLayout();
             СпинерВыборДата.refreshDrawableState();
-            Log.d(this.getClass().getName()," ПолученноеЗначениеИзСпинераРаздел() "+ПолученноеЗначениеИзСпинераРаздел);
+            Log.d(this.getClass().getName()," ИмесяцвИГодСразу() "+ИмесяцвИГодСразу);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -786,17 +811,15 @@ while(iterator.hasNext()){
             Integer IDЦфоДЛяПередачи=      bundleДляСозданияНовгоТабелч.getInt("ПолучаемIDЦфо",0);
             String НазваниеЦФО=   bundleДляСозданияНовгоТабелч.getString("НазваниеЦФО","");
             //TODO ФУНКЙИИ ОПРЕДЕЛЕНИ МЕСЯЦА И ГОДА
-            Integer МесяцДляАнализаиВставкиЕслиТакогоНет =  intentПришелСДанными.getIntExtra("ФинальнаяМЕсяцДляНовогоТабеля",0);
-            Integer ГодляАнализаиВставкиЕслиТакогоНет = intentПришелСДанными.getIntExtra("ПолученныйГодДляНовогоТабеля",0);
             Log.d(this.getClass().getName()," IDЦфоДЛяПередачи " +IDЦфоДЛяПередачи + "НазваниеЦФО" +  НазваниеЦФО);
             // TODO: 15.12.2022 добадяем в передачу дальше
-            bundleДляСозданияНовгоТабелч.putInt("МесяцВырезалиИзБуфераТабель",МесяцДляАнализаиВставкиЕслиТакогоНет);
-            bundleДляСозданияНовгоТабелч.putInt("ГодВырезалиИзБуфераТабель",ГодляАнализаиВставкиЕслиТакогоНет);
+            bundleДляСозданияНовгоТабелч.putInt("МесяцВырезалиИзБуфераТабель",НовыйМесяц);
+            bundleДляСозданияНовгоТабелч.putInt("ГодВырезалиИзБуфераТабель",НовыйГод);
             //////TODO  Метод определяем елси такое Навание Табеля Проверраем
             boolean РезультатЕслиТакоеНазвание =
                     МетодПроверяемЕслиТакойНазваниеТабеляВБазеУжеЕсть(IDЦфоДЛяПередачи
-                            ,МесяцДляАнализаиВставкиЕслиТакогоНет
-                            ,ГодляАнализаиВставкиЕслиТакогоНет
+                            ,НовыйМесяц
+                            ,НовыйГод
                             ,Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков);
             Log.d(this.getClass().getName(), " РезультатЕслиТакоеНазвание" +РезультатЕслиТакоеНазвание );
             // TODO: 14.12.2022 оперделяем содаес новый табель или нет  
@@ -850,8 +873,8 @@ while(iterator.hasNext()){
 
                 АдаптерВставкиНовгоТабеля.put("current_table", РезультатУвеличинаяВерсияДАныхЧата);
                 АдаптерВставкиНовгоТабеля.put("cfo",IDЦфоДЛяПередачи);
-                АдаптерВставкиНовгоТабеля.put("year_tabels", ГодляАнализаиВставкиЕслиТакогоНет);
-                АдаптерВставкиНовгоТабеля.put("month_tabels",  МесяцДляАнализаиВставкиЕслиТакогоНет);
+                АдаптерВставкиНовгоТабеля.put("year_tabels", НовыйГод);
+                АдаптерВставкиНовгоТабеля.put("month_tabels",  НовыйМесяц);
                 АдаптерВставкиНовгоТабеля.put("status_send", " ");
                 АдаптерВставкиНовгоТабеля.  putNull("_id");
 
