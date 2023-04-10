@@ -3,7 +3,6 @@ package com.dsy.dsu.Code_ForTABEL;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -208,6 +207,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private SubClassSingleTabelRecycreView. MyRecycleViewAdapter myRecycleViewAdapter;
     private SubClassSingleTabelRecycreView. MyViewHolder myViewHolder;
     private  Integer Position =0;
+    String ЯчейкаДляЗаписиМетки;
+
+    String ЯчейкаСодержимоеДляЗаписиМетки;
 
 
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
@@ -347,6 +349,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             FullNameCFO=  bundleИзMainActitivy_List_Tables.getString("FullNameCFO", "");
             ИмесяцвИГодСразу= bundleИзMainActitivy_List_Tables.getString("ИмесяцвИГодСразу", "");
             CurrenrsСhildUUID= bundleИзMainActitivy_List_Tables.getLong("CurrenrsСhildUUID", 0l);
+            ЯчейкаДляЗаписиМетки=bundleИзMainActitivy_List_Tables.getString("ЯчейкаДляЗаписиМетки", "");;
+            ЯчейкаСодержимоеДляЗаписиМетки=bundleИзMainActitivy_List_Tables.getString("ЯчейкаСодержимоеДляЗаписиМетки", "");;
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -633,7 +637,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 @Override
                 public void onClick(View v) {
                     Log.d(this.getClass().getName(), "  onDestroyView");
-                    МетодЗапускаетСотрудниковПослеУспешногоУдалениеСотрудника();
+                    методПереходаMainActivity_List_Peoples();
                 }
             });
         } catch (Exception e) {
@@ -1518,7 +1522,7 @@ try{
                 alertDialog.dismiss();
                 Log.d(this.getClass().getName(), "  ФИНАЛ после удалание сотрудуника ");
                 ///TODO запускаем возврат на предыдущее активывти после успешного удаление сотрудника
-                МетодЗапускаетСотрудниковПослеУспешногоУдалениеСотрудника();
+                методПереходаMainActivity_List_Peoples();
 
 
                 //todo
@@ -1530,38 +1534,21 @@ try{
 ////todo конец фильаного сообщения о удалени самого табеля
 
 
-    void МетодЗапускаетСотрудниковПослеУспешногоУдалениеСотрудника() {
+    void методПереходаMainActivity_List_Peoples() {
         try{
             ////TODO ИНТРЕНТ КОТОРЫЙ СОЗДАЕТ НОВГО СОТРУДНИКА
-            Intent Интент_ЗапускСозданиеНовогоСотрудника = new Intent();
-            Интент_ЗапускСозданиеНовогоСотрудника.setClass(context, MainActivity_List_Peoples.class); //  ТЕСТ КОД КОТОРЫЙ ЗАПУСКАЕТ ACTIVITY VIEWDATA  ПРОВЕРИТЬ ОБМЕН
-    /*        Интент_ЗапускСозданиеНовогоСотрудника.putExtra("ИмесяцвИГодСразу", НазваниеЗагруженногТАбеля);
-            Log.d(this.getClass().getName(), " ИмесяцвИГодСразу " + НазваниеЗагруженногТАбеля);
-            Интент_ЗапускСозданиеНовогоСотрудника.putExtra("МЕсяцТабелей", МЕсяцТабелей);
-            Log.d(this.getClass().getName(), "МЕсяцТабелей" + МЕсяцТабелей);
-            Интент_ЗапускСозданиеНовогоСотрудника.putExtra("ДепартаментТабеляВКоторомИНадоСоздатьНовогоСотрудника", НазваниеЗагруженногТАбеля);
-            Log.d(this.getClass().getName(), "  НазваниеЗагруженногТАбеля  " + НазваниеЗагруженногТАбеля);
-            Интент_ЗапускСозданиеНовогоСотрудника.putExtra("UUIDТабеляПослеУспешногоСозданиеСотрудника", UUIDТабеляПослеУспешногоСозданиеСотрудника);
-            Интент_ЗапускСозданиеНовогоСотрудника.putExtra("UUIDТабеляГлавыйРодительскгоТабеля",UUIDТекущегоВыбраногоСотрудника  );
-            Log.d(this.getClass().getName(), "  UUIDТабеляПослеУспешногоСозданиеСотрудника " + UUIDТабеляПослеУспешногоСозданиеСотрудника);
-            Интент_ЗапускСозданиеНовогоСотрудника.putExtra("UUIDТабеляВКоторомИНадоСоздатьНовогоСотрудника", UUIDТабеляПослеУспешногоСозданиеСотрудника);
-            Log.d(this.getClass().getName(), "  UUIDТабеляВКоторомИНадоСоздатьНовогоСотрудника " + UUIDТабеляПослеУспешногоСозданиеСотрудника);
-            Интент_ЗапускСозданиеНовогоСотрудника.putExtra("CurrenrsСhildUUID",UUIDТекущегоВыбраногоСотрудника  );
-            Log.d(this.getClass().getName(), "  CurrenrsСhildUUID " + UUIDТабеляПослеУспешногоСозданиеСотрудника);
-            Интент_ЗапускСозданиеНовогоСотрудника.putExtra("ЦифровоеИмяНовгоТабеляSingle", ЦифровоеИмяНовгоТабеля);
-            Log.d(this.getClass().getName(), "  ЦифровоеИмяНовгоТабеля " + ЦифровоеИмяНовгоТабеля);
-            Интент_ЗапускСозданиеНовогоСотрудника.putExtra("ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре", ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре);
-            Интент_ЗапускСозданиеНовогоСотрудника.putExtra("ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре",ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре);
-            Log.d(this.getClass().getName(), "  ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре " + ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре);
-            Интент_ЗапускСозданиеНовогоСотрудника.putExtra("МесяцТабеляФиналИзВсехСотрудниковВТАбеле",МесяциГодТабеляПолностью);
-            Log.d(this.getClass().getName(), "  МесяциГодТабеляПолностью " + МесяциГодТабеляПолностью);
-            Интент_ЗапускСозданиеНовогоСотрудника.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            Bundle data=new Bundle();*/
-            //Интент_ЗапускСозданиеНовогоСотрудника.putExtras(data);
-            startActivity(Интент_ЗапускСозданиеНовогоСотрудника);
+            Intent Интент_ПереходаMainActivity_List_Peoples = new Intent();
+            Интент_ПереходаMainActivity_List_Peoples.setClass(context, MainActivity_List_Peoples.class);
+            методBACKFromMainActivitySingleTabel(Интент_ПереходаMainActivity_List_Peoples);
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " FullNameCFO "+FullNameCFO+ " CurrenrsСhildUUID " +CurrenrsСhildUUID
+                    + " ГодТабелей " +ГодТабелей +" МЕсяцТабелей " +МЕсяцТабелей   + " DigitalNameCFO "+DigitalNameCFO+
+                    " Position " +Position+ " ИмесяцвИГодСразу " +ИмесяцвИГодСразу);
+            startActivity(Интент_ПереходаMainActivity_List_Peoples);
         } catch (Exception e) {
             e.printStackTrace();
-            ///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
             new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
