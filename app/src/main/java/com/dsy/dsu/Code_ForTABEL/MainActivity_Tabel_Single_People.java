@@ -1445,7 +1445,7 @@ try{
         try{
             Intent IntentПереХодНаМеткиТабеля  =new Intent();
              IntentПереХодНаМеткиТабеля.setClass(getApplicationContext(), MainActivity_Metki_Tabel.class);
-            // TODO: 10.04.2023  переход ИЗ MAINaCTITyTabelSingle Peolpe 
+            // TODO: 10.04.2023  переход ИЗ MAINaCTITyTabelSingle Peolpe
             методBACKFromMainActivitySingleTabel(IntentПереХодНаМеткиТабеля);
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1535,7 +1535,7 @@ try{
             ////TODO ИНТРЕНТ КОТОРЫЙ СОЗДАЕТ НОВГО СОТРУДНИКА
             Intent Интент_ЗапускСозданиеНовогоСотрудника = new Intent();
             Интент_ЗапускСозданиеНовогоСотрудника.setClass(context, MainActivity_List_Peoples.class); //  ТЕСТ КОД КОТОРЫЙ ЗАПУСКАЕТ ACTIVITY VIEWDATA  ПРОВЕРИТЬ ОБМЕН
-            Интент_ЗапускСозданиеНовогоСотрудника.putExtra("ИмесяцвИГодСразу", НазваниеЗагруженногТАбеля);
+    /*        Интент_ЗапускСозданиеНовогоСотрудника.putExtra("ИмесяцвИГодСразу", НазваниеЗагруженногТАбеля);
             Log.d(this.getClass().getName(), " ИмесяцвИГодСразу " + НазваниеЗагруженногТАбеля);
             Интент_ЗапускСозданиеНовогоСотрудника.putExtra("МЕсяцТабелей", МЕсяцТабелей);
             Log.d(this.getClass().getName(), "МЕсяцТабелей" + МЕсяцТабелей);
@@ -1556,8 +1556,8 @@ try{
             Интент_ЗапускСозданиеНовогоСотрудника.putExtra("МесяцТабеляФиналИзВсехСотрудниковВТАбеле",МесяциГодТабеляПолностью);
             Log.d(this.getClass().getName(), "  МесяциГодТабеляПолностью " + МесяциГодТабеляПолностью);
             Интент_ЗапускСозданиеНовогоСотрудника.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            Bundle data=new Bundle();
-            Интент_ЗапускСозданиеНовогоСотрудника.putExtras(data);
+            Bundle data=new Bundle();*/
+            //Интент_ЗапускСозданиеНовогоСотрудника.putExtras(data);
             startActivity(Интент_ЗапускСозданиеНовогоСотрудника);
         } catch (Exception e) {
             e.printStackTrace();
@@ -1621,14 +1621,13 @@ try{
                     }
                 ScrollСамогоТабеля.startAnimation(animationRich);
                 TextViewНазваниеДанныхВТабелеФИО.startAnimation(animationПрофессия);
-                МетодАнализДанныхSwipes( );
+
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                     + " ГлавныйALLКурсорДанныеSwipes.getCount() "+ ГлавныйALLКурсорДанныеSwipes.getCount()+
-                    "ГлавныйALLКурсорДанныеSwipes.getPosition()  " + ГлавныйALLКурсорДанныеSwipes.getPosition() +
-                     " ПроизошелЛиСфайпПоДаннымСингТабеля " +ПроизошелЛиСфайпПоДаннымСингТабеля);
+                    "ГлавныйALLКурсорДанныеSwipes.getPosition()  " + ГлавныйALLКурсорДанныеSwipes.getPosition() );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -1650,14 +1649,13 @@ try{
                 }
                 ScrollСамогоТабеля.startAnimation(animationLesft);
                 TextViewНазваниеДанныхВТабелеФИО.startAnimation(animationПрофессия);
-                МетодАнализДанныхSwipes( );
+
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                     + " ГлавныйALLКурсорДанныеSwipes.getCount() "+ ГлавныйALLКурсорДанныеSwipes.getCount()+
-                     "ГлавныйALLКурсорДанныеSwipes.getPosition()  " + ГлавныйALLКурсорДанныеSwipes.getPosition()+
-                     " ПроизошелЛиСфайпПоДаннымСингТабеля " +ПроизошелЛиСфайпПоДаннымСингТабеля);
+                     "ГлавныйALLКурсорДанныеSwipes.getPosition()  " + ГлавныйALLКурсорДанныеSwipes.getPosition());
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -2004,13 +2002,13 @@ try{
                                                     bundle.putString("НазваниеПрофесии",НазваниеПрофесии);
                                                     bundle.putLong("UUIDПрофесиии",UUIDПрофесиии);
                                                     bundle.putLong("CurrenrsСhildUUID",РодительскийUUDТаблицыТабель);
-                                                    UUIDТекущегоВыбраногоСотрудника=      ГлавныйALLКурсорДанныеSwipes.getLong(ГлавныйALLКурсорДанныеSwipes.getColumnIndex("uuid"));
-                                                    bundle.putLong("UUIDТекущегоВыбраногоСотрудника",UUIDТекущегоВыбраногоСотрудника);
+                                                  /*  UUIDТекущегоВыбраногоСотрудника=      ГлавныйALLКурсорДанныеSwipes.getLong(ГлавныйALLКурсорДанныеSwipes.getColumnIndex("uuid"));
+                                                    bundle.putLong("UUIDТекущегоВыбраногоСотрудника",UUIDТекущегоВыбраногоСотрудника);*/
                                                     ((MaterialTextView)view).setTag(bundle);
                                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                            + " bundle"+bundle  + " UUIDТекущегоВыбраногоСотрудника " +UUIDТекущегоВыбраногоСотрудника);
+                                                            + " bundle"+bundle );
                                                 }
                                                 // TODO: 20.01.2022
                                                 Log.d(this.getClass().getName()," НазваниеЦФО "+НазваниеПрофесии);
@@ -2126,7 +2124,7 @@ try{
                                 searchViewДляНовогоПоиска.refreshDrawableState();
                                 Integer ПровйдерСменаПрофесии=   new SubClassUpdateSingletabel().   МетодЗаписиСменыПрофесии( (SearchView)  searchViewДляНовогоПоиска,getApplicationContext());
                                 if (ПровйдерСменаПрофесии>0) {
-                                    ПроизошелЛиСфайпПоДаннымСингТабеля=true;
+
                                     // TODO: 30.03.2023 Курсор ALL Date
                                      Integer ПолощениеДАнных=            ГлавныйALLКурсорДанныеSwipes.getPosition();
                                     //МетодSwipeALLКурсор();
@@ -2264,7 +2262,7 @@ try{
 
     private void МетодПереопределенияНазваниеПрофесии() {
         try {
-            МетодАнализДанныхSwipes( );
+
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -2475,7 +2473,7 @@ try{
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                        "cursor  " + cursor + " RowNumber " +RowNumber);
+                        "cursor  " + cursor );
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getApplicationContext().getClass().getName(),
