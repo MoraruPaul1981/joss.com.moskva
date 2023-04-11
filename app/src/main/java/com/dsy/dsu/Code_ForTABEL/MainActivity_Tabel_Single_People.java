@@ -2785,12 +2785,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
         }
         }
 
-
-
-
-
-
-
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " TextViewRowКликПоНазваниям " +TextViewRowКликПоНазваниям);
@@ -2926,10 +2920,12 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 try{
                 String EditTextДАнныеФокус=       ((EditText) v).getText().toString().trim();
                 if (EditTextДАнныеФокус.length()==0) {
-                    ((EditText) v).setText("0");
+                    ((EditText) v).setHint("0");
                     ((EditText) v).setTextColor(Color.parseColor("#00ACC1"));
                     ((EditText) v).refreshDrawableState();
                     ((EditText) v).forceLayout();
+                }else{
+                    ((EditText) v).setTextColor(Color.BLACK);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
