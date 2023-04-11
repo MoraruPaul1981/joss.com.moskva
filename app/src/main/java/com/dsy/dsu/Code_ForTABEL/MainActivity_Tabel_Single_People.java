@@ -1140,7 +1140,41 @@ try{
 
                     // TODO: 11.04.2023 празничные
                     Integer ИндексДнейФинал = (Integer) ИндексДней;
-                    linkedHashMapДни.put("d" + ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+                    ///linkedHashMapДни.put("d" + ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+
+if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТабелей ==11   ){
+    if (МЕсяцТабелей ==5 ) {
+        if(ИндексДней==1 || ИндексДней==9    ){
+            linkedHashMapДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim()+"###");
+        }else {
+            ///linkedHashMapДни.put("d" + ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+            linkedHashMapДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+
+        }
+    }
+    if (МЕсяцТабелей==6) {
+        if(  ИндексДней==12   ){
+            linkedHashMapДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim()+"###");
+        }else {
+            ///linkedHashMapДни.put("d" + ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+            linkedHashMapДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+
+        }
+    }
+    if (МЕсяцТабелей ==11) {
+        if(  ИндексДней==4 ){
+            linkedHashMapДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim()+"###");
+        }else {
+            ///linkedHashMapДни.put("d" + ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+            linkedHashMapДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+
+        }
+    }
+}else {
+    ///linkedHashMapДни.put("d" + ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+    linkedHashMapДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+
+}
                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -2740,15 +2774,22 @@ try{
     if(       ((TextView)v).getText().toString().matches("(.*)Вс(.*)")  || ((TextView)v).getText().toString().matches("(.*)Сб(.*)")) {
         ((TextView)v).setTextColor(Color.parseColor("#DC143C"));
     }else {
+
         if ( ((TextView)v).getText().toString().matches("(.*)###(.*)")){
             String УдаляемДляПразничныхДней=     ((TextView)v).getText().toString();
             УдаляемДляПразничныхДней=           УдаляемДляПразничныхДней.replaceAll("###","");
             ((TextView)v).setText(УдаляемДляПразничныхДней);
-            ((TextView)v).setTextColor(Color.parseColor("#DC143C"));
+            ((TextView)v).setTextColor(Color.parseColor("#9C112D"));
         }  else {
             ((TextView)v).setTextColor(Color.parseColor("#008080"));
         }
-    }
+        }
+
+
+
+
+
+
 
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
