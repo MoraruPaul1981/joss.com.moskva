@@ -183,7 +183,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private  long CurrenrsСhildUUID =0l;
     private      Message message;
     private      Message messageRows;
-    private Animation animationПрофессия600;
+    private Animation animationПрофессия400;
 
     private Animation animationПрофессия300;
     private Animation animationRows;
@@ -254,7 +254,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             КнопкаНазад=(Button) findViewById(R.id.imageViewСтрелкаВнутриТабеля);
             view2Линия=(View) findViewById(R.id.view2Линия);
             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
-            animationПрофессия600 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row);
+            animationПрофессия400 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row);
             animationПрофессия300 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row2);
             animationVibr1 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_singletable);
             animationVibr2 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_singletable2);
@@ -1502,7 +1502,7 @@ try{
                         ГлавныйALLКурсорДанныеSwipes.moveToFirst();
                     }
                 ScrollСамогоТабеля.startAnimation(animationRich);
-                TextViewНазваниеДанныхВТабелеФИО.startAnimation(animationПрофессия600);
+                TextViewНазваниеДанныхВТабелеФИО.startAnimation(animationПрофессия400);
 
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1530,7 +1530,7 @@ try{
                     ГлавныйALLКурсорДанныеSwipes.moveToPrevious();
                 }
                 ScrollСамогоТабеля.startAnimation(animationLesft);
-                TextViewНазваниеДанныхВТабелеФИО.startAnimation(animationПрофессия600);
+                TextViewНазваниеДанныхВТабелеФИО.startAnimation(animationПрофессия400);
 
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1714,7 +1714,7 @@ try{
                     + " ХЭШНазваниеДнейНедели.get(ИндексИтерации) "+ ХЭШНазваниеДнейНедели.get(ИндексИтерации)+
                     "  СамиДанныеТабеля " + СамиДанныеТабеля.getText().toString()+ " ТекущийЭлементДанные " +ТекущийЭлементДанные);
             // TODO: 31.03.2023  анимация для данных
-            СамиДанныеТабеля.startAnimation(animationПрофессия600);
+            СамиДанныеТабеля.startAnimation(animationПрофессия400);
         }
             // TODO: 31.03.2023  Запоминаем ФИО
           //  TextViewНазваниеДанныхВТабелеФИО.setTag(bundleДляОбновление);
@@ -1911,7 +1911,7 @@ try{
                                                 ((MaterialTextView)view).setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
-                                                        ((MaterialTextView)view).startAnimation(animationПрофессия600);
+                                                        ((MaterialTextView)view).startAnimation(animationПрофессия400);
                                                         Bundle bundle=(Bundle)   ((MaterialTextView)view).getTag();
                                                         Integer ПолучаемIDПрофессии=      bundle.getInt("ПолучаемIDПрофессии",0);
                                                         String НазваниеПрофесии=   bundle.getString("НазваниеПрофесии","");
@@ -1967,7 +1967,7 @@ try{
                         simpleCursorAdapterЦФО.setViewBinder(БиндингДляНовогоПоиска);
                         listViewДляНовыйПосик[0].setAdapter(simpleCursorAdapterЦФО);
                         simpleCursorAdapterЦФО.notifyDataSetChanged();
-                        listViewДляНовыйПосик[0].startAnimation(animationПрофессия600);
+                        listViewДляНовыйПосик[0].startAnimation(animationПрофессия400);
                         listViewДляНовыйПосик[0].setSelection(0);
                         listViewДляНовыйПосик[0].forceLayout();
 
@@ -2162,7 +2162,7 @@ try{
 
     private void МетодПерегрузкаВидаЭкрана() {
         try {
-            TextViewНазваниеДанныхВТабелеФИО.startAnimation(animationПрофессия600);
+            TextViewНазваниеДанныхВТабелеФИО.startAnimation(animationПрофессия400);
             TextViewНазваниеДанныхВТабелеФИО.refreshDrawableState();
             TextViewНазваниеДанныхВТабелеФИО.forceLayout();
         } catch (Exception e) {
@@ -2277,7 +2277,7 @@ try{
                recyclerView.addItemDecoration(dividerItemDecoration);
                 recyclerView.setLayoutManager(staggeredGridLayoutManager);
                recyclerView.setHasFixedSize(true);
-                recyclerView.startAnimation(animationПрофессия600);
+                recyclerView.startAnimation(animationПрофессия400);
                 staggeredGridLayoutManager.    invalidateSpanAssignments();
                 staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -2822,7 +2822,7 @@ try{
                         public void run() {
                             TextView textViewФИо = (TextView) tableRowФио.findViewById(R.id.RowКонтейнерКудаЗагружаетьсяФИО);
                             String ФИОСодержимое =                Optional.ofNullable(textViewФИо.getHint()).map(Objects::toString).orElse("");
-                            textViewФИо.startAnimation(animationПрофессия600) ;
+                            textViewФИо.startAnimation(animationПрофессия400) ;
                             textViewФИо.setVisibility(View.VISIBLE);
                             textViewФИо.setText("Новая Должность !!! ");
 
