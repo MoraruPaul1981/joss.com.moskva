@@ -204,31 +204,53 @@ public class ContentProviderForDataBaseCurrentOperations extends ContentProvider
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         // TODO: Implement this to handle requests to insert a new row.
-        Uri  ОтветВставкиДанных = null;
+        final Uri[] ОтветВставкиДанных = {null};
         try {
-         //   Create_Database_СамаБАзаSQLite=new CREATE_DATABASE(getContext()).getССылкаНаСозданнуюБазу();
-            if (!Create_Database_СамаБАзаSQLite.inTransaction()) {
-                Create_Database_СамаБАзаSQLite.beginTransaction();
-            }
-            Log.d(this.getClass().getName(), " uri"+uri );
-            // TODO: 14.10.2022 метод определения текущней таблицы
-            String table = МетодОпределяемТаблицу(uri);
+            CompletableFuture.supplyAsync(new Supplier<Uri>() {
+                @Override
+                public Uri get() {
+                    //   Create_Database_СамаБАзаSQLite=new CREATE_DATABASE(getContext()).getССылкаНаСозданнуюБазу();
+                    if (!Create_Database_СамаБАзаSQLite.inTransaction()) {
+                        Create_Database_СамаБАзаSQLite.beginTransaction();
+                    }
+                    Log.d(this.getClass().getName(), " uri"+uri );
+                    // TODO: 14.10.2022 метод определения текущней таблицы
+                    String table = МетодОпределяемТаблицу(uri);
 
 
-            Long   РезультатВставкиДанных  = Create_Database_СамаБАзаSQLite.insertOrThrow(table, null, values);
-            // TODO: 30.10.2021
-            Log.w(getContext().getClass().getName(), " РезультатВставкиДанных  " + РезультатВставкиДанных);/////
+                    Long   РезультатВставкиДанных  = Create_Database_СамаБАзаSQLite.insertOrThrow(table, null, values);
+                    // TODO: 30.10.2021
+                    Log.w(getContext().getClass().getName(), " РезультатВставкиДанных  " + РезультатВставкиДанных);/////
 
-            ОтветВставкиДанных  = Uri.parse("content://"+РезультатВставкиДанных.toString());
-            if (РезультатВставкиДанных> 0) {
-                if (Create_Database_СамаБАзаSQLite.inTransaction()) {
-                    Create_Database_СамаБАзаSQLite.setTransactionSuccessful();
-                    // TODO: 22.09.2022 увеличивает версию данных
+                    ОтветВставкиДанных[0] = Uri.parse("content://"+РезультатВставкиДанных.toString());
+                    if (РезультатВставкиДанных> 0) {
+                        if (Create_Database_СамаБАзаSQLite.inTransaction()) {
+                            Create_Database_СамаБАзаSQLite.setTransactionSuccessful();
+                            // TODO: 22.09.2022 увеличивает версию данных
+                        }
+                    }
+                    if (Create_Database_СамаБАзаSQLite.inTransaction()) {
+                        Create_Database_СамаБАзаSQLite.endTransaction();
+                    }
+                    shutdown();
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    return ОтветВставкиДанных[0];
                 }
-            }
-            if (Create_Database_СамаБАзаSQLite.inTransaction()) {
-                Create_Database_СамаБАзаSQLite.endTransaction();
-            }
+            }).exceptionally(e -> {
+                System.out.println(e.getClass());
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
+                        Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+                return null;
+            }).get();
+
             // TODO: 30.10.2021
             getContext().getContentResolver().notifyChange(uri, null);
         } catch (Exception e) {
@@ -239,7 +261,7 @@ public class ContentProviderForDataBaseCurrentOperations extends ContentProvider
             new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-        return ОтветВставкиДанных;
+        return ОтветВставкиДанных[0];
     }
 
     // TODO: 22.11.2022 INSERT
