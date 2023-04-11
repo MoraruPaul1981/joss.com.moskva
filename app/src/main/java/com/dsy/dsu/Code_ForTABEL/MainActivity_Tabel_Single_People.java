@@ -2406,6 +2406,16 @@ try{
             try{
             ItemTouchHelper.SimpleCallback simpleItemTouchCallbackRIGHT = new ItemTouchHelper.SimpleCallback(10,
                       ItemTouchHelper.RIGHT   ) {
+
+                @Override
+                public boolean isItemViewSwipeEnabled() {
+                    return true;
+                }
+                @Override
+                public boolean isLongPressDragEnabled() {
+                    return false;
+                }
+
                 @Override
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                     Integer posio= myViewHolder.getAbsoluteAdapterPosition();
@@ -2431,9 +2441,58 @@ try{
                     return true;// true if moved, false otherwise
                 }
 
+
+
             };
                 ItemTouchHelper.SimpleCallback simpleItemTouchCallbackLEFT = new ItemTouchHelper.SimpleCallback(10,
                         ItemTouchHelper.LEFT  ) {
+
+                    @Override
+                    public boolean isItemViewSwipeEnabled() {
+                        return true;
+                    }
+                    @Override
+                    public boolean isLongPressDragEnabled() {
+                        return false;
+                    }
+
+                    @Override
+                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                        Integer posio= myViewHolder.getAbsoluteAdapterPosition();
+                        // remove item from adapter
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"recyclerView   " + recyclerView+ " cursor " +cursor);
+/*
+                    myRecycleViewAdapter = new  MyRecycleViewAdapter(cursor);
+                    recyclerView.setAdapter(myRecycleViewAdapter);
+
+                    myRecycleViewAdapter.onBindViewHolder(myViewHolder,3,new ArrayList<>());
+                  //  recyclerView.setAdapter(myRecycleViewAdapter);
+                    myRecycleViewAdapter.notifyDataSetChanged();
+                    recyclerView.requestLayout();*/
+                    }
+                    @Override
+                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                          RecyclerView.ViewHolder target) {
+                        final int fromPos = viewHolder.getAdapterPosition();
+                        final int toPos = target.getAdapterPosition();
+                        // move item in `fromPos` to `toPos` in adapter.
+                        return true;// true if moved, false otherwise
+                    }
+
+                };
+                ItemTouchHelper.SimpleCallback simpleItemTouchCallbackAll = new ItemTouchHelper.SimpleCallback(10,
+                        ItemTouchHelper.ACTION_STATE_IDLE ) {
+
+                    @Override
+                    public boolean isItemViewSwipeEnabled() {
+                        return true;
+                    }
+                    @Override
+                    public boolean isLongPressDragEnabled() {
+                        return false;
+                    }
                     @Override
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         Integer posio= myViewHolder.getAbsoluteAdapterPosition();
@@ -2464,6 +2523,8 @@ try{
                 itemTouchHelperLEFT.attachToRecyclerView(recyclerView);
                 ItemTouchHelper itemTouchHelperRIGHT = new ItemTouchHelper(simpleItemTouchCallbackRIGHT);
                 itemTouchHelperRIGHT.attachToRecyclerView(recyclerView);
+                ItemTouchHelper itemTouchHelperAll = new ItemTouchHelper(simpleItemTouchCallbackAll);
+                itemTouchHelperAll.attachToRecyclerView(recyclerView);
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
