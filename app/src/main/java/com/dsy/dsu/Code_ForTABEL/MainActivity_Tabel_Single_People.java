@@ -68,6 +68,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.loader.content.CursorLoader;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -87,6 +88,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.common.util.concurrent.AtomicDouble;
 import com.jakewharton.rxbinding4.view.RxView;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
@@ -102,7 +104,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
@@ -118,6 +119,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
 
 import javax.crypto.NoSuchPaddingException;
@@ -137,15 +139,11 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private    Integer ПолученаяПрофесииdata_tabels;
     private    Integer ПолученаяПрофесииFio;
     private ImageButton imageButtonДвижениеПоСотрудникамВТАбеле,imageButtonНазадПоСотрудникамВТАбеле;
-    private  Integer МЕсяцТабелей=0;
+
 
     private  Integer DigitalNameCFO=0;
     private  Configuration config;
-    private  ArrayList<String> МассивДляВыбораСпинераДаты= new ArrayList<>(); //////АКАРЛИСТ ДЛЯ ПОЛУЧЕНЫЙ НОВЫХ ДАТ
-    private  ArrayList<String> МассивДляВыбораВСпинерДепартамент= new ArrayList<>(); //////АКАРЛИСТ ДЛЯ ПОЛУЧЕНЫЙ НОВЫХ ДАТ
-    private  String КонтентСпинераНаАктивтиТабель= "";
-    private  String FullNameCFO = "";
-    private  String ИмесяцвИГодСразу = "";
+
     private   TextView НазваниеДанныхВТабелеСНИЛС;
     private TextView TextViewНазваниеДанныхВТабелеФИО;
 
@@ -154,11 +152,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private  Boolean    СтаттусТабеля= false;
     private   String ДробимДляТабеляГод,ДробимДляТебеляМесяц;
     private  View ГлавныйКонтентТабеляИнфлейтер;
-    private Map< Integer,String> ХЭШНазваниеДнейНедели = Collections.synchronizedMap(new LinkedHashMap<>());
-
     private CREATE_DATABASE Create_Database_СсылкаНАБазовыйКласс;
     private  String МесяцДляЗагрузкиТабелей= "";
-    private  Integer ГодТабелей = 0;
+
     private  String ПубличноеIDЗагрузкиТабелей= "";
     private   int МЕсяцДляКурсораТабелей;
     private   int ГодДляТабелей;
@@ -204,6 +200,15 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private String ЯчейкаДляЗаписиМетки;
     private  String ЯчейкаСодержимоеДляЗаписиМетки;
     private  Cursor ГлавныйALLКурсорДанныеSwipes;
+
+
+    private  ArrayList<String> МассивДляВыбораСпинераДаты= new ArrayList<>(); //////АКАРЛИСТ ДЛЯ ПОЛУЧЕНЫЙ НОВЫХ ДАТ
+    private  ArrayList<String> МассивДляВыбораВСпинерДепартамент= new ArrayList<>(); //////АКАРЛИСТ ДЛЯ ПОЛУЧЕНЫЙ НОВЫХ ДАТ
+    private  String КонтентСпинераНаАктивтиТабель= "";
+    private  String FullNameCFO = "";
+    private  Integer ГодТабелей = 2016;
+    private  String ИмесяцвИГодСразу = "";
+    private  Integer МЕсяцТабелей=3;
 
 
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
@@ -1105,41 +1110,44 @@ try{
 
 
     // TODO: 03.04.2023 Создание  Дней Недели Вс, Пон, Ср,Черт
-    private  void методПолучениеДнейНеделиЧерезКалендарь() throws ParseException {
+    private  LinkedHashMap< String,String> методВсеДниЧерезКалендарь() throws ParseException,RuntimeException {
+        LinkedHashMap< String,String> linkedHashMapДни=new LinkedHashMap<>();
         try {
-
             Integer ПолученоеКоличествоДнейНаКонкретныйМЕсяц=МетодПолучениеСколькоДнейВКонкретномМесяце(ГодТабелей,    МЕсяцТабелей );
-            SimpleDateFormat СозданияВычисляемВыходные=null;
-            ///////TODO сам цикл который заполняет месяцами
-            for (int ИндексДней=1;ИндексДней<ПолученоеКоличествоДнейНаКонкретныйМЕсяц+1;ИндексДней++) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    СозданияВычисляемВыходные = new SimpleDateFormat("yyyy-MM-dd",new Locale("rus"));
-                }else {
-                    СозданияВычисляемВыходные = new java.text.SimpleDateFormat("yyyy-MM-dd",new Locale("rus"));
+            IntStream.iterate(1, i -> i + 1).limit(ПолученоеКоличествоДнейНаКонкретныйМЕсяц ).forEachOrdered(new IntConsumer() {
+                @Override
+                public void accept(int ИндексДней) {
+                    SimpleDateFormat СозданияВычисляемВыходные = null;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        СозданияВычисляемВыходные = new SimpleDateFormat("yyyy-MM-dd", new Locale("rus"));
+                    } else {
+                        СозданияВычисляемВыходные = new java.text.SimpleDateFormat("yyyy-MM-dd", new Locale("rus"));
+                    }
+                    Date ДатаПосикаВыходныеДней = null;
+
+                    try {
+                        ДатаПосикаВыходныеДней = СозданияВычисляемВыходные.parse(ГодТабелей + "-" + МЕсяцТабелей + "-" + ИндексДней);
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    String РезультатДатыДляКонктетногоТабеляТолькоЗанвание = new SimpleDateFormat("EEE", new Locale("ru")).format(ДатаПосикаВыходныеДней);
+                    Integer РезультатДатыДляКонктетногоТабеляТольокЧисло = Integer.parseInt(new SimpleDateFormat("dd", new Locale("ru")).format(ДатаПосикаВыходныеДней));
+                    StringBuffer БуферРезультатСокращенноВставкиВТабель = new StringBuffer();
+                    БуферРезультатСокращенноВставкиВТабель.append(РезультатДатыДляКонктетногоТабеляТолькоЗанвание).append(" ,").append(РезультатДатыДляКонктетногоТабеляТольокЧисло);
+                    String СокращенныйДниМесяцаВТабеле = БуферРезультатСокращенноВставкиВТабель.substring(0, 1).toUpperCase()
+                            + БуферРезультатСокращенноВставкиВТабель.substring(1, БуферРезультатСокращенноВставкиВТабель.length()).toLowerCase();
+
+                    // TODO: 11.04.2023 празничные
+                    Integer ИндексДнейФинал = (Integer) ИндексДней;
+                    linkedHashMapДни.put("d" + ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                            + " linkedHashMapДни " + linkedHashMapДни
+                            + " КоличествоДнейвЗагружаемойМесяце " + КоличествоДнейвЗагружаемойМесяце);
                 }
-                Date   ДатаПосикаВыходныеДней       = СозданияВычисляемВыходные.parse (ГодТабелей+"-"+МЕсяцТабелей+"-"+ИндексДней );
-                String РезультатДатыДляКонктетногоТабеляТолькоЗанвание = new SimpleDateFormat("EEE", new Locale("ru")).format(ДатаПосикаВыходныеДней );
-                Integer РезультатДатыДляКонктетногоТабеляТольокЧисло = Integer.parseInt(new SimpleDateFormat("dd", new Locale("ru")).format(ДатаПосикаВыходныеДней ));
-                Log.d(this.getClass().getName()," РезультатДатыДляКонктетногоТабеляТолькоЗанвание " +РезультатДатыДляКонктетногоТабеляТолькоЗанвание+
-                        " РезультатДатыДляКонктетногоТабеляТольокЧисло " +РезультатДатыДляКонктетногоТабеляТольокЧисло);
-                StringBuffer БуферРезультатСокращенноВставкиВТабель=new StringBuffer();
-                // TODO: 29.01.2022 append date for tabels
-                БуферРезультатСокращенноВставкиВТабель.append(РезультатДатыДляКонктетногоТабеляТолькоЗанвание).append(" ,").append(РезультатДатыДляКонктетногоТабеляТольокЧисло);
-                Log.d(this.getClass().getName()," РезультатСокращенноВставкиВТабель " +БуферРезультатСокращенноВставкиВТабель.toString());
-                //TODO ДНИ НЕДЕЛИ С ЗАГЛАВНОЙ БУКВЫ
-                String  СокращенныйДниМесяцаВТабеле=   БуферРезультатСокращенноВставкиВТабель.substring(0,1).toUpperCase()
-                        +БуферРезультатСокращенноВставкиВТабель.substring(1,БуферРезультатСокращенноВставкиВТабель.length()).toLowerCase();
-                ///////
-                Log.d(this.getClass().getName()," ИндексДней " +ИндексДней+
-                        " СокращенныйДниМесяцаВТабеле " +СокращенныйДниМесяцаВТабеле);
-                //TODO ЗАПОЛЕНЯЕМ ПОЛУЧЕННЫЕ ДНИ НЕДЕЛИ ЧТОБЫ ВСТАВИИТЬ ЕГО В АКТИВТИ
-                ХЭШНазваниеДнейНедели.put(ИндексДней, СокращенныйДниМесяцаВТабеле);
-                Log.d(this.getClass().getName()," ХЭШНазваниеДнейНедели " +ХЭШНазваниеДнейНедели.toString()+
-                        " ХЭШНазваниеДнейНедели.size()  " +ХЭШНазваниеДнейНедели.size());
-            }
-            ///todo вычисляем сколько дней в месяце текущем
-            КоличествоДнейвЗагружаемойМесяце=МетодПолучениеКоличествоДнейвЗагружаемомМесяце(МЕсяцТабелей ,ГодТабелей);
-            Log.d(this.getClass().getName()," КоличествоДнейвЗагружаемойМесяце " +КоличествоДнейвЗагружаемойМесяце);
+            });
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -1147,6 +1155,7 @@ try{
             new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
+        return  linkedHashMapДни;
     }
 
 
@@ -1485,250 +1494,6 @@ try{
 
 
 
-
-
-
-
-
-
-
-
-    private void МетодСвайпВпередПоДАнным() {
-        try {
-            if (ГлавныйALLКурсорДанныеSwipes.getCount() >0) {
-                    if (ГлавныйALLКурсорДанныеSwipes.getPosition()< ГлавныйALLКурсорДанныеSwipes.getCount()-1) {
-                        ГлавныйALLКурсорДанныеSwipes.moveToNext();
-                    }else {
-                        ГлавныйALLКурсорДанныеSwipes.moveToFirst();
-                    }
-                ScrollСамогоТабеля.startAnimation(animationRich);
-                TextViewНазваниеДанныхВТабелеФИО.startAnimation(animationПрофессия400);
-
-            }
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " ГлавныйALLКурсорДанныеSwipes.getCount() "+ ГлавныйALLКурсорДанныеSwipes.getCount()+
-                    "ГлавныйALLКурсорДанныеSwipes.getPosition()  " + ГлавныйALLКурсорДанныеSwipes.getPosition() );
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-
-
-        }
-    }
-
-    void МетодСвайпНазаПоДанным() {
-        try{
-            if (ГлавныйALLКурсорДанныеSwipes.getCount() >0) {
-                if (ГлавныйALLКурсорДанныеSwipes.getPosition() == 0) {
-                    ГлавныйALLКурсорДанныеSwipes.moveToLast();
-                }else{
-                    ГлавныйALLКурсорДанныеSwipes.moveToPrevious();
-                }
-                ScrollСамогоТабеля.startAnimation(animationLesft);
-                TextViewНазваниеДанныхВТабелеФИО.startAnimation(animationПрофессия400);
-
-            }
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " ГлавныйALLКурсорДанныеSwipes.getCount() "+ ГлавныйALLКурсорДанныеSwipes.getCount()+
-                     "ГлавныйALLКурсорДанныеSwipes.getPosition()  " + ГлавныйALLКурсорДанныеSwipes.getPosition());
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-
-
-        }
-    }
-
-
-
-    // TODO: 06.05.2021  созадение тача для свайпов   созадение тача для свайпов   созадение тача для свайпов   созадение тача для свайпов   созадение тача для свайпов   созадение тача для свайпов
-
-
-//TODO SUB CLASS с ГЛАВНЫМ МЕПТОДОМ ОФОРМЛЕНИЯ ТАБЕЛЯ
-
-
-    private void МетодГлавныеДанныеLayoutInflater(@NonNull Map<Integer, String> ХЭШНазваниеДнейНедели
-            , @NonNull View КонтентТабеляИнфлейтер
-            , @NonNull  Cursor sqLiteCursor) {
-        /////todo ПЕРВАЯ СТРОКА НАЗВАНИЯ
-        String НазваниеДней= "";
-        Bundle bundleДляОбновление=null;
-          String regex = "Сб ,(.*)";
-          String regex1 = "Вс ,(.*)";
-        try{
-            final Integer[] ИндексНазвания = {0};
-            final Integer[] ИндексЗначения = {0};
-            // TODO: 31.03.2023 НАЗВАНИЕ ROW 1
-      message.getTarget().post(()->{
-          IntStream intStreamOneName =IntStream.of(
-                  R.id.ПерваяСтрочкаНазваниеДень1,R.id.ПерваяСтрочкаНазваниеДень2,R.id.ПерваяСтрочкаНазваниеДень3,R.id.ПерваяСтрочкаНазваниеДень4,
-                  R.id.ПерваяСтрочкаНазваниеДень5,R.id.ПерваяСтрочкаНазваниеДень6,R.id.ПерваяСтрочкаНазваниеДень7,R.id.ПерваяСтрочкаНазваниеДень8,
-                  R.id.ПерваяСтрочкаНазваниеДень9,R.id.ПерваяСтрочкаНазваниеДень10,R.id.ПерваяСтрочкаНазваниеДень11,R.id.ПерваяСтрочкаНазваниеДень12,
-                  R.id.ПерваяСтрочкаНазваниеДень13,R.id.ПерваяСтрочкаНазваниеДень14,R.id.ПерваяСтрочкаНазваниеДень15,R.id.ПерваяСтрочкаНазваниеДень16);
-          ИндексНазвания[0]=
-                  МетодНазваниеЯчеек(ХЭШНазваниеДнейНедели, КонтентТабеляИнфлейтер, regex, regex1,intStreamOneName, ИндексНазвания[0]);
-          // TODO: 31.03.2023 НАЗВАНИЕ ROW 2
-          IntStream intStreamOneValues=IntStream.of(
-                  R.id.ВтораяСтрочкаНазваниеДень17, R.id.ВтораяСтрочкаНазваниеДень18, R.id.ВтораяСтрочкаНазваниеДень19, R.id.ВтораяСтрочкаНазваниеДень20
-                  , R.id.ВтораяСтрочкаНазваниеДень21, R.id.ВтораяСтрочкаНазваниеДень22, R.id.ВтораяСтрочкаНазваниеДень23, R.id.ВтораяСтрочкаНазваниеДень24
-                  , R.id.ВтораяСтрочкаНазваниеДень25, R.id.ВтораяСтрочкаНазваниеДень26, R.id.ВтораяСтрочкаНазваниеДень27, R.id.ВтораяСтрочкаНазваниеДень28
-                  , R.id.ВтораяСтрочкаНазваниеДень29 , R.id.ВтораяСтрочкаНазваниеДень30, R.id.ВтораяСтрочкаНазваниеДень31);
-          ИндексНазвания[0]=
-                  МетодНазваниеЯчеек(ХЭШНазваниеДнейНедели, КонтентТабеляИнфлейтер, regex, regex1,intStreamOneValues, ИндексНазвания[0]);
-      });
-            // TODO: 31.03.2023 ДАННЫЕ ROW 1
-            message.getTarget().post(()->{
-          IntStream intStreamTwoName=IntStream.of(
-                  R.id.ПерваяСтрочкаДанныеДень1,  R.id.ПерваяСтрочкаДанныеДень2,  R.id.ПерваяСтрочкаДанныеДень3,  R.id.ПерваяСтрочкаДанныеДень4,
-                  R.id.ПерваяСтрочкаДанныеДень5,  R.id.ПерваяСтрочкаДанныеДень6,  R.id.ПерваяСтрочкаДанныеДень7,  R.id.ПерваяСтрочкаДанныеДень8,
-                  R.id.ПерваяСтрочкаДанныеДень9, R.id.ПерваяСтрочкаДанныеДень10,  R.id.ПерваяСтрочкаДанныеДень11,  R.id.ПерваяСтрочкаДанныеДень12,  R.id.ПерваяСтрочкаДанныеДень13,
-                  R.id.ПерваяСтрочкаДанныеДень14,  R.id.ПерваяСтрочкаДанныеДень15,  R.id.ПерваяСтрочкаДанныеДень16);
-          ИндексЗначения[0] =
-                  МетодДанныеЯчеек(ХЭШНазваниеДнейНедели, КонтентТабеляИнфлейтер, sqLiteCursor,intStreamTwoName, ИндексЗначения[0]);
-            // TODO: 31.03.2023 ДАННЫЕ ROW 2
-                IntStream intStreamTwoValues=IntStream.of(
-                        R.id.ВтораяСтрочкаДанныеДень17,R.id.ВтораяСтрочкаДанныеДень18,R.id.ВтораяСтрочкаДанныеДень19,R.id.ВтораяСтрочкаДанныеДень20,
-                        R.id.ВтораяСтрочкаДанныеДень21,R.id.ВтораяСтрочкаДанныеДень22,R.id.ВтораяСтрочкаДанныеДень23,R.id.ВтораяСтрочкаДанныеДень24,
-                        R.id.ВтораяСтрочкаДанныеДень25,R.id.ВтораяСтрочкаДанныеДень26,R.id.ВтораяСтрочкаДанныеДень27,R.id.ВтораяСтрочкаДанныеДень28
-                ,R.id.ВтораяСтрочкаДанныеДень29,R.id.ВтораяСтрочкаДанныеДень30,R.id.ВтораяСтрочкаДанныеДень31);
-                ИндексЗначения[0] =
-                        МетодДанныеЯчеек(ХЭШНазваниеДнейНедели, КонтентТабеляИнфлейтер, sqLiteCursor,intStreamTwoValues, ИндексЗначения[0]);
-            });
-            // TODO: 31.03.2023
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + "  ИндексНазвания[0] "+  ИндексНазвания[0]+ "  ИндексЗначения[0] " +    ИндексЗначения[0]);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
-
-    private Integer МетодДанныеЯчеек(@NonNull Map<Integer, String> ХЭШНазваниеДнейНедели,
-                                     @NonNull View КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла,
-                                     @NonNull  Cursor sqLiteCursor,
-                                     @NonNull    IntStream intStreamПерваяСтрочкаСамиДанные,
-                                     @NonNull      Integer ИндексИтерации) {
-        try{
-        Bundle bundleДляОбновление;
-        String НазваниеДней;
-        EditText  СамиДанныеТабеля = null;
-// TODO: 31.03.2023 Данные Перво1 СТрочки
-        PrimitiveIterator.OfInt iteratorIteratorПерваяСтрочкаСамиДанные= intStreamПерваяСтрочкаСамиДанные.iterator();
-        bundleДляОбновление=new Bundle();
-        while (iteratorIteratorПерваяСтрочкаСамиДанные.hasNext()) {
-            // TODO: 31.03.2023 поднимаем версию
-            ИндексИтерации++;
-            /////TODO НАЧАЛО САМИ ДАННЫЕ ПЕРВОЙ СТРОКИ
-            Integer ТекущийЭлементДанные=     iteratorIteratorПерваяСтрочкаСамиДанные.nextInt();
-           СамиДанныеТабеля = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(ТекущийЭлементДанные);
-           Integer  ПосикДня = sqLiteCursor.getColumnIndex("d"+ИндексИтерации.toString());
-            НазваниеДней = sqLiteCursor.getColumnName(ПосикДня);
-            // TODO: 30.03.2023 новый код сохраняем в сам обьект uuid и день
-        /*    Integer ID = sqLiteCursor.getInt(sqLiteCursor.getColumnIndex("_id"));
-            Long UUID = sqLiteCursor.getLong(sqLiteCursor.getColumnIndex("uuid_tabel"));
-            Long UUID_Tabel = sqLiteCursor.getLong(sqLiteCursor.getColumnIndex("uuid"));
-            Long FIO = sqLiteCursor.getLong(sqLiteCursor.getColumnIndex("fio"));*/
-            String ДанныеДней = sqLiteCursor.getString(ПосикДня);
-/*            bundleДляОбновление.putInt("ID",ID );
-            bundleДляОбновление.putLong("UUID",UUID);
-            bundleДляОбновление.putLong("FIO",FIO);
-            bundleДляОбновление.putLong("UUID_Tabel",UUID_Tabel);
-            bundleДляОбновление.putInt("ПосикДня",ПосикДня);
-            bundleДляОбновление.putString("ДанныеДней", ДанныеДней);
-            bundleДляОбновление.putString("НазваниеДней",НазваниеДней);*/
-            // TODO: 31.03.2023 ЗАПОМИНАЕМ ДАнные Д1
-             СамиДанныеТабеля.setTag(bundleДляОбновление);
-            Log.d(this.getClass().getName(), " ДанныеДней" + ДанныеДней + " СамиДанныеТабеля " +СамиДанныеТабеля  + " TextViewНазваниеДанныхВТабелеФИО " + TextViewНазваниеДанныхВТабелеФИО);
-            if (ДанныеДней != null) {
-                ДанныеДней = ДанныеДней.replaceAll("\\s+", "");
-                if (ДанныеДней.equals("0")) {
-                    ДанныеДней = "";
-                }
-                if (ДанныеДней.matches("[А-Я]")) {
-                    СамиДанныеТабеля.setTextColor(Color.parseColor("#2F4F4F"));
-                }
-            }
-              СамиДанныеТабеля.setText(ДанныеДней); ///replace("[^0-9]"));
-
-
-
-              СамиДанныеТабеля.addOnUnhandledKeyEventListener(new View.OnUnhandledKeyEventListener() {
-                  @Override
-                  public boolean onUnhandledKeyEvent(View v, KeyEvent event) {
-                     if (event.getAction()==KeyEvent.ACTION_UP) {
-
-
-                         // TODO: 31.03.2023
-                         class SubClassОбнолениеЯчеек extends SubClassUpdateSingletabel{
-                             @Override
-                             Integer МетодЗаписиСменыПрофесии(@NonNull View searchViewДляНовогоПоиска, @NonNull Context context) {
-                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                                 return super.МетодЗаписиСменыПрофесии(searchViewДляНовогоПоиска, context);
-                             }
-                         }
-                         Integer ОбновлениеЯчеекДанных=        new SubClassОбнолениеЯчеек().МетодЗаписиСменыПрофесии(v,getApplicationContext());
-                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                   + "ОбновлениеЯчеекДанных " +ОбновлениеЯчеекДанных);
-                         return true;
-                      }
-                      return false;
-                  }
-              });
-             СамиДанныеТабеля.setOnLongClickListener(new View.OnLongClickListener() {
-                 @Override
-                 public boolean onLongClick(View v) {
-                     МетодПереходаНаМеткиТабеля();
-                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                     return false;
-                 }
-             });
-            if(СтаттусТабеля==true){
-                 СамиДанныеТабеля.setInputType(InputType.TYPE_NULL);
-                СамиДанныеТабеля.setLongClickable(false);
-            }
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " ХЭШНазваниеДнейНедели.get(ИндексИтерации) "+ ХЭШНазваниеДнейНедели.get(ИндексИтерации)+
-                    "  СамиДанныеТабеля " + СамиДанныеТабеля.getText().toString()+ " ТекущийЭлементДанные " +ТекущийЭлементДанные);
-            // TODO: 31.03.2023  анимация для данных
-            СамиДанныеТабеля.startAnimation(animationПрофессия400);
-        }
-            // TODO: 31.03.2023  Запоминаем ФИО
-          //  TextViewНазваниеДанныхВТабелеФИО.setTag(bundleДляОбновление);
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-
-
-    }
-        return  ИндексИтерации;
-    }
 
 
     //TODO Первый МЕТОД заполения строчки
@@ -2260,12 +2025,14 @@ try{
          private     Cursor cursor;
         private   LifecycleOwner lifecycleOwner;
         private   LifecycleOwner  lifecycleOwnerОбщая;
+
+        private LinkedHashMap< String,String> ДниВыходные=new LinkedHashMap<>();
+
         public SubClassSingleTabelRecycreView(@NonNull  LifecycleOwner lifecycleOwner,
                                               @NonNull  LifecycleOwner  lifecycleOwnerОбщая,
                                               @NonNull Activity activity) {
             this.lifecycleOwner=lifecycleOwner;
             this.lifecycleOwnerОбщая=lifecycleOwnerОбщая;
-
         }
 
         private void МетодИнициализацииRecycreView() {
@@ -2560,10 +2327,11 @@ try{
 
                 if ( cursor!=null) {
                     if (cursor.getCount() > 0 ) {
+                        ДниВыходные=методВсеДниЧерезКалендарь();
                     }
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " cursor  " + cursor.getCount());
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " cursor  " + cursor.getCount()+ " ДниВыходные " +ДниВыходные);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -2949,26 +2717,43 @@ try{
             }
             private void методЗаполениеНазванияRowData(@NonNull  TextView TextViewRowКликПоНазваниям,String s) {
                 try {
-                            TextViewRowКликПоНазваниям.setText(s.trim());
-
+                    // TODO: 11.04.2023 Ставим Дни
+                    TextViewRowКликПоНазваниям.setText( ДниВыходные.get(s.trim()));
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " s.trim() " +s.trim());
-
-
-
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " s.trim() " +s.trim() + "  ДниВыходные.get(s.trim()) " + ДниВыходные.get(s.trim()));
+                    
                     TextViewRowКликПоНазваниям.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
                         @Override
                         public void onViewAttachedToWindow(View v) {
-                            // TODO: 19.10.2022
-                            TextViewRowКликПоНазваниям.startAnimation(animationПрофессия300);
-                            TextViewRowКликПоНазваниям.setVisibility(View.VISIBLE);
+                            // TODO: 19.10.202
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " ДниВыходные " +ДниВыходные);
+                            // TODO: 11.04.2023  оформление вида
+                            v.startAnimation(animationПрофессия300);
+                            v.setVisibility(View.VISIBLE);
+                            // TODO: 11.04.2023 меняем Цвет и Убираем *** если празничные
+
+
+    if(       ((TextView)v).getText().toString().matches("(.*)Вс(.*)")  || ((TextView)v).getText().toString().matches("(.*)Сб(.*)")) {
+        ((TextView)v).setTextColor(Color.parseColor("#DC143C"));
+    }else {
+        if ( ((TextView)v).getText().toString().matches("(.*)###(.*)")){
+            String УдаляемДляПразничныхДней=     ((TextView)v).getText().toString();
+            УдаляемДляПразничныхДней=           УдаляемДляПразничныхДней.replaceAll("###","");
+            ((TextView)v).setText(УдаляемДляПразничныхДней);
+            ((TextView)v).setTextColor(Color.parseColor("#DC143C"));
+        }  else {
+            ((TextView)v).setTextColor(Color.parseColor("#008080"));
+        }
+    }
+
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " TextViewRowКликПоНазваниям " +TextViewRowКликПоНазваниям);
                         }
-
                         @Override
                         public void onViewDetachedFromWindow(View v) {
                             // TODO: 19.10.2022
@@ -2977,7 +2762,6 @@ try{
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " TextViewRowКликПоНазваниям " +TextViewRowКликПоНазваниям);
                         }
                     });
-
 
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
