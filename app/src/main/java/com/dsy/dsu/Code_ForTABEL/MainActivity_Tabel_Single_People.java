@@ -268,7 +268,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             animationRich = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_swipe_r);//R.anim.slide_in_row)
             animationLesft = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_swipe_l);//R.anim.slide_in_row)R.anim.slide_in_row_newscanner1
             // TODO: 29.03.2023  Метод Какая марка телфона из за этого загрудаем вид
-            методДанныеИзДругихАктивити();
+            методGETДанныеИзДругихАктивити();
             МетодGetmessage();
 
             МетодSwipesКурсор();
@@ -337,7 +337,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     }
 
 
-    private void методДанныеИзДругихАктивити() {
+    private void методGETДанныеИзДругихАктивити() {
         try {
             Intent ИнтентMainActivity_List_Peoples =  getIntent();
             Bundle bundleИзMainActitivy_List_Tables=ИнтентMainActivity_List_Peoples.getExtras();
@@ -349,8 +349,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             FullNameCFO=  bundleИзMainActitivy_List_Tables.getString("FullNameCFO", "");
             ИмесяцвИГодСразу= bundleИзMainActitivy_List_Tables.getString("ИмесяцвИГодСразу", "");
             CurrenrsСhildUUID= bundleИзMainActitivy_List_Tables.getLong("CurrenrsСhildUUID", 0l);
-            ЯчейкаДляЗаписиМетки=bundleИзMainActitivy_List_Tables.getString("ЯчейкаДляЗаписиМетки", "");;
-            ЯчейкаСодержимоеДляЗаписиМетки=bundleИзMainActitivy_List_Tables.getString("ЯчейкаСодержимоеДляЗаписиМетки", "");;
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -1477,6 +1475,8 @@ try{
         bundleИзMainActitivy_List_Tables.putInt("DigitalNameCFO", DigitalNameCFO);
         bundleИзMainActitivy_List_Tables.getString("FullNameCFO", FullNameCFO);
         bundleИзMainActitivy_List_Tables.putString("ИмесяцвИГодСразу", ИмесяцвИГодСразу.trim());
+        bundleИзMainActitivy_List_Tables.putString("ЯчейкаДляЗаписиМетки", ЯчейкаДляЗаписиМетки);;
+        bundleИзMainActitivy_List_Tables.putString("ЯчейкаСодержимоеДляЗаписиМетки", ЯчейкаСодержимоеДляЗаписиМетки);;
         startActivity(intentBack);
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
