@@ -32,7 +32,6 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -47,7 +46,6 @@ import android.widget.FilterQueryProvider;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -191,8 +189,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     private Animation animationПрофессия300;
     private Animation animationRows;
-
-    private Cursor  ГлавныйКурсорSingleДанные;
     private         Long ПолученыйUUIDФИОСледующий=0l;
     private   Animation animationRich;
     private   Animation animationLesft;
@@ -284,10 +280,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
                   subClassSingleTabelRecycreView. методДляSimpeCallbacks();
 
-                  subClassSingleTabelRecycreView.  МетодСлушательRecycleView();
 
 
-                  subClassSingleTabelRecycreView.  МетодСлушательКурсора();
+
+
+
+
 
                /*     message.getTarget().postDelayed(()->{
                         subClassSingleTabelRecycreView.  МетодСлушательRecycleView();
@@ -570,67 +568,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         }
 
     }
-    // TODO: 22.12.2021
-    private void МетодПриИзмениеДанныхВБазеМенемВнешнийВидТабеляObserver() {
-        try{
-            LifecycleOwner lifecycleOwner =this ;
-            lifecycleOwner.getLifecycle().addObserver(new LifecycleEventObserver() {
-                @Override
-                public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
-                    source.getLifecycle().getCurrentState();
-                    event.getTargetState().name();
-                }
-            });
-            // TODO: 29.01.2022
-            // TODO: 16.12.2021  --ОДНОРАЗОВАЯ СИНХРОНИАЗЦИЯ СЛУШАТЕЛЬ
-            WorkManager.getInstance(getApplicationContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОдноразовая)
-                    .observe(lifecycleOwner, new Observer<List<WorkInfo>>() {
-                        @Override
-                        public void onChanged(List<WorkInfo> workInfos) {
-                            workInfos.stream().filter(statee->statee.getState().compareTo(WorkInfo.State.SUCCEEDED)==0).forEachOrdered(new Consumer<WorkInfo>() {
-                                @Override
-                                public void accept(WorkInfo workInfo) {
-                                    Log.d(this.getClass().getName(), " WorkInfoИнформацияОЗапущенойСлужбеОдноразовая  workInfo " + workInfos.get(0).getState().name());
-                                    Long CallBaskОтWorkManagerОдноразового = workInfos.get(0).getOutputData().getLong("ОтветПослеВыполения_MyWork_Async_Синхронизация_Одноразовая", 0l);
-                                    Log.d(this.getClass().getName(), " CallBaskОтWorkManagerОдноразового " + CallBaskОтWorkManagerОдноразового);
-                                    onResume();
-
-                                }
-                            });}
-                    });
-
-
-            // TODO: 16.12.2021  --ОДНОРАЗОВАЯ СИНХРОНИАЗЦИЯ СЛУШАТЕЛЬ
-            WorkManager.getInstance(getApplicationContext()).getWorkInfosByTagLiveData(ИмяСлужбыОбщейСинхронизацииДляЗадачи)
-                    .observe(lifecycleOwner, new Observer<List<WorkInfo>>() {
-                        @Override
-                        public void onChanged(List<WorkInfo> workInfos) {
-                            workInfos.stream().filter(statee->statee.getState().compareTo(WorkInfo.State.ENQUEUED)==0).forEachOrdered(new Consumer<WorkInfo>() {
-                                @Override
-                                public void accept(WorkInfo workInfo) {
-                                    Log.d(this.getClass().getName(), " WorkInfoИнформацияОЗапущенойСлужбеОдноразовая  workInfo " + workInfos.get(0).getState().name());
-                                    Long CallBaskОтWorkManagerОдноразового = workInfos.get(0).getOutputData().getLong("ОтветПослеВыполения_MyWork_Async_Синхронизация_Одноразовая", 0l);
-                                    Log.d(this.getClass().getName(), " CallBaskОтWorkManagerОдноразового " + CallBaskОтWorkManagerОдноразового);
-                                    onResume();
-                                }
-                            });}
-                    });
-
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            ///метод запись ошибок в таблицу
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
-// TODO: 29.01.2022
-
-
-
 
     //todo метод возврата к предыдущему активти
     private void МетодПриНАжатииНаКнопкуBACK() {
@@ -2617,93 +2554,6 @@ try{
             }
 
         }
-        // TODO: 18.10.2021  СИНХРОНИАЗЦИЯ ЧАТА ПО РАСПИСАНИЮ ЧАТ
-        @SuppressLint("FragmentLiveDataObserve")
-        void методWorkMAnagerReycreVIew() {
-// TODO: 11.05.2021 ЗПУСКАЕМ СЛУЖБУ через брдкастер синхронизхации и уведомления
-            try {
-                String ИмяСлужбыСинхронизациОдноразовая="WorkManager Synchronizasiy_Data Disposable";
-                String ИмяСлужбыСинхронизацииОбщая="WorkManager Synchronizasiy_Data";
-                lifecycleOwner.getLifecycle().addObserver(new LifecycleEventObserver() {
-                    @Override
-                    public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
-                        source.getLifecycle().getCurrentState();
-                        event.getTargetState().name();
-                    }
-                });
-                lifecycleOwnerОбщая.getLifecycle().addObserver(new LifecycleEventObserver() {
-                    @Override
-                    public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
-                        source.getLifecycle().getCurrentState();
-                        event.getTargetState().name();
-                    }
-                });
-
-                WorkManager.getInstance(getApplicationContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).observe(lifecycleOwner, new Observer<List<WorkInfo>>() {
-                    @Override
-                    public void onChanged(List<WorkInfo> workInfos) {
-                        workInfos.forEach((СтастусWorkMangerДляФрагментаЧитатьИПисать) -> {
-                            try {
-                                Long CallBaskОтWorkManagerОдноразового=0l;
-                                if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.SUCCEEDED) == 0)         {
-                                   CallBaskОтWorkManagerОдноразового =
-                                            СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getLong("ОтветПослеВыполения_MyWork_Async_Синхронизация_Одноразовая", 0l);
-                                    if (CallBaskОтWorkManagerОдноразового>0) {
-                                        recyclerView.getAdapter().notifyDataSetChanged();
-                                        recyclerView.requestLayout();
-                                    }
-                                }
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "CallBaskОтWorkManagerОдноразового " +CallBaskОтWorkManagerОдноразового);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            }
-                        });
-                    }
-                });
-                WorkManager.getInstance(getApplicationContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая)
-                        .observe(lifecycleOwnerОбщая, new Observer<List<WorkInfo>>() {
-                    @Override
-                    public void onChanged(List<WorkInfo> workInfos) {
-                        workInfos.forEach((СтастусWorkMangerДляФрагментаЧитатьИПисать) -> {
-                            try {
-                                Integer CallBaskОтWorkManageОбщая=0;
-                                if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.RUNNING) != 0) {
-                                    long end = Calendar.getInstance().getTimeInMillis();
-                                     CallBaskОтWorkManageОбщая =
-                                            СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnPublicAsyncWorkMananger", 0);
-                                    if (CallBaskОтWorkManageОбщая>0) {
-                                        recyclerView.getAdapter().notifyDataSetChanged();
-                                        recyclerView.requestLayout();
-                                    }
-                                }
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "CallBaskОтWorkManageОбщая " +CallBaskОтWorkManageОбщая);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            }
-                        });
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
-
         class MyRecycleViewAdapter extends RecyclerView.Adapter< MyViewHolder> {
             private Cursor cursor;
             public MyRecycleViewAdapter(@NotNull Cursor cursor) {
@@ -2736,6 +2586,7 @@ try{
                                         Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
                                         // TODO: 07.04.2023 переопрелделния Вида Табеля
                                         МетодПерегрузкаSingletabel();
+                                        Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
                                     } else {
                                         Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
                                     }
@@ -2767,7 +2618,11 @@ try{
                         recyclerView.forceLayout();
                         constraintLayoutsingletabel.refreshDrawableState();
                         constraintLayoutsingletabel.forceLayout();
-                    },500);
+                        // TODO: 11.04.2023 слушатели
+                        методWorkManagerLifecycleOwner();
+                        МетодСлушательRecycleView();
+                        МетодСлушательКурсора(cursor);
+                    },1000);
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -3314,7 +3169,7 @@ try{
         }
 
         // TODO: 03.04.2023 перенесеный RecycreView
-        private void МетодСлушательКурсора() {
+        private void МетодСлушательКурсора(@NonNull Cursor cursor) {
             // TODO: 15.10.2022  слушатиель для курсора
             try {
                     cursor.registerDataSetObserver(new DataSetObserver() {
@@ -3471,6 +3326,92 @@ try{
                 new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                         this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+        // TODO: 18.10.2021  СИНХРОНИАЗЦИЯ ЧАТА ПО РАСПИСАНИЮ ЧАТ
+        @SuppressLint("FragmentLiveDataObserve")
+        void методWorkManagerLifecycleOwner() {
+// TODO: 11.05.2021 ЗПУСКАЕМ СЛУЖБУ через брдкастер синхронизхации и уведомления
+            try {
+                String ИмяСлужбыСинхронизациОдноразовая="WorkManager Synchronizasiy_Data Disposable";
+                String ИмяСлужбыСинхронизацииОбщая="WorkManager Synchronizasiy_Data";
+                lifecycleOwner.getLifecycle().addObserver(new LifecycleEventObserver() {
+                    @Override
+                    public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
+                        source.getLifecycle().getCurrentState();
+                        event.getTargetState().name();
+                    }
+                });
+                lifecycleOwnerОбщая.getLifecycle().addObserver(new LifecycleEventObserver() {
+                    @Override
+                    public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
+                        source.getLifecycle().getCurrentState();
+                        event.getTargetState().name();
+                    }
+                });
+
+                WorkManager.getInstance(getApplicationContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).observe(lifecycleOwner, new Observer<List<WorkInfo>>() {
+                    @Override
+                    public void onChanged(List<WorkInfo> workInfos) {
+                        workInfos.forEach((СтастусWorkMangerДляФрагментаЧитатьИПисать) -> {
+                            try {
+                                Long CallBaskОтWorkManagerОдноразового=0l;
+                                if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.SUCCEEDED) == 0)         {
+                                    CallBaskОтWorkManagerОдноразового =
+                                            СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getLong("ОтветПослеВыполения_MyWork_Async_Синхронизация_Одноразовая", 0l);
+                                    if (CallBaskОтWorkManagerОдноразового>0) {
+                                        recyclerView.getAdapter().notifyDataSetChanged();
+                                        recyclerView.requestLayout();
+                                    }
+                                }
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "CallBaskОтWorkManagerОдноразового " +CallBaskОтWorkManagerОдноразового);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            }
+                        });
+                    }
+                });
+                WorkManager.getInstance(getApplicationContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая)
+                        .observe(lifecycleOwnerОбщая, new Observer<List<WorkInfo>>() {
+                            @Override
+                            public void onChanged(List<WorkInfo> workInfos) {
+                                workInfos.forEach((СтастусWorkMangerДляФрагментаЧитатьИПисать) -> {
+                                    try {
+                                        Integer CallBaskОтWorkManageОбщая=0;
+                                        if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.RUNNING) != 0) {
+                                            long end = Calendar.getInstance().getTimeInMillis();
+                                            CallBaskОтWorkManageОбщая =
+                                                    СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnPublicAsyncWorkMananger", 0);
+                                            if (CallBaskОтWorkManageОбщая>0) {
+                                                recyclerView.getAdapter().notifyDataSetChanged();
+                                                recyclerView.requestLayout();
+                                            }
+                                        }
+                                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "CallBaskОтWorkManageОбщая " +CallBaskОтWorkManageОбщая);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                    }
+                                });
+                            }
+                        });
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
     }//TODO КОНЕЦ КЛАССА визуального оформление Recycreview
