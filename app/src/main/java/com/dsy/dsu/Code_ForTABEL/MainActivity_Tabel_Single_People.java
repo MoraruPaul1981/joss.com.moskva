@@ -68,7 +68,6 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -119,7 +118,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 import javax.crypto.NoSuchPaddingException;
@@ -185,7 +183,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private  long CurrenrsСhildUUID =0l;
     private      Message message;
     private      Message messageRows;
-    private Animation animationПрофессия;
+    private Animation animationПрофессия600;
 
     private Animation animationПрофессия300;
     private Animation animationRows;
@@ -256,7 +254,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             КнопкаНазад=(Button) findViewById(R.id.imageViewСтрелкаВнутриТабеля);
             view2Линия=(View) findViewById(R.id.view2Линия);
             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
-            animationПрофессия = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row);
+            animationПрофессия600 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row);
             animationПрофессия300 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row2);
             animationVibr1 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_singletable);
             animationVibr2 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_singletable2);
@@ -1504,7 +1502,7 @@ try{
                         ГлавныйALLКурсорДанныеSwipes.moveToFirst();
                     }
                 ScrollСамогоТабеля.startAnimation(animationRich);
-                TextViewНазваниеДанныхВТабелеФИО.startAnimation(animationПрофессия);
+                TextViewНазваниеДанныхВТабелеФИО.startAnimation(animationПрофессия600);
 
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1532,7 +1530,7 @@ try{
                     ГлавныйALLКурсорДанныеSwipes.moveToPrevious();
                 }
                 ScrollСамогоТабеля.startAnimation(animationLesft);
-                TextViewНазваниеДанныхВТабелеФИО.startAnimation(animationПрофессия);
+                TextViewНазваниеДанныхВТабелеФИО.startAnimation(animationПрофессия600);
 
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1716,7 +1714,7 @@ try{
                     + " ХЭШНазваниеДнейНедели.get(ИндексИтерации) "+ ХЭШНазваниеДнейНедели.get(ИндексИтерации)+
                     "  СамиДанныеТабеля " + СамиДанныеТабеля.getText().toString()+ " ТекущийЭлементДанные " +ТекущийЭлементДанные);
             // TODO: 31.03.2023  анимация для данных
-            СамиДанныеТабеля.startAnimation(animationПрофессия);
+            СамиДанныеТабеля.startAnimation(animationПрофессия600);
         }
             // TODO: 31.03.2023  Запоминаем ФИО
           //  TextViewНазваниеДанныхВТабелеФИО.setTag(bundleДляОбновление);
@@ -1913,7 +1911,7 @@ try{
                                                 ((MaterialTextView)view).setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
-                                                        ((MaterialTextView)view).startAnimation(animationПрофессия);
+                                                        ((MaterialTextView)view).startAnimation(animationПрофессия600);
                                                         Bundle bundle=(Bundle)   ((MaterialTextView)view).getTag();
                                                         Integer ПолучаемIDПрофессии=      bundle.getInt("ПолучаемIDПрофессии",0);
                                                         String НазваниеПрофесии=   bundle.getString("НазваниеПрофесии","");
@@ -1969,7 +1967,7 @@ try{
                         simpleCursorAdapterЦФО.setViewBinder(БиндингДляНовогоПоиска);
                         listViewДляНовыйПосик[0].setAdapter(simpleCursorAdapterЦФО);
                         simpleCursorAdapterЦФО.notifyDataSetChanged();
-                        listViewДляНовыйПосик[0].startAnimation(animationПрофессия);
+                        listViewДляНовыйПосик[0].startAnimation(animationПрофессия600);
                         listViewДляНовыйПосик[0].setSelection(0);
                         listViewДляНовыйПосик[0].forceLayout();
 
@@ -2164,7 +2162,7 @@ try{
 
     private void МетодПерегрузкаВидаЭкрана() {
         try {
-            TextViewНазваниеДанныхВТабелеФИО.startAnimation(animationПрофессия);
+            TextViewНазваниеДанныхВТабелеФИО.startAnimation(animationПрофессия600);
             TextViewНазваниеДанныхВТабелеФИО.refreshDrawableState();
             TextViewНазваниеДанныхВТабелеФИО.forceLayout();
         } catch (Exception e) {
@@ -2279,7 +2277,7 @@ try{
                recyclerView.addItemDecoration(dividerItemDecoration);
                 recyclerView.setLayoutManager(staggeredGridLayoutManager);
                recyclerView.setHasFixedSize(true);
-                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.startAnimation(animationПрофессия600);
                 staggeredGridLayoutManager.    invalidateSpanAssignments();
                 staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -2824,7 +2822,7 @@ try{
                         public void run() {
                             TextView textViewФИо = (TextView) tableRowФио.findViewById(R.id.RowКонтейнерКудаЗагружаетьсяФИО);
                             String ФИОСодержимое =                Optional.ofNullable(textViewФИо.getHint()).map(Objects::toString).orElse("");
-                            textViewФИо.startAnimation(animationПрофессия) ;
+                            textViewФИо.startAnimation(animationПрофессия600) ;
                             textViewФИо.setVisibility(View.VISIBLE);
                             textViewФИо.setText("Новая Должность !!! ");
 
@@ -2951,14 +2949,36 @@ try{
             }
             private void методЗаполениеНазванияRowData(@NonNull  TextView TextViewRowКликПоНазваниям,String s) {
                 try {
-                    messageRows.getTarget().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            TextViewRowКликПоНазваниям.startAnimation(animationПрофессия300) ;
-                            TextViewRowКликПоНазваниям.setVisibility(View.VISIBLE);
                             TextViewRowКликПоНазваниям.setText(s.trim());
+
+                    // TODO: 19.10.2022
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " s.trim() " +s.trim());
+
+
+
+                    TextViewRowКликПоНазваниям.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+                        @Override
+                        public void onViewAttachedToWindow(View v) {
+                            // TODO: 19.10.2022
+                            TextViewRowКликПоНазваниям.startAnimation(animationПрофессия300);
+                            TextViewRowКликПоНазваниям.setVisibility(View.VISIBLE);
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " TextViewRowКликПоНазваниям " +TextViewRowКликПоНазваниям);
                         }
-                    },150);
+
+                        @Override
+                        public void onViewDetachedFromWindow(View v) {
+                            // TODO: 19.10.2022
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " TextViewRowКликПоНазваниям " +TextViewRowКликПоНазваниям);
+                        }
+                    });
+
+
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
