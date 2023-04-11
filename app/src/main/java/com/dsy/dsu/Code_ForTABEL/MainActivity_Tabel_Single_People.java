@@ -32,6 +32,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -190,7 +191,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     private Animation animationПрофессия300;
     private Animation animationRows;
-    private Cursor ГлавныйALLКурсорДанныеSwipes;
 
     private Cursor  ГлавныйКурсорSingleДанные;
     private         Long ПолученыйUUIDФИОСледующий=0l;
@@ -207,9 +207,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private SubClassSingleTabelRecycreView. MyRecycleViewAdapter myRecycleViewAdapter;
     private SubClassSingleTabelRecycreView. MyViewHolder myViewHolder;
     private  Integer Position =0;
-    String ЯчейкаДляЗаписиМетки;
-
-    String ЯчейкаСодержимоеДляЗаписиМетки;
+    private String ЯчейкаДляЗаписиМетки;
+    private  String ЯчейкаСодержимоеДляЗаписиМетки;
+    private  Cursor ГлавныйALLКурсорДанныеSwipes;
 
 
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
@@ -271,9 +271,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             методGETДанныеИзДругихАктивити();
             МетодGetmessage();
 
-            МетодSwipesКурсор();
-
-
          LifecycleOwner lifecycleOwner=this;
          LifecycleOwner  lifecycleOwnerОбщая=this;
 
@@ -283,7 +280,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
                     subClassSingleTabelRecycreView.МетодИнициализацииRecycreView();
 
-                    subClassSingleTabelRecycreView.МетодЗаполениеRecycleView(ГлавныйКурсорSingleДанные);
+                    subClassSingleTabelRecycreView.МетодЗаполениеRecycleView( );
 
                   subClassSingleTabelRecycreView. методДляSimpeCallbacks();
 
@@ -342,13 +339,15 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             Intent ИнтентMainActivity_List_Peoples =  getIntent();
             Bundle bundleИзMainActitivy_List_Tables=ИнтентMainActivity_List_Peoples.getExtras();
             // TODO: 10.04.2023
-            Position=    bundleИзMainActitivy_List_Tables.getInt("Position", 0);
-            ГодТабелей=  bundleИзMainActitivy_List_Tables.getInt("ГодТабелей", 0);
-            МЕсяцТабелей=  bundleИзMainActitivy_List_Tables.getInt("МЕсяцТабелей",0);
-            DigitalNameCFO=   bundleИзMainActitivy_List_Tables.getInt("DigitalNameCFO", 0);
-            FullNameCFO=  bundleИзMainActitivy_List_Tables.getString("FullNameCFO", "");
-            ИмесяцвИГодСразу= bundleИзMainActitivy_List_Tables.getString("ИмесяцвИГодСразу", "");
-            CurrenrsСhildUUID= bundleИзMainActitivy_List_Tables.getLong("CurrenrsСhildUUID", 0l);
+            if (bundleИзMainActitivy_List_Tables!=null) {
+                Position=    bundleИзMainActitivy_List_Tables.getInt("Position", 0);
+                ГодТабелей=  bundleИзMainActitivy_List_Tables.getInt("ГодТабелей", 0);
+                МЕсяцТабелей=  bundleИзMainActitivy_List_Tables.getInt("МЕсяцТабелей",0);
+                DigitalNameCFO=   bundleИзMainActitivy_List_Tables.getInt("DigitalNameCFO", 0);
+                FullNameCFO=  bundleИзMainActitivy_List_Tables.getString("FullNameCFO", "");
+                ИмесяцвИГодСразу= bundleИзMainActitivy_List_Tables.getString("ИмесяцвИГодСразу", "");
+                CurrenrsСhildUUID= bundleИзMainActitivy_List_Tables.getLong("CurrenrsСhildUUID", 0l);
+            }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -467,7 +466,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         }
     }
 
-    private void МетодSwipesКурсор() {
+    private Cursor МетодSwipesКурсор() {
+        Cursor          cursor = null;
         try{
             //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
             Bundle bundleГлавныйКурсорMultiДанныеSwipes= new Bundle();
@@ -479,9 +479,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             bundleГлавныйКурсорMultiДанныеSwipes.putStringArray("УсловияВыборки" ,
                     new String[]{String.valueOf(428),
                             String.valueOf(3),
-                            String.valueOf(2023),"Удаленная" });
+                            String.valueOf(2016),"Удаленная" });
             bundleГлавныйКурсорMultiДанныеSwipes.putString("Таблица","viewtabel");
-            ГлавныйALLКурсорДанныеSwipes =      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleГлавныйКурсорMultiДанныеSwipes);
+            cursor =      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleГлавныйКурсорMultiДанныеSwipes);
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -494,6 +494,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
+        return  cursor;
     }
 
     @Override
@@ -908,7 +909,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             //TODO ЗАПОЛЯНЕМ ПОЛУЧЕННЫЙ МЕСЯ Ц ПЛУС КОЛИЧЕСТВО ЧАСОВ СОТРУДНИКА КОНКРЕТНОГО
          Integer   ЧасыТекущегоСОтрудника = new Class_MODEL_synchronized(getApplicationContext()).МетодПосчётаЧасовПоСотруднику(sqLiteCursor);
             Log.d(this.getClass().getName(), "  ЧасыТекущегоСОтрудника " + ЧасыТекущегоСОтрудника);
-            TextViewЧасовСотрудникаВТабелеСотудников.setText(" (" + " " + ЧасыТекущегоСОтрудника + "/часы)  "+" из "+ ГлавныйALLКурсорДанныеSwipes.getCount()+"");
+            TextViewЧасовСотрудникаВТабелеСотудников.setText(" (" + " " + ЧасыТекущегоСОтрудника + "/часы)  "+" из "+ recyclerView.getAdapter().getItemCount()+"");
             Log.d(Class_MODEL_synchronized.class.getName()," RowNumber  " + " sqLiteCursor " +sqLiteCursor.getPosition()  );
         } catch (Exception e) {
             e.printStackTrace();
@@ -2403,8 +2404,8 @@ try{
 
         private void методДляSimpeCallbacks() {
             try{
-            ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(10,
-                    ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT  | ItemTouchHelper.DOWN | ItemTouchHelper.END) {
+            ItemTouchHelper.SimpleCallback simpleItemTouchCallbackRIGHT = new ItemTouchHelper.SimpleCallback(10,
+                      ItemTouchHelper.RIGHT   ) {
                 @Override
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                     Integer posio= myViewHolder.getAbsoluteAdapterPosition();
@@ -2431,9 +2432,38 @@ try{
                 }
 
             };
-            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-            itemTouchHelper.attachToRecyclerView(recyclerView);
+                ItemTouchHelper.SimpleCallback simpleItemTouchCallbackLEFT = new ItemTouchHelper.SimpleCallback(10,
+                        ItemTouchHelper.LEFT  ) {
+                    @Override
+                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                        Integer posio= myViewHolder.getAbsoluteAdapterPosition();
+                        // remove item from adapter
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"recyclerView   " + recyclerView+ " cursor " +cursor);
+/*
+                    myRecycleViewAdapter = new  MyRecycleViewAdapter(cursor);
+                    recyclerView.setAdapter(myRecycleViewAdapter);
 
+                    myRecycleViewAdapter.onBindViewHolder(myViewHolder,3,new ArrayList<>());
+                  //  recyclerView.setAdapter(myRecycleViewAdapter);
+                    myRecycleViewAdapter.notifyDataSetChanged();
+                    recyclerView.requestLayout();*/
+                    }
+                    @Override
+                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                          RecyclerView.ViewHolder target) {
+                        final int fromPos = viewHolder.getAdapterPosition();
+                        final int toPos = target.getAdapterPosition();
+                        // move item in `fromPos` to `toPos` in adapter.
+                        return true;// true if moved, false otherwise
+                    }
+
+                };
+               ItemTouchHelper itemTouchHelperLEFT = new ItemTouchHelper(simpleItemTouchCallbackLEFT);
+                itemTouchHelperLEFT.attachToRecyclerView(recyclerView);
+                ItemTouchHelper itemTouchHelperRIGHT = new ItemTouchHelper(simpleItemTouchCallbackRIGHT);
+                itemTouchHelperRIGHT.attachToRecyclerView(recyclerView);
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2451,8 +2481,9 @@ try{
 
 
         // TODO: 04.03.2022 прозвомжность Заполения RecycleView
-        void МетодЗаполениеRecycleView(@NonNull Cursor cursor) {
+        void МетодЗаполениеRecycleView( ) {
             try {
+      Cursor          cursor =    МетодSwipesКурсор();
                 // remove item from adapter
                 myRecycleViewAdapter = new  MyRecycleViewAdapter(cursor );
                 recyclerView.setAdapter(myRecycleViewAdapter);
@@ -2952,17 +2983,23 @@ try{
             public  MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View viewSingleTabel = null;
                 try {
-                   viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov, parent, false);//todo old simple_for_takst_cardview1
-                    Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewSingleTabel);
-                    if (Build.BRAND.toString().contains("Samsung") ||Build.BRAND.toString().contains("Galaxy")
-                            || Build.BRAND.toString().contains("samsung") ||Build.BRAND.toString().contains("galaxy") ) {
-                        // TODO: 03.04.2023  для Sansung
-                        viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main_grid_for_tables_four_columns_samsung, parent, false);
-                    }  else {
-                        // TODO: 03.04.2023 для MM
-                        viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm, parent, false);
-                       // viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main_grid_for_tables_four_columns_in_mm, parent, false);
+                   viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov, parent, false);
+
+                    if (cursor.getCount()>0) {
+                        if (Build.BRAND.toString().contains("Samsung") ||Build.BRAND.toString().contains("Galaxy")
+                                || Build.BRAND.toString().contains("samsung") ||Build.BRAND.toString().contains("galaxy") ) {
+                            viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main_grid_for_tables_four_columns_samsung, parent, false);
+                        }  else {
+                            viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm, parent, false);
+
+                        }
+                    }else{
+                        viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_isnull_single_tabel, parent, false);
+                        Log.d(this.getClass().getName(),"\n" + " НЕт ДАнных class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+  "myViewHolder " +myViewHolder);
                     }
+
                     // TODO: 04.04.2023  Запускаем ПОлучений Вид View
                     myViewHolder = new  MyViewHolder(viewSingleTabel);
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

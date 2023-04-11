@@ -1059,7 +1059,7 @@ public class FragmentAdmissionMaterials extends Fragment {
                         viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_assionamaterial, parent, false);//todo old  simple_for_assionamaterial
                         Log.i(this.getClass().getName(), "   viewПолучениеМатериалов" + viewПолучениеМатериалов+ "  sqLiteCursor.getCount()  " + cursor.getCount());
                     } else {
-                        viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_isnull_actimavmaretisl, parent, false);//todo old simple_for_takst_cardview1
+                        viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_isnull_dm_materials, parent, false);//todo old simple_for_takst_cardview1
                         Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов+ "  sqLiteCursor.getCount()  " + cursor.getCount() );
                     }
                 }
