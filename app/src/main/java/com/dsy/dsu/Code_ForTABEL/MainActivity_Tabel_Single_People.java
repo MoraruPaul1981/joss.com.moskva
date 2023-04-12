@@ -279,13 +279,13 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
                     subClassSingleTabelRecycreView. методДляSimpeCallbacks();
 
-
             // TODO: 12.04.2023 Вторастипенные методы
             message.getTarget().post(()->{
                 subClassSingleTabelRecycreView. МетодСлушательКурсора(cursor);
                 subClassSingleTabelRecycreView.  методWorkManagerLifecycleOwner();
                 subClassSingleTabelRecycreView.МетодСлушательRecycleView();
             });
+
                /*     message.getTarget().postDelayed(()->{
                         subClassSingleTabelRecycreView.  МетодСлушательRecycleView();
                         subClassSingleTabelRecycreView.  МетодСлушательКурсора();
@@ -332,6 +332,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
+
+
+
 
 
     private void методGETДанныеИзДругихАктивити() {
@@ -3232,19 +3235,17 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     public void onChanged(List<WorkInfo> workInfos) {
                         workInfos.forEach((СтастусWorkMangerДляФрагментаЧитатьИПисать) -> {
                             try {
-                                Long CallBaskОтWorkManagerОдноразового=0l;
                                 if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.SUCCEEDED) == 0)         {
-                                    CallBaskОтWorkManagerОдноразового =
-                                            СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getLong("ReturnSingleAsyncWork", 0l);
-                                    if (CallBaskОтWorkManagerОдноразового>0) {
+                                    Integer     ReturnCallSingle = СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnSingleAsyncWork", 0);
+                                    if (ReturnCallSingle>0) {
                                         recyclerView.getAdapter().notifyDataSetChanged();
                                         recyclerView.requestLayout();
-                                        WorkManager.getInstance(getApplicationContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая);
                                     }
+                                    WorkManager.getInstance(getApplicationContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая);
                                 }
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "CallBaskОтWorkManagerОдноразового " +CallBaskОтWorkManagerОдноразового);
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -3261,19 +3262,17 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                             public void onChanged(List<WorkInfo> workInfos) {
                                 workInfos.forEach((СтастусWorkMangerДляФрагментаЧитатьИПисать) -> {
                                     try {
-                                        Integer CallBaskОтWorkManageОбщая=0;
                                         if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.RUNNING) != 0) {
                                             long end = Calendar.getInstance().getTimeInMillis();
-                                            CallBaskОтWorkManageОбщая =
-                                                    СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnPublicAsyncWork", 0);
-                                            if (CallBaskОтWorkManageОбщая>0) {
+                                            Integer ReturnCallPublic = СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnPublicAsyncWork", 0);
+                                            if (ReturnCallPublic>0) {
                                                 recyclerView.getAdapter().notifyDataSetChanged();
                                                 recyclerView.requestLayout();
                                             }
                                         }
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "CallBaskОтWorkManageОбщая " +CallBaskОтWorkManageОбщая);
+                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +

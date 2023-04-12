@@ -174,11 +174,7 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
                         + " РешениеЗапускатьWorkManagerИлиНетАктивтиКакое "+РешениеЗапускатьWorkManagerИлиНетАктивтиКакое  + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
             }
 
-            myDataОтветОбщейСлужбы = new Data.Builder()
-                    .putLong("ReturnPublicAsyncWork",
-                            ФинальныйРезультатAsyncBackgroud)
-                    .putBoolean("ReturnPublicAsyncWork",true)
-                    .build();
+            myDataОтветОбщейСлужбы = new Data.Builder().putInt("ReturnPublicAsyncWork", ФинальныйРезультатAsyncBackgroud).build();
             if (serviceConnection!=null) {
                 getApplicationContext().unbindService(serviceConnection);
                 service_for_remote_async=null;

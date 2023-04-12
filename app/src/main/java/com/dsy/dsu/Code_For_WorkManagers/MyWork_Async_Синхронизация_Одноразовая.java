@@ -147,11 +147,8 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
                  " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                  + " РешениеЗапускатьWorkManagerИлиНетАктивтиКакое "+РешениеЗапускатьWorkManagerИлиНетАктивтиКакое  + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
      }
-       myDataОтветОдноразовойСлужбы = new Data.Builder()
-             .putLong("ReturnSingleAsyncWork",
-                     ФинальныйРезультатAsyncBackgroud)
-           .putBoolean("ReturnSingleAsyncWork",true)
-             .build();
+       myDataОтветОдноразовойСлужбы = new Data.Builder().putInt("ReturnSingleAsyncWork",
+                     ФинальныйРезультатAsyncBackgroud).build();
      if (serviceConnection!=null) {
          context.unbindService(serviceConnection);
          service_for_remote_async=null;
