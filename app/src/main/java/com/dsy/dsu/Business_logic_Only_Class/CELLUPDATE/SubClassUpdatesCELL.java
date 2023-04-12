@@ -48,15 +48,17 @@ public class SubClassUpdatesCELL {
                 // TODO: 12.04.2023 ТОкльЧисло ОБновдение
                 if(ФлагНовоеЗначение==true){
                     ЗначениеИзЯчейки=   ЗначениеИзЯчейки.replaceAll("[^0-9]","");
-                    ЗначениеИзЯчейки =  ЗначениеИзЯчейки.substring(0, 2);
                     if (   Integer.parseInt(editTextЯчейкаОбновление.getText().toString())>24) {
                         Toast aa = Toast.makeText(context, "OPEN", Toast.LENGTH_LONG);
                         ImageView cc = new ImageView( context);
                         cc.setImageResource(R.drawable.icon_dsu1_add_organisazio_error);//icon_dsu1_synchronisazia_dsu1_success
                         aa.setView(cc);
                         aa.show();
-                        Toast.makeText( context, "Нет сохранилось !!!"+
-                                "\n"+" (Часы больше 24 ) :" +editTextЯчейкаОбновление.getText().toString(), Toast.LENGTH_SHORT).show();
+                        context.getMainExecutor().execute(()->{
+                            Toast.makeText( context, "Нет сохранилось !!!"+
+                                    "\n"+" (Часы больше 24 ) :" +editTextЯчейкаОбновление.getText().toString(), Toast.LENGTH_SHORT).show();
+                        });
+
                     }else {
                         editTextЯчейкаОбновление.setText(ЗначениеИзЯчейки);
                         Bundle bundleперезаписьЯчейки= (Bundle)  editTextЯчейкаОбновление.getTag();
