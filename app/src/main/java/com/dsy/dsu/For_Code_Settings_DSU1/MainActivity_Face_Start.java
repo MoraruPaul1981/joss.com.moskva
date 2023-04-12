@@ -589,10 +589,10 @@ try{
             if(Курсор_ПолучаемПубличныйID.getCount()>0){
                 Курсор_ПолучаемПубличныйID.moveToFirst();
                 ПубличноеIDПолученныйИзСервлетаДляUUID=         Курсор_ПолучаемПубличныйID.getInt(0);
-                Log.d(this.getClass().getName(), " ПубличноеIDПолученныйИзСервлетаДляUUID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                Log.d(this.getClass().getName(), " ID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
             }
             //TODO ЕСЛИ ПУБЛИЧНОГО ID  НЕТ
-            Log.d(this.getClass().getName(), " ПубличноеIDПолученныйИзСервлетаДляUUID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+            Log.d(this.getClass().getName(), " ID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
             if (ПубличноеIDПолученныйИзСервлетаДляUUID>0) {
                 classGrudSqlOperations =new Class_GRUD_SQL_Operations(getApplicationContext());
                 classGrudSqlOperations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","SuccessLogin");
@@ -610,7 +610,7 @@ try{
                         Integer СамоЗначениеIDПриработаетОфлайн = Курсор_ВытаскиваемЗначениеПубличногоIDкогдаРабатаемОфлайн.getInt(0);
                         Log.d(this.getClass().getName(), " СамоЗначениеIDПриработаетОфлайн " + СамоЗначениеIDПриработаетОфлайн);
                        ПубличноеIDПолученныйИзСервлетаДляUUID = СамоЗначениеIDПриработаетОфлайн;
-                        Log.d(this.getClass().getName(), " ПубличноеIDПолученныйИзСервлетаДляUUID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                        Log.d(this.getClass().getName(), " ID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
                         if(СамоЗначениеIDПриработаетОфлайн!=null){
                             break;
                         }

@@ -63,7 +63,7 @@ public class Class_Send_Generation_Errors {
 ///
 
 
-            Log.d(this.getClass().getName(), " ПубличноеIDПолученныйИзСервлетаДляUUID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+            Log.d(this.getClass().getName(), " ID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
 
 
         }

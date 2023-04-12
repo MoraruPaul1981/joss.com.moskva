@@ -196,8 +196,12 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
                                 ПрогрессБарДляВходаСистему.setVisibility(View.VISIBLE);// при нажатии делаем видимый програсссбар
                                 ПрогрессБарДляВходаСистему.refreshDrawableState();
                                 //TODO запукаем метод аунтификции
-                                МетодАунтификациисСервером(v);//// данный метод в будущем будет запускаться с  кнопк
-                                Log.d(this.getClass().getName(), " РеальныйПингСервера "+ РеальныйПингСервера) ;
+                                //TODO запукаем метод Афторизаиция по ЛОГИНУ И ПАРОЛЮ
+                                StringBuffer  БуферПолученнниеДанныхПолученияIDотСервера=new Class_MODEL_synchronized(getApplicationContext()).
+                                        методАвторизацииЛогинИПаполь(v,getApplicationContext(),preferences,СтрокаСвязиСсервером,ПубличноеЛогин,ПубличноеПароль);
+                                Log.d(this.getClass().getName(), " БуферПолученнниеДанныхПолученияIDотСервера "+ БуферПолученнниеДанныхПолученияIDотСервера) ;
+                                // TODO: 12.04.2023 Как получаем ответ от сервра сообщаем это пользователю 
+                                МетодПослеАунтификациисСервером(v);
                             }
                         } else {
                             Log.d(this.getClass().getName(), " Вы не заполнили Логин/Пароль ") ;
@@ -224,117 +228,13 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
     }
 
 
-    ////TODO САМ МЕТОД АУНТИФИКАЦИИ С СЕРВЕРОМ
-    private void МетодАунтификациисСервером(View v) {
-        Class_GRUD_SQL_Operations class_grud_sql_operationsАунтификация=new Class_GRUD_SQL_Operations(getApplicationContext());
-        try {
-            //////TODO Запуск асинхроного ЛОУДОРА ДЛЯ АУНТИФТИКАЦИИ ПОЛЬЗОВАТЕЛЯ
-            this.v=v;
-                PUBLIC_CONTENT public_content=   new PUBLIC_CONTENT(getApplicationContext());
-                String   ИмяСерверИзХранилица = preferences.getString("ИмяСервера","");
-                Integer    ПортСерверИзХранилица = preferences.getInt("ИмяПорта",0);
-                String ИмменоКакойСерверПодкючения ="http://"+ИмяСерверИзХранилица+":"+ПортСерверИзХранилица+"/";
-                //////TODO --операции
-                СтрокаСвязиСсервером = ИмменоКакойСерверПодкючения +new PUBLIC_CONTENT(getApplicationContext()).getСсылкаНаРежимСервераАунтификация()+ "?"
-                        + "ЗаданиеДляСервлетаВнутриПотока=Хотим Получить ID для Генерации  UUID";
-                СтрокаСвязиСсервером = СтрокаСвязиСсервером.replace(" ", "%20");
-                Log.d(this.getClass().getName(), " СтрокаСвязиСсервером " +СтрокаСвязиСсервером);
-                URL Adress = new URL(СтрокаСвязиСсервером); //
-            Log.d(this.getClass().getName(),  "СтрокаСвязиСсервером "+СтрокаСвязиСсервером+
-                    "ПубличноеПароль "+ПубличноеПароль+
-                    "СтрокаСвязиСсервером "+СтрокаСвязиСсервером
-                    + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber()+
-                    " Класс  :" + Thread.currentThread().getStackTrace()[2].getClassName());
-
-            // TODO: 11.03.2023  текст код
-            if (ПубличноеЛогин.length()>0 && ПубличноеПароль.length()>0 && СтрокаСвязиСсервером.length()>0) {
-                OkHttpClient okHttpClientИмяиПароль = new OkHttpClient().newBuilder().addInterceptor(new Interceptor() {
-                            @Override
-                            public Response intercept(Chain chain) throws IOException {
-                                String ANDROID_ID = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-                                // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
-                                Log.d(this.getClass().getName(), "  ПубличноеЛогин " + ПубличноеЛогин + " ПубличноеПароль " + ПубличноеПароль);
-                                Request originalRequest = chain.request();
-                                Request.Builder builder = originalRequest.newBuilder()
-                                        .header("Content-Type", "application/text; charset=UTF-8")
-                                        .header("Accept-Encoding", "gzip,deflate,sdch")
-                                        .header("Connection", "Keep-Alive")
-                                        .header("Accept-Language", "ru-RU")
-                                        .header("identifier", ПубличноеЛогин)
-                                        .header("p_identifier", ПубличноеПароль)
-                                        .header("id_device_androis", ANDROID_ID);
-                                Request newRequest = builder.build();
-                                return chain.proceed(newRequest);
-                            }
-                        }).connectTimeout(5, TimeUnit.SECONDS)
-                        .readTimeout(20, TimeUnit.SECONDS).build();
-                ///  MediaType JSON = MediaType.parse("application/json; charset=utf-16");
-                Request requestGET = new Request.Builder().get().url(Adress).build();
-                Log.d(this.getClass().getName(), "  request  " + requestGET);
-                // TODO  Call callGET = client.newCall(requestGET);
-                Dispatcher dispatcherПроверкаЛогиниПароль = okHttpClientИмяиПароль.dispatcher();
-                okHttpClientИмяиПароль.newCall(requestGET).enqueue(new Callback() {
-                    @Override
-                    public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                        Log.e(this.getClass().getName(), "  ERROR call  " + call + "  e" + e.toString());
-                        Log.e(Class_MODEL_synchronized.class.getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber() + " ОшибкаТекущегоМетода " + e.getMessage());
-                        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), Class_MODEL_synchronized.class.getName(),
-                                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        // TODO: 31.05.2022
-                        dispatcherПроверкаЛогиниПароль.executorService().shutdown();
-                        // TODO: 11.03.2023  ПОСЛЕ ПИНГА ПЕРЕХОДИМ
-                        МетодПослеАунтификациисСервером(v);
-                        //TODO закрываем п отоки
-                    }
-                    @Override
-                    public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                        try{
-                        if (response.isSuccessful()) {
-                            InputStream inputStreamОтПинга = response.body().source().inputStream();
-                            GZIPInputStream GZIPПотокОтСЕРВЕРА = new GZIPInputStream(inputStreamОтПинга);
-                            BufferedReader РидерОтСервераМетодаGET = new BufferedReader(new InputStreamReader(GZIPПотокОтСЕРВЕРА, StandardCharsets.UTF_16));//
-                            БуферПолученнниеДанныхПолученияIDотСервера = РидерОтСервераМетодаGET.lines().collect(StringBuffer::new, (sb, i) -> sb.append(i),
-                                    StringBuffer::append);
-                            Long РазмерПришедшегоПотока = Long.parseLong(   response.header("stream_size"));
-                            Log.d(this.getClass().getName(), "БуферПолученнниеДанныхПолученияIDотСервера " + БуферПолученнниеДанныхПолученияIDотСервера +  " РазмерПришедшегоПотока " +РазмерПришедшегоПотока);
-                            // TODO: 31.05.2022
-                            dispatcherПроверкаЛогиниПароль.executorService().shutdown();
-                            // TODO: 11.03.2023  ПОСЛЕ ПИНГА ПЕРЕХОДИМ
-                            МетодПослеАунтификациисСервером(v);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        ///метод запись ошибок в таблицу
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                    }
-                });
-                //TODO
-             /*   dispatcherПроверкаЛогиниПароль.executorService().awaitTermination(1,TimeUnit.MINUTES);
-                dispatcherПроверкаЛогиниПароль.cancelAll();*/
-            } else {
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            ///метод запись ошибок в таблицу
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
     private void МетодПослеАунтификациисСервером(View v)  {
         try{
         if (БуферПолученнниеДанныхПолученияIDотСервера.length() > 0) {
             if (!БуферПолученнниеДанныхПолученияIDотСервера.toString().trim() .matches("(.*)Don't Login and Password(.*)") ) {
                 ПубличноеIDПолученныйИзСервлетаДляUUID =Integer.parseInt(БуферПолученнниеДанныхПолученияIDотСервера.toString());
                 Log.d(this.getClass().getName(), "  ПроверкаПришёлЛиОтветОтСервлетаДляАунтификацииПользователя "
-                        + БуферПолученнниеДанныхПолученияIDотСервера + "  ПубличноеIDПолученныйИзСервлетаДляUUID " +ПубличноеIDПолученныйИзСервлетаДляUUID);
+                        + БуферПолученнниеДанныхПолученияIDотСервера + "  ID " +ПубличноеIDПолученныйИзСервлетаДляUUID);
                 Integer ПолученинныйПубличныйIDДлчЗаписиВБАзу=Integer.parseInt(БуферПолученнниеДанныхПолученияIDотСервера.toString());
                 Log.d(this.getClass().getName(), " ПолученинныйПубличныйIDДлчЗаписиВБАзу " +ПолученинныйПубличныйIDДлчЗаписиВБАзу);
                 // TODO: 11.03.2023 ПОСЛЕ УСПЕШНОГО ПЕРЕХОД НА АКТИВТИ
@@ -397,7 +297,7 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
             Log.d(this.getClass().getName(), " stopLoading() asyncTaskLoaderАунтификацияПользователя ");
             Intent Интент_ЗапускСамогоПриложенияЕслиПользовательПослеУспешнойаунтификации = new Intent();
             Интент_ЗапускСамогоПриложенияЕслиПользовательПослеУспешнойаунтификации.putExtra("РежимЗапускаСинхронизации","СамыйПервыйЗапускСинхронизации");
-            Интент_ЗапускСамогоПриложенияЕслиПользовательПослеУспешнойаунтификации.putExtra("ПубличноеIDПолученныйИзСервлетаДляUUID",ПубличноеIDПолученныйИзСервлетаДляUUID);
+            Интент_ЗапускСамогоПриложенияЕслиПользовательПослеУспешнойаунтификации.putExtra("ID",ПубличноеIDПолученныйИзСервлетаДляUUID);
             Интент_ЗапускСамогоПриложенияЕслиПользовательПослеУспешнойаунтификации.putExtra("ПубличноеИмяПользовательДлСервлета", ПубличноеЛогин);
             Интент_ЗапускСамогоПриложенияЕслиПользовательПослеУспешнойаунтификации.putExtra("ПубличноеПарольДлСервлета", ПубличноеПароль);
             Интент_ЗапускСамогоПриложенияЕслиПользовательПослеУспешнойаунтификации.putExtra("СтрокаСвязиСсервером",СтрокаСвязиСсервером);

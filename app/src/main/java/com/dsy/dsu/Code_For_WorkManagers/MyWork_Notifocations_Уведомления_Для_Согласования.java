@@ -851,7 +851,7 @@ public class MyWork_Notifocations_Уведомления_Для_Согласов
 
 
 
-                Log.w(this.getClass().getName(), "  ПубличноеIDПолученныйИзСервлетаДляUUID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                Log.w(this.getClass().getName(), "  ID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
 
 
             }

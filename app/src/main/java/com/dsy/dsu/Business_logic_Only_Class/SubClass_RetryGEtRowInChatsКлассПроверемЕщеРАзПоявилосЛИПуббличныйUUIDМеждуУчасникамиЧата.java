@@ -71,7 +71,7 @@ public class SubClass_RetryGEtRowInChatsКлассПроверемЕщеРАзП
             ///
             class_grud_sql_operations_ДляПовторногоПоискаПуцбличногоUUIDМеждуУчасникамиперпискиЧатаТекущего.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СамFreeSQLКОд",///viewchat
 
-         /*               " SELECT  * FROM viewchat  WHERE     id_user   =" + ПубличноеIDПолученныйИзСервлетаДляUUID +
+         /*               " SELECT  * FROM viewchat  WHERE     id_user   =" + ID +
                                 " ORDER BY  date_update  ASC ;");
 */
                     " SELECT uuid_parent FROM chats   WHERE id_user= " + ПолученыйIDДляЧата + "  AND  user_update=" + ПубличныйIDДляФрагмента + " ORDER BY  date_update  ASC ;");
@@ -182,7 +182,7 @@ public class SubClass_RetryGEtRowInChatsКлассПроверемЕщеРАзП
             ///
             class_grud_sql_operations_ДляПовторногоПоискаПуцбличногоUUIDМеждуУчасникамиперпискиЧатаТекущего.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СамFreeSQLКОд",///viewchat
 
-         /*               " SELECT  * FROM viewchat  WHERE     id_user   =" + ПубличноеIDПолученныйИзСервлетаДляUUID +
+         /*               " SELECT  * FROM viewchat  WHERE     id_user   =" + ID +
                                 " ORDER BY  date_update  ASC ;");
 */
                     " SELECT uuid FROM notifications   WHERE id_user= " + ПолученыйIDДляЧата + "  AND  user_update = " + ПубличныйIDДляФрагмента + " ORDER BY  date_update  ASC ;");

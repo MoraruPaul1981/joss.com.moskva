@@ -99,7 +99,7 @@ public class Class_Generation_UUID {
 ///
 
 
-                Log.d(this.getClass().getName(), " ПубличноеIDПолученныйИзСервлетаДляUUID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                Log.d(this.getClass().getName(), " ID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
 
 
             }
@@ -126,7 +126,7 @@ public class Class_Generation_UUID {
 
                     UUID = ПубличноеIDПолученныйИзСервлетаДляUUIDПромежуточный+СгенерированоДатаВТипеLongПромежуточный;// Integer.parseInt(UUIDФинал.trim());
 
-                    Log.i(this.getClass().getName(), " UUID " + UUID+ "  ПубличноеIDПолученныйИзСервлетаДляUUID "
+                    Log.i(this.getClass().getName(), " UUID " + UUID+ "  ID "
                             +ПубличноеIDПолученныйИзСервлетаДляUUID + " СгенерированоДатаВТипеLong " +СгенерированоДатаВТипеLong);
 
 

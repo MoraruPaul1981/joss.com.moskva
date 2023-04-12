@@ -270,7 +270,7 @@ public class Class_Engine_SQL extends Class_MODEL_synchronized {
     Integer МетодПолучениеIDотСервераДляГеренированиеUUID(String КакойРежимСинхрониазцииПерваяСинхронизациИлиПовторная) throws JSONException, InterruptedException, ExecutionException, TimeoutException {
         String ДанныеПришёлЛиIDДЛяГенерацииUUID = new String();
         Integer РезультатСинхрониазции=0;
-        ПубличноеIDПолученныйИзСервлетаДляUUID=0;
+        ID=0;
         try {
             Log.d(this.getClass().getName(), " public   void МетодПолучениеIDОтСервераДляГеренированиеUUID ()" + " ДанныеПришёлЛиIDДЛяГенерацииUUID " + ДанныеПришёлЛиIDДЛяГенерацииUUID +
                     " ДанныеПришёлЛиIDДЛяГенерацииUUID.length()  " + ДанныеПришёлЛиIDДЛяГенерацииUUID.length());
@@ -288,15 +288,15 @@ public class Class_Engine_SQL extends Class_MODEL_synchronized {
             StringBuffer БуферПолучениеДанных = new StringBuffer();
             if (Курсор_ВычисляемПУбличныйID.getCount() > 0) {
                 Курсор_ВычисляемПУбличныйID.moveToFirst();
-                ПубличноеIDПолученныйИзСервлетаДляUUID=Курсор_ВычисляемПУбличныйID.getInt(0);
-                Log.w(this.getClass().getName(), "  ПубличноеIDПолученныйИзСервлетаДляUUID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                ID=Курсор_ВычисляемПУбличныйID.getInt(0);
+                Log.w(this.getClass().getName(), "  ID " + ID);
             }
-            Log.w(this.getClass().getName(), "  ПубличноеIDПолученныйИзСервлетаДляUUID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+            Log.w(this.getClass().getName(), "  ID  " + ID);
             Курсор_ВычисляемПУбличныйID.close();
             // TODO: 09.09.2022  запускаем синхрониазцию 
-            if (ПубличноеIDПолученныйИзСервлетаДляUUID > 0) {
+            if (ID > 0) {
                 ////TODO создаем списко таблиц запускаем слуд.ющий метод получение версии базы данных
-                РезультатСинхрониазции = МетодПолучениеСпискаТаблицДляОбменаДанными(String.valueOf(ПубличноеIDПолученныйИзСервлетаДляUUID),
+                РезультатСинхрониазции = МетодПолучениеСпискаТаблицДляОбменаДанными(String.valueOf(ID),
                         КакойРежимСинхрониазцииПерваяСинхронизациИлиПовторная);//получаем ID для генерирования UUID
                 if (РезультатСинхрониазции == null) {
                     РезультатСинхрониазции = 0;
@@ -364,7 +364,7 @@ public class Class_Engine_SQL extends Class_MODEL_synchronized {
             // TODO: 03.09.2021
             if (БуферПолученияСпискаТАблицДляОбмена != null) {
                 if (БуферПолученияСпискаТАблицДляОбмена.toString().toCharArray().length > 3) {
-                    Log.d(this.getClass().getName(), "  ПубличноеIDПолученныйИзСервлетаДляUUID  " + ПубличноеIDПолученныйИзСервлетаДляUUID +
+                    Log.d(this.getClass().getName(), "  ID  " + ID +
                             " БуферПолученияСпискаТАблицДляОбмена " + БуферПолученияСпискаТАблицДляОбмена.toString());
                    JSONObject ОбьектыJSONТаблицыПришлиКонктетоНаЭтогоКлиента = new JSONObject(БуферПолученияСпискаТАблицДляОбмена.toString());///упаковываем в j
                     Log.d(this.getClass().getName(), "  ОбьектыJSONТаблицыПришлиКонктетоНаЭтогоКлиента  " +
@@ -4825,7 +4825,7 @@ public class Class_Engine_SQL extends Class_MODEL_synchronized {
                     PUBLIC_CONTENT public_content=   new PUBLIC_CONTENT(context);
                 // TODO: 21.09.2022 ОТПРАВЯЛЕТ ДАННЫЕ НА СЕРВЕР
                     БуферОтправкаДанныхвФоне = УниверсальныйБуферОтправкиДанныхНаСервера(ГенерацияJSONполейФиналДляОтправкиНаСеврерОтАндройда,
-                            ПубличноеIDПолученныйИзСервлетаДляUUID, имяТаблицыОтАндройда_локальноая,
+                            ID, имяТаблицыОтАндройда_локальноая,
                             "Получение JSON файла от Андройда",
                             60000, public_content.getАдресСервера() , public_content.getПортСервера());
                     ///БУФЕР ОТПРАВКИ ДАННЫХ НА СЕРВЕР  //TODO original "tabel.dsu1.ru", 8888        //TODO "192.168.254.40", 8080

@@ -43,7 +43,6 @@ import android.widget.Filter;
 import android.widget.FilterQueryProvider;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -73,6 +72,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
+import com.dsy.dsu.Business_logic_Only_Class.CELLUPDATE.SubClassUpdatesCELL;
 import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
@@ -280,11 +280,11 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     subClassSingleTabelRecycreView. методДляSimpeCallbacks();
 
             // TODO: 12.04.2023 Вторастипенные методы
-            message.getTarget().post(()->{
-                subClassSingleTabelRecycreView. МетодСлушательКурсора(cursor);
-                subClassSingleTabelRecycreView.  методWorkManagerLifecycleOwner();
-                subClassSingleTabelRecycreView.МетодСлушательRecycleView();
-            });
+            message.getTarget().postDelayed(()->{
+              //  subClassSingleTabelRecycreView. МетодСлушательКурсора(cursor);
+             //   subClassSingleTabelRecycreView.  методWorkManagerLifecycleOwner();
+               // subClassSingleTabelRecycreView.МетодСлушательRecycleView();
+            },2000);
 
                /*     message.getTarget().postDelayed(()->{
                         subClassSingleTabelRecycreView.  МетодСлушательRecycleView();
@@ -1350,7 +1350,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 Cursor    КурсорТаблицаПрофесии=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleПрофесии);
                                 Log.d(this.getClass().getName(), " КурсорТаблицаПрофесии" + КурсорТаблицаПрофесии);
                                 // TODO: 27.03.2023 Новый ПОсик
-                                new SubClassNewSearchAlertDialogНовыйПосик().МетодСообщениеНовыйПоиска(activity,КурсорТаблицаПрофесии ,message,"prof", CurrenrsСhildUUID);
+                                new SubClassSearchProfessia().МетодСообщениеНовыйПоиска(activity,КурсорТаблицаПрофесии ,message,"prof", CurrenrsСhildUUID);
                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
@@ -1623,7 +1623,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
 
 
-    class SubClassNewSearchAlertDialogНовыйПосик{
+    class SubClassSearchProfessia {
         Cursor cursorДанные;
         MaterialButton   alertDialogНовыйПосикКнопкаЗакрыть;
 
@@ -1802,7 +1802,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                             if (  searchViewДляНовогоПоиска.getQuery().toString().length()>5 ) {
                                 searchViewДляНовогоПоиска.setQuery("",true);
                                 searchViewДляНовогоПоиска.refreshDrawableState();
-                                Integer ПровйдерСменаПрофесии=   new SubClassUpdateSingletabel().   МетодЗаписиСменыПрофесии( (SearchView)  searchViewДляНовогоПоиска,getApplicationContext());
+                                Integer ПровйдерСменаПрофесии=     МетодЗаписиСменыПрофесии( (SearchView)  searchViewДляНовогоПоиска,getApplicationContext());
                                 if (ПровйдерСменаПрофесии>0) {
 
                                     // TODO: 30.03.2023 Курсор ALL Date
@@ -1937,6 +1937,37 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             }
             return  КурсорТаблицаПрофесииLike;
         }
+        // TODO: 12.04.2023 смена професси
+
+
+        Integer МетодЗаписиСменыПрофесии(@NonNull View searchViewДляНовогоПоиска, @NonNull Context context){ //TODO метод записи СМЕНЫ ПРОФЕСИИ
+            Integer ПровйдерСменаПрофесии=0;
+            try{
+                String ТаблицаОбработки="data_tabels";
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " searchViewДляНовогоПоиска "+searchViewДляНовогоПоиска+ " ТаблицаОбработки "+ТаблицаОбработки);
+                Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" +ТаблицаОбработки + "");
+                Bundle bundleСменаПрофессии= (Bundle)  searchViewДляНовогоПоиска.getTag();
+                ContentResolver contentResolver=context.getContentResolver();
+                Bundle bundleОбновлениеПрофесии=  contentResolver.call(uri,ТаблицаОбработки,ТаблицаОбработки,bundleСменаПрофессии);
+                ПровйдерСменаПрофесии=  bundleОбновлениеПрофесии.getInt(    "СтатусОбновления",0);
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" РЕЗУЛЬТАТ ПровйдерСменаПрофесии  " +  ПровйдерСменаПрофесии);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+            return  ПровйдерСменаПрофесии;
+        }
+
+
 
     }
 
@@ -1973,118 +2004,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
         }
     }
 
-    //TODO класс обновление Ячеек
-    class SubClassUpdateSingletabel{
-        Integer МетодЗаписиСменыПрофесии(@NonNull View searchViewДляНовогоПоиска,@NonNull Context context){ //TODO метод записи СМЕНЫ ПРОФЕСИИ
-            Integer ПровйдерСменаПрофесии=0;
-            try{
-                String ТаблицаОбработки="data_tabels";
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " searchViewДляНовогоПоиска "+searchViewДляНовогоПоиска+ " ТаблицаОбработки "+ТаблицаОбработки);
-                Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" +ТаблицаОбработки + "");
-                Bundle bundleСменаПрофессии= (Bundle)  searchViewДляНовогоПоиска.getTag();
-                ContentResolver contentResolver=getContentResolver();
-                Bundle bundleОбновлениеПрофесии=  contentResolver.call(uri,ТаблицаОбработки,ТаблицаОбработки,bundleСменаПрофессии);
-                ПровйдерСменаПрофесии=  bundleОбновлениеПрофесии.getInt(    "СтатусОбновления",0);
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" РЕЗУЛЬТАТ ПровйдерСменаПрофесии  " +  ПровйдерСменаПрофесии);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                        Thread.currentThread().getStackTrace()[2].getMethodName(),
-                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-            return  ПровйдерСменаПрофесии;
-        }
 
-        private View МетодВалидацияЯчеек(@NonNull View viewДанные) {
-            Integer ОбновлениеЯчейки=0;
-            try{
-                if (viewДанные!=null) {
-                    Log.d(this.getClass().getName(), " viewДанные" +  viewДанные);
-                    EditText editTextЯчейкаОбновление=(EditText)    viewДанные;
-
-                    List<Integer> ЛистДопустимоеСодержание = new ArrayList();
-                    IntStream.iterate(1, i -> i + 1).limit(24).forEachOrdered(ЛистДопустимоеСодержание::add);
-                    String ЗначениеИзЯчейки=editTextЯчейкаОбновление.getText().toString();
-                    boolean ФлагНовоеЗначение=        ЗначениеИзЯчейки.matches("(.*)[0-9](.*)");/////TODO   viewДанные.toString().matches("(.*)[^0-9](.*)");
-                    if(ФлагНовоеЗначение==true){
-                        ЗначениеИзЯчейки=   ЗначениеИзЯчейки.replaceAll("[^0-9]","");
-                        ЗначениеИзЯчейки =  ЗначениеИзЯчейки.substring(0, 1);
-                        if (   Integer.parseInt(editTextЯчейкаОбновление.getText().toString())>24) {
-                            Toast aa = Toast.makeText(getBaseContext(), "OPEN", Toast.LENGTH_LONG);
-                            ImageView cc = new ImageView(getBaseContext());
-                            cc.setImageResource(R.drawable.icon_dsu1_add_organisazio_error);//icon_dsu1_synchronisazia_dsu1_success
-                            aa.setView(cc);
-                            aa.show();
-                            Toast.makeText(getBaseContext(), "Нет сохранилось !!!"+
-                                    "\n"+" (Часы больше 24 ) :" +editTextЯчейкаОбновление.getText().toString(), Toast.LENGTH_SHORT).show();
-                        }else {
-                            editTextЯчейкаОбновление.setText(ЗначениеИзЯчейки);
-                            // TODO: 11.04.2023 Обновление Ячейки через ПРовайдер
-                        ОбновлениеЯчейки=    МетодСохранениеЯчейки(editTextЯчейкаОбновление,context);
-                        }
-                    }else {
-                        ЗначениеИзЯчейки.replaceAll("[0-9]","");
-                        ЗначениеИзЯчейки=   ЗначениеИзЯчейки.substring(0, 2);
-                        editTextЯчейкаОбновление.setText(ЗначениеИзЯчейки);
-                        // TODO: 11.04.2023 Обновление Ячейки через ПРовайдер
-                      ОбновлениеЯчейки=      МетодСохранениеЯчейки(editTextЯчейкаОбновление,context);
-
-                    }
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + " ФлагНовоеЗначение " +ФлагНовоеЗначение+
-                            " editTextЯчейкаОбновление.toString()" +  editTextЯчейкаОбновление.toString() + " ОбновлениеЯчейки " +ОбновлениеЯчейки);
-
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                Log.e(getApplicationContext().getClass().getName(), "С ОШИБКОЙ  Стоп СЛУЖБА СЛУЖБАService_Notifications  ДЛЯ ЧАТА   ДЛЯ ЧАТА onDestroy() время "+new Date());
-
-            }
-            return viewДанные;
-        }
-        Integer МетодСохранениеЯчейки(@NonNull EditText viewЯчейка,@NonNull Context context){ //TODO метод записи СМЕНЫ ПРОФЕСИИ
-            Integer ОбновлениеЯчейки=0;
-            try{
-                String ТаблицаОбработки="data_tabels";
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " searchViewДляНовогоПоиска "+viewЯчейка+ " ТаблицаОбработки "+ТаблицаОбработки);
-                Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" +ТаблицаОбработки + "");
-                Bundle bundleОбновлениеЯчейки= (Bundle)  viewЯчейка.getTag();
-
-                ContentValues contentValuesОбноленияЯчейкиSingleTanel=new ContentValues();
-                ContentResolver contentResolver=getContentResolver();
-                Uri urlОбновлениеПрофесии=  contentResolver.insert(uri, contentValuesОбноленияЯчейкиSingleTanel);
-                String ответОперцииВставки=    Optional.ofNullable(urlОбновлениеПрофесии).map(Emmeter->Emmeter.toString().replace("content://","")).get();
-                ОбновлениеЯчейки= Integer.parseInt(ответОперцииВставки);
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" РЕЗУЛЬТАТ ОбновлениеЯчейки  " +  ОбновлениеЯчейки);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                        Thread.currentThread().getStackTrace()[2].getMethodName(),
-                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-            return  ОбновлениеЯчейки;
-        }
-
-    }
 
 
 
@@ -2448,14 +2368,11 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
             private void МетодПерегрузкаSingletabel() {
                 try {
-                    messageRows.getTarget().postDelayed(()-> {
                         ProgressBarSingleTabel.setVisibility(View.INVISIBLE);
                         recyclerView.requestLayout();
                         recyclerView.refreshDrawableState();
-                        recyclerView.forceLayout();
                         constraintLayoutsingletabel.refreshDrawableState();
-                        constraintLayoutsingletabel.forceLayout();
-                    },200);
+                        constraintLayoutsingletabel.requestLayout();
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -2786,6 +2703,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 try {
                     // TODO: 11.04.2023 Ставим Дни
                     TextViewRowКликПоНазваниям.setText( ДниВыходные.get(s.trim()));
+                    TextViewRowКликПоНазваниям.setVisibility(View.VISIBLE);
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2800,7 +2718,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " ДниВыходные " +ДниВыходные);
                             // TODO: 11.04.2023  оформление вида
                             v.startAnimation(animationПрофессия300);
-                            v.setVisibility(View.VISIBLE);
                             // TODO: 11.04.2023 меняем Цвет и Убираем *** если празничные
 
 
@@ -2908,7 +2825,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                    // TODO: 06.04.2023 Принимаем Решение Если ДАные РАзные ЗАпускаем Обновление
                     if (      !EditTextДАнные.equalsIgnoreCase(ЗначениеДняTag)) {
                         // TODO: 11.04.2023 Оперция Обновлнения ЯЧЕЕК
-                        SubClassUpdateSingletabel subClassUpdateSingletabel=new SubClassUpdateSingletabel();
+                        SubClassUpdatesCELL subClassUpdateSingletabel=new SubClassUpdatesCELL(getApplicationContext());
 
                         subClassUpdateSingletabel.МетодВалидацияЯчеек(v);
                         Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

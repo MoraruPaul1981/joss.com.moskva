@@ -138,7 +138,7 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
 
             new CONTROLLER(getActivity()).  МетодРегистрацииУстройсвоНАFirebaseAndOneSignal();
 
-            Log.d(this.getClass().getName(), "  ПубличноеIDПолученныйИзСервлетаДляUUID   " +ПубличноеIDПолученныйИзСервлетаДляUUID);
+            Log.d(this.getClass().getName(), "  ID   " +ПубличноеIDПолученныйИзСервлетаДляUUID);
 
 
 
@@ -152,18 +152,18 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
 
 
 
-            Log.d(this.getClass().getName(), "  ПубличноеIDПолученныйИзСервлетаДляUUID   " +ПубличноеIDПолученныйИзСервлетаДляUUID);
+            Log.d(this.getClass().getName(), "  ID   " +ПубличноеIDПолученныйИзСервлетаДляUUID);
 
 
             // TODO: 04.11.2021   ЗАПУСКАЕМ СИНХРОНИАХЦИИЮ  через ONESIGNAL
 
             modelФрагментСообщениия.МетодПодписываемсяОдноразовыйСлушателяСлужбыОбюмена();
 
-            Log.d(this.getClass().getName(), "  ПубличноеIDПолученныйИзСервлетаДляUUID   " +ПубличноеIDПолученныйИзСервлетаДляUUID);
+            Log.d(this.getClass().getName(), "  ID   " +ПубличноеIDПолученныйИзСервлетаДляUUID);
 
             modelФрагментСообщениия.МетодЗапускаОБЩЕЙСлушателяОбщегоWorkManager();
 
-            Log.d(this.getClass().getName(), "  ПубличноеIDПолученныйИзСервлетаДляUUID   " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+            Log.d(this.getClass().getName(), "  ID   " + ПубличноеIDПолученныйИзСервлетаДляUUID);
 
 
             new Fragment_Messages_СообщенияЧата.MODEL(getActivity());
@@ -522,7 +522,7 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
 
                             Log.d(this.getClass().getName(), "  IDдляпервогоФрагментаПользовательКоторыйНаписал  "
                                     + IDдляпервогоФрагментаПользовательКоторыйНаписал +
-                                    " ПубличноеIDПолученныйИзСервлетаДляUUID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                                    " ID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
 
 
 
@@ -530,7 +530,7 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
 
 
                                 Log.d(this.getClass().getName(), "  IDдляпервогоФрагментаПользовательКоторыйНаписал  " + IDдляпервогоФрагментаПользовательКоторыйНаписал +
-                                        " ПубличноеIDПолученныйИзСервлетаДляUUID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                                        " ID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
 
 
                                 //TODO ПЕРВОЕ ДЕЙСТВИЕ  Я НАПИСАЛ  ДЕЙСТВИЕ МНЕ НАПИСАЛИ ДРУГИЕ УЧАСТИК ЧАТА   #1
@@ -543,7 +543,7 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
                                 Log.d(this.getClass().getName(), "  ФИОдляпервогоФрагмента  " + ФИОдляпервогоФрагмента
                                         + " IDдляпервогоФрагментаПользовательКоторыйНаписал "
                                         + IDдляпервогоФрагментаПользовательКоторыйНаписал +
-                                        " ПубличноеIDПолученныйИзСервлетаДляUUID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                                        " ID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
 
 
                                 //TODO ПЕРВОЕ ДЕЙСТВИЕ  Я НАПИСАЛ  ДЕЙСТВИЕ МНЕ НАПИСАЛИ ДРУГИЕ УЧАСТИК ЧАТА   #1
@@ -551,7 +551,7 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
                                 // TODO: 21.12.2021
 
                                 Log.d(this.getClass().getName(), " I DдляпервогоФрагментаДляСообщенияTag " + UUIDдляпервогоФрагментаДляСообщенияTagДляПередачиВоДругиеФрагменты+
-                                        " ПубличноеIDПолученныйИзСервлетаДляUUID " +ПубличноеIDПолученныйИзСервлетаДляUUID);
+                                        " ID " +ПубличноеIDПолученныйИзСервлетаДляUUID);
 
                                 //TODO ОпеределяемСтарусЕслиХотьОднаНЕпрочитаное Союощение ДяТекущегоПользователя У каждого кто ему НАПИСАЛ
 
@@ -610,7 +610,7 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
 
 
                             Log.d(this.getClass().getName(), "  IDдляпервогоФрагментаПользовательКоторыйНаписал  " + IDдляпервогоФрагментаПользовательКоторыйНаписал +
-                                    " ПубличноеIDПолученныйИзСервлетаДляUUID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                                    " ID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
 
 
 
@@ -684,14 +684,14 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
                             //    view.setFontFeatureSettings(String.valueOf(IDдляпервогоФрагментаПользовательКоторыйНаписал));
 
                                 // TODO: 14.02.2022
-                                Log.d(this.getClass().getName(), "  ПубличноеIDПолученныйИзСервлетаДляUUID  " + ПубличноеIDПолученныйИзСервлетаДляUUID + " \n" +
+                                Log.d(this.getClass().getName(), "  ID  " + ПубличноеIDПолученныйИзСервлетаДляUUID + " \n" +
                                         "  IDдляпервогоФрагментаПользовательКоторыйНаписал  " + IDдляпервогоФрагментаПользовательКоторыйНаписал+ " ЛистДополнительныеПрарментыID " +
                                         ЛистДополнительныеПрарментыID.toArray().toString()
                                         + "ЛистДополнительныеПрарменты_UUID.toArray().toString()  " +ЛистДополнительныеПрарменты_UUID.toArray().toString() );
                             }
 
 
-                            Log.d(this.getClass().getName(), "  ПубличноеIDПолученныйИзСервлетаДляUUID  " + ПубличноеIDПолученныйИзСервлетаДляUUID + " \n" +
+                            Log.d(this.getClass().getName(), "  ID  " + ПубличноеIDПолученныйИзСервлетаДляUUID + " \n" +
                                     "  IDдляпервогоФрагментаПользовательКоторыйНаписал  " + IDдляпервогоФрагментаПользовательКоторыйНаписал);
 
                             // TODO: 21.12.2021
@@ -793,7 +793,7 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
 
                         try{
 
-                            Log.d(this.getClass().getName(), "ПолученныйUUIDСтчрокиКтоМнеНАписал " + ПолученныйUUIDСтчрокиКтоМнеНАписал  + " ПубличноеIDПолученныйИзСервлетаДляUUID " +ПубличноеIDПолученныйИзСервлетаДляUUID);
+                            Log.d(this.getClass().getName(), "ПолученныйUUIDСтчрокиКтоМнеНАписал " + ПолученныйUUIDСтчрокиКтоМнеНАписал  + " ID " +ПубличноеIDПолученныйИзСервлетаДляUUID);
 
 
                             Class_GRUD_SQL_Operations       class_grud_sql_operationsCтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате=new Class_GRUD_SQL_Operations(getContext());
@@ -1618,7 +1618,7 @@ try {
                     //////////////
                     ПубличноеIDПолученныйИзСервлетаДляUUID = Курсор_ВычисляемПУбличныйID.getInt(0);
                     //////
-                    Log.d(this.getClass().getName(), "ПубличноеIDПолученныйИзСервлетаДляUUID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                    Log.d(this.getClass().getName(), "ID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
 
                 }
 
@@ -1628,7 +1628,7 @@ try {
 
                 //  TimeUnit.MILLISECONDS.sleep(100);
 
-                Log.d(this.getClass().getName(), "  MODEL  ПубличноеIDПолученныйИзСервлетаДляUUID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                Log.d(this.getClass().getName(), "  MODEL  ID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
 
 
                 // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
@@ -1681,7 +1681,7 @@ try {
                 ///
                 class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СамFreeSQLКОд",///viewchat
 
-         /*               " SELECT  * FROM viewchat  WHERE     id_user   =" + ПубличноеIDПолученныйИзСервлетаДляUUID +
+         /*               " SELECT  * FROM viewchat  WHERE     id_user   =" + ID +
                                 " ORDER BY  date_update  ASC ;");
 */
                         // " SELECT  * FROM chats WHERE id_user  = "+ПубличныйIDДляФрагмента +"  ORDER BY  date_update  ASC ;");
@@ -1884,7 +1884,7 @@ try {
 ///
 
 
-                    Log.d(this.getClass().getName(), " ПубличноеIDПолученныйИзСервлетаДляUUID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                    Log.d(this.getClass().getName(), " ID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
 
 
                 }

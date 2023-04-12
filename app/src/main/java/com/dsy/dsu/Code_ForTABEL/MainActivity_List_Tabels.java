@@ -592,7 +592,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                     LinearLayoutСозданныхТабелей.removeAllViews();
                     LinearLayoutСозданныхТабелей.forceLayout();
                 } catch (Exception e) {}
-                    Log.d(this.getClass().getName(), " ПубличноеIDПолученныйИзСервлетаДляUUID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                    Log.d(this.getClass().getName(), " ID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
 
                         class_grud_sql_operationsДляАктивтиТабель= new Class_GRUD_SQL_Operations(getApplicationContext());
                         class_grud_sql_operationsДляАктивтиТабель. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СамFreeSQLКОд",
@@ -606,7 +606,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                         if(Курсор_ПолучаемПубличныйID.getCount()>0){
                             Курсор_ПолучаемПубличныйID.moveToFirst();
                             ПубличноеIDПолученныйИзСервлетаДляUUID=         Курсор_ПолучаемПубличныйID.getInt(0);
-                            Log.d(this.getClass().getName(), " ПубличноеIDПолученныйИзСервлетаДляUUID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                            Log.d(this.getClass().getName(), " ID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
                         }
                         if(Курсор_ПолучаемПубличныйID != null && !Курсор_ПолучаемПубличныйID.isClosed()) {
                             Курсор_ПолучаемПубличныйID.close();

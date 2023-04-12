@@ -1148,7 +1148,7 @@ try{
 
 
 
-                Log.w(this.getClass().getName(), "  ПубличноеIDПолученныйИзСервлетаДляUUID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                Log.w(this.getClass().getName(), "  ID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
 
 
             }

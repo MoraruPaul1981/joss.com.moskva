@@ -2,6 +2,7 @@ package com.dsy.dsu.Business_logic_Only_Class;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteCursor;
@@ -10,6 +11,8 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 
 import com.dsy.dsu.Business_logic_Only_Class.DATE.Class_Generation_Data;
@@ -71,7 +74,7 @@ import okio.BufferedSink;
     public Cipher ПолитикаШифрование;
     ///////
     public Cipher ПолитикаРасшифровки;*/
-    public Integer ПубличноеIDПолученныйИзСервлетаДляUUID = 0;
+    public Integer ID = 0;
     public CREATE_DATABASE Create_Database_СсылкаНАБазовыйКласс;
     public Class_MODEL_synchronized(  @NotNull Context context) {
         super(context);
@@ -92,15 +95,13 @@ import okio.BufferedSink;
 
 
     ///МЕТОД ПОЛУЧЕНИЕ ДАННЫХ С СЕРВЕРА
-    public StringBuffer МетодУниверсальныйДанныесСервера(String ПУбличныйИмяТаблицыОтАндройдаВнутриПотока,
-                                                         String КонкретнаяТаблицаВПотокеВнутриПотока,
-                                                         String МакАдресТелефонаВнутриПотока,
-                                                         String ТипОтветаTEXTилиJSONВнутриПотока,
-                                                         String ЗаданиеДляСервлетаВнутриПотока,
-                                                         Long ВерсииДанныхНаАндройдеСерверная,
-                                                         String IDДляПолучениеКонткртнойНабораТаблиц,
-                                                         Long РезультаПолученаяЛокальнаяВерсияДанныхДляОтправкиНаСервер,
-                                                         String ИмяСервера, Integer ИмяПорта,String СсылкаНаТекущийСервер) {
+    public StringBuffer МетодУниверсальныйДанныесСервера(String ИмяТаблицы,
+                                                         String Тип,
+                                                         String JobForServer,
+                                                         Long Версия,
+                                                         Integer ID,
+                                                         String ИмяСервера,
+                                                         Integer ИмяПорта) {
 
         final StringBuffer[] БуферСамиДанныеОтСервера = {new StringBuffer()};
         try {
@@ -109,13 +110,11 @@ import okio.BufferedSink;
             Log.d(this.getClass().getName(), "   СтрокаСвязиСсервером "+  СтрокаСвязиСсервером);
             String Adress_String = new String();
             String Params = new String();
-            Adress_String = СтрокаСвязиСсервером +СсылкаНаТекущийСервер;
-            Params = "?" + "ИмяТаблицыОтАндройда= " + ПУбличныйИмяТаблицыОтАндройдаВнутриПотока + "&" + "КонкретнаяТаблицаВПотоке=" + КонкретнаяТаблицаВПотокеВнутриПотока + ""
-                    + "&" + "МакАдресТелефона=" + МакАдресТелефонаВнутриПотока + "" +
-                    "&" + "ЗаданиеДляСервлетаВнутриПотока=" + ЗаданиеДляСервлетаВнутриПотока + "" + "&" + "ДатаНаДанныеВнутриПотока=" + ВерсииДанныхНаАндройдеСерверная + ""
-                    + "&" + "IDДляПолучениеКонткртнойНабораТаблиц=" + IDДляПолучениеКонткртнойНабораТаблиц + ""
-                    + "&" + "РезультаПолученаяЛокальнаяВерсияДанныхДляОтправкиНаСервер=" + РезультаПолученаяЛокальнаяВерсияДанныхДляОтправкиНаСервер + "";
-            Log.d(this.getClass().getName(), " Params" + Params  + " СсылкаНаТекущийСервер " +СсылкаНаТекущийСервер);
+            Adress_String = СтрокаСвязиСсервером +ИмяСервера;
+            Params = "?" + "NameTable= " + ИмяТаблицы.trim() +
+                    "&" + "JobForServer=" + JobForServer.trim() + ""
+                    + "&" + "IdUser=" + ID + ""
+                    + "&" + "VersionData=" + Версия + "";
             Adress_String = Adress_String + Params;
             Adress_String = Adress_String.replace(" ", "%20");
             URL Adress = new URL(Adress_String);
@@ -151,7 +150,7 @@ import okio.BufferedSink;
                             Log.d(this.getClass().getName(), "  ПубличноеЛогин " + ПубличноеЛогин + " ПубличноеПароль " + ПубличноеПароль+" ANDROID_ID "+ANDROID_ID);
                             Request originalRequest = chain.request();
                             Request.Builder builder = originalRequest.newBuilder()
-                                    .header("Content-Type", ТипОтветаTEXTилиJSONВнутриПотока + " ;charset=UTF-8")
+                                    .header("Content-Type", Тип + " ;charset=UTF-8")
                                     .header("Accept-Encoding", "gzip,deflate,sdch")
                                     .header("Connection", "Keep-Alive")
                                     .header("Accept-Language", "ru-RU")
@@ -161,7 +160,7 @@ import okio.BufferedSink;
                             Request newRequest = builder.build();
                             return chain.proceed(newRequest);
                         }
-                    }).connectTimeout(5, TimeUnit.SECONDS)
+                    }).connectTimeout(2, TimeUnit.SECONDS)
                     .readTimeout(55, TimeUnit.SECONDS).build();
             ///  MediaType JSON = MediaType.parse("application/json; charset=utf-16");
             Request requestGET = new Request.Builder().get().url(Adress).build();
@@ -220,17 +219,13 @@ import okio.BufferedSink;
 
     //todo #GET     //#GET  только для ПИНГА     //#GET  только для ПИНГА  //#GET  только для ПИНГА //#GET  только для ПИНГА //#GET  только для ПИНГА //#GET  только для ПИНГА //#GET  только для ПИНГА //#GET  только для ПИНГА
     ///МЕТОД ПОЛУЧЕНИЕ ДАННЫХ С СЕРВЕРА
-    public Integer МетодУниверсальногоПинга(String ПУбличныйИмяТаблицыОтАндройдаВнутриПотока,
-                                            String КонкретнаяТаблицаВПотокеВнутриПотока,
-                                            String МакАдресТелефонаВнутриПотока,
-                                            String ТипОтветаTEXTилиJSONВнутриПотока,
-                                            String ЗаданиеДляСервлетаВнутриПотока,
-                                            Long ВерсииДанныхНаАндройдеСерверная,
-                                            String IDДляПолучениеКонткртнойНабораТаблиц
-                                           , int ВремяЗакотороеСерверБудетЗагружатьДанные,
-                                            String ФлагТОлькоДлПолученияСтрочекТаблицыССерера,
-                                            Long РезультаПолученаяЛокальнаяВерсияДанныхДляОтправкиНаСервер,
-                                            String ИмяСервера, Integer ИмяПорта) throws IOException,
+    public Integer МетодУниверсальногоПинга(String NameTable,
+                                            String Тип ,
+                                            String JobForServer,
+                                            Long VersionData,
+                                            Integer IdUser,
+                                            String ИмяСервера,
+                                            Integer ИмяПорта) throws IOException,
             ExecutionException, InterruptedException, TimeoutException, NoSuchAlgorithmException,
             KeyManagementException, InvalidKeyException, NoSuchPaddingException {
         final Integer[] РазмерПришедшегоПотока = {0};
@@ -242,11 +237,10 @@ import okio.BufferedSink;
             String Adress_String = new String();
             String Params = new String();
             Adress_String = СтрокаСвязиСсервером + new PUBLIC_CONTENT(context).getСсылкаНаРежимСервераRuntime();///СТРОЧКА УКАЗЫВАЕТ НА КАКОЙ СЕРВЕЛ НА СЕРВЕР МЫ БУДЕМ СТУЧАТЬСЯ /// 80.66.149.58 /// dsu1.glassfish/DSU1JsonServlet
-            Params = "?" + "ИмяТаблицыОтАндройда= " + ПУбличныйИмяТаблицыОтАндройдаВнутриПотока + "&" + "КонкретнаяТаблицаВПотоке=" + КонкретнаяТаблицаВПотокеВнутриПотока + ""
-                    + "&" + "МакАдресТелефона=" + МакАдресТелефонаВнутриПотока + "" +
-                    "&" + "ЗаданиеДляСервлетаВнутриПотока=" + ЗаданиеДляСервлетаВнутриПотока + "" + "&" + "ДатаНаДанныеВнутриПотока=" + ВерсииДанныхНаАндройдеСерверная + ""
-                    + "&" + "IDДляПолучениеКонткртнойНабораТаблиц=" + IDДляПолучениеКонткртнойНабораТаблиц + ""
-                    + "&" + "РезультаПолученаяЛокальнаяВерсияДанныхДляОтправкиНаСервер=" + РезультаПолученаяЛокальнаяВерсияДанныхДляОтправкиНаСервер + "";
+            Params = "?" + "NameTable= " + NameTable.trim() +
+                    "&" + "JobForServer=" + JobForServer.trim() + ""+
+                    "&" + "IdUser=" + IdUser + ""
+                    + "&" + "VersionData=" + VersionData + "";
             Log.d(this.getClass().getName(), " Params" + Params);
             Adress_String = Adress_String + Params;
             Log.d(this.getClass().getName(), "Adress_String " + Adress_String);
@@ -285,7 +279,7 @@ import okio.BufferedSink;
                                     " PUBLIC_CONTENT.ПубличноеПарольДлСервлета " + ПубличноеПароль);
                             Request originalRequest = chain.request();
                             Request.Builder builder = originalRequest.newBuilder()
-                                    .header("Content-Type", ТипОтветаTEXTилиJSONВнутриПотока + " ;charset=UTF-8")
+                                    .header("Content-Type", Тип + " ;charset=UTF-8")
                                     .header("Accept-Encoding", "gzip,deflate,sdch")
                                     .header("Connection", "Keep-Alive")
                                     .header("Accept-Language", "ru-RU")
@@ -295,7 +289,7 @@ import okio.BufferedSink;
                             Request newRequest = builder.build();
                             return chain.proceed(newRequest);
                         }
-                    }).connectTimeout(5, TimeUnit.SECONDS)
+                    }).connectTimeout(2, TimeUnit.SECONDS)
                     .readTimeout(20, TimeUnit.SECONDS).build();
             ///  MediaType JSON = MediaType.parse("application/json; charset=utf-16");
             Request requestGET = new Request.Builder().get().url(Adress).build();
@@ -401,11 +395,11 @@ import okio.BufferedSink;
 
     ///////метод ОТПРАВКИ ДАННЫХ НА СЕРВЕР
     public StringBuffer УниверсальныйБуферОтправкиДанныхНаСервера(@NonNull String СгенерированыйФайлJSONДляОтправкиНаСервер,
-                                                                  Integer ПУбличныйИмяТаблицыМетодPOST,
-                                                                  String ПубличноеИмяПользовательМетодPOST,
-                                                                  String ЗаданиеДляСервлета,
-                                                                  int ВремяЗакотороеСерверБудетЗагружатьДанные,
-                                                                  String ИмяСервера, Integer ИмяПорта)  {
+                                                                  @NonNull Integer ID,
+                                                                  @NonNull String Таблица,
+                                                                  @NonNull  String JobForServer,
+                                                                  @NonNull   String ИмяСервера,
+                                                                  Integer ИмяПорта)  {
 
         final StringBuffer[] БуферCallsBackОтСеврера = {new StringBuffer()};
                 try {
@@ -415,8 +409,9 @@ import okio.BufferedSink;
                     String Adress_String = new String();
                     Adress_String = СтрокаСвязиСсервером +new PUBLIC_CONTENT(context).getСсылкаНаРежимСервераТабель();
                     String Params = new String();
-                    Params = "?" + "ИмяТаблицыОтАндройда=" + ПубличноеИмяПользовательМетодPOST + "&" + "СотрудникТаблицыОтАндройда=" + ПУбличныйИмяТаблицыМетодPOST +
-                            "&" + "ЗаданиеДляСервлетаВнутриПотока=" + ЗаданиеДляСервлета + "";
+                    Params = "?" + "NameTable=" + Таблица.trim() + "&"
+                            + "IdUser=" + ID +
+                            "&" + "JobForServer=" + JobForServer.trim() + "";
                     Adress_String = Adress_String + Params;
                     Adress_String = Adress_String.replace(" ", "%20");
                     Log.d(this.getClass().getName(), " Adress_String " + Adress_String);
@@ -462,7 +457,7 @@ import okio.BufferedSink;
                                     Request newRequest = builder.build();
                                     return chain.proceed(newRequest);
                                 }
-                            }).connectTimeout(5, TimeUnit.SECONDS)
+                            }).connectTimeout(2, TimeUnit.SECONDS)
                             .writeTimeout(20, TimeUnit.SECONDS)
                             .readTimeout(20, TimeUnit.SECONDS).build();
                     ///  MediaType JSON = MediaType.parse("application/json; charset=utf-16");
@@ -554,178 +549,6 @@ import okio.BufferedSink;
                 }
         return БуферCallsBackОтСеврера[0];
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//# UNIVERSAL CURSOR//# UNIVERSAL CURSOR//# UNIVERSAL CURSOR//# UNIVERSAL CURSOR//# UNIVERSAL CURSOR//# UNIVERSAL CURSOR//# UNIVERSAL CURSOR//# UNIVERSAL CURSOR//# UNIVERSAL CURSOR//# UNIVERSAL CURSOR//# UNIVERSAL CURSOR//# UNIVERSAL CURSOR//# UNIVERSAL CURSOR//# UNIVERSAL CURSOR
-
-
-/*    //УНИВЕРСАЛЬНЫЙ КУРСОР С ПАРАМЕТРАМИ
-    Cursor КурсорУниверсальныйДляБазыДанных(String таблица, String[] колонки, String фильтр, String[] условияфильтра, String групировка, String хэвинг, String ордербай, String лимиты)
-            throws ExecutionException, InterruptedException, TimeoutException {
-////
-
-
-
-
-        ////
-        Cursor Курсор_Универсальный = null;
-        ///////ПОПЫТКА ПОДКЛЮЧЧЕНИЕ К ИНТРЕНТУ
-
-        Log.i(this.getClass().getName(), "  колонки " + колонки.length);
-        try {
-            ////TODO сам курсор универсальный
-            Курсор_Универсальный = ССылкаНаСозданнуюБазу.query(true, таблица, колонки, фильтр, условияфильтра, групировка, хэвинг, ордербай, лимиты); //todo включен dictict
-            /////НАЗВАНИЕ ПОТОКА
-
-            Log.i(this.getClass().getName(), "НАЗВАНИЕ ПОТОКА В aSYNSTASK " + Thread.currentThread().getName().toUpperCase()
-                    + " Курсор_Универсальный строчки :   " + Курсор_Универсальный.getCount() + " Курсор_Универсальный колонки  : "
-                    + Курсор_Универсальный.getColumnCount() + "  таблица " + таблица);
-////
-        } catch (Exception e) {///////ошибки
-            e.printStackTrace();
-            ///метод запись ошибок в таблицу
-            Log.e(Class_MODEL_synchronized.class.getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(contextСозданиеБАзы).МетодЗаписиВЖурналНовойОшибки(e.toString(), Class_MODEL_synchronized.class.getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-
-
-
-        //// todo get ASYNtASK
-        return Курсор_Универсальный;
-    }*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-    //TODO УНИВЕРСАЛЬНЫЙ КУРСОР  БЕЗ ПАРАМЕТРАМИ
-
-
-    Cursor КурсорУниверсальныйБазыДанных(String ПишемЧистыйSQL) throws ExecutionException, InterruptedException, TimeoutException {
-        ////////////////////////////////////////////////////
-        ///////ПОПЫТКА ПОДКЛЮЧЧЕНИЕ К ИНТРЕНТУ
-
-        ////
-
-
-
-        System.out.println(" КурсорУниверсальныйБазыДанных , null");
-        Cursor Курсор_Универсальный = null;
-        String ОшибкаТекущегоМетода;
-        //  Cursor cursor = db.rawQuery("SELECT name, amount FROM accounts WHERE name = ?", new String[]{"Lucy"});
-        try {
-            Курсор_Универсальный = ССылкаНаСозданнуюБазу.rawQuery(ПишемЧистыйSQL, null);
-            /////НАЗВАНИЕ ПОТОКА
-            Log.i(this.getClass().getName(), "НАЗВАНИЕ ПОТОКА В aSYNSTASK " + Thread.currentThread().getName().toUpperCase());
-            /////
-        } catch (Exception e) {///////ошибки
-            e.printStackTrace();
-            ///метод запись ошибок в таблицу
-            ОшибкаТекущегоМетода = e.toString();
-            Log.e(Class_MODEL_synchronized.class.getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(contextСозданиеБАзы).МетодЗаписиВЖурналНовойОшибки(e.toString(), Class_MODEL_synchronized.class.getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-
-        //// todo get ASYNtASK
-        return Курсор_Универсальный;
-
-    }
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     ////--- TODO ТУТ НАХОДЯТЬСЯ КОНТЕРЙНЕРЫ ДЛЯ ВСТАВКИ И ОБНОВЛЕНИИ ДАННЫХ  ЧЕРЕЗ КОНТЕЙНЕРЫ
 
@@ -2240,10 +2063,10 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                         Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.moveToFirst();
 
                         /////
-                        ПубличноеIDПолученныйИзСервлетаДляUUID=         Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.getInt(0);
+                        ID =         Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.getInt(0);
 
 
-                        Log.d(this.getClass().getName(), " ПубличноеIDПолученныйИзСервлетаДляUUID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                        Log.d(this.getClass().getName(), " ID  " + ID);
                     }
 
 
@@ -2262,7 +2085,7 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                     ////////
                     class_grud_sql_operationsЗаписываемВыбранныйРежимИнтрернетаWifiИлиMobil.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("Флаг_ЧерезКакоеПолеОбновлением","id");
                     ////////
-                    class_grud_sql_operationsЗаписываемВыбранныйРежимИнтрернетаWifiИлиMobil.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ЗначениеФлагОбновления",ПубличноеIDПолученныйИзСервлетаДляUUID);
+                    class_grud_sql_operationsЗаписываемВыбранныйРежимИнтрернетаWifiИлиMobil.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ЗначениеФлагОбновления", ID);
 
 //
 
@@ -2279,7 +2102,7 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
 
 
 
-                    ВставляемВБАзуВыбранныйРежимИнтренета.put("id", ПубличноеIDПолученныйИзСервлетаДляUUID);
+                    ВставляемВБАзуВыбранныйРежимИнтренета.put("id", ID);
 
                     ВставляемВБАзуВыбранныйРежимИнтренета.put(Поля, ПередаваемыйРежимИнтрентета);
 
@@ -3178,7 +3001,7 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                                     Request newRequest = builder.build();
                                     return chain.proceed(newRequest);
                                 }
-                            }).connectTimeout(5, TimeUnit.SECONDS)
+                            }).connectTimeout(2, TimeUnit.SECONDS)
                             .readTimeout(2, TimeUnit.MINUTES).build();
                     ///  MediaType JSON = MediaType.parse("application/json; charset=utf-16");
                     Request requestGET = new Request.Builder().get().url(Adress).build();
@@ -3550,6 +3373,113 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
             return false;
         }
 
+    }
+
+
+
+    ////TODO САМ МЕТОД АУНТИФИКАЦИИ С СЕРВЕРОМ
+    public StringBuffer методАвторизацииЛогинИПаполь(@NonNull View v,
+                                                     @NonNull Context context,
+                                                     @NonNull SharedPreferences preferences
+            , @NonNull String СтрокаСвязиСсервером,
+                                                     @NonNull String ПубличноеЛогин,
+                                                     @NonNull String ПубличноеПароль) {
+
+
+        final StringBuffer[] БуферПолученнниеДанныхПолученияIDотСервера = {new StringBuffer()};
+        try {
+            Class_GRUD_SQL_Operations class_grud_sql_operationsАунтификация=new Class_GRUD_SQL_Operations(context);
+            //////TODO Запуск асинхроного ЛОУДОРА ДЛЯ АУНТИФТИКАЦИИ ПОЛЬЗОВАТЕЛЯ
+            PUBLIC_CONTENT public_content=   new PUBLIC_CONTENT(context);
+            String   ИмяСерверИзХранилица = preferences.getString("ИмяСервера","");
+            Integer    ПортСерверИзХранилица = preferences.getInt("ИмяПорта",0);
+            String ИмменоКакойСерверПодкючения ="http://"+ИмяСерверИзХранилица+":"+ПортСерверИзХранилица+"/";
+            //////TODO --операции
+            СтрокаСвязиСсервером = ИмменоКакойСерверПодкючения +new PUBLIC_CONTENT(context).getСсылкаНаРежимСервераАунтификация()+ "?"
+                    + "ЗаданиеДляСервлетаВнутриПотока=Хотим Получить ID для Генерации  UUID";
+            СтрокаСвязиСсервером = СтрокаСвязиСсервером.replace(" ", "%20");
+            Log.d(this.getClass().getName(), " СтрокаСвязиСсервером " +СтрокаСвязиСсервером);
+            URL Adress = new URL(СтрокаСвязиСсервером); //
+            Log.d(this.getClass().getName(),  "СтрокаСвязиСсервером "+СтрокаСвязиСсервером+
+                    "ПубличноеПароль "+ПубличноеПароль+
+                    "СтрокаСвязиСсервером "+СтрокаСвязиСсервером
+                    + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber()+
+                    " Класс  :" + Thread.currentThread().getStackTrace()[2].getClassName());
+
+            // TODO: 11.03.2023  текст код
+            if (ПубличноеЛогин.length()>0 && ПубличноеПароль.length()>0 && СтрокаСвязиСсервером.length()>0) {
+                OkHttpClient okHttpClientИмяиПароль = new OkHttpClient().newBuilder().addInterceptor(new Interceptor() {
+                            @Override
+                            public Response intercept(Chain chain) throws IOException {
+                                String ANDROID_ID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+                                // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
+                                Log.d(this.getClass().getName(), "  ПубличноеЛогин " + ПубличноеЛогин + " ПубличноеПароль " + ПубличноеПароль);
+                                Request originalRequest = chain.request();
+                                Request.Builder builder = originalRequest.newBuilder()
+                                        .header("Content-Type", "application/text; charset=UTF-8")
+                                        .header("Accept-Encoding", "gzip,deflate,sdch")
+                                        .header("Connection", "Keep-Alive")
+                                        .header("Accept-Language", "ru-RU")
+                                        .header("identifier", ПубличноеЛогин)
+                                        .header("p_identifier", ПубличноеПароль)
+                                        .header("id_device_androis", ANDROID_ID);
+                                Request newRequest = builder.build();
+                                return chain.proceed(newRequest);
+                            }
+                        }).connectTimeout(2, TimeUnit.SECONDS)
+                        .readTimeout(20, TimeUnit.SECONDS).build();
+                ///  MediaType JSON = MediaType.parse("application/json; charset=utf-16");
+                Request requestGET = new Request.Builder().get().url(Adress).build();
+                Log.d(this.getClass().getName(), "  request  " + requestGET);
+                // TODO  Call callGET = client.newCall(requestGET);
+                Dispatcher dispatcherПроверкаЛогиниПароль = okHttpClientИмяиПароль.dispatcher();
+                okHttpClientИмяиПароль.newCall(requestGET).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                        Log.e(this.getClass().getName(), "  ERROR call  " + call + "  e" + e.toString());
+                        Log.e(Class_MODEL_synchronized.class.getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber() + " ОшибкаТекущегоМетода " + e.getMessage());
+                        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), Class_MODEL_synchronized.class.getName(),
+                                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        // TODO: 31.05.2022
+                        dispatcherПроверкаЛогиниПароль.executorService().shutdown();
+
+                        //TODO закрываем п отоки
+                    }
+                    @Override
+                    public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                        try{
+                            if (response.isSuccessful()) {
+                                InputStream inputStreamОтПинга = response.body().source().inputStream();
+                                GZIPInputStream GZIPПотокОтСЕРВЕРА = new GZIPInputStream(inputStreamОтПинга);
+                                BufferedReader РидерОтСервераМетодаGET = new BufferedReader(new InputStreamReader(GZIPПотокОтСЕРВЕРА, StandardCharsets.UTF_16));//
+                                БуферПолученнниеДанныхПолученияIDотСервера[0] = РидерОтСервераМетодаGET.lines().collect(StringBuffer::new, (sb, i) -> sb.append(i),
+                                        StringBuffer::append);
+                                Long РазмерПришедшегоПотока = Long.parseLong(   response.header("stream_size"));
+                                Log.d(this.getClass().getName(), "БуферПолученнниеДанныхПолученияIDотСервера " + БуферПолученнниеДанныхПолученияIDотСервера[0] +  " РазмерПришедшегоПотока " +РазмерПришедшегоПотока);
+                                // TODO: 31.05.2022
+                                dispatcherПроверкаЛогиниПароль.executorService().shutdown();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
+                    }
+                });
+            } else {
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        return    БуферПолученнниеДанныхПолученияIDотСервера[0] ;
     }
 }
 

@@ -56,7 +56,7 @@ public class Class_Generation_Errors {
                 if (Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.getCount() > 0) {
                     Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.moveToFirst();
                     ПубличноеIDПолученныйИзСервлетаДляUUID = Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.getInt(0);
-                    Log.d(this.getClass().getName(), " ПубличноеIDПолученныйИзСервлетаДляUUID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                    Log.d(this.getClass().getName(), " ID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
                 }
                 classGrudSqlOperationsДляЗаписиНовойОшибки.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.clear();
                 classGrudSqlOperationsДляЗаписиНовойОшибки = new Class_GRUD_SQL_Operations(context);

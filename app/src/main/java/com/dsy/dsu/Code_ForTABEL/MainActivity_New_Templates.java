@@ -877,11 +877,11 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
             if (Курсор_ПолучаемПубличныйID.getCount() > 0) {
                 Курсор_ПолучаемПубличныйID.moveToFirst();
                 ПубличноеIDПолученныйИзСервлетаДляUUID = Курсор_ПолучаемПубличныйID.getInt(0);
-                Log.d(this.getClass().getName(), " ПубличноеIDПолученныйИзСервлетаДляUUID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                Log.d(this.getClass().getName(), " ID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
 
             }
             Log.d(this.getClass().getName(), "ПолученнаяUUIDНазванияОрганизации " + ПолученнаяUUIDНазванияОрганизации
-                    + " ПубличноеIDПолученныйИзСервлетаДляUUID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                    + " ID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
 
 
             // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
@@ -1930,7 +1930,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
 ///
 
 
-                Log.d(this.getClass().getName(), " ПубличноеIDПолученныйИзСервлетаДляUUID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                Log.d(this.getClass().getName(), " ID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
 
 
             }

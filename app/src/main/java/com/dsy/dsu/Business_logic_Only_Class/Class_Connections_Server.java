@@ -65,12 +65,11 @@ public class Class_Connections_Server  extends  Class_GRUD_SQL_Operations {
                 // TODO: 10.11.2022  пинг к сервера
                    Integer  БуферПолучениеДанныхРЕальныйСтатусРАботыSQLServer =
                       new Class_MODEL_synchronized(КонтекстКоторыйДляСинхронизации).
-                              МетодУниверсальногоПинга(null, "",
-                        "", "application/gzip",
-                                      "Хотим Получить Статус Реальной Работы SQL SERVER",
-                                      0l, "",30000,
-                                      "",
-                        0l,ИмяСервера, ИмяПорта);//application/gzip
+                              МетодУниверсальногоПинга(new String(), "application/gzip",
+                                      "Хотим Получить Статус Реальной Работы SQL SERVER"
+                                      ,0l,
+                                      0
+                              ,ИмяСервера, ИмяПорта);//application/gzip
                 Log.d(Class_MODEL_synchronized.class.getName(), "  БуферПолучениеДанныхРЕальныйСтатусРАботыSQLServer" +
                         БуферПолучениеДанныхРЕальныйСтатусРАботыSQLServer);
                     if (БуферПолучениеДанныхРЕальныйСтатусРАботыSQLServer==null) {

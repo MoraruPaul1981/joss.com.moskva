@@ -36,4 +36,13 @@ public class Class_Generation_Data {
         }
         return dateFormat.format(Дата);
     }
+
+    public String ГлавнаяДатаИВремяОперацийСБазойДанныхДОП() {
+        Date Дата = Calendar.getInstance().getTime();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", new Locale("ru"));//"yyyy-MM-dd HH:mm:ss.SSS"//"yyyy-MM-dd'T'HH:mm:ss'Z'"
+        //  dateFormat.setTimeZone(TimeZone.getTimeZone("UTC-03:00"));
+        dateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Moscow"));
+        Log.d(this.getClass().getName(), " ГЛАВНАЯ ДАТА ПРОГРАММЫ ДСУ-1 : " + dateFormat.format(Дата));
+        return dateFormat.format(Дата);
+    }
 }

@@ -21,7 +21,6 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.Parcel;
 import android.os.RemoteException;
-import android.util.JsonReader;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -36,36 +35,22 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID
 import com.dsy.dsu.Business_logic_Only_Class.Class_MODEL_synchronized;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Visible_Processing_Async;
 import com.dsy.dsu.Business_logic_Only_Class.Class__Generation_Genetal_Tables;
-import com.dsy.dsu.Business_logic_Only_Class.Jakson.GeneratorJSONDeserializer;
 import com.dsy.dsu.Business_logic_Only_Class.Jakson.GeneratorJSONSerializer;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.dsy.dsu.Business_logic_Only_Class.SubClass_Connection_BroadcastReceiver_Sous_Asyns_Glassfish;
-import com.dsy.dsu.model.Depatment;
-import com.dsy.dsu.model.Fio;
-import com.dsy.dsu.model.Organization;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -577,7 +562,7 @@ public class Service_For_Remote_Async extends IntentService {
         Integer МетодПолучениеIDотСервераДляГеренированиеUUID() throws JSONException, InterruptedException, ExecutionException, TimeoutException {
             String ДанныеПришёлЛиIDДЛяГенерацииUUID = new String();
             Integer РезультатСинхрониазции=0;
-            ПубличноеIDПолученныйИзСервлетаДляUUID=0;
+            ID =0;
             try {
                 Log.d(this.getClass().getName(), " public   void МетодПолучениеIDОтСервераДляГеренированиеUUID ()" + " ДанныеПришёлЛиIDДЛяГенерацииUUID "
                         + ДанныеПришёлЛиIDДЛяГенерацииUUID +
@@ -596,15 +581,15 @@ public class Service_For_Remote_Async extends IntentService {
                 StringBuffer БуферПолучениеДанных = new StringBuffer();
                 if (Курсор_ВычисляемПУбличныйID.getCount() > 0) {
                     Курсор_ВычисляемПУбличныйID.moveToFirst();
-                    ПубличноеIDПолученныйИзСервлетаДляUUID=Курсор_ВычисляемПУбличныйID.getInt(0);
-                    Log.w(this.getClass().getName(), "  ПубличноеIDПолученныйИзСервлетаДляUUID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                    ID =Курсор_ВычисляемПУбличныйID.getInt(0);
+                    Log.w(this.getClass().getName(), "  ID " + ID);
                 }
-                Log.w(this.getClass().getName(), "  ПубличноеIDПолученныйИзСервлетаДляUUID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                Log.w(this.getClass().getName(), "  ID  " + ID);
                 Курсор_ВычисляемПУбличныйID.close();
                 // TODO: 09.09.2022  запускаем синхрониазцию
-                if (ПубличноеIDПолученныйИзСервлетаДляUUID > 0) {
+                if (ID > 0) {
                     ////TODO создаем списко таблиц запускаем слуд.ющий метод получение версии базы данных
-                    РезультатСинхрониазции = МетодПолучениеСпискаТаблицДляОбменаДанными(String.valueOf(ПубличноеIDПолученныйИзСервлетаДляUUID));//получаем ID для генерирования UUID
+                    РезультатСинхрониазции = МетодПолучениеСпискаТаблицДляОбменаДанными(ID);//получаем ID для генерирования UUID
                     if (РезультатСинхрониазции == null) {
                         РезультатСинхрониазции = 0;
                     }
@@ -649,10 +634,10 @@ public class Service_For_Remote_Async extends IntentService {
 
 
         ////////////МЕТОД ПОЛУЧЕНИЕ  ВЕРСИИ ДАННЫХ
-        Integer МетодПолучениеСпискаТаблицДляОбменаДанными( String ДанныеПришёлЛиIDДЛяГенерацииUUID)
+        Integer МетодПолучениеСпискаТаблицДляОбменаДанными(@NonNull Integer   ID)
                 throws JSONException, InterruptedException, ExecutionException, TimeoutException {///второй метод получаем версию данных на СЕРВЕР ЧТОБЫ СОПОЧТАВИТЬ ДАТЫ
 
-            Log.d(this.getClass().getName(), " ДанныеПришёлЛиIDДЛяГенерацииUUID" + ДанныеПришёлЛиIDДЛяГенерацииUUID);
+            Log.d(this.getClass().getName(), "   ID  ID" +   ID);
             String ДанныеПришлаСпискаТаблицДляОбмена = new String();
             StringBuffer БуферModification_server = new StringBuffer();
             final Integer[] РЕЗУЛЬТАТГЛАВНОЙСИНХРОНИАЗЦИИПОТАБЛИЦАМ = {0};
@@ -667,20 +652,20 @@ public class Service_For_Remote_Async extends IntentService {
                 String   ИмяСерверИзХранилица = preferences.getString("ИмяСервера","");
                 Integer    ПортСерверИзХранилица = preferences.getInt("ИмяПорта",0);
                 // TODO: 10.11.2022 Получение Список Таблиц
-                БуферModification_server = МетодУниверсальныйДанныесСервера("view_data_modification",
-                        "", "",
-                        "application/gzip",//application/json
+                БуферModification_server = МетодУниверсальныйДанныесСервера(
+                        "view_data_modification",
+                        "application/gzip",
                         "Хотим Получить Версию Данных Сервера",
                         0l,
-                        ДанныеПришёлЛиIDДЛяГенерацииUUID,
-                        0l,
-                        ИмяСерверИзХранилица ,ПортСерверИзХранилица,new PUBLIC_CONTENT(context).getСсылкаНаРежимСервераАунтификация());   //// БуферПолученнниеДанныхОтМетодаGET.mark(1000); // save the data we are about to readБуферПолученнниеДанныхОтМетодаGET.reset(); // jump back to the marked position
+                        ID,
+                        ИмяСерверИзХранилица ,
+                        ПортСерверИзХранилица);
                 Log.d(this.getClass().getName(), " БуферModification_server.toString().toCharArray().length "
                         + БуферModification_server.toString().toCharArray().length);
                 // TODO: 03.09.2021
                 if (БуферModification_server != null) {
                     if (БуферModification_server.toString().toCharArray().length > 3) {
-                        Log.d(this.getClass().getName(), "  ПубличноеIDПолученныйИзСервлетаДляUUID  " + ПубличноеIDПолученныйИзСервлетаДляUUID +
+                        Log.d(this.getClass().getName(), "  ID  " + this.ID +
                                 " БуферModification_server " + БуферModification_server.toString());
                         //TODO БУфер JSON от Сервера
                         CopyOnWriteArrayList<Map<String, String>> БуферJsonОтСервераmodification_server = new PUBLIC_CONTENT(context).getGeneratorJackson().readValue(БуферModification_server.toString(),
@@ -730,7 +715,7 @@ public class Service_For_Remote_Async extends IntentService {
                                 .doOnComplete(new Action() {
                                     @Override
                                     public void run() throws Throwable {
-                                        РЕЗУЛЬТАТГЛАВНОЙСИНХРОНИАЗЦИИПОТАБЛИЦАМ[0] = МетодГлавныхЦиклТаблицДляСинхронизации(ДанныеПришёлЛиIDДЛяГенерацииUUID);
+                                        РЕЗУЛЬТАТГЛАВНОЙСИНХРОНИАЗЦИИПОТАБЛИЦАМ[0] = МетодГлавныхЦиклТаблицДляСинхронизации(ID);
 
                                         if (РЕЗУЛЬТАТГЛАВНОЙСИНХРОНИАЗЦИИПОТАБЛИЦАМ[0] == null) {
                                             РЕЗУЛЬТАТГЛАВНОЙСИНХРОНИАЗЦИИПОТАБЛИЦАМ[0] = 0;
@@ -776,7 +761,7 @@ public class Service_For_Remote_Async extends IntentService {
         }
 
 // TODO: 10.09.2021  запускаем метод обработки по таблицам
-        Integer МетодЗапускаСинхрониазцииПоАТблицам(String данныеПришёлЛиIDДЛяГенерацииUUID,
+        Integer МетодЗапускаСинхрониазцииПоАТблицам(Integer ID,
                                                     String текущаяТаблицаДляОБменаДанными,
                                                     CompletionService МенеджерПотоковВнутрений,
                                                     PUBLIC_CONTENT public_contentДатыДляГлавныхТаблицСинхронизации) {
@@ -786,7 +771,7 @@ public class Service_For_Remote_Async extends IntentService {
             try {
                 //////TODO метод обрабтки п таюлицам
                 РезультаУспешнойВсатвкиИлиобвнлденияДаннымиССервера=
-                        МетодДляАнализаВерсийДанныхПолучаемДатыСервера(текущаяТаблицаДляОБменаДанными, данныеПришёлЛиIDДЛяГенерацииUUID,
+                        МетодДляАнализаВерсийДанныхПолучаемДатыСервера(текущаяТаблицаДляОБменаДанными, ID,
                                 МенеджерПотоковВнутрений,public_contentДатыДляГлавныхТаблицСинхронизации); ////Получение Версии Данных Сервера для дальнейшего анализа
                 if(РезультаУспешнойВсатвкиИлиобвнлденияДаннымиССервера==null){
                     РезультаУспешнойВсатвкиИлиобвнлденияДаннымиССервера=0;
@@ -828,13 +813,13 @@ public class Service_For_Remote_Async extends IntentService {
 
         /////////////////////ИЩЕМ ДАТУ СЕРВЕРВА
         Integer МетодДляАнализаВерсийДанныхПолучаемДатыСервера(@NonNull  String ТекущаяТаблицаДляОБменаДанными,
-                                                               @NonNull  String ДанныеПришёлЛиIDДЛяГенерацииUUID,
+                                                               @NonNull  Integer ID,
                                                                @NonNull  CompletionService МенеджерПотоковВнутрений,
                                                                @NonNull   PUBLIC_CONTENT public_contentДатыДляГлавныхТаблицСинхронизации)
                 throws JSONException, InterruptedException, ExecutionException, TimeoutException {
             final Integer[] РезультаУспешнойВсатвкиИлиобвнлденияДаннымиССервера = {0};
 ///TODO принудительн устанвливаем редим работы синхронизации
-            Log.d(this.getClass().getName(), " ДанныеПришёлЛиIDДЛяГенерацииUUID  " + ДанныеПришёлЛиIDДЛяГенерацииUUID + " ТекущаяТаблицаДляОБменаДанными "
+            Log.d(this.getClass().getName(), " ID  " + ID + " ТекущаяТаблицаДляОБменаДанными "
                     + ТекущаяТаблицаДляОБменаДанными +
                     " public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц " + public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц);
             try {
@@ -868,7 +853,7 @@ public class Service_For_Remote_Async extends IntentService {
                                     МетодАнализаВресииДАнныхКлиента(ТекущаяТаблицаДляОБменаДанными,
                                             Полученная_ВерсияДанныхсSqlServer,
                                             ИмяТаблицыНаSqlServerИзТаблицыВерсииДанных
-                                            , ДанныеПришёлЛиIDДЛяГенерацииUUID,
+                                            , ID,
                                             МенеджерПотоковВнутрений);
                             /////////
                             Log.i(this.getClass().getName(), "  РезультаУспешнойВсатвкиИлиобвнлденияДаннымиССервера[0]  " +  РезультаУспешнойВсатвкиИлиобвнлденияДаннымиССервера[0]);
@@ -905,7 +890,7 @@ public class Service_For_Remote_Async extends IntentService {
         Integer МетодАнализаВресииДАнныхКлиента(String ИмяТаблицыОтАндройда_Локальноая,
                                                 Long Полученная_ВерсияДанныхсSqlServer,
                                                 String ИмяТаблицыНаSqlServerИзТаблицыВерсииДанных,
-                                                String ДанныеПришёлЛиIDДЛяГенерацииUUID,
+                                                Integer ID,
                                                 CompletionService МенеджерПотоковВнутрений) {
 
             Log.d(this.getClass().getName(), " Полученная_ВерсияДанныхсSqlServer " +Полученная_ВерсияДанныхсSqlServer);
@@ -950,14 +935,13 @@ public class Service_For_Remote_Async extends IntentService {
                 ///
                 if (ВерсииДанныхНаАндройдеЛокальнаяЛокальная !=null  && ВерсииДанныхНаАндройдеСерверная!=null && Полученная_ВерсияДанныхсSqlServer!=null) {
                     //TODO СЛЕДУЮЩИЙ ЭТАМ РАБОТЫ ОПРЕДЕЛЯЕМ ЧТО МЫ ДЕЛАЕМ ПОЛУЧАЕМ ДАННЫЕ С СЕВРЕРА ИЛИ НА ОБОРОТ  ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР
-                    РезультатУспешнойВсатвкиИлиОбвовлениясСервера=       МетодПринятияРешенияПолучитьДанныесСервераИлиОтправитьДанныесКлиента(
+                    РезультатУспешнойВсатвкиИлиОбвовлениясСервера=       методПринятияРешенияПолучаемИлиОтправляемДанные(
                             ВерсииДанныхНаАндройдеЛокальнаяЛокальная,
                             ВерсииДанныхНаАндройдеСерверная,
                             Полученная_ВерсияДанныхсSqlServer,
                             ИмяТаблицыОтАндройда_Локальноая,
                             ИмяТаблицыНаSqlServerИзТаблицыВерсииДанных,
-                            ДанныеПришёлЛиIDДЛяГенерацииUUID,
-                            МенеджерПотоковВнутрений);///СЛЕДУЮЩИЙ ЭТАМ РАБОТЫ ОПРЕДЕЛЯЕМ ЧТО МЫ ДЕЛАЕМ ПОЛУЧАЕМ ДАННЫЕ С СЕВРЕРА ИЛИ НА ОБОРОТ  ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР
+                            ID);///СЛЕДУЮЩИЙ ЭТАМ РАБОТЫ ОПРЕДЕЛЯЕМ ЧТО МЫ ДЕЛАЕМ ПОЛУЧАЕМ ДАННЫЕ С СЕВРЕРА ИЛИ НА ОБОРОТ  ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР
                     Log.d(this.getClass().getName(), "   РезультатУспешнойВсатвкиИлиОбвовлениясСервера " +РезультатУспешнойВсатвкиИлиОбвовлениясСервера);
                 }else{
 
@@ -1002,13 +986,12 @@ public class Service_For_Remote_Async extends IntentService {
 
 
         //TODO СЛЕДУЮЩИЙ ЭТАМ РАБОТЫ ОПРЕДЕЛЯЕМ ЧТО МЫ ДЕЛАЕМ ПОЛУЧАЕМ ДАННЫЕ С СЕВРЕРА ИЛИ НА ОБОРОТ  ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР
-        Integer МетодПринятияРешенияПолучитьДанныесСервераИлиОтправитьДанныесКлиента(Long ВерсииДанныхНаАндройдеЛокальнаяЛокальная,
-                                                                                     Long ВерсииДанныхНаАндройдеСерверная,
-                                                                                     Long ВерсияДанныхсСамогоSqlServer,
-                                                                                     String ИмяТаблицыОтАндройда_Локальноая,
-                                                                                     String ИмяТаблицыНаSqlServerИзТаблицыВерсииДанных,
-                                                                                     String ДанныеПришёлЛиIDДЛяГенерацииUUID,
-                                                                                     CompletionService МенеджерПотоковВнутрений) {
+        Integer методПринятияРешенияПолучаемИлиОтправляемДанные(Long ВерсииДанныхНаАндройдеЛокальнаяЛокальная,
+                                                                Long ВерсииДанныхНаАндройдеСерверная,
+                                                                Long ВерсияДанныхсСамогоSqlServer,
+                                                                String ИмяТаблицыОтАндройда_Локальноая,
+                                                                String ИмяТаблицыНаSqlServerИзТаблицыВерсииДанных,
+                                                                Integer ID) {
             try {
                 SubClassUpVersionDATA subClassUpVersionDATA=     new SubClassUpVersionDATA();
                 if (ИмяТаблицыНаSqlServerИзТаблицыВерсииДанных.equalsIgnoreCase(ИмяТаблицыОтАндройда_Локальноая)) {//////ОБЯЗАТОЛЬНОЕ УСЛОВИЕ НАЗВАНИЕ ТАБЛИЦ ДОЛЖНО БЫТЬ ОДИНАКОВЫМ НАПРИМЕР  CFO==CFO
@@ -1043,7 +1026,7 @@ public class Service_For_Remote_Async extends IntentService {
                                         +ИмяТаблицыОтАндройда_Локальноая);
                         // TODO: 30.06.2022  конец встаялеммого кода с задержкой
                         Integer    ДанныеПосылаемНаСервер = МетодОбменаЗаданиеДляСервера_ПосылаемНа_Сервер(ИмяТаблицыОтАндройда_Локальноая,
-                                МенеджерПотоковВнутрений, ВерсияДанныхЛокальнаяСерверная);
+                         ВерсияДанныхЛокальнаяСерверная);
 
                         // TODO: 28.10.2021 ПЕРЕРДАЕМ ВОЗМОЖНЫЙ ОТВЕТ
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1076,9 +1059,7 @@ public class Service_For_Remote_Async extends IntentService {
                         if (Math.abs(ВерсияДанныхсСамогоSqlServer-ВерсияДанныхЛокальнаяСерверная)>=2) {
                             // TODO: 05.10.2021  ДЕЙСТИВЕ ВТОРОЕ ПОЛУЧАЕМ ДАННЫЕ ОТ СЕРВЕРА ДЛЯ ТЕКЦЩЕЙ ТАБЛИЦЫ
                             Integer         ДанныесСервера = МетодОбменаЗаданиеСервера_сервераПолучаем_Сервер(ВерсииДанныхНаАндройдеЛокальнаяЛокальная,
-                                    ИмяТаблицыОтАндройда_Локальноая, ДанныеПришёлЛиIDДЛяГенерацииUUID,
-                                    МенеджерПотоковВнутрений,
-                                    ВерсияДанныхЛокальнаяСерверная );
+                                    ИмяТаблицыОтАндройда_Локальноая, ID);
                             // TODO: 28.10.2021 ПЕРЕРДАЕМ ВОЗМОЖНЫЙ ОТВЕТ
                             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1187,16 +1168,13 @@ public class Service_For_Remote_Async extends IntentService {
         
 
 
-        private Integer МетодОбменаЗаданиеДляСервера_ПосылаемНа_Сервер(String ИмяТаблицыОтАндройда_Локальноая,
-                                                                       CompletionService МенеджерПотоковВнутрений
-                , Long ВерсияДанныхПришлаПослеУспешнойСинхронизации) {
+        private Integer МетодОбменаЗаданиеДляСервера_ПосылаемНа_Сервер(String ИмяТаблицыОтАндройда_Локальноая, Long ВерсияДанныхПришлаПослеУспешнойСинхронизации) {
             Integer РезультатОтправкиДанныхНаСервер=0;
             try{
                 Log.d(this.getClass().getName(), "  ВерсияДанныхПришлаПослеУспешнойСинхронизации   " + ВерсияДанныхПришлаПослеУспешнойСинхронизации );
                 ////// todo МЕТОД POST() в фоне    ////// todo МЕТОД POST
                 РезультатОтправкиДанныхНаСервер =
-                        МетодПосылаемДанныеНаСервервФоне(ИмяТаблицыОтАндройда_Локальноая, ВерсияДанныхПришлаПослеУспешнойСинхронизации,
-                                МенеджерПотоковВнутрений);
+                        МетодПосылаемДанныеНаСервервФоне(ИмяТаблицыОтАндройда_Локальноая, ВерсияДанныхПришлаПослеУспешнойСинхронизации);
                 Log.i(this.getClass().getName(), "   РезультатОтправкиДанныхНаСервер" + РезультатОтправкиДанныхНаСервер+
                         " ВерсияДанныхПришлаПослеУспешнойСинхронизации "+ВерсияДанныхПришлаПослеУспешнойСинхронизации);
             } catch (Exception e) {
@@ -1210,38 +1188,21 @@ public class Service_For_Remote_Async extends IntentService {
         }
 
         @NonNull
-        private Integer МетодОбменаЗаданиеСервера_сервераПолучаем_Сервер(Long ВерсииДанныхНаАндройдеЛокальнаяЛокальная,
-                                                                         String ИмяТаблицыОтАндройда_Локальноая,
-                                                                         String ДанныеПришёлЛиIDДЛяГенерацииUUID,
-                                                                         CompletionService МенеджерПотоковВнутрений,
-                                                                         Long РезультаПолученаяСервернуюВерсиюДанныхКогдаПоследнийРазПришлиДанныесСерера) {
-            // TODO: 05.10.2021  ДЕЙСТИВЕ ВТОРОЕ ПОЛУЧАЕМ ДАННЫЕ ОТ СЕРВЕРА ДЛЯ ТЕКЦЩЕЙ ТАБЛИЦЫ
-            // TODO: 05.10.2021  ДЕЙСТИВЕ ВТОРОЕ ПОЛУЧАЕМ ДАННЫЕ ОТ СЕРВЕРА ДЛЯ ТЕКЦЩЕЙ ТАБЛИЦЫ
-            Integer  Результат_СсервераПолучаем_Сервер=0;
+        private Integer МетодОбменаЗаданиеСервера_сервераПолучаем_Сервер(@NonNull  Long ВерсияДанных,
+                                                                         @NonNull String ИмяТаблицы,
+                                                                         @NonNull  Integer ID) {
+            Integer  РезультатДанныесСервера=0;
             try{
-                Log.d(this.getClass().getName(), " НА SQL SERVER  ДАТА больше версия" +
-                        "  ЛОКАЛЬНАЯ ВЕРСИЯ (последнего серверного обновления) ЧАТ  РезультаПолученаяСервернуюВерсиюДанныхКогдаПоследнийРазПришлиДанныесСерера "
-                        + РезультаПолученаяСервернуюВерсиюДанныхКогдаПоследнийРазПришлиДанныесСерера +
-                        " и  ТЕКУЩАЯ СЕРВЕРНАЯ ВЕРСИЯ  ЧАТ РезультатВерсииДанныхЧатаНаСервере "  + ИмяТаблицыОтАндройда_Локальноая);
-                // TODO: 19.08.2021 уменьшаемм для повторгого повторной отправки
+                Log.d(this.getClass().getName(), " ВерсияДанных" + ВерсияДанных+" ID "   + ID + "ИмяТаблицы"  + ИмяТаблицы);
+
                 //////////TODO МЕТОД get
-                  Результат_СсервераПолучаем_Сервер =
-                        МетодПолучаемДаннныесСервера(ИмяТаблицыОтАндройда_Локальноая,
-                                РезультаПолученаяСервернуюВерсиюДанныхКогдаПоследнийРазПришлиДанныесСерера,
-                                ДанныеПришёлЛиIDДЛяГенерацииUUID,
-                                ВерсииДанныхНаАндройдеЛокальнаяЛокальная,
-                                РезультаПолученаяСервернуюВерсиюДанныхКогдаПоследнийРазПришлиДанныесСерера,
-                                МенеджерПотоковВнутрений);/// ЗАПУСКАМ МЕТОД ПОЛУЧЕНИЕ ДАННЫХ С СЕРВЕРА    МЕТОД GET
+                  РезультатДанныесСервера =
+                        МетодПолучаемДаннныесСервера(ИмяТаблицы,
+                                ID,
+                                ВерсияДанных );
 
+                Log.d(this.getClass().getName(),  "РезультатДанныесСервера" + РезультатДанныесСервера);
 
-                Log.d(this.getClass().getName(), " ПОСЛЕ УСПЕШНОЙ ОТПАРВКИ ДАННЫХ НА СЕРВЕР" +
-                        " Результат_СсервераПолучаем_Сервер " + Результат_СсервераПолучаем_Сервер
-                        + "  ИмяТаблицыОтАндройда_Локальноая " + ИмяТаблицыОтАндройда_Локальноая + "\n" +
-                        "  РезультаПолученаяСервернуюВерсиюДанныхКогдаПоследнийРазПришлиДанныесСерера "
-                        + РезультаПолученаяСервернуюВерсиюДанныхКогдаПоследнийРазПришлиДанныесСерера+
-                        " ВерсииДанныхНаАндройдеЛокальнаяЛокальная " +
-                        ВерсииДанныхНаАндройдеЛокальнаяЛокальная);
-                /////В ДАНОМ СЛУЧАЕ ДАННЫЕ СИНХРОНИЗИРОВАТЬ НЕ НАДО ВЕСРИЯ ДАННЫХ НА СЕРВРЕР И НА КЛИЕНТЕ ОДИНАКОВЫ
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -1249,38 +1210,35 @@ public class Service_For_Remote_Async extends IntentService {
                 new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
-            return Результат_СсервераПолучаем_Сервер;
+            return РезультатДанныесСервера;
         }
 
         // TODO: 19.08.2021   КОнец Класс ВЫЧИСЛЯЕТ ЕЩЕ НЕ ОТРРВЛЕННЫЕ СООБЩЕНИЯ НА СЕРВЕР ИЗ ЧАТА
         /////МЕТОД КОГДА НА СЕРВЕРЕ ВЕРСИЯ ДАННЫХ ВЫШЕ И МЫ ПОЛУЧАЕМ ДАННЫЕ С СЕРВРА
-        Integer МетодПолучаемДаннныесСервера(String имяТаблицыОтАндройда_локальноая,
-                                             Long ВерсииДанныхНаАндройдеСерверная,
-                                             String ДанныеПришёлЛиIDДЛяГенерацииUUID,
-                                             Long ВерсииДанныхНаАндройдеЛокальнаяЛокальная
-                ,Long  РезультаПолученаяЛокальнаяВерсияДанныхДляОтправкиНаСервер,
-                                             CompletionService МенеджерПотоковВнутрений ) {
+        Integer МетодПолучаемДаннныесСервера(String ИмяТаблицы,
+                                              Integer ID
+                                              ,Long  ВерсияДанных) {
 
             Integer РезультатФоновнойСинхронизации=0;
             StringBuffer БуферПолученныйJSON = null;
             try {
-                Log.d(this.getClass().getName(), "  МетодПолучаемДаннныесСервера" + "  имяТаблицыОтАндройда_локальноая" + имяТаблицыОтАндройда_локальноая);
+                Log.d(this.getClass().getName(), "  МетодПолучаемДаннныесСервера" + "  имяТаблицыОтАндройда_локальноая" + ИмяТаблицы);
                 StringBuffer БуферПолучениеДанных = new StringBuffer();
                     МетодCallBasksВизуальноИзСлужбы(МаксималноеКоличествоСтрочекJSON,
-                            ИндексВизуальнойДляPrograssBar,имяТаблицыОтАндройда_локальноая,
+                            ИндексВизуальнойДляPrograssBar,ИмяТаблицы,
                             Проценты,"ПроцессеAsyncBackground",false,false,0);
                     PUBLIC_CONTENT public_content=   new PUBLIC_CONTENT(context);
                     String   ИмяСерверИзХранилица = preferences.getString("ИмяСервера","");
                     Integer    ПортСерверИзХранилица = preferences.getInt("ИмяПорта",0);
                     // TODO: 10.11.2022  Получение JSON-потока
-                    БуферПолучениеДанных = МетодУниверсальныйДанныесСервера(имяТаблицыОтАндройда_локальноая, "",
-                            "", "application/gzip", "Хотим Получить  JSON"
-                            ,ВерсииДанныхНаАндройдеСерверная,//    ВерсииДанныхНаАндройдеСерверная,//37262l
-                            ДанныеПришёлЛиIDДЛяГенерацииUUID,
-                            РезультаПолученаяЛокальнаяВерсияДанныхДляОтправкиНаСервер,
+                    БуферПолучениеДанных = МетодУниверсальныйДанныесСервера(
+                            ИмяТаблицы,
+                          "application/gzip",
+                            "Хотим Получить  JSON"
+                            ,ВерсияДанных,
+                            ID,
                             ИмяСерверИзХранилица
-                            ,ПортСерверИзХранилица,
-                            new PUBLIC_CONTENT(context).getСсылкаНаРежимСервераТабель());//TODO "http://192.168.254.40:8080/"      /      // TODO     "http://tabel.dsu1.ru:8888/"   original     "tabel.dsu1.ru", 8888);
+                            ,ПортСерверИзХранилица);
                     Log.d(this.getClass().getName(), "  БУФЕР получаем даннные БуферПолучениеДанных.toString() " + БуферПолучениеДанных.toString());
                     if(БуферПолучениеДанных==null){
                         БуферПолучениеДанных = new StringBuffer();
@@ -1297,9 +1255,9 @@ public class Service_For_Remote_Async extends IntentService {
                     Log.d(this.getClass().getName(), " БуферПолученныйJSON.length()  " + БуферПолученныйJSON.length());
                     int Результат_ПриписиИзменнийВерсииДанныхВФонеПослеОбработкиТекущийТаблицы = 0;
                     Log.i(this.getClass().getName(), "   Результат_ПриписиИзменнийВерсииДанныхВФоне:"
-                            + Результат_ПриписиИзменнийВерсииДанныхВФонеПослеОбработкиТекущийТаблицы + " имяТаблицыОтАндройда_локальноая " + имяТаблицыОтАндройда_локальноая);
+                            + Результат_ПриписиИзменнийВерсииДанныхВФонеПослеОбработкиТекущийТаблицы + " имяТаблицыОтАндройда_локальноая " + ИмяТаблицы);
                     //////TODO запускаем метод распарстивая JSON
-                    РезультатФоновнойСинхронизации=        МетодПарсингJSONФайлаОтСервреравФоне(БуферПолученныйJSON, имяТаблицыОтАндройда_локальноая);
+                    РезультатФоновнойСинхронизации=        МетодПарсингJSONФайлаОтСервреравФоне(БуферПолученныйJSON, ИмяТаблицы);
                     Log.i(this.getClass().getName(), " РезультатФоновнойСинхронизации  "  +РезультатФоновнойСинхронизации);
                 } else {////ОШИБКА В ПОЛУЧЕНИИ С СЕРВЕРА ТАБЛИУЦЫ МОДИФИКАЦИИ ДАННЫХ СЕРВЕРА
                     Log.d(this.getClass().getName(), " Данных нет c сервера сам файл JSON   пришел от сервера БуферПолучениеДанных   "+БуферПолучениеДанных);
@@ -1626,8 +1584,7 @@ public class Service_For_Remote_Async extends IntentService {
 
         /////todo POST МЕТОД КОГДА НА АНДРОЙДЕ ВЕРСИЯ ДАННЫХ ВЫШЕ ЧЕМ НА СЕРВРЕР И МЫ  JSON ФАЙЛ ТУДА МЕТОД POST
         Integer МетодПосылаемДанныеНаСервервФоне(String имяТаблицыОтАндройда_локальноая,
-                                                 Long ВерсияДанныхОсноваСозданиеДанныхОтправки,
-                                                 CompletionService МенеджерПотоковВнутрений) {
+                                                 Long ВерсияДанныхОсноваСозданиеДанныхОтправки) {
 
             Integer РезультатОтправкиДанныхНасервер=0;
             try {
@@ -1637,7 +1594,7 @@ public class Service_For_Remote_Async extends IntentService {
                 // TODO: 15.02.2022  ПолучаемдАннык На ОТправку На сервер
             Cursor    КурсорДляОтправкиДанныхНаСервер = (SQLiteCursor) getData
                         .getdata(sql_operations.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
-                                МенеджерПотоковВнутрений, СсылкаНаБазуSqlite);
+                                new PUBLIC_CONTENT(context).МенеджерПотоков, СсылкаНаБазуSqlite);
                 /////TODO результаты   количество отправляемой информации на сервера
                 if (КурсорДляОтправкиДанныхНаСервер.getCount() > 0) {
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1647,7 +1604,7 @@ public class Service_For_Remote_Async extends IntentService {
 
                     //////// todo упаковываем в  json ПЕРЕХОДИМ НА СЛЕДУЩИМ МЕТОД для отрправки на сервер метод POST() POST() POST() POST() POST() POST()POST()
                         РезультатОтправкиДанныхНасервер =
-                                МетодГенерацииJSON(КурсорДляОтправкиДанныхНаСервер, имяТаблицыОтАндройда_локальноая,МенеджерПотоковВнутрений);
+                                МетодГенерацииJSON(КурсорДляОтправкиДанныхНаСервер, имяТаблицыОтАндройда_локальноая );
                         Log.d(this.getClass().getName(), "РезультатОтправкиДанныхНасервер " + РезультатОтправкиДанныхНасервер);
 
                 }
@@ -1794,8 +1751,7 @@ public class Service_For_Remote_Async extends IntentService {
         ////////TODO     МЕТОД ГЕНЕРИРОУЕМ JSON ПОЛЯ НА ОСНОВАНИЕ НАШИХ ДАННЫХ ДЛЯ ПОСЛЕДЖУЮЩЕ ОТПРАВКИ  POST()->
 
         Integer МетодГенерацииJSON(@NonNull  Cursor КурсорДляОтправкиДанныхНаСерверОтАндройда,
-                                   @NonNull String имяТаблицыОтАндройда_локальноая,
-                                   @NonNull  CompletionService МенеджерПотоковВнутрений) {
+                                   @NonNull String имяТаблицыОтАндройда_локальноая) {
             Integer РезультатОтветаОтСервреУспешнаяВставкаИлиОбновления = 0;
             try {
                 if (КурсорДляОтправкиДанныхНаСерверОтАндройда.getCount()>0) {
@@ -1820,7 +1776,7 @@ public class Service_For_Remote_Async extends IntentService {
 
                     // TODO: 14.03.2023 ПОСЫЛАЕМ ДАННЫЕ СГЕНЕРИРОНГО JSON НА СЕРВЕР ---->SERVER
                     РезультатОтветаОтСервреУспешнаяВставкаИлиОбновления = new SubClass_SendToServer(context)
-                                    .МетодПосылаетНаСерверСозданныйJSONФайлвФоне(БуферJSONДлСервера, имяТаблицыОтАндройда_локальноая, МенеджерПотоковВнутрений); ////СГЕНЕРИРОВАНЫЙ JSON ФАЙЛ ЕСЛИ БОЛЬШЕ 2 ССИМВОЛОМ В НЕМ ТО ОТПРАВЛЯЕМ
+                                    .МетодПосылаетНаСерверСозданныйJSONФайлвФоне(БуферJSONДлСервера, имяТаблицыОтАндройда_локальноая ); ////СГЕНЕРИРОВАНЫЙ JSON ФАЙЛ ЕСЛИ БОЛЬШЕ 2 ССИМВОЛОМ В НЕМ ТО ОТПРАВЛЯЕМ
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -1877,7 +1833,7 @@ public class Service_For_Remote_Async extends IntentService {
         }
 
 //todo  ПОД КЛАСС  С ГЛАВНМ ЦИКЛОМ ОБМЕНА ДАННЫМИ ТАБЛИ
-            Integer МетодГлавныхЦиклТаблицДляСинхронизации(String ДанныеПришёлЛиIDДЛяГенерацииUUID)
+            Integer МетодГлавныхЦиклТаблицДляСинхронизации(Integer ID)
                     throws ExecutionException, InterruptedException {//КонтекстСинхроДляКонтроллера
                 final Integer[] РезультатТаблицыОбмена = {0};
                 try {
@@ -1924,7 +1880,7 @@ public class Service_For_Remote_Async extends IntentService {
                                                             ИндексВизуальнойДляPrograssBar,ТекущаяТаблицаИзПотока,
                                                             Проценты,"ПроцессеAsyncBackground",false,false,0);
                                                     // TODO: 24.01.2022 сама операция синхрониазции по таблице
-                                                    ПубличныйРезультатОтветаОтСерврераУспешно= МетодЗапускаСинхрониазцииПоАТблицам(ДанныеПришёлЛиIDДЛяГенерацииUUID,
+                                                    ПубличныйРезультатОтветаОтСерврераУспешно= МетодЗапускаСинхрониазцииПоАТблицам(ID,
                                                             ТекущаяТаблицаИзПотока,
                                                             public_contentДатыДляГлавныхТаблицСинхронизации.МенеджерПотоков ,public_contentДатыДляГлавныхТаблицСинхронизации);
                                                     Log.d(this.getClass().getName(), " ТАБЛИЦА СИНХРОНИЗАЦИИ ГЛАВНОГО ЦИКЛА "+"\n"+
@@ -1980,8 +1936,8 @@ public class Service_For_Remote_Async extends IntentService {
             // TODO: 22.03.2022
 
             //////todo МЕТОД НЕПОСТРЕДСТВЕННО ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР МЕТОД POST
-            Integer МетодПосылаетНаСерверСозданныйJSONФайлвФоне(@NonNull String ГенерацияJSONполейФиналДляОтправкиНаСеврерОтАндройда, @NonNull String имяТаблицыОтАндройда_локальноая,
-                                                                CompletionService МенеджерПотоковВнутрений) {
+            Integer МетодПосылаетНаСерверСозданныйJSONФайлвФоне(@NonNull String ГенерацияJSONОтAndroida,
+                                                                @NonNull String Таблицы) {
                 /////
                 Integer РезультатУспешнойВставкиИлиОбновлениеCallBacksОтСервера = 0;
                 String ДанныеПришёлВОтветОтМетодаPOST = new String();
@@ -1990,23 +1946,25 @@ public class Service_For_Remote_Async extends IntentService {
                 class_grud_sql_operations = new Class_GRUD_SQL_Operations(context);
                 try {
                     МетодCallBasksВизуальноИзСлужбы(МаксималноеКоличествоСтрочекJSON,
-                            ИндексВизуальнойДляPrograssBar,имяТаблицыОтАндройда_локальноая,
+                            ИндексВизуальнойДляPrograssBar,Таблицы,
                             Проценты,"ПроцессеAsyncBackground",false,true,0);
                     Log.d(this.getClass().getName(), "  МЕТОД НЕПОСТРЕДСТВЕННО ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР МЕТОД POST ");
                     // TODO: 15.06.2021 проверяем если таблица табель то еси в нутри потока отпралеемого хоть один день d1,d2,d3 защита от пустого траыфика\
-                    Log.d(this.getClass().getName(), " ГенерацияJSONполейФиналДляОтправкиНаСеврерОтАндройда.toString() "
-                            + ГенерацияJSONполейФиналДляОтправкиНаСеврерОтАндройда.toString() +
-                            " ГенерацияJSONполейФиналДляОтправкиНаСеврерОтАндройда.toString().toCharArray().length  "
-                            + ГенерацияJSONполейФиналДляОтправкиНаСеврерОтАндройда.toString().toCharArray().length +
-                            " имяТаблицыОтАндройда_локальноая " + имяТаблицыОтАндройда_локальноая);
+                    Log.d(this.getClass().getName(), " ГенерацияJSONОтAndroida.toString() "
+                            + ГенерацияJSONОтAndroida.toString() +
+                            " ГенерацияJSONОтAndroida.toString().toCharArray().length  "
+                            + ГенерацияJSONОтAndroida.toString().toCharArray().length +
+                            " Таблицы " + Таблицы);
                     PUBLIC_CONTENT public_content=   new PUBLIC_CONTENT(context);
                     String   ИмяСерверИзХранилица = preferences.getString("ИмяСервера","");
                     Integer    ПортСерверИзХранилица = preferences.getInt("ИмяПорта",0);
                     // TODO: 21.09.2022 ОТПРАВЯЛЕТ ДАННЫЕ НА СЕРВЕР
-                    БуферДанныхНаСервер = УниверсальныйБуферОтправкиДанныхНаСервера(ГенерацияJSONполейФиналДляОтправкиНаСеврерОтАндройда,
-                            ПубличноеIDПолученныйИзСервлетаДляUUID, имяТаблицыОтАндройда_локальноая,
+                    БуферДанныхНаСервер = УниверсальныйБуферОтправкиДанныхНаСервера(
+                            ГенерацияJSONОтAndroida,
+                            ID,
+                            Таблицы,
                             "Получение JSON файла от Андройда",
-                            60000,  ИмяСерверИзХранилица ,ПортСерверИзХранилица);
+                             ИмяСерверИзХранилица ,ПортСерверИзХранилица);
                     ///БУФЕР ОТПРАВКИ ДАННЫХ НА СЕРВЕР  //TODO original "tabel.dsu1.ru", 8888        //TODO "192.168.254.40", 8080
                     Log.d(this.getClass().getName(), "  СЛУЖБА ВЕРНУЛЬСЯ ОТВЕТ ОТ СЕРВЕРА ОБРАТНО АНДРОЙДУ  БуферОтправкаДанных.toString() " + БуферДанныхНаСервер.toString());
                     if (БуферДанныхНаСервер == null) {

@@ -94,11 +94,11 @@ public class Class_Get_For_Server_All_Rows_Json {
                 Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.moveToFirst();
 
                 /////
-                ПубличноеIDПолученныйИзСервлетаДляUUID=         Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.getInt(0);
+                ID=         Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.getInt(0);
 ///
 
 
-                Log.d(this.getClass().getName(), " ПубличноеIDПолученныйИзСервлетаДляUUID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                Log.d(this.getClass().getName(), " ID  " + ID);
 
 
             }*/
@@ -230,7 +230,7 @@ public class Class_Get_For_Server_All_Rows_Json {
             /////TODo public user
 
 
-            ПодключениеПолученияДанныхсСервер.setRequestProperty("publicuserforountjosnrows",PUBLIC_CONTENT.ПубличноеIDПолученныйИзСервлетаДляUUID) ;
+            ПодключениеПолученияДанныхсСервер.setRequestProperty("publicuserforountjosnrows",PUBLIC_CONTENT.ID) ;
 */
 
 
