@@ -2827,11 +2827,15 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         // TODO: 11.04.2023 Оперция Обновлнения ЯЧЕЕК
                         SubClassUpdatesCELL subClassUpdateSingletabel=new SubClassUpdatesCELL(getApplicationContext());
 
-                        subClassUpdateSingletabel.МетодВалидацияЯчеек(v);
+                     Integer РезультатОбновлениеЯчейки=   subClassUpdateSingletabel.МетодВалидацияЯчеек(v);
+                     if (РезультатОбновлениеЯчейки>0){
+                         ((EditText) v).startAnimation(animationVibr2);
+                     }
                         Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +" hasFocus " +hasFocus + " v"+v+
-                                " bundleДанныеTag " +bundleДанныеTag + " EditTextДАнные " +EditTextДАнные+  "ЗначениеДняTag " +ЗначениеДняTag);
+                                " bundleДанныеTag " +bundleДанныеTag + " EditTextДАнные " +EditTextДАнные+  "ЗначениеДняTag " +ЗначениеДняTag+
+                                " РезультатОбновлениеЯчейки " +РезультатОбновлениеЯчейки);
                         
                         
                     } else {
