@@ -175,9 +175,9 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
             }
 
             myDataОтветОбщейСлужбы = new Data.Builder()
-                    .putLong("ОтветПослеВыполения_MyWork_Async_Синхронизация_Одноразовая",
+                    .putLong("ReturnPublicAsyncWork",
                             ФинальныйРезультатAsyncBackgroud)
-                    .putBoolean("Proccesing_MyWork_Async_Синхронизация_Одноразовая",true)
+                    .putBoolean("ReturnPublicAsyncWork",true)
                     .build();
             if (serviceConnection!=null) {
                 getApplicationContext().unbindService(serviceConnection);

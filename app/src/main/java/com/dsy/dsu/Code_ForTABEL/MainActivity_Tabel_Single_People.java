@@ -275,17 +275,17 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
                     subClassSingleTabelRecycreView.МетодИнициализацииRecycreView();
 
-                    subClassSingleTabelRecycreView.МетодЗаполениеRecycleView( );
+                 Cursor cursor=   subClassSingleTabelRecycreView.МетодЗаполениеRecycleView( );
 
-                  subClassSingleTabelRecycreView. методДляSimpeCallbacks();
-
-
+                    subClassSingleTabelRecycreView. методДляSimpeCallbacks();
 
 
-
-
-
-
+            // TODO: 12.04.2023 Вторастипенные методы
+            message.getTarget().post(()->{
+                subClassSingleTabelRecycreView. МетодСлушательКурсора(cursor);
+                subClassSingleTabelRecycreView.  методWorkManagerLifecycleOwner();
+                subClassSingleTabelRecycreView.МетодСлушательRecycleView();
+            });
                /*     message.getTarget().postDelayed(()->{
                         subClassSingleTabelRecycreView.  МетодСлушательRecycleView();
                         subClassSingleTabelRecycreView.  МетодСлушательКурсора();
@@ -2298,9 +2298,10 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
 
         // TODO: 04.03.2022 прозвомжность Заполения RecycleView
-        void МетодЗаполениеRecycleView( ) {
+        Cursor МетодЗаполениеRecycleView( ) {
+            Cursor cursor = null;
             try {
-      Cursor          cursor =    МетодSwipesКурсор();
+            cursor =    МетодSwipesКурсор();
                 // remove item from adapter
                 myRecycleViewAdapter = new  MyRecycleViewAdapter(cursor );
                 recyclerView.setAdapter(myRecycleViewAdapter);
@@ -2318,6 +2319,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
+            return  cursor;
         }
 
 
@@ -2450,11 +2452,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         recyclerView.forceLayout();
                         constraintLayoutsingletabel.refreshDrawableState();
                         constraintLayoutsingletabel.forceLayout();
-                        // TODO: 11.04.2023 слушатели
-                        методWorkManagerLifecycleOwner();
-                        МетодСлушательRecycleView();
-                        МетодСлушательКурсора(cursor);
-                    },1000);
+                    },200);
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -3237,10 +3235,11 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 Long CallBaskОтWorkManagerОдноразового=0l;
                                 if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.SUCCEEDED) == 0)         {
                                     CallBaskОтWorkManagerОдноразового =
-                                            СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getLong("ОтветПослеВыполения_MyWork_Async_Синхронизация_Одноразовая", 0l);
+                                            СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getLong("ReturnSingleAsyncWork", 0l);
                                     if (CallBaskОтWorkManagerОдноразового>0) {
                                         recyclerView.getAdapter().notifyDataSetChanged();
                                         recyclerView.requestLayout();
+                                        WorkManager.getInstance(getApplicationContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая);
                                     }
                                 }
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -3266,7 +3265,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                         if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.RUNNING) != 0) {
                                             long end = Calendar.getInstance().getTimeInMillis();
                                             CallBaskОтWorkManageОбщая =
-                                                    СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnPublicAsyncWorkMananger", 0);
+                                                    СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnPublicAsyncWork", 0);
                                             if (CallBaskОтWorkManageОбщая>0) {
                                                 recyclerView.getAdapter().notifyDataSetChanged();
                                                 recyclerView.requestLayout();

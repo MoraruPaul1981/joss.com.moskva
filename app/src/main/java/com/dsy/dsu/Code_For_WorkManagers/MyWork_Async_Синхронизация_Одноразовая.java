@@ -148,9 +148,9 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
                  + " РешениеЗапускатьWorkManagerИлиНетАктивтиКакое "+РешениеЗапускатьWorkManagerИлиНетАктивтиКакое  + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
      }
        myDataОтветОдноразовойСлужбы = new Data.Builder()
-             .putLong("ОтветПослеВыполения_MyWork_Async_Синхронизация_Одноразовая",
+             .putLong("ReturnSingleAsyncWork",
                      ФинальныйРезультатAsyncBackgroud)
-           .putBoolean("Proccesing_MyWork_Async_Синхронизация_Одноразовая",true)
+           .putBoolean("ReturnSingleAsyncWork",true)
              .build();
      if (serviceConnection!=null) {
          context.unbindService(serviceConnection);
