@@ -652,7 +652,7 @@ public class Service_For_Remote_Async extends IntentService {
                 String   ИмяСерверИзХранилица = preferences.getString("ИмяСервера","");
                 Integer    ПортСерверИзХранилица = preferences.getInt("ИмяПорта",0);
                 // TODO: 10.11.2022 Получение Список Таблиц
-                БуферModification_server = МетодУниверсальныйДанныесСервера(
+                БуферModification_server = МетодУниверсальныйСервернаяВерсияДанныхДанныесСервера(
                         "view_data_modification",
                         "application/gzip",
                         "Хотим Получить Версию Данных Сервера",

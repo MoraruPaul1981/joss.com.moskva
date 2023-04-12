@@ -105,20 +105,17 @@ import okio.BufferedSink;
 
         final StringBuffer[] БуферСамиДанныеОтСервера = {new StringBuffer()};
         try {
-            String СтрокаСвязиСсервером ="http://"+ИмяСервера+":"+ИмяПорта+"/";;
+            String СтрокаСвязиСсервером ="http://"+ИмяСервера+":"+ИмяПорта+"/"+new PUBLIC_CONTENT(context).getСсылкаНаРежимСервераТабель();;
             СтрокаСвязиСсервером = СтрокаСвязиСсервером.replace(" ", "%20");
             Log.d(this.getClass().getName(), "   СтрокаСвязиСсервером "+  СтрокаСвязиСсервером);
-            String Adress_String = new String();
-            String Params = new String();
-            Adress_String = СтрокаСвязиСсервером +ИмяСервера;
-            Params = "?" + "NameTable= " + ИмяТаблицы.trim() +
+            String Params  = "?" + "NameTable= " + ИмяТаблицы.trim() +
                     "&" + "JobForServer=" + JobForServer.trim() + ""
                     + "&" + "IdUser=" + ID + ""
                     + "&" + "VersionData=" + Версия + "";
-            Adress_String = Adress_String + Params;
-            Adress_String = Adress_String.replace(" ", "%20");
-            URL Adress = new URL(Adress_String);
-            Log.d(this.getClass().getName(), " Adress_String " + Adress_String);
+            СтрокаСвязиСсервером = СтрокаСвязиСсервером + Params;
+            СтрокаСвязиСсервером = СтрокаСвязиСсервером.replace(" ", "%20");
+            URL Adress = new URL(СтрокаСвязиСсервером);
+            Log.d(this.getClass().getName(), " СтрокаСвязиСсервером " + СтрокаСвязиСсервером);
             OkHttpClient okHttpClientДанныеОтСервера = new OkHttpClient().newBuilder().addInterceptor(new Interceptor() {
                         @Override
                         public Response intercept(Chain chain) throws IOException {
@@ -216,6 +213,123 @@ import okio.BufferedSink;
 
     // TODO: 04.08.2021 HEAD HEAD
 
+    ///МЕТОД ПОЛУЧЕНИЕ ДАННЫХ С СЕРВЕРА
+    public StringBuffer МетодУниверсальныйСервернаяВерсияДанныхДанныесСервера(String ИмяТаблицы,
+                                                                              String Тип,
+                                                                              String JobForServer,
+                                                                              Long Версия,
+                                                                              Integer ID,
+                                                                              String ИмяСервера,
+                                                                              Integer ИмяПорта) {
+
+        final StringBuffer[] БуферСамиДанныеОтСервера = {new StringBuffer()};
+        try {
+            String СтрокаСвязиСсервером ="http://"+ИмяСервера+":"+ИмяПорта+"/"+new PUBLIC_CONTENT(context).getСсылкаНаРежимСервераАунтификация();;
+            СтрокаСвязиСсервером = СтрокаСвязиСсервером.replace(" ", "%20");
+            Log.d(this.getClass().getName(), "   СтрокаСвязиСсервером "+  СтрокаСвязиСсервером);
+            String Params = "?" + "NameTable= " + ИмяТаблицы.trim() +
+                    "&" + "JobForServer=" + JobForServer.trim() + ""
+                    + "&" + "IdUser=" + ID + ""
+                    + "&" + "VersionData=" + Версия + "";
+            СтрокаСвязиСсервером=   СтрокаСвязиСсервером + Params;
+            СтрокаСвязиСсервером = СтрокаСвязиСсервером.replace(" ", "%20");
+            URL Adress = new URL(СтрокаСвязиСсервером);
+            Log.d(this.getClass().getName(), " СтрокаСвязиСсервером " + СтрокаСвязиСсервером);
+            OkHttpClient okHttpClientДанныеОтСервера = new OkHttpClient().newBuilder().addInterceptor(new Interceptor() {
+                        @Override
+                        public Response intercept(Chain chain) throws IOException {
+                            Class_GRUD_SQL_Operations grudSqlOperations= new Class_GRUD_SQL_Operations(context);
+                            grudSqlOperations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СамFreeSQLКОд",
+                                    " SELECT success_users,success_login  FROM successlogin  ORDER BY date_update DESC ;");
+                            PUBLIC_CONTENT  classEngineSQLГдеНаходитьсяМенеджерПотоков =new PUBLIC_CONTENT (context);
+                            SQLiteCursor            Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО= null;
+                            try {
+                                Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО = (SQLiteCursor) grudSqlOperations.
+                                        new GetаFreeData(context).getfreedata(grudSqlOperations.
+                                                concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                                        classEngineSQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
+                            } catch (ExecutionException e) {
+                                throw new RuntimeException(e);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                            if(Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.getCount()>0){
+                                Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.moveToFirst();
+                                ПубличноеЛогин =         Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.getString(0).trim();
+                                ПубличноеПароль =           Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.getString(1).trim();
+                            }
+                            Log.d(this.getClass().getName(), "  PUBLIC_CONTENT.ПубличноеИмяПользовательДлСервлета  " + ПубличноеЛогин +
+                                    " PUBLIC_CONTENT.ПубличноеПарольДлСервлета " + ПубличноеПароль);
+                            String ANDROID_ID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+                            // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
+                            Log.d(this.getClass().getName(), "  ПубличноеЛогин " + ПубличноеЛогин + " ПубличноеПароль " + ПубличноеПароль+" ANDROID_ID "+ANDROID_ID);
+                            Request originalRequest = chain.request();
+                            Request.Builder builder = originalRequest.newBuilder()
+                                    .header("Content-Type", Тип + " ;charset=UTF-8")
+                                    .header("Accept-Encoding", "gzip,deflate,sdch")
+                                    .header("Connection", "Keep-Alive")
+                                    .header("Accept-Language", "ru-RU")
+                                    .header("identifier", ПубличноеЛогин)
+                                    .header("p_identifier", ПубличноеПароль)
+                                    .header("id_device_androis", ANDROID_ID);
+                            Request newRequest = builder.build();
+                            return chain.proceed(newRequest);
+                        }
+                    }).connectTimeout(2, TimeUnit.SECONDS)
+                    .readTimeout(55, TimeUnit.SECONDS).build();
+            ///  MediaType JSON = MediaType.parse("application/json; charset=utf-16");
+            Request requestGET = new Request.Builder().get().url(Adress).build();
+            Log.d(this.getClass().getName(), "  request  " + requestGET);
+            // TODO  Call callGET = client.newCall(requestGET);
+            Dispatcher dispatcherДанныеОтСервера = okHttpClientДанныеОтСервера.dispatcher();
+            okHttpClientДанныеОтСервера.newCall(requestGET).enqueue(new Callback() {
+                @Override
+                public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                    Log.e(this.getClass().getName(), "  ERROR call  " + call + "  e" + e.toString());
+                    Log.e(Class_MODEL_synchronized.class.getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber() + " ОшибкаТекущегоМетода " + e.getMessage());
+                    new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), Class_MODEL_synchronized.class.getName(),
+                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    // TODO: 31.05.2022
+                    dispatcherДанныеОтСервера.executorService().shutdown();
+                    //TODO закрываем п отоки
+                }
+                @Override
+                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                    if (response.isSuccessful()) {
+                        InputStream inputStreamОтПинга = response.body().source().inputStream();
+                        GZIPInputStream GZIPПотокОтСЕРВЕРА = new GZIPInputStream(inputStreamОтПинга);
+                        BufferedReader РидерОтСервераМетодаGET = new BufferedReader(new InputStreamReader(GZIPПотокОтСЕРВЕРА, StandardCharsets.UTF_16));//
+                        БуферСамиДанныеОтСервера[0] = РидерОтСервераМетодаGET.lines().collect(StringBuffer::new, (sb, i) -> sb.append(i),
+                                StringBuffer::append);
+                        Long РазмерПришедшегоПотока = Long.parseLong(   response.header("stream_size"));
+                        Log.d(this.getClass().getName(), "БуферСамиДанныеОтСервера " + БуферСамиДанныеОтСервера[0] +  " РазмерПришедшегоПотока " +РазмерПришедшегоПотока);
+                        // TODO: 31.05.2022
+                        dispatcherДанныеОтСервера.executorService().shutdown();
+                    }
+                }
+            });
+            //TODO
+            dispatcherДанныеОтСервера.executorService().awaitTermination(1, TimeUnit.MINUTES);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            String ОшибкаТекущегоМетода = e.toString();
+            if (!ОшибкаТекущегоМетода.toString().matches("(.*)java.io.EOFException(.*)") &&
+                    !ОшибкаТекущегоМетода.toString().matches("(.*)java.net.sockettimeoutexception(.*)")
+                    &&
+                    !ОшибкаТекущегоМетода.toString().matches("(.*)SocketTimeout(.*)")) {
+                Log.e(Class_MODEL_synchronized.class.getName(), "Ошибка " + ОшибкаТекущегоМетода + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber() + " ОшибкаТекущегоМетода " + ОшибкаТекущегоМетода.toString());
+                new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), Class_MODEL_synchronized.class.getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+        //// todo get ASYNtASK
+        return БуферСамиДанныеОтСервера[0];
+
+    }
+
 
     //todo #GET     //#GET  только для ПИНГА     //#GET  только для ПИНГА  //#GET  только для ПИНГА //#GET  только для ПИНГА //#GET  только для ПИНГА //#GET  только для ПИНГА //#GET  только для ПИНГА //#GET  только для ПИНГА
     ///МЕТОД ПОЛУЧЕНИЕ ДАННЫХ С СЕРВЕРА
@@ -231,22 +345,18 @@ import okio.BufferedSink;
         final Integer[] РазмерПришедшегоПотока = {0};
         try {
             StringBuffer БуферРезультатПингасСервером = null;
-            String СтрокаСвязиСсервером = "http://" + ИмяСервера + ":" + ИмяПорта + "/";
+            String СтрокаСвязиСсервером = "http://" + ИмяСервера + ":" + ИмяПорта + "/"+ new PUBLIC_CONTENT(context).getСсылкаНаРежимСервераRuntime();
             СтрокаСвязиСсервером = СтрокаСвязиСсервером.replace(" ", "%20");
             Log.d(this.getClass().getName(), "   СтрокаСвязиСсервером " + СтрокаСвязиСсервером);
-            String Adress_String = new String();
-            String Params = new String();
-            Adress_String = СтрокаСвязиСсервером + new PUBLIC_CONTENT(context).getСсылкаНаРежимСервераRuntime();///СТРОЧКА УКАЗЫВАЕТ НА КАКОЙ СЕРВЕЛ НА СЕРВЕР МЫ БУДЕМ СТУЧАТЬСЯ /// 80.66.149.58 /// dsu1.glassfish/DSU1JsonServlet
-            Params = "?" + "NameTable= " + NameTable.trim() +
+            String Params  = "?" + "NameTable= " + NameTable.trim() +
                     "&" + "JobForServer=" + JobForServer.trim() + ""+
                     "&" + "IdUser=" + IdUser + ""
                     + "&" + "VersionData=" + VersionData + "";
             Log.d(this.getClass().getName(), " Params" + Params);
-            Adress_String = Adress_String + Params;
-            Log.d(this.getClass().getName(), "Adress_String " + Adress_String);
-            Adress_String = Adress_String.replace(" ", "%20");
-            Log.d(this.getClass().getName(), " Adress_String " + Adress_String);
-            URL Adress = new URL(Adress_String);
+            СтрокаСвязиСсервером = СтрокаСвязиСсервером + Params;
+            СтрокаСвязиСсервером = СтрокаСвязиСсервером.replace(" ", "%20");
+            URL Adress = new URL(СтрокаСвязиСсервером);
+            Log.d(this.getClass().getName(), " СтрокаСвязиСсервером " + СтрокаСвязиСсервером);
             // TODO: 11.03.2023 новый тест код
             // MediaType JSON = MediaType.parse("application/json; charset=utf-8");
             OkHttpClient okHttpClientПинг = new OkHttpClient().newBuilder().addInterceptor(new Interceptor() {
@@ -404,18 +514,14 @@ import okio.BufferedSink;
         final StringBuffer[] БуферCallsBackОтСеврера = {new StringBuffer()};
                 try {
                     // TODO: 12.03.2023  метод POST()
-                    String СтрокаСвязиСсервером ="http://"+ИмяСервера+":"+ИмяПорта+"/";;
+                    String СтрокаСвязиСсервером ="http://"+ИмяСервера+":"+ИмяПорта+"/"+new PUBLIC_CONTENT(context).getСсылкаНаРежимСервераТабель();
                     СтрокаСвязиСсервером = СтрокаСвязиСсервером.replace(" ", "%20");
-                    String Adress_String = new String();
-                    Adress_String = СтрокаСвязиСсервером +new PUBLIC_CONTENT(context).getСсылкаНаРежимСервераТабель();
-                    String Params = new String();
-                    Params = "?" + "NameTable=" + Таблица.trim() + "&"
+                    String Params = "?" + "NameTable=" + Таблица.trim() + "&"
                             + "IdUser=" + ID +
                             "&" + "JobForServer=" + JobForServer.trim() + "";
-                    Adress_String = Adress_String + Params;
-                    Adress_String = Adress_String.replace(" ", "%20");
-                    Log.d(this.getClass().getName(), " Adress_String " + Adress_String);
-                    URL Adress = new URL(Adress_String);
+                    СтрокаСвязиСсервером = СтрокаСвязиСсервером + Params;
+                    СтрокаСвязиСсервером = СтрокаСвязиСсервером.replace(" ", "%20");
+                    URL Adress = new URL(СтрокаСвязиСсервером);
                     Log.d(this.getClass().getName(), " Adress  " + Adress);
                     OkHttpClient okHttpClientОтправкиДанныхНаСервер = new OkHttpClient().newBuilder().addInterceptor(new Interceptor() {
                                 @Override
@@ -2952,14 +3058,9 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                 try {
                     String СтрокаСвязиСсервером ="http://"+ИмяСервера+":"+ИмяПорта+"/";;
                     СтрокаСвязиСсервером = СтрокаСвязиСсервером.replace(" ", "%20");
-                    Log.d(this.getClass().getName(), " СтрокаСвязиСсервером " +СтрокаСвязиСсервером);
-                    String Adress_String = null;
-                    Adress_String = СтрокаСвязиСсервером + АдресЗагрузки; /////"dsu1.glassfish/update_android_dsu1/output-metadata.json";
-                    Log.d(this.getClass().getName(), "Adress_String " + Adress_String);
-                    Adress_String = Adress_String.replace(" ", "%20");
-                    Log.d(this.getClass().getName(), " Adress_String " + Adress_String);
-                    URL Adress = null;
-                    Adress = new URL(Adress_String);
+                    СтрокаСвязиСсервером = СтрокаСвязиСсервером + АдресЗагрузки; /////"dsu1.glassfish/update_android_dsu1/output-metadata.json";
+                    СтрокаСвязиСсервером = СтрокаСвязиСсервером.replace(" ", "%20");
+                    URL    Adress = new URL(СтрокаСвязиСсервером);
                     OkHttpClient okHttpClientЗагрузкаНовогоПО = new OkHttpClient().newBuilder().addInterceptor(new Interceptor() {
                                 @Override
                                 public Response intercept(Chain chain) throws IOException {
@@ -3380,8 +3481,7 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
     ////TODO САМ МЕТОД АУНТИФИКАЦИИ С СЕРВЕРОМ
     public StringBuffer методАвторизацииЛогинИПаполь(@NonNull View v,
                                                      @NonNull Context context,
-                                                     @NonNull SharedPreferences preferences
-            , @NonNull String СтрокаСвязиСсервером,
+                                                     @NonNull SharedPreferences preferences,
                                                      @NonNull String ПубличноеЛогин,
                                                      @NonNull String ПубличноеПароль) {
 
@@ -3389,14 +3489,13 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
         final StringBuffer[] БуферПолученнниеДанныхПолученияIDотСервера = {new StringBuffer()};
         try {
             Class_GRUD_SQL_Operations class_grud_sql_operationsАунтификация=new Class_GRUD_SQL_Operations(context);
-            //////TODO Запуск асинхроного ЛОУДОРА ДЛЯ АУНТИФТИКАЦИИ ПОЛЬЗОВАТЕЛЯ
             PUBLIC_CONTENT public_content=   new PUBLIC_CONTENT(context);
             String   ИмяСерверИзХранилица = preferences.getString("ИмяСервера","");
             Integer    ПортСерверИзХранилица = preferences.getInt("ИмяПорта",0);
             String ИмменоКакойСерверПодкючения ="http://"+ИмяСерверИзХранилица+":"+ПортСерверИзХранилица+"/";
-            //////TODO --операции
-            СтрокаСвязиСсервером = ИмменоКакойСерверПодкючения +new PUBLIC_CONTENT(context).getСсылкаНаРежимСервераАунтификация()+ "?"
-                    + "ЗаданиеДляСервлетаВнутриПотока=Хотим Получить ID для Генерации  UUID";
+          String  СтрокаСвязиСсервером = ИмменоКакойСерверПодкючения +new PUBLIC_CONTENT(context).getСсылкаНаРежимСервераАунтификация()+ "?"
+                     + "JobForServer=" + "Хотим Получить ID для Генерации  UUID" + ""+
+                  "&" + "IdUser=" + ПубличноеЛогин + "";
             СтрокаСвязиСсервером = СтрокаСвязиСсервером.replace(" ", "%20");
             Log.d(this.getClass().getName(), " СтрокаСвязиСсервером " +СтрокаСвязиСсервером);
             URL Adress = new URL(СтрокаСвязиСсервером); //
@@ -3470,6 +3569,7 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                         }
                     }
                 });
+                dispatcherПроверкаЛогиниПароль.executorService().awaitTermination(1,TimeUnit.MINUTES);
             } else {
             }
         } catch (Exception e) {

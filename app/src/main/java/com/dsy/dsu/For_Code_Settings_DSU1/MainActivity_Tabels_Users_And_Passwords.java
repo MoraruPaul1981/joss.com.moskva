@@ -12,6 +12,9 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.Settings;
@@ -44,6 +47,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -72,12 +76,12 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
     private String ПубличноеЛогин =new String();
     private String ПубличноеПароль =new String();
     private   Integer ПубличноеIDПолученныйИзСервлетаДляUUID;
-    private String СтрокаСвязиСсервером=new String();
     private  CREATE_DATABASE   Create_Database_СсылкаНАБазовыйКласс;
-    private  StringBuffer   БуферПолученнниеДанныхПолученияIDотСервера=new StringBuffer();
+
     private SharedPreferences preferences;
     private   String ОшибкиПришлиПослеПингаОтСервера = null;
     private  View v;
+    private  Message message;
     ////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +135,8 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, permissions, 1);
            // preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             preferences = getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
+            // TODO: 12.04.2023  messageGet
+            messageGet();
         } catch (Exception e) {
             ПрогрессБарДляВходаСистему.setVisibility(View.INVISIBLE);// при нажатии делаем видимый програсссбар
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -197,11 +203,17 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
                                 ПрогрессБарДляВходаСистему.refreshDrawableState();
                                 //TODO запукаем метод аунтификции
                                 //TODO запукаем метод Афторизаиция по ЛОГИНУ И ПАРОЛЮ
-                                StringBuffer  БуферПолученнниеДанныхПолученияIDотСервера=new Class_MODEL_synchronized(getApplicationContext()).
-                                        методАвторизацииЛогинИПаполь(v,getApplicationContext(),preferences,СтрокаСвязиСсервером,ПубличноеЛогин,ПубличноеПароль);
-                                Log.d(this.getClass().getName(), " БуферПолученнниеДанныхПолученияIDотСервера "+ БуферПолученнниеДанныхПолученияIDотСервера) ;
-                                // TODO: 12.04.2023 Как получаем ответ от сервра сообщаем это пользователю 
-                                МетодПослеАунтификациисСервером(v);
+                                message.getTarget().post(()->{
+                                    StringBuffer  БуферПолученнниеДанныхПолученияIDотСервера=new Class_MODEL_synchronized(getApplicationContext()).
+                                            методАвторизацииЛогинИПаполь(v,getApplicationContext(),preferences,ПубличноеЛогин,ПубличноеПароль);
+                                    Log.d(this.getClass().getName(), " БуферПолученнниеДанныхПолученияIDотСервера "+
+                                            БуферПолученнниеДанныхПолученияIDотСервера) ;
+                                    Bundle bundleРезультатПарольЛогин=new Bundle();
+                                    bundleРезультатПарольЛогин.putString("БуферПолученнниеДанныхПолученияIDотСервера",
+                                         БуферПолученнниеДанныхПолученияIDотСервера.toString());
+                                    message.setData(bundleРезультатПарольЛогин);
+                                    message.sendToTarget();
+                                });
                             }
                         } else {
                             Log.d(this.getClass().getName(), " Вы не заполнили Логин/Пароль ") ;
@@ -228,11 +240,36 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
     }
 
 
-    private void МетодПослеАунтификациисСервером(View v)  {
+    // TODO: 12.04.2023
+    void messageGet(){
+        message= Message.obtain(new Handler(Looper.myLooper()),()->{
+            try{
+                Bundle bundle=   message.getData();
+    String БуферПолученнниеДанныхПолученияIDотСервера=          bundle.getString("БуферПолученнниеДанныхПолученияIDотСервера","");
+                // TODO: 12.04.2023 Как получаем ответ от сервра сообщаем это пользователю
+                МетодПослеАунтификациисСервером(v,new StringBuffer(БуферПолученнниеДанныхПолученияIDотСервера));
+
+                Log.i(this.getClass().getName(),  " Атоманически установкаОбновление ПО "+
+                        Thread.currentThread().getStackTrace()[2].getMethodName()+
+                        " время " +new Date().toLocaleString() + " bundle " +bundle );
+                Log.i(this.getClass().getName(), "bundle " +bundle);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        });
+    }
+
+
+    private void МетодПослеАунтификациисСервером(View v,@NonNull StringBuffer БуферПолученнниеДанныхПолученияIDотСервера)  {
         try{
-        if (БуферПолученнниеДанныхПолученияIDотСервера.length() > 0) {
+        if (БуферПолученнниеДанныхПолученияIDотСервера.toString().length()  > 0) {
             if (!БуферПолученнниеДанныхПолученияIDотСервера.toString().trim() .matches("(.*)Don't Login and Password(.*)") ) {
-                ПубличноеIDПолученныйИзСервлетаДляUUID =Integer.parseInt(БуферПолученнниеДанныхПолученияIDотСервера.toString());
+                ПубличноеIDПолученныйИзСервлетаДляUUID = Integer.parseInt(БуферПолученнниеДанныхПолученияIDотСервера.toString()) ;
                 Log.d(this.getClass().getName(), "  ПроверкаПришёлЛиОтветОтСервлетаДляАунтификацииПользователя "
                         + БуферПолученнниеДанныхПолученияIDотСервера + "  ID " +ПубличноеIDПолученныйИзСервлетаДляUUID);
                 Integer ПолученинныйПубличныйIDДлчЗаписиВБАзу=Integer.parseInt(БуферПолученнниеДанныхПолученияIDотСервера.toString());
@@ -272,8 +309,7 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
                         new Class_MODEL_synchronized(getApplicationContext()).  МетодЗАписиПолученогоОтСервреаIDПубличногоВТАблицу_settings_tabels(
                                 ПолученинныйПубличныйIDДлчЗаписиВБАзу);
                 // TODO: 10.09.2021  РЕЗУЛЬТАТ ЗАПИСИ СОТРУДНИКА ЗАПИСИ В БАЗУ
-                Log.d(this.getClass().getName(), " БуферПолученнниеДанныхПолученияIDотСервера "
-                        +БуферПолученнниеДанныхПолученияIDотСервера.toString() +
+                Log.d(this.getClass().getName(), " БуферПолученнниеДанныхПолученияIDотСервера "+
                         " УСПЕШАЯ ЗАПИСЬ ПУБЛИЧНОГО id SUCCEESS !!!!  " +
                         "ТАБЛИЦА settings_tabels  РезультатЗаписиНовгоIDБАзуВТаблицеНАСТРОЕКПОЛЬЗОВТЕЛЯ_ДЛяЗАПИСИВТаблицу_settings_tabels "
                         + РезультатЗаписиНовгоIDБАзуВТаблицеНАСТРОЕКПОЛЬЗОВТЕЛЯ_ДЛяЗАПИСИВТаблицу_settings_tabels+
@@ -300,7 +336,6 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
             Интент_ЗапускСамогоПриложенияЕслиПользовательПослеУспешнойаунтификации.putExtra("ID",ПубличноеIDПолученныйИзСервлетаДляUUID);
             Интент_ЗапускСамогоПриложенияЕслиПользовательПослеУспешнойаунтификации.putExtra("ПубличноеИмяПользовательДлСервлета", ПубличноеЛогин);
             Интент_ЗапускСамогоПриложенияЕслиПользовательПослеУспешнойаунтификации.putExtra("ПубличноеПарольДлСервлета", ПубличноеПароль);
-            Интент_ЗапускСамогоПриложенияЕслиПользовательПослеУспешнойаунтификации.putExtra("СтрокаСвязиСсервером",СтрокаСвязиСсервером);
             Интент_ЗапускСамогоПриложенияЕслиПользовательПослеУспешнойаунтификации.setClass(getApplication(), MainActivity_Visible_Async.class);
             Интент_ЗапускСамогоПриложенияЕслиПользовательПослеУспешнойаунтификации.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);/// FLAG_ACTIVITY_SINGLE_TOP
             // TODO: 01.12.2022 записываем режим синъронизации
@@ -334,8 +369,7 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
                     ПрогрессБарДляВходаСистему.refreshDrawableState();
                     Snackbar snackbar = Snackbar.make(v, " " +СтатусДляПользователя+" ("+ПодсчетПолощительиОтрцательРезультатов+") " , Snackbar.LENGTH_LONG);
                     snackbar.show();
-                    Log.d(this.getClass().getName(), " ОшибкаПриПодключениекСерверуДляАунтификацииПользователяПриВходе "
-                            + " БуферПолученнниеДанныхПолученияIDотСервера" + БуферПолученнниеДанныхПолученияIDотСервера.length());
+                    Log.d(this.getClass().getName(), " ОшибкаПриПодключениекСерверуДляАунтификацииПользователяПриВходе ");
                         if (ПодсчетПолощительиОтрцательРезультатов > 4) {////ПОПЫТКИ НЕ УДАЧНОГО ВХОДА В ПРОГРАММУ СВЫШЕ 5  СООБШАЕМ ПОЛЬЗОВАТЛЮ ЧТО ЕГО ИММ ЯИ ИЛИ ПАРОЛЬ НЕ ПРАВИЛЬНЫЙ И ПРИЛОЖЕНИЕ ОПРАЫЛЕМ В СОН
                             ПодсчетПолощительиОтрцательРезультатов = 0;
                             ПрогрессБарДляВходаСистему.setVisibility(View.VISIBLE);// при нажатии делаем видимый програсссбар
