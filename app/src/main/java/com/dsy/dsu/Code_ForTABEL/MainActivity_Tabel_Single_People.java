@@ -120,6 +120,8 @@ import java.util.stream.IntStream;
 
 import javax.crypto.NoSuchPaddingException;
 
+import io.reactivex.rxjava3.functions.Consumer;
+
 
 public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private Spinner СпинерТАбельМЕсяцФинал;/////спинеры для создание табеля
@@ -1390,8 +1392,11 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             intentПереХодНаМеткиТабеля.setClass(getApplicationContext(), MainActivity_Metki_Tabel.class);
             Bundle bundleToMainActitivyMetkiTabel= (Bundle) editTextЯчейка.getTag();
             intentПереХодНаМеткиТабеля.putExtras(bundleToMainActitivyMetkiTabel);
-            // TODO: 10.04.2023  переход ИЗ MAINaCTITyTabelSingle Peolpe
-            методBACKFromMainActivitySingleTabel(intentПереХодНаМеткиТабеля);
+            message.getTarget().postDelayed(()->{
+                // TODO: 10.04.2023  переход ИЗ MAINaCTITyTabelSingle Peolpe
+                методBACKFromMainActivitySingleTabel(intentПереХодНаМеткиТабеля);
+            },300);
+
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -2835,6 +2840,18 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                     // TODO: 19.10.2022
                                     RxView.focusChanges(v)
                                             .throttleLast(250, TimeUnit.MILLISECONDS)
+                                            .doOnError(new Consumer<Throwable>() {
+                                                @Override
+                                                public void accept(Throwable throwable) throws Throwable {
+                                                    throwable.printStackTrace();
+                                                    Log.e(getApplicationContext().getClass().getName(),
+                                                            "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(throwable.toString(),
+                                                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                                }
+                                            })
                                             .subscribe(new io.reactivex.rxjava3.functions.Consumer<Boolean>() {
                                                 @Override
                                                 public void accept(Boolean aBoolean) throws Throwable {
@@ -2849,7 +2866,9 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
                      Integer РезультатОбновлениеЯчейки=   subClassUpdateSingletabel.МетодВалидацияЯчеек(v);
                      if (РезультатОбновлениеЯчейки>0){
+                         message.getTarget().postDelayed(()->{
                          ((EditText) v).startAnimation(animationVibr2);
+                         },150);
                      }
                         Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.Class_Generation_Data;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.dsy.dsu.R;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,7 +40,13 @@ public class SubClassUpdatesCELL {
         try{
             if (viewДанные!=null) {
                 Log.d(this.getClass().getName(), " viewДанные" +  viewДанные);
-                EditText editTextЯчейкаОбновление=(EditText)    viewДанные;
+                 TextView editTextЯчейкаОбновление = null;
+                if (viewДанные instanceof  EditText ) {
+                    editTextЯчейкаОбновление = (TextView)    viewДанные;
+                }
+                if (viewДанные instanceof  MaterialTextView ) {
+                    editTextЯчейкаОбновление = (MaterialTextView) viewДанные;
+                }
 
                 List<Integer> ЛистДопустимоеСодержание = new ArrayList();
                 IntStream.iterate(1, i -> i + 1).limit(24).forEachOrdered(ЛистДопустимоеСодержание::add);
@@ -54,9 +62,10 @@ public class SubClassUpdatesCELL {
                         cc.setImageResource(R.drawable.icon_dsu1_add_organisazio_error);//icon_dsu1_synchronisazia_dsu1_success
                         aa.setView(cc);
                         aa.show();
+                        TextView finalEditTextЯчейкаОбновление = editTextЯчейкаОбновление;
                         context.getMainExecutor().execute(()->{
                             Toast.makeText( context, "Нет сохранилось !!!"+
-                                    "\n"+" (Часы больше 24 ) :" +editTextЯчейкаОбновление.getText().toString(), Toast.LENGTH_SHORT).show();
+                                    "\n"+" (Часы больше 24 ) :" + finalEditTextЯчейкаОбновление.getText().toString(), Toast.LENGTH_SHORT).show();
                         });
 
                     }else {
@@ -69,7 +78,6 @@ public class SubClassUpdatesCELL {
                     // TODO: 12.04.2023 ЧИСЛО ОБНОВЛЕНИЕ
                 }else {
                     ЗначениеИзЯчейки.replaceAll("[0-9]","");
-                    ЗначениеИзЯчейки=   ЗначениеИзЯчейки.substring(0, 2);
                     editTextЯчейкаОбновление.setText(ЗначениеИзЯчейки);
                     Bundle bundleперезаписьЯчейки= (Bundle)  editTextЯчейкаОбновление.getTag();
                     bundleперезаписьЯчейки.putString("ЗначениеДня",ЗначениеИзЯчейки);
@@ -94,7 +102,7 @@ public class SubClassUpdatesCELL {
         }
         return ОбновлениеЯчейки;
     }
-    Integer МетодСохранениеЯчейки(@NonNull EditText viewЯчейка,@NonNull Context context){ //TODO метод записи СМЕНЫ ПРОФЕСИИ
+    Integer МетодСохранениеЯчейки(@NonNull TextView viewЯчейка,@NonNull Context context){ //TODO метод записи СМЕНЫ ПРОФЕСИИ
         Integer ОбновлениеЯчейки=0;
         try{
             String ТаблицаОбработки="data_tabels";
