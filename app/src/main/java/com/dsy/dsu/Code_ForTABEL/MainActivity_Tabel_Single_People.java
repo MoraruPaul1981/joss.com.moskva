@@ -193,8 +193,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private SubClassSingleTabelRecycreView. MyRecycleViewAdapter myRecycleViewAdapter;
     private SubClassSingleTabelRecycreView. MyViewHolder myViewHolder;
     private  Integer Position =0;
-    private String ЯчейкаДляЗаписиМетки;
-    private  String ЯчейкаСодержимоеДляЗаписиМетки;
     private  Cursor ГлавныйALLКурсорДанныеSwipes;
 
 
@@ -1380,23 +1378,25 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
     //TODO переход на метки табеля
 
-    private void МетодПереходаНаМеткиТабеля( ) {
-        try{
-            Intent IntentПереХодНаМеткиТабеля  =new Intent();
-             IntentПереХодНаМеткиТабеля.setClass(getApplicationContext(), MainActivity_Metki_Tabel.class);
+    private void МетодПереходаНаМеткиТабеля(@NonNull EditText editTextЯчейка) {
+        try {
+            Intent intentПереХодНаМеткиТабеля = new Intent();
+            intentПереХодНаМеткиТабеля.setClass(getApplicationContext(), MainActivity_Metki_Tabel.class);
+            Bundle bundleToMainActitivyMetkiTabel= (Bundle) editTextЯчейка.getTag();
+            intentПереХодНаМеткиТабеля.putExtras(bundleToMainActitivyMetkiTabel);
             // TODO: 10.04.2023  переход ИЗ MAINaCTITyTabelSingle Peolpe
-            методBACKFromMainActivitySingleTabel(IntentПереХодНаМеткиТабеля);
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+            методBACKFromMainActivitySingleTabel(intentПереХодНаМеткиТабеля);
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " FullNameCFO "+FullNameCFO+ " CurrenrsСhildUUID " +CurrenrsСhildUUID
-                    + " ГодТабелей " +ГодТабелей +" МЕсяцТабелей " +МЕсяцТабелей   + " DigitalNameCFO "+DigitalNameCFO+
-                    " Position " +Position+ " ИмесяцвИГодСразу " +ИмесяцвИГодСразу);
+                    + " FullNameCFO " + FullNameCFO + " CurrenrsСhildUUID " + CurrenrsСhildUUID
+                    + " ГодТабелей " + ГодТабелей + " МЕсяцТабелей " + МЕсяцТабелей + " DigitalNameCFO " + DigitalNameCFO +
+                    " Position " + Position + " ИмесяцвИГодСразу " + ИмесяцвИГодСразу+ " editTextЯчейка " +editTextЯчейка);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
@@ -1412,15 +1412,13 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
         bundleИзMainActitivy_List_Tables.putInt("DigitalNameCFO", DigitalNameCFO);
         bundleИзMainActitivy_List_Tables.getString("FullNameCFO", FullNameCFO);
         bundleИзMainActitivy_List_Tables.putString("ИмесяцвИГодСразу", ИмесяцвИГодСразу.trim());
-        bundleИзMainActitivy_List_Tables.putString("ЯчейкаДляЗаписиМетки", ЯчейкаДляЗаписиМетки);;
-        bundleИзMainActitivy_List_Tables.putString("ЯчейкаСодержимоеДляЗаписиМетки", ЯчейкаСодержимоеДляЗаписиМетки);;
         startActivity(intentBack);
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                 + " FullNameCFO "+FullNameCFO+ " CurrenrsСhildUUID " +CurrenrsСhildUUID
                 + " ГодТабелей " +ГодТабелей +" МЕсяцТабелей " +МЕсяцТабелей   + " DigitalNameCFO "+DigitalNameCFO+
-                " Position " +Position+ " ИмесяцвИГодСразу " +ИмесяцвИГодСразу);
+                " Position " +Position+ " ИмесяцвИГодСразу " +ИмесяцвИГодСразу + " bundleИзMainActitivy_List_Tables " +bundleИзMainActitivy_List_Tables);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -2800,10 +2798,21 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                             editTextRowКликПоДАнными.setOnLongClickListener(new View.OnLongClickListener() {
                                 @Override
                                 public boolean onLongClick(View v) {
-                                    // TODO: 19.10.2022
+                                    try{
+                                    // TODO: 19.10.2022  переход на метки табеля
+                                    МетодПереходаНаМеткиТабеля( (EditText) v);
                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Log.e(getApplicationContext().getClass().getName(),
+                                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                }
                                     return true;
                                 }
                             });
@@ -3161,6 +3170,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                     if (ReturnCallSingle>0) {
                                         recyclerView.getAdapter().notifyDataSetChanged();
                                         recyclerView.requestLayout();
+                                        recyclerView.refreshDrawableState();
                                     }
                                     WorkManager.getInstance(getApplicationContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая);
                                 }
@@ -3189,6 +3199,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                             if (ReturnCallPublic>0) {
                                                 recyclerView.getAdapter().notifyDataSetChanged();
                                                 recyclerView.requestLayout();
+                                                recyclerView.refreshDrawableState();
                                             }
                                         }
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
