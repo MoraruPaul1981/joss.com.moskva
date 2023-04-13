@@ -205,9 +205,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private  ArrayList<String> МассивДляВыбораВСпинерДепартамент= new ArrayList<>(); //////АКАРЛИСТ ДЛЯ ПОЛУЧЕНЫЙ НОВЫХ ДАТ
     private  String КонтентСпинераНаАктивтиТабель= "";
     private  String FullNameCFO = "";
-    private  Integer ГодТабелей = 2016;
+    private  Integer ГодТабелей = 0;
     private  String ИмесяцвИГодСразу = "";
-    private  Integer МЕсяцТабелей=3;
+    private  Integer МЕсяцТабелей=0;
 
 
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
@@ -486,12 +486,14 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     " WHERE t.cfo=? AND t.month_tabels  =?  AND t.year_tabels = ?  AND t.status_send !=?  AND t.fio IS NOT NULL  ORDER BY   t._id  " );
            // bundleГлавныйКурсорMultiДанныеSwipes.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(ЦифровоеИмяНовгоТабеля), String.valueOf(МесяцТабеля),String.valueOf(ГодДляТабелей),"Удаленная" });
             bundleГлавныйКурсорMultiДанныеSwipes.putStringArray("УсловияВыборки" ,
-                    new String[]{String.valueOf(428),
-                            String.valueOf(3),
-                            String.valueOf(2016),"Удаленная" });
+                    new String[]{String.valueOf(DigitalNameCFO),
+                            String.valueOf(  МЕсяцТабелей),
+                            String.valueOf(   ГодТабелей),
+                            String.valueOf(  "Удаленная") });
             bundleГлавныйКурсорMultiДанныеSwipes.putString("Таблица","viewtabel");
             cursor =      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleГлавныйКурсорMultiДанныеSwipes);
-
+            // TODO: 13.04.2023 делаем смещение по курсору
+            cursor.move(Position);
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
