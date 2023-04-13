@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =      1014;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+     static final int VERSION =      1015;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
     private      SQLiteDatabase ССылкаНаСозданнуюБазу;
     private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
@@ -807,7 +807,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         ССылкаНаСозданнуюБазу.execSQL("drop table  if exists  metki_tabel");//test
         ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0' ,versionserveraandroid_version='0' WHERE name =  'metki_tabel'");//test
         ССылкаНаСозданнуюБазу.execSQL("Create table if not exists    metki_tabel  (" +
-                "id  INTEGER PRIMARY KEY AUTOINCREMENT ," +
+                "_id  INTEGER PRIMARY KEY AUTOINCREMENT ," +
                 " metka TEXT ," +
                 " fullname_metka TEXT ," +
                 " date_update NUMERIC  ," +
@@ -1125,9 +1125,9 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             Log.d(this.getClass().getName(), " после СЛУЖБА  содание базы newVersion==  652   (например)   " + new Date() + " newVersion " + newVersion);
 
             
-      if(newVersion ==     1001){
+      if(newVersion ==     1015){
                //TODO table создание
-          МетодСозданияViewТабеля(ССылкаНаСозданнуюБазу);
+          МетодСозданиеМетокТабеля(ССылкаНаСозданнуюБазу);
                    }else
             if (newVersion > oldVersion) {
                    // TODO: 08.06.2021 создание Базы Данных
