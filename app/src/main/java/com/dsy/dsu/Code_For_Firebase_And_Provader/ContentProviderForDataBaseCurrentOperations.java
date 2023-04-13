@@ -451,34 +451,59 @@ public class ContentProviderForDataBaseCurrentOperations extends ContentProvider
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        Integer РезультатСменыСтатусаВыбраногоМатериала=0;
+        Integer РезультатUpdateCurrentPro=0;
         try{
-        //    Create_Database_СамаБАзаSQLite=new CREATE_DATABASE(getContext()).getССылкаНаСозданнуюБазу();
-            if (!Create_Database_СамаБАзаSQLite.inTransaction()) {
-                Create_Database_СамаБАзаSQLite.beginTransaction();
-            }
-            Log.d(this.getClass().getName(), " uri"+uri );
-            // TODO: 14.10.2022 метод определения текущней таблицы
-            String table = МетодОпределяемТаблицу(uri);
-            if (table!=null) {
-                Integer РезультатУдаления  = Create_Database_СамаБАзаSQLite.update(table,values, selection, selectionArgs);
-                // TODO: 30.10.2021
-                Log.w(getContext().getClass().getName(), " РезультатУдаления  " + РезультатУдаления);/////
-                Uri ОтветВставкиДанных  = Uri.parse("content://"+РезультатУдаления.toString());
-                String ответОперцииВставки=    Optional.ofNullable(ОтветВставкиДанных).map(Emmeter->Emmeter.toString().replace("content://","")).get();
-                РезультатСменыСтатусаВыбраногоМатериала= Integer.parseInt(ответОперцииВставки);
-                if (РезультатУдаления> 0) {
-                    getContext().getContentResolver().notifyChange(uri, null);
+            CompletableFuture<Integer>  completableFutureUpdate=
+                    CompletableFuture.supplyAsync(new Supplier<Integer>() {
+                @Override
+                public Integer get() {
+                    if (!Create_Database_СамаБАзаSQLite.inTransaction()) {
+                        Create_Database_СамаБАзаSQLite.beginTransaction();
+                    }
+                    Integer  РезультатUpdateCurrentPro=0;
+                    Log.d(this.getClass().getName(), " uri"+uri );
+                    // TODO: 14.10.2022 метод определения текущней таблицы
+                    String table = МетодОпределяемТаблицу(uri);
+                    if (table!=null) {
+                        Integer РезультатУдаления  = Create_Database_СамаБАзаSQLite.update(table,values, selection, selectionArgs);
+                        // TODO: 30.10.2021
+                        Log.w(getContext().getClass().getName(), " РезультатУдаления  " + РезультатУдаления);/////
+                        Uri ОтветВставкиДанных  = Uri.parse("content://"+РезультатУдаления.toString());
+                        String ответОперцииВставки=    Optional.ofNullable(ОтветВставкиДанных).map(Emmeter->Emmeter
+                                .toString().replace("content://","")).get();
+                         РезультатUpdateCurrentPro= Integer.parseInt(ответОперцииВставки);
+                        if (РезультатУдаления> 0) {
+                            getContext().getContentResolver().notifyChange(uri, null);
+                        }
+                    }else {
+                        Log.w(getContext().getClass().getName(), " table  " + table);/////
+                    }
+                    if (Create_Database_СамаБАзаSQLite.inTransaction()) {
+                        Create_Database_СамаБАзаSQLite.setTransactionSuccessful();
+                    }
+                    if (Create_Database_СамаБАзаSQLite.inTransaction()) {
+                        Create_Database_СамаБАзаSQLite.endTransaction();
+                    }
+                    shutdown();
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    return РезультатUpdateCurrentPro;
                 }
-            }else {
-                Log.w(getContext().getClass().getName(), " table  " + table);/////
-            }
-            if (Create_Database_СамаБАзаSQLite.inTransaction()) {
-                Create_Database_СамаБАзаSQLite.setTransactionSuccessful();
-            }
-            if (Create_Database_СамаБАзаSQLite.inTransaction()) {
-                Create_Database_СамаБАзаSQLite.endTransaction();
-            }
+            }).exceptionally(e -> {
+                System.out.println(e.getClass());
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
+                        Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+                return null;
+            });
+            РезультатUpdateCurrentPro=     completableFutureUpdate.get();
+
         } catch (Exception e) {
             e.printStackTrace();
             Create_Database_СамаБАзаSQLite.endTransaction();
@@ -487,7 +512,7 @@ public class ContentProviderForDataBaseCurrentOperations extends ContentProvider
             new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-        return РезультатСменыСтатусаВыбраногоМатериала;
+        return РезультатUpdateCurrentPro;
     }
 
     @Override
