@@ -208,7 +208,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private  Integer ГодТабелей = 0;
     private  String ИмесяцвИГодСразу = "";
     private  Integer МЕсяцТабелей=0;
-
+    private  Bundle bundleИзMainActitivy_List_Tables;
 
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
     @Override
@@ -282,12 +282,14 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
                     subClassSingleTabelRecycreView. методДляSimpeCallbacks(cursor);
 
+                     МетодПриНАжатииНаКнопкуBACK();
+
             // TODO: 12.04.2023 Вторастипенные методы
-            message.getTarget().postDelayed(()->{
+ /*           message.getTarget().postDelayed(()->{
               //  subClassSingleTabelRecycreView. МетодСлушательКурсора(cursor);
              //   subClassSingleTabelRecycreView.  методWorkManagerLifecycleOwner();
                // subClassSingleTabelRecycreView.МетодСлушательRecycleView();
-            },2000);
+            },2000);*/
 
                /*     message.getTarget().postDelayed(()->{
                         subClassSingleTabelRecycreView.  МетодСлушательRecycleView();
@@ -343,7 +345,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private void методGETДанныеИзДругихАктивити() {
         try {
             Intent ИнтентMainActivity_List_Peoples =  getIntent();
-            Bundle bundleИзMainActitivy_List_Tables=ИнтентMainActivity_List_Peoples.getExtras();
+              bundleИзMainActitivy_List_Tables=ИнтентMainActivity_List_Peoples.getExtras();
             // TODO: 10.04.2023
             if (bundleИзMainActitivy_List_Tables!=null) {
                 MainParentUUID=    bundleИзMainActitivy_List_Tables.getLong("MainParentUUID", 0l);
@@ -1480,6 +1482,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             ////TODO ИНТРЕНТ КОТОРЫЙ СОЗДАЕТ НОВГО СОТРУДНИКА
             Intent Интент_ПереходаMainActivity_List_Peoples = new Intent();
             Интент_ПереходаMainActivity_List_Peoples.setClass(context, MainActivity_List_Peoples.class);
+            Интент_ПереходаMainActivity_List_Peoples.putExtras(bundleИзMainActitivy_List_Tables);
             методBACKFromMainActivitySingleTabel(Интент_ПереходаMainActivity_List_Peoples);
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
