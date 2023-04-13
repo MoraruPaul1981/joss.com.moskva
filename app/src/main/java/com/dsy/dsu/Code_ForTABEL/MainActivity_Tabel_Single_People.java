@@ -1411,13 +1411,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
         try {
         Bundle bundleИзMainActitivy_List_Tables= intentBack.getExtras();
         // TODO: 10.04.2023  ОТПРАВЛЯЕММ ПЕРЕМЕННЫЕ
-        bundleИзMainActitivy_List_Tables.putLong("CurrenrsСhildUUID", CurrenrsСhildUUID);
-        bundleИзMainActitivy_List_Tables.putInt("Position", Position);
-        bundleИзMainActitivy_List_Tables.putInt("ГодТабелей", ГодТабелей);
-        bundleИзMainActitivy_List_Tables.putInt("МЕсяцТабелей",МЕсяцТабелей);
-        bundleИзMainActitivy_List_Tables.putInt("DigitalNameCFO", DigitalNameCFO);
-        bundleИзMainActitivy_List_Tables.getString("FullNameCFO", FullNameCFO);
-        bundleИзMainActitivy_List_Tables.putString("ИмесяцвИГодСразу", ИмесяцвИГодСразу.trim());
         startActivity(intentBack);
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2682,17 +2675,29 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 try {
                         String День = Optional.ofNullable(cursor.getString(cursor.getColumnIndex(НазваниеДляДень))).orElse("0");
                         Long uuid = Optional.ofNullable(cursor.getLong(cursor.getColumnIndex("uuid"))).orElse(0l);
-                        Bundle data = new Bundle();
-                        data.putString("ЗначениеДня", День);
-                        data.putLong("uuid", uuid);
-                        data.putString("День", НазваниеДляДень);
-                        editTextRowКликПоДАнными.setTag(data);
+                        Bundle dataRowData = new Bundle();
+                        dataRowData.putString("ЗначениеДня", День);
+                        dataRowData.putLong("uuid", uuid);
+                        dataRowData.putString("День", НазваниеДляДень);
+                    // TODO: 13.04.2023  дополнительные
+                    dataRowData.putLong("MainParentUUID", MainParentUUID);
+                    dataRowData.putInt("Position", Position);
+                    dataRowData.putInt("ГодТабелей",   ГодТабелей);
+                    dataRowData.putInt("МЕсяцТабелей", МЕсяцТабелей);
+                    dataRowData.putInt("DigitalNameCFO", DigitalNameCFO);
+                    dataRowData.putString("FullNameCFO", FullNameCFO);
+                    dataRowData.putString("ИмесяцвИГодСразу", ИмесяцвИГодСразу);
+                    dataRowData.putLong("CurrenrsСhildUUID", CurrenrsСhildUUID);
+                    dataRowData.putString("ФИО", ФИО);
+                    dataRowData.putLong("CurrenrsSelectFio", CurrenrsSelectFio);
+                        editTextRowКликПоДАнными.setTag(dataRowData);
                        editTextRowКликПоДАнными.setVisibility(View.VISIBLE);
                         editTextRowКликПоДАнными.setText(День.trim());
                         // TODO: 19.10.2022
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " НазваниеДляДень " + НазваниеДляДень + "data " + data);
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " НазваниеДляДень "
+                                + НазваниеДляДень + "dataRowData " + dataRowData);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getApplicationContext().getClass().getName(),
