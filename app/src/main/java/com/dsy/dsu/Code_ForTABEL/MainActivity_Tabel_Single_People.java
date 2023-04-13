@@ -173,6 +173,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private    String ИмяСлужбыСинхронизацииОдноразовая = "WorkManager Synchronizasiy_Data Disposable";//
     final private   String ИмяСлужбыОбщейСинхронизацииДляЗадачи = "WorkManager Synchronizasiy_Data";
     private  long CurrenrsСhildUUID =0l;
+    private  long CurrenrsSelectFio =0l;
+    private  long MainParentUUID =0l;
+    private  String ФИО;
     private      Message message;
     private      Message messageRows;
     private Animation animationПрофессия400;
@@ -341,6 +344,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             Bundle bundleИзMainActitivy_List_Tables=ИнтентMainActivity_List_Peoples.getExtras();
             // TODO: 10.04.2023
             if (bundleИзMainActitivy_List_Tables!=null) {
+                MainParentUUID=    bundleИзMainActitivy_List_Tables.getLong("MainParentUUID", 0l);
                 Position=    bundleИзMainActitivy_List_Tables.getInt("Position", 0);
                 ГодТабелей=  bundleИзMainActitivy_List_Tables.getInt("ГодТабелей", 0);
                 МЕсяцТабелей=  bundleИзMainActitivy_List_Tables.getInt("МЕсяцТабелей",0);
@@ -348,6 +352,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 FullNameCFO=  bundleИзMainActitivy_List_Tables.getString("FullNameCFO", "");
                 ИмесяцвИГодСразу= bundleИзMainActitivy_List_Tables.getString("ИмесяцвИГодСразу", "");
                 CurrenrsСhildUUID= bundleИзMainActitivy_List_Tables.getLong("CurrenrsСhildUUID", 0l);
+                ФИО= bundleИзMainActitivy_List_Tables.getString("ФИО", "");
+                CurrenrsSelectFio= bundleИзMainActitivy_List_Tables.getLong("CurrenrsSelectFio", 0l);
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
