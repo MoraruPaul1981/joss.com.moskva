@@ -18,12 +18,12 @@
         android:layout_width="70dp"
         android:layout_height="50dp"
         android:layout_marginBottom="2dp"
+        android:background="#FFFFFF"
         android:backgroundTint="#FFFFFF"
         android:backgroundTintMode="screen"
         android:stateListAnimator="@drawable/icon_dsu1_exit3_foreground"
         android:textAlignment="center"
         android:visibility="visible"
-        android:background="#FFFFFF"
         app:icon="@drawable/icon_dsu1_exit3_foreground"
         app:iconGravity="textEnd"
         app:iconSize="40dp"
@@ -53,8 +53,11 @@
         android:textSize="26dp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/ГлавныйКойтейнерМетокТабеляСотрудника"
-        app:layout_constraintEnd_toEndOf="@+id/ГлавныйКойтейнерМетокТабеляСотрудника"
-        app:layout_constraintStart_toStartOf="@+id/ГлавныйКойтейнерМетокТабеляСотрудника"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ГлавныйКойтейнерМетокТабеляСотрудника"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ГлавныйКойтейнерМетокТабеляСотрудника"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/ГлавныйКойтейнерМетокТабеляСотрудника" />
 
     <View
@@ -70,32 +73,14 @@
         app:layout_constraintTop_toBottomOf="parent"
         tools:visibility="visible" />
 
-    <ImageView
-        android:id="@+id/imageView_МеткиТабеля"
-        android:layout_width="28dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="6dp"
-        android:foregroundGravity="center"
-        android:scaleType="centerCrop"
-        android:stateListAnimator="@android:animator/fade_in"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/ГлавныйКойтейнерМетокТабеляСотрудника"
-        app:layout_constraintStart_toEndOf="@id/названиеВыборСотрудникаДляТабеля"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon_dsu1_metki_tabely"
-        tools:src="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/названиеВыборСотрудникаДляТабеля"
         style="@style/Widget.MaterialComponents.MaterialCalendar.DayTextView"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="4dp"
         android:bufferType="normal"
-        android:capitalize="characters"
         android:fontFamily="sans-serif-light"
         android:foregroundGravity="center"
         android:gravity="center"
@@ -110,8 +95,11 @@
         android:theme="@style/Theme.AppCompat.DayNight"
         android:typeface="monospace"
         android:visibility="visible"
-        app:layout_constraintStart_toEndOf="@id/СтрелкаНазадУстановкиМеткиТабеля"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
 
     <View
         android:id="@+id/линияСозданиеСотрудника"
