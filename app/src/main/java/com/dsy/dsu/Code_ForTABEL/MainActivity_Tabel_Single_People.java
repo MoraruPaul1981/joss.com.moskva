@@ -126,7 +126,7 @@ import io.reactivex.rxjava3.functions.Consumer;
 public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private Spinner СпинерТАбельМЕсяцФинал;/////спинеры для создание табеля
     private Spinner СпинерТАбельДепартаментФинал;/////спинеры для создание табеля
-    private ScrollView ScrollСамогоТабеля;
+    private ScrollView Scrollviewsingletabel;
     private  boolean РежимыПросмотраДанныхЭкрана;
     private ConstraintLayout constraintLayoutsingletabel; ////главный linelayuout
     private  Activity activity;
@@ -241,7 +241,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             СпинерТАбельДепартаментФинал = (Spinner) findViewById(R.id.СпинерТабельДепратамент);
             constraintLayoutsingletabel = (ConstraintLayout) findViewById(R.id.constraintLayoutsingletabel);
             ProgressBarSingleTabel = (ProgressBar) findViewById(R.id.ProgressBarSingleTabel);
-
+            Scrollviewsingletabel = (ScrollView) findViewById(R.id.scrollviewsingletabel);
             ///TODO на данной КНОПКЕ МЫ МОЖЕМ ДОБАВИТЬ СОТРУДНИКА К ТАБЕЛЮ ИЛИ СОЗДАТЬ НОВОГО СОТРУДНИКА
 
             КнопкаЛеваяПередвиженияПоДанным=(Button) findViewById(R.id.imageViewВСамомТабелеЛеваяСтрелка);
@@ -933,7 +933,7 @@ try{
                     Log.d(Class_MODEL_synchronized.class.getName()," Часысотрудника  "+ Часысотрудника);
                     /////TODO ОБНУЛЯЕМ ЗНАЧЕНИЕ ID AND UUID ЧТОБЫ НЕ БЫЛО ПОВТОРОНОГО ОБНОЛЕНИЕ НЕ СВОЕГО ХОЗЯИНА UUID
                     КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.clear();
-                    ScrollСамогоТабеля.requestLayout();
+                    Scrollviewsingletabel.requestLayout();
                 } else {
                     Toast.makeText(getApplicationContext(), " Ошибка обновление ячейки не произошло !!!!! " , Toast.LENGTH_SHORT).show();
                     КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.clear();
@@ -1815,7 +1815,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                          ГлавныйALLКурсорДанныеSwipes.moveToPosition(ПолощениеДАнных);
                                     // TODO: 29.03.2023 Методы ПОсле усМешного Смены Професиии
                                     МетодПереопределенияНазваниеПрофесии();
-                                    МетодПерегрузкаВидаЭкрана();
+                                    МетодПерегрузкаВидаПрофесии();
                                 }else {
                                     Toast.makeText(MainActivity_Tabel_Single_People.this, "Профессия не сменилась !!! ", Toast.LENGTH_SHORT).show();
                                 }
@@ -1993,7 +1993,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
     }
 
 
-    private void МетодПерегрузкаВидаЭкрана() {
+    private void МетодПерегрузкаВидаПрофесии() {
         try {
             TextViewНазваниеДанныхВТабелеФИО.startAnimation(animationПрофессия400);
             TextViewНазваниеДанныхВТабелеФИО.refreshDrawableState();
@@ -2079,7 +2079,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                             Position=Position-1;
                             cursor.moveToPosition(Position);
                         }else {
-                            cursor.moveToLast();
+                            cursor.moveToFirst();
                         }
                         recyclerView.getAdapter().notifyDataSetChanged();
                         myRecycleViewAdapter.notifyDataSetChanged();
@@ -2129,14 +2129,13 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         try{
                             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
-
                             message.getTarget().post(()->{
                                 Integer posio= myViewHolder.getAbsoluteAdapterPosition();
                                 if (Position<cursor.getCount()-1) {
                                     Position=Position+1;
                                     cursor.moveToPosition(Position);
                                 }else {
-                                    cursor.moveToFirst();
+                                    cursor.moveToLast();
                                 }
                                 recyclerView.getAdapter().notifyDataSetChanged();
                                 myRecycleViewAdapter.notifyDataSetChanged();
@@ -2385,6 +2384,8 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     },500);
                         recyclerView.requestLayout();
                         recyclerView.refreshDrawableState();
+                        Scrollviewsingletabel.pageScroll(View.FOCUS_UP);
+                        Scrollviewsingletabel.refreshDrawableState();
                         constraintLayoutsingletabel.refreshDrawableState();
                         constraintLayoutsingletabel.requestLayout();
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
