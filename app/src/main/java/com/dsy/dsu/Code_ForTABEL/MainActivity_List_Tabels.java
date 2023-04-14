@@ -171,12 +171,13 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             SharedPreferences.Editor editor = sharedPreferencesХранилище.edit();
             editor.putString( "sharedPreferencesХранилищеkey", "sharedPreferencesХранилищеvalue" );
             editor.commit();
+
             // TODO: 06.11.2022 методы после создание
+            //TODO МЕТОД ПОЛУЧЕНИЕ ДАННЫХ ДЛЯ ДАННОГО АКВТИВИ
+            МетодBackПеременныеFromListPeoples();
             МетодКруглаяКнопка();
             МетодНазадBACKНААктивти();
             МетодMessage();
-            // TODO: 09.04.2023  ТЕСТ КОД
-
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -239,7 +240,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
     }
 
     // TODO: 09.04.2023  получем данные для ТАбелей
-    void МетодПолучениеДанныхДляДаногоАктивтиИсторияТАбеля() {
+    void МетодBackПеременныеFromListPeoples() {
         try{
         Intent Интент_Back_MAinActivity_List_peole = getIntent();
             Bundle bundleДЛяListTabels=Интент_Back_MAinActivity_List_peole.getExtras();
@@ -275,8 +276,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
         ///TODO попытка открыть экран как full screan
         ////////ЗАПОЛНЯЕМ АРАЙЛИСТ
         try {
-            //TODO МЕТОД ПОЛУЧЕНИЕ ДАННЫХ ДЛЯ ДАННОГО АКВТИВИ
-            МетодПолучениеДанныхДляДаногоАктивтиИсторияТАбеля();
+
             ////todo заполение спинера
             МетодЗаполненияСпинераДат();////метод вызаваем все созжданные ТАБЕДЯ ИЗ БАПЗЫ И ДАЛЕЕ ИХ ЗАПИСЫВАЕМ В ОБМЕН
 

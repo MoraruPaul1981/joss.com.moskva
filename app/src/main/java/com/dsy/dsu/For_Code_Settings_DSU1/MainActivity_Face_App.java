@@ -54,6 +54,7 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_MODEL_synchronized;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Code_ForTABEL.MainActivity_List_Tabels;
 import com.dsy.dsu.Code_ForTABEL.MainActivity_New_Templates;
+import com.dsy.dsu.Code_For_AdmissionMaterials_ПоступлениеМатериалов.MainActivity_AdmissionMaterials;
 import com.dsy.dsu.Code_For_Commit_Payments_КодДля_Согласование.MainActivity_CommitPay;
 import com.dsy.dsu.Code_For_Firebase_AndOneSignal_Здесь_КодДЛяСлужбыУведомленияFirebase.Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal;
 import com.dsy.dsu.Code_For_Services.ServiceUpdatePoОбновлениеПО;
@@ -510,7 +511,16 @@ public class MainActivity_Face_App extends AppCompatActivity {
 
 
             });
-
+            // TODO: 14.04.2023 Запускаем получение материалов
+                    КнопкаПоступлениеМатериалов.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent ИнтентДляЗапускаПолуступлениеМатериалов = new Intent(getApplicationContext(), MainActivity_AdmissionMaterials.class);
+                            ИнтентДляЗапускаПолуступлениеМатериалов.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(ИнтентДляЗапускаПолуступлениеМатериалов);
+                            Log.w(getPackageName().getClass().getName(), "ИнтентДляЗапускаПолуступлениеМатериалов    ");/////////*/
+                        }
+                    });
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

@@ -9,17 +9,23 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
+import com.dsy.dsu.Business_logic_Only_Class.AllboundServices.AllBindingService;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generator_One_WORK_MANAGER;
 import com.dsy.dsu.Code_For_Services.Service_for_AdminissionMaterial;
 import com.dsy.dsu.R;
+
+import java.util.Date;
 
 public class MainActivity_AdmissionMaterials extends AppCompatActivity {
     private Activity activity;
@@ -27,7 +33,8 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
     private FragmentTransaction fragmentTransaction;
     private Fragment fragment_ДляПолучениеМатериалов;
     private LinearLayout activity_admissionmaterias_face,activity_admissionmaterias_down;
-    private  Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binder;
+    private  Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binderДляПолучениеМатериалов;
+    private  Message message;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,16 +55,11 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
          activity_admissionmaterias_down = (LinearLayout) findViewById(R.id.activity_admissionmaterias_down);
             activity_admissionmaterias_down.setVisibility(View.GONE);
             ViewGroup.LayoutParams params = activity_admissionmaterias_face.getLayoutParams();
-// Changes the height and width to the specified *pixels*
             params.height= ViewGroup.LayoutParams.WRAP_CONTENT;
             activity_admissionmaterias_face.setLayoutParams(params);
-                Bundle data=     getIntent().getExtras();
-            if (data!=null) {
-                binder=  (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) data.getBinder("binder");
-            }
-            Log.d(this.getClass().getName(), "  onViewCreated  FragmentAdmissionMaterials  binder  "+binder);
+            Log.d(this.getClass().getName(), "  onViewCreated  FragmentAdmissionMaterials  binderДляПолучениеМатериалов  "+binderДляПолучениеМатериалов);
             // TODO: 27.09.2022  запускаем фрагмент получение материалов
-            МетодЗапускФрагментаПриемМатериалов();
+            МетодБиндингаПолучениеМатериалов();
             // TODO: 04.11.2022 test
     } catch (Exception e) {
         e.printStackTrace();
@@ -78,7 +80,7 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
             fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             fragment_ДляПолучениеМатериалов = new FragmentAdmissionMaterials();
             Bundle data=new Bundle();
-            data.putBinder("binder",binder);
+            data.putBinder("binder",binderДляПолучениеМатериалов);
             fragment_ДляПолучениеМатериалов.setArguments(data);
             fragmentTransaction.add(R.id.activity_admissionmaterias_face, fragment_ДляПолучениеМатериалов);//.layout.activity_for_fragemtb_history_tasks
             fragmentTransaction.commit();
@@ -127,5 +129,38 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
 
             // TODO: 11.05.2021 запись ошибок
         }
+    }
+
+    private void МетодБиндингаПолучениеМатериалов() {
+        try {
+            if (binderДляПолучениеМатериалов==null) {
+                message= Message.obtain(new Handler(Looper.myLooper()),()->{
+                    Bundle bundle=   message.getData();
+                    binderДляПолучениеМатериалов= (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов)  bundle.getBinder("allbinders")  ;
+                    Log.i(this.getClass().getName(),  " биндинг материалов к службе "+
+                            Thread.currentThread().getStackTrace()[2].getMethodName()+
+                            " время " +new Date().toLocaleString() + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов );
+                    Log.i(this.getClass().getName(), "bundle " +bundle);
+                    МетодЗапускФрагментаПриемМатериалов();
+                    message.recycle();
+                });
+                // TODO: 27.03.2023 биндинг службы
+                new AllBindingService(getApplicationContext(), message). МетодБиндингМатериалы() ;
+            }
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+            Log.d(this.getClass().getName(), "  Полусаем Ошибку e.toString() " + e.toString());
+        }
+
     }
 }
