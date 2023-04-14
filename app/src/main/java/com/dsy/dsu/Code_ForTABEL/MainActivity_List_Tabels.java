@@ -42,6 +42,7 @@ import androidx.annotation.UiThread;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.dsy.dsu.Business_logic_Only_Class.AllboundServices.AllBindingService;
 import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
@@ -51,6 +52,7 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_MODEL_synchronized;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Code_For_Services.Service_For_Public;
+import com.dsy.dsu.Code_For_Services.Service_for_AdminissionMaterial;
 import com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_App;
 import com.dsy.dsu.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -102,8 +104,6 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
     private   Button ТабелявВидеКнопок=null;
     private     String ПолученныйГодДляНовогоТабеля= "";
     private   String ФинальнаяМЕсяцДляНовогоТабеля= "";
-   // private    LinkedList<String> МассивДляВыбораВСпинерДата = new LinkedList<>(); //////АКАРЛИСТ ДЛЯ ПОЛУЧЕНЫЙ НОВЫХ ДАТ
-
 
     private   Context context;
     private  String  МесяцТабеляФиналИзВсехСотрудниковВТАбеле;
@@ -130,7 +130,6 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
     LinkedList< String> МассивДляВыбораВСпинерДатаArray=new  LinkedList< String>();
     LinkedHashMap<Long,String> МассивДляВыбораВСпинерДатаUUID=new LinkedHashMap<Long,String>();
-
     Message message;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
