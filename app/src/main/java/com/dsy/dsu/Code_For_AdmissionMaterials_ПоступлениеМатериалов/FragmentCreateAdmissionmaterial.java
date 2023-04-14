@@ -77,7 +77,6 @@ public class FragmentCreateAdmissionmaterial extends Fragment {
     private Handler handler;
     private MyRecycleViewAdapter myRecycleViewAdapter;
     private MyViewHolder myViewHolder;
-    private  Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binder;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private Fragment fragmentПолученыеМатериалов;
@@ -98,12 +97,15 @@ public class FragmentCreateAdmissionmaterial extends Fragment {
     private Boolean ФлагЧтоУжепервыйПрогоУжеПрошул=false;
     private  ScrollView scrollViewНовыйматериал;
     // TODO: 15.12.2022 получение материалов
+    private  Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binderДляПолучениеМатериалов;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try{
             preferencesМатериалы = getContext().getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
-            Log.d(this.getClass().getName(), "  onCreate  FragmentCreateAdmissionmaterialbinder    "+binder);
+            Bundle data=         getArguments();
+            binderДляПолучениеМатериалов=  (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) data.getBinder("binder");
+            Log.d(this.getClass().getName(), "  onCreate  FragmentCreateAdmissionmaterialbinder    "+binderДляПолучениеМатериалов);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -268,7 +270,7 @@ public class FragmentCreateAdmissionmaterial extends Fragment {
         Log.d(this.getClass().getName(), " CursorДляОдногоМатериалаБышВесов " + CursorДляОдногоМатериалаБышВесов);
     }
 
-    // TODO: 26.12.2022  автомобили 
+    // TODO: 26.12.2022  автомобили
     private void МетоПолучениеДанныхДляАвтомобилей(@NonNull Intent intentДляПолучениеСправочкинов,
                                                    @NonNull String ФильтрВесовых) {
         Bundle bundle=new Bundle();
@@ -332,14 +334,26 @@ public class FragmentCreateAdmissionmaterial extends Fragment {
     }
 
     private void МетодПереходаНаПредыдущыйФрагментBack() {
+        try{
         fragmentTransaction = fragmentManager.beginTransaction();
       //  fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-        fragmentПолученыеМатериалов = new FragmentAdmissionMaterials();
-        Bundle data=new Bundle();
-        data.putBinder("binder",binder);
-        fragmentПолученыеМатериалов.setArguments(data);
-        fragmentTransaction.replace(R.id.activity_admissionmaterias_face, fragmentПолученыеМатериалов).commit();//.layout.activity_for_fragemtb_history_tasks
-        fragmentTransaction.show(fragmentПолученыеМатериалов);
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            fragmentПолученыеМатериалов = new FragmentAdmissionMaterials();
+            Bundle data=new Bundle();
+            data.putBinder("binder",binderДляПолучениеМатериалов);
+            fragmentПолученыеМатериалов.setArguments(data);
+            fragmentTransaction.add(R.id.activity_admissionmaterias_face, fragmentПолученыеМатериалов).commit();;//.layout.activity_for_fragemtb_history_tasks
+            fragmentTransaction.show(fragmentПолученыеМатериалов);
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(getContext().getClass().getName(),
+                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
     }
 
 
@@ -435,7 +449,7 @@ public class FragmentCreateAdmissionmaterial extends Fragment {
             Intent intentПолучениеМатериалов = new Intent(getContext(), Service_for_AdminissionMaterial.class);
             intentПолучениеМатериалов.setAction(ФлагКакаяРаботаНужнаДляВыполнения);
             intentПолучениеМатериалов.putExtras(bundleДляПЕредачи);
-                cursor = (Cursor) binder.getService().МетодCлужбыПолучениеМатериалов(getContext(), intentПолучениеМатериалов);
+                cursor = (Cursor) binderДляПолучениеМатериалов.getService().МетодCлужбыПолучениеМатериалов(getContext(), intentПолучениеМатериалов);
                 Log.d(this.getClass().getName(), "   cursor " + cursor);
                 if (cursor.getCount() > 0) {
                     cursor.moveToFirst();
@@ -627,11 +641,11 @@ public class FragmentCreateAdmissionmaterial extends Fragment {
             try {
                 if(asyncTaskLoader.isStarted()){
                     viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov, parent, false);//todo old simple_for_takst_cardview1
-                    Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов + " binder " +binder);
+                    Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
                 }else {
                     if(CursorДляЦФО !=null){
                     viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_new_assitionmaterial_cardview_new2, parent, false);//todo simple_for_new_assitionmaterial_cardview1_test
-                    Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов + " binder " +binder);
+                    Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
                 } else {
                     viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_isnull_actimavmaretisl_sprachnikov, parent, false);//todo old simple_for_takst_cardview1
                     Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов+ "  CursorДляЦФО " + CursorДляЦФО);
@@ -639,7 +653,7 @@ public class FragmentCreateAdmissionmaterial extends Fragment {
                 }
                 // TODO: 13.10.2022  добавляем новый компонент в Нащ RecycreView
                 myViewHolder = new MyViewHolder(viewПолучениеМатериалов);
-                Log.i(this.getClass().getName(), "   myViewHolder" + myViewHolder + "  binder " +binder);
+                Log.i(this.getClass().getName(), "   myViewHolder" + myViewHolder + "  binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -654,12 +668,12 @@ public class FragmentCreateAdmissionmaterial extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             try {
-                Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " binder " + binder);
+                Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " binderДляПолучениеМатериалов " + binderДляПолучениеМатериалов);
                 if (!asyncTaskLoader.isStarted()) {
                     МетодЗаполняемДаннымиПолучениеМАтериалов(holder);
                     МетодАнимации(holder);
                 }
-                Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " binder " + binder);
+                Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " binderДляПолучениеМатериалов " + binderДляПолучениеМатериалов);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -934,8 +948,8 @@ public class FragmentCreateAdmissionmaterial extends Fragment {
                 Intent intentПолучениеМатериалов = new Intent(getContext(), Service_for_AdminissionMaterial.class);
                 intentПолучениеМатериалов.setAction("ПолучениеМатериалоСозданиеНового");
                 intentПолучениеМатериалов.putExtras(bundleДляПЕредачи);
-                if (binder!=null) {
-                    cursor = (Cursor) binder.getService().МетодCлужбыПолучениеМатериалов(getContext(), intentПолучениеМатериалов);
+                if (binderДляПолучениеМатериалов!=null) {
+                    cursor = (Cursor) binderДляПолучениеМатериалов.getService().МетодCлужбыПолучениеМатериалов(getContext(), intentПолучениеМатериалов);
                     Log.d(this.getClass().getName(), "   cursor " + cursor);
                 }
             } catch (Exception e) {
@@ -963,8 +977,8 @@ public class FragmentCreateAdmissionmaterial extends Fragment {
                 Intent intentПолучениеМатериалов = new Intent(getContext(), Service_for_AdminissionMaterial.class);
                 intentПолучениеМатериалов.setAction("ПолучениеМатериалоИзНовгоПоиска");
                 intentПолучениеМатериалов.putExtras(bundleДляПЕредачи);
-                if (binder!=null) {
-                    cursor = (Cursor) binder.getService().МетодCлужбыПолучениеМатериалов(getContext(), intentПолучениеМатериалов);
+                if (binderДляПолучениеМатериалов!=null) {
+                    cursor = (Cursor) binderДляПолучениеМатериалов.getService().МетодCлужбыПолучениеМатериалов(getContext(), intentПолучениеМатериалов);
                     Log.d(this.getClass().getName(), "   cursor " + cursor);
                 }
             } catch (Exception e) {
@@ -994,8 +1008,8 @@ public class FragmentCreateAdmissionmaterial extends Fragment {
                 Intent intentПолучениеМатериалов = new Intent(getContext(), Service_for_AdminissionMaterial.class);
                 intentПолучениеМатериалов.setAction("ПолучениеМатериалоИзНовгоПоиска");
                 intentПолучениеМатериалов.putExtras(bundleДляПЕредачи);
-                if (binder!=null) {
-                    cursor = (Cursor) binder.getService().МетодCлужбыПолучениеМатериалов(getContext(), intentПолучениеМатериалов);
+                if (binderДляПолучениеМатериалов!=null) {
+                    cursor = (Cursor) binderДляПолучениеМатериалов.getService().МетодCлужбыПолучениеМатериалов(getContext(), intentПолучениеМатериалов);
                     Log.d(this.getClass().getName(), "   cursor " + cursor);
                 }
             } catch (Exception e) {
@@ -1190,7 +1204,7 @@ public class FragmentCreateAdmissionmaterial extends Fragment {
                     public void onClick(View v) {
                         Log.d(this.getClass().getName(), " МетоднажатиеСозданиеМатериалов  ");
                         МетодЗапускаАнимацииКнопок(v);//todo только анимауия
-                        Log.d(this.getClass().getName(), " binder " + binder);
+                        Log.d(this.getClass().getName(), " binderДляПолучениеМатериалов " + binderДляПолучениеМатериалов);
                         handler.postDelayed(()->{
                             Intent intentСамоПолучениеНовогоМатериала=new Intent("СамоСозданиеНовогоМатериала");
                             // TODO: 21.10.2022  перед созданием нового материала получанеим Данные которые нужно вставить
@@ -1256,7 +1270,7 @@ public class FragmentCreateAdmissionmaterial extends Fragment {
                                 bundleДляСоздании.putInt("companys",ВыбраноеКонтагенты);
                                 intentСамоПолучениеНовогоМатериала.putExtras(bundleДляСоздании);
                                 Integer ХэшРезультататСозданияСозданиеНовогоМатериала =
-                                        binder.getService().МетодCлужбыСозданиеНовогоМатериала(getContext(),intentСамоПолучениеНовогоМатериала);
+                                        binderДляПолучениеМатериалов.getService().МетодCлужбыСозданиеНовогоМатериала(getContext(),intentСамоПолучениеНовогоМатериала);
                                 // TODO: 21.10.2022  результат  создание нового материала
                                 Log.d(this.getClass().getName(), " ХэшРезультататСозданияСозданиеНовогоМатериала  "+ХэшРезультататСозданияСозданиеНовогоМатериала+
                                         " ХэшРезультататСозданияСозданиеНовогоМатериала " +ХэшРезультататСозданияСозданиеНовогоМатериала);
@@ -1283,7 +1297,7 @@ public class FragmentCreateAdmissionmaterial extends Fragment {
                                         editor.putString("НазваниеВыбраногоДатаТТН",holder.textipputmaretialttdata.getText().toString());
                                     }
                                     // TODO: 27.12.2022  ДВА НОВЫХ ПОЛЯ МАТЕРИАЛОВ КОНТРАГЕНТ И АВТОМОБИЛЬ
-                                    // TODO: 09.12.2022 Автомобиль запоминаем 
+                                    // TODO: 09.12.2022 Автомобиль запоминаем
                                     editor.putInt("ПозицияВыбраногоАвтомобили",ВыбраноеАвтомобили);
                                     editor.putString("НазваниеВыбраногоАвтомобили",holder.valueavtomobil.getText().toString());
                                     // TODO: 09.12.2022 Автомобиль Контрогент
@@ -1328,7 +1342,7 @@ public class FragmentCreateAdmissionmaterial extends Fragment {
             int КоличесвоСтрок = 0;
             try {
                 КоличесвоСтрок = 1;
-                Log.d(this.getClass().getName(), " bilder "+ binder);
+                Log.d(this.getClass().getName(), " binderДляПолучениеМатериалов "+ binderДляПолучениеМатериалов);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1595,7 +1609,8 @@ public class FragmentCreateAdmissionmaterial extends Fragment {
                         Integer ПолученеиеID=bundle.getInt("ПолучаемIDЦфо");
                         МетоПолучениеДанныхДляОдногоМатериала(intentДляПолучениеСправочкинов,ПолученеиеID);
                         Log.d(this.getClass().getName(),"    holder.cursorДляВсехМатериалов"+   holder.cursorДляВсехМатериалов
-                                +  "holder.marerialtextgroupmaterial.getTag() "+holder.marerialtextgroupmaterial.getTag()+ "  vbinder.getService() " +binder.getService());
+                                +  "holder.marerialtextgroupmaterial.getTag() "+holder.marerialtextgroupmaterial.getTag()
+                                + "  binderДляПолучениеМатериалов.getService() " +binderДляПолучениеМатериалов.getService());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

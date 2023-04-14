@@ -105,7 +105,10 @@ public class FragmentAdmissionMaterials extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         try{
             super.onCreate(savedInstanceState);
-            Bundle data=      getArguments();
+          /*  Bundle data=      getArguments();
+            if (data!=null) {
+                binderДляПолучениеМатериалов=  (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) data.getBinder("binder");
+            }*/
             // TODO: 27.09.2022  запускаем фрагмент получение материалов
             МетодБиндингаПолучениеМатериалов();
             Log.d(this.getClass().getName(), "  onViewCreated  FragmentAdmissionMaterials  binderДляПолучениеМатериалов  "+binderДляПолучениеМатериалов);
@@ -409,7 +412,7 @@ public class FragmentAdmissionMaterials extends Fragment {
             data.putBinder("binder",binderДляПолучениеМатериалов);
             fragment_СозданиеНовогоМатериалов.setArguments(data);
            // fragmentTransaction.replace(R.id.activity_admissionmaterias_face, fragment_СозданиеНовогоМатериалов).commit();//.layout.activity_for_fragemtb_history_task
-            fragmentTransaction.replace(R.id.scrollviewmaterial, fragment_СозданиеНовогоМатериалов).commit();//.layout.activity_for_fragemtb_history_task
+            fragmentTransaction.replace(R.id.activity_admissionmaterias_face, fragment_СозданиеНовогоМатериалов).commit();//.layout.activity_for_fragemtb_history_task
             fragmentTransaction.show(fragment_СозданиеНовогоМатериалов);
             Log.d(this.getClass().getName(), " fragment_СозданиеНовогоМатериалов " + fragment_СозданиеНовогоМатериалов);
         } catch (Exception e) {
@@ -1126,7 +1129,7 @@ public class FragmentAdmissionMaterials extends Fragment {
 
         private void МетодАнимации(MyViewHolder holder) {
             try {
-             //   holder.cardViewМатериалРодительная.startAnimation(animation);
+               holder.cardViewМатериалРодительная.startAnimation(animationПолучениеМатериалов);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1440,6 +1443,9 @@ public class FragmentAdmissionMaterials extends Fragment {
                 });
                 // TODO: 27.03.2023 биндинг службы
                 new AllBindingService(getContext(), message). МетодБиндингМатериалы() ;
+            }else {
+                // TODO: 14.04.2023 запускаем материалы
+                методПолучениеДаных();
             }
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
