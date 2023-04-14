@@ -9,11 +9,25 @@
     android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
     android:background="#F5FFFA"
     tools:context=".Code_For_AdmissionMaterials_ПоступлениеМатериалов.MainActivity_AdmissionMaterials">
-
+    <ScrollView
+        android:id="@+id/scrollviewmaterial"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F5FFFA"
+        android:fillViewport="true"
+        android:scrollbars="horizontal|vertical"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll"
+        app:layout_constraintBottom_toTopOf="@+id/СпинерТабельДепратамент"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view2Линия"
+        app:layout_constraintVertical_bias="0.0">
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardviewmatirealtask"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:checkable="true"
         android:clickable="true"
@@ -68,6 +82,7 @@
 
     </com.google.android.material.card.MaterialCardView>
 
+    </ScrollView>
 
 
 </LinearLayout>
