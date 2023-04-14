@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,7 +13,6 @@ import android.content.res.Configuration;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.DataSetObserver;
-import android.database.sqlite.SQLiteCursor;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -91,11 +89,7 @@ import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONException;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -106,26 +100,19 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.PrimitiveIterator;
-import java.util.TimeZone;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
-
-import javax.crypto.NoSuchPaddingException;
 
 import io.reactivex.rxjava3.functions.Consumer;
 
 
 public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
-    private Spinner СпинерТАбельМЕсяцФинал;/////спинеры для создание табеля
-    private Spinner СпинерТАбельДепартаментФинал;/////спинеры для создание табеля
+    private Spinner СпинерИгодИМесяц;/////спинеры для создание табеля
+    private Spinner СпинерНазваниеЦФО;/////спинеры для создание табеля
     private ScrollView Scrollviewsingletabel;
     private  boolean РежимыПросмотраДанныхЭкрана;
     private ConstraintLayout constraintLayoutsingletabel; ////главный linelayuout
@@ -199,7 +186,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private SubClassSingleTabelRecycreView. MyViewHolder myViewHolder;
     private  Integer Position =0;
     private  Cursor ГлавныйALLКурсорДанныеSwipes;
-    private  String КонтентСпинераНаАктивтиТабель= "";
     private  String FullNameCFO = "";
     private  Integer ГодТабелей = 0;
     private  String ИмесяцвИГодСразу = "";
@@ -233,8 +219,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             config.setLocale(locale);
             createConfigurationContext(config);
             ((Activity) context) .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
-            СпинерТАбельМЕсяцФинал = (Spinner) findViewById(R.id.СпинерТабельМесяц);
-            СпинерТАбельДепартаментФинал = (Spinner) findViewById(R.id.СпинерТабельДепратамент);
+            СпинерИгодИМесяц = (Spinner) findViewById(R.id.СпинерТабельМесяц);
+            СпинерНазваниеЦФО = (Spinner) findViewById(R.id.СпинерТабельДепратамент);
             constraintLayoutsingletabel = (ConstraintLayout) findViewById(R.id.constraintLayoutsingletabel);
             ProgressBarSingleTabel = (ProgressBar) findViewById(R.id.ProgressBarSingleTabel);
             Scrollviewsingletabel = (ScrollView) findViewById(R.id.scrollviewsingletabel);
@@ -280,6 +266,13 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
                      МетодПриНАжатииНаКнопкуBACK();
 
+            // TODO: 14.04.2023 доделываем single tabel
+                  методСпинерМесяцы();//запускаем метод создание табеля
+
+                МетодСпинерДепартамент( );
+
+            МетодОтработкиПоднятияКлавиатуры();
+        
             // TODO: 12.04.2023 Вторастипенные методы
  /*           message.getTarget().postDelayed(()->{
               //  subClassSingleTabelRecycreView. МетодСлушательКурсора(cursor);
@@ -503,11 +496,11 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     if (isOpen) {
                         Log.d(this.getClass().getName(), " FullNameCFO  "+FullNameCFO +"\n"+
                                 " ФИОДляТабеляНаАктивти " + ФИОТекущегоСотрудника);
-                        методСпинерМесяцы(ФИОТекущегоСотрудника);
+                        методСпинерМесяцы( );
                     }else{
                         Log.d(this.getClass().getName(), " FullNameCFO  "+FullNameCFO +"\n"+
                                 " ФИОДляТабеляНаАктивти " + ФИОТекущегоСотрудника);
-                        методСпинерМесяцы(FullNameCFO );
+                        методСпинерМесяцы( );
                     }
                 }
             });
@@ -547,34 +540,28 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
 
     //TODO хдесь мы запускаем метод создание и обработка самого табеля
-    private void методСпинерМесяцы(@NonNull  String ВнутрениеЗначениеСФОилиПриСменеФИОсотрудника) {
+    private void методСпинерМесяцы( ) {
         try{
           List<String>  МассивДляВыбораСпинераДаты=new ArrayList<>();
             МассивДляВыбораСпинераДаты=new ArrayList<>();
-            МассивДляВыбораСпинераДаты.add(МЕсяцТабелей.toString());
+            МассивДляВыбораСпинераДаты.add(ИмесяцвИГодСразу.trim());
             Log.d(this.getClass().getName(), " МассивДляВыбораВСпинерТабельФинал " +МассивДляВыбораСпинераДаты.toString());
-            ArrayAdapter<String> АдаптерДляСпинераТабельФинал = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1, МассивДляВыбораСпинераДаты);
-            АдаптерДляСпинераТабельФинал.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            СпинерТАбельМЕсяцФинал.setAdapter(АдаптерДляСпинераТабельФинал);
-            СпинерТАбельМЕсяцФинал.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            ArrayAdapter<String> АдаптерИгодИМесяц = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1, МассивДляВыбораСпинераДаты);
+            АдаптерИгодИМесяц.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            СпинерИгодИМесяц.setAdapter(АдаптерИгодИМесяц);
+            СпинерИгодИМесяц.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    //////меняем цвет спинера
                     try {
                         if (view!=null) {
-                            for (int i=0;i<СпинерТАбельМЕсяцФинал.getCount();i++) {
-                                ////
                                 ((TextView) parent.getChildAt(0)).setTypeface(Typeface.SANS_SERIF,Typeface.BOLD);//Typeface boldTypeface = Typeface.defaultFromStyle(Typeface.BOLD);
                                 ((TextView) parent.getChildAt(0)).setPaintFlags( ((TextView) parent.getChildAt(0)).getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
                                 ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
                                 ((TextView) parent.getChildAt(0)).setBackgroundResource(R.drawable.textlines_tabel);
                                 ((TextView) parent.getChildAt(0)).setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
                                 ((TextView) parent.getChildAt(0)).setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
-                                //////
-                                //////todo полученое выбраное ЗНАЧЕНИЕ ИЗ СПИНЕРПА ПЕРЕДАЕМ ДАЛЬШЕ
-                                КонтентСпинераНаАктивтиТабель= String.valueOf(((TextView) parent.getChildAt(0)).getText()); /////ОПРЕДЕЛЯЕМ ТЕКУЩЕЕ ЗНАЧЕНИЕ ВНУТИРИ СПЕНИРА
-                                Log.d(this.getClass().getName(), " КонтентСпинераНаАктивтиТабель  " +КонтентСпинераНаАктивтиТабель);
-                            }
+                            ИмесяцвИГодСразу= String.valueOf(((TextView) parent.getChildAt(0)).getText()).toString(); /////ОПРЕДЕЛЯЕМ ТЕКУЩЕЕ ЗНАЧЕНИЕ ВНУТИРИ СПЕНИРА
+                                Log.d(this.getClass().getName(), " СпинерИгодИМесяц  " +СпинерИгодИМесяц);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -589,8 +576,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     Log.e(this.getClass().getName(), " ПолученноеЗначениеИзСпинераДата  " );
                 }
             });
-
-            МетодСпинерДепартамент(ВнутрениеЗначениеСФОилиПриСменеФИОсотрудника, АдаптерДляСпинераТабельФинал);
+            СпинерИгодИМесяц.setClickable(false);
+            СпинерИгодИМесяц.setFocusable(false);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -601,33 +588,29 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     }
 
-    private void МетодСпинерДепартамент(@NonNull String ВнутрениеЗначениеСФОилиПриСменеФИОсотрудника, ArrayAdapter<String> АдаптерДляСпинераТабельФинал) {
+    private void МетодСпинерДепартамент( ) {
         // TODO: 20.11.2022 второй спинер департамент
         try {
             List<String> МассивДляВыбораВСпинерДепартамент=new ArrayList<>();
-            МассивДляВыбораВСпинерДепартамент.add(ВнутрениеЗначениеСФОилиПриСменеФИОсотрудника);
+            МассивДляВыбораВСпинерДепартамент.add(FullNameCFO.trim());
             Log.d(this.getClass().getName(), " МассивДляВыбораВСпинерТабельФинал " +МассивДляВыбораВСпинерДепартамент.toString());
-            ArrayAdapter<String> АдаптерДляСпинераТабельФиналДепартамент = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1,МассивДляВыбораВСпинерДепартамент);
-            АдаптерДляСпинераТабельФинал.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            СпинерТАбельДепартаментФинал.setAdapter(АдаптерДляСпинераТабельФиналДепартамент);
-            СпинерТАбельДепартаментФинал.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            ArrayAdapter<String> АдаптерНазваниеЦФО = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1,МассивДляВыбораВСпинерДепартамент);
+            АдаптерНазваниеЦФО.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            СпинерНазваниеЦФО.setAdapter(АдаптерНазваниеЦФО);
+            СпинерНазваниеЦФО.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    //////меняем цвет спинера
                     try {
                         if (view!=null) {
-                            for (int i=0;i<СпинерТАбельДепартаментФинал.getCount();i++) {
-                                ///////ВЫДЕЛЕМ ЖИРНЫМ ЦВЕТОМ ДАТЫ((TextView) parent.getChildAt(0)).setTextColor(Color.parseColor("#708090"));
                                 ((TextView) parent.getChildAt(0)).setTypeface(Typeface.SANS_SERIF,Typeface.BOLD);//Typeface boldTypeface = Typeface.defaultFromStyle(Typeface.BOLD);
                                 ((TextView) parent.getChildAt(0)).setPaintFlags( ((TextView) parent.getChildAt(0)).getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
                                 ((TextView) parent.getChildAt(0)).setBackgroundResource(R.drawable.textlines_tabel);
                                 ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
                                 ((TextView) parent.getChildAt(0)).setGravity(Gravity.CENTER_VERTICAL |Gravity.CENTER_HORIZONTAL);
                                 ((TextView) parent.getChildAt(0)).setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
-                                КонтентСпинераНаАктивтиТабель= String.valueOf(((TextView) parent.getChildAt(0)).getText()); /////ОПРЕДЕЛЯЕМ ТЕКУЩЕЕ ЗНАЧЕНИЕ ВНУТИРИ СПЕНИРА
-                                Log.d(this.getClass().getName(), " КонтентСпинераНаАктивтиТабель  " +КонтентСпинераНаАктивтиТабель);
+                                FullNameCFO= String.valueOf(((TextView) parent.getChildAt(0)).getText()); /////ОПРЕДЕЛЯЕМ ТЕКУЩЕЕ ЗНАЧЕНИЕ ВНУТИРИ СПЕНИРА
+                                Log.d(this.getClass().getName(), " FullNameCFO  " +FullNameCFO);
                             }
-                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -635,8 +618,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                         new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                                 Thread.currentThread().getStackTrace()[2].getLineNumber());
                     }
-                    СпинерТАбельДепартаментФинал.setClickable(false);
-                    СпинерТАбельДепартаментФинал.setFocusable(false);
+                    СпинерНазваниеЦФО.setClickable(false);
+                    СпинерНазваниеЦФО.setFocusable(false);
                 }
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
