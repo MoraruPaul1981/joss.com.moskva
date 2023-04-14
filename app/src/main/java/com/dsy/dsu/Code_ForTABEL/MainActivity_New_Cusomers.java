@@ -102,7 +102,7 @@ public class MainActivity_New_Cusomers extends AppCompatActivity implements Date
     private PUBLIC_CONTENT Class_Engine_SQLГдеНаходитьсяМенеджерПотоков =null;
     private   ProgressDialog progressDialog;
     private      ConstraintLayout constraintLayout;
-    private  Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binder;
+
 
 
     @Override
@@ -152,10 +152,7 @@ public class MainActivity_New_Cusomers extends AppCompatActivity implements Date
         //todo кнопка назад
         КнопкаНазад= findViewById(R.id.imageViewСтрелкаНазадНовыйСотрудник);
                 СпинерВыборОрганизацииПриСозданииНовогоСотрудника= findViewById(R.id.значениеИзСпинераОрганизацияДляНовогоСотрудника);
-            Bundle data=     getIntent().getExtras();
-            if (data!=null) {
-                binder=  (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) data.getBinder("binder");
-            }
+
 //todo настройки
     } catch (Exception e) {
         //  Block of code to handle errors
@@ -1194,9 +1191,6 @@ private void МетодВозврещениеНаПредыдущуюАктив�
             Log.d(this.getClass().getName(), "  УниверсальныйUUIDДляСОзданиеНовогоСотрудникаНаКонкретныйТабель " + УниверсальныйUUIDДляСОзданиеНовогоСотрудникаНаКонкретныйТабель);
             ИнтентФиналПослеУспешногоСозданиеНовгоСотрудника.putExtra("РодительскийUUDТаблицыТабель", УниверсальныйUUIDДляСОзданиеНовогоСотрудникаНаКонкретныйТабель);
             ИнтентФиналПослеУспешногоСозданиеНовгоСотрудника.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            Bundle data=new Bundle();
-            data.putBinder("binder", binder);
-            ИнтентФиналПослеУспешногоСозданиеНовгоСотрудника.putExtras(data);
         startActivity(ИнтентФиналПослеУспешногоСозданиеНовгоСотрудника);
         } catch (Exception e) {
         e.printStackTrace();

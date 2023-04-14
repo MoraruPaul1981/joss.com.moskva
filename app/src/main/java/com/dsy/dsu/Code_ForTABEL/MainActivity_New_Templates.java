@@ -130,7 +130,6 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
     private  TextView TExtvieeСловоТабельВсегоШАблонов;
     private ProgressDialog progressDialog ;
     private  FloatingActionButton КруглаяКнопкаСозданиеНовогоТабеля;
-    private  Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binder;
     private  Activity activity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,12 +163,6 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
         createConfigurationContext(config);
         ///////// todo Круглая Кнопка
        КруглаяКнопкаСозданиеНовогоТабеля = findViewById(R.id.КруглаяКнопкаСамТабель);//////КНОПКА СОЗДАНИЕ НОВГО ТАБЕЛЯ ИЗ ИСТОРИИ ВТОРОЙ ШАГ СОЗДАНИЯ ТАБЕЛЯ СНАЧАЛА ИСТРОИЯ ПОТОМ НА БАЗЕ ЕГО СОЗЗДАНИЕ
-
-            Bundle data=     getIntent().getExtras();
-            if (data!=null) {
-                binder=  (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) data.getBinder("binder");
-            }
-
 
         } catch (Exception e) {
         e.printStackTrace();
@@ -1754,9 +1747,6 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
             АдаптерВставкаНовогоМЕсяцаИзКалендаря.clear();//
             ПолученныйГодДляНовогоТабеля = "";
             ФинальнаяМЕсяцДляНовогоТабеля = "";
-            Bundle data=new Bundle();
-            data.putBinder("binder", binder);
-            Интент_ЗапускСозданиеНовогоТабельногоУчетавТаблицуИстория.putExtras(data);
             startActivity(Интент_ЗапускСозданиеНовогоТабельногоУчетавТаблицуИстория);
 
         } catch (Exception e) {
@@ -2142,9 +2132,6 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
             if (РодительскийUUDТаблицыТабель > 0) {
                 Интент_ШаблоныызватИлиСоздать.putExtra("РодительскийUUDТаблицыТабель", РодительскийUUDТаблицыТабель);
             }
-            Bundle data=new Bundle();
-            data.putBinder("binder", binder);
-            Интент_ШаблоныызватИлиСоздать.putExtras(data);
             startActivity(Интент_ШаблоныызватИлиСоздать);
         } catch (Exception e) {
             e.printStackTrace();
@@ -2356,9 +2343,6 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                     Log.d(this.getClass().getName(), "ЦифровоеИмяНовгоТабеля" + ЦифровоеИмяНовгоТабеля + " ПередаемСозданнуюНазваниеТабеля " + ПередаемСозданнуюНазваниеТабеля +
                             "  РодительскийUUDТаблицыТабель " + РодительскийUUDТаблицыТабель);
                     Интент_ШаблоныызватИлиСоздать.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    Bundle data = new Bundle();
-                    data.putBinder("binder", binder);
-                    Интент_ШаблоныызватИлиСоздать.putExtras(data);
                     startActivity(Интент_ШаблоныызватИлиСоздать);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -2707,9 +2691,6 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
             ИнтентЗапускаемСуществующийТабель.putExtra("РодительскийUUDТаблицыТабель", РодительскийUUDТаблицыТабель);
             Log.d(this.getClass().getName(), "UUIDТабеляКнопкаBACKУниверсальный " + РодительскийUUDТаблицыТабель);
             ИнтентЗапускаемСуществующийТабель.putExtra("МесяцТабеляФинал", МесяцТабеляФинал);
-            Bundle data=new Bundle();
-            data.putBinder("binder", binder);
-            ИнтентЗапускаемСуществующийТабель.putExtras(data);
             startActivity(ИнтентЗапускаемСуществующийТабель);
         } catch (Exception e) {
             e.printStackTrace();
