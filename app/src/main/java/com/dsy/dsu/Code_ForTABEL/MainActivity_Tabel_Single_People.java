@@ -199,10 +199,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private SubClassSingleTabelRecycreView. MyViewHolder myViewHolder;
     private  Integer Position =0;
     private  Cursor ГлавныйALLКурсорДанныеSwipes;
-
-
-    private  ArrayList<String> МассивДляВыбораСпинераДаты= new ArrayList<>(); //////АКАРЛИСТ ДЛЯ ПОЛУЧЕНЫЙ НОВЫХ ДАТ
-    private  ArrayList<String> МассивДляВыбораВСпинерДепартамент= new ArrayList<>(); //////АКАРЛИСТ ДЛЯ ПОЛУЧЕНЫЙ НОВЫХ ДАТ
     private  String КонтентСпинераНаАктивтиТабель= "";
     private  String FullNameCFO = "";
     private  Integer ГодТабелей = 0;
@@ -426,57 +422,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     }
 
-
-
-
-
-
-
-    private void МетодВыбораВнешнегоВидаИзВидаТелефона() {
-        try{
-            LayoutInflater МеханизмЗагрузкиОдногЛайАутавДругой = getLayoutInflater();
-            //todo ВЫБИРАЕМ ВЗАВИСИСМОСТИ КАКОЙ ЭКРАН БУДЕТ ЗАГРУЖАТЬСЯ ПОЛЬЗОВАТЕЛЮ В ОДИНОЧНОМ тАБЕЛЕ
-/*            if (Build.BRAND.toString().contains("Samsung") ||Build.BRAND.toString().contains("Galaxy")
-                    || Build.BRAND.toString().contains("samsung") ||Build.BRAND.toString().contains("galaxy") ) {
-                Log.d(this.getClass().getName(), "Внешний вид САМСУНГА  "  +Build.BRAND.toString() );
-                ГлавныйКонтентТабеляИнфлейтер =
-                        МеханизмЗагрузкиОдногЛайАутавДругой.inflate(R.layout.activity_main_grid_for_tables_four_columns_samsung,//activity_main_find_customer_for_tables // activity_main_grid_for_tables
-                                ГлавныйКонтейнерТабель, false);
-                ViewGroup.LayoutParams ПараментыКонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла = ГлавныйКонтентТабеляИнфлейтер.getLayoutParams();
-
-                // TODO: 24.05.2021 ВЫБОР КАКОЙ АКТИВТИ МАКЕТ ЗАГРУЗАТЬ НА HTC
-            } else if (Build.BRAND.toString().contains("HTC") ){
-                Log.d(this.getClass().getName(), "Внешний вид HTC "  +Build.BRAND.toString() );
-                ГлавныйКонтентТабеляИнфлейтер =
-                        МеханизмЗагрузкиОдногЛайАутавДругой.inflate(R.layout.activity_main_grid_for_tables_four_columns_in_mm_htc,//activity_main_find_customer_for_tables // activity_main_grid_for_tables
-                                ГлавныйКонтейнерТабель, false);
-                ViewGroup.LayoutParams ПараментыКонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла =
-                        ГлавныйКонтентТабеляИнфлейтер.getLayoutParams();
-                // TODO: 24.05.2021 ВЫБОР КАКОЙ АКТИВТИ МАКЕТ ЗАГРУЗАТЬ ВСЕ ОСТАЛЬНЫЕ ТЕЛЕФОНЫ
-            } else {
-                Log.d(this.getClass().getName(), "Внешний вид ДЛЯ ВСЕХ ОСТАЛЬНЫХ "  +Build.BRAND.toString() );
-                ГлавныйКонтентТабеляИнфлейтер =
-                        МеханизмЗагрузкиОдногЛайАутавДругой.inflate(R.layout.activity_main_grid_for_tables_four_columns_in_mm,//activity_main_find_customer_for_tables // activity_main_grid_for_tables
-                                ГлавныйКонтейнерТабель, false);
-                ViewGroup.LayoutParams ПараментыКонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла = ГлавныйКонтентТабеляИнфлейтер.getLayoutParams();
-            }*/
-            HorizontalScrollViewВТабелеОдинСотрудник =(HorizontalScrollView)     ГлавныйКонтентТабеляИнфлейтер.findViewById(R.id.ГоризонтльнаяПрокруткаВнутриСамТабель);
-
-
-         //   КонтейнерКудаЗагружаетьсяФИО =(TextView)     ГлавныйКонтентТабеляИнфлейтер.findViewById(R.id.КонтейнерКудаЗагружаетьсяФИО);
-
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
-
     private Cursor МетодSwipesКурсор() {
         Cursor          cursor = null;
         try{
@@ -604,7 +549,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     //TODO хдесь мы запускаем метод создание и обработка самого табеля
     private void методСпинерМесяцы(@NonNull  String ВнутрениеЗначениеСФОилиПриСменеФИОсотрудника) {
         try{
-            МассивДляВыбораСпинераДаты.clear();
+          List<String>  МассивДляВыбораСпинераДаты=new ArrayList<>();
             МассивДляВыбораСпинераДаты=new ArrayList<>();
             МассивДляВыбораСпинераДаты.add(МЕсяцТабелей.toString());
             Log.d(this.getClass().getName(), " МассивДляВыбораВСпинерТабельФинал " +МассивДляВыбораСпинераДаты.toString());
@@ -659,8 +604,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private void МетодСпинерДепартамент(@NonNull String ВнутрениеЗначениеСФОилиПриСменеФИОсотрудника, ArrayAdapter<String> АдаптерДляСпинераТабельФинал) {
         // TODO: 20.11.2022 второй спинер департамент
         try {
-            МассивДляВыбораВСпинерДепартамент.clear();
-            МассивДляВыбораВСпинерДепартамент=new ArrayList<>();
+            List<String> МассивДляВыбораВСпинерДепартамент=new ArrayList<>();
             МассивДляВыбораВСпинерДепартамент.add(ВнутрениеЗначениеСФОилиПриСменеФИОсотрудника);
             Log.d(this.getClass().getName(), " МассивДляВыбораВСпинерТабельФинал " +МассивДляВыбораВСпинерДепартамент.toString());
             ArrayAdapter<String> АдаптерДляСпинераТабельФиналДепартамент = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1,МассивДляВыбораВСпинерДепартамент);
@@ -686,7 +630,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        ///метод запись ошибок в таблицу
                         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                                 + Thread.currentThread().getStackTrace()[2].getLineNumber());
                         new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
@@ -734,57 +677,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
         return КоличествоСтотрубниковВТАбеле;
-    }
-
-
-
-
-    private void МетодПолучениеФИОиПрофессия( @NonNull  Cursor sqLiteCursor) {
-        try{
-            Log.d(this.getClass().getName(), "ПолученыйUUIDФИОСледующий " + ПолученыйUUIDФИОСледующий);
-            Class_GRUD_SQL_Operations classGrudSqlOperations= new Class_GRUD_SQL_Operations(getApplicationContext());
-            classGrudSqlOperations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СамFreeSQLКОд",
-                    " SELECT name,prof  FROM fio  WHERE  uuid = '" + ПолученыйUUIDФИОСледующий + "' ;");
-            ///////
-             Cursor            Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО= (SQLiteCursor) classGrudSqlOperations.
-                    new GetаFreeData(getApplicationContext()).getfreedata(classGrudSqlOperations.
-                            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
-                    Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков
-                    ,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
-            Log.d(this.getClass().getName(), "Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО "  +Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.getCount());
-            Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.moveToFirst();
-
-            ФИОТекущегоСотрудника = Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.getString(0);
-            Log.d(  this.getClass().getName(), "ФИОСледующий " +"uuid"+ ФИОТекущегоСотрудника);
-            int ИндексПрофесииdata_tabels = sqLiteCursor.getColumnIndex("dt_prof");//name
-            ПолученаяПрофесииdata_tabels=     sqLiteCursor.getInt(ИндексПрофесииdata_tabels);////  String ФИОСледующий
-            Log.d(this.getClass().getName(), " ПолученаяПрофесииdata_tabels " + ПолученаяПрофесииdata_tabels);
-            // TODO: 23.03.2023 по таблиуе ФИо
-            int ИндексПрофесииFio = sqLiteCursor.getColumnIndex("fio_prof");//name
-            ПолученаяПрофесииFio=     sqLiteCursor.getInt(ИндексПрофесииFio);////  String ФИОСледующий
-            Log.d(this.getClass().getName(), " ПолученаяПрофесииFio " + ПолученаяПрофесииFio);
-            // TODO: 24.03.2023 ВЫЧИСЛЯКЕМ ТЕКУЩАЮ ПРОФЕСИЮ
-            if (ПолученаяПрофесииdata_tabels>0) {
-                Профессия=МетодgetПрофесия(ПолученаяПрофесииdata_tabels);
-            } else {
-                if (ПолученаяПрофесииFio>0) {
-                    Профессия=МетодgetПрофесия(ПолученаяПрофесииFio);
-                    Log.d(this.getClass().getName(), " ПолученаяПрофесииdata_tabels " + ПолученаяПрофесииdata_tabels
-                            + " ПолученаяПрофесииFio " +ПолученаяПрофесииFio);
-                }else {
-                    Профессия= "Должность";
-                    Log.d(this.getClass().getName(), " ПолученаяПрофесииdata_tabels " + ПолученаяПрофесииdata_tabels
-                            + " ПолученаяПрофесииFio " +ПолученаяПрофесииFio);
-                }
-            }
-            Log.d(this.getClass().getName(), "Профессия" + Профессия);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " +e + " Метод :"+Thread.currentThread().getStackTrace()[2].getMethodName()
-                    + " Линия  :"+Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),  this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
     }
 
 
@@ -849,272 +741,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         }
 
     }
-
-
-
-    /////View/////TODO метод uuid id названеи стоблика
-    public  void МетодПередНаМеткиТАбеля(View v) {
-
-try{
-    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " +e + " Метод :"+Thread.currentThread().getStackTrace()[2].getMethodName()
-                + " Линия  :"+Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),  this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                Thread.currentThread().getStackTrace()[2].getLineNumber());
-    }
-    }
-
-
-
-
-    ///todo  конец метода удаления третий обработчки нажатия
-    //////TODO локального обнвлени с Активити в базу
-    private Long МетодЛокальногоОбновлениеЧерезКликвТабеле(ContentValues КонтейнерЗаполненияДаннымиПриЛокальномОбновлении ,String ПолучениеЗначениеСтолбикUUID)
-            throws InterruptedException, ExecutionException,
-            NoSuchMethodException, TimeoutException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, JSONException {
-        String таблицаДляЛокальногоОбонвления="data_tabels";
-        Long РезультатЛокальногоОбновления = null;
-        try {
-            Log.d(this.getClass().getName(), " ПолучениеЗначениеСтолбикUUID " + ПолучениеЗначениеСтолбикUUID +
-                    " КонтейнерЗаполненияДаннымиПриЛокальномОбновлении  " + КонтейнерЗаполненияДаннымиПриЛокальномОбновлении);
-            ///TOdo универсальное значение или uuid или id КАКОЕ НЕ NULL
-            String УниверсальныйИнлификаторЛокальногоОбновлениеиIDиUUID = "";
-////TODO сам метод запуска обновления
-            if (КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.size() > 0) {///если в контенер заполнилься то начинаем обновление
-                //TODO принимеем решение через чего БУДЕМ ОБНОВЛЯТЬ ЧЕРЕЗ ID ИЛИ UUID, ПРИОРИТЕТ ID ,НО ЕЛСИ ЕГО НЕТ ТО UUID
-                /////TODO  локальное ОБНОВЛЕНИЕ ЧЕРЕЗ UUID ПОЛЕ
-                if (ПолучениеЗначениеСтолбикUUID != null) {
-                    Log.d(this.getClass().getName(), " ПолучениеЗначениеСтолбикUUID " + ПолучениеЗначениеСтолбикUUID);
-                    boolean РузультатМетодОпределяемуЗаписиКакойСтатусУдаленныйИлиНет =
-                            МетодОпределяемуЗаписиКакойСтатусУдаленныйИлиНет(ПолучениеЗначениеСтолбикUUID, "uuid");
-                    Log.d(this.getClass().getName(), " РузультатМетодОпределяемуЗаписиКакойСтатусУдаленныйИлиНет " + РузультатМетодОпределяемуЗаписиКакойСтатусУдаленныйИлиНет +
-                            " КонтейнерЗаполненияДаннымиПриЛокальномОбновлении " + КонтейнерЗаполненияДаннымиПриЛокальномОбновлении);
-
-                    ///todo ПРОИЗВОДИМ ЛОКАЛЬНОЕ ОБНОВЛЕНИЕ ,ЕСЛИ В СТАТУСЕ ОТПРАВИК НЕ СТОИТЬ СТАТУС УДАЛЕННЫЙ
-                    //////todo производим локальное обновлени когда статус false --, это значит статуса Уданненый нет
-                    try {
-                        // TODO: 22.03.2021  вставка только если false запись не Имеет статус Удаленная
-                        if (РузультатМетодОпределяемуЗаписиКакойСтатусУдаленныйИлиНет == false) {
-                            ///TODO ТОЛЬКО ЛОКАЛЬНОЕ ОБНОВЛЕНИЕ НА ТАБЕЛЕ В АКТИВИТИ
-                            РезультатЛокальногоОбновления = new Class_MODEL_synchronized(getApplicationContext()).
-                                    МетодЛокальноеОбновлениеВТабеле(КонтейнерЗаполненияДаннымиПриЛокальномОбновлении,
-                                            ПолучениеЗначениеСтолбикUUID,
-                                            getApplicationContext(),таблицаДляЛокальногоОбонвления);
-                            Log.d(this.getClass().getName(), " РезультатЛокальногоОбновления " + РезультатЛокальногоОбновления);
-
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                + " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                }
-                /// //TODO РЕЗУЛЬТАТ ФИНАЛЬНЫЙ ПОСЛЕ ЛОКАЛЬНОГО ОБНОВЛЕНИЕ ЕСОИ ВСЕ ХОРОШО ТО ОБНУЛЯЕМ ПЕРЕМЕННЫЕ И НЕТ СООБЩЕНИЙ
-                Log.d(this.getClass().getName(), " РезультатЛокальногоОбновления" + РезультатЛокальногоОбновления);
-                //TODO ЕЛИ РЕЗУЛЬТАТ ЛОКАЛЬНОГО ОБНОВЛЕНИЯ СРАБОТАЛ ТО И ПОКАЗЫВАЕМ ИЗМЕННЕЯ ЧАСЫ
-                if (РезультатЛокальногоОбновления > 0 ) {
-                    ///todo после заполнения табелями обнуляем куросры
-                    ////////// TODO ПОДСЧЁТ ЧАСОВ ПОСЛЕ ЛОКАЛЬНОГО ОБНОВЛЕНИЯ
-                 Integer   Часысотрудника = new Class_MODEL_synchronized(getApplicationContext()).МетодПосчётаЧасовПоСотруднику(ГлавныйALLКурсорДанныеSwipes);
-                    Log.d(this.getClass().getName(), "  ОбщееКоличествоЧасовСотрудникаВТабелеСотудников " + TextViewЧасовСотрудникаВТабелеСотудников);
-                    МетодСуммаЧасовВТабеле(ГлавныйALLКурсорДанныеSwipes);
-                    // TODO: 07.05.2021 обнуляем UUID после созданеия подтчета часов
-                    Log.d(Class_MODEL_synchronized.class.getName()," Часысотрудника  "+ Часысотрудника);
-                    МетодСуммаЧасовВТабеле(ГлавныйALLКурсорДанныеSwipes);
-                    // TODO: 25.09.2021
-                    Log.d(Class_MODEL_synchronized.class.getName()," Часысотрудника  "+ Часысотрудника);
-                    /////TODO ОБНУЛЯЕМ ЗНАЧЕНИЕ ID AND UUID ЧТОБЫ НЕ БЫЛО ПОВТОРОНОГО ОБНОЛЕНИЕ НЕ СВОЕГО ХОЗЯИНА UUID
-                    КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.clear();
-                    Scrollviewsingletabel.requestLayout();
-                } else {
-                    Toast.makeText(getApplicationContext(), " Ошибка обновление ячейки не произошло !!!!! " , Toast.LENGTH_SHORT).show();
-                    КонтейнерЗаполненияДаннымиПриЛокальномОбновлении.clear();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName()
-                    + " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-        return РезультатЛокальногоОбновления;
-
-    }
-
-
-
-
-    //todo метод орпреедгния статутс записи обнолвемой удленнва я или нет
-    private boolean МетодОпределяемуЗаписиКакойСтатусУдаленныйИлиНет( String ПолучениеЗначениеСтолбикUUID,String ИндификаторСтатус) {
-
-        boolean Результат_СтатусЗаписиДляЛокальногоОбновленияУдаленноеИлиНет=false;
-        //////
-        SQLiteCursor Курсор_УзнаемСтатусЗаписиДляЛокальногоОбновленияУдаленноеИлиНет = null;
-        ///////
-        Class_GRUD_SQL_Operations class_grud_sql_operationsОпределяемуЗаписиКакойСтатусУдаленныйИлиНет=new Class_GRUD_SQL_Operations(getApplicationContext());
-
-        try{
-            Log.d(this.getClass().getName(), "  МетодЗапускаЛокальногоОбновлениеЧерезКликвТабеле : ");
-
-
-//////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
-            // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
-            ///
-            class_grud_sql_operationsОпределяемуЗаписиКакойСтатусУдаленныйИлиНет. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","data_tabels");
-            ///////
-            class_grud_sql_operationsОпределяемуЗаписиКакойСтатусУдаленныйИлиНет. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","status_send");
-            //
-            class_grud_sql_operationsОпределяемуЗаписиКакойСтатусУдаленныйИлиНет. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика",""+ИндификаторСтатус+"=? AND status_send=?");
-            ///"_id > ?   AND _id< ?"
-            //////
-            class_grud_sql_operationsОпределяемуЗаписиКакойСтатусУдаленныйИлиНет. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1",ПолучениеЗначениеСтолбикUUID);
-            ///
-            class_grud_sql_operationsОпределяемуЗаписиКакойСтатусУдаленныйИлиНет. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска2","Удаленная");
-            ///
-/*                    class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска3",МЕсяцДляКурсораТабелей);
-                    //
-                    class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска4",ГодДляКурсораТабелей);////УсловиеПоискаv4,........УсловиеПоискаv5 .......*/
-
-            ////TODO другие поля
-
-            ///classGrudSqlOperations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ПоляГрупировки",null);
-            ////
-            //class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеГрупировки",null);
-            ////
-            class_grud_sql_operationsОпределяемуЗаписиКакойСтатусУдаленныйИлиНет. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки","date_update desc");
-            ////
-            /// class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита","1");
-            ////
-
-            // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
-            Курсор_УзнаемСтатусЗаписиДляЛокальногоОбновленияУдаленноеИлиНет=null;
-
-            ////
-
-            Курсор_УзнаемСтатусЗаписиДляЛокальногоОбновленияУдаленноеИлиНет= (SQLiteCursor)  new Class_GRUD_SQL_Operations(getApplicationContext()).
-                    new GetData(getApplicationContext()).getdata(class_grud_sql_operationsОпределяемуЗаписиКакойСтатусУдаленныйИлиНет. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
-                    Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков
-                    ,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
-
-            Log.d(this.getClass().getName(), "GetData "  +Курсор_УзнаемСтатусЗаписиДляЛокальногоОбновленияУдаленноеИлиНет);
-
-
-
-
-
-
-
-
-
-
-            /////////////TODO результат
-            if (Курсор_УзнаемСтатусЗаписиДляЛокальногоОбновленияУдаленноеИлиНет.getCount() > 0) {
-                /////
-                // TODO: 08.09.2021  полчжительный
-
-                Результат_СтатусЗаписиДляЛокальногоОбновленияУдаленноеИлиНет=true;
-
-            }else{
-
-                // TODO: 08.09.2021  отрицательный
-
-                Результат_СтатусЗаписиДляЛокальногоОбновленияУдаленноеИлиНет=false;
-            }
-
-///TODO ЗАПУСКАЕМ  ПуллПамяти
-            Курсор_УзнаемСтатусЗаписиДляЛокальногоОбновленияУдаленноеИлиНет.close();
-
-
-            //////////
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " +e + " Метод :"+Thread.currentThread().getStackTrace()[2].getMethodName()
-                    + " Линия  :"+Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),  this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-        /////
-        return Результат_СтатусЗаписиДляЛокальногоОбновленияУдаленноеИлиНет;
-    }
-
-
-
-
-
-    //TODO метод получени месяа для записи в одну колонку
-
-    protected int  МетодПолучениниеМесяцДляЗАписивОднуКолонку(String ДатаКоторуюНадоПеревестиИзТекставЦифру) throws ParseException {
-//
-        Calendar calendar =null;
-        //////////
-        try{
-            ///
-            String[] ДелимМЕсяцИгод =ДатаКоторуюНадоПеревестиИзТекставЦифру.split(" ");
-
-            System.out.println( " " + ДелимМЕсяцИгод [0] + " " +ДелимМЕсяцИгод [1]);
-
-            SimpleDateFormat formatмесяц = new SimpleDateFormat("MMMM");
-
-            SimpleDateFormat formatгод = new SimpleDateFormat("yyyy");
-
-            Date date = formatмесяц.parse(ДелимМЕсяцИгод [0]);
-
-            calendar = Calendar.getInstance(new Locale("ru"));
-
-            calendar.setTime(date);
-
-            System.out.println(calendar.get(Calendar.YEAR));
-
-            System.out.println(calendar.get(Calendar.MONTH)+1);
-
-            System.out.println(calendar.get(Calendar.DAY_OF_MONTH));
-
-            System.out.println(new SimpleDateFormat("MMMM").format(calendar.getTime()));
-
-
-            //////////
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " +e + " Метод :"+Thread.currentThread().getStackTrace()[2].getMethodName()
-                    + " Линия  :"+Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),  this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-        // TODO: 08.09.2021   resultat
-        return   calendar.get(Calendar.MONTH)+1;
-    }
-
-
-
-
-    //TODO метод который обрабатывает дни
-    String МетодСопоставлениеДнейТАбеляСКалендарем(String ДатаДляКадендаря){
-
-        Calendar c = GregorianCalendar.getInstance();
-        SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyy");
-
-        return null;
-    }
-
-
-
-
-
-
-
-
-
-
-
     // TODO: 03.04.2023 Создание  Дней Недели Вс, Пон, Ср,Черт
     private  LinkedHashMap< String,String> методВсеДниЧерезКалендарь() throws ParseException,RuntimeException {
         LinkedHashMap< String,String> linkedHashMapДни=new LinkedHashMap<>();
@@ -1218,102 +844,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
 
 
-
-
-
-////TODO МЕТОД ТОЛЬКО ДЛЯ ВСТВКИ НОВОГО МЕСЯЦА и ГОД НОВЫЙ
-
-
-
-
-    private int МетодПоказатьМесяцДляЗАписивОднуКолонку(String ДатаКоторуюНадоПеревестиИзТекставЦифру) throws ParseException {
-        System.out.println( " " + ДатаКоторуюНадоПеревестиИзТекставЦифру + " " +ДатаКоторуюНадоПеревестиИзТекставЦифру);
-        SimpleDateFormat formatмесяц = new SimpleDateFormat("LLLL  yyyy");
-        Date date = formatмесяц .parse(ДатаКоторуюНадоПеревестиИзТекставЦифру);
-        Calendar calendar = Calendar.getInstance(new Locale("ru"));
-        calendar.setTime(date);
-        calendar.setTime(date );
-        int month = calendar.get(Calendar.MONTH) + 1;
-        return   month;
-    }
-
-    private int  МетодПоказатьГодДляЗАписивОднуКолонку(String ДатаКоторуюНадоПеревестиИзТекставЦифру) throws ParseException {
-        System.out.println( "ДатаКоторуюНадоПеревестиИзТекставЦифру " +ДатаКоторуюНадоПеревестиИзТекставЦифру);
-        SimpleDateFormat formatгод = new SimpleDateFormat("LLLL  yyyy");
-        Date date = formatгод.parse(ДатаКоторуюНадоПеревестиИзТекставЦифру);
-        Calendar calendar = Calendar.getInstance(new Locale("ru"));
-        calendar.setTime(date);
-        calendar.setTime(date );
-        int year = calendar.get(Calendar.YEAR);
-        return   year ;
-    }
-
-    private int  МетодПолучениниеМесяцДляКурсора(String ДатаКоторуюНадоПеревестиИзТекставЦифру) throws ParseException {
-        System.out.println( " " + ДатаКоторуюНадоПеревестиИзТекставЦифру + " " +ДатаКоторуюНадоПеревестиИзТекставЦифру);
-        SimpleDateFormat formatмесяц = new SimpleDateFormat("LLLL  yyyy");
-        Date date = formatмесяц .parse(ДатаКоторуюНадоПеревестиИзТекставЦифру);
-        Calendar calendar = Calendar.getInstance(new Locale("ru"));
-        calendar.setTime(date);
-        Calendar calendar2 = new GregorianCalendar();
-        calendar.setTime(date );
-        int month = calendar.get(Calendar.MONTH) + 1;
-        return   month;
-    }
-
-    //TODO метод получени месяа для записи в одну колонку
-
-    private int  МетодПолучениниеГодДляКурсора(String ДатаКоторуюНадоПеревестиИзТекставЦифру) throws ParseException {
-        System.out.println( "ДатаКоторуюНадоПеревестиИзТекставЦифру " +ДатаКоторуюНадоПеревестиИзТекставЦифру);
-        SimpleDateFormat formatгод = new SimpleDateFormat("LLLL  yyyy");
-        Date date = formatгод.parse(ДатаКоторуюНадоПеревестиИзТекставЦифру);
-        Calendar calendar = Calendar.getInstance(new Locale("ru"));
-        calendar.setTime(date);
-        int year = calendar.get(Calendar.YEAR);
-        return   year ;
-    }
-
-
-
-
-
-    public String ГлавнаяДатаИВремяДляТабеля() {
-        Date Дата = Calendar.getInstance().getTime();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", new Locale("ru"));//"yyyy-MM-dd HH:mm:ss.SSS"//"yyyy-MM-dd'T'HH:mm:ss'Z'"
-        //dateFormat.setTimeZone(TimeZone.getTimeZone("UTC-03:00"));
-        dateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Moscow"));
-        Log.d(this.getClass().getName(), " ГЛАВНАЯ ДАТА ПРОГРАММЫ ДСУ-1 : " + dateFormat.format(Дата));
-        return dateFormat.format(Дата);
-    }
-    ///todo ОПРЕДЕЛЯЕМ КОЛИЧЕСТВО ДНЕЙ ЗАГРУЖАЕМОЙ МЕСЯЦ
-    protected int МетодПолучениеКоличествоДнейвЗагружаемомМесяце(int Месяц ,int месяцДляСокращенно) {
-        int daysInMonth = 0;
-        try{
-            int КонктетныйМесяцВВидеЦифры;
-            Date  date;
-            String МесяцПлюсНоль=String.valueOf(Месяц);
-            if (МесяцПлюсНоль.length() == 1){
-                МесяцПлюсНоль="0"+МесяцПлюсНоль;
-            }
-            date = new SimpleDateFormat("MMyyyy",new Locale("rus")).parse(МесяцПлюсНоль+ месяцДляСокращенно);
-            System.out.println(" date " +date);
-            Calendar  cal = Calendar.getInstance();
-            cal.setTime(date);
-            КонктетныйМесяцВВидеЦифры=cal.get(Calendar.MONTH);
-            System.out.println(cal.get(Calendar.MONTH));
-            daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH); // 28
-            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                    " daysInMonth  " + daysInMonth );
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-        return  daysInMonth;
-    }
 
     ///todo сообщение информация о ФИО
     @UiThread
@@ -1434,46 +964,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
     }
 
 
-    ///todo сообщение
-    @UiThread
-    protected void СообщениеПослеУдаленияСотрудникаИзТабеля(String ШабкаДиалога,  String СообщениеДиалога,boolean Статус) {
-        ///////СОЗДАЕМ ДИАЛОГ ДА ИЛИ НЕТ///////СОЗДАЕМ ДИАЛОГ ДА ИЛИ НЕТ
-//////сам вид
-        int Значек;
-        if (Статус){
-            Значек  =R.drawable.icon_dsu1_tabel_info;
-        }else{
-            Значек  =R.drawable.icon_dsu1_delete_customer;
-        }
-        final AlertDialog alertDialog = new MaterialAlertDialogBuilder(this)
-                .setTitle(ШабкаДиалога)
-                .setMessage(СообщениеДиалога)
-                .setPositiveButton("ОК", null)
-                .setIcon(Значек)
-                .show();
-/////////кнопка
-        final Button MessageBoxUpdateСоздатьТабель = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        MessageBoxUpdateСоздатьТабель.setOnClickListener(new View.OnClickListener() {
-            ///MessageBoxUpdate метод CLICK для DIALOBOX
-
-            @Override
-            public void onClick(View v) {
-                //удаляем с экрана Диалог
-                alertDialog.dismiss();
-                Log.d(this.getClass().getName(), "  ФИНАЛ после удалание сотрудуника ");
-                ///TODO запускаем возврат на предыдущее активывти после успешного удаление сотрудника
-                методПереходаMainActivity_List_Peoples();
-
-
-                //todo
-            }
-
-
-        });
-    }
-////todo конец фильаного сообщения о удалени самого табеля
-
-
     void методПереходаMainActivity_List_Peoples() {
         try{
             ////TODO ИНТРЕНТ КОТОРЫЙ СОЗДАЕТ НОВГО СОТРУДНИКА
@@ -1498,82 +988,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //TODO Первый МЕТОД заполения строчки
-    private Integer МетодНазваниеЯчеек(@NonNull Map<Integer, String> ХЭШНазваниеДнейНедели,
-                                       @NonNull View КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла,
-                                       @NonNull String regex, @NonNull String regex1,
-                                       @NonNull   IntStream intStreamИтератор,
-                                       @NonNull      Integer ИндексИтерации) {
-        try {
-            TextView    НазваниеДанныхВТабелеДниНедели;
-        // TODO: 31.03.2023 Первая СТРОЧКА данных НА ЭКРАНЕ SIGLE
-        PrimitiveIterator.OfInt iteratorIteratorПерваяСтрочкаНазвание= intStreamИтератор.iterator();
-        while (iteratorIteratorПерваяСтрочкаНазвание.hasNext()){
-            // TODO: 31.03.2023 поднимаем версию
-            ИндексИтерации++;
-            /////TODO ДЕНЬ ПЕРВЫЙ
-        Integer ТекущийЭлементНазвания=     iteratorIteratorПерваяСтрочкаНазвание.nextInt();
-             НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(ТекущийЭлементНазвания);
-            НазваниеДанныхВТабелеДниНедели = КонтентТабеляКоторыйМыИБудемЗаполнятьВнутриЦикла.findViewById(ТекущийЭлементНазвания);
-            НазваниеДанныхВТабелеДниНедели.setText(ХЭШНазваниеДнейНедели.get(ИндексИтерации).trim());
-            if (ХЭШНазваниеДнейНедели.get(ИндексИтерации).matches(regex) || ХЭШНазваниеДнейНедели.get(ИндексИтерации).matches(regex1)) {
-                 НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                 НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#DC143C"));
-            } else {
-                 НазваниеДанныхВТабелеДниНедели.setBackgroundResource(R.drawable.textlines_tabel_row_name_value);
-                 НазваниеДанныхВТабелеДниНедели.setTextColor(Color.parseColor("#008080"));
-            }
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " ХЭШНазваниеДнейНедели.get(ИндексИтерации) "+ ХЭШНазваниеДнейНедели.get(ИндексИтерации)+
-                    "  this.НазваниеДанныхВТабелеДниНедели " +  НазваниеДанныхВТабелеДниНедели.getText().toString()+ " ТекущийЭлементНазвания " +ТекущийЭлементНазвания);
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                this.getClass().getName(),
-                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-    }
-        return  ИндексИтерации;
-    }
 
 
     //TODO метод делает callback с ответом на экран
