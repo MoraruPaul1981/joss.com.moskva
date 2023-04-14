@@ -482,11 +482,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         try{
             //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
             Bundle bundleГлавныйКурсорMultiДанныеSwipes= new Bundle();
-           /* bundleГлавныйКурсорMultiДанныеSwipes.putString("СамЗапрос","  SELECT * FROM viewtabel WHERE cfo=? " +
-                    "AND month_tabels  =?  AND year_tabels = ?  AND status_send !=?  AND fio IS NOT NULL  ORDER BY uuid " );*/
             bundleГлавныйКурсорMultiДанныеSwipes.putString("СамЗапрос"," SELECT  *   FROM viewtabel AS t" +
-                    " WHERE t.cfo=? AND t.month_tabels  =?  AND t.year_tabels = ?  AND t.status_send !=?  AND t.fio IS NOT NULL  ORDER BY   t._id  " );
-           // bundleГлавныйКурсорMultiДанныеSwipes.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(ЦифровоеИмяНовгоТабеля), String.valueOf(МесяцТабеля),String.valueOf(ГодДляТабелей),"Удаленная" });
+                    " WHERE t.cfo=? AND t.month_tabels  =?  AND t.year_tabels = ?  AND t.status_send !=?  AND t.fio IS NOT NULL  ORDER BY   t.date_update  " );
             bundleГлавныйКурсорMultiДанныеSwipes.putStringArray("УсловияВыборки" ,
                     new String[]{String.valueOf(DigitalNameCFO),
                             String.valueOf(  МЕсяцТабелей),
@@ -2075,17 +2072,25 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 @Override
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                     try{
+                        ProgressBarSingleTabel.setVisibility(View.VISIBLE);
+                        message.getTarget().post(()->{
                     Integer posio= myViewHolder.getAbsoluteAdapterPosition();
                         if (Position>0) {
                             Position=Position-1;
                             cursor.moveToPosition(Position);
+                        }else {
+                            cursor.moveToLast();
                         }
                         recyclerView.getAdapter().notifyDataSetChanged();
                         myRecycleViewAdapter.notifyDataSetChanged();
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"Position   " + Position+ " cursor " +cursor+
+                                    " posio " +posio);
+                        });
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"Position   " + Position+ " cursor " +cursor+
-                             " posio " +posio);
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"Position   " + Position+ " cursor " +cursor);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getApplicationContext().getClass().getName(),
@@ -2127,9 +2132,11 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
                             message.getTarget().post(()->{
                                 Integer posio= myViewHolder.getAbsoluteAdapterPosition();
-                                if (Position<cursor.getCount()) {
+                                if (Position<cursor.getCount()-1) {
                                     Position=Position+1;
                                     cursor.moveToPosition(Position);
+                                }else {
+                                    cursor.moveToFirst();
                                 }
                                 recyclerView.getAdapter().notifyDataSetChanged();
                                 myRecycleViewAdapter.notifyDataSetChanged();
@@ -2183,14 +2190,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"recyclerView   " + recyclerView+ " cursor " +cursor);
-/*
-                    myRecycleViewAdapter = new  MyRecycleViewAdapter(cursor);
-                    recyclerView.setAdapter(myRecycleViewAdapter);
-
-                    myRecycleViewAdapter.onBindViewHolder(myViewHolder,3,new ArrayList<>());
-                  //  recyclerView.setAdapter(myRecycleViewAdapter);
-                    myRecycleViewAdapter.notifyDataSetChanged();
-                    recyclerView.requestLayout();*/
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(getApplicationContext().getClass().getName(),
