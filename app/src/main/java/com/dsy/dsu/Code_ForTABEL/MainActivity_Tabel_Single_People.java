@@ -1466,12 +1466,16 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         }else {
                             cursor.moveToFirst();
                         }
+                            CurrenrsСhildUUID=       cursor.getLong(cursor.getColumnIndex("uuid"));
+                            CurrenrsSelectFio=       cursor.getLong(cursor.getColumnIndex("fio"));
+                            ФИО=       cursor.getString(cursor.getColumnIndex("name"));
+
                         recyclerView.getAdapter().notifyDataSetChanged();
                         myRecycleViewAdapter.notifyDataSetChanged();
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"Position   " + Position+ " cursor " +cursor+
-                                    " posio " +posio);
+                                    " posio " +posio  + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
                         });
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1522,12 +1526,16 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 }else {
                                     cursor.moveToLast();
                                 }
+                                CurrenrsСhildUUID=       cursor.getLong(cursor.getColumnIndex("uuid"));
+                                CurrenrsSelectFio=       cursor.getLong(cursor.getColumnIndex("fio"));
+                                ФИО=       cursor.getString(cursor.getColumnIndex("name"));
+
                                 recyclerView.getAdapter().notifyDataSetChanged();
                                 myRecycleViewAdapter.notifyDataSetChanged();
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"Position   " + Position+ " cursor " +cursor+
-                                        " posio " +posio);
+                                        " posio " +posio  + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
                             });
 
 
