@@ -249,43 +249,38 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             animationRows = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row_scroll_for_singletabel);
             animationRich = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_swipe_r);//R.anim.slide_in_row)
             animationLesft = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_swipe_l);//R.anim.slide_in_row)R.anim.slide_in_row_newscanner1
-            // TODO: 29.03.2023  Метод Какая марка телфона из за этого загрудаем вид
+            Scrollviewsingletabel.pageScroll(View.FOCUS_UP);
+
+
+            // TODO: 29.03.2023  Метод обсуживаюшие
             методGETДанныеИзДругихАктивити();
             МетодGetmessage();
-
-         LifecycleOwner lifecycleOwner=this;
-         LifecycleOwner  lifecycleOwnerОбщая=this;
-
-
-                    SubClassSingleTabelRecycreView subClassSingleTabelRecycreView=
-                            new SubClassSingleTabelRecycreView(lifecycleOwner,lifecycleOwnerОбщая,activity);
-
-                    subClassSingleTabelRecycreView.МетодИнициализацииRecycreView();
-
-         Cursor   cursor =    new SubClassGetCursor().МетодSwipesКурсор();
-
-                   subClassSingleTabelRecycreView.МетодЗаполениеRecycleView( cursor);
-
-                    subClassSingleTabelRecycreView. методДляSimpeCallbacks(cursor);
-
-                     МетодПриНАжатииНаКнопкуBACK();
-
-            // TODO: 14.04.2023 доделываем single tabel
-                  методСпинерМесяцы();//запускаем метод создание табеля
-
-                МетодСпинерДепартамент( );
-
+            методСпинерМесяцы();//запускаем метод создание табеля
+            МетодСпинерДепартамент( );
             МетодОтработкиПоднятияКлавиатуры();
 
+                // TODO: 29.03.2023  Метод RerecyView RerecyView RerecyView RerecyView RerecyView
+                LifecycleOwner lifecycleOwner=this;
+                LifecycleOwner  lifecycleOwnerОбщая=this;
+                SubClassSingleTabelRecycreView subClassSingleTabelRecycreView=
+                    new SubClassSingleTabelRecycreView(lifecycleOwner,lifecycleOwnerОбщая,activity);
+                subClassSingleTabelRecycreView.МетодИнициализацииRecycreView();
+                Cursor   cursor =    new SubClassGetCursor().МетодSwipesКурсор();
+                subClassSingleTabelRecycreView.МетодЗаполениеRecycleView( cursor);
+                subClassSingleTabelRecycreView. методДляSimpeCallbacks(cursor);
+                МетодПриНАжатииНаКнопкуBACK();
+            // TODO: 14.04.2023 доделываем single tabel
             subClassSingleTabelRecycreView.МетодСлушательRecycleView();
 
+
+
+            // TODO: 16.04.2023 Професии Професии Професии Професии
             // TODO: 04.04.2023  ФИО
             subClassSingleTabelRecycreView.   МетодЗаполняемФИОRow();
             // TODO: 04.04.20223 КЛИК ПО ДАННЫМ
             subClassSingleTabelRecycreView.     МетодаКликаTableRowФИО( );
 
 
-            Scrollviewsingletabel.pageScroll(View.FOCUS_UP);
 
 
 
@@ -303,38 +298,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                         subClassSingleTabelRecycreView.  методWorkMAnagerReycreVIew();
                     },2000);*/
 
-
-            // TODO: 30.03.2023 Новые Методы
-      /*      МетодSwipeALLКурсор();
-            МетодВыбораВнешнегоВидаИзВидаТелефона();
-
-           // МетодОбновлениеПрофесиии();
-
-            МетодПриИзмениеДанныхВБазеМенемВнешнийВидТабеляObserver();
-
-            методДанныеИзДругихАктивити();
-            // TODO: 30.03.2023 CЛУШАТЕЛИ ДВА ДАННЫХ
-            МетодGetmessage();
-
-            //TODO #2
-            МетодПриНАжатииНаКнопкуBACK();
-            //TODO #4
-            методСпинерМесяцы(FullNameCFO );//запускаем метод создание табеля
-            //TODO #5
-            ВсеСтрокиТабеля=   МетодЗаполненияАлайЛИстаНовымМЕсцевНовогоТабеля(МЕсяцТабелей);   ////раньше стояло 0
-            // TODO: 29.03.2023
-            ///TODO   #7  запускаем метод ПОСЛЕ УСПЕШНОЙ ГЕНЕРАЦИИ ТАБЕЛЯ
-            МетодСлушательСвайпов();
-            ///TODO   #8 запускаем метод отработки поднятие клавиатур
-            МетодОтработкиПоднятияКлавиатуры();
-            // TODO: 29.01.2022 ПРИ ИЗМЕНЕНИ МЕНЯЕМ ДАННЫЕ В БАЗЕ В ТАБЕЛЕ
-            МетодАнализДанныхSwipes( );
-            // TODO: 03.04.2023 Создание  Дней Недели Вс, Пон, Ср,Черт
-            методПолучениеДнейНеделиЧерезКалендарь();*/
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -381,56 +347,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
         }
     }
 
-    private void МетодОбновлениеПрофесиии() {
-        КонтейнерКудаЗагружаетьсяФИО.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
-                Class_GRUD_SQL_Operations class_grud_sql_operationsСлушательИнформацияОСотрудника=new Class_GRUD_SQL_Operations(getApplicationContext());
-                try{
-                    TextViewФИОиЧасыСотрудника.setBackgroundColor(Color.GRAY);
-                    Long ФИО=0l;
-                    if (МыУжеВКодеУденияСотрудника==false) {
-                        TextView ФИОДляУдаление = (TextView) v;
-                        Log.d(this.getClass().getName(), " v " + v.getTag() + " ФИОДляУдаление.getText() " + ФИОДляУдаление.getText() +
-                                "  ФИОДляУдаление.getTag() " +ФИОДляУдаление.getTag());
-                        //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
-                        Bundle bundleTabelView= (Bundle) ФИОДляУдаление.getTag();
-                        Long UUIDИзTabelView=bundleTabelView.getLong("UUID",0l);
-                        Long FIOИзTabelView=bundleTabelView.getLong("FIO",0l);
-                        Bundle bundleФио=new Bundle();
-                        bundleФио.putString("СамЗапрос","  SELECT * FROM  fio WHERE uuid=? ");
-                        bundleФио.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(FIOИзTabelView)});
-                        bundleФио.putString("Таблица","fio");
-                        Cursor    КурсорТаблицаФИО=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleФио);
-                        Log.d(this.getClass().getName(), " КурсорТаблицаФИО" + КурсорТаблицаФИО);
-                        if (КурсорТаблицаФИО.getCount()>0) {
-                            String ФИОИнфо= КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("name"));
-                            String ДеньРОжденияИНФО= КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("BirthDate"));
-                            Long СНИЛСИНфо= КурсорТаблицаФИО.getLong(КурсорТаблицаФИО.getColumnIndex("snils"));
-                            String ПрофессияИзФИо= КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("prof"));
-                            // TODO: 20.03.2023  ПОказываем Данные Для Обзора
-                            СообщениеИнформацияОСотруднике("Данные",  "ФИО: " +ФИОИнфо+
-                                    "\n"+"День рождения: " +ДеньРОжденияИНФО+
-                                    "\n"+"СНИЛС: " +СНИЛСИНфо+
-                                    "\n" +"Должость: " + "( "+Профессия.trim()+ " )");
 
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                    + " КурсорТаблицаФИО "+КурсорТаблицаФИО.getCount() );
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
-            }});
-
-    }
 
 
 
@@ -1738,13 +1655,12 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
             private void МетодПерегрузкаЧасыSingletabel() {
                 try {
+                    TextViewФИОиЧасыСотрудника.refreshDrawableState();
+                    TextViewФИОиЧасыСотрудника.requestLayout();
                     recyclerView.requestLayout();
                     recyclerView.refreshDrawableState();
                     Scrollviewsingletabel.refreshDrawableState();
-                    TextViewФИОиЧасыСотрудника.refreshDrawableState();
-                    TextViewФИОиЧасыСотрудника.requestLayout();
-                    constraintLayoutsingletabel.refreshDrawableState();
-                    constraintLayoutsingletabel.requestLayout();
+                    Scrollviewsingletabel.requestLayout();
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -2696,26 +2612,53 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     public void onClick(View v) {
                         Bundle bundleПереходДетализацию=(Bundle) v.getTag();
                         if (bundleПереходДетализацию != null) {
+                            // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
+                            try{
+                                message.getTarget().postDelayed(()->{
+                                    TextViewФИОиЧасыСотрудника.setBackgroundColor(Color.WHITE);
+                                },2000);
+                                TextViewФИОиЧасыСотрудника.setBackgroundColor(Color.GRAY);
+                                if (МыУжеВКодеУденияСотрудника==false) {
+                                    TextView TextViewФИОДляУдаление = (TextView) v;
+                                    Log.d(this.getClass().getName(), " v " + v.getTag() + " TextViewФИОДляУдаление.getText() " + TextViewФИОДляУдаление.getText() +
+                                            "  TextViewФИОДляУдаление.getTag() " +TextViewФИОДляУдаление.getTag());
+                                    //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
+                                    Bundle bundleTabelViewПрофессияФИО= (Bundle) TextViewФИОДляУдаление.getTag();
+                                    bundleTabelViewПрофессияФИО.putString("ФИО",  ФИО);
+                                    bundleTabelViewПрофессияФИО.putString("СамЗапрос","  SELECT * FROM  fio WHERE uuid=? ");
+                                    bundleTabelViewПрофессияФИО.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(CurrenrsSelectFio)});
+                                    bundleTabelViewПрофессияФИО.putString("Таблица","fio");
+                                    Cursor    КурсорТаблицаФИО=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleTabelViewПрофессияФИО);
+                                    Log.d(this.getClass().getName(), " КурсорТаблицаФИО" + КурсорТаблицаФИО);
+                                    if (КурсорТаблицаФИО.getCount()>0) {
+                                        String ФИОИнфо= КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("name"));
+                                        String ДеньРОжденияИНФО= КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("BirthDate"));
+                                        Long СНИЛСИНфо= КурсорТаблицаФИО.getLong(КурсорТаблицаФИО.getColumnIndex("snils"));
+                                        String ПрофессияИзФИо= КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("prof"));
+                                        // TODO: 20.03.2023  ПОказываем Данные Для Обзора
+                                        СообщениеИнформацияОСотруднике("Данные",  "ФИО: " +ФИОИнфо+
+                                                "\n"+"День рождения: " +ДеньРОжденияИНФО+
+                                                "\n"+"СНИЛС: " +СНИЛСИНфо+
+                                                "\n" +"Должость: " + "( "+Профессия.trim()+ " )");
+
+                                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                                + " КурсорТаблицаФИО "+КурсорТаблицаФИО.getCount() );
+                                    }
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            }
                         }
-                        Toast.makeText(activity, "onClick МетодаКликаTableRowФИО ", Toast.LENGTH_SHORT).show();
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                 + " v "+v );
-                    }
-                });
-                TextViewФИОПрофессия.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        Bundle bundleПереходДетализацию=(Bundle) v.getTag();
-                        if (bundleПереходДетализацию != null) {
-                        }
-                        Toast.makeText(activity, " onLongClick МетодаКликаTableRowФИО ", Toast.LENGTH_SHORT).show();
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                + " v "+v );
-                        return true;
                     }
                 });
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
