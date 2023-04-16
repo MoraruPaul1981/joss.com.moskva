@@ -190,6 +190,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private  Integer МЕсяцТабелей=0;
     private  Bundle bundleИзMainActitivy_List_Tables;
 
+    private TextView TextViewФИОПрофессия;
+
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -238,6 +240,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             КнопкаНазад=(Button) findViewById(R.id.imageViewСтрелкаВнутриТабеля);
             view2Линия=(View) findViewById(R.id.view2Линия);
             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
+            TextViewФИОПрофессия = (TextView)  findViewById(R.id.TextViewФИОПрофессия);
+
             animationПрофессия400 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_rowsingletabel);
             animationПрофессия300 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row2);
             animationVibr1 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_singletable);
@@ -274,6 +278,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             МетодОтработкиПоднятияКлавиатуры();
 
             subClassSingleTabelRecycreView.МетодСлушательRecycleView();
+
+            // TODO: 04.04.2023  ФИО
+            subClassSingleTabelRecycreView.   МетодЗаполняемФИОRow();
+            // TODO: 04.04.20223 КЛИК ПО ДАННЫМ
+            subClassSingleTabelRecycreView.     МетодаКликаTableRowФИО( );
+
 
             Scrollviewsingletabel.pageScroll(View.FOCUS_UP);
 
@@ -1599,7 +1609,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
         // TODO: 28.02.2022 начало  MyViewHolderДляЧата
         protected class MyViewHolder extends RecyclerView.ViewHolder {
             private TableLayout TableLayoutSingleTabel;
-            private   TableRow rowФИО;
             private  TableRow rowName ;
             private  TableRow rowData;
             public MyViewHolder(@NonNull View itemView ) {
@@ -1624,7 +1633,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 try {
                     // TODO: 04.04.2023  Иниуциализация Комепонетов
                     TableLayoutSingleTabel = itemView.findViewById(R.id.TableLayoutSingleTabelOneRow);
-                    rowФИО = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableRowsFIO);
                     // TODO: 04.04.2023   NAME
                     rowName= (TableRow) TableLayoutSingleTabel.findViewById(R.id.TableRow1Name);
                     // TODO: 04.04.2023   Data
@@ -1920,8 +1928,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             ///todo первый метод #1
             private void МетодЗаполняемДаннымиRecycreViewSingleTable(@NonNull  MyViewHolder holder, @NonNull Cursor cursor) {
                 try {
-                    // TODO: 04.04.2023  ФИО 
-                        МетодЗаполняемФИОRow(holder.rowФИО);
                     // TODO: 04.04.2023   DATA
                     МетодЗаполняемДаннымиTableRow(cursor ,holder  );
                     // TODO: 04.04.2023   Name
@@ -1940,34 +1946,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
             }
-            private void МетодЗаполняемФИОRow( @NonNull  TableRow tableRowФио) {
-                try {
-                    messageRows.getTarget().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            TextView textViewФИо = (TextView) tableRowФио.findViewById(R.id.RowКонтейнерКудаЗагружаетьсяФИО);
-                            String ФИОСодержимое =                Optional.ofNullable(textViewФИо.getHint()).map(Objects::toString).orElse("");
-                            textViewФИо.startAnimation(animationПрофессия400) ;
-                            textViewФИо.setVisibility(View.VISIBLE);
-                            textViewФИо.setText("Новая Должность !!! ");
 
-                        }
-                    },150);
-                        // TODO: 04.04.20223 КЛИК ПО ДАННЫМ
-                        МетодаКликаTableRowФИО(tableRowФио);
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cursor  " +cursor+ "tableRowФио " +tableRowФио);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(getApplicationContext().getClass().getName(),
-                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
-            }
 
             private void МетодЗаполняемДаннымиTableRow(@NonNull Cursor cursor,
                                                  @NonNull  MyViewHolder holder) {
@@ -2079,14 +2058,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 if (viewtextRowКликПоШабка != null) {
                                     // TODO: 06.04.2023 Названия
                                     методЗаполениеНазванияRowData(viewtextRowКликПоШабка, ДнейНазвание);
-                                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                            + " editTextRowКликПоШабка " + viewtextRowКликПоШабка + " ДнейНазвание " + ДнейНазвание);
-                                }
-                                // TODO: 16.04.2023  END LOOP d31
-                                if (ДнейНазвание.equalsIgnoreCase("d31")) {
-                                   // break;
                                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -2413,52 +2384,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
             }
-            // TODO: 08.11.2022 КЛИК ПО ФИО
-            private void МетодаКликаTableRowФИО(TableRow tableRowКликПоДАнными) {
-                try{
-                        TextView editTextRowКликПоФио=(TextView) tableRowКликПоДАнными.findViewById(R.id.RowКонтейнерКудаЗагружаетьсяФИО);
-                        if (editTextRowКликПоФио!=null) {
-                            editTextRowКликПоФио.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Bundle bundleПереходДетализацию=(Bundle) v.getTag();
-                                    if (bundleПереходДетализацию != null) {
-                                    }
-                                    Toast.makeText(activity, "onClick МетодаКликаTableRowФИО ", Toast.LENGTH_SHORT).show();
-                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                            + " v "+v );
-                                }
-                            });
-                            editTextRowКликПоФио.setOnLongClickListener(new View.OnLongClickListener() {
-                                @Override
-                                public boolean onLongClick(View v) {
-                                    Bundle bundleПереходДетализацию=(Bundle) v.getTag();
-                                    if (bundleПереходДетализацию != null) {
-                                    }
-                                    Toast.makeText(activity, " onLongClick МетодаКликаTableRowФИО ", Toast.LENGTH_SHORT).show();
-                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                            + " v "+v );
-                                    return false;
-                                }
-                            });
-                        }
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(getApplicationContext().getClass().getName(),
-                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
-            }
+
             @Override
             public long getItemId(int position) {
                 // TODO: 04.03.2022
@@ -2767,8 +2693,73 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             }
 
         }
-
+        private void МетодЗаполняемФИОRow(  ) {
+            try {
+                TextViewФИОПрофессия.startAnimation(animationПрофессия400) ;
+                TextViewФИОПрофессия.setVisibility(View.VISIBLE);
+                TextViewФИОПрофессия.setText("Новая Должность NEW  !!! ");
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cursor  " +cursor+ "TextViewФИОПрофессия " +TextViewФИОПрофессия);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getApplicationContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+        // TODO: 08.11.2022 КЛИК ПО ФИО
+        private void МетодаКликаTableRowФИО() {
+            try{
+                TextViewФИОПрофессия.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundleПереходДетализацию=(Bundle) v.getTag();
+                        if (bundleПереходДетализацию != null) {
+                        }
+                        Toast.makeText(activity, "onClick МетодаКликаTableRowФИО ", Toast.LENGTH_SHORT).show();
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                + " v "+v );
+                    }
+                });
+                TextViewФИОПрофессия.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        Bundle bundleПереходДетализацию=(Bundle) v.getTag();
+                        if (bundleПереходДетализацию != null) {
+                        }
+                        Toast.makeText(activity, " onLongClick МетодаКликаTableRowФИО ", Toast.LENGTH_SHORT).show();
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                + " v "+v );
+                        return true;
+                    }
+                });
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getApplicationContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
     }//TODO КОНЕЦ КЛАССА визуального оформление Recycreview
+
+
+
+
+
 class SubClassGetCursor{
     Cursor          cursor = null;
     String  СамЗапрос;
