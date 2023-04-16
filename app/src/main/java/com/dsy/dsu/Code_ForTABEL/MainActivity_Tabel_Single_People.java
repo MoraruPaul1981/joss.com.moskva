@@ -258,7 +258,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
                     subClassSingleTabelRecycreView.МетодИнициализацииRecycreView();
 
-                 Cursor cursor=   subClassSingleTabelRecycreView.МетодЗаполениеRecycleView( );
+         Cursor   cursor =    new SubClassGetCursor().МетодSwipesКурсор();
+
+                   subClassSingleTabelRecycreView.МетодЗаполениеRecycleView( cursor);
 
                     subClassSingleTabelRecycreView. методДляSimpeCallbacks(cursor);
 
@@ -1573,10 +1575,8 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
 
         // TODO: 04.03.2022 прозвомжность Заполения RecycleView
-        Cursor МетодЗаполениеRecycleView( ) {
-            Cursor cursor = null;
+        void МетодЗаполениеRecycleView( @NonNull Cursor   cursor) {
             try {
-            cursor =    new SubClassGetCursor().МетодSwipesКурсор();
                 // remove item from adapter
                 myRecycleViewAdapter = new  MyRecycleViewAdapter(cursor );
                 recyclerView.setAdapter(myRecycleViewAdapter);
@@ -1594,7 +1594,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
-            return  cursor;
         }
 
 
@@ -1602,8 +1601,8 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
         protected class MyViewHolder extends RecyclerView.ViewHolder {
             private TableLayout TableLayoutSingleTabel;
             private   TableRow rowФИО;
-            private CopyOnWriteArrayList<TableRow> rowName =new CopyOnWriteArrayList<>();
-            private CopyOnWriteArrayList<TableRow> rowData=new CopyOnWriteArrayList<>();
+            private  TableRow rowName ;
+            private  TableRow rowData;
             public MyViewHolder(@NonNull View itemView ) {
                 super(itemView);
                 try {
@@ -1625,27 +1624,12 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             private void МетодИнициализацииRecycreViewSingleTabel(@NonNull View itemView) {
                 try {
                     // TODO: 04.04.2023  Иниуциализация Комепонетов
-                    TableLayoutSingleTabel = itemView.findViewById(R.id.TableLayoutSingleTabel);
+                    TableLayoutSingleTabel = itemView.findViewById(R.id.TableLayoutSingleTabelOneRow);
                     rowФИО = (TableRow)  TableLayoutSingleTabel.findViewById(R.id.TableRowsFIO);
                     // TODO: 04.04.2023   NAME
-                    rowName.add(TableLayoutSingleTabel.findViewById(R.id.TableRow1Name));
-                    rowName.add(TableLayoutSingleTabel.findViewById(R.id.TableRow2Name));
-                    rowName.add(TableLayoutSingleTabel.findViewById(R.id.TableRow2Name));
-                    rowName.add(TableLayoutSingleTabel.findViewById(R.id.TableRow3Name));
-                    rowName.add(TableLayoutSingleTabel.findViewById(R.id.TableRow4Name));
-                    rowName.add(TableLayoutSingleTabel.findViewById(R.id.TableRow5Name));
-                    rowName.add(TableLayoutSingleTabel.findViewById(R.id.TableRow6Name));
-                    rowName.add(TableLayoutSingleTabel.findViewById(R.id.TableRow7Name));
-                    rowName.add(TableLayoutSingleTabel.findViewById(R.id.TableRow8Name));
+                    rowName= (TableRow) TableLayoutSingleTabel.findViewById(R.id.TableRow1Name);
                     // TODO: 04.04.2023   Data
-                    rowData.add(TableLayoutSingleTabel.findViewById(R.id.TableData1Row));
-                    rowData.add(TableLayoutSingleTabel.findViewById(R.id.TableData2Row));
-                    rowData.add(TableLayoutSingleTabel.findViewById(R.id.TableData3Row));
-                    rowData.add(TableLayoutSingleTabel.findViewById(R.id.TableData4Row));
-                    rowData.add(TableLayoutSingleTabel.findViewById(R.id.TableData5Row));
-                    rowData.add(TableLayoutSingleTabel.findViewById(R.id.TableData6Row));
-                    rowData.add(TableLayoutSingleTabel.findViewById(R.id.TableData7Row));
-                    rowData.add(TableLayoutSingleTabel.findViewById(R.id.TableData8Row));
+                    rowData= (TableRow) TableLayoutSingleTabel.findViewById(R.id.TableData1Row);
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" TableLayoutSingleTabel   " + TableLayoutSingleTabel+
@@ -1670,6 +1654,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
                 if ( cursor!=null) {
                     if (cursor.getCount() > 0 ) {
+                        // TODO: 16.04.2023  празники и авходные
                         ДниВыходные=методВсеДниЧерезКалендарь();
                     }
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1983,13 +1968,14 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 try {
                         //ListIterator<TableRow> listIterator = holder.rowData.listIterator();
                             // TODO: 06.04.2023
-                            TableRow tableRowДАнные = holder.rowData.get(holder.getLayoutPosition());
+                    Integer  ИндексСтрочкиOffSet = getИндексСтрочкиДней(holder);
+                            TableRow tableRowДАнные = holder.rowData;
                             for (int ИндексСтрочкиДней = 0; ИндексСтрочкиДней < tableRowДАнные.getChildCount(); ИндексСтрочкиДней++) {
                                 // TODO: 06.04.2023  СОДЕРДИМОЕ ROW
                                 EditText editTextRowКликПоДАнными = (EditText) tableRowДАнные.getChildAt(ИндексСтрочкиДней);
                                // String ДнейСодержимое =            Optional.ofNullable(editTextRowКликПоДАнными.getHint()).map(Objects::toString).orElse("");
-                                ИндексСтрочкиДней=ИндексСтрочкиДней+1;
-                                String ДнейСодержимое =            "d"+ИндексСтрочкиДней;
+                                Integer ИндексСтрочкиДнейФинал= ИндексСтрочкиДней+ИндексСтрочкиOffSet;
+                                String ДнейСодержимое =            "d"+ИндексСтрочкиДнейФинал;
                                 // TODO: 06.04.2023  НАЗВАНИЕ ROW
                                 if (editTextRowКликПоДАнными != null) {
                                     // TODO: 05.04.2023  ЗАПОЛЯНИЕМ ДНЯМИ ROW 1
@@ -2019,18 +2005,49 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 }
             }
 
+            private int getИндексСтрочкиДней(@NonNull MyViewHolder holder) {
+                Integer ИндексСтрочкиДней=0;
+                try {
+                switch (holder.getLayoutPosition()){
+                    case 0:
+                            ИндексСтрочкиДней =   1;
+                        break;
+                    case 1:
+                            ИндексСтрочкиДней =  5;
+                        break;
+                    case 2:
+                            ИндексСтрочкиДней =   10;
+                        break;
+                    case 3:
+                            ИндексСтрочкиДней =  15;
+                        break;
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getApplicationContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+                return ИндексСтрочкиДней;
+            }
+
             private void МетодЗаполняеШабкаTableRow(@NonNull Cursor cursor,
                                                  @NonNull  MyViewHolder holder) {
                 try {
                         //ListIterator<TableRow> listIterator = holder.rowName.listIterator();
                             // TODO: 06.04.2023
-                            TableRow tableRowШабка = holder.rowName.get(holder.getLayoutPosition());
+                    Integer  ИндексСтрочкиOffSet = getИндексСтрочкиДней(holder);
+                            TableRow tableRowШабка = holder.rowName;
                             for (int ИндексСтрочкиДней = 0; ИндексСтрочкиДней < tableRowШабка.getChildCount(); ИндексСтрочкиДней++) {
                                 // TODO: 06.04.2023  СОДЕРДИМОЕ ROW
                                 TextView viewtextRowКликПоШабка = (TextView) tableRowШабка.getChildAt(ИндексСтрочкиДней);
                                 //String ДнейНазвание = Optional.ofNullable(viewtextRowКликПоШабка.getHint()).map(Objects::toString).orElse("");
-                                ИндексСтрочкиДней=ИндексСтрочкиДней+1;
-                                String ДнейНазвание =            "d"+ИндексСтрочкиДней;
+                                Integer ИндексСтрочкиДнейФинал= ИндексСтрочкиДней+ИндексСтрочкиOffSet;
+                                String ДнейНазвание =            "d"+ИндексСтрочкиДнейФинал;
                                 // TODO: 06.04.2023  НАЗВАНИЕ ROW
                                 if (viewtextRowКликПоШабка != null) {
                                     // TODO: 06.04.2023 Названия
@@ -2060,10 +2077,10 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                                         @NonNull String НазваниеДляДень) {
                 try {
                         String День = Optional.ofNullable(cursor.getString(cursor.getColumnIndex(НазваниеДляДень))).orElse("0");
-                        Long uuid = Optional.ofNullable(cursor.getLong(cursor.getColumnIndex("uuid"))).orElse(0l);
+                    CurrenrsСhildUUID= Optional.ofNullable(cursor.getLong(cursor.getColumnIndex("uuid"))).orElse(0l);
                         Bundle dataRowData = new Bundle();
                         dataRowData.putString("ЗначениеДня", День);
-                        dataRowData.putLong("uuid", uuid);
+                        dataRowData.putLong("uuid", CurrenrsСhildUUID);
                         dataRowData.putString("День", НазваниеДляДень);
                     // TODO: 13.04.2023  дополнительные
                     dataRowData.putLong("MainParentUUID", MainParentUUID);
@@ -2724,7 +2741,7 @@ class SubClassGetCursor{
     protected Cursor МетодSwipesКурсор() {
         try{
             СамЗапрос=" SELECT  *   FROM viewtabel AS t" +
-                    " WHERE t.cfo=? AND t.month_tabels  =?  AND t.year_tabels = ?  AND t.status_send !=?  AND t.fio IS NOT NULL  ORDER BY   t.date_update  " ;
+                    " WHERE t.cfo=? AND t.month_tabels  =?  AND t.year_tabels = ?  AND t.status_send !=?  AND t.fio IS NOT NULL  ORDER BY   t._id  " ;
             УсловияВыборки=new String[]{String.valueOf(DigitalNameCFO),
                     String.valueOf(  МЕсяцТабелей),
                     String.valueOf(   ГодТабелей),
