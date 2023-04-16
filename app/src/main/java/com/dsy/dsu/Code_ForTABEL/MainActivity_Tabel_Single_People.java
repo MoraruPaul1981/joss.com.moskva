@@ -1894,9 +1894,9 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 }
             }
 
-            private void МетодАнимации(@NonNull View v) {
+            private void МетодАнимации(@NonNull  TableRow tableRow) {
                 try {
-                      v.startAnimation(animationПрофессия300);
+                    tableRow.startAnimation(animationПрофессия300);
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cursor " +cursor +
@@ -2034,12 +2034,15 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 if (viewtextRowКликПоШабка != null) {
                                     // TODO: 06.04.2023 Названия
                                     методЗаполениеНазванияRowData(viewtextRowКликПоШабка, ДнейНазвание);
+                                    // TODO: 16.04.2023  анимация
                                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                             + " editTextRowКликПоШабка " + viewtextRowКликПоШабка + " ДнейНазвание " + ДнейНазвание);
                                 }
                             }
+                    // TODO: 11.04.2023  оформление вида
+                    МетодАнимации(tableRowШабка);
                         // TODO: 19.10.2022
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2111,8 +2114,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " ДниВыходные " +ДниВыходные);
-                            // TODO: 11.04.2023  оформление вида
-                            МетодАнимации(v);
                             // TODO: 11.04.2023 меняем Цвет и Убираем *** если празничные
 
 

@@ -174,7 +174,7 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/TextViewФИОПрофессия"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_margin="3dp"
         android:layout_span="4"
         android:background="#FFFFFF"
