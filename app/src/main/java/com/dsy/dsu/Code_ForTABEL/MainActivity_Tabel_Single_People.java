@@ -181,7 +181,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private RecyclerView recyclerView;
     private SubClassSingleTabelRecycreView. MyRecycleViewAdapter myRecycleViewAdapter;
     private SubClassSingleTabelRecycreView. MyViewHolder myViewHolder;
-    private  Integer Position =0;
+
+    private  Integer PositionCustomer =0;
     private  Cursor ГлавныйALLКурсорДанныеSwipes;
     private  String FullNameCFO = "";
     private  Integer ГодТабелей = 0;
@@ -342,7 +343,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             // TODO: 10.04.2023
             if (bundleИзMainActitivy_List_Tables!=null) {
                 MainParentUUID=    bundleИзMainActitivy_List_Tables.getLong("MainParentUUID", 0l);
-                Position=    bundleИзMainActitivy_List_Tables.getInt("Position", 0);
+                PositionCustomer=    bundleИзMainActitivy_List_Tables.getInt("Position", 0);
                 ГодТабелей=  bundleИзMainActitivy_List_Tables.getInt("ГодТабелей", 0);
                 МЕсяцТабелей=  bundleИзMainActitivy_List_Tables.getInt("МЕсяцТабелей",0);
                 DigitalNameCFO=   bundleИзMainActitivy_List_Tables.getInt("DigitalNameCFO", 0);
@@ -357,7 +358,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                     + " FullNameCFO "+FullNameCFO+ " CurrenrsСhildUUID " +CurrenrsСhildUUID
                     + " ГодТабелей " +ГодТабелей +" МЕсяцТабелей " +МЕсяцТабелей   + " DigitalNameCFO "+DigitalNameCFO+
-                    " Position " +Position+ " ИмесяцвИГодСразу " +ИмесяцвИГодСразу);
+                    " PositionCustomer " +PositionCustomer+ " ИмесяцвИГодСразу " +ИмесяцвИГодСразу);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -419,61 +420,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     }
 
-    private Cursor МетодSwipesКурсор() {
-        Cursor          cursor = null;
-        try{
-            //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
-            Bundle bundleГлавныйКурсорMultiДанныеSwipes= new Bundle();
-            bundleГлавныйКурсорMultiДанныеSwipes.putString("СамЗапрос"," SELECT  *   FROM viewtabel AS t" +
-                    " WHERE t.cfo=? AND t.month_tabels  =?  AND t.year_tabels = ?  AND t.status_send !=?  AND t.fio IS NOT NULL  ORDER BY   t.date_update  " );
-            bundleГлавныйКурсорMultiДанныеSwipes.putStringArray("УсловияВыборки" ,
-                    new String[]{String.valueOf(DigitalNameCFO),
-                            String.valueOf(  МЕсяцТабелей),
-                            String.valueOf(   ГодТабелей),
-                            String.valueOf(  "Удаленная") });
-            bundleГлавныйКурсорMultiДанныеSwipes.putString("Таблица","viewtabel");
-            cursor =      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleГлавныйКурсорMultiДанныеSwipes);
-            // TODO: 13.04.2023 делаем смещение по курсору
-            cursor.moveToPosition(Position);
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                    "  ГлавныйALLКурсорДанныеSwipes " + ГлавныйALLКурсорДанныеSwipes );
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-        return  cursor;
-    }
-    private Cursor МетодGetЧасыКурсор() {
-        Cursor          cursor = null;
-        try{
-            //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
-            Bundle bundleГлавныйКурсорMultiДанныеSwipes= new Bundle();
-            bundleГлавныйКурсорMultiДанныеSwipes.putString("СамЗапрос"," SELECT  *   FROM viewtabel AS t" +
-                    " WHERE t.uuid=?   AND t.status_send !=?  AND t.fio IS NOT NULL  ORDER BY   t.date_update  " );
-            bundleГлавныйКурсорMultiДанныеSwipes.putStringArray("УсловияВыборки" ,
-                    new String[]{String.valueOf(CurrenrsСhildUUID),
-                            String.valueOf(  "Удаленная") });
-            bundleГлавныйКурсорMultiДанныеSwipes.putString("Таблица","viewtabel");
-            cursor =      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleГлавныйКурсорMultiДанныеSwipes);
-            // TODO: 13.04.2023 делаем смещение по курсору
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                    "  ГлавныйALLКурсорДанныеSwipes " + ГлавныйALLКурсорДанныеSwipes );
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-        return  cursor;
-    }
+
+
 
     @Override
     protected void onStop() {
@@ -904,7 +852,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                     + " FullNameCFO " + FullNameCFO + " CurrenrsСhildUUID " + CurrenrsСhildUUID
                     + " ГодТабелей " + ГодТабелей + " МЕсяцТабелей " + МЕсяцТабелей + " DigitalNameCFO " + DigitalNameCFO +
-                    " Position " + Position + " ИмесяцвИГодСразу " + ИмесяцвИГодСразу+ " editTextЯчейка " +editTextЯчейка);
+                    " PositionCustomer " + PositionCustomer + " ИмесяцвИГодСразу " + ИмесяцвИГодСразу+ " editTextЯчейка " +editTextЯчейка);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -924,7 +872,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                 + " FullNameCFO "+FullNameCFO+ " CurrenrsСhildUUID " +CurrenrsСhildUUID
                 + " ГодТабелей " +ГодТабелей +" МЕсяцТабелей " +МЕсяцТабелей   + " DigitalNameCFO "+DigitalNameCFO+
-                " Position " +Position+ " ИмесяцвИГодСразу " +ИмесяцвИГодСразу + " bundleИзMainActitivy_List_Tables " +bundleИзMainActitivy_List_Tables);
+                " PositionCustomer " +PositionCustomer+ " ИмесяцвИГодСразу " +ИмесяцвИГодСразу + " bundleИзMainActitivy_List_Tables " +bundleИзMainActitivy_List_Tables);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -947,7 +895,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                     + " FullNameCFO "+FullNameCFO+ " CurrenrsСhildUUID " +CurrenrsСhildUUID
                     + " ГодТабелей " +ГодТабелей +" МЕсяцТабелей " +МЕсяцТабелей   + " DigitalNameCFO "+DigitalNameCFO+
-                    " Position " +Position+ " ИмесяцвИГодСразу " +ИмесяцвИГодСразу);
+                    " PositionCustomer " +PositionCustomer+ " ИмесяцвИГодСразу " +ИмесяцвИГодСразу);
             startActivity(Интент_ПереходаMainActivity_List_Peoples);
         } catch (Exception e) {
             e.printStackTrace();
@@ -1460,9 +1408,9 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         ProgressBarSingleTabel.setVisibility(View.VISIBLE);
                         message.getTarget().post(()->{
                     Integer posio= myViewHolder.getAbsoluteAdapterPosition();
-                        if (Position>0) {
-                            Position=Position-1;
-                            cursor.moveToPosition(Position);
+                        if (PositionCustomer>0) {
+                            PositionCustomer=PositionCustomer-1;
+                            cursor.moveToPosition(PositionCustomer);
                         }else {
                             cursor.moveToFirst();
                         }
@@ -1474,12 +1422,12 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         myRecycleViewAdapter.notifyDataSetChanged();
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"Position   " + Position+ " cursor " +cursor+
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
                                     " posio " +posio  + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
                         });
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"Position   " + Position+ " cursor " +cursor);
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getApplicationContext().getClass().getName(),
@@ -1520,9 +1468,9 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
                             message.getTarget().post(()->{
                                 Integer posio= myViewHolder.getAbsoluteAdapterPosition();
-                                if (Position<cursor.getCount()-1) {
-                                    Position=Position+1;
-                                    cursor.moveToPosition(Position);
+                                if (PositionCustomer<cursor.getCount()-1) {
+                                    PositionCustomer=PositionCustomer+1;
+                                    cursor.moveToPosition(PositionCustomer);
                                 }else {
                                     cursor.moveToLast();
                                 }
@@ -1534,7 +1482,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 myRecycleViewAdapter.notifyDataSetChanged();
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"Position   " + Position+ " cursor " +cursor+
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
                                         " posio " +posio  + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
                             });
 
@@ -1628,7 +1576,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
         Cursor МетодЗаполениеRecycleView( ) {
             Cursor cursor = null;
             try {
-            cursor =    МетодSwipesКурсор();
+            cursor =    new SubClassGetCursor().МетодSwipesКурсор();
                 // remove item from adapter
                 myRecycleViewAdapter = new  MyRecycleViewAdapter(cursor );
                 recyclerView.setAdapter(myRecycleViewAdapter);
@@ -1897,7 +1845,8 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 || Build.BRAND.toString().contains("samsung") ||Build.BRAND.toString().contains("galaxy") ) {
                             viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main_grid_for_tables_four_columns_samsung, parent, false);
                         }  else {
-                            viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm, parent, false);
+                           // viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm, parent, false);
+                            viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm_one_row, parent, false);
 
                         }
                     }else{
@@ -2032,16 +1981,17 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             private void МетодЗаполняемДаннымиTableRow(@NonNull Cursor cursor,
                                                  @NonNull  MyViewHolder holder) {
                 try {
-                        ListIterator<TableRow> listIterator = holder.rowData.listIterator();
-                        while (listIterator.hasNext()) {
+                        //ListIterator<TableRow> listIterator = holder.rowData.listIterator();
                             // TODO: 06.04.2023
-                            TableRow tableRowДАнные = listIterator.next();
+                            TableRow tableRowДАнные = holder.rowData.get(holder.getLayoutPosition());
                             for (int ИндексСтрочкиДней = 0; ИндексСтрочкиДней < tableRowДАнные.getChildCount(); ИндексСтрочкиДней++) {
                                 // TODO: 06.04.2023  СОДЕРДИМОЕ ROW
                                 EditText editTextRowКликПоДАнными = (EditText) tableRowДАнные.getChildAt(ИндексСтрочкиДней);
-                                String ДнейСодержимое =            Optional.ofNullable(editTextRowКликПоДАнными.getHint()).map(Objects::toString).orElse("");
+                               // String ДнейСодержимое =            Optional.ofNullable(editTextRowКликПоДАнными.getHint()).map(Objects::toString).orElse("");
+                                ИндексСтрочкиДней=ИндексСтрочкиДней+1;
+                                String ДнейСодержимое =            "d"+ИндексСтрочкиДней;
                                 // TODO: 06.04.2023  НАЗВАНИЕ ROW
-                                if (ДнейСодержимое != null) {
+                                if (editTextRowКликПоДАнными != null) {
                                     // TODO: 05.04.2023  ЗАПОЛЯНИЕМ ДНЯМИ ROW 1
                                     методЗаполениеСодеримомRowData(editTextRowКликПоДАнными, cursor, ДнейСодержимое);
                                     // TODO: 05.04.2023 Вешаем на Ячекку ДАнных Слушатель
@@ -2052,7 +2002,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                             + " editTextRowКликПоДАнными " + editTextRowКликПоДАнными + " ДнейСодержимое " + ДнейСодержимое);
                                 }
                             }
-                        }
+
                         // TODO: 19.10.2022
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2072,16 +2022,17 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             private void МетодЗаполняеШабкаTableRow(@NonNull Cursor cursor,
                                                  @NonNull  MyViewHolder holder) {
                 try {
-                        ListIterator<TableRow> listIterator = holder.rowName.listIterator();
-                        while (listIterator.hasNext()) {
+                        //ListIterator<TableRow> listIterator = holder.rowName.listIterator();
                             // TODO: 06.04.2023
-                            TableRow tableRowДАнные = listIterator.next();
-                            for (int ИндексСтрочкиДней = 0; ИндексСтрочкиДней < tableRowДАнные.getChildCount(); ИндексСтрочкиДней++) {
+                            TableRow tableRowШабка = holder.rowName.get(holder.getLayoutPosition());
+                            for (int ИндексСтрочкиДней = 0; ИндексСтрочкиДней < tableRowШабка.getChildCount(); ИндексСтрочкиДней++) {
                                 // TODO: 06.04.2023  СОДЕРДИМОЕ ROW
-                                TextView viewtextRowКликПоШабка = (TextView) tableRowДАнные.getChildAt(ИндексСтрочкиДней);
-                                String ДнейНазвание = Optional.ofNullable(viewtextRowКликПоШабка.getHint()).map(Objects::toString).orElse("");
+                                TextView viewtextRowКликПоШабка = (TextView) tableRowШабка.getChildAt(ИндексСтрочкиДней);
+                                //String ДнейНазвание = Optional.ofNullable(viewtextRowКликПоШабка.getHint()).map(Objects::toString).orElse("");
+                                ИндексСтрочкиДней=ИндексСтрочкиДней+1;
+                                String ДнейНазвание =            "d"+ИндексСтрочкиДней;
                                 // TODO: 06.04.2023  НАЗВАНИЕ ROW
-                                if (ДнейНазвание != null) {
+                                if (viewtextRowКликПоШабка != null) {
                                     // TODO: 06.04.2023 Названия
                                     методЗаполениеНазванияRowData(viewtextRowКликПоШабка, ДнейНазвание);
                                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -2090,7 +2041,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                             + " editTextRowКликПоШабка " + viewtextRowКликПоШабка + " ДнейНазвание " + ДнейНазвание);
                                 }
                             }
-                        }
                         // TODO: 19.10.2022
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2117,7 +2067,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         dataRowData.putString("День", НазваниеДляДень);
                     // TODO: 13.04.2023  дополнительные
                     dataRowData.putLong("MainParentUUID", MainParentUUID);
-                    dataRowData.putInt("Position", Position);
+                    dataRowData.putInt("Position", PositionCustomer);
                     dataRowData.putInt("ГодТабелей",   ГодТабелей);
                     dataRowData.putInt("МЕсяцТабелей", МЕсяцТабелей);
                     dataRowData.putInt("DigitalNameCFO", DigitalNameCFO);
@@ -2152,7 +2102,8 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " s.trim() " +s.trim() + "  ДниВыходные.get(s.trim()) " + ДниВыходные.get(s.trim()));
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " s.trim() " +s.trim() + "  ДниВыходные.get(s.trim()) "
+                            + ДниВыходные.get(s.trim()));
                     
                     TextViewRowКликПоНазваниям.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
                         @Override
@@ -2305,7 +2256,39 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
                          // TODO: 14.04.2023 пересчитываем часы
                          message.getTarget().post(()->{
-                             Cursor    cursorДляЧасов =    МетодGetЧасыКурсор();
+
+
+
+                          class  SubClassGetCursorЧасы extends SubClassGetCursor {
+                              @Override
+                              protected Cursor МетодSwipesКурсор() {
+                                  try{
+                                   СамЗапрос=" SELECT  *   FROM viewtabel AS t" +
+                                          " WHERE t.uuid=?   AND t.status_send !=?  AND t.fio IS NOT NULL  ORDER BY   t.date_update  " ;
+                                 УсловияВыборки=new String[]{ String.valueOf(CurrenrsСhildUUID),
+                                          String.valueOf(  "Удаленная")};
+                                  //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
+                                  Bundle bundleГлавныйКурсорMultiДанныеSwipes= new Bundle();
+                                  bundleГлавныйКурсорMultiДанныеSwipes.putString("СамЗапрос",СамЗапрос);
+                                  bundleГлавныйКурсорMultiДанныеSwipes.putStringArray("УсловияВыборки" ,УсловияВыборки);
+                                  bundleГлавныйКурсорMultiДанныеSwipes.putString("Таблица","viewtabel");
+                                  cursor =      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleГлавныйКурсорMultiДанныеSwipes);
+                                  // TODO: 13.04.2023 делаем смещение по курсору
+                                  Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                          " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                          " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                                          "  ГлавныйALLКурсорДанныеSwipes " + ГлавныйALLКурсорДанныеSwipes );
+                              } catch (Exception e) {
+                                  e.printStackTrace();
+                                  Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                          " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                  new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                          Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                              }
+                               return  cursor;
+                              }
+                          }
+                             Cursor    cursorДляЧасов =  new SubClassGetCursorЧасы().МетодSwipesКурсор();
                              // TODO: 14.04.2023 пересчитываем часы
                              методСчитаемЧасы(cursorДляЧасов);
                              МетодПерегрузкаЧасыSingletabel();
@@ -2432,7 +2415,8 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             }
             @Override
             public int getItemCount() {
-                int КоличесвоСтрок = 1;
+                //int КоличесвоСтрок = 1;
+                int КоличесвоСтрок =4;
                 try {
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2733,7 +2717,41 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
         }
 
     }//TODO КОНЕЦ КЛАССА визуального оформление Recycreview
+class SubClassGetCursor{
+    Cursor          cursor = null;
+    String  СамЗапрос;
+    String[] УсловияВыборки;
+    protected Cursor МетодSwipesКурсор() {
+        try{
+            СамЗапрос=" SELECT  *   FROM viewtabel AS t" +
+                    " WHERE t.cfo=? AND t.month_tabels  =?  AND t.year_tabels = ?  AND t.status_send !=?  AND t.fio IS NOT NULL  ORDER BY   t.date_update  " ;
+            УсловияВыборки=new String[]{String.valueOf(DigitalNameCFO),
+                    String.valueOf(  МЕсяцТабелей),
+                    String.valueOf(   ГодТабелей),
+                    String.valueOf(  "Удаленная") };
+            //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
+            Bundle bundleГлавныйКурсорMultiДанныеSwipes= new Bundle();
+            bundleГлавныйКурсорMultiДанныеSwipes.putString("СамЗапрос",СамЗапрос);
+            bundleГлавныйКурсорMultiДанныеSwipes.putStringArray("УсловияВыборки" ,УсловияВыборки);
+            bundleГлавныйКурсорMultiДанныеSwipes.putString("Таблица","viewtabel");
+            cursor =      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleГлавныйКурсорMultiДанныеSwipes);
+            // TODO: 13.04.2023 делаем смещение по курсору
+            cursor.moveToPosition(PositionCustomer);
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                    "  ГлавныйALLКурсорДанныеSwipes " + ГлавныйALLКурсорДанныеSwipes );
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        return  cursor;
+    }
 
+}
 }
 
 
