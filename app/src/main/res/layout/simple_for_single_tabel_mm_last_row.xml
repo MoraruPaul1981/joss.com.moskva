@@ -49,39 +49,7 @@
 
 
 
-    <TableRow android:id="@+id/TableRowsFIO"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="2dp"
-        android:gravity="center_vertical|center_horizontal">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/RowКонтейнерКудаЗагружаетьсяФИО"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="3dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_span="4"
-            android:background="#FFFFFF"
-            android:foregroundGravity="center"
-            android:gravity="center_vertical|center_horizontal"
-            android:hint="ФИО+Профессия"
-            android:minWidth="100dp"
-            android:minHeight="35dp"
-            android:textAlignment="gravity"
-            android:textColor="#000000"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:visibility="visible"
-            app:cardCornerRadius="15dp"
-            app:cardElevation="5dp"
-            android:padding="2dp"
-            app:strokeColor="#F5FFFA" />
-    </TableRow>
 
     <TableRow android:id="@+id/TableOneRowLine"
         android:layout_width="match_parent"
