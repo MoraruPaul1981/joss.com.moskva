@@ -276,7 +276,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             // TODO: 16.04.2023 Професии Професии Професии Професии
             // TODO: 04.04.2023  ФИО
-            subClassSingleTabelRecycreView.   МетодЗаполняемФИОRow();
+            subClassSingleTabelRecycreView.   МетодЗаполняемФИОRow(cursor);
             // TODO: 04.04.20223 КЛИК ПО ДАННЫМ
             subClassSingleTabelRecycreView.     МетодаКликаTableRowФИО( );
 
@@ -2586,14 +2586,39 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             }
 
         }
-        private void МетодЗаполняемФИОRow(  ) {
+        private void МетодЗаполняемФИОRow( @NonNull  Cursor   cursor  ) {
             try {
+                // TODO: 16.04.2023  посик по ФИО
+                Integer ПрофессияИзФИо = cursor.getInt(cursor.getColumnIndex("fio_prof"));
+                // TODO: 16.04.2023  посик по Data_Tabels
+                Integer ПрофессияИзDatatabels = cursor.getInt(cursor.getColumnIndex("dt_prof"));
+                //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
+                Bundle bundleTabelViewПосикПрофессия= new Bundle();
+                bundleTabelViewПосикПрофессия.putString("СамЗапрос","  SELECT name FROM  prof WHERE _id=? ");
+                if (ПрофессияИзDatatabels>0) {
+                    bundleTabelViewПосикПрофессия.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(ПрофессияИзDatatabels)});
+                } else {
+                    bundleTabelViewПосикПрофессия.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(ПрофессияИзФИо)});
+                }
+                bundleTabelViewПосикПрофессия.putString("Таблица","prof");
+                Cursor    КурсорПрофессия=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleTabelViewПосикПрофессия);
+                Log.d(this.getClass().getName(), " КурсорПрофессия" + КурсорПрофессия);
+                if (КурсорПрофессия.getCount()>0) {
+                        String Профессия = КурсорПрофессия.getString(КурсорПрофессия.getColumnIndex("name"));
+                    if ( Профессия!=null && Профессия.length()> 0) {
+                        TextViewФИОПрофессия.setText(ФИО.trim()+"("+Профессия+")");
+                    }else {
+                        TextViewФИОПрофессия.setText(ФИО.trim() + "(Должность)");
+                    }
+                }
+
                 TextViewФИОПрофессия.startAnimation(animationПрофессия400) ;
-                TextViewФИОПрофессия.setVisibility(View.VISIBLE);
-                TextViewФИОПрофессия.setText("Новая Должность NEW  !!! ");
+                // TODO: 16.04.2023  close
+                КурсорПрофессия.close();
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cursor  " +cursor+ "TextViewФИОПрофессия " +TextViewФИОПрофессия);
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cursor  "
+                        +cursor+ "TextViewФИОПрофессия " +TextViewФИОПрофессия);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getApplicationContext().getClass().getName(),
