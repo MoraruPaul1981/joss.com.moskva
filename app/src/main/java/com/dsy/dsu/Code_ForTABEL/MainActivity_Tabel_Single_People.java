@@ -275,7 +275,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             subClassSingleTabelRecycreView.МетодСлушательRecycleView();
 
-
+            Scrollviewsingletabel.pageScroll(View.FOCUS_UP);
 
 
 
@@ -1679,7 +1679,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                         МетодЗаполняемДаннымиRecycreViewSingleTable(holder, cursor);
                                         Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
                                         // TODO: 14.04.2023 ЧАСЫ
-                                        методСчитаемЧасы(cursor);
+                                     //   методСчитаемЧасы(cursor);
                                         // TODO: 07.04.2023 переопрелделния Вида Табеля
                                         МетодПерегрузкаSingletabel();
                                         Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
@@ -1712,7 +1712,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     },500);
                         recyclerView.requestLayout();
                         recyclerView.refreshDrawableState();
-                        Scrollviewsingletabel.pageScroll(View.FOCUS_UP);
                         Scrollviewsingletabel.refreshDrawableState();
                         TextViewФИОиЧасыСотрудника.refreshDrawableState();
                         TextViewФИОиЧасыСотрудника.requestLayout();
@@ -1832,6 +1831,13 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         }  else {
                           // viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm, parent, false);
                             viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm_one_row, parent, false);
+            if (myViewHolder!=null) {
+                switch (myViewHolder.getAbsoluteAdapterPosition()){
+                    case 7:
+                        viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm_last_row, parent, false);
+                        break;
+                }
+            }
 
                         }
                     }else{
@@ -1845,7 +1851,8 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     myViewHolder = new  MyViewHolder(viewSingleTabel);
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+  "myViewHolder " +myViewHolder);
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+  "myViewHolder " +myViewHolder+
+                            myViewHolder.getLayoutPosition()+ myViewHolder.getAbsoluteAdapterPosition());
                 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -1989,7 +1996,11 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 }
                                 // TODO: 16.04.2023  END LOOP d31
                                 if(ДнейСодержимое.equalsIgnoreCase("d31")){
-                                    break;
+                                    //break;
+                                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                            + " editTextRowКликПоДАнными " + editTextRowКликПоДАнными + " ДнейСодержимое " + ДнейСодержимое);
                                 }
                             }
 
@@ -2076,7 +2087,11 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 }
                                 // TODO: 16.04.2023  END LOOP d31
                                 if (ДнейНазвание.equalsIgnoreCase("d31")) {
-                                    break;
+                                   // break;
+                                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                            + " editTextRowКликПоШабка " + viewtextRowКликПоШабка + " ДнейНазвание " + ДнейНазвание);
                                 }
                             }
                         // TODO: 19.10.2022
