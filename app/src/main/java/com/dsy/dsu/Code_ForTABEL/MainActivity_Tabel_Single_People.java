@@ -1830,7 +1830,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 || Build.BRAND.toString().contains("samsung") ||Build.BRAND.toString().contains("galaxy") ) {
                             viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main_grid_for_tables_four_columns_samsung, parent, false);
                         }  else {
-                           // viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm, parent, false);
+                          // viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm, parent, false);
                             viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm_one_row, parent, false);
 
                         }
@@ -1987,6 +1987,10 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                             + " editTextRowКликПоДАнными " + editTextRowКликПоДАнными + " ДнейСодержимое " + ДнейСодержимое);
                                 }
+                                // TODO: 16.04.2023  END LOOP d31
+                                if(ДнейСодержимое.equalsIgnoreCase("d31")){
+                                    break;
+                                }
                             }
 
                         // TODO: 19.10.2022
@@ -2016,11 +2020,24 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                             ИндексСтрочкиДней =  5;
                         break;
                     case 2:
-                            ИндексСтрочкиДней =   10;
+                            ИндексСтрочкиДней =   9;
                         break;
                     case 3:
-                            ИндексСтрочкиДней =  15;
+                            ИндексСтрочкиДней =  13;
                         break;
+                    case 4:
+                        ИндексСтрочкиДней =  17;
+                        break;
+                    case 5:
+                        ИндексСтрочкиДней =  21;
+                        break;
+                    case 6:
+                        ИндексСтрочкиДней =  25;
+                        break;
+                    case 7:
+                        ИндексСтрочкиДней =  29;
+                        break;
+
 
                 }
             } catch (Exception e) {
@@ -2046,8 +2063,8 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 // TODO: 06.04.2023  СОДЕРДИМОЕ ROW
                                 TextView viewtextRowКликПоШабка = (TextView) tableRowШабка.getChildAt(ИндексСтрочкиДней);
                                 //String ДнейНазвание = Optional.ofNullable(viewtextRowКликПоШабка.getHint()).map(Objects::toString).orElse("");
-                                Integer ИндексСтрочкиДнейФинал= ИндексСтрочкиДней+ИндексСтрочкиOffSet;
-                                String ДнейНазвание =            "d"+ИндексСтрочкиДнейФинал;
+                                Integer ИндексСтрочкиДнейФинал = ИндексСтрочкиДней + ИндексСтрочкиOffSet;
+                                String ДнейНазвание = "d" + ИндексСтрочкиДнейФинал;
                                 // TODO: 06.04.2023  НАЗВАНИЕ ROW
                                 if (viewtextRowКликПоШабка != null) {
                                     // TODO: 06.04.2023 Названия
@@ -2056,6 +2073,10 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                             + " editTextRowКликПоШабка " + viewtextRowКликПоШабка + " ДнейНазвание " + ДнейНазвание);
+                                }
+                                // TODO: 16.04.2023  END LOOP d31
+                                if (ДнейНазвание.equalsIgnoreCase("d31")) {
+                                    break;
                                 }
                             }
                         // TODO: 19.10.2022
@@ -2433,7 +2454,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             @Override
             public int getItemCount() {
                 //int КоличесвоСтрок = 1;
-                int КоличесвоСтрок =4;
+                int КоличесвоСтрок =8;
                 try {
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
