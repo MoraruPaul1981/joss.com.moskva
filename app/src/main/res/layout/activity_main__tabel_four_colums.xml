@@ -168,6 +168,12 @@
         app:layout_constraintTop_toBottomOf="@id/textView3СловоТабель"
         tools:visibility="visible" />
 
+
+
+
+
+
+
     <ScrollView
         android:id="@+id/scrollviewsingletabel"
         android:layout_width="match_parent"

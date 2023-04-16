@@ -1372,7 +1372,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                recyclerView.addItemDecoration(dividerItemDecoration);
                 recyclerView.setLayoutManager(staggeredGridLayoutManager);
                recyclerView.setHasFixedSize(true);
-                recyclerView.startAnimation(animationПрофессия400);
                 staggeredGridLayoutManager.    invalidateSpanAssignments();
                 staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1834,7 +1833,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             if (myViewHolder!=null) {
                 switch (myViewHolder.getAbsoluteAdapterPosition()){
                     case 6:
-                    case 7:
                         viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm_last_row, parent, false);
                         break;
                 }
