@@ -272,12 +272,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             // TODO: 14.04.2023 доделываем single tabel
             subClassSingleTabelRecycreView.МетодСлушательRecycleView();
 
-
-
             // TODO: 16.04.2023 Професии Професии Професии Професии
-            // TODO: 04.04.2023  ФИО
-            subClassSingleTabelRecycreView.   МетодЗаполняемФИОRow(cursor);
-            // TODO: 04.04.20223 КЛИК ПО ДАННЫМ
             subClassSingleTabelRecycreView.     МетодаКликаTableRowФИО( );
 
 
@@ -1760,6 +1755,8 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     case 0:
                         // TODO: 14.04.2023 ЧАСЫ
                          методСчитаемЧасы(cursor);
+                        // TODO: 04.04.2023  ФИО
+                          МетодЗаполняемФИОRow(cursor);
                         break;
                 }
             }
@@ -2606,15 +2603,12 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 if (КурсорПрофессия.getCount()>0) {
                         String Профессия = КурсорПрофессия.getString(КурсорПрофессия.getColumnIndex("name"));
                     if ( Профессия!=null && Профессия.length()> 0) {
-                        TextViewФИОПрофессия.setText(ФИО.trim()+"("+Профессия+")");
-                    }else {
-                        TextViewФИОПрофессия.setText(ФИО.trim() + "(Должность)");
+                        TextViewФИОПрофессия.setText(ФИО.trim()+ "\n"+"("+Профессия.trim()+")");
                     }
+                }else {
+                    TextViewФИОПрофессия.setText(ФИО.trim() + "\n"+ "(Должность)");
                 }
-
                 TextViewФИОПрофессия.startAnimation(animationПрофессия400) ;
-                // TODO: 16.04.2023  close
-                КурсорПрофессия.close();
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cursor  "
