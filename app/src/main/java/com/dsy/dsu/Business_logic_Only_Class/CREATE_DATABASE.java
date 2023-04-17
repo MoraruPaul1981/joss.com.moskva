@@ -113,12 +113,14 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'templates'");//test
         ССылкаНаСозданнуюБазу.execSQL("Create table if not exists    templates  (" +
                 "id  INTEGER PRIMARY KEY ," +
-                " name_templates TEXT  ," +
+                " name_templates TEXT NOT NULL ," +
                 " user_update INTEGER ,"+
                 " date_update NUMERIC,"+
                 " uuid  NUMERIC UNIQUE  ," +
                 " status_send  TEXT," +
-                "  current_table NUMERIC UNIQUE   ) ");
+                "  current_table NUMERIC UNIQUE ,"+
+                " UNIQUE (name_templates)   ) ");
+        Log.d(this.getClass().getName(), " сработала ... templates " +new Date().toGMTString());
     }
 
     private void МетодСозданииТаблицыДатаФорк(SQLiteDatabase ССылкаНаСозданнуюБазу) {

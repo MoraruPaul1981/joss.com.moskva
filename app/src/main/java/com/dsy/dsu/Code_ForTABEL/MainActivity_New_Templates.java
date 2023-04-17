@@ -34,6 +34,7 @@ import androidx.annotation.UiThread;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.loader.content.CursorLoader;
 
 import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
@@ -42,9 +43,11 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_UUID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Weekend_For_Tabels;
 import com.dsy.dsu.Business_logic_Only_Class.Class_MODEL_synchronized;
+import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassGetPublicId;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
+import com.dsy.dsu.Code_For_Services.Service_For_Public;
 import com.dsy.dsu.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -124,6 +127,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
     private ProgressDialog progressDialog ;
     private  FloatingActionButton КруглаяКнопкаСозданиеНовогоТабеля;
     private  Activity activity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try{
@@ -2157,6 +2161,20 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                     bundleFind_Templates.putString("FullNameCFO", FullNameCFO);
                     bundleFind_Templates.putString("ИмесяцвИГодСразу",    ИмесяцвИГодСразу);
                     bundleFind_Templates.putString("NameAddSelfTemplate",    view.getText().toString());
+
+
+                    String УжеСозданныейШаблон=view.getText().toString().trim();
+                    if(УжеСозданныейШаблон!=null && УжеСозданныейШаблон.length()>0){
+                        Bundle bundleПосикШаблона=new Bundle();
+                        bundleПосикШаблона.putString("СамЗапрос","  SELECT  uuid   FROM  templates WHERE name_templates  =?"+";");
+                        bundleПосикШаблона.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(УжеСозданныейШаблон)});
+                        bundleПосикШаблона.putString("Таблица","templates");
+                        Cursor КурсорПосикШаблона=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(getApplicationContext(), bundleПосикШаблона);
+                        if(КурсорПосикШаблона.getCount()>0){
+                          Long  CurrenrsYesCreateTemplates=   КурсорПосикШаблона.getLong(0);
+                            bundleFind_Templates.putLong("CurrenrsYesCreateTemplates",  CurrenrsYesCreateTemplates);
+                        }
+                    }
                     bundleFind_Templates.putLong("CurrenrsСhildUUID",  CurrenrsСhildUUID);
                     Интент_Find_Templates .putExtras(bundleFind_Templates);
                     startActivity( Интент_Find_Templates );
