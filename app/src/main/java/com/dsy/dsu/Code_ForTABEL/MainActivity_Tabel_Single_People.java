@@ -272,8 +272,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             // TODO: 14.04.2023 доделываем single tabel
             subClassSingleTabelRecycreView.МетодСлушательRecycleView();
 
-            // TODO: 16.04.2023 Професии Професии Професии Професии
-            subClassSingleTabelRecycreView.     МетодаКликаTableRowФИО( );
+
 
 
 
@@ -1757,6 +1756,8 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                          методСчитаемЧасы(cursor);
                         // TODO: 04.04.2023  ФИО
                           МетодЗаполняемФИОRow(cursor);
+                        // TODO: 16.04.2023 Професии Професии Професии Професии
+                        МетодаКликаTableRowФИО( );
                         break;
                 }
             }
@@ -2609,6 +2610,13 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     TextViewФИОПрофессия.setText(ФИО.trim() + "\n"+ "(Должность)");
                 }
                 TextViewФИОПрофессия.startAnimation(animationПрофессия400) ;
+                // TODO: 17.04.2023 Tag
+                bundleTabelViewПосикПрофессия.putString("ФИО",ФИО);
+                bundleTabelViewПосикПрофессия.putString("Профессия",Профессия);
+                bundleTabelViewПосикПрофессия.putInt("ПрофессияИзDatatabels",ПрофессияИзDatatabels);
+                bundleTabelViewПосикПрофессия.putInt("ПрофессияИзФИо",ПрофессияИзФИо);
+                TextViewФИОПрофессия.setTag(bundleTabelViewПосикПрофессия);
+
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cursor  "
