@@ -1321,6 +1321,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                             cursor.moveToPosition(PositionCustomer);
                         }else {
                             cursor.moveToLast();
+                            PositionCustomer=cursor.getCount()-1;
                         }
                             CurrenrsСhildUUID=       cursor.getLong(cursor.getColumnIndex("uuid"));
                             CurrenrsSelectFio=       cursor.getLong(cursor.getColumnIndex("fio"));
@@ -1391,6 +1392,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                     cursor.moveToPosition(PositionCustomer);
                                 }else {
                                     cursor.moveToFirst();
+                                    PositionCustomer=0;
                                 }
                                 CurrenrsСhildUUID=       cursor.getLong(cursor.getColumnIndex("uuid"));
                                 CurrenrsSelectFio=       cursor.getLong(cursor.getColumnIndex("fio"));
