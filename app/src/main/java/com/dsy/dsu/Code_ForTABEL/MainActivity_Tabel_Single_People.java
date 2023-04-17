@@ -145,7 +145,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private Button КнопкаПраваяПередвиженияПоДанным;
     private  TextView TextViewФИОиЧасыСотрудника;
     private   int КоличествоДнейвЗагружаемойМесяце;
-    private boolean МыУжеВКодеУденияСотрудника=false;
+
     private  String ЛимитСоСмещениемДанных= "";
     private int ИндексДвижениеТабеляСкролл=0;
     private int ИндексДвижениеТабеляКнопки=0;
@@ -183,7 +183,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private SubClassSingleTabelRecycreView. MyViewHolder myViewHolder;
 
     private  Integer PositionCustomer =0;
-    private  Cursor ГлавныйALLКурсорДанныеSwipes;
+
     private  String FullNameCFO = "";
     private  Integer ГодТабелей = 0;
     private  String ИмесяцвИГодСразу = "";
@@ -974,7 +974,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                                         Integer ПолучаемIDПрофессии=      bundle.getInt("ПолучаемIDПрофессии",0);
                                                         String НазваниеПрофесии=   bundle.getString("НазваниеПрофесии","");
                                                         Long UUIDПрофесиии =   bundle.getLong("UUIDПрофесиии",0l);
-                                                        Long РодительскийUUDТаблицыТабель =   bundle.getLong("CurrenrsСhildUUID",0l);
+                                                        Long CurrenrsСhildUUID =   bundle.getLong("CurrenrsСhildUUID",0l);
                                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -1064,14 +1064,8 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 searchViewДляНовогоПоиска.refreshDrawableState();
                                 Integer ПровйдерСменаПрофесии=     МетодЗаписиСменыПрофесии( (SearchView)  searchViewДляНовогоПоиска,getApplicationContext());
                                 if (ПровйдерСменаПрофесии>0) {
-
-                                    // TODO: 30.03.2023 Курсор ALL Date
-                                     Integer ПолощениеДАнных=            ГлавныйALLКурсорДанныеSwipes.getPosition();
-                                    //МетодSwipeALLКурсор();
-                                         ГлавныйALLКурсорДанныеSwipes.moveToPosition(ПолощениеДАнных);
                                     // TODO: 29.03.2023 Методы ПОсле усМешного Смены Професиии
-                                    МетодПереопределенияНазваниеПрофесии();
-                                    МетодПерегрузкаВидаПрофесии();
+                                    МетодПерегрузкаВидаПрофесии(searchViewДляНовогоПоиска);
                                 }else {
                                     Toast.makeText(MainActivity_Tabel_Single_People.this, "Профессия не сменилась !!! ", Toast.LENGTH_SHORT).show();
                                 }
@@ -1231,29 +1225,21 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
     }
 
-    private void МетодПереопределенияНазваниеПрофесии() {
+
+
+
+    private void МетодПерегрузкаВидаПрофесии(@NonNull SearchView searchViewДляНовогоПоиска) {
         try {
-
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
-
-
-    private void МетодПерегрузкаВидаПрофесии() {
-        try {
+    Bundle bundleПослеУспешнойСменыПрофесии=   (Bundle)     searchViewДляНовогоПоиска.getTag();
+         String УспешнаяСменПрофессия=   bundleПослеУспешнойСменыПрофесии.getString("НазваниеПрофесии");
+            TextViewФИОПрофессия.setText(ФИО.trim() + "\n"+ УспешнаяСменПрофессия);
+        TextViewФИОПрофессия.startAnimation(animationПрофессия400) ;
             TextViewФИОиЧасыСотрудника.startAnimation(animationПрофессия400);
             TextViewФИОиЧасыСотрудника.refreshDrawableState();
             TextViewФИОиЧасыСотрудника.forceLayout();
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "  УспешнаяСменПрофессия " +УспешнаяСменПрофессия);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1755,7 +1741,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         // TODO: 14.04.2023 ЧАСЫ
                          методСчитаемЧасы(cursor);
                         // TODO: 04.04.2023  ФИО
-                          МетодЗаполняемФИОRow(cursor);
+                        new SubClassChanegeSetNameProffesio().    МетодЗаполняемФИОRow(cursor);
                         // TODO: 16.04.2023 Професии Професии Професии Професии
                         МетодаКликаTableRowФИО( );
                         break;
@@ -2190,8 +2176,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                   // TODO: 13.04.2023 делаем смещение по курсору
                                   Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                           " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                          " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                                          "  ГлавныйALLКурсорДанныеSwipes " + ГлавныйALLКурсорДанныеSwipes );
+                                          " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
                               } catch (Exception e) {
                                   e.printStackTrace();
                                   Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -2584,53 +2569,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             }
 
         }
-        private void МетодЗаполняемФИОRow( @NonNull  Cursor   cursor  ) {
-            try {
-                // TODO: 16.04.2023  посик по ФИО
-                Integer ПрофессияИзФИо = cursor.getInt(cursor.getColumnIndex("fio_prof"));
-                // TODO: 16.04.2023  посик по Data_Tabels
-                Integer ПрофессияИзDatatabels = cursor.getInt(cursor.getColumnIndex("dt_prof"));
-                //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
-                Bundle bundleTabelViewПосикПрофессия= new Bundle();
-                bundleTabelViewПосикПрофессия.putString("СамЗапрос","  SELECT name FROM  prof WHERE _id=? ");
-                if (ПрофессияИзDatatabels>0) {
-                    bundleTabelViewПосикПрофессия.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(ПрофессияИзDatatabels)});
-                } else {
-                    bundleTabelViewПосикПрофессия.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(ПрофессияИзФИо)});
-                }
-                bundleTabelViewПосикПрофессия.putString("Таблица","prof");
-                Cursor    КурсорПрофессия=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleTabelViewПосикПрофессия);
-                Log.d(this.getClass().getName(), " КурсорПрофессия" + КурсорПрофессия);
-                if (КурсорПрофессия.getCount()>0) {
-                        String Профессия = КурсорПрофессия.getString(КурсорПрофессия.getColumnIndex("name"));
-                    if ( Профессия!=null && Профессия.length()> 0) {
-                        TextViewФИОПрофессия.setText(ФИО.trim()+ "\n"+"("+Профессия.trim()+")");
-                    }
-                }else {
-                    TextViewФИОПрофессия.setText(ФИО.trim() + "\n"+ "(Должность)");
-                }
-                TextViewФИОПрофессия.startAnimation(animationПрофессия400) ;
-                // TODO: 17.04.2023 Tag
-                bundleTabelViewПосикПрофессия.putString("ФИО",ФИО);
-                bundleTabelViewПосикПрофессия.putString("Профессия",Профессия);
-                bundleTabelViewПосикПрофессия.putInt("ПрофессияИзDatatabels",ПрофессияИзDatatabels);
-                bundleTabelViewПосикПрофессия.putInt("ПрофессияИзФИо",ПрофессияИзФИо);
-                TextViewФИОПрофессия.setTag(bundleTabelViewПосикПрофессия);
 
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cursor  "
-                        +cursor+ "TextViewФИОПрофессия " +TextViewФИОПрофессия);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(getApplicationContext().getClass().getName(),
-                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
         // TODO: 08.11.2022 КЛИК ПО ФИО
         private void МетодаКликаTableRowФИО() {
             try{
@@ -2645,7 +2584,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                     TextViewФИОиЧасыСотрудника.setBackgroundColor(Color.WHITE);
                                 },2000);
                                 TextViewФИОиЧасыСотрудника.setBackgroundColor(Color.GRAY);
-                                if (МыУжеВКодеУденияСотрудника==false) {
                                     TextView TextViewФИОДляУдаление = (TextView) v;
                                     Log.d(this.getClass().getName(), " v " + v.getTag() + " TextViewФИОДляУдаление.getText() " + TextViewФИОДляУдаление.getText() +
                                             "  TextViewФИОДляУдаление.getTag() " +TextViewФИОДляУдаление.getTag());
@@ -2661,19 +2599,18 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                         String ФИОИнфо= КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("name"));
                                         String ДеньРОжденияИНФО= КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("BirthDate"));
                                         Long СНИЛСИНфо= КурсорТаблицаФИО.getLong(КурсорТаблицаФИО.getColumnIndex("snils"));
-                                        String ПрофессияИзФИо= КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("prof"));
+                                        String ПрофессияИзФИо= Optional.ofNullable(КурсорТаблицаФИО.getString(КурсорТаблицаФИО.getColumnIndex("prof"))).orElse("Должность");
                                         // TODO: 20.03.2023  ПОказываем Данные Для Обзора
                                         СообщениеИнформацияОСотруднике("Данные",  "ФИО: " +ФИОИнфо+
                                                 "\n"+"День рождения: " +ДеньРОжденияИНФО+
                                                 "\n"+"СНИЛС: " +СНИЛСИНфо+
-                                                "\n" +"Должость: " + "( "+Профессия.trim()+ " )");
+                                                "\n" +"Должость: " + "( "+ПрофессияИзФИо.trim()+ " )");
 
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                                 + " КурсорТаблицаФИО "+КурсорТаблицаФИО.getCount() );
                                     }
-                                }
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -2729,8 +2666,7 @@ class SubClassGetCursor{
             cursor.moveToPosition(PositionCustomer);
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                    "  ГлавныйALLКурсорДанныеSwipes " + ГлавныйALLКурсорДанныеSwipes );
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "cursor " +cursor );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -2741,6 +2677,58 @@ class SubClassGetCursor{
         return  cursor;
     }
 
+}
+
+class SubClassChanegeSetNameProffesio{
+
+
+    private void МетодЗаполняемФИОRow( @NonNull  Cursor   cursor  ) {
+        try {
+            // TODO: 16.04.2023  посик по ФИО
+            Integer ПрофессияИзФИо = cursor.getInt(cursor.getColumnIndex("fio_prof"));
+            // TODO: 16.04.2023  посик по Data_Tabels
+            Integer ПрофессияИзDatatabels = cursor.getInt(cursor.getColumnIndex("dt_prof"));
+            //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
+            Bundle bundleTabelViewПосикПрофессия= new Bundle();
+            bundleTabelViewПосикПрофессия.putString("СамЗапрос","  SELECT name FROM  prof WHERE _id=? ");
+            if (ПрофессияИзDatatabels>0) {
+                bundleTabelViewПосикПрофессия.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(ПрофессияИзDatatabels)});
+            } else {
+                bundleTabelViewПосикПрофессия.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(ПрофессияИзФИо)});
+            }
+            bundleTabelViewПосикПрофессия.putString("Таблица","prof");
+            Cursor    КурсорПрофессия=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleTabelViewПосикПрофессия);
+            Log.d(this.getClass().getName(), " КурсорПрофессия" + КурсорПрофессия);
+            if (КурсорПрофессия.getCount()>0) {
+                String Профессия = КурсорПрофессия.getString(КурсорПрофессия.getColumnIndex("name"));
+                if ( Профессия!=null && Профессия.length()> 0) {
+                    TextViewФИОПрофессия.setText(ФИО.trim()+ "\n"+"("+Профессия.trim()+")");
+                }
+            }else {
+                TextViewФИОПрофессия.setText(ФИО.trim() + "\n"+ "(Должность)");
+            }
+            TextViewФИОПрофессия.startAnimation(animationПрофессия400) ;
+            // TODO: 17.04.2023 Tag
+            bundleTabelViewПосикПрофессия.putString("ФИО",ФИО);
+            bundleTabelViewПосикПрофессия.putString("Профессия",Профессия);
+            bundleTabelViewПосикПрофессия.putInt("ПрофессияИзDatatabels",ПрофессияИзDatatabels);
+            bundleTabelViewПосикПрофессия.putInt("ПрофессияИзФИо",ПрофессияИзФИо);
+            TextViewФИОПрофессия.setTag(bundleTabelViewПосикПрофессия);
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cursor  "
+                    +cursor+ "TextViewФИОПрофессия " +TextViewФИОПрофессия);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(getApplicationContext().getClass().getName(),
+                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
 }
 }
 
