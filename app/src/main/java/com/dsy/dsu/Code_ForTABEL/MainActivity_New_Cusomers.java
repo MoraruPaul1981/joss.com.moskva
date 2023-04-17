@@ -63,6 +63,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.functions.Action;
+import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Predicate;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -432,14 +433,16 @@ public class MainActivity_New_Cusomers extends AppCompatActivity implements Date
         try{
             Intent ИнтентActivityNewCustomer = getIntent();
            Bundle bundleActivityNewCustomer =      ИнтентActivityNewCustomer.getExtras();
-            MainParentUUID=    bundleActivityNewCustomer.getLong("MainParentUUID", 0);
-            Position=    bundleActivityNewCustomer.getInt("Position", 0);
-            ГодТабелей=  bundleActivityNewCustomer.getInt("ГодТабелей", 0);
-            МЕсяцТабелей=  bundleActivityNewCustomer.getInt("МЕсяцТабелей",0);
-            DigitalNameCFO=   bundleActivityNewCustomer.getInt("DigitalNameCFO", 0);
-            FullNameCFO=  bundleActivityNewCustomer.getString("FullNameCFO", "");
-            ИмесяцвИГодСразу= bundleActivityNewCustomer.getString("ИмесяцвИГодСразу", "");
-            CurrenrsСhildUUID= bundleActivityNewCustomer.getLong("CurrenrsСhildUUID", 0l);
+            if (bundleActivityNewCustomer!=null) {
+                MainParentUUID=    bundleActivityNewCustomer.getLong("MainParentUUID", 0);
+                Position=    bundleActivityNewCustomer.getInt("Position", 0);
+                ГодТабелей=  bundleActivityNewCustomer.getInt("ГодТабелей", 0);
+                МЕсяцТабелей=  bundleActivityNewCustomer.getInt("МЕсяцТабелей",0);
+                DigitalNameCFO=   bundleActivityNewCustomer.getInt("DigitalNameCFO", 0);
+                FullNameCFO=  bundleActivityNewCustomer.getString("FullNameCFO", "");
+                ИмесяцвИГодСразу= bundleActivityNewCustomer.getString("ИмесяцвИГодСразу", "");
+                CurrenrsСhildUUID= bundleActivityNewCustomer.getLong("CurrenrsСhildUUID", 0l);
+            }
 // TODO: 17.04.2023  //////////20.15
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -557,6 +560,7 @@ private void МетодВозврещениеНаПредыдущуюАктив�
 
     ///todo данный метод начальный для создание нового сотрудника с кнопки
        void МетодЗапускаКодаПоСозданиюНовогоСотрудникаДляДвухТаблицФиоиДатаТабеля()  throws  InterruptedException{
+           final Long[] РезультатВставкиDataTabels = {0l};
            try{
             КнопкаСозданиеНовогоСотрудника.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -566,122 +570,112 @@ private void МетодВозврещениеНаПредыдущуюАктив�
                             " ЗначениеСНИЛССозданиеСотрудника  " +ЗначениеСНИЛССозданиеСотрудника);
                     // TODO: 09.08.2022 создаем новго сотрудника
                     int ТекущаяПозиция=СпинерВыборОрганизацииПриСозданииНовогоСотрудника.getSelectedItemPosition();
+                    Integer ПубличноеID=    new SubClassGetPublicId().ПубличныйID(getApplicationContext());
                     ПолученноеТекущееЗначениеСпинераОрганизация=( СпинерВыборОрганизацииПриСозданииНовогоСотрудника.getItemAtPosition(ТекущаяПозиция).toString());
                     ReentrantLock reentrantLock=new ReentrantLock();
                     Condition condition= reentrantLock.newCondition();
                     Log.d(this.getClass().getName(), " ПолученноеТекущееЗначениеСпинераОрганизация  "+ ПолученноеТекущееЗначениеСпинераОрганизация);
+
+
+                    if (ЗначениеФИОСозданиеСотрудника.length() > 4
+                            && ЗначениеДеньРожденияСозданиеСотрудника.length() > 4
+                            && ЗначениеСНИЛССозданиеСотрудника.length()==11 &&
+                            ТекущаяПозиция!=0 &&
+                            СпинерВыборОрганизацииПриСозданииНовогоСотрудника.getItemAtPosition(ТекущаяПозиция).toString()!=null &&
+                            СпинерВыборОрганизацииПриСозданииНовогоСотрудника.getItemAtPosition(ТекущаяПозиция).toString()!="") {
+                        // TODO: 17.04.2023 наинаем встаавку новаого сотрудинка Single
+
                         Completable.fromAction(new Action() {
-                            @Override
-                            public void run() throws Throwable {
-                                Long РезультатВставкивТаблицуФИО = 0l;
-                                final Long  РезультатВставкивТаблицуDataTabels = 0l;
+                                    @Override
+                                    public void run() throws Throwable {
+                                        Long РезультатВставкивТаблицуФИО = 0l;
+                                        final Long  РезультатВставкивТаблицуDataTabels = 0l;
 /////TODO перед созданием определяем не пустые ли значения
-                                if (ЗначениеФИОСозданиеСотрудника.length() > 4
-                                        && ЗначениеДеньРожденияСозданиеСотрудника.length() > 4
-                                        && ЗначениеСНИЛССозданиеСотрудника.length()==11 &&
-                                        ТекущаяПозиция!=0 &&
-                                        СпинерВыборОрганизацииПриСозданииНовогоСотрудника.getItemAtPosition(ТекущаяПозиция).toString()!=null &&
-                                        СпинерВыборОрганизацииПриСозданииНовогоСотрудника.getItemAtPosition(ТекущаяПозиция).toString()!="") {
-                                    //TODO внешний вид
-                                    activity.runOnUiThread(()->{
-                                        progressDialog=new ProgressDialog(activity  );
-                                        progressDialog.setCancelable(false);
-                                        progressDialog.setTitle("Создание сотрудника");
-                                        progressDialog.setMessage("в процессе...");
-                                        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                                        progressDialog.setMax(1);
-                                        progressDialog.setProgress(0);
-                                        progressDialog.setIndeterminate(true);
-                                        progressDialog.show();
-                                        constraintLayout.setClickable(false);
-                                    });
+                                        //TODO внешний вид
+                                        activity.runOnUiThread(()->{
+                                            progressDialog=new ProgressDialog(activity  );
+                                            progressDialog.setCancelable(false);
+                                            progressDialog.setTitle("Создание сотрудника");
+                                            progressDialog.setMessage("в процессе...");
+                                            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                                            progressDialog.setMax(1);
+                                            progressDialog.setProgress(0);
+                                            progressDialog.setIndeterminate(true);
+                                            progressDialog.show();
+                                            constraintLayout.setClickable(false);
+                                        });
 
-                                    reentrantLock.lock();
-                                    Long   UUIDGenetetorNewCustoner= (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID(getApplicationContext());
-                                    // TODO: 23.09.2021  получение из даты месяц и год
-                                    Log.d(this.getClass().getName(), " ИмесяцвИГодСразу  "
-                                            + ИмесяцвИГодСразу);
-                                    int МесяцТекущегоТабеля=0;//
-                                    int ГодТекущегоТабеля=0;
-                                    Class_Generation_From_Name_Date_To_Diginal_Name class_generation_from_name_date_to_diginal_nameперерводимИзНАзваниеДатуВЦифру=
-                                            new Class_Generation_From_Name_Date_To_Diginal_Name(getApplicationContext());
-                                    МесяцТекущегоТабеля=           class_generation_from_name_date_to_diginal_nameперерводимИзНАзваниеДатуВЦифру.
-                                            МетодПолучениниеМесяцПриСозданииНовогоСОтрудника(ИмесяцвИГодСразу);
-                                    ////
-                                    Log.d(this.getClass().getName(), " МесяцТекущегоТабеля  "+ МесяцТекущегоТабеля);
-                                    ГодТекущегоТабеля = class_generation_from_name_date_to_diginal_nameперерводимИзНАзваниеДатуВЦифру.
-                                            МетодПолучениниеГОдПриСозданииНовогоСОтрудника(ИмесяцвИГодСразу);
-                                    Log.d(this.getClass().getName(), " ГодТекущегоТабеля  "+ ГодТекущегоТабеля);
-                                    ///TODO создание нового сотрудника
-                                    // TODO: 22.09.2021 обработка ТАБЛИЦА ФИО
-                                    // TODO: 24.09.2021
-                                    РезультатВставкивТаблицуФИО = new Class_Generator_New_Customer_In_Table_Fio().методВставкиВТАблицуФИО(ТекущаяПозиция,UUIDGenetetorNewCustoner);
-                                    // TODO: 22.09.2021 ПОСЛЕ ДВУХ ОБРАБОТКАХ  ФИО И ДАТА_ТАБЕЛЬ ПЕРЕРХОДИМ НА ДРГОЕ АКТИВТИ
-                                    Log.d(this.getClass().getName(), " РезультатВставкивТаблицуФИО  "
-                                            + РезультатВставкивТаблицуФИО);
+                                        reentrantLock.lock();
+                                        Long   UUIDGenetetorNewCustoner= (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID(getApplicationContext());
+                                        // TODO: 23.09.2021  получение из даты месяц и год
+                                        Log.d(this.getClass().getName(), " ИмесяцвИГодСразу  " + ИмесяцвИГодСразу);
+                                        // TODO: 22.09.2021 обработка ТАБЛИЦА ФИО
 
-                                    if (РезультатВставкивТаблицуФИО >0) {
-                                        condition.await(200, TimeUnit.MILLISECONDS);
-                                        condition.signal();
-                                    }
-
-                                    if (РезультатВставкивТаблицуФИО >0 && MainParentUUID>0) {
-                                        // TODO: 22.09.2021 обработка ТАБЛИЦА ДАТА_ТАБЕЛЯ  вторая часть ПРОИЗВОДИМ ВСТАВКУ ВО ТРОРУЮ ТАБЛИЦУ ПОСЛЕ ТАБЛИЦЫ ФИО
-                                       Long РезультатВставкиDataTabels = new Class_Generator_New_Customer_In_Table_Data_Tables().
-                                                МетодСозданиеНовогоСотрудника_вТаблицу_Дата_Табеля(UUIDGenetetorNewCustoner,
-                                                        МесяцТекущегоТабеля,
-                                                        ГодТекущегоТабеля);
+                                        РезультатВставкивТаблицуФИО = new Class_Generator_New_Customer_In_Table_Fio().методВставкиВТАблицуФИО(ТекущаяПозиция,UUIDGenetetorNewCustoner,ПубличноеID);
                                         // TODO: 22.09.2021 ПОСЛЕ ДВУХ ОБРАБОТКАХ  ФИО И ДАТА_ТАБЕЛЬ ПЕРЕРХОДИМ НА ДРГОЕ АКТИВТИ
-                                        Log.d(this.getClass().getName(), " РезультатВставкивТаблицуDataTabels  "+РезультатВставкивТаблицуDataTabels);
-                                        if (  РезультатВставкиDataTabels  >0) {
+                                        Log.d(this.getClass().getName(), " РезультатВставкивТаблицуФИО  " + РезультатВставкивТаблицуФИО);
+
+                                        if (РезультатВставкивТаблицуФИО >0) {
                                             condition.await(200, TimeUnit.MILLISECONDS);
                                             condition.signal();
-                                            Toast.makeText(activity, "Успешное Добавление !!!", Toast.LENGTH_SHORT).show();
-                                        }else {
-                                            Toast.makeText(activity, "Ошибка при Добавлении !!!", Toast.LENGTH_SHORT).show();
                                         }
 
-                                    }else {
-                                        Snackbar.make(v, "Сотрунидник не был создан ", Snackbar.LENGTH_LONG).show();
+                                        if (РезультатВставкивТаблицуФИО >0) {
+                                            // TODO: 22.09.2021  ТАБЛИЦА ДАТА_ТАБЕЛЯ
+                                            РезультатВставкиDataTabels[0] = new Class_Generator_New_Customer_In_Table_Data_Tables().
+                                                    МетодСозданиеНовогоСотрудника_вТаблицу_Дата_Табеля(UUIDGenetetorNewCustoner,
+                                                            МЕсяцТабелей,
+                                                            ГодТабелей,ПубличноеID);
+                                            // TODO: 22.09.2021 ПОСЛЕ ДВУХ ОБРАБОТКАХ  ФИО И ДАТА_ТАБЕЛЬ ПЕРЕРХОДИМ НА ДРГОЕ АКТИВТИ
+                                            Log.d(this.getClass().getName(), " РезультатВставкивТаблицуDataTabels  "+РезультатВставкивТаблицуDataTabels);
+                                            if (  РезультатВставкиDataTabels[0] >0) {
+                                                condition.await(200, TimeUnit.MILLISECONDS);
+                                                condition.signal();
+                                            }else {
+                                                getApplicationContext().getMainExecutor().execute(()->{
+                                                    Snackbar.make(v, "Сотрунидник не был создан !!! ", Snackbar.LENGTH_LONG).show();
+                                                    Log.d(this.getClass().getName(), " РезультатВставкиDataTabels[0]  "+РезультатВставкиDataTabels[0]);
+                                                });
+                                            }
+
+                                        }else {
+                                            getApplicationContext().getMainExecutor().execute(()->{
+                                                Snackbar.make(v, "Сотрунидник не был создан !!!", Snackbar.LENGTH_LONG).show();
+                                                Log.d(this.getClass().getName(), " РезультатВставкиDataTabels[0]  "+РезультатВставкиDataTabels[0]);
+                                            });
+                                        }
+                                        Log.d(this.getClass().getName(), " РезультатВставкиDataTabels[0]  "+РезультатВставкиDataTabels[0]);
+
+                                        reentrantLock.unlock();
+
                                     }
-                                    Log.d(this.getClass().getName(), " ЗАВЕРШИЛИ ВСТАВКИ НОВОГО СОТРУДНИКА СРАЗУ В ДВЕ ТАБЛИЦЫ ФИО И ДАТА ТАБЕЛЬС ");
-
-                                    reentrantLock.unlock();
-
-                                } else {
-                                    activity.runOnUiThread(()->{
-                                        Snackbar.make(v, "Заполните данные (СНИЛС от 11 знаков) ", Snackbar.LENGTH_LONG).show();
-                                        Log.i(this.getClass().getName(), " Не все поля заполены (снилс от 10 знаков) ");
-                                    });
-
-                                }
-                            }
-                        })     .subscribeOn(Schedulers.computation())
+                                })
+                                .subscribeOn(Schedulers.single())
                                 .observeOn(AndroidSchedulers.mainThread()).
                                 doOnComplete(new Action() {
                                     @Override
                                     public void run() throws Throwable {
-                                            constraintLayout.forceLayout();
-                                            progressDialog.setProgress(1);
-                                            // TODO: 17.04.2023 переходим на обратно в активити выбор сотрудников
+                                        constraintLayout.forceLayout();
+                                        progressDialog.setProgress(1);
 
+                                        if (РезультатВставкиDataTabels[0]>0) {
+                                            // TODO: 17.04.2023 переходим на обратно в активити выбор сотрудников
                                             методBackActivityListPeoples();
-                                            // TODO: 17.04.2023  //////////20.15
-                                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                                        }
+                                        // TODO: 17.04.2023  //////////20.15
+                                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                                     }
                                 })
-                                .onErrorComplete(new Predicate<Throwable>() {
+                                .doOnError(new Consumer<Throwable>() {
                                     @Override
-                                    public boolean test(Throwable throwable) throws Throwable {
+                                    public void accept(Throwable throwable) throws Throwable {
                                         ///метод запись ошибок в таблицу
                                         Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                                 " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
                                         new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(throwable.toString(), this.getClass().getName(),
                                                 Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                        ///////
-                                        return false;
                                     }
                                 })
                                 .doOnTerminate(new Action() {
@@ -692,18 +686,24 @@ private void МетодВозврещениеНаПредыдущуюАктив�
                                             progressDialog.dismiss();
                                             constraintLayout.setClickable(true);
                                         }
-                                        Log.d(this.getClass().getName(), " Ошибка не создаен сотрудник (в таблице дата_табеля) !!!  " + ФинальныйРезультатВставкиНовгоСотрудникаВТаюлицу_ФИО[0]);
+                                        Log.d(this.getClass().getName(), " Ошибка не создаен сотрудник (в таблице дата_табеля) !!!  РезультатВставкиDataTabels[0] " + РезультатВставкиDataTabels[0]);
                                     }
                                 }).subscribe();
+
+                    } else {
+                        activity.runOnUiThread(()->{
+                            Snackbar.make(v, "Заполните данные (СНИЛС от 11 знаков) ", Snackbar.LENGTH_LONG).show();
+                            Log.i(this.getClass().getName(), " Не все поля заполены (снилс от 10 знаков) ");
+                        });
+
+                    }
                 }
             });
        } catch (Exception e) {
-        ///метод запись ошибок в таблицу
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                 " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
         new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                 Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        ///////
     }
     }
 
@@ -1256,7 +1256,8 @@ private void МетодВозврещениеНаПредыдущуюАктив�
 
 
       protected Long методВставкиВТАблицуФИО(@NotNull  int ТекущееЗначение,
-                                             @NotNull Long   UUIDGenetetorNewCustoner) throws InterruptedException {
+                                             @NotNull Long   UUIDGenetetorNewCustoner
+                                             ,@NotNull Integer ПубличноеID) throws InterruptedException {
 
             Long РезультаВставкиВТАблицуФИО=0l;
             try {
@@ -1334,8 +1335,6 @@ private void МетодВозврещениеНаПредыдущуюАктив�
                     // TODO: 22.04.2021  srart JOBschedele
                     Log.d(this.getClass().getName(), "ПолученноеТекущееЗначениеСпинераОрганизация "+ПолученноеТекущееЗначениеСпинераОрганизация +
                             "  ПолученныйIDОрганизации " +ПолученныйIDОрганизации);
-                    // TODO: 25.03.2021 заполяем  user_update
-                    Integer ПубличноеID=    new SubClassGetPublicId().ПубличныйID(getApplicationContext());
                         АдаптерДляСозданиеНовогоСотрудаТАблицаФИО.put("user_update", ПубличноеID);
                     final int[] ТекущуюОрганизацию = {0};
                     final Cursor[] Курсор_ИщемТекущуюОрганизациюКоторуюВыбраСОтрудник = {null};
@@ -1486,7 +1485,8 @@ private void МетодВозврещениеНаПредыдущуюАктив�
     //TODO метод записи нового сотрудника в базу
    protected Long МетодСозданиеНовогоСотрудника_вТаблицу_Дата_Табеля( @NotNull  Long UUIDGenetetorNewCustoner,
                                                                      int ГодПриВставкеНовогоСотрудника,
-                                                                   int  МЕсяцПриВставкеНовогоСотрудника) throws InterruptedException {
+                                                                   int  МЕсяцПриВставкеНовогоСотрудника,
+                                                                      @NotNull Integer ПубличноеID) throws InterruptedException {
 
 
         Long РезультатВставкиВтаблицу_Дата_табеля=0l;
@@ -1513,11 +1513,11 @@ private void МетодВозврещениеНаПредыдущуюАктив�
             АдаптерДляСозданиеНовогоСотрудаТАблицаТабель.put("uuid",UUidGeneratorDataTabels);
                 // TODO: 24.03.2021 ЕслиВубличногоНЕтТоНАходим ЕГо
 
-            Integer ПубличноеID=    new SubClassGetPublicId().ПубличныйID(getApplicationContext());
                 final int[] ТекущуюОрганизацию = {0};
                 final Cursor[] Курсор_ИщемТекущуюОрганизациюКоторуюВыбраСОтрудник = {null};
             // TODO: 23.09.2021  повышаем верисю таблицы фио
             АдаптерДляСозданиеНовогоСотрудаТАблицаТабель.put("status_send", " ");
+            АдаптерДляСозданиеНовогоСотрудаТАблицаТабель.put("user_update", ПубличноеID);
             Log.d(this.getClass().getName(),"ТекущуюОрганизацию[0] " + ТекущуюОрганизацию[0] );
             // TODO: 08.09.2021  метод после заполения данными
             РезультатВставкиВтаблицу_Дата_табеля=   new Class_Generations_New_Customers_For_Tabels(getApplicationContext()).
