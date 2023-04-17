@@ -48,6 +48,7 @@ import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassGetPublicId;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.dsy.dsu.Code_For_Services.Service_For_Public;
+import com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_App;
 import com.dsy.dsu.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -2102,7 +2103,9 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                 .setNeutralButton("Ещё", null)
                 .setIcon(R.drawable.icon_dsu1_tabels_for_new_tamples)
                 .show();
-            ((AlertDialog) alertDialog).getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.GONE);
+        if (CurrenrsСhildUUID==0) {
+             ((AlertDialog) alertDialog).getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.GONE);
+        }
         final Button MessageBoxUpdateСоздатьТабель = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
         MessageBoxUpdateСоздатьТабель.setOnClickListener(new View.OnClickListener() {
             ///MessageBoxUpdate метод CLICK для DIALOBOX
@@ -2119,7 +2122,8 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                     Log.d(this.getClass().getName(), " Переход на  Шаблоны"
                             + " Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней "
                             + Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней +
-                            "  Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм " + Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм);
+                            "  Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм " + Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм+
+                            " CurrenrsСhildUUID "+CurrenrsСhildUUID);
                     // TODO: 14.02.2023
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -2494,7 +2498,12 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
 
     private void методBackActivityListPeoples() {
         try {
-           Intent ИнтентBackactivityListPeoples = new Intent(getApplicationContext(), MainActivity_List_Peoples.class);
+            Intent ИнтентBackactivityListPeoples = null;
+            if (CurrenrsСhildUUID>0) {
+                ИнтентBackactivityListPeoples = new Intent(getApplicationContext(), MainActivity_List_Peoples.class);
+            } else {
+                ИнтентBackactivityListPeoples = new Intent(getApplicationContext(), MainActivity_Face_App.class);
+            }
             Bundle bundleBackactivityListPeoples=new Bundle();
             bundleBackactivityListPeoples.putLong("MainParentUUID", MainParentUUID);
             bundleBackactivityListPeoples.putInt("Position",    Position);

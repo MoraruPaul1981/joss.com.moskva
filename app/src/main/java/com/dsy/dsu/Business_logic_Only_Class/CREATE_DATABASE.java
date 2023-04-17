@@ -119,7 +119,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
                 " uuid  NUMERIC UNIQUE  ," +
                 " status_send  TEXT," +
                 "  current_table NUMERIC UNIQUE ,"+
-                " UNIQUE (name_templates)   ) ");
+                " UNIQUE (name_templates,user_update)   ) ");
         Log.d(this.getClass().getName(), " сработала ... templates " +new Date().toGMTString());
     }
 
