@@ -35,7 +35,6 @@ import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.Class_Generation_Data;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
-import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_From_Name_Date_To_Diginal_Name;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_UUID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_New_Customers_For_Tabels;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
@@ -64,7 +63,6 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.functions.Predicate;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainActivity_New_Cusomers extends AppCompatActivity implements DatePickerDialog.OnDateSetListener  {
@@ -623,7 +621,7 @@ private void МетодВозврещениеНаПредыдущуюАктив�
                                         if (РезультатВставкивТаблицуФИО >0) {
                                             // TODO: 22.09.2021  ТАБЛИЦА ДАТА_ТАБЕЛЯ
                                             РезультатВставкиDataTabels[0] = new Class_Generator_New_Customer_In_Table_Data_Tables().
-                                                    МетодСозданиеНовогоСотрудника_вТаблицу_Дата_Табеля(UUIDGenetetorNewCustoner,
+                                                    методСозданиеНовогоСотрудникаDataTabels(UUIDGenetetorNewCustoner,
                                                             МЕсяцТабелей,
                                                             ГодТабелей,ПубличноеID);
                                             // TODO: 22.09.2021 ПОСЛЕ ДВУХ ОБРАБОТКАХ  ФИО И ДАТА_ТАБЕЛЬ ПЕРЕРХОДИМ НА ДРГОЕ АКТИВТИ
@@ -660,6 +658,12 @@ private void МетодВозврещениеНаПредыдущуюАктив�
 
                                         if (РезультатВставкиDataTabels[0]>0) {
                                             // TODO: 17.04.2023 переходим на обратно в активити выбор сотрудников
+                                            if (progressDialog!=null) {
+                                                progressDialog.setIndeterminate(false);
+                                                progressDialog.dismiss();
+                                                constraintLayout.setClickable(true);
+                                            }
+
                                             методBackActivityListPeoples();
                                         }
                                         // TODO: 17.04.2023  //////////20.15
@@ -676,17 +680,6 @@ private void МетодВозврещениеНаПредыдущуюАктив�
                                                 " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
                                         new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(throwable.toString(), this.getClass().getName(),
                                                 Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                    }
-                                })
-                                .doOnTerminate(new Action() {
-                                    @Override
-                                    public void run() throws Throwable {
-                                        if (progressDialog!=null) {
-                                            progressDialog.setIndeterminate(false);
-                                            progressDialog.dismiss();
-                                            constraintLayout.setClickable(true);
-                                        }
-                                        Log.d(this.getClass().getName(), " Ошибка не создаен сотрудник (в таблице дата_табеля) !!!  РезультатВставкиDataTabels[0] " + РезультатВставкиDataTabels[0]);
                                     }
                                 }).subscribe();
 
@@ -1483,10 +1476,10 @@ private void МетодВозврещениеНаПредыдущуюАктив�
 
 
     //TODO метод записи нового сотрудника в базу
-   protected Long МетодСозданиеНовогоСотрудника_вТаблицу_Дата_Табеля( @NotNull  Long UUIDGenetetorNewCustoner,
-                                                                     int ГодПриВставкеНовогоСотрудника,
-                                                                   int  МЕсяцПриВставкеНовогоСотрудника,
-                                                                      @NotNull Integer ПубличноеID) throws InterruptedException {
+   protected Long методСозданиеНовогоСотрудникаDataTabels(@NotNull  Long UUIDGenetetorNewCustoner,
+                                                          int ГодПриВставкеНовогоСотрудника,
+                                                          int  МЕсяцПриВставкеНовогоСотрудника,
+                                                          @NotNull Integer ПубличноеID) throws InterruptedException {
 
 
         Long РезультатВставкиВтаблицу_Дата_табеля=0l;
