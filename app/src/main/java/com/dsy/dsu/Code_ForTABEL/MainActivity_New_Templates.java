@@ -42,6 +42,7 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_UUID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Weekend_For_Tabels;
 import com.dsy.dsu.Business_logic_Only_Class.Class_MODEL_synchronized;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
+import com.dsy.dsu.Business_logic_Only_Class.SubClassGetPublicId;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.dsy.dsu.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -98,7 +99,6 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
     private String FullNameCFO;
     private String ИмесяцвИГодСразу;
     private  String ПубличноеИмяКнопкиТабеля;
-    private  Long МетодГенерацииUUIDУжеСуществующегоСотрудника = 0l;
     private  View.OnLongClickListener СлушательУдаланиеСамогоТабеля;
     private  Button ШАблонвВидеКнопок = null;
     private  String ПолученныйГодДляНовогоТабеля = "";
@@ -176,12 +176,10 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
             @Override
             public void onClick(View v) {
                 try{
-                Log.d(this.getClass().getName(), "МетодСозданияНовогоШАблона()   КруглаяКнопкаСозданиеНовогоТабеля  СОЗДАНИЕ НОВГО ШАБЛОНА" +
-                        "  " + ПолученнаяUUIDНазванияОрганизации);
+                Log.d(this.getClass().getName(), "МетодСозданияНовогоШАблона()   КруглаяКнопкаСозданиеНовогоТабеля  СОЗДАНИЕ НОВГО ШАБЛОНА" );
                 МетодСозданияНовогоШАблона();
             } catch (Exception e) {
                 e.printStackTrace();
-                ///метод запись ошибок в таблицу
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                         " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
                 // TODO: 01.09.2021 метод вызова
@@ -199,21 +197,12 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                 @Override
                 public void onClick(View v) {
                     Log.d(this.getClass().getName(), " кликнем для созданни новго сотрдника при нажатии  ");
-                    ///todo код которыц возврящет предыдущий актвитики кнопка back
                     методBackActivityListPeoples();
-                    ////todo запускаем активти
-                    Log.d(this.getClass().getName(), " ЦифровоеИмяНовгоТабеля  " + ЦифровоеИмяНовгоТабеля +
-                            " МесяцТабеляФинал " + МесяцТабеляФинал + " ПолноеИмяТабеляПослеСозданиеНовогоСотрудника " +
-                            ПолноеИмяТабеляПослеСозданиеНовогоСотрудника + " РодительскийUUDТаблицыТабель ");
-
                 }
             });
 
-
-
         } catch (Exception e) {
             e.printStackTrace();
-            ///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
             // TODO: 01.09.2021 метод вызова
@@ -1368,69 +1357,26 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
     // TODO: 12.03.2021  метод записываем В КОНКРЕНТЫЙ ТАБЕЛЬ СОТРУДНИКОВ ИЗ ЗАРАНЕЕ СОЗДАНОГО ШАБЛОНА
 
     protected SQLiteCursor МетодЗаполненияТабеляИзЗаранееСозданогоШабона() {
-
-
         SQLiteCursor Курсор_НаОсновеПолученогоЭлектроногоНазваниеОрганицииПонемуПолучаемВсеИнформацииОТабеле = null;
-        //
         Class_GRUD_SQL_Operations class_grud_sql_operationsЗаполненияТабеляИзЗаранееСозданогоШабона = new Class_GRUD_SQL_Operations(getApplicationContext());
-
-
         try {
-
             Log.d(this.getClass().getName(), "МетодЗаполненияТабеляИзЗаранееСозданогоШабона ");
-
-
-// TODO: 14.03.2021  тут нужно только одна строчка как пример данных для заполнения ДАННЫХ ИЗ КУРСОРА КОТОРЫЙ ТАБЕЛЬ УЖЕ ЕСТЬ
-
-
-            // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
-
-            ///
             class_grud_sql_operationsЗаполненияТабеляИзЗаранееСозданогоШабона.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы", "tabel");
-            ///////
             class_grud_sql_operationsЗаполненияТабеляИзЗаранееСозданогоШабона.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки", "*");
-            //
             class_grud_sql_operationsЗаполненияТабеляИзЗаранееСозданогоШабона.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика", "status_send!=?  AND cfo=? ");
-            ///"_id > ?   AND _id< ?"
-            //////
             class_grud_sql_operationsЗаполненияТабеляИзЗаранееСозданогоШабона.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1", "Удаленная");
-            ///
-            class_grud_sql_operationsЗаполненияТабеляИзЗаранееСозданогоШабона.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска2", ЦифровоеИмяНовгоТабеля);
-            ///
-          /*          class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска3",МЕсяцДляКурсораТабелей);
-                    //
-                    class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска4",ГодДляКурсораТабелей);////УсловиеПоискаv4,........УсловиеПоискаv5 .......
-
-            ////TODO другие поля*/
-
-            ///classGrudSqlOperations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ПоляГрупировки",null);
-            ////
-            //class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеГрупировки",null);
-            ////
+            class_grud_sql_operationsЗаполненияТабеляИзЗаранееСозданогоШабона.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска2", DigitalNameCFO);
             class_grud_sql_operationsЗаполненияТабеляИзЗаранееСозданогоШабона.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки", "date_update DESC");
-            ////
             class_grud_sql_operationsЗаполненияТабеляИзЗаранееСозданогоШабона.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита", "1");
-            ////
-
             Курсор_НаОсновеПолученогоЭлектроногоНазваниеОрганицииПонемуПолучаемВсеИнформацииОТабеле = null;
             // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
-
             Курсор_НаОсновеПолученогоЭлектроногоНазваниеОрганицииПонемуПолучаемВсеИнформацииОТабеле = (SQLiteCursor) class_grud_sql_operationsЗаполненияТабеляИзЗаранееСозданогоШабона.
                     new GetData(getApplicationContext()).getdata(class_grud_sql_operationsЗаполненияТабеляИзЗаранееСозданогоШабона.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
                     Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков, Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
-
-
-            ////////
-
             Log.d(this.getClass().getName(), "GetData " + Курсор_НаОсновеПолученогоЭлектроногоНазваниеОрганицииПонемуПолучаемВсеИнформацииОТабеле);
-
-
 // TODO: 12.03.2021  мы получили даные на основании ЦИФРОВОГО ИИЕНИ ДАЛЕЕ БУДЕМ ЗАПОЛНЯТЬ ЕГО ДАННЫМИ
-
-            ///КОНЕЦ ЗАПОЛЕНИЯ ТАБЕЛЯ ИЗ ДАННЫХ
         } catch (Exception e) {
             e.printStackTrace();
-            ///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
             new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
@@ -1877,56 +1823,8 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
     }
 
 
-    private void МетодВозвратаПравильногоДатыВСпиноре() {
-        try {
-            //TODO для првавильного востсзвтра делаем дополнительнй параметр ДВА ВИДА ЗАГРУЗЩКИ ПЕРВОНОЧАЛЬНЫЙ И ВОЗВРАТ ИЗ BACK
-            if (ПравильныйВозвратИзДруговоАктивтиBACK != null) {
-                Log.d(this.getClass().getName(), " МассивДляВыбораВСпинерДата.size() " + МассивДляВыбораВСпинерДата.size());
-
-
-                Log.d(this.getClass().getName(), " МассивДляВыбораВСпинерДата " + МассивДляВыбораВСпинерДата + "\n");
-                int ИщемСвойМесяцПорядок = МассивДляВыбораВСпинерДата.indexOf(ПравильныйВозвратИзДруговоАктивтиBACK);
-                /////TODo данной командой ставим месяц котроый наш всегда в начало Арайлиста
-                Collections.swap(МассивДляВыбораВСпинерДата, 0, ИщемСвойМесяцПорядок);
-                Log.d(this.getClass().getName(), " МассивДляВыбораВСпинерДата " + МассивДляВыбораВСпинерДата + "\n");
-
-                ///TODO возврат из другой активти
-   /*         int РазмерАрайЛиста=МассивДляВыбораВСпинерДата.size();
-            МассивДляВыбораВСпинерДата.ensureCapacity(РазмерАрайЛиста);
-            for ( int  i = 0; i < РазмерАрайЛиста; i++) {
-                Log.d(this.getClass().getName()," МассивДляВыбораВСпинерДата.get(i) "+МассивДляВыбораВСпинерДата.get(i));
-                String ИщемСвойМесяцНулевой=МассивДляВыбораВСпинерДата.get(0);
-                String ИщемСвойМесяц=МассивДляВыбораВСпинерДата.get(i);
-                if (ИщемСвойМесяц.equalsIgnoreCase(ПравильныйВозвратИзДруговоАктивтиBACK)) {
-                    //int ИщемСвойМесяцПорядок=МассивДляВыбораВСпинерДата.indexOf(ИщемСвойМесяц);
-                    МассивДляВыбораВСпинерДата.set(0,МассивДляВыбораВСпинерДата.get(i));
-                    МассивДляВыбораВСпинерДата.set(i,ИщемСвойМесяцНулевой);
-                    //МассивДляВыбораВСпинерДата.remove(i);
-                    break;
-                }
-            }*/
-                Log.d(this.getClass().getName(), " МассивДляВыбораВСпинерДата.toString() " + МассивДляВыбораВСпинерДата.toString());
-
-                //TODO нормальные режим загрузки ДАты спипернар
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            ///метод запись ошибок в таблицу
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
-    //TODO метод получени месяа для записи в одну колонку
-
 
     ////СООБЩЕНИЕ ИЗ ИТОРИИИ ТАБЛЕЙ ОТПРАВЛЯЕМ СООБЩЕНЕИ И ЗНАЧЕНИЕ В ДУГОЕ АКТИВТИ О СОЗДАНИЮ НОВОГО ТАБЕЛЯ
-
-
-    ////ВТОРАЯ ФУНКЦИЯ  ДАТЫ НА РУСКИЙ ЯЗЫК МЕСЯЦ
-    //функция получающая время операции
-
     public String МетодПереводаНазваниеМесяцаСАнглискогоНаРУсский(Date ПрасингДаты) {
         SimpleDateFormat sdfmt = null;
         SimpleDateFormat sdfmtГод = null;
@@ -2040,21 +1938,25 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
 
 
     private void МетодСозданияНовогоШАблона() {
-        Intent Интент_ШаблоныызватИлиСоздать = new Intent();
+        Intent Интент_Find_Templates = new Intent();
         try {
-            Интент_ШаблоныызватИлиСоздать.setClass(getApplicationContext(), MainActivity_Find_Templates.class); // Т
-            Интент_ШаблоныызватИлиСоздать.putExtra("ЦифровоеИмяНовгоТабеля", ЦифровоеИмяНовгоТабеля);
-            Интент_ШаблоныызватИлиСоздать.putExtra("ПолноеИмяТабеляПослеСозданиеНовогоСотрудника", ПолноеИмяТабеляПослеСозданиеНовогоСотрудника);
-            Интент_ШаблоныызватИлиСоздать.putExtra("МесяцТабеляФинал", МесяцТабеляФинал);
-            Интент_ШаблоныызватИлиСоздать.putExtra("ПолученнаяUUIDНазванияОрганизации", ПолученнаяUUIDНазванияОрганизации);
-            Интент_ШаблоныызватИлиСоздать.putExtra("ЗапускШаблоновFaceAppБлокировкаКнопкиДа", ЗапускШаблоновFaceAppБлокировкаКнопкиДа);
-            Интент_ШаблоныызватИлиСоздать.putExtra("ЦифровоеИмяНовгоТабеля", ЦифровоеИмяНовгоТабеля);
-            // TODO: 22.09.2021  clear operasion
-            Log.d(this.getClass().getName(), "  РодительскийUUDТаблицыТабель " + РодительскийUUDТаблицыТабель);
-            if (РодительскийUUDТаблицыТабель > 0) {
-                Интент_ШаблоныызватИлиСоздать.putExtra("РодительскийUUDТаблицыТабель", РодительскийUUDТаблицыТабель);
-            }
-            startActivity(Интент_ШаблоныызватИлиСоздать);
+            Интент_Find_Templates .setClass(getApplicationContext(), MainActivity_Find_Templates.class); // Т
+            Bundle bundleFind_Templates=new Bundle();
+            bundleFind_Templates.putLong("MainParentUUID", MainParentUUID);
+            bundleFind_Templates.putInt("Position",    Position);
+            bundleFind_Templates.putInt("ГодТабелей",     ГодТабелей);
+            bundleFind_Templates.putInt("МЕсяцТабелей", МЕсяцТабелей);
+            bundleFind_Templates.putInt("DigitalNameCFO",  DigitalNameCFO);
+            bundleFind_Templates.putString("FullNameCFO", FullNameCFO);
+            bundleFind_Templates.putString("ИмесяцвИГодСразу",    ИмесяцвИГодСразу);
+            bundleFind_Templates.putLong("CurrenrsСhildUUID",  CurrenrsСhildUUID);
+            Интент_Find_Templates .putExtras(bundleFind_Templates);
+            startActivity( Интент_Find_Templates );
+            // TODO: 17.04.2023
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " bundleFind_Templates "+bundleFind_Templates);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -2193,13 +2095,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                 .setNeutralButton("Ещё", null)
                 .setIcon(R.drawable.icon_dsu1_tabels_for_new_tamples)
                 .show();
-        Log.d(this.getClass().getName(),
-                " ЗапускШаблоновFaceAppБлокировкаКнопкиДа " + ЗапускШаблоновFaceAppБлокировкаКнопкиДа
-                        + " lines " + lines);
-        if (ЗапускШаблоновFaceAppБлокировкаКнопкиДа == true || lines == 0) {
             ((AlertDialog) alertDialog).getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.GONE);
-        }
-
         final Button MessageBoxUpdateСоздатьТабель = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
         MessageBoxUpdateСоздатьТабель.setOnClickListener(new View.OnClickListener() {
             ///MessageBoxUpdate метод CLICK для DIALOBOX
@@ -2246,26 +2142,25 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
-                Log.d(this.getClass().getName(), " создание нового сотрудника ");
-                ///TODO создание нового ТАБЕЛЯ
-                Log.d(this.getClass().getName(), " Переход на  Шаблоны");
                 try {
-                    Log.d(this.getClass().getName(), " Переход на  Шаблоны");
-                    Intent Интент_ШаблоныызватИлиСоздать = new Intent();
-                    Интент_ШаблоныызватИлиСоздать.setClass(getApplicationContext(), MainActivity_Find_Templates.class); // Т
-                    Интент_ШаблоныызватИлиСоздать.putExtra("ЦифровоеИмяНовгоТабеля", ЦифровоеИмяНовгоТабеля);
-                    Интент_ШаблоныызватИлиСоздать.putExtra("ПолноеИмяТабеляПослеСозданиеНовогоСотрудника", ПолноеИмяТабеляПослеСозданиеНовогоСотрудника);
-                    Интент_ШаблоныызватИлиСоздать.putExtra("МесяцТабеляФинал", МесяцТабеляФинал);
-                    Интент_ШаблоныызватИлиСоздать.putExtra("ПолученнаяUUIDНазванияОрганизации", ПолученнаяUUIDНазванияОрганизации);
-                    Интент_ШаблоныызватИлиСоздать.putExtra("ПередаемСозданнуюНазваниеТабеля", ПередаемСозданнуюНазваниеТабеля);
-                    Интент_ШаблоныызватИлиСоздать.putExtra("ПередаваемыйИзКнопкиПолучаемUUIDТабеля", Long.parseLong(ПередаваемыйИзКнопкиПолучаемUUIDТабеля.toString()));
-                    Интент_ШаблоныызватИлиСоздать.putExtra("ЗапускШаблоновFaceAppБлокировкаКнопкиДа", ЗапускШаблоновFaceAppБлокировкаКнопкиДа);
-                    Log.d(this.getClass().getName(), "  РодительскийUUDТаблицыТабель " + РодительскийUUDТаблицыТабель);
-                    Интент_ШаблоныызватИлиСоздать.putExtra("РодительскийUUDТаблицыТабель", РодительскийUUDТаблицыТабель);
-                    Log.d(this.getClass().getName(), "ЦифровоеИмяНовгоТабеля" + ЦифровоеИмяНовгоТабеля + " ПередаемСозданнуюНазваниеТабеля " + ПередаемСозданнуюНазваниеТабеля +
-                            "  РодительскийUUDТаблицыТабель " + РодительскийUUDТаблицыТабель);
-                    Интент_ШаблоныызватИлиСоздать.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(Интент_ШаблоныызватИлиСоздать);
+                  Intent  Интент_Find_Templates=new Intent(getApplicationContext(),MainActivity_Find_Templates.class);
+                    Интент_Find_Templates.setClass(getApplicationContext(), MainActivity_Find_Templates.class); // Т
+                    Bundle bundleFind_Templates=new Bundle();
+                    bundleFind_Templates.putLong("MainParentUUID", MainParentUUID);
+                    bundleFind_Templates.putInt("Position",    Position);
+                    bundleFind_Templates.putInt("ГодТабелей",     ГодТабелей);
+                    bundleFind_Templates.putInt("МЕсяцТабелей", МЕсяцТабелей);
+                    bundleFind_Templates.putInt("DigitalNameCFO",  DigitalNameCFO);
+                    bundleFind_Templates.putString("FullNameCFO", FullNameCFO);
+                    bundleFind_Templates.putString("ИмесяцвИГодСразу",    ИмесяцвИГодСразу);
+                    bundleFind_Templates.putLong("CurrenrsСhildUUID",  CurrenrsСhildUUID);
+                    Интент_Find_Templates .putExtras(bundleFind_Templates);
+                    startActivity( Интент_Find_Templates );
+                    // TODO: 17.04.2023
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                            + " bundleFind_Templates "+bundleFind_Templates);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -2289,6 +2184,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
             Курсор_СамиДАнные.moveToFirst();
             Курсор_ВыходныеДниДанные.moveToFirst();
             Integer КоличествоДанных = Курсор_СамиДАнные.getCount();
+            Long UUIDgeneratorOpertion = (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID(getApplicationContext());
 
                     Observable.range(0, КоличествоДанных)
                             .subscribeOn(Schedulers.single())
@@ -2338,7 +2234,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                                     ///todo из заполянем адапрет из курсора
                                     АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель =
                                             МетодЗаполенияДаннымиДляЗаполенияТабеляИзГотовогоШаблона(Курсор_ВыходныеДниДанные,
-                                                    Курсор_СамиДАнные);
+                                                    Курсор_СамиДАнные,UUIDgeneratorOpertion);
                                     Log.d(this.getClass().getName(), "АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель[0]" + АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.valueSet().toString()+
                                             " Курсор_СамиДАнные "+Курсор_СамиДАнные+ " Курсор_ВыходныеДниДанные "+Курсор_ВыходныеДниДанные);
 
@@ -2361,7 +2257,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                                         int Год = Курсор_ВыходныеДниДанные.getInt(ИндексГод);
                                         Integer РезультатВставкаВыходныхДНей =
                                                 new Class_Generation_Weekend_For_Tabels(getApplicationContext())
-                                                        .МетодТретийАвтоматическаяВставкаВыходныхДней(МетодГенерацииUUIDУжеСуществующегоСотрудника, Год, Месяц);
+                                                        .МетодТретийАвтоматическаяВставкаВыходныхДней(UUIDgeneratorOpertion, Год, Месяц);
                                         Log.d(this.getClass().getName(), "   РезультатВставкаВыходныхДНей  " + РезультатВставкаВыходныхДНей);
                                         // TODO: 28.01.2022 ПОВЫШАЕМ ВЕРСИЮ  В ТАБЛИЦЕ МОДИФИКАЦИИ КЛИЕНТ
                                         ((Activity) КонтекстШаблоны).runOnUiThread(new Runnable() {
@@ -2410,12 +2306,8 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                                 }
                             });
             Log.d(this.getClass().getName(), "   observableВставкаИзШаблонаВТабкель  " );
-
-
-            ///*/
         } catch (Exception e) {
             e.printStackTrace();
-            ///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
             // TODO: 01.09.2021 метод вызова
@@ -2432,7 +2324,8 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
 
     // TODO: 26.09.2021  ЗАПОЛНЯЕМ КОНТЕЙНЕР ДЛЯ ВСТАВКИ ИЗ ГОТОВГО ШАБЛОНА  В ТАБЕЛЬ
     private ContentValues МетодЗаполенияДаннымиДляЗаполенияТабеляИзГотовогоШаблона( @NonNull SQLiteCursor Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней,
-                                                                                      @NonNull  SQLiteCursor Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм) {
+                                                                                      @NonNull  SQLiteCursor Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм,
+                                                                                    @NonNull Long UUIDgeneratorOpertion) {
         ContentValues АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель = new ContentValues();////контрейнер для нового табеля
         try {
             Long ФИОИзАТблицы = 0l;
@@ -2468,7 +2361,11 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
             // TODO: 25.10.2021  производим ВСТАВКУ ЕСЛИ ТАЕОКГО СОТРУДНИКА ЕЩЕ НЕТ ЕСДИ КУРСОР НЕ ППУСТОЙ
 
             // TODO: 15.02.2023 заопления даными для шаблона
-            МетодЗаполениеяДаннымиСотрудникаДляШаблонаЕслиОниЕсть(АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель, ФИОИзАТблицы, Курсор_ИщемПроверяемЕслиТакойСотрудникУжеЕстьВТабеле);
+            МетодЗаполениеяДаннымиСотрудникаДляШаблонаЕслиОниЕсть(АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель, ФИОИзАТблицы, Курсор_ИщемПроверяемЕслиТакойСотрудникУжеЕстьВТабеле,UUIDgeneratorOpertion);
+            // TODO: 17.04.2023
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -2480,7 +2377,8 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
     }
 
     private void МетодЗаполениеяДаннымиСотрудникаДляШаблонаЕслиОниЕсть(ContentValues АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель,
-                                                                       Long ФИОИзАТблицы, SQLiteCursor Курсор_ИщемПроверяемЕслиТакойСотрудникУжеЕстьВТабеле)
+                                                                       Long ФИОИзАТблицы, SQLiteCursor Курсор_ИщемПроверяемЕслиТакойСотрудникУжеЕстьВТабеле
+    ,@NonNull Long UUIDgeneratorOpertion)
             throws ExecutionException, InterruptedException {
         try{
         Class_GRUD_SQL_Operations class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля;
@@ -2490,8 +2388,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
             АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("status_send", " ");
             String СгенерированованныйДатаДляВставки = new Class_Generation_Data(getApplicationContext()).ГлавнаяДатаИВремяОперацийСБазойДанных();
             АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("date_update", СгенерированованныйДатаДляВставки);
-            АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("uuid_tabel", РодительскийUUDТаблицыТабель);
-            Log.d(this.getClass().getName(), "РодительскийUUDТаблицыТабель " + РодительскийUUDТаблицыТабель);
+            АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("uuid_tabel", MainParentUUID);
             // TODO: 08.10.2021 повышаем версию
             Class_GRUD_SQL_Operations class_grud_sql_operationsПовышаемВерсиюДанныхПриСозданеииИзШаблонаСотрудника = new Class_GRUD_SQL_Operations(getApplicationContext());
             // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ
@@ -2501,7 +2398,6 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
 
             АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("current_table", РезультатУвеличинаяВерсияДАныхЧата);
             АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.putNull("_id");
-            Log.d(this.getClass().getName(), "РодительскийUUDТаблицыТабель" + РодительскийUUDТаблицыТабель);
             class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля = new Class_GRUD_SQL_Operations(getApplicationContext());
             class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы", "SuccessLogin");
             class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки", "id");
@@ -2509,26 +2405,14 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
             class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки", "date_update DESC");
             class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита", "1");
             // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
-            SQLiteCursor     Курсор_ИщемПУбличныйIDКогдаегоНетВстатике = (SQLiteCursor) class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля.
-                    new GetData(getApplicationContext()).getdata(class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
-                    Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков, Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
-            Log.d(this.getClass().getName(), "GetData " + Курсор_ИщемПУбличныйIDКогдаегоНетВстатике);
-            int  ПолученныйID=0;
-            // TODO: 07.09.2021  Реузльтат
-            if (Курсор_ИщемПУбличныйIDКогдаегоНетВстатике.getCount() > 0) {
-                Курсор_ИщемПУбличныйIDКогдаегоНетВстатике.moveToFirst();
-                ПолученныйID = Курсор_ИщемПУбличныйIDКогдаегоНетВстатике.getInt(0);
-                Log.d(this.getClass().getName(), " Курсор_ИщемПУбличныйIDКогдаегоНетВстатике " + Курсор_ИщемПУбличныйIDКогдаегоНетВстатике.getCount()+
-                        "  ПолученныйID " +ПолученныйID);
-            }
-            Log.d(this.getClass().getName(), " String.valueOf(ПолученныйID[0]) " + String.valueOf(ПолученныйID));
-            Integer ПолучениПубличныйID = ПолученныйID;
-            АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("user_update", ПолучениПубличныйID);
-            МетодГенерацииUUIDУжеСуществующегоСотрудника = 0l;
-            МетодГенерацииUUIDУжеСуществующегоСотрудника = (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID(getApplicationContext());
-            Log.d(this.getClass().getName(), " МетодГенерацииUUIDУжеСуществующегоСотрудника " + МетодГенерацииUUIDУжеСуществующегоСотрудника);
-            АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("uuid", МетодГенерацииUUIDУжеСуществующегоСотрудника);
-            Log.d(this.getClass().getName(), " current_table УВЕЛИЧИВАЕМ ВЕРИСЮ ДАННЫХ ВНУТРИ ТАБЛИЦЫ  РезультатУвеличинаяВерсияДАныхЧата  " + РезультатУвеличинаяВерсияДАныхЧата);
+            Integer ПубличноеID=    new SubClassGetPublicId().ПубличныйID(getApplicationContext());
+            АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("user_update", ПубличноеID);
+            АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("uuid", UUIDgeneratorOpertion);
+            // TODO: 17.04.2023
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  +  "АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель "
+                    +АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель);
         }
     } catch (Exception e) {
         e.printStackTrace();
