@@ -1320,7 +1320,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                             PositionCustomer=PositionCustomer-1;
                             cursor.moveToPosition(PositionCustomer);
                         }else {
-                            cursor.moveToFirst();
+                            cursor.moveToLast();
                         }
                             CurrenrsСhildUUID=       cursor.getLong(cursor.getColumnIndex("uuid"));
                             CurrenrsSelectFio=       cursor.getLong(cursor.getColumnIndex("fio"));
@@ -1328,6 +1328,16 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
                         recyclerView.getAdapter().notifyDataSetChanged();
                         myRecycleViewAdapter.notifyDataSetChanged();
+
+                            // TODO: 14.04.2023 ЧАСЫ
+                            методСчитаемЧасы(cursor);
+                            // TODO: 04.04.2023  ФИО
+                            new SubClassChanegeSetNameProffesio().    МетодЗаполняемФИОRow(cursor);
+                            // TODO: 16.04.2023 Професии Професии Професии Професии
+                            МетодаКликаTableRowФИО( );
+
+                            // TODO: 07.04.2023 переопрелделния Вида Табеля
+                            МетодПерегрузкаSingletabel();
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
@@ -1380,7 +1390,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                     PositionCustomer=PositionCustomer+1;
                                     cursor.moveToPosition(PositionCustomer);
                                 }else {
-                                    cursor.moveToLast();
+                                    cursor.moveToFirst();
                                 }
                                 CurrenrsСhildUUID=       cursor.getLong(cursor.getColumnIndex("uuid"));
                                 CurrenrsSelectFio=       cursor.getLong(cursor.getColumnIndex("fio"));
@@ -1388,6 +1398,16 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
                                 recyclerView.getAdapter().notifyDataSetChanged();
                                 myRecycleViewAdapter.notifyDataSetChanged();
+
+
+                                // TODO: 14.04.2023 ЧАСЫ
+                                методСчитаемЧасы(cursor);
+                                // TODO: 04.04.2023  ФИО
+                                new SubClassChanegeSetNameProffesio().    МетодЗаполняемФИОRow(cursor);
+                                // TODO: 16.04.2023 Професии Професии Професии Професии
+                                МетодаКликаTableRowФИО( );
+
+                                МетодПерегрузкаSingletabel();
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
@@ -1607,31 +1627,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             }
 
 
-            private void МетодПерегрузкаSingletabel() {
-                try {
-                    message.getTarget().postDelayed(()->{
-                        ProgressBarSingleTabel.setVisibility(View.INVISIBLE);
-                    },500);
-                        recyclerView.requestLayout();
-                        recyclerView.refreshDrawableState();
-                        Scrollviewsingletabel.refreshDrawableState();
-                        TextViewФИОиЧасыСотрудника.refreshDrawableState();
-                        TextViewФИОиЧасыСотрудника.requestLayout();
-                        constraintLayoutsingletabel.refreshDrawableState();
-                        constraintLayoutsingletabel.requestLayout();
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                            + " constraintLayoutsingletabel "+ constraintLayoutsingletabel);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                            Thread.currentThread().getStackTrace()[2].getMethodName(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
-            }
 
             private void МетодПерегрузкаЧасыSingletabel() {
                 try {
@@ -2635,6 +2630,33 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
                 new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                         this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+
+
+        private void МетодПерегрузкаSingletabel() {
+            try {
+                message.getTarget().postDelayed(()->{
+                    ProgressBarSingleTabel.setVisibility(View.INVISIBLE);
+                },500);
+                recyclerView.requestLayout();
+                recyclerView.refreshDrawableState();
+                Scrollviewsingletabel.refreshDrawableState();
+                TextViewФИОиЧасыСотрудника.refreshDrawableState();
+                TextViewФИОиЧасыСотрудника.requestLayout();
+                constraintLayoutsingletabel.refreshDrawableState();
+                constraintLayoutsingletabel.requestLayout();
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " constraintLayoutsingletabel "+ constraintLayoutsingletabel);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(),
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
