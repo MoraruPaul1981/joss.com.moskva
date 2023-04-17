@@ -35,17 +35,12 @@ import java.util.concurrent.Executors;
 import javax.inject.Inject;
 
 public class MyWork_Async_Синхронизация_Общая extends Worker {
-
     private String ИмяСлужбыСинхронизации="WorkManager Synchronizasiy_Data";
-
-    private WorkInfo WorkManagerОБЩИЙ;
     @Inject
     private Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal class_generation_sendBroadcastReceiver_and_firebase_oneSignal;
     private Service_For_Remote_Async localBinderAsync;
     private      ServiceConnection serviceConnection;
     private  String КлючДляFirebaseNotification = "2a1819db-60c8-4ca3-a752-1b6cd9cadfa1";
-    private    String СтатусРаботыСлужбыСинхронизации;
-
     private Service_For_Remote_Async service_for_remote_async;
     // TODO: 28.09.2022
     public MyWork_Async_Синхронизация_Общая(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -123,7 +118,8 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
     // TODO: 26.12.2021  метод регистации на СЕРВЕРА ONESIGNAL
     private void МетодРегистрацииУстройсвоНАFirebaseAndOneSignal() {
         try{
-            Integer  ПубличныйIDДляФрагмента=   new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
+            Integer  ПубличныйIDДляФрагмента=   new Class_Generations_PUBLIC_CURRENT_ID()
+                    .ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
             new Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal(getApplicationContext()).
                     МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal(КлючДляFirebaseNotification,ПубличныйIDДляФрагмента);
             //TODO ФУТУРЕ ЗАВЕРШАЕМ
@@ -153,6 +149,7 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
         Integer     ФинальныйРезультатAsyncBackgroud = 0;
         Data   myDataОтветОбщейСлужбы=null;
         try {
+            //while (  serviceConnection!=null);
             // TODO: 25.03.2023  ждем биндинга с службой синхронизации
             class_generation_sendBroadcastReceiver_and_firebase_oneSignal =
                     new Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal(getApplicationContext());
@@ -191,6 +188,9 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
                     + e.toString());
         }
         if (ФинальныйРезультатAsyncBackgroud>0 ) {
+
+            МетодЗапускаПослеУспешнойСтинхронизацииOneSignalИУведомления();
+
             return Result.success(myDataОтветОбщейСлужбы);
        /*    if (WorkManagerОБЩИЙ.getRunAttemptCount()<2) {
                 return Result.retry();

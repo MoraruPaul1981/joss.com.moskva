@@ -312,7 +312,6 @@ public class Service_For_Remote_Async extends IntentService {
             Intent intentПослеСинхроницииРегламентаняРаботаУдалениеДанных=new Intent();
             intentПослеСинхроницииРегламентаняРаботаУдалениеДанных.setClass(context, Service_For_Public.class);
             intentПослеСинхроницииРегламентаняРаботаУдалениеДанных.setAction("ЗапускУдалениеСтатусаУдаленияСтрок");
-            while (localBinderОбщий==null);
             // TODO: 25.03.2023 дополнительное удаление после синхрониазции статус Удаленныц
             localBinderОбщий.getService().МетодГлавныйPublicPO(context,intentПослеСинхроницииРегламентаняРаботаУдалениеДанных);
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
