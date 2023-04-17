@@ -1074,65 +1074,31 @@ import okio.BufferedSink;
 
 
     /////////КОНТЕЙНЕР ВСТВКИ ДАННЫХ УНИВЕРСАЛЬНЫЙ
-    public Long ВставкаДанныхЧерезКонтейнерТолькоПриСозданииНовогоСотрудникаУниверсальная(String ТаблицаКудаВставляем, ContentValues КонтейнерДляВставкиНовогоСотрудника,
-                                                                                          String ИмяТаблицыОтАндройда_Локальноая,
-                                                                                          String ПолученнаяДатаДляПониманияДатуСейчасВставляетьИлиНет)  {
-        ///////////////////////////////////////////////////////////////////////////
-        ///////ПОПЫТКА ПОДКЛЮЧЧЕНИЕ К ИНТРЕНТУ
-        //AsyncTask AsyncTaskУнивермальныйДляОбмена=null;
+    public Long ВставкаДанныхЧерезКонтейнерТолькоПриСозданииНовогоСотрудникаУниверсальная(String ТаблицаКудаВставляем, ContentValues КонтейнерДляВставкиНовогоСотрудника)  {
+
 
         Long Результат_ВставкиДанныхТолькоДляСотрудникаНового = 0l;
-        ////
         Integer Результат_ПриписиИзменнийВерсииДанных = 0;
-
-
-
-        Long ВытаскиваемПОвышенуюВерисюДанныхВнутриПоля_CurrenTable=КонтейнерДляВставкиНовогоСотрудника.getAsLong("current_table");
-
-        System.out.println(" Вставка Данных Через Контейнер Универсальная  ВытаскиваемПОвышенуюВерисюДанныхВнутриПоля_CurrenTable "+ ВытаскиваемПОвышенуюВерисюДанныхВнутриПоля_CurrenTable);
-
-
         Class_GRUD_SQL_Operations class_grud_sql_operationsВставкаСотрудника;
-        ////TOdo начинаем таранзакццию
-
             try {
-
-
+                Long ВытаскиваемПОвышенуюВерисюДанныхВнутриПоля_CurrenTable=КонтейнерДляВставкиНовогоСотрудника.getAsLong("current_table");
                     class_grud_sql_operationsВставкаСотрудника=new Class_GRUD_SQL_Operations(context);
-
                     /////TODO параменты для вставки
-
-
                     class_grud_sql_operationsВставкаСотрудника.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы",ТаблицаКудаВставляем);
-
-
                     /////TODO контейнер для вставки
-
                     class_grud_sql_operationsВставкаСотрудника.contentValuesДляSQLBuilder_Для_GRUD_Операций.putAll(КонтейнерДляВставкиНовогоСотрудника);
-
-
-                    // TODO: 06.09.2021  сама вставка нового сотрукдника
-
-
                     ///TODO РЕЗУЛЬТА изменения версии данных
                     Результат_ВставкиДанныхТолькоДляСотрудникаНового= (Long)  class_grud_sql_operationsВставкаСотрудника.
                             new InsertData(context).insertdata(class_grud_sql_operationsВставкаСотрудника. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
                             class_grud_sql_operationsВставкаСотрудника.contentValuesДляSQLBuilder_Для_GRUD_Операций ,
                             Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,
                             Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
-
-
-                    /////
                     Log.d(this.getClass().getName(), " Результат_ВставкиДанныхТолькоДляСотрудникаНового  "+Результат_ВставкиДанныхТолькоДляСотрудникаНового);
-
-
                     if(Результат_ВставкиДанныхТолькоДляСотрудникаНового==null){
-                        ///
                         Результат_ВставкиДанныхТолькоДляСотрудникаНового=0l;
                     }
             } catch (Exception e) {///////ошибки
                 e.printStackTrace();
-                ///метод запись ошибок в таблицу
                 Log.e(Class_MODEL_synchronized.class.getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                         " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
                 new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), Class_MODEL_synchronized.class.getName(),
