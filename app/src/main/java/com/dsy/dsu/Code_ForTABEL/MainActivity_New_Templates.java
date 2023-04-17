@@ -33,6 +33,7 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.UiThread;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
@@ -1265,8 +1266,9 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                                 // TODO: 14.03.2021 метод записываем сотрудников в табель на базе ранее созданого шаблона
                                 СообщениеЗаполнениеСотрудниковИзШаблона("Шаблоны", "Заполнить Табель из Шаблона ? :"
                                                 + "\n" + "\n" + stringBuffer.toString() + ":" + lines + " кол.", true,
-                                        Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней, Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм, ПередаемСозданнуюНазваниеТабеля,
-                                        ПередаваемыйИзКнопкиПолучаемUUIDТабеля,lines);
+                                        Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней,
+                                        Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм, ПередаемСозданнуюНазваниеТабеля,
+                                        ПередаваемыйИзКнопкиПолучаемUUIDТабеля,lines,v);
 
 
                                 /////
@@ -2084,7 +2086,8 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                                                            SQLiteCursor Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм,
                                                            String ПередаемСозданнуюНазваниеТабеля,
                                                            Object ПередаваемыйИзКнопкиПолучаемUUIDТабеля
-            , int lines) {
+            , int lines,
+                                                           @NonNull TextView view) {
         ///////СОЗДАЕМ ДИАЛОГ ДА ИЛИ НЕТ///////СОЗДАЕМ ДИАЛОГ ДА ИЛИ НЕТ
 //////сам вид
         final AlertDialog alertDialog = new MaterialAlertDialogBuilder(this)
@@ -2153,6 +2156,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                     bundleFind_Templates.putInt("DigitalNameCFO",  DigitalNameCFO);
                     bundleFind_Templates.putString("FullNameCFO", FullNameCFO);
                     bundleFind_Templates.putString("ИмесяцвИГодСразу",    ИмесяцвИГодСразу);
+                    bundleFind_Templates.putString("NameAddSelfTemplate",    view.getText().toString());
                     bundleFind_Templates.putLong("CurrenrsСhildUUID",  CurrenrsСhildUUID);
                     Интент_Find_Templates .putExtras(bundleFind_Templates);
                     startActivity( Интент_Find_Templates );
@@ -2160,7 +2164,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                            + " bundleFind_Templates "+bundleFind_Templates);
+                            + " bundleFind_Templates "+bundleFind_Templates  + " view " +view);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
