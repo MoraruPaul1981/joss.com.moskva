@@ -120,12 +120,12 @@
     <ScrollView
         android:id="@+id/ScrollViewListTabels"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="400dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="2dp"
-        android:background="#FFFFFF"
+        android:background="#D32F2F"
         app:layout_collapseMode="pin"
         app:layout_constraintBottom_toTopOf="@+id/КруглаяКнопкаСамТабель"
         app:layout_constraintEnd_toEndOf="parent"
@@ -134,23 +134,15 @@
         app:layout_constraintTop_toBottomOf="@+id/view2Линия"
         app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
-        <LinearLayout
-            android:id="@+id/ГлавныйКонтейнерТабель"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#F5FFFA"
-            android:orientation="vertical"
-            android:visibility="visible"
-            app:layout_collapseMode="pin"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap" />
-    </ScrollView>
+
+
 
 
 
     <ListView
         android:id="@+id/ListAllTabels"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="450dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginStart="1dp"
         android:layout_marginTop="1dp"
@@ -159,19 +151,20 @@
         android:backgroundTintMode="multiply"
         android:choiceMode="multipleChoice"
         android:layerType="software"
-
         android:orientation="vertical"
         android:scrollbars="horizontal|vertical"
         android:textAlignment="center"
         android:textDirection="firstStrong"
+        android:background="#7B1FA2"
         android:textSize="26dp"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/ScrollViewListTabels"
-        app:layout_constraintEnd_toEndOf="@+id/ScrollViewListTabels"
-        app:layout_constraintStart_toStartOf="@+id/ScrollViewListTabels"
-        app:layout_constraintTop_toTopOf="@+id/ScrollViewListTabels" />
+        app:layout_constraintBottom_toTopOf="@+id/КруглаяКнопкаСамТабель"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view2Линия" />
 
-
+    </ScrollView>
 
 
     <TextView
