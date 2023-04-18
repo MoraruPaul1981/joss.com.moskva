@@ -1,17 +1,13 @@
 package com.dsy.dsu.Code_For_Firebase_AndOneSignal_Здесь_КодДЛяСлужбыУведомленияFirebase;
 
-import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.database.sqlite.SQLiteCursor;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.util.Log;
 
-import androidx.annotation.BinderThread;
 import androidx.annotation.NonNull;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
@@ -44,7 +40,6 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
 
 import javax.crypto.NoSuchPaddingException;
 
@@ -53,7 +48,6 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.functions.Predicate;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -61,7 +55,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
  public class Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal  {
      private Context context;
-     private  String ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal = null;
+     private  String НовыйКлючОтOneSingnal = null;
      private  Class_Generator_One_WORK_MANAGER class_generator_one_work_manager;
     public Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal(@NonNull  Context context) {
         this.context=context;
@@ -225,15 +219,15 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
     // TODO: 14.11.2021  ПОВТОРЫЙ ЗАПУСК ВОРК МЕНЕДЖЕР
 
-    public String МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal(@NonNull String КлючДляFirebaseNotification,
+    public void МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal(@NonNull String КлючДляFirebaseNotification,
                                                                      Integer ОтправкаСообщенияТолькоСтрогоОдномуУказанномуСотрудника) {
 
         Class_GRUD_SQL_Operations class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal=new Class_GRUD_SQL_Operations(context);
         PUBLIC_CONTENT public_contentменеджер=new PUBLIC_CONTENT(context);
-         String ЛокальныйКлючНААндройдеПолученныйУжеСуществующийКлючНАONESIGNAl = null;
         try {
             // TODO: 23.12.2021 ЧЕТЫРЕ ПОПЫТКИ ПОДКЛЮЧЕНИЕ В СЕВРЕРУONESIGNAL
           Observable observableПолученияКлючаОтСервераOneSignal=  Observable.interval(5,TimeUnit.SECONDS)
+                  .delay(3,TimeUnit.SECONDS)
                   .take(30,TimeUnit.MINUTES)
                   .subscribeOn(Schedulers.single())
                   .flatMap((ТекущаяОперацияОбрабооткиКлючаОтСервера)->{
@@ -261,16 +255,21 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                           // TODO: 26.12.2021
                           Log.w(context.getClass().getName(), "   takeWhile МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal"  +"\n"+
                                   " Thread.currentThread().getName() " +Thread.currentThread().getName()+ "  o " +o);
-                          if (   ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal!=null) {
+                          if (   НовыйКлючОтOneSingnal !=null) {
 
                               Log.w(context.getClass().getName(), "  ДЛЯ ТЕКУЩЕГО ПОЛЬЗОВАТЕЛЯ (телефона)Ключ ПришелОтСЕРВЕРА SUCEESSSSSS !!!@!  " +
                                       " takeWhile МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal САМ КЛЮЧ ::::" +
                                       "  "+"\n"
-                                      +ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal  +"\n"+
+                                      + НовыйКлючОтOneSingnal +"\n"+
                                       " Thread.currentThread().getName() " +Thread.currentThread().getName());
                               // TODO: 04.01.2022
                               return false;
                           }else {
+                              Log.w(context.getClass().getName(), "  ДЛЯ ТЕКУЩЕГО ПОЛЬЗОВАТЕЛЯ (телефона)Ключ ПришелОтСЕРВЕРА SUCEESSSSSS !!!@!  " +
+                                      " takeWhile МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal САМ КЛЮЧ ::::" +
+                                      "  "+"\n"
+                                      + НовыйКлючОтOneSingnal +"\n"+
+                                      " Thread.currentThread().getName() " +Thread.currentThread().getName());
                               return true;
                           }
                       }
@@ -278,10 +277,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                   .doOnComplete(new Action() {
                       @Override
                       public void run() throws Throwable {
-                          Log.w(context.getClass().getName(), " doOnTerminate  МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal" +ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal);
+                          Log.w(context.getClass().getName(), " doOnTerminate  МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal" + НовыйКлючОтOneSingnal);
                           // TODO: 06.01.2022
                           МетодПослепингаПослеПолученияКлючаСервераOneSingmalЗапускаемЗаписьКлючаНового(class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal,
-                                  ЛокальныйКлючНААндройдеПолученныйУжеСуществующийКлючНАONESIGNAl,
                                   ОтправкаСообщенияТолькоСтрогоОдномуУказанномуСотрудника,
                                   public_contentменеджер);
                           // TODO: 06.01.2022
@@ -294,33 +292,26 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
             observableПолученияКлючаОтСервераOneSignal.subscribe(System.out::println);
             // TODO: 05.01.2022  ДЕЛАЕМ ПОДПИСКУ НА ОСУЩЕСТВЛЛЕНУЮ ДАННЫХ
         } catch (Exception e ) {
-            //  Block of code to handle errors
             e.printStackTrace();
-            ///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
             new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
 
-            // TODO: 11.05.2021 запись ошибок
-
-
         }
-
-        return ЛокальныйКлючНААндройдеПолученныйУжеСуществующийКлючНАONESIGNAl;
     }
 
 
     private void МетодПослепингаПослеПолученияКлючаСервераOneSingmalЗапускаемЗаписьКлючаНового(
             Class_GRUD_SQL_Operations class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal,
-                           String ЛокальныйКлючНААндройдеПолученныйУжеСуществующийКлючНАONESIGNAl,
                           Integer ОтправкаСообщенияТолькоСтрогоОдномуУказанномуСотрудника,
                            PUBLIC_CONTENT public_contentменеджер) {
         try{
+            String СтарыйКлючОтOneSignal = null;
             // TODO: 23.12.2021 второй код получние данных ключа если они еть и записатьв базу
-            if (ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal !=null) {
+            if (НовыйКлючОтOneSingnal !=null) {
                 Log.w("OneSignalExample", "РезультатЗаписиНовогоIDОтСервреаOneSignal "+  "РезультатЗаписиНовогоIDОтСервреаOneSignal   "
-                        + ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal);
+                        + НовыйКлючОтOneSingnal);
                 class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
                         concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","settings_tabels");
                 class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
@@ -331,7 +322,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                 //////
                 class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
                         concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1",
-                        ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal.trim());
+                        НовыйКлючОтOneSingnal.trim());
                 class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
                         concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки","date_update DESC");
                 class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
@@ -344,29 +335,29 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                 if(Курсор_ПолучаемУжеЗагруженныйЕслиНОНЕИзменильсяIDДляONESIGNAL.getCount()>0){
                     // TODO: 22.12.2021
                     Курсор_ПолучаемУжеЗагруженныйЕслиНОНЕИзменильсяIDДляONESIGNAL.moveToFirst();
-                    ЛокальныйКлючНААндройдеПолученныйУжеСуществующийКлючНАONESIGNAl=Курсор_ПолучаемУжеЗагруженныйЕслиНОНЕИзменильсяIDДляONESIGNAL.getString(0);
+                    СтарыйКлючОтOneSignal=Курсор_ПолучаемУжеЗагруженныйЕслиНОНЕИзменильсяIDДляONESIGNAL.getString(0);
                 }
-                Log.d(this.getClass().getName(), "ЛокальныйКлючНААндройдеПолученныйУжеСуществующийКлючНАONESIGNAl "+
-                        ЛокальныйКлючНААндройдеПолученныйУжеСуществующийКлючНАONESIGNAl +"\n"+
-                        " ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal " + ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal);
+                Log.d(this.getClass().getName(), "СтарыйКлючОтOneSignal "+
+                        СтарыйКлючОтOneSignal +"\n"+
+                        " НовыйКлючОтOneSingnal " + НовыйКлючОтOneSingnal);
                 // TODO: 10.12.2022 проверка условия сстоит записывать ключновый или нет от SINGONE FIREBASE
-                if (ЛокальныйКлючНААндройдеПолученныйУжеСуществующийКлючНАONESIGNAl ==null ||
-                        ! ЛокальныйКлючНААндройдеПолученныйУжеСуществующийКлючНАONESIGNAl.
-                                equalsIgnoreCase(ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal)) {
+                if (СтарыйКлючОтOneSignal ==null ||
+                        ! СтарыйКлючОтOneSignal.
+                                equalsIgnoreCase(НовыйКлючОтOneSingnal)) {
                     // TODO: 04.01.2022  ПРИШЕЛ НОВЫЙ КЛЮЧ И ЕГО НАДО ЗАПИСАТЬ ДЛЯ ONESINGNAL
                     new Класс_ЗаписываетНовоеЗначениееслиОноИзменилосьНаСервреаOneSignalДляТекущегоПользователя(context,
-                            ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal);
+                            НовыйКлючОтOneSingnal);
                     Log.w("OneSignalExample", " ВНИМАНИЕ !!!!!!  ЗАПИСЬ НОВОГО КЛЮЧА ДЛЯ ДАННОГО ПОЛЬЗОВАТЕЛЯ ONESIGNAL " +
                             "РезультатЗаписиНовогоIDОтСервреаOneSignal " + "\n"
-                            + "РезультатЗаписиНовогоIDОтСервреаOneSignal   " + ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal+"\n"+
-                            "ЛокальныйКлючНААндройдеПолученныйУжеСуществующийКлючНАONESIGNAl "+
-                            ЛокальныйКлючНААндройдеПолученныйУжеСуществующийКлючНАONESIGNAl);
+                            + "РезультатЗаписиНовогоIDОтСервреаOneSignal   " + НовыйКлючОтOneSingnal +"\n"+
+                            "СтарыйКлючОтOneSignal "+
+                            СтарыйКлючОтOneSignal);
                 }else{
                     Log.w("OneSignalExample", "СТАРЫЙ КЛЮЧ ДЕЙСТВУЕТ ДЛЯ КЛЮЧА ДЛЯ ДАННОГО ПОЛЬЗОВАТЕЛЯ ONESIGNAL  РезультатЗаписиНовогоIDОтСервреаOneSignal   "
-                            +  "ЛокальныйКлючНААндройдеПолученныйУжеСуществующийКлючНАONESIGNAl[0]   "
-                            + ЛокальныйКлючНААндройдеПолученныйУжеСуществующийКлючНАONESIGNAl
+                            +  "СтарыйКлючОтOneSignal[0]   "
+                            + СтарыйКлючОтOneSignal
                             +  "РезультатЗаписиНовогоIDОтСервреаOneSignal   "
-                            + ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal);
+                            + НовыйКлючОтOneSingnal);
                 }
                 Log.d(this.getClass().getName(), "ОтправкаСообщенияТолькоСтрогоОдномуУказанномуСотрудника "+ОтправкаСообщенияТолькоСтрогоОдномуУказанномуСотрудника  );
                 class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal=new Class_GRUD_SQL_Operations(context);
@@ -389,10 +380,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                     class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
                             concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика","  onesignal!=?  ");
                     class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1", ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal);
-                    Log.d(this.getClass().getName(), " ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal "+ ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal  );
-                    Log.d(this.getClass().getName(), "  СРАБОТАЛО ОТПРАВЛЯЕМ СООБЩЕНИЕ все мпользоватем кторые есть в базе  ............ SEND MESSAGE DSU1  ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal" +
-                            ""+ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal );
+                            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1", НовыйКлючОтOneSingnal);
+                    Log.d(this.getClass().getName(), " НовыйКлючОтOneSingnal "+ НовыйКлючОтOneSingnal);
+                    Log.d(this.getClass().getName(), "  СРАБОТАЛО ОТПРАВЛЯЕМ СООБЩЕНИЕ все мпользоватем кторые есть в базе  ............ SEND MESSAGE DSU1  НовыйКлючОтOneSingnal" +
+                            ""+ НовыйКлючОтOneSingnal);
                 }
                 // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
                 SQLiteCursor Курсор_ПолучаемВесьСписокIDДляONESIGNAL= null;
@@ -409,7 +400,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                         String КлючТекущйщийПолученныйДляОбменаOneSignal=  Курсор_ПолучаемВесьСписокIDДляONESIGNAL.getString(0).trim();
                         Log.d(this.getClass().getName(), "КлючТекущйщийПолученныйДляОбменаOneSignal "+КлючТекущйщийПолученныйДляОбменаOneSignal  );
                         Log.d(this.getClass().getName(), " КлючТекущйщийПолученныйДляОбменаOneSignal"+ КлючТекущйщийПолученныйДляОбменаOneSignal+"\n"+
-                                "ПоулчаемДляТекущегоПользователяIDОтOneSignal  "+ ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal);
+                                "ПоулчаемДляТекущегоПользователяIDОтOneSignal  "+ НовыйКлючОтOneSingnal);
                         Date Дата = null;
                         DateFormat dateFormat = null;//"yyyy-MM-dd HH:mm:ss.SSS"//"yyyy-MM-dd'T'HH:mm:ss'Z'"
                         Дата = Calendar.getInstance().getTime();
@@ -453,7 +444,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            ///метод запись ошибок в таблицу
                             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
                             new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
@@ -466,7 +456,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                 Log.e(this.getClass().getName(), " НЕТ ПОКА КЛЮЧА  ДЛЯ , СКОРЕЙ ВСЕГО ПЕРВЫЫЙ ЩЗАПУСК ПОСЛЕ КЛЮЧ ДЛЯ  OneSignal..."+"\n"+
                         "   OneSignal.getTriggerValueForKey(\"GT_PLAYER_ID\"); " + OneSignal.getTriggerValueForKey("GT_PLAYER_ID")+
                         "     OneSignal.getTriggers() " +   OneSignal.getTriggers()+"\n"+
-                        "    ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal " + ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal);
+                        "    НовыйКлючОтOneSingnal " + НовыйКлючОтOneSingnal);
             }
 
         } catch (Exception e ) {
@@ -510,13 +500,13 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
             OneSignal.sendTag("content_available", "true");
             //TODO srating......  oneSignal
         String ПушТОкен=    OneSignal.getDeviceState().getPushToken();
-            ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal = OneSignal.getDeviceState().getUserId();
+            НовыйКлючОтOneSingnal = OneSignal.getDeviceState().getUserId();
             // TODO: 15.12.2021
             Log.d(this.getClass().getName(), "  ПОСЛЕ КЛЮЧ ДЛЯ  OneSignal........  2a1819db-60c8-4ca3-a752-1b6cd9cadfa1 "+"\n"+
 
                     "   OneSignal.getTriggerValueForKey(\"GT_PLAYER_ID\"); " + OneSignal.getTriggerValueForKey("GT_PLAYER_ID")+
                     "     OneSignal.getTriggers() " +   OneSignal.getTriggers()+"\n"+
-                    "    ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal ОТ СЕРВЕРА ::: " + ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal+ "\n"+ПушТОкен);
+                    "    НовыйКлючОтOneSingnal ОТ СЕРВЕРА ::: " + НовыйКлючОтOneSingnal + "\n"+ПушТОкен);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
