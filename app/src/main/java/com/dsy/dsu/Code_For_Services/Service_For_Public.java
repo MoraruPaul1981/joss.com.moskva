@@ -1,5 +1,6 @@
 package com.dsy.dsu.Code_For_Services;
 import android.app.IntentService;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -113,7 +114,7 @@ public class Service_For_Public extends IntentService {
                 " УДАЛЕНИЕ СТАТУСА Удаленная !!!!!   Класс в процессе... " +  this.getClass().getName()+"\n"+
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
         this.context=getApplicationContext();
-        МетодГлавныйPublicPO(getApplicationContext(),intent);
+        МетодГлавныйPublicPO(getApplicationContext(),intent,null);
 // TODO: 30.06.2022 сама не постредствено запуск метода
     }
 
@@ -135,8 +136,8 @@ public class Service_For_Public extends IntentService {
         }
     }
 
-    public Integer МетодГлавныйPublicPO(@NonNull Context context, @NonNull Intent intent) {
-        Integer РезультатСинхрониазции=0;
+    public Integer МетодГлавныйPublicPO(@NonNull Context context, @NonNull Intent intent,@NonNull ProgressDialog progressDialog) {
+        Integer РезультатОперации=0;
         try{
             if( this.context==null){
                 this.context=context;
@@ -144,7 +145,8 @@ public class Service_For_Public extends IntentService {
             switch (intent.getAction()) {
                 case "ЗапускЗаполенеияИзПрошлыхМесяцев":
                     // TODO: 28.09.2022 Запуск Само Заполенеия Данных из Прошлого Месяца
-                    sibClassApplyFromBackPeriodof_заполененияТабеляИзПрошлогоМесяца.    МетодЗапускЗаполенеияИзПрошлыхМесяцев(context, intent);
+                    РезультатОперации=         sibClassApplyFromBackPeriodof_заполененияТабеляИзПрошлогоМесяца.
+                            МетодЗапускЗаполенеияИзПрошлыхМесяцев(context, intent,progressDialog);
                     Log.w(this.getClass().getName(), "   intent.getAction()  " + intent.getAction());
                     break;
                 // TODO: 25.09.2022 удаление статуса удаленных строк
@@ -166,7 +168,7 @@ public class Service_For_Public extends IntentService {
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
         }
-        return РезультатСинхрониазции;
+        return РезультатОперации;
     }
 // TODO: 15.02.2023
 public Cursor МетодПолучениеДанныхЧерезCursorLoader(@NonNull Context context, @NonNull Intent intent) {
@@ -196,17 +198,24 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
     class SibClassApplyFromBackPeriodof_ЗаполененияТабеляИзПрошлогоМесяца {
         Integer ГодСейчас = 0;
         Integer МесяцСейчас=0;
-        private void МетодЗапускЗаполенеияИзПрошлыхМесяцев(@NonNull Context context, @NonNull Intent intent) {
+        private Integer МетодЗапускЗаполенеияИзПрошлыхМесяцев(@NonNull Context context, @NonNull Intent intent,@NonNull ProgressDialog progressDialog) {
+            final Integer[] РезультатВставкиИзПрошлогоМесяца = {0};
             try {
                 SubClassCursorLoader cursorLoader=     new SubClassCursorLoader();
                 Log.w(this.getClass().getName(), "   context  " + context);
                 SQLiteDatabase sqLiteDatabaseДляЗаполенеяИзПрошлогоМесяца = new CREATE_DATABASE(getApplicationContext()).getССылкаНаСозданнуюБазу();
-                Integer ПубличныйIDДляЗаполененияИзПрошлогоМесяца = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
-                Bundle bundleПолучаемДанных = intent.getExtras();
-                Long UUIDПОискаПредыдущегоМЕсяцаТАбеля = bundleПолучаемДанных.getLong("UUIDРОДИТЕЛЬСКАЯУжеСозданогоТАбеля", 0l);
-                Integer СФОУжеСозданогоТАбеля = bundleПолучаемДанных.getInt("СФО", 0);
-                ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре = bundleПолучаемДанных.getString("ДепартаментТабеляПослеПодбораBACK", "");
-                //  Long ГенерироватьUUIDРОДИТЕЛЬСКАЯ = (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID(getApplicationContext());
+                Integer ПубличныйIDДляЗаполененияИзПрошлогоМесяца = new Class_Generations_PUBLIC_CURRENT_ID()
+                        .ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
+                 Bundle bundleПолучаемДанных =(Bundle)  intent.getExtras();
+                 Long   MainParentUUID=    bundleПолучаемДанных.getLong("MainParentUUID", 0);
+                 Integer    Position=    bundleПолучаемДанных.getInt("Position", 0);
+                Integer  ГодТабелей=  bundleПолучаемДанных.getInt("ГодТабелей", 0);
+                Integer   МЕсяцТабелей=  bundleПолучаемДанных.getInt("МЕсяцТабелей",0);
+                Integer   DigitalNameCFO=   bundleПолучаемДанных.getInt("DigitalNameCFO", 0);
+                 String   FullNameCFO=  bundleПолучаемДанных.getString("FullNameCFO", "");
+                String   ИмесяцвИГодСразу= bundleПолучаемДанных.getString("ИмесяцвИГодСразу", "");
+                Long     CurrenrsСhildUUID= bundleПолучаемДанных.getLong("CurrenrsСhildUUID", 0l);
+
                 // TODO: 21.09.2022
                 String ПолученяМесяцПростоАнализа = new SubClassMONTHONLY_ТолькоАнализ(getApplicationContext()).ГлавнаяДатаИВремяОперацийСБазойДанных();
                  МесяцСейчас = Optional.ofNullable(ПолученяМесяцПростоАнализа).map(Integer::new).orElse(0);
@@ -224,7 +233,6 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                 // TODO: 22.09.2022
                 Log.d(this.getClass().getName(), "ГодСейчас " + ГодСейчас + " МесяцСейчас " + МесяцСейчас);
                 //TODO ВЫЧИСЛЯЕМ ДАННЫЕ КОТОРЫЕ НА ВСТАВИТЬ
-                final Integer[] РезультатВставкиИзПрошлогоМесяца = {0};
                 // TODO: 15.02.2023 ГОД бежим по ЦИКЛЦУ
                 GregorianCalendar gregorianCalendarИзПрошлыхМесяцев = new GregorianCalendar();
                 gregorianCalendarИзПрошлыхМесяцев.set(GregorianCalendar.YEAR, ГодСейчас);
@@ -278,7 +286,7 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                                 Bundle bundle=new Bundle();
                                 bundle.putString("СамЗапрос","  SELECT * FROM  viewtabel WHERE year_tabels=?  AND month_tabels=?  AND cfo=?  AND status_send!=?");
                                 bundle.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(ФиналГодВставки),
-                                        String.valueOf( ФиналМесяцВставки),String.valueOf(СФОУжеСозданогоТАбеля),"Удаленная"});
+                                        String.valueOf( ФиналМесяцВставки),String.valueOf(DigitalNameCFO),"Удаленная"});
                                 bundle.putString("Таблица","viewtabel");
                                 Cursor     Курсор_ВытаскиваемПоследнийМесяцТабеля=      (Cursor)    cursorLoader.  CursorLoaders(context, bundle);
                                 Log.d(this.getClass().getName(), " Курсор_ВытаскиваемПоследнийМесяцТабеля" + Курсор_ВытаскиваемПоследнийМесяцТабеля);
@@ -287,7 +295,8 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                                     String ДатаОперации = new SubClassMONTHONLY(getApplicationContext()).ГлавнаяДатаИВремяОперацийСБазойДанных();
                                     // TODO: 16.02.2023 сама вставка
                                     РезультатВставкиИзПрошлогоМесяца[0] =
-                                            МетодСозданиеТабеляИДАнныхПрошлогоМесяца(context, ГодСейчас, МесяцСейчас, Курсор_ВытаскиваемПоследнийМесяцТабеля,СФОУжеСозданогоТАбеля);
+                                            МетодСозданиеТабеляИДАнныхПрошлогоМесяца(context, ГодСейчас, МесяцСейчас, Курсор_ВытаскиваемПоследнийМесяцТабеля,
+                                                    DigitalNameCFO,  progressDialog);
                                     Log.d(this.getClass().getName(), "  РезультатВставкиИзПрошлогоМесяца[0] " +  РезультатВставкиИзПрошлогоМесяца[0] );
                                 }
                                 Log.d(this.getClass().getName(), "  РезультатВставкиИзПрошлогоМесяца[0] " +  РезультатВставкиИзПрошлогоМесяца[0] );
@@ -307,8 +316,6 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() );
-                                // TODO: 25.11.2022 выход
-                                МетодОтображениеОперацииИзПрошлогоМЕсяца(context, "ВыходИзВставкиИзПрошлогоМесяца", РезультатВставкиИзПрошлогоМесяца[0]);
                             }
                         })
 
@@ -321,19 +328,22 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                 Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
             }
+            return  РезультатВставкиИзПрошлогоМесяца[0];
         }
 
         private Integer МетодСозданиеТабеляИДАнныхПрошлогоМесяца(@NonNull Context context,
                                                                  @NonNull  Integer ГодНазадДляЗаполнени,
                                                                  @NonNull   Integer МесяцИзПрошлогоМесяца,
                                                                  @NonNull    Cursor Курсор_ВытаскиваемПоследнийМесяцТабеля,
-                                                                 @NonNull Integer СФОУжеСозданогоТАбеля) {
+                                                                 @NonNull Integer DigitalNameCFO,
+                                                                 @NonNull ProgressDialog progressDialog) {
             ArrayList<Integer> integerArrayListВствавкаИзПрошлогоМесяц = null;
             try {
               integerArrayListВствавкаИзПрошлогоМесяц=new ArrayList<>();
                 ReentrantLock reentrantLock = new ReentrantLock();
                 Condition condition = reentrantLock.newCondition();
                 Курсор_ВытаскиваемПоследнийМесяцТабеля.moveToFirst();
+                progressDialog.setMax(Курсор_ВытаскиваемПоследнийМесяцТабеля.getCount());
                 reentrantLock.lock();
                 Long ParentUUID = (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID(getApplicationContext());
                 // TODO: 23.09.2022 ВСТАВЛЯЕМ ДАННЫЕ ВО ВТОРУЮ ТАБЛИЦЫ ДАТА_ТАБЕЛЬ
@@ -341,7 +351,7 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                         Курсор_ВытаскиваемПоследнийМесяцТабеля,
                         ГодНазадДляЗаполнени,
                         МесяцИзПрошлогоМесяца,
-                        СФОУжеСозданогоТАбеля,
+                        DigitalNameCFO,
                         ParentUUID);
                 Log.d(this.getClass().getName(), " РезультатВставкиВверхнеюТаблицы" + РезультатВставкиВверхнеюТаблицы);
                 condition.await(200, TimeUnit.MILLISECONDS);
@@ -364,8 +374,6 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                             condition.await(200, TimeUnit.MILLISECONDS);
                             condition.signal();
                         }
-                        // TODO: 25.11.2022 выход
-                        МетодОтображениеОперацииИзПрошлогоМЕсяца(context, "РезультатДобавенияСотрудникаИзПрошлогоМесяца",integerArrayListВствавкаИзПрошлогоМесяц.size());
                         Log.d(this.getClass().getName(), " Вторая Таблиуа Из Прошлого МЕссяца РезультатВставкиВНИжнуюТаюблицу");
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -376,9 +384,20 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                         Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
                     } finally {
                         reentrantLock.unlock();
+                        // TODO: 18.04.2023 прогресс бар
+                     Integer УспешнаяОпеарция=   integerArrayListВствавкаИзПрошлогоМесяц.size();
+                        // TODO: 18.04.2023
+                        progressDialog.setProgress(УспешнаяОпеарция);
+                        progressDialog.setMessage(УспешнаяОпеарция.toString());
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                + " integerArrayListВствавкаИзПрошлогоМесяц.size() "+integerArrayListВствавкаИзПрошлогоМесяц.size());
                     }
                 } while (Курсор_ВытаскиваемПоследнийМесяцТабеля.moveToNext());//TODO конец цикла заполения даными
                 Курсор_ВытаскиваемПоследнийМесяцТабеля.close();
+                progressDialog.dismiss();
+                progressDialog.cancel();
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -498,30 +517,6 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                 Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
             }
             return Integer.parseInt(ответОперцииВставкиТабель);
-        }
-
-
-
-        protected void МетодОтображениеОперацииИзПрошлогоМЕсяца(@NonNull Context context, String Статус, Integer Значение) {
-            try {
-                Intent intentЗапускаемИзСлужбыДляЛистТАбеля = new Intent();
-                intentЗапускаемИзСлужбыДляЛистТАбеля.setAction("LocalBroadcastВставкаИзПрошлогоМесяцаТабель");
-                Bundle bundleЗапускемBackДанные = new Bundle();
-                bundleЗапускемBackДанные.putInt("Значения", Значение);
-                bundleЗапускемBackДанные.putString("Статус", Статус);///"В процесс"
-                bundleЗапускемBackДанные.putString("ДепартаментТабеляПослеПодбораBACK", ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре);///"В процесс"
-                intentЗапускаемИзСлужбыДляЛистТАбеля.putExtras(bundleЗапускемBackДанные);
-                Log.w(this.getClass().getName(), "   bundleЗапускемBackДанные  " + bundleЗапускемBackДанные);
-                LocalBroadcastManager localBroadcastManagerИзСлужбыServiceForAllTabel = LocalBroadcastManager.getInstance(context);
-                localBroadcastManagerИзСлужбыServiceForAllTabel.sendBroadcast(intentЗапускаемИзСлужбыДляЛистТАбеля);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
-            }
         }
 
 
