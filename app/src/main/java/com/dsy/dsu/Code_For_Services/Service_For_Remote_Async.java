@@ -1972,35 +1972,11 @@ public class Service_For_Remote_Async extends IntentService {
                     if (БуферДанныхНаСервер.length() > 0) {
                         ПубличныйРезультатОтветаОтСерврераУспешно = 0;
                         ПубличныйРезультатОтветаОтСерврераУспешно = БуферДанныхНаСервер.length();
+                        РезультатУспешнойВставкиИлиОбновлениеCallBacksОтСервера=Integer.parseInt(БуферДанныхНаСервер.toString());
                     }
-                    Log.d(this.getClass().getName(), "БуферДанныхНаСервер.length() " + БуферДанныхНаСервер.length() +
-                            " БуферДанныхНаСервер " + БуферДанныхНаСервер.toString() );
-                    ////TODO  ОТВЕТ ОТ СЕРВЕРА ПОСЛЕ ОТПРАВКИ ДАННЫХ НА СЕРВЕР
-                    if (БуферДанныхНаСервер != null) {
-                        if (БуферДанныхНаСервер.length() > 0) {
-                            Log.d(this.getClass().getName(), "  БуферДанныхНаСервер.toString()  " + БуферДанныхНаСервер.toString());
-                            ДанныеПришёлВОтветОтМетодаPOST = БуферДанныхНаСервер.toString();
-                            Log.d(this.getClass().getName(), "  ДанныеПришёлВОтветОтМетодаPOST  " + ДанныеПришёлВОтветОтМетодаPOST);
+                    Log.d(this.getClass().getName(), "БуферДанныхНаСервер.length() " + БуферДанныхНаСервер.length()+
+                            " РезультатУспешнойВставкиИлиОбновлениеCallBacksОтСервера " +РезультатУспешнойВставкиИлиОбновлениеCallBacksОтСервера);
 
-                            ////todo дОПОЛНИТЕЛЬНЫЙ КОД ПОСИКА ДВННЫХ ИЗ ОТВЕТА ОТ СЕРВЕРА
-                            РезультатУспешнойВставкиИлиОбновлениеCallBacksОтСервера = МетодАнализОтветаОтСервера(БуферДанныхНаСервер);
-                        }
-                        ////TODO ответ от сервера РЕЗУЛЬТАТ
-                        Log.d(this.getClass().getName(), "Успешный Ответ от сервера ДанныеПришёлВОтветОтМетодаPOST в фоне " + ДанныеПришёлВОтветОтМетодаPOST+"" +
-                                " РезультатУспешнойВставкиИлиОбновлениеCallBacksОтСервера " +РезультатУспешнойВставкиИлиОбновлениеCallBacksОтСервера);
-                        if (ДанныеПришёлВОтветОтМетодаPOST.length() > 5) {
-                            РезультатУспешнойВставкиИлиОбновлениеCallBacksОтСервера = РезультатУспешнойВставкиИлиОбновлениеCallBacksОтСервера ;//TODO ДанныеПришёлВОтветОтМетодаPOST.length();
-
-                            Log.d(this.getClass().getName(), " СЛУЖБА УСПЕШНЫЙ ОТВКЕТ ОТ СЕРВЕРА ОТВЕТ CALBACKS  ДанныеПришёлВОтветОтМетодаPOST.length()  "
-                                    + ДанныеПришёлВОтветОтМетодаPOST.length() + " ДанныеПришёлВОтветОтМетодаPOST " + ДанныеПришёлВОтветОтМетодаPOST.toString()+
-                                    " РезультатУспешнойВставкиИлиОбновлениеCallBacksОтСервера " +РезультатУспешнойВставкиИлиОбновлениеCallBacksОтСервера);
-                        } else {
-                            Log.d(this.getClass().getName(), " NULL НОЛЬ ОБНОВЛЕНИЙ ИЛИ ВСТАВОК С СЕРВЕРА  СЛУЖБА УСПЕШНЫЙ ОТВКЕТ ОТ СЕРВЕРА ОТВЕТ CALBACKS  ДанныеПришёлВОтветОтМетодаPOST.length() ");
-                        }
-                    } else {
-                        Log.d(this.getClass().getName(), " Данных нет c сервера  БуферОтправкаДанных.length() в фоне " + БуферДанныхНаСервер.length());
-                    }
-                    Log.d(this.getClass().getName(), " ДанныеПришёлВОтветОтМетодаPOST " + ДанныеПришёлВОтветОтМетодаPOST);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -2009,48 +1985,6 @@ public class Service_For_Remote_Async extends IntentService {
                             Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
                 return РезультатУспешнойВставкиИлиОбновлениеCallBacksОтСервера;
-            }
-
-
-
-
-            //TODO get max versrsion data server
-
-            @NonNull
-            private Integer МетодАнализОтветаОтСервера(StringBuffer БуферОтправкаДанныхвФоне) {
-                Long  РезультатУспешнойВставкиИли=0l;
-                try{
-                    String ПолучениееыкОтветыОтСервераSQlServerАнализ= БуферОтправкаДанныхвФоне.toString();
-                    StringBuffer stringBufferРезульата;
-                    ArrayList<Long> ФинальныСписокЦифр=new ArrayList();
-                    String[] words = ПолучениееыкОтветыОтСервераSQlServerАнализ.split("таблица");
-                    for (String word : words) {
-                        System.out.println(word);
-                        Integer ЕслиТакойПоискаОригинальноВерсииДанныхОтСервера = word.indexOf("OriginalVesion :::");
-                        if (ЕслиТакойПоискаОригинальноВерсииДанныхОтСервера>0) {
-                            //TODO
-                            Integer КонецПоискаОригинальноВерсииДанныхОтСервера = word.lastIndexOf(":::")+3;
-                            stringBufferРезульата=new StringBuffer();
-                            stringBufferРезульата.append(word.substring(КонецПоискаОригинальноВерсииДанныхОтСервера, word.length()).replace(" ","")  );
-                            ФинальныСписокЦифр.add(Long.parseLong(stringBufferРезульата.toString()));
-                            ////TODO ответ от сервера РЕЗУЛЬТАТ
-                            Log.d(this.getClass().getName(), " word.substring(КонецПоискаОригинальноВерсииДанныхОтСервера, КонецПоискаОригинальноВерсииДанныхОтСервера) "
-                                    +  word.substring(КонецПоискаОригинальноВерсииДанныхОтСервера, КонецПоискаОригинальноВерсииДанныхОтСервера));
-                        }
-                    }
-                 РезультатУспешнойВставкиИли = ФинальныСписокЦифр
-                            .stream()
-                            .mapToLong(v -> v)
-                            .max().orElse(0);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    // TODO: 01.09.2021 метод вызова
-                    new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
-                return РезультатУспешнойВставкиИли.intValue();
             }
 
         }
