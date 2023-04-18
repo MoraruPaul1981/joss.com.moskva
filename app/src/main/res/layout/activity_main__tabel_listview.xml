@@ -13,7 +13,7 @@
 
 
     <ListView
-        android:id="@+id/ЛистВсеСотрудникаВТАбеле"
+        android:id="@+id/ListAllTabels"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
@@ -185,7 +185,7 @@
         app:fabSize="auto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ЛистВсеСотрудникаВТАбеле"
+        app:layout_constraintTop_toBottomOf="@+id/ListAllTabels"
         app:srcCompat="@drawable/icon_dsu1_plus_tabel" />
 
     <ScrollView

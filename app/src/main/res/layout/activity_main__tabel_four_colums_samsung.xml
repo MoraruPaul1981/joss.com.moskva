@@ -185,7 +185,7 @@
         tools:visibility="visible" />
 
     <ScrollView
-        android:id="@+id/ScrollViewСамТабеля"
+        android:id="@+id/ScrollViewListTabels"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="#F5FFFA"
@@ -233,7 +233,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ScrollViewСамТабеля"
+        app:layout_constraintTop_toBottomOf="@+id/ScrollViewListTabels"
         app:srcCompat="@drawable/icon_dsu1_singlescroll_forfartbest" />
 
     <ImageButton
@@ -246,7 +246,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ScrollViewСамТабеля"
+        app:layout_constraintTop_toBottomOf="@+id/ScrollViewListTabels"
         app:srcCompat="@drawable/icon_dsu1_singlescroll_tbest" />
 
 

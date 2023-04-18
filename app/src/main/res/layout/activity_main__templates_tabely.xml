@@ -74,7 +74,7 @@
         android:scaleType="centerCrop"
         android:stateListAnimator="@android:animator/fade_in"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/ScrollViewСамТабеля"
+        app:layout_constraintBottom_toTopOf="@+id/ScrollViewListTabels"
         app:layout_constraintStart_toEndOf="@+id/textView3СловоТабель"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/icon_dsu1_new_tamplas_create" />
@@ -92,7 +92,7 @@
         app:backgroundTint="#00ACC1"
         app:fabSize="auto"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/ScrollViewСамТабеля" />
+        app:layout_constraintEnd_toEndOf="@id/ScrollViewListTabels" />
 
     <View
         android:id="@+id/view2Линия"
@@ -108,7 +108,7 @@
         tools:visibility="visible" />
 
     <ScrollView
-        android:id="@+id/ScrollViewСамТабеля"
+        android:id="@+id/ScrollViewListTabels"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="3dp"

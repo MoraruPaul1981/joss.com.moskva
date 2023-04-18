@@ -33,8 +33,6 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.UiThread;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.loader.content.CursorLoader;
 
 import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
@@ -47,7 +45,6 @@ import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassGetPublicId;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
-import com.dsy.dsu.Code_For_Services.Service_For_Public;
 import com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_App;
 import com.dsy.dsu.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -61,7 +58,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
@@ -145,7 +141,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         /////
-        ScrollНаАктивтиСозданныхТабелей = (ScrollView) findViewById(R.id.ScrollViewСамТабеля); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
+        ScrollНаАктивтиСозданныхТабелей = (ScrollView) findViewById(R.id.ScrollViewListTabels); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
         LinearLayoutСозданныхТабелей = (LinearLayout) findViewById(R.id.ГлавныйКонтейнерТабель); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
         КнопкаНазадВсеТабеля = findViewById(R.id.КонопкаНазадСтрелкаВсеТабеля);
         TExtvieeСловоТабельВсегоШАблонов = (TextView) findViewById(R.id.textView3СловоТабель);
