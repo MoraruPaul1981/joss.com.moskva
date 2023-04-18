@@ -208,11 +208,15 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
                                             методАвторизацииЛогинИПаполь(v,getApplicationContext(),preferences,ПубличноеЛогин,ПубличноеПароль);
                                     Log.d(this.getClass().getName(), " БуферПолученнниеДанныхПолученияIDотСервера "+
                                             БуферПолученнниеДанныхПолученияIDотСервера) ;
-                                    Bundle bundleРезультатПарольЛогин=new Bundle();
-                                    bundleРезультатПарольЛогин.putString("БуферПолученнниеДанныхПолученияIDотСервера",
-                                         БуферПолученнниеДанныхПолученияIDотСервера.toString());
-                                    message.setData(bundleРезультатПарольЛогин);
-                                    message.sendToTarget();
+                                    if (БуферПолученнниеДанныхПолученияIDотСервера!=null) {
+                                        Bundle bundleРезультатПарольЛогин=new Bundle();
+                                        bundleРезультатПарольЛогин.putString("БуферПолученнниеДанныхПолученияIDотСервера",
+                                             БуферПолученнниеДанныхПолученияIDотСервера.toString());
+                                        message.setData(bundleРезультатПарольЛогин);
+                                        message.sendToTarget();
+                                    }else {
+                                        Snackbar.make(v, "Логин/Пароль не подходят !!! ", Snackbar.LENGTH_LONG).show();
+                                    }
                                 });
                             }
                         } else {
@@ -253,6 +257,7 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
                         Thread.currentThread().getStackTrace()[2].getMethodName()+
                         " время " +new Date().toLocaleString() + " bundle " +bundle );
                 Log.i(this.getClass().getName(), "bundle " +bundle);
+
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
