@@ -80,7 +80,7 @@ public class FragmentDetailingMaterials extends Fragment {
     private  Cursor cursorДетализацияМатериала;
     private MyRecycleViewAdapter myRecycleViewAdapter;
     private MyViewHolder myViewHolder;
-    private  Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binder;
+    private  Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binderДляПолучениеМатериалов;
     private Integer ТекущаяЦФО=0;
     private Integer ТекущаяНомерМатериала=0;
     private Float  СуммаВыбраногоМатериала=0f;
@@ -105,7 +105,7 @@ public class FragmentDetailingMaterials extends Fragment {
             super.onCreate(savedInstanceState);
              data=      getArguments();
             if (data!=null) {
-                binder=  (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) data.getBinder("binder");
+                binderДляПолучениеМатериалов=  (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) data.getBinder("binder");
                 ТекущаяЦФО= data.getInt("Цфо");
                 ТекущаяНомерМатериала= data.getInt("НомерВыбраногоМатериала");
                 РодительскийМатериал   =data.getString("Материал");
@@ -115,7 +115,7 @@ public class FragmentDetailingMaterials extends Fragment {
                 start=     Calendar.getInstance().getTimeInMillis();
                 startДляОбноразвовной=     Calendar.getInstance().getTimeInMillis();
             }
-            Log.d(this.getClass().getName(), "  onViewCreated  FragmentDetailingMaterials  binder  "+binder+
+            Log.d(this.getClass().getName(), "  onViewCreated  FragmentDetailingMaterials  binderДляПолучениеМатериалов  "+binderДляПолучениеМатериалов+
                     " ТекущаяЦФО " +ТекущаяЦФО+ " ТекущаяНомерМатериала "+ТекущаяНомерМатериала+
                     "ВыбранныйМатериал "+ВыбранныйМатериал+"СуммаВыбраногоМатериала "+СуммаВыбраногоМатериала);
         } catch (Exception e) {
@@ -335,11 +335,11 @@ public class FragmentDetailingMaterials extends Fragment {
                         МетодЗапускаАнимацииКнопок(v);//todo только анимауия
                         Fragment      fragmentПолученыеМатериалов = new FragmentAdmissionMaterials();
                         Bundle data=new Bundle();
-                        data.putBinder("binder",binder);
+                        data.putBinder("binder",binderДляПолучениеМатериалов);
                         fragmentПолученыеМатериалов.setArguments(data);
                         fragmentTransaction = fragmentManager.beginTransaction();
                     //    fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                        fragmentTransaction.replace(R.id.activity_admissionmaterias_face, fragmentПолученыеМатериалов).commit();//.layout.activity_for_fragemtb_history_tasks
+                        fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragmentПолученыеМатериалов).commit();//.layout.activity_for_fragemtb_history_tasks
                         fragmentTransaction.show(fragmentПолученыеМатериалов);
                         Log.d(this.getClass().getName(), "  v  " + v);
                     } catch (Exception e) {
@@ -442,9 +442,9 @@ public class FragmentDetailingMaterials extends Fragment {
                     ,android. R.anim.slide_in_left,android. R.anim.slide_out_right);*/
             fragment_СозданиеНовогоМатериалов = new FragmentMaretialNew();
             Bundle data=new Bundle();
-            data.putBinder("binder",binder);
+            data.putBinder("binder",binderДляПолучениеМатериалов);
             fragment_СозданиеНовогоМатериалов.setArguments(data);
-            fragmentTransaction.replace(R.id.activity_admissionmaterias_face, fragment_СозданиеНовогоМатериалов).commit();//.layout.activity_for_fragemtb_history_task
+            fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragment_СозданиеНовогоМатериалов).commit();//.layout.activity_for_fragemtb_history_task
             fragmentTransaction.show(fragment_СозданиеНовогоМатериалов);
             Log.d(this.getClass().getName(), " fragment_СозданиеНовогоМатериалов " + fragment_СозданиеНовогоМатериалов);
         } catch (Exception e) {
@@ -809,7 +809,7 @@ public class FragmentDetailingMaterials extends Fragment {
             Log.d(this.getClass().getName(), "   ПубличныйIDДляФрагмента "+ ПубличныйIDДляФрагмента);
             intentПолучениеМатериалов.putExtras(bundleДляПЕредачи);
             //TODO получение данных от Службы ДЛя Получение Материалов
-                    cursorДетализацияМатериала = (Cursor) binder.getService().МетодCлужбыПолучениеМатериалов(getContext(), intentПолучениеМатериалов);
+                    cursorДетализацияМатериала = (Cursor) binderДляПолучениеМатериалов.getService().МетодCлужбыПолучениеМатериалов(getContext(), intentПолучениеМатериалов);
                     Log.d(this.getClass().getName(), "   cursorНомерМатериала " + cursorДетализацияМатериала);
                     if (cursorДетализацияМатериала.getCount() > 0) {
                         cursorДетализацияМатериала.moveToFirst();
@@ -1021,7 +1021,7 @@ public class FragmentDetailingMaterials extends Fragment {
                 }
                 // TODO: 13.10.2022  добавляем новый компонент в Нащ RecycreView
                 myViewHolder = new MyViewHolder(viewПолучениеМатериалов);
-                Log.i(this.getClass().getName(), "   myViewHolder" + myViewHolder + "  binder " +binder);
+                Log.i(this.getClass().getName(), "   myViewHolder" + myViewHolder + "  binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1206,7 +1206,7 @@ public class FragmentDetailingMaterials extends Fragment {
                                                     Intent intentДляУдалениеМатериалов=new Intent("УдалениеВыбранныеМатериалыДетализации");
                                                     intentДляУдалениеМатериалов.putExtras(bundleПереходУдалениеМатериала);
                                                     Log.d(this.getClass().getName(), "  v  " + v+ " UUIDДляУдаления " +UUIDДляУдаления);
-                                                    Integer РезультатСменыСтатусаНАУдалнной=    binder.getService().МетодCлужбыУдалениеМатериалов(getContext(),intentДляУдалениеМатериалов);
+                                                    Integer РезультатСменыСтатусаНАУдалнной=    binderДляПолучениеМатериалов.getService().МетодCлужбыУдалениеМатериалов(getContext(),intentДляУдалениеМатериалов);
                                                     Log.d(this.getClass().getName(), "  РезультатСменыСтатусаНАУдалнной  " + РезультатСменыСтатусаНАУдалнной);
                                                     if(РезультатСменыСтатусаНАУдалнной>0){
                                                         recyclerView.getAdapter().notifyItemRemoved(myViewHolder.getAdapterPosition());
@@ -1276,7 +1276,7 @@ public class FragmentDetailingMaterials extends Fragment {
                                         @Override
                                         public void onClick(View v) {
                                             Log.d(this.getClass().getName(), "  v  " + v+ " UUIDДляУдаления " +UUIDДляУдаления);
-                                            binder.getService().onCreate();
+                                            binderДляПолучениеМатериалов.getService().onCreate();
                                         }
                                     }).setActionTextColor(Color.WHITE)
                                     .setTextColor(Color.GRAY)

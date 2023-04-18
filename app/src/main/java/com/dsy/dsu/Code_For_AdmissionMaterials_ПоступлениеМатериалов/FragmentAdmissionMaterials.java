@@ -17,8 +17,6 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
-import androidx.loader.content.AsyncTaskLoader;
-import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.WorkInfo;
@@ -91,7 +89,6 @@ public class FragmentAdmissionMaterials extends Fragment {
     private FragmentTransaction fragmentTransaction;
     private Fragment fragment_СозданиеНовогоМатериалов;
     private  TextView   textViewНазваниеФрагмента;
-    private AsyncTaskLoader<Cursor> asyncTaskLoader;
     long start;
     long startДляОбноразвовной;
     private  Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binderДляПолучениеМатериалов;
@@ -105,12 +102,8 @@ public class FragmentAdmissionMaterials extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         try{
             super.onCreate(savedInstanceState);
-          /*  Bundle data=      getArguments();
-            if (data!=null) {
-                binderДляПолучениеМатериалов=  (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) data.getBinder("binder");
-            }*/
             // TODO: 27.09.2022  запускаем фрагмент получение материалов
-            МетодБиндингаПолучениеМатериалов();
+            методБиндингСлужбы();
             Log.d(this.getClass().getName(), "  onViewCreated  FragmentAdmissionMaterials  binderДляПолучениеМатериалов  "+binderДляПолучениеМатериалов);
         } catch (Exception e) {
             e.printStackTrace();
@@ -190,6 +183,11 @@ public class FragmentAdmissionMaterials extends Fragment {
         super.onStart();
         try{
             МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
+            if (cursorНомерЦФО!=null) {
+                МетодСлушательRecycleView();//todo создаем слушатель для recycreview для получение материалов
+                МетодСлушательКурсора();
+                МетодКпопкиЗначков(cursorНомерЦФО);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -201,43 +199,24 @@ public class FragmentAdmissionMaterials extends Fragment {
         }
     }
 
-    private void методПолучениеДаных() {
-        try{
-        if (binderДляПолучениеМатериалов!=null) {
-            asyncTaskLoader=new AsyncTaskLoader(getContext()) {
-                @Nullable
-                @Override
-                public Cursor loadInBackground() {
-                    МетодПолучениеДанныхДЛяПолучениеМатериалов("ПолучениеЦФО",0);
-                    return cursorНомерЦФО;
-                }
-            };
-            asyncTaskLoader.startLoading();
-            asyncTaskLoader.forceLoad();
-            asyncTaskLoader.registerListener(new Random().nextInt(), new Loader.OnLoadCompleteListener<Cursor>() {
-                @Override
-                public void onLoadComplete(@NonNull Loader<Cursor> loader, @Nullable Cursor cursorНомерЦФО) {
-                    asyncTaskLoader.reset();
-                    if (cursorНомерЦФО.toString().length()>0) {
-                        МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
-                        МетодКпопкиЗначков(cursorНомерЦФО);
-                        МетодСлушательRecycleView();//todo создаем слушатель для recycreview для получение материалов
-                        МетодСлушательКурсора();
-                    }
-                }
-            });
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(getContext().getClass().getName(),
-                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                Thread.currentThread().getStackTrace()[2].getLineNumber());
-    }
-    }
 
+    // TODO: 04.03.2022 прозвомжность Заполения RecycleView
+    void МетодЗаполенияRecycleViewДляЗадач() {
+        try {
+            Log.d(this.getClass().getName(), "sqLiteCursor  " + cursorНомерЦФО);
+            myRecycleViewAdapter = new MyRecycleViewAdapter(cursorНомерЦФО);
+            recyclerView.setAdapter(myRecycleViewAdapter);
+            Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(getContext().getClass().getName(),
+                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
 
     @Override
     public void onStop() {
@@ -282,23 +261,6 @@ public class FragmentAdmissionMaterials extends Fragment {
         }
     }
 
-    // TODO: 04.03.2022 прозвомжность Заполения RecycleView
-    void МетодЗаполенияRecycleViewДляЗадач() {
-        try {
-            Log.d(this.getClass().getName(), "sqLiteCursor  " + cursorНомерЦФО);
-            myRecycleViewAdapter = new MyRecycleViewAdapter(cursorНомерЦФО);
-            recyclerView.setAdapter(myRecycleViewAdapter);
-            Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(getContext().getClass().getName(),
-                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
 
     private void МетодИнициализацииRecycreView() {
         try{
@@ -411,10 +373,13 @@ public class FragmentAdmissionMaterials extends Fragment {
             Bundle data=new Bundle();
             data.putBinder("binder",binderДляПолучениеМатериалов);
             fragment_СозданиеНовогоМатериалов.setArguments(data);
-           // fragmentTransaction.replace(R.id.activity_admissionmaterias_face, fragment_СозданиеНовогоМатериалов).commit();//.layout.activity_for_fragemtb_history_task
-            fragmentTransaction.replace(R.id.activity_admissionmaterias_face, fragment_СозданиеНовогоМатериалов).commit();//.layout.activity_for_fragemtb_history_task
+            fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragment_СозданиеНовогоМатериалов).commit();//.layout.activity_for_fragemtb_history_task
             fragmentTransaction.show(fragment_СозданиеНовогоМатериалов);
-            Log.d(this.getClass().getName(), " fragment_СозданиеНовогоМатериалов " + fragment_СозданиеНовогоМатериалов);
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
@@ -512,8 +477,6 @@ public class FragmentAdmissionMaterials extends Fragment {
                 try {
                     Log.d(this.getClass().getName(), " msg  " + msg);
                     Bundle bundle = msg.getData();
-                    onStart();
-                    onResume();
                     progressBarСканирование.setVisibility(View.INVISIBLE);
                     Log.d(this.getClass().getName(), " bundle  " + bundle);
                 } catch (Exception e) {
@@ -1288,7 +1251,7 @@ public class FragmentAdmissionMaterials extends Fragment {
                             Fragment              fragmentAdmissionMaterialsDetailing = new FragmentDetailingMaterials();
                             bundleПереходДетализацию.putBinder("binder",binderДляПолучениеМатериалов);
                             fragmentAdmissionMaterialsDetailing.setArguments(bundleПереходДетализацию);
-                            fragmentTransaction.replace(R.id.activity_admissionmaterias_face, fragmentAdmissionMaterialsDetailing);//.layout.activity_for_fragemtb_history_tasks
+                            fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragmentAdmissionMaterialsDetailing);//.layout.activity_for_fragemtb_history_tasks
                             fragmentTransaction.commit();
                             fragmentTransaction.show(fragmentAdmissionMaterialsDetailing);
                             Log.d(this.getClass().getName(), " fragmentAdmissionMaterialsDetailing " + fragmentAdmissionMaterialsDetailing);
@@ -1427,7 +1390,7 @@ public class FragmentAdmissionMaterials extends Fragment {
             return КоличесвоСтрок;
         }
     }
-    private void МетодБиндингаПолучениеМатериалов() {
+    private void методБиндингСлужбы() {
         try {
             if (binderДляПолучениеМатериалов==null) {
                 message= Message.obtain(new Handler(Looper.myLooper()),()->{
@@ -1437,15 +1400,13 @@ public class FragmentAdmissionMaterials extends Fragment {
                             Thread.currentThread().getStackTrace()[2].getMethodName()+
                             " время " +new Date().toLocaleString() + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов );
                     Log.i(this.getClass().getName(), "bundle " +bundle);
-                    // TODO: 14.04.2023 запускаем материалы
-                    методПолучениеДаных();
-                    message.recycle();
+                    // TODO: 18.04.2023
+                     МетодПолучениеДанныхДЛяПолучениеМатериалов("ПолучениеЦФО",0);
+                    // TODO: 18.04.2023
+                    onStart();
                 });
                 // TODO: 27.03.2023 биндинг службы
                 new AllBindingService(getContext(), message). МетодБиндингМатериалы() ;
-            }else {
-                // TODO: 14.04.2023 запускаем материалы
-                методПолучениеДаных();
             }
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

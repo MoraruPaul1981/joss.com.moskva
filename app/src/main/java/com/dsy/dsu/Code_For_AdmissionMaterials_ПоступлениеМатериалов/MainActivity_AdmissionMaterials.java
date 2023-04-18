@@ -51,7 +51,7 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
                 | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
             fragmentManager = getSupportFragmentManager();
-           activity_admissionmaterias_face =  (LinearLayout) findViewById(R.id.activity_admissionmaterias_face);
+           activity_admissionmaterias_face =  (LinearLayout) findViewById(R.id.activity_admissionmaterias_mainface);
             ViewGroup.LayoutParams params = activity_admissionmaterias_face.getLayoutParams();
             params.height= ViewGroup.LayoutParams.WRAP_CONTENT;
             activity_admissionmaterias_face.setLayoutParams(params);
@@ -76,7 +76,7 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             fragment_ДляПолучениеМатериалов = new FragmentAdmissionMaterials();
-            fragmentTransaction.add(R.id.activity_admissionmaterias_face, fragment_ДляПолучениеМатериалов);//.layout.activity_for_fragemtb_history_tasks
+            fragmentTransaction.add(R.id.activity_admissionmaterias_mainface, fragment_ДляПолучениеМатериалов);//.layout.activity_for_fragemtb_history_tasks
             fragmentTransaction.commit();
             fragmentTransaction.show(fragment_ДляПолучениеМатериалов);
             Log.d(this.getClass().getName(), " fragment_ДляПолучениеМатериалов " + fragment_ДляПолучениеМатериалов);

@@ -308,7 +308,7 @@ public class FragmentMaretialNew extends Fragment {
                     try {
                         МетодЗапускаАнимацииКнопок(v);//todo только анимауия
                         handler.postDelayed(()->{
-                            МетодПереходаНаПредыдущыйФрагментBack();
+                            методBackToFragmentAdmissionMaterilas(v);
                             Log.d(this.getClass().getName(), " fragment_ДляПолучениеМатериалов " + fragmentПолученыеМатериалов);
                         },500);
                         Log.d(this.getClass().getName(), "  v  " + v);
@@ -333,18 +333,19 @@ public class FragmentMaretialNew extends Fragment {
         }
     }
 
-    private void МетодПереходаНаПредыдущыйФрагментBack() {
+    private void методBackToFragmentAdmissionMaterilas(@NonNull View v) {
         try{
-        fragmentTransaction = fragmentManager.beginTransaction();
-      //  fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            // TODO: 09.11.2022  переходим на детализацию Полученихы Материалов
+            МетодЗапускаАнимацииКнопок(v);//todo только анимауия
+            Fragment      fragmentПолученыеМатериалов = new FragmentAdmissionMaterials();
+            Bundle bundleСозданиеНовогоМатериала=new Bundle();
+            bundleСозданиеНовогоМатериала.putBinder("binder",binderДляПолучениеМатериалов);
+            fragmentПолученыеМатериалов.setArguments(bundleСозданиеНовогоМатериала);
             fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            fragmentПолученыеМатериалов = new FragmentAdmissionMaterials();
-            Bundle data=new Bundle();
-            data.putBinder("binder",binderДляПолучениеМатериалов);
-            fragmentПолученыеМатериалов.setArguments(data);
-            fragmentTransaction.add(R.id.activity_admissionmaterias_face, fragmentПолученыеМатериалов).commit();;//.layout.activity_for_fragemtb_history_tasks
+            //    fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragmentПолученыеМатериалов).commit();//.layout.activity_for_fragemtb_history_tasks
             fragmentTransaction.show(fragmentПолученыеМатериалов);
+
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(getContext().getClass().getName(),
@@ -1277,7 +1278,7 @@ public class FragmentMaretialNew extends Fragment {
 
 
                                 if (ХэшРезультататСозданияСозданиеНовогоМатериала>0) {
-                                    МетодПереходаНаПредыдущыйФрагментBack();
+                                    методBackToFragmentAdmissionMaterilas(v);
                                     // TODO: 17.11.2022 запоманаем выбраное цфо
                                     SharedPreferences.Editor editor = preferencesМатериалы.edit();
                                     editor.putBoolean("ДляСпинераУжеВибиралЦФО",true);
