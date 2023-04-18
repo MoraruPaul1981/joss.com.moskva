@@ -1723,10 +1723,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                    viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov, parent, false);
 
                     if (cursor.getCount()>0) {
-                        if (Build.BRAND.toString().contains("Samsung") ||Build.BRAND.toString().contains("Galaxy")
-                                || Build.BRAND.toString().contains("samsung") ||Build.BRAND.toString().contains("galaxy") ) {
-                            viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main_grid_for_tables_four_columns_samsung, parent, false);
-                        }  else {
                           // viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm, parent, false);
                             viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm_one_row, parent, false);
             if (myViewHolder!=null) {
@@ -1745,7 +1741,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 }
             }
 
-                        }
+
                     }else{
                         viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_isnull_single_tabel, parent, false);
                         Log.d(this.getClass().getName(),"\n" + " НЕт ДАнных class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

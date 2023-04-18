@@ -191,7 +191,7 @@
 
 
         <EditText
-            android:id="@+id/d1"
+            android:id="@+id/v1"
             android:layout_column="0"
             android:layout_width="87dp"
             android:layout_height="6mm"
@@ -213,7 +213,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/d2"
+            android:id="@+id/v2"
             android:layout_column="1"
             android:layout_width="87dp"
             android:layout_height="6mm"
@@ -234,7 +234,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/d3"
+            android:id="@+id/v3"
             android:layout_column="2"
             android:layout_width="87dp"
             android:layout_height="6mm"
