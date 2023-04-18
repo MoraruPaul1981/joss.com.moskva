@@ -1313,8 +1313,9 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 @Override
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                     try{
+                        recyclerView.smoothScrollToPosition(0);
                         ProgressBarSingleTabel.setVisibility(View.VISIBLE);
-                        message.getTarget().post(()->{
+                        message.getTarget().postDelayed(()->{
                     Integer posio= myViewHolder.getAbsoluteAdapterPosition();
                         if (PositionCustomer>0) {
                             PositionCustomer=PositionCustomer-1;
@@ -1339,11 +1340,14 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
                             // TODO: 07.04.2023 переопрелделния Вида Табеля
                             МетодПерегрузкаSingletabel();
+
+                            Scrollviewsingletabel.pageScroll(View.FOCUS_UP);
+
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
                                     " posio " +posio  + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
-                        });
+                        },50);
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor);
@@ -1384,8 +1388,9 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     @Override
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         try{
+                            recyclerView.smoothScrollToPosition(0);
                             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
-                            message.getTarget().post(()->{
+                            message.getTarget().postDelayed(()->{
                                 Integer posio= myViewHolder.getAbsoluteAdapterPosition();
                                 if (PositionCustomer<cursor.getCount()-1) {
                                     PositionCustomer=PositionCustomer+1;
@@ -1398,10 +1403,11 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 CurrenrsSelectFio=       cursor.getLong(cursor.getColumnIndex("fio"));
                                 ФИО=       cursor.getString(cursor.getColumnIndex("name"));
 
+
+
+
                                 recyclerView.getAdapter().notifyDataSetChanged();
                                 myRecycleViewAdapter.notifyDataSetChanged();
-
-
                                 // TODO: 14.04.2023 ЧАСЫ
                                 методСчитаемЧасы(cursor);
                                 // TODO: 04.04.2023  ФИО
@@ -1410,11 +1416,13 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 МетодаКликаTableRowФИО( );
 
                                 МетодПерегрузкаSingletabel();
+
+                                Scrollviewsingletabel.pageScroll(View.FOCUS_UP);
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
                                         " posio " +posio  + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
-                            });
+                            },50);
 
 
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1720,14 +1728,15 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             public  MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View viewSingleTabel = null;
                 try {
-                   viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov, parent, false);
+                    viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov, parent, false);
 
                     if (cursor.getCount()>0) {
                           // viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm, parent, false);
                             viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm_one_row, parent, false);
             if (myViewHolder!=null) {
-                switch (myViewHolder.getAbsoluteAdapterPosition()){
+                switch (   myViewHolder.getAbsoluteAdapterPosition()){
                     case 6:
+                    case 7:
                         viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm_last_row, parent, false);
                         break;
                     case 0:
@@ -1740,8 +1749,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         break;
                 }
             }
-
-
                     }else{
                         viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_isnull_single_tabel, parent, false);
                         Log.d(this.getClass().getName(),"\n" + " НЕт ДАнных class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
