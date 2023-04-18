@@ -64,7 +64,7 @@ import java.util.concurrent.LinkedTransferQueue;
 
 
 // TODO: 29.09.2022 фрагмент для получение материалов
-public class FragmentAdmissionMaterialsDetailing extends Fragment {
+public class FragmentDetailingMaterials extends Fragment {
     private Integer ПубличныйIDДляФрагмента;
     private RecyclerView recyclerView;
     private LinearLayout linearLayou;
@@ -96,7 +96,7 @@ public class FragmentAdmissionMaterialsDetailing extends Fragment {
     long start;
     long startДляОбноразвовной;
     // TODO: 27.09.2022 Фрагмент Получение Материалов
-    public FragmentAdmissionMaterialsDetailing() {
+    public FragmentDetailingMaterials() {
         // Required empty public constructor
     }
     @Override
@@ -115,7 +115,7 @@ public class FragmentAdmissionMaterialsDetailing extends Fragment {
                 start=     Calendar.getInstance().getTimeInMillis();
                 startДляОбноразвовной=     Calendar.getInstance().getTimeInMillis();
             }
-            Log.d(this.getClass().getName(), "  onViewCreated  FragmentAdmissionMaterialsDetailing  binder  "+binder+
+            Log.d(this.getClass().getName(), "  onViewCreated  FragmentDetailingMaterials  binder  "+binder+
                     " ТекущаяЦФО " +ТекущаяЦФО+ " ТекущаяНомерМатериала "+ТекущаяНомерМатериала+
                     "ВыбранныйМатериал "+ВыбранныйМатериал+"СуммаВыбраногоМатериала "+СуммаВыбраногоМатериала);
         } catch (Exception e) {
@@ -134,7 +134,7 @@ public class FragmentAdmissionMaterialsDetailing extends Fragment {
         try {
             view= inflater.inflate(R.layout.fragment_admission_materials_detelizaziy, container, false);
             this.container=container;
-            Log.d(this.getClass().getName(), " onCreateView FragmentAdmissionMaterialsDetailing" + view);
+            Log.d(this.getClass().getName(), " onCreateView FragmentDetailingMaterials" + view);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -175,7 +175,7 @@ public class FragmentAdmissionMaterialsDetailing extends Fragment {
             МетодСоздаенияСлушателяДляПолучениеМатериалаWorkMAnager();
             МетодСлушательКурсора();
             МетодСлушательRecycleView();//todo создаем слушатель для recycreview для получение материалов
-            Log.d(this.getClass().getName(), "  onViewCreated  FragmentAdmissionMaterialsDetailing  recyclerView  "+recyclerView+
+            Log.d(this.getClass().getName(), "  onViewCreated  FragmentDetailingMaterials  recyclerView  "+recyclerView+
                     " linearLayou "+linearLayou+"  fragmentManager "+fragmentManager);
         } catch (Exception e) {
             e.printStackTrace();
@@ -440,7 +440,7 @@ public class FragmentAdmissionMaterialsDetailing extends Fragment {
             //fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 /*            fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right
                     ,android. R.anim.slide_in_left,android. R.anim.slide_out_right);*/
-            fragment_СозданиеНовогоМатериалов = new FragmentCreateAdmissionmaterial();
+            fragment_СозданиеНовогоМатериалов = new FragmentMaretialNew();
             Bundle data=new Bundle();
             data.putBinder("binder",binder);
             fragment_СозданиеНовогоМатериалов.setArguments(data);

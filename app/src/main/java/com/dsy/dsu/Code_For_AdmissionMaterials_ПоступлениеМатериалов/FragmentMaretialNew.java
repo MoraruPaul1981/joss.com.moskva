@@ -66,7 +66,7 @@ import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 
-public class FragmentCreateAdmissionmaterial extends Fragment {
+public class FragmentMaretialNew extends Fragment {
     private RecyclerView recyclerView;
     private LinearLayout linearLayou;
     private BottomNavigationView bottomNavigationView;

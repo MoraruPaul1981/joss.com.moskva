@@ -407,7 +407,7 @@ public class FragmentAdmissionMaterials extends Fragment {
         try{
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            fragment_СозданиеНовогоМатериалов = new FragmentCreateAdmissionmaterial();
+            fragment_СозданиеНовогоМатериалов = new FragmentMaretialNew();
             Bundle data=new Bundle();
             data.putBinder("binder",binderДляПолучениеМатериалов);
             fragment_СозданиеНовогоМатериалов.setArguments(data);
@@ -1285,7 +1285,7 @@ public class FragmentAdmissionMaterials extends Fragment {
                             // TODO: 09.11.2022  переходим на детализацию Полученихы Материалов
                             fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                            Fragment              fragmentAdmissionMaterialsDetailing = new FragmentAdmissionMaterialsDetailing();
+                            Fragment              fragmentAdmissionMaterialsDetailing = new FragmentDetailingMaterials();
                             bundleПереходДетализацию.putBinder("binder",binderДляПолучениеМатериалов);
                             fragmentAdmissionMaterialsDetailing.setArguments(bundleПереходДетализацию);
                             fragmentTransaction.replace(R.id.activity_admissionmaterias_face, fragmentAdmissionMaterialsDetailing);//.layout.activity_for_fragemtb_history_tasks
