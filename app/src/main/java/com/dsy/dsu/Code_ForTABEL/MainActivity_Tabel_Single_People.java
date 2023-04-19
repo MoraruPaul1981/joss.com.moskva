@@ -1559,11 +1559,14 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             private void МетодИнициализацииRecycreViewSingleTabel(@NonNull View itemView) {
                 try {
                     // TODO: 04.04.2023  Иниуциализация Комепонетов
-                    TableLayoutSingleTabel = itemView.findViewById(R.id.TableLayoutSingleTabelOneRow);
-                    // TODO: 04.04.2023   NAME
-                    rowName= (TableRow) TableLayoutSingleTabel.findViewById(R.id.TableRow1Name);
-                    // TODO: 04.04.2023   Data
-                    rowData= (TableRow) TableLayoutSingleTabel.findViewById(R.id.TableData1Row);
+                        TableLayoutSingleTabel = itemView.findViewById(R.id.TableLayoutSingleTabelOneRow);
+                        if (TableLayoutSingleTabel!=null) {
+                            // TODO: 04.04.2023   NAME
+                            rowName= (TableRow) TableLayoutSingleTabel.findViewById(R.id.TableRow1Name);
+                            // TODO: 04.04.2023   Data
+                            rowData= (TableRow) TableLayoutSingleTabel.findViewById(R.id.TableData1Row);
+                        }
+
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" TableLayoutSingleTabel   " + TableLayoutSingleTabel+
@@ -1585,7 +1588,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             public MyRecycleViewAdapter(@NotNull Cursor cursor) {
                 try{
                 this.cursor = cursor;
-
                 if ( cursor!=null) {
                     if (cursor.getCount() > 0 ) {
                         // TODO: 16.04.2023  празники и авходные
@@ -1611,9 +1613,9 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 if (cursor!=null) {
                                     if (cursor.getCount() > 0 && holder.TableLayoutSingleTabel != null) {
                                         МетодЗаполняемДаннымиRecycreViewSingleTable(holder, cursor);
+                                     // TODO: 07.04.2023 переопрелделния Вида Табеля
+                                       МетодПерегрузкаSingletabel();
                                         Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
-                                        // TODO: 07.04.2023 переопрелделния Вида Табеля
-                                        МетодПерегрузкаSingletabel();
                                         Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
                                     } else {
                                         Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
