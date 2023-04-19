@@ -15,6 +15,7 @@ import android.os.Parcel;
 import android.os.RemoteException;
 import android.util.Log;
 
+import androidx.annotation.BinderThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -38,6 +39,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Optional;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
@@ -69,11 +71,21 @@ public class Service_For_Public extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
+        try{
         Log.d(context.getClass().getName(), "\n"
                 + " время: " + new Date()+"\n+" +
                 " Класс в процессе... " +  this.getClass().getName()+"\n"+
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
         sibClassApplyFromBackPeriodof_заполененияТабеляИзПрошлогоМесяца=new SibClassApplyFromBackPeriodof_ЗаполененияТабеляИзПрошлогоМесяца();
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
+    }
     }
 
     @Override
@@ -87,11 +99,21 @@ public class Service_For_Public extends IntentService {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+        try{
         Log.d(context.getClass().getName(), "\n"
                 + " время: " + new Date()+"\n+" +
                 " Класс в процессе... " +  this.getClass().getName()+"\n"+
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
         //   return super.onBind(intent);
+        localBinderОбщий.setCallingWorkSourceUid(new Random().nextInt());
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
+    }
         return localBinderОбщий;
     }
 
@@ -135,7 +157,7 @@ public class Service_For_Public extends IntentService {
             return    reply.readBoolean();
         }
     }
-
+    @BinderThread
     public Integer МетодГлавныйPublicPO(@NonNull Context context, @NonNull Intent intent,@NonNull ProgressDialog progressDialog) {
         Integer РезультатОперации=0;
         try{

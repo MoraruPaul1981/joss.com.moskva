@@ -661,15 +661,19 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                             view.findViewById(R.id.   linearLayoutSimpelCursorAllTabeles);
                     ImageView imageView  = (ImageView) linearLayoutSimpelCursorAllTabeles.getChildAt(0);
                     MaterialTextView materialTextView  = (MaterialTextView) linearLayoutSimpelCursorAllTabeles.getChildAt(1);
-                    Bundle bundleДЛяListTabels=(Bundle)           materialTextView.getTag();
-                    Long    MainParentUUID=      bundleДЛяListTabels.getLong("MainParentUUID");
-                    String    FullNameCFO=      bundleДЛяListTabels.getString("FullNameCFO");
-                    ///todo Удаление
-                    МетодУдалениеТАбеляСообщениеПередЭтим(MainParentUUID, FullNameCFO,view);
+                    materialTextView.setBackgroundColor(Color.BLACK);
+
+                    message.getTarget().postDelayed(()->{
+                        Bundle bundleДЛяListTabels=(Bundle)           materialTextView.getTag();
+                        Long    MainParentUUID=      bundleДЛяListTabels.getLong("MainParentUUID");
+                        String    FullNameCFO=      bundleДЛяListTabels.getString("FullNameCFO");
+                        ///todo Удаление
+                        МетодУдалениеТАбеляСообщениеПередЭтим(MainParentUUID, FullNameCFO,view);
+                            },200);
+
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                            + " bundleДЛяListTabels "+bundleДЛяListTabels );
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -695,8 +699,11 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
 
                     materialTextView.setBackgroundColor(Color.GRAY);
-                    // TODO: 09.04.2023  перехеод после клика Items
-                    МетодПереходMainActivity_List_Peoples(materialTextView);
+                    message.getTarget().postDelayed(()->{
+                        // TODO: 09.04.2023  перехеод после клика Items
+                        МетодПереходMainActivity_List_Peoples(materialTextView);
+                    },150);
+
 /////TODO одинатрный клик для загрузки в этот табель всех сотрудников
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1538,7 +1545,7 @@ try{
 
     void МетодУдалениеТАбеляСообщениеПередЭтим(  @NonNull Long СамUUIDТабеля,
                                                @NonNull String НазваниеУдаляемогоТАбеля,
-                                                 @NonNull  View v) throws InterruptedException {
+                                                 @NonNull  View v) {
 
         try{
             Long СамUUIDТабеляКакLONG= Long.valueOf(СамUUIDТабеля);
