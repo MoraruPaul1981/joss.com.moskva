@@ -538,7 +538,8 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             Bundle bundleListTabels=new Bundle();
             bundleListTabels.putString("СамЗапрос","  SELECT * FROM tabel WHERE status_send!=?  " +
                     "  AND month_tabels IS NOT NULL " +
-                    " AND year_tabels IS NOT NULL" +
+                    " AND year_tabels IS NOT NULL" +  "" +
+                    " GROUP BY month_tabels, year_tabels HAVING count(year_tabels )>0  "+
                     " ORDER BY year_tabels DESC ,month_tabels DESC LIMIT 6  ");
             bundleListTabels.putStringArray("УсловияВыборки" ,new String[]{String.valueOf("Удаленная")});
             bundleListTabels.putString("Таблица","tabel");
