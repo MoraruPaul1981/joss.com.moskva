@@ -557,7 +557,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             Log.d(this.getClass().getName(), " Курсор_Main_ListTabels " + Курсор_Main_ListTabels.getCount());
             // TODO: 18.04.2023 18.50 start simplrcursor    // TODO: 18.04.2023 18.50 start simplrcursor
             SimpleCursorAdapter simpleCursorAdapterAllTAbels =
-                    new SimpleCursorAdapter(getApplicationContext(), R.layout.list_item_all_customer_tabel2,
+                    new SimpleCursorAdapter(getApplicationContext(), R.layout.list_item_all_customer_tabel3,
                     Курсор_Main_ListTabels, new String[]{"_id","cfo"}, new int[]{android.R.id.text1,android.R.id.text2},
                             CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);  ///name
             SimpleCursorAdapter.ViewBinder binding = new SimpleCursorAdapter.ViewBinder() {
@@ -603,10 +603,10 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
 
                             case android.R.id.text1:
-
-                                Drawable icon2 = getResources().getDrawable(   R.drawable.icon_alltabels1);
-                                icon2.setBounds(0, 2, 100, 100);
+                                //Drawable icon2 = getResources().getDrawable(   R.drawable.icon_alltabels1);
+                                Drawable icon2 = getResources().getDrawable(   R.drawable.icon_alltabels4);
                                 ((ImageView) view).setImageDrawable(icon2);
+                                ((ImageView) view).setImageResource(R.drawable.icon_alltabels4);
 
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
