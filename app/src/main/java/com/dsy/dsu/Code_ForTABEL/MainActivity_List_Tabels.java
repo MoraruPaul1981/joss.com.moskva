@@ -522,75 +522,25 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
         try{
        TextView ДанныеСпинера=(TextView) СпинерВыборДату.getSelectedView();
        Bundle bundleДанныеИзСпинераДАт=(Bundle) ДанныеСпинера.getTag();
-            Log.d(this.getClass().getName(), "  FullNameCFO" +  FullNameCFO  + "ДанныеСпинера " +ДанныеСпинера  + " bundleДанныеИзСпинераДАт "
-                    +bundleДанныеИзСпинераДАт);
-
-                    Log.d(this.getClass().getName(), " ID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
-
-                        class_grud_sql_operationsДляАктивтиТабель= new Class_GRUD_SQL_Operations(getApplicationContext());
-                        class_grud_sql_operationsДляАктивтиТабель. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СамFreeSQLКОд",
-                                " SELECT id  FROM successlogin  ORDER BY date_update DESC ;");
-                        // TODO: 12.10.2021  Ссылка Менеджер Потоков
-                       SQLiteCursor Курсор_ПолучаемПубличныйID= (SQLiteCursor) class_grud_sql_operationsДляАктивтиТабель.
-                        new GetаFreeData(getApplicationContext()).getfreedata(class_grud_sql_operationsДляАктивтиТабель.
-                                concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
-                        Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
-                        Log.d(this.getClass().getName(), " Курсор_ПолучаемПубличныйID  " + Курсор_ПолучаемПубличныйID);
-                        if(Курсор_ПолучаемПубличныйID.getCount()>0){
-                            Курсор_ПолучаемПубличныйID.moveToFirst();
-                            ПубличноеIDПолученныйИзСервлетаДляUUID=         Курсор_ПолучаемПубличныйID.getInt(0);
-                            Log.d(this.getClass().getName(), " ID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
-                        }
-                        if(Курсор_ПолучаемПубличныйID != null && !Курсор_ПолучаемПубличныйID.isClosed()) {
-                            Курсор_ПолучаемПубличныйID.close();
-                        }
-
 
             // TODO: 09.04.2023  курсор самим создаваемых табеляПОСИК ДАННЫХ ЧЕРЕЗ UUID
             Bundle bundleListTabels=new Bundle();
-            bundleListTabels.putString("СамЗапрос","  SELECT * FROM  tabel WHERE status_send!=? AND uuid=?" +
+            bundleListTabels.putString("СамЗапрос","  SELECT * FROM tabel WHERE status_send!=?  " +
                     "  AND month_tabels IS NOT NULL " +
                     " AND year_tabels IS NOT NULL" +
                     " ORDER BY year_tabels DESC ,month_tabels DESC LIMIT 6  ");
-            bundleListTabels.putStringArray("УсловияВыборки" ,new String[]{String.valueOf("Удаленная"),String.valueOf(bundleДанныеИзСпинераДАт.getLong("UUIDSpinner"))});
+            bundleListTabels.putStringArray("УсловияВыборки" ,new String[]{String.valueOf("Удаленная")});
             bundleListTabels.putString("Таблица","tabel");
             Курсор_Main_ListTabels=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleListTabels);
             Log.d(this.getClass().getName(), "GetData "+Курсор_Main_ListTabels  );
 
-            if(Курсор_Main_ListTabels.getCount()>0){
-
-             Integer МесяцИЗПОсикаUUID=   Курсор_Main_ListTabels.getInt(Курсор_Main_ListTabels.getColumnIndex("month_tabels"));
-             Integer ГОДИЗПОсикаUUID=   Курсор_Main_ListTabels.getInt(Курсор_Main_ListTabels.getColumnIndex("year_tabels"));
-             Курсор_Main_ListTabels.close();
-
-                // TODO: 09.04.2023  курсор самим создаваемых табеляПОСИК ДАННЫХ ПолучаемРЕальные ДАнные
-                bundleListTabels=new Bundle();
-                bundleListTabels.putString("СамЗапрос","  SELECT * FROM  tabel WHERE status_send!=?  " +
-                        "  AND month_tabels=? " +
-                        " AND year_tabels =?" +
-                        " ORDER BY year_tabels DESC ,month_tabels DESC LIMIT 6  ");
-                bundleListTabels.putStringArray("УсловияВыборки" ,new String[]{String.valueOf("Удаленная"),
-                        String.valueOf(МесяцИЗПОсикаUUID),
-                        String.valueOf(ГОДИЗПОсикаUUID) });
-                bundleListTabels.putString("Таблица","tabel");
-                Курсор_Main_ListTabels=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleListTabels);
-                Log.d(this.getClass().getName(), "GetData "+Курсор_Main_ListTabels  );
-
-            }
-
-                            Log.d(this.getClass().getName(), "GetData "+Курсор_Main_ListTabels  );
-                                    //////todo работающий NULL в query
-                                    Log.d(this.getClass().getName(), " Курсор_Main_ListTabels.getCount() " +    Курсор_Main_ListTabels.getCount());
-                                    ////todo получаем значение ищем
-                              Log.d(this.getClass().getName(), "ЗАГРУЗИЛИ ДАННЫЕ НА АКТИВТИ ИСТОРИЯ ТАБЕЛЯЕЙ  Курсор_Main_ListTabels.getCount() "
-                                      + Курсор_Main_ListTabels.getCount());
                                   if (   Курсор_Main_ListTabels.getCount()>0) {
                                          textViewКоличествоТабелей.setText(" ("+СпинерВыборДату.getCount()+" м) "+
                                                  " ("+ String.valueOf(Курсор_Main_ListTabels.getCount())+" т)")  ;
                                      } else {
                                          textViewКоличествоТабелей.setText("("+"0"+")");
                                      }
-
+            Log.d(this.getClass().getName(), " Курсор_Main_ListTabels.getCount() " +    Курсор_Main_ListTabels.getCount());
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -618,13 +568,15 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                     try{
                         MainParentUUID= cursor.getLong(cursor.getColumnIndex("uuid"));
                         DigitalNameCFO= cursor.getInt(cursor.getColumnIndex("cfo"));
+                        Integer ID= cursor.getInt(cursor.getColumnIndex("_id"));
                         // TODO: 18.04.2023 Название ЦФО
                         Bundle bundleНазваниеЦФО=new Bundle();
-                        bundleНазваниеЦФО.putString("СамЗапрос","  SELECT name FROM  cfo WHERE  status_send!=? AND id!=?   name DESC LIMIT 1  ");
-                        bundleНазваниеЦФО.putStringArray("УсловияВыборки" ,new String[]{String.valueOf("Удаленная"), String.valueOf(DigitalNameCFO)});
+                        bundleНазваниеЦФО.putString("СамЗапрос","  SELECT * FROM  cfo WHERE    _id=? ");
+                        bundleНазваниеЦФО.putStringArray("УсловияВыборки" ,new String[]{  String.valueOf(DigitalNameCFO)});
                         bundleНазваниеЦФО.putString("Таблица","cfo");
                         Cursor КурсорПОискНазваниеЦФО=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleНазваниеЦФО);
                         FullNameCFO=КурсорПОискНазваниеЦФО.getString(КурсорПОискНазваниеЦФО.getColumnIndex("name"));
+                        КурсорПОискНазваниеЦФО.close();
                         МЕсяцТабелей = cursor.getInt(cursor.getColumnIndex("month_tabels"));
                         ГодТабелей= cursor.getInt(cursor.getColumnIndex("year_tabels"));
                             // TODO: 15.12.2022  Давные Bundle
@@ -653,7 +605,8 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                    " ID " +ID+ " MainParentUUID "+MainParentUUID);
                         return true;
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -667,7 +620,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             };
             simpleCursorAdapterAllTAbels.setViewBinder(binding);
             ListAllTabels.setAdapter(simpleCursorAdapterAllTAbels);
-            ScrollViewListTabels.fullScroll(View.FOCUS_DOWN);
+            ScrollViewListTabels.fullScroll(View.FOCUS_UP);
             ListAllTabels.forceLayout();
         }
     } catch (Exception e) {

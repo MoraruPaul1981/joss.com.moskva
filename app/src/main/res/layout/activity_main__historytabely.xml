@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:backgroundTintMode="screen"
+    android:orientation="vertical"
     android:focusable="auto"
     app:layout_collapseMode="pin"
-    app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
     tools:context=".Code_ForTABEL.MainActivity_List_Tabels">
 
 
@@ -41,7 +41,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="19dp"
         android:layout_marginEnd="85dp"
         android:background="@drawable/style_forpolymaterialb_cycle_createspinner"
         android:backgroundTintMode="multiply"
@@ -56,8 +55,7 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/КруглаяКнопкаСамТабель"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ScrollViewListTabels" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView3СловоТабель"
@@ -88,14 +86,14 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/КруглаяКнопкаСамТабель"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="56dp"
+        android:layout_height="83dp"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="25dp"
         android:src="@drawable/icon_dsu1_add_tably1"
         android:visibility="visible"
         app:backgroundTint="#00ACC1"
@@ -103,7 +101,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/СпинерТабельМесяцИсториииТабелей"
-        app:layout_constraintTop_toBottomOf="@+id/ScrollViewListTabels" />
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.13999999" />
 
     <View
         android:id="@+id/view2Линия"
@@ -117,55 +116,18 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3СловоТабель"
         tools:visibility="visible" />
 
-    <ScrollView
-        android:id="@+id/ScrollViewListTabels"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="2dp"
-        android:background="#D32F2F"
-        app:layout_collapseMode="pin"
-        app:layout_constraintBottom_toTopOf="@+id/КруглаяКнопкаСамТабель"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view2Линия"
-        app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
-
-
-
-
-
-
-    <ListView
-        android:id="@+id/ListAllTabels"
-        android:layout_width="match_parent"
-        android:layout_height="450dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp"
-        android:backgroundTintMode="multiply"
-        android:choiceMode="multipleChoice"
-        android:layerType="software"
-        android:orientation="vertical"
-        android:scrollbars="horizontal|vertical"
-        android:textAlignment="center"
-        android:textDirection="firstStrong"
-        android:background="#7B1FA2"
-        android:textSize="26dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/КруглаяКнопкаСамТабель"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view2Линия" />
-
-    </ScrollView>
-
+    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/gridView1"
+        android:numColumns="2"
+        android:gravity="center"
+        android:columnWidth="70dp"
+        android:stretchMode="columnWidth"
+        android:background="#00ACC1"
+        android:layout_width="250dp"
+        android:scrollbars="horizontal"
+        android:layout_height="500dp"
+        tools:ignore="MissingConstraints">
+    </GridView>
 
     <TextView
         android:id="@+id/textViewКоличествоТабелей"
@@ -182,4 +144,4 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

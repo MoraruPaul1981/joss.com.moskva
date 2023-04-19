@@ -225,7 +225,7 @@
             android:name=".Code_For_Services.Service_For_Remote_Async"
             android:enabled="true"
             android:exported="true"
-            android:process=":async"
+
             android:directBootAware="true"
             android:showOnLockScreen="true"
             android:permission="android.permission.BIND_JOB_SERVICE">
