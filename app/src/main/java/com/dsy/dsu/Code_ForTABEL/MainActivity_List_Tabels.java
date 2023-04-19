@@ -127,7 +127,8 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
     private String FullNameCFO;
 
     LinkedList< String> МассивДляВыбораВСпинерДатаArray=new  LinkedList< String>();
-    LinkedHashMap<Long,String> МассивДляВыбораВСпинерДатаUUID=new LinkedHashMap<Long,String>();
+    LinkedList< Long> МассивДляВыбораВСпинореMainUUID=new  LinkedList< Long>();
+
 
     Message message;
     @Override
@@ -393,39 +394,34 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                              parent.getChildAt(0)).getText())).map(String::new).orElse(" "); /////ОПРЕДЕЛЯЕМ ТЕКУЩЕЕ ЗНАЧЕНИЕ ВНУТИРИ СПЕНИРА
                         //////TODO линия снизу самих табелей ЦВЕТ
                         if (! ИмесяцвИГодСразу.equalsIgnoreCase("Не создано") ) {
-                            //((TextView) parent.getChildAt(0)).setBackgroundResource(R.drawable.textlines_tabel_row_color_green);
+
                             ((TextView) parent.getChildAt(0)).setTextSize(16);
                             ((TextView) parent.getChildAt(0)).startAnimation(animation);
                             ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
                             ((TextView) parent.getChildAt(0)).setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
                             ((TextView) parent.getChildAt(0)).setTypeface(((TextView) parent.getChildAt(0)).getTypeface(), Typeface.BOLD);//////ВЫДЕЛЕМ ЖИРНЫМ ЦВЕТОМ ДАТЫ
-
-
-                            Bundle bundleInsertSpinerDate=new Bundle();
-                            bundleInsertSpinerDate.putString("ИмесяцвИГодСразу",ИмесяцвИГодСразу);
-                            MainParentUUID= МассивДляВыбораВСпинерДатаUUID.entrySet().stream()
-                                    .filter(f->f.getValue().equalsIgnoreCase(ИмесяцвИГодСразу))
-                                    .map(Map.Entry::getKey).findFirst().orElse(0l);
-                            bundleInsertSpinerDate.putLong("UUIDSpinner",MainParentUUID);
-                            ((TextView) parent.getChildAt(0)).setTag(bundleInsertSpinerDate);
                             ((TextView) parent.getChildAt(0)).setText(ИмесяцвИГодСразу);//// ЗАПИСЫВАЕМ ЗНАЧЕНИЕ В СПИПЕР
                             СпинерВыборДату.startAnimation(animation);
                             TextView textViewspiner=(TextView)   СпинерВыборДату.getSelectedView();
                                 textViewspiner.setTextColor(Color.BLACK);
 
-                            Bundle bundleДЛяСпинераДаты=new Bundle();
-                            bundleДЛяСпинераДаты.putLong("MainParentUUID", MainParentUUID);
-                            bundleДЛяСпинераДаты.putInt("Position", position);
-                            bundleДЛяСпинераДаты.putString("ИмесяцвИГодСразу", ИмесяцвИГодСразу.trim());
+                            MainParentUUID=(Long)       МассивДляВыбораВСпинореMainUUID.get(position);
 
                             // TODO: 19.04.2023  Вытасикваем на основе   MainParentUUID
                             Cursor Курсор_Main_ListTabelFinding=    методИниЦиализацииSimpleCursor(MainParentUUID);
                             МЕсяцТабелей =Курсор_Main_ListTabelFinding.getInt(Курсор_Main_ListTabelFinding.getColumnIndex("month_tabels"));
                             ГодТабелей   =Курсор_Main_ListTabelFinding.getInt(Курсор_Main_ListTabelFinding.getColumnIndex("year_tabels"));
                             DigitalNameCFO=Курсор_Main_ListTabelFinding.getInt(Курсор_Main_ListTabelFinding.getColumnIndex("cfo"));
+                            // TODO: 19.04.2023 даннные
+
+                            Bundle bundleДЛяСпинераДаты=new Bundle();
+                            bundleДЛяСпинераДаты.putLong("MainParentUUID", MainParentUUID);
+                            bundleДЛяСпинераДаты.putInt("Position", position);
+                            bundleДЛяСпинераДаты.putString("ИмесяцвИГодСразу", ИмесяцвИГодСразу.trim());
                             bundleДЛяСпинераДаты.putInt("ГодТабелей",ГодТабелей );
                             bundleДЛяСпинераДаты.putInt("МЕсяцТабелей",МЕсяцТабелей);
                             bundleДЛяСпинераДаты.putInt("DigitalNameCFO",DigitalNameCFO);
+                            bundleДЛяСпинераДаты.putString("ИмесяцвИГодСразу",ИмесяцвИГодСразу);
                             // TODO: 19.04.2023  add bungle
                             textViewspiner.setTag(bundleДЛяСпинераДаты);
                             Курсор_Main_ListTabelFinding.close();
@@ -435,13 +431,9 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
                         // TODO: 09.04.2023  Главный Треитий Последние Получение Данных Для Конктерного Месяца И Года
                       Cursor    Курсор_Main_ListTabelsFinal=    методИниЦиализацииSimpleCursor(МЕсяцТабелей,ГодТабелей);
-
                             методзаполненияSimplrCursor(Курсор_Main_ListTabelsFinal);
                             // TODO: 19.04.2023  внешний вид
-                                gridViewAllTabes.setSelection(position);
                                 gridViewAllTabes.smoothScrollByOffset(position);
-
-
                             // TODO: 19.04.2023  Когда ДАННЫХ НЕТ
                                 
                         }else {
@@ -454,7 +446,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                         Log.d(this.getClass().getName(), " КакойКонтекст" + ИмесяцвИГодСразу +
                                 " ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре " + ИмесяцвИГодСразу+
                                 " МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray  +
-                                " МассивДляВыбораВСпинерДатаUUID " + МассивДляВыбораВСпинерДатаUUID+
+                                " МассивДляВыбораВСпинореMainUUID " + МассивДляВыбораВСпинореMainUUID+
                                 "  ((TextView) parent.getChildAt(0)) " +((TextView) parent.getChildAt(0)).getTag()  + " MainParentUUID " +MainParentUUID+
                                 " Курсор_Main_ListTabels "+Курсор_Main_ListTabels);
                     }
@@ -489,7 +481,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             Log.d(this.getClass().getName(), " КакойКонтекст" + ИмесяцвИГодСразу +
                     " ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре " + ИмесяцвИГодСразу+
                     " МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray  +
-                    " МассивДляВыбораВСпинерДатаUUID " + МассивДляВыбораВСпинерДатаUUID+
+                    " МассивДляВыбораВСпинореMainUUID " + МассивДляВыбораВСпинореMainUUID+
                     "  ((TextView) parent.getChildAt(0)) "+ " MainParentUUID " +MainParentUUID);
     } catch (Exception e) {
         e.printStackTrace();
@@ -659,6 +651,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                                 // TODO: 09.04.2023  ВставлЯем Данные
                                 ((MaterialTextView) view).setTag(bundleДЛяListTabels);
                                 ((MaterialTextView) view).setText(FullNameCFO.trim());
+                                ((MaterialTextView) view).startAnimation(animationvibr1);
                                 // TODO: 18.04.2023  Внешниц вид
 
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -835,7 +828,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                     message.getTarget().postDelayed(()->{
                         // TODO: 09.04.2023  перехеод после клика Items
                         МетодПереходMainActivity_List_Peoples(materialTextView);
-                    },150);
+                    },100);
 
 /////TODO одинатрный клик для загрузки в этот табель всех сотрудников
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1419,23 +1412,24 @@ try{
         try {
 
             МассивДляВыбораВСпинерДатаArray.clear();
-            МассивДляВыбораВСпинерДатаUUID.clear();
+            МассивДляВыбораВСпинореMainUUID.clear();
             if (Курсор_ДанныеДляСпинераДаты.getCount()>0) {
                 do{
-                    String     ЗнаениеИзБазыНовыеТабеляМесяц = Курсор_ДанныеДляСпинераДаты.getString(0).trim();
-                    String     ЗнаениеИзБазыНовыеТабеляГод = Курсор_ДанныеДляСпинераДаты.getString(1).trim();
+                    Integer      Месяц = Курсор_ДанныеДляСпинераДаты.getInt(Курсор_ДанныеДляСпинераДаты.getColumnIndex("month_tabels")) ;
+                    Integer     Год =Курсор_ДанныеДляСпинераДаты.getInt(Курсор_ДанныеДляСпинераДаты.getColumnIndex(	"year_tabels")) ;
                     Long     ЗнаениеИзБазыНовыеТабеляUUID = Курсор_ДанныеДляСпинераДаты.getLong(Курсор_ДанныеДляСпинераДаты.getColumnIndex("uuid"));
                     String     ЗнаениеИзБазыНовыеТабеляНазваниеТабеля = null;
-                    int ИндексСФО=Курсор_ДанныеДляСпинераДаты.getColumnIndex("cfo");
-                    int     ЗнаениеИзБазыНовыеТабеляIDСфо = Курсор_ДанныеДляСпинераДаты.getInt(ИндексСФО);
+                    int     ЗнаениеИзБазыНовыеТабеляIDСфо = Курсор_ДанныеДляСпинераДаты.getInt(Курсор_ДанныеДляСпинераДаты.getColumnIndex("cfo"));
                     Log.d(this.getClass().getName()," ЗнаениеИзБазыНовыеТабеляНазваниеТабеля " +ЗнаениеИзБазыНовыеТабеляНазваниеТабеля);
+
+
                     ////todo ПРЕОБРАЗОВАЫВЕМ ЦИФРВЫ В ДАТУ ВВИДЕТ ТЕКСТА ИБЛЬ АВГУСТ 2020 2021
                     SimpleDateFormat ПереводимЦифруВТЕкстМЕсяца = new SimpleDateFormat("mm", new Locale("rus") );
-                    Date ДатаДляПолученияМесяцаСловом = ПереводимЦифруВТЕкстМЕсяца.parse(ЗнаениеИзБазыНовыеТабеляМесяц);
+                    Date ДатаДляПолученияМесяцаСловом = ПереводимЦифруВТЕкстМЕсяца.parse(Месяц.toString());
                     String ПреобразованоеИмяМесяца= ПереводимЦифруВТЕкстМЕсяца.format( ДатаДляПолученияМесяцаСловом );
                     Log.d(this.getClass().getName()," ПреобразованоеИмяМесяца " +ПреобразованоеИмяМесяца);
                     SimpleDateFormat formatмесяц = new SimpleDateFormat("MMyyyy", new Locale("ru"));
-                    Date date = formatмесяц.parse(ПреобразованоеИмяМесяца+ЗнаениеИзБазыНовыеТабеляГод);
+                    Date date = formatмесяц.parse(ПреобразованоеИмяМесяца+Год);
                     Calendar calendar = Calendar.getInstance(new Locale("ru"));
                     calendar.setTime(date);
                     System.out.println(calendar.get(Calendar.YEAR));
@@ -1445,20 +1439,17 @@ try{
                     ПреобразованоеИмяМесяца=new SimpleDateFormat("LLLL").format(calendar.getTime());
                     StringBuffer stringBuffer=new StringBuffer(ПреобразованоеИмяМесяца);
                     ПреобразованоеИмяМесяца=stringBuffer.substring(0,1).toUpperCase()+stringBuffer.substring(1,stringBuffer.length()).toLowerCase();
-                    //String месяцОбрантноТекстДляКурсора=   МетодПолучениеДатыИзЦифраВТекстДляКурсора(ЗнаениеИзБазыНовыеТабеляМесяц);
                     String ФиналВставкаМЕсяцаИгода = "";
-                    ////TODO ПОКАЗЫВВАЕТ ПОЛЬЗОВАТЛЕЛЮ МЕСЯЦ И ГОДВ ВИДЕ СЛОВ ИЗ ЦИФРЫ 11 МЕНЯЕ НА НОЯБРЬ 2020 НАПРИМЕР
-                    ФиналВставкаМЕсяцаИгода=ПреобразованоеИмяМесяца+ "  "+ЗнаениеИзБазыНовыеТабеляГод;
+                    ФиналВставкаМЕсяцаИгода=ПреобразованоеИмяМесяца+ "  "+Год;
                     Log.d(this.getClass().getName()," ФиналВставкаМЕсяцаИгода "+ФиналВставкаМЕсяцаИгода);
                     ///todo заполяем Название СФО
-                  МассивДляВыбораВСпинерДатаArray.add(ФиналВставкаМЕсяцаИгода.trim());
-                    // TODO: 09.04.2023 заполяем СФО
-                  МассивДляВыбораВСпинерДатаUUID.put(ЗнаениеИзБазыНовыеТабеляUUID,ФиналВставкаМЕсяцаИгода.trim());
+                 МассивДляВыбораВСпинерДатаArray.add(ФиналВставкаМЕсяцаИгода.trim());
+                    ///todo заполяем Название UUID
+                    МассивДляВыбораВСпинореMainUUID.add(ЗнаениеИзБазыНовыеТабеляUUID);
 
 
                 }while (Курсор_ДанныеДляСпинераДаты.moveToNext());
                 // TODO: 19.04.2023 close cursor
-                // TODO: 19.04.2023
                 Курсор_ДанныеДляСпинераДаты.moveToFirst();
             }else {
                      МассивДляВыбораВСпинерДатаArray.add("Не создано");
@@ -1468,7 +1459,7 @@ try{
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                     + " МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray +
-                    " МассивДляВыбораВСпинерДатаUUID " +МассивДляВыбораВСпинерДатаUUID);
+                    " МассивДляВыбораВСпинореMainUUID " +МассивДляВыбораВСпинореMainUUID);
 
         } catch (Exception e) {///////ошибки
             e.printStackTrace();
