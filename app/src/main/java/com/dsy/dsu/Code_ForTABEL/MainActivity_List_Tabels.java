@@ -31,8 +31,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.GridView;
-import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -42,7 +40,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.loader.content.CursorLoader;
 
 import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
@@ -559,7 +556,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             Log.d(this.getClass().getName(), " Курсор_Main_ListTabels " + Курсор_Main_ListTabels.getCount());
             // TODO: 18.04.2023 18.50 start simplrcursor    // TODO: 18.04.2023 18.50 start simplrcursor
             SimpleCursorAdapter simpleCursorAdapterAllTAbels =
-                    new SimpleCursorAdapter(getApplicationContext(), R.layout.list_item_all_customer_tabel,
+                    new SimpleCursorAdapter(getApplicationContext(), R.layout.list_item_all_customer_tabel2,
                     Курсор_Main_ListTabels, new String[]{"cfo"}, new int[]{android.R.id.text1},
                             CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);  ///name
             SimpleCursorAdapter.ViewBinder binding = new SimpleCursorAdapter.ViewBinder() {
@@ -598,10 +595,6 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                         ((TextView) view).setCompoundDrawables(icon, null, null, null);
                         ((TextView) view).setBackground(getApplication().getResources().getDrawable(R.drawable.textlines_tabel_row_color_green_mini));
 
-                        // TODO: 18.04.2023 Слушатель Удалание
-                        методУдалениеТабеля(((TextView) view));
-                        // TODO: 18.04.2023 Слушаиель Клика
-                        методКликТабеля(((TextView) view));
 
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -622,6 +615,14 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             gridViewAllTabes.setAdapter(simpleCursorAdapterAllTAbels);
             gridViewAllTabes.refreshDrawableState();
             gridViewAllTabes.forceLayout();
+            // TODO: 19.04.2023 слушаелти
+
+
+            // TODO: 18.04.2023 Слушаиель Клика
+            методПоGridView( );
+            // TODO: 18.04.2023 Слушатель Удалание
+            методУдалениеТабеля( );
+
         }
     } catch (Exception e) {
         e.printStackTrace();
@@ -632,42 +633,40 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
     }
     }
 
-    private void методУдалениеТабеля(@NonNull TextView textView) {
-        textView.setOnLongClickListener(new View.OnLongClickListener() {
+    private void методУдалениеТабеля( ) {
+        gridViewAllTabes.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 try{
-               Bundle bundleДЛяListTabels=(Bundle)           v.getTag();
-                Long    MainParentUUID=      bundleДЛяListTabels.getLong("MainParentUUID");
-                String    FullNameCFO=      bundleДЛяListTabels.getString("FullNameCFO");
+                    Bundle bundleДЛяListTabels=(Bundle)           view.getTag();
+                    Long    MainParentUUID=      bundleДЛяListTabels.getLong("MainParentUUID");
+                    String    FullNameCFO=      bundleДЛяListTabels.getString("FullNameCFO");
                     ///todo Удаление
-                    МетодУдалениеТАбеляСообщениеПередЭтим(MainParentUUID, FullNameCFO,v);
-
+                    МетодУдалениеТАбеляСообщениеПередЭтим(MainParentUUID, FullNameCFO,view);
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                             + " bundleДЛяListTabels "+bundleДЛяListTabels );
                 } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-                return false;
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
+                return true;
             }
         });
-    }
-    private void методКликТабеля(@NonNull TextView textView) {
 
-        // TODO: 18.04.2023 Клик по Табелю
-        textView.setOnClickListener(new View.OnClickListener() {
+    }
+    private void методПоGridView( ) {
+        gridViewAllTabes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 try{
-                    ((TextView) v).setBackgroundColor(Color.GRAY);
+                    ((TextView) view).setBackgroundColor(Color.GRAY);
                     // TODO: 09.04.2023  перехеод после клика Items
-                    МетодПереходMainActivity_List_Peoples((TextView) v);
+                    МетодПереходMainActivity_List_Peoples((TextView) view);
 /////TODO одинатрный клик для загрузки в этот табель всех сотрудников
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

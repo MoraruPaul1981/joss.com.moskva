@@ -121,11 +121,11 @@
         android:numColumns="1"
         android:gravity="center"
         android:columnWidth="70dp"
-        android:layout_height="500dp"
         android:stretchMode="columnWidth"
         android:background="#00ACC1"
         android:layout_width="250dp"
         android:scrollbars="horizontal|vertical"
+        android:layout_height="500dp"
         android:scrollIndicators="left"
         tools:ignore="MissingConstraints">
     </GridView>
