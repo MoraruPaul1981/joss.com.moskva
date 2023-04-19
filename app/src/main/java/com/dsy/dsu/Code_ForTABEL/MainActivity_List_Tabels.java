@@ -88,6 +88,7 @@ import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.BiFunction;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Predicate;
+import io.reactivex.rxjava3.internal.operators.parallel.ParallelDoOnNextTry;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainActivity_List_Tabels extends AppCompatActivity  {
@@ -278,7 +279,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
             ////todo заполение спинера
             МетодДанныеСпинераДаты(Курсор_Main_ListTabels);
-
+            
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -293,41 +294,25 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    private void методКоличествоТабелей( ) {
+        try{
+        if (   СпинерВыборДату.getCount()>0) {
+            textViewКоличествоТабелей.setText(" ("+СпинерВыборДату.getCount()+")");
+        } else {
+            textViewКоличествоТабелей.setText("("+"0"+")");
+        }
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+    }
 
 
     ///todo  конец метода удаления третий обработчки нажатия
@@ -404,7 +389,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                         ИмесяцвИГодСразу = Optional.ofNullable(String.valueOf(((TextView)
                              parent.getChildAt(0)).getText())).map(String::new).orElse(" "); /////ОПРЕДЕЛЯЕМ ТЕКУЩЕЕ ЗНАЧЕНИЕ ВНУТИРИ СПЕНИРА
                         //////TODO линия снизу самих табелей ЦВЕТ
-                        if (ИмесяцвИГодСразу != null  && Курсор_Main_ListTabels.getCount()>0) {
+                        if (! ИмесяцвИГодСразу.equalsIgnoreCase("Не создано") ) {
                             //((TextView) parent.getChildAt(0)).setBackgroundResource(R.drawable.textlines_tabel_row_color_green);
                             ((TextView) parent.getChildAt(0)).setTextSize(16);
                             ((TextView) parent.getChildAt(0)).startAnimation(animation);
@@ -432,12 +417,11 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                             методзаполненияSimplrCursor(Курсор_Main_ListTabels);
 
                         }else {
-                            ((TextView) parent.getChildAt(0)).setText("Не созданно");
-                            ((TextView) parent.getChildAt(0)).forceLayout();
-                            ((TextView) parent.getChildAt(0)).refreshDrawableState();
-                            // TODO: 19.04.2023  когад нет данныхх
-                            методDontCursorSimplrCursor( );
+                            методDontGetData(Курсор_Main_ListTabels);
                         }
+                        // TODO: 19.04.2023  показываем количемтво табеленй
+                        методКоличествоТабелей( );
+
                         Log.d(this.getClass().getName(), " КакойКонтекст" + ИмесяцвИГодСразу +
                                 " ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре " + ИмесяцвИГодСразу+
                                 " МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray  +
@@ -452,6 +436,32 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                 Log.d(this.getClass().getName(), "  FullNameCFO  " + FullNameCFO);
             }
         });
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+    }
+
+
+    void методDontGetData(@NonNull Cursor Курсор_Main_ListTabels ){
+        try{
+                TextView textViewСпинерДАты = (TextView) СпинерВыборДату.getSelectedView();
+                СпинерВыборДату.setSelection(0, true);
+                СпинерВыборДату.refreshDrawableState();
+                СпинерВыборДату.requestLayout();
+                // TODO: 19.04.2023  когад нет данныхх
+                методDontCursorSimplrCursor();
+
+
+            Log.d(this.getClass().getName(), " КакойКонтекст" + ИмесяцвИГодСразу +
+                    " ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре " + ИмесяцвИГодСразу+
+                    " МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray  +
+                    " МассивДляВыбораВСпинерДатаUUID " + МассивДляВыбораВСпинерДатаUUID+
+                    "  ((TextView) parent.getChildAt(0)) "+ " MainParentUUID " +MainParentUUID);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -503,9 +513,6 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
     private Cursor методИниЦиализацииSimpleCursor()  {
         Cursor Курсор_Main_ListTabels = null;
         try{
-       TextView ДанныеСпинера=(TextView) СпинерВыборДату.getSelectedView();
-       Bundle bundleДанныеИзСпинераДАт=(Bundle) ДанныеСпинера.getTag();
-
             // TODO: 09.04.2023  курсор самим создаваемых табеляПОСИК ДАННЫХ ЧЕРЕЗ UUID
             Bundle bundleListTabels=new Bundle();
             bundleListTabels.putString("СамЗапрос","  SELECT * FROM tabel WHERE status_send!=?  " +
@@ -517,12 +524,6 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             Курсор_Main_ListTabels=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleListTabels);
             Log.d(this.getClass().getName(), "GetData "+Курсор_Main_ListTabels  );
 
-                                  if (   Курсор_Main_ListTabels.getCount()>0) {
-                                         textViewКоличествоТабелей.setText(" ("+СпинерВыборДату.getCount()+" м) "+
-                                                 " ("+ String.valueOf(Курсор_Main_ListTabels.getCount())+" т)")  ;
-                                     } else {
-                                         textViewКоличествоТабелей.setText("("+"0"+")");
-                                     }
             Log.d(this.getClass().getName(), " Курсор_Main_ListTabels.getCount() " +    Курсор_Main_ListTabels.getCount());
         } catch (Exception e) {
             e.printStackTrace();
@@ -675,25 +676,40 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             ArrayList<HashMap<String, Object>> ЛистНетданных= new ArrayList<HashMap<String, Object>> ();
             HashMap<String, Object> map = new HashMap<>();
             map.put("alldonttbels", "Не создано !!!");
-
+            map.put("allimage", " dont");
+            ЛистНетданных.add(map);
             SimpleAdapter АдаптерКогдаНетданных = new SimpleAdapter(getApplicationContext(),
                     ЛистНетданных,
-                    android.R.layout.simple_spinner_dropdown_item,
-                    new String[]{"alldonttbels"},
-                    new int[]{android.R.id.text1});
+                    R.layout.list_item_all_customer_tabel4dont,
+                    new String[]{"alldonttbels","allimage"},
+                    new int[]{android.R.id.text2,android.R.id.text1});
 
             SimpleAdapter.ViewBinder БиндингКогдаНетДАнных = new SimpleAdapter.ViewBinder() {
                 @Override
                 public boolean setViewValue(View view, Object data, String textRepresentation) {
                         try{
+                            switch (view.getId()) {
+                                case android.R.id.text2:
                                     // TODO: 09.04.2023  ВставлЯем Данные
-                            ((TextView) view).setText(data.toString());
-                            ((TextView) view).setTextColor(Color.GRAY);
-                            ((TextView) view).setTextSize(20l);
+                                    ((MaterialTextView) view).setText(data.toString());
+                                    ((MaterialTextView) view).setTextColor(Color.GRAY);
+                                    ((MaterialTextView) view).setTextSize(18l);
 
                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" + " MainParentUUID "+MainParentUUID);
+                                    return  true;
+                                case android.R.id.text1:
+                                    Drawable icon2 = getResources().getDrawable(   R.drawable.icon_alltabels5red);
+                                    ((ImageView) view).setImageDrawable(icon2);
+                                    ((ImageView) view).setImageResource(R.drawable.icon_alltabels5red);
+
+                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " MainParentUUID "+MainParentUUID);
                                     return true;
+                            }
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" + " MainParentUUID "+MainParentUUID);
                         } catch (Exception e) {
                             e.printStackTrace();
                             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -701,7 +717,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                             new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
-                        return true;
+                        return false;
                     }
                 };
                 АдаптерКогдаНетданных.setViewBinder(БиндингКогдаНетДАнных);
@@ -1323,48 +1339,56 @@ try{
 
             МассивДляВыбораВСпинерДатаArray.clear();
             МассивДляВыбораВСпинерДатаUUID.clear();
-            do{
-                String     ЗнаениеИзБазыНовыеТабеляМесяц = Курсор_ДанныеДляСпинераДаты.getString(0).trim();
-                String     ЗнаениеИзБазыНовыеТабеляГод = Курсор_ДанныеДляСпинераДаты.getString(1).trim();
-                Long     ЗнаениеИзБазыНовыеТабеляUUID = Курсор_ДанныеДляСпинераДаты.getLong(Курсор_ДанныеДляСпинераДаты.getColumnIndex("uuid"));
-                String     ЗнаениеИзБазыНовыеТабеляНазваниеТабеля = null;
-                int ИндексСФО=Курсор_ДанныеДляСпинераДаты.getColumnIndex("cfo");
-                int     ЗнаениеИзБазыНовыеТабеляIDСфо = Курсор_ДанныеДляСпинераДаты.getInt(ИндексСФО);
-                Log.d(this.getClass().getName()," ЗнаениеИзБазыНовыеТабеляНазваниеТабеля " +ЗнаениеИзБазыНовыеТабеляНазваниеТабеля);
-                ////todo ПРЕОБРАЗОВАЫВЕМ ЦИФРВЫ В ДАТУ ВВИДЕТ ТЕКСТА ИБЛЬ АВГУСТ 2020 2021
-                SimpleDateFormat ПереводимЦифруВТЕкстМЕсяца = new SimpleDateFormat("mm", new Locale("rus") );
-                Date ДатаДляПолученияМесяцаСловом = ПереводимЦифруВТЕкстМЕсяца.parse(ЗнаениеИзБазыНовыеТабеляМесяц);
-                String ПреобразованоеИмяМесяца= ПереводимЦифруВТЕкстМЕсяца.format( ДатаДляПолученияМесяцаСловом );
-                Log.d(this.getClass().getName()," ПреобразованоеИмяМесяца " +ПреобразованоеИмяМесяца);
-                SimpleDateFormat formatмесяц = new SimpleDateFormat("MMyyyy", new Locale("ru"));
-                Date date = formatмесяц.parse(ПреобразованоеИмяМесяца+ЗнаениеИзБазыНовыеТабеляГод);
-                Calendar calendar = Calendar.getInstance(new Locale("ru"));
-                calendar.setTime(date);
-                System.out.println(calendar.get(Calendar.YEAR));
-                System.out.println(calendar.get(Calendar.MONTH)+1);
-                System.out.println(calendar.get(Calendar.DAY_OF_MONTH));
-                System.out.println(new SimpleDateFormat("LLLL").format(calendar.getTime()));
-                ПреобразованоеИмяМесяца=new SimpleDateFormat("LLLL").format(calendar.getTime());
-                StringBuffer stringBuffer=new StringBuffer(ПреобразованоеИмяМесяца);
-                ПреобразованоеИмяМесяца=stringBuffer.substring(0,1).toUpperCase()+stringBuffer.substring(1,stringBuffer.length()).toLowerCase();
-                //String месяцОбрантноТекстДляКурсора=   МетодПолучениеДатыИзЦифраВТекстДляКурсора(ЗнаениеИзБазыНовыеТабеляМесяц);
-                String ФиналВставкаМЕсяцаИгода = "";
-                ////TODO ПОКАЗЫВВАЕТ ПОЛЬЗОВАТЛЕЛЮ МЕСЯЦ И ГОДВ ВИДЕ СЛОВ ИЗ ЦИФРЫ 11 МЕНЯЕ НА НОЯБРЬ 2020 НАПРИМЕР
-                ФиналВставкаМЕсяцаИгода=ПреобразованоеИмяМесяца+ "  "+ЗнаениеИзБазыНовыеТабеляГод;
-                Log.d(this.getClass().getName()," ФиналВставкаМЕсяцаИгода "+ФиналВставкаМЕсяцаИгода);
-                ///todo заполяем Название СФО
-                МассивДляВыбораВСпинерДатаArray.add(ФиналВставкаМЕсяцаИгода.trim());
-                // TODO: 09.04.2023 заполяем СФО
-                МассивДляВыбораВСпинерДатаUUID.put(ЗнаениеИзБазыНовыеТабеляUUID,ФиналВставкаМЕсяцаИгода.trim());
-                
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray +
-                        " МассивДляВыбораВСпинерДатаUUID " +МассивДляВыбораВСпинерДатаUUID);
-            }while (Курсор_ДанныеДляСпинераДаты.moveToNext());
-            // TODO: 19.04.2023
-            Курсор_ДанныеДляСпинераДаты.moveToFirst();
+            if (Курсор_ДанныеДляСпинераДаты.getCount()>0) {
+                do{
+                    String     ЗнаениеИзБазыНовыеТабеляМесяц = Курсор_ДанныеДляСпинераДаты.getString(0).trim();
+                    String     ЗнаениеИзБазыНовыеТабеляГод = Курсор_ДанныеДляСпинераДаты.getString(1).trim();
+                    Long     ЗнаениеИзБазыНовыеТабеляUUID = Курсор_ДанныеДляСпинераДаты.getLong(Курсор_ДанныеДляСпинераДаты.getColumnIndex("uuid"));
+                    String     ЗнаениеИзБазыНовыеТабеляНазваниеТабеля = null;
+                    int ИндексСФО=Курсор_ДанныеДляСпинераДаты.getColumnIndex("cfo");
+                    int     ЗнаениеИзБазыНовыеТабеляIDСфо = Курсор_ДанныеДляСпинераДаты.getInt(ИндексСФО);
+                    Log.d(this.getClass().getName()," ЗнаениеИзБазыНовыеТабеляНазваниеТабеля " +ЗнаениеИзБазыНовыеТабеляНазваниеТабеля);
+                    ////todo ПРЕОБРАЗОВАЫВЕМ ЦИФРВЫ В ДАТУ ВВИДЕТ ТЕКСТА ИБЛЬ АВГУСТ 2020 2021
+                    SimpleDateFormat ПереводимЦифруВТЕкстМЕсяца = new SimpleDateFormat("mm", new Locale("rus") );
+                    Date ДатаДляПолученияМесяцаСловом = ПереводимЦифруВТЕкстМЕсяца.parse(ЗнаениеИзБазыНовыеТабеляМесяц);
+                    String ПреобразованоеИмяМесяца= ПереводимЦифруВТЕкстМЕсяца.format( ДатаДляПолученияМесяцаСловом );
+                    Log.d(this.getClass().getName()," ПреобразованоеИмяМесяца " +ПреобразованоеИмяМесяца);
+                    SimpleDateFormat formatмесяц = new SimpleDateFormat("MMyyyy", new Locale("ru"));
+                    Date date = formatмесяц.parse(ПреобразованоеИмяМесяца+ЗнаениеИзБазыНовыеТабеляГод);
+                    Calendar calendar = Calendar.getInstance(new Locale("ru"));
+                    calendar.setTime(date);
+                    System.out.println(calendar.get(Calendar.YEAR));
+                    System.out.println(calendar.get(Calendar.MONTH)+1);
+                    System.out.println(calendar.get(Calendar.DAY_OF_MONTH));
+                    System.out.println(new SimpleDateFormat("LLLL").format(calendar.getTime()));
+                    ПреобразованоеИмяМесяца=new SimpleDateFormat("LLLL").format(calendar.getTime());
+                    StringBuffer stringBuffer=new StringBuffer(ПреобразованоеИмяМесяца);
+                    ПреобразованоеИмяМесяца=stringBuffer.substring(0,1).toUpperCase()+stringBuffer.substring(1,stringBuffer.length()).toLowerCase();
+                    //String месяцОбрантноТекстДляКурсора=   МетодПолучениеДатыИзЦифраВТекстДляКурсора(ЗнаениеИзБазыНовыеТабеляМесяц);
+                    String ФиналВставкаМЕсяцаИгода = "";
+                    ////TODO ПОКАЗЫВВАЕТ ПОЛЬЗОВАТЛЕЛЮ МЕСЯЦ И ГОДВ ВИДЕ СЛОВ ИЗ ЦИФРЫ 11 МЕНЯЕ НА НОЯБРЬ 2020 НАПРИМЕР
+                    ФиналВставкаМЕсяцаИгода=ПреобразованоеИмяМесяца+ "  "+ЗнаениеИзБазыНовыеТабеляГод;
+                    Log.d(this.getClass().getName()," ФиналВставкаМЕсяцаИгода "+ФиналВставкаМЕсяцаИгода);
+                    ///todo заполяем Название СФО
+                  МассивДляВыбораВСпинерДатаArray.add(ФиналВставкаМЕсяцаИгода.trim());
+                    // TODO: 09.04.2023 заполяем СФО
+                  МассивДляВыбораВСпинерДатаUUID.put(ЗнаениеИзБазыНовыеТабеляUUID,ФиналВставкаМЕсяцаИгода.trim());
+
+
+                }while (Курсор_ДанныеДляСпинераДаты.moveToNext());
+                // TODO: 19.04.2023 close cursor
+                // TODO: 19.04.2023
+                Курсор_ДанныеДляСпинераДаты.moveToFirst();
+            }else {
+                     МассивДляВыбораВСпинерДатаArray.add("Не создано");
+
+            }
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray +
+                    " МассивДляВыбораВСпинерДатаUUID " +МассивДляВыбораВСпинерДатаUUID);
+
         } catch (Exception e) {///////ошибки
             e.printStackTrace();
             Log.e(Class_MODEL_synchronized.class.getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
