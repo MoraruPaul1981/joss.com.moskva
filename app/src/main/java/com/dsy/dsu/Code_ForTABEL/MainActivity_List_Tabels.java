@@ -604,10 +604,8 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
                             case android.R.id.text1:
 
-
-                                Drawable icon = getResources().getDrawable(R.mipmap.icon_dsu1_emloeys_sonrudnik);
-                                Drawable icon2 = getResources().getDrawable(R.mipmap.icon_dsu1_exit2_round);
-                                icon.setBounds(0, 2, 100, 100);
+                                Drawable icon2 = getResources().getDrawable(   R.drawable.icon_alltabels1);
+                                icon2.setBounds(0, 2, 100, 100);
                                 ((ImageView) view).setImageDrawable(icon2);
 
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
