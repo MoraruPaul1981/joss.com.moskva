@@ -298,10 +298,10 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
         }
     }
 
-    private void методКоличествоТабелей( ) {
+    private void методКоличествоТабелей( @NonNull  Cursor    Курсор_Main_ListTabelsFinal) {
         try{
         if (   СпинерВыборДату.getCount()>0) {
-            textViewКоличествоТабелей.setText(" ("+СпинерВыборДату.getCount()+")");
+            textViewКоличествоТабелей.setText(" ("+СпинерВыборДату.getCount()+")"+" ("+Курсор_Main_ListTabelsFinal.getCount()+")");
         } else {
             textViewКоличествоТабелей.setText("("+"0"+")");
         }
@@ -435,14 +435,13 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                             // TODO: 19.04.2023  внешний вид
                                 gridViewAllTabes.smoothScrollByOffset(position);
                             // TODO: 19.04.2023  Когда ДАННЫХ НЕТ
+                            // TODO: 19.04.2023  показываем количемтво табеленй
+                            методКоличествоТабелей(Курсор_Main_ListTabelsFinal );
                                 
                         }else {
                             // TODO: 19.04.2023  Когда ДАННЫХ НЕТ
                             методDontGetData(Курсор_Main_ListTabels);
                         }
-                        // TODO: 19.04.2023  показываем количемтво табеленй
-                        методКоличествоТабелей( );
-
                         Log.d(this.getClass().getName(), " КакойКонтекст" + ИмесяцвИГодСразу +
                                 " ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре " + ИмесяцвИГодСразу+
                                 " МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray  +
