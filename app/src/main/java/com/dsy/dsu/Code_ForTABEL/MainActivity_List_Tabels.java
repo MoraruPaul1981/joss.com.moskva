@@ -32,6 +32,7 @@ import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -56,6 +57,7 @@ import com.dsy.dsu.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textview.MaterialTextView;
 
 
 import org.jetbrains.annotations.NotNull;
@@ -554,8 +556,6 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
         try {
         if (Курсор_Main_ListTabels.getCount() > 0) {/////ЕСЛИ ЕСТЬХОТЯБЫ ОДИН ТАБЕЛЬ
             Курсор_Main_ListTabels.moveToFirst();
-            Log.d(this.getClass().getName(), " Курсор_Main_ListTabels " + Курсор_Main_ListTabels.getCount());
-            // TODO: 18.04.2023 18.50 start simplrcursor    // TODO: 18.04.2023 18.50 start simplrcursor
             SimpleCursorAdapter simpleCursorAdapterAllTAbels =
                     new SimpleCursorAdapter(getApplicationContext(), R.layout.list_item_all_customer_tabel3,
                     Курсор_Main_ListTabels, new String[]{"_id","cfo"}, new int[]{android.R.id.text1,android.R.id.text2},
@@ -590,8 +590,8 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                                 bundleДЛяListTabels.putString("ИмесяцвИГодСразу", ИмесяцвИГодСразу.trim());
 
                                 // TODO: 09.04.2023  ВставлЯем Данные
-                                ((TextView) view).setTag(bundleДЛяListTabels);
-                                ((TextView) view).setText(FullNameCFO.trim());
+                                ((MaterialTextView) view).setTag(bundleДЛяListTabels);
+                                ((MaterialTextView) view).setText(FullNameCFO.trim());
                                 // TODO: 18.04.2023  Внешниц вид
 
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -657,7 +657,11 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 try{
-                    Bundle bundleДЛяListTabels=(Bundle)           view.getTag();
+                    LinearLayout linearLayoutSimpelCursorAllTabeles= (LinearLayout)
+                            view.findViewById(R.id.   linearLayoutSimpelCursorAllTabeles);
+                    ImageView imageView  = (ImageView) linearLayoutSimpelCursorAllTabeles.getChildAt(0);
+                    MaterialTextView materialTextView  = (MaterialTextView) linearLayoutSimpelCursorAllTabeles.getChildAt(1);
+                    Bundle bundleДЛяListTabels=(Bundle)           materialTextView.getTag();
                     Long    MainParentUUID=      bundleДЛяListTabels.getLong("MainParentUUID");
                     String    FullNameCFO=      bundleДЛяListTabels.getString("FullNameCFO");
                     ///todo Удаление
@@ -683,9 +687,16 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 try{
-                    ((TextView) view).setBackgroundColor(Color.GRAY);
+                    LinearLayout linearLayoutSimpelCursorAllTabeles= (LinearLayout)
+                            view.findViewById(R.id.   linearLayoutSimpelCursorAllTabeles);
+
+                    ImageView imageView  = (ImageView) linearLayoutSimpelCursorAllTabeles.getChildAt(0);
+                    MaterialTextView materialTextView  = (MaterialTextView) linearLayoutSimpelCursorAllTabeles.getChildAt(1);
+
+
+                    materialTextView.setBackgroundColor(Color.GRAY);
                     // TODO: 09.04.2023  перехеод после клика Items
-                    МетодПереходMainActivity_List_Peoples((TextView) view);
+                    МетодПереходMainActivity_List_Peoples(materialTextView);
 /////TODO одинатрный клик для загрузки в этот табель всех сотрудников
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -701,7 +712,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
         });
     }
     /////TODO метод запуска кода при однократорм нажатии просто загузка сотрудников табель
-    private void МетодПереходMainActivity_List_Peoples(@NonNull  TextView textView) {
+    private void МетодПереходMainActivity_List_Peoples(@NonNull  MaterialTextView textView) {
         try{
             Intent    ИнтентпереходВMainActivityList_Peoples=new Intent(getApplicationContext(),MainActivity_List_Peoples.class);
             Bundle bundleИзMAinActivbity_List_Tabels=(Bundle) textView.getTag();
