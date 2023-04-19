@@ -33,6 +33,7 @@ import android.widget.CursorAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -42,6 +43,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.collection.SimpleArrayMap;
 
 import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
@@ -70,6 +72,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Locale;
@@ -112,7 +115,6 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
     private Long MainParentUUID =0l;
     private SharedPreferences sharedPreferencesХранилище;
     private  Animation     animation;
-  private    Cursor     Курсор_ДанныеДляСпинераДаты;
     private   int МЕсяцТабелей;
     private  int ГодТабелей;
     private   int DigitalNameCFO;
@@ -269,18 +271,13 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
         ///TODO попытка открыть экран как full screan
         ////////ЗАПОЛНЯЕМ АРАЙЛИСТ
         try {
+            Cursor Курсор_Main_ListTabels=    методИниЦиализацииSimpleCursor(); /////МЕТОД ЗАГРУЗКИ СОЗДАННЫХ ТАБЕЛЕЙ ИЗ БАЗ
+
+            методЗаполенениеДатаСпинер(Курсор_Main_ListTabels);
+
 
             ////todo заполение спинера
-            МетодЗаполненияСпинераДат();////метод вызаваем все созжданные ТАБЕДЯ ИЗ БАПЗЫ И ДАЛЕЕ ИХ ЗАПИСЫВАЕМ В ОБМЕН
-
-            методЗаполенениеДатаСпинер();
-
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-            ////todo заполение спинера
-            МетодДанныеСпинераДаты();
+            МетодДанныеСпинераДаты(Курсор_Main_ListTabels);
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -290,7 +287,6 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            // TODO: 01.09.2021 метод вызова
         new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), 
        this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
@@ -366,9 +362,6 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
     private void методМассивДляВыбораВСпинерДата() {
         try {
-            ////TODO сортируем дату на ПОСЛЕДНКЮ
-            Log.d(  getApplicationContext().getClass().getName(), " сработала ... ВСТАВКА МассивДляВыбораВСпинерДатаArray"+МассивДляВыбораВСпинерДатаArray);
-            if (Курсор_ДанныеДляСпинераДаты.getCount()>0) {/// && МассивДляВыбораВСпинерДата.size()>0
                 if (ИмесяцвИГодСразу !=null) {
                  Integer ИндексНахождение=   МассивДляВыбораВСпинерДатаArray.indexOf(ИмесяцвИГодСразу);
                     Log.d(  getApplicationContext().getClass().getName(), " ИндексНахождение "+ИндексНахождение);
@@ -376,22 +369,13 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                         Collections.swap(МассивДляВыбораВСпинерДатаArray,0,ИндексНахождение);
                     }
                 }
-                Log.d(this.getClass().getName(), "  FullNameCFO  " +FullNameCFO);
-            }else{
-                Log.d(this.getClass().getName(), " МассивДляВыбораВСпинерДатаArray.size()  " + МассивДляВыбораВСпинерДатаArray.size());
-                // TODO: 21.09.2021  НЕТ ДАННЫХ  НЕТ ТАБЕЛЬ
-                МассивДляВыбораВСпинерДатаArray.add("Не созданно");
-            }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray);
+                    + " МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray+"  FullNameCFO  " +FullNameCFO);
         } catch (Exception e) {
-            e.printStackTrace();
-            ///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            // TODO: 01.09.2021 метод вызова
         new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), 
        this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
@@ -404,7 +388,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
     }
 
-    private void МетодДанныеСпинераДаты( ) {
+    private void МетодДанныеСпинераДаты( @NonNull Cursor Курсор_Main_ListTabels) {
         try{
             ArrayAdapter<String>           АдаптерДляСпинераДата = new ArrayAdapter<String>(this,
                     R.layout.simple_for_create_new_assintionmaterila_spinner_main, МассивДляВыбораВСпинерДатаArray);
@@ -420,7 +404,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                         ИмесяцвИГодСразу = Optional.ofNullable(String.valueOf(((TextView)
                              parent.getChildAt(0)).getText())).map(String::new).orElse(" "); /////ОПРЕДЕЛЯЕМ ТЕКУЩЕЕ ЗНАЧЕНИЕ ВНУТИРИ СПЕНИРА
                         //////TODO линия снизу самих табелей ЦВЕТ
-                        if (ИмесяцвИГодСразу != null) {
+                        if (ИмесяцвИГодСразу != null  && Курсор_Main_ListTabels.getCount()>0) {
                             //((TextView) parent.getChildAt(0)).setBackgroundResource(R.drawable.textlines_tabel_row_color_green);
                             ((TextView) parent.getChildAt(0)).setTextSize(16);
                             ((TextView) parent.getChildAt(0)).startAnimation(animation);
@@ -440,27 +424,26 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                             СпинерВыборДату.startAnimation(animation);
                             TextView textViewspiner=(TextView)   СпинерВыборДату.getSelectedView();
                                 textViewspiner.setTextColor(Color.BLACK);
-                            // TODO: 09.04.2023  set Позиция после инициализации Scinner
-                   методМассивДляВыбораВСпинерДата();
-                   // TODO: 09.04.2023  Главный Код создаем ТАбеля
-               Cursor Курсор_Main_ListTabels=    методИниЦиализацииSimpleCursor(); /////МЕТОД ЗАГРУЗКИ СОЗДАННЫХ ТАБЕЛЕЙ ИЗ БАЗ
 
+
+                            // TODO: 09.04.2023  set Позиция после инициализации Scinner
+                           методМассивДляВыбораВСпинерДата();
+                        // TODO: 09.04.2023  Главный Код создаем ТАбеля
                             методзаполненияSimplrCursor(Курсор_Main_ListTabels);
-                            Log.d(this.getClass().getName(), " КакойКонтекст" + ИмесяцвИГодСразу +
-                                    " ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре " + ИмесяцвИГодСразу+
-                                    " МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray  +
-                                    " МассивДляВыбораВСпинерДатаUUID " + МассивДляВыбораВСпинерДатаUUID+
-                                    "  ((TextView) parent.getChildAt(0)) " +((TextView) parent.getChildAt(0)).getTag()  + " MainParentUUID " +MainParentUUID+
-                                    " Курсор_Main_ListTabels "+Курсор_Main_ListTabels);
+
                         }else {
                             ((TextView) parent.getChildAt(0)).setText("Не созданно");
                             ((TextView) parent.getChildAt(0)).forceLayout();
                             ((TextView) parent.getChildAt(0)).refreshDrawableState();
-                            Log.d(this.getClass().getName(), " КакойКонтекст" + ИмесяцвИГодСразу +
-                                    " ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре " + ИмесяцвИГодСразу+
-                                    " МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray  +
-                                    " МассивДляВыбораВСпинерДатаUUID " + МассивДляВыбораВСпинерДатаUUID);
+                            // TODO: 19.04.2023  когад нет данныхх
+                            методDontCursorSimplrCursor( );
                         }
+                        Log.d(this.getClass().getName(), " КакойКонтекст" + ИмесяцвИГодСразу +
+                                " ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре " + ИмесяцвИГодСразу+
+                                " МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray  +
+                                " МассивДляВыбораВСпинерДатаUUID " + МассивДляВыбораВСпинерДатаUUID+
+                                "  ((TextView) parent.getChildAt(0)) " +((TextView) parent.getChildAt(0)).getTag()  + " MainParentUUID " +MainParentUUID+
+                                " Курсор_Main_ListTabels "+Курсор_Main_ListTabels);
                     }
                 }
             }
@@ -686,6 +669,59 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
         });
 
     }
+
+    private void методDontCursorSimplrCursor( ) {
+        try {
+            ArrayList<HashMap<String, Object>> ЛистНетданных= new ArrayList<HashMap<String, Object>> ();
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("alldonttbels", "Не создано !!!");
+
+            SimpleAdapter АдаптерКогдаНетданных = new SimpleAdapter(getApplicationContext(),
+                    ЛистНетданных,
+                    android.R.layout.simple_spinner_dropdown_item,
+                    new String[]{"alldonttbels"},
+                    new int[]{android.R.id.text1});
+
+            SimpleAdapter.ViewBinder БиндингКогдаНетДАнных = new SimpleAdapter.ViewBinder() {
+                @Override
+                public boolean setViewValue(View view, Object data, String textRepresentation) {
+                        try{
+                                    // TODO: 09.04.2023  ВставлЯем Данные
+                            ((TextView) view).setText(data.toString());
+                            ((TextView) view).setTextColor(Color.GRAY);
+                            ((TextView) view).setTextSize(20l);
+
+                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" + " MainParentUUID "+MainParentUUID);
+                                    return true;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
+                        return true;
+                    }
+                };
+                АдаптерКогдаНетданных.setViewBinder(БиндингКогдаНетДАнных);
+                gridViewAllTabes.setAdapter(АдаптерКогдаНетданных);
+                gridViewAllTabes.refreshDrawableState();
+                gridViewAllTabes.forceLayout();
+                // TODO: 19.04.2023 слушаелти
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
+
+
+
+
     private void методПоGridView( ) {
         gridViewAllTabes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -1276,40 +1312,15 @@ try{
 
 
 
-    // TODO вытасиваем даные из базы чтобы ЗАполнить спирер готовыми табелями Датами НАПРИМЕР ОКТЯРЬ 2020  ДЕКАБРЬ 2019
-    private void МетодЗаполненияСпинераДат() throws InterruptedException, ExecutionException, TimeoutException, ParseException {
-        try{
-         ////  Курсор_ДанныеДляСпинераДаты = new Class_MODEL_synchronized(context).МетодДанныеДЛяСпинераТАбеля();
-            // TODO: 09.04.2023  курсор самим создаваемых табеляПОСИК ДАННЫХ ЧЕРЕЗ UUID
-            Bundle bundleListTabelsДАты=new Bundle();
-            bundleListTabelsДАты.putString("СамЗапрос","  SELECT month_tabels,year_tabels,cfo,uuid FROM  tabel WHERE status_send!=?  " +
-                    "  AND month_tabels IS NOT NULL " +
-                    " AND year_tabels IS NOT NULL" +
-                    " ORDER BY year_tabels DESC ,month_tabels DESC LIMIT 6  ");
-            bundleListTabelsДАты.putStringArray("УсловияВыборки" ,new String[]{String.valueOf("Удаленная")});
-            bundleListTabelsДАты.putString("Таблица","tabel");
-            Курсор_ДанныеДляСпинераДаты=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleListTabelsДАты);
-            Log.d(this.getClass().getName(), "Курсор_ДанныеДляСпинераДаты "+Курсор_ДанныеДляСпинераДаты  );
-            Log.d(this.getClass().getName(), " Курсор_ДанныеДляСпинераДаты" +" время: " +Курсор_ДанныеДляСпинераДаты);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), 
-       this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
 
 
 
 
 
-    private void методЗаполенениеДатаСпинер()
+    private void методЗаполенениеДатаСпинер(@NonNull Cursor Курсор_ДанныеДляСпинераДаты)
             throws ExecutionException, InterruptedException, ParseException {
         try {
-        if ( Курсор_ДанныеДляСпинераДаты.getCount()>0) {/////ЗАГРУЖАЕМ ДАННЫЕ ИЗ ТАБЛИЦЫ CFO ДЛЯ СПИНЕРА И СОЗДАНИЯ ТАБЕЛЯ
-                Log.d(this.getClass().getName()," Курсор_ДанныеДляСпинераДаты.getCount() " + Курсор_ДанныеДляСпинераДаты.getCount());
+
             МассивДляВыбораВСпинерДатаArray.clear();
             МассивДляВыбораВСпинерДатаUUID.clear();
             do{
@@ -1351,17 +1362,9 @@ try{
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                         + " МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray +
                         " МассивДляВыбораВСпинерДатаUUID " +МассивДляВыбораВСпинерДатаUUID);
-
-
             }while (Курсор_ДанныеДляСпинераДаты.moveToNext());
-            // TODO: 14.11.2022
-            Log.d(this.getClass().getName(),"    МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray  +
-                     "МассивДляВыбораВСпинерДатаUUID "+МассивДляВыбораВСпинерДатаUUID);
-            Курсор_ДанныеДляСпинераДаты.close();
-        }else {
-            Log.d(this.getClass().getName(),"    МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray  +
-                    "МассивДляВыбораВСпинерДатаUUID "+МассивДляВыбораВСпинерДатаUUID);
-        }
+            // TODO: 19.04.2023
+            Курсор_ДанныеДляСпинераДаты.moveToFirst();
         } catch (Exception e) {///////ошибки
             e.printStackTrace();
             Log.e(Class_MODEL_synchronized.class.getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
