@@ -31,6 +31,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -557,50 +558,70 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             // TODO: 18.04.2023 18.50 start simplrcursor    // TODO: 18.04.2023 18.50 start simplrcursor
             SimpleCursorAdapter simpleCursorAdapterAllTAbels =
                     new SimpleCursorAdapter(getApplicationContext(), R.layout.list_item_all_customer_tabel2,
-                    Курсор_Main_ListTabels, new String[]{"cfo"}, new int[]{android.R.id.text1},
+                    Курсор_Main_ListTabels, new String[]{"_id","cfo"}, new int[]{android.R.id.text1,android.R.id.text2},
                             CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);  ///name
             SimpleCursorAdapter.ViewBinder binding = new SimpleCursorAdapter.ViewBinder() {
                 @Override
                 public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
                     try{
-                        MainParentUUID= cursor.getLong(cursor.getColumnIndex("uuid"));
-                        DigitalNameCFO= cursor.getInt(cursor.getColumnIndex("cfo"));
-                        Integer ID= cursor.getInt(cursor.getColumnIndex("_id"));
-                        // TODO: 18.04.2023 Название ЦФО
-                        Bundle bundleНазваниеЦФО=new Bundle();
-                        bundleНазваниеЦФО.putString("СамЗапрос","  SELECT * FROM  cfo WHERE    _id=? ");
-                        bundleНазваниеЦФО.putStringArray("УсловияВыборки" ,new String[]{  String.valueOf(DigitalNameCFO)});
-                        bundleНазваниеЦФО.putString("Таблица","cfo");
-                        Cursor КурсорПОискНазваниеЦФО=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleНазваниеЦФО);
-                        FullNameCFO=КурсорПОискНазваниеЦФО.getString(КурсорПОискНазваниеЦФО.getColumnIndex("name")).trim();
-                        КурсорПОискНазваниеЦФО.close();
-                        МЕсяцТабелей = cursor.getInt(cursor.getColumnIndex("month_tabels"));
-                        ГодТабелей= cursor.getInt(cursor.getColumnIndex("year_tabels"));
-                            // TODO: 15.12.2022  Давные Bundle
-                            Bundle bundleДЛяListTabels=new Bundle();
-                            bundleДЛяListTabels.putLong("MainParentUUID", MainParentUUID);
-                            bundleДЛяListTabels.putInt("Position", cursor.getPosition());
-                            bundleДЛяListTabels.putInt("ГодТабелей", МЕсяцТабелей);
-                            bundleДЛяListTabels.putInt("МЕсяцТабелей",ГодТабелей);
-                            bundleДЛяListTabels.putInt("DigitalNameCFO", DigitalNameCFO);
-                            bundleДЛяListTabels.putString("FullNameCFO", FullNameCFO.trim());
-                            bundleДЛяListTabels.putString("ИмесяцвИГодСразу", ИмесяцвИГодСразу.trim());
+                        switch (view.getId()) {
+                            case android.R.id.text2:
+                                MainParentUUID= cursor.getLong(cursor.getColumnIndex("uuid"));
+                                DigitalNameCFO= cursor.getInt(cursor.getColumnIndex("cfo"));
+                                Integer ID= cursor.getInt(cursor.getColumnIndex("_id"));
+                                // TODO: 18.04.2023 Название ЦФО
+                                Bundle bundleНазваниеЦФО=new Bundle();
+                                bundleНазваниеЦФО.putString("СамЗапрос","  SELECT * FROM  cfo WHERE    _id=? ");
+                                bundleНазваниеЦФО.putStringArray("УсловияВыборки" ,new String[]{  String.valueOf(DigitalNameCFO)});
+                                bundleНазваниеЦФО.putString("Таблица","cfo");
+                                Cursor КурсорПОискНазваниеЦФО=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleНазваниеЦФО);
+                                FullNameCFO=КурсорПОискНазваниеЦФО.getString(КурсорПОискНазваниеЦФО.getColumnIndex("name")).trim();
+                                КурсорПОискНазваниеЦФО.close();
+                                МЕсяцТабелей = cursor.getInt(cursor.getColumnIndex("month_tabels"));
+                                ГодТабелей= cursor.getInt(cursor.getColumnIndex("year_tabels"));
+                                // TODO: 15.12.2022  Давные Bundle
+                                Bundle bundleДЛяListTabels=new Bundle();
+                                bundleДЛяListTabels.putLong("MainParentUUID", MainParentUUID);
+                                bundleДЛяListTabels.putInt("Position", cursor.getPosition());
+                                bundleДЛяListTabels.putInt("ГодТабелей", МЕсяцТабелей);
+                                bundleДЛяListTabels.putInt("МЕсяцТабелей",ГодТабелей);
+                                bundleДЛяListTabels.putInt("DigitalNameCFO", DigitalNameCFO);
+                                bundleДЛяListTabels.putString("FullNameCFO", FullNameCFO.trim());
+                                bundleДЛяListTabels.putString("ИмесяцвИГодСразу", ИмесяцвИГодСразу.trim());
 
-                        // TODO: 09.04.2023  ВставлЯем Данные
-                        ((TextView) view).setTag(bundleДЛяListTabels);
-                        ((TextView) view).setText(FullNameCFO.trim());
-                        // TODO: 18.04.2023  Внешниц вид
-                        Drawable icon = getResources().getDrawable(R.mipmap.icon_dsu1_emloeys_sonrudnik);
-                        icon.setBounds(0, 2, 100, 100);
-                        ((TextView) view).setCompoundDrawables(icon, null, null, null);
-                        ((TextView) view).setBackground(getApplication().getResources().getDrawable(R.drawable.textlines_tabel_row_color_green_mini));
+                                // TODO: 09.04.2023  ВставлЯем Данные
+                                ((TextView) view).setTag(bundleДЛяListTabels);
+                                ((TextView) view).setText(FullNameCFO.trim());
+                                // TODO: 18.04.2023  Внешниц вид
+
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                        " ID " +ID+ " MainParentUUID "+MainParentUUID);
+                                return true;
 
 
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                    " ID " +ID+ " MainParentUUID "+MainParentUUID);
-                        return true;
+
+                            case android.R.id.text1:
+
+
+                                Drawable icon = getResources().getDrawable(R.mipmap.icon_dsu1_emloeys_sonrudnik);
+                                Drawable icon2 = getResources().getDrawable(R.mipmap.icon_dsu1_exit2_round);
+                                icon.setBounds(0, 2, 100, 100);
+                                ((ImageView) view).setImageDrawable(icon2);
+
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " MainParentUUID "+MainParentUUID);
+                                return true;
+
+                        }
+
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                + " MainParentUUID "+MainParentUUID);
+                        return false;
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
