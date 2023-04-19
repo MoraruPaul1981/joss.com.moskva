@@ -1200,23 +1200,27 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
         try{
         Log.d(this.getClass().getName()," ИмесяцвИГодСразу " +ИмесяцвИГодСразу);
         StringBuffer МЕсяцСЗакглавнойБуквы =new StringBuffer(ИмесяцвИГодСразу.toLowerCase());
-        ИмесяцвИГодСразу= МЕсяцСЗакглавнойБуквы.substring(0, 1).toUpperCase() + МЕсяцСЗакглавнойБуквы .substring(1).toLowerCase();
+        ИмесяцвИГодСразу= МЕсяцСЗакглавнойБуквы.substring(0, 1).toUpperCase() + МЕсяцСЗакглавнойБуквы .substring(1).toLowerCase().trim();
         Log.d(this.getClass().getName()," МЕсяцСЗакглавнойБуквы " +ИмесяцвИГодСразу);
             int НовыйМесяц = МетодПолучениниеНовогоМесяцДляЗАписивОднуКолонку(ФинальнаяМЕсяцДляНовогоТабеля);
             int НовыйГод = МетодПолучениниеНовыйГодДляЗАписивОднуКолонку(ПолученныйГодДляНовогоТабеля);
             ///TODO  ПОСЛЕ ВСТАКИ ПЕРЕХОДИМ НА АКТИВТИ С ВЫБОРО И СОЗДАНИЕМ САМОГО ТАБЕЛЯ НОВОГО
             Intent Интент_НовыйТабель = new Intent(getApplicationContext(),MainActivity_New_Tabely.class);
             Bundle     bundleСозданиеНовогоТабеля=new Bundle();
-            bundleСозданиеНовогоТабеля.putString("ИмесяцвИГодСразу", ИмесяцвИГодСразу);
-            bundleСозданиеНовогоТабеля.putInt("ГодТабелей", НовыйГод);
-            bundleСозданиеНовогоТабеля.putInt("МЕсяцТабелей", НовыйМесяц);
-            Интент_НовыйТабель.putExtras(bundleСозданиеНовогоТабеля);
-             Интент_НовыйТабель.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(Интент_НовыйТабель);
+            if (НовыйГод>0 && НовыйМесяц>0 ) {
+                bundleСозданиеНовогоТабеля.putString("ИмесяцвИГодСразу", ИмесяцвИГодСразу);
+                bundleСозданиеНовогоТабеля.putInt("ГодТабелей", НовыйГод);
+                bundleСозданиеНовогоТабеля.putInt("МЕсяцТабелей", НовыйМесяц);
+                Интент_НовыйТабель.putExtras(bundleСозданиеНовогоТабеля);
+            }
+            Интент_НовыйТабель.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            if (bundleСозданиеНовогоТабеля.size()>0) {
+                startActivity(Интент_НовыйТабель);
+            }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " bundleСозданиеНовогоТабеля "+bundleСозданиеНовогоТабеля );
+                    + " bundleСозданиеНовогоТабеля "+bundleСозданиеНовогоТабеля + " НовыйМесяц " +НовыйМесяц+ " НовыйГод " +НовыйГод);
         } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
