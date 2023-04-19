@@ -116,16 +116,17 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3СловоТабель"
         tools:visibility="visible" />
 
-    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/gridView1"
-        android:numColumns="2"
+    <GridView
+        android:id="@+id/gridViewAllTabes"
+        android:numColumns="1"
         android:gravity="center"
         android:columnWidth="70dp"
+        android:layout_height="500dp"
         android:stretchMode="columnWidth"
         android:background="#00ACC1"
         android:layout_width="250dp"
-        android:scrollbars="horizontal"
-        android:layout_height="500dp"
+        android:scrollbars="horizontal|vertical"
+        android:scrollIndicators="left"
         tools:ignore="MissingConstraints">
     </GridView>
 

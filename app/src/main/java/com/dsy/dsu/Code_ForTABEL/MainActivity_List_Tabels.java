@@ -30,6 +30,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CursorAdapter;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.SimpleCursorAdapter;
@@ -89,7 +90,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class MainActivity_List_Tabels extends AppCompatActivity  {
     private  Spinner СпинерВыборДату;/////спинеры для создание табеляСпинерТабельДепратамент
 
-    private  ScrollView ScrollViewListTabels;
+    private  GridView gridViewAllTabes;
     private   ProgressDialog progressDialogДляУдаления;
 
     private    Configuration config;
@@ -121,7 +122,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
     LinkedList< String> МассивДляВыбораВСпинерДатаArray=new  LinkedList< String>();
     LinkedHashMap<Long,String> МассивДляВыбораВСпинерДатаUUID=new LinkedHashMap<Long,String>();
-    private  ListView   ListAllTabels;
+
     Message message;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +141,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         /////todo данная настрока запрещает при запуке активти подскаваать клавиатуре вверх на компонеты eedittext
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        ScrollViewListTabels = (ScrollView) findViewById(R.id.ScrollViewListTabels); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
+            gridViewAllTabes = (GridView) findViewById(R.id.gridViewAllTabes); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
 
         //todo кнопка назад
         КнопкаНазадВсеТабеля= findViewById(R.id.КонопкаНазадСтрелкаВсеТабеля);
@@ -157,7 +158,6 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_row_tabellist);
          КруглаяКнопкаСозданиеНовогоТабеля = findViewById(R.id.КруглаяКнопкаСамТабель);//////КНОПКА СОЗДАНИЕ НОВГО ТАБЕЛЯ ИЗ ИСТОРИИ ВТОРОЙ ШАГ СОЗДАНИЯ ТАБЕЛЯ СНАЧАЛА ИСТРОИЯ ПОТОМ НА БАЗЕ ЕГО СОЗЗДАНИЕ
 
-             ListAllTabels = (ListView) findViewById(R.id.ListAllTabels);
             // TODO: 14.10.2022 настйрока хранилища
             sharedPreferencesХранилище=   getApplicationContext().getSharedPreferences("sharedPreferencesХранилище",
                     Context.MODE_MULTI_PROCESS);
@@ -575,7 +575,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                         bundleНазваниеЦФО.putStringArray("УсловияВыборки" ,new String[]{  String.valueOf(DigitalNameCFO)});
                         bundleНазваниеЦФО.putString("Таблица","cfo");
                         Cursor КурсорПОискНазваниеЦФО=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleНазваниеЦФО);
-                        FullNameCFO=КурсорПОискНазваниеЦФО.getString(КурсорПОискНазваниеЦФО.getColumnIndex("name"));
+                        FullNameCFO=КурсорПОискНазваниеЦФО.getString(КурсорПОискНазваниеЦФО.getColumnIndex("name")).trim();
                         КурсорПОискНазваниеЦФО.close();
                         МЕсяцТабелей = cursor.getInt(cursor.getColumnIndex("month_tabels"));
                         ГодТабелей= cursor.getInt(cursor.getColumnIndex("year_tabels"));
@@ -619,9 +619,9 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                 }
             };
             simpleCursorAdapterAllTAbels.setViewBinder(binding);
-            ListAllTabels.setAdapter(simpleCursorAdapterAllTAbels);
-            ScrollViewListTabels.fullScroll(View.FOCUS_UP);
-            ListAllTabels.forceLayout();
+            gridViewAllTabes.setAdapter(simpleCursorAdapterAllTAbels);
+            gridViewAllTabes.refreshDrawableState();
+            gridViewAllTabes.forceLayout();
         }
     } catch (Exception e) {
         e.printStackTrace();
