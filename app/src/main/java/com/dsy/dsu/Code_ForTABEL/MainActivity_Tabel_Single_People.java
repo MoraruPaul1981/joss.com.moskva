@@ -1340,21 +1340,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                             CurrenrsSelectFio=       cursor.getLong(cursor.getColumnIndex("fio"));
                             ФИО=       cursor.getString(cursor.getColumnIndex("name"));
 
-             /*           recyclerView.getAdapter().notifyDataSetChanged();
-                        myRecycleViewAdapter.notifyDataSetChanged();
-
-
-                            // TODO: 14.04.2023 ЧАСЫ
-                            методСчитаемЧасы(cursor);
-                            // TODO: 04.04.2023  ФИО
-                            new SubClassChanegeSetNameProffesio().    МетодЗаполняемФИОRow(cursor);
-                            // TODO: 16.04.2023 Професии Професии Професии Професии
-                            МетодаКликаTableRowФИО( );
-
-                            // TODO: 07.04.2023 переопрелделния Вида Табеля
-                            МетодПерегрузкаSingletabel();*/
-
-                            методСчитаемЧасы(cursor);
                             МетодЗаполениеRecycleView( cursor );
 
 
@@ -1424,15 +1409,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 CurrenrsSelectFio=       cursor.getLong(cursor.getColumnIndex("fio"));
                                 ФИО=       cursor.getString(cursor.getColumnIndex("name"));
                                 // TODO: 20.04.2023
-                                // TODO: 14.04.2023 ЧАСЫ
-                         /*       методСчитаемЧасы(cursor);
-                                // TODO: 04.04.2023  ФИО
-                                new SubClassChanegeSetNameProffesio().    МетодЗаполняемФИОRow(cursor);
-                                // TODO: 16.04.2023 Професии Професии Професии Професии
-                                МетодаКликаTableRowФИО( );
-
-                                МетодПерегрузкаSingletabel();*/
-                                методСчитаемЧасы(cursor);
                               МетодЗаполениеRecycleView( cursor );
 
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1760,7 +1736,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         break;
                     case 0:
                         // TODO: 14.04.2023 ЧАСЫ
-                         методСчитаемЧасы(cursor);
+                         методСчитаемЧасы(cursor );
                         // TODO: 04.04.2023  ФИО
                         new SubClassChanegeSetNameProffesio().    МетодЗаполняемФИОRow(cursor);
                         // TODO: 16.04.2023 Професии Професии Професии Професии
@@ -2208,7 +2184,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                           }
                              Cursor    cursorДляЧасов =  new SubClassGetCursorЧасы().МетодSwipesКурсор();
                              // TODO: 14.04.2023 пересчитываем часы
-                             методСчитаемЧасы(cursorДляЧасов);
+                             методСчитаемЧасы(cursorДляЧасов );
                              МетодПерегрузкаЧасыSingletabel();
                          });
 
@@ -2570,7 +2546,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             }
         }
 
-        void методСчитаемЧасы(@NonNull Cursor cursor) {
+        void методСчитаемЧасы(@NonNull Cursor cursor ) {
             try{
                 Integer ПозицуияВыбраногоСОтрудника=      cursor.getPosition();
                 ПозицуияВыбраногоСОтрудника=ПозицуияВыбраногоСОтрудника+1;
@@ -2579,7 +2555,8 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 Log.d(this.getClass().getName(), "  ЧасыТекущегоСОтрудника " + ЧасыТекущегоСОтрудника);
                 textViewчасыsimgletabel.setText(" (" + " " + ЧасыТекущегоСОтрудника + "/часы)  "
                         + ""+ ПозицуияВыбраногоСОтрудника+" из "+  cursor.getCount()+"");
-                Log.d(Class_MODEL_synchronized.class.getName()," RowNumber  " + " cursor " +cursor.getPosition()  );
+                Log.d(Class_MODEL_synchronized.class.getName()," RowNumber  " + " cursor " +cursor.getPosition()
+                        +"myViewHolder.getLayoutPosition()   "+myViewHolder.getLayoutPosition() + "PositionCustomer  " + PositionCustomer);
 
             } catch (Exception e) {
                 e.printStackTrace();
