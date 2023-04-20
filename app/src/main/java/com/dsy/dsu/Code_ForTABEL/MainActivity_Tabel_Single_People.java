@@ -325,10 +325,10 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 ГодТабелей=  bundleИзMainActitivy_List_Tables.getInt("ГодТабелей", 0);
                 МЕсяцТабелей=  bundleИзMainActitivy_List_Tables.getInt("МЕсяцТабелей",0);
                 DigitalNameCFO=   bundleИзMainActitivy_List_Tables.getInt("DigitalNameCFO", 0);
-                FullNameCFO=  bundleИзMainActitivy_List_Tables.getString("FullNameCFO", "");
-                ИмесяцвИГодСразу= bundleИзMainActitivy_List_Tables.getString("ИмесяцвИГодСразу", "");
+                FullNameCFO=  bundleИзMainActitivy_List_Tables.getString("FullNameCFO", "").trim();
+                ИмесяцвИГодСразу= bundleИзMainActitivy_List_Tables.getString("ИмесяцвИГодСразу", "").trim();
                 CurrenrsСhildUUID= bundleИзMainActitivy_List_Tables.getLong("CurrenrsСhildUUID", 0l);
-                ФИО= bundleИзMainActitivy_List_Tables.getString("ФИО", "");
+                ФИО= bundleИзMainActitivy_List_Tables.getString("ФИО", "").trim();
                 CurrenrsSelectFio= bundleИзMainActitivy_List_Tables.getLong("CurrenrsSelectFio", 0l);
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1851,6 +1851,13 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                             + " editTextRowКликПоДАнными " + editTextRowКликПоДАнными + " ДнейСодержимое " + ДнейСодержимое);
+                                    // TODO: 20.04.2023
+                                    String ВыходныеИлиПразничные=    ДниВыходные.get(ДнейСодержимое.trim());
+                                    if (ВыходныеИлиПразничные!=null) {
+                                        editTextRowКликПоДАнными.setVisibility(View.VISIBLE);
+                                    }else {
+                                        editTextRowКликПоДАнными.setVisibility(View.INVISIBLE);
+                                    }
                                 }
                             }
 
@@ -1957,6 +1964,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                                         @NonNull String НазваниеДляДень) {
                 try {
                         String День = Optional.ofNullable(cursor.getString(cursor.getColumnIndex(НазваниеДляДень))).orElse("0");
+                        if(День.length()==0){День="0";}
                     CurrenrsСhildUUID= Optional.ofNullable(cursor.getLong(cursor.getColumnIndex("uuid"))).orElse(0l);
                         Bundle dataRowData = new Bundle();
                         dataRowData.putString("ЗначениеДня", День);
@@ -1994,8 +2002,13 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             private void методЗаполениеНазванияRowData(@NonNull  TextView TextViewRowКликПоНазваниям,String s) {
                 try {
                     // TODO: 11.04.2023 Ставим Дни
-                    TextViewRowКликПоНазваниям.setText( ДниВыходные.get(s.trim()));
-                    TextViewRowКликПоНазваниям.setVisibility(View.VISIBLE);
+                String ВыходныеИлиПразничные=    ДниВыходные.get(s.trim());
+                    TextViewRowКликПоНазваниям.setText( ВыходныеИлиПразничные);
+                    if (ВыходныеИлиПразничные!=null) {
+                        TextViewRowКликПоНазваниям.setVisibility(View.VISIBLE);
+                    }else {
+                        TextViewRowКликПоНазваниям.setVisibility(View.INVISIBLE);
+                    }
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2012,23 +2025,25 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                             // TODO: 11.04.2023 меняем Цвет и Убираем *** если празничные
 
 
-    if(       ((TextView)v).getText().toString().matches("(.*)Вс(.*)")  || ((TextView)v).getText().toString().matches("(.*)Сб(.*)")) {
-        ((TextView)v).setTextColor(Color.parseColor("#DC143C"));
-    }else {
+                            if (ВыходныеИлиПразничные!=null) {
+                                if(       ((TextView)v).getText().toString().matches("(.*)Вс(.*)")  || ((TextView)v).getText().toString().matches("(.*)Сб(.*)")) {
+                                    ((TextView)v).setTextColor(Color.parseColor("#DC143C"));
+                                }else {
 
-        if ( ((TextView)v).getText().toString().matches("(.*)###(.*)")){
-            String УдаляемДляПразничныхДней=     ((TextView)v).getText().toString();
-            УдаляемДляПразничныхДней=           УдаляемДляПразничныхДней.replaceAll("###","");
-            ((TextView)v).setText(УдаляемДляПразничныхДней);
-            ((TextView)v).setTextColor(Color.parseColor("#9C112D"));
-        }  else {
-            ((TextView)v).setTextColor(Color.parseColor("#008080"));
-        }
-        }
+                                    if ( ((TextView)v).getText().toString().matches("(.*)###(.*)")){
+                                        String УдаляемДляПразничныхДней=     ((TextView)v).getText().toString();
+                                        УдаляемДляПразничныхДней=           УдаляемДляПразничныхДней.replaceAll("###","");
+                                        ((TextView)v).setText(УдаляемДляПразничныхДней);
+                                        ((TextView)v).setTextColor(Color.parseColor("#9C112D"));
+                                    }  else {
+                                        ((TextView)v).setTextColor(Color.parseColor("#008080"));
+                                    }
+                                    }
 
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " TextViewRowКликПоНазваниям " +TextViewRowКликПоНазваниям);
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " TextViewRowКликПоНазваниям " +TextViewRowКликПоНазваниям);
+                            }
                         }
                         @Override
                         public void onViewDetachedFromWindow(View v) {
