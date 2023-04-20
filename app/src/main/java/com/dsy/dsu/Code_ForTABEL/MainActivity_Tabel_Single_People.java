@@ -272,7 +272,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             // TODO: 14.04.2023 доделываем single tabel
             subClassSingleTabelRecycreView.МетодСлушательRecycleView();
 
+            subClassSingleTabelRecycreView.   МетодСлушательКурсора(cursor);
 
+            subClassSingleTabelRecycreView.   методWorkManagerLifecycleOwner();
 
 
 
@@ -1313,6 +1315,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 @Override
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                     try{
+
                         recyclerView.smoothScrollToPosition(0);
                         ProgressBarSingleTabel.setVisibility(View.VISIBLE);
                         message.getTarget().postDelayed(()->{
