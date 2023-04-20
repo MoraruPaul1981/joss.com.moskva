@@ -59,7 +59,7 @@ android {
         applicationId "com.dsy.dsu"
         minSdkVersion 26
         targetSdk defaultTargetSdkVersion
-        versionCode 811
+        versionCode 812
         versionName 'SousAvtodor 2023'
 
         //TODO настройки уведомлений
