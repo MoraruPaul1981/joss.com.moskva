@@ -595,22 +595,24 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         // TODO: 26.08.2021 старый view табель
         ССылкаНаСозданнуюБазу.execSQL("drop view  if exists viewtabel");//test
         //ВИД View_TABEL
-        ССылкаНаСозданнуюБазу.execSQL("CREATE VIEW if not exists viewtabel AS  SELECT DISTINCT     \n" +
-                "                          data_tabels. _id,  fio.name,  tabel.cfo,  tabel.month_tabels, " +
-                " tabel.year_tabels,  data_tabels.fio,  data_tabels.d1,  data_tabels.d2,  data_tabels.d3,  data_tabels.d4,  data_tabels.d5, \n" +
-                "                          data_tabels.d6,  data_tabels.d7,  data_tabels.d8," +
-                "  data_tabels.d9,  data_tabels.d10,  data_tabels.d11,  data_tabels.d12,  data_tabels.d13,  data_tabels.d14,  data_tabels.d15, \n" +
-                "                          data_tabels.d16,  data_tabels.d17,  data_tabels.d18," +
-                "  data_tabels.d20,  data_tabels.d19,  data_tabels.d21,  data_tabels.d22,  data_tabels.d23, data_tabels.d24, data_tabels.d25,   \n" +
-                "                          data_tabels.d26,  data_tabels.d27,  data_tabels.d28, " +
-                " data_tabels.d29,  data_tabels.d30,  data_tabels.d31,  data_tabels.date_update, " +
-                " data_tabels.uuid,  data_tabels.uuid_tabel, \n" +
-                "                          data_tabels.user_update,  data_tabels.current_table," +
-                "  data_tabels.status_send,  data_tabels.status_carried_out,  data_tabels.prof AS dt_prof,  fio.prof AS fio_prof\n" +
+        ССылкаНаСозданнуюБазу.execSQL("CREATE VIEW if not exists viewtabel AS  \n" +
+                "\n" +
+                "SELECT DISTINCT \n" +
+                "                          data_tabels._id,  fio.name,  tabel.cfo,  tabel.month_tabels,  tabel.year_tabels,  data_tabels.fio,  data_tabels.d1, \n" +
+                " data_tabels.d2,  data_tabels.d3,  data_tabels.d4,\n" +
+                "  data_tabels.d5, \n" +
+                "                          data_tabels.d6,  data_tabels.d7,  data_tabels.d8,  data_tabels.d9,  data_tabels.d10,  data_tabels.d11,\n" +
+                "  data_tabels.d12,  data_tabels.d13,  data_tabels.d14,  data_tabels.d15, \n" +
+                "                          data_tabels.d16,  data_tabels.d17,  data_tabels.d18,  data_tabels.d19,  data_tabels.d20,  data_tabels.d21, \n" +
+                " data_tabels.d22,  data_tabels.d23,  data_tabels.d25,  data_tabels.d24, \n" +
+                "                          data_tabels.d26,  data_tabels.d27,  data_tabels.d28,  data_tabels.d29,  data_tabels.d30,  data_tabels.d31,\n" +
+                "  data_tabels.date_update,  data_tabels.uuid,  data_tabels.uuid_tabel, \n" +
+                "                          data_tabels.user_update,  data_tabels.current_table,  data_tabels.status_send,  data_tabels.status_carried_out, \n" +
+                " data_tabels.prof AS dt_prof,  fio.prof AS fio_prof\n" +
                 "FROM             fio INNER JOIN\n" +
                 "                          data_tabels ON  fio.uuid =  data_tabels.fio INNER JOIN\n" +
                 "                          tabel ON  tabel.uuid =  data_tabels.uuid_tabel\n" +
-                "WHERE        ( data_tabels.fio IS NOT NULL)");
+                "WHERE        ( data_tabels.fio IS NOT NULL)\n");
         Log.d(this.getClass().getName(), " сработала ...  создание вид  viewtabel");
 
     }
