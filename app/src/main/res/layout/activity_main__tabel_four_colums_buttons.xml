@@ -19,7 +19,7 @@
 
 
     <TextView
-        android:id="@+id/textViewJОбщееКоличествоСотрудниковВТабеле"
+        android:id="@+id/textViewчасыsimgletabel"
         android:layout_width="140dp"
         android:layout_height="15dp"
         android:layout_marginStart="1dp"
@@ -82,7 +82,7 @@
         android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
         android:touchscreenBlocksFocus="false"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/textViewJОбщееКоличествоСотрудниковВТабеле"
+        app:layout_constraintBottom_toTopOf="@id/textViewчасыsimgletabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintTop_toTopOf="parent"

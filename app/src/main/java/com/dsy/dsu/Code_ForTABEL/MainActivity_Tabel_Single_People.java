@@ -72,7 +72,6 @@ import androidx.work.WorkManager;
 
 import com.dsy.dsu.Business_logic_Only_Class.CELLUPDATE.SubClassUpdatesCELL;
 import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
-import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_MODEL_synchronized;
@@ -98,11 +97,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
@@ -143,7 +139,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private Button КнопкаНазад;
     private Button КнопкаЛеваяПередвиженияПоДанным;
     private Button КнопкаПраваяПередвиженияПоДанным;
-    private  TextView TextViewФИОиЧасыСотрудника;
+    private  TextView textViewчасыsimgletabel;
     private   int КоличествоДнейвЗагружаемойМесяце;
 
     private  String ЛимитСоСмещениемДанных= "";
@@ -192,6 +188,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     private TextView TextViewФИОПрофессия;
 
+    private  Cursor   cursor=null;
+
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -228,12 +226,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             КнопкаЛеваяПередвиженияПоДанным=(Button) findViewById(R.id.imageViewВСамомТабелеЛеваяСтрелка);
             КнопкаПраваяПередвиженияПоДанным=(Button) findViewById(R.id.imageViewВСамомТабелеТабельПраваяСтрелка);
-            TextViewФИОиЧасыСотрудника =(TextView) findViewById(R.id.textViewJОбщееКоличествоСотрудниковВТабеле);
+            textViewчасыsimgletabel =(TextView) findViewById(R.id.textViewчасыsimgletabel);
             imageButtonДвижениеПоСотрудникамВТАбеле=(ImageButton) findViewById(R.id.imageButtonДвижениеПоСотрудникамВТАбеле);
             imageButtonНазадПоСотрудникамВТАбеле=(ImageButton) findViewById(R.id.imageButtonНазадПоСотрудникамВТАбеле);
-            TextViewФИОиЧасыСотрудника.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
-            TextViewФИОиЧасыСотрудника.setTypeface(Typeface.SANS_SERIF,Typeface.BOLD);
-            TextViewФИОиЧасыСотрудника.setPaintFlags( (TextViewФИОиЧасыСотрудника.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG));
+            textViewчасыsimgletabel.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+            textViewчасыsimgletabel.setTypeface(Typeface.SANS_SERIF,Typeface.BOLD);
+            textViewчасыsimgletabel.setPaintFlags( (textViewчасыsimgletabel.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG));
             СловоТабель=(TextView) findViewById(R.id.textView3СловоТабель);
             СловоТабель.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
             ЛимитСоСмещениемДанных="0";
@@ -258,21 +256,27 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             методСпинерМесяцы();//запускаем метод создание табеля
             МетодСпинерДепартамент( );
             МетодОтработкиПоднятияКлавиатуры();
+            МетодПриНАжатииНаКнопкуBACK();
+
+
+            // TODO: 20.04.2023 Данные
+            cursor =    new SubClassGetCursor().МетодSwipesКурсор();
 
                 // TODO: 29.03.2023  Метод RerecyView RerecyView RerecyView RerecyView RerecyView
                 LifecycleOwner lifecycleOwner=this;
                 LifecycleOwner  lifecycleOwnerОбщая=this;
                 SubClassSingleTabelRecycreView subClassSingleTabelRecycreView=
-                    new SubClassSingleTabelRecycreView(lifecycleOwner,lifecycleOwnerОбщая,activity);
+                    new SubClassSingleTabelRecycreView(lifecycleOwner,lifecycleOwnerОбщая,activity,cursor);
                 subClassSingleTabelRecycreView.МетодИнициализацииRecycreView();
-                Cursor   cursor =    new SubClassGetCursor().МетодSwipesКурсор();
-                subClassSingleTabelRecycreView.МетодЗаполениеRecycleView( cursor);
-                subClassSingleTabelRecycreView. методДляSimpeCallbacks(cursor);
-                МетодПриНАжатииНаКнопкуBACK();
+
+
+                subClassSingleTabelRecycreView.МетодЗаполениеRecycleView( cursor );
+                subClassSingleTabelRecycreView. методДляSimpeCallbacks( );
+
             // TODO: 14.04.2023 доделываем single tabel
             subClassSingleTabelRecycreView.МетодСлушательRecycleView();
 
-            subClassSingleTabelRecycreView.   МетодСлушательКурсора(cursor);
+            subClassSingleTabelRecycreView.   МетодСлушательКурсора(cursor );
 
             subClassSingleTabelRecycreView.   методWorkManagerLifecycleOwner();
 
@@ -544,8 +548,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     private void МетодЗаполениеЭкранНАзваниеФИоИПрофесиии() {
         try{
-            TextViewФИОиЧасыСотрудника.setText("");
-            TextViewФИОиЧасыСотрудника.setText(ФИОТекущегоСотрудника.trim() + "\n"+ "( "+Профессия.trim()+ " )"); ///строго имя
+            textViewчасыsimgletabel.setText("");
+            textViewчасыsimgletabel.setText(ФИОТекущегоСотрудника.trim() + "\n"+ "( "+Профессия.trim()+ " )"); ///строго имя
             Log.d(this.getClass().getName(), " ФИО " + ФИОТекущегоСотрудника + " Профессия " +Профессия);
         } catch (Exception e) {
             e.printStackTrace();
@@ -703,11 +707,11 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             try {
-                                TextViewФИОиЧасыСотрудника.setBackgroundColor(Color.WHITE);
+                                textViewчасыsimgletabel.setBackgroundColor(Color.WHITE);
                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                        " TextViewФИОиЧасыСотрудника  " + TextViewФИОиЧасыСотрудника);
+                                        " textViewчасыsimgletabel  " + textViewчасыsimgletabel);
                                 dialog.dismiss();
                                 dialog.cancel();
                             } catch (Exception e) {
@@ -723,7 +727,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             try {
-                                TextViewФИОиЧасыСотрудника.setBackgroundColor(Color.WHITE);
+                                textViewчасыsimgletabel.setBackgroundColor(Color.WHITE);
                                 Bundle bundleПрофесии=new Bundle();
                                 bundleПрофесии.putString("СамЗапрос","  SELECT * FROM  prof WHERE uuid!=? ");
                                 bundleПрофесии.putStringArray("УсловияВыборки" ,new String[]{"0"});
@@ -735,7 +739,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                        " TextViewФИОиЧасыСотрудника  " + TextViewФИОиЧасыСотрудника);
+                                        " textViewчасыsimgletabel  " + textViewчасыsimgletabel);
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1236,9 +1240,9 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
          String УспешнаяСменПрофессия=   bundleПослеУспешнойСменыПрофесии.getString("НазваниеПрофесии");
             TextViewФИОПрофессия.setText(ФИО.trim() + "\n"+ УспешнаяСменПрофессия);
         TextViewФИОПрофессия.startAnimation(animationПрофессия400) ;
-            TextViewФИОиЧасыСотрудника.startAnimation(animationПрофессия400);
-            TextViewФИОиЧасыСотрудника.refreshDrawableState();
-            TextViewФИОиЧасыСотрудника.forceLayout();
+            textViewчасыsimgletabel.startAnimation(animationПрофессия400);
+            textViewчасыsimgletabel.refreshDrawableState();
+            textViewчасыsimgletabel.forceLayout();
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "  УспешнаяСменПрофессия " +УспешнаяСменПрофессия);
@@ -1267,9 +1271,11 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
         public SubClassSingleTabelRecycreView(@NonNull  LifecycleOwner lifecycleOwner,
                                               @NonNull  LifecycleOwner  lifecycleOwnerОбщая,
-                                              @NonNull Activity activity) {
+                                              @NonNull Activity activity,
+                                              @NonNull Cursor cursor) {
             this.lifecycleOwner=lifecycleOwner;
             this.lifecycleOwnerОбщая=lifecycleOwnerОбщая;
+            this.cursor=cursor;
         }
 
         private void МетодИнициализацииRecycreView() {
@@ -1285,7 +1291,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+  "cursor " +cursor);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getApplicationContext().getClass().getName(),
@@ -1298,7 +1304,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
         }
 
         // TODO: 11.04.2023 метод SWIPES лева и право
-        private void методДляSimpeCallbacks(@NonNull   Cursor cursor) {
+        private void методДляSimpeCallbacks(   ) {
             try{
             ItemTouchHelper.SimpleCallback simpleItemTouchCallbackRIGHT = new ItemTouchHelper.SimpleCallback(10,
                       ItemTouchHelper.RIGHT   ) {
@@ -1315,6 +1321,9 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 @Override
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                     try{
+                        recyclerView.getAdapter().notifyDataSetChanged();
+                        // TODO: 20.04.2023 Данные
+                        cursor =    new SubClassGetCursor().МетодSwipesКурсор();
 
                         recyclerView.smoothScrollToPosition(0);
                         ProgressBarSingleTabel.setVisibility(View.VISIBLE);
@@ -1331,8 +1340,9 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                             CurrenrsSelectFio=       cursor.getLong(cursor.getColumnIndex("fio"));
                             ФИО=       cursor.getString(cursor.getColumnIndex("name"));
 
-                        recyclerView.getAdapter().notifyDataSetChanged();
+             /*           recyclerView.getAdapter().notifyDataSetChanged();
                         myRecycleViewAdapter.notifyDataSetChanged();
+
 
                             // TODO: 14.04.2023 ЧАСЫ
                             методСчитаемЧасы(cursor);
@@ -1342,9 +1352,12 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                             МетодаКликаTableRowФИО( );
 
                             // TODO: 07.04.2023 переопрелделния Вида Табеля
-                            МетодПерегрузкаSingletabel();
+                            МетодПерегрузкаSingletabel();*/
 
-                            Scrollviewsingletabel.pageScroll(View.FOCUS_UP);
+                            методСчитаемЧасы(cursor);
+                            МетодЗаполениеRecycleView( cursor );
+
+
 
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1391,6 +1404,11 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     @Override
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         try{
+                            recyclerView.getAdapter().notifyDataSetChanged();
+
+                            // TODO: 20.04.2023 Данные
+                            cursor =    new SubClassGetCursor().МетодSwipesКурсор();
+
                             recyclerView.smoothScrollToPosition(0);
                             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
                             message.getTarget().postDelayed(()->{
@@ -1405,22 +1423,18 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 CurrenrsСhildUUID=       cursor.getLong(cursor.getColumnIndex("uuid"));
                                 CurrenrsSelectFio=       cursor.getLong(cursor.getColumnIndex("fio"));
                                 ФИО=       cursor.getString(cursor.getColumnIndex("name"));
-
-
-
-
-                                recyclerView.getAdapter().notifyDataSetChanged();
-                                myRecycleViewAdapter.notifyDataSetChanged();
+                                // TODO: 20.04.2023
                                 // TODO: 14.04.2023 ЧАСЫ
-                                методСчитаемЧасы(cursor);
+                         /*       методСчитаемЧасы(cursor);
                                 // TODO: 04.04.2023  ФИО
                                 new SubClassChanegeSetNameProffesio().    МетодЗаполняемФИОRow(cursor);
                                 // TODO: 16.04.2023 Професии Професии Професии Професии
                                 МетодаКликаTableRowФИО( );
 
-                                МетодПерегрузкаSingletabel();
+                                МетодПерегрузкаSingletabel();*/
+                                методСчитаемЧасы(cursor);
+                              МетодЗаполениеRecycleView( cursor );
 
-                                Scrollviewsingletabel.pageScroll(View.FOCUS_UP);
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
@@ -1514,7 +1528,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
 
         // TODO: 04.03.2022 прозвомжность Заполения RecycleView
-        void МетодЗаполениеRecycleView( @NonNull Cursor   cursor) {
+        void МетодЗаполениеRecycleView(  @NonNull Cursor cursor) {
             try {
                 // remove item from adapter
                 myRecycleViewAdapter = new  MyRecycleViewAdapter(cursor );
@@ -1645,8 +1659,8 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
             private void МетодПерегрузкаЧасыSingletabel() {
                 try {
-                    TextViewФИОиЧасыСотрудника.refreshDrawableState();
-                    TextViewФИОиЧасыСотрудника.requestLayout();
+                    textViewчасыsimgletabel.refreshDrawableState();
+                    textViewчасыsimgletabel.requestLayout();
                     recyclerView.requestLayout();
                     recyclerView.refreshDrawableState();
                     Scrollviewsingletabel.refreshDrawableState();
@@ -2294,7 +2308,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
         }
 
         // TODO: 03.04.2023 перенесеный RecycreView
-        private void МетодСлушательКурсора(@NonNull Cursor cursor) {
+        private void МетодСлушательКурсора( @NonNull Cursor cursor) {
             // TODO: 15.10.2022  слушатиель для курсора
             try {
                     cursor.registerDataSetObserver(new DataSetObserver() {
@@ -2375,9 +2389,9 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.SUCCEEDED) == 0)         {
                                     Integer     ReturnCallSingle = СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnSingleAsyncWork", 0);
                                     if (ReturnCallSingle>0) {
-                                        recyclerView.getAdapter().notifyDataSetChanged();
+                                   /*     recyclerView.getAdapter().notifyDataSetChanged();
                                         recyclerView.requestLayout();
-                                        recyclerView.refreshDrawableState();
+                                        recyclerView.refreshDrawableState();*/
                                     }
                                     WorkManager.getInstance(getApplicationContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая);
                                 }
@@ -2439,6 +2453,8 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     public void onChanged() {
                         super.onChanged();
                         try {
+                       cursor =    new SubClassGetCursor().МетодSwipesКурсор();
+
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -2561,7 +2577,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 //TODO ЗАПОЛЯНЕМ ПОЛУЧЕННЫЙ МЕСЯ Ц ПЛУС КОЛИЧЕСТВО ЧАСОВ СОТРУДНИКА КОНКРЕТНОГО
                 Integer   ЧасыТекущегоСОтрудника = new Class_MODEL_synchronized(getApplicationContext()).МетодПосчётаЧасовПоСотруднику(cursor);
                 Log.d(this.getClass().getName(), "  ЧасыТекущегоСОтрудника " + ЧасыТекущегоСОтрудника);
-                TextViewФИОиЧасыСотрудника.setText(" (" + " " + ЧасыТекущегоСОтрудника + "/часы)  "
+                textViewчасыsimgletabel.setText(" (" + " " + ЧасыТекущегоСОтрудника + "/часы)  "
                         + ""+ ПозицуияВыбраногоСОтрудника+" из "+  cursor.getCount()+"");
                 Log.d(Class_MODEL_synchronized.class.getName()," RowNumber  " + " cursor " +cursor.getPosition()  );
 
@@ -2586,9 +2602,9 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                             // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
                             try{
                                 message.getTarget().postDelayed(()->{
-                                    TextViewФИОиЧасыСотрудника.setBackgroundColor(Color.WHITE);
+                                    textViewчасыsimgletabel.setBackgroundColor(Color.WHITE);
                                 },2000);
-                                TextViewФИОиЧасыСотрудника.setBackgroundColor(Color.GRAY);
+                                textViewчасыsimgletabel.setBackgroundColor(Color.GRAY);
                                     TextView TextViewФИОДляУдаление = (TextView) v;
                                     Log.d(this.getClass().getName(), " v " + v.getTag() + " TextViewФИОДляУдаление.getText() " + TextViewФИОДляУдаление.getText() +
                                             "  TextViewФИОДляУдаление.getTag() " +TextViewФИОДляУдаление.getTag());
@@ -2650,11 +2666,12 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 message.getTarget().postDelayed(()->{
                     ProgressBarSingleTabel.setVisibility(View.INVISIBLE);
                 },500);
+                Scrollviewsingletabel.pageScroll(View.FOCUS_UP);
                 recyclerView.requestLayout();
                 recyclerView.refreshDrawableState();
                 Scrollviewsingletabel.refreshDrawableState();
-                TextViewФИОиЧасыСотрудника.refreshDrawableState();
-                TextViewФИОиЧасыСотрудника.requestLayout();
+                textViewчасыsimgletabel.refreshDrawableState();
+                textViewчасыsimgletabel.requestLayout();
                 constraintLayoutsingletabel.refreshDrawableState();
                 constraintLayoutsingletabel.requestLayout();
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
