@@ -2184,7 +2184,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                           }
                              Cursor    cursorДляЧасов =  new SubClassGetCursorЧасы().МетодSwipesКурсор();
                              // TODO: 14.04.2023 пересчитываем часы
-                             методСчитаемЧасы(cursorДляЧасов );
+                             методСчитаемЧасы(cursorДляЧасов,myViewHolder );
                              МетодПерегрузкаЧасыSingletabel();
                          });
 
@@ -2567,7 +2567,27 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             }
 
         }
+        void методСчитаемЧасы(@NonNull Cursor cursorЧасы,@NonNull MyViewHolder holder ) {
+            try{
+                Integer позицияЧасы=cursor.getPosition();
+                позицияЧасы=позицияЧасы+1;
+                //TODO ЗАПОЛЯНЕМ ПОЛУЧЕННЫЙ МЕСЯ Ц ПЛУС КОЛИЧЕСТВО ЧАСОВ СОТРУДНИКА КОНКРЕТНОГО
+                Integer   ЧасыТекущегоСОтрудника = new Class_MODEL_synchronized(getApplicationContext()).МетодПосчётаЧасовПоСотруднику(cursorЧасы);
+                Log.d(this.getClass().getName(), "  ЧасыТекущегоСОтрудника " + ЧасыТекущегоСОтрудника);
+                textViewчасыsimgletabel.setText(" (" + " " + ЧасыТекущегоСОтрудника + "/часы)  "
+                        + ""+ позицияЧасы+" из "+  holder.getLayoutPosition()+"");
+                Log.d(Class_MODEL_synchronized.class.getName()," RowNumber  " + " cursor " +cursor.getPosition()
+                        +"myViewHolder.getLayoutPosition()   "+holder.getLayoutPosition() + "cursorЧасы  " + cursorЧасы + " cursor  "+cursor);
 
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " +e + " Метод :"+Thread.currentThread().getStackTrace()[2].getMethodName()
+                        + " Линия  :"+Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),  this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+
+        }
         // TODO: 08.11.2022 КЛИК ПО ФИО
         private void МетодаКликаTableRowФИО() {
             try{
