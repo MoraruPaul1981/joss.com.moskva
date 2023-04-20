@@ -787,7 +787,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
                 " current_organization INTEGER," +
                 " current_table  NUMERIC UNIQUE   ," +
                 " prof  INTEGER   ," +
-                "  UNIQUE (name,f,n,o,BirthDate, snils,prof)," +
+                "  UNIQUE (uuid, name)," +
                 "FOREIGN KEY(user_update) REFERENCES users  (id)  ON UPDATE CASCADE," +
                 "FOREIGN KEY(prof) REFERENCES prof  (_id)  ON UPDATE CASCADE," +
                 "FOREIGN KEY(current_organization) REFERENCES organization  (id)  ON UPDATE CASCADE " +
@@ -1129,15 +1129,15 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             Log.d(this.getClass().getName(), " после СЛУЖБА  содание базы newVersion==  652   (например)   " + new Date() + " newVersion " + newVersion);
 
             
-      if(newVersion ==     1015){
+ /*     if(newVersion ==     1015){
                //TODO table создание
           МетодСозданиеМетокТабеля(ССылкаНаСозданнуюБазу);
-                   }else
+                   }else*/
             if (newVersion > oldVersion) {
                    // TODO: 08.06.2021 создание Базы Данных
                    onCreate(ССылкаНаСозданнуюБазу);
                    Log.d(this.getClass().getName(), " СЛУЖБА  содание базы newVersion > oldVersion   " + new Date());
-               }
+             }
             Log.d(this.getClass().getName(), " сработала ... КОНЕЦ СОЗДАНИЯ ТАБЛИЦ ВИЮ ТРИГЕР " +new Date().toGMTString());
         } catch (SQLException | InterruptedException e) {
             e.printStackTrace();
