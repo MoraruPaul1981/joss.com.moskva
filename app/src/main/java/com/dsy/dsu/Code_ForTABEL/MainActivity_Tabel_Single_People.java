@@ -2590,7 +2590,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 Integer   ЧасыТекущегоСОтрудника = new Class_MODEL_synchronized(getApplicationContext()).МетодПосчётаЧасовПоСотруднику(cursorЧасы);
                 Log.d(this.getClass().getName(), "  ЧасыТекущегоСОтрудника " + ЧасыТекущегоСОтрудника);
                 textViewчасыsimgletabel.setText(" (" + " " + ЧасыТекущегоСОтрудника + "/часы)  "
-                        + ""+ позицияЧасы+" из "+  holder.getLayoutPosition()+"");
+                        + ""+ позицияЧасы+" из "+  cursor.getCount()+"");
                 Log.d(Class_MODEL_synchronized.class.getName()," RowNumber  " + " cursor " +cursor.getPosition()
                         +"myViewHolder.getLayoutPosition()   "+holder.getLayoutPosition() + "cursorЧасы  " + cursorЧасы + " cursor  "+cursor);
 
