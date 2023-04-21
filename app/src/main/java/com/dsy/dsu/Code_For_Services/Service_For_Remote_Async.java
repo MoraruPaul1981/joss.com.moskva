@@ -96,6 +96,8 @@ public class Service_For_Remote_Async extends IntentService {
     private Service_For_Public.LocalBinderОбщий localBinderОбщий;
 
     ArrayList<ContentValues> АдаптерДляВставкиИОбновления;
+
+    private      ServiceConnection connectionPUBLIC;
     public Service_For_Remote_Async() {
         super("Service_For_Remote_Async");
     }
@@ -103,6 +105,7 @@ public class Service_For_Remote_Async extends IntentService {
     public void onCreate() {
         super.onCreate();
         try{
+            МетодБиндинuCлужбыPublic();
        ПубличныйIDДляФрагмента = new SubClass_Connection_BroadcastReceiver_Sous_Asyns_Glassfish().МетодПолучениеяПубличногоID(context);
         Log.d(context.getClass().getName(), "\n"
                 + " время: " + new Date() + "\n+" +
@@ -239,7 +242,7 @@ public class Service_For_Remote_Async extends IntentService {
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
         this.context =getApplicationContext();
             // TODO: 25.03.2023 ДОПОЛНИТЕОТНЕ УДЛАНИЕ СТАТУСА УДАЛЕНИЕ ПОСЛЕ СИНХРОНИАЗЦИИ
-            МетодБиндинuCлужбыPublic();
+
         CompletableFuture.supplyAsync(new Supplier<Object>() {
             @Override
             public Object get() {
@@ -291,6 +294,10 @@ public class Service_For_Remote_Async extends IntentService {
             if (ФинальныйРезультатAsyncBackgroud>0) {
                 МетодПослеСинхрониазцииУдалениеСтатусаУдаленный();
             }
+
+            if (connectionPUBLIC!=null) {
+                unbindService(connectionPUBLIC);
+            }
             Log.d(context.getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -313,7 +320,9 @@ public class Service_For_Remote_Async extends IntentService {
             intentПослеСинхроницииРегламентаняРаботаУдалениеДанных.setClass(context, Service_For_Public.class);
             intentПослеСинхроницииРегламентаняРаботаУдалениеДанных.setAction("ЗапускУдалениеСтатусаУдаленияСтрок");
             // TODO: 25.03.2023 дополнительное удаление после синхрониазции статус Удаленныц
-            localBinderОбщий.getService().МетодГлавныйPublicPO(context,intentПослеСинхроницииРегламентаняРаботаУдалениеДанных,null);
+            if (localBinderОбщий!=null) {
+                localBinderОбщий.getService().МетодГлавныйPublicPO(context,intentПослеСинхроницииРегламентаняРаботаУдалениеДанных,null);
+            }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +   "  localBinderОбщий  " +localBinderОбщий);
@@ -2027,7 +2036,7 @@ public class Service_For_Remote_Async extends IntentService {
             Intent intentЗапускPublicService = new Intent(context, Service_For_Public.class);
             intentЗапускPublicService.setAction("ЗапускУдалениеСтатусаУдаленияСтрок");
             if (localBinderОбщий==null) {
-                context.bindService(intentЗапускPublicService,  new ServiceConnection() {
+               connectionPUBLIC=     new ServiceConnection() {
                     @Override
                     public void onServiceConnected(ComponentName name, IBinder service) {
                         try {
@@ -2069,7 +2078,10 @@ public class Service_For_Remote_Async extends IntentService {
 
                         }
                     }
-                    },Context.BIND_AUTO_CREATE);
+                };
+
+
+                context.bindService(intentЗапускPublicService, connectionPUBLIC ,Context.BIND_AUTO_CREATE);
             }
         } catch (Exception e) {
             e.printStackTrace();

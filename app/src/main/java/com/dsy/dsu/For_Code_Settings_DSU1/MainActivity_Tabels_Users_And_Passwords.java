@@ -214,7 +214,7 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
                                         bundleРезультатПарольЛогин.putString("БуферПолученнниеДанныхПолученияIDотСервера",
                                              БуферПолученнниеДанныхПолученияIDотСервера.toString());
                                         message.setData(bundleРезультатПарольЛогин);
-                                        message.sendToTarget();
+                                        message.getTarget().dispatchMessage(message);
                                     }else {
                                         Snackbar.make(vКнопки, "Логин/Пароль не подходят !!! ", Snackbar.LENGTH_LONG).show();
                                     }
@@ -253,7 +253,8 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
     String БуферПолученнниеДанныхПолученияIDотСервера=          bundle.getString("БуферПолученнниеДанныхПолученияIDотСервера","");
                 // TODO: 12.04.2023 Как получаем ответ от сервра сообщаем это пользователю
                 МетодПослеАунтификациисСервером(vКнопки,new StringBuffer(БуферПолученнниеДанныхПолученияIDотСервера));
-
+                // TODO: 21.04.2023
+                message.getTarget().removeCallbacksAndMessages(null);
                 Log.i(this.getClass().getName(),  " Атоманически установкаОбновление ПО "+
                         Thread.currentThread().getStackTrace()[2].getMethodName()+
                         " время " +new Date().toLocaleString() + " bundle " +bundle );
@@ -271,14 +272,15 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
     }
 
 
-    private void МетодПослеАунтификациисСервером(View v,@NonNull StringBuffer БуферПолученнниеДанныхПолученияIDотСервера)  {
+    private void МетодПослеАунтификациисСервером(View v,@NonNull StringBuffer БуферОтветаLoginPassword)  {
         try{
-        if (БуферПолученнниеДанныхПолученияIDотСервера.toString().length()  > 0) {
-            if (!БуферПолученнниеДанныхПолученияIDотСервера.toString().trim() .matches("(.*)Don't Login and Password(.*)") ) {
-                ПубличноеIDПолученныйИзСервлетаДляUUID = Integer.parseInt(БуферПолученнниеДанныхПолученияIDотСервера.toString()) ;
+        if (БуферОтветаLoginPassword.toString().length()  > 0) {
+            if (БуферОтветаLoginPassword.toString().trim() .matches("(.*)[0-9](.*)") &&
+            ! БуферОтветаLoginPassword.toString().trim() .matches("(.*)[Don't Login and Password](.*)")) {
+                ПубличноеIDПолученныйИзСервлетаДляUUID = Integer.parseInt(БуферОтветаLoginPassword.toString()) ;
                 Log.d(this.getClass().getName(), "  ПроверкаПришёлЛиОтветОтСервлетаДляАунтификацииПользователя "
-                        + БуферПолученнниеДанныхПолученияIDотСервера + "  ID " +ПубличноеIDПолученныйИзСервлетаДляUUID);
-                Integer ПолученинныйПубличныйIDДлчЗаписиВБАзу=Integer.parseInt(БуферПолученнниеДанныхПолученияIDотСервера.toString());
+                        + БуферОтветаLoginPassword + "  ID " +ПубличноеIDПолученныйИзСервлетаДляUUID);
+                Integer ПолученинныйПубличныйIDДлчЗаписиВБАзу=Integer.parseInt(БуферОтветаLoginPassword.toString());
                 Log.d(this.getClass().getName(), " ПолученинныйПубличныйIDДлчЗаписиВБАзу " +ПолученинныйПубличныйIDДлчЗаписиВБАзу);
                 // TODO: 11.03.2023 ПОСЛЕ УСПЕШНОГО ПЕРЕХОД НА АКТИВТИ
                 МетодПослеУспешногоПолучениеДанныхОтСервераЗаписываемИх(ПолученинныйПубличныйIDДлчЗаписиВБАзу,v);
