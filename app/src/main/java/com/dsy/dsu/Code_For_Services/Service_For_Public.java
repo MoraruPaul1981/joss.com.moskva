@@ -340,6 +340,15 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                                                        МетодСозданиеТабеляИДАнныхПрошлогоМесяца(context, ГодСейчас, МесяцСейчас, Курсор_ВытаскиваемПоследнийМесяцТабеля[0],
                                                                DigitalNameCFO,  progressDialog);
                                                Log.d(this.getClass().getName(), "  РезультатВставкиИзПрошлогоМесяца[0] " +  РезультатВставкиИзПрошлогоМесяца[0] );
+
+                                               progressDialog.dismiss();
+                                               progressDialog.cancel();
+                                               if ( РезультатВставкиИзПрошлогоМесяца[0]==0) {
+                                                   Toast.makeText(context, "Такой табель уже есть !!! ", Toast.LENGTH_SHORT).show();
+                                               }else{
+                                                   Toast.makeText(context, "Успешное создание!!! ", Toast.LENGTH_SHORT).show();
+                                               }
+
                                            }
                                            Log.d(this.getClass().getName(), "  РезультатВставкиИзПрошлогоМесяца[0] " +  РезультатВставкиИзПрошлогоМесяца[0] );
                                        } catch (Exception e) {
@@ -367,6 +376,15 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() );
+                            }
+                        })
+                        .onErrorComplete(new Predicate<Throwable>() {
+                            @Override
+                            public boolean test(Throwable throwable) throws Throwable {
+                                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() );
+                                return false;
                             }
                         })
                         .observeOn(AndroidSchedulers.mainThread())
