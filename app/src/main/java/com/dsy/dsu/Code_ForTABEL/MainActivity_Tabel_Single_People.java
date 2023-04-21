@@ -2082,10 +2082,16 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
                                 public void afterTextChanged(Editable s) {
 
-                                    методЛовимПустоеЗначениеEditTExt(editTextRowКликПоДАнными);
+                                    методЗаписьЯчейкиRxView(editTextRowКликПоДАнными);
+                                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
+
+                           /*         методЛовимПустоеЗначениеEditTExt(editTextRowКликПоДАнными);
                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " s " +s);
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " s " +s);*/
                                 }
 
                                 public void beforeTextChanged(CharSequence s, int start,
@@ -2145,107 +2151,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
                                 }
 
-
-                                // TODO: 21.04.2023  записб данных в ячейку 
-                                private void методЗаписьЯчейкиRxView(@NonNull View v) {
-                                    try {
-                                    RxView.focusChanges(v)
-                                            .throttleLast(250, TimeUnit.MILLISECONDS)
-                                            .doOnError(new Consumer<Throwable>() {
-                                                @Override
-                                                public void accept(Throwable throwable) throws Throwable {
-                                                    throwable.printStackTrace();
-                                                    Log.e(getApplicationContext().getClass().getName(),
-                                                            "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(throwable.toString(),
-                                                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                                            Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                                }
-                                            })
-                                            .subscribe(new Consumer<Boolean>() {
-                                                @Override
-                                                public void accept(Boolean aBoolean) throws Throwable {
-
-                                          Bundle bundleДанныеTag=        (Bundle)      v.getTag();
-                                          String ЗначениеДняTag=       bundleДанныеTag.getString("ЗначениеДня").trim();
-                                        String EditTextДАнные=       ((EditText) v).getText().toString().trim();
-                   // TODO: 06.04.2023 Принимаем Решение Если ДАные РАзные ЗАпускаем Обновление
-                    if (      !EditTextДАнные.equalsIgnoreCase(ЗначениеДняTag)) {
-                        // TODO: 11.04.2023 Оперция Обновлнения ЯЧЕЕК
-                        SubClassUpdatesCELL subClassUpdateSingletabel=new SubClassUpdatesCELL(getApplicationContext());
-
-                     Integer РезультатОбновлениеЯчейки=   subClassUpdateSingletabel.МетодВалидацияЯчеек(v);
-                     if (РезультатОбновлениеЯчейки>0){
-                         message.getTarget().postDelayed(()->{
-                             ((EditText) v).startAnimation(animationVibr2);
-                         },150);
-
-
-
-                         // TODO: 14.04.2023 пересчитываем часы
-                         message.getTarget().post(()->{
-                          class  SubClassGetCursorЧасы extends SubClassGetCursor {
-                              @Override
-                              protected Cursor МетодSwipesКурсор() {
-                                  try{
-                                   СамЗапрос=" SELECT  *   FROM viewtabel AS t" +
-                                          " WHERE t.uuid=?   AND t.status_send !=?  AND t.fio IS NOT NULL  ORDER BY   t.date_update  " ;
-                                 УсловияВыборки=new String[]{ String.valueOf(CurrenrsСhildUUID),
-                                          String.valueOf(  "Удаленная")};
-                                  //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
-                                  Bundle bundleГлавныйКурсорMultiДанныеSwipes= new Bundle();
-                                  bundleГлавныйКурсорMultiДанныеSwipes.putString("СамЗапрос",СамЗапрос);
-                                  bundleГлавныйКурсорMultiДанныеSwipes.putStringArray("УсловияВыборки" ,УсловияВыборки);
-                                  bundleГлавныйКурсорMultiДанныеSwipes.putString("Таблица","viewtabel");
-                                  cursor =      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleГлавныйКурсорMultiДанныеSwipes);
-                                  // TODO: 13.04.2023 делаем смещение по курсору
-                                  Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                          " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                          " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-                              } catch (Exception e) {
-                                  e.printStackTrace();
-                                  Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                          " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                  new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                          Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                              }
-                               return  cursor;
-                              }
-                          }
-                             Cursor    cursorДляЧасов =  new SubClassGetCursorЧасы().МетодSwipesКурсор();
-                             // TODO: 14.04.2023 пересчитываем часы
-                             методСчитаемЧасы(cursorДляЧасов,myViewHolder );
-                             МетодПерегрузкаЧасыSingletabel();
-                         });
-
-                     }
-                        Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v"+ v +
-                                " bundleДанныеTag " +bundleДанныеTag + " EditTextДАнные " +EditTextДАнные+  "ЗначениеДняTag " +ЗначениеДняTag+
-                                " РезультатОбновлениеЯчейки " +РезультатОбновлениеЯчейки);
-                        
-                        
-                    } else {
-                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v"+ v +
-                                " bundleДанныеTag " +bundleДанныеTag + " EditTextДАнные " +EditTextДАнные);
-                    }
-
-
-                                                }
-                                            });
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                    new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                }
-                                }
-
                             });
                             // TODO: 21.04.2023  Еще Один Клик
 
@@ -2264,6 +2169,114 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
             }
+
+
+            // TODO: 21.04.2023  записб данных в ячейку
+            private void методЗаписьЯчейкиRxView(@NonNull View v) {
+                try {
+                    RxView.focusChanges(v)
+                            .throttleLast(250, TimeUnit.MILLISECONDS)
+                            .doOnError(new Consumer<Throwable>() {
+                                @Override
+                                public void accept(Throwable throwable) throws Throwable {
+                                    throwable.printStackTrace();
+                                    Log.e(getApplicationContext().getClass().getName(),
+                                            "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(throwable.toString(),
+                                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                }
+                            })
+                            .subscribe(new Consumer<Boolean>() {
+                                @Override
+                                public void accept(Boolean aBoolean) throws Throwable {
+
+                                    Bundle bundleДанныеTag=        (Bundle)      v.getTag();
+                                    String ЗначениеДняTag=       bundleДанныеTag.getString("ЗначениеДня").trim();
+                                    String EditTextДАнные=       ((EditText) v).getText().toString().trim();
+                                    // TODO: 06.04.2023 Принимаем Решение Если ДАные РАзные ЗАпускаем Обновление
+                                    if (      !EditTextДАнные.equalsIgnoreCase(ЗначениеДняTag)) {
+                                        // TODO: 11.04.2023 Оперция Обновлнения ЯЧЕЕК
+                                        SubClassUpdatesCELL subClassUpdateSingletabel=new SubClassUpdatesCELL(getApplicationContext());
+
+                                        Integer РезультатОбновлениеЯчейки=   subClassUpdateSingletabel.МетодВалидацияЯчеек(v);
+                                        if (РезультатОбновлениеЯчейки>0){
+                                            message.getTarget().postDelayed(()->{
+                                                ((EditText) v).startAnimation(animationVibr2);
+                                            },150);
+
+
+
+                                            // TODO: 14.04.2023 пересчитываем часы
+                                            message.getTarget().post(()->{
+                                                class  SubClassGetCursorЧасы extends SubClassGetCursor {
+                                                    @Override
+                                                    protected Cursor МетодSwipesКурсор() {
+                                                        try{
+                                                            СамЗапрос=" SELECT  *   FROM viewtabel AS t" +
+                                                                    " WHERE t.uuid=?   AND t.status_send !=?  AND t.fio IS NOT NULL  ORDER BY   t.date_update  " ;
+                                                            УсловияВыборки=new String[]{ String.valueOf(CurrenrsСhildUUID),
+                                                                    String.valueOf(  "Удаленная")};
+                                                            //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
+                                                            Bundle bundleГлавныйКурсорMultiДанныеSwipes= new Bundle();
+                                                            bundleГлавныйКурсорMultiДанныеSwipes.putString("СамЗапрос",СамЗапрос);
+                                                            bundleГлавныйКурсорMultiДанныеSwipes.putStringArray("УсловияВыборки" ,УсловияВыборки);
+                                                            bundleГлавныйКурсорMultiДанныеSwipes.putString("Таблица","viewtabel");
+                                                            cursor =      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleГлавныйКурсорMultiДанныеSwipes);
+                                                            // TODO: 13.04.2023 делаем смещение по курсору
+                                                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                                                        } catch (Exception e) {
+                                                            e.printStackTrace();
+                                                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                                            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                                                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                                        }
+                                                        return  cursor;
+                                                    }
+                                                }
+                                                Cursor    cursorДляЧасов =  new SubClassGetCursorЧасы().МетодSwipesКурсор();
+                                                // TODO: 14.04.2023 пересчитываем часы
+                                                методСчитаемЧасы(cursorДляЧасов,myViewHolder );
+                                                МетодПерегрузкаЧасыSingletabel();
+                                            });
+
+                                        }
+                                        Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v"+ v +
+                                                " bundleДанныеTag " +bundleДанныеTag + " EditTextДАнные " +EditTextДАнные+  "ЗначениеДняTag " +ЗначениеДняTag+
+                                                " РезультатОбновлениеЯчейки " +РезультатОбновлениеЯчейки);
+
+
+                                    } else {
+                                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v"+ v +
+                                                " bundleДанныеTag " +bundleДанныеTag + " EditTextДАнные " +EditTextДАнные);
+                                    }
+
+
+                                }
+                            });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
+            }
+
+
+
+
+
+
+
 
             private void методЛовимПустоеЗначениеEditTExt(View v) {
                 try{
