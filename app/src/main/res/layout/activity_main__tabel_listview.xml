@@ -24,8 +24,10 @@
         android:backgroundTintMode="multiply"
         android:choiceMode="multipleChoice"
         android:layerType="software"
-
+        android:divider="@null"
+        android:dividerHeight="0dp"
         android:orientation="vertical"
+        android:layout_margin="5dp"
         android:scrollbars="horizontal|vertical"
         android:textAlignment="center"
         android:textDirection="firstStrong"

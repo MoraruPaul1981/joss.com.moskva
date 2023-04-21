@@ -2125,11 +2125,30 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 }
                             });
 
-                            // TODO: 05.04.2023 ПРОСТОЙ КЛИК
+                            // TODO: 05.04.2023 ПРОСТОЙ ФОКУС
                             editTextRowКликПоДАнными.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                                 @Override
                                 public void onFocusChange(View v, boolean hasFocus) {
                                     // TODO: 19.10.2022
+                                    if(hasFocus==false){
+                                        методЗаписьЯчейкиRxView(v);
+                                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                                    }else{
+
+                                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +" hasFocus " + hasFocus + " v"+ v);
+                                    }
+
+
+                                }
+
+
+                                // TODO: 21.04.2023  записб данных в ячейку 
+                                private void методЗаписьЯчейкиRxView(@NonNull View v) {
+                                    try {
                                     RxView.focusChanges(v)
                                             .throttleLast(250, TimeUnit.MILLISECONDS)
                                             .doOnError(new Consumer<Throwable>() {
@@ -2144,10 +2163,10 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                                                 }
                                             })
-                                            .subscribe(new io.reactivex.rxjava3.functions.Consumer<Boolean>() {
+                                            .subscribe(new Consumer<Boolean>() {
                                                 @Override
                                                 public void accept(Boolean aBoolean) throws Throwable {
-                                                    if(aBoolean==false){
+
                                           Bundle bundleДанныеTag=        (Bundle)      v.getTag();
                                           String ЗначениеДняTag=       bundleДанныеTag.getString("ЗначениеДня").trim();
                                         String EditTextДАнные=       ((EditText) v).getText().toString().trim();
@@ -2166,9 +2185,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
                          // TODO: 14.04.2023 пересчитываем часы
                          message.getTarget().post(()->{
-
-
-
                           class  SubClassGetCursorЧасы extends SubClassGetCursor {
                               @Override
                               protected Cursor МетодSwipesКурсор() {
@@ -2206,7 +2222,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                      }
                         Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +" hasFocus " +hasFocus + " v"+v+
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v"+ v +
                                 " bundleДанныеTag " +bundleДанныеTag + " EditTextДАнные " +EditTextДАнные+  "ЗначениеДняTag " +ЗначениеДняTag+
                                 " РезультатОбновлениеЯчейки " +РезультатОбновлениеЯчейки);
                         
@@ -2214,24 +2230,24 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     } else {
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +" hasFocus " +hasFocus + " v"+v+
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v"+ v +
                                 " bundleДанныеTag " +bundleДанныеTag + " EditTextДАнные " +EditTextДАнные);
                     }
-                                                    }else{
 
-                                                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +" hasFocus " +hasFocus + " v"+v);
-                                                    }
 
                                                 }
                                             });
-                                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                    new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                }
                                 }
 
                             });
+                            // TODO: 21.04.2023  Еще Один Клик
 
                             // TODO: 19.10.2022  ПРОСТОЙ КЛИК
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

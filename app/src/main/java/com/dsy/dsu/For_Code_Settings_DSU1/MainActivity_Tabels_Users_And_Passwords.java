@@ -80,7 +80,7 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
 
     private SharedPreferences preferences;
     private   String ОшибкиПришлиПослеПингаОтСервера = null;
-    private  View v;
+    private  View vКнопки;
     private  Message message;
     ////
     @Override
@@ -176,6 +176,7 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
             КнопкаВходавСистему.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    vКнопки=v;
                     Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
@@ -205,7 +206,7 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
                                 //TODO запукаем метод Афторизаиция по ЛОГИНУ И ПАРОЛЮ
                                 message.getTarget().post(()->{
                                     StringBuffer  БуферПолученнниеДанныхПолученияIDотСервера=new Class_MODEL_synchronized(getApplicationContext()).
-                                            методАвторизацииЛогинИПаполь(v,getApplicationContext(),preferences,ПубличноеЛогин,ПубличноеПароль);
+                                            методАвторизацииЛогинИПаполь(vКнопки,getApplicationContext(),preferences,ПубличноеЛогин,ПубличноеПароль);
                                     Log.d(this.getClass().getName(), " БуферПолученнниеДанныхПолученияIDотСервера "+
                                             БуферПолученнниеДанныхПолученияIDотСервера) ;
                                     if (БуферПолученнниеДанныхПолученияIDотСервера!=null) {
@@ -215,7 +216,7 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
                                         message.setData(bundleРезультатПарольЛогин);
                                         message.sendToTarget();
                                     }else {
-                                        Snackbar.make(v, "Логин/Пароль не подходят !!! ", Snackbar.LENGTH_LONG).show();
+                                        Snackbar.make(vКнопки, "Логин/Пароль не подходят !!! ", Snackbar.LENGTH_LONG).show();
                                     }
                                 });
                             }
@@ -223,7 +224,7 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
                             Log.d(this.getClass().getName(), " Вы не заполнили Логин/Пароль ") ;
                             ПрогрессБарДляВходаСистему.setVisibility(View.INVISIBLE);// при нажатии делаем видимый програсссбар
                             ПрогрессБарДляВходаСистему.refreshDrawableState();
-                            Snackbar.make(v, "Нет связи с с сервером !!! ", Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(vКнопки, "Нет связи с с сервером !!! ", Snackbar.LENGTH_LONG).show();
                         }////end проверки если сеть или нет TRUE
                     } else {
                         Log.d(this.getClass().getName(), " Вы не заполнили Логин/Пароль ") ;
@@ -251,7 +252,7 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
                 Bundle bundle=   message.getData();
     String БуферПолученнниеДанныхПолученияIDотСервера=          bundle.getString("БуферПолученнниеДанныхПолученияIDотСервера","");
                 // TODO: 12.04.2023 Как получаем ответ от сервра сообщаем это пользователю
-                МетодПослеАунтификациисСервером(v,new StringBuffer(БуферПолученнниеДанныхПолученияIDотСервера));
+                МетодПослеАунтификациисСервером(vКнопки,new StringBuffer(БуферПолученнниеДанныхПолученияIDотСервера));
 
                 Log.i(this.getClass().getName(),  " Атоманически установкаОбновление ПО "+
                         Thread.currentThread().getStackTrace()[2].getMethodName()+
@@ -280,15 +281,15 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
                 Integer ПолученинныйПубличныйIDДлчЗаписиВБАзу=Integer.parseInt(БуферПолученнниеДанныхПолученияIDотСервера.toString());
                 Log.d(this.getClass().getName(), " ПолученинныйПубличныйIDДлчЗаписиВБАзу " +ПолученинныйПубличныйIDДлчЗаписиВБАзу);
                 // TODO: 11.03.2023 ПОСЛЕ УСПЕШНОГО ПЕРЕХОД НА АКТИВТИ
-                МетодПослеУспешногоПолучениеДанныхОтСервераЗаписываемИх(ПолученинныйПубличныйIDДлчЗаписиВБАзу);
+                МетодПослеУспешногоПолучениеДанныхОтСервераЗаписываемИх(ПолученинныйПубличныйIDДлчЗаписиВБАзу,v);
                 //TODO не прошёл аунтификайию
             }else{
                 //TODO ПОСЛЕ ПИНГА ВИЗУАЛИЗАЦИЯ
-                МетодВизуальногоОтображениеРаботыКоннекта("Логин и/или Пароль не правильный !!!" );
+                МетодВизуальногоОтображениеРаботыКоннекта("Логин и/или Пароль не правильный !!!" ,v);
             }
         }else {
             //TODO ПОСЛЕ ПИНГА ВИЗУАЛИЗАЦИЯ
-            МетодВизуальногоОтображениеРаботыКоннекта("Сервер выкл !!!");
+            МетодВизуальногоОтображениеРаботыКоннекта("Сервер выкл !!!",v);
         }
     } catch (Exception e) {
         e.printStackTrace();
@@ -300,7 +301,7 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
     }
 
 
-    private void МетодПослеУспешногоПолучениеДанныхОтСервераЗаписываемИх(Integer ПолученинныйПубличныйIDДлчЗаписиВБАзу )
+    private void МетодПослеУспешногоПолучениеДанныхОтСервераЗаписываемИх(Integer ПолученинныйПубличныйIDДлчЗаписиВБАзу,View v )
             throws ExecutionException, InterruptedException {
         //// todo после успешного получение имени и пароля записываем их в базу ЗАПУСК МЕТОДА ВСТАВКИ ИМЕНИ И ПАРОЛЯ ПРИ АУНТИФИКАЦИИ БОЛЕЕ 7 ДНЕЙ
         try{
@@ -362,7 +363,7 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
 
 
     ///todo метод визуализацци успешных и не успешных аунтифиуаци пользоватле
-    private void МетодВизуальногоОтображениеРаботыКоннекта(String СтатусДляПользователя) {
+    private void МетодВизуальногоОтображениеРаботыКоннекта(String СтатусДляПользователя,@NonNull  View v) {
        runOnUiThread(new Runnable() {
             public void run() {
                 Log.d(this.getClass().getName(), " handlerВизуализацияАунтификации ");
