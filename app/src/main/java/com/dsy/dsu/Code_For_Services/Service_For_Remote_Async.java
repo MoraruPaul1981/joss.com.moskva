@@ -284,7 +284,6 @@ public class Service_For_Remote_Async extends IntentService {
             if( this.context==null){
                 this.context=context;
             }
-            МетодБиндинuCлужбыPublic();
             // TODO: 16.11.2022
             ФинальныйРезультатAsyncBackgroud  = new Class_Engine_SQL(context).МетодЗАпускаФоновойСинхронизации(context);
             Log.d(context.getClass().getName(), "\n"
@@ -2035,7 +2034,6 @@ public class Service_For_Remote_Async extends IntentService {
         try {
             Intent intentЗапускPublicService = new Intent(context, Service_For_Public.class);
             intentЗапускPublicService.setAction("ЗапускУдалениеСтатусаУдаленияСтрок");
-            if (localBinderОбщий==null) {
                connectionPUBLIC=     new ServiceConnection() {
                     @Override
                     public void onServiceConnected(ComponentName name, IBinder service) {
@@ -2080,9 +2078,7 @@ public class Service_For_Remote_Async extends IntentService {
                     }
                 };
 
-
-                context.bindService(intentЗапускPublicService, connectionPUBLIC ,Context.BIND_AUTO_CREATE);
-            }
+             bindService(intentЗапускPublicService, connectionPUBLIC ,Context.BIND_AUTO_CREATE);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
