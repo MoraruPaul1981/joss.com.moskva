@@ -719,7 +719,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                             view.findViewById(R.id.   linearLayoutSimpelCursorAllTabeles);
                     ImageView imageView  = (ImageView) linearLayoutSimpelCursorAllTabeles.getChildAt(0);
                     MaterialTextView materialTextView  = (MaterialTextView) linearLayoutSimpelCursorAllTabeles.getChildAt(1);
-                    materialTextView.setBackgroundColor(Color.BLACK);
+                    materialTextView.setBackgroundColor(Color.GRAY);
 
                     message.getTarget().postDelayed(()->{
                         Bundle bundleДЛяListTabels=(Bundle)           materialTextView.getTag();
