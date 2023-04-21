@@ -83,9 +83,9 @@ public class MainActivity_Face_App extends AppCompatActivity {
     private boolean РежимыПросмотраДанныхЭкрана;
     private Context context;
     // private MaterialCardView КнопкаЗадачи, КнопкаТабель, КнопкаЧат,КнопкаСогласование,КнопкаОтгрузкаМатериалов;
-    private MaterialCardView КнопкаТабель, КнопкаСогласование, КнопкаПоступлениеМатериалов;
+    private MaterialCardView КнопкаТабель, КнопкаСогласование, КнопкаПоступлениеМатериалов,КнопкаЗаявкаНаТранспорт;
     // private ProgressBar progressBarTask, progressBarTabel, progressBarChat,progressCommitpay,progressShipment_of_Materials;
-    private ProgressBar progressBarTabel, progressCommitpay;
+    private ProgressBar progressBarTabel, progressCommitpay,prograessbarOrderTransport,prograessbarControlAccess;
     private Handler handlerFaceAPP;
     private final String ИмяСлужбыСинхронизацииОдноразовая = "WorkManager Synchronizasiy_Data Disposable";//"WorkManager Synchronizasiy_Data";//  "WorkManager Synchronizasiy_Data"; ///"WorkManager Synchronizasiy_Data";
     private DrawerLayout drawerLayoutFaceApp;
@@ -115,6 +115,7 @@ public class MainActivity_Face_App extends AppCompatActivity {
             КнопкаТабель = (MaterialCardView) findViewById(R.id.cardview2_For_MainActivity); ///// TODO КНОПКА ТАБЕЛЬНОГО УЧЕТА
             КнопкаСогласование = (MaterialCardView) findViewById(R.id.cardviewCommitPay_For_MainActivity); ///// TODO КНОПКА ТАБЕЛЬНОГО УЧЕТА
             КнопкаПоступлениеМатериалов = (MaterialCardView) findViewById(R.id.cardviewControlAccess); /////TODO КОНТРОЛЬ ДОСТУПА
+            КнопкаЗаявкаНаТранспорт = (MaterialCardView) findViewById(R.id.cardviewOrderTransport); /////TODO КОНТРОЛЬ ДОСТУПА
             Log.d(this.getClass().getName(), "КнопкаЧат " + " КнопкаЗадачи "
                     + " КнопкаТабель " + КнопкаТабель + " КнопкаСогласование " + КнопкаСогласование + " КнопкаКонтрольДоступа " + КнопкаПоступлениеМатериалов);
             imageView_ЗначекApp = (ImageView) findViewById(R.id.imageView_ЗначекApp); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
@@ -122,6 +123,8 @@ public class MainActivity_Face_App extends AppCompatActivity {
             imageView_ЗначекApp.setImageDrawable(drawable);
             progressBarTabel = (ProgressBar) findViewById(R.id.prograessbarTabel_inner_ardview_forMainActivity); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
             progressCommitpay = (ProgressBar) findViewById(R.id.prograessbarCommitPay_inner_ardview_forMainActivity4); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
+            prograessbarOrderTransport = (ProgressBar) findViewById(R.id.prograessbarOrderTransport); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
+            prograessbarControlAccess = (ProgressBar) findViewById(R.id.prograessbarControlAccess); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
             drawerLayoutFaceApp = (DrawerLayout) findViewById(R.id.drawerLayout_faceapp_menu); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
             constraintLayoutFaceApp = (ConstraintLayout) findViewById(R.id.constraintLayout_faceapp22); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
             navigationViewFaceApp = (NavigationView) findViewById(R.id.navigator_faceapp_main); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
@@ -134,6 +137,9 @@ public class MainActivity_Face_App extends AppCompatActivity {
             preferences = getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
             progressBarTabel.setVisibility(View.INVISIBLE);
             progressCommitpay.setVisibility(View.INVISIBLE);
+            prograessbarOrderTransport.setVisibility(View.INVISIBLE);
+            prograessbarControlAccess.setVisibility(View.INVISIBLE);
+
             // TODO: 27.03.2023 inisial message
             // TODO: 18.02.2023   Инициализация Хандлера
             HadlerИнициализация();
@@ -515,12 +521,66 @@ public class MainActivity_Face_App extends AppCompatActivity {
                     КнопкаПоступлениеМатериалов.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent ИнтентДляЗапускаПолуступлениеМатериалов = new Intent(getApplicationContext(), MainActivity_AdmissionMaterials.class);
-                            ИнтентДляЗапускаПолуступлениеМатериалов.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                            startActivity(ИнтентДляЗапускаПолуступлениеМатериалов);
-                            Log.w(getPackageName().getClass().getName(), "ИнтентДляЗапускаПолуступлениеМатериалов    ");/////////*/
+                            try {
+                                prograessbarControlAccess.setVisibility(View.VISIBLE);
+                                КнопкаПоступлениеМатериалов.setBackgroundColor(Color.GRAY);
+                                Log.d(this.getClass().getName(), "Запускает Согласния   ");
+                                Intent ИнтентДляЗапускаПолуступлениеМатериалов = new Intent();
+                                Bundle data = new Bundle();
+                                ИнтентДляЗапускаПолуступлениеМатериалов.putExtras(data);
+                                ИнтентДляЗапускаПолуступлениеМатериалов.setClass(getApplicationContext(), MainActivity_AdmissionMaterials.class);//рабочий
+                                ИнтентДляЗапускаПолуступлениеМатериалов.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(ИнтентДляЗапускаПолуступлениеМатериалов);
+                                handlerFaceAPP.postDelayed(() -> {
+                                    prograessbarControlAccess.setVisibility(View.INVISIBLE);
+                                    КнопкаПоступлениеМатериалов.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                                }, 3000);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                        Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            }
+
+
                         }
                     });
+            // TODO: 14.04.2023 Запускаем Заявка НА Транспорт
+            КнопкаЗаявкаНаТранспорт.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        prograessbarOrderTransport.setVisibility(View.VISIBLE);
+                        КнопкаЗаявкаНаТранспорт.setBackgroundColor(Color.GRAY);
+                        Log.d(this.getClass().getName(), "Запускает Согласния   ");
+                        Intent ИнтентЗаявкаНаТранспорт = new Intent();
+                        Bundle data = new Bundle();
+                        ИнтентЗаявкаНаТранспорт.putExtras(data);
+                      //  ИнтентДляЗапускаПолуступлениеМатериалов.setClass(getApplicationContext(), MainActivity_AdmissionMaterials.class);//рабочий
+                        ИнтентЗаявкаНаТранспорт.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                       /// startActivity(ИнтентЗаявкаНаТранспорт);
+                        handlerFaceAPP.postDelayed(() -> {
+                            prograessbarOrderTransport.setVisibility(View.INVISIBLE);
+                            КнопкаЗаявкаНаТранспорт.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                        }, 3000);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
+
+
+                }
+            });
+
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
