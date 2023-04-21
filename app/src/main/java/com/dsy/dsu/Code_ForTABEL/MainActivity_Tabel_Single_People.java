@@ -2081,7 +2081,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                             editTextRowКликПоДАнными.addTextChangedListener(new TextWatcher() {
 
                                 public void afterTextChanged(Editable s) {
-
                                     методЗаписьЯчейкиRxView(editTextRowКликПоДАнными);
                                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2175,7 +2174,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             private void методЗаписьЯчейкиRxView(@NonNull View v) {
                 try {
                     RxView.focusChanges(v)
-                            .throttleLast(250, TimeUnit.MILLISECONDS)
+                            .throttleLast(3000, TimeUnit.MILLISECONDS)
                             .doOnError(new Consumer<Throwable>() {
                                 @Override
                                 public void accept(Throwable throwable) throws Throwable {
@@ -2753,7 +2752,7 @@ class SubClassGetCursor{
             bundleГлавныйКурсорMultiДанныеSwipes.putString("Таблица","viewtabel");
             cursor =      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleГлавныйКурсорMultiДанныеSwipes);
             // TODO: 13.04.2023 делаем смещение по курсору
-            cursor.moveToPosition(PositionCustomer);
+            cursor.move(PositionCustomer);
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "cursor " +cursor );
