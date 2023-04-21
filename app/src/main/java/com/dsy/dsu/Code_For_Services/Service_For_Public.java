@@ -34,6 +34,9 @@ import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassMONTHONLY_Только
 import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassYEARONLY;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassYearHONLY_ТолькоАнализ;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
+import com.dsy.dsu.Code_ForTABEL.MainActivity_List_Peoples;
+import com.google.android.material.textview.MaterialTextView;
+import com.google.common.util.concurrent.AtomicDouble;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -68,6 +71,7 @@ public class Service_For_Public extends IntentService {
     public LocalBinderОбщий localBinderОбщий = new LocalBinderОбщий();
     protected         SibClassApplyFromBackPeriodof_ЗаполененияТабеляИзПрошлогоМесяца sibClassApplyFromBackPeriodof_заполененияТабеляИзПрошлогоМесяца;
     private Context context;
+    private  Intent intentОтActivityListPeoples;
     public Service_For_Public() {
         super("Service_For_Public");
     }
@@ -168,6 +172,7 @@ public class Service_For_Public extends IntentService {
             if( this.context==null){
                 this.context=context;
             }
+            this.intentОтActivityListPeoples=intent;
             switch (intent.getAction()) {
                 case "ЗапускЗаполенеияИзПрошлыхМесяцев":
                     // TODO: 28.09.2022 Запуск Само Заполенеия Данных из Прошлого Месяца
@@ -270,20 +275,21 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                 gregorianCalendarИзПрошлыхМесяцев.set(GregorianCalendar.DATE, 1);
                 Log.d(this.getClass().getName(), " gregorianCalendarИзПрошлыхМесяцев" + gregorianCalendarИзПрошлыхМесяцев.getTime().toLocaleString());
 
-
+                final Integer[] Количесво = {1};
                 // TODO: 21.03.2023  Заполение из прошлого месяца
-                Flowable.range(1,100)
+                Flowable.range(1,24)
                         .onBackpressureBuffer(true)
                         .subscribeOn(Schedulers.single())
                         .repeatWhen(repeat->repeat.delay(500,TimeUnit.MILLISECONDS))
                         .takeWhile(new Predicate<Integer>() {
                             @Override
                             public boolean test(Integer integer) throws Throwable {
-                                if (РезультатВставкиИзПрошлогоМесяца[0] >0) {
+                                if (РезультатВставкиИзПрошлогоМесяца[0] >0 || Количесво[0] >24) {
                                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                            " РезультатВставкиИзПрошлогоМесяца  " + РезультатВставкиИзПрошлогоМесяца[0]);
+                                            " РезультатВставкиИзПрошлогоМесяца  " + РезультатВставкиИзПрошлогоМесяца[0]  +
+                                            "  Количесво[0] " +Количесво[0]);
                                     return false;
                                 } else {
                                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -332,6 +338,7 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                             public void accept(Object o) throws Throwable {
                                    try{
                                        try{
+                                           Количесво[0]++;
                                            if (Курсор_ВытаскиваемПоследнийМесяцТабеля[0].getCount() > 0 ) {
                                                Log.d(this.getClass().getName(), "Курсор_ВытаскиваемПоследнийМесяцТабеля.getCount() " + Курсор_ВытаскиваемПоследнийМесяцТабеля[0].getCount());
                                                String ДатаОперации = new SubClassMONTHONLY(getApplicationContext()).ГлавнаяДатаИВремяОперацийСБазойДанных();
@@ -341,20 +348,12 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                                                                DigitalNameCFO,  progressDialog);
                                                Log.d(this.getClass().getName(), "  РезультатВставкиИзПрошлогоМесяца[0] " +  РезультатВставкиИзПрошлогоМесяца[0] );
 
-                                               progressDialog.dismiss();
-                                               progressDialog.cancel();
-                                               if ( РезультатВставкиИзПрошлогоМесяца[0]==0) {
-                                                   Toast.makeText(context, "Такой табель уже есть !!! ", Toast.LENGTH_SHORT).show();
-                                               }else{
-                                                   Toast.makeText(context, "Успешное создание!!! ", Toast.LENGTH_SHORT).show();
-                                               }
                                                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()  + "    РезультатВставкиИзПрошлогоМесяца[0] "
                                                        +   РезультатВставкиИзПрошлогоМесяца[0]);
                                                // TODO: 21.04.2023  stop service
 
-                                               stopSelf();
                                            }
                                            Log.d(this.getClass().getName(), "  РезультатВставкиИзПрошлогоМесяца[0] " +  РезультатВставкиИзПрошлогоМесяца[0] );
                                        } catch (Exception e) {
@@ -399,13 +398,18 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                             public void run() throws Throwable {
                                 progressDialog.dismiss();
                                 progressDialog.cancel();
-                                if (Курсор_ВытаскиваемПоследнийМесяцТабеля[0].getCount()==0) {
-                                    Toast.makeText(context, "Нет тебеля прошлых месяцев !!! ", Toast.LENGTH_SHORT).show();
-                                }else{
+                                    if ( РезультатВставкиИзПрошлогоМесяца[0]==0) {
+                                        Toast.makeText(context, "Нет создание!!!"+"\n"+" (Табель может быть уже создан)  ", Toast.LENGTH_SHORT).show();
+                                    }else{
+                                        Toast.makeText(context, "Успешное создание!!! ", Toast.LENGTH_SHORT).show();
+                                        // TODO: 21.04.202 3 переъодим на активтив
+                                    }
+                                    // TODO: 21.04.2023 после операции возврящемся на Activity List Peoples
+                                    МетодПереходMainActivity_List_Peoples(intentОтActivityListPeoples);
 
-                                }
+
+
                                 // TODO: 21.04.2023  stop service
-
                                 stopSelf();
                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -424,6 +428,30 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
             }
             return  РезультатВставкиИзПрошлогоМесяца[0];
         }
+
+
+        /////TODO метод запуска кода при однократорм нажатии просто загузка сотрудников табель
+        private void МетодПереходMainActivity_List_Peoples( @NonNull Intent intentОтActivityListPeoples) {
+            try{
+                Intent    ИнтентпереходВMainActivityList_Peoples=new Intent(getApplicationContext(), MainActivity_List_Peoples.class);
+                ИнтентпереходВMainActivityList_Peoples      .putExtras(intentОтActivityListPeoples.getExtras());
+                ИнтентпереходВMainActivityList_Peoples.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getApplicationContext().startActivity(ИнтентпереходВMainActivityList_Peoples);
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + " intentОтActivityListPeoples " +intentОтActivityListPeoples.getExtras());
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+
+
+
+
 
         private Integer МетодСозданиеТабеляИДАнныхПрошлогоМесяца(@NonNull Context context,
                                                                  @NonNull  Integer ГодНазадДляЗаполнени,
