@@ -348,7 +348,13 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                                                }else{
                                                    Toast.makeText(context, "Успешное создание!!! ", Toast.LENGTH_SHORT).show();
                                                }
+                                               Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                       " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                       " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()  + "    РезультатВставкиИзПрошлогоМесяца[0] "
+                                                       +   РезультатВставкиИзПрошлогоМесяца[0]);
+                                               // TODO: 21.04.2023  stop service
 
+                                               stopSelf();
                                            }
                                            Log.d(this.getClass().getName(), "  РезультатВставкиИзПрошлогоМесяца[0] " +  РезультатВставкиИзПрошлогоМесяца[0] );
                                        } catch (Exception e) {
@@ -398,6 +404,9 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                                 }else{
 
                                 }
+                                // TODO: 21.04.2023  stop service
+
+                                stopSelf();
                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() );
