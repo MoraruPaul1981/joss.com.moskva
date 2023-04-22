@@ -43,6 +43,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -1282,7 +1283,36 @@ public class Service_For_Remote_Async extends IntentService {
 // TODO: 05.04.2023 старый код END
                     //TODO БУфер JSON от Сервера
                 ObjectMapper jsonGenerator = new PUBLIC_CONTENT(context).getGeneratorJackson();
-                JsonNode jsonNodeParent= jsonGenerator.readTree(БуферПолученныйJSON.toString());
+                JsonNode jsonNodeParent=   jsonGenerator.readTree(БуферПолученныйJSON.toString());
+                jsonNodeParent.get(0).fieldNames().forEachRemaining(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) {
+                        Log.d(this.getClass().getName(), " stringJsonNodeEntry.getKey() " +  s
+                                + " stringJsonNodeEntry.getValue()" +  s);
+                    }
+                });
+
+                jsonNodeParent.fieldNames().forEachRemaining(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) {
+                        Log.d(this.getClass().getName(), " stringJsonNodeEntry.getKey() " +  s
+                                + " stringJsonNodeEntry.getValue()" +  s);
+                    }
+                });
+                jsonNodeParent.forEach(new Consumer<JsonNode>() {
+                    @Override
+                    public void accept(JsonNode jsonNode) {
+                        jsonNode.fieldNames().forEachRemaining(new Consumer<String>() {
+                            @Override
+                            public void accept(String s) {
+                                Log.d(this.getClass().getName(), " stringJsonNodeEntry.getKey() " +  s
+                                        + " stringJsonNodeEntry.getValue()" +  s);
+                            }
+                        });
+                    }
+                });
+
+
              Iterator<Map.Entry<String,JsonNode>>  jsonbuffer=jsonNodeParent.fields();
                 Flowable.fromArray(jsonbuffer)
                         .onBackpressureBuffer(true)
