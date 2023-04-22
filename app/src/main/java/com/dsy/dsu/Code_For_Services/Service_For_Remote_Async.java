@@ -40,6 +40,7 @@ import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.dsy.dsu.Business_logic_Only_Class.SubClass_Connection_BroadcastReceiver_Sous_Asyns_Glassfish;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
@@ -53,6 +54,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -1230,7 +1232,6 @@ public class Service_For_Remote_Async extends IntentService {
             StringBuffer БуферПолученныйJSON = null;
             try {
                 Log.d(this.getClass().getName(), "  МетодПолучаемДаннныесСервера" + "  имяТаблицыОтАндройда_локальноая" + ИмяТаблицы);
-                StringBuffer БуферПолучениеДанных = new StringBuffer();
                     МетодCallBasksВизуальноИзСлужбы(МаксималноеКоличествоСтрочекJSON,
                             ИндексВизуальнойДляPrograssBar,ИмяТаблицы,
                             Проценты,"ПроцессеAsyncBackground",false,false,0);
@@ -1238,7 +1239,7 @@ public class Service_For_Remote_Async extends IntentService {
                     String   ИмяСерверИзХранилица = preferences.getString("ИмяСервера","");
                     Integer    ПортСерверИзХранилица = preferences.getInt("ИмяПорта",0);
                     // TODO: 10.11.2022  Получение JSON-потока
-                    БуферПолучениеДанных = МетодУниверсальныйДанныесСервера(
+                БуферПолученныйJSON = МетодУниверсальныйДанныесСервера(
                             ИмяТаблицы,
                           "application/gzip",
                             "Хотим Получить  JSON"
@@ -1246,28 +1247,20 @@ public class Service_For_Remote_Async extends IntentService {
                             ID,
                             ИмяСерверИзХранилица
                             ,ПортСерверИзХранилица);
-                    Log.d(this.getClass().getName(), "  БУФЕР получаем даннные БуферПолучениеДанных.toString() " + БуферПолучениеДанных.toString());
-                    if(БуферПолучениеДанных==null){
-                        БуферПолучениеДанных = new StringBuffer();
+                    Log.d(this.getClass().getName(), "  БУФЕР получаем даннные БуферПолученныйJSON.toString() " + БуферПолученныйJSON.toString());
+                    if(БуферПолученныйJSON==null){
+                        БуферПолученныйJSON = new StringBuffer();
                     }
-                    Log.d(this.getClass().getName(), "  МетодПолучаемДаннныесСервера" + "  БуферПолучениеДанных" + БуферПолучениеДанных.toString()+"\n"
-                            + "  БуферПолучениеДанных.length()" + БуферПолучениеДанных.length());
+                    Log.d(this.getClass().getName(), "  БуферПолученныйJSON.length()" + БуферПолученныйJSON.length());
 
-                if ( БуферПолучениеДанных.toString().toCharArray().length > 3) {
-                    БуферПолученныйJSON = new StringBuffer();
-                    Log.d(this.getClass().getName(), "  БуферПолучениеДанных.toString()) " + БуферПолучениеДанных.toString());
+                if ( БуферПолученныйJSON.toString().toCharArray().length > 3) {
+                    Log.d(this.getClass().getName(), "  БуферПолученныйJSON.toString()) " + БуферПолученныйJSON.toString() + " ИмяТаблицы " +ИмяТаблицы);
 
-                    БуферПолученныйJSON.append(БуферПолучениеДанных.toString());
-                    ////////Присылаем количестов строчек обработанных на сервлете
-                    Log.d(this.getClass().getName(), " БуферПолученныйJSON.length()  " + БуферПолученныйJSON.length());
-                    int Результат_ПриписиИзменнийВерсииДанныхВФонеПослеОбработкиТекущийТаблицы = 0;
-                    Log.i(this.getClass().getName(), "   Результат_ПриписиИзменнийВерсииДанныхВФоне:"
-                            + Результат_ПриписиИзменнийВерсииДанныхВФонеПослеОбработкиТекущийТаблицы + " имяТаблицыОтАндройда_локальноая " + ИмяТаблицы);
                     //////TODO запускаем метод распарстивая JSON
                     РезультатФоновнойСинхронизации=        МетодПарсингJSONФайлаОтСервреравФоне(БуферПолученныйJSON, ИмяТаблицы);
                     Log.i(this.getClass().getName(), " РезультатФоновнойСинхронизации  "  +РезультатФоновнойСинхронизации);
                 } else {////ОШИБКА В ПОЛУЧЕНИИ С СЕРВЕРА ТАБЛИУЦЫ МОДИФИКАЦИИ ДАННЫХ СЕРВЕРА
-                    Log.d(this.getClass().getName(), " Данных нет c сервера сам файл JSON   пришел от сервера БуферПолучениеДанных   "+БуферПолучениеДанных);
+                    Log.d(this.getClass().getName(), "  БуферПолученныйJSON.toString()) " + БуферПолученныйJSON.toString() + " ИмяТаблицы " +ИмяТаблицы);
                 }
                 Log.i(this.getClass().getName(), " РезультатФоновнойСинхронизации "+РезультатФоновнойСинхронизации);
             } catch (Exception e) {
@@ -1288,6 +1281,44 @@ public class Service_For_Remote_Async extends IntentService {
                 Log.d(this.getClass().getName(), " БуферПолученныйJSON " + БуферПолученныйJSON.toString());
 // TODO: 05.04.2023 старый код END
                     //TODO БУфер JSON от Сервера
+                ObjectMapper jsonGenerator = new PUBLIC_CONTENT(context).getGeneratorJackson();
+                JsonNode jsonNodeParent= jsonGenerator.readTree(БуферПолученныйJSON.toString());
+             Iterator<Map.Entry<String,JsonNode>>  jsonbuffer=jsonNodeParent.fields();
+                Flowable.fromArray(jsonbuffer)
+                        .onBackpressureBuffer(true)
+                        .buffer(500)
+                        .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Throwable {
+                                Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" +
+                                        Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(throwable.toString(),
+                                        this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            }
+                        })
+                        .blockingForEach(new io.reactivex.rxjava3.functions.Consumer<List<Iterator<Map.Entry<String, JsonNode>>>>() {
+                            @Override
+                            public void accept(List<Iterator<Map.Entry<String, JsonNode>>> iterators) throws Throwable {
+                                iterators.forEach(new Consumer<Iterator<Map.Entry<String, JsonNode>>>() {
+                                    @Override
+                                    public void accept(Iterator<Map.Entry<String, JsonNode>> entryIterator) {
+                                        entryIterator.forEachRemaining(new Consumer<Map.Entry<String, JsonNode>>() {
+                                            @Override
+                                            public void accept(Map.Entry<String, JsonNode> stringJsonNodeEntry) {
+                                                Log.d(this.getClass().getName(), " stringJsonNodeEntry.getKey() " + stringJsonNodeEntry.getKey()
+                                                        + " stringJsonNodeEntry.getValue()" + stringJsonNodeEntry.getValue());
+                                                // TODO: 27.10.2022  UUID есть Обновление
+
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+
+
                 CopyOnWriteArrayList<Map<String,String>>  БуферJsonОтСервера= new PUBLIC_CONTENT(context).getGeneratorJackson()
                 .readValue(БуферПолученныйJSON.toString(),
                                 new TypeReference<   CopyOnWriteArrayList<Map<String,String>>>() {});
