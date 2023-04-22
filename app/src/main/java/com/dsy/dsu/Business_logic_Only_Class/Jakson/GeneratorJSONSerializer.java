@@ -23,8 +23,10 @@ public class GeneratorJSONSerializer extends JsonSerializer<Cursor> {
     public void serialize(Cursor КурсорДляОтправкиДанныхНаСерверОтАндройда, JsonGenerator jsonGenerator, SerializerProvider serializers) throws IOException {
 //////////20.15
         try{
-        jsonGenerator.writeStartArray();
+            jsonGenerator.writeStartObject();
         do {
+         Long Key=   КурсорДляОтправкиДанныхНаСерверОтАндройда.getLong(КурсорДляОтправкиДанныхНаСерверОтАндройда.getColumnIndex("uuid"));
+            jsonGenerator.writeFieldId(Key);
             jsonGenerator.writeStartObject();
             // TODO: 14.03.2023  генериуем по столбцам
             for (int ИндексСтолбикаJson = 0; ИндексСтолбикаJson < КурсорДляОтправкиДанныхНаСерверОтАндройда.getColumnCount(); ИндексСтолбикаJson++) {
@@ -38,13 +40,12 @@ public class GeneratorJSONSerializer extends JsonSerializer<Cursor> {
                     case "uuid":
                     case "current_table":
                         Long UUIDandCurrenttableValue=  Long.parseLong(СодержимоеСтолбикаJson.toString());
-                      //  jsonGenerator.writeStringField(НазваниеСтолбикаJson,UUIDandCurrenttableValue.toString());
                         serializers.defaultSerializeField(НазваниеСтолбикаJson,UUIDandCurrenttableValue.toString(), jsonGenerator);
                         Log.d(this.getClass().getName(), " НазваниеСтолбикаJson   " + НазваниеСтолбикаJson);
                         break;
                     default:
-                        //  jsonGenerator.writeStringField(НазваниеСтолбикаJson,UUIDandCurrenttableValue.toString());
-                        serializers.defaultSerializeField(НазваниеСтолбикаJson,String.valueOf(Optional.ofNullable(СодержимоеСтолбикаJson).map(new java.util.function.Function<Object, Object>() {
+                        serializers.defaultSerializeField(НазваниеСтолбикаJson,String.valueOf(Optional.ofNullable(СодержимоеСтолбикаJson)
+                                .map(new java.util.function.Function<Object, Object>() {
                             @Override
                             public Object apply(Object o) {
                                 if(o==null){
@@ -64,7 +65,7 @@ public class GeneratorJSONSerializer extends JsonSerializer<Cursor> {
             jsonGenerator.writeEndObject();
             Log.d(this.getClass().getName(), " jsonObjectWriter.toString()   " + jsonGenerator.toString());
         } while (КурсорДляОтправкиДанныхНаСерверОтАндройда.moveToNext());////ДАННЫЕ КРУТИЯТЬСЯ ДО КОНЦА ДАННЫХ И ГЕНЕРИРУЮ JSON
-        jsonGenerator.writeEndArray();
+            jsonGenerator.writeEndObject();
         jsonGenerator.flush();
         jsonGenerator.close();
         КурсорДляОтправкиДанныхНаСерверОтАндройда.close();
