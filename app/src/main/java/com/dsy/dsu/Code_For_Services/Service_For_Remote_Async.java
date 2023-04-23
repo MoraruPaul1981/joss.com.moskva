@@ -1299,24 +1299,21 @@ public class Service_For_Remote_Async extends IntentService {
                         0);
                 ИндексВизуальнойДляPrograssBar=0;
                 // TODO: 23.04.2023 Главный Синхронизатор
-                Flowable.fromArray(jsonNodeParent)
+                Flowable.fromIterable(jsonNodeParent)
                         .onBackpressureBuffer(jsonNodeParent.size())
                         .buffer(500)
                         .doOnNext(new io.reactivex.rxjava3.functions.Consumer<List<JsonNode>>() {
                             @Override
-                            public void accept(List<JsonNode> jsonNodes) throws Throwable {
+                            public void accept(List<JsonNode> jsonNodesBuffer500) throws Throwable {
                                 // TODO: 13.01.2023  ОБРАБОТКА ИЗ БУФЕРА
-                                jsonNodes.forEach(new Consumer<JsonNode>() {
+                                АдаптерДляВставкиИОбновления = new ArrayList<>();//JSON_ПерваяЧасть.names().length()
+                                jsonNodesBuffer500.forEach(new Consumer<JsonNode>() {
                                     @Override
-                                    public void accept(JsonNode jsonNode) {
-                                        АдаптерДляВставкиИОбновления = new ArrayList<>();//JSON_ПерваяЧасть.names().length()
-
+                                    public void accept(JsonNode jsonNodeRowBuffer) {
                                         // TODO: 23.04.2023 Two
-                                        jsonNodeParent.forEach(new Consumer<JsonNode>() {
-                                            @Override
-                                            public void accept(JsonNode jsonNode) {
                                                 ТекущийАдаптерДляВсего = new ContentValues();
-                                                jsonNode.fields().forEachRemaining(new Consumer<Map.Entry<String, JsonNode>>() {
+
+                                                jsonNodeRowBuffer.fields().forEachRemaining(new Consumer<Map.Entry<String, JsonNode>>() {
                                                     @Override
                                                     public void accept(Map.Entry<String, JsonNode> stringJsonNodeEntry) {
                                                         // TODO: 06.10.2022  ВНУТрений СТрочка обработки данных сами Столбикки
@@ -1376,19 +1373,19 @@ public class Service_For_Remote_Async extends IntentService {
                                                                 + stringJsonNodeEntry.getValue());
                                                     }
                                                 });
-                                                // TODO: 27.10.2022  UUID есть Обновление
-                                                АдаптерДляВставкиИОбновления.add(ТекущийАдаптерДляВсего);
-                                                Log.d(this.getClass().getName(),"\n" + " class " +
-                                                        Thread.currentThread().getStackTrace()[2].getClassName()
-                                                        + "\n" +
-                                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                        + " АдаптерДляВставкиИОбновления "+АдаптерДляВставкиИОбновления);
+                                        // TODO: 27.10.2022  UUID есть Обновление
+                                        АдаптерДляВставкиИОбновления.add(ТекущийАдаптерДляВсего);
+                                        Log.d(this.getClass().getName(),"\n" + " class " +
+                                                Thread.currentThread().getStackTrace()[2].getClassName()
+                                                + "\n" +
+                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                                + " АдаптерДляВставкиИОбновления "+АдаптерДляВставкиИОбновления);
                                             }
                                         });
 
-                                    }
-                                });
+
+
                             }
                         })
                         .doAfterNext(new io.reactivex.rxjava3.functions.Consumer<List<JsonNode>>() {
