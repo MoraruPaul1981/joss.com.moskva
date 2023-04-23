@@ -299,7 +299,7 @@ public class Service_For_Remote_Async extends IntentService {
             }
 
             if (connectionPUBLIC!=null) {
-                unbindService(connectionPUBLIC);
+               getApplicationContext(). unbindService(connectionPUBLIC);
             }
             Log.d(context.getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
@@ -2039,7 +2039,7 @@ public class Service_For_Remote_Async extends IntentService {
                     }
                 };
 
-             bindService(intentЗапускPublicService, connectionPUBLIC ,Context.BIND_AUTO_CREATE);
+            getApplicationContext(). bindService(intentЗапускPublicService, connectionPUBLIC ,Context.BIND_AUTO_CREATE);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
