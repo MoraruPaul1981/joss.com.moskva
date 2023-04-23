@@ -224,7 +224,7 @@ import okio.BufferedSink;
 
         final StringBuffer[] БуферСамиДанныеОтСервера = {new StringBuffer()};
         try {
-            String СтрокаСвязиСсервером ="http://"+ИмяСервера+":"+ИмяПорта+"/"+new PUBLIC_CONTENT(context).getСсылкаНаРежимСервераАунтификация();;
+            String СтрокаСвязиСсервером ="http://"+ИмяСервера+":"+ИмяПорта+"/"+new PUBLIC_CONTENT(context).getСсылкаНаРежимСервераТабель();;
             СтрокаСвязиСсервером = СтрокаСвязиСсервером.replace(" ", "%20");
             Log.d(this.getClass().getName(), "   СтрокаСвязиСсервером "+  СтрокаСвязиСсервером);
             String Params = "?" + "NameTable= " + ИмяТаблицы.trim() +
@@ -3461,7 +3461,7 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
             String   ИмяСерверИзХранилица = preferences.getString("ИмяСервера","");
             Integer    ПортСерверИзХранилица = preferences.getInt("ИмяПорта",0);
             String ИмменоКакойСерверПодкючения ="http://"+ИмяСерверИзХранилица+":"+ПортСерверИзХранилица+"/";
-          String  СтрокаСвязиСсервером = ИмменоКакойСерверПодкючения +new PUBLIC_CONTENT(context).getСсылкаНаРежимСервераАунтификация()+ "?"
+          String  СтрокаСвязиСсервером = ИмменоКакойСерверПодкючения +new PUBLIC_CONTENT(context).getСсылкаНаРежимСервераТабель()+ "?"
                      + "JobForServer=" + "Хотим Получить ID для Генерации  UUID" + ""+
                   "&" + "IdUser=" + ПубличноеЛогин + "";
             СтрокаСвязиСсервером = СтрокаСвязиСсервером.replace(" ", "%20");

@@ -209,7 +209,8 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
                                             методАвторизацииЛогинИПаполь(vКнопки,getApplicationContext(),preferences,ПубличноеЛогин,ПубличноеПароль);
                                     Log.d(this.getClass().getName(), " БуферПолученнниеДанныхПолученияIDотСервера "+
                                             БуферПолученнниеДанныхПолученияIDотСервера) ;
-                                    if (БуферПолученнниеДанныхПолученияIDотСервера!=null) {
+                                    if (БуферПолученнниеДанныхПолученияIDотСервера!=null
+                                            && БуферПолученнниеДанныхПолученияIDотСервера.toString().length()>0) {
                                         Bundle bundleРезультатПарольЛогин=new Bundle();
                                         bundleРезультатПарольЛогин.putString("БуферПолученнниеДанныхПолученияIDотСервера",
                                              БуферПолученнниеДанныхПолученияIDотСервера.toString());
