@@ -2125,7 +2125,7 @@ public class Fragment3_Now_Create_Tasks extends Fragment {
                             // TODO: 22.03.2022  для всех заполяется столбик
 
 
-                            contentValuesДляСозданияНовойЗадачиДляДвухТаблиц.putNull("id");
+                        //    contentValuesДляСозданияНовойЗадачиДляДвухТаблиц.putNull("id");
 
 
                             // TODO: 21.03.2022 выбираем какую точно нужно обработать

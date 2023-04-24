@@ -112,7 +112,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         ССылкаНаСозданнуюБазу.execSQL("drop table  if exists templates");//test
         ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'templates'");//test
         ССылкаНаСозданнуюБазу.execSQL("Create table if not exists    templates  (" +
-                "id  INTEGER PRIMARY KEY ," +
+                "id  INTEGER PRIMARY KEY AUTOINCREMENT ," +
                 " name_templates TEXT NOT NULL ," +
                 " user_update INTEGER ,"+
                 " date_update NUMERIC,"+
@@ -288,7 +288,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         ССылкаНаСозданнуюБазу.execSQL("drop table  if exists fio_template");//test
         ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'fio_template'");//test
         ССылкаНаСозданнуюБазу.execSQL("Create table if not exists    fio_template  (" +
-                "id  INTEGER ," +
+                "id  INTEGER PRIMARY KEY AUTOINCREMENT  ," +
                 " uuid  NUMERIC UNIQUE," +
                 " fio_template NUMERIC ," +
                 "fio_uuid  NUMERIC   ,"+
@@ -299,7 +299,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
                 "FOREIGN KEY(fio_uuid  ) REFERENCES fio (uuid)  ON UPDATE CASCADE," +
                 "FOREIGN KEY( fio_template  ) REFERENCES templates (uuid)  ON UPDATE CASCADE ," +
                 "FOREIGN KEY( fio_template  ) REFERENCES templates (uuid)   ON DELETE CASCADE," +
-                "PRIMARY KEY(fio_template,fio_uuid )) ");
+                " UNIQUE (fio_template,fio_uuid )) ");
 
         Log.d(this.getClass().getName(), " сработала ...  создание таблицы Fio_Template");
         /////todo встака данных по умолчанию
@@ -627,7 +627,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         ССылкаНаСозданнуюБазу.execSQL("drop table  if exists tabel");//test
         ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'tabel'");//test
        ССылкаНаСозданнуюБазу.execSQL("Create table if not exists tabel(" +
-                "_id  INTEGER  PRIMARY KEY  ," +
+                "_id  INTEGER  PRIMARY KEY  AUTOINCREMENT ," +
                 "cfo NUMERIC ," +
                 " month_tabels TEXT check(length(month_tabels) <13 ) ," +
                 "year_tabels NUMERIC," +
@@ -668,7 +668,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         ССылкаНаСозданнуюБазу.execSQL("drop table  if exists data_tabels");//test
         ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0' ,versionserveraandroid_version='0' WHERE name ='data_tabels'");//test
         ССылкаНаСозданнуюБазу.execSQL("Create table if not exists data_tabels(" +
-                "_id  INTEGER  PRIMARY KEY   ," +
+                "_id  INTEGER  PRIMARY KEY  AUTOINCREMENT  ," +
                 "fio NUMERIC ," +
                 "d1 INTEGER  DEFAULT 0   ," +
                 "d2 INTEGER  DEFAULT 0    ," +

@@ -90,31 +90,14 @@ public class SubClassUpVersionDATA {
                                                  @NotNull Context context,
                                                  @NotNull SQLiteDatabase getБазаДанныхДЛяОперацийВнутри) {
         Long  ПовышенняВерсияMAXCurrentTable=0l;
-        try  (   SQLiteCursor  КурсорMAXVersionCurrentTable=
-                         (SQLiteCursor) getБазаДанныхДЛяОперацийВнутри.rawQuery(" SELECT MAX ( current_table  ) AS MAX_R  FROM " +  Текущаятаблицы.trim()+"" , null);
-
-                 SQLiteCursor         Курсор_АнализMODIFITATION_Client= (SQLiteCursor)
+        try  (SQLiteCursor         Курсор_АнализMODIFITATION_Client= (SQLiteCursor)
                          getБазаДанныхДЛяОперацийВнутри.rawQuery(" SELECT  localversionandroid_version  FROM " +
                                  "  MODIFITATION_Client  WHERE  name = ? ", new String[]{ Текущаятаблицы.trim().toLowerCase()});) {
-            if(КурсорMAXVersionCurrentTable.getCount()>0){
-                КурсорMAXVersionCurrentTable.moveToFirst();
-                Integer  ИндексГдеСтолбикМах=КурсорMAXVersionCurrentTable.getColumnIndex("MAX_R");
-                ПовышенняВерсияMAXCurrentTable=КурсорMAXVersionCurrentTable.getLong(ИндексГдеСтолбикМах);
+            if(Курсор_АнализMODIFITATION_Client.getCount()>0 && Курсор_АнализMODIFITATION_Client!=null){
+                Курсор_АнализMODIFITATION_Client.moveToFirst();
+                ПовышенняВерсияMAXCurrentTable=Курсор_АнализMODIFITATION_Client.getLong(0);
                 // TODO: 22.11.2022
-                Long ПолучениеВерсииАнализаИзMODIFITATION_Client=0l;
-                if(Курсор_АнализMODIFITATION_Client.getCount()>0){
-                    Курсор_АнализMODIFITATION_Client.moveToFirst();
-                    Integer  ИндексГMODIFITATION_Client=Курсор_АнализMODIFITATION_Client.getColumnIndex("localversionandroid_version");
-                    ПолучениеВерсииАнализаИзMODIFITATION_Client=    Курсор_АнализMODIFITATION_Client.getLong(ИндексГMODIFITATION_Client);
-                }
-                if(ПовышенняВерсияMAXCurrentTable>=ПолучениеВерсииАнализаИзMODIFITATION_Client){
                     ПовышенняВерсияMAXCurrentTable++;
-                }else{
-                    ПовышенняВерсияMAXCurrentTable=    ПолучениеВерсииАнализаИзMODIFITATION_Client;
-                    ПовышенняВерсияMAXCurrentTable++;
-                }
-
-
             }else {
                 ПовышенняВерсияMAXCurrentTable=1l;
             }

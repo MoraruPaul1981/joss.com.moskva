@@ -851,7 +851,7 @@ private class SubClassGetDataAdmissionMaterial_Автомобили {
                      contentValuesСозданиеНовогоМатериала.put("user_update", ПубличныйIDДляФрагмента);
                      String СгенерированованныйДатаДляДаннойОперации = new Class_Generation_Data(getApplicationContext()).ГлавнаяДатаИВремяОперацийСБазойДанных();
                      contentValuesСозданиеНовогоМатериала.put("date_update", СгенерированованныйДатаДляДаннойОперации);
-                     contentValuesСозданиеНовогоМатериала.putNull("id");
+                 //    contentValuesСозданиеНовогоМатериала.putNull("id");
                      contentValuesСозданиеНовогоМатериала.put("status_send"," ");
 
                      // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ

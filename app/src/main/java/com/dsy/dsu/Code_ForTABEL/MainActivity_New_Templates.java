@@ -2099,7 +2099,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                 .setNeutralButton("Ещё", null)
                 .setIcon(R.drawable.icon_dsu1_tabels_for_new_tamples)
                 .show();
-        if (CurrenrsСhildUUID==0) {
+        if (MainParentUUID==0) {
              ((AlertDialog) alertDialog).getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.GONE);
         }
         final Button MessageBoxUpdateСоздатьТабель = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
@@ -2202,11 +2202,24 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
 
      
         try {
-            // TODO: 29.06.2022 Данные Пришли ДЛля Вставки Данных В шаблон Из ШАБЛОНА ГТовго 
+            // TODO: 29.06.2022 Данные Пришли ДЛля Вставки Данных В шаблон Из ШАБЛОНА ГТовго
+
             Курсор_СамиДАнные.moveToFirst();
             Курсор_ВыходныеДниДанные.moveToFirst();
             Integer КоличествоДанных = Курсор_СамиДАнные.getCount();
             Long UUIDgeneratorOpertion = (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID(getApplicationContext());
+            final ContentValues[] АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель = new ContentValues[1];
+            progressDialog = new ProgressDialog(activity);
+            progressDialog.setTitle(" Из Шаблона");
+            progressDialog.setMessage("Добавление...");
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setMax(КоличествоДанных);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+            progressDialog.setProgress(0);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+            Log.d(this.getClass().getName(), " onSubscribe  МетодСамойЗаписиСотрудниковИзРанееСозданногШаблона  " +Thread.currentThread().getName());
 
                     Observable.range(0, КоличествоДанных)
                             .subscribeOn(Schedulers.single())
@@ -2223,49 +2236,40 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                                     return false;
                                 }
                             })
+                            .doOnError(new Consumer<Throwable>() {
+                                @Override
+                                public void accept(Throwable throwable) throws Throwable {
+                                    Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                    new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(throwable.toString(), this.getClass().getName(),
+                                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                }
+                            })
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .doOnNext(new Consumer<Integer>() {
+                                @Override
+                                public void accept(Integer integer) throws Throwable {
+                                    АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель[0] = new ContentValues();
+                                    ///todo из заполянем адапрет из курсора
+                                    АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель[0] =
+                                            МетодЗаполенияДаннымиДляЗаполенияТабеляИзГотовогоШаблона(UUIDgeneratorOpertion,Курсор_СамиДАнные);
+                                    // TODO: 26.03.2021 ДОПОЛНИТЕЛЬНО ОБНУЛЯЕМ ВСЕ ТАБЕЛЯ С NULL В ФИО ЧТО БЫ ОБМЕН НЕ РУГАЛЬСЯ
+                                    Log.w(this.getClass().getName(), "  АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель[0]  "+
+                                            АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель[0]);
+
+                                }
+                            })
+
+                            .subscribeOn(Schedulers.single())
                             .doAfterNext(new Consumer<Integer>() {
                                 @Override
                                 public void accept(Integer integer) throws Throwable {
-                                    Курсор_СамиДАнные.moveToNext();
-                                }
-                            })
-                            .subscribe(new Observer<Integer>() {
-                                @Override
-                                public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-                                    // TODO: 29.06.2022  запускаем ПрогрессБарСОТпображениеОперациий Вставки данных В ТАбель Из шаблона
-                                    progressDialog = new ProgressDialog(activity);
-                                    progressDialog.setTitle(" Из Шаблона");
-                                    progressDialog.setMessage("Добавление...");
-                                    progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                                    progressDialog.setMax(КоличествоДанных);
-                                    progressDialog.setIndeterminate(true);
-                                    progressDialog.setCancelable(false);
-                                    progressDialog.setProgress(0);
-                                    progressDialog.setCanceledOnTouchOutside(false);
-                                    progressDialog.show();
-                                    Log.d(this.getClass().getName(), " onSubscribe  МетодСамойЗаписиСотрудниковИзРанееСозданногШаблона  " +Thread.currentThread().getName());
-                                }
-
-                                @Override
-                                public void onNext(@io.reactivex.rxjava3.annotations.NonNull Integer integer) {
-                                    Log.d(this.getClass().getName(), " onNext  МетодСамойЗаписиСотрудниковИзРанееСозданногШаблона  " +Thread.currentThread().getName());
-                                    int ТекущаяОперацияВставкиИзШаблонаСотрудниковВТабел = 0;
-                                    Long  ВставкиСотрудниковИзШаблона = 0l;
+                                    Long   ВставкиСотрудниковИзШаблона=0l;
                                     String ТаблицаОбработкиДорбалвенИзШаблона = "data_tabels";
-                                    ContentValues АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель = new ContentValues();
-                                    ///todo из заполянем адапрет из курсора
-                                    АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель =
-                                            МетодЗаполенияДаннымиДляЗаполенияТабеляИзГотовогоШаблона(Курсор_ВыходныеДниДанные,
-                                                    Курсор_СамиДАнные,UUIDgeneratorOpertion);
-                                    Log.d(this.getClass().getName(), "АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель[0]" + АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.valueSet().toString()+
-                                            " Курсор_СамиДАнные "+Курсор_СамиДАнные+ " Курсор_ВыходныеДниДанные "+Курсор_ВыходныеДниДанные);
-
-                                    // TODO: 03.10.2021  сама вставка
-                                    if (АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.size() > 0) {
-                                        ///////////////////////////////
-                                        ВставкиСотрудниковИзШаблона = new Class_MODEL_synchronized(getApplicationContext()).
+                                    if (АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель[0].size() > 0) {
+                                    ВставкиСотрудниковИзШаблона = new Class_MODEL_synchronized(getApplicationContext()).
                                                 ВставкаДанныхЧерезКонтейнерТолькоПриСозданииНовогоСотрудникаУниверсальная(ТаблицаОбработкиДорбалвенИзШаблона,
-                                                        АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель );
+                                                        АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель[0]);
                                         //////TODO когда true -это значет применяеться только не вобмене  и говорит что плюс записываем изменению версии джанных
                                     }
                                     Log.d(this.getClass().getName(), "  ВставкиСотрудниковИзШаблона " + ВставкиСотрудниковИзШаблона);
@@ -2302,19 +2306,17 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                                             }
                                         });
                                     }
+                                    // TODO: 24.04.2023 Увеличиваем Курсор
+                                    Курсор_СамиДАнные.moveToNext();
+                                    Log.d(this.getClass().getName(), " Курсор_СамиДАнные  "+Курсор_СамиДАнные.getCount() +
+                                             "  Курсор_СамиДАнные.getPosition() " +Курсор_СамиДАнные.getPosition());
                                 }
+
+                            })
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .doOnComplete(new Action() {
                                 @Override
-                                public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                                    Log.d(this.getClass().getName(), " onError  МетодСамойЗаписиСотрудниковИзРанееСозданногШаблона  e " +e.getMessage());
-                                    ///метод запись ошибок в таблицу
-                                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                    new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                }
-                                @Override
-                                public void onComplete() {
-                                    Log.d(this.getClass().getName(), "   onComplete МетодСамойЗаписиСотрудниковИзРанееСозданногШаблона  " +Thread.currentThread().getName());
+                                public void run() throws Throwable {
                                     // TODO: 29.06.2022 close cursor
                                     Курсор_СамиДАнные.close();
                                     Курсор_ВыходныеДниДанные.close();
@@ -2326,7 +2328,8 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                                     // TODO: 26.03.2021 ДОПОЛНИТЕЛЬНО ОБНУЛЯЕМ ВСЕ ТАБЕЛЯ С NULL В ФИО ЧТО БЫ ОБМЕН НЕ РУГАЛЬСЯ
                                     Log.w(this.getClass().getName(), " Не был вставлен СОТРУДНИК ИЗ ШАБЛОНА КАК ТАК ОН УЖЕ ЕСТЬ В ЭТОМ ТАБЕЛЕ o  ");
                                 }
-                            });
+                            })
+                            .subscribe();
             Log.d(this.getClass().getName(), "   observableВставкаИзШаблонаВТабкель  " );
         } catch (Exception e) {
             e.printStackTrace();
@@ -2345,45 +2348,12 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
 
 
     // TODO: 26.09.2021  ЗАПОЛНЯЕМ КОНТЕЙНЕР ДЛЯ ВСТАВКИ ИЗ ГОТОВГО ШАБЛОНА  В ТАБЕЛЬ
-    private ContentValues МетодЗаполенияДаннымиДляЗаполенияТабеляИзГотовогоШаблона( @NonNull SQLiteCursor Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней,
-                                                                                      @NonNull  SQLiteCursor Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм,
-                                                                                    @NonNull Long UUIDgeneratorOpertion) {
+    private ContentValues МетодЗаполенияДаннымиДляЗаполенияТабеляИзГотовогоШаблона(@NonNull Long UUIDgeneratorOpertion,@NonNull Cursor Курсор_СамиДАнные) {
         ContentValues АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель = new ContentValues();////контрейнер для нового табеля
         try {
-            Long ФИОИзАТблицы = 0l;
-            Class_GRUD_SQL_Operations class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля = new Class_GRUD_SQL_Operations(getApplicationContext());
-            // TODO: 26.09.2021   # 1
-            Integer Индекс = Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм.getColumnIndex("fio_uuid");
-            ФИОИзАТблицы = Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм.getLong(Индекс);
-            int ИндексМесяц = Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней.getColumnIndex("month_tabels");
-            int Месяц = Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней.getInt(ИндексМесяц);
-            // TODO: 24.05.2021  год
-            int ИндексГод = Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней.getColumnIndex("year_tabels");
-            int Год = Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней.getInt(ИндексГод);
-            // TODO: 24.05.2021  год
-            int ИндексЦФО = Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней.getColumnIndex("cfo");
-            int ЦФО = Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней.getInt(ИндексЦФО);
-            // TODO: 25.10.2021  ВЫЧИСЛЯЕМ ЕСЛИ ТАКОЙ УЖЕ СОТРУДНИК В ТАБЛИЦЕ DATA_TBELS
-            class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы", "viewtabel");
-            class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки", "fio");
-            class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика",
-                    " fio=?   AND month_tabels=? AND year_tabels=? AND cfo=?  AND status_send!=?  ");
-            class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1", ФИОИзАТблицы);
-            class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска2", Месяц);
-            class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска3", Год);
-            class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска4", ЦФО);
-            class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска5", "Удаленная");
-            class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки", "date_update DESC");
-            class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита", "1");
-            // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
-            SQLiteCursor  Курсор_ИщемПроверяемЕслиТакойСотрудникУжеЕстьВТабеле = (SQLiteCursor) class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля.
-                    new GetData(getApplicationContext()).getdata(class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
-                    Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков, Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
-            Log.d(this.getClass().getName(), "GetData " + Курсор_ИщемПроверяемЕслиТакойСотрудникУжеЕстьВТабеле);
-            // TODO: 25.10.2021  производим ВСТАВКУ ЕСЛИ ТАЕОКГО СОТРУДНИКА ЕЩЕ НЕТ ЕСДИ КУРСОР НЕ ППУСТОЙ
 
             // TODO: 15.02.2023 заопления даными для шаблона
-            МетодЗаполениеяДаннымиСотрудникаДляШаблонаЕслиОниЕсть(АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель, ФИОИзАТблицы, Курсор_ИщемПроверяемЕслиТакойСотрудникУжеЕстьВТабеле,UUIDgeneratorOpertion);
+            МетодЗаполениеяДаннымиСотрудникаДляШаблонаЕслиОниЕсть(АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель,  UUIDgeneratorOpertion, Курсор_СамиДАнные);
             // TODO: 17.04.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2398,44 +2368,37 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
         return АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель;
     }
 
-    private void МетодЗаполениеяДаннымиСотрудникаДляШаблонаЕслиОниЕсть(ContentValues АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель,
-                                                                       Long ФИОИзАТблицы, SQLiteCursor Курсор_ИщемПроверяемЕслиТакойСотрудникУжеЕстьВТабеле
-    ,@NonNull Long UUIDgeneratorOpertion)
+    private ContentValues МетодЗаполениеяДаннымиСотрудникаДляШаблонаЕслиОниЕсть(ContentValues АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель,
+                                                                                @NonNull Long UUIDgeneratorOpertion,
+                                                                                @NonNull Cursor Курсор_СамиДАнные)
             throws ExecutionException, InterruptedException {
         try{
-        Class_GRUD_SQL_Operations class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля;
-        if (Курсор_ИщемПроверяемЕслиТакойСотрудникУжеЕстьВТабеле.getCount() == 0) {
-            Log.d(this.getClass().getName(), "ФИОИзАТблицы" + ФИОИзАТблицы);
-            АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("fio", ФИОИзАТблицы);
             АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("status_send", " ");
             String СгенерированованныйДатаДляВставки = new Class_Generation_Data(getApplicationContext()).ГлавнаяДатаИВремяОперацийСБазойДанных();
             АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("date_update", СгенерированованныйДатаДляВставки);
             АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("uuid_tabel", MainParentUUID);
             // TODO: 08.10.2021 повышаем версию
-            Class_GRUD_SQL_Operations class_grud_sql_operationsПовышаемВерсиюДанныхПриСозданеииИзШаблонаСотрудника = new Class_GRUD_SQL_Operations(getApplicationContext());
+            Class_GRUD_SQL_Operations class_grud_sql_operationsПовышаемВерсиюДанныхПриСозданеииИзШаблонаСотрудника
+                    = new Class_GRUD_SQL_Operations(getApplicationContext());
             // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ
             Long РезультатУвеличинаяВерсияДАныхЧата =
-                    new SubClassUpVersionDATA().МетодПовышаемВерсииCurrentTable(    "data_tabels",getApplicationContext(),Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
+                    new SubClassUpVersionDATA().МетодПовышаемВерсииCurrentTable(    "data_tabels",getApplicationContext(),
+                            Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
             Log.d(this.getClass().getName(), " РезультатУвеличинаяВерсияДАныхЧата  " + РезультатУвеличинаяВерсияДАныхЧата);
 
             АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("current_table", РезультатУвеличинаяВерсияДАныхЧата);
-            АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.putNull("_id");
-            class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля = new Class_GRUD_SQL_Operations(getApplicationContext());
-            class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы", "SuccessLogin");
-            class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки", "id");
-            class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика", " id IS NOT NULL ");
-            class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки", "date_update DESC");
-            class_grud_sql_operationsЗаполенияДаннымиПередВставкойНовогоТабеля.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита", "1");
+    
             // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
-            Integer ПубличноеID=    new SubClassGetPublicId().ПубличныйID(getApplicationContext());
-            АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("user_update", ПубличноеID);
-            АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("uuid", UUIDgeneratorOpertion);
+                Integer ПубличноеID=    new SubClassGetPublicId().ПубличныйID(getApplicationContext());
+                АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("user_update", ПубличноеID);
+                АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("uuid", UUIDgeneratorOpertion);
+                Long ФИОИзАТблицы=  Курсор_СамиДАнные.getLong(Курсор_СамиДАнные.getColumnIndex("fio_uuid"));
+                АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("fio", ФИОИзАТблицы);
             // TODO: 17.04.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  +  "АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель "
                     +АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель);
-        }
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -2443,6 +2406,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
         new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                 Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
     }
+        return  АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель;
     }
 
 
