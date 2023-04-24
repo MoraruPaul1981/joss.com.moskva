@@ -50,26 +50,20 @@ public class SubClassUpdatesCELL {
 
                 List<Integer> ЛистДопустимоеСодержание = new ArrayList();
                 IntStream.iterate(1, i -> i + 1).limit(24).forEachOrdered(ЛистДопустимоеСодержание::add);
-                String ЗначениеИзЯчейки=editTextЯчейкаОбновление.getText().toString();
+                String ЗначениеИзЯчейки=editTextЯчейкаОбновление.getText().toString().trim();
                 boolean ФлагНовоеЗначение=        ЗначениеИзЯчейки.matches("(.*)[0-9](.*)");/////TODO   viewДанные.toString().matches("(.*)[^0-9](.*)");
 
                 // TODO: 12.04.2023 ТОкльЧисло ОБновдение
                 if(ФлагНовоеЗначение==true){
-                    ЗначениеИзЯчейки=   ЗначениеИзЯчейки.replaceAll("[^0-9]","");
-                    if (   Integer.parseInt(editTextЯчейкаОбновление.getText().toString())>24) {
+                    ЗначениеИзЯчейки=   ЗначениеИзЯчейки.replaceAll("[^0-9]","").trim();
+                    if (   Integer.parseInt(ЗначениеИзЯчейки.trim())>24) {
                         Toast aa = Toast.makeText(context, "OPEN", Toast.LENGTH_LONG);
                         ImageView cc = new ImageView( context);
                         cc.setImageResource(R.drawable.icon_dsu1_add_organisazio_error);//icon_dsu1_synchronisazia_dsu1_success
                         aa.setView(cc);
                         aa.show();
-                        TextView finalEditTextЯчейкаОбновление = editTextЯчейкаОбновление;
-                        context.getMainExecutor().execute(()->{
-                            Toast.makeText( context, "Нет сохранилось !!!"+
-                                    "\n"+" (Часы больше 24 ) :" + finalEditTextЯчейкаОбновление.getText().toString(), Toast.LENGTH_SHORT).show();
-                        });
-
                     }else {
-                        editTextЯчейкаОбновление.setText(ЗначениеИзЯчейки);
+                        editTextЯчейкаОбновление.setText(ЗначениеИзЯчейки.toString());
                         Bundle bundleперезаписьЯчейки= (Bundle)  editTextЯчейкаОбновление.getTag();
                         bundleперезаписьЯчейки.putString("ЗначениеДня",ЗначениеИзЯчейки);
                         // TODO: 11.04.2023 Обновление Ячейки через ПРовайдер
@@ -78,7 +72,7 @@ public class SubClassUpdatesCELL {
                     // TODO: 12.04.2023 ЧИСЛО ОБНОВЛЕНИЕ
                 }else {
                     ЗначениеИзЯчейки.replaceAll("[0-9]","");
-                    editTextЯчейкаОбновление.setText(ЗначениеИзЯчейки);
+                    editTextЯчейкаОбновление.setText(ЗначениеИзЯчейки.toString());
                     Bundle bundleперезаписьЯчейки= (Bundle)  editTextЯчейкаОбновление.getTag();
                     bundleперезаписьЯчейки.putString("ЗначениеДня",ЗначениеИзЯчейки);
                     // TODO: 11.04.2023 Обновление Ячейки через ПРовайдер
