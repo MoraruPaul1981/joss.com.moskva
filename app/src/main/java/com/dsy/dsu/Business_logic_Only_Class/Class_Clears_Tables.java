@@ -2,16 +2,23 @@ package com.dsy.dsu.Business_logic_Only_Class;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.SQLException;
+import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.loader.content.CursorLoader;
+
+import com.dsy.dsu.Business_logic_Only_Class.DATE.Class_Generation_Data;
+import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Tabels_Users_And_Passwords;
 
 import java.security.InvalidKeyException;
@@ -79,10 +86,15 @@ public class Class_Clears_Tables {
                               public void accept(String текущаяТаблицаДляУдваления) throws Throwable {
                                   // TODO: 09.09.2021 DELETE УДАЛЕНИЕ ТАБЛИЦ ПЕРЕД УМЕНЫ ПОЛЬЗОВАТЕЛЯ
                                   Integer РезультатУдалениеДанных=
-                                          ОчисткаТаблицысЗаписьюВMODIFITATION_Client( текущаяТаблицаДляУдваления.toString().trim(),
-                                                  context,МенеджерПотоковВнутрений);
+                                          методСменыДанныхПользователя( текущаяТаблицаДляУдваления.toString().trim(),
+                                                  context);
                                   Log.d(this.getClass().getName(), "РезультатУдалениеДанных " + РезультатУдалениеДанных+ " текущаяТаблицаДляУдваления "
                                           +текущаяТаблицаДляУдваления);
+                                  Integer РезультатУдалениеMODIFITATION_Client=
+                                          методСменыДанныхMODIFITATION_Client( текущаяТаблицаДляУдваления.toString().trim(),
+                                                  context);
+
+
                                   // TODO: 09.09.2021  действие второе добалянеим дату
                                   РезультатСменыДанных.add(РезультатУдалениеДанных);
                                   activity.runOnUiThread(()->{
@@ -157,28 +169,56 @@ public class Class_Clears_Tables {
 
 
 
+    // TODO: 09.09.2021 delete data for tabels
+    protected Integer методСменыДанныхПользователя(String ИмяТаблицы, Context context) throws ExecutionException, InterruptedException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+//
+        Integer СменаДанных = 0;
+        try {
+            Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/  "+ИмяТаблицы+"");
+            Log.d(this.getClass().getName(), "  ИмяТаблицы "+ИмяТаблицы+"" );
+
+            ContentResolver contentResolver=context.getContentResolver();
+            СменаДанных=  contentResolver.delete(uri,null,null);
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    ///
+                    Log.d(context.getClass().getName(), " РезультатУдалениеОчисткиТаблиц" + "--" + СменаДанных));/////
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            // TODO: 01.09.2021 метод вызова
+            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        return СменаДанных;
+    }
 
 
 
     // TODO: 09.09.2021 delete data for tabels
-    protected Integer ОчисткаТаблицысЗаписьюВMODIFITATION_Client(String ИмяТаблицы,Context context
-            ,CompletionService МенеджерПотоковВнутрений) throws ExecutionException, InterruptedException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+    protected Integer методСменыДанныхMODIFITATION_Client(String ИмяТаблицы, Context context) throws ExecutionException, InterruptedException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
 //
         Integer РезультатУдалениеОчисткиТаблиц = 0;
         try {
-            //
-            Log.d(this.getClass().getName(), "  ИмяТаблицы " + ИмяТаблицы);
-            // TODO: 09.09.2021 первое ДЕЙСТВИЕ УДАЛЕНИЕ ТАБЛИЦЫ
-           Class_GRUD_SQL_Operations class_grud_sql_operationclass_grud_sql_operationsОчисткаsОчистакаталиц=new Class_GRUD_SQL_Operations(context);
-            // TODO: 06.09.2021  ПАРАМЕНТЫ ДЛЯ удаление данных
-            class_grud_sql_operationclass_grud_sql_operationsОчисткаsОчистакаталиц.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы", ИмяТаблицы);
-            ///TODO РЕЗУЛЬТАТ ОБНОВЛЕНИЕ ДАННЫХ
-            РезультатУдалениеОчисткиТаблиц = (Integer) class_grud_sql_operationclass_grud_sql_operationsОчисткаsОчистакаталиц.
-                    new DeleteData(context).deletedataAlltable(class_grud_sql_operationclass_grud_sql_operationsОчисткаsОчистакаталиц.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
-                    МенеджерПотоковВнутрений,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
+            Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/ MODIFITATION_Client ");
+            Log.d(this.getClass().getName(), "  ИмяТаблицы MODIFITATION_Client  " );
+            ContentValues contentValuesСменаДанных=new ContentValues();
+            String Дата =     new Class_Generation_Data(context).ГлавнаяДатаИВремяОперацийСБазойДанныхДОП();
+
+
+            contentValuesСменаДанных.put("localversionandroid", "1901-01-10 00:00:00");
+            contentValuesСменаДанных.put("versionserveraandroid", "1901-01-10 00:00:00");
+
+            contentValuesСменаДанных.put("localversionandroid_version", 0);
+            contentValuesСменаДанных.put("versionserveraandroid_version", 0);
+
+
+            ContentResolver contentResolver=context.getContentResolver();
+          Integer  СменаДанных=  contentResolver.update(uri, contentValuesСменаДанных,"name=?",new String[]{String.valueOf(ИмяТаблицы)});
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
             ///
-            Log.d(context.getClass().getName(), " РезультатУдалениеОчисткиТаблиц" + "--" + РезультатУдалениеОчисткиТаблиц);/////
-            class_grud_sql_operationclass_grud_sql_operationsОчисткаsОчистакаталиц.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.clear();
+            Log.d(context.getClass().getName(), " РезультатУдалениеОчисткиТаблиц" + "--" + РезультатУдалениеОчисткиТаблиц));/////
         } catch (SQLException e) {
             e.printStackTrace();
             ///метод запись ошибок в таблицу
