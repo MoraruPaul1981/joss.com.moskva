@@ -3,19 +3,15 @@ package com.dsy.dsu.For_Code_Settings_DSU1;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
@@ -58,18 +54,12 @@ import com.dsy.dsu.Code_For_AdmissionMaterials_ПоступлениеМатер�
 import com.dsy.dsu.Code_For_Commit_Payments_КодДля_Согласование.MainActivity_CommitPay;
 import com.dsy.dsu.Code_For_Firebase_AndOneSignal_Здесь_КодДЛяСлужбыУведомленияFirebase.Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal;
 import com.dsy.dsu.Code_For_Services.ServiceUpdatePoОбновлениеПО;
-import com.dsy.dsu.Code_For_Services.Service_Async_1C;
-import com.dsy.dsu.Code_For_Services.Service_Notificatios_Для_Согласования;
-import com.dsy.dsu.Code_For_Services.Service_for_AdminissionMaterial;
 import com.dsy.dsu.R;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Date;
-import java.util.concurrent.Executors;
-
-import javax.inject.Inject;
 
 /////////////////////////////////////////////////////////////////////////
 public class MainActivity_Face_App extends AppCompatActivity {
@@ -718,17 +708,31 @@ public class MainActivity_Face_App extends AppCompatActivity {
                                 }
                                 break;
                             case "Пользователи Системы":
-                                Integer РезультатОчистикТАблицИДобалениеДаты = 0;
                                 try {
-                                    Handler handlerУдалениеТаблицПринудительно = new Handler();
-                                    PUBLIC_CONTENT Class_Engine_SQLГдеНаходитьсяМенеджерПотоков = new PUBLIC_CONTENT(activity);
-                                    РезультатОчистикТАблицИДобалениеДаты =
-                                            new Class_Clears_Tables(activity, handlerУдалениеТаблицПринудительно)
-                                                    .ОчисткаТаблицДляПользователяЗапусксFaceApp(activity,
-                                                            Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,
-                                                            activity);
-                                    Log.d(this.getClass().getName(), "   ЗАПУСК ФОНРезультатОчистикТАблицИДобалениеДаты " +
-                                            РезультатОчистикТАблицИДобалениеДаты);
+                                    методЗапускСинхронизацииДоСменыПользователя();
+                                    // TODO: 24.04.2023  запуск смены Пользоватедя Данные
+                                    handlerFaceAPP.postDelayed(()->{
+                                        try{
+                                        PUBLIC_CONTENT Class_Engine_SQLГдеНаходитьсяМенеджерПотоков = new PUBLIC_CONTENT(activity);
+                                        Integer    РезультатОчистикТАблицИДобалениеДаты =
+                                                new Class_Clears_Tables(activity, handlerFaceAPP)
+                                                        .ОчисткаТаблицДляПользователяЗапусксFaceApp(activity,
+                                                                Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,
+                                                                activity);
+                                        Log.d(this.getClass().getName(), "   ЗАПУСК ФОНРезультатОчистикТАблицИДобалениеДаты " +
+                                                РезультатОчистикТАблицИДобалениеДаты);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                                + " Линия  :"
+                                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                                this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                    }
+
+                                    },3000);
+
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName()
@@ -778,6 +782,27 @@ public class MainActivity_Face_App extends AppCompatActivity {
         }
         ///////////СЕРВЕР  ///////////СЕРВЕР  ///////////СЕРВЕР  ///////////СЕРВЕР  ///////////СЕРВЕР  ///////////СЕРВЕР  ///////////СЕРВЕР  ///////////СЕРВЕР  ///////////СЕРВЕР
 
+    }
+
+    private void методЗапускСинхронизацииДоСменыПользователя() {
+        try{
+        // TODO: 24.04.2023 Синхрониазция
+        Integer ПубличныйIDДляОдноразовойСинхрониазции =
+                new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
+        Bundle bundleДляПЕредачи = new Bundle();
+        bundleДляПЕредачи.putInt("IDПубличныйНеМойАСкемБылаПереписака", ПубличныйIDДляОдноразовойСинхрониазции);
+        bundleДляПЕредачи.putBoolean("StatusOneWokManagers", true);
+        Intent intentЗапускОднорworkanager = new Intent();
+        intentЗапускОднорworkanager.putExtras(bundleДляПЕредачи);
+        // TODO: 02.08.2022
+        new Class_Generator_One_WORK_MANAGER(getApplicationContext()).
+                МетодИзFaceAppОдноразовыйЗапускВоерМенеджера(getApplicationContext(), intentЗапускОднорworkanager);
+    } catch (Exception e) {
+        e.printStackTrace();
+///метод запись ошибок в таблицу
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
     }
 
     protected void МетодЗапускаИзМенюНастроек() {
