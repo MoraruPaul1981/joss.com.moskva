@@ -169,7 +169,6 @@ public class MainActivity_Face_App extends AppCompatActivity {
                        Thread.currentThread().getStackTrace()[2].getMethodName()+
                        " время " +new Date().toLocaleString() + " localBinderОбновлениеПО " +localBinderОбновлениеПО );
                Log.i(this.getClass().getName(), "bundle " +bundle);
-               message.recycle();
            });
         // TODO: 27.03.2023 биндинг службы
         new AllBindingService(context, message).МетодБиндингаОбновлениеПО();
@@ -202,6 +201,38 @@ public class MainActivity_Face_App extends AppCompatActivity {
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try{
+            методUnBindingСлужбыОбновления();
+        } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+    }
+    private void методUnBindingСлужбыОбновления() {
+        try {
+            if (localBinderОбновлениеПО!=null) {
+                localBinderОбновлениеПО=null;
+            }
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
+
 
     @Override
     protected void onResume() {
@@ -709,17 +740,29 @@ public class MainActivity_Face_App extends AppCompatActivity {
                                 break;
                             case "Пользователи Системы":
                                 try {
+                                    // TODO: 24.04.2023  запускаем простую синхрониазцию
                                     методЗапускСинхронизацииДоСменыПользователя();
                                     // TODO: 24.04.2023  запуск смены Пользоватедя Данные
-                                    handlerFaceAPP.postDelayed(()->{
+                                    ProgressDialog prograssbarСменаДанныхПользователя;
+                                    prograssbarСменаДанныхПользователя = new ProgressDialog(activity);
+                                    prograssbarСменаДанныхПользователя.setTitle("Смена данных");
+                                    prograssbarСменаДанныхПользователя.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                    prograssbarСменаДанныхПользователя.setProgress(0);
+                                    prograssbarСменаДанныхПользователя.setCanceledOnTouchOutside(false);
+                                    prograssbarСменаДанныхПользователя.setMessage("в процессе...");
+                                    prograssbarСменаДанныхПользователя.show();
+
                                         try{
                                         PUBLIC_CONTENT Class_Engine_SQLГдеНаходитьсяМенеджерПотоков = new PUBLIC_CONTENT(activity);
-                                        Integer    РезультатОчистикТАблицИДобалениеДаты =
-                                                new Class_Clears_Tables(activity, handlerFaceAPP)
-                                                        .ОчисткаТаблицДляПользователяЗапусксFaceApp(activity,
+                                            Class_Clears_Tables class_clears_tables=     new Class_Clears_Tables(activity,
+                                                    handlerFaceAPP,
+                                                    prograssbarСменаДанныхПользователя);
+
+                                        Integer    РезультатОчистикТАблицИДобалениеДаты = class_clears_tables
+                                                        .методСменаДанныхПользователя(activity,
                                                                 Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,
                                                                 activity);
-                                        Log.d(this.getClass().getName(), "   ЗАПУСК ФОНРезультатОчистикТАблицИДобалениеДаты " +
+                                            Log.d(this.getClass().getName(), "   ЗАПУСК ФОНРезультатОчистикТАблицИДобалениеДаты " +
                                                 РезультатОчистикТАблицИДобалениеДаты);
                                     } catch (Exception e) {
                                         e.printStackTrace();
@@ -730,8 +773,6 @@ public class MainActivity_Face_App extends AppCompatActivity {
                                                 this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                                                 Thread.currentThread().getStackTrace()[2].getLineNumber());
                                     }
-
-                                    },3000);
 
                                 } catch (Exception e) {
                                     e.printStackTrace();
