@@ -189,7 +189,7 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                         }
                     })
                     .subscribeOn(Schedulers.single())
-                    .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
+                    .doOnError(new Consumer<Throwable>() {
                         @Override
                         public void accept(Throwable throwable) throws Throwable {
                             throwable.printStackTrace();
@@ -206,7 +206,10 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                         public void run() throws Throwable {
                             // TODO: 18.02.2023 Анализ Версии
                             МетодАнализВерсийЛокальнаяИСерверная(ВерсияПООтСервере[0]);
-                            Log.d(getApplicationContext().getClass().getName(), "\n" + "   ФинальныйРезультатAsyncBackgroud ");
+                            Log.d(getApplicationContext().getClass().getName(), "\n" + "   ФинальныйРезультатAsyncBackgroud ВерсияПООтСервере[0]"+ВерсияПООтСервере[0]);
+                            // TODO: 24.04.2023 останаливаем службу
+                            stopSelf();
+
                         }
                     })
                     .onErrorComplete(new Predicate<Throwable>() {

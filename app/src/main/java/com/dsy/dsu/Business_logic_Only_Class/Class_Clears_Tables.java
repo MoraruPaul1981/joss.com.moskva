@@ -72,6 +72,8 @@ public class Class_Clears_Tables {
                  .filter(e->!e.equalsIgnoreCase("region"))
                  .filter(e->!e.equalsIgnoreCase("nomen_vesov"))
                  .filter(e->!e.equalsIgnoreCase("type_materials"))
+                 .filter(e->!e.equalsIgnoreCase("track"))
+                 .filter(e->!e.equalsIgnoreCase("company"))
                          .forEachOrdered((текущаяТаблицаДляУдваления)-> {
               try {
               // TODO: 09.09.2021 DELETE УДАЛЕНИЕ ТАБЛИЦ ПЕРЕД УМЕНЫ ПОЛЬЗОВАТЕЛЯ

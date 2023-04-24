@@ -169,6 +169,7 @@ public class MainActivity_Face_App extends AppCompatActivity {
 
 
 
+
     private void МетодБиндингаОбновлениеПО() {
         try {
         message=Message.obtain(new Handler(Looper.myLooper()),()->{
