@@ -174,7 +174,7 @@ public class Class_Clears_Tables {
 //
         Integer СменаДанных = 0;
         try {
-            Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/  "+ИмяТаблицы+"");
+            Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/"+ИмяТаблицы+"");
             Log.d(this.getClass().getName(), "  ИмяТаблицы "+ИмяТаблицы+"" );
 
             ContentResolver contentResolver=context.getContentResolver();
@@ -201,7 +201,7 @@ public class Class_Clears_Tables {
 //
         Integer РезультатУдалениеОчисткиТаблиц = 0;
         try {
-            Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/ MODIFITATION_Client ");
+            Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/MODIFITATION_Client ");
             Log.d(this.getClass().getName(), "  ИмяТаблицы MODIFITATION_Client  " );
             ContentValues contentValuesСменаДанных=new ContentValues();
             String Дата =     new Class_Generation_Data(context).ГлавнаяДатаИВремяОперацийСБазойДанныхДОП();
