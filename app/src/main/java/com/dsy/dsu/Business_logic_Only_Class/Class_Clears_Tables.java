@@ -79,6 +79,11 @@ public class Class_Clears_Tables {
                           .filter(e->!e.equalsIgnoreCase("type_materials"))
                           .filter(e->!e.equalsIgnoreCase("track"))
                           .filter(e->!e.equalsIgnoreCase("company"))
+                          .filter(e->!e.equalsIgnoreCase("prof"))
+                          .filter(e->!e.equalsIgnoreCase("prof"))
+                          .filter(e->!e.equalsIgnoreCase("type_materials"))
+                          .filter(e->!e.equalsIgnoreCase("nomen_vesov"))
+                          .filter(e->!e.equalsIgnoreCase("view_onesignal"))
                           .delay(2,TimeUnit.SECONDS)
                           .concatMap(i -> Observable.just(i).delay(300, TimeUnit.MILLISECONDS))
                           .doOnNext(new Consumer<String>() {
