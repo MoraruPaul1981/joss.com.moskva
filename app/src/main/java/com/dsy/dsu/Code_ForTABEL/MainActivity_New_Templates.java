@@ -2207,7 +2207,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
             Курсор_СамиДАнные.moveToFirst();
             Курсор_ВыходныеДниДанные.moveToFirst();
             Integer КоличествоДанных = Курсор_СамиДАнные.getCount();
-            Long UUIDgeneratorOpertion = (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID(getApplicationContext());
+            final Long[] UUIDgeneratorOpertion = {0l};
             final ContentValues[] АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель = new ContentValues[1];
             progressDialog = new ProgressDialog(activity);
             progressDialog.setTitle(" Из Шаблона");
@@ -2250,12 +2250,13 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                                 @Override
                                 public void accept(Integer integer) throws Throwable {
                                     АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель[0] = new ContentValues();
+                                    UUIDgeneratorOpertion[0] = (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID(getApplicationContext());
                                     ///todo из заполянем адапрет из курсора
                                     АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель[0] =
-                                            МетодЗаполенияДаннымиДляЗаполенияТабеляИзГотовогоШаблона(UUIDgeneratorOpertion,Курсор_СамиДАнные);
+                                            МетодЗаполенияДаннымиДляЗаполенияТабеляИзГотовогоШаблона(UUIDgeneratorOpertion[0],Курсор_СамиДАнные);
                                     // TODO: 26.03.2021 ДОПОЛНИТЕЛЬНО ОБНУЛЯЕМ ВСЕ ТАБЕЛЯ С NULL В ФИО ЧТО БЫ ОБМЕН НЕ РУГАЛЬСЯ
                                     Log.w(this.getClass().getName(), "  АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель[0]  "+
-                                            АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель[0]);
+                                            АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель[0] + " UUIDgeneratorOpertion[0]  "+ UUIDgeneratorOpertion[0] );
 
                                 }
                             })
@@ -2283,7 +2284,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                                         int Год = Курсор_ВыходныеДниДанные.getInt(ИндексГод);
                                         Integer РезультатВставкаВыходныхДНей =
                                                 new Class_Generation_Weekend_For_Tabels(getApplicationContext())
-                                                        .МетодТретийАвтоматическаяВставкаВыходныхДней(UUIDgeneratorOpertion, Год, Месяц);
+                                                        .МетодТретийАвтоматическаяВставкаВыходныхДней(UUIDgeneratorOpertion[0], Год, Месяц);
                                         Log.d(this.getClass().getName(), "   РезультатВставкаВыходныхДНей  " + РезультатВставкаВыходныхДНей);
                                         // TODO: 28.01.2022 ПОВЫШАЕМ ВЕРСИЮ  В ТАБЛИЦЕ МОДИФИКАЦИИ КЛИЕНТ
                                         ((Activity) КонтекстШаблоны).runOnUiThread(new Runnable() {
@@ -2387,7 +2388,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
             Log.d(this.getClass().getName(), " РезультатУвеличинаяВерсияДАныхЧата  " + РезультатУвеличинаяВерсияДАныхЧата);
 
             АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("current_table", РезультатУвеличинаяВерсияДАныхЧата);
-    
+
             // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
                 Integer ПубличноеID=    new SubClassGetPublicId().ПубличныйID(getApplicationContext());
                 АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("user_update", ПубличноеID);
@@ -2459,7 +2460,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
     private void методBackActivityListPeoples() {
         try {
             Intent ИнтентBackactivityListPeoples = null;
-            if (CurrenrsСhildUUID>0) {
+            if (MainParentUUID>0) {
                 ИнтентBackactivityListPeoples = new Intent(getApplicationContext(), MainActivity_List_Peoples.class);
             } else {
                 ИнтентBackactivityListPeoples = new Intent(getApplicationContext(), MainActivity_Face_App.class);
