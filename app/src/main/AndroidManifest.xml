@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dsy.dsu"
     xmlns:dist="http://schemas.android.com/apk/distribution"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.dsy.dsu">
+
     <dist:module dist:instant="true" />
+
     <uses-permission android:name="com.google.android.c2dm.permission.SEND" />
     <uses-permission android:name="oppo.permission.OPPO_COMPONENT_SAFE" />
     <uses-permission android:name="com.huawei.permission.external_app_settings.USE_COMPONENT" />
@@ -52,8 +54,11 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+
     <uses-feature android:name="android.hardware.location.gps" />
+
     <uses-permission android:name="android.intent.action.ACCESS_BACKGROUND_LOCATION " />
+
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="true" />
@@ -133,18 +138,27 @@
         android:showOnLockScreen="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar.Bridge"
-        android:usesCleartextTraffic="true" >
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".MainActivityOrdersTransports"
+            android:exported="false" />
+
+        <service
+            android:name=".OrserTransportService"
+            android:exported="false" />
         <service
             android:name=".Code_For_Services.Service_For_Public"
+            android:directBootAware="true"
             android:enabled="true"
             android:exported="true"
-            android:directBootAware="true"
             android:permission="android.permission.BIND_JOB_SERVICE"
-            android:showOnLockScreen="true" >
+            android:showOnLockScreen="true">
             <intent-filter>
                 <action android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <action android:name="android.permission.WAKE_LOCK" />
                 <action android:name="android.intent.action.SCREEN_OFF" />
                 <action android:name="android.intent.action.SCREEN_ON" />
@@ -177,8 +191,8 @@
             android:exported="true"
             android:grantUriPermissions="true"
             android:label="Поступление материалов"
-            android:windowSoftInputMode="adjustResize"
-           android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" >
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -223,16 +237,18 @@
 
         <service
             android:name=".Code_For_Services.Service_For_Remote_Async"
+            android:directBootAware="true"
             android:enabled="true"
             android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE"
             android:process=":async"
-            android:directBootAware="true"
-            android:showOnLockScreen="true"
-            android:permission="android.permission.BIND_JOB_SERVICE">
+            android:showOnLockScreen="true">
             <intent-filter>
                 <action android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <action android:name="android.permission.WAKE_LOCK" />
                 <action android:name="android.intent.action.SCREEN_OFF" />
                 <action android:name="android.intent.action.SCREEN_ON" />
@@ -261,15 +277,17 @@
         </service>
         <service
             android:name=".Code_For_Services.Service_for_AdminissionMaterial"
+            android:directBootAware="true"
             android:enabled="true"
             android:exported="true"
-            android:directBootAware="true"
-            android:showOnLockScreen="true"
-            android:permission="android.permission.BIND_JOB_SERVICE">
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:showOnLockScreen="true">
             <intent-filter>
                 <action android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <action android:name="android.permission.WAKE_LOCK" />
                 <action android:name="android.intent.action.SCREEN_OFF" />
                 <action android:name="android.intent.action.SCREEN_ON" />
@@ -298,11 +316,10 @@
             </intent-filter>
         </service>
 
-
         <receiver
             android:name=".Code_For_Starting_BroadcastReciever_ЗдесьКодЗапускаБроадКастеров.ReceivePingBluetooth"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
                 <action android:name="android.bluetooth.adapter.action.CONNECTION_STATE_CHANGED" />
@@ -325,8 +342,8 @@
             android:name=".Code_For_Starting_BroadcastReciever_ЗдесьКодЗапускаБроадКастеров.BroadcastReceiver_Sous_Notificatioons_For_Tasks"
             android:enabled="true"
             android:exported="false"
-            android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
-            <intent-filter android:priority="500" >
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter android:priority="500">
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -338,8 +355,8 @@
             android:name=".Code_For_Starting_BroadcastReciever_ЗдесьКодЗапускаБроадКастеров.BroadcastReceiver_Sous_Asyns_Glassfish"
             android:enabled="true"
             android:exported="false"
-            android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
-            <intent-filter android:priority="500" >
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter android:priority="500">
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -353,8 +370,8 @@
             android:name=".Code_For_Starting_BroadcastReciever_ЗдесьКодЗапускаБроадКастеров.BroadcastReceiver_ScannerBluetooth"
             android:enabled="true"
             android:exported="false"
-            android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
-            <intent-filter android:priority="500" >
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter android:priority="500">
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -368,8 +385,8 @@
             android:name=".Code_For_Starting_BroadcastReciever_ЗдесьКодЗапускаБроадКастеров.BroadcastReceiver_Sous_Notificatioons_For_Chats"
             android:enabled="true"
             android:exported="false"
-            android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
-            <intent-filter android:priority="500" >
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter android:priority="500">
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -381,8 +398,8 @@
             android:name=".Code_For_Starting_BroadcastReciever_ЗдесьКодЗапускаБроадКастеров.BroadcastReceiver_Sous_Notificatios_UpdateSoft"
             android:enabled="true"
             android:exported="false"
-            android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
-            <intent-filter android:priority="500" >
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter android:priority="500">
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -393,10 +410,10 @@
 
         <service
             android:name=".Code_For_Firebase_And_Provader.MyFirebaseMessagingService"
-            android:exported="false"
             android:directBootAware="true"
+            android:exported="false"
             android:showOnLockScreen="true"
-            android:usesCleartextTraffic="true" >
+            android:usesCleartextTraffic="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -426,7 +443,7 @@
             android:exported="true"
             android:grantUriPermissions="true"
             android:label="Чат"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar.Bridge" >
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -474,7 +491,7 @@
             android:grantUriPermissions="true"
             android:label="Задания"
             android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"
-            android:windowSoftInputMode="stateVisible|adjustPan" >
+            android:windowSoftInputMode="stateVisible|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -521,7 +538,7 @@
             android:exported="true"
             android:grantUriPermissions="true"
             android:label="Задания"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" >
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -568,7 +585,7 @@
             android:exported="true"
             android:grantUriPermissions="true"
             android:label="Задания"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" >
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -612,13 +629,13 @@
         </activity> <!-- android:permission="android.intent.action.BOOT_COMPLETED" -->
         <service
             android:name=".Code_For_Services.Service_Notifocations_Для_Чата"
+            android:directBootAware="true"
             android:enabled="true"
             android:exported="true"
-            android:directBootAware="true"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:requestLegacyExternalStorage="true"
             android:showOnLockScreen="true"
-            android:stopWithTask="false" >
+            android:stopWithTask="false">
             <intent-filter>
                 <action android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -653,13 +670,13 @@
         </service> <!-- android:permission="android.intent.action.BOOT_COMPLETED" -->
         <service
             android:name=".Code_For_Services.Service_For_Task_Для_Задания_СменаСатуса"
+            android:directBootAware="true"
             android:enabled="true"
             android:exported="true"
-            android:directBootAware="true"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:requestLegacyExternalStorage="true"
             android:showOnLockScreen="true"
-            android:stopWithTask="false" >
+            android:stopWithTask="false">
             <intent-filter>
                 <action android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -695,13 +712,13 @@
         <!-- todo JOBintenservice -->
         <service
             android:name=".Code_For_Services.Service_Для_ЧатаСменаСтатусаПрочитаноИлиНет"
+            android:directBootAware="true"
             android:enabled="true"
             android:exported="true"
-            android:directBootAware="true"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:requestLegacyExternalStorage="true"
             android:showOnLockScreen="true"
-            android:stopWithTask="false" >
+            android:stopWithTask="false">
             <intent-filter>
                 <action android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -737,11 +754,11 @@
         <!-- android:permission="android.intent.action.BOOT_COMPLETED" -->
         <service
             android:name=".Code_For_Services.Service_Notificatios_Для_Согласования"
-            android:enabled="true"
             android:directBootAware="true"
-            android:showOnLockScreen="true"
+            android:enabled="true"
             android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE">
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:showOnLockScreen="true">
             <intent-filter>
                 <action android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -776,13 +793,13 @@
         </service> <!-- android:permission="android.intent.action.BOOT_COMPLETED" -->
         <service
             android:name=".Code_For_Services.Service_Get1C_ПолучениеДанныхОт1С"
+            android:directBootAware="true"
             android:enabled="true"
             android:exported="true"
-            android:directBootAware="true"
-            android:showOnLockScreen="true"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:requestLegacyExternalStorage="true"
-            android:stopWithTask="false" >
+            android:showOnLockScreen="true"
+            android:stopWithTask="false">
             <intent-filter>
                 <action android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -817,17 +834,19 @@
         </service>
         <service
             android:name=".Code_For_Services.Service_Async_1C"
+            android:directBootAware="true"
             android:enabled="true"
             android:exported="true"
-            android:directBootAware="true"
-            android:showOnLockScreen="true"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:requestLegacyExternalStorage="true"
-            android:stopWithTask="false" >
+            android:showOnLockScreen="true"
+            android:stopWithTask="false">
             <intent-filter>
                 <action android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <action android:name="android.permission.WAKE_LOCK" />
                 <action android:name="android.intent.action.SCREEN_OFF" />
                 <action android:name="android.intent.action.SCREEN_ON" />
@@ -856,17 +875,19 @@
         </service>
         <service
             android:name=".Code_For_Services.ServiceUpdatePoОбновлениеПО"
+            android:directBootAware="true"
             android:enabled="true"
             android:exported="true"
-            android:directBootAware="true"
-            android:showOnLockScreen="true"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:requestLegacyExternalStorage="true"
-            android:stopWithTask="false" >
+            android:showOnLockScreen="true"
+            android:stopWithTask="false">
             <intent-filter>
                 <action android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <action android:name="android.permission.WAKE_LOCK" />
                 <action android:name="android.intent.action.SCREEN_OFF" />
                 <action android:name="android.intent.action.SCREEN_ON" />
@@ -898,7 +919,7 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
-            android:grantUriPermissions="true" >
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_path" />
@@ -907,7 +928,7 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
-            android:grantUriPermissions="true" >
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
@@ -919,7 +940,6 @@
             android:enabled="true"
             android:excludeFromRecents="true"
             android:exported="true"
-
             android:grantUriPermissions="true"
             android:permission="com.dsy.dsu.providerdatabase.pemission"
             android:readPermission="true"
@@ -931,12 +951,10 @@
             android:enabled="true"
             android:excludeFromRecents="true"
             android:exported="true"
-
             android:grantUriPermissions="true"
             android:permission="com.dsy.dsu.providerdatabasemirror.pemission"
             android:readPermission="true"
             android:writePermission="true" />
-
         <provider
             android:name=".Code_For_Firebase_And_Provader.ContentProviderSynsUpdateChangeDeleting"
             android:authorities="com.dsy.dsu.providerdatachangedeleting"
@@ -944,12 +962,10 @@
             android:enabled="true"
             android:excludeFromRecents="true"
             android:exported="true"
-
             android:grantUriPermissions="true"
             android:permission="com.dsy.dsu.providerdatachangedeleting.pemission"
             android:readPermission="true"
             android:writePermission="true" />
-
         <provider
             android:name=".Code_For_Firebase_And_Provader.ContentProviderForAdminissionMaterial"
             android:authorities="com.dsy.dsu.providerdataadminissionmaterial"
@@ -957,25 +973,21 @@
             android:enabled="true"
             android:excludeFromRecents="true"
             android:exported="true"
-
             android:grantUriPermissions="true"
             android:permission="com.dsy.dsu.providerdataadminissionmaterial.pemission"
             android:readPermission="true"
             android:writePermission="true" />
-
         <provider
             android:name=".Code_For_Firebase_And_Provader.ContentProviderForDataBaseCurrentOperations"
             android:authorities="com.dsy.dsu.providerdatabasecurrentoperations"
             android:directBootAware="true"
             android:enabled="true"
             android:excludeFromRecents="true"
-
             android:exported="true"
             android:grantUriPermissions="true"
             android:permission="com.dsy.dsu.providerdatabasecurrentoperations.pemission"
             android:readPermission="true"
-            android:writePermission="true"
-            />
+            android:writePermission="true" />
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
@@ -997,12 +1009,12 @@
         <!-- ДОПОЛНИТЕЛЬНЫЕ ПРОВАЙДЕРЫ -->
         <activity
             android:name=".For_Code_Settings_DSU1.MainActivity_Visible_Async"
+            android:configChanges="orientation|screenSize|keyboardHidden|screenSize|screenLayout"
             android:exported="true"
             android:grantUriPermissions="true"
             android:label="Синхронизация Прогрессбар"
-            android:configChanges="orientation|screenSize|keyboardHidden|screenSize|screenLayout"
             android:launchMode="singleTask"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" >
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Visible_Async" />
@@ -1025,7 +1037,7 @@
             android:exported="true"
             android:grantUriPermissions="true"
             android:label="Шаблоны Табелей"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" >
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dsy.dsu.Code_ForTABEL.MainActivity_New_Templates" />
@@ -1048,7 +1060,7 @@
             android:exported="true"
             android:grantUriPermissions="true"
             android:label="Поиск Шаблон Сотурдников"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" >
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dsy.dsu.Code_ForTABEL.MainActivity_Find_Templates" />
@@ -1070,7 +1082,7 @@
             android:name=".Code_ForTABEL.MainActivity_Metki_Tabel"
             android:exported="true"
             android:label="Список Контант Слов Для Табеля"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" >
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dsy.dsu.Code_ForTABEL.MainActivity_Metki_Tabel" />
@@ -1092,7 +1104,7 @@
             android:name=".Code_ForTABEL.MainActivity_Find_Customers"
             android:exported="true"
             android:label="Выбор Сотрудника"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" >
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dsy.dsu.Code_ForTABEL.MainActivity_Find_Customers" />
@@ -1114,7 +1126,7 @@
             android:name=".Code_ForTABEL.MainActivity_New_Cusomers"
             android:exported="true"
             android:label="Новый Сотрудник"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" >
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dsy.dsu.Code_ForTABEL.MainActivity_New_Cusomers" />
@@ -1136,7 +1148,7 @@
             android:name=".Code_ForTABEL.MainActivity_Tabel_Single_People"
             android:exported="true"
             android:label="Табель"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" >
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dsy.dsu.Code_ForTABEL.MainActivity_Tabel_Single_People" />
@@ -1158,7 +1170,7 @@
             android:name=".Code_ForTABEL.MainActivity_List_Peoples"
             android:exported="true"
             android:label="Сотрудники Табеля"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" >
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dsy.dsu.Code_ForTABEL.MainActivity_List_Tabels" />
@@ -1180,7 +1192,7 @@
             android:name=".Code_ForTABEL.MainActivity_List_Tabels"
             android:exported="true"
             android:label="Выбор ЦФО"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" >
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_App" />
@@ -1202,13 +1214,17 @@
             android:name=".For_Code_Settings_DSU1.MainActivity_Face_Start"
             android:exported="true"
             android:label="Союз-Автодор"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" >
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
+
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <action android:name="android.intent.action.PACKAGE_INSTALL" />
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
@@ -1218,7 +1234,9 @@
                 <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
                 <action android:name="android.intent.action.USER_PRESENT" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <action android:name="android.intent.action.PACKAGE_INSTALL" />
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
@@ -1248,7 +1266,7 @@
             android:exported="true"
             android:label="Аунтификация ДСУ-1"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" >
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_Start" />
@@ -1270,7 +1288,7 @@
             android:name=".For_Code_Settings_DSU1.MainActivity_Errors"
             android:exported="true"
             android:label="Ошибки приложения ДСУ-1"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" >
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_Start" />
@@ -1300,7 +1318,7 @@
             android:launchMode="standard"
             android:requestLegacyExternalStorage="true"
             android:showOnLockScreen="true"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" >
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_Start" />
@@ -1337,7 +1355,7 @@
             android:name=".Code_ForTABEL.MainActivity_New_Tabely"
             android:exported="true"
             android:label="Логины ДСУ-1"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" >
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dsy.dsu.Code_ForTABEL.MainActivity_List_Tabels" />
@@ -1365,7 +1383,7 @@
             android:name=".For_Code_Settings_DSU1.MainActivity_Settings"
             android:exported="true"
             android:label="Форма просмотр Логин"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" >
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_Start" />
