@@ -19,9 +19,14 @@ public class OrserTransportService extends IntentService {
 
 
     public OrserTransportService() {
+
         super("OrserTransportService");
     }
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+    }
 
     @Override
     public void onDestroy() {

@@ -1,6 +1,7 @@
 package com.dsy.dsu.Code_ForTABEL;
 
 
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -13,9 +14,11 @@ import android.content.res.Configuration;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.DataSetObserver;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,6 +27,9 @@ import android.os.Looper;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -58,6 +64,7 @@ import androidx.annotation.UiThread;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.graphics.ColorUtils;
 import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.lifecycle.Lifecycle;
@@ -100,6 +107,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
@@ -172,6 +180,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private   Animation animationVibr2;
     private Integer ВсеСтрокиТабеля=0;
     private  TextView    КонтейнерКудаЗагружаетьсяФИО;
+
+
     private ProgressBar ProgressBarSingleTabel;
 
 
@@ -188,8 +198,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private  Bundle bundleИзMainActitivy_List_Tables;
 
     private TextView TextViewФИОПрофессия;
+    private  Cursor   cursor;
 
-    private  Cursor   cursor=null;
+    ValueAnimator    valueAnimator;
 
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
     @Override
@@ -248,6 +259,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             animationRows = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row_scroll_for_singletabel);
             animationRich = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_swipe_r);//R.anim.slide_in_row)
             animationLesft = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_swipe_l);//R.anim.slide_in_row)R.anim.slide_in_row_newscanner1
+
             Scrollviewsingletabel.pageScroll(View.FOCUS_UP);
 
 
@@ -281,24 +293,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             subClassSingleTabelRecycreView.   методWorkManagerLifecycleOwner();
 
-
-
-
-
-        
-            // TODO: 12.04.2023 Вторастипенные методы
- /*           message.getTarget().postDelayed(()->{
-              //  subClassSingleTabelRecycreView. МетодСлушательКурсора(cursor);
-             //   subClassSingleTabelRecycreView.  методWorkManagerLifecycleOwner();
-               // subClassSingleTabelRecycreView.МетодСлушательRecycleView();
-            },2000);*/
-
-               /*     message.getTarget().postDelayed(()->{
-                        subClassSingleTabelRecycreView.  МетодСлушательRecycleView();
-                        subClassSingleTabelRecycreView.  МетодСлушательКурсора();
-                        subClassSingleTabelRecycreView.  методWorkMAnagerReycreVIew();
-                    },2000);*/
-
+            subClassSingleTabelRecycreView.        методАнимацияRecyreView();
+// TODO: 25.04.2023 тест код
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -310,7 +306,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
-
 
 
 
@@ -1322,6 +1317,9 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 @Override
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                     try{
+
+                        valueAnimator.start();
+
                         recyclerView.getAdapter().notifyDataSetChanged();
                         // TODO: 20.04.2023 Данные
                         cursor =    new SubClassGetCursor().МетодSwipesКурсор();
@@ -1390,8 +1388,10 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     @Override
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         try{
-                            recyclerView.getAdapter().notifyDataSetChanged();
 
+                            valueAnimator.start();
+
+                            recyclerView.getAdapter().notifyDataSetChanged();
                             // TODO: 20.04.2023 Данные
                             cursor =    new SubClassGetCursor().МетодSwipesКурсор();
 
@@ -1433,6 +1433,22 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 Thread.currentThread().getStackTrace()[2].getLineNumber());
                     }
                     }
+
+                    @Override
+                    public void onMoved(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, int fromPos, @NonNull RecyclerView.ViewHolder target, int toPos, int x, int y) {
+                        super.onMoved(recyclerView, viewHolder, fromPos, target, toPos, x, y);
+                    }
+
+                    @Override
+                    public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                    }
+
+                    @Override
+                    public long getAnimationDuration(@NonNull RecyclerView recyclerView, int animationType, float animateDx, float animateDy) {
+                        return super.getAnimationDuration(recyclerView, animationType, animateDx, animateDy);
+                    }
+
                     @Override
                     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                                           RecyclerView.ViewHolder target) {
@@ -1525,7 +1541,30 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
+        private void методАнимацияRecyreView() {
+            try{
+                valueAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
+                valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
 
+                        float fractionAnim = new Random().nextFloat();
+
+                    recyclerView.setBackgroundColor(ColorUtils.blendARGB(Color.parseColor("#C0C0C0")
+                                , Color.parseColor("#FFFFFF")
+                                , fractionAnim));
+                    }
+                });
+                // TODO: 25.04.2023
+                valueAnimator.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
 
         // TODO: 28.02.2022 начало  MyViewHolderДляЧата
         protected class MyViewHolder extends RecyclerView.ViewHolder {

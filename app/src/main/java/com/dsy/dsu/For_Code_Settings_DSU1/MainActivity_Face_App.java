@@ -48,6 +48,7 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generator_One_WORK_MANAGER;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Get_Json_1C;
 import com.dsy.dsu.Business_logic_Only_Class.Class_MODEL_synchronized;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
+import com.dsy.dsu.CodeOrdersAnTransports.Window.MainActivityOrdersTransports;
 import com.dsy.dsu.Code_ForTABEL.MainActivity_List_Tabels;
 import com.dsy.dsu.Code_ForTABEL.MainActivity_New_Templates;
 import com.dsy.dsu.Code_For_AdmissionMaterials_ПоступлениеМатериалов.MainActivity_AdmissionMaterials;
@@ -106,7 +107,7 @@ public class MainActivity_Face_App extends AppCompatActivity {
             КнопкаСогласование = (MaterialCardView) findViewById(R.id.cardviewCommitPay_For_MainActivity); ///// TODO КНОПКА ТАБЕЛЬНОГО УЧЕТА
             КнопкаПоступлениеМатериалов = (MaterialCardView) findViewById(R.id.cardviewControlAccess); /////TODO КОНТРОЛЬ ДОСТУПА
             КнопкаЗаявкаНаТранспорт = (MaterialCardView) findViewById(R.id.cardviewOrderTransport); /////TODO КОНТРОЛЬ ДОСТУПА
-            КнопкаЗаявкаНаТранспорт.setVisibility(View.GONE);
+            КнопкаЗаявкаНаТранспорт.setVisibility(View.VISIBLE);
             Log.d(this.getClass().getName(), "КнопкаЧат " + " КнопкаЗадачи "
                     + " КнопкаТабель " + КнопкаТабель + " КнопкаСогласование " + КнопкаСогласование + " КнопкаКонтрольДоступа " + КнопкаПоступлениеМатериалов);
             imageView_ЗначекApp = (ImageView) findViewById(R.id.imageView_ЗначекApp); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
@@ -241,6 +242,7 @@ public class MainActivity_Face_App extends AppCompatActivity {
             КнопкаТабель.setAnimation(animation);
             КнопкаСогласование.setAnimation(animation);
             КнопкаПоступлениеМатериалов.setAnimation(animation);
+            КнопкаЗаявкаНаТранспорт   .setAnimation(animation);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -581,9 +583,9 @@ public class MainActivity_Face_App extends AppCompatActivity {
                         Intent ИнтентЗаявкаНаТранспорт = new Intent();
                         Bundle data = new Bundle();
                         ИнтентЗаявкаНаТранспорт.putExtras(data);
-                      //  ИнтентДляЗапускаПолуступлениеМатериалов.setClass(getApplicationContext(), MainActivity_AdmissionMaterials.class);//рабочий
+                        ИнтентЗаявкаНаТранспорт.setClass(getApplicationContext(), MainActivityOrdersTransports.class);//рабочий
                         ИнтентЗаявкаНаТранспорт.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                       /// startActivity(ИнтентЗаявкаНаТранспорт);
+                        startActivity(ИнтентЗаявкаНаТранспорт);
                         handlerFaceAPP.postDelayed(() -> {
                             prograessbarOrderTransport.setVisibility(View.INVISIBLE);
                             КнопкаЗаявкаНаТранспорт.setBackgroundColor(Color.parseColor("#FFFFFF"));
