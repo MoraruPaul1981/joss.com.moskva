@@ -103,6 +103,7 @@ public class Service_For_Remote_Async extends IntentService {
     private      ServiceConnection connectionPUBLIC;
 
     private LinkedBlockingQueue<ContentValues> АдаптерДляВставкиИОбновления;
+
     public Service_For_Remote_Async() {
         super("Service_For_Remote_Async");
     }
@@ -1289,7 +1290,7 @@ public class Service_For_Remote_Async extends IntentService {
                             @Override
                             public void accept(List<JsonNode> jsonNodesBuffer500) throws Throwable {
                                 // TODO: 13.01.2023  ОБРАБОТКА ИЗ БУФЕРА
-                                 АдаптерДляВставкиИОбновления=new LinkedBlockingQueue<>();
+                                 АдаптерДляВставкиИОбновления=new LinkedBlockingQueue<>(jsonNodesBuffer500.size());
                                 Log.d(this.getClass().getName(), "АдаптерДляВставкиИОбновления " + АдаптерДляВставкиИОбновления);
                                 // TODO: 23.04.2023 Второй   Flowable
                                 Flowable.fromIterable(jsonNodesBuffer500)
@@ -1305,7 +1306,7 @@ public class Service_For_Remote_Async extends IntentService {
                                                             @Override
                                                             public void accept(JsonNode jsonNodeOneRowBuffer) throws Throwable {
                                                                 // TODO: 23.04.2023 Two
-                                                                ContentValues ТекущийАдаптерДляВсего=new ContentValues();
+                                                                ContentValues       ТекущийАдаптерДляВсего=new ContentValues();
                                                                 jsonNodeOneRowBuffer.fields().forEachRemaining(new Consumer<Map.Entry<String, JsonNode>>() {
                                                                     @Override
                                                                     public void accept(Map.Entry<String, JsonNode> stringJsonNodeEntry) {
@@ -1367,7 +1368,9 @@ public class Service_For_Remote_Async extends IntentService {
                                                                     }
                                                                 });
                                                                 // TODO: 27.10.2022  UUID есть Обновление
-                                                                АдаптерДляВставкиИОбновления.offer(ТекущийАдаптерДляВсего,5, TimeUnit.SECONDS);
+                                                                if (АдаптерДляВставкиИОбновления.contains(ТекущийАдаптерДляВсего)==false) {
+                                                                    АдаптерДляВставкиИОбновления.offer(ТекущийАдаптерДляВсего,5, TimeUnit.SECONDS);
+                                                                }
                                                                 Log.d(this.getClass().getName(),"\n" + " class " +
                                                                         Thread.currentThread().getStackTrace()[2].getClassName()
                                                                         + "\n" +
@@ -1410,6 +1413,11 @@ public class Service_For_Remote_Async extends IntentService {
                                 Log.d(this.getClass().getName(), " Конец  ПАРСИНГА ОБРАБОАТЫВАЕМОМЙ ТАБЛИЦЫ МетодBulkUPDATE   ::::: "
                                         + имяТаблицаAsync+" АдаптерДляВставкиИОбновления.size() "
                                         + АдаптерДляВставкиИОбновления.size() + "    РезультатРаботыСинхрониазциии[0] "+    РезультатРаботыСинхрониазциии[0]);
+                                // TODO: 25.04.2023  обнуяоем еременные
+
+                                if (!АдаптерДляВставкиИОбновления.isEmpty()) {
+                                    АдаптерДляВставкиИОбновления.clear();
+                                }
                             }
                         })
                         .onErrorComplete(new Predicate<Throwable>() {
