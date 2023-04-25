@@ -417,46 +417,12 @@ public class ContentProviderForDataBaseCurrentOperations extends ContentProvider
     @Override
     public Bundle call(@NonNull String authority, @NonNull String method, @Nullable String arg, @Nullable Bundle extras) {
         // TODO: 28.03.2023
-        try {
-            CompletableFuture.supplyAsync(new Supplier<Object>() {
-                @Override
-                public Object get() {
-                    if (!Create_Database_СамаБАзаSQLite.inTransaction()) {
-                        Create_Database_СамаБАзаSQLite.beginTransaction();
-                    }
-                    Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" +arg + "");
-                    String table = МетодОпределяемТаблицу(uri);
-                    Integer СтатусОбновления=   update(uri,null,extras);
-                    extras.putInt("СтатусОбновления",СтатусОбновления);
-                    if (СтатусОбновления>0) {
-                        if (Create_Database_СамаБАзаSQLite.inTransaction()) {
-                            Create_Database_СамаБАзаSQLite.setTransactionSuccessful();
-                        }
-                    }
-                    if (Create_Database_СамаБАзаSQLite.inTransaction()) {
-                        Create_Database_СамаБАзаSQLite.endTransaction();
-                    }
-                    shutdown();
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                    return extras;
-                }
-            }).exceptionally(e -> {
-                System.out.println(e.getClass());
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
-                        Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                        this.getClass().getName(),
-                        Thread.currentThread().getStackTrace()[2].getMethodName(),
-                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-                return e;
-            }).get();
+        try{
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
         } catch (Exception e) {
             e.printStackTrace();
-            Create_Database_СамаБАзаSQLite.endTransaction();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
             new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
@@ -533,7 +499,7 @@ public class ContentProviderForDataBaseCurrentOperations extends ContentProvider
         return РезультатUpdateCurrentPro;
     }
 
-    @Override
+/*    @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable Bundle extras) throws  NullPointerException{
         Integer РезультатСменыПрофесии=0;
         try{
@@ -565,6 +531,28 @@ public class ContentProviderForDataBaseCurrentOperations extends ContentProvider
     }
         return РезультатСменыПрофесии;
     }
+    */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     class ContentResolvers extends  ContentResolver{
 
         /**

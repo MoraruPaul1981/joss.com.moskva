@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -1197,7 +1198,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
 
         Integer МетодЗаписиСменыПрофесии(@NonNull View searchViewДляНовогоПоиска, @NonNull Context context){ //TODO метод записи СМЕНЫ ПРОФЕСИИ
-            Integer ПровйдерСменаПрофесии=0;
+            Integer ОбновлениеПрофесии=0;
             try{
                 String ТаблицаОбработки="data_tabels";
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1206,12 +1207,30 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         + " searchViewДляНовогоПоиска "+searchViewДляНовогоПоиска+ " ТаблицаОбработки "+ТаблицаОбработки);
                 Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" +ТаблицаОбработки + "");
                 Bundle bundleСменаПрофессии= (Bundle)  searchViewДляНовогоПоиска.getTag();
-                ContentResolver contentResolver=context.getContentResolver();
-                Bundle bundleОбновлениеПрофесии=  contentResolver.call(uri,ТаблицаОбработки,ТаблицаОбработки,bundleСменаПрофессии);
-                ПровйдерСменаПрофесии=  bundleОбновлениеПрофесии.getInt(    "СтатусОбновления",0);
+                ContentValues valuesСменаПрофесси=new ContentValues();
+
+         /*       valuesСменаПрофесси.put
+
+
+
+                Integer ПолучаемIDПрофессии=      extras.getInt("ПолучаемIDПрофессии",0);
+                values.put("prof",ПолучаемIDПрофессии);
+                String НазваниеПрофесии=   extras.getString("НазваниеПрофесии","");
+                Long CurrenrsСhildUUID =   extras.getLong("CurrenrsСhildUUID",0l);
+                Long ВерсияДанныхUp = new SubClassUpVersionDATA().МетодПовышаемВерсииCurrentTable(table,getContext(),Create_Database_СамаБАзаSQLite);
+                values.put("current_table",ВерсияДанныхUp);
+                String ДатаОбновления=     new Class_Generation_Data(getContext()).ГлавнаяДатаИВремяОперацийСБазойДанных();
+                values.put("date_update",ДатаОбновления);
+*/
+
+              /*  ContentResolver contentResolver=context.getContentResolver();
+
+                ОбновлениеПрофесии=  contentResolver.update(uri, valuesСменаПрофесси,"uuid=?",new String[]{String.valueOf(uuid)});
+
+
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" РЕЗУЛЬТАТ ПровйдерСменаПрофесии  " +  ПровйдерСменаПрофесии);
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" РЕЗУЛЬТАТ ПровйдерСменаПрофесии  " +  ПровйдерСменаПрофесии);*/
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1220,7 +1239,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         Thread.currentThread().getStackTrace()[2].getMethodName(),
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
-            return  ПровйдерСменаПрофесии;
+            return  ОбновлениеПрофесии;
         }
 
 

@@ -183,7 +183,7 @@
         </service>
 
         <service
-            android:name=".CodeOrdersAnTransports.Background.OrserTransportService"
+            android:name=".CodeOrdersAnTransports.Background.ServiceOrserTransportService"
             android:directBootAware="true"
             android:enabled="true"
             android:exported="true"
