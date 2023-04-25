@@ -190,6 +190,11 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
                     Log.d(getPackageName().getClass().getName(), "ПубличноеПарольДлСервлета " + ПубличноеПароль);
                     getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
+                    ПрогрессБарДляВходаСистему.setVisibility(View.VISIBLE);// при нажатии делаем видимый програсссбар
+                    ПрогрессБарДляВходаСистему.refreshDrawableState();
+                    ПрогрессБарДляВходаСистему.forceLayout();
+                    // TODO: 25.04.2023 начинаем работак Асинхроном
+                    message.getTarget().post(()->{
                     if (ПубличноеЛогин.length() > 0 &&  ПубличноеПароль.length() > 0) {
 
                         boolean РезультатПроВеркиУстановкиПользователяРежимРаботыСетиСтоитЛиЗапускатьСсинхронизацию =
@@ -200,11 +205,8 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
                                     МетодПингаСервераРаботаетИлиНет(getApplicationContext());
                                     Log.d(this.getClass().getName(), " РеальныйПингСервера "+ РеальныйПингСервера) ;
                             if (РеальныйПингСервера==true) {
-                                ПрогрессБарДляВходаСистему.setVisibility(View.VISIBLE);// при нажатии делаем видимый програсссбар
-                                ПрогрессБарДляВходаСистему.refreshDrawableState();
                                 //TODO запукаем метод аунтификции
                                 //TODO запукаем метод Афторизаиция по ЛОГИНУ И ПАРОЛЮ
-                                message.getTarget().post(()->{
                                     StringBuffer  БуферПолученнниеДанныхПолученияIDотСервера=new Class_MODEL_synchronized(getApplicationContext()).
                                             методАвторизацииЛогинИПаполь(vКнопки,getApplicationContext(),preferences,ПубличноеЛогин,ПубличноеПароль);
                                     Log.d(this.getClass().getName(), " БуферПолученнниеДанныхПолученияIDотСервера "+
@@ -219,21 +221,20 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
                                     }else {
                                         Snackbar.make(vКнопки, "Логин/Пароль не подходят !!! ", Snackbar.LENGTH_LONG).show();
                                     }
-                                });
                             }
                         } else {
                             Log.d(this.getClass().getName(), " Вы не заполнили Логин/Пароль ") ;
-                            ПрогрессБарДляВходаСистему.setVisibility(View.INVISIBLE);// при нажатии делаем видимый програсссбар
-                            ПрогрессБарДляВходаСистему.refreshDrawableState();
                             Snackbar.make(vКнопки, "Нет связи с с сервером !!! ", Snackbar.LENGTH_LONG).show();
-                        }////end проверки если сеть или нет TRUE
+                        }
                     } else {
                         Log.d(this.getClass().getName(), " Вы не заполнили Логин/Пароль ") ;
+                        Snackbar.make(v, " Вы не заполнили Логин/Пароль ", Snackbar.LENGTH_LONG).show();
+                    }
                         ПрогрессБарДляВходаСистему.setVisibility(View.INVISIBLE);// при нажатии делаем видимый програсссбар
                         ПрогрессБарДляВходаСистему.refreshDrawableState();
-                        Snackbar.make(v, " Вы не заполнили Логин/Пароль ", Snackbar.LENGTH_LONG).show();
-
-                    }
+                        ПрогрессБарДляВходаСистему.forceLayout();
+                    });
+                    // TODO: 25.04.2023  end async pool
                 }
             });
 

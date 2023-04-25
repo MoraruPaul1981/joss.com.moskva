@@ -98,8 +98,8 @@ public class Service_For_Remote_Async extends IntentService {
     private      Integer ПубличныйIDДляФрагмента=0;
 
     private Service_For_Public.LocalBinderОбщий localBinderОбщий;
-
-    /*ArrayList<ContentValues> АдаптерДляВставкиИОбновления;*/
+    ArrayList<ContentValues> АдаптерДляВставкиИОбновления=new ArrayList<ContentValues>();
+    ContentValues ТекущийАдаптерДляВсего ;
 
     private      ServiceConnection connectionPUBLIC;
     public Service_For_Remote_Async() {
@@ -1256,7 +1256,6 @@ public class Service_For_Remote_Async extends IntentService {
             final Long[] РезультатРаботыСинхрониазциии = {0l};
             try {
                 Log.d(this.getClass().getName(), " имяТаблицаAsync " + имяТаблицаAsync + " БуферПолученныйJSON " +БуферПолученныйJSON.toString() );
-                final ArrayList<ContentValues>[] АдаптерДляВставкиИОбновления = new ArrayList[1];
                     //TODO БУфер JSON от Сервера
                 final ObjectMapper[] jsonGenerator = {new PUBLIC_CONTENT(context).getGeneratorJackson()};
                 JsonNode jsonNodeParent=   jsonGenerator[0].readTree(БуферПолученныйJSON.toString());
@@ -1286,11 +1285,10 @@ public class Service_For_Remote_Async extends IntentService {
                         }, BackpressureOverflowStrategy.ERROR)
                         .buffer(500)
                         .doOnNext(new io.reactivex.rxjava3.functions.Consumer<List<JsonNode>>() {
-                            ContentValues ТекущийАдаптерДляВсего =null;
                             @Override
                             public void accept(List<JsonNode> jsonNodesBuffer500) throws Throwable {
                                 // TODO: 13.01.2023  ОБРАБОТКА ИЗ БУФЕРА
-                                АдаптерДляВставкиИОбновления[0] = new ArrayList<>();//JSON_ПерваяЧасть.names().length()
+                                АдаптерДляВставкиИОбновления.clear();//JSON_ПерваяЧасть.names().length()
                                 // TODO: 23.04.2023 Второй   Flowable
                                 Flowable.fromIterable(jsonNodesBuffer500)
                                                 .onBackpressureBuffer(jsonNodesBuffer500.size(), new Action() {
@@ -1305,7 +1303,8 @@ public class Service_For_Remote_Async extends IntentService {
                                                             @Override
                                                             public void accept(JsonNode jsonNodeOneRowBuffer) throws Throwable {
                                                                 // TODO: 23.04.2023 Two
-                                                                ТекущийАдаптерДляВсего = new ContentValues();
+                                                                ТекущийАдаптерДляВсего=null;
+                                                                ТекущийАдаптерДляВсего=new ContentValues();
                                                                 jsonNodeOneRowBuffer.fields().forEachRemaining(new Consumer<Map.Entry<String, JsonNode>>() {
                                                                     @Override
                                                                     public void accept(Map.Entry<String, JsonNode> stringJsonNodeEntry) {
@@ -1367,13 +1366,13 @@ public class Service_For_Remote_Async extends IntentService {
                                                                     }
                                                                 });
                                                                 // TODO: 27.10.2022  UUID есть Обновление
-                                                                АдаптерДляВставкиИОбновления[0].add(ТекущийАдаптерДляВсего);
+                                                                АдаптерДляВставкиИОбновления.add(ТекущийАдаптерДляВсего);
                                                                 Log.d(this.getClass().getName(),"\n" + " class " +
                                                                         Thread.currentThread().getStackTrace()[2].getClassName()
                                                                         + "\n" +
                                                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                                        + " АдаптерДляВставкиИОбновления "+ АдаптерДляВставкиИОбновления[0]);
+                                                                        + " АдаптерДляВставкиИОбновления "+ АдаптерДляВставкиИОбновления);
                                                             }
                                                         },jsonNodesBuffer500.size());
 
@@ -1384,18 +1383,18 @@ public class Service_For_Remote_Async extends IntentService {
                             public void accept(List<JsonNode> jsonNodes) throws Throwable {
                                 Log.d(this.getClass().getName(), "jsonNodes " +  jsonNodes);
                                 // TODO: 09.11.2022 ПОСЛЕ ОБРАБОТКИ НАЧИНАЕМ ВСТАКУ ДАННЫХ ЧЕРЕЗ BULK INSERT
-                              РезультатРаботыСинхрониазциии[0] =            МетодBulkUPDATE(имяТаблицаAsync, context, АдаптерДляВставкиИОбновления[0]);
+                              РезультатРаботыСинхрониазциии[0] =            МетодBulkUPDATE(имяТаблицаAsync, context, АдаптерДляВставкиИОбновления);
                                 // TODO: 23.04.2023 Удаление
                                 if (РезультатРаботыСинхрониазциии[0] >0) {
-                                    МетодСерверноеУдаление(имяТаблицаAsync, АдаптерДляВставкиИОбновления[0]);
+                                    МетодСерверноеУдаление(имяТаблицаAsync, АдаптерДляВставкиИОбновления);
                                 }
 
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                         + имяТаблицаAsync+" АдаптерДляВставкиИОбновления.size() "
-                                        + АдаптерДляВставкиИОбновления[0].size() + " РезультатРаботыСинхрониазциии "
-                                        + РезультатРаботыСинхрониазциии[0]);
+                                        + АдаптерДляВставкиИОбновления.size() + " РезультатРаботыСинхрониазциии "
+                                        + РезультатРаботыСинхрониазциии);
                             }
                         })
                         .doOnComplete(new Action() {
@@ -1407,7 +1406,7 @@ public class Service_For_Remote_Async extends IntentService {
                                         false,0);
                                 Log.d(this.getClass().getName(), " Конец  ПАРСИНГА ОБРАБОАТЫВАЕМОМЙ ТАБЛИЦЫ МетодBulkUPDATE   ::::: "
                                         + имяТаблицаAsync+" АдаптерДляВставкиИОбновления.size() "
-                                        + АдаптерДляВставкиИОбновления[0].size() + "    РезультатРаботыСинхрониазциии[0] "+    РезультатРаботыСинхрониазциии[0]);
+                                        + АдаптерДляВставкиИОбновления.size() + "    РезультатРаботыСинхрониазциии[0] "+    РезультатРаботыСинхрониазциии[0]);
                             }
                         })
                         .onErrorComplete(new Predicate<Throwable>() {

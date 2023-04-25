@@ -116,14 +116,14 @@ public Gson gson = new GsonBuilder()
 
     public LinkedHashMap<Integer,String> getМассивПортовСервера() {
 
-    /*    МассивПортовСервера.putIfAbsent(8080,"192.168.254.40");// TODO: 10.11.2022 Debug
+        МассивПортовСервера.putIfAbsent(8080,"192.168.254.40");// TODO: 10.11.2022 Debug
         МассивПортовСервера.putIfAbsent(8084,"192.168.254.40");// TODO: 10.11.2022 Debug
-        МассивПортовСервера.putIfAbsent(8085,"192.168.254.40");// TODO: 10.11.2022 Debug*/
+        МассивПортовСервера.putIfAbsent(8085,"192.168.254.40");// TODO: 10.11.2022 Debug
         // TODO: 18.03.2023 московский сервер
        // http://185.136.77.98:8888/jboss-1.0-SNAPSHOT/sous.jboss.tabel
-        МассивПортовСервера.putIfAbsent(8888,"185.136.77.98");// TODO: 10.11.2022 РЕЛИЗ  Москвовский
+     /*   МассивПортовСервера.putIfAbsent(8888,"185.136.77.98");// TODO: 10.11.2022 РЕЛИЗ  Москвовский
         МассивПортовСервера.putIfAbsent(8889,"185.136.77.98");// TODO: 10.11.2022 РЕЛИЗ  Москвовский
-        МассивПортовСервера.putIfAbsent(8890,"185.136.77.98");// TODO: 10.11.2022 РЕЛИЗ  Москвовский
+        МассивПортовСервера.putIfAbsent(8890,"185.136.77.98");// TODO: 10.11.2022 РЕЛИЗ  Москвовский*/
         //todo//////////20.15
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
