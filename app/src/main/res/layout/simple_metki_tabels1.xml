@@ -12,12 +12,15 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@android:id/text1"
-        android:layout_width="220dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#DAD3D3"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="2dp"
-        android:layout_marginLeft="80dp"
+
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+
         android:checkMark="?android:attr/listChoiceIndicatorSingle"
         android:gravity="center"
         android:minHeight="50dp"
@@ -35,11 +38,15 @@
     </com.google.android.material.textview.MaterialTextView>
     <com.google.android.material.textview.MaterialTextView
         android:id="@android:id/text2"
-        android:layout_width="220dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="80dp"
         android:minHeight="30dp"
-        android:layout_marginBottom="5dp"
+
+
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+
         android:background="#E8E3E3"
         android:padding="2dp"
         android:checkMark="?android:attr/listChoiceIndicatorSingle"

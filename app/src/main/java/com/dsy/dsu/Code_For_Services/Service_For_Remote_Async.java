@@ -104,6 +104,8 @@ public class Service_For_Remote_Async extends IntentService {
 
     private LinkedBlockingQueue<ContentValues> АдаптерДляВставкиИОбновления;
 
+    ContentValues       ТекущийАдаптерДляВсего;
+
     public Service_For_Remote_Async() {
         super("Service_For_Remote_Async");
     }
@@ -411,7 +413,7 @@ public class Service_For_Remote_Async extends IntentService {
         private  PUBLIC_CONTENT public_contentДатыДляГлавныхТаблицСинхронизации;
         private boolean ФлагУказываетЧтоТОлькоОбработкаТаблицДляЧАТА = false;
         private  String ФлагКакуюЧастьСинхронизацииЗапускаем =new String();
-   /*     private   ContentValues ТекущийАдаптерДляВсего =null;*/
+
         private  Integer ИндексТекущейОперацииРеальногРезультатОбработкиАтблицы=0;
         // TODO: 28.07.2022
         public Class_Engine_SQL(@NotNull Context context)
@@ -1306,7 +1308,7 @@ public class Service_For_Remote_Async extends IntentService {
                                                             @Override
                                                             public void accept(JsonNode jsonNodeOneRowBuffer) throws Throwable {
                                                                 // TODO: 23.04.2023 Two
-                                                                ContentValues       ТекущийАдаптерДляВсего=new ContentValues();
+                                                                   ТекущийАдаптерДляВсего=new ContentValues();
                                                                 jsonNodeOneRowBuffer.fields().forEachRemaining(new Consumer<Map.Entry<String, JsonNode>>() {
                                                                     @Override
                                                                     public void accept(Map.Entry<String, JsonNode> stringJsonNodeEntry) {
@@ -1369,7 +1371,7 @@ public class Service_For_Remote_Async extends IntentService {
                                                                 });
                                                                 // TODO: 27.10.2022  UUID есть Обновление
                                                                 if (АдаптерДляВставкиИОбновления.contains(ТекущийАдаптерДляВсего)==false) {
-                                                                    АдаптерДляВставкиИОбновления.offer(ТекущийАдаптерДляВсего,5, TimeUnit.SECONDS);
+                                                                    АдаптерДляВставкиИОбновления.offer(ТекущийАдаптерДляВсего);
                                                                 }
                                                                 Log.d(this.getClass().getName(),"\n" + " class " +
                                                                         Thread.currentThread().getStackTrace()[2].getClassName()
@@ -1417,6 +1419,7 @@ public class Service_For_Remote_Async extends IntentService {
 
                                 if (!АдаптерДляВставкиИОбновления.isEmpty()) {
                                     АдаптерДляВставкиИОбновления.clear();
+                                    ТекущийАдаптерДляВсего.clear();
                                 }
                             }
                         })
