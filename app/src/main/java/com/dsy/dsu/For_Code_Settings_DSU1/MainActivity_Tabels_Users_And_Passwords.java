@@ -221,6 +221,10 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
                                     }else {
                                         Snackbar.make(vКнопки, "Логин/Пароль не подходят !!! ", Snackbar.LENGTH_LONG).show();
                                     }
+                            }else {
+                                Log.d(this.getClass().getName(), " Вы не заполнили Логин/Пароль ") ;
+                                Snackbar.make(vКнопки, "Нет связи с с сервером !!! ", Snackbar.LENGTH_LONG).show();
+
                             }
                         } else {
                             Log.d(this.getClass().getName(), " Вы не заполнили Логин/Пароль ") ;
