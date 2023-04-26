@@ -480,6 +480,12 @@ public class ContentProviderSynsInsert extends ContentProvider {
         return super.call(authority, method, arg, extras);
     }
 
+    @Nullable
+    @Override
+    public Bundle call(@NonNull String method, @Nullable String arg, @Nullable Bundle extras) {
+        return super.call(method, arg, extras);
+    }
+
     @Override
     public void shutdown() {
         super.shutdown();

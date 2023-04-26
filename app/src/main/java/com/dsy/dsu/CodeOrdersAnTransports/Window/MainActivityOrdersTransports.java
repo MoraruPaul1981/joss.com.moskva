@@ -6,30 +6,21 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.os.Parcel;
 import android.util.ArrayMap;
+import android.util.ArraySet;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
-import com.dsy.dsu.CodeOrdersAnTransports.Background.ServiceOrserTransportService;
-import com.dsy.dsu.Code_For_AdmissionMaterials_ПоступлениеМатериалов.FragmentAdmissionMaterials;
-import com.dsy.dsu.Code_For_Services.Service_For_Public;
 import com.dsy.dsu.R;
 
 import java.util.Date;
-import java.util.Map;
-import java.util.Random;
 
 public class MainActivityOrdersTransports extends AppCompatActivity {
     // TODO: 25.04.2023 Переменные
@@ -37,7 +28,7 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private Fragment fragment_СозданиеЗаказаТранспорта;
-    private LinearLayout activity_admissionmaterias_face ;
+    private LinearLayout activity_ordertransports ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,27 +46,14 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
                     | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
             fragmentManager = getSupportFragmentManager();
-            activity_admissionmaterias_face =  (LinearLayout) findViewById(R.id.activity_admissionmaterias_mainface);
-            ViewGroup.LayoutParams params = activity_admissionmaterias_face.getLayoutParams();
+            activity_ordertransports =  (LinearLayout) findViewById(R.id.activity_ordertransports);
+            ViewGroup.LayoutParams params = activity_ordertransports.getLayoutParams();
             params.height= ViewGroup.LayoutParams.WRAP_CONTENT;
-            activity_admissionmaterias_face.setLayoutParams(params);
-
-
-            Log.d(this.getClass().getName(), "  onViewCreated  FragmentAdmissionMaterials");
-            // TODO: 04.11.2022 test
-            МетодЗапускФрагментаПриемМатериалов();
-            ArrayMap arrayMap=new ArrayMap();
-            ContentValues [] cccc=       ContentValues.CREATOR.newArray(500);
-            Parcel obtain = Parcel.obtain();
-            obtain.writeMap(arrayMap  );
-            ContentValues cc= ContentValues.CREATOR.createFromParcel(obtain);
-            cccc[0].put("ffff","ffffs");
-
-
-
-
-
-
+            activity_ordertransports.setLayoutParams(params);
+            // TODO: 26.04.2023 Запускаем Ордер Транпорта 
+            SubClassStartingFragmentOrderTran subClassStartingFragmentOrderTran=new SubClassStartingFragmentOrderTran();
+            subClassStartingFragmentOrderTran.методЗапускаФрагментаОрдерТранспорта();
+            
             Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date()+"\n+" +
                     " Класс в процессе... " +  getApplicationContext().getClass().getName()+"\n"+
@@ -97,7 +75,7 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
 
     // TODO: 26.04.2023  класс для ЗАПУСКА ЗАКАЗАТЬ НОВЫЙ ТРАНСПОРТ
 
-    protected void МетодЗапускФрагментаПриемМатериалов() {
+    protected void методЗапускаФрагментаОрдерТранспорта() {
         try{
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
@@ -105,7 +83,11 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
             fragmentTransaction.add(R.id.activity_ordertransports, fragment_СозданиеЗаказаТранспорта);//.layout.activity_for_fragemtb_history_tasks
             fragmentTransaction.commit();
             fragmentTransaction.show(fragment_СозданиеЗаказаТранспорта);
-            Log.d(this.getClass().getName(), " fragment_СозданиеЗаказаТранспорта " + fragment_СозданиеЗаказаТранспорта);
+            Log.d(getApplicationContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                    + "   fragment_СозданиеЗаказаТранспорта " + fragment_СозданиеЗаказаТранспорта);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
