@@ -107,7 +107,7 @@ public class MainActivity_Face_App extends AppCompatActivity {
             КнопкаСогласование = (MaterialCardView) findViewById(R.id.cardviewCommitPay_For_MainActivity); ///// TODO КНОПКА ТАБЕЛЬНОГО УЧЕТА
             КнопкаПоступлениеМатериалов = (MaterialCardView) findViewById(R.id.cardviewControlAccess); /////TODO КОНТРОЛЬ ДОСТУПА
             КнопкаЗаявкаНаТранспорт = (MaterialCardView) findViewById(R.id.cardviewOrderTransport); /////TODO КОНТРОЛЬ ДОСТУПА
-            КнопкаЗаявкаНаТранспорт.setVisibility(View.VISIBLE);
+            КнопкаЗаявкаНаТранспорт.setVisibility(View.INVISIBLE);
             Log.d(this.getClass().getName(), "КнопкаЧат " + " КнопкаЗадачи "
                     + " КнопкаТабель " + КнопкаТабель + " КнопкаСогласование " + КнопкаСогласование + " КнопкаКонтрольДоступа " + КнопкаПоступлениеМатериалов);
             imageView_ЗначекApp = (ImageView) findViewById(R.id.imageView_ЗначекApp); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
