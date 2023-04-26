@@ -2,6 +2,7 @@ package com.dsy.dsu.Code_For_Services;
 
 import android.app.IntentService;
 import android.content.ComponentName;
+import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -20,6 +21,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.Parcel;
+import android.os.Parcelable;
 import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
@@ -54,6 +56,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -1304,6 +1307,14 @@ public class Service_For_Remote_Async extends IntentService {
                     //TODO БУфер JSON от Сервера
                 final ObjectMapper[] jsonGenerator = {new PUBLIC_CONTENT(context).getGeneratorJackson()};
                 JsonNode jsonNodeParent=   jsonGenerator[0].readTree(БуферПолученныйJSON.toString());
+
+                Log.d(this.getClass().getName(),"\n" + " class " +
+                        Thread.currentThread().getStackTrace()[2].getClassName()
+                        + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                        " jsonNodeParent " +jsonNodeParent);
+
 
                 // TODO: 26.03.2023  Количество Максимальное СТРОК
                 МаксималноеКоличествоСтрочекJSON = jsonNodeParent.size();
