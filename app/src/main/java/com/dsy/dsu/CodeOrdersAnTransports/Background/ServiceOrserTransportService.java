@@ -152,11 +152,16 @@ public class ServiceOrserTransportService extends IntentService {
         protected boolean onTransact(int code, @NonNull Parcel data, @Nullable Parcel reply, int flags) throws RemoteException {
             Map mp = null;
            try{
-            reply.writeString("Ответа33333333333");
-               reply.writeInt(14578);
+            reply.writeString(new Date().toLocaleString());
+               reply.writeInt(new Random().nextInt());
                mp=new HashMap();
-               mp.put("ddd","ddddddd");
+               mp.put("ddd",new Random().nextFloat());
                reply.writeMap(mp);
+
+               Log.d(getApplicationContext().getClass().getName(), "\n"
+                       + " время: " + new Date() + "\n+" +
+                       " Класс в процессе... " + this.getClass().getName() + "\n" +
+                       " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
