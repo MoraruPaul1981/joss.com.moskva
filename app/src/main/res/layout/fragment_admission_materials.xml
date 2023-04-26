@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|center_vertical"
         android:background="#FFFFFF">
+
         <TextView
             android:id="@+id/TextView"
             android:layout_width="match_parent"
@@ -31,6 +32,25 @@
             android:textStyle="bold"
             android:visibility="visible"
             tools:ignore="MissingConstraints,RtlCompat" />
+
+
+        <View
+            android:id="@+id/view2Линия"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="3dp"
+            android:background="#00ACC1"
+            android:foregroundGravity="center"
+            android:visibility="visible"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/TextView"
+            />
+
+
+
+
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/activitynain_for_Taskslinelayoutrela3"
@@ -40,31 +60,35 @@
         android:orientation="vertical"
         android:background="#FFFFFF">
 
-        <ScrollView
-            android:id="@+id/scrollview_new_materials"
+        <!--   НАЧАЛО САМИХ ДАННЫХ ВСЕ ТАБЕЛЯ -->
+        <GridView
+            android:id="@+id/gridViewAllTabes"
             android:layout_width="match_parent"
-            android:layout_height="631dp"
-            android:fillViewport="true"
+            android:layout_height="484dp"
+            android:layout_above="@+id/BottomNavigationView"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="#FFFFFF"
+            android:columnWidth="700dp"
+            android:gravity="center"
+            android:horizontalSpacing="5dp"
+            android:numColumns="1"
+            android:padding="2dp"
+            android:scrollIndicators="left"
             android:scrollbars="horizontal|vertical"
-            android:stackFromBottom="true"
-            android:transcriptMode="alwaysScroll">
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="10dp"
+            tools:ignore="MissingConstraints">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/RecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/BottomNavigationView"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="5dp"
-                android:background="#FFFFFF"
-                android:minHeight="500dp"
-                android:visibility="visible"
-                tools:ignore="MissingConstraints" />
-        </ScrollView>
+        </GridView>
+
+
+
+
 
 
 
