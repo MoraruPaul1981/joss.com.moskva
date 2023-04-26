@@ -88,6 +88,8 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             МетодСозданиеТаблицаСправочиникNomen_vesov(ССылкаНаСозданнуюБазу);
             МетодСозданиеТаблицаДанныеТрак(ССылкаНаСозданнуюБазу);
             МетодСозданиеТаблицаДанныеКомпания(ССылкаНаСозданнуюБазу);
+            МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
+            МетодСозданиеТаблицаЗаказы(ССылкаНаСозданнуюБазу);
 
             // TODO: 12.10.2022  создание VIEW
             МетодСозданияВидаЧатаViewChat(ССылкаНаСозданнуюБазу);
@@ -1003,8 +1005,62 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         }
     }
 
+    private void МетодСозданиеТаблицаЗаказТранспорт(SQLiteDatabase ССылкаНаСозданнуюБазу) {
+        try{
+            ССылкаНаСозданнуюБазу.execSQL("drop table  if exists order_tc ");//ТАБЛИЦА ГЕНЕРАЦИИ ОШИБОК
+            ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'order_tc'");//test
+            ССылкаНаСозданнуюБазу.execSQL("Create table if not exists order_tc (" +
+                    "_id INTEGER   ," +
+                    "orders  TEXT ," +
+                    "machina TEXT," +
+                    "date_update TEXT ," +
+                    "kolich  INTEGER ," +
+                    "dateorders TEXT ," +
+                    "machinaexp  INTEGER ," +
+                    "machall  NUMERIC ," +
+                    "summacina  NUMERIC ," +
+                    "uuid NUMERIC UNIQUE," +
+                    "user_update INTEGER," +
+                    " current_table NUMERIC UNIQUE )");
+            Log.d(this.getClass().getName(), " сработала ...  создание таблицы order_tc ");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
+
+    private void МетодСозданиеТаблицаЗаказы(SQLiteDatabase ССылкаНаСозданнуюБазу) {
+        try{
+            ССылкаНаСозданнуюБазу.execSQL("drop table  if exists vid_tc ");//ТАБЛИЦА ГЕНЕРАЦИИ ОШИБОК
+            ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'vid_tc'");//test
+            ССылкаНаСозданнуюБазу.execSQL("Create table if not exists vid_tc (" +
+                    "_id INTEGER   ," +
+                    "name  TEXT ," +
+                    "date_update TEXT ," +
+                    "uuid NUMERIC UNIQUE," +
+                    "user_update INTEGER," +
+                    " current_table NUMERIC UNIQUE )");
+            Log.d(this.getClass().getName(), " сработала ...  создание таблицы vid_tc ");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
 
 
+
+
+    // TODO: 26.04.2023  VIEW созданиея
 
 
 
