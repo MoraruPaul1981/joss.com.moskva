@@ -706,11 +706,11 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             try {
-                                textViewчасыsimgletabel.setBackgroundColor(Color.WHITE);
+                                TextViewФИОПрофессия.setBackgroundColor(Color.WHITE);
                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                        " textViewчасыsimgletabel  " + textViewчасыsimgletabel);
+                                        " TextViewФИОПрофессия  " + TextViewФИОПрофессия);
                                 dialog.dismiss();
                                 dialog.cancel();
                             } catch (Exception e) {
@@ -726,7 +726,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             try {
-                                textViewчасыsimgletabel.setBackgroundColor(Color.WHITE);
+                                TextViewФИОПрофессия.setBackgroundColor(Color.WHITE);
                                 Bundle bundleПрофесии=new Bundle();
                                 bundleПрофесии.putString("СамЗапрос","  SELECT * FROM  prof WHERE uuid!=? ");
                                 bundleПрофесии.putStringArray("УсловияВыборки" ,new String[]{"0"});
@@ -738,7 +738,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                        " textViewчасыsimgletabel  " + textViewчасыsimgletabel);
+                                        " textViewчасыsimgletabel  " + TextViewФИОПрофессия);
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -2705,10 +2705,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         if (bundleПереходДетализацию != null) {
                             // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
                             try{
-                                message.getTarget().postDelayed(()->{
-                                    textViewчасыsimgletabel.setBackgroundColor(Color.WHITE);
-                                },2000);
-                                textViewчасыsimgletabel.setBackgroundColor(Color.GRAY);
+                                TextViewФИОПрофессия.setBackgroundColor(Color.GRAY);
                                     TextView TextViewФИОДляУдаление = (TextView) v;
                                     Log.d(this.getClass().getName(), " v " + v.getTag() + " TextViewФИОДляУдаление.getText() " + TextViewФИОДляУдаление.getText() +
                                             "  TextViewФИОДляУдаление.getTag() " +TextViewФИОДляУдаление.getTag());
