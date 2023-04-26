@@ -1131,18 +1131,28 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         try{
                             cursorДанные=      МетодКурсорДляНовогоПосика(ТаблицаПосика,constraint.toString());
                             message.getTarget().post(()->{
-                                if (cursorДанные.getCount()>0 && cursorДанные!=null) {
+                                if (cursorДанные.getCount()>0 && constraint.length()>0) {
                                     simpleCursorAdapterЦФО.swapCursor(cursorДанные);
                                     listViewДляНовыйПосик.setSelection(0);
                                     alertDialogНовыйПосикКнопкаЗакрыть.setText("Сохранить");
+                                }else {
+
+                                    if (cursorДанные.getCount()==0) {
+                                        alertDialogНовыйПосикКнопкаЗакрыть.setText("Закрыть");
+                                        searchViewДляНовогоЦФО.setBackgroundColor(Color.RED);
+                                        message.getTarget().postDelayed(() -> {
+                                            searchViewДляНовогоЦФО.setBackgroundColor(Color.parseColor("#F2F5F5"));
+                                        }, 500);
+                                    }
                                 }
-                                if (cursorДанные.getCount()==0 && cursorДанные!=null) {
+                                if ( constraint.length()==0) {
+                                    simpleCursorAdapterЦФО.swapCursor(cursorДанные);
+                                    listViewДляНовыйПосик.setSelection(0);
                                     alertDialogНовыйПосикКнопкаЗакрыть.setText("Закрыть");
-                                    searchViewДляНовогоЦФО.setBackgroundColor(Color.RED);
-                                    message.getTarget().postDelayed(() -> {
-                                        searchViewДляНовогоЦФО.setBackgroundColor(Color.parseColor("#F2F5F5"));
-                                    }, 500);
                                 }
+
+
+
                                 simpleCursorAdapterЦФО.notifyDataSetChanged();
                                 searchViewДляНовогоЦФО.refreshDrawableState();
                                 listViewДляНовыйПосик.deferNotifyDataSetChanged();

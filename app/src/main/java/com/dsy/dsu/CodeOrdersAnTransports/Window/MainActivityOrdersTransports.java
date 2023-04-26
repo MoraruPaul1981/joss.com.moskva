@@ -50,7 +50,7 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
             ViewGroup.LayoutParams params = activity_ordertransports.getLayoutParams();
             params.height= ViewGroup.LayoutParams.WRAP_CONTENT;
             activity_ordertransports.setLayoutParams(params);
-            // TODO: 26.04.2023 Запускаем Ордер Транпорта 
+            // TODO: 26.04.2023 Запускаем Ордер Транпорта
             SubClassStartingFragmentOrderTran subClassStartingFragmentOrderTran=new SubClassStartingFragmentOrderTran();
             subClassStartingFragmentOrderTran.методЗапускаФрагментаОрдерТранспорта();
             

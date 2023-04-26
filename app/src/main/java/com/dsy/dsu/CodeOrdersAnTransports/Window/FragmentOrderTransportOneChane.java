@@ -1,6 +1,11 @@
 package com.dsy.dsu.CodeOrdersAnTransports.Window;
 import android.annotation.SuppressLint;
+import android.content.ComponentCallbacks;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.content.res.Configuration;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.DataSetObserver;
@@ -23,6 +28,7 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
@@ -43,6 +49,7 @@ import com.dsy.dsu.Business_logic_Only_Class.AllboundServices.AllBindingService;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generator_One_WORK_MANAGER;
+import com.dsy.dsu.CodeOrdersAnTransports.Background.ServiceOrserTransportService;
 import com.dsy.dsu.Code_For_Services.Service_for_AdminissionMaterial;
 import com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_App;
 import com.dsy.dsu.R;
@@ -67,13 +74,13 @@ public class FragmentOrderTransportOneChane extends Fragment {
     private Integer ПубличныйIDДляФрагмента;
     private RecyclerView recyclerView;
     private LinearLayout linearLayou;
-    private Fragment fragment_ТекущийФрагментСогласованиеСписок;
+
     private BottomNavigationView bottomNavigationView;
     private BottomNavigationItemView bottomNavigationItemViewвыход;
     private BottomNavigationItemView bottomNavigationItemView2создать;
     private BottomNavigationItemView bottomNavigationItemView3обновить;
     private ProgressBar progressBarСканирование;
-    private LayoutAnimationController layoutAnimationController;
+
     private Animation animationПолучениеМатериалов;
     private  Handler handler;
     private  Cursor cursorНомерЦФО;
@@ -91,7 +98,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
     private  TextView   textViewНазваниеФрагмента;
     long start;
     long startДляОбноразвовной;
-    private  Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binderДляПолучениеМатериалов;
+    private  ServiceOrserTransportService.  LocalBinderOrderTransport localBinderOrderTransport;
+    private ServiceConnection serviceConnection;
     private  Message message;
 
     // TODO: 27.09.2022 Фрагмент Получение Материалов
@@ -102,9 +110,13 @@ public class FragmentOrderTransportOneChane extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         try{
             super.onCreate(savedInstanceState);
-            // TODO: 27.09.2022  запускаем фрагмент получение материалов
-            методБиндингСлужбы();
-            Log.d(this.getClass().getName(), "  onViewCreated  FragmentAdmissionMaterials  binderДляПолучениеМатериалов  "+binderДляПолучениеМатериалов);
+
+            МетодБиндингOrderTransport();
+
+            Log.d(getContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -297,7 +309,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         Интент_BackВозвращаемАктивти.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         Bundle gameData = new Bundle();
                         gameData.putString("ФлагСтатусИзФрагментаСканирования", "ЗакрываетИзСканирования");
-                        gameData.putBinder("binder", binderДляПолучениеМатериалов);
+                        gameData.putBinder("binder", localBinderOrderTransport);
                         Интент_BackВозвращаемАктивти.putExtras(gameData);
                         Log.d(this.getClass().getName(), "  выходим из задания МетодКпопкаВозвращениеНазадИзСогласованиии");
                         handler.postDelayed(()->{ startActivity(Интент_BackВозвращаемАктивти); },500);
@@ -371,7 +383,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
             fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
          //   fragment_СозданиеНовогоМатериалов = new FragmentMaretialNew();
             Bundle data=new Bundle();
-            data.putBinder("binder",binderДляПолучениеМатериалов);
+            data.putBinder("binder",localBinderOrderTransport);
             fragment_СозданиеНовогоМатериалов.setArguments(data);
             fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragment_СозданиеНовогоМатериалов).commit();//.layout.activity_for_fragemtb_history_task
             fragmentTransaction.show(fragment_СозданиеНовогоМатериалов);
@@ -379,7 +391,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
+                    + " localBinderOrderTransport " +localBinderOrderTransport);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
@@ -796,9 +808,9 @@ public class FragmentOrderTransportOneChane extends Fragment {
             Log.d(this.getClass().getName(), "   ПубличныйIDДляФрагмента "+ ПубличныйIDДляФрагмента);
             intentПолучениеМатериалов.putExtras(bundleДляПЕредачи);
             //TODO получение данных от Службы ДЛя Получение Материалов
-            switch (ФлагКакиеДанныеНужныПолучениеМатериалов){
+/*            switch (ФлагКакиеДанныеНужныПолучениеМатериалов){
                 case "ПолучениеЦФО":
-                    cursorНомерЦФО = (Cursor) binderДляПолучениеМатериалов.getService().МетодCлужбыПолучениеМатериалов(getContext(), intentПолучениеМатериалов);
+                    cursorНомерЦФО = (Cursor) localBinderOrderTransport.getService().МетодCлужбыПолучениеМатериалов(getContext(), intentПолучениеМатериалов);
                     Log.d(this.getClass().getName(), "   cursorНомерЦФО " + cursorНомерЦФО);
                     if (cursorНомерЦФО.getCount() > 0) {
                         cursorНомерЦФО.moveToFirst();
@@ -807,7 +819,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     }
                     break;
                 case "ПолучениеНомерМатериала":
-                    cursorНомерМатериала = (Cursor) binderДляПолучениеМатериалов.getService().МетодCлужбыПолучениеМатериалов(getContext(), intentПолучениеМатериалов);
+                    cursorНомерМатериала = (Cursor) localBinderOrderTransport.getService().МетодCлужбыПолучениеМатериалов(getContext(), intentПолучениеМатериалов);
                     Log.d(this.getClass().getName(), "   cursorНомерМатериалаДляGroupBy " + cursorНомерМатериала);
                     if (cursorНомерМатериала.getCount() > 0) {
                         cursorНомерМатериала.moveToFirst();
@@ -815,14 +827,14 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     }
                     break;
                 case "ПолучениеСгрупированныеСамиДанные":
-                    cursorСамиДанныеGroupBy = (Cursor) binderДляПолучениеМатериалов.getService().МетодCлужбыПолучениеМатериалов(getContext(), intentПолучениеМатериалов);
+                    cursorСамиДанныеGroupBy = (Cursor) localBinderOrderTransport.getService().МетодCлужбыПолучениеМатериалов(getContext(), intentПолучениеМатериалов);
                     Log.d(this.getClass().getName(), "   cursorСамиДанныеFace " + cursorСамиДанныеGroupBy);
                     if (cursorСамиДанныеGroupBy.getCount() > 0) {
                         cursorСамиДанныеGroupBy.moveToFirst();
                         Log.d(this.getClass().getName(), "   cursorСамиДанныеFace " + cursorСамиДанныеGroupBy);
                     }
                     break;
-            }
+            }*/
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1019,7 +1031,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View viewПолучениеМатериалов = null;
             try {
-                if(   binderДляПолучениеМатериалов==null || cursor==null){
+                if(   localBinderOrderTransport==null || cursor==null){
                     viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov, parent, false);//todo old simple_for_takst_cardview1
                     Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов);
 
@@ -1034,7 +1046,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 }
                 // TODO: 13.10.2022  добавляем новый компонент в Нащ RecycreView
                 myViewHolder = new MyViewHolder(viewПолучениеМатериалов);
-                Log.i(this.getClass().getName(), "   myViewHolder" + myViewHolder + "  binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
+                Log.i(this.getClass().getName(), "   myViewHolder" + myViewHolder + "  localBinderOrderTransport " +localBinderOrderTransport);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1127,7 +1139,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
         private void МетодДобавленеиЕлементоввRecycreView(@NonNull TableLayout tableLayoutРодительская) {
             try {
                 // TODO: 07.11.2022   ВТОРОЙ ЭТАП ПОЛУЧАЕМ НОМЕР ЦФО
-                if (binderДляПолучениеМатериалов!=null && cursor!=null && ТекущаяЦФО>0) {
+                if (localBinderOrderTransport!=null && cursor!=null && ТекущаяЦФО>0) {
                     // TODO: 03.11.2022 Второй Запрос Получем САМО Цифра Полученого Материла
                     МетодПолучениеДанныхДЛяПолучениеМатериалов("ПолучениеНомерМатериала",ТекущаяЦФО);
                 }
@@ -1376,7 +1388,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     }
                 }else {
                     КоличесвоСтрок = 1;
-                    Log.d(this.getClass().getName(), "sqLiteCursor.getCount()  " + cursor+"  binderДляПолучениеМатериалов "+ binderДляПолучениеМатериалов);
+                    Log.d(this.getClass().getName(), "sqLiteCursor.getCount()  " + cursor+"  localBinderOrderTransport "+ localBinderOrderTransport);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1390,38 +1402,82 @@ public class FragmentOrderTransportOneChane extends Fragment {
             return КоличесвоСтрок;
         }
     }
-    private void методБиндингСлужбы() {
+    public void МетодБиндингOrderTransport() {
         try {
-            if (binderДляПолучениеМатериалов==null) {
-                message= Message.obtain(new Handler(Looper.myLooper()),()->{
-                    Bundle bundle=   message.getData();
-                    binderДляПолучениеМатериалов= (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов)  bundle.getBinder("allbinders")  ;
-                    Log.i(this.getClass().getName(),  " биндинг материалов к службе "+
-                            Thread.currentThread().getStackTrace()[2].getMethodName()+
-                            " время " +new Date().toLocaleString() + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов );
-                    Log.i(this.getClass().getName(), "bundle " +bundle);
-                    // TODO: 18.04.2023
-                    МетодПолучениеДанныхДЛяПолучениеМатериалов("ПолучениеЦФО",0);
-                    // TODO: 18.04.2023
-                    onStart();
-                });
-                // TODO: 27.03.2023 биндинг службы
-                new AllBindingService(getContext(), message). МетодБиндингМатериалы() ;
-            }
+            Intent intentЗапускOrserTransportService = new Intent(getContext(), ServiceOrserTransportService.class);
+            intentЗапускOrserTransportService.setAction("intentЗапускOrserTransportService");
+            serviceConnection=     new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    try {
+                        if (service.isBinderAlive()) {
+                            localBinderOrderTransport = (ServiceOrserTransportService.  LocalBinderOrderTransport) service;
+                            // TODO: 16.11.2022
+                            Log.d(getContext().getClass().getName(), "\n"
+                                    + " время: " + new Date() + "\n+" +
+                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                    + "   service.isBinderAlive()" + service.isBinderAlive());
 
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
+                                Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
+                }
 
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
+                    try {
+                        localBinderOrderTransport = null;
+                        Log.d(getContext().getClass().getName(), "\n"
+                                + " время: " + new Date() + "\n+" +
+                                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
+                                Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        // TODO: 11.05.2021 запись ошибок
+
+                    }
+                }
+            };
+            Boolean   isBound =    getContext(). bindService(intentЗапускOrserTransportService, serviceConnection , Context.BIND_AUTO_CREATE);
+            getContext().registerComponentCallbacks(new ComponentCallbacks() {
+                @Override
+                public void onConfigurationChanged(@NonNull Configuration newConfig) {
+                    Log.d(getContext().getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                }
+
+                @Override
+                public void onLowMemory() {
+                    Log.d(getContext().getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
-            Log.d(this.getClass().getName(), "  Полусаем Ошибку e.toString() " + e.toString());
         }
-
     }
+    // TODO: 26.04.2023  КОЛНЕЦ Фрагмента
 }
