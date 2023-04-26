@@ -43,7 +43,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -55,7 +54,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +63,6 @@ import java.util.concurrent.CompletionService;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -78,7 +75,6 @@ import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.functions.Predicate;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 /**
@@ -113,7 +109,7 @@ public class Service_For_Remote_Async extends IntentService {
     public void onCreate() {
         super.onCreate();
         try{
-            МетодБиндинuCлужбыPublic();
+            МетодБиндинuCлужбыPublic(getApplicationContext());
        ПубличныйIDДляФрагмента = new SubClass_Connection_BroadcastReceiver_Sous_Asyns_Glassfish().МетодПолучениеяПубличногоID(context);
         Log.d(context.getClass().getName(), "\n"
                 + " время: " + new Date() + "\n+" +
@@ -247,48 +243,13 @@ public class Service_For_Remote_Async extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         try{
-        Log.d(getApplicationContext().getClass().getName(), "\n"
-                + " время: " + new Date() + "\n+" +
-                " Класс в процессе... " + this.getClass().getName() + "\n" +
-                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
         this.context =getApplicationContext();
-            // TODO: 25.03.2023 ДОПОЛНИТЕОТНЕ УДЛАНИЕ СТАТУСА УДАЛЕНИЕ ПОСЛЕ СИНХРОНИАЗЦИИ
-
-        CompletableFuture.supplyAsync(new Supplier<Integer>() {
-            @Override
-            public Integer get() {
                 // TODO: 28.09.2022  запускаем службу табелей
-                Integer Async=    МетодAsyncИзСлужбы(context);
+                  metodStartingSync(context);
                 Log.d(getApplicationContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-                return Async;
-            }
-        })
-                .thenAcceptAsync(new Consumer<Integer>() {
-                    @Override
-                    public void accept(Integer o) {
-                        onDestroy();
-                        Log.d(getApplicationContext().getClass().getName(), "\n"
-                                + " время: " + new Date() + "\n+" +
-                                " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-
-                    }
-                })
-                .exceptionally(e -> {
-                    System.out.println(e.getClass());
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
-                    Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    return null ;
-                }).complete( null);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -301,39 +262,109 @@ public class Service_For_Remote_Async extends IntentService {
 
 
 
-    public Integer МетодAsyncИзСлужбы(@NonNull Context context) {
-        Integer ФинальныйРезультатAsyncBackgroud=0;
-        try {
-            if( this.context==null){
-                this.context=context;
-            }
-            // TODO: 16.11.2022
-            ФинальныйРезультатAsyncBackgroud  = new Class_Engine_SQL(context).МетодЗАпускаФоновойСинхронизации(context);
-            Log.d(context.getClass().getName(), "\n"
-                    + "   ФинальныйРезультатAsyncBackgroud " + ФинальныйРезультатAsyncBackgroud);
-            МетодПослеAsyncTaskЗавершающий( context,ФинальныйРезультатAsyncBackgroud);
-            // TODO: 26.03.2023 дополнительное удаление после Удаление статсу удалнеенон
-            if (ФинальныйРезультатAsyncBackgroud>0) {
-                МетодПослеСинхрониазцииУдалениеСтатусаУдаленный();
-            }
+    public void metodStartingSync(@NonNull Context context) {
+         CompletableFuture.supplyAsync(new Supplier<Integer>() {
+            @Override
+            public Integer get() {
+                Integer    ФинальныйРезультатAsyncBackgroud=0;
+                    // TODO: 25.03.2023 ДОПОЛНИТЕОТНЕ УДЛАНИЕ СТАТУСА УДАЛЕНИЕ ПОСЛЕ СИНХРОНИАЗЦИИ
+                    // TODO: 16.11.2022
+                     ФинальныйРезультатAsyncBackgroud  = new Class_Engine_SQL(context).МетодЗАпускаФоновойСинхронизации(context);
 
-            Log.d(context.getClass().getName(), "\n"
-                    + " время: " + new Date() + "\n+" +
-                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                    + "    ФинальныйРезультатAsyncBackgroud "+ФинальныйРезультатAsyncBackgroud);
-        } catch (Exception e) {
+                    Log.d(context.getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                            + "    ФинальныйРезультатAsyncBackgroud "+ФинальныйРезультатAsyncBackgroud);
+                return ФинальныйРезультатAsyncBackgroud;
+            }
+        }) .exceptionally(e -> {
+            System.out.println(e.getClass());
             e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-            Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
-        }
-        return ФинальныйРезультатAsyncBackgroud;
+                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                             " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                     new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                             Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                     Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
+            return null ;
+        }) .thenAcceptAsync(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer ФинальныйРезультатAsyncBackgroud) {
+
+                МетодПослеAsyncTaskЗавершающий( context,ФинальныйРезультатAsyncBackgroud);
+                // TODO: 26.03.2023 дополнительное удаление после Удаление статсу удалнеенон
+                if (ФинальныйРезультатAsyncBackgroud>0) {
+                    МетодПослеСинхрониазцииУдалениеСтатусаУдаленный(context);
+                }
+                Log.d(context.getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
+            }
+        }).exceptionally(e -> {
+                     System.out.println(e.getClass());
+                     e.printStackTrace();
+                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                             " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                     new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                             Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                     Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
+                     return null ;
+                 })
+                 .complete(null);
+
     }
 
-    private void МетодПослеСинхрониазцииУдалениеСтатусаУдаленный() {
+    // TODO: 26.04.2023  метод запуск службы синхрониазции толькь для службы
+
+    public Integer metodServiceStartingSync(@NonNull Context context) throws ExecutionException, InterruptedException {
+        CompletableFuture<Integer> completableFutureStartingServiceSync=   CompletableFuture.supplyAsync(new Supplier<Integer>() {
+                    @Override
+                    public Integer get() {
+                        Integer    ФинальныйРезультатAsyncBackgroud=0;
+                        // TODO: 25.03.2023 ДОПОЛНИТЕОТНЕ УДЛАНИЕ СТАТУСА УДАЛЕНИЕ ПОСЛЕ СИНХРОНИАЗЦИИ
+                      МетодБиндинuCлужбыPublic(context);
+                        // TODO: 16.11.2022
+                        ФинальныйРезультатAsyncBackgroud  = new Class_Engine_SQL(context).МетодЗАпускаФоновойСинхронизации(context);
+
+
+                        МетодПослеAsyncTaskЗавершающий( context,ФинальныйРезультатAsyncBackgroud);
+                        // TODO: 26.03.2023 дополнительное удаление после Удаление статсу удалнеенон
+                        if (ФинальныйРезультатAsyncBackgroud>0) {
+                            МетодПослеСинхрониазцииУдалениеСтатусаУдаленный(context);
+                        }
+                        Log.d(context.getClass().getName(), "\n"
+                                + " время: " + new Date() + "\n+" +
+                                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
+
+
+
+                        Log.d(context.getClass().getName(), "\n"
+                                + " время: " + new Date() + "\n+" +
+                                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                + "    ФинальныйРезультатAsyncBackgroud "+ФинальныйРезультатAsyncBackgroud);
+                        return ФинальныйРезультатAsyncBackgroud;
+                    }
+                }) .exceptionally(e -> {
+                    System.out.println(e.getClass());
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
+                    return null ;
+                }) ;
+        return  completableFutureStartingServiceSync.get();
+    }
+
+
+
+
+
+    private void МетодПослеСинхрониазцииУдалениеСтатусаУдаленный(@NonNull Context context) {
         try {
             Intent intentПослеСинхроницииРегламентаняРаботаУдалениеДанных=new Intent();
             intentПослеСинхроницииРегламентаняРаботаУдалениеДанных.setClass(context, Service_For_Public.class);
@@ -342,7 +373,7 @@ public class Service_For_Remote_Async extends IntentService {
             if (localBinderОбщий!=null) {
                 localBinderОбщий.getService().МетодГлавныйPublicPO(context,intentПослеСинхроницииРегламентаняРаботаУдалениеДанных,null);
             }
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+            Log.d(context.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +   "  localBinderОбщий  " +localBinderОбщий);
 
@@ -428,8 +459,7 @@ public class Service_For_Remote_Async extends IntentService {
 
         private  Integer ИндексТекущейОперацииРеальногРезультатОбработкиАтблицы=0;
         // TODO: 28.07.2022
-        public Class_Engine_SQL(@NotNull Context context)
-                throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+        public Class_Engine_SQL(@NotNull Context context) {
             super(context);
             this.context=context;
             public_contentДатыДляГлавныхТаблицСинхронизации=new PUBLIC_CONTENT(context);
@@ -438,9 +468,8 @@ public class Service_For_Remote_Async extends IntentService {
         }
 
         // TODO метод запуска СИНХРОНИЗАЦИИ  в фоне
-        public Integer МетодЗАпускаФоновойСинхронизации(@NotNull Context context) throws InterruptedException {
+        public Integer МетодЗАпускаФоновойСинхронизации(@NotNull Context context)   {
             Integer      РезультатаСинхронизации = 0;
-           
             try{this.context=context;
                 ГлавныеТаблицыСинхронизации = 
                         new Class__Generation_Genetal_Tables(context).МетодЗаполеннияТаблицДЛяРаботыиСинхрониазции();
@@ -1404,11 +1433,15 @@ public class Service_For_Remote_Async extends IntentService {
                                 Log.d(this.getClass().getName(), "jsonNodes " +  jsonNodes);
                                 // TODO: 09.11.2022 ПОСЛЕ ОБРАБОТКИ НАЧИНАЕМ ВСТАКУ ДАННЫХ ЧЕРЕЗ BULK INSERT
                               РезультатРаботыСинхрониазциии[0] =            МетодBulkUPDATE(имяТаблицаAsync, context);
-                                // TODO: 23.04.2023 Удаление
+                                // TODO: 23.04.2023 Удаление СЕРВЕРНОЕ
                                 if (РезультатРаботыСинхрониазциии[0] >0) {
                                     МетодСерверноеУдаление(имяТаблицаAsync, АдаптерДляВставкиИОбновления);
                                 }
-
+                                // TODO: 25.04.2023  ПОСЛЕ ПРОХОДА ОБНУЛЯЕМ ДВА КОНТЕЙНЕРА
+                                if (!АдаптерДляВставкиИОбновления.isEmpty()) {
+                                    АдаптерДляВставкиИОбновления.clear();
+                                    ТекущийАдаптерДляВсего.clear();
+                                }
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -1427,12 +1460,6 @@ public class Service_For_Remote_Async extends IntentService {
                                 Log.d(this.getClass().getName(), " Конец  ПАРСИНГА ОБРАБОАТЫВАЕМОМЙ ТАБЛИЦЫ МетодBulkUPDATE   ::::: "
                                         + имяТаблицаAsync+" АдаптерДляВставкиИОбновления.size() "
                                         + АдаптерДляВставкиИОбновления.size() + "    РезультатРаботыСинхрониазциии[0] "+    РезультатРаботыСинхрониазциии[0]);
-                                // TODO: 25.04.2023  обнуяоем еременные
-
-                                if (!АдаптерДляВставкиИОбновления.isEmpty()) {
-                                    АдаптерДляВставкиИОбновления.clear();
-                                    ТекущийАдаптерДляВсего.clear();
-                                }
                             }
                         })
                         .onErrorComplete(new Predicate<Throwable>() {
@@ -2015,11 +2042,10 @@ public class Service_For_Remote_Async extends IntentService {
         return  IDПрофесии;
     }
 
-    public void МетодБиндинuCлужбыPublic() {
+    public void МетодБиндинuCлужбыPublic(@NonNull Context context) {
         try {
             Intent intentЗапускPublicService = new Intent(context, Service_For_Public.class);
             intentЗапускPublicService.setAction("ЗапускУдалениеСтатусаУдаленияСтрок");
-            if (connectionPUBLIC==null) {
                 connectionPUBLIC=     new ServiceConnection() {
                      @Override
                      public void onServiceConnected(ComponentName name, IBinder service) {
@@ -2037,7 +2063,7 @@ public class Service_For_Remote_Async extends IntentService {
                              e.printStackTrace();
                              Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                                      + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                             new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                             new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                                      Thread.currentThread().getStackTrace()[2].getLineNumber());
                          }
                      }
@@ -2045,8 +2071,7 @@ public class Service_For_Remote_Async extends IntentService {
                      @Override
                      public void onServiceDisconnected(ComponentName name) {
                          try {
-                             localBinderОбщий = null;
-                             Log.d(getApplicationContext().getClass().getName(), "\n"
+                             Log.d(context.getClass().getName(), "\n"
                                      + " время: " + new Date() + "\n+" +
                                      " Класс в процессе... " + this.getClass().getName() + "\n" +
                                      " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
@@ -2055,7 +2080,7 @@ public class Service_For_Remote_Async extends IntentService {
                              e.printStackTrace();
                              Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                                      + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                             new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                             new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                                      Thread.currentThread().getStackTrace()[2].getMethodName(),
                                      Thread.currentThread().getStackTrace()[2].getLineNumber());
                              // TODO: 11.05.2021 запись ошибок
@@ -2063,8 +2088,7 @@ public class Service_For_Remote_Async extends IntentService {
                          }
                      }
                  };
-            }
-            getApplicationContext(). bindService(intentЗапускPublicService, connectionPUBLIC ,Context.BIND_AUTO_CREATE);
+           context. bindService(intentЗапускPublicService, connectionPUBLIC ,Context.BIND_AUTO_CREATE);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

@@ -257,7 +257,7 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
             Log.d(this.getClass().getName(), "  ВыбранныйРежимСети ВыбранныйРежимСети "
                     + ВыбранныйРежимСети);
             if (ВыбранныйРежимСети == true && service_for_remote_async!=null ) {
-              ФинальныйРезультатAsyncBackgroud = service_for_remote_async.МетодAsyncИзСлужбы(getApplicationContext());
+              ФинальныйРезультатAsyncBackgroud = service_for_remote_async.metodServiceStartingSync(getApplicationContext());
                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
