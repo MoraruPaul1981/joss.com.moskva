@@ -776,7 +776,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         ССылкаНаСозданнуюБазу.execSQL("drop table  if exists   fio");//test
         ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'fio'");//test
         ССылкаНаСозданнуюБазу.execSQL("Create table if not exists   fio (" +
-                "_id  INTEGER   ," +
+                "_id  INTEGER  PRIMARY KEY ," +
                 " name TEXT  ," +
                 " f TEXT ," +
                 " n TEXT," +
@@ -835,7 +835,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
     private void МетодСозданиеТаблицыЛогинов(SQLiteDatabase ССылкаНаСозданнуюБазу) {
         ССылкаНаСозданнуюБазу.execSQL("drop table  if exists successlogin");//test
         ССылкаНаСозданнуюБазу.execSQL("Create table  if not exists successlogin (" +
-                " id   INTEGER ," +
+                " id   INTEGER PRIMARY KEY ," +
                 " success_users  TEXT  ," +
                 " success_login  TEXT ,  " +
                 " date_update  NUMERIC," +
@@ -924,7 +924,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             ССылкаНаСозданнуюБазу.execSQL("drop table  if exists get_materials_data ");//ТАБЛИЦА ГЕНЕРАЦИИ ОШИБОК
             ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'get_materials_data'");//test
             ССылкаНаСозданнуюБазу.execSQL("Create table if not exists get_materials_data (" +
-                    "id INTEGER   ," +
+                    "id INTEGER  PRIMARY KEY ," +
                     "type_material  INTEGER ," +
                     "nomen_vesov INTEGER," +
                     "tracks  INTEGER ," +
@@ -960,7 +960,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             ССылкаНаСозданнуюБазу.execSQL("drop table  if exists company ");//ТАБЛИЦА ГЕНЕРАЦИИ ОШИБОК
             ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'company'");//test
             ССылкаНаСозданнуюБазу.execSQL("Create table if not exists company (" +
-                    "_id INTEGER   ," +
+                    "_id INTEGER PRIMARY KEY  ," +
                     "name  TEXT ," +
                     "fullname TEXT," +
                     "inn  TEXT ," +
@@ -985,7 +985,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             ССылкаНаСозданнуюБазу.execSQL("drop table  if exists track ");//ТАБЛИЦА ГЕНЕРАЦИИ ОШИБОК
             ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'track'");//test
             ССылкаНаСозданнуюБазу.execSQL("Create table if not exists track (" +
-                    "_id INTEGER   ," +
+                    "_id INTEGER PRIMARY KEY  ," +
                     "name  TEXT ," +
                     "fullname TEXT," +
                     "date_update TEXT ," +
@@ -1010,7 +1010,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             ССылкаНаСозданнуюБазу.execSQL("drop table  if exists order_tc ");//ТАБЛИЦА ГЕНЕРАЦИИ ОШИБОК
             ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'order_tc'");//test
             ССылкаНаСозданнуюБазу.execSQL("Create table if not exists order_tc (" +
-                    "_id INTEGER   ," +
+                    "_id INTEGER PRIMARY KEY  ," +
                     "orders  TEXT ," +
                     "machina TEXT," +
                     "date_update TEXT ," +
@@ -1039,7 +1039,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             ССылкаНаСозданнуюБазу.execSQL("drop table  if exists vid_tc ");//ТАБЛИЦА ГЕНЕРАЦИИ ОШИБОК
             ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'vid_tc'");//test
             ССылкаНаСозданнуюБазу.execSQL("Create table if not exists vid_tc (" +
-                    "_id INTEGER   ," +
+                    "_id INTEGER PRIMARY KEY  ," +
                     "name  TEXT ," +
                     "date_update TEXT ," +
                     "uuid NUMERIC UNIQUE," +
@@ -1120,7 +1120,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             ССылкаНаСозданнуюБазу.execSQL("drop table  if exists nomen_vesov ");//ТАБЛИЦА ГЕНЕРАЦИИ ОШИБОК
             ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'nomen_vesov'");//test
             ССылкаНаСозданнуюБазу.execSQL("Create table if not exists nomen_vesov (" +
-                    "_id INTEGER   ," +
+                    "_id INTEGER PRIMARY KEY  ," +
                     "name  TEXT ," +
                     "namefull  TEXT ," +
                     "articul TEXT," +
@@ -1150,7 +1150,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             ССылкаНаСозданнуюБазу.execSQL("drop table  if exists type_materials ");//ТАБЛИЦА ГЕНЕРАЦИИ ОШИБОК
             ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'type_materials'");//test
             ССылкаНаСозданнуюБазу.execSQL("Create table if not exists type_materials (" +
-                    "_id INTEGER   ," +
+                    "_id INTEGER  PRIMARY KEY ," +
                     "name  TEXT ," +
                     "date_update TEXT ," +
                     "user_update  INTEGER, " +
