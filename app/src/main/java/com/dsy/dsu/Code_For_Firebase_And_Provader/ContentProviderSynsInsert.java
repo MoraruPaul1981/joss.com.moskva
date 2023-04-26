@@ -474,14 +474,6 @@ public class ContentProviderSynsInsert extends ContentProvider {
 
     @Nullable
     @Override
-    public Bundle call(@NonNull String authority, @NonNull String method, @Nullable String arg, @Nullable Bundle extras) {
-        Uri uri = Uri.parse(authority);
-        update(uri,null,null,null);
-        return super.call(authority, method, arg, extras);
-    }
-
-    @Nullable
-    @Override
     public Bundle call(@NonNull String method, @Nullable String arg, @Nullable Bundle extras) {
         return super.call(method, arg, extras);
     }

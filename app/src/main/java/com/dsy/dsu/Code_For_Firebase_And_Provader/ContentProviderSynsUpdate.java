@@ -336,10 +336,11 @@ public class ContentProviderSynsUpdate extends ContentProvider {
         return super.applyBatch(authority, operations);
     }
 
+
     @Nullable
     @Override
-    public Bundle call(@NonNull String authority, @NonNull String method, @Nullable String arg, @Nullable Bundle extras) {
-        return super.call(authority, method, arg, extras);
+    public Bundle call(@NonNull String method, @Nullable String arg, @Nullable Bundle extras) {
+        return super.call(method, arg, extras);
     }
 
     @Override
