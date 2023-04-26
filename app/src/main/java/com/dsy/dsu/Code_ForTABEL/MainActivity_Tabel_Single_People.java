@@ -84,8 +84,10 @@ import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_MODEL_synchronized;
+import com.dsy.dsu.Business_logic_Only_Class.DATE.Class_Generation_Data;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
+import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.dsy.dsu.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -1208,29 +1210,21 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" +ТаблицаОбработки + "");
                 Bundle bundleСменаПрофессии= (Bundle)  searchViewДляНовогоПоиска.getTag();
                 ContentValues valuesСменаПрофесси=new ContentValues();
-
-         /*       valuesСменаПрофесси.put
-
-
-
-                Integer ПолучаемIDПрофессии=      extras.getInt("ПолучаемIDПрофессии",0);
-                values.put("prof",ПолучаемIDПрофессии);
-                String НазваниеПрофесии=   extras.getString("НазваниеПрофесии","");
-                Long CurrenrsСhildUUID =   extras.getLong("CurrenrsСhildUUID",0l);
-                Long ВерсияДанныхUp = new SubClassUpVersionDATA().МетодПовышаемВерсииCurrentTable(table,getContext(),Create_Database_СамаБАзаSQLite);
-                values.put("current_table",ВерсияДанныхUp);
-                String ДатаОбновления=     new Class_Generation_Data(getContext()).ГлавнаяДатаИВремяОперацийСБазойДанных();
-                values.put("date_update",ДатаОбновления);
-*/
-
-              /*  ContentResolver contentResolver=context.getContentResolver();
-
-                ОбновлениеПрофесии=  contentResolver.update(uri, valuesСменаПрофесси,"uuid=?",new String[]{String.valueOf(uuid)});
+                Integer ПолучаемIDПрофессии=      bundleСменаПрофессии.getInt("ПолучаемIDПрофессии",0);
+                valuesСменаПрофесси.put("prof",ПолучаемIDПрофессии);
+                Long ВерсияДанныхUp = new SubClassUpVersionDATA().МетодПовышаемВерсииCurrentTable(ТаблицаОбработки,getApplicationContext(),
+                        new CREATE_DATABASE(getApplicationContext()).getССылкаНаСозданнуюБазу());
+                valuesСменаПрофесси.put("current_table",ВерсияДанныхUp);
+                String ДатаОбновления=     new Class_Generation_Data(getApplicationContext()).ГлавнаяДатаИВремяОперацийСБазойДанных();
+                valuesСменаПрофесси.put("date_update",ДатаОбновления);
+                Long CurrenrsСhildUUID =   bundleСменаПрофессии.getLong("CurrenrsСhildUUID",0l);
+               ContentResolver contentResolver=context.getContentResolver();
+                ОбновлениеПрофесии=  contentResolver.update(uri, valuesСменаПрофесси,"uuid=?",new String[]{String.valueOf(CurrenrsСhildUUID)});
 
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" РЕЗУЛЬТАТ ПровйдерСменаПрофесии  " +  ПровйдерСменаПрофесии);*/
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" РЕЗУЛЬТАТ ОбновлениеПрофесии  " +  ОбновлениеПрофесии);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
