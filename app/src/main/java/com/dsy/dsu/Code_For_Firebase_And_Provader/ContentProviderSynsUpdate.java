@@ -47,6 +47,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Spliterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -873,77 +874,61 @@ class SubClassJsonTwoParserOtServer{
             if (!Create_Database_СамаБАзаSQLite.inTransaction()) {
                 Create_Database_СамаБАзаSQLite.beginTransaction();
             }
-            jsonNodeParent.forEach(new java.util.function.Consumer<JsonNode>() {
+            Iterator<JsonNode> jsonNodeIteratorParent  =jsonNodeParent.elements();
+            jsonNodeIteratorParent.forEachRemaining(new java.util.function.Consumer<JsonNode>() {
                 @Override
-                public void accept(JsonNode jsonNode) {
+                public void accept(JsonNode jsonNodeChild) {
                     // TODO: 23.04.2023 Two
-                    Integer ОперацияUPDATE = 0;
-                    // TODO: 26.04.2023
                     ТекущийАдаптерДляВсего = new ContentValues();
-                    jsonNode.fields().forEachRemaining(new java.util.function.Consumer<Map.Entry<String, JsonNode>>() {
+                    jsonNodeChild.fields().forEachRemaining(new java.util.function.Consumer<Map.Entry<String, JsonNode>>() {
                         @Override
-                        public void accept(Map.Entry<String, JsonNode> stringJsonNodeEntry) {
+                        public void accept(Map.Entry<String, JsonNode> jsonNodeRow) {
                             // TODO: 06.10.2022  ВНУТрений СТрочка обработки данных сами Столбикки
-                            String ПолеОтJSONKEY = stringJsonNodeEntry.getKey().trim();
-                            switch (имяТаблицаAsync.trim().toLowerCase()) {
-                                case "tabels":
-                                case "chats":
-                                case "data_chat":
-                                case "chat_users":
-                                case "fio":
-                                case "tabel":
-                                case "cfo":
-                                case "data_tabels":
-                                case "nomen_vesov":
-                                case "type_materials":
-                                case "company":
-                                case "track":
-                                case "prof":
-                                    System.out.println("  ПолеОтJSONKEY  " + ПолеОтJSONKEY);
-                                    if (stringJsonNodeEntry.getKey().contentEquals("id") == true) {
-                                        ПолеОтJSONKEY = "_id";
-                                    }
-                                    break;
-                            }
-                            // TODO: 27.10.2022 Дополнительна Обработка
-                            String ПолеЗначениеJson = stringJsonNodeEntry.getValue().asText().trim()
-                                    .replace("\"", "").replace("\\n", "")
-                                    .replace("\\r", "").replace("\\", "")
-                                    .replace("\\t", "").trim();//todo .replaceAll("[^A-Za-zА-Яа-я0-9]", "")
-                            if (ПолеОтJSONKEY.equalsIgnoreCase("status_carried_out") ||
-                                    ПолеОтJSONKEY.equalsIgnoreCase("closed") ||
-                                    ПолеОтJSONKEY.equalsIgnoreCase("locked")) {
-                                if (ПолеЗначениеJson.equalsIgnoreCase("false") ||
-                                        ПолеЗначениеJson.equalsIgnoreCase("0")) {
-                                    ПолеЗначениеJson = "False";
-                                }
-                                if (ПолеЗначениеJson.equalsIgnoreCase("true") ||
-                                        ПолеЗначениеJson.equalsIgnoreCase("1")) {
-                                    ПолеЗначениеJson = "True";
-                                }
-                            }
-                            Log.d(this.getClass().getName(), " ПолеОтJSONKEY " + ПолеОтJSONKEY +
-                                    " ПолеЗначениеJson" + ПолеЗначениеJson);
-                            // TODO: 27.10.2022  UUID есть Обновление
-                            ТекущийАдаптерДляВсего.put(ПолеОтJSONKEY, ПолеЗначениеJson);//
+                            String ПолеОтJSONKEY = jsonNodeRow.getKey().trim();
 
-                            Log.d(this.getClass().getName(), "\n" + " class " +
-                                    Thread.currentThread().getStackTrace()[2].getClassName()
-                                    + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                    + " ТекущийАдаптерДляВсего " + ТекущийАдаптерДляВсего.size());
+                            if (ПолеОтJSONKEY.contentEquals("id") == false) {
+
+                                // TODO: 27.10.2022 Дополнительна Обработка
+                                String ПолеЗначениеJson = jsonNodeRow.getValue().asText().trim()
+                                        .replace("\"", "").replace("\\n", "")
+                                        .replace("\\r", "").replace("\\", "")
+                                        .replace("\\t", "").trim();//todo .replaceAll("[^A-Za-zА-Яа-я0-9]", "")
+                                if (ПолеОтJSONKEY.equalsIgnoreCase("status_carried_out") ||
+                                        ПолеОтJSONKEY.equalsIgnoreCase("closed") ||
+                                        ПолеОтJSONKEY.equalsIgnoreCase("locked")) {
+                                    if (ПолеЗначениеJson.equalsIgnoreCase("false") ||
+                                            ПолеЗначениеJson.equalsIgnoreCase("0")) {
+                                        ПолеЗначениеJson = "False";
+                                    }
+                                    if (ПолеЗначениеJson.equalsIgnoreCase("true") ||
+                                            ПолеЗначениеJson.equalsIgnoreCase("1")) {
+                                        ПолеЗначениеJson = "True";
+                                    }
+                                }
+                                Log.d(this.getClass().getName(), " ПолеОтJSONKEY " + ПолеОтJSONKEY +
+                                        " ПолеЗначениеJson" + ПолеЗначениеJson);
+                                // TODO: 27.10.2022  UUID есть Обновление
+                                ТекущийАдаптерДляВсего.put(ПолеОтJSONKEY, ПолеЗначениеJson);//
+
+                                Log.d(this.getClass().getName(), "\n" + " class " +
+                                        Thread.currentThread().getStackTrace()[2].getClassName()
+                                        + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                        + " ТекущийАдаптерДляВсего " + ТекущийАдаптерДляВсего.size());
+                            }
                             Log.d(this.getClass().getName(), "BUffer " + " Метод :" +
                                     Thread.currentThread().getStackTrace()[2].getMethodName() +
                                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
                     });
+                    // TODO: 27.04.2023 end current row
                     // TODO: 27.04.2023  ПОсле заполенения строчки
                     Log.d(this.getClass().getName(), "BUffer " + " Метод :" +
                             Thread.currentThread().getStackTrace()[2].getMethodName() +
                             " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber()+ "ТекущийАдаптерДляВсего  "+ТекущийАдаптерДляВсего);
                     // TODO: 27.10.2022  UUID есть Обновление
-
+                    Integer  ОперацияUPDATE=0;
                     if (ФлагКакойСинхронизацияПерваяИлиНет.equalsIgnoreCase("ПовторныйЗапускСинхронизации") ||
                             имяТаблицаAsync.equalsIgnoreCase("settings_tabels") ||
                             имяТаблицаAsync.equalsIgnoreCase("view_onesignal")) {
@@ -986,9 +971,11 @@ class SubClassJsonTwoParserOtServer{
                             + имяТаблицаAsync + " АдаптерДляВставкиИОбновления.size() "
                             + ТекущийАдаптерДляВсего + " РезультатОперацииBurkUPDATE "
                             + РезультатОперацииBurkUPDATE + " ОперацияUPDATE " + ОперацияUPDATE);
-                }
 
+                }
             });
+
+            // TODO: 27.04.2023  ПОСЛЕ ВСЕХ ОПЕРАЦИЙ ЗАКАНЧИВАЕМ ТРАНЗАКЦИЮ и Повышаем Версию
 
             if (РезультатОперацииBurkUPDATE.size() > 0) {
                 Integer РезультатПовышенииВерсииДанных =
