@@ -102,7 +102,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
     private ServiceConnection serviceConnection;
     private  Message message;
 
-    // TODO: 27.09.2022 Фрагмент Получение Материалов
+    // TODO: 27.09.2022 Фрагмент Заказ Транпорта
     public FragmentOrderTransportOneChane() {
         // Required empty public constructor
     }
@@ -110,7 +110,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         try{
             super.onCreate(savedInstanceState);
-
+            // TODO: 27.04.2023  Запускаем Заказ Транпорта
             МетодБиндингOrderTransport();
 
             Log.d(getContext().getClass().getName(), "\n"
@@ -131,9 +131,13 @@ public class FragmentOrderTransportOneChane extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View    view=null;
         try {
-            view= inflater.inflate(R.layout.fragment_admission_materials, container, false);
+            view= inflater.inflate(R.layout.fragment_ordertransport1, container, false);
             this.container=container;
-            Log.d(this.getClass().getName(), " onCreateView FragmentAdmissionMaterials" + view);
+
+            Log.d(getContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " view " +view);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -162,8 +166,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
             bottomNavigationItemView2создать.setIconSize(70);
             bottomNavigationItemView3обновить = bottomNavigationView.findViewById(R.id.id_async);
             bottomNavigationItemView3обновить.setIconSize(50);
-            // animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator1);
-            // animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_tabellist);
             animationПолучениеМатериалов = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row);
             progressBarСканирование=  view.findViewById(R.id.ProgressBar);
             progressBarСканирование.setVisibility(View.VISIBLE);
@@ -211,6 +213,21 @@ public class FragmentOrderTransportOneChane extends Fragment {
         }
     }
 
+    // TODO: 27.04.2023  новый код Заказ Транспорта
+    class   SubClassNewOrderTransport{
+
+
+        public SubClassNewOrderTransport() {
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
 
     // TODO: 04.03.2022 прозвомжность Заполения RecycleView
     void МетодЗаполенияRecycleViewДляЗадач() {

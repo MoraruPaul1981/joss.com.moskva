@@ -1,6 +1,7 @@
 package com.dsy.dsu.CodeOrdersAnTransports.Window;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.collection.ArrayMap;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -10,7 +11,6 @@ import android.content.ContentValues;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Parcel;
-import android.util.ArrayMap;
 import android.util.ArraySet;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -21,6 +21,11 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.R;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 
 public class MainActivityOrdersTransports extends AppCompatActivity {
     // TODO: 25.04.2023 Переменные
@@ -53,7 +58,7 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
             // TODO: 26.04.2023 Запускаем Ордер Транпорта
             SubClassStartingFragmentOrderTran subClassStartingFragmentOrderTran=new SubClassStartingFragmentOrderTran();
             subClassStartingFragmentOrderTran.методЗапускаФрагментаОрдерТранспорта();
-            
+
             Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date()+"\n+" +
                     " Класс в процессе... " +  getApplicationContext().getClass().getName()+"\n"+
