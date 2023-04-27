@@ -1304,7 +1304,7 @@ public class Service_For_Remote_Async extends IntentService {
         /////// TODO МЕТОД ПАСРИНГА ПРИШЕДШЕГО  С СЕРВЕРА ВНУТРИ ASYNSTASK В ФОНЕ
         Integer МетодПарсингJSONФайлаОтСервреравФоне(@NonNull  StringBuffer БуферПолученныйJSON,
                                                    @NonNull  String имяТаблицаAsync) throws InterruptedException, JSONException {
-            final Long[] РезультатРаботыСинхрониазциии = {0l};
+           Long РезультатРаботыСинхрониазциии =0l ;
             try {
                 Log.d(this.getClass().getName(), " имяТаблицаAsync " + имяТаблицаAsync + " БуферПолученныйJSON " +БуферПолученныйJSON.toString() );
                     //TODO БУфер JSON от Сервера
@@ -1341,7 +1341,9 @@ public class Service_For_Remote_Async extends IntentService {
                 bundle.putSerializable("getjson", (Serializable) jsonNodeParent);
                 bundle.putString("nametable",имяТаблицаAsync);
 
-                    Bundle РезультатОбновлениеМассовой =resolver.call(uri,имяТаблицаAsync,БуферПолученныйJSON.toString(),bundle);
+                    Bundle bundleРезультатОбновлениеМассовой =resolver.call(uri,имяТаблицаAsync,БуферПолученныйJSON.toString(),bundle);
+
+                РезультатРаботыСинхрониазциии=     bundleРезультатОбновлениеМассовой.getLong("ResultAsync",0);
 
 
                 Log.d(this.getClass().getName(),"\n" + " class " +
@@ -1349,11 +1351,7 @@ public class Service_For_Remote_Async extends IntentService {
                         + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                        " РезультатОбновлениеМассовой " +РезультатОбновлениеМассовой);
-
-
-
-
+                        " РезультатРаботыСинхрониазциии " +РезультатРаботыСинхрониазциии);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1362,8 +1360,8 @@ public class Service_For_Remote_Async extends IntentService {
                 new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
-            Log.d(this.getClass().getName(), "     РезультатРаботыСинхрониазциии[0] " +    РезультатРаботыСинхрониазциии[0]);
-            return     РезультатРаботыСинхрониазциии[0].intValue();
+            Log.d(this.getClass().getName(), "     РезультатРаботыСинхрониазциии " +    РезультатРаботыСинхрониазциии);
+            return   РезультатРаботыСинхрониазциии.intValue();
         }
 
 
