@@ -52,9 +52,11 @@ import java.util.stream.Stream;
 
 import io.reactivex.rxjava3.core.BackpressureOverflowStrategy;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Predicate;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class ContentProviderSynsUpdate extends ContentProvider {
   private   UriMatcher uriMatcherДЛяПровайдераКонтентБазаДанных;
