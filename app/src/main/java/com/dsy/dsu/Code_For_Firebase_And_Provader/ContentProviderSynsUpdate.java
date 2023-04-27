@@ -569,7 +569,18 @@ class SubClassJsonParserOtServer{
                                             }
                                         }, BackpressureOverflowStrategy.ERROR)
                                         .buffer(500)
-                                        .doOnNext(new Consumer<List<JsonNode>>() {
+                                        .doOnError(new Consumer<Throwable>() {
+                                            @Override
+                                            public void accept(Throwable throwable) throws Throwable {
+                                                Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" +
+                                                        Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(throwable.toString(),
+                                                        this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                            }
+                                        })
+                                        .blockingForEach(new Consumer<List<JsonNode>>() {
                                             @Override
                                             public void accept(List<JsonNode> jsonNodesBuffer500) throws Throwable {
                                                 // TODO: 13.01.2023  ВТОРОЙ  Flowable
@@ -593,15 +604,15 @@ class SubClassJsonParserOtServer{
                                                                         Thread.currentThread().getStackTrace()[2].getLineNumber());
                                                             }
                                                         })
-                                                                .blockingForEach(new Consumer<JsonNode>() {
-                                                                    @Override
-                                                                    public void accept(JsonNode jsonNodeOneRowBuffer) throws Throwable {
-                                                                        // TODO: 23.04.2023 Two
-                                                                        Integer ОперацияUPDATE = 0;
-                                                                        // TODO: 26.04.2023
-                                                                        ТекущийАдаптерДляВсего = new ContentValues();
-                                                                        jsonNodeOneRowBuffer.fields().forEachRemaining(
-                                                                                new java.util.function.Consumer<Map.Entry<String, JsonNode>>() {
+                                                        .blockingForEach(new Consumer<JsonNode>() {
+                                                            @Override
+                                                            public void accept(JsonNode jsonNodeOneRowBuffer) throws Throwable {
+                                                                // TODO: 23.04.2023 Two
+                                                                Integer ОперацияUPDATE = 0;
+                                                                // TODO: 26.04.2023
+                                                                ТекущийАдаптерДляВсего = new ContentValues();
+                                                                jsonNodeOneRowBuffer.fields().forEachRemaining(
+                                                                        new java.util.function.Consumer<Map.Entry<String, JsonNode>>() {
                                                                             @Override
                                                                             public void accept(Map.Entry<String, JsonNode> stringJsonNodeEntry) {
                                                                                 // TODO: 06.10.2022  ВНУТрений СТрочка обработки данных сами Столбикки
@@ -661,52 +672,52 @@ class SubClassJsonParserOtServer{
                                                                                         + stringJsonNodeEntry.getValue());
                                                                             }
                                                                         });
-                                                                        // TODO: 27.10.2022  UUID есть Обновление
+                                                                // TODO: 27.10.2022  UUID есть Обновление
 
-                                                                        if (ФлагКакойСинхронизацияПерваяИлиНет.equalsIgnoreCase("ПовторныйЗапускСинхронизации") ||
-                                                                                имяТаблицаAsync.equalsIgnoreCase("settings_tabels") ||
-                                                                                имяТаблицаAsync.equalsIgnoreCase("view_onesignal")) {
-                                                                            ОперацияUPDATE = методUpdateCALL();
+                                                                if (ФлагКакойСинхронизацияПерваяИлиНет.equalsIgnoreCase("ПовторныйЗапускСинхронизации") ||
+                                                                        имяТаблицаAsync.equalsIgnoreCase("settings_tabels") ||
+                                                                        имяТаблицаAsync.equalsIgnoreCase("view_onesignal")) {
+                                                                    ОперацияUPDATE = методUpdateCALL();
 
-                                                                            // TODO: 27.04.2023  метод Вставки
-                                                                            Long ОперацияInsert = 0l;
-                                                                            if (ОперацияUPDATE == 0) {
-                                                                                ОперацияInsert = методInsertCAll(ОперацияUPDATE);
-                                                                            }
-                                                                            // TODO: 27.04.2023
-                                                                            Log.d(this.getClass().getName(), "\n" + " class " +
-                                                                                    Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                                                    + имяТаблицаAsync + " АдаптерДляВставкиИОбновления.size() "
-                                                                                    + ТекущийАдаптерДляВсего + " ОперацияUPDATE "
-                                                                                    + ОперацияUPDATE + " ОперацияInsert " + ОперацияInsert);
-
-                                                                        } else {
-                                                                            // TODO: 27.04.2023  метод Вставки
-                                                                            Long ОперацияInsert = методInsertCAll(ОперацияUPDATE);
-                                                                            // TODO: 27.04.2023
-                                                                            Log.d(this.getClass().getName(), "\n" + " class " +
-                                                                                    Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                                                    + имяТаблицаAsync + " АдаптерДляВставкиИОбновления.size() "
-                                                                                    + ТекущийАдаптерДляВсего + " ОперацияUPDATE "
-                                                                                    + ОперацияUPDATE + " ОперацияInsert " + ОперацияInsert);
-
-                                                                        }
-                                                                        // TODO: 27.04.2023  clears
-                                                                        ТекущийАдаптерДляВсего.clear();
-                                                                        // TODO: 25.04.2023  ПОСЛЕ ПРОХОДА ОБНУЛЯЕМ ДВА КОНТЕЙНЕРА
-                                                                        Log.d(this.getClass().getName(), "\n" + " class " +
-                                                                                Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                                                + имяТаблицаAsync + " АдаптерДляВставкиИОбновления.size() "
-                                                                                + ТекущийАдаптерДляВсего + " РезультатОперацииBurkUPDATE "
-                                                                                + РезультатОперацииBurkUPDATE + " ОперацияUPDATE " + ОперацияUPDATE);
+                                                                    // TODO: 27.04.2023  метод Вставки
+                                                                    Long ОперацияInsert = 0l;
+                                                                    if (ОперацияUPDATE == 0) {
+                                                                        ОперацияInsert = методInsertCAll(ОперацияUPDATE);
                                                                     }
-                                                                },jsonNodesBuffer500.size());
+                                                                    // TODO: 27.04.2023
+                                                                    Log.d(this.getClass().getName(), "\n" + " class " +
+                                                                            Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                                                            + имяТаблицаAsync + " АдаптерДляВставкиИОбновления.size() "
+                                                                            + ТекущийАдаптерДляВсего + " ОперацияUPDATE "
+                                                                            + ОперацияUPDATE + " ОперацияInsert " + ОперацияInsert);
+
+                                                                } else {
+                                                                    // TODO: 27.04.2023  метод Вставки
+                                                                    Long ОперацияInsert = методInsertCAll(ОперацияUPDATE);
+                                                                    // TODO: 27.04.2023
+                                                                    Log.d(this.getClass().getName(), "\n" + " class " +
+                                                                            Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                                                            + имяТаблицаAsync + " АдаптерДляВставкиИОбновления.size() "
+                                                                            + ТекущийАдаптерДляВсего + " ОперацияUPDATE "
+                                                                            + ОперацияUPDATE + " ОперацияInsert " + ОперацияInsert);
+
+                                                                }
+                                                                // TODO: 27.04.2023  clears
+                                                                ТекущийАдаптерДляВсего.clear();
+                                                                // TODO: 25.04.2023  ПОСЛЕ ПРОХОДА ОБНУЛЯЕМ ДВА КОНТЕЙНЕРА
+                                                                Log.d(this.getClass().getName(), "\n" + " class " +
+                                                                        Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                                                        + имяТаблицаAsync + " АдаптерДляВставкиИОбновления.size() "
+                                                                        + ТекущийАдаптерДляВсего + " РезультатОперацииBurkUPDATE "
+                                                                        + РезультатОперацииBurkUPDATE + " ОперацияUPDATE " + ОперацияUPDATE);
+                                                            }
+                                                        },jsonNodesBuffer500.size());
                                                 if (РезультатОперацииBurkUPDATE.size() > 0) {
                                                     Integer РезультатПовышенииВерсииДанных =
                                                             new SubClassUpVersionDATA().МетодVesrionUPMODIFITATION_Client(имяТаблицаAsync, getContext(), Create_Database_СамаБАзаSQLite);
@@ -721,61 +732,30 @@ class SubClassJsonParserOtServer{
                                                         + " bundleОперацииUpdateOrinsert " + bundleОперацииUpdateOrinsert +
                                                         " РезультатОперацииBurkUPDATE.size() " + РезультатОперацииBurkUPDATE.size());
                                             }
-                                        })
-                                        .doOnComplete(new Action() {
-                                            @Override
-                                            public void run() throws Throwable {
-                                                // TODO: 11.10.2022 ПОСЛЕ ОПЕРАЦИИ ВИЗАУЛИЗИРУЕМ КОНЕЦ ОПЕРАЦИИ ПОЛЬЗОВАТЕЛЮ
-                                                if (РезультатОперацииBurkUPDATE.size() > 0) {
-                                                    Integer РезультатПовышенииВерсииДанных =
-                                                            new SubClassUpVersionDATA().МетодVesrionUPMODIFITATION_Client(имяТаблицаAsync, getContext(), Create_Database_СамаБАзаSQLite);
-                                                    Log.d(this.getClass().getName(), " РезультатПовышенииВерсииДанных  " + РезультатПовышенииВерсииДанных);
-                                                }
-                                                // TODO: 27.04.2023  сохраняем количество операций
-                                                bundleОперацииUpdateOrinsert.putLong("ResultAsync", РезультатОперацииBurkUPDATE.size());
+                                        },jsonNodeParent.size());
+                // TODO: 11.10.2022 ПОСЛЕ ОПЕРАЦИИ ВИЗАУЛИЗИРУЕМ КОНЕЦ ОПЕРАЦИИ ПОЛЬЗОВАТЕЛЮ
+                if (РезультатОперацииBurkUPDATE.size() > 0) {
+                    Integer РезультатПовышенииВерсииДанных =
+                            new SubClassUpVersionDATA().МетодVesrionUPMODIFITATION_Client(имяТаблицаAsync, getContext(), Create_Database_СамаБАзаSQLite);
+                    Log.d(this.getClass().getName(), " РезультатПовышенииВерсииДанных  " + РезультатПовышенииВерсииДанных);
+                }
+                // TODO: 27.04.2023  сохраняем количество операций
+                bundleОперацииUpdateOrinsert.putLong("ResultAsync", РезультатОперацииBurkUPDATE.size());
 
-                                                if (Create_Database_СамаБАзаSQLite.inTransaction()) {
-                                                    if (РезультатОперацииBurkUPDATE.size() > 0) {
-                                                        Create_Database_СамаБАзаSQLite.setTransactionSuccessful();
-                                                    }
-                                                    Create_Database_СамаБАзаSQLite.endTransaction();
-                                                }
-                                                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                        + имяТаблицаAsync + " АдаптерДляВставкиИОбновления.size() "
-                                                        + ТекущийАдаптерДляВсего.size() + " РезультатОперацииBurkUPDATE "
-                                                        + РезультатОперацииBurkUPDATE + "  имяТаблицаAsync " + имяТаблицаAsync
-                                                        + " bundleОперацииUpdateOrinsert " + bundleОперацииUpdateOrinsert +
-                                                        " РезультатОперацииBurkUPDATE.size() " + РезультатОперацииBurkUPDATE.size());
-                                            }
-                                        })
-                                        .onErrorComplete(new Predicate<Throwable>() {
-                                            @Override
-                                            public boolean test(Throwable throwable) throws Throwable {
-                                                Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" +
-                                                        Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(throwable.toString(),
-                                                        this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                                return false;
-                                            }
-                                        })
-                                        .doOnError(new Consumer<Throwable>() {
-                                            @Override
-                                            public void accept(Throwable throwable) throws Throwable {
-                                                Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" +
-                                                        Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(throwable.toString(),
-                                                        this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                            }
-                                        }).subscribe();
-
-            Log.d(this.getClass().getName(),  " date "+ "jsonObjects "  +new Date().toGMTString().toString());
-
+                if (Create_Database_СамаБАзаSQLite.inTransaction()) {
+                    if (РезультатОперацииBurkUPDATE.size() > 0) {
+                        Create_Database_СамаБАзаSQLite.setTransactionSuccessful();
+                    }
+                    Create_Database_СамаБАзаSQLite.endTransaction();
+                }
+                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + имяТаблицаAsync + " АдаптерДляВставкиИОбновления.size() "
+                        + ТекущийАдаптерДляВсего.size() + " РезультатОперацииBurkUPDATE "
+                        + РезультатОперацииBurkUPDATE + "  имяТаблицаAsync " + имяТаблицаAsync
+                        + " bundleОперацииUpdateOrinsert " + bundleОперацииUpdateOrinsert +
+                        " РезультатОперацииBurkUPDATE.size() " + РезультатОперацииBurkUPDATE.size());
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
