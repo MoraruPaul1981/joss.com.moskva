@@ -5,28 +5,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="#FFFFFF"
     tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
     android:orientation="vertical">
-    <RelativeLayout
-        android:id="@+id/RelativeLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:background="#FFFFFF">
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/TextViewHadler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:gravity="center"
-            android:hint="Заказы Транспорта"
+            android:hint="  Фрагмент 1 Заказ"
             android:minWidth="100dp"
             android:minHeight="35dp"
-            android:text=""
+            android:padding="2dp"
             android:textAlignment="center"
             android:textColor="#00574B"
             android:textSize="14sp"
@@ -35,91 +31,84 @@
             tools:ignore="MissingConstraints,RtlCompat" />
 
 
-        <View
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/view2Линия"
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
             android:layout_marginBottom="3dp"
+            android:layout_marginTop="2dp"
+            android:padding="2dp"
             android:background="#00ACC1"
             android:foregroundGravity="center"
             android:visibility="visible"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/TextViewHadler"
-            />
+            android:layout_centerHorizontal="true" />
 
-
-
-
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/activitynain_for_Taskslinelayoutrela3"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:orientation="vertical"
-        android:background="#FFFFFF">
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
+        android:orientation="horizontal">
 
-        <!--   НАЧАЛО САМИХ ДАННЫХ ВСЕ ТАБЕЛЯ -->
-        <GridView
-            android:id="@+id/gridViewOrderTransport"
-            android:layout_width="match_parent"
-            android:layout_height="484dp"
-            android:layout_above="@+id/BottomNavigationView"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
-            android:background="#FFFFFF"
-            android:columnWidth="700dp"
-            android:gravity="center"
-            android:horizontalSpacing="5dp"
-            android:numColumns="2"
+        <ImageView
+            android:id="@android:id/text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="45dp"
+            android:minWidth="30dp"
             android:padding="2dp"
-            android:scrollIndicators="left"
-            android:scrollbars="horizontal|vertical"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="10dp"
-            tools:ignore="MissingConstraints">
-
-        </GridView>
-
-
-
-
+            android:layout_margin="5dp"
+            android:animateLayoutChanges="true"
+            android:background="@drawable/stylesingletablerowiine"
+            android:gravity="center"
+            android:visibility="visible"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp"
+            app:srcCompat="@drawable/icon_alltabels4"
+            app:strokeColor="#F5FFFA" />
 
 
 
-
-
-
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/BottomNavigationView"
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:scrollbarFadeDuration="@integer/config_navAnimTime"
-            android:background="#0A524B"
-            android:translationZ="5dp"
-            app:itemIconTint="#F2F5F5"
-            app:menu="@menu/menuadmissionmaterisls"
-            tools:ignore="MissingConstraints" />
-        <ProgressBar
-            android:id="@+id/ProgressBar"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_above="@+id/BottomNavigationView"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@android:id/text2"
             android:layout_width="match_parent"
-            android:background="#FFFFFF"
-            android:layout_height="10dp"
-            android:scaleY="3"
-            android:scaleX="1"
-            android:layout_centerHorizontal="true"
-            android:indeterminate="true"
-            android:visibility="visible" />
-    </RelativeLayout>
+            android:layout_height="wrap_content"
+            android:minHeight="45dp"
+            android:padding="2dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/stylesingletablerowiine"
+            android:checkMark="?android:attr/textCheckMark"
+            android:foregroundGravity="center"
+            android:gravity="center"
+            android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+            android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+            android:text="text2"
+            android:textAlignment="gravity"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp"
+            app:strokeColor="#F5FFFA"
+            android:animateLayoutChanges="true"
+            android:visibility="visible"/>
+
+
+
+
+
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
 </LinearLayout>

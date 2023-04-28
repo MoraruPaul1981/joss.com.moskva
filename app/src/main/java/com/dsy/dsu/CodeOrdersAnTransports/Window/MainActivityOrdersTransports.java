@@ -85,8 +85,7 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             fragment_СозданиеЗаказаТранспорта = new FragmentOrderTransportOneChane();
-            fragmentTransaction.add(R.id.activity_ordertransports, fragment_СозданиеЗаказаТранспорта);//.layout.activity_for_fragemtb_history_tasks
-            fragmentTransaction.commit();
+            fragmentTransaction.add(R.id.activity_ordertransports, fragment_СозданиеЗаказаТранспорта).commit();//.layout.activity_for_fragemtb_history_tasks
             fragmentTransaction.show(fragment_СозданиеЗаказаТранспорта);
             Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
