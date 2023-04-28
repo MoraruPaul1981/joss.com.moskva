@@ -278,7 +278,7 @@
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE"
-            android:process=":async"
+
             android:showOnLockScreen="true">
             <intent-filter>
                 <action android:name="android.permission.RECEIVE_BOOT_COMPLETED" />

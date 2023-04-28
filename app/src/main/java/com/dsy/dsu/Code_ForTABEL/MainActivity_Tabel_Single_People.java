@@ -2237,7 +2237,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             private void методЗаписьЯчейкиRxView(@NonNull View v) {
                 try {
                     RxView.focusChanges(v)
-                            .throttleLast(3000, TimeUnit.MILLISECONDS)
+                            .throttleLast(1500, TimeUnit.MILLISECONDS)
                             .doOnError(new Consumer<Throwable>() {
                                 @Override
                                 public void accept(Throwable throwable) throws Throwable {
