@@ -1308,9 +1308,9 @@ public class Service_For_Remote_Async extends IntentService {
             try {
                 Log.d(this.getClass().getName(), " имяТаблицаAsync " + имяТаблицаAsync + " БуферПолученныйJSON " +БуферПолученныйJSON.toString() );
                     //TODO БУфер JSON от Сервера
-                final ObjectMapper[] jsonGenerator = {new PUBLIC_CONTENT(context).getGeneratorJackson()};
-                JsonNode jsonNodeParent=   jsonGenerator[0].readTree(БуферПолученныйJSON.toString());
-
+                ObjectMapper jsonGenerator = new PUBLIC_CONTENT(context).getGeneratorJackson();
+               // JsonNode jsonNodeParent=   jsonGenerator.readTree(БуферПолученныйJSON.toString());
+                JsonNode jsonNodeParent = jsonGenerator.readValue(БуферПолученныйJSON.toString(), JsonNode.class);
                 Log.d(this.getClass().getName(),"\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +

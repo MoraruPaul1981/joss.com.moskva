@@ -875,12 +875,17 @@ class SubClassJsonTwoParserOtServer{
                 Create_Database_СамаБАзаSQLite.beginTransaction();
             }
             // TODO: 28.04.2023
-            jsonNodeParent.elements().forEachRemaining(new java.util.function.Consumer<JsonNode>() {
+      Spliterator<JsonNode> jsonNodeSpliterator=      jsonNodeParent.spliterator();
+            jsonNodeSpliterator.hasCharacteristics(Spliterator.CONCURRENT | Spliterator.IMMUTABLE);
+
+            jsonNodeSpliterator
+                    .forEachRemaining(new java.util.function.Consumer<JsonNode>() {
                 @Override
-                public void accept(JsonNode jsonNodeParent) {
+                public void accept(JsonNode jsonNode) {
                     // TODO: 28.04.2023  Parent
                     ТекущийАдаптерДляВсего = new ContentValues();
-                    jsonNodeParent.fields().forEachRemaining(new java.util.function.Consumer<Map.Entry<String, JsonNode>>() {
+                    // TODO: 28.04.2023
+                    jsonNode.fields().forEachRemaining(new java.util.function.Consumer<Map.Entry<String, JsonNode>>() {
                         @Override
                         public void accept(Map.Entry<String, JsonNode> stringJsonNodeEntryChild) {
                             String     getKeys=stringJsonNodeEntryChild.getKey().trim();
@@ -918,7 +923,6 @@ class SubClassJsonTwoParserOtServer{
                             Log.d(this.getClass().getName(), "BUffer " + " Метод :" +
                                     Thread.currentThread().getStackTrace()[2].getMethodName() +
                                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-
                         }
                     });
                     // TODO: 27.04.2023  ПОсле заполенения строчки
@@ -969,12 +973,18 @@ class SubClassJsonTwoParserOtServer{
                             + имяТаблицаAsync + " АдаптерДляВставкиИОбновления.size() "
                             + ТекущийАдаптерДляВсего + " РезультатОперацииBurkUPDATE "
                             + РезультатОперацииBurkUPDATE + " ОперацияUPDATE " + ОперацияUPDATE);
-
+                    // TODO: 28.04.2023 end row
+                    Log.d(this.getClass().getName(), "\n" + " class " +
+                            Thread.currentThread().getStackTrace()[2].getClassName()
+                            + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                 }
+                        // TODO: 28.04.2023 start Insert Update
+
             });
 
             // TODO: 27.04.2023  ПОСЛЕ ВСЕХ ОПЕРАЦИЙ ЗАКАНЧИВАЕМ ТРАНЗАКЦИЮ и Повышаем Версию
-
             if (РезультатОперацииBurkUPDATE.size() > 0) {
                 Integer РезультатПовышенииВерсииДанных =
                         new SubClassUpVersionDATA().МетодVesrionUPMODIFITATION_Client(имяТаблицаAsync, getContext(), Create_Database_СамаБАзаSQLite);

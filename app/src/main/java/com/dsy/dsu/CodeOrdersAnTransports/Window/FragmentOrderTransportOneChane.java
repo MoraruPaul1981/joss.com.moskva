@@ -159,7 +159,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
             startДляОбноразвовной=     Calendar.getInstance().getTimeInMillis();
 
             //todo запуск методов в фрагменте
-            SubClassNewOrderTransport subClassNewOrderTransport=new SubClassNewOrderTransport(getActivity());
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
