@@ -267,7 +267,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     public void onClick(View v) {
                         try {
                             МетодЗапускаАнимацииКнопок(v);
-                            message.getTarget().postDelayed(()->{ методFragmentСозданиеЗаказаНаТранспорт();},500);
+                            message.getTarget().postDelayed(()->{ методNewOrderTransport();},500);
                             Log.d(this.getClass().getName(), "  v  " + v);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -410,7 +410,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
         private void методПерегрузкаЭкрана() {
             try {
                 BottomNavigationOrderTransport.requestLayout();
-                BottomNavigationOrderTransport.forceLayout();
+                BottomNavigationOrderTransport.refreshDrawableState();
                 gridViewOrderTransport.requestLayout();
                 gridViewOrderTransport.refreshDrawableState();
                 activity_ordertransportone.requestLayout();
@@ -556,7 +556,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
         // TODO: 28.04.2023  
 
 
-        protected void методFragmentСозданиеЗаказаНаТранспорт() {
+        protected void методNewOrderTransport() {
             try{
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
@@ -604,9 +604,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         + " ПубличныйIDДляОдноразовойСинхронПубличныйIDДляФрагментаиазции "+ПубличныйIDДляФрагмента );
 
             } catch (Exception e) {
-                //  Block of code to handle errors
                 e.printStackTrace();
-                ///метод запись ошибок в таблицу
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                         + Thread.currentThread().getStackTrace()[2].getLineNumber());
                 new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
@@ -619,7 +617,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
 
         // TODO: 02.08.2022
-        protected   void методGetCursor(  ){
+        protected   void методGetCursor( ){
             try{
                 ПубличныйID = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
                 Log.d(getContext().getClass().getName(), "\n"
@@ -729,11 +727,61 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
+        // TODO: 28.04.2023
+      void  методОформленияGridView(@NonNull Cursor cursorOrderTransport){
+            try{
 
+          Log.d(getContext().getClass().getName(), "\n"
+                  + " время: " + new Date() + "\n+" +
+                  " Класс в процессе... " + this.getClass().getName() + "\n" +
+                  " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+      } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
 
+        }
 
+        // TODO: 28.04.2023
+        void  методОформленияGridView(){
+            try{
 
+            Log.d(getContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
 
+        }
+
+        // TODO: 28.04.2023
+        void  методОформленияIsNullGridView(){
+            try{
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+
+        }
 // TODO: 28.04.2023  КОНЕЦ SubClassNewOrderTranport           //// TODO: 28.04.2023  КОНЕЦ SubClassNewOrderTranport   //// TODO: 28.04.2023  КОНЕЦ SubClassNewOrderTranport
 
 
