@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:id="@+id/linearLayoutfragmentorderone"
+    android:id="@android:id/text1"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#FFFFFF"
+    android:layout_margin="10dp"
     tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
     android:orientation="vertical">
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/TextViewHadler"
+            android:id="@+id/texviewordertransport1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -32,21 +33,21 @@
 
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/view2Линия"
+            android:id="@+id/texviewordertransport2"
             android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:layout_marginStart="1dp"
-            android:layout_marginEnd="1dp"
+            android:layout_height="2dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
             android:layout_marginBottom="3dp"
             android:layout_marginTop="2dp"
             android:padding="2dp"
-            android:background="#00ACC1"
+            android:background="#797F80"
             android:foregroundGravity="center"
             android:visibility="visible"
             android:layout_centerHorizontal="true" />
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/linearLayoutordertransfport2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
@@ -54,7 +55,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@android:id/text1"
+            android:id="@+id/imageviewordertranspor1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="45dp"
@@ -70,10 +71,8 @@
             app:srcCompat="@drawable/icon_alltabels4"
             app:strokeColor="#F5FFFA" />
 
-
-
         <com.google.android.material.textview.MaterialTextView
-            android:id="@android:id/text2"
+            android:id="@+id/texviewordertransportvalue1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="45dp"
@@ -96,12 +95,6 @@
             app:strokeColor="#F5FFFA"
             android:animateLayoutChanges="true"
             android:visibility="visible"/>
-
-
-
-
-
-
     </LinearLayout>
 
 
