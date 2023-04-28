@@ -1,5 +1,6 @@
 package com.dsy.dsu.CodeOrdersAnTransports.Window;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ComponentCallbacks;
 import android.content.ComponentName;
 import android.content.Context;
@@ -38,18 +39,18 @@ import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.dsy.dsu.Business_logic_Only_Class.AllboundServices.AllBindingService;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generator_One_WORK_MANAGER;
 import com.dsy.dsu.CodeOrdersAnTransports.Background.ServiceOrserTransportService;
+import com.dsy.dsu.Code_For_Services.ServiceUpdatePoОбновлениеПО;
 import com.dsy.dsu.Code_For_Services.Service_for_AdminissionMaterial;
 import com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_App;
 import com.dsy.dsu.R;
@@ -59,6 +60,7 @@ import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.card.MaterialCardView;
 
 
+import org.checkerframework.checker.units.qual.A;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
@@ -71,48 +73,34 @@ import java.util.concurrent.ExecutionException;
 
 // TODO: 29.09.2022 фрагмент для получение материалов
 public class FragmentOrderTransportOneChane extends Fragment {
-    private Integer ПубличныйIDДляФрагмента;
-    private RecyclerView recyclerView;
+    private Integer ПубличныйID;
     private LinearLayout linearLayou;
-
     private BottomNavigationView bottomNavigationView;
     private BottomNavigationItemView bottomNavigationItemViewвыход;
     private BottomNavigationItemView bottomNavigationItemView2создать;
     private BottomNavigationItemView bottomNavigationItemView3обновить;
     private ProgressBar progressBarСканирование;
-
-    private Animation animationПолучениеМатериалов;
-    private  Handler handler;
-    private  Cursor cursorНомерЦФО;
-    private  Cursor cursorНомерМатериала;
-    private  Cursor cursorСамиДанныеGroupBy;
-    private MyRecycleViewAdapter myRecycleViewAdapter;
-    private MyViewHolder myViewHolder;
-    private Integer ТекущаяЦФО=0;
-    private Integer ТекущаяНомерМатериала=0;
-    private String ТекущаяИмяЦФО=new String();
+    private Animation ani;
     private  ViewGroup container;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private Fragment fragment_СозданиеНовогоМатериалов;
-    private  TextView   textViewНазваниеФрагмента;
+    private  TextView TextViewHadler;
     long start;
     long startДляОбноразвовной;
     private  ServiceOrserTransportService.  LocalBinderOrderTransport localBinderOrderTransport;
     private ServiceConnection serviceConnection;
     private  Message message;
 
-    // TODO: 27.09.2022 Фрагмент Заказ Транпорта
-    public FragmentOrderTransportOneChane() {
-        // Required empty public constructor
-    }
+    private  Cursor cursorOrderTransport;
+    private GridView gridViewOrderTransport;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         try{
             super.onCreate(savedInstanceState);
             // TODO: 27.04.2023  Запускаем Заказ Транпорта
             МетодБиндингOrderTransport();
-
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -153,9 +141,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         try{
             super.onViewCreated(view, savedInstanceState);
-            recyclerView = view.findViewById(R.id.RecyclerView);
-            textViewНазваниеФрагмента = view.findViewById(R.id.TextView);
-            textViewНазваниеФрагмента.setText("Поступление материалов".toUpperCase());
+            gridViewOrderTransport = view.findViewById(R.id.gridViewOrderTransport);
+            TextViewHadler = view.findViewById(R.id.TextViewHadler);
             fragmentManager = getActivity().getSupportFragmentManager();
             linearLayou = view.findViewById(R.id.fragmentadmissionmaterias);
             bottomNavigationView = view.findViewById(R.id.BottomNavigationView);
@@ -166,20 +153,26 @@ public class FragmentOrderTransportOneChane extends Fragment {
             bottomNavigationItemView2создать.setIconSize(70);
             bottomNavigationItemView3обновить = bottomNavigationView.findViewById(R.id.id_async);
             bottomNavigationItemView3обновить.setIconSize(50);
-            animationПолучениеМатериалов = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row);
+            ani = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row);
             progressBarСканирование=  view.findViewById(R.id.ProgressBar);
             progressBarСканирование.setVisibility(View.VISIBLE);
-
-            //todo запуск методов в фрагменте
-            МетодИнициализацииRecycreView();
-            МетодHandlerCallBack();
-            МетодВыходНаAppBack();
-            МетодСоздаенияСлушателяДляПолучениеМатериалаWorkMAnager();
-            Log.d(this.getClass().getName(), "  onViewCreated  FragmentAdmissionMaterials  recyclerView  "+recyclerView+
-                    " linearLayou "+linearLayou+"  fragmentManager "+fragmentManager);
             start=     Calendar.getInstance().getTimeInMillis();
             startДляОбноразвовной=     Calendar.getInstance().getTimeInMillis();
 
+
+            //todo запуск методов в фрагменте
+            SubClassNewOrderTransport subClassNewOrderTransport=new SubClassNewOrderTransport(getActivity());
+
+            МетодВыходНаAppBack();
+            МетодСоздаенияСлушателяДляПолучениеМатериалаWorkMAnager();
+            Log.d(this.getClass().getName(), "  onViewCreated  FragmentAdmissionMaterials  gridViewOrderTransport  "+gridViewOrderTransport);
+
+            Log.d(this.getClass().getName(), "\n" + " class " +
+                    Thread.currentThread().getStackTrace()[2].getClassName()
+                    + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " gridViewOrderTransport " +gridViewOrderTransport);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -197,11 +190,11 @@ public class FragmentOrderTransportOneChane extends Fragment {
         super.onStart();
         try{
             МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
-            if (cursorНомерЦФО!=null) {
+
                 МетодСлушательRecycleView();//todo создаем слушатель для recycreview для получение материалов
                 МетодСлушательКурсора();
                 МетодКпопкиЗначков(cursorНомерЦФО);
-            }
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -215,9 +208,46 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
     // TODO: 27.04.2023  новый код Заказ Транспорта
     class   SubClassNewOrderTransport{
+ private Activity activity;
 
+        public SubClassNewOrderTransport(Activity activity) {
+            this.activity = activity;
+        }
 
-        public SubClassNewOrderTransport() {
+        // TODO: 28.04.2023
+        private void методЗаполенияGridView() {
+            try{
+                Log.d(this.getClass().getName(), " gridViewOrderTransport  "+gridViewOrderTransport);
+                gridViewOrderTransport.setVisibility(View.VISIBLE);
+                gridViewOrderTransport.startAnimation(ani);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+        // TODO: 28.04.2023
+        void МетодHandlerCallBack() {
+            try{
+            message=Message.obtain(new Handler(Looper.myLooper()),()->{
+                Bundle bundle=   message.getData();
+                Log.i(this.getClass().getName(),  " Атоманически установкаОбновление ПО "+
+                        Thread.currentThread().getStackTrace()[2].getMethodName()+
+                        " время " +new Date().toLocaleString() + " message " +message );
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(getContext().getClass().getName(),
+                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
         }
     }
     
@@ -291,25 +321,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
     }
 
 
-    private void МетодИнициализацииRecycreView() {
-        try{
-            Log.d(this.getClass().getName(), " recyclerView  "+recyclerView);
-            recyclerView.setVisibility(View.VISIBLE);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-            recyclerView.setLayoutManager(linearLayoutManager);
-            recyclerView.startAnimation(animationПолучениеМатериалов);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(getContext().getClass().getName(),
-                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
 
 
 
@@ -425,7 +436,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
     void МетодНепосредственногоЗапускаБиндингаОдноразовойСдлужбы(@NonNull  Integer ПубличныйIDДляФрагмента ){
         try{
             Log.d(getContext().getClass().getName(), "\n"
-                    + " ПубличныйIDДляФрагмента: " + ПубличныйIDДляФрагмента);
+                    + " ПубличныйID: " + ПубличныйIDДляФрагмента);
             // TODO: 01.02.2022 заПУСКАЕМ сИНХРОНИАЗАЦИЮ С ВСЕХ ЛИСТ ТАБЕЛЕЙ
             Integer  ПубличныйIDДляАсих=   new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
             Bundle bundleДляПЕредачи=new Bundle();
@@ -499,28 +510,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
         }
     }
 
-    void МетодHandlerCallBack() {
-        handler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
-            @Override
-            public boolean handleMessage(@NonNull android.os.Message msg) {
-                try {
-                    Log.d(this.getClass().getName(), " msg  " + msg);
-                    Bundle bundle = msg.getData();
-                    progressBarСканирование.setVisibility(View.INVISIBLE);
-                    Log.d(this.getClass().getName(), " bundle  " + bundle);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(getContext().getClass().getName(),
-                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
-                return true;
-            }
-        });
-    }
+
     // TODO: 10.03.2022 БИЗНЕС-КОД для ФРАГМЕНТА ПОСТУПЛЕНИЯ МАТЕРИАЛА
 
     void МетодСлушательRecycleView() {  // TODO: 04.03.2022  класс в котором находяться слушатели
@@ -802,9 +792,9 @@ public class FragmentOrderTransportOneChane extends Fragment {
     // TODO: 02.08.2022
     protected   void МетодПолучениеДанныхДЛяПолучениеМатериалов(@NonNull String  ФлагКакиеДанныеНужныПолучениеМатериалов,@NonNull Integer ТекущаяЦФО ){
         try{
-            ПубличныйIDДляФрагмента     = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
+            ПубличныйID = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
             Log.d(getContext().getClass().getName(), "\n"
-                    + " ПубличныйIDДляФрагмента: " + ПубличныйIDДляФрагмента);
+                    + " ПубличныйID: " + ПубличныйID);
             Bundle bundleДляПЕредачи=new Bundle();
             switch (ФлагКакиеДанныеНужныПолучениеМатериалов){
                 case "ПолучениеЦФО":
@@ -815,14 +805,14 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     bundleДляПЕредачи.putString("Таблица","view_taterials_group");//TODO сами данные
                     break;
             }
-            bundleДляПЕредачи.putInt("ПубличныйIDДляФрагмента",ПубличныйIDДляФрагмента);
+            bundleДляПЕредачи.putInt("ПубличныйID", ПубличныйID);
             bundleДляПЕредачи.putInt("ТекущаяЦФО",ТекущаяЦФО);
             bundleДляПЕредачи.putInt("ТекущаяНомерМатериала",ТекущаяНомерМатериала);
             bundleДляПЕредачи.putString("ФлагКакиеДанныеНужныПолучениеМатериалов",ФлагКакиеДанныеНужныПолучениеМатериалов);
             Intent intentПолучениеМатериалов = new Intent(getContext(), Service_for_AdminissionMaterial.class);
             intentПолучениеМатериалов.setAction(ФлагКакиеДанныеНужныПолучениеМатериалов);
             intentПолучениеМатериалов.putExtras(bundleДляПЕредачи);
-            Log.d(this.getClass().getName(), "   ПубличныйIDДляФрагмента "+ ПубличныйIDДляФрагмента);
+            Log.d(this.getClass().getName(), "   ПубличныйID "+ ПубличныйID);
             intentПолучениеМатериалов.putExtras(bundleДляПЕредачи);
             //TODO получение данных от Службы ДЛя Получение Материалов
 /*            switch (ФлагКакиеДанныеНужныПолучениеМатериалов){
@@ -1121,7 +1111,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
         private void МетодАнимации(MyViewHolder holder) {
             try {
-                holder.cardViewМатериалРодительная.startAnimation(animationПолучениеМатериалов);
+                holder.cardViewМатериалРодительная.startAnimation(ani);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1246,7 +1236,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 tableLayout.removeView(rowПервыеДанные);
                 rowПервыеДанные.setId(new Random().nextInt());
                 tableLayout.recomputeViewAttributes(rowПервыеДанные);
-                rowПервыеДанные.startAnimation(animationПолучениеМатериалов);
+                rowПервыеДанные.startAnimation(ani);
                 // TODO: 18.10.2022 добавляем  сами данные
                 МетодДобаленияНовыхСтрокДанных(rowПервыеДанные, tableLayoutРодительская);
                 // TODO: 19.10.2022

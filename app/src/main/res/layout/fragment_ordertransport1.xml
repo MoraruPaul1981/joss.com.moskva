@@ -17,16 +17,16 @@
         android:background="#FFFFFF">
 
         <TextView
-            android:id="@+id/TextView"
+            android:id="@+id/TextViewHadler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginTop="5dp"
             android:gravity="center"
+            android:hint="Заказы Транспорта"
             android:minWidth="100dp"
             android:minHeight="35dp"
             android:text=""
-            android:hint="Заказы Транспорта"
             android:textAlignment="center"
             android:textColor="#00574B"
             android:textSize="14sp"
