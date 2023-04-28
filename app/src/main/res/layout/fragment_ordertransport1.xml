@@ -31,9 +31,6 @@
         app:srcCompat="@drawable/icon_ordertransportorder1"
         app:strokeColor="#F5FFFA" />
 
-
-
-
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/texviewordertransport2"
             android:layout_width="match_parent"
@@ -58,13 +55,34 @@
         tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
         android:orientation="horizontal">
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/key1"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:minHeight="30dp"
+            android:minWidth="30dp"
+            android:padding="2dp"
+            android:hint="цфо"
+            android:layout_margin="5dp"
+            android:animateLayoutChanges="true"
+            android:background="@drawable/stylesingletablerowiine"
+            android:gravity="center"
+            android:visibility="visible"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp"
+            app:srcCompat="@drawable/icon_ordertransportorder1"
+            app:strokeColor="#F5FFFA" />
+
+
+
+
 
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/texviewordertransportvalue1"
+            android:id="@+id/value1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="45dp"
+            android:minHeight="30dp"
             android:padding="2dp"
             android:layout_margin="5dp"
             android:background="@drawable/stylesingletablerowiine"
@@ -73,7 +91,7 @@
             android:gravity="center"
             android:paddingStart="?android:attr/listPreferredItemPaddingStart"
             android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-           android:hint="text1"
+           android:hint="value1"
             android:textAlignment="gravity"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:textColor="#000000"
@@ -99,12 +117,31 @@
         android:orientation="horizontal">
 
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/key2"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:minHeight="30dp"
+            android:minWidth="30dp"
+            android:padding="2dp"
+            android:hint="вид тс"
+            android:layout_margin="5dp"
+            android:animateLayoutChanges="true"
+            android:background="@drawable/stylesingletablerowiine"
+            android:gravity="center"
+            android:visibility="visible"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp"
+            app:srcCompat="@drawable/icon_ordertransportorder1"
+            app:strokeColor="#F5FFFA" />
+
+
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/texviewordertransportvalue2"
+            android:id="@+id/value2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="45dp"
+            android:minHeight="30dp"
             android:padding="2dp"
             android:layout_margin="5dp"
             android:background="@drawable/stylesingletablerowiine"
@@ -113,7 +150,7 @@
             android:gravity="center"
             android:paddingStart="?android:attr/listPreferredItemPaddingStart"
             android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-            android:hint="text2"
+            android:hint="value2"
             android:textAlignment="gravity"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:textColor="#000000"
@@ -137,11 +174,33 @@
         android:orientation="horizontal">
 
 
+
+
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/texviewordertransportvalue3"
+            android:id="@+id/key3"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:minHeight="30dp"
+            android:minWidth="30dp"
+            android:padding="2dp"
+            android:hint="гос.номер"
+            android:layout_margin="5dp"
+            android:animateLayoutChanges="true"
+            android:background="@drawable/stylesingletablerowiine"
+            android:gravity="center"
+            android:visibility="visible"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp"
+            app:srcCompat="@drawable/icon_ordertransportorder1"
+            app:strokeColor="#F5FFFA" />
+
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/value3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="45dp"
+            android:minHeight="30dp"
             android:padding="2dp"
             android:layout_margin="5dp"
             android:background="@drawable/stylesingletablerowiine"
@@ -150,7 +209,7 @@
             android:gravity="center"
             android:paddingStart="?android:attr/listPreferredItemPaddingStart"
             android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-            android:hint="text3"
+            android:hint="value3"
             android:textAlignment="gravity"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:textColor="#000000"
@@ -166,18 +225,77 @@
 
 
 
+    <LinearLayout
+        android:id="@+id/linearLayoutordertransfport3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
+        android:orientation="horizontal">
+
+
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/key4"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:minHeight="30dp"
+            android:minWidth="30dp"
+            android:padding="2dp"
+            android:hint="дата"
+            android:layout_margin="5dp"
+            android:animateLayoutChanges="true"
+            android:background="@drawable/stylesingletablerowiine"
+            android:gravity="center"
+            android:visibility="visible"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp"
+            app:srcCompat="@drawable/icon_ordertransportorder1"
+            app:strokeColor="#F5FFFA" />
+
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/value4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="30dp"
+            android:padding="2dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/stylesingletablerowiine"
+            android:checkMark="?android:attr/textCheckMark"
+            android:foregroundGravity="center"
+            android:gravity="center"
+            android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+            android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+            android:hint="value4"
+            android:textAlignment="gravity"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp"
+            app:strokeColor="#F5FFFA"
+            android:animateLayoutChanges="true"
+            android:visibility="visible"/>
+    </LinearLayout>
+
 
     <ProgressBar
         android:id="@+id/ProgressBar"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_above="@+id/BottomNavigationView"
         android:layout_width="match_parent"
-        android:background="#FFFFFF"
         android:layout_height="3dp"
-        android:scaleY="3"
-        android:scaleX="1"
+        android:layout_above="@+id/BottomNavigationView"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="3dp"
+        android:background="#FFFFFF"
         android:indeterminate="true"
-        android:visibility="invisible" />
+        android:indeterminateTint="#B9F6CA"
+        android:scaleX="1"
+        android:scaleY="3"
+        android:visibility="visible" />
 
 </LinearLayout>
