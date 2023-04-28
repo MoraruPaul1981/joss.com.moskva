@@ -1,17 +1,13 @@
 package com.dsy.dsu.CodeOrdersAnTransports.Window;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.collection.ArrayMap;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.util.ArraySet;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -19,13 +15,10 @@ import android.widget.LinearLayout;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.R;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
 
 public class MainActivityOrdersTransports extends AppCompatActivity {
     // TODO: 25.04.2023 Переменные
@@ -33,12 +26,12 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private Fragment fragment_СозданиеЗаказаТранспорта;
-    private LinearLayout activity_ordertransports ;
+    private LinearLayout activity_main_order_transport;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try{
-        setContentView(R.layout.activity_main_orders_transports);
+        setContentView(R.layout.activity_main_order_transport);
         // TODO: 25.04.2023  ЗАКАЗ Транспорта
             activity=this;
             fragmentManager = getSupportFragmentManager();
@@ -51,10 +44,10 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
                     | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
             fragmentManager = getSupportFragmentManager();
-            activity_ordertransports =  (LinearLayout) findViewById(R.id.activity_ordertransports);
-            ViewGroup.LayoutParams params = activity_ordertransports.getLayoutParams();
+            activity_main_order_transport =  (LinearLayout) findViewById(R.id.activity_main_order_transport);
+            ViewGroup.LayoutParams params = activity_main_order_transport.getLayoutParams();
             params.height= ViewGroup.LayoutParams.WRAP_CONTENT;
-            activity_ordertransports.setLayoutParams(params);
+            activity_main_order_transport.setLayoutParams(params);
             // TODO: 26.04.2023 Запускаем Ордер Транпорта
             SubClassStartingFragmentOrderTran subClassStartingFragmentOrderTran=new SubClassStartingFragmentOrderTran();
             subClassStartingFragmentOrderTran.методЗапускаФрагментаОрдерТранспорта();
@@ -85,7 +78,7 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             fragment_СозданиеЗаказаТранспорта = new FragmentOrderTransportOneChane();
-            fragmentTransaction.add(R.id.activity_ordertransports, fragment_СозданиеЗаказаТранспорта).commit();//.layout.activity_for_fragemtb_history_tasks
+            fragmentTransaction.add(R.id.activity_main_order_transport, fragment_СозданиеЗаказаТранспорта).commit();//.layout.activity_for_fragemtb_history_tasks
             fragmentTransaction.show(fragment_СозданиеЗаказаТранспорта);
             Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +

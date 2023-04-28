@@ -23,7 +23,6 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
@@ -40,38 +39,30 @@ import android.view.animation.AnimationUtils;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generator_One_WORK_MANAGER;
 import com.dsy.dsu.CodeOrdersAnTransports.Background.ServiceOrserTransportService;
-import com.dsy.dsu.Code_For_Services.Service_for_AdminissionMaterial;
 import com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_App;
 import com.dsy.dsu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
-import com.google.android.material.card.MaterialCardView;
 
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 
 // TODO: 29.09.2022 фрагмент для получение материалов
 public class FragmentOrderTransportOneChane extends Fragment {
     private Integer ПубличныйID;
-    private LinearLayout linearLayou;
-    private BottomNavigationView bottomNavigationView;
+    private LinearLayout activity_ordertransportone;
+    private BottomNavigationView BottomNavigationOrderTransport;
     private BottomNavigationItemView bottomNavigationItemViewвыход;
     private BottomNavigationItemView bottomNavigationItemView2создать;
     private BottomNavigationItemView bottomNavigationItemView3обновить;
@@ -118,7 +109,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View    view=null;
         try {
-            view= inflater.inflate(R.layout.fragment_ordertransport1, container, false);
+            view= inflater.inflate(R.layout.activity_main_orders_transports, container, false);
+           // view= inflater.inflate(R.layout.fragment_ordertransport1, container, false);
             this.container=container;
 
             Log.d(getContext().getClass().getName(), "\n"
@@ -143,14 +135,14 @@ public class FragmentOrderTransportOneChane extends Fragment {
             gridViewOrderTransport = view.findViewById(R.id.gridViewOrderTransport);
             TextViewHadler = view.findViewById(R.id.TextViewHadler);
             fragmentManager = getActivity().getSupportFragmentManager();
-            linearLayou = view.findViewById(R.id.fragmentadmissionmaterias);
-            bottomNavigationView = view.findViewById(R.id.BottomNavigationView);
-            bottomNavigationView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED);
-            bottomNavigationItemViewвыход = bottomNavigationView.findViewById(R.id.id_lback);
+            activity_ordertransportone = view.findViewById(R.id.activity_ordertransportone);
+            BottomNavigationOrderTransport = view.findViewById(R.id.BottomNavigationOrderTransport);
+            BottomNavigationOrderTransport.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED);
+            bottomNavigationItemViewвыход = BottomNavigationOrderTransport.findViewById(R.id.id_lback);
             bottomNavigationItemViewвыход.setIconSize(50);
-            bottomNavigationItemView2создать = bottomNavigationView.findViewById(R.id.id_create);
+            bottomNavigationItemView2создать = BottomNavigationOrderTransport.findViewById(R.id.id_create);
             bottomNavigationItemView2создать.setIconSize(70);
-            bottomNavigationItemView3обновить = bottomNavigationView.findViewById(R.id.id_async);
+            bottomNavigationItemView3обновить = BottomNavigationOrderTransport.findViewById(R.id.id_async);
             bottomNavigationItemView3обновить.setIconSize(50);
             ani = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row);
             progressBarСканирование=  view.findViewById(R.id.ProgressBar);
@@ -159,6 +151,10 @@ public class FragmentOrderTransportOneChane extends Fragment {
             startДляОбноразвовной=     Calendar.getInstance().getTimeInMillis();
 
             //todo запуск методов в фрагменте
+            subClassNewOrderTransport.   МетодHandlerCallBack();
+            subClassNewOrderTransport.   МетодВыходНаAppBack();
+
+
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
@@ -253,7 +249,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                             gameData.putBinder("binder", localBinderOrderTransport);
                             Интент_BackВозвращаемАктивти.putExtras(gameData);
                             Log.d(this.getClass().getName(), "  выходим из задания МетодКпопкаВозвращениеНазадИзСогласованиии");
-                            message.getTarget().postDelayed(()->{ startActivity(Интент_BackВозвращаемАктивти); },500);
+                            message.getTarget().postDelayed(()->{ startActivity(Интент_BackВозвращаемАктивти); },250);
                             Log.d(this.getClass().getName(), "  v  " + v);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -413,12 +409,12 @@ public class FragmentOrderTransportOneChane extends Fragment {
         //TODO метод делает callback с ответом на экран
         private void методПерегрузкаЭкрана() {
             try {
-                bottomNavigationView.requestLayout();
-                bottomNavigationView.forceLayout();
+                BottomNavigationOrderTransport.requestLayout();
+                BottomNavigationOrderTransport.forceLayout();
                 gridViewOrderTransport.requestLayout();
                 gridViewOrderTransport.refreshDrawableState();
-                linearLayou.requestLayout();
-                linearLayou.refreshDrawableState();
+                activity_ordertransportone.requestLayout();
+                activity_ordertransportone.refreshDrawableState();
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -442,16 +438,16 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 if (cursor!=null) {
                     if (cursor.getCount()> 0) {
                         Log.d(this.getClass().getName(), "  cursor" + cursor.getCount());
-                        bottomNavigationView.getOrCreateBadge(R.id.id_async).setNumber( cursor.getCount());//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
-                        bottomNavigationView.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.parseColor("#15958A"));
+                        BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setNumber( cursor.getCount());//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
+                        BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.parseColor("#15958A"));
                     } else {
-                        bottomNavigationView.getOrCreateBadge(R.id.id_async).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
-                        bottomNavigationView.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.RED);
+                        BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
+                        BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.RED);
                     }
                 }else
                 {
-                    bottomNavigationView.getOrCreateBadge(R.id.id_async).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
-                    bottomNavigationView.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.RED);
+                    BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
+                    BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.RED);
                 }
                 //TODO
             } catch (Exception e) {

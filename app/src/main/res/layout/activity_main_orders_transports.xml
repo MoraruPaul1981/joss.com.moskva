@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:id="@+id/activity_ordertransports"
+    android:id="@+id/activity_ordertransportone"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -66,7 +66,7 @@
             android:id="@+id/gridViewOrderTransport"
             android:layout_width="match_parent"
             android:layout_height="484dp"
-            android:layout_above="@+id/BottomNavigationView"
+            android:layout_above="@+id/BottomNavigationOrderTransport"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="5dp"
@@ -98,7 +98,7 @@
 
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/BottomNavigationView"
+            android:id="@+id/BottomNavigationOrderTransport"
             android:layout_width="fill_parent"
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
@@ -112,7 +112,7 @@
         <ProgressBar
             android:id="@+id/ProgressBar"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_above="@+id/BottomNavigationView"
+            android:layout_above="@+id/BottomNavigationOrderTransport"
             android:layout_width="match_parent"
             android:background="#FFFFFF"
             android:layout_height="10dp"
