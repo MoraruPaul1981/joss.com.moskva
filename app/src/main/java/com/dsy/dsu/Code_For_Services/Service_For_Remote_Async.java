@@ -64,10 +64,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Spliterator;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Flow;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BiConsumer;
@@ -78,9 +80,11 @@ import javax.crypto.NoSuchPaddingException;
 
 import io.reactivex.rxjava3.core.BackpressureOverflowStrategy;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.functions.Predicate;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 /**
@@ -1304,7 +1308,7 @@ public class Service_For_Remote_Async extends IntentService {
         /////// TODO МЕТОД ПАСРИНГА ПРИШЕДШЕГО  С СЕРВЕРА ВНУТРИ ASYNSTASK В ФОНЕ
         Integer МетодПарсингJSONФайлаОтСервреравФоне(@NonNull  StringBuffer БуферПолученныйJSON,
                                                    @NonNull  String имяТаблицаAsync) throws InterruptedException, JSONException {
-           Long РезультатРаботыСинхрониазциии =0l ;
+            final Long[] РезультатРаботыСинхрониазциии = {0l};
             try {
                 Log.d(this.getClass().getName(), " имяТаблицаAsync " + имяТаблицаAsync + " БуферПолученныйJSON " +БуферПолученныйJSON.toString() );
                     //TODO БУфер JSON от Сервера
@@ -1332,26 +1336,101 @@ public class Service_For_Remote_Async extends IntentService {
                         0);
                 ИндексВизуальнойДляPrograssBar=0;
 
+                // TODO: 28.04.2023  начало тест кода
 
-                Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasemirror/" + имяТаблицаAsync + "");
+                CopyOnWriteArrayList<ContentValues> contentValuesCopyOnWriteArrayList=new CopyOnWriteArrayList<>();
 
-                ContentResolver resolver = context.getContentResolver();
+                Observable.fromIterable(jsonNodeParent )
+                        .concatMap(runnbale-> Observable.just(runnbale).subscribeOn(Schedulers.computation()))
+                        .doOnNext(new io.reactivex.rxjava3.functions.Consumer<JsonNode>() {
+                            @Override
+                            public void accept(JsonNode jsonNodeMap) throws Throwable {
+                                // TODO: 28.04.2023  Parent
+                                ТекущийАдаптерДляВсего = new ContentValues();
+                                // TODO: 28.04.2023 Map
+                                jsonNodeMap.fields().forEachRemaining(new Consumer<Map.Entry<String, JsonNode>>() {
+                                    @Override
+                                    public void accept(Map.Entry<String, JsonNode> stringJsonNodeEntryChild) {
+                                        String     getKeys=stringJsonNodeEntryChild.getKey().trim();
+                                        String getValues=       stringJsonNodeEntryChild.getValue().asText().trim();
+                                        if (getKeys.contentEquals("id") == false) {
+                                            // TODO: 27.10.2022 Дополнительна Обработка
+                                            getValues.trim()
+                                                    .replace("\"", "").replace("\\n", "")
+                                                    .replace("\\r", "").replace("\\", "")
+                                                    .replace("\\t", "").trim();//todo .replaceAll("[^A-Za-zА-Яа-я0-9]", "")
+                                            if (getKeys.equalsIgnoreCase("status_carried_out") ||
+                                                    getKeys.equalsIgnoreCase("closed") ||
+                                                    getKeys.equalsIgnoreCase("locked")) {
+                                                if (getValues.equalsIgnoreCase("false") ||
+                                                        getValues.equalsIgnoreCase("0")) {
+                                                    getValues = "False";
+                                                }
+                                                if (getValues.equalsIgnoreCase("true") ||
+                                                        getValues.equalsIgnoreCase("1")) {
+                                                    getValues = "True";
+                                                }
+                                            }
+                                            Log.d(this.getClass().getName(), " getKeys " + getKeys +
+                                                    " getValues" + getValues);
+                                            // TODO: 27.10.2022  UUID есть Обновление
+                                            ТекущийАдаптерДляВсего.put(getKeys, getValues);//
 
-                Bundle bundle=new Bundle();
-                bundle.putSerializable("getjson", (Serializable) jsonNodeParent);
-                bundle.putString("nametable",имяТаблицаAsync);
+                                            Log.d(this.getClass().getName(), "\n" + " class " +
+                                                    Thread.currentThread().getStackTrace()[2].getClassName()
+                                                    + "\n" +
+                                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                                    + " ТекущийАдаптерДляВсего " + ТекущийАдаптерДляВсего.size());
+                                        }
 
-                    Bundle bundleРезультатОбновлениеМассовой =resolver.call(uri,имяТаблицаAsync,БуферПолученныйJSON.toString(),bundle);
+                                    }
+                                });
+                                // TODO: 28.04.2023  end ROW
 
-                РезультатРаботыСинхрониазциии=     bundleРезультатОбновлениеМассовой.getLong("ResultAsync",0);
+                                if ( contentValuesCopyOnWriteArrayList.contains(ТекущийАдаптерДляВсего)==false) {
+                                    contentValuesCopyOnWriteArrayList.add(ТекущийАдаптерДляВсего);
+                                }
+                                Log.d(this.getClass().getName(), "BUffer " + " Метод :" +
+                                        Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber() +
+                                        "  contentValuesCopyOnWriteArrayList " +contentValuesCopyOnWriteArrayList);
+                            }
+                        })
+                        .doOnComplete(new Action() {
+                            @Override
+                            public void run() throws Throwable {
+                                Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasemirror/" + имяТаблицаAsync + "");
+
+                                ContentResolver resolver = context.getContentResolver();
+                                Bundle bundle=new Bundle();
+                                bundle.putSerializable("getjson", (Serializable) contentValuesCopyOnWriteArrayList);
+                                bundle.putString("nametable",имяТаблицаAsync);
+
+                                Bundle bundleРезультатОбновлениеМассовой =resolver.call(uri,имяТаблицаAsync,БуферПолученныйJSON.toString(),bundle);
+
+                                РезультатРаботыСинхрониазциии[0] =     bundleРезультатОбновлениеМассовой.getLong("ResultAsync",0);
 
 
-                Log.d(this.getClass().getName(),"\n" + " class " +
-                        Thread.currentThread().getStackTrace()[2].getClassName()
-                        + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                        " РезультатРаботыСинхрониазциии " +РезультатРаботыСинхрониазциии);
+                                Log.d(this.getClass().getName(),"\n" + " class " +
+                                        Thread.currentThread().getStackTrace()[2].getClassName()
+                                        + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                        " РезультатРаботыСинхрониазциии " + РезультатРаботыСинхрониазциии[0]);
+                            }
+                        })
+                        .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Throwable {
+                                throwable.printStackTrace();
+                                Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(throwable.toString(), this.getClass().getName(),
+                                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            }
+                        })
+                        .blockingSubscribe();
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1360,8 +1439,8 @@ public class Service_For_Remote_Async extends IntentService {
                 new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
-            Log.d(this.getClass().getName(), "     РезультатРаботыСинхрониазциии " +    РезультатРаботыСинхрониазциии);
-            return   РезультатРаботыСинхрониазциии.intValue();
+            Log.d(this.getClass().getName(), "     РезультатРаботыСинхрониазциии " + РезультатРаботыСинхрониазциии[0]);
+            return   РезультатРаботыСинхрониазциии[0].intValue();
         }
 
 
