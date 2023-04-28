@@ -91,12 +91,15 @@ public class FragmentOrderTransportOneChane extends Fragment {
     private  Cursor cursorOrderTransport;
     private GridView gridViewOrderTransport;
 
+    private     SubClassNewOrderTransport subClassNewOrderTransport;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         try{
             super.onCreate(savedInstanceState);
             // TODO: 27.04.2023  Запускаем Заказ Транпорта
-            МетодБиндингOrderTransport();
+            subClassNewOrderTransport    =new SubClassNewOrderTransport(getActivity());
+            subClassNewOrderTransport.   МетодБиндингOrderTransport();
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +

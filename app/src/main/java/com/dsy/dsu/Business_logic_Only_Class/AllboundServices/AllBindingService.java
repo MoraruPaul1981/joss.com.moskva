@@ -289,47 +289,5 @@ Context context;
         }
     }
 
-    public void МетодБиндингRemoteAsync() {
-        try{
-            Intent intentОбноразоваяСинхронизациия = new Intent(context, Service_For_Remote_Async.class);
-            context.    bindService(intentОбноразоваяСинхронизациия, new ServiceConnection() {
-                @Override
-                public void onServiceConnected(ComponentName name, IBinder service) {
-                    try{
-                        Messenger    messenger =new Messenger(service);
-                        if (service.isBinderAlive()) {
-                            Log.d(context.getClass().getName().toString(), "\n"
-                                    + "onServiceConnected  одноразовая messengerActivity  " +  messenger.getBinder().pingBinder());
-                                Service_For_Remote_Async    locaBinderAsync = new Service_For_Remote_Async();
-                                Bundle bundle=new Bundle();
-                                bundle.putParcelable("allbinders", (Parcelable) messenger);
-                                message.setData(bundle);
-                                message.getTarget().dispatchMessage(message);
-                                Log.d(context.getClass().getName().toString(), "\n"
-                                        + " МетодБиндингасМессажером onServiceConnected  binder.isBinderAlive()  " + locaBinderAsync.binderBinderRemoteAsync);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                }
-                @Override
-                public void onServiceDisconnected(ComponentName name) {
-                    Log.d(context.getClass().getName().toString(), "\n"
-                            + "onServiceConnected  одноразовая  messengerActivity  " );
-                }
-            },Context.BIND_AUTO_CREATE);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-            Log.e(context.getClass().getName(), " ОШИБКА В WORK MANAGER  MyWork_Async_Синхронизация_Одноразовая из FaceApp в  MyWork_Async_Синхронизация_Одноразовая Exception  ошибка в классе  MyWork_Async_Синхронизация_Одноразовая" + e.toString());
-        }
-    }
 
 }
