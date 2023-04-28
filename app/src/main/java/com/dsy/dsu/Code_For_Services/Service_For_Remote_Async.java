@@ -1341,7 +1341,7 @@ public class Service_For_Remote_Async extends IntentService {
                 CopyOnWriteArrayList<ContentValues> contentValuesCopyOnWriteArrayList=new CopyOnWriteArrayList<>();
 
                 Observable.fromIterable(jsonNodeParent )
-                        .concatMap(runnbale-> Observable.just(runnbale).subscribeOn(Schedulers.computation()))
+                        .concatMap(runnbale-> Observable.just(runnbale).subscribeOn(Schedulers.io()))
                         .doOnNext(new io.reactivex.rxjava3.functions.Consumer<JsonNode>() {
                             @Override
                             public void accept(JsonNode jsonNodeMap) throws Throwable {
