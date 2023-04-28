@@ -23,7 +23,6 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
@@ -36,7 +35,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowInsets;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.GridView;
@@ -50,7 +48,6 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generator_One_WORK_MANAGER;
 import com.dsy.dsu.CodeOrdersAnTransports.Background.ServiceOrserTransportService;
-import com.dsy.dsu.Code_For_Services.ServiceUpdatePoОбновлениеПО;
 import com.dsy.dsu.Code_For_Services.Service_for_AdminissionMaterial;
 import com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_App;
 import com.dsy.dsu.R;
@@ -60,7 +57,6 @@ import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.card.MaterialCardView;
 
 
-import org.checkerframework.checker.units.qual.A;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
@@ -159,13 +155,10 @@ public class FragmentOrderTransportOneChane extends Fragment {
             start=     Calendar.getInstance().getTimeInMillis();
             startДляОбноразвовной=     Calendar.getInstance().getTimeInMillis();
 
-
             //todo запуск методов в фрагменте
             SubClassNewOrderTransport subClassNewOrderTransport=new SubClassNewOrderTransport(getActivity());
 
-            МетодВыходНаAppBack();
-            МетодСоздаенияСлушателяДляПолучениеМатериалаWorkMAnager();
-            Log.d(this.getClass().getName(), "  onViewCreated  FragmentAdmissionMaterials  gridViewOrderTransport  "+gridViewOrderTransport);
+
 
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
@@ -189,11 +182,9 @@ public class FragmentOrderTransportOneChane extends Fragment {
     public void onStart() {
         super.onStart();
         try{
-            МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
 
-                МетодСлушательRecycleView();//todo создаем слушатель для recycreview для получение материалов
                 МетодСлушательКурсора();
-                МетодКпопкиЗначков(cursorНомерЦФО);
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -249,162 +240,290 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
         }
-    }
-    
-    
-    
-    
-    
-    
-    
-    
+        // TODO: 28.04.2023
 
-    // TODO: 04.03.2022 прозвомжность Заполения RecycleView
-    void МетодЗаполенияRecycleViewДляЗадач() {
-        try {
-            Log.d(this.getClass().getName(), "sqLiteCursor  " + cursorНомерЦФО);
-            myRecycleViewAdapter = new MyRecycleViewAdapter(cursorНомерЦФО);
-            recyclerView.setAdapter(myRecycleViewAdapter);
-            Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(getContext().getClass().getName(),
-                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        try{
-            if (cursorНомерЦФО !=null) {
-                cursorНомерЦФО.close();
-            }
-            if (cursorНомерМатериала !=null) {
-                cursorНомерМатериала.close();
-            }
-            if (cursorСамиДанныеGroupBy !=null) {
-                cursorСамиДанныеGroupBy.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
-
-    //TODO метод делает callback с ответом на экран
-    private void МетодПерегрузкаRecyceView() {
-        try {
-            bottomNavigationView.requestLayout();
-            bottomNavigationView.forceLayout();
-            recyclerView.requestLayout();
-            recyclerView.refreshDrawableState();
-            linearLayou.requestLayout();
-            linearLayou.refreshDrawableState();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(getContext().getClass().getName(),
-                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
-
-
-
-
-
-
-    private void МетодВыходНаAppBack() {
-        try {
-            bottomNavigationItemViewвыход.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        МетодЗапускаАнимацииКнопок(v);//todo только анимауия
-                        Intent Интент_BackВозвращаемАктивти = getActivity().getIntent();
-                        Интент_BackВозвращаемАктивти.setClass(getContext(), MainActivity_Face_App.class); // Т
-                        Интент_BackВозвращаемАктивти.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        Bundle gameData = new Bundle();
-                        gameData.putString("ФлагСтатусИзФрагментаСканирования", "ЗакрываетИзСканирования");
-                        gameData.putBinder("binder", localBinderOrderTransport);
-                        Интент_BackВозвращаемАктивти.putExtras(gameData);
-                        Log.d(this.getClass().getName(), "  выходим из задания МетодКпопкаВозвращениеНазадИзСогласованиии");
-                        handler.postDelayed(()->{ startActivity(Интент_BackВозвращаемАктивти); },500);
-                        Log.d(this.getClass().getName(), "  v  " + v);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(getContext().getClass().getName(),
-                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+        private void МетодВыходНаAppBack() {
+            try {
+                bottomNavigationItemViewвыход.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            МетодЗапускаАнимацииКнопок(v);//todo только анимауия
+                            Intent Интент_BackВозвращаемАктивти = getActivity().getIntent();
+                            Интент_BackВозвращаемАктивти.setClass(getContext(), MainActivity_Face_App.class); // Т
+                            Интент_BackВозвращаемАктивти.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            Bundle gameData = new Bundle();
+                            gameData.putString("ФлагСтатусИзФрагментаСканирования", "ЗакрываетИзСканирования");
+                            gameData.putBinder("binder", localBinderOrderTransport);
+                            Интент_BackВозвращаемАктивти.putExtras(gameData);
+                            Log.d(this.getClass().getName(), "  выходим из задания МетодКпопкаВозвращениеНазадИзСогласованиии");
+                            message.getTarget().postDelayed(()->{ startActivity(Интент_BackВозвращаемАктивти); },500);
+                            Log.d(this.getClass().getName(), "  v  " + v);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(getContext().getClass().getName(),
+                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
                     }
-                }
-            });
-            bottomNavigationItemView2создать.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        МетодЗапускаАнимацииКнопок(v);
-                        handler.postDelayed(()->{ МетодЗапускСозданиНовгоМатериалов();},500);
-                        Log.d(this.getClass().getName(), "  v  " + v);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(getContext().getClass().getName(),
-                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                });
+                bottomNavigationItemView2создать.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            МетодЗапускаАнимацииКнопок(v);
+                            message.getTarget().postDelayed(()->{ МетодЗапускСозданиНовгоМатериалов();},500);
+                            Log.d(this.getClass().getName(), "  v  " + v);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(getContext().getClass().getName(),
+                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
                     }
-                }
-            });
-            bottomNavigationItemView3обновить.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        progressBarСканирование.setVisibility(View.VISIBLE);
-                        МетодЗапускаАнимацииКнопок(v);
-                        Integer ПубличныйIDДляФрагмента =
-                                new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
-                        // TODO: 16.11.2022  запуск синхронизации однорозовая
-                        МетодНепосредственногоЗапускаБиндингаОдноразовойСдлужбы(ПубличныйIDДляФрагмента);
-                        Log.d(this.getClass().getName(), "  v  " + v);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(getContext().getClass().getName(),
-                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                });
+                bottomNavigationItemView3обновить.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            progressBarСканирование.setVisibility(View.VISIBLE);
+                            МетодЗапускаАнимацииКнопок(v);
+                            Integer ПубличныйIDДляФрагмента =
+                                    new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
+                            // TODO: 16.11.2022  запуск синхронизации однорозовая
+                            МетодНепосредственногоЗапускаБиндингаОдноразовойСдлужбы(ПубличныйIDДляФрагмента);
+                            Log.d(this.getClass().getName(), "  v  " + v);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(getContext().getClass().getName(),
+                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
                     }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+
+
+        }
+        // TODO: 28.04.2023
+        // TODO: 18.10.2021  СИНХРОНИАЗЦИЯ ЧАТА ПО РАСПИСАНИЮ ЧАТ
+        @SuppressLint("FragmentLiveDataObserve")
+        void методСлушателяWorkManager(@NonNull  LifecycleOwner lifecycleOwner , @NonNull LifecycleOwner lifecycleOwnerОбщая ) throws ExecutionException, InterruptedException {
+// TODO: 11.05.2021 ЗПУСКАЕМ СЛУЖБУ через брдкастер синхронизхации и уведомления
+            try {
+                String ИмяСлужбыСинхронизациОдноразовая="WorkManager Synchronizasiy_Data Disposable";
+                String ИмяСлужбыСинхронизацииОбщая="WorkManager Synchronizasiy_Data";
+                lifecycleOwner.getLifecycle().addObserver(new LifecycleEventObserver() {
+                    @Override
+                    public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
+                        source.getLifecycle().getCurrentState();
+                        event.getTargetState().name();
+                    }
+                });
+                lifecycleOwnerОбщая.getLifecycle().addObserver(new LifecycleEventObserver() {
+                    @Override
+                    public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
+                        source.getLifecycle().getCurrentState();
+                        event.getTargetState().name();
+                    }
+                });
+
+                WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).observe(lifecycleOwner, new Observer<List<WorkInfo>>() {
+                    @Override
+                    public void onChanged(List<WorkInfo> workInfos) {
+                        workInfos.forEach((СтастусWorkMangerДляФрагментаЧитатьИПисать) -> {
+                            try {
+                                if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.SUCCEEDED) == 0)         {
+                                    Long CallBaskОтWorkManagerОдноразового =
+                                            СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getLong("ОтветПослеВыполения_MyWork_Async_Синхронизация_Одноразовая",
+                                                    0l);
+                                    long end = Calendar.getInstance().getTimeInMillis();
+                                    long РазницаВоврмени=end-startДляОбноразвовной;
+                                    if (РазницаВоврмени>5000) {
+                                        if (CallBaskОтWorkManagerОдноразового>0) {
+                                            onStart();
+                                            onResume();
+                                            // TODO: 21.11.2022  запускаем удаление
+                                        }
+                                    }
+                                }
+                                progressBarСканирование.setVisibility(View.INVISIBLE);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            }
+                        });
+                    }
+                });
+                WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая).observe(lifecycleOwnerОбщая, new Observer<List<WorkInfo>>() {
+                    @Override
+                    public void onChanged(List<WorkInfo> workInfos) {
+                        workInfos.forEach((СтастусWorkMangerДляФрагментаЧитатьИПисать) -> {
+                            try {
+                                if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.RUNNING) != 0) {
+                                    long end = Calendar.getInstance().getTimeInMillis();
+                                    Integer CallBaskОтWorkManageОбщая =
+                                            СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnPublicAsyncWorkMananger", 0);
+                                    Long РелультатОбщеегоWorkMAnger =
+                                            СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getLong("WorkManangerVipolil", 0l);
+                                    long РазницаВоврмени=end-start;
+                                    if (РазницаВоврмени>6000) {
+                                        onStart();
+                                        onResume();
+                                    }
+                                }
+                                // WorkManager.getInstance(getContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая).getResult();
+                                progressBarСканирование.setVisibility(View.INVISIBLE);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            }
+                        });
+                    }
+                });
+                // TODO: 29.09.2021  конец синхрониазции по раписанию
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+        // TODO: 28.04.2023
+        //TODO метод делает callback с ответом на экран
+        private void методПерегрузкаЭкрана() {
+            try {
+                bottomNavigationView.requestLayout();
+                bottomNavigationView.forceLayout();
+                gridViewOrderTransport.requestLayout();
+                gridViewOrderTransport.refreshDrawableState();
+                linearLayou.requestLayout();
+                linearLayou.refreshDrawableState();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+// TODO: 28.04.2023
+
+        private void МетодЗапускаАнимацииКнопок(View v) {
+            v.animate().rotationX(-40l);
+            message.getTarget() .postDelayed(()->{
+                v.animate().rotationX(0);
+            },300);
+        }
+        private void МетодКпопкиЗначков(@NonNull Cursor cursor) {
+            try {
+                if (cursor!=null) {
+                    if (cursor.getCount()> 0) {
+                        Log.d(this.getClass().getName(), "  cursor" + cursor.getCount());
+                        bottomNavigationView.getOrCreateBadge(R.id.id_async).setNumber( cursor.getCount());//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
+                        bottomNavigationView.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.parseColor("#15958A"));
+                    } else {
+                        bottomNavigationView.getOrCreateBadge(R.id.id_async).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
+                        bottomNavigationView.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.RED);
+                    }
+                }else
+                {
+                    bottomNavigationView.getOrCreateBadge(R.id.id_async).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
+                    bottomNavigationView.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.RED);
                 }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(getContext().getClass().getName(),
-                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                //TODO
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+        // TODO: 28.04.2023
+
+
+
+        // TODO: 10.03.2022 БИЗНЕС-КОД для ФРАГМЕНТА ПОСТУПЛЕНИЯ МАТЕРИАЛА
+
+        void методСлушательGridView() {  // TODO: 04.03.2022  класс в котором находяться слушатели
+            try {
+                gridViewOrderTransport.getAdapter().registerDataSetObserver(new DataSetObserver() {
+                    @Override
+                    public void onChanged() {
+                        super.onChanged();
+                        Log.d(this.getClass().getName(), "\n" + " class " +
+                                Thread.currentThread().getStackTrace()[2].getClassName()
+                                + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    }
+
+                    @Override
+                    public void onInvalidated() {
+                        super.onInvalidated();
+                        Log.d(this.getClass().getName(), "\n" + " class " +
+                                Thread.currentThread().getStackTrace()[2].getClassName()
+                                + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    }
+                });
+                Log.d(this.getClass().getName(), "\n" + " class " +
+                        Thread.currentThread().getStackTrace()[2].getClassName()
+                        + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
         }
 
 
+
     }
+    
+    
+    
+
+
+
+
+
     protected void МетодЗапускСозданиНовгоМатериалов() {
         try{
             fragmentTransaction = fragmentManager.beginTransaction();
@@ -475,319 +594,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
 
 
-    private void МетодЗапускаАнимацииКнопок(View v) {
-        v.animate().rotationX(-40l);
-        handler .postDelayed(()->{
-            v.animate().rotationX(0);
-        },300);
-    }
-    private void МетодКпопкиЗначков(@NonNull Cursor cursor)
-    {
-        try {
-            if (cursor!=null) {
-                if (cursor.getCount()> 0) {
-                    Log.d(this.getClass().getName(), "  cursor" + cursor.getCount());
-                    bottomNavigationView.getOrCreateBadge(R.id.id_async).setNumber( cursor.getCount());//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
-                    bottomNavigationView.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.parseColor("#15958A"));
-                } else {
-                    bottomNavigationView.getOrCreateBadge(R.id.id_async).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
-                    bottomNavigationView.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.RED);
-                }
-            }else
-            {
-                bottomNavigationView.getOrCreateBadge(R.id.id_async).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
-                bottomNavigationView.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.RED);
-            }
-            //TODO
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(getContext().getClass().getName(),
-                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
-
-
-    // TODO: 10.03.2022 БИЗНЕС-КОД для ФРАГМЕНТА ПОСТУПЛЕНИЯ МАТЕРИАЛА
-
-    void МетодСлушательRecycleView() {  // TODO: 04.03.2022  класс в котором находяться слушатели
-        try {
-            myRecycleViewAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-                @Override
-                public void onChanged() {
-                    super.onChanged();
-                    try {
-                        Log.d(this.getClass().getName(), "onChanged ");
-                        //TODO
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(getContext().getClass().getName(),
-                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                }
-
-                @Override
-                public void onItemRangeChanged(int positionStart, int itemCount) {
-                    super.onItemRangeChanged(positionStart, itemCount);
-                    // TODO: 05.03.2022  СТАТУС ЗНАЧКА С ДОПОЛНИТЕЛЬНЫЙ СТАТУСОМ
-                    try {
-                        Log.d(this.getClass().getName(), "onItemRangeChanged ");
-                        //TODO
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(getContext().getClass().getName(),
-                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                }
-
-                @Override
-                public void onItemRangeChanged(int positionStart, int itemCount, @Nullable Object payload) {
-                    super.onItemRangeChanged(positionStart, itemCount, payload);
-                    try {
-                        Log.d(this.getClass().getName(), "onItemRangeChanged ");
-                        //TODO
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(getContext().getClass().getName(),
-                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                }
-
-                @Override
-                public void onItemRangeInserted(int positionStart, int itemCount) {
-                    super.onItemRangeInserted(positionStart, itemCount);
-                    try {
-                        Log.d(this.getClass().getName(), "onItemRangeInserted ");
-                        //TODO
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(getContext().getClass().getName(),
-                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                }
-
-                @Override
-                public void onItemRangeRemoved(int positionStart, int itemCount) {
-                    super.onItemRangeRemoved(positionStart, itemCount);
-                    try {
-                        Log.d(this.getClass().getName(), "onItemRangeRemoved ");
-                        //TODO
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(getContext().getClass().getName(),
-                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                }
-
-                @Override
-                public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
-                    super.onItemRangeMoved(fromPosition, toPosition, itemCount);
-                    try {
-                        Log.d(this.getClass().getName(), "     onItemRangeMoved ");
-         /*                   recyclerView.getRecycledViewPool().clear();
-                            recyclerView.getAdapter().notifyDataSetChanged();
-                            recyclerView.refreshDrawableState();*/
-                        //TODO
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(getContext().getClass().getName(),
-                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                }
-            });
-            recyclerView.setRecyclerListener(new RecyclerView.RecyclerListener() {
-                @Override
-                public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
-                    Log.d(this.getClass().getName(), "     holder "+holder);
-                    //   ContentProviderOperation.Builder builder = null;
-                }
-            });
-            // TODO: 15.10.2022  дополнительные слушатели
-
-            recyclerView.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
-                @Override
-                public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
-                    Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
-                    return null;
-                }
-            });
-            // TODO: 17.10.2022 метод внешний вид нижних строчек
-            recyclerView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
-                @Override
-                public void onChildViewAttachedToWindow(@NonNull View view) {
-                    Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
-                    try {
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(getContext().getClass().getName(),
-                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                }
-                @Override
-                public void onChildViewDetachedFromWindow(@NonNull View view) {
-                    Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
-                    try {
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(getContext().getClass().getName(),
-                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                }
-            });
-
-            recyclerView.setRecyclerListener(new RecyclerView.RecyclerListener() {
-                @Override
-                public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
-                    Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
-                }
-            });
-            recyclerView.setOnFlingListener(new RecyclerView.OnFlingListener() {
-                @Override
-                public boolean onFling(int velocityX, int velocityY) {
-                    Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
-                    return false;
-                }
-            });
-            //TODO
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(getContext().getClass().getName(),
-                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
-
-    // TODO: 18.10.2021  СИНХРОНИАЗЦИЯ ЧАТА ПО РАСПИСАНИЮ ЧАТ
-    @SuppressLint("FragmentLiveDataObserve")
-    void МетодСоздаенияСлушателяДляПолучениеМатериалаWorkMAnager() throws ExecutionException, InterruptedException {
-// TODO: 11.05.2021 ЗПУСКАЕМ СЛУЖБУ через брдкастер синхронизхации и уведомления
-        try {
-            String ИмяСлужбыСинхронизациОдноразовая="WorkManager Synchronizasiy_Data Disposable";
-            String ИмяСлужбыСинхронизацииОбщая="WorkManager Synchronizasiy_Data";
-            LifecycleOwner lifecycleOwner =this ;
-            LifecycleOwner lifecycleOwnerОбщая =this ;
-            lifecycleOwner.getLifecycle().addObserver(new LifecycleEventObserver() {
-                @Override
-                public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
-                    source.getLifecycle().getCurrentState();
-                    event.getTargetState().name();
-                }
-            });
-            lifecycleOwnerОбщая.getLifecycle().addObserver(new LifecycleEventObserver() {
-                @Override
-                public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
-                    source.getLifecycle().getCurrentState();
-                    event.getTargetState().name();
-                }
-            });
-
-            WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).observe(lifecycleOwner, new Observer<List<WorkInfo>>() {
-                @Override
-                public void onChanged(List<WorkInfo> workInfos) {
-                    workInfos.forEach((СтастусWorkMangerДляФрагментаЧитатьИПисать) -> {
-                        try {
-                            if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.SUCCEEDED) == 0)         {
-                                Long CallBaskОтWorkManagerОдноразового =
-                                        СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getLong("ОтветПослеВыполения_MyWork_Async_Синхронизация_Одноразовая",
-                                                0l);
-                                long end = Calendar.getInstance().getTimeInMillis();
-                                long РазницаВоврмени=end-startДляОбноразвовной;
-                                if (РазницаВоврмени>5000) {
-                                    if (CallBaskОтWorkManagerОдноразового>0) {
-                                        onStart();
-                                        onResume();
-                                        // TODO: 21.11.2022  запускаем удаление
-                                    }
-                                }
-                            }
-                            progressBarСканирование.setVisibility(View.INVISIBLE);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    });
-                }
-            });
-            WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая).observe(lifecycleOwnerОбщая, new Observer<List<WorkInfo>>() {
-                @Override
-                public void onChanged(List<WorkInfo> workInfos) {
-                    workInfos.forEach((СтастусWorkMangerДляФрагментаЧитатьИПисать) -> {
-                        try {
-                            if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.RUNNING) != 0) {
-                                long end = Calendar.getInstance().getTimeInMillis();
-                                Integer CallBaskОтWorkManageОбщая =
-                                        СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnPublicAsyncWorkMananger", 0);
-                                Long РелультатОбщеегоWorkMAnger =
-                                        СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getLong("WorkManangerVipolil", 0l);
-                                long РазницаВоврмени=end-start;
-                                if (РазницаВоврмени>6000) {
-                                    onStart();
-                                    onResume();
-                                }
-                            }
-                            // WorkManager.getInstance(getContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая).getResult();
-                            progressBarСканирование.setVisibility(View.INVISIBLE);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    });
-                }
-            });
-            // TODO: 29.09.2021  конец синхрониазции по раписанию
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
 
     // TODO: 02.08.2022
     protected   void МетодПолучениеДанныхДЛяПолучениеМатериалов(@NonNull String  ФлагКакиеДанныеНужныПолучениеМатериалов,@NonNull Integer ТекущаяЦФО ){
@@ -1129,7 +935,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     // TODO: 18.10.2022 заполеняем данныими
                     МетодДобавленеиЕлементоввRecycreView(holder.tableLayoutМатериалРодительная);
                 }
-                МетодПерегрузкаRecyceView();
+                методПерегрузкаЭкрана();
 
             } catch (Exception e) {
                 e.printStackTrace();
