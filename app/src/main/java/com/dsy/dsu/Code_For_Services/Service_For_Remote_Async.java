@@ -44,6 +44,7 @@ import com.dsy.dsu.Business_logic_Only_Class.Jakson.GeneratorJSONSerializer;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.dsy.dsu.Business_logic_Only_Class.SubClass_Connection_BroadcastReceiver_Sous_Asyns_Glassfish;
+import com.dsy.dsu.model.Organization;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -1253,6 +1254,21 @@ public class Service_For_Remote_Async extends IntentService {
                 ObjectMapper jsonGenerator = new PUBLIC_CONTENT(context).getGeneratorJackson();
                // JsonNode jsonNodeParent=   jsonGenerator.readTree(БуферПолученныйJSON.toString());
                 JsonNode jsonNodeParent = jsonGenerator.readValue(БуферПолученныйJSON.toString(), JsonNode.class);
+
+                TypeReference<ArrayList<Organization>> typeReference=   new TypeReference<ArrayList<Organization>>() {};
+
+                ArrayList<Organization> jor=jsonGenerator.readValue(БуферПолученныйJSON.toString(), typeReference);
+                jor.forEach(new Consumer<Organization>() {
+                    @Override
+                    public void accept(Organization organization) {
+                        Log.d(this.getClass().getName(),"\n" + " class " +
+                                Thread.currentThread().getStackTrace()[2].getClassName()
+                                + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                " jsonNodeParent " +jsonNodeParent);
+                    }
+                });
                 Log.d(this.getClass().getName(),"\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
