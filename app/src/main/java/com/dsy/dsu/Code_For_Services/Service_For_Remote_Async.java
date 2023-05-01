@@ -78,6 +78,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Flow;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -1255,71 +1256,19 @@ public class Service_For_Remote_Async extends IntentService {
             try {
                 Log.d(this.getClass().getName(), " имяТаблицаAsync " + имяТаблицаAsync + " БуферПолученныйJSON " +БуферПолученныйJSON.toString() );
                     //TODO БУфер JSON от Сервера
+                CopyOnWriteArrayList<ContentValues>   contentValuesCopyOnWriteArrayList=new CopyOnWriteArrayList<>();
                 ObjectMapper jsonGenerator = new PUBLIC_CONTENT(context).getGeneratorJackson();
                // JsonNode jsonNodeParent=   jsonGenerator.readTree(БуферПолученныйJSON.toString());
                JsonNode jsonNodeParent = jsonGenerator.readValue(БуферПолученныйJSON.toString(), JsonNode.class);
+                TypeReference< CopyOnWriteArrayList<Map<String,String>>> typeReference=   new TypeReference< CopyOnWriteArrayList<Map<String,String>>>() {};
+               CopyOnWriteArrayList<Map<String,String>> jsonNodeParentMAP= jsonGenerator.readValue(БуферПолученныйJSON.toString(), typeReference);
 
-
-                // TODO: 28.04.2023  Parent
-                CopyOnWriteArrayList<ContentValues> contentValuesCopyOnWriteArrayList=new CopyOnWriteArrayList<>();
-                ТекущийАдаптерДляВсего = new ContentValues();
-                TypeReference<ArrayList<Fio>> typeReference=   new TypeReference<ArrayList<Fio>>() {};
-
-                ArrayList<Fio> fioArrayList= null;
-                if (имяТаблицаAsync.equalsIgnoreCase("fio")) {
-                    fioArrayList = jsonGenerator.readValue(БуферПолученныйJSON.toString(), typeReference);
-                }
-
-                if (fioArrayList!=null) {
-                    МаксималноеКоличествоСтрочекJSON = fioArrayList.size();
-                    fioArrayList.forEach(new Consumer<Fio>() {
-                        @Override
-                        public void accept(Fio fio) {
-                            ТекущийАдаптерДляВсего = new ContentValues();
-                            // TODO: 01.05.2023  
-                            ТекущийАдаптерДляВсего.put( "name" ,fio.getName());
-                            ТекущийАдаптерДляВсего.put( "f" ,fio.getF());
-                            ТекущийАдаптерДляВсего.put( "n" ,fio.getN());
-                            ТекущийАдаптерДляВсего.put( "o" ,fio.getO());
-                            try {
-                                ТекущийАдаптерДляВсего.put( "BirthDate" ,fio.getBirthDate().toString());
-                            } catch (ParseException e) {
-                                throw new RuntimeException(e);
-                            }
-                            ТекущийАдаптерДляВсего.put( "snils" ,fio.getSnils());
-                            try {
-                                ТекущийАдаптерДляВсего.put( "date_update" ,fio.getDateUpdate().toString());
-                            } catch (ParseException e) {
-                                throw new RuntimeException(e);
-                            }
-                            ТекущийАдаптерДляВсего.put( "user_update" ,fio.getUserUpdate());
-                            ТекущийАдаптерДляВсего.put( "uuid" ,fio.getUuid().toString());
-                            ТекущийАдаптерДляВсего.put( "current_organization" ,fio.getCurrentOrganization());
-                            ТекущийАдаптерДляВсего.put( "current_table" ,fio.getCurrentTable().toString());
-                            ТекущийАдаптерДляВсего.put( "prof" ,fio.getName());
-
-
-
-
-
-                            if ( contentValuesCopyOnWriteArrayList.contains(ТекущийАдаптерДляВсего)==false) {
-                                contentValuesCopyOnWriteArrayList.add(ТекущийАдаптерДляВсего);
-                            }
-                            Log.d(this.getClass().getName(),"\n" + " class " +
-                                    Thread.currentThread().getStackTrace()[2].getClassName()
-                                    + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                    " ТекущийАдаптерДляВсего " +ТекущийАдаптерДляВсего.toString());
-                        }
-                    });
-                }
                 Log.d(this.getClass().getName(),"\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                        " БуферПолученныйJSON " +БуферПолученныйJSON);
+                        " БуферПолученныйJSON " +БуферПолученныйJSON + " jsonNodeParentMAP " +jsonNodeParentMAP);
 
                 // TODO: 26.03.2023  Количество Максимальное СТРОК
                 МаксималноеКоличествоСтрочекJSON = jsonNodeParent.size();
@@ -1336,66 +1285,74 @@ public class Service_For_Remote_Async extends IntentService {
 
 
 
-                Observable.fromIterable(jsonNodeParent )
-                        .concatMap(runnbale-> Observable.just(runnbale).subscribeOn(Schedulers.io()))
-                        .doOnNext(new io.reactivex.rxjava3.functions.Consumer<JsonNode>() {
+                Flowable.fromIterable(jsonNodeParentMAP )
+                        .onBackpressureBuffer(true)
+                        .buffer(3, TimeUnit.SECONDS)
+                        .concatMap(eee->Flowable.just(eee).subscribeOn(Schedulers.newThread()))
+                        .doOnNext(new io.reactivex.rxjava3.functions.Consumer<List<Map<String, String>>>() {
                             @Override
-                            public void accept(JsonNode jsonNodeMap) throws Throwable {
-                                // TODO: 28.04.2023  Parent
-                                ТекущийАдаптерДляВсего = new ContentValues();
-                                // TODO: 28.04.2023 Map
-                                jsonNodeMap.fields().forEachRemaining(new Consumer<Map.Entry<String, JsonNode>>() {
+                            public void accept(List<Map<String, String>> maps) throws Throwable {
+
+                                maps.spliterator().forEachRemaining(new Consumer<Map<String, String>>() {
                                     @Override
-                                    public void accept(Map.Entry<String, JsonNode> stringJsonNodeEntryChild) {
-                                        String     getKeys=stringJsonNodeEntryChild.getKey().trim();
-                                        String getValues=       stringJsonNodeEntryChild.getValue().asText().trim();
-                                        if (getKeys.contentEquals("id") == false) {
-                                            // TODO: 27.10.2022 Дополнительна Обработка
-                                            getValues.trim()
-                                                    .replace("\"", "").replace("\\n", "")
-                                                    .replace("\\r", "").replace("\\", "")
-                                                    .replace("\\t", "").trim();//todo .replaceAll("[^A-Za-zА-Яа-я0-9]", "")
-                                            if (getKeys.equalsIgnoreCase("status_carried_out") ||
-                                                    getKeys.equalsIgnoreCase("closed") ||
-                                                    getKeys.equalsIgnoreCase("locked")) {
-                                                if (getValues.equalsIgnoreCase("false") ||
-                                                        getValues.equalsIgnoreCase("0")) {
-                                                    getValues = "False";
-                                                }
-                                                if (getValues.equalsIgnoreCase("true") ||
-                                                        getValues.equalsIgnoreCase("1")) {
-                                                    getValues = "True";
+                                    public void accept(Map<String, String> stringStringMap) {
+                                        // TODO: 28.04.2023  Parent
+                                        ТекущийАдаптерДляВсего = new ContentValues();
+                                        // TODO: 28.04.2023 Map
+                                        stringStringMap.entrySet().forEach(new Consumer<Map.Entry<String, String>>() {
+                                            @Override
+                                            public void accept(Map.Entry<String, String> stringJsonNodeEntryChild) {
+                                                String     getKeys=stringJsonNodeEntryChild.getKey().trim();
+                                                String getValues=       stringJsonNodeEntryChild.getValue() .trim();
+                                                if (getKeys.contentEquals("id") == false) {
+                                                    // TODO: 27.10.2022 Дополнительна Обработка
+                                                    getValues.trim()
+                                                            .replace("\"", "").replace("\\n", "")
+                                                            .replace("\\r", "").replace("\\", "")
+                                                            .replace("\\t", "").trim();//todo .replaceAll("[^A-Za-zА-Яа-я0-9]", "")
+                                                    if (getKeys.equalsIgnoreCase("status_carried_out") ||
+                                                            getKeys.equalsIgnoreCase("closed") ||
+                                                            getKeys.equalsIgnoreCase("locked")) {
+                                                        if (getValues.equalsIgnoreCase("false") ||
+                                                                getValues.equalsIgnoreCase("0")) {
+                                                            getValues = "False";
+                                                        }
+                                                        if (getValues.equalsIgnoreCase("true") ||
+                                                                getValues.equalsIgnoreCase("1")) {
+                                                            getValues = "True";
+                                                        }
+                                                    }
+                                                    Log.d(this.getClass().getName(), " getKeys " + getKeys +
+                                                            " getValues" + getValues);
+                                                    // TODO: 27.10.2022  UUID есть Обновление
+                                                    ТекущийАдаптерДляВсего.put(getKeys, getValues);//
+
+                                                    Log.d(this.getClass().getName(), "\n" + " class " +
+                                                            Thread.currentThread().getStackTrace()[2].getClassName()
+                                                            + "\n" +
+                                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                                            + " ТекущийАдаптерДляВсего " + ТекущийАдаптерДляВсего.size());
                                                 }
                                             }
-                                            Log.d(this.getClass().getName(), " getKeys " + getKeys +
-                                                    " getValues" + getValues);
-                                            // TODO: 27.10.2022  UUID есть Обновление
-                                            ТекущийАдаптерДляВсего.put(getKeys, getValues);//
-
-                                            Log.d(this.getClass().getName(), "\n" + " class " +
-                                                    Thread.currentThread().getStackTrace()[2].getClassName()
-                                                    + "\n" +
-                                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                    + " ТекущийАдаптерДляВсего " + ТекущийАдаптерДляВсего.size());
+                                        });
+                                        // TODO: 28.04.2023  end ROW
+                                        if ( contentValuesCopyOnWriteArrayList.contains(ТекущийАдаптерДляВсего)==false) {
+                                            contentValuesCopyOnWriteArrayList.add(ТекущийАдаптерДляВсего);
                                         }
-
+                                        Log.d(this.getClass().getName(), "BUffer " + " Метод :" +
+                                                Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber() +
+                                                "  contentValuesCopyOnWriteArrayList " +contentValuesCopyOnWriteArrayList+
+                                            " ПОТОК"   + Thread.currentThread().getName());
                                     }
                                 });
-                                // TODO: 28.04.2023  end ROW
 
-                                if ( contentValuesCopyOnWriteArrayList.contains(ТекущийАдаптерДляВсего)==false) {
-                                    contentValuesCopyOnWriteArrayList.add(ТекущийАдаптерДляВсего);
-                                }
-                                Log.d(this.getClass().getName(), "BUffer " + " Метод :" +
-                                        Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber() +
-                                        "  contentValuesCopyOnWriteArrayList " +contentValuesCopyOnWriteArrayList);
                             }
                         })
-                        .doOnComplete(new Action() {
+                        .doAfterNext(new io.reactivex.rxjava3.functions.Consumer<List<Map<String, String>>>() {
                             @Override
-                            public void run() throws Throwable {
+                            public void accept(List<Map<String, String>> maps) throws Throwable {
                                 Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasemirror/" + имяТаблицаAsync + "");
 
                                 ContentResolver resolver = context.getContentResolver();
