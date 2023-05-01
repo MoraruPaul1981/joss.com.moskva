@@ -44,6 +44,7 @@ import com.dsy.dsu.Business_logic_Only_Class.Jakson.GeneratorJSONSerializer;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.dsy.dsu.Business_logic_Only_Class.SubClass_Connection_BroadcastReceiver_Sous_Asyns_Glassfish;
+import com.dsy.dsu.model.Fio;
 import com.dsy.dsu.model.Organization;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -58,6 +59,8 @@ import java.io.Serializable;
 import java.io.StringWriter;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -65,6 +68,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Spliterator;
@@ -1253,34 +1257,72 @@ public class Service_For_Remote_Async extends IntentService {
                     //TODO БУфер JSON от Сервера
                 ObjectMapper jsonGenerator = new PUBLIC_CONTENT(context).getGeneratorJackson();
                // JsonNode jsonNodeParent=   jsonGenerator.readTree(БуферПолученныйJSON.toString());
-                JsonNode jsonNodeParent = jsonGenerator.readValue(БуферПолученныйJSON.toString(), JsonNode.class);
+               JsonNode jsonNodeParent = jsonGenerator.readValue(БуферПолученныйJSON.toString(), JsonNode.class);
 
-                TypeReference<ArrayList<Organization>> typeReference=   new TypeReference<ArrayList<Organization>>() {};
 
-                ArrayList<Organization> jor=jsonGenerator.readValue(БуферПолученныйJSON.toString(), typeReference);
-                jor.forEach(new Consumer<Organization>() {
-                    @Override
-                    public void accept(Organization organization) {
-                        Log.d(this.getClass().getName(),"\n" + " class " +
-                                Thread.currentThread().getStackTrace()[2].getClassName()
-                                + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                " jsonNodeParent " +jsonNodeParent);
-                    }
-                });
+                // TODO: 28.04.2023  Parent
+                CopyOnWriteArrayList<ContentValues> contentValuesCopyOnWriteArrayList=new CopyOnWriteArrayList<>();
+                ТекущийАдаптерДляВсего = new ContentValues();
+                TypeReference<ArrayList<Fio>> typeReference=   new TypeReference<ArrayList<Fio>>() {};
+
+                ArrayList<Fio> fioArrayList= null;
+                if (имяТаблицаAsync.equalsIgnoreCase("fio")) {
+                    fioArrayList = jsonGenerator.readValue(БуферПолученныйJSON.toString(), typeReference);
+                }
+
+                if (fioArrayList!=null) {
+                    МаксималноеКоличествоСтрочекJSON = fioArrayList.size();
+                    fioArrayList.forEach(new Consumer<Fio>() {
+                        @Override
+                        public void accept(Fio fio) {
+                            ТекущийАдаптерДляВсего = new ContentValues();
+                            // TODO: 01.05.2023  
+                            ТекущийАдаптерДляВсего.put( "name" ,fio.getName());
+                            ТекущийАдаптерДляВсего.put( "f" ,fio.getF());
+                            ТекущийАдаптерДляВсего.put( "n" ,fio.getN());
+                            ТекущийАдаптерДляВсего.put( "o" ,fio.getO());
+                            try {
+                                ТекущийАдаптерДляВсего.put( "BirthDate" ,fio.getBirthDate().toString());
+                            } catch (ParseException e) {
+                                throw new RuntimeException(e);
+                            }
+                            ТекущийАдаптерДляВсего.put( "snils" ,fio.getSnils());
+                            try {
+                                ТекущийАдаптерДляВсего.put( "date_update" ,fio.getDateUpdate().toString());
+                            } catch (ParseException e) {
+                                throw new RuntimeException(e);
+                            }
+                            ТекущийАдаптерДляВсего.put( "user_update" ,fio.getUserUpdate());
+                            ТекущийАдаптерДляВсего.put( "uuid" ,fio.getUuid().toString());
+                            ТекущийАдаптерДляВсего.put( "current_organization" ,fio.getCurrentOrganization());
+                            ТекущийАдаптерДляВсего.put( "current_table" ,fio.getCurrentTable().toString());
+                            ТекущийАдаптерДляВсего.put( "prof" ,fio.getName());
+
+
+
+
+
+                            if ( contentValuesCopyOnWriteArrayList.contains(ТекущийАдаптерДляВсего)==false) {
+                                contentValuesCopyOnWriteArrayList.add(ТекущийАдаптерДляВсего);
+                            }
+                            Log.d(this.getClass().getName(),"\n" + " class " +
+                                    Thread.currentThread().getStackTrace()[2].getClassName()
+                                    + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                    " ТекущийАдаптерДляВсего " +ТекущийАдаптерДляВсего.toString());
+                        }
+                    });
+                }
                 Log.d(this.getClass().getName(),"\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                        " jsonNodeParent " +jsonNodeParent);
+                        " БуферПолученныйJSON " +БуферПолученныйJSON);
 
                 // TODO: 26.03.2023  Количество Максимальное СТРОК
                 МаксималноеКоличествоСтрочекJSON = jsonNodeParent.size();
-                Log.d(this.getClass().getName(), " МаксималноеКоличествоСтрочекJSON:::  " + МаксималноеКоличествоСтрочекJSON+
-                        " jsonNodeParent.size() " +jsonNodeParent.size());
-
                 // TODO: 11.10.2022 callback метод обратно в актвити #1
                 МетодCallBasksВизуальноИзСлужбы(МаксималноеКоличествоСтрочекJSON, ИндексВизуальнойДляPrograssBar,
                         имяТаблицаAsync,
@@ -1292,7 +1334,7 @@ public class Service_For_Remote_Async extends IntentService {
 
                 // TODO: 28.04.2023  начало тест кода
 
-                CopyOnWriteArrayList<ContentValues> contentValuesCopyOnWriteArrayList=new CopyOnWriteArrayList<>();
+
 
                 Observable.fromIterable(jsonNodeParent )
                         .concatMap(runnbale-> Observable.just(runnbale).subscribeOn(Schedulers.io()))

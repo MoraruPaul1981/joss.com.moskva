@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Fio implements Serializable {
     private static final long serialVersionUID = 1L;
     private int id;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone= "Europe/Moscow")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @JsonProperty("BirthDate")
 
     private Date BirthDate;
@@ -66,13 +66,15 @@ public class Fio implements Serializable {
     public Date getBirthDate() throws ParseException {
         DateFormat	dateFormat =   new SimpleDateFormat("yyyy-MM-dd",new Locale("ru"));
         if ( this.BirthDate==null) {
-            Date date = dateFormat.parse("1900-01-01");
-            return date;
+            return this.BirthDate;
 
         }else {
-            Date date = dateFormat.parse(this.BirthDate.toString());
-            return date;
+            String Дата = dateFormat.format(this.BirthDate);
+            this. BirthDate = dateFormat.parse(Дата);
+            return this.BirthDate;
         }
+
+
     }
 
     public void setBirthDate(Date BirthDate) {
@@ -99,8 +101,11 @@ public class Fio implements Serializable {
         this.current_table = current_table;
     }
 
-    public Date getDateUpdate() {
-        return this.date_update;
+    public Date getDateUpdate() throws ParseException{
+        DateFormat	dateFormat =   new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS",new Locale("ru"));
+        String Дата = dateFormat.format(this.date_update);
+        this.date_update = dateFormat.parse(Дата);
+            return this.date_update;
     }
 
     public void setDateUpdate(Date date_update) {

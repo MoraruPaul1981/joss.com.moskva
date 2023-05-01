@@ -141,9 +141,10 @@ public Gson gson = new GsonBuilder()
             mapperJackson = new ObjectMapper(factory);
             mapperJackson.writerWithDefaultPrettyPrinter();
             mapperJackson.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", new Locale("ru"));
-            mapperJackson.setDateFormat(df);
             mapperJackson.setLocale(new Locale("ru"));
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", new Locale("ru"));
+            mapperJackson.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            mapperJackson.setDateFormat(df);
             mapperJackson.enable(SerializationFeature.FLUSH_AFTER_WRITE_VALUE);
             mapperJackson .enable(SerializationFeature.INDENT_OUTPUT);
             mapperJackson.setSerializationInclusion(JsonInclude.Include.NON_NULL);
