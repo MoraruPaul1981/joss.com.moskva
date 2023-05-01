@@ -1252,14 +1252,16 @@ public class Service_For_Remote_Async extends IntentService {
         /////// TODO МЕТОД ПАСРИНГА ПРИШЕДШЕГО  С СЕРВЕРА ВНУТРИ ASYNSTASK В ФОНЕ
         Integer МетодПарсингJSONФайлаОтСервреравФоне(@NonNull  StringBuffer БуферПолученныйJSON,
                                                    @NonNull  String имяТаблицаAsync) throws InterruptedException, JSONException {
-            final Long[] РезультатРаботыСинхрониазциии = {0l};
+            ///final Long[] РезультатРаботыСинхрониазциии = {0l};
+            CopyOnWriteArrayList<Long>   copyOnWriteArrayРезультатUpdateInsert=new CopyOnWriteArrayList<>();
             try {
                 Log.d(this.getClass().getName(), " имяТаблицаAsync " + имяТаблицаAsync + " БуферПолученныйJSON " +БуферПолученныйJSON.toString() );
                     //TODO БУфер JSON от Сервера
                 CopyOnWriteArrayList<ContentValues>   contentValuesCopyOnWriteArrayList=new CopyOnWriteArrayList<>();
+
                 ObjectMapper jsonGenerator = new PUBLIC_CONTENT(context).getGeneratorJackson();
                // JsonNode jsonNodeParent=   jsonGenerator.readTree(БуферПолученныйJSON.toString());
-               JsonNode jsonNodeParent = jsonGenerator.readValue(БуферПолученныйJSON.toString(), JsonNode.class);
+              // JsonNode jsonNodeParent = jsonGenerator.readValue(БуферПолученныйJSON.toString(), JsonNode.class);
                 TypeReference< CopyOnWriteArrayList<Map<String,String>>> typeReference=   new TypeReference< CopyOnWriteArrayList<Map<String,String>>>() {};
                CopyOnWriteArrayList<Map<String,String>> jsonNodeParentMAP= jsonGenerator.readValue(БуферПолученныйJSON.toString(), typeReference);
 
@@ -1271,7 +1273,7 @@ public class Service_For_Remote_Async extends IntentService {
                         " БуферПолученныйJSON " +БуферПолученныйJSON + " jsonNodeParentMAP " +jsonNodeParentMAP);
 
                 // TODO: 26.03.2023  Количество Максимальное СТРОК
-                МаксималноеКоличествоСтрочекJSON = jsonNodeParent.size();
+                МаксималноеКоличествоСтрочекJSON = jsonNodeParentMAP.size();
                 // TODO: 11.10.2022 callback метод обратно в актвити #1
                 МетодCallBasksВизуальноИзСлужбы(МаксималноеКоличествоСтрочекJSON, ИндексВизуальнойДляPrograssBar,
                         имяТаблицаAsync,
@@ -1286,9 +1288,8 @@ public class Service_For_Remote_Async extends IntentService {
 
 
                 Flowable.fromIterable(jsonNodeParentMAP )
-                        .onBackpressureBuffer(true)
-                        .buffer(3, TimeUnit.SECONDS)
-                        .concatMap(eee->Flowable.just(eee).subscribeOn(Schedulers.newThread()))
+                        .onBackpressureBuffer(jsonNodeParentMAP.size())
+                        .buffer(200)
                         .doOnNext(new io.reactivex.rxjava3.functions.Consumer<List<Map<String, String>>>() {
                             @Override
                             public void accept(List<Map<String, String>> maps) throws Throwable {
@@ -1353,6 +1354,7 @@ public class Service_For_Remote_Async extends IntentService {
                         .doAfterNext(new io.reactivex.rxjava3.functions.Consumer<List<Map<String, String>>>() {
                             @Override
                             public void accept(List<Map<String, String>> maps) throws Throwable {
+                                try{
                                 Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasemirror/" + имяТаблицаAsync + "");
 
                                 ContentResolver resolver = context.getContentResolver();
@@ -1363,7 +1365,7 @@ public class Service_For_Remote_Async extends IntentService {
 
                                 Bundle bundleРезультатОбновлениеМассовой =resolver.call(uri,имяТаблицаAsync,БуферПолученныйJSON.toString(),bundle);
 
-                                РезультатРаботыСинхрониазциии[0] =     bundleРезультатОбновлениеМассовой.getLong("ResultAsync",0);
+                                    copyOnWriteArrayРезультатUpdateInsert.add(bundleРезультатОбновлениеМассовой.getLong("ResultAsync",0))    ;
 
 
                                 Log.d(this.getClass().getName(),"\n" + " class " +
@@ -1371,8 +1373,20 @@ public class Service_For_Remote_Async extends IntentService {
                                         + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                        " РезультатРаботыСинхрониазциии " + РезультатРаботыСинхрониазциии[0]);
+                                        " copyOnWriteArrayРезультатUpdateInsert " + copyOnWriteArrayРезультатUpdateInsert.size());
+
+                                // TODO: 01.05.2023 clear
+                                contentValuesCopyOnWriteArrayList.clear();
+                                ТекущийАдаптерДляВсего.clear();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                             }
+                            }
+
                         })
                         .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
                             @Override
@@ -1393,8 +1407,7 @@ public class Service_For_Remote_Async extends IntentService {
                 new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
-            Log.d(this.getClass().getName(), "     РезультатРаботыСинхрониазциии " + РезультатРаботыСинхрониазциии[0]);
-            return   РезультатРаботыСинхрониазциии[0].intValue();
+            return   copyOnWriteArrayРезультатUpdateInsert.size();
         }
 
 
