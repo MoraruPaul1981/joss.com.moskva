@@ -6,17 +6,23 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
+import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
+import com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_App;
 import com.dsy.dsu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 
 import java.util.Date;
 
@@ -26,7 +32,16 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private Fragment fragment_СозданиеЗаказаТранспорта;
-    private LinearLayout activity_main_order_transport;
+    private LinearLayout linear_main_ordertransport;
+    private BottomNavigationView BottomNavigationOrderTransport;
+
+    private BottomNavigationItemView bottomNavigationItemViewвыход;
+
+    private BottomNavigationItemView bottomNavigationItemView2создать;
+
+    private BottomNavigationItemView bottomNavigationItemView3обновить;
+
+    private ProgressBar progressBarСканирование;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,13 +59,24 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
                     | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
             fragmentManager = getSupportFragmentManager();
-            activity_main_order_transport =  (LinearLayout) findViewById(R.id.activity_main_order_transport);
-            ViewGroup.LayoutParams params = activity_main_order_transport.getLayoutParams();
+            linear_main_ordertransport =  (LinearLayout) findViewById(R.id.linear_main_ordertransport);
+            ViewGroup.LayoutParams params = linear_main_ordertransport.getLayoutParams();
             params.height= ViewGroup.LayoutParams.WRAP_CONTENT;
-            activity_main_order_transport.setLayoutParams(params);
+            linear_main_ordertransport.setLayoutParams(params);
+            BottomNavigationOrderTransport =  (BottomNavigationView) findViewById(R.id.BottomNavigationOrderTransport);
+            BottomNavigationOrderTransport.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED);
+            bottomNavigationItemViewвыход = BottomNavigationOrderTransport.findViewById(R.id.id_lback);
+            bottomNavigationItemViewвыход.setIconSize(50);
+            bottomNavigationItemView2создать = BottomNavigationOrderTransport.findViewById(R.id.id_create);
+            bottomNavigationItemView2создать.setIconSize(70);
+            bottomNavigationItemView3обновить = BottomNavigationOrderTransport.findViewById(R.id.id_async);
+            bottomNavigationItemView3обновить.setIconSize(50);
+            progressBarСканирование=  (ProgressBar) findViewById(R.id.ProgressBar);
+            progressBarСканирование.setVisibility(View.VISIBLE);
             // TODO: 26.04.2023 Запускаем Ордер Транпорта
             SubClassStartingFragmentOrderTran subClassStartingFragmentOrderTran=new SubClassStartingFragmentOrderTran();
             subClassStartingFragmentOrderTran.методЗапускаФрагментаОрдерТранспорта();
+            subClassStartingFragmentOrderTran.МетодВыходНаAppBack();
 
             Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date()+"\n+" +
@@ -78,7 +104,7 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             fragment_СозданиеЗаказаТранспорта = new FragmentOrderTransportOneChane();
-            fragmentTransaction.add(R.id.activity_main_order_transport, fragment_СозданиеЗаказаТранспорта).commit();//.layout.activity_for_fragemtb_history_tasks
+            fragmentTransaction.add(R.id.linear_main_ordertransport, fragment_СозданиеЗаказаТранспорта).commit();//.layout.activity_for_fragemtb_history_tasks
             fragmentTransaction.show(fragment_СозданиеЗаказаТранспорта);
             Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
@@ -101,5 +127,88 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
 
 
 }
+    private void методСлушательКнопок() {
+        try {
+            bottomNavigationItemViewвыход.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        Intent Интент_BackВозвращаемАктивти = getActivity().getIntent();
+                        Интент_BackВозвращаемАктивти.setClass(getContext(), MainActivity_Face_App.class); // Т
+                        Интент_BackВозвращаемАктивти.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        Bundle gameData = new Bundle();
+                        gameData.putString("ФлагСтатусИзФрагментаСканирования", "ЗакрываетИзСканирования");
+                        gameData.putBinder("binder", localBinderOrderTransport);
+                        Интент_BackВозвращаемАктивти.putExtras(gameData);
+                        Log.d(this.getClass().getName(), "  выходим из задания МетодКпопкаВозвращениеНазадИзСогласованиии");
+                        message.getTarget().postDelayed(()->{ startActivity(Интент_BackВозвращаемАктивти); },250);
+                        Log.d(this.getClass().getName(), "  v  " + v);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(getContext().getClass().getName(),
+                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
+                }
+            });
+            bottomNavigationItemView2создать.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        message.getTarget().postDelayed(()->{ методNewOrderTransport();},500);
+                        Log.d(this.getClass().getName(), "  v  " + v);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(getApplicationContext().getClass().getName(),
+                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
+                }
+            });
+            bottomNavigationItemView3обновить.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        progressBarСканирование.setVisibility(View.VISIBLE);
+                        Integer ПубличныйIDДляФрагмента =
+                                new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
+                        // TODO: 16.11.2022  запуск синхронизации однорозовая
+                       // методЗапускаSingleWorkManager(ПубличныйIDДляФрагмента);
+                        Log.d(this.getClass().getName(), "  v  " + v);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(getContext().getClass().getName(),
+                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(getContext().getClass().getName(),
+                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
 
+
+    }
+
+    private void МетодДизайнПрограссБара() {
+        progressBarСканирование.postDelayed(()->{
+            progressBarСканирование.setVisibility(View.INVISIBLE);
+            progressBarСканирование.setIndeterminate(true);
+        },1000);
+    }
 }
