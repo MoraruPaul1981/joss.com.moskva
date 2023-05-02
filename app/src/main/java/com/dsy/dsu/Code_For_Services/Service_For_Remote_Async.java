@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.Messenger;
 import android.os.Parcel;
 import android.os.RemoteException;
 import android.util.Log;
@@ -62,6 +63,7 @@ import java.util.Random;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Flow;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BiConsumer;
@@ -99,7 +101,6 @@ public class Service_For_Remote_Async extends IntentService {
     private LinkedBlockingQueue<ContentValues> АдаптерДляВставкиИОбновления;
 
     private   ContentValues       ТекущийАдаптерДляВсего;
-
 private  Message message;
     public Service_For_Remote_Async() {
         super("Service_For_Remote_Async");
@@ -198,13 +199,11 @@ private  Message message;
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
 try{
-       // metodStartingSync(context);
+        metodStartingSync(getApplicationContext(),null);
         Log.d(getApplicationContext().getClass().getName(), "\n"
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-
-
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -253,7 +252,9 @@ try{
 
     public void metodStartingSync(@NonNull Context context , @NonNull Message messageback) {
         try{
-            this.message=messageback;
+            if (messageback!=null) {
+                this.message=messageback;
+            }
             // TODO: 25.03.2023 ДОПОЛНИТЕОТНЕ УДЛАНИЕ СТАТУСА УДАЛЕНИЕ ПОСЛЕ СИНХРОНИАЗЦИИ
             Integer       ФинальныйРезультатAsyncBackgroud=0;
             // TODO: 16.11.2022

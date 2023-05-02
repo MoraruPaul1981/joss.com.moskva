@@ -878,7 +878,7 @@ class SubClassJsonTwoParserOtServer{
 
             // TODO: 28.04.2023
                        Flowable.fromIterable(contentValuesCopyOnWriteArrayList)
-                    .onBackpressureBuffer(true)
+                    .onBackpressureBuffer(contentValuesCopyOnWriteArrayList.size())
                     .doOnNext(new Consumer<ContentValues>() {
                         @Override
                         public void accept(ContentValues ТекущийАдаптерДляВсего) throws Throwable {
@@ -892,12 +892,20 @@ class SubClassJsonTwoParserOtServer{
                                     имяТаблицаAsync.equalsIgnoreCase("settings_tabels") ||
                                     имяТаблицаAsync.equalsIgnoreCase("view_onesignal")) {
                                 ОперацияUPDATE = методUpdateCALL(ТекущийАдаптерДляВсего);
+                                if(ОперацияUPDATE>0){
+                                    // TODO: 27.04.2023  результат
+                                    РезультатОперацииBurkUPDATE.add(ОперацияUPDATE);
+                                }
 
                                 // TODO: 27.04.2023  метод Вставки
                                 Long ОперацияInsert = 0l;
-                                if (ОперацияUPDATE == 0) {
+                               if (ОперацияUPDATE == 0) {
                                     ОперацияInsert = методInsertCAll(ОперацияUPDATE,ТекущийАдаптерДляВсего);
-                                }
+                                   // TODO: 27.04.2023  результат
+                                   if (ОперацияInsert>0) {
+                                       РезультатОперацииBurkUPDATE.add(ОперацияInsert.intValue());
+                                   }
+                               }
                                 // TODO: 27.04.2023
                                 Log.d(this.getClass().getName(), "\n" + " class " +
                                         Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -905,19 +913,24 @@ class SubClassJsonTwoParserOtServer{
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                         + имяТаблицаAsync + " АдаптерДляВставкиИОбновления.size() "
                                         + ТекущийАдаптерДляВсего + " ОперацияUPDATE "
-                                        + ОперацияUPDATE + " ОперацияInsert " + ОперацияInsert);
+                                        + ОперацияUPDATE + " ОперацияInsert " + ОперацияInsert+
+                                        "  РезультатОперацииBurkUPDATE " +РезультатОперацииBurkUPDATE);
 
                             } else {
                                 // TODO: 27.04.2023  метод Вставки
                                 Long ОперацияInsert = методInsertCAll(ОперацияUPDATE,ТекущийАдаптерДляВсего);
-                                // TODO: 27.04.2023
+                                // TODO: 27.04.2023  результат
+                                if (ОперацияInsert>0) {
+                                    РезультатОперацииBurkUPDATE.add(ОперацияInsert.intValue());
+                                }
                                 Log.d(this.getClass().getName(), "\n" + " class " +
                                         Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                         + имяТаблицаAsync + " АдаптерДляВставкиИОбновления.size() "
                                         + ТекущийАдаптерДляВсего + " ОперацияUPDATE "
-                                        + ОперацияUPDATE + " ОперацияInsert " + ОперацияInsert);
+                                        + ОперацияUPDATE + " ОперацияInsert " + ОперацияInsert+
+                                         " РезультатОперацииBurkUPDATE " +РезультатОперацииBurkUPDATE);
 
                             }
                             // TODO: 27.04.2023  clears
@@ -940,7 +953,7 @@ class SubClassJsonTwoParserOtServer{
                             // TODO: 28.04.2023 start Insert Update
                         }
                     })
-                    .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
+                    .doOnError(new Consumer<Throwable>() {
                         @Override
                         public void accept(Throwable throwable) throws Throwable {
                             throwable.printStackTrace();
@@ -968,6 +981,9 @@ class SubClassJsonTwoParserOtServer{
                                 }
                                 Create_Database_СамаБАзаSQLite.endTransaction();
                             }
+                            // TODO: 02.05.2023 clear
+                            // TODO: 02.05.2023
+                            РезультатОперацииBurkUPDATE.clear();
                             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
