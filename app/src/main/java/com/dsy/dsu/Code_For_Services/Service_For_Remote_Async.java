@@ -18,13 +18,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.os.Messenger;
 import android.os.Parcel;
 import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.BinderThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -353,12 +351,10 @@ try{
     private void МетодПослеAsyncTaskЗавершающий( @NonNull Context context,@NonNull Integer ФинальныйРезультатAsyncBackgroud) {
         try{
         // TODO: 05.11.2022  после  ВЫПОЛЕНИЯ СИНЗХРОНИАЗИИ СООБЩАЕМ ОБ ОКОНЧАТИИ СИХРОНИАЗЦИИ ВИЗУАЛЬТА
-        new Class_Engine_SQL(context).МетодCallBasksВизуальноИзСлужбы(МаксималноеКоличествоСтрочекJSON,МаксималноеКоличествоСтрочекJSON,
-                Проценты,null,"ФинишВыходИзAsyncBackground",false,false,
-                ФинальныйРезультатAsyncBackgroud);
-            // TODO: 28.03.2023
-        Log.d(context.getClass().getName(), "\n" + " МаксималноеКоличествоСтрочекJSON: " +МаксималноеКоличествоСтрочекJSON );
-            // TODO: 28.03.2023 Выключаем СЛужбу
+        new Class_Engine_SQL(context).   методCallBackPrograssBars(2, Проценты,new String(),0);
+            Log.i(context.getClass().getName(),  " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " Проценты " + Проценты  );
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -1098,13 +1094,6 @@ try{
 
                         }
                     }
-                    // TODO: 09.11.2022 визуальна часть синхрониазции по таблице
-                    МетодCallBasksВизуальноИзСлужбы(МаксималноеКоличествоСтрочекJSON,
-                            ИндексВизуальнойДляPrograssBar,ИмяТаблицыОтАндройда_Локальноая,
-                            Проценты,"ПроцессеAsyncBackground",
-                            true,false,0);
-                    // TODO: 20.03.2023  Запуск Метода Смены Статуса Удаление на Сервера
-             /*       МетодОчисткаПеременныхПослеСинх();*/
                 }
                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1217,9 +1206,7 @@ try{
             StringBuffer БуферПолученныйJSON = null;
             try {
                 Log.d(this.getClass().getName(), "  МетодПолучаемДаннныесСервера" + "  имяТаблицыОтАндройда_локальноая" + ИмяТаблицы);
-                    МетодCallBasksВизуальноИзСлужбы(МаксималноеКоличествоСтрочекJSON,
-                            ИндексВизуальнойДляPrograssBar,ИмяТаблицы,
-                            Проценты,"ПроцессеAsyncBackground",false,false,0);
+                // TODO: 02.05.2023  Ответ Обратно ПрограссБару
                     PUBLIC_CONTENT public_content=   new PUBLIC_CONTENT(context);
                     String   ИмяСерверИзХранилица = preferences.getString("ИмяСервера","");
                     Integer    ПортСерверИзХранилица = preferences.getInt("ИмяПорта",0);
@@ -1284,18 +1271,8 @@ try{
                 // TODO: 26.03.2023  Количество Максимальное СТРОК
                 МаксималноеКоличествоСтрочекJSON = jsonNodeParentMAP.size();
                 // TODO: 11.10.2022 callback метод обратно в актвити #1
-                МетодCallBasksВизуальноИзСлужбы(МаксималноеКоличествоСтрочекJSON, ИндексВизуальнойДляPrograssBar,
-                        имяТаблицаAsync,
-                        Проценты, "ПроцессеAsyncBackground",
-                        false,
-                        false,
-                        0);
                 ИндексВизуальнойДляPrograssBar=0;
-
                 // TODO: 28.04.2023  начало тест кода
-
-
-
                 Flowable.fromIterable(jsonNodeParentMAP )
                         .onBackpressureBuffer(jsonNodeParentMAP.size())
                         .buffer(200)
@@ -1436,48 +1413,18 @@ try{
 
 
 //todo МЕТОД ВИЗУАЛЬНОГО ОТВЕТА ИЗ СЛУЖБЫ ОБРАБТНО В activity async
-        private void МетодCallBasksВизуальноИзСлужбы(Integer МаксималноеКоличествоСтрочекJSON,
-                                                     Integer ИндексТекущейОперацииJSONДляВизуальнойОбработкиНижнегоПрограссБара,
-                                                     String имяТаблицыОтАндройда_локальноая,
-                                                     String ПроцентыВерхнегоПрограссбара,
-                                                     String СтатусAsyncBackground,
-                                                     Boolean РеальнаяРаботаВставкаОбновиеContProver,
-                                                     Boolean ЧтоДелаемПолучаемДанныеИлиОтправляем,
-                                                     Integer ФинальныйРезультатAsyncBackgroud)  {
+        private void методCallBackPrograssBars(@NonNull  Integer CurrentProssesing,
+                                               @NonNull  String Проценны
+                                               ,@NonNull String имяТаблицаAsync,
+                                               @NonNull Integer ПозицияТекущейТаблицы)  {
             try {
-                
-/*            Message lMsg = new Message();
-            Bundle bundleОтправкаОбратноActivity=new Bundle();
-                if (МаксималноеКоличествоСтрочекJSON!=null) {
-                    bundleОтправкаОбратноActivity.putInt("МаксималноеКоличествоСтрочекJSON",МаксималноеКоличествоСтрочекJSON);
-                }
-                if (ИндексТекущейОперацииJSONДляВизуальнойОбработкиНижнегоПрограссБара!=null) {
-                    bundleОтправкаОбратноActivity.putInt("ИндексТекущейОперацииJSONДляВизуальнойОбработкиНижнегоПрограссБара",ИндексТекущейОперацииJSONДляВизуальнойОбработкиНижнегоПрограссБара);
-                }
-                if (имяТаблицыОтАндройда_локальноая!=null) {
-                    bundleОтправкаОбратноActivity.putString("имяТаблицыОтАндройда_локальноая",имяТаблицыОтАндройда_локальноая);
-                }
-                if (ПроцентыВерхнегоПрограссбара!=null) {
-                    bundleОтправкаОбратноActivity.putString("ПроцентыВерхнегоПрограссбара",ПроцентыВерхнегоПрограссбара);
-                }
-                if (СтатусAsyncBackground!=null) {
-                    bundleОтправкаОбратноActivity.putString("СтатусРаботыСлужбыСинхронизации",СтатусAsyncBackground);
-                }
-                if (РеальнаяРаботаВставкаОбновиеContProver!=null) {
-                    bundleОтправкаОбратноActivity.putBoolean("РеальнаяРаботаВставкаОбновиеContProver",РеальнаяРаботаВставкаОбновиеContProver);
-                }
-                if (ЧтоДелаемПолучаемДанныеИлиОтправляем!=null) {
-                    bundleОтправкаОбратноActivity.putBoolean("ЧтоДелаемПолучаемДанныеИлиОтправляем",ЧтоДелаемПолучаемДанныеИлиОтправляем);
-                }
-                if (ФинальныйРезультатAsyncBackgroud!=null) {
-                    bundleОтправкаОбратноActivity.putInt("ФинальныйРезультатAsyncBackgroud",ФинальныйРезультатAsyncBackgroud);
-                }
-                lMsg.setData(bundleОтправкаОбратноActivity);
-
-                if (mService !=null) {
-                    mService.send(lMsg);
-                }*/
-                Message msg = Message.obtain(null,1,ПроцентыВерхнегоПрограссбара);
+                Bundle bundleCallsBackAsync=new Bundle();
+                bundleCallsBackAsync.putString("Проценны" ,Проценны);
+                bundleCallsBackAsync.putString("имятаблицы" ,имяТаблицаAsync);
+                bundleCallsBackAsync.putInt("maxtables" ,public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.size());
+                bundleCallsBackAsync.putInt("currentposition" ,ПозицияТекущейТаблицы);
+                message.what=CurrentProssesing;
+                message.setData(bundleCallsBackAsync);
                 message.getTarget().dispatchMessage(message);
                 Log.d(this.getClass().getName(), "\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
@@ -1500,10 +1447,7 @@ try{
                 Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasemirror/" + имяТаблицыОтАндройда_локальноая + "");
                     if (АдаптерДляВставкиИОбновления.size()>0) {
                         ContentResolver contentResolver  = context.getContentResolver();
-                        МетодCallBasksВизуальноИзСлужбы(МаксималноеКоличествоСтрочекJSON,
-                                ИндексВизуальнойДляPrograssBar,имяТаблицыОтАндройда_локальноая,
-                                Проценты,"ПроцессеAsyncBackground",
-                                true,false,0);
+                        // TODO: 02.05.2023  Ответ Обратно ПрограссБару
                         ContentValues[] contentValuesМассив=new ContentValues[АдаптерДляВставкиИОбновления.size()];
                         contentValuesМассив=АдаптерДляВставкиИОбновления.toArray(contentValuesМассив);
                         int РезультатОбновлениеМассовой = contentResolver.bulkInsert(uri, contentValuesМассив);
@@ -1799,12 +1743,13 @@ try{
                     // TODO: 01.12.2022
 
                     Flowable.fromIterable(public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда)
-                            .onBackpressureBuffer(true)
+                            .onBackpressureBuffer(public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.size())
                                     .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
                                         @Override
                                         public void accept(Throwable throwable) throws Throwable {
                                             throwable.printStackTrace();
-                                            Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                            Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :"
+                                                    + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                                                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
                                             // TODO: 01.09.2021 метод вызова
                                             new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(throwable.toString(),
@@ -1816,18 +1761,10 @@ try{
                                                 @Override
                                                 public Object apply(String ТекущаяТаблицаИзПотока) throws Throwable {
                                                     ИндексТекущейОперацииРеальногРезультатОбработкиАтблицы = 0;
-                                                    Log.d(this.getClass().getName(), " ТекущаяТаблицаИзПотока " + ТекущаяТаблицаИзПотока +"  " + new Date().toGMTString());
-                                                    // TODO: 06.10.2022  вычисляем какую таблицу нужно отоброзить в верхнем ПрограссбАре
-                                                    Integer ИндексТекущееТаллицыДляПониманияВизуальнойОтобрабжения = ГлавныеТаблицыСинхронизации.indexOf(ТекущаяТаблицаИзПотока);
-                                                    Проценты = new Class_Visible_Processing_Async(context).
-                                                            ГенерируемПРОЦЕНТЫДляAsync(ИндексТекущееТаллицыДляПониманияВизуальнойОтобрабжения + 1,
-                                                                    ГлавныеТаблицыСинхронизации.size());
-                                                    Log.d(this.getClass().getName(), "  ИндексТекущееТаллицыДляПониманияВизуальнойОтобрабжения " +
-                                                            ИндексТекущееТаллицыДляПониманияВизуальнойОтобрабжения + " Проценты " + Проценты);
-                                                    // TODO: 09.11.2022 визуальна часть синхрониазции по таблице
-                                                    МетодCallBasksВизуальноИзСлужбы(МаксималноеКоличествоСтрочекJSON,
-                                                            ИндексВизуальнойДляPrograssBar,ТекущаяТаблицаИзПотока,
-                                                            Проценты,"ПроцессеAsyncBackground",false,false,0);
+                                                    Integer ПозицияТекущейТаблицы=  ГлавныеТаблицыСинхронизации.indexOf(ТекущаяТаблицаИзПотока);
+                                                    Проценты = new Class_Visible_Processing_Async(context).ГенерируемПРОЦЕНТЫДляAsync(ПозицияТекущейТаблицы, ГлавныеТаблицыСинхронизации.size());
+                                                    // TODO: 02.05.2023  Ответ Обратно ПрограссБару
+                                                    методCallBackPrograssBars(2, Проценты,ТекущаяТаблицаИзПотока,ПозицияТекущейТаблицы+1);
                                                     // TODO: 24.01.2022 сама операция синхрониазции по таблице
                                                     ПубличныйРезультатОтветаОтСерврераУспешно= МетодЗапускаСинхрониазцииПоАТблицам(ID,
                                                             ТекущаяТаблицаИзПотока,
@@ -1894,9 +1831,6 @@ try{
                 Class_GRUD_SQL_Operations class_grud_sql_operations;
                 class_grud_sql_operations = new Class_GRUD_SQL_Operations(context);
                 try {
-                    МетодCallBasksВизуальноИзСлужбы(МаксималноеКоличествоСтрочекJSON,
-                            ИндексВизуальнойДляPrograssBar,Таблицы,
-                            Проценты,"ПроцессеAsyncBackground",false,true,0);
                     Log.d(this.getClass().getName(), "  МЕТОД НЕПОСТРЕДСТВЕННО ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР МЕТОД POST ");
                     // TODO: 15.06.2021 проверяем если таблица табель то еси в нутри потока отпралеемого хоть один день d1,d2,d3 защита от пустого траыфика\
                     Log.d(this.getClass().getName(), " ГенерацияJSONОтAndroida.toString() "
