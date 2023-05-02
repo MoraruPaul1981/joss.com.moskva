@@ -239,12 +239,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
                             Intent Интент_BackВозвращаемАктивти = getActivity().getIntent();
                             Интент_BackВозвращаемАктивти.setClass(getContext(), MainActivity_Face_App.class); // Т
                             Интент_BackВозвращаемАктивти.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            Bundle gameData = new Bundle();
-                            gameData.putString("ФлагСтатусИзФрагментаСканирования", "ЗакрываетИзСканирования");
-                            gameData.putBinder("binder", localBinderOrderTransport);
-                            Интент_BackВозвращаемАктивти.putExtras(gameData);
                             Log.d(this.getClass().getName(), "  выходим из задания МетодКпопкаВозвращениеНазадИзСогласованиии");
-                            message.getTarget().postDelayed(()->{ startActivity(Интент_BackВозвращаемАктивти); },250);
+                            message.getTarget().post(()->{ startActivity(Интент_BackВозвращаемАктивти); });
                             Log.d(this.getClass().getName(), "  v  " + v);
                         } catch (Exception e) {
                             e.printStackTrace();

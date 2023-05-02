@@ -2,7 +2,6 @@ package com.dsy.dsu.Code_For_Services;
 
 import android.app.IntentService;
 import android.content.ComponentName;
-import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,7 +11,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
@@ -22,7 +20,6 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.Parcel;
-import android.os.Parcelable;
 import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
@@ -44,10 +41,7 @@ import com.dsy.dsu.Business_logic_Only_Class.Jakson.GeneratorJSONSerializer;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.dsy.dsu.Business_logic_Only_Class.SubClass_Connection_BroadcastReceiver_Sous_Asyns_Glassfish;
-import com.dsy.dsu.model.Fio;
-import com.dsy.dsu.model.Organization;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
@@ -59,40 +53,27 @@ import java.io.Serializable;
 import java.io.StringWriter;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Spliterator;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Flow;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import javax.crypto.NoSuchPaddingException;
 
-import io.reactivex.rxjava3.core.BackpressureOverflowStrategy;
 import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.functions.Predicate;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 /**
@@ -106,7 +87,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class Service_For_Remote_Async extends IntentService {
     public LocalBinderДляТабеля binderBinderRemoteAsync = new LocalBinderДляТабеля();
     private Context context;
-    private    Messenger messengerCallBacks;
     private  Integer МаксималноеКоличествоСтрочекJSON;
     private SharedPreferences preferences;
     private   String Проценты;
@@ -119,6 +99,8 @@ public class Service_For_Remote_Async extends IntentService {
     private LinkedBlockingQueue<ContentValues> АдаптерДляВставкиИОбновления;
 
     ContentValues       ТекущийАдаптерДляВсего;
+
+    private   Messenger mMessenger;
 
     public Service_For_Remote_Async() {
         super("Service_For_Remote_Async");
@@ -147,13 +129,27 @@ public class Service_For_Remote_Async extends IntentService {
     class IncomingHandler extends Handler{
         @Override
         public void handleMessage(@NonNull Message msg) {
-            super.handleMessage(msg);
             try{
-                  Bundle data =msg.getData();
-                  messengerCallBacks=msg.replyTo;
-                  Intent intentДляФоновойСинхронизации=new Intent("ЗапусAsyncBackground");
-                  intentДляФоновойСинхронизации.putExtras(data);
-                  onHandleIntent(intentДляФоновойСинхронизации);
+                switch (msg.what){
+                    case 1:
+                        // TODO: 28.09.2022  запускаем службу табелей
+                       metodStartingSync(context);
+                        Log.d(getApplicationContext().getClass().getName(), "\n"
+                                + " время: " + new Date() + "\n+" +
+                                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                        break;
+
+                    default:
+                        // TODO: 28.09.2022  запускаем службу табелей
+                        Log.d(getApplicationContext().getClass().getName(), "\n"
+                                + " время: " + new Date() + "\n+" +
+                                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                        super.handleMessage(msg);
+
+
+                }
             Log.d(context.getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -195,22 +191,13 @@ public class Service_For_Remote_Async extends IntentService {
             return super.unlinkToDeath(recipient, flags);
         }
     }
-    final Messenger messenger = new Messenger(new IncomingHandler());
-/*
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        Log.d(context.getClass().getName(), "\n"
-                + " время: " + new Date() + "\n+" +
-                " Класс в процессе... " + this.getClass().getName() + "\n" +
-                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-        //   return super.onBind(intent);
-        return binder;
-    }*/
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
   try{
+      Handler handler=new IncomingHandler();
+      mMessenger = new Messenger(handler);
         Log.d(context.getClass().getName(), "\n"
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -224,8 +211,17 @@ public class Service_For_Remote_Async extends IntentService {
                 Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
     }
-        return messenger.getBinder();
+        return mMessenger.getBinder();
     }
+
+    @Override
+    protected void onHandleIntent(@Nullable Intent intent) {
+        Log.d(context.getClass().getName(), "\n"
+                + " время: " + new Date() + "\n+" +
+                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+    }
+
     @Override
     public void onDestroy() {
         try{
@@ -258,25 +254,7 @@ public class Service_For_Remote_Async extends IntentService {
         super.attachBaseContext(newBase);
     }
 
-    @Override
-    protected void onHandleIntent(Intent intent) {
-        try{
-        this.context =getApplicationContext();
-                // TODO: 28.09.2022  запускаем службу табелей
-                  metodStartingSync(context);
-                Log.d(getApplicationContext().getClass().getName(), "\n"
-                        + " время: " + new Date() + "\n+" +
-                        " Класс в процессе... " + this.getClass().getName() + "\n" +
-                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-    }
-// TODO: 30.06.2022 сама не постредствено запуск метода
-    }
+
 
 
 @BinderThread
@@ -1398,7 +1376,7 @@ public class Service_For_Remote_Async extends IntentService {
                                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                             }
                         })
-                        .blockingSubscribe();
+                        .subscribe();
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1436,7 +1414,31 @@ public class Service_For_Remote_Async extends IntentService {
                                                      Boolean ЧтоДелаемПолучаемДанныеИлиОтправляем,
                                                      Integer ФинальныйРезультатAsyncBackgroud)  {
             try {
-            Message lMsg = new Message();
+
+             /*   Bundle bundle = new Bundle();
+                bundle.putString("СтатусРаботыСлужбыСинхронизации", "ЗапускаемAsyncBackground");
+                bundle.putString("ПроцентыВерхнегоПрограссбара",ПроцентыВерхнегоПрограссбара);
+                Message msg = Message.obtain(new IncomingHandler(),1,bundle);
+                mMessenger.send(msg);*/
+
+                Handler handler=new IncomingHandler();
+                Message m = Message.obtain(handler);
+                m.replyTo = mMessenger;
+                mMessenger.send(m);
+
+
+
+
+
+
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " mService "+ mMessenger);//mMessenger
+
+
+
+/*            Message lMsg = new Message();
             Bundle bundleОтправкаОбратноActivity=new Bundle();
                 if (МаксималноеКоличествоСтрочекJSON!=null) {
                     bundleОтправкаОбратноActivity.putInt("МаксималноеКоличествоСтрочекJSON",МаксималноеКоличествоСтрочекJSON);
@@ -1464,9 +1466,9 @@ public class Service_For_Remote_Async extends IntentService {
                 }
                 lMsg.setData(bundleОтправкаОбратноActivity);
 
-                if (messengerCallBacks!=null) {
-                    messengerCallBacks.send(lMsg);
-                }
+                if (mService !=null) {
+                    mService.send(lMsg);
+                }*/
             } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
