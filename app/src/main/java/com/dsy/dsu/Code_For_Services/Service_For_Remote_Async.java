@@ -73,6 +73,7 @@ import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.functions.Predicate;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 /**
@@ -693,7 +694,7 @@ try{
                         // TODO: 02.04.2023 версия данных
                         final String[] НазваниеСервернойТаблицы = new String[1];
                         Flowable.fromIterable(БуферJsonОтСервераmodification_server)
-                                .onBackpressureBuffer(true)
+                                .onBackpressureBuffer(БуферJsonОтСервераmodification_server.size())
                                 .doOnNext(new io.reactivex.rxjava3.functions.Consumer<Map<String, String>>() {
                                     @Override
                                     public void accept(Map<String, String> stringStringMap) throws Throwable {
