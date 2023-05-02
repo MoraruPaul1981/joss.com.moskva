@@ -310,41 +310,28 @@ try{
         Integer       ФинальныйРезультатAsyncBackgroud=0;
         try{
             // TODO: 25.03.2023 ДОПОЛНИТЕОТНЕ УДЛАНИЕ СТАТУСА УДАЛЕНИЕ ПОСЛЕ СИНХРОНИАЗЦИИ
-            // TODO: 16.11.2022
-            Flowable
-                    .fromSupplier(new io.reactivex.rxjava3.functions.Supplier<Object>() {
-                        @Override
-                        public Object get() throws Throwable {
-                            Integer       ФинальныйРезультатAsyncBackgroud  = new Class_Engine_SQL(context).МетодЗАпускаФоновойСинхронизации(context);
+            ФинальныйРезультатAsyncBackgroud  = new Class_Engine_SQL(context).МетодЗАпускаФоновойСинхронизации(context);
 
-                            Log.d(context.getClass().getName(), "\n"
-                                    + " время: " + new Date() + "\n+" +
-                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                    + "    ФинальныйРезультатAsyncBackgroud "+ФинальныйРезультатAsyncBackgroud);
+            Log.d(context.getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                    + "    ФинальныйРезультатAsyncBackgroud "+ФинальныйРезультатAsyncBackgroud);
 
-                         МетодПослеAsyncTaskЗавершающий( context,ФинальныйРезультатAsyncBackgroud);
-                            Log.d(context.getClass().getName(), "\n"
-                                    + " время: " + new Date() + "\n+" +
-                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
-                            return ФинальныйРезультатAsyncBackgroud;
-                        }
-                    })
-                    .subscribeOn(Schedulers.single())
-                    .doOnComplete(new Action() {
-                        @Override
-                        public void run() throws Throwable {
-                            // TODO: 26.03.2023 дополнительное удаление после Удаление статсу удалнеенон
-                            if (ФинальныйРезультатAsyncBackgroud>0) {
-                                МетодПослеСинхрониазцииУдалениеСтатусаУдаленный(context);
-                            }
-                            Log.d(context.getClass().getName(), "\n"
-                                    + " время: " + new Date() + "\n+" +
-                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
-                        }
-                    }).blockingSubscribe();
+            МетодПослеAsyncTaskЗавершающий( context,ФинальныйРезультатAsyncBackgroud);
+            Log.d(context.getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
+
+            if (ФинальныйРезультатAsyncBackgroud>0) {
+                МетодПослеСинхрониазцииУдалениеСтатусаУдаленный(context);
+            }
+            Log.d(context.getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -1436,6 +1423,7 @@ try{
                                                ,@NonNull String имяТаблицаAsync,
                                                @NonNull Integer ПозицияТекущейТаблицы)  {
             try {
+                if (message!=null) {
                     Bundle bundleCallsBackAsync=new Bundle();
                     bundleCallsBackAsync.putString("Проценны" ,Проценны);
                     bundleCallsBackAsync.putString("имятаблицы" ,имяТаблицаAsync);
@@ -1444,7 +1432,8 @@ try{
                     message.what=CurrentProssesing;
                     message.setData(bundleCallsBackAsync);
                     message.getTarget().dispatchMessage(message);
-                    Log.d(this.getClass().getName(), "\n" + " class " +
+                }
+                Log.d(this.getClass().getName(), "\n" + " class " +
                             Thread.currentThread().getStackTrace()[2].getClassName()
                             + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
