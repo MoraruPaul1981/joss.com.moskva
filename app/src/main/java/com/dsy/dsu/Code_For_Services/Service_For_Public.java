@@ -158,10 +158,21 @@ public class Service_For_Public extends IntentService {
 
         @Override
         protected boolean onTransact(int code, @NonNull Parcel data, @Nullable Parcel reply, int flags) throws RemoteException {
-
+          try{
             data = Parcel.obtain();
             reply = Parcel.obtain();
             data.writeString("fffff");
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
+        }
             return    reply.readBoolean();
         }
     }

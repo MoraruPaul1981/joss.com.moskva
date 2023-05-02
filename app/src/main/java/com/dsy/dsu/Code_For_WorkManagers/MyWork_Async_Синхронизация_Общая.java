@@ -38,10 +38,10 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
     private String ИмяСлужбыСинхронизации="WorkManager Synchronizasiy_Data";
     @Inject
     private Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal class_generation_sendBroadcastReceiver_and_firebase_oneSignal;
-    private Service_For_Remote_Async localBinderAsync;
     private      ServiceConnection serviceConnection;
     private  String КлючДляFirebaseNotification = "2a1819db-60c8-4ca3-a752-1b6cd9cadfa1";
-    private Service_For_Remote_Async service_for_remote_async;
+
+    private Service_For_Remote_Async.LocalBinderAsync localBinderAsync;
     // TODO: 28.09.2022
     public MyWork_Async_Синхронизация_Общая(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -71,12 +71,12 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
                         Log.d(getApplicationContext().getClass().getName().toString(), "\n"
                                 + "onServiceConnected  ОБЩАЯ messengerActivity  " + messengerWorkManager.getBinder().pingBinder());
                         if (service.isBinderAlive()) {
-                            service_for_remote_async = new Service_For_Remote_Async();
+                            localBinderAsync = (Service_For_Remote_Async.LocalBinderAsync) service;
                             //TODO СИНХРОНИАЗЦИЯ ГЛАВНАЯ
                             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                    + " МетодБиндингаОбщая service.isBinderAlive() " + service.isBinderAlive());
+                                    + "localBinderAsync " + localBinderAsync.isBinderAlive());
                         }
                     }
 
@@ -174,7 +174,7 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
             myDataОтветОбщейСлужбы = new Data.Builder().putInt("ReturnPublicAsyncWork", ФинальныйРезультатAsyncBackgroud).build();
             if (serviceConnection!=null) {
                 getApplicationContext().unbindService(serviceConnection);
-                service_for_remote_async=null;
+                localBinderAsync=null;
                 serviceConnection=null;
             }
 
@@ -296,12 +296,12 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
                     new Class_Find_Setting_User_Network(getApplicationContext()).МетодПроветяетКакуюУстановкуВыбралПользовательСети();
             Log.d(this.getClass().getName(), "  ВыбранныйРежимСети ВыбранныйРежимСети "
                     + ВыбранныйРежимСети);
-            if (ВыбранныйРежимСети == true && service_for_remote_async!=null ) {
-              ФинальныйРезультатAsyncBackgroud = service_for_remote_async.metodStartingSync(getApplicationContext());
+            if (ВыбранныйРежимСети == true && localBinderAsync!=null ) {
+              ФинальныйРезультатAsyncBackgroud = localBinderAsync.getService().metodStartingSync(getApplicationContext());
                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " ФинальныйРезультатAsyncBackgroud " + " service_for_remote_async " + service_for_remote_async.binderBinderRemoteAsync);
+                        + " ФинальныйРезультатAsyncBackgroud " + " localBinderAsync.isBinderAlive( " + localBinderAsync.isBinderAlive());
             }
        } catch (Exception e) {
            e.printStackTrace();

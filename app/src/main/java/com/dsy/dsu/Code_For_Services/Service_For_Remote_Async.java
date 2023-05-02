@@ -60,6 +60,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
@@ -85,7 +86,7 @@ import io.reactivex.rxjava3.functions.Predicate;
  * helper methods.
  */
 public class Service_For_Remote_Async extends IntentService {
-    public LocalBinderДляТабеля binderBinderRemoteAsync = new LocalBinderДляТабеля();
+    protected LocalBinderAsync binderBinderRemoteAsync = new LocalBinderAsync();
     private Context context;
     private  Integer МаксималноеКоличествоСтрочекJSON;
     private SharedPreferences preferences;
@@ -98,10 +99,9 @@ public class Service_For_Remote_Async extends IntentService {
 
     private LinkedBlockingQueue<ContentValues> АдаптерДляВставкиИОбновления;
 
-    ContentValues       ТекущийАдаптерДляВсего;
+    private   ContentValues       ТекущийАдаптерДляВсего;
 
-    private   Messenger mMessenger;
-
+private  Message message;
     public Service_For_Remote_Async() {
         super("Service_For_Remote_Async");
     }
@@ -126,34 +126,29 @@ public class Service_For_Remote_Async extends IntentService {
     }
     }
 
-    class IncomingHandler extends Handler{
+
+    /**
+     * Class used for the client Binder.  Because we know this service always
+     * runs in the same process as its clients, we don't need to deal with IPC.
+     */
+   public class LocalBinderAsync extends Binder {
+        public Service_For_Remote_Async getService() {
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+            return Service_For_Remote_Async.this;
+        }
+
         @Override
-        public void handleMessage(@NonNull Message msg) {
-            try{
-                switch (msg.what){
-                    case 1:
-                        // TODO: 28.09.2022  запускаем службу табелей
-                       metodStartingSync(context);
-                        Log.d(getApplicationContext().getClass().getName(), "\n"
-                                + " время: " + new Date() + "\n+" +
-                                " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-                        break;
-
-                    default:
-                        // TODO: 28.09.2022  запускаем службу табелей
-                        Log.d(getApplicationContext().getClass().getName(), "\n"
-                                + " время: " + new Date() + "\n+" +
-                                " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-                        super.handleMessage(msg);
-
-
-                }
-            Log.d(context.getClass().getName(), "\n"
-                    + " время: " + new Date() + "\n+" +
-                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+        protected boolean onTransact(int code, @NonNull Parcel data, @Nullable Parcel reply, int flags) throws RemoteException {
+  try{
+            data = Parcel.obtain();
+            reply = Parcel.obtain();
+      reply.writeSerializable( (Serializable) new Handler(getMainLooper()));
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "  message " +message);
+            ///return super.onTransact(code, data, reply, flags);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -162,23 +157,7 @@ public class Service_For_Remote_Async extends IntentService {
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
         }
-        }
-    }
-
-    /**
-     * Class used for the client Binder.  Because we know this service always
-     * runs in the same process as its clients, we don't need to deal with IPC.
-     */
-   public class LocalBinderДляТабеля extends Binder {
-        public Service_For_Remote_Async getService() {
-            // Return this instance of LocalService so clients can call public methods
-            //   return Service_For_Remote_Async.this;
-            return Service_For_Remote_Async.this;
-        }
-
-        @Override
-        protected boolean onTransact(int code, @NonNull Parcel data, @Nullable Parcel reply, int flags) throws RemoteException {
-            return super.onTransact(code, data, reply, flags);
+            return   true;
         }
 
         @Override
@@ -191,18 +170,43 @@ public class Service_For_Remote_Async extends IntentService {
             return super.unlinkToDeath(recipient, flags);
         }
     }
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-  try{
-      Handler handler=new IncomingHandler();
-      mMessenger = new Messenger(handler);
-        Log.d(context.getClass().getName(), "\n"
+        try{
+            binderBinderRemoteAsync.setCallingWorkSourceUid(new Random().nextInt());
+            Log.d(context.getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
+        }
+        return binderBinderRemoteAsync;
+    }
+
+
+
+
+
+
+
+
+    @Override
+    protected void onHandleIntent(@Nullable Intent intent) {
+try{
+        metodStartingSync(context);
+        Log.d(getApplicationContext().getClass().getName(), "\n"
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-        //   return super.onBind(intent);
+
+
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -211,15 +215,6 @@ public class Service_For_Remote_Async extends IntentService {
                 Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
     }
-        return mMessenger.getBinder();
-    }
-
-    @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
-        Log.d(context.getClass().getName(), "\n"
-                + " время: " + new Date() + "\n+" +
-                " Класс в процессе... " + this.getClass().getName() + "\n" +
-                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
     }
 
     @Override
@@ -257,7 +252,7 @@ public class Service_For_Remote_Async extends IntentService {
 
 
 
-@BinderThread
+
     public Integer metodStartingSync(@NonNull Context context) {
         Integer ФинальныйРезультатAsyncBackgroud = 0;
   try{
@@ -290,6 +285,42 @@ public class Service_For_Remote_Async extends IntentService {
         Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
     }
   return    ФинальныйРезультатAsyncBackgroud;
+    }
+
+    // TODO: 02.05.2023 for Visiul Async
+    public Integer metodStartingSync(@NonNull Context context,@NonNull Message message) {
+        Integer ФинальныйРезультатAsyncBackgroud = 0;
+        try{
+            this.message=message;
+            // TODO: 25.03.2023 ДОПОЛНИТЕОТНЕ УДЛАНИЕ СТАТУСА УДАЛЕНИЕ ПОСЛЕ СИНХРОНИАЗЦИИ
+            // TODO: 16.11.2022
+            ФинальныйРезультатAsyncBackgroud = new Class_Engine_SQL(context).МетодЗАпускаФоновойСинхронизации(context);
+            Log.d(context.getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                    + "    ФинальныйРезультатAsyncBackgroud " + ФинальныйРезультатAsyncBackgroud + "message " +message);
+
+
+            МетодПослеAsyncTaskЗавершающий(context, ФинальныйРезультатAsyncBackgroud);
+            // TODO: 26.03.2023 дополнительное удаление после Удаление статсу удалнеенон
+            if (ФинальныйРезультатAsyncBackgroud > 0) {
+                МетодПослеСинхрониазцииУдалениеСтатусаУдаленный(context);
+            }
+            Log.d(context.getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " ФинальныйРезультатAsyncBackgroud " + ФинальныйРезультатAsyncBackgroud);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
+        }
+        return    ФинальныйРезультатAsyncBackgroud;
     }
 
 
@@ -1414,30 +1445,7 @@ public class Service_For_Remote_Async extends IntentService {
                                                      Boolean ЧтоДелаемПолучаемДанныеИлиОтправляем,
                                                      Integer ФинальныйРезультатAsyncBackgroud)  {
             try {
-
-             /*   Bundle bundle = new Bundle();
-                bundle.putString("СтатусРаботыСлужбыСинхронизации", "ЗапускаемAsyncBackground");
-                bundle.putString("ПроцентыВерхнегоПрограссбара",ПроцентыВерхнегоПрограссбара);
-                Message msg = Message.obtain(new IncomingHandler(),1,bundle);
-                mMessenger.send(msg);*/
-
-                Handler handler=new IncomingHandler();
-                Message m = Message.obtain(handler);
-                m.replyTo = mMessenger;
-                mMessenger.send(m);
-
-
-
-
-
-
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " mService "+ mMessenger);//mMessenger
-
-
-
+                
 /*            Message lMsg = new Message();
             Bundle bundleОтправкаОбратноActivity=new Bundle();
                 if (МаксималноеКоличествоСтрочекJSON!=null) {
@@ -1469,6 +1477,16 @@ public class Service_For_Remote_Async extends IntentService {
                 if (mService !=null) {
                     mService.send(lMsg);
                 }*/
+                Bundle bundle=new Bundle();
+                bundle.putString("prossesig",ПроцентыВерхнегоПрограссбара  );
+                message.setData(bundle);
+                message.getTarget().dispatchMessage(message);
+                Log.d(this.getClass().getName(), "\n" + " class " +
+                        Thread.currentThread().getStackTrace()[2].getClassName()
+                        + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " message " +message);
             } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +

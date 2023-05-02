@@ -279,13 +279,13 @@
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE"
 
-
-
             android:showOnLockScreen="true">
             <intent-filter>
                 <action android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <action android:name="android.permission.WAKE_LOCK" />
                 <action android:name="android.intent.action.SCREEN_OFF" />
                 <action android:name="android.intent.action.SCREEN_ON" />
@@ -312,6 +312,10 @@
                 <action android:name="android.intent.action.ACTION_EXTERNAL_APPLICATIONS_AVAILABLE" />
             </intent-filter>
         </service>
+
+
+
+
         <service
             android:name=".Code_For_Services.Service_for_AdminissionMaterial"
             android:directBootAware="true"
