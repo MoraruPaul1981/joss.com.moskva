@@ -252,7 +252,7 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
             Log.d(this.getClass().getName(), "  ВыбранныйРежимСети ВыбранныйРежимСети "
                     + ВыбранныйРежимСети);
             if (ВыбранныйРежимСети == true && localBinderAsync!=null ) {
-              ФинальныйРезультатAsyncBackgroud = localBinderAsync.getService().metodStartingSync(getApplicationContext());
+              ФинальныйРезультатAsyncBackgroud = localBinderAsync.getService().metodStartingSyncWorkNamager(getApplicationContext());
                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"

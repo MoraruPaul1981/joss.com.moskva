@@ -173,7 +173,6 @@ private  Message message;
     @Override
     public IBinder onBind(Intent intent) {
         try{
-            binderBinderRemoteAsync.setCallingWorkSourceUid(new Random().nextInt());
             Log.d(context.getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -199,7 +198,7 @@ private  Message message;
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
 try{
-        metodStartingSync(context);
+       // metodStartingSync(context);
         Log.d(getApplicationContext().getClass().getName(), "\n"
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -252,75 +251,114 @@ try{
 
 
 
-    public Integer metodStartingSync(@NonNull Context context) {
-        Integer ФинальныйРезультатAsyncBackgroud = 0;
-  try{
-        // TODO: 25.03.2023 ДОПОЛНИТЕОТНЕ УДЛАНИЕ СТАТУСА УДАЛЕНИЕ ПОСЛЕ СИНХРОНИАЗЦИИ
-        // TODO: 16.11.2022
-        ФинальныйРезультатAsyncBackgroud = new Class_Engine_SQL(context).МетодЗАпускаФоновойСинхронизации(context);
-        Log.d(context.getClass().getName(), "\n"
-                + " время: " + new Date() + "\n+" +
-                " Класс в процессе... " + this.getClass().getName() + "\n" +
-                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                + "    ФинальныйРезультатAsyncBackgroud " + ФинальныйРезультатAsyncBackgroud);
-
-
-        МетодПослеAsyncTaskЗавершающий(context, ФинальныйРезультатAsyncBackgroud);
-        // TODO: 26.03.2023 дополнительное удаление после Удаление статсу удалнеенон
-        if (ФинальныйРезультатAsyncBackgroud > 0) {
-            МетодПослеСинхрониазцииУдалениеСтатусаУдаленный(context);
-        }
-        Log.d(context.getClass().getName(), "\n"
-                + " время: " + new Date() + "\n+" +
-                " Класс в процессе... " + this.getClass().getName() + "\n" +
-                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                " ФинальныйРезультатAsyncBackgroud " + ФинальныйРезультатAsyncBackgroud);
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
-    }
-  return    ФинальныйРезультатAsyncBackgroud;
-    }
-
-    // TODO: 02.05.2023 for Visiul Async
-    public Integer metodStartingSync(@NonNull Context context,@NonNull Message message) {
-        Integer ФинальныйРезультатAsyncBackgroud = 0;
+    public void metodStartingSync(@NonNull Context context , @NonNull Message messageback) {
         try{
-            this.message=message;
+            this.message=messageback;
             // TODO: 25.03.2023 ДОПОЛНИТЕОТНЕ УДЛАНИЕ СТАТУСА УДАЛЕНИЕ ПОСЛЕ СИНХРОНИАЗЦИИ
+            Integer       ФинальныйРезультатAsyncBackgroud=0;
             // TODO: 16.11.2022
-            ФинальныйРезультатAsyncBackgroud = new Class_Engine_SQL(context).МетодЗАпускаФоновойСинхронизации(context);
-            Log.d(context.getClass().getName(), "\n"
-                    + " время: " + new Date() + "\n+" +
-                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                    + "    ФинальныйРезультатAsyncBackgroud " + ФинальныйРезультатAsyncBackgroud + "message " +message);
+            Flowable
+                    .fromSupplier(new io.reactivex.rxjava3.functions.Supplier<Object>() {
+                        @Override
+                        public Object get() throws Throwable {
+                            Integer       ФинальныйРезультатAsyncBackgroud  = new Class_Engine_SQL(context).МетодЗАпускаФоновойСинхронизации(context);
 
-
-            МетодПослеAsyncTaskЗавершающий(context, ФинальныйРезультатAsyncBackgroud);
-            // TODO: 26.03.2023 дополнительное удаление после Удаление статсу удалнеенон
-            if (ФинальныйРезультатAsyncBackgroud > 0) {
-                МетодПослеСинхрониазцииУдалениеСтатусаУдаленный(context);
-            }
-            Log.d(context.getClass().getName(), "\n"
-                    + " время: " + new Date() + "\n+" +
-                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " ФинальныйРезультатAsyncBackgroud " + ФинальныйРезультатAsyncBackgroud);
+                            Log.d(context.getClass().getName(), "\n"
+                                    + " время: " + new Date() + "\n+" +
+                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                    + "    ФинальныйРезультатAsyncBackgroud "+ФинальныйРезультатAsyncBackgroud);
+                            return ФинальныйРезультатAsyncBackgroud;
+                        }
+                    })
+                    .subscribeOn(Schedulers.single())
+                    .doOnComplete(new Action() {
+                        @Override
+                        public void run() throws Throwable {
+                            МетодПослеAsyncTaskЗавершающий( context,ФинальныйРезультатAsyncBackgroud);
+                            Log.d(context.getClass().getName(), "\n"
+                                    + " время: " + new Date() + "\n+" +
+                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                    + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
+                        }
+                    }).doOnTerminate(new Action() {
+                        @Override
+                        public void run() throws Throwable {
+                            // TODO: 26.03.2023 дополнительное удаление после Удаление статсу удалнеенон
+                            if (ФинальныйРезультатAsyncBackgroud>0  && ФинальныйРезультатAsyncBackgroud!=null) {
+                                МетодПослеСинхрониазцииУдалениеСтатусаУдаленный(context);
+                            }
+                            Log.d(context.getClass().getName(), "\n"
+                                    + " время: " + new Date() + "\n+" +
+                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                    + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
+                        }
+                    })
+                    .subscribe();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
             new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-            Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
         }
-        return    ФинальныйРезультатAsyncBackgroud;
     }
+
+    public Integer metodStartingSyncWorkNamager(@NonNull Context context) {
+        Integer       ФинальныйРезультатAsyncBackgroud=0;
+        try{
+            // TODO: 25.03.2023 ДОПОЛНИТЕОТНЕ УДЛАНИЕ СТАТУСА УДАЛЕНИЕ ПОСЛЕ СИНХРОНИАЗЦИИ
+            // TODO: 16.11.2022
+            Flowable
+                    .fromSupplier(new io.reactivex.rxjava3.functions.Supplier<Object>() {
+                        @Override
+                        public Object get() throws Throwable {
+                            Integer       ФинальныйРезультатAsyncBackgroud  = new Class_Engine_SQL(context).МетодЗАпускаФоновойСинхронизации(context);
+
+                            Log.d(context.getClass().getName(), "\n"
+                                    + " время: " + new Date() + "\n+" +
+                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                    + "    ФинальныйРезультатAsyncBackgroud "+ФинальныйРезультатAsyncBackgroud);
+
+                         МетодПослеAsyncTaskЗавершающий( context,ФинальныйРезультатAsyncBackgroud);
+                            Log.d(context.getClass().getName(), "\n"
+                                    + " время: " + new Date() + "\n+" +
+                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
+                            return ФинальныйРезультатAsyncBackgroud;
+                        }
+                    })
+                    .subscribeOn(Schedulers.single())
+                    .doOnComplete(new Action() {
+                        @Override
+                        public void run() throws Throwable {
+                            // TODO: 26.03.2023 дополнительное удаление после Удаление статсу удалнеенон
+                            if (ФинальныйРезультатAsyncBackgroud>0) {
+                                МетодПослеСинхрониазцииУдалениеСтатусаУдаленный(context);
+                            }
+                            Log.d(context.getClass().getName(), "\n"
+                                    + " время: " + new Date() + "\n+" +
+                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
+                        }
+                    }).blockingSubscribe();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        return  ФинальныйРезультатAsyncBackgroud;
+    }
+
+
+
+
+
 
 
 
@@ -352,7 +390,7 @@ try{
     private void МетодПослеAsyncTaskЗавершающий( @NonNull Context context,@NonNull Integer ФинальныйРезультатAsyncBackgroud) {
         try{
         // TODO: 05.11.2022  после  ВЫПОЛЕНИЯ СИНЗХРОНИАЗИИ СООБЩАЕМ ОБ ОКОНЧАТИИ СИХРОНИАЗЦИИ ВИЗУАЛЬТА
-        new Class_Engine_SQL(context).   методCallBackPrograssBars(2, Проценты,new String(),0);
+        new Class_Engine_SQL(context).   методCallBackPrograssBars(3, Проценты,new String(),0);
             Log.i(context.getClass().getName(),  " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " Проценты " + Проценты  );
@@ -693,67 +731,38 @@ try{
                         public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.clear();
                         // TODO: 02.04.2023 версия данных
                         final String[] НазваниеСервернойТаблицы = new String[1];
-                        Flowable.fromIterable(БуферJsonОтСервераmodification_server)
-                                .onBackpressureBuffer(БуферJsonОтСервераmodification_server.size())
-                                .doOnNext(new io.reactivex.rxjava3.functions.Consumer<Map<String, String>>() {
+                        БуферJsonОтСервераmodification_server.spliterator().forEachRemaining(new Consumer<Map<String, String>>() {
+                            @Override
+                            public void accept(Map<String, String> stringStringMap) {
+                                stringStringMap.forEach(new BiConsumer<String, String>() {
                                     @Override
-                                    public void accept(Map<String, String> stringStringMap) throws Throwable {
-                                        stringStringMap.forEach(new BiConsumer<String, String>() {
-                                            @Override
-                                            public void accept(String НазваниеТаблицыСервера, String ВерсияДанныхСервернойТаблицы) {
-                                                if (НазваниеТаблицыСервера.equalsIgnoreCase("name")) {
-                                                    public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.add(ВерсияДанныхСервернойТаблицы.trim());
-                                                     НазваниеСервернойТаблицы[0] =ВерсияДанныхСервернойТаблицы.trim();
-                                                }
-                                                if (НазваниеТаблицыСервера.equalsIgnoreCase("versionserverversion")) {
-                                                    public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.put(НазваниеСервернойТаблицы[0].trim(),
-                                                            Long.valueOf(ВерсияДанныхСервернойТаблицы));
-                                                }
-                                                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                        + " НазваниеТаблицыСервера " + НазваниеТаблицыСервера + " ВерсияДанныхСервернойТаблицы " + ВерсияДанныхСервернойТаблицы+
-                                                         " НазваниеСервернойТаблицы[0] " +НазваниеСервернойТаблицы[0]);
-                                            }
-                                        });
-                                    }
-                                })
-                                .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
-                                    @Override
-                                    public void accept(Throwable throwable) throws Throwable {
-                                        Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(throwable.toString(),
-                                                this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                    }
-                                })
-                                .doOnComplete(new Action() {
-                                    @Override
-                                    public void run() throws Throwable {
-                                        РЕЗУЛЬТАТГЛАВНОЙСИНХРОНИАЗЦИИПОТАБЛИЦАМ[0] = МетодГлавныхЦиклТаблицДляСинхронизации(ID);
-
-                                        if (РЕЗУЛЬТАТГЛАВНОЙСИНХРОНИАЗЦИИПОТАБЛИЦАМ[0] == null) {
-                                            РЕЗУЛЬТАТГЛАВНОЙСИНХРОНИАЗЦИИПОТАБЛИЦАМ[0] = 0;
+                                    public void accept(String НазваниеТаблицыСервера, String ВерсияДанныхСервернойТаблицы) {
+                                        if (НазваниеТаблицыСервера.equalsIgnoreCase("name")) {
+                                            public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.add(ВерсияДанныхСервернойТаблицы.trim());
+                                            НазваниеСервернойТаблицы[0] =ВерсияДанныхСервернойТаблицы.trim();
+                                        }
+                                        if (НазваниеТаблицыСервера.equalsIgnoreCase("versionserverversion")) {
+                                            public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.put(НазваниеСервернойТаблицы[0].trim(),
+                                                    Long.valueOf(ВерсияДанныхСервернойТаблицы));
                                         }
                                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                + " РЕЗУЛЬТАТГЛАВНОЙСИНХРОНИАЗЦИИПОТАБЛИЦАМ " + РЕЗУЛЬТАТГЛАВНОЙСИНХРОНИАЗЦИИПОТАБЛИЦАМ);
+                                                + " НазваниеТаблицыСервера " + НазваниеТаблицыСервера + " ВерсияДанныхСервернойТаблицы " + ВерсияДанныхСервернойТаблицы+
+                                                " НазваниеСервернойТаблицы[0] " +НазваниеСервернойТаблицы[0]);
                                     }
-                                })
-                                .onErrorComplete(new Predicate<Throwable>() {
-                                    @Override
-                                    public boolean test(Throwable throwable) throws Throwable {
-                                        Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(throwable.toString(),
-                                                this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                        return false;
-                                    }
-                                })
-                                .subscribe();
+                                });
+                            }
+                        });
+                        РЕЗУЛЬТАТГЛАВНОЙСИНХРОНИАЗЦИИПОТАБЛИЦАМ[0] = МетодГлавныхЦиклТаблицДляСинхронизации(ID);
+
+                        if (РЕЗУЛЬТАТГЛАВНОЙСИНХРОНИАЗЦИИПОТАБЛИЦАМ[0] == null) {
+                            РЕЗУЛЬТАТГЛАВНОЙСИНХРОНИАЗЦИИПОТАБЛИЦАМ[0] = 0;
+                        }
+                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                + " РЕЗУЛЬТАТГЛАВНОЙСИНХРОНИАЗЦИИПОТАБЛИЦАМ " + РЕЗУЛЬТАТГЛАВНОЙСИНХРОНИАЗЦИИПОТАБЛИЦАМ);
 
                         Log.i(this.getClass().getName(), " ИменаТаблицыОтАндройда "
                                 + public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.toString() +
@@ -1350,6 +1359,14 @@ try{
                                 bundle.putString("nametable",имяТаблицаAsync);
 
 
+
+                                    Integer ПозицияТекущейТаблицы=  ГлавныеТаблицыСинхронизации.indexOf(имяТаблицаAsync);
+                                    ПозицияТекущейТаблицы=ПозицияТекущейТаблицы+1;
+                                    Проценты = new Class_Visible_Processing_Async(context).ГенерируемПРОЦЕНТЫДляAsync(ПозицияТекущейТаблицы, ГлавныеТаблицыСинхронизации.size());
+
+                                    методCallBackPrograssBars(7, Проценты,имяТаблицаAsync,ПозицияТекущейТаблицы);
+
+
                                 Bundle bundleРезультатОбновлениеМассовой =resolver.call(uri,имяТаблицаAsync,БуферПолученныйJSON.toString(),bundle);
 
                                     copyOnWriteArrayРезультатUpdateInsert.add(bundleРезультатОбновлениеМассовой.getLong("ResultAsync",0))    ;
@@ -1419,20 +1436,20 @@ try{
                                                ,@NonNull String имяТаблицаAsync,
                                                @NonNull Integer ПозицияТекущейТаблицы)  {
             try {
-                Bundle bundleCallsBackAsync=new Bundle();
-                bundleCallsBackAsync.putString("Проценны" ,Проценны);
-                bundleCallsBackAsync.putString("имятаблицы" ,имяТаблицаAsync);
-                bundleCallsBackAsync.putInt("maxtables" ,public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.size());
-                bundleCallsBackAsync.putInt("currentposition" ,ПозицияТекущейТаблицы);
-                message.what=CurrentProssesing;
-                message.setData(bundleCallsBackAsync);
-                message.getTarget().dispatchMessage(message);
-                Log.d(this.getClass().getName(), "\n" + " class " +
-                        Thread.currentThread().getStackTrace()[2].getClassName()
-                        + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " message " +message);
+                    Bundle bundleCallsBackAsync=new Bundle();
+                    bundleCallsBackAsync.putString("Проценны" ,Проценны);
+                    bundleCallsBackAsync.putString("имятаблицы" ,имяТаблицаAsync);
+                    bundleCallsBackAsync.putInt("maxtables" ,public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.size());
+                    bundleCallsBackAsync.putInt("currentposition" ,ПозицияТекущейТаблицы);
+                    message.what=CurrentProssesing;
+                    message.setData(bundleCallsBackAsync);
+                    message.getTarget().dispatchMessage(message);
+                    Log.d(this.getClass().getName(), "\n" + " class " +
+                            Thread.currentThread().getStackTrace()[2].getClassName()
+                            + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                            + " message " +message);
             } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -1592,7 +1609,8 @@ try{
             return class_grud_sql_operationsГенерируемКурсорДляОтправки;
         }
 
-        private Integer getInteger(String имяТаблицыОтАндройда_локальноая, Long РезультаПолученаяЛокальнаяСервернуюВерсиюДанныхКогдаПоследнийРазПришлиДанныесСерера, Class_GRUD_SQL_Operations class_grud_sql_operationsПосылаемДанныеНаСервервФоне) {
+        private Integer getInteger(String имяТаблицыОтАндройда_локальноая, Long РезультаПолученаяЛокальнаяСервернуюВерсиюДанныхКогдаПоследнийРазПришлиДанныесСерера,
+                                   Class_GRUD_SQL_Operations class_grud_sql_operationsПосылаемДанныеНаСервервФоне) {
             Integer ПубличныйIDДляФрагмента;
             // TODO: 11.01.2022 ПУБЛИЧНЫЙ ID ТЕКУЩЕГО ПОЛЬЗОВТЕЛЯ
 
@@ -1742,69 +1760,36 @@ try{
                     Log.d(this.getClass().getName(), " 1ТекущаяТаблицаИзПотока "  + " date " +new Date().toString());
                     Log.d(this.getClass().getName(), " 3ТекущаяТаблицаИзПотока " +" date " +new Date().toString());
                     // TODO: 01.12.2022
+                    public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.spliterator().forEachRemaining(new Consumer<String>() {
+                        @Override
+                        public void accept(String ТекущаяТаблицаИзПотока) {
+                            ИндексТекущейОперацииРеальногРезультатОбработкиАтблицы = 0;
+                            Integer ПозицияТекущейТаблицы=  ГлавныеТаблицыСинхронизации.indexOf(ТекущаяТаблицаИзПотока);
+                            ПозицияТекущейТаблицы=ПозицияТекущейТаблицы+1;
+                            Проценты = new Class_Visible_Processing_Async(context).ГенерируемПРОЦЕНТЫДляAsync(ПозицияТекущейТаблицы, ГлавныеТаблицыСинхронизации.size());
+                            // TODO: 02.05.2023  Ответ Обратно ПрограссБару
+                            методCallBackPrograssBars(2, Проценты,ТекущаяТаблицаИзПотока,ПозицияТекущейТаблицы);
+                            // TODO: 24.01.2022 сама операция синхрониазции по таблице
+                                    ПубличныйРезультатОтветаОтСерврераУспешно= МетодЗапускаСинхрониазцииПоАТблицам(ID,
+                                            ТекущаяТаблицаИзПотока,
+                                            public_contentДатыДляГлавныхТаблицСинхронизации.МенеджерПотоков ,public_contentДатыДляГлавныхТаблицСинхронизации);
+                                    Log.d(this.getClass().getName(), " ТАБЛИЦА СИНХРОНИЗАЦИИ ГЛАВНОГО ЦИКЛА "+"\n"+
+                                            " ТАБЛИЦА СИНХРОНИЗАЦИИ ГЛАВНОГО ЦИКЛА "+"\n"+
+                                            " ТАБЛИЦА СИНХРОНИЗАЦИИ ГЛАВНОГО ЦИКЛА "+"\n"+
+                                            " ТАБЛИЦА СИНХРОНИЗАЦИИ ГЛАВНОГО ЦИКЛА "+"\n"+
+                                            " ТАБЛИЦА ТекущаяТаблицаИзПотока " + ТекущаяТаблицаИзПотока +"\n"+
+                                            " +ПубличныйРезультатОтветаОтСерврераУспешно" +ПубличныйРезультатОтветаОтСерврераУспешно+ "\n"+
+                                            " время" +new Date().toGMTString());
+                                    ЛистТаблицыОбмена.add(ПубличныйРезультатОтветаОтСерврераУспешно);
+                        }
+                    });
 
-                    Flowable.fromIterable(public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда)
-                            .onBackpressureBuffer(public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.size())
-                                    .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
-                                        @Override
-                                        public void accept(Throwable throwable) throws Throwable {
-                                            throwable.printStackTrace();
-                                            Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :"
-                                                    + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                            // TODO: 01.09.2021 метод вызова
-                                            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(throwable.toString(),
-                                                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                        }
-                                    })
-                                            .map(new Function<String, Object>() {
-                                                @Override
-                                                public Object apply(String ТекущаяТаблицаИзПотока) throws Throwable {
-                                                    ИндексТекущейОперацииРеальногРезультатОбработкиАтблицы = 0;
-                                                    Integer ПозицияТекущейТаблицы=  ГлавныеТаблицыСинхронизации.indexOf(ТекущаяТаблицаИзПотока);
-                                                    Проценты = new Class_Visible_Processing_Async(context).ГенерируемПРОЦЕНТЫДляAsync(ПозицияТекущейТаблицы, ГлавныеТаблицыСинхронизации.size());
-                                                    // TODO: 02.05.2023  Ответ Обратно ПрограссБару
-                                                    методCallBackPrograssBars(2, Проценты,ТекущаяТаблицаИзПотока,ПозицияТекущейТаблицы+1);
-                                                    // TODO: 24.01.2022 сама операция синхрониазции по таблице
-                                                    ПубличныйРезультатОтветаОтСерврераУспешно= МетодЗапускаСинхрониазцииПоАТблицам(ID,
-                                                            ТекущаяТаблицаИзПотока,
-                                                            public_contentДатыДляГлавныхТаблицСинхронизации.МенеджерПотоков ,public_contentДатыДляГлавныхТаблицСинхронизации);
-                                                    Log.d(this.getClass().getName(), " ТАБЛИЦА СИНХРОНИЗАЦИИ ГЛАВНОГО ЦИКЛА "+"\n"+
-                                                            " ТАБЛИЦА СИНХРОНИЗАЦИИ ГЛАВНОГО ЦИКЛА "+"\n"+
-                                                            " ТАБЛИЦА СИНХРОНИЗАЦИИ ГЛАВНОГО ЦИКЛА "+"\n"+
-                                                            " ТАБЛИЦА СИНХРОНИЗАЦИИ ГЛАВНОГО ЦИКЛА "+"\n"+
-                                                            " ТАБЛИЦА ТекущаяТаблицаИзПотока " + ТекущаяТаблицаИзПотока +"\n"+
-                                                            " +ПубличныйРезультатОтветаОтСерврераУспешно" +ПубличныйРезультатОтветаОтСерврераУспешно+ "\n"+
-                                                            " время" +new Date().toGMTString());
-                                                    ЛистТаблицыОбмена.add(ПубличныйРезультатОтветаОтСерврераУспешно);
-                                                    return ТекущаяТаблицаИзПотока;
-                                                }
-                                            })
-                                                    .doOnComplete(new Action() {
-                                                        @Override
-                                                        public void run() throws Throwable {
-                                                            if (СсылкаНаБазуSqlite.isOpen()) {
-                                                                СсылкаНаБазуSqlite.close();
-                                                            }
-                                                            РезультатТаблицыОбмена[0] = ЛистТаблицыОбмена.stream().reduce(0, (a, b) -> a + b);
-                                                            Log.w(this.getClass().getName(), " doOnTerminate ОБРАБОТКА ВСЕХ ТАБЛИЦ ЗАВЫЕРШИЛАСЬ В ГЛАВНОМ ЦИКЛЕ ПО ТАБЛИЦАМ В ОБМЕНЕ РезультатТаблицыОбмена"
-                                                                    + РезультатТаблицыОбмена[0] + " СсылкаНаБазуSqlite.isOpen() " +СсылкаНаБазуSqlite.isOpen());
-                                                        }
-                                                    })
-                                                            .onErrorComplete(new Predicate<Throwable>() {
-                                                                @Override
-                                                                public boolean test(Throwable throwable) throws Throwable {
-                                                                    throwable.printStackTrace();
-                                                                    Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                                                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                                                    // TODO: 01.09.2021 метод вызова
-                                                                    new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(throwable.toString(),
-                                                                            this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                                                            Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                                                    return false;
-                                                                }
-                                                            }).subscribe();
+                    if (СсылкаНаБазуSqlite.isOpen()) {
+                        СсылкаНаБазуSqlite.close();
+                    }
+                    РезультатТаблицыОбмена[0] = ЛистТаблицыОбмена.stream().reduce(0, (a, b) -> a + b);
+                    Log.w(this.getClass().getName(), " doOnTerminate ОБРАБОТКА ВСЕХ ТАБЛИЦ ЗАВЫЕРШИЛАСЬ В ГЛАВНОМ ЦИКЛЕ ПО ТАБЛИЦАМ В ОБМЕНЕ РезультатТаблицыОбмена"
+                            + РезультатТаблицыОбмена[0] + " СсылкаНаБазуSqlite.isOpen() " +СсылкаНаБазуSqlite.isOpen());
 
                 } catch (Exception e) {
                     e.printStackTrace();
