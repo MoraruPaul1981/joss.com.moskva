@@ -24,6 +24,7 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.BinderThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -249,7 +250,7 @@ try{
 
 
 
-
+@BinderThread
     public void metodStartingSync(@NonNull Context context , @NonNull Message messageback) {
         try{
             if (messageback!=null) {
@@ -307,6 +308,8 @@ try{
         }
     }
 
+
+    @BinderThread
     public Integer metodStartingSyncWorkNamager(@NonNull Context context) {
         Integer       ФинальныйРезультатAsyncBackgroud=0;
         try{
