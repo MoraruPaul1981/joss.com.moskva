@@ -1477,9 +1477,7 @@ try{
                 if (mService !=null) {
                     mService.send(lMsg);
                 }*/
-                Bundle bundle=new Bundle();
-                bundle.putString("prossesig",ПроцентыВерхнегоПрограссбара  );
-                message.setData(bundle);
+                Message msg = Message.obtain(null,1,ПроцентыВерхнегоПрограссбара);
                 message.getTarget().dispatchMessage(message);
                 Log.d(this.getClass().getName(), "\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
