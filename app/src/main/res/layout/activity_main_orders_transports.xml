@@ -62,9 +62,11 @@
         android:orientation="vertical"
         android:background="#FFFFFF">
 
-        <!--   НАЧАЛО САМИХ ДАННЫХ ВСЕ ТАБЕЛЯ -->
-        <GridView
-            android:id="@+id/gridViewOrderTransport"
+
+
+
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollordertranport"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/BottomNavigationOrderTransport"
@@ -73,16 +75,52 @@
             android:layout_margin="5dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:horizontalSpacing="5dp"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="30dp"
-            android:numColumns="auto_fit"
-            android:padding="2dp"
-            android:scrollIndicators="left|right"
-            android:scrollbars="horizontal|vertical"
-            tools:ignore="MissingConstraints">
+            android:visibility="visible">
 
-        </GridView>
+
+
+        <ScrollView
+            android:id="@+id/scroll_layoutordertranport"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/BottomNavigationOrderTransport"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="5dp"
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:visibility="visible">
+
+        <!--   НАЧАЛО САМИХ ДАННЫХ ВСЕ ТАБЕЛЯ -->
+            <GridView
+                android:id="@+id/gridViewOrderTransport"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/BottomNavigationOrderTransport"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
+                android:background="#FFFFFF"
+                android:gravity="center"
+                android:horizontalSpacing="5dp"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="30dp"
+                android:numColumns="auto_fit"
+                android:padding="2dp"
+                android:scrollIndicators="left|right"
+                android:scrollbars="horizontal|vertical"
+                tools:ignore="MissingConstraints">
+
+            </GridView>
+
+
+        </ScrollView>
+
+        </HorizontalScrollView>
+
+
+
+
 
 
 
