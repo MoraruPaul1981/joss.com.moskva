@@ -53,9 +53,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 
@@ -664,36 +667,26 @@ public class FragmentOrderTransportOneChane extends Fragment {
                             if (service.isBinderAlive()) {
                                 localBinderOrderTransport = (ServiceOrserTransportService.  LocalBinderOrderTransport) service;
                                 // TODO: 03.05.2023 тест код
-
                                 Parcel data=Parcel.obtain();
-                                data.writeString("8989eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+                                Map mapBoundService=new HashMap();
+                                mapBoundService.putIfAbsent("1","select");
+                                mapBoundService.putIfAbsent("2","where");
+                                mapBoundService.putIfAbsent("3","table");
+                                data.writeMap(mapBoundService);
+                                // TODO: 03.05.2023 Ответ
                                 Parcel reply=Parcel.obtain();
 
+                         Boolean BoundService=       localBinderOrderTransport.transact(11,data,reply,12);
 
-                         Boolean Резульата=       localBinderOrderTransport.transact(11,data,reply,12);
-
-                           String CallBasl=     reply.readString();
-
-
-                           Cursor cursor=  (Cursor)   reply.readSerializable();
+                        cursorOrderTransport=  (Cursor)   reply.readSerializable();
 
                                 Log.d(getContext().getClass().getName(), "\n"
                                         + " время: " + new Date() + "\n+" +
                                         " Класс в процессе... " + this.getClass().getName() + "\n" +
                                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
                                         + "   service.isBinderAlive()" + service.isBinderAlive()+
-                                        " Резульата " +Резульата + " CallBasl " +CallBasl);
-
-
-
-
-                                // TODO: 16.11.2022
-                                Log.d(getContext().getClass().getName(), "\n"
-                                        + " время: " + new Date() + "\n+" +
-                                        " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                        " BoundService " +BoundService + " cursorOrderTransport " +cursorOrderTransport
                                         + "   service.isBinderAlive()" + service.isBinderAlive());
-
                             }
                         } catch (Exception e) {
                             e.printStackTrace();

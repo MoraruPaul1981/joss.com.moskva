@@ -157,12 +157,8 @@ public class ServiceOrserTransportService extends IntentService {
         @BinderThread
         @Override
         protected boolean onTransact(int code, @NonNull Parcel data, @Nullable Parcel reply, int flags) throws RemoteException {
-            Map mp = null;
            try{
-
-        String Пришел=       data.readString();
-
-               reply.writeString("CallBacks"+new Date().toLocaleString());
+               Map mapBoundService=       data.readHashMap(HashMap.class.getClassLoader());
 
                Cursor cursor = null;
                reply.writeSerializable((Serializable) cursor);
@@ -170,7 +166,7 @@ public class ServiceOrserTransportService extends IntentService {
                Log.d(getApplicationContext().getClass().getName(), "\n"
                        + " время: " + new Date() + "\n+" +
                        " Класс в процессе... " + this.getClass().getName() + "\n" +
-                       " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                       " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +  " mapBoundService " +mapBoundService);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
