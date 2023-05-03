@@ -11,6 +11,7 @@ import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -38,8 +39,10 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
@@ -51,6 +54,7 @@ import com.dsy.dsu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
+import com.google.android.material.textview.MaterialTextView;
 
 
 import java.util.ArrayList;
@@ -115,7 +119,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
         View    view=null;
         try {
         //    view= inflater.inflate(R.layout.activity_main_orders_transports, container, false);
-            view= inflater.inflate(R.layout.fragment_ordertransport1, container, false);
+           // view= inflater.inflate(R.layout.fragment_ordertransport1, container, false);
+            view= inflater.inflate(R.layout.list_item_progressing_ordertransport, container, false);
             this.container=container;
             linear_main_ordertransport=(LinearLayout)  container.findViewById(R.id.linear_main_ordertransport);
             // TODO: 01.05.2023  Кнопки
@@ -777,11 +782,59 @@ public class FragmentOrderTransportOneChane extends Fragment {
         void  методОформленияЗагрузкаGridView(){
             try{
                 if( cursorOrderTransport==null){
+                    ArrayList<HashMap<String, Object>> ЛистНетданных= new ArrayList<HashMap<String, Object>> ();
+                    HashMap<String, Object> map = new HashMap<>();
+                    map.put("alldonttbels", "Нет Заказов !!!");
+                    map.put("allimage", " dont");
+                    ЛистНетданных.add(map);
+                    SimpleAdapter АдаптерКогдаНетданных = new SimpleAdapter(getContext(),
+                            ЛистНетданных,
+                            R.layout.list_item_progressing_ordertransport,
+                            new String[]{"alldonttbels","allimage"},
+                            new int[]{android.R.id.text2,android.R.id.text1});
 
+                    SimpleAdapter.ViewBinder БиндингКогдаНетДАнных = new SimpleAdapter.ViewBinder() {
+                        @Override
+                        public boolean setViewValue(View view, Object data, String textRepresentation) {
+                            try{
+                                switch (view.getId()) {
+                                    case android.R.id.text2:
+                                        // TODO: 09.04.2023  ВставлЯем Данные
+                                        ((MaterialTextView) view).setText(data.toString());
+                                        ((MaterialTextView) view).setTextColor(Color.GRAY);
+                                        ((MaterialTextView) view).setTextSize(18l);
 
+                                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n"  );
+                                        return  true;
+                                    case android.R.id.text1:
+                                        Drawable icon2 = getResources().getDrawable(   R.drawable.icon_rdertransport1);
+                                        ((ImageView) view).setImageDrawable(icon2);
+                                        ((ImageView) view).setImageResource(R.drawable.icon_rdertransport1);
 
-
-
+                                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()  );
+                                        return true;
+                                }
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            }
+                            return false;
+                        }
+                    };
+                    АдаптерКогдаНетданных.setViewBinder(БиндингКогдаНетДАнных);
+                    АдаптерКогдаНетданных.notifyDataSetChanged();
+                    gridViewOrderTransport.setAdapter(АдаптерКогдаНетданных);
+                    gridViewOrderTransport.refreshDrawableState();
+                    gridViewOrderTransport.requestLayout();
+                    // TODO: 19.04.2023 слушаелти
                     Log.d(getContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
                             " Класс в процессе... " + this.getClass().getName() + "\n" +

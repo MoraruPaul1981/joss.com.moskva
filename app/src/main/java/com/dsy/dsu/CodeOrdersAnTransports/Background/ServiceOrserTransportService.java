@@ -192,12 +192,9 @@ public class ServiceOrserTransportService extends IntentService {
 
     // TODO: 25.04.2023  КЛАСС РАБОТЫ ЗАКАЗА ТРАНСПОРТА
    protected class SubClassOrderTransport{
-        public SubClassOrderTransport() {
-
-        }
 
         // TODO: 03.05.2023 GEt Cursor
-        class SubClassGetCursor{
+      protected   class SubClassGetCursor{
             Cursor методGetCursor(@NonNull   HashMap<String,String>  mapBoundService){
                 Cursor cursor = null;
                 try{
