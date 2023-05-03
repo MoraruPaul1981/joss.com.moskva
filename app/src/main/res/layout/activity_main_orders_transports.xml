@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:id="@+id/activity_ordertransportone"
+    android:id="@+id/linear_main_ordertransport"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -75,8 +75,8 @@
             android:gravity="center"
             android:horizontalSpacing="5dp"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="10dp"
-            android:numColumns="1"
+            android:verticalSpacing="30dp"
+            android:numColumns="auto_fit"
             android:padding="2dp"
             android:scrollIndicators="left|right"
             android:scrollbars="horizontal|vertical"

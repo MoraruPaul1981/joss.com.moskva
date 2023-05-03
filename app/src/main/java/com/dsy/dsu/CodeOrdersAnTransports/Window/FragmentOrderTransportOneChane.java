@@ -76,7 +76,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
     private BottomNavigationItemView bottomNavigationItemView3обновить;
     private ProgressBar progressBarСканирование;
     private Animation ani;
-    private  ViewGroup container;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private Fragment fragment_СозданиеНовогоМатериалов;
@@ -118,20 +117,19 @@ public class FragmentOrderTransportOneChane extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View    view=null;
         try {
-           // view= inflater.inflate(R.layout.activity_main_orders_transports, container, false);
-            view= inflater.inflate(R.layout.fragment_ordertransport1, container, false);
-            //view= inflater.inflate(R.layout.list_item_progressing_ordertransport, container, false);
-            this.container=container;
+            view= inflater.inflate(R.layout.activity_main_orders_transports, container, false);
+          // view= inflater.inflate(R.layout.list_item_progressing_ordertransport, container, false);
+           /// view= inflater.inflate(R.layout.list_item_progressing_ordertransport, container, false);
             linear_main_ordertransport=(LinearLayout)  container.findViewById(R.id.linear_main_ordertransport);
             // TODO: 01.05.2023  Кнопки
-            BottomNavigationOrderTransport=  (BottomNavigationView) linear_main_ordertransport. findViewById(R.id.BottomNavigationOrderTransport);
+            BottomNavigationOrderTransport=  (BottomNavigationView) container. findViewById(R.id.BottomNavigationOrderTransport);
             bottomNavigationItemViewвыход = BottomNavigationOrderTransport.findViewById(R.id.id_lback);
             bottomNavigationItemView2создать = BottomNavigationOrderTransport.findViewById(R.id.id_create);
             bottomNavigationItemView3обновить = BottomNavigationOrderTransport.findViewById(R.id.id_async);
-            progressBarСканирование=  (ProgressBar)  linear_main_ordertransport. findViewById(R.id.ProgressBar);
+            progressBarСканирование=  (ProgressBar)  container. findViewById(R.id.ProgressBar);
             // TODO: 01.05.2023
-            gridViewOrderTransport = linear_main_ordertransport.findViewById(R.id.gridViewOrderTransport);
-            TextViewHadler = linear_main_ordertransport.findViewById(R.id.TextViewHadler);
+            gridViewOrderTransport = container.findViewById(R.id.gridViewOrderTransport);
+            TextViewHadler = container.findViewById(R.id.TextViewHadler);
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -182,9 +180,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
         super.onStart();
         try{
             subClassNewOrderTransport.     методОформленияDontGetGridView();
-
             subClassNewOrderTransport.     методОформленияЗагрузкаGridView();
-
             subClassNewOrderTransport.     методОформленияGridView();
 
             Log.d(this.getClass().getName(), "\n" + " class " +
@@ -800,18 +796,18 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                 switch (view.getId()) {
                                     case android.R.id.text2:
                                         // TODO: 09.04.2023  ВставлЯем Данные
-                                  /*      ((MaterialTextView) view).setText(data.toString());
+                                      ((MaterialTextView) view).setText(data.toString());
                                         ((MaterialTextView) view).setTextColor(Color.GRAY);
-                                        ((MaterialTextView) view).setTextSize(18l);*/
+                                        ((MaterialTextView) view).setTextSize(18l);
 
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n"  );
                                         return  true;
                                     case android.R.id.text1:
-                         /*               Drawable icon2 = getResources().getDrawable(   R.drawable.icon_rdertransport1);
+                                     Drawable icon2 = getResources().getDrawable(   R.drawable.icon_rdertransport1);
                                         ((ImageView) view).setImageDrawable(icon2);
                                         ((ImageView) view).setImageResource(R.drawable.icon_rdertransport1);
-*/
+
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()  );
