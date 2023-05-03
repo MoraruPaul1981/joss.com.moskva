@@ -34,6 +34,8 @@ import java.util.Random;
  */
 public class ServiceOrserTransportService extends IntentService {
 
+    private  SubClassOrderTransport subClassOrderTransport;
+
    protected LocalBinderOrderTransport localBinderOrderTransport= new LocalBinderOrderTransport();
     public ServiceOrserTransportService() {
 
@@ -44,6 +46,8 @@ public class ServiceOrserTransportService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        subClassOrderTransport=new SubClassOrderTransport();
         Log.d(getApplicationContext().getClass().getName(), "\n"
                 + " время: " + new Date()+"\n+" +
                 " Класс в процессе... " +  getApplicationContext().getClass().getName()+"\n"+
@@ -158,9 +162,11 @@ public class ServiceOrserTransportService extends IntentService {
         @Override
         protected boolean onTransact(int code, @NonNull Parcel data, @Nullable Parcel reply, int flags) throws RemoteException {
            try{
-               Map mapBoundService=       data.readHashMap(HashMap.class.getClassLoader());
+               HashMap<String,String>  mapBoundService=       data.readHashMap(HashMap.class.getClassLoader());
 
-               Cursor cursor = null;
+
+               Cursor cursor=   subClassOrderTransport.new SubClassGetCursor().методGetCursor(mapBoundService);
+
                reply.writeSerializable((Serializable) cursor);
 
                Log.d(getApplicationContext().getClass().getName(), "\n"
@@ -189,7 +195,28 @@ public class ServiceOrserTransportService extends IntentService {
         public SubClassOrderTransport() {
 
         }
-        class ClassData{
+
+        // TODO: 03.05.2023 GEt Cursor
+        class SubClassGetCursor{
+            Cursor методGetCursor(@NonNull   HashMap<String,String>  mapBoundService){
+                Cursor cursor = null;
+                try{
+
+                Log.d(getApplicationContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "mapBoundService " +mapBoundService );
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
+            }
+                return  cursor;
+            }
 
 
         }

@@ -668,7 +668,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                 localBinderOrderTransport = (ServiceOrserTransportService.  LocalBinderOrderTransport) service;
                                 // TODO: 03.05.2023 тест код
                                 Parcel data=Parcel.obtain();
-                                Map mapBoundService=new HashMap();
+                                HashMap<String,String> mapBoundService=new HashMap();
                                 mapBoundService.putIfAbsent("1","select");
                                 mapBoundService.putIfAbsent("2","where");
                                 mapBoundService.putIfAbsent("3","table");
