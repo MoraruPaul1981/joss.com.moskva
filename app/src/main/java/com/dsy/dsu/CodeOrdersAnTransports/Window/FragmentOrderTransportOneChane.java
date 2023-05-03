@@ -173,7 +173,18 @@ public class FragmentOrderTransportOneChane extends Fragment {
     public void onStart() {
         super.onStart();
         try{
+            subClassNewOrderTransport.     методОформленияDontGetGridView();
 
+            subClassNewOrderTransport.     методОформленияЗагрузкаGridView();
+
+            subClassNewOrderTransport.     методОформленияGridView();
+
+            Log.d(this.getClass().getName(), "\n" + " class " +
+                    Thread.currentThread().getStackTrace()[2].getClassName()
+                    + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " cursorOrderTransport " +cursorOrderTransport);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -663,6 +674,9 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
                            String CallBasl=     reply.readString();
 
+
+                           Cursor cursor=  (Cursor)   reply.readSerializable();
+
                                 Log.d(getContext().getClass().getName(), "\n"
                                         + " время: " + new Date() + "\n+" +
                                         " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -741,13 +755,20 @@ public class FragmentOrderTransportOneChane extends Fragment {
             }
         }
         // TODO: 28.04.2023
-      void  методОформленияGridView(@NonNull Cursor cursorOrderTransport){
+      void  методОформленияGridView(){
             try{
+                if(cursorOrderTransport!=null && cursorOrderTransport.getCount()>0){
 
-          Log.d(getContext().getClass().getName(), "\n"
-                  + " время: " + new Date() + "\n+" +
-                  " Класс в процессе... " + this.getClass().getName() + "\n" +
-                  " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+
+
+
+
+
+                    Log.d(getContext().getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()  + "  cursorOrderTransport " + cursorOrderTransport);
+                }
       } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -760,13 +781,19 @@ public class FragmentOrderTransportOneChane extends Fragment {
         }
 
         // TODO: 28.04.2023
-        void  методОформленияGridView(){
+        void  методОформленияЗагрузкаGridView(){
             try{
+                if( cursorOrderTransport==null){
 
-            Log.d(getContext().getClass().getName(), "\n"
-                    + " время: " + new Date() + "\n+" +
-                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+
+
+
+
+                    Log.d(getContext().getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorOrderTransport  " + cursorOrderTransport);
+                }
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -779,12 +806,17 @@ public class FragmentOrderTransportOneChane extends Fragment {
         }
 
         // TODO: 28.04.2023
-        void  методОформленияIsNullGridView(){
+        void  методОформленияDontGetGridView(){
             try{
-                Log.d(getContext().getClass().getName(), "\n"
-                        + " время: " + new Date() + "\n+" +
-                        " Класс в процессе... " + this.getClass().getName() + "\n" +
-                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                if (cursorOrderTransport!=null && cursorOrderTransport.getCount()==0){
+
+
+
+                    Log.d(getContext().getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorOrderTransport " + cursorOrderTransport);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

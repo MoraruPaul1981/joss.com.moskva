@@ -44,6 +44,7 @@ import com.dsy.dsu.Business_logic_Only_Class.SubClass_Connection_BroadcastReceiv
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.google.firebase.annotations.concurrent.Background;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -251,6 +252,7 @@ try{
 
 
 @BinderThread
+@Background
     public void metodStartingSync(@NonNull Context context , @NonNull Message messageback) {
         try{
             if (messageback!=null) {
@@ -274,6 +276,7 @@ try{
                         }
                     })
                     .subscribeOn(Schedulers.single())
+                    .onBackpressureBuffer(1)
                     .doOnComplete(new Action() {
                         @Override
                         public void run() throws Throwable {

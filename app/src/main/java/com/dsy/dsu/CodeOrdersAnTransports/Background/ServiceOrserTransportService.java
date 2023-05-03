@@ -3,6 +3,7 @@ package com.dsy.dsu.CodeOrdersAnTransports.Background;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.Parcel;
@@ -16,6 +17,7 @@ import androidx.annotation.Nullable;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.google.firebase.annotations.concurrent.Background;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -161,6 +163,9 @@ public class ServiceOrserTransportService extends IntentService {
         String Пришел=       data.readString();
 
                reply.writeString("CallBacks"+new Date().toLocaleString());
+
+               Cursor cursor = null;
+               reply.writeSerializable((Serializable) cursor);
 
                Log.d(getApplicationContext().getClass().getName(), "\n"
                        + " время: " + new Date() + "\n+" +
