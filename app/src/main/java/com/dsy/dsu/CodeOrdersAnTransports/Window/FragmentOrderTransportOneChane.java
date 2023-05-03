@@ -30,6 +30,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
+import android.os.Parcel;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -651,6 +652,27 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         try {
                             if (service.isBinderAlive()) {
                                 localBinderOrderTransport = (ServiceOrserTransportService.  LocalBinderOrderTransport) service;
+                                // TODO: 03.05.2023 тест код
+
+                                Parcel data=Parcel.obtain();
+                                data.writeString("8989eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+                                Parcel reply=Parcel.obtain();
+
+
+                         Boolean Резульата=       localBinderOrderTransport.transact(11,data,reply,12);
+
+                           String CallBasl=     reply.readString();
+
+                                Log.d(getContext().getClass().getName(), "\n"
+                                        + " время: " + new Date() + "\n+" +
+                                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                        + "   service.isBinderAlive()" + service.isBinderAlive()+
+                                        " Резульата " +Резульата + " CallBasl " +CallBasl);
+
+
+
+
                                 // TODO: 16.11.2022
                                 Log.d(getContext().getClass().getName(), "\n"
                                         + " время: " + new Date() + "\n+" +

@@ -9,10 +9,12 @@ import android.os.Parcel;
 import android.os.RemoteException;
 import android.util.Log;
 
+import androidx.annotation.BinderThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
+import com.google.firebase.annotations.concurrent.Background;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,7 +32,7 @@ import java.util.Random;
  */
 public class ServiceOrserTransportService extends IntentService {
 
-    LocalBinderOrderTransport localBinderOrderTransport= new LocalBinderOrderTransport();
+   protected LocalBinderOrderTransport localBinderOrderTransport= new LocalBinderOrderTransport();
     public ServiceOrserTransportService() {
 
         super("ServiceOrserTransportService");
@@ -148,15 +150,17 @@ public class ServiceOrserTransportService extends IntentService {
             return ServiceOrserTransportService.this;
         }
 
+
+        @Background
+        @BinderThread
         @Override
         protected boolean onTransact(int code, @NonNull Parcel data, @Nullable Parcel reply, int flags) throws RemoteException {
             Map mp = null;
            try{
-            reply.writeString(new Date().toLocaleString());
-               reply.writeInt(new Random().nextInt());
-               mp=new HashMap();
-               mp.put("ddd",new Random().nextFloat());
-               reply.writeMap(mp);
+
+        String Пришел=       data.readString();
+
+               reply.writeString("CallBacks"+new Date().toLocaleString());
 
                Log.d(getApplicationContext().getClass().getName(), "\n"
                        + " время: " + new Date() + "\n+" +
