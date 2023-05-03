@@ -179,10 +179,17 @@ public class FragmentOrderTransportOneChane extends Fragment {
     public void onStart() {
         super.onStart();
         try{
-            subClassNewOrderTransport.     методОформленияDontGetGridView();
-            subClassNewOrderTransport.     методОформленияЗагрузкаGridView();
-            subClassNewOrderTransport.     методОформленияGridView();
-
+            if( cursorOrderTransport==null) {
+                subClassNewOrderTransport.методОформленияЗагрузкаGridView(R.layout.list_item_progressing_ordertransport,
+                        "Загрузка...", R.drawable.icon_dsu1_ordertransport_down);
+            }else {
+                if( cursorOrderTransport.getCount()>0) {
+                    subClassNewOrderTransport.     методОформленияGridView(R.layout.fragment_ordertransport1);
+                }else{
+                    subClassNewOrderTransport.     методОформленияЗагрузкаGridView( R.layout.list_item_isnull_ordertransport,
+                            "Нет заказов !!!", R.drawable.icon_dsu1_ordertransport_down);
+                }
+            }
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
@@ -749,20 +756,13 @@ public class FragmentOrderTransportOneChane extends Fragment {
             }
         }
         // TODO: 28.04.2023
-      void  методОформленияGridView(){
+      void  методОформленияGridView(@NonNull Integer Макет){
             try{
-                if(cursorOrderTransport!=null && cursorOrderTransport.getCount()>0){
-
-
-
-
-
-
                     Log.d(getContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
                             " Класс в процессе... " + this.getClass().getName() + "\n" +
                             " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()  + "  cursorOrderTransport " + cursorOrderTransport);
-                }
+
       } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -775,17 +775,15 @@ public class FragmentOrderTransportOneChane extends Fragment {
         }
 
         // TODO: 28.04.2023
-        void  методОформленияЗагрузкаGridView(){
+        void  методОформленияЗагрузкаGridView(@NonNull Integer Макет ,@NonNull String Сообщение,@NonNull Integer Значек){///      R.layout.list_item_progressing_ordertransport
             try{
-                if( cursorOrderTransport==null){
                     ArrayList<HashMap<String, Object>> ЛистНетданных= new ArrayList<HashMap<String, Object>> ();
                     HashMap<String, Object> map = new HashMap<>();
-                    map.put("alldonttbels", "Нет Заказов !!!");
+                    map.put("alldonttbels", Сообщение);
                     map.put("allimage", " dont");
                     ЛистНетданных.add(map);
                     SimpleAdapter АдаптерКогдаНетданных = new SimpleAdapter(getContext(),
-                            ЛистНетданных,
-                            R.layout.list_item_progressing_ordertransport,
+                            ЛистНетданных,Макет,
                             new String[]{"alldonttbels","allimage"},
                             new int[]{android.R.id.text2,android.R.id.text1});
 
@@ -796,7 +794,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                 switch (view.getId()) {
                                     case android.R.id.text2:
                                         // TODO: 09.04.2023  ВставлЯем Данные
-                                      ((MaterialTextView) view).setText(data.toString());
+                                        ((MaterialTextView) view).setText(data.toString());
                                         ((MaterialTextView) view).setTextColor(Color.GRAY);
                                         ((MaterialTextView) view).setTextSize(18l);
 
@@ -804,9 +802,9 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n"  );
                                         return  true;
                                     case android.R.id.text1:
-                                     Drawable icon2 = getResources().getDrawable(   R.drawable.icon_rdertransport1);
+                                     Drawable icon2 = getResources().getDrawable(   Значек);
                                         ((ImageView) view).setImageDrawable(icon2);
-                                        ((ImageView) view).setImageResource(R.drawable.icon_rdertransport1);
+                                        ((ImageView) view).setImageResource(Значек);
 
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -835,7 +833,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
                             + " время: " + new Date() + "\n+" +
                             " Класс в процессе... " + this.getClass().getName() + "\n" +
                             " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorOrderTransport  " + cursorOrderTransport);
-                }
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
