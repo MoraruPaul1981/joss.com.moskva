@@ -180,14 +180,18 @@ public class FragmentOrderTransportOneChane extends Fragment {
         super.onStart();
         try{
             if( cursorOrderTransport==null) {
-                subClassNewOrderTransport.методОформленияЗагрузкаGridView(R.layout.list_item_progressing_ordertransport,
-                        "Загрузка...", R.drawable.icon_dsu1_ordertransport_down);
+                /*subClassNewOrderTransport.методОформленияЗагрузкаGridView(R.layout.list_item_progressing_ordertransport,
+                        "Загрузка...", R.drawable.icon_dsu1_ordertransport_down);*/
+                // TODO: 03.05.2023
+
+                subClassNewOrderTransport.     методОформленияЗагрузкаGridView( R.layout.list_item_isnull_ordertransport,
+                        "Нет заказов !!!", R.drawable.icon_rdertransport2);
             }else {
                 if( cursorOrderTransport.getCount()>0) {
                     subClassNewOrderTransport.     методОформленияGridView(R.layout.fragment_ordertransport1);
                 }else{
                     subClassNewOrderTransport.     методОформленияЗагрузкаGridView( R.layout.list_item_isnull_ordertransport,
-                            "Нет заказов !!!", R.drawable.icon_dsu1_ordertransport_down);
+                            "Нет заказов !!!", R.drawable.icon_rdertransport2);
                 }
             }
             Log.d(this.getClass().getName(), "\n" + " class " +
