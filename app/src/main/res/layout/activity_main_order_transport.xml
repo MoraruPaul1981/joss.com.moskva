@@ -9,6 +9,15 @@
     android:background="#FFFFFF"
     tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
     android:orientation="vertical">
+
+
+
+
+
+
+
+
+
     <RelativeLayout
         android:id="@+id/RelativeLayout"
         android:layout_width="match_parent"
@@ -70,16 +79,17 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_margin="5dp"
+            android:padding="2dp"
             android:background="#FFFFFF"
             android:columnWidth="700dp"
             android:gravity="center"
             android:horizontalSpacing="5dp"
-            android:numColumns="2"
-            android:padding="2dp"
-            android:scrollIndicators="left"
-            android:scrollbars="horizontal|vertical"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="10dp"
+            android:verticalSpacing="30dp"
+            android:numColumns="auto_fit"
+            android:scrollIndicators="left|right"
+            android:scrollbars="horizontal|vertical"
+
             tools:ignore="MissingConstraints">
 
         </GridView>
@@ -119,4 +129,10 @@
             android:indeterminate="true"
             android:visibility="visible" />
     </RelativeLayout>
+
+
+
+
+
+
 </LinearLayout>

@@ -1,49 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
+<LinearLayout
     android:id="@+id/cardviewisnullordertransport"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-   android:layout_height="400dp"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:minHeight="150dp"
     android:layout_margin="5dp"
-    app:cardCornerRadius="20dp"
     app:cardElevation="10dp"
     android:animateLayoutChanges="true"
-    android:background="#84FFFF"
+    android:background="#FFFFFF"
     android:gravity="center">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_margin="10dp"
-            android:background="#EA80FC">
-
-
-
 
                 <ImageView
                     android:id="@android:id/text1"
                     android:layout_width="35dp"
                     android:layout_height="match_parent"
-                    android:layout_margin="10dp"
                     android:animateLayoutChanges="true"
                     android:background="@drawable/stylesingletablerowiine"
                     android:gravity="center"
-                    android:padding="5dp"
+                    android:layout_margin="5dp"
                     android:visibility="visible"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="10dp"
                     app:srcCompat="@drawable/icon_rdertransport1"
-                    app:strokeColor="#F5FFFA" />
-
-
-
-
-
-
-
-
+                    app:strokeColor="#FFFFFF" />
 
 
                 <com.google.android.material.textview.MaterialTextView
@@ -54,8 +36,7 @@
                     android:checkMark="?android:attr/textCheckMark"
                     android:foregroundGravity="center"
                     android:gravity="center"
-                    android:padding="5dp"
-                    android:layout_margin="10dp"
+                    android:layout_margin="5dp"
                     android:paddingStart="?android:attr/listPreferredItemPaddingStart"
                     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
                     android:text="text2"
@@ -70,13 +51,7 @@
                     android:animateLayoutChanges="true"
                     android:visibility="visible"/>
 
-
-
-        </LinearLayout>
-
-
-
-</com.google.android.material.card.MaterialCardView>
+</LinearLayout>
 
 
 

@@ -69,7 +69,7 @@ import java.util.concurrent.ExecutionException;
 // TODO: 29.09.2022 фрагмент для получение материалов
 public class FragmentOrderTransportOneChane extends Fragment {
     private Integer ПубличныйID;
-    private LinearLayout activity_ordertransportone;
+    LinearLayout    linear_main_ordertransport;
     private BottomNavigationView BottomNavigationOrderTransport;
     private BottomNavigationItemView bottomNavigationItemViewвыход;
     private BottomNavigationItemView bottomNavigationItemView2создать;
@@ -91,7 +91,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
     private GridView gridViewOrderTransport;
 
     private     SubClassNewOrderTransport subClassNewOrderTransport;
-    private LinearLayout linear_main_ordertransport;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -118,9 +118,9 @@ public class FragmentOrderTransportOneChane extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View    view=null;
         try {
-        //    view= inflater.inflate(R.layout.activity_main_orders_transports, container, false);
-           // view= inflater.inflate(R.layout.fragment_ordertransport1, container, false);
-            view= inflater.inflate(R.layout.list_item_progressing_ordertransport, container, false);
+           // view= inflater.inflate(R.layout.activity_main_orders_transports, container, false);
+            view= inflater.inflate(R.layout.fragment_ordertransport1, container, false);
+            //view= inflater.inflate(R.layout.list_item_progressing_ordertransport, container, false);
             this.container=container;
             linear_main_ordertransport=(LinearLayout)  container.findViewById(R.id.linear_main_ordertransport);
             // TODO: 01.05.2023  Кнопки
@@ -424,8 +424,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 BottomNavigationOrderTransport.refreshDrawableState();
                 gridViewOrderTransport.requestLayout();
                 gridViewOrderTransport.refreshDrawableState();
-                activity_ordertransportone.requestLayout();
-                activity_ordertransportone.refreshDrawableState();
+                linear_main_ordertransport.requestLayout();
+                linear_main_ordertransport.refreshDrawableState();
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -800,18 +800,18 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                 switch (view.getId()) {
                                     case android.R.id.text2:
                                         // TODO: 09.04.2023  ВставлЯем Данные
-                                        ((MaterialTextView) view).setText(data.toString());
+                                  /*      ((MaterialTextView) view).setText(data.toString());
                                         ((MaterialTextView) view).setTextColor(Color.GRAY);
-                                        ((MaterialTextView) view).setTextSize(18l);
+                                        ((MaterialTextView) view).setTextSize(18l);*/
 
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n"  );
                                         return  true;
                                     case android.R.id.text1:
-                                        Drawable icon2 = getResources().getDrawable(   R.drawable.icon_rdertransport1);
+                         /*               Drawable icon2 = getResources().getDrawable(   R.drawable.icon_rdertransport1);
                                         ((ImageView) view).setImageDrawable(icon2);
                                         ((ImageView) view).setImageResource(R.drawable.icon_rdertransport1);
-
+*/
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()  );

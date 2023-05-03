@@ -6,6 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="5dp"
     android:background="#FFFFFF"
     tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
     android:orientation="vertical">
@@ -65,24 +66,20 @@
         <GridView
             android:id="@+id/gridViewOrderTransport"
             android:layout_width="match_parent"
-            android:layout_height="484dp"
+            android:layout_height="match_parent"
             android:layout_above="@+id/BottomNavigationOrderTransport"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_margin="5dp"
             android:background="#FFFFFF"
-            android:columnWidth="700dp"
             android:gravity="center"
             android:horizontalSpacing="5dp"
-            android:numColumns="2"
-            android:padding="2dp"
-            android:scrollIndicators="left"
-            android:scrollbars="horizontal|vertical"
             android:stretchMode="columnWidth"
             android:verticalSpacing="10dp"
+            android:numColumns="1"
+            android:padding="2dp"
+            android:scrollIndicators="left|right"
+            android:scrollbars="horizontal|vertical"
             tools:ignore="MissingConstraints">
 
         </GridView>
