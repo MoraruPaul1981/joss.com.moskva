@@ -1,11 +1,7 @@
 package com.dsy.dsu.Business_logic_Only_Class;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
-import android.widget.TextView;
-
-import com.dsy.dsu.R;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -14,13 +10,13 @@ import java.util.Locale;
 
 public class Class_Visible_Processing_Async {
 
-    Context contextДляКлассавизуальнойСинхронизации;
+    Context context;
 
 
 
     public Class_Visible_Processing_Async(Context context) {
 
-        contextДляКлассавизуальнойСинхронизации=context;
+        this.context =context;
 
     }
     //функция получающая время операции ДАННАЯ ФУНКЦИЯ ВРЕМЯ ПРИМЕНЯЕТЬСЯ ВО ВСЕЙ ПРОГРАММЕ
@@ -30,9 +26,9 @@ public class Class_Visible_Processing_Async {
 
     // TODO: 07.09.2021  метод визуальной синхронизации отображения прогресс бара////
 
-    public String ГенерируемПРОЦЕНТЫДляAsync(Integer Результат_Обновление_ИлиВставкиДанных,
+    public int  ГенерируемПРОЦЕНТЫДляAsync(Integer Результат_Обновление_ИлиВставкиДанных,
                                              Integer ОбщееКоличествоСтрокВJSON) {
-         String Проценты = null;
+        int Проценты = 0;
         try{
                 Log.d(Class_MODEL_synchronized.class.getName(),
                         " Результат_Обновление_ИлиВставкиДанных  " + Результат_Обновление_ИлиВставкиДанных);
@@ -73,15 +69,13 @@ public class Class_Visible_Processing_Async {
                         }
 
                     }
-                    Проценты = ФинальныеПроценты + " %";
+                    Проценты = ФинальныеПроценты  ;
                     Log.d(this.getClass().getName(), " Проценты " + Проценты);
-
-        } catch (Exception e) {///////ошибки
+        } catch (Exception e) {
             e.printStackTrace();
-            ///метод запись ошибок в таблицу
             Log.e(Class_MODEL_synchronized.class.getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(contextДляКлассавизуальнойСинхронизации).МетодЗаписиВЖурналНовойОшибки(e.toString(), Class_MODEL_synchronized.class.getName(),
+            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), Class_MODEL_synchronized.class.getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
 
         }

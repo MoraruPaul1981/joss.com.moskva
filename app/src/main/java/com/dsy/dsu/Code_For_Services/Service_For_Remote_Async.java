@@ -93,7 +93,7 @@ public class Service_For_Remote_Async extends IntentService {
     private Context context;
     private  Integer МаксималноеКоличествоСтрочекJSON;
     private SharedPreferences preferences;
-    private   String Проценты;
+    private   int Проценты;
     private Integer ИндексВизуальнойДляPrograssBar=0;
     private      Integer ПубличныйIDДляФрагмента=0;
 
@@ -1426,13 +1426,13 @@ try{
 
 //todo МЕТОД ВИЗУАЛЬНОГО ОТВЕТА ИЗ СЛУЖБЫ ОБРАБТНО В activity async
         private void методCallBackPrograssBars(@NonNull  Integer CurrentProssesing,
-                                               @NonNull  String Проценны
+                                               @NonNull  int Проценны
                                                ,@NonNull String имяТаблицаAsync,
                                                @NonNull Integer ПозицияТекущейТаблицы)  {
             try {
                 if (message!=null) {
                     Bundle bundleCallsBackAsync=new Bundle();
-                    bundleCallsBackAsync.putString("Проценны" ,Проценны);
+                    bundleCallsBackAsync.putInt("Проценны" ,Проценны);
                     bundleCallsBackAsync.putString("имятаблицы" ,имяТаблицаAsync);
                     bundleCallsBackAsync.putInt("maxtables" ,public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.size());
                     bundleCallsBackAsync.putInt("currentposition" ,ПозицияТекущейТаблицы);
