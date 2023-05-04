@@ -631,23 +631,29 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
 
         // TODO: 02.08.2022
-        protected   void методGetCursor( ){
+        protected   Cursor методGetCursor(@NonNull Integer ФлагОперации ){
             try{
                 ПубличныйID = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
-                Log.d(getContext().getClass().getName(), "\n"
-                        + " ПубличныйID: " + ПубличныйID);
-       /*     cursorOrderTransport = (Cursor) localBinderOrderTransport.getService().МетодCлужбыПолучениеМатериалов(getContext(), intentПолучениеМатериалов);
-            Log.d(this.getClass().getName(), "   cursorСамиДанныеFace " + cursorСамиДанныеGroupBy);
-            if (cursorСамиДанныеGroupBy.getCount() > 0) {
-                cursorСамиДанныеGroupBy.moveToFirst();
-                Log.d(this.getClass().getName(), "   cursorСамиДанныеFace " + cursorСамиДанныеGroupBy);
-            }*/
+                // TODO: 03.05.2023 тест код
+                Parcel data=Parcel.obtain();
+                HashMap<String,String> mapBoundService=new HashMap();
+                mapBoundService.putIfAbsent("1","select");
+                mapBoundService.putIfAbsent("2","where");
+                mapBoundService.putIfAbsent("3","table");
+                data.writeMap(mapBoundService);
+                // TODO: 03.05.2023 Ответ
+                Parcel reply=Parcel.obtain();
+
+                Boolean BoundService=       localBinderOrderTransport.transact(ФлагОперации,data,reply,ПубличныйID);
+
+                cursorOrderTransport=  (Cursor)   reply.readSerializable();
+                
                 Log.d(this.getClass().getName(), "\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " cursorOrderTransport " + cursorOrderTransport );
+                        + " cursorOrderTransport " + cursorOrderTransport  + " ПубличныйID  "+ПубличныйID + " ФлагОперации " +ФлагОперации );
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -655,6 +661,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
+            return  cursorOrderTransport;
         }
 
         private void МетодДизайнПрограссБара() {
@@ -674,26 +681,17 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         try {
                             if (service.isBinderAlive()) {
                                 localBinderOrderTransport = (ServiceOrserTransportService.  LocalBinderOrderTransport) service;
-                                // TODO: 03.05.2023 тест код
-                                Parcel data=Parcel.obtain();
-                                HashMap<String,String> mapBoundService=new HashMap();
-                                mapBoundService.putIfAbsent("1","select");
-                                mapBoundService.putIfAbsent("2","where");
-                                mapBoundService.putIfAbsent("3","table");
-                                data.writeMap(mapBoundService);
-                                // TODO: 03.05.2023 Ответ
-                                Parcel reply=Parcel.obtain();
 
-                         Boolean BoundService=       localBinderOrderTransport.transact(11,data,reply,12);
-
-                        cursorOrderTransport=  (Cursor)   reply.readSerializable();
-
+                            // TODO: 04.05.2023  получаем первоночальыне Данные  #1
+                                cursorOrderTransport=              методGetCursor( 1);
+                                
                                 Log.d(getContext().getClass().getName(), "\n"
                                         + " время: " + new Date() + "\n+" +
                                         " Класс в процессе... " + this.getClass().getName() + "\n" +
                                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
                                         + "   service.isBinderAlive()" + service.isBinderAlive()+
-                                        " BoundService " +BoundService + " cursorOrderTransport " +cursorOrderTransport
+                                        " localBinderOrderTransport " +localBinderOrderTransport 
+                                        + " cursorOrderTransport " +cursorOrderTransport
                                         + "   service.isBinderAlive()" + service.isBinderAlive());
                             }
                         } catch (Exception e) {

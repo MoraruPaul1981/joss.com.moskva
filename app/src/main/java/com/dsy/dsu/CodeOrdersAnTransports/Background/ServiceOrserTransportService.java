@@ -163,16 +163,17 @@ public class ServiceOrserTransportService extends IntentService {
         protected boolean onTransact(int code, @NonNull Parcel data, @Nullable Parcel reply, int flags) throws RemoteException {
            try{
                HashMap<String,String>  mapBoundService=       data.readHashMap(HashMap.class.getClassLoader());
-
-
-               Cursor cursor=   subClassOrderTransport.new SubClassGetCursor().методGetCursor(mapBoundService);
-
-               reply.writeSerializable((Serializable) cursor);
-
+               switch (code){
+                   case 1:
+                       Cursor cursor=   subClassOrderTransport.new SubClassGetCursor().методGetCursor(mapBoundService);
+                       reply.writeSerializable((Serializable) cursor);
+                       break;
+               }
                Log.d(getApplicationContext().getClass().getName(), "\n"
                        + " время: " + new Date() + "\n+" +
                        " Класс в процессе... " + this.getClass().getName() + "\n" +
-                       " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +  " mapBoundService " +mapBoundService);
+                       " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +  " mapBoundService " +mapBoundService +
+                       " reply " +reply  + " data " +data );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
