@@ -55,6 +55,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.common.util.concurrent.AtomicDouble;
 
 
 import java.util.ArrayList;
@@ -99,6 +100,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
             // TODO: 27.04.2023  Запускаем Заказ Транпорта
             subClassNewOrderTransport    =new SubClassNewOrderTransport(getActivity());
             subClassNewOrderTransport.   МетодБиндингOrderTransport();
+            // TODO: 04.05.2023
+            ПубличныйID = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -633,26 +636,24 @@ public class FragmentOrderTransportOneChane extends Fragment {
         // TODO: 02.08.2022
         protected   Cursor методGetCursor(@NonNull Integer ФлагОперации ){
             try{
-                ПубличныйID = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
                 // TODO: 03.05.2023 тест код
-                Parcel data=Parcel.obtain();
-                HashMap<String,String> mapBoundService=new HashMap();
-                mapBoundService.putIfAbsent("1","  SELECT  *  FROM  order_tc  ");
-                mapBoundService.putIfAbsent("2"," WHERE orders IS NOT NULL  AND _id >?  ORDER BY _id ");
-                mapBoundService.putIfAbsent("3"," 0 ");
-                mapBoundService.putIfAbsent("4"," order_tc ");
-                data.writeMap(mapBoundService);
-                // TODO: 03.05.2023 Ответ
-                Parcel reply=Parcel.obtain();
-                Boolean BoundService=       localBinderOrderTransport.transact(ФлагОперации,data,reply,ПубличныйID);
+                HashMap<String,String> datasendMap=new HashMap();
+                datasendMap.putIfAbsent("1","  SELECT  *  FROM  order_tc  ");
+                datasendMap.putIfAbsent("2"," WHERE orders IS NOT NULL  AND _id >?  ORDER BY _id ");
+                datasendMap.putIfAbsent("3"," 0 ");
+                datasendMap.putIfAbsent("4"," order_tc ");
+
+                Map<String,Object>  mapRetry=       localBinderOrderTransport.методГлавныйTraffic(datasendMap,ФлагОперации);
                 // TODO: 04.05.2023 результат
-                cursorOrderTransport=  (Cursor)   reply.readSerializable();
+                cursorOrderTransport  =(Cursor) mapRetry.get("replyget1" );
+
                 Log.d(this.getClass().getName(), "\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " cursorOrderTransport " + cursorOrderTransport  + " ПубличныйID  "+ПубличныйID + " ФлагОперации " +ФлагОперации );
+                        + " cursorOrderTransport " + cursorOrderTransport  + " ПубличныйID  "+ПубличныйID + " ФлагОперации " +ФлагОперации +
+                         " mapRetry " +mapRetry);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

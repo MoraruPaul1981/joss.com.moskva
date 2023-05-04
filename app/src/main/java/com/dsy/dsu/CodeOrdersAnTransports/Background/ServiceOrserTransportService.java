@@ -8,21 +8,17 @@ import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Parcel;
-import android.os.Parcelable;
 import android.os.RemoteException;
 import android.util.Log;
 
 import androidx.annotation.BinderThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.loader.content.CursorLoader;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.google.firebase.annotations.concurrent.Background;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -166,17 +162,10 @@ public class ServiceOrserTransportService extends IntentService {
         @Override
         protected boolean onTransact(int code, @NonNull Parcel data, @Nullable Parcel reply, int flags) throws RemoteException {
            try{
-               HashMap<String,String>  mapBoundService=       data.readHashMap(HashMap.class.getClassLoader());
-               switch (code){
-                   case 1:
-                       Cursor cursor=   subClassOrderTransport.new SubClassGetCursor().методGetCursor(mapBoundService);
-                       reply.writeParcelable((Parcelable) cursor,new Random().nextInt());
-                       break;
-               }
                Log.d(getApplicationContext().getClass().getName(), "\n"
                        + " время: " + new Date() + "\n+" +
                        " Класс в процессе... " + this.getClass().getName() + "\n" +
-                       " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +  " mapBoundService " +mapBoundService +
+                       " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +  " mapBoundService " +
                        " reply " +reply  + " data " +data );
         } catch (Exception e) {
             e.printStackTrace();
@@ -188,7 +177,68 @@ public class ServiceOrserTransportService extends IntentService {
         }
             return    true;
         }
+
+        // TODO: 04.05.2023 Главный метод Службы Заказы Транспота
+        public  Map<String,Object> методГлавныйTraffic(@NonNull  HashMap<String,String> dataMap  , @NonNull Integer code){
+            Map<String,Object>  mapRetry= new HashMap<>();;
+            try{
+                switch (code){
+                    case 1:
+                     Cursor cursor=   subClassOrderTransport.new SubClassGetCursor().методGetCursor(dataMap);
+                        // TODO: 04.05.2023  ответ Курсором Из Службы
+                        mapRetry.put("replyget1",cursor);
+                        break;
+                }
+                Log.d(getApplicationContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +  " mapBoundService " +
+                        " mapRetry " +mapRetry );
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
+        }
+            return  mapRetry;
+        }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -232,8 +282,6 @@ public class ServiceOrserTransportService extends IntentService {
 
 
         }
-
-
         // TODO: 25.04.2023 END CLASS   SubClassOrderTransport
     }
 
