@@ -23,7 +23,7 @@
         android:visibility="visible"
         app:cardCornerRadius="20dp"
         app:cardElevation="10dp"
-        app:srcCompat="@drawable/icon_dsu1_ordertransport_down"
+        app:srcCompat="@drawable/icon_rdertransport2"
         app:strokeColor="#FFFFFF" />
 
 
