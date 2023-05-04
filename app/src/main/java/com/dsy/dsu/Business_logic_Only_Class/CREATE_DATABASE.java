@@ -998,7 +998,9 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
                     "user_update INTEGER," +
                     "dir  INTEGER ," +
                     "uuid NUMERIC UNIQUE," +
-                    " current_table NUMERIC UNIQUE )");
+                    " current_table NUMERIC UNIQUE," +
+                    " owner INTEGER , " +
+                    " vid_tc INTEGER  )");
             Log.d(this.getClass().getName(), " сработала ...  создание таблицы track ");
 
         } catch (SQLException e) {
