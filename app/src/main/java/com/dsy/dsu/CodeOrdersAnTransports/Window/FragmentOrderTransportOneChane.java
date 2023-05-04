@@ -192,6 +192,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     subClassNewOrderTransport.     методОформленияЗагрузкаGridView( R.layout.list_item_isnull_ordertransport,
                             "Нет заказов !!!", R.drawable.icon_rdertransport2);
                 }
+                // TODO: 04.05.2023 Получаем Данные что обработка данных закончена
+                subClassNewOrderTransport.    МетодДизайнПрограссБара();
             }
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
@@ -668,7 +670,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
             progressBarСканирование.postDelayed(()->{
                 progressBarСканирование.setVisibility(View.INVISIBLE);
                 progressBarСканирование.setIndeterminate(true);
-            },1000);
+            },250);
         }
         // TODO: 28.04.2023
         public void МетодБиндингOrderTransport() {
