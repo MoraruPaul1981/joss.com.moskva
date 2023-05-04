@@ -640,7 +640,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 HashMap<String,String> datasendMap=new HashMap();
                 datasendMap.putIfAbsent("1","  SELECT  *  FROM  order_tc  ");
                 datasendMap.putIfAbsent("2"," WHERE orders IS NOT NULL  AND _id >?  ORDER BY _id ");
-                datasendMap.putIfAbsent("3"," 0 ");
+                datasendMap.putIfAbsent("3"," 10 ");
                 datasendMap.putIfAbsent("4"," order_tc ");
 
                 Map<String,Object>  mapRetry=       localBinderOrderTransport.методГлавныйTraffic(datasendMap,ФлагОперации);
