@@ -5,16 +5,20 @@ import android.content.Intent;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Parcel;
+import android.os.Parcelable;
 import android.os.RemoteException;
 import android.util.Log;
 
 import androidx.annotation.BinderThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.loader.content.CursorLoader;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
+import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.google.firebase.annotations.concurrent.Background;
 
 import java.io.Serializable;
@@ -166,7 +170,7 @@ public class ServiceOrserTransportService extends IntentService {
                switch (code){
                    case 1:
                        Cursor cursor=   subClassOrderTransport.new SubClassGetCursor().методGetCursor(mapBoundService);
-                       reply.writeSerializable((Serializable) cursor);
+                       reply.writeParcelable((Parcelable) cursor,new Random().nextInt());
                        break;
                }
                Log.d(getApplicationContext().getClass().getName(), "\n"
@@ -199,11 +203,21 @@ public class ServiceOrserTransportService extends IntentService {
             Cursor методGetCursor(@NonNull   HashMap<String,String>  mapBoundService){
                 Cursor cursor = null;
                 try{
+               String    СамЗапрос = mapBoundService.get("1").trim();
+                String УсловияВыборки=    mapBoundService.get("2").trim();
+                String ФильтрУсловияВыборки=    mapBoundService.get("3").trim();
+                String Таблица=    mapBoundService.get("4").trim();
+                    Bundle bundleЗаказТранспорт=new Bundle();
+                    bundleЗаказТранспорт.putString("СамЗапрос", СамЗапрос + " "+ УсловияВыборки);
+                    bundleЗаказТранспорт.putStringArray("УсловияВыборки" ,new String[]{ФильтрУсловияВыборки});
+                    bundleЗаказТранспорт.putString("Таблица",Таблица);
+                    cursor=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(getApplicationContext(), bundleЗаказТранспорт);
 
                 Log.d(getApplicationContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
-                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "mapBoundService " +mapBoundService );
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "mapBoundService " +mapBoundService+
+                         "cursor " +cursor);
 
             } catch (Exception e) {
                 e.printStackTrace();

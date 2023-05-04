@@ -637,17 +637,16 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 // TODO: 03.05.2023 тест код
                 Parcel data=Parcel.obtain();
                 HashMap<String,String> mapBoundService=new HashMap();
-                mapBoundService.putIfAbsent("1","select");
-                mapBoundService.putIfAbsent("2","where");
-                mapBoundService.putIfAbsent("3","table");
+                mapBoundService.putIfAbsent("1","  SELECT  *  FROM  order_tc  ");
+                mapBoundService.putIfAbsent("2"," WHERE orders IS NOT NULL  AND _id >?  ORDER BY _id ");
+                mapBoundService.putIfAbsent("3"," 0 ");
+                mapBoundService.putIfAbsent("4"," order_tc ");
                 data.writeMap(mapBoundService);
                 // TODO: 03.05.2023 Ответ
                 Parcel reply=Parcel.obtain();
-
                 Boolean BoundService=       localBinderOrderTransport.transact(ФлагОперации,data,reply,ПубличныйID);
-
+                // TODO: 04.05.2023 результат
                 cursorOrderTransport=  (Cursor)   reply.readSerializable();
-                
                 Log.d(this.getClass().getName(), "\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
@@ -684,6 +683,9 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
                             // TODO: 04.05.2023  получаем первоночальыне Данные  #1
                                 cursorOrderTransport=              методGetCursor( 1);
+                                // TODO: 04.05.2023  перегружаем экран
+
+                                onStart();
                                 
                                 Log.d(getContext().getClass().getName(), "\n"
                                         + " время: " + new Date() + "\n+" +
