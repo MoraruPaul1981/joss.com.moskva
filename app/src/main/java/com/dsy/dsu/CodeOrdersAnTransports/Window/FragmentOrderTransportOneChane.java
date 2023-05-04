@@ -38,16 +38,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.CursorAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generator_One_WORK_MANAGER;
+import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.dsy.dsu.CodeOrdersAnTransports.Background.ServiceOrserTransportService;
 import com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_App;
 import com.dsy.dsu.R;
@@ -195,6 +199,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 // TODO: 04.05.2023 Получаем Данные что обработка данных закончена
                 subClassNewOrderTransport.    МетодДизайнПрограссБара();
             }
+            // TODO: 04.05.2023 Анимация
+            subClassNewOrderTransport.    методЗаполенияGridView();
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
@@ -761,10 +767,94 @@ public class FragmentOrderTransportOneChane extends Fragment {
         // TODO: 28.04.2023
       void  методОформленияGridView(@NonNull Integer Макет){
             try{
+                    SimpleCursorAdapter АдаптерЗаказыТарнпорта=
+                            new SimpleCursorAdapter(getContext(), Макет,
+                                    cursorOrderTransport, new String[]{"_id","orders"},
+                                    new int[]{android.R.id.text1,android.R.id.text2},
+                                    CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);  ///name
+                    SimpleCursorAdapter.ViewBinder binding = new SimpleCursorAdapter.ViewBinder() {
+                        @Override
+                        public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+                            try{
+                                switch (view.getId()) {
+                                    case android.R.id.text2:
+                               /*         MainParentUUID= cursor.getLong(cursor.getColumnIndex("uuid"));
+                                        DigitalNameCFO= cursor.getInt(cursor.getColumnIndex("cfo"));
+                                        Integer ID= cursor.getInt(cursor.getColumnIndex("_id"));
+                                        // TODO: 18.04.2023 Название ЦФО
+                                        Bundle bundleНазваниеЦФО=new Bundle();
+                                        bundleНазваниеЦФО.putString("СамЗапрос","  SELECT * FROM  cfo WHERE    _id=? ");
+                                        bundleНазваниеЦФО.putStringArray("УсловияВыборки" ,new String[]{  String.valueOf(DigitalNameCFO)});
+                                        bundleНазваниеЦФО.putString("Таблица","cfo");
+                                        Cursor КурсорПОискНазваниеЦФО=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleНазваниеЦФО);
+                                        FullNameCFO=КурсорПОискНазваниеЦФО.getString(КурсорПОискНазваниеЦФО.getColumnIndex("name")).trim();
+                                        КурсорПОискНазваниеЦФО.close();
+                                        МЕсяцТабелей = cursor.getInt(cursor.getColumnIndex("month_tabels"));
+                                        ГодТабелей= cursor.getInt(cursor.getColumnIndex("year_tabels"));
+                                        // TODO: 15.12.2022  Давные Bundle
+                                        Bundle bundleДЛяListTabels=new Bundle();
+                                        bundleДЛяListTabels.putLong("MainParentUUID", MainParentUUID);
+                                        bundleДЛяListTabels.putInt("Position", cursor.getPosition());
+                                        bundleДЛяListTabels.putInt("ГодТабелей",ГодТабелей );
+                                        bundleДЛяListTabels.putInt("МЕсяцТабелей",  МЕсяцТабелей);
+                                        bundleДЛяListTabels.putInt("DigitalNameCFO", DigitalNameCFO);
+                                        bundleДЛяListTabels.putString("FullNameCFO", FullNameCFO.trim());
+                                        bundleДЛяListTabels.putString("ИмесяцвИГодСразу", ИмесяцвИГодСразу.trim());
+
+                                        // TODO: 09.04.2023  ВставлЯем Данные
+                                        ((MaterialTextView) view).setTag(bundleДЛяListTabels);
+                                        ((MaterialTextView) view).setText(FullNameCFO.trim());
+                                        ((MaterialTextView) view).startAnimation(animationvibr1);*/
+                                        // TODO: 18.04.2023  Внешниц вид
+
+                                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                                        return true;
+
+                                    case android.R.id.text1:
+                                        //Drawable icon2 = getResources().getDrawable(   R.drawable.icon_alltabels1);
+                                        Drawable icon2 = getResources().getDrawable(   R.drawable.icon_alltabels4);
+                                        ((ImageView) view).setImageDrawable(icon2);
+                                        ((ImageView) view).setImageResource(R.drawable.icon_alltabels4);
+
+                                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                                        return true;
+
+                                }
+
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                                return false;
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            }
+                            return false;
+                        }
+                    };
+                    АдаптерЗаказыТарнпорта.setViewBinder(binding);
+                   АдаптерЗаказыТарнпорта.notifyDataSetChanged();
+                    gridViewOrderTransport.setAdapter(АдаптерЗаказыТарнпорта);
+                    gridViewOrderTransport.refreshDrawableState();
+                    gridViewOrderTransport.requestLayout();
+                    // TODO: 19.04.2023 слушаелти
+                    // TODO: 18.04.2023 Слушаиель Клика
+                    методПоGridView( );
+                    // TODO: 18.04.2023 Слушатель Удалание
+                    методУдалениеТабеля( );
+
                     Log.d(getContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
                             " Класс в процессе... " + this.getClass().getName() + "\n" +
-                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()  + "  cursorOrderTransport " + cursorOrderTransport);
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                            + "  cursorOrderTransport " + cursorOrderTransport);
 
       } catch (Exception e) {
             e.printStackTrace();
@@ -776,6 +866,79 @@ public class FragmentOrderTransportOneChane extends Fragment {
         }
 
         }
+        private void методПоGridView( ) {
+            gridViewOrderTransport.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    try{
+                        LinearLayout linearLayoutSimpelCursorAllTabeles= (LinearLayout)
+                                view.findViewById(R.id.   linearLayoutSimpelCursorAllTabeles);
+
+                        ImageView imageView  = (ImageView) linearLayoutSimpelCursorAllTabeles.getChildAt(0);
+                        MaterialTextView materialTextView  = (MaterialTextView) linearLayoutSimpelCursorAllTabeles.getChildAt(1);
+
+
+                     /*   materialTextView.setBackgroundColor(Color.GRAY);
+                        message.getTarget().postDelayed(()->{
+                            // TODO: 09.04.2023  перехеод после клика Items
+                            МетодПереходMainActivity_List_Peoples(materialTextView);
+                        },100);*/
+
+/////TODO одинатрный клик для загрузки в этот табель всех сотрудников
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
+                }
+            });
+        }
+
+
+        private void методУдалениеТабеля( ) {
+            gridViewOrderTransport.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    try{
+                        LinearLayout linearLayoutSimpelCursorAllTabeles= (LinearLayout)
+                                view.findViewById(R.id.   linearLayoutSimpelCursorAllTabeles);
+                        ImageView imageView  = (ImageView) linearLayoutSimpelCursorAllTabeles.getChildAt(0);
+                        MaterialTextView materialTextView  = (MaterialTextView) linearLayoutSimpelCursorAllTabeles.getChildAt(1);
+                        materialTextView.setBackgroundColor(Color.GRAY);
+
+                     /*   message.getTarget().postDelayed(()->{
+                            Bundle bundleДЛяListTabels=(Bundle)           materialTextView.getTag();
+                            Long    MainParentUUID=      bundleДЛяListTabels.getLong("MainParentUUID");
+                            String    FullNameCFO=      bundleДЛяListTabels.getString("FullNameCFO");
+                            ///todo Удаление
+                            //МетодУдалениеТАбеляСообщениеПередЭтим(MainParentUUID, FullNameCFO,view);
+                        },200);*/
+
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
+                    return true;
+                }
+            });
+
+        }
+
+
+
 
         // TODO: 28.04.2023
         void  методОформленияЗагрузкаGridView(@NonNull Integer Макет ,@NonNull String Сообщение,@NonNull Integer Значек){///      R.layout.list_item_progressing_ordertransport
@@ -847,28 +1010,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
         }
 
-        // TODO: 28.04.2023
-        void  методОформленияDontGetGridView(){
-            try{
-                if (cursorOrderTransport!=null && cursorOrderTransport.getCount()==0){
 
-
-
-                    Log.d(getContext().getClass().getName(), "\n"
-                            + " время: " + new Date() + "\n+" +
-                            " Класс в процессе... " + this.getClass().getName() + "\n" +
-                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorOrderTransport " + cursorOrderTransport);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                        this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-
-        }
 // TODO: 28.04.2023  КОНЕЦ SubClassNewOrderTranport           //// TODO: 28.04.2023  КОНЕЦ SubClassNewOrderTranport   //// TODO: 28.04.2023  КОНЕЦ SubClassNewOrderTranport
 
 
