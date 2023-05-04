@@ -171,6 +171,11 @@ public class MainActivity_Face_App extends AppCompatActivity {
                        Thread.currentThread().getStackTrace()[2].getMethodName()+
                        " время " +new Date().toLocaleString() + " localBinderОбновлениеПО " +localBinderОбновлениеПО );
                Log.i(this.getClass().getName(), "bundle " +bundle);
+
+               if(localBinderОбновлениеПО!=null){
+                   localBinderОбновлениеПО.getService().МетодГлавныйОбновленияПО(false, activity);
+               }
+
            });
         // TODO: 27.03.2023 биндинг службы
         new AllBindingService(context, message).МетодБиндингаОбновлениеПО();

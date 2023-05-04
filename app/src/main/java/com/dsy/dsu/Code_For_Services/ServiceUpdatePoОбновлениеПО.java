@@ -45,6 +45,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -188,6 +189,7 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                             return РежимРаботыСети;
                         }
                     })
+                    .delay(2, TimeUnit.SECONDS)
                     .subscribeOn(Schedulers.single())
                     .doOnError(new Consumer<Throwable>() {
                         @Override
@@ -208,8 +210,6 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                             МетодАнализВерсийЛокальнаяИСерверная(ВерсияПООтСервере[0]);
                             Log.d(getApplicationContext().getClass().getName(), "\n" + "   ФинальныйРезультатAsyncBackgroud ВерсияПООтСервере[0]"+ВерсияПООтСервере[0]);
                             // TODO: 24.04.2023 останаливаем службу
-                            stopSelf();
-
                         }
                     })
                     .onErrorComplete(new Predicate<Throwable>() {
