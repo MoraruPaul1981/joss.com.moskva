@@ -628,6 +628,8 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                 }
             });
         }
+      // TODO: 04.05.2023 выключаем
+      stopSelf();
     } catch (Exception e ) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
