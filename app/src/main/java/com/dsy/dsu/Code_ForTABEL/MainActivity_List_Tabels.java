@@ -613,8 +613,6 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
     private void методзаполненияSimplrCursor(Cursor Курсор_Main_ListTabels) {
         try {
-        if (Курсор_Main_ListTabels.getCount() > 0) {/////ЕСЛИ ЕСТЬХОТЯБЫ ОДИН ТАБЕЛЬ
-            Курсор_Main_ListTabels.moveToFirst();
             SimpleCursorAdapter simpleCursorAdapterAllTAbels =
                     new SimpleCursorAdapter(getApplicationContext(), R.layout.list_item_all_customer_tabel3,
                     Курсор_Main_ListTabels, new String[]{"_id","cfo"}, new int[]{android.R.id.text1,android.R.id.text2},
@@ -700,7 +698,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             // TODO: 18.04.2023 Слушатель Удалание
             методУдалениеТабеля( );
 
-        }
+
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
