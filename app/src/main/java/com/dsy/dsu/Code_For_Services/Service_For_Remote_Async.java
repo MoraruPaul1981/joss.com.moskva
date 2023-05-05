@@ -1297,24 +1297,6 @@ try{
                                                 String getValues=       stringJsonNodeEntryChild.getValue() .trim();
 
 
-                                                switch ( имяТаблицаAsync) {
-                                                    case "fio":
-                                                    case "organization":
-                                                    case "depatment":
-                                                    case "region":
-                                                    case "cfo":
-
-                                                    case "chat_users":
-                                                    case "view_onesignal":
-                                                    case "nomen_vesov":
-                                                    case "type_materials":
-
-
-                                                    case "company":
-                                                    case "track":
-                                                    case "prof":
-                                                    case "vid_tc":
-
                                                         switch ( имяТаблицаAsync){
                                                             case "fio":
                                                             case "cfo":
@@ -1333,36 +1315,8 @@ try{
                                                                 break;
                                                         }
 
-                                                        // TODO: 05.05.2023  вставка данных
-                                                        методВставкиДанныхБазу(getKeys, getValues);
-
-                                                        Log.d(this.getClass().getName(), "\n" + " class " +
-                                                                Thread.currentThread().getStackTrace()[2].getClassName()
-                                                                + "\n" +
-                                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                                + " ТекущийАдаптерДляВсего " + ТекущийАдаптерДляВсего.size() + " имяТаблицаAsync " +имяТаблицаAsync
-                                                                + " getKeys  "  +getKeys);
-
-
-                                                        break;
-
-                                                    default:
-                                                        if (getKeys.contentEquals("id") == false) {
-                                                            // TODO: 05.05.2023  вставка данных
-                                                            методВставкиДанныхБазу(getKeys, getValues);
-                                                        }
-                                                        Log.d(this.getClass().getName(), "\n" + " class " +
-                                                                Thread.currentThread().getStackTrace()[2].getClassName()
-                                                                + "\n" +
-                                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                                + " ТекущийАдаптерДляВсего " + ТекущийАдаптерДляВсего.size() + " имяТаблицаAsync " +имяТаблицаAsync
-                                                                + " getKeys  "  +getKeys);
-                                                        break;
-                                                }
-
-
+                                                // TODO: 05.05.2023  вставка данных
+                                                методВставкиДанныхБазу(getKeys, getValues);
 
                                                 Log.d(this.getClass().getName(), "\n" + " class " +
                                                         Thread.currentThread().getStackTrace()[2].getClassName()
@@ -1370,11 +1324,9 @@ try{
                                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                                         + " ТекущийАдаптерДляВсего " + ТекущийАдаптерДляВсего.size() + " имяТаблицаAsync " +имяТаблицаAsync
-                                                        + " getKeys  "  +getKeys);
+                                                        + " getKeys  "  +getKeys  + " getValues " +getValues);
+
                                             }
-
-
-
 
                                             // TODO: 05.05.2023  класс вставки данных
                                             private void методВставкиДанныхБазу(String getKeys, String getValues) {
