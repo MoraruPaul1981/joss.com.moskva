@@ -31,7 +31,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
-import android.os.Parcel;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,15 +50,12 @@ import android.widget.TextView;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generator_One_WORK_MANAGER;
-import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.dsy.dsu.CodeOrdersAnTransports.Background.ServiceOrserTransportService;
 import com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_App;
 import com.dsy.dsu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.textview.MaterialTextView;
-import com.google.common.util.concurrent.AtomicDouble;
 
 
 import java.util.ArrayList;
@@ -163,6 +159,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
             //todo запуск методов в фрагменте
             subClassNewOrderTransport.   МетодHandlerCallBack();
             subClassNewOrderTransport.   МетодВыходНаAppBack();
+            // TODO: 04.05.2023 Анимация
+            subClassNewOrderTransport.методАнимацииGridView();
 
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
@@ -187,20 +185,18 @@ public class FragmentOrderTransportOneChane extends Fragment {
         super.onStart();
         try{
             if( cursorOrderTransport==null) {
-                subClassNewOrderTransport.методОформленияЗагрузкаGridView(R.layout.list_item_progressing_ordertransport,
+                subClassNewOrderTransport.методПредварительнаяЗагрузкаGridView(R.layout.list_item_progressing_ordertransport,
                         "Загрузка...", R.drawable.icon_dsu1_ordertransport_down);
             }else {
                 if( cursorOrderTransport.getCount()>0) {
-                    subClassNewOrderTransport.     методОформленияGridView(R.layout.fragment_ordertransport1);
+                    subClassNewOrderTransport.методФиналЗагрузкиGridView(R.layout.fragment_ordertransport1);
                 }else{
-                    subClassNewOrderTransport.     методОформленияЗагрузкаGridView( R.layout.list_item_isnull_ordertransport,
+                    subClassNewOrderTransport.методПредварительнаяЗагрузкаGridView( R.layout.list_item_isnull_ordertransport,
                             "Нет заказов !!!", R.drawable.icon_rdertransport2);
                 }
                 // TODO: 04.05.2023 Получаем Данные что обработка данных закончена
                 subClassNewOrderTransport.    МетодДизайнПрограссБара();
             }
-            // TODO: 04.05.2023 Анимация
-            subClassNewOrderTransport.    методЗаполенияGridView();
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
@@ -227,11 +223,15 @@ public class FragmentOrderTransportOneChane extends Fragment {
         }
 
         // TODO: 28.04.2023
-        private void методЗаполенияGridView() {
+        private void методАнимацииGridView() {
             try{
-                Log.d(this.getClass().getName(), " gridViewOrderTransport  "+gridViewOrderTransport);
-                gridViewOrderTransport.setVisibility(View.VISIBLE);
                 gridViewOrderTransport.startAnimation(ani);
+                Log.d(this.getClass().getName(), "\n" + " class " +
+                        Thread.currentThread().getStackTrace()[2].getClassName()
+                        + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " cursorOrderTransport " +cursorOrderTransport);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -642,16 +642,10 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
 
         // TODO: 02.08.2022
-        protected   Cursor методGetCursor(@NonNull Integer ФлагОперации ){
+        protected   Cursor методGetCursor(@NonNull   HashMap<String,String> datasendMap ){
             try{
                 // TODO: 03.05.2023 тест код
-                HashMap<String,String> datasendMap=new HashMap();
-                datasendMap.putIfAbsent("1","  SELECT  *  FROM  order_tc  ");
-                datasendMap.putIfAbsent("2"," WHERE orders IS NOT NULL  AND _id >?  ORDER BY _id ");
-                datasendMap.putIfAbsent("3"," 10 ");
-                datasendMap.putIfAbsent("4"," order_tc ");
-
-                Map<String,Object>  mapRetry=       localBinderOrderTransport.методГлавныйTraffic(datasendMap,ФлагОперации);
+                Map<String,Object>  mapRetry=       localBinderOrderTransport.методГлавныйTraffic(datasendMap);
                 // TODO: 04.05.2023 результат
                 cursorOrderTransport  =(Cursor) mapRetry.get("replyget1" );
 
@@ -660,8 +654,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " cursorOrderTransport " + cursorOrderTransport  + " ПубличныйID  "+ПубличныйID + " ФлагОперации " +ФлагОперации +
-                         " mapRetry " +mapRetry);
+                        + " cursorOrderTransport " + cursorOrderTransport  + " ПубличныйID  "+ПубличныйID + " ФлагОперации " +
+                         " mapRetry " +mapRetry+ " ");
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -691,7 +685,13 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                 localBinderOrderTransport = (ServiceOrserTransportService.  LocalBinderOrderTransport) service;
 
                             // TODO: 04.05.2023  получаем первоночальыне Данные  #1
-                                cursorOrderTransport=              методGetCursor( 1);
+                                HashMap<String,String> datasendMap=new HashMap();
+                                datasendMap.putIfAbsent("1","  SELECT  *  FROM  order_tc  ");
+                                datasendMap.putIfAbsent("2"," WHERE orders IS NOT NULL  AND _id >?  ORDER BY _id ");
+                                datasendMap.putIfAbsent("3"," 0 ");
+                                datasendMap.putIfAbsent("4"," order_tc ");
+                                // TODO: 05.05.2023  ПОЛУЧАЕМ ДАННЫЕ
+                                cursorOrderTransport=              методGetCursor( datasendMap);
                                 // TODO: 04.05.2023  перегружаем экран
 
                                 onStart();
@@ -765,7 +765,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
             }
         }
         // TODO: 28.04.2023
-      void  методОформленияGridView(@NonNull Integer Макет){
+      void методФиналЗагрузкиGridView(@NonNull Integer Макет){
             try{
                     SimpleCursorAdapter АдаптерЗаказыТарнпорта=
                             new SimpleCursorAdapter(getContext(), Макет,
@@ -777,7 +777,15 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
                             try{
                                 switch (view.getId()) {
-                                    case android.R.id.text2:
+                                    case android.R.id.text1:
+
+                                        LinearLayout linearLayoutЗаказыТранспорта= (LinearLayout)
+                                                view.findViewById(android.R.id.text1);
+
+                                        MaterialTextView value1  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.value1);
+                                        MaterialTextView key1  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.key1);
+
+
                                /*         MainParentUUID= cursor.getLong(cursor.getColumnIndex("uuid"));
                                         DigitalNameCFO= cursor.getInt(cursor.getColumnIndex("cfo"));
                                         Integer ID= cursor.getInt(cursor.getColumnIndex("_id"));
@@ -807,22 +815,19 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                         ((MaterialTextView) view).startAnimation(animationvibr1);*/
                                         // TODO: 18.04.2023  Внешниц вид
 
-                                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                                        return true;
-
-                                    case android.R.id.text1:
                                         //Drawable icon2 = getResources().getDrawable(   R.drawable.icon_alltabels1);
-                                        Drawable icon2 = getResources().getDrawable(   R.drawable.icon_alltabels4);
+                                     /*   Drawable icon2 = getResources().getDrawable(   R.drawable.icon_alltabels4);
                                         ((ImageView) view).setImageDrawable(icon2);
-                                        ((ImageView) view).setImageResource(R.drawable.icon_alltabels4);
+                                        ((ImageView) view).setImageResource(R.drawable.icon_alltabels4);*/
 
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-                                        return true;
 
+                                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                                        return true;
                                 }
 
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -941,7 +946,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
 
         // TODO: 28.04.2023
-        void  методОформленияЗагрузкаGridView(@NonNull Integer Макет ,@NonNull String Сообщение,@NonNull Integer Значек){///      R.layout.list_item_progressing_ordertransport
+        void методПредварительнаяЗагрузкаGridView(@NonNull Integer Макет , @NonNull String Сообщение, @NonNull Integer Значек){///      R.layout.list_item_progressing_ordertransport
             try{
                     ArrayList<HashMap<String, Object>> ЛистНетданных= new ArrayList<HashMap<String, Object>> ();
                     HashMap<String, Object> map = new HashMap<>();

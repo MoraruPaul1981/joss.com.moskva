@@ -179,16 +179,12 @@ public class ServiceOrserTransportService extends IntentService {
         }
 
         // TODO: 04.05.2023 Главный метод Службы Заказы Транспота
-        public  Map<String,Object> методГлавныйTraffic(@NonNull  HashMap<String,String> dataMap  , @NonNull Integer code){
-            Map<String,Object>  mapRetry= new HashMap<>();;
+        public  Map<String,Object> методГлавныйTraffic(@NonNull  HashMap<String,String> dataMap  ){
+            Map<String,Object>  mapRetry= new HashMap<>();
             try{
-                switch (code){
-                    case 1:
                      Cursor cursor=   subClassOrderTransport.new SubClassGetCursor().методGetCursor(dataMap);
                         // TODO: 04.05.2023  ответ Курсором Из Службы
                         mapRetry.put("replyget1",cursor);
-                        break;
-                }
                 Log.d(getApplicationContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
