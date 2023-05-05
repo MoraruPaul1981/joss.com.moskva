@@ -76,7 +76,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
     private BottomNavigationItemView bottomNavigationItemView2создать;
     private BottomNavigationItemView bottomNavigationItemView3обновить;
     private ProgressBar progressBarСканирование;
-    private Animation ani;
+
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private Fragment fragment_СозданиеНовогоМатериалов;
@@ -134,7 +134,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
             // TODO: 01.05.2023
             gridViewOrderTransport = container.findViewById(R.id.gridViewOrderTransport);
             TextViewHadler = container.findViewById(R.id.TextViewHadler);
-            animationvibr1 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_singletable2);
+            animationvibr1 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_singletable2);//  ani = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row);
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -155,7 +155,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
         try{
             super.onViewCreated(view, savedInstanceState);
             fragmentManager = getActivity().getSupportFragmentManager();
-            ani = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row);
             start=     Calendar.getInstance().getTimeInMillis();
             startДляОбноразвовной=     Calendar.getInstance().getTimeInMillis();
             //todo запуск методов в фрагменте
@@ -227,7 +226,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
         // TODO: 28.04.2023
         private void методАнимацииGridView() {
             try{
-                gridViewOrderTransport.startAnimation(ani);
+                gridViewOrderTransport.startAnimation(animationvibr1);
                 Log.d(this.getClass().getName(), "\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
@@ -783,9 +782,14 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
                                         LinearLayout linearLayoutЗаказыТранспорта= (LinearLayout)
                                                 view.findViewById(android.R.id.text1);
-
                                         MaterialTextView value1  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.value1);
                                         MaterialTextView key1  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.key1);
+
+
+
+
+
+
 
 
                                          Long   MainParentUUID= cursor.getLong(cursor.getColumnIndex("uuid"));
