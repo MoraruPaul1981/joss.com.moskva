@@ -1295,26 +1295,73 @@ try{
                                             public void accept(Map.Entry<String, String> stringJsonNodeEntryChild) {
                                                 String     getKeys=stringJsonNodeEntryChild.getKey().trim();
                                                 String getValues=       stringJsonNodeEntryChild.getValue() .trim();
-                                                if (getKeys.contentEquals("id") == false) {
-                                                    // TODO: 05.05.2023  вставка данных
-                                                    методВставкиДанныхБазу(getKeys, getValues);
+
+
+                                                switch ( имяТаблицаAsync) {
+                                                    case "fio":
+                                                    case "organization":
+                                                    case "depatment":
+                                                    case "region":
+                                                    case "cfo":
+
+                                                    case "chat_users":
+                                                    case "view_onesignal":
+                                                    case "nomen_vesov":
+                                                    case "type_materials":
+
+
+                                                    case "company":
+                                                    case "track":
+                                                    case "prof":
+                                                    case "vid_tc":
+
+                                                        switch ( имяТаблицаAsync){
+                                                            case "fio":
+                                                            case "cfo":
+                                                            case "chat_users":
+                                                            case "nomen_vesov":
+                                                            case "type_materials":
+                                                            case "company":
+                                                            case "track":
+                                                            case "prof":
+                                                            case "vid_tc":
+                                                                if (getKeys.contentEquals("id") == true) {
+                                                                    // TODO: 05.05.2023  вставка данных
+                                                                    getKeys = "_id";
+                                                                }
+                                                                // TODO: 05.05.2023  вставка данных  _id
+                                                                break;
+                                                        }
+
+                                                        // TODO: 05.05.2023  вставка данных
+                                                        методВставкиДанныхБазу(getKeys, getValues);
+
+                                                        Log.d(this.getClass().getName(), "\n" + " class " +
+                                                                Thread.currentThread().getStackTrace()[2].getClassName()
+                                                                + "\n" +
+                                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                                                + " ТекущийАдаптерДляВсего " + ТекущийАдаптерДляВсего.size() + " имяТаблицаAsync " +имяТаблицаAsync
+                                                                + " getKeys  "  +getKeys);
+
+
+                                                        break;
+
+                                                    default:
+                                                        if (getKeys.contentEquals("id") == false) {
+                                                            // TODO: 05.05.2023  вставка данных
+                                                            методВставкиДанныхБазу(getKeys, getValues);
+                                                        }
+                                                        Log.d(this.getClass().getName(), "\n" + " class " +
+                                                                Thread.currentThread().getStackTrace()[2].getClassName()
+                                                                + "\n" +
+                                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                                                + " ТекущийАдаптерДляВсего " + ТекущийАдаптерДляВсего.size() + " имяТаблицаAsync " +имяТаблицаAsync
+                                                                + " getKeys  "  +getKeys);
+                                                        break;
                                                 }
-                                                if(имяТаблицаAsync.equalsIgnoreCase("organization") ||
-                                                        имяТаблицаAsync.equalsIgnoreCase("depatment") ||
-                                                        имяТаблицаAsync.equalsIgnoreCase("fio") ||
-                                                        имяТаблицаAsync.equalsIgnoreCase("region") ||
-                                                        имяТаблицаAsync.equalsIgnoreCase("cfo") ||
-                                                        имяТаблицаAsync.equalsIgnoreCase("chat_users") ||
-                                                        имяТаблицаAsync.equalsIgnoreCase("view_onesignal") ||
-                                                        имяТаблицаAsync.equalsIgnoreCase("nomen_vesov") ||
-                                                        имяТаблицаAsync.equalsIgnoreCase("type_materials") ||
-                                                        имяТаблицаAsync.equalsIgnoreCase("company") ||
-                                                        имяТаблицаAsync.equalsIgnoreCase("track") ||
-                                                        имяТаблицаAsync.equalsIgnoreCase("prof") ||
-                                                        имяТаблицаAsync.equalsIgnoreCase("vid_tc")){
-                                                    // TODO: 05.05.2023  вставка данных
-                                                    методВставкиДанныхБазу(getKeys, getValues);
-                                                }
+
 
 
                                                 Log.d(this.getClass().getName(), "\n" + " class " +
@@ -1322,13 +1369,14 @@ try{
                                                         + "\n" +
                                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                        + " ТекущийАдаптерДляВсего " + ТекущийАдаптерДляВсего.size() + " имяТаблицаAsync " +имяТаблицаAsync);
-
-
-
+                                                        + " ТекущийАдаптерДляВсего " + ТекущийАдаптерДляВсего.size() + " имяТаблицаAsync " +имяТаблицаAsync
+                                                        + " getKeys  "  +getKeys);
                                             }
 
-                                            // TODO: 05.05.2023  класс вставки данных  
+
+
+
+                                            // TODO: 05.05.2023  класс вставки данных
                                             private void методВставкиДанныхБазу(String getKeys, String getValues) {
                                                 try{
                                                 // TODO: 27.10.2022 Дополнительна Обработка
