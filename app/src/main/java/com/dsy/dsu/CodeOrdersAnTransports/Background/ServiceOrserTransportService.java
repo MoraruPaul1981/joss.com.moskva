@@ -179,6 +179,8 @@ public class ServiceOrserTransportService extends IntentService {
         }
 
         // TODO: 04.05.2023 Главный метод Службы Заказы Транспота
+        @BinderThread
+        @Background
         public  Map<String,Object> методГлавныйTraffic(@NonNull  HashMap<String,String> dataMap  ){
             Map<String,Object>  mapRetry= new HashMap<>();
             try{
