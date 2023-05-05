@@ -1306,11 +1306,12 @@ try{
                                                             case "company":
                                                             case "track":
                                                             case "prof":
-                                                            case "vid_tc":
                                                             case "chats":
                                                             case "data_chat":
                                                             case "tabel":
                                                             case "data_tabels":
+                                                            case "order_tc":
+                                                            case "vid_tc":
                                                                 if (getKeys.contentEquals("id") == true) {
                                                                     // TODO: 05.05.2023  вставка данных
                                                                     getKeys = "_id";
