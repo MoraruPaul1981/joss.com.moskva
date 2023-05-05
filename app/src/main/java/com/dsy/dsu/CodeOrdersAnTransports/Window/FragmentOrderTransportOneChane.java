@@ -779,50 +779,23 @@ public class FragmentOrderTransportOneChane extends Fragment {
                             try{
                                 switch (view.getId()) {
                                     case android.R.id.text1:
-
                                         LinearLayout linearLayoutЗаказыТранспорта= (LinearLayout)
                                                 view.findViewById(android.R.id.text1);
-                                        MaterialTextView value1  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.value1);
-                                        MaterialTextView key1  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.key1);
 
+                                        String      NameOrder= cursor.getString(cursor.getColumnIndex("name")).trim();
 
-
-
-
-
-
-
-                                         Long   MainParentUUID= cursor.getLong(cursor.getColumnIndex("uuid"));
-                                         String      NameOrder= cursor.getString(cursor.getColumnIndex("name")).trim();
-                                         String DateOrder= cursor.getString(cursor.getColumnIndex("dateorders")).trim();
-                                        Integer IdOrder= cursor.getInt(cursor.getColumnIndex("_id"));
-                                        Integer NumberOrder= cursor.getInt(cursor.getColumnIndex("number_order"));
-
-
-                                        // TODO: 18.04.2023 Данные Заказы Трансопрта
-                                        Bundle bundleOrderTransport=new Bundle();;
-                                        bundleOrderTransport.putLong("MainParentUUID", MainParentUUID);
-                                        bundleOrderTransport.putInt("Position", cursor.getPosition());
-                                        bundleOrderTransport.putString("NameOrder",NameOrder );
-                                        bundleOrderTransport.putString("DateOrder",  DateOrder);
-                                        bundleOrderTransport.putInt("IdOrder", IdOrder);
-                                        bundleOrderTransport.putInt("NumberOrder", NumberOrder);
-
-
+                                        Bundle bundleOrderTransport=    методДанныеBungle(cursor);
+                                        MaterialTextView values;
+                                        // TODO: 05.05.2023  сами данные
+                                              values  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue0);
                                         // TODO: 09.04.2023  ВставлЯем Данные
-                                        ((MaterialTextView) value1).setTag(bundleOrderTransport);
-                                        ((MaterialTextView) value1).setText(NameOrder);
-                                        ((MaterialTextView) value1).startAnimation(animationvibr1);
+                                        методЗаполенияЗаказаТранспорта(NameOrder, bundleOrderTransport, (MaterialTextView) values);
                                         // TODO: 18.04.2023  Внешниц вид
-
-                                        //Drawable icon2 = getResources().getDrawable(   R.drawable.icon_alltabels1);
-                                     /*   Drawable icon2 = getResources().getDrawable(   R.drawable.icon_alltabels4);
-                                        ((ImageView) view).setImageDrawable(icon2);
-                                        ((ImageView) view).setImageResource(R.drawable.icon_alltabels4);*/
 
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                                                "  bundleOrderTransport " +bundleOrderTransport +  "values " +values);
                                         return true;
                                 }
 
@@ -865,8 +838,63 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-
         }
+
+        private void методЗаполенияЗаказаТранспорта(String NameOrder, Bundle bundleOrderTransport, MaterialTextView values) {
+            try{
+                values.setTag(bundleOrderTransport);
+                values.setText(NameOrder);
+                values.startAnimation(animationvibr1);
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                        + "  bundleOrderTransport " + bundleOrderTransport);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        }
+
+        // TODO: 05.05.2023
+        Bundle методДанныеBungle(@NonNull Cursor cursor) {
+            Bundle bundleOrderTransport=new Bundle();
+            try {
+                Long   MainParentUUID= cursor.getLong(cursor.getColumnIndex("uuid"));
+                String      NameOrder= cursor.getString(cursor.getColumnIndex("name")).trim();
+                String DateOrder= cursor.getString(cursor.getColumnIndex("dateorders")).trim();
+                Integer IdOrder= cursor.getInt(cursor.getColumnIndex("_id"));
+                Integer NumberOrder= cursor.getInt(cursor.getColumnIndex("number_order"));
+                // TODO: 18.04.2023 Данные Заказы Трансопрта
+                bundleOrderTransport.putLong("MainParentUUID", MainParentUUID);
+                bundleOrderTransport.putInt("Position", cursor.getPosition());
+                bundleOrderTransport.putString("NameOrder",NameOrder );
+                bundleOrderTransport.putString("DateOrder",  DateOrder);
+                bundleOrderTransport.putInt("IdOrder", IdOrder);
+                bundleOrderTransport.putInt("NumberOrder", NumberOrder);
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                        + "  cursor " + cursor);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+
+            }
+            return  bundleOrderTransport;
+        }
+
+
+
         private void методПоGridView( ) {
             gridViewOrderTransport.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
