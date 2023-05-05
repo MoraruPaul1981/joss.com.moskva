@@ -431,13 +431,27 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
                         // TODO: 09.04.2023  Главный Треитий Последние Получение Данных Для Конктерного Месяца И Года
                       Cursor    Курсор_Main_ListTabelsFinal=    методИниЦиализацииSimpleCursor(МЕсяцТабелей,ГодТабелей);
-                            методзаполненияSimplrCursor(Курсор_Main_ListTabelsFinal);
-                            // TODO: 19.04.2023  внешний вид
+
+
+                            if (Курсор_Main_ListTabelsFinal.getCount()>0) {
+                                методзаполненияSimplrCursor(Курсор_Main_ListTabelsFinal);
+                                // TODO: 19.04.2023  внешний вид
                                 gridViewAllTabes.smoothScrollByOffset(position);
-                            // TODO: 19.04.2023  Когда ДАННЫХ НЕТ
-                            // TODO: 19.04.2023  показываем количемтво табеленй
-                            методКоличествоТабелей(Курсор_Main_ListTabelsFinal );
-                                
+                                // TODO: 19.04.2023  Когда ДАННЫХ НЕТ
+                                // TODO: 19.04.2023  показываем количемтво табеленй
+                                методКоличествоТабелей(Курсор_Main_ListTabelsFinal );
+                            } else {
+                                // TODO: 19.04.2023  Когда ДАННЫХ НЕТ
+                                методDontGetData(Курсор_Main_ListTabels);
+                            }
+
+                            Log.d(this.getClass().getName(), " КакойКонтекст" + ИмесяцвИГодСразу +
+                                    " ПолученныйПоследнийМесяцДляСортировкиЕгоВСпиноре " + ИмесяцвИГодСразу+
+                                    " МассивДляВыбораВСпинерДатаArray " +МассивДляВыбораВСпинерДатаArray  +
+                                    " МассивДляВыбораВСпинореMainUUID " + МассивДляВыбораВСпинореMainUUID+
+                                    "  ((TextView) parent.getChildAt(0)) " +((TextView) parent.getChildAt(0)).getTag()  + " MainParentUUID " +MainParentUUID+
+                                    " Курсор_Main_ListTabelsFinal "+Курсор_Main_ListTabelsFinal);
+
                         }else {
                             // TODO: 19.04.2023  Когда ДАННЫХ НЕТ
                             методDontGetData(Курсор_Main_ListTabels);

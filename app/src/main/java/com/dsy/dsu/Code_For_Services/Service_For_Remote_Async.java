@@ -1296,35 +1296,79 @@ try{
                                                 String     getKeys=stringJsonNodeEntryChild.getKey().trim();
                                                 String getValues=       stringJsonNodeEntryChild.getValue() .trim();
                                                 if (getKeys.contentEquals("id") == false) {
-                                                    // TODO: 27.10.2022 Дополнительна Обработка
-                                                    getValues.trim()
-                                                            .replace("\"", "").replace("\\n", "")
-                                                            .replace("\\r", "").replace("\\", "")
-                                                            .replace("\\t", "").trim();//todo .replaceAll("[^A-Za-zА-Яа-я0-9]", "")
-                                                    if (getKeys.equalsIgnoreCase("status_carried_out") ||
-                                                            getKeys.equalsIgnoreCase("closed") ||
-                                                            getKeys.equalsIgnoreCase("locked")) {
-                                                        if (getValues.equalsIgnoreCase("false") ||
-                                                                getValues.equalsIgnoreCase("0")) {
-                                                            getValues = "False";
-                                                        }
-                                                        if (getValues.equalsIgnoreCase("true") ||
-                                                                getValues.equalsIgnoreCase("1")) {
-                                                            getValues = "True";
-                                                        }
-                                                    }
-                                                    Log.d(this.getClass().getName(), " getKeys " + getKeys +
-                                                            " getValues" + getValues);
-                                                    // TODO: 27.10.2022  UUID есть Обновление
-                                                    ТекущийАдаптерДляВсего.put(getKeys, getValues);//
-
-                                                    Log.d(this.getClass().getName(), "\n" + " class " +
-                                                            Thread.currentThread().getStackTrace()[2].getClassName()
-                                                            + "\n" +
-                                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                            + " ТекущийАдаптерДляВсего " + ТекущийАдаптерДляВсего.size());
+                                                    // TODO: 05.05.2023  вставка данных
+                                                    методВставкиДанныхБазу(getKeys, getValues);
                                                 }
+                                                if(имяТаблицаAsync.equalsIgnoreCase("organization") ||
+                                                        имяТаблицаAsync.equalsIgnoreCase("depatment") ||
+                                                        имяТаблицаAsync.equalsIgnoreCase("fio") ||
+                                                        имяТаблицаAsync.equalsIgnoreCase("region") ||
+                                                        имяТаблицаAsync.equalsIgnoreCase("cfo") ||
+                                                        имяТаблицаAsync.equalsIgnoreCase("chat_users") ||
+                                                        имяТаблицаAsync.equalsIgnoreCase("view_onesignal") ||
+                                                        имяТаблицаAsync.equalsIgnoreCase("nomen_vesov") ||
+                                                        имяТаблицаAsync.equalsIgnoreCase("type_materials") ||
+                                                        имяТаблицаAsync.equalsIgnoreCase("company") ||
+                                                        имяТаблицаAsync.equalsIgnoreCase("track") ||
+                                                        имяТаблицаAsync.equalsIgnoreCase("prof") ||
+                                                        имяТаблицаAsync.equalsIgnoreCase("vid_tc")){
+                                                    // TODO: 05.05.2023  вставка данных
+                                                    методВставкиДанныхБазу(getKeys, getValues);
+                                                }
+
+
+                                                Log.d(this.getClass().getName(), "\n" + " class " +
+                                                        Thread.currentThread().getStackTrace()[2].getClassName()
+                                                        + "\n" +
+                                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                                        + " ТекущийАдаптерДляВсего " + ТекущийАдаптерДляВсего.size() + " имяТаблицаAsync " +имяТаблицаAsync);
+
+
+
+                                            }
+
+                                            // TODO: 05.05.2023  класс вставки данных  
+                                            private void методВставкиДанныхБазу(String getKeys, String getValues) {
+                                                try{
+                                                // TODO: 27.10.2022 Дополнительна Обработка
+                                                getValues.trim()
+                                                        .replace("\"", "").replace("\\n", "")
+                                                        .replace("\\r", "").replace("\\", "")
+                                                        .replace("\\t", "").trim();//todo .replaceAll("[^A-Za-zА-Яа-я0-9]", "")
+                                                if (getKeys.equalsIgnoreCase("status_carried_out") ||
+                                                        getKeys.equalsIgnoreCase("closed") ||
+                                                        getKeys.equalsIgnoreCase("locked")) {
+                                                    if (getValues.equalsIgnoreCase("false") ||
+                                                            getValues.equalsIgnoreCase("0")) {
+                                                        getValues = "False";
+                                                    }
+                                                    if (getValues.equalsIgnoreCase("true") ||
+                                                            getValues.equalsIgnoreCase("1")) {
+                                                        getValues = "True";
+                                                    }
+                                                }
+                                                Log.d(this.getClass().getName(), " getKeys " + getKeys +
+                                                        " getValues" + getValues);
+                                                // TODO: 27.10.2022  UUID есть Обновление
+                                                ТекущийАдаптерДляВсего.put(getKeys, getValues);//
+
+                                                Log.d(this.getClass().getName(), "\n" + " class " +
+                                                        Thread.currentThread().getStackTrace()[2].getClassName()
+                                                        + "\n" +
+                                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                                        + " ТекущийАдаптерДляВсего " + ТекущийАдаптерДляВсего.size());
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
+                                                        Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                                new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                                        this.getClass().getName(),
+                                                        Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                            }
                                             }
                                         });
                                         // TODO: 28.04.2023  end ROW
