@@ -1307,6 +1307,10 @@ try{
                                                             case "track":
                                                             case "prof":
                                                             case "vid_tc":
+                                                            case "chats":
+                                                            case "data_chat":
+                                                            case "tabel":
+                                                            case "data_tabels":
                                                                 if (getKeys.contentEquals("id") == true) {
                                                                     // TODO: 05.05.2023  вставка данных
                                                                     getKeys = "_id";
