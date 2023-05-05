@@ -91,6 +91,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
     private GridView gridViewOrderTransport;
 
     private     SubClassNewOrderTransport subClassNewOrderTransport;
+    private  Animation animationvibr1;
 
 
     @Override
@@ -133,6 +134,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
             // TODO: 01.05.2023
             gridViewOrderTransport = container.findViewById(R.id.gridViewOrderTransport);
             TextViewHadler = container.findViewById(R.id.TextViewHadler);
+            animationvibr1 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_singletable2);
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -686,10 +688,10 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
                             // TODO: 04.05.2023  получаем первоночальыне Данные  #1
                                 HashMap<String,String> datasendMap=new HashMap();
-                                datasendMap.putIfAbsent("1","  SELECT  *  FROM  order_tc  ");
-                                datasendMap.putIfAbsent("2"," WHERE vid_trasport  IS NOT NULL  AND _id >?  ORDER BY _id ");
+                                datasendMap.putIfAbsent("1","  SELECT  *  FROM  view_ordertransport  ");
+                                datasendMap.putIfAbsent("2"," WHERE name  IS NOT NULL  AND _id >?  ORDER BY _id ");
                                 datasendMap.putIfAbsent("3"," 0 ");
-                                datasendMap.putIfAbsent("4"," order_tc ");
+                                datasendMap.putIfAbsent("4"," view_ordertransport ");
                                 // TODO: 05.05.2023  ПОЛУЧАЕМ ДАННЫЕ
                                 cursorOrderTransport=              методGetCursor( datasendMap);
                                 // TODO: 04.05.2023  перегружаем экран
@@ -769,7 +771,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
             try{
                     SimpleCursorAdapter АдаптерЗаказыТарнпорта=
                             new SimpleCursorAdapter(getContext(), Макет,
-                                    cursorOrderTransport, new String[]{"_id","orders"},
+                                    cursorOrderTransport, new String[]{"_id","name"},
                                     new int[]{android.R.id.text1,android.R.id.text2},
                                     CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);  ///name
                     SimpleCursorAdapter.ViewBinder binding = new SimpleCursorAdapter.ViewBinder() {
@@ -787,25 +789,26 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
 
                                          Long   MainParentUUID= cursor.getLong(cursor.getColumnIndex("uuid"));
-                                         String      НазваниеЗаказаТранпорта= cursor.getString(cursor.getColumnIndex("orders"));
-                                         String ДатаЗаказаТранпорта= cursor.getString(cursor.getColumnIndex("dateorders"));
-                                        Integer DigitalNameOrderTransport= cursor.getInt(cursor.getColumnIndex("_id"));
+                                         String      NameOrder= cursor.getString(cursor.getColumnIndex("name")).trim();
+                                         String DateOrder= cursor.getString(cursor.getColumnIndex("dateorders")).trim();
+                                        Integer IdOrder= cursor.getInt(cursor.getColumnIndex("_id"));
+                                        Integer NumberOrder= cursor.getInt(cursor.getColumnIndex("number_order"));
 
 
                                         // TODO: 18.04.2023 Данные Заказы Трансопрта
                                         Bundle bundleOrderTransport=new Bundle();;
-                    /*                    bundleOrderTransport.putLong("MainParentUUID", MainParentUUID);
+                                        bundleOrderTransport.putLong("MainParentUUID", MainParentUUID);
                                         bundleOrderTransport.putInt("Position", cursor.getPosition());
-                                        bundleOrderTransport.putString("НазваниеЗаказаТранпорта",НазваниеЗаказаТранпорта );
-                                        bundleOrderTransport.putString("ДатаЗаказаТранпорта",  ДатаЗаказаТранпорта);
-                                        bundleOrderTransport.putInt("DigitalNameOrderTransport", DigitalNameOrderTransport);
-                                        bundleOrderTransport.putString("FullNameCFO", FullNameCFO.trim());
-                                        bundleOrderTransport.putString("ИмесяцвИГодСразу", ИмесяцвИГодСразу.trim());
+                                        bundleOrderTransport.putString("NameOrder",NameOrder );
+                                        bundleOrderTransport.putString("DateOrder",  DateOrder);
+                                        bundleOrderTransport.putInt("IdOrder", IdOrder);
+                                        bundleOrderTransport.putInt("NumberOrder", NumberOrder);
+
 
                                         // TODO: 09.04.2023  ВставлЯем Данные
-                                        ((MaterialTextView) view).setTag(bundleДЛяListTabels);
-                                        ((MaterialTextView) view).setText(FullNameCFO.trim());
-                                        ((MaterialTextView) view).startAnimation(animationvibr1);*/
+                                        ((MaterialTextView) value1).setTag(bundleOrderTransport);
+                                        ((MaterialTextView) value1).setText(NameOrder);
+                                        ((MaterialTextView) value1).startAnimation(animationvibr1);
                                         // TODO: 18.04.2023  Внешниц вид
 
                                         //Drawable icon2 = getResources().getDrawable(   R.drawable.icon_alltabels1);
@@ -816,10 +819,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-
-                                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                                         return true;
                                 }
 
