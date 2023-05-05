@@ -786,28 +786,21 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                         MaterialTextView key1  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.key1);
 
 
-                               /*         MainParentUUID= cursor.getLong(cursor.getColumnIndex("uuid"));
-                                        DigitalNameCFO= cursor.getInt(cursor.getColumnIndex("cfo"));
-                                        Integer ID= cursor.getInt(cursor.getColumnIndex("_id"));
-                                        // TODO: 18.04.2023 Название ЦФО
-                                        Bundle bundleНазваниеЦФО=new Bundle();
-                                        bundleНазваниеЦФО.putString("СамЗапрос","  SELECT * FROM  cfo WHERE    _id=? ");
-                                        bundleНазваниеЦФО.putStringArray("УсловияВыборки" ,new String[]{  String.valueOf(DigitalNameCFO)});
-                                        bundleНазваниеЦФО.putString("Таблица","cfo");
-                                        Cursor КурсорПОискНазваниеЦФО=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleНазваниеЦФО);
-                                        FullNameCFO=КурсорПОискНазваниеЦФО.getString(КурсорПОискНазваниеЦФО.getColumnIndex("name")).trim();
-                                        КурсорПОискНазваниеЦФО.close();
-                                        МЕсяцТабелей = cursor.getInt(cursor.getColumnIndex("month_tabels"));
-                                        ГодТабелей= cursor.getInt(cursor.getColumnIndex("year_tabels"));
-                                        // TODO: 15.12.2022  Давные Bundle
-                                        Bundle bundleДЛяListTabels=new Bundle();
-                                        bundleДЛяListTabels.putLong("MainParentUUID", MainParentUUID);
-                                        bundleДЛяListTabels.putInt("Position", cursor.getPosition());
-                                        bundleДЛяListTabels.putInt("ГодТабелей",ГодТабелей );
-                                        bundleДЛяListTabels.putInt("МЕсяцТабелей",  МЕсяцТабелей);
-                                        bundleДЛяListTabels.putInt("DigitalNameCFO", DigitalNameCFO);
-                                        bundleДЛяListTabels.putString("FullNameCFO", FullNameCFO.trim());
-                                        bundleДЛяListTabels.putString("ИмесяцвИГодСразу", ИмесяцвИГодСразу.trim());
+                                         Long   MainParentUUID= cursor.getLong(cursor.getColumnIndex("uuid"));
+                                         String      НазваниеЗаказаТранпорта= cursor.getString(cursor.getColumnIndex("orders"));
+                                         String ДатаЗаказаТранпорта= cursor.getString(cursor.getColumnIndex("dateorders"));
+                                        Integer DigitalNameOrderTransport= cursor.getInt(cursor.getColumnIndex("_id"));
+
+
+                                        // TODO: 18.04.2023 Данные Заказы Трансопрта
+                                        Bundle bundleOrderTransport=new Bundle();;
+                    /*                    bundleOrderTransport.putLong("MainParentUUID", MainParentUUID);
+                                        bundleOrderTransport.putInt("Position", cursor.getPosition());
+                                        bundleOrderTransport.putString("НазваниеЗаказаТранпорта",НазваниеЗаказаТранпорта );
+                                        bundleOrderTransport.putString("ДатаЗаказаТранпорта",  ДатаЗаказаТранпорта);
+                                        bundleOrderTransport.putInt("DigitalNameOrderTransport", DigitalNameOrderTransport);
+                                        bundleOrderTransport.putString("FullNameCFO", FullNameCFO.trim());
+                                        bundleOrderTransport.putString("ИмесяцвИГодСразу", ИмесяцвИГодСразу.trim());
 
                                         // TODO: 09.04.2023  ВставлЯем Данные
                                         ((MaterialTextView) view).setTag(bundleДЛяListTabels);
@@ -876,11 +869,11 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     try{
-                        LinearLayout linearLayoutSimpelCursorAllTabeles= (LinearLayout)
-                                view.findViewById(R.id.   linearLayoutSimpelCursorAllTabeles);
+                        LinearLayout linearLayoutЗаказыТранспорта= (LinearLayout)
+                                view.findViewById(android.R.id.text1);
 
-                        ImageView imageView  = (ImageView) linearLayoutSimpelCursorAllTabeles.getChildAt(0);
-                        MaterialTextView materialTextView  = (MaterialTextView) linearLayoutSimpelCursorAllTabeles.getChildAt(1);
+                        ImageView imageView  = (ImageView) linearLayoutЗаказыТранспорта.getChildAt(0);
+                        MaterialTextView materialTextView  = (MaterialTextView) linearLayoutЗаказыТранспорта.getChildAt(1);
 
 
                      /*   materialTextView.setBackgroundColor(Color.GRAY);
@@ -911,10 +904,10 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                     try{
-                        LinearLayout linearLayoutSimpelCursorAllTabeles= (LinearLayout)
-                                view.findViewById(R.id.   linearLayoutSimpelCursorAllTabeles);
-                        ImageView imageView  = (ImageView) linearLayoutSimpelCursorAllTabeles.getChildAt(0);
-                        MaterialTextView materialTextView  = (MaterialTextView) linearLayoutSimpelCursorAllTabeles.getChildAt(1);
+                        LinearLayout linearLayoutЗаказыТранспорта= (LinearLayout)
+                                view.findViewById(android.R.id.text1);
+                        ImageView imageView  = (ImageView) linearLayoutЗаказыТранспорта.getChildAt(0);
+                        MaterialTextView materialTextView  = (MaterialTextView) linearLayoutЗаказыТранспорта.getChildAt(1);
                         materialTextView.setBackgroundColor(Color.GRAY);
 
                      /*   message.getTarget().postDelayed(()->{

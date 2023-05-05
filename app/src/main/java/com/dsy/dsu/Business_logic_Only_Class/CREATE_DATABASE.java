@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =      1015;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+     static final int VERSION =      1016;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
     private      SQLiteDatabase ССылкаНаСозданнуюБазу;
     private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
@@ -104,6 +104,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             МетодСозданияViewТабеля(ССылкаНаСозданнуюБазу);
             МетодСозданиеViewПолученныхМатериалов(ССылкаНаСозданнуюБазу);
             МетодСозданиеViewПолученныхМатериаловGroup(ССылкаНаСозданнуюБазу);
+            МетодСозданиеViewЗаказыТранспорта(ССылкаНаСозданнуюБазу);
 // TODO: 12.10.2022  создание Trigers
             МетодСозданиеТрирераМодификаценКлиент(ССылкаНаСозданнуюБазу,ИменаТаблицыОтАндройда);
             Log.d(this.getClass().getName(), " сработала ... КОНЕЦ СОЗДАНИЯ ТАБЛИЦ " +new Date().toGMTString());
@@ -1019,14 +1020,14 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'order_tc'");//test
             ССылкаНаСозданнуюБазу.execSQL("Create table if not exists order_tc (" +
                     "_id INTEGER PRIMARY KEY  ," +
-                    "orders  TEXT ," +
-                    "machina TEXT," +
-                    "date_update TEXT ," +
-                    "kolich  INTEGER ," +
+
+                    "cfo INTEGER," +
+                    "vid_trasport  INTEGER ," +
                     "dateorders TEXT ," +
-                    "machinaexp  INTEGER ," +
-                    "machall  NUMERIC ," +
-                    "summacina  NUMERIC ," +
+                    "gos_nomer  TEXT ," +
+                    "number_order  INTEGER ," +
+
+                    "date_update TEXT ," +
                     "uuid NUMERIC UNIQUE," +
                     "user_update INTEGER," +
                     " current_table NUMERIC UNIQUE )");
@@ -1109,6 +1110,28 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
                     "WHERE        (get_mater.status_send <> 'Удаленная')\n" +
                     "GROUP BY t_m.name, get_mater.cfo, get_mater.nomenvesov, get_mater.nomen_vesov, get_mater.typematerial" );
             Log.d(this.getClass().getName(), " сработала ...  создание view  view_taterials_group ");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
+    private void МетодСозданиеViewЗаказыТранспорта(SQLiteDatabase ССылкаНаСозданнуюБазу) {
+        try{
+            ССылкаНаСозданнуюБазу.execSQL("drop view  if exists view_ordertransport");//test
+            ССылкаНаСозданнуюБазу.execSQL("CREATE VIEW if not exists view_ordertransport AS" +
+                    " SELECT             order_tc._id,  vid_tc.name,  order_tc.dateorders,  order_tc.gos_nomer,  order_tc.number_order, \n" +
+                    " order_tc.date_update,  order_tc.uuid,  order_tc.user_update,  order_tc.current_table, \n" +
+                    "                          cfo.name AS cfo,  order_tc.status\n" +
+                    "FROM             order_tc INNER JOIN\n" +
+                    "                          vid_tc ON  order_tc.vid_trasport =  vid_tc.id INNER JOIN\n" +
+                    "                          cfo ON  order_tc.cfo =  cfo.id\n" +
+                    "WHERE        ( vid_tc.name IS NOT NULL)" );
+
+            Log.d(this.getClass().getName(), " сработала ...  создание view  view_ordertransport ");
         } catch (SQLException e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

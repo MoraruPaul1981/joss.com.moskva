@@ -8,6 +8,7 @@
     android:layout_height="wrap_content"
     android:background="#FFFFFF"
     android:layout_margin="5dp"
+    android:padding="5dp"
     tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
     android:orientation="vertical">
 
@@ -28,7 +29,7 @@
         android:visibility="visible"
         app:cardCornerRadius="20dp"
         app:cardElevation="10dp"
-        app:srcCompat="@drawable/icon_ordertransportorder1"
+        app:srcCompat="@drawable/icon_rdertransport1"
         app:strokeColor="#F5FFFA" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -283,19 +284,5 @@
     </LinearLayout>
 
 
-    <ProgressBar
-        android:id="@+id/ProgressBar"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:layout_above="@+id/BottomNavigationView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="3dp"
-        android:background="#FFFFFF"
-        android:indeterminate="true"
-        android:indeterminateTint="#ABB3AD"
-        android:scaleX="1"
-        android:scaleY="3"
-        android:visibility="visible" />
 
 </LinearLayout>
