@@ -191,7 +191,9 @@ public class ServiceOrserTransportService extends IntentService {
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +  " mapBoundService " +
-                        " mapRetry " +mapRetry );
+                        " mapRetry " +mapRetry + " Thread 1   "
+                        + Thread.currentThread().getName()+ " Thread 2"
+                        + Thread.getAllStackTraces().values().toString() );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +

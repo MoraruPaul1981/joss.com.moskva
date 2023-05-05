@@ -687,7 +687,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                             // TODO: 04.05.2023  получаем первоночальыне Данные  #1
                                 HashMap<String,String> datasendMap=new HashMap();
                                 datasendMap.putIfAbsent("1","  SELECT  *  FROM  order_tc  ");
-                                datasendMap.putIfAbsent("2"," WHERE orders IS NOT NULL  AND _id >?  ORDER BY _id ");
+                                datasendMap.putIfAbsent("2"," WHERE vid_trasport  IS NOT NULL  AND _id >?  ORDER BY _id ");
                                 datasendMap.putIfAbsent("3"," 0 ");
                                 datasendMap.putIfAbsent("4"," order_tc ");
                                 // TODO: 05.05.2023  ПОЛУЧАЕМ ДАННЫЕ

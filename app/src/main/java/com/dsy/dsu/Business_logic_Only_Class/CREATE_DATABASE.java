@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =      1017;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+     static final int VERSION =      1018;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
     private      SQLiteDatabase ССылкаНаСозданнуюБазу;
     private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
@@ -1124,13 +1124,21 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         try{
             ССылкаНаСозданнуюБазу.execSQL("drop view  if exists view_ordertransport");//test
             ССылкаНаСозданнуюБазу.execSQL("CREATE VIEW if not exists view_ordertransport AS" +
-                    " SELECT             order_tc._id,  vid_tc.name,  order_tc.dateorders,  order_tc.gos_nomer,  order_tc.number_order, \n" +
-                    " order_tc.date_update,  order_tc.uuid,  order_tc.user_update,  order_tc.current_table, \n" +
-                    "                          cfo.name AS cfo,  order_tc.status\n" +
-                    "FROM             order_tc INNER JOIN\n" +
-                    "                          vid_tc ON  order_tc.vid_trasport =  vid_tc.id INNER JOIN\n" +
-                    "                          cfo ON  order_tc.cfo =  cfo.id\n" +
-                    "WHERE        ( vid_tc.name IS NOT NULL)" );
+                    " SELECT           order_tc._id,  \n" +
+                    "  vid_tc.name,  \n" +
+                    "  order_tc.dateorders,   \n" +
+                    "  order_tc.gos_nomer,\n" +
+                    "                        order_tc.number_order,  \n" +
+                    " torder_tc.date_update, \n" +
+                    " torder_tc.uuid,\n" +
+                    " torder_tc.user_update,\n" +
+                    "                        order_tc.current_table, \n" +
+                    "                                                cfo.name AS cfo, \n" +
+                    " torder_tc.status\n" +
+                    "                    FROM               order_tc INNER JOIN\n" +
+                    "                                                vid_tc ON    order_tc.vid_trasport =    vid_tc._id INNER JOIN\n" +
+                    "                                                cfo ON    order_tc.cfo =    cfo._id\n" +
+                    "                    WHERE        (   vid_tc.name IS NOT NULL)" );
 
             Log.d(this.getClass().getName(), " сработала ...  создание view  view_ordertransport ");
         } catch (SQLException e) {
