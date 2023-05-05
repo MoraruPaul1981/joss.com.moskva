@@ -1298,7 +1298,7 @@ try{
 
 
                                                         switch ( имяТаблицаAsync){
-                                                            case "fio":
+                                                            //case "fio":
                                                             case "cfo":
                                                             case "chat_users":
                                                             case "nomen_vesov":
@@ -1318,9 +1318,17 @@ try{
                                                                 // TODO: 05.05.2023  вставка данных  _id
                                                                 break;
                                                         }
+                                                // TODO: 05.05.2023  заполенени по условию
+                                                if (имяТаблицаAsync.equalsIgnoreCase("fio")==false) {
+                                                    // TODO: 05.05.2023  вставка данных
+                                                    методВставкиДанныхБазу(getKeys, getValues);
+                                                }else {
+                                                    if (getKeys.contentEquals("id") == false) {
+                                                      // TODO: 05.05.2023  вставка данных  только для ФИО
+                                                        методВставкиДанныхБазу(getKeys, getValues);
+                                                    }
 
-                                                // TODO: 05.05.2023  вставка данных
-                                                методВставкиДанныхБазу(getKeys, getValues);
+                                                }
 
                                                 Log.d(this.getClass().getName(), "\n" + " class " +
                                                         Thread.currentThread().getStackTrace()[2].getClassName()
