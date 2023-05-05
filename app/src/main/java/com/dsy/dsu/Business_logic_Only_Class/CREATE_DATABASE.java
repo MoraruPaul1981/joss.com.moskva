@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =      1018;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+     static final int VERSION =      1019;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
     private      SQLiteDatabase ССылкаНаСозданнуюБазу;
     private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
@@ -1129,12 +1129,12 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
                     "  order_tc.dateorders,   \n" +
                     "  order_tc.gos_nomer,\n" +
                     "                        order_tc.number_order,  \n" +
-                    " torder_tc.date_update, \n" +
-                    " torder_tc.uuid,\n" +
-                    " torder_tc.user_update,\n" +
+                    " order_tc.date_update, \n" +
+                    " order_tc.uuid,\n" +
+                    " order_tc.user_update,\n" +
                     "                        order_tc.current_table, \n" +
                     "                                                cfo.name AS cfo, \n" +
-                    " torder_tc.status\n" +
+                    " order_tc.status\n" +
                     "                    FROM               order_tc INNER JOIN\n" +
                     "                                                vid_tc ON    order_tc.vid_trasport =    vid_tc._id INNER JOIN\n" +
                     "                                                cfo ON    order_tc.cfo =    cfo._id\n" +
