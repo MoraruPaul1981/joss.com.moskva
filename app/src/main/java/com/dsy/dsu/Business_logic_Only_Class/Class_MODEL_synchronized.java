@@ -3070,7 +3070,7 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                                     return chain.proceed(newRequest);
                                 }
                             }).connectTimeout(2, TimeUnit.SECONDS)
-                            .readTimeout(4, TimeUnit.MINUTES).build();
+                            .readTimeout(40, TimeUnit.MINUTES).build();
                     ///  MediaType JSON = MediaType.parse("application/json; charset=utf-16");
                     Request requestGET = new Request.Builder().get().url(Adress).build();
                     Log.d(this.getClass().getName(), "  request  " + requestGET);
@@ -3099,38 +3099,48 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                         @Override
                         public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                             try{
+                                Integer  РазмерПришедшегоПотока=0;
                             if (response.isSuccessful()) {
-                                InputStream inputStreamОтПинга = response.body().source().inputStream();
-                                File ПутькФайлу = null;
-                                if (Build.VERSION.SDK_INT >= 30) {
-                                    ПутькФайлу = context.getExternalFilesDir( Environment.DIRECTORY_DOWNLOADS);
-                                } else {
-                                    ПутькФайлу = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                                }
-                                 СамФайлJsonandApk[0] = new File(ПутькФайлу, "/" + ИмяФайлаЗагрузки );
-                                if (!СамФайлJsonandApk[0].getParentFile().mkdirs() ) {
-                                    СамФайлJsonandApk[0].getParentFile().mkdirs();
-                                    СамФайлJsonandApk[0].setWritable(true);
-                                    СамФайлJsonandApk[0].setExecutable(true);
-                                    // TODO: 20.03.2023 само создание файла
-                                    if (СамФайлJsonandApk[0].createNewFile()) {
-                                        Log.d(context.getClass().getName(), "Будущий файл успешно создалься , далее запись на диск новго APk файла ");
-                                        FileUtils.copyInputStreamToFile(inputStreamОтПинга, СамФайлJsonandApk[0]);
-                                        Log.d(context.getClass().getName(), "FileUtils.copyInputStreamToFile СамФайлJsonandApk"+
-                                                СамФайлJsonandApk[0]);
-                                    } else {
-                                        Log.e(context.getClass().getName(), "Ошибка не создалься Будущий файл успешно создалься , далее запись на диск новго APk файла  СЛУЖБА ");
-                                    }
-                                }
-                                // TODO: 20.03.2023 ответ от сервреа если нет цифры значит не и файла
-                              Integer  РазмерПришедшегоПотока =
-                                      Integer.parseInt(   Optional.ofNullable(response.header("stream_size")).orElse(""));
+                               String РазмерПришедшегоПотокаБуфер=    Optional.ofNullable(response.header("stream_size")).orElse("");
+                               if (РазмерПришедшегоПотокаБуфер.length()>0){
+                                     РазмерПришедшегоПотока =Integer.parseInt(РазмерПришедшегоПотокаБуфер);
+                               }
+                                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()  + "РазмерПришедшегоПотока  " +РазмерПришедшегоПотока);
+                                // TODO: 06.05.2023  если ПОТОК ЕСТЬ СОДЕРЖИВАЕМ ПАРСИМ
+                                                    if(РазмерПришедшегоПотока>0){
+                                                        InputStream inputStreamОтПинга = response.body().source().inputStream();
+                                                        File ПутькФайлу = null;
+                                                        if (Build.VERSION.SDK_INT >= 30) {
+                                                            ПутькФайлу = context.getExternalFilesDir( Environment.DIRECTORY_DOWNLOADS);
+                                                        } else {
+                                                            ПутькФайлу = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                                                        }
+                                                        СамФайлJsonandApk[0] = new File(ПутькФайлу, "/" + ИмяФайлаЗагрузки );
+                                                        if (!СамФайлJsonandApk[0].getParentFile().mkdirs() ) {
+                                                            СамФайлJsonandApk[0].getParentFile().mkdirs();
+                                                            СамФайлJsonandApk[0].setWritable(true);
+                                                            СамФайлJsonandApk[0].setExecutable(true);
+                                                            // TODO: 20.03.2023 само создание файла
+                                                            if (СамФайлJsonandApk[0].createNewFile()) {
+                                                                Log.d(context.getClass().getName(), "Будущий файл успешно создалься , далее запись на диск новго APk файла ");
+                                                                FileUtils.copyInputStreamToFile(inputStreamОтПинга, СамФайлJsonandApk[0]);
+                                                                Log.d(context.getClass().getName(), "FileUtils.copyInputStreamToFile СамФайлJsonandApk"+
+                                                                        СамФайлJsonandApk[0]);
+                                                            } else {
+                                                                Log.e(context.getClass().getName(), "Ошибка не создалься Будущий файл успешно создалься , далее запись на диск новго APk файла  СЛУЖБА ");
+                                                            }
+                                                        }
+                                                        // TODO: 20.03.2023 ответ от сервреа если нет цифры значит не и файла
+                                                    }
                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            }
+                                // TODO: 06.05.2023 exit
                                 response.close();
                                 dispatcherЗагрузкаПО.executorService().shutdown();
-                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -3141,7 +3151,7 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                         }
                         }
                     });
-                    dispatcherЗагрузкаПО.executorService().awaitTermination(5,TimeUnit.MINUTES);
+                    dispatcherЗагрузкаПО.executorService().awaitTermination(50,TimeUnit.MINUTES);
                     Log.i(context.getClass().getName(), "СамФайлJsonandApk" + СамФайлJsonandApk[0]);
                     // TODO: 13.03.2023  конец загрузки файла по новому FILE
                 } catch (IOException | InterruptedException ex) {

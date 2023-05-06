@@ -426,6 +426,13 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                                         alertDialog.cancel();
                                         if (FileAPK[0] !=null && FileAPK[0].length()>0) {
                                             МетодУстановкиНовойВерсииПО(СервернаяВерсияПОВнутри,FileAPK[0]);
+                                        }else{
+
+                                            Log.w(getApplicationContext().getClass().getName(),
+                                                    Thread.currentThread().getStackTrace()[2].getMethodName()+
+                                                            " ЛокальнаяВерсияПО "+ЛокальнаяВерсияПО+
+                                                            " СервернаяВерсияПОВнутри  "+СервернаяВерсияПОВнутри +
+                                                            " POOLS" + " FileAPK[0] " +FileAPK[0] );
                                         }
                                         Log.w(getApplicationContext().getClass().getName(),
                                                 Thread.currentThread().getStackTrace()[2].getMethodName()+
