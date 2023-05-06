@@ -246,16 +246,11 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
             // TODO: 08.01.2022 Полученм JSON File  для анализа
             FileAPK = new Class_MODEL_synchronized(getApplicationContext()).
                     МетодЗагрузкиОбновлениеПОсСервера(new PUBLIC_CONTENT(getApplicationContext()).getСсылкаНаРежимСервераОбновлениеПО(),
-                            getApplicationContext(), ИмяСерверИзХранилица ,ПортСерверИзХранилица,"FileAPKUpdatePO","update_dsu1.apk");
+                            getApplicationContext(), ИмяСерверИзХранилица ,ПортСерверИзХранилица,
+                            "FileAPKUpdatePO","update_dsu1.apk","application/octet-stream");
+
             Log.w(getApplicationContext().getClass().getName(),    Thread.currentThread().getStackTrace()[2].getMethodName()
                     + Thread.currentThread().getName()+" FileAPK" + FileAPK);
-            // TODO: 19.12.2021  загрузка файда  .apk    УниверсальныйБуферAPKФайлаПОсСервера("dsu1.glassfish/update_android_dsu1/app-release.apk", "update_dsu1.apk",
-         /*   FileAPK = new Class_MODEL_synchronized(getApplicationContext()).
-                    УниверсальныйБуферAPKФайлаПОсСервера(new PUBLIC_CONTENT(getApplicationContext()).
-                                    getСсылкаНаРежимСервера()+ "/update_android_dsu1/app-release.apk",
-                            "update_dsu1.apk",
-                            getApplicationContext(), ИмяСерверИзХранилица ,ПортСерверИзХранилица);
-            Log.w(this.getClass().getName(), "FileAPK "+ FileAPK);*/
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -561,7 +556,9 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
             // TODO: 08.01.2022 Полученм JSON File  для анализа
             File ФайлJsonОтСервера = new Class_MODEL_synchronized(getApplicationContext()).
                     МетодЗагрузкиОбновлениеПОсСервера(new PUBLIC_CONTENT(getApplicationContext()).getСсылкаНаРежимСервераОбновлениеПО(),
-                                    getApplicationContext(), ИмяСерверИзХранилица ,ПортСерверИзХранилица,"FileJsonUpdatePO","update_dsu1.json");
+                                    getApplicationContext(), ИмяСерверИзХранилица ,ПортСерверИзХранилица,"FileJsonUpdatePO",
+                            "update_dsu1.json","application/json");
+
             Log.w(getApplicationContext().getClass().getName(),    Thread.currentThread().getStackTrace()[2].getMethodName()
                     + Thread.currentThread().getName()+" ФайлJsonОтСервера" + ФайлJsonОтСервера);
             // TODO: 13.03.2023 Анализ JSON
@@ -628,7 +625,7 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
             });
         }
       // TODO: 04.05.2023 выключаем
-      stopSelf();
+      ///stopSelf();
     } catch (Exception e ) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

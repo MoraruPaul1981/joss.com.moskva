@@ -3019,7 +3019,8 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                                                   @NonNull String ИмяСервера,
                                                   @NonNull Integer ИмяПорта,
                                                   @NonNull String ЗаданиеЗагрузки,
-                                                  @NonNull String ИмяФайлаЗагрузки ) {
+                                                  @NonNull String ИмяФайлаЗагрузки ,
+                                                  @NonNull String ВозвращяемыйТип) {
         final File[] СамФайлJsonandApk = {null};
                 try {
                     String СтрокаСвязиСсервером ="http://"+ИмяСервера+":"+ИмяПорта+"/";;
@@ -3057,7 +3058,7 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                                             " PUBLIC_CONTENT.ПубличноеПарольДлСервлета " + ПубличноеПароль);
                                     Request originalRequest = chain.request();
                                     Request.Builder builder = originalRequest.newBuilder()
-                                            .header("Content-Type", "application/octet-stream")
+                                            .header("Content-Type", ВозвращяемыйТип)
                                             .header("Accept-Encoding", "gzip,deflate,sdch")
                                             .header("Connection", "Keep-Alive")
                                             .header("Accept-Language", "ru-RU")
