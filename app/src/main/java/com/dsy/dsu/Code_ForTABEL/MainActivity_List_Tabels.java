@@ -703,9 +703,10 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                 }
             };
             simpleCursorAdapterAllTAbels.setViewBinder(binding);
+            simpleCursorAdapterAllTAbels.notifyDataSetChanged();
             gridViewAllTabes.setAdapter(simpleCursorAdapterAllTAbels);
             gridViewAllTabes.refreshDrawableState();
-            gridViewAllTabes.forceLayout();
+            gridViewAllTabes.requestLayout();
             // TODO: 19.04.2023 слушаелти
             // TODO: 18.04.2023 Слушаиель Клика
             методПоGridView( );
@@ -727,10 +728,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 try{
-                    LinearLayout linearLayoutSimpelCursorAllTabeles= (LinearLayout)
-                            view.findViewById(R.id.   linearLayoutSimpelCursorAllTabeles);
-                    ImageView imageView  = (ImageView) linearLayoutSimpelCursorAllTabeles.getChildAt(0);
-                    MaterialTextView materialTextView  = (MaterialTextView) linearLayoutSimpelCursorAllTabeles.getChildAt(1);
+                    MaterialTextView materialTextView=(MaterialTextView)        view.findViewById(android.R.id.text2);
                     materialTextView.setBackgroundColor(Color.GRAY);
 
                     message.getTarget().postDelayed(()->{
@@ -807,9 +805,10 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                     }
                 };
                 АдаптерКогдаНетданных.setViewBinder(БиндингКогдаНетДАнных);
+              АдаптерКогдаНетданных.notifyDataSetChanged();
                 gridViewAllTabes.setAdapter(АдаптерКогдаНетданных);
                 gridViewAllTabes.refreshDrawableState();
-                gridViewAllTabes.forceLayout();
+                gridViewAllTabes.requestLayout();
                 // TODO: 19.04.2023 слушаелти
 
         } catch (Exception e) {
@@ -829,13 +828,8 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 try{
-                    LinearLayout linearLayoutSimpelCursorAllTabeles= (LinearLayout)
-                            view.findViewById(R.id.   linearLayoutSimpelCursorAllTabeles);
 
-                    ImageView imageView  = (ImageView) linearLayoutSimpelCursorAllTabeles.getChildAt(0);
-                    MaterialTextView materialTextView  = (MaterialTextView) linearLayoutSimpelCursorAllTabeles.getChildAt(1);
-
-
+                    MaterialTextView materialTextView=(MaterialTextView)        view.findViewById(android.R.id.text2);
                     materialTextView.setBackgroundColor(Color.GRAY);
                     message.getTarget().postDelayed(()->{
                         // TODO: 09.04.2023  перехеод после клика Items
