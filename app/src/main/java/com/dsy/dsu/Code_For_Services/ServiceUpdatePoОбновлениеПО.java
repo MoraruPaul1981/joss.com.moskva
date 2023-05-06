@@ -360,6 +360,18 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                     .setNegativeButton("Позже", null)
                     .setIcon(R.drawable.icon_dsu1_update_success)
                     .show();
+            // TODO: 06.05.2023 ДВЕ КНОПКИ
+            final Button MessageBoxUpdateНеуСтанавливатьПО = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+            MessageBoxUpdateНеуСтанавливатьПО.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialog.dismiss();
+                    alertDialog.cancel();
+                    Log.i(this.getClass().getName(),  "Установщик ПО..." + Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                }
+            });
+
+
 /////////кнопка
             final Button MessageBoxЗагрущикПО = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
             Integer finalСервернаяВерсияПОВнутри = СервернаяВерсияПОВнутри;
@@ -368,12 +380,14 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                 public void onClick(View v) {
                     try {
 // TODO: 18.02.2023 Загрузка Нового файла APK
-            activity.runOnUiThread(()->{
+             activity.runOnUiThread(()->{
                 progressBar.setVisibility(View.VISIBLE);
                 progressBar.setIndeterminate(true);
-                ((Button)v).setEnabled(false);
+                // TODO: 06.05.2023 делаем кнопки не активныйе
+                MessageBoxЗагрущикПО.setEnabled(false);
+                MessageBoxUpdateНеуСтанавливатьПО.setEnabled(false);
                 Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                v2.vibrate(VibrationEffect.createOneShot(150, VibrationEffect.DEFAULT_AMPLITUDE));
+                v2.vibrate(VibrationEffect.createOneShot(300, VibrationEffect.DEFAULT_AMPLITUDE));
             });
             Log.i(this.getClass().getName(),  "Установщик ПО..." + Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
                         Flowable.fromCallable(new Callable<File>() {
@@ -436,15 +450,6 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                                 this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                                 Thread.currentThread().getStackTrace()[2].getLineNumber());
                     }
-                }
-            });
-            final Button MessageBoxUpdateНеуСтанавливатьПО = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-            MessageBoxUpdateНеуСтанавливатьПО.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    alertDialog.dismiss();
-                    alertDialog.cancel();
-                    Log.i(this.getClass().getName(),  "Установщик ПО..." + Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
                 }
             });
         } catch (Exception e) {
