@@ -3069,7 +3069,7 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                                     return chain.proceed(newRequest);
                                 }
                             }).connectTimeout(2, TimeUnit.SECONDS)
-                            .readTimeout(2, TimeUnit.MINUTES).build();
+                            .readTimeout(4, TimeUnit.MINUTES).build();
                     ///  MediaType JSON = MediaType.parse("application/json; charset=utf-16");
                     Request requestGET = new Request.Builder().get().url(Adress).build();
                     Log.d(this.getClass().getName(), "  request  " + requestGET);
@@ -3077,12 +3077,21 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                     okHttpClientЗагрузкаНовогоПО.newCall(requestGET).enqueue(new Callback() {
                         @Override
                         public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                            try{
                             Log.e(this.getClass().getName(), "  ERROR call  " + call + "  e" + e.toString());
                             Log.e(Class_MODEL_synchronized.class.getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber() + " ОшибкаТекущегоМетода " + e.getMessage());
                             new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), Class_MODEL_synchronized.class.getName(),
                                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                             // TODO: 31.05.2022
+                        } catch (Exception ex) {
+                                ex.printStackTrace();
+                            Log.e(this.getClass().getName(), "Ошибка " + ex + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(ex.toString(), this.getClass().getName(),
+                                    Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
                             dispatcherЗагрузкаПО.executorService().shutdown();
                             //TODO закрываем п отоки
                         }
@@ -3131,7 +3140,7 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                         }
                         }
                     });
-                    dispatcherЗагрузкаПО.executorService().awaitTermination(2,TimeUnit.MINUTES);
+                    dispatcherЗагрузкаПО.executorService().awaitTermination(5,TimeUnit.MINUTES);
                     Log.i(context.getClass().getName(), "СамФайлJsonandApk" + СамФайлJsonandApk[0]);
                     // TODO: 13.03.2023  конец загрузки файла по новому FILE
                 } catch (IOException | InterruptedException ex) {
