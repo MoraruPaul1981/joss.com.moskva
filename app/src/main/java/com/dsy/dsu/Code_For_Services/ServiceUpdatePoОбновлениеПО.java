@@ -42,10 +42,12 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -312,36 +314,20 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                 ФайлыДляОбновлениеПОУдалениеПриАнализеJSONВерсии = Environment.getExternalStoragePublicDirectory(
                         Environment.DIRECTORY_DOWNLOADS);
             }
-            Log.d(this.getClass().getName(), "ФайлыДляОбновлениеПОУдалениеПриАнализеJSONВерсии" + ФайлыДляОбновлениеПОУдалениеПриАнализеJSONВерсии);
+
             // TODO: 10.04.2022
-            Boolean[] ФайлУдаления = new Boolean[10];
             File[] Files = ФайлыДляОбновлениеПОУдалениеПриАнализеJSONВерсии.listFiles();
-            if (Files != null) {
-                int j;
-                for (j = 0; j < Files.length; j++) {
-                    String ИмяФайла = Files[j].getName();
-                    // TODO: 10.04.2022//    boolean ПосикПоНазваниюФайла=Files[j].getName().matches("(.*).json(.*)");
-                    ФайлУдаления[0] = ИмяФайла.matches("(.*)analysis_version(.*)");//    boolean ПосикПоНазваниюФайла=Files[j].getName().matches("(.*).json(.*)");
-                    ФайлУдаления[1] = ИмяФайла.matches("(.*)output-metadata.json(.*)");
-                    ФайлУдаления[2] = ИмяФайла.matches("(.*)update_dsu1(.*)");//    boolean ПосикПоНазваниюФайла=Files[j].getName().matches("(.*).json(.*)");
-                    ФайлУдаления[3] = ИмяФайла.equalsIgnoreCase("update_dsu1.apk");//    boolean ПосикПоНазваниюФайла=Files[j].getName().matches("(.*).json(.*)");
-                    ФайлУдаления[4] = ИмяФайла.equalsIgnoreCase("update_dsu1.json");//    boolean ПосикПоНазваниюФайла=Files[j].getName().matches("(.*).json(.*)");
-                    // TODO: 10.04.2022
-                    Log.d(this.getClass().getName(), " СЛУЖБА  ТАКОГО ФАЙЛА БОЛЬШЕ НЕТ  .JSON АНАЛИЗ " + Files[j].length()
-                            + "   путь файла " + Files[j].getAbsolutePath() + "   --- " + new Date() + " ИмяФайла " + ИмяФайла);
-                    if (ФайлУдаления[0] = true || ФайлУдаления[1] == true ||
-                            ФайлУдаления[2] == true || ФайлУдаления[3] == true  || ФайлУдаления[4] == true ) {
-                        // TODO: 10.04.2022
-                        if (Files[j].exists()) {
-                            // TODO: 10.04.2022
-                            Files[j].delete();
-                            // TODO: 10.04.2022
-                            Log.d(this.getClass().getName(), " СЛУЖБА  ТАКОГО ФАЙЛА БОЛЬШЕ НЕТ  .JSON АНАЛИЗ " + Files[j].length()
-                                    + "   путь файла " + Files[j].getAbsolutePath() + "   --- " + new Date() + " ИмяФайла " + ИмяФайла);
-                        }
-                    }
+
+            for (int i = 0; i < Files.length; i++) {
+                String ИмяФайла = Files[i].getName();
+                // TODO: 10.04.2022//    boolean ПосикПоНазваниюФайла=Files[j].getName().matches("(.*).json(.*)");
+                boolean ФайлУдаленияJson = ИмяФайла.matches("(.*)update_dsu1(.*)") ;//    boolean ПосикПоНазваниюФайла=Files[j].getName().matches("(.*).json(.*)");
+                if(ФайлУдаленияJson==true){
+                    Files[i].delete();
+                    Log.d(this.getClass().getName(), "ФайлУдаленияJson" + ФайлУдаленияJson );
                 }
             }
+            Log.d(this.getClass().getName(), "Files" + Files);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -429,9 +415,14 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                                         progressBar.setIndeterminate(false);
                                         alertDialog.dismiss();
                                         alertDialog.cancel();
-                                        МетодУстановкиНовойВерсииПО(СервернаяВерсияПОВнутри,FileAPK[0]);
-                                        Log.w(getApplicationContext().getClass().getName(),    Thread.currentThread().getStackTrace()[2].getMethodName()+
-                                                " ЛокальнаяВерсияПО "+ЛокальнаяВерсияПО+  " СервернаяВерсияПОВнутри  "+СервернаяВерсияПОВнутри + " POOLS" + " FileAPK[0] " +FileAPK[0] );
+                                        if (FileAPK[0] !=null && FileAPK[0].length()>0) {
+                                            МетодУстановкиНовойВерсииПО(СервернаяВерсияПОВнутри,FileAPK[0]);
+                                        }
+                                        Log.w(getApplicationContext().getClass().getName(),
+                                                Thread.currentThread().getStackTrace()[2].getMethodName()+
+                                                " ЛокальнаяВерсияПО "+ЛокальнаяВерсияПО+
+                                                " СервернаяВерсияПОВнутри  "+СервернаяВерсияПОВнутри +
+                                                " POOLS" + " FileAPK[0] " +FileAPK[0] );
                                     }
                                 })
                                 .subscribe();
@@ -500,10 +491,11 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                         Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                         v2.vibrate(VibrationEffect.createOneShot(150, VibrationEffect.DEFAULT_AMPLITUDE));
                     });
-                    Log.i(this.getClass().getName(),  "Установка Обновления .APK СЛУЖБА "+ Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-                    String ФинальныйПутьДляЗагрузкиФайлаОбновения = null;
+                    Log.i(this.getClass().getName(),  "Установка Обновления .APK СЛУЖБА "
+                            + Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                  String ФинальныйПутьДляЗагрузкиФайлаОбновения = null;
                     if (Build.VERSION.SDK_INT >= 30) {
-                        ФинальныйПутьДляЗагрузкиФайлаОбновения = getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/";  //null
+                        ФинальныйПутьДляЗагрузкиФайлаОбновения = activity.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/";  //null
                     } else {
                         ФинальныйПутьДляЗагрузкиФайлаОбновения = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/";
                     }
@@ -511,11 +503,13 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                     String НазваниеФайлаОбновления = "update_dsu1.apk";
                     ФинальныйПутьДляЗагрузкиФайлаОбновения += НазваниеФайлаОбновления;
                     Uri URIПутиДляЗагрузкиФайловЧерезПровайдер = FileProvider.getUriForFile(getApplicationContext(),
-                            getApplicationContext().getPackageName() + ".provider",
+                            activity.getPackageName() + ".provider",
                             ЗагрузкиФайлаОбновенияПОДополнительный);
-                    Log.d(this.getClass().getName(), "Установка ЗагрузкиФайлаОбновенияПОДополнительный  " + ЗагрузкиФайлаОбновенияПОДополнительный);
+                    Log.d(this.getClass().getName(), "Установка ЗагрузкиФайлаОбновенияПОДополнительный  "
+                            + ЗагрузкиФайлаОбновенияПОДополнительный);
                     Intent intentОбновлениеПО = new Intent(Intent.ACTION_INSTALL_PACKAGE);
-                    intentОбновлениеПО.setDataAndType(URIПутиДляЗагрузкиФайловЧерезПровайдер, "application/vnd.android.package-archive");
+                    intentОбновлениеПО.setDataAndType(URIПутиДляЗагрузкиФайловЧерезПровайдер,
+                            "application/vnd.android.package-archive");
                     intentОбновлениеПО.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
                             | Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
                             Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
