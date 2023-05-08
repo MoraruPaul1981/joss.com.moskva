@@ -24,9 +24,10 @@
     <TextView
         android:id="@+id/textViewчасыsimgletabel"
         android:layout_width="wrap_content"
-        android:layout_height="18dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="3dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
         android:background="#FFFFFF"
         android:clickable="false"
         android:focusable="false"
@@ -34,6 +35,7 @@
         android:fontFamily="sans-serif-light"
         android:foregroundGravity="center_vertical|center_horizontal"
         android:minWidth="180dp"
+        android:minHeight="20dp"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
         android:textAlignment="center"
@@ -45,6 +47,7 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@id/view2Линия"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView3СловоТабель"
         app:layout_constraintTop_toBottomOf="@+id/СпинерТабельМесяц" />
 
     <Button
@@ -72,9 +75,11 @@
         android:id="@+id/СпинерТабельМесяц"
         style="@android:style/Widget.Holo.Light.Spinner"
         android:layout_width="wrap_content"
-        android:layout_height="18dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="1dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
         android:background="#FFFFFF"
         android:backgroundTintMode="multiply"
         android:clickable="false"
@@ -83,6 +88,7 @@
         android:focusableInTouchMode="false"
         android:gravity="center|center_horizontal"
         android:minWidth="180dp"
+        android:minHeight="20dp"
         android:textColor="@android:color/white"
         android:textSize="10sp"
         android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
@@ -90,6 +96,7 @@
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@id/textViewчасыsimgletabel"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView3СловоТабель"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         tools:visibility="visible" />
@@ -127,7 +134,8 @@
         style="@style/Widget.MaterialComponents.MaterialCalendar.DayTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
+        android:minWidth="50dp"
+        android:layout_marginTop="15dp"
         android:background="#FFFFFF"
         android:bufferType="normal"
         android:capitalize="characters"
@@ -169,7 +177,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView3СловоТабель"
         tools:visibility="visible" />
-
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/TextViewФИОПрофессия"
