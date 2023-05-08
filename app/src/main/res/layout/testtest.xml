@@ -1,37 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/activity_main_faceasync"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    android:foregroundGravity="center"
-    android:layout_margin="5dp"
     android:padding="5dp"
-    android:backgroundTint="@color/cardview_light_background"
-    tools:context=".For_Code_Settings_DSU1.MainActivity_Visible_Async"
-    android:scrollbars="vertical">
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/activity_main_faceasync"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        android:backgroundTint="@color/cardview_light_background"
+        tools:context=".For_Code_Settings_DSU1.MainActivity_Visible_Async">
 
 
-<ImageView
-    android:id="@+id/imageView_icon_asynsapp"
-    android:layout_width="37dp"
-    android:layout_height="37dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginEnd="20dp"
-    android:layout_marginRight="10dp"
-    android:foregroundGravity="center_vertical"
-    android:scaleType="centerCrop"
-    android:stateListAnimator="@android:animator/fade_in"
-    android:visibility="visible"
-    app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:srcCompat="@drawable/icon_dsu1_async_asynprograssbar"
-    tools:src="@tools:sample/avatars" />
+        <ImageView
+            android:id="@+id/imageView_icon_asynsapp"
+            android:layout_width="37dp"
+            android:layout_height="37dp"
+            android:foregroundGravity="center_vertical"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="20dp"
+            android:background="#C62828"
+            android:stateListAnimator="@android:animator/fade_in"
+            android:visibility="visible"
+            app:srcCompat="@drawable/icon_dsu1_async_asynprograssbar"
+            tools:src="@tools:sample/avatars" />
 
+    </RelativeLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/LineLayFaceApp"
@@ -41,6 +42,8 @@
         android:backgroundTint="@color/cardview_light_background"
         android:gravity="center"
         android:visibility="visible"
+        android:layout_margin="5dp"
+        android:padding="5dp"
         tools:layout_editor_absoluteX="5dp"
         tools:layout_editor_absoluteY="5dp">
 
@@ -114,4 +117,12 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
+
+
+
+
+
+
+
