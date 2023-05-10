@@ -202,25 +202,40 @@
 
 
 
+
+
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/RecyclerViewSingleTabel"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_margin="3dp"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
+                    android:layout_margin="3dp"
                     android:layout_marginStart="3dp"
                     android:layout_marginEnd="3dp"
                     android:background="#F1EDED"
+                    android:keyboardNavigationCluster="true"
                     android:minHeight="500dp"
+                    android:padding="3dp"
+                    android:scrollbarSize="@dimen/activity_vertical_margin"
+                    android:scrollbarStyle="insideInset"
                     android:visibility="visible"
+                    android:windowSoftInputMode="stateVisible|adjustPan"
                     app:layout_constraintBottom_toTopOf="@+id/ProgressBarSingleTabel"
-                    app:layout_constraintTop_toBottomOf="@+id/TextViewФИОПрофессия"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/TextViewФИОПрофессия"
                     app:layout_constraintVertical_bias="0.0"
                     tools:ignore="MissingConstraints" />
+
+
+
+
+
+
+
 
 
 

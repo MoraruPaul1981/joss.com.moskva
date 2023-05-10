@@ -1189,6 +1189,7 @@
             android:name=".Code_ForTABEL.MainActivity_Tabel_Single_People"
             android:exported="true"
             android:label="Табель"
+            android:windowSoftInputMode="stateVisible|adjustPan"
             android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

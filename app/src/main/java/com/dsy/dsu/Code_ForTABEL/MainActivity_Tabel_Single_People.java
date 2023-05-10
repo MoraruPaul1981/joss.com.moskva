@@ -36,6 +36,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -298,6 +299,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             subClassSingleTabelRecycreView.   методWorkManagerLifecycleOwner();
 
             subClassSingleTabelRecycreView.        методАнимацияRecyreView();
+
+            subClassSingleTabelRecycreView. МетодаScrollViewПоtableRow();
 
 
 // TODO: 25.04.2023 тест код
@@ -1343,6 +1346,10 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 @Override
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                     try{
+                               InputMethodManager imm = (InputMethodManager) recyclerView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                      imm.hideSoftInputFromWindow(recyclerView.getWindowToken(), 0);
+
+                      recyclerView.scrollToPosition(0);
 
                         valueAnimator.start();
 
@@ -1414,6 +1421,11 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     @Override
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         try{
+
+                            InputMethodManager imm = (InputMethodManager) recyclerView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(recyclerView.getWindowToken(), 0);
+
+                            recyclerView.scrollToPosition(0);
 
                             valueAnimator.start();
 
@@ -1593,6 +1605,51 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
+
+
+        // TODO: 08.11.2022 метод КЛИК ПО ДАННЫМ
+        private void МетодаScrollViewПоtableRow(   ) {
+            try{
+                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                        super.onScrollStateChanged(recyclerView, newState);
+                        switch (newState) {
+                            case RecyclerView.SCROLL_STATE_IDLE:
+                                System.out.println("The RecyclerView is not scrolling");
+                                break;
+                            case RecyclerView.SCROLL_STATE_DRAGGING:
+                                System.out.println("Scrolling now");
+                      /*InputMethodManager imm = (InputMethodManager) recyclerView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                      imm.hideSoftInputFromWindow(recyclerView.getWindowToken(), 0);*/
+                                InputMethodManager imm = (InputMethodManager) recyclerView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.showSoftInput(recyclerView, InputMethodManager.SHOW_IMPLICIT);
+                                break;
+                            case RecyclerView.SCROLL_STATE_SETTLING:
+                                System.out.println("Scroll Settling");
+                                /*         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);*/
+                                break;
+
+                        }
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    }
+                });
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getApplicationContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+
 
         // TODO: 28.02.2022 начало  MyViewHolderДляЧата
         protected class MyViewHolder extends RecyclerView.ViewHolder {
@@ -1795,10 +1852,10 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                             viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm_one_row, parent, false);
             if (myViewHolder!=null) {
                 switch (   myViewHolder.getAbsoluteAdapterPosition()){
-                    case 6:
+              /*      case 6:
                     case 7:
                         viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm_last_row, parent, false);
-                        break;
+                        break;*/
                     case 0:
                         // TODO: 14.04.2023 ЧАСЫ
                          методСчитаемЧасы(cursor );
@@ -1909,7 +1966,12 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 // TODO: 06.04.2023  НАЗВАНИЕ ROW
                                 if (editTextRowКликПоДАнными != null) {
                                     // TODO: 05.04.2023  ЗАПОЛЯНИЕМ ДНЯМИ ROW 1
-                                    методЗаполениеСодеримомRowData(editTextRowКликПоДАнными, cursor, ДнейСодержимое);
+                                    if (ДнейСодержимое.equalsIgnoreCase("d32")==false) {
+                                        методЗаполениеСодеримомRowData(editTextRowКликПоДАнными, cursor, ДнейСодержимое);
+                                    }else {
+                                        // TODO: 16.04.2023  анимация
+                                        editTextRowКликПоДАнными.setVisibility(View.INVISIBLE);
+                                    }
 
                                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1926,7 +1988,10 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 // TODO: 10.05.2023 Зепляем Слушатель
                                 // TODO: 05.04.2023 Вешаем на Ячекку ДАнных Слушатель
                                 МетодаКликаПоtableRow(editTextRowКликПоДАнными );
-                                // TODO: 19.10.2022 ЦИКЛ
+                                // TODO: 19.10.2022 ScroolView
+                                // TODO: 10.05.2023
+                               МетодаScrollViewEdittext(editTextRowКликПоДАнными);
+
                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cursor  " + cursor);
@@ -2006,7 +2071,16 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 // TODO: 06.04.2023  НАЗВАНИЕ ROW
                                 if (viewtextRowКликПоШабка != null) {
                                     // TODO: 06.04.2023 Названия
-                                    методЗаполениеНазванияRowData(viewtextRowКликПоШабка, ДнейНазвание);
+                                    if (ДнейНазвание.equalsIgnoreCase("d32")==false) {
+                                        методЗаполениеНазванияRowData(viewtextRowКликПоШабка, ДнейНазвание);
+                                    }else {
+                                        // TODO: 16.04.2023  анимация
+                                        viewtextRowКликПоШабка.setVisibility(View.INVISIBLE);
+                                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                                + " editTextRowКликПоШабка " + viewtextRowКликПоШабка + " ДнейНазвание " + ДнейНазвание);
+                                    }
                                     // TODO: 16.04.2023  анимация
                                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2034,28 +2108,29 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                                         @NonNull Cursor cursor,
                                                         @NonNull String НазваниеДляДень) {
                 try {
+                    Bundle dataRowData = null;
                         String День = Optional.ofNullable(cursor.getString(cursor.getColumnIndex(НазваниеДляДень))).orElse("0");
                         if(День.length()==0){День="0";}
-                    CurrenrsСhildUUID= Optional.ofNullable(cursor.getLong(cursor.getColumnIndex("uuid"))).orElse(0l);
-                        Bundle dataRowData = new Bundle();
+                        CurrenrsСhildUUID= Optional.ofNullable(cursor.getLong(cursor.getColumnIndex("uuid"))).orElse(0l);
+                        dataRowData = new Bundle();
                         dataRowData.putString("ЗначениеДня", День);
                         dataRowData.putLong("uuid", CurrenrsСhildUUID);
                         dataRowData.putString("День", НазваниеДляДень);
-                    // TODO: 13.04.2023  дополнительные
-                    dataRowData.putLong("MainParentUUID", MainParentUUID);
-                    dataRowData.putInt("Position", PositionCustomer);
-                    dataRowData.putInt("ГодТабелей",   ГодТабелей);
-                    dataRowData.putInt("МЕсяцТабелей", МЕсяцТабелей);
-                    dataRowData.putInt("DigitalNameCFO", DigitalNameCFO);
-                    dataRowData.putString("FullNameCFO", FullNameCFO);
-                    dataRowData.putString("ИмесяцвИГодСразу", ИмесяцвИГодСразу);
-                    dataRowData.putLong("CurrenrsСhildUUID", CurrenrsСhildUUID);
-                    dataRowData.putString("ФИО", ФИО);
-                    dataRowData.putLong("CurrenrsSelectFio", CurrenrsSelectFio);
+                        // TODO: 13.04.2023  дополнительные
+                        dataRowData.putLong("MainParentUUID", MainParentUUID);
+                        dataRowData.putInt("Position", PositionCustomer);
+                        dataRowData.putInt("ГодТабелей",   ГодТабелей);
+                        dataRowData.putInt("МЕсяцТабелей", МЕсяцТабелей);
+                        dataRowData.putInt("DigitalNameCFO", DigitalNameCFO);
+                        dataRowData.putString("FullNameCFO", FullNameCFO);
+                        dataRowData.putString("ИмесяцвИГодСразу", ИмесяцвИГодСразу);
+                        dataRowData.putLong("CurrenrsСhildUUID", CurrenrsСhildUUID);
+                        dataRowData.putString("ФИО", ФИО);
+                        dataRowData.putLong("CurrenrsSelectFio", CurrenrsSelectFio);
                         editTextRowКликПоДАнными.setTag(dataRowData);
-                       editTextRowКликПоДАнными.setVisibility(View.VISIBLE);
+                        editTextRowКликПоДАнными.setVisibility(View.VISIBLE);
                         editTextRowКликПоДАнными.setText(День.trim());
-                        // TODO: 19.10.2022
+                    // TODO: 19.10.2022
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " НазваниеДляДень "
@@ -2152,6 +2227,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
                                                 public void afterTextChanged(Editable s) {
                                                     try {
+                                                        // TODO: 10.05.2023  ГЛАВНЫЙ МЕТОД ЗАПИСИ ДАННЫХ update
                                                     методЗаписьЯчейкиRxView(editTextRowКликПоДАнными);
                                                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2203,6 +2279,8 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                                     return true;
                                                 }
                                             });
+                            // TODO: 10.05.2023 Просток CLICK
+
                                         }
 
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -2218,6 +2296,46 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
             }
+            // TODO: 08.11.2022 метод КЛИК ПО ДАННЫМ
+            private void МетодаScrollViewEdittext(@NonNull   EditText editTextRowКликПоДАнными  ) {
+                try{
+                    editTextRowКликПоДАнными.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                        @Override
+                        public void onFocusChange(View v, boolean hasFocus) {
+                            try{
+                            if (hasFocus) {
+                                EditText editText=(EditText)v;
+                                editText.requestFocus();
+                                getSystemService(Context.INPUT_METHOD_SERVICE);
+                                InputMethodManager imm = (InputMethodManager) recyclerView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(getApplicationContext().getClass().getName(),
+                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
+                        }
+                    });
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(getApplicationContext().getClass().getName(),
+                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
+            }
+
+
 
 
             // TODO: 21.04.2023  записб данных в ячейку
