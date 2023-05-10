@@ -1286,7 +1286,6 @@ try{
                             }
                         }, BackpressureOverflowStrategy.ERROR)
                         .buffer(200)
-                        .subscribeOn(Schedulers.single())
                         .doOnNext(new io.reactivex.rxjava3.functions.Consumer<List<Map<String, String>>>() {
                             @Override
                             public void accept(List<Map<String, String>> maps) throws Throwable {

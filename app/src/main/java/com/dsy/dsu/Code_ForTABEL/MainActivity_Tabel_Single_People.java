@@ -2374,6 +2374,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                                     // TODO: 24.04.2023  после обновление ячейки Считаем Часы
                                                     методПослеОбновлениеЯчейкиСчитаемЧасы();
                                                     ((EditText) v).startAnimation(animationVibr2);
+                                                    recyclerView.smoothScrollToPosition( myViewHolder.getAbsoluteAdapterPosition());
                                                 }else {
                                                     Toast aa = Toast.makeText(context, "OPEN", Toast.LENGTH_LONG);
                                                     ImageView cc = new ImageView( context);
