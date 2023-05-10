@@ -288,7 +288,10 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
 
                 subClassSingleTabelRecycreView.МетодЗаполениеRecycleView( cursor );
+
                 subClassSingleTabelRecycreView. методДляSimpeCallbacks( );
+
+
 
             // TODO: 14.04.2023 доделываем single tabel
             subClassSingleTabelRecycreView.МетодСлушательRecycleView();
@@ -1567,6 +1570,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
+
         private void методАнимацияRecyreView() {
             try{
                 valueAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
@@ -1879,6 +1883,8 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     МетодЗаполняемДаннымиTableRow(cursor ,holder  );
                     // TODO: 04.04.2023   Name
                     МетодЗаполняеШабкаTableRow(cursor ,holder);
+                    // TODO: 10.05.2023 Scroll
+                    МетодScrollViewRecycleView(holder);
 
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2028,6 +2034,60 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
             }
+
+            // TODO: 04.03.2022 прозвомжность Заполения RecycleView
+            void МетодScrollViewRecycleView(@NonNull  MyViewHolder holder  ) {
+                try {
+                    recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+                        @Override
+                        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                            super.onScrollStateChanged(recyclerView, newState);
+/*                        if (cursor.getCount()>0) {
+                            // viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm, parent, false);
+                            viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm_one_row, parent, false);
+                            if (myViewHolder!=null) {
+                                switch (   myViewHolder.getAbsoluteAdapterPosition()){
+                                    case 6:
+                                    case 7:
+                                        viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm_last_row, parent, false);
+                                        break;
+                                    case 0:
+                                        // TODO: 14.04.2023 ЧАСЫ
+                                        методСчитаемЧасы(cursor );
+                                        // TODO: 04.04.2023  ФИО
+                                        new SubClassChanegeSetNameProffesio().    МетодЗаполняемФИОRow(cursor);
+                                        // TODO: 16.04.2023 Професии Професии Професии Професии
+                                        МетодаКликаTableRowФИО( );
+                                        break;
+                                }
+                            }
+                        }*/
+
+                        }
+
+                        @Override
+                        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                            super.onScrolled(recyclerView, dx, dy);
+                        }
+                    });
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                            "cursor  " + cursor );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(getApplicationContext().getClass().getName(),
+                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
+            }
+
+
+
+
             private void методЗаполениеСодеримомRowData(@NonNull  EditText editTextRowКликПоДАнными,
                                                         @NonNull Cursor cursor,
                                                         @NonNull String НазваниеДляДень) {
@@ -2792,8 +2852,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 },250);
                 recyclerView.requestLayout();
                 recyclerView.refreshDrawableState();
-               /// Scrollviewsingletabel.pageScroll(View.FOCUS_UP);
-               // Scrollviewsingletabel.refreshDrawableState();
+                recyclerView.scrollToPosition(0);
                 textViewчасыsimgletabel.refreshDrawableState();
                 textViewчасыsimgletabel.requestLayout();
                 constraintLayoutsingletabel.refreshDrawableState();
