@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayoutsingletabel"
@@ -8,32 +7,54 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:backgroundTintMode="screen"
+    android:clickable="false"
+    android:drawingCacheQuality="auto"
+    android:focusable="false"
+    android:focusableInTouchMode="false"
     android:persistentDrawingCache="scrolling"
     android:scrollbarAlwaysDrawHorizontalTrack="true"
     android:touchscreenBlocksFocus="false"
+    app:layout_collapseMode="pin"
     app:layout_gravity="fill"
-    android:layout_margin="3dp"
-    app:layout_scrollFlags="snapMargins|scroll"
+    app:layout_scrollFlags="snapMargins|scroll|enterAlways|enterAlwaysCollapsed|exitUntilCollapsed|snap"
     tools:context=".Code_ForTABEL.MainActivity_List_Peoples"
-    android:orientation="vertical"
     tools:visibility="visible">
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="50dp"
-        android:background="#FFFFFF"
-        android:layout_margin="5dp">
-        <!--   //TODO ПЕРВАЯ СТРОЧКА-->
+        <TextView
+            android:id="@+id/textViewчасыsimgletabel"
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="3dp"
+            android:background="#FFFFFF"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:fontFamily="sans-serif-light"
+            android:foregroundGravity="center_vertical|center_horizontal"
+            android:minWidth="180dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:touchscreenBlocksFocus="false"
+            android:typeface="sans"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/view2Линия"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/СпинерТабельМесяц" />
 
         <Button
             android:id="@+id/imageViewСтрелкаВнутриТабеля"
             android:layout_width="70dp"
             android:layout_height="50dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:backgroundTint="#AD1457"
+            android:layout_marginStart="1dp"
+            android:layout_marginBottom="1dp"
+            android:background="#FFFFFF"
+            android:backgroundTint="#FFFFFF"
             android:backgroundTintMode="screen"
             android:stateListAnimator="@drawable/icon_dsu1_exit3_foreground"
             android:textAlignment="center"
@@ -42,203 +63,195 @@
             app:iconGravity="textEnd"
             app:iconSize="40dp"
             app:iconTint="#00ACC1"
+            app:layout_constraintBottom_toBottomOf="@id/view2Линия"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:rippleColor="@color/colorAccent" />
-
-
-        <TextView
-            android:id="@+id/textView3СловоТабель"
-            style="@style/Widget.MaterialComponents.MaterialCalendar.DayTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:background="#F9A825"
-            android:focusableInTouchMode="false"
-            android:fontFamily="sans-serif-light"
-            android:foregroundGravity="center"
-            android:text="Табель"
-            android:textAllCaps="false"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="#0E0E0E"
-            android:textSize="21sp"
-            android:textStyle="bold"
-            android:theme="@style/Theme.AppCompat.DayNight"
-            android:touchscreenBlocksFocus="false"
-            android:typeface="monospace" />
-
-
-
-
-
-
-
 
         <Spinner
             android:id="@+id/СпинерТабельМесяц"
             style="@android:style/Widget.Holo.Light.Spinner"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="150dp"
-            android:minHeight="20dp"
+            android:layout_height="18dp"
             android:layout_marginTop="1dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="3dp"
-            android:layout_alignParentTop="true"
-            android:background="#6A1B9A"
+            android:layout_marginEnd="5dp"
+            android:background="#FFFFFF"
             android:backgroundTintMode="multiply"
             android:clickable="false"
             android:dropDownWidth="wrap_content"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:gravity="center|center_horizontal"
+            android:minWidth="180dp"
             android:textColor="@android:color/white"
             android:textSize="10sp"
             android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
             android:touchscreenBlocksFocus="false"
-            android:layout_alignParentRight="true"
-            android:visibility="visible" />
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@id/textViewчасыsimgletabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:visibility="visible" />
 
+        <Spinner
+            android:id="@+id/СпинерТабельДепратамент"
+            style="@android:style/Widget.Holo.Light.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
+            android:background="#FFFFFF"
+            android:backgroundTintMode="multiply"
+            android:clickable="false"
+            android:dropDownWidth="wrap_content"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:foregroundGravity="fill_horizontal|fill_vertical"
+            android:gravity="clip_vertical|fill_horizontal"
+            android:popupBackground="@color/actionbar_text_color"
+            android:textColor="@android:color/white"
+            android:textSize="10dp"
+            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
+            android:touchscreenBlocksFocus="false"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/imageButtonНазадПоСотрудникамВТАбеле"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@id/imageButtonДвижениеПоСотрудникамВТАбеле"
+            tools:ignore="NotSibling" />
 
         <TextView
-            android:id="@+id/textViewчасыsimgletabel"
+            android:id="@+id/textView3СловоТабель"
+            style="@style/Widget.MaterialComponents.MaterialCalendar.DayTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="150dp"
-            android:minHeight="20dp"
-            android:layout_marginEnd="3dp"
-            android:layout_marginStart="5dp"
-            android:background="#0277BD"
-            android:layout_marginTop="3dp"
-            android:layout_alignRight ="@+id/СпинерТабельМесяц"
-            android:layout_below="@+id/СпинерТабельМесяц"
+            android:layout_marginTop="6dp"
+            android:background="#FFFFFF"
+            android:bufferType="normal"
+            android:capitalize="characters"
             android:clickable="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:fontFamily="sans-serif-light"
-            android:foregroundGravity="center_vertical|center_horizontal"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="12sp"
+            android:foregroundGravity="center"
+            android:gravity="center"
+            android:text="Табель"
+            android:textAlignment="textStart"
+            android:textAllCaps="false"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="#0E0E0E"
+            android:textSize="20sp"
             android:textStyle="bold"
+            android:theme="@style/Theme.AppCompat.DayNight"
             android:touchscreenBlocksFocus="false"
-            android:layout_alignParentRight="true"
-            android:typeface="sans"
-            android:visibility="visible" />
-
+            android:typeface="monospace"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.48"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <View
             android:id="@+id/view2Линия"
             android:layout_width="match_parent"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="3dp"
             android:layout_height="3dp"
-            android:layout_below="@+id/textViewчасыsimgletabel"
+            android:layout_marginTop="8dp"
             android:background="#00ACC1"
+            android:clickable="false"
+            android:focusable="false"
             android:focusableInTouchMode="false"
             android:foregroundGravity="center"
             android:touchscreenBlocksFocus="false"
-            android:visibility="visible" />
-        <!--   //TODO КОНЕЦ ПЕРВОЙ СТРОЧКИ-->
-    </RelativeLayout>
-
-    <!--   //TODO НАЧАЛО ВТОРОЙ СТРОЧКИ-->
-
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/TextViewФИОПрофессия"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="#1565C0"
-        android:foregroundGravity="center"
-        android:gravity="center_vertical|center_horizontal"
-        android:hint="ФИО+Профессия"
-        android:minWidth="100dp"
-        android:minHeight="35dp"
-        android:textAlignment="gravity"
-        android:textColor="#000000"
-        android:textSize="13sp"
-        android:textStyle="bold"
-        android:visibility="visible"
-        app:cardCornerRadius="15dp"
-        app:cornerRadius='15dp'
-        app:cardElevation="15dp"
-        tools:visibility="visible"
-        android:translationZ="10dp"
-        app:strokeColor="#F5FFFA" />
-
-
-
-
-
-
-    <ScrollView
-        android:id="@+id/scrollviewsingletabel"
-        android:layout_width="match_parent"
-        android:layout_height="450dp"
-        android:layout_margin="5dp"
-        android:background="#00838F"
-        android:fillViewport="true"
-        android:scrollbars="horizontal|vertical"
-        android:stackFromBottom="true"
-        android:transcriptMode="alwaysScroll">
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RecyclerViewSingleTabel"
-            android:layout_width="match_parent"
-            android:layout_height="430dp"
-            android:background="#2E7D32"
-            android:layout_margin="2dp"
-            android:layout_marginStart="3dp"
-            android:layout_marginEnd="3dp"
-            android:minHeight="500dp"
             android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView3СловоТабель"
+            tools:visibility="visible" />
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/TextViewФИОПрофессия"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:layout_span="4"
+            android:background="#FFFFFF"
+            android:foregroundGravity="center"
+            android:gravity="center_vertical|center_horizontal"
+            android:hint="ФИО+Профессия"
+            android:minWidth="100dp"
+            android:minHeight="35dp"
+            android:padding="2dp"
+            android:textAlignment="gravity"
+            android:textColor="#000000"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            app:cardCornerRadius="15dp"
+            app:cornerRadius='15dp'
+            app:cardElevation="15dp"
+            tools:visibility="visible"
+            android:translationZ="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view2Линия"
+            app:strokeColor="#F5FFFA" />
+
+
+        <ScrollView
+            android:id="@+id/scrollviewsingletabel"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="2dp"
+            android:fillViewport="true"
+            android:scrollbars="horizontal|vertical"
+            android:stackFromBottom="true"
+            android:transcriptMode="alwaysScroll"
+            app:layout_constraintBottom_toTopOf="@+id/СпинерТабельДепратамент"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/TextViewФИОПрофессия">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/RecyclerViewSingleTabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="5dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:background="#F1EDED"
+                    android:minHeight="500dp"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toTopOf="@+id/СпинерТабельДепратамент"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view2Линия"
+                    app:layout_constraintVertical_bias="0.0"
+                    tools:ignore="MissingConstraints" />
+
+        </ScrollView>
+
+        <ProgressBar
+            android:id="@+id/ProgressBarSingleTabel"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_centerHorizontal="true"
+            android:background="#FFFFFF"
+            android:indeterminate="true"
+            android:scaleX="5"
+            android:scaleY="2"
+            android:scrollIndicators="top"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/СпинерТабельДепратамент"
             tools:ignore="MissingConstraints" />
-   </ScrollView>
-
-    <ProgressBar
-        android:id="@+id/ProgressBarSingleTabel"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_margin="5dp"
-        android:layout_height="10dp"
-        android:layout_centerHorizontal="true"
-        android:background="#0277BD"
-        android:indeterminate="true"
-        android:scaleX="5"
-        android:scaleY="2"
-        android:scrollIndicators="top"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/СпинерТабельДепратамент"
-        tools:ignore="MissingConstraints" />
 
 
-
-    <Spinner
-        android:id="@+id/СпинерТабельДепратамент"
-        style="@android:style/Widget.Holo.Light.Spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="30dp"
-        android:layout_margin="5dp"
-        android:background="#F9A825"
-        android:backgroundTintMode="multiply"
-        android:clickable="false"
-        android:dropDownWidth="wrap_content"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:foregroundGravity="fill_horizontal|fill_vertical"
-        android:gravity="clip_vertical|fill_horizontal"
-        android:popupBackground="@color/actionbar_text_color"
-        android:textColor="@android:color/white"
-        android:textSize="10dp"
-        android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
-        android:touchscreenBlocksFocus="false"
-        android:visibility="visible"
-        tools:ignore="NotSibling" />
-
-    <!--   //TODO КОНЕЦ ВТОРОЙ СТРОЧКИ-->
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
