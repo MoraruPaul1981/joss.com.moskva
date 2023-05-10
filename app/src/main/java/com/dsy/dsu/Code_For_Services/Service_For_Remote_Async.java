@@ -73,6 +73,7 @@ import java.util.function.Consumer;
 
 import javax.crypto.NoSuchPaddingException;
 
+import io.reactivex.rxjava3.core.BackpressureOverflowStrategy;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Function;
@@ -1278,8 +1279,14 @@ try{
                 ИндексВизуальнойДляPrograssBar=0;
                 // TODO: 28.04.2023  начало тест кода
                 Flowable.fromIterable(jsonNodeParentMAP )
-                        .onBackpressureBuffer(jsonNodeParentMAP.size())
+                        .onBackpressureBuffer(jsonNodeParentMAP.size(), new Action() {
+                            @Override
+                            public void run() throws Throwable {
+
+                            }
+                        }, BackpressureOverflowStrategy.ERROR)
                         .buffer(200)
+                        .subscribeOn(Schedulers.single())
                         .doOnNext(new io.reactivex.rxjava3.functions.Consumer<List<Map<String, String>>>() {
                             @Override
                             public void accept(List<Map<String, String>> maps) throws Throwable {

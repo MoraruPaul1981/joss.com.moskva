@@ -89,6 +89,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.common.util.concurrent.AtomicDouble;
 import com.jakewharton.rxbinding4.view.RxView;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
@@ -107,10 +108,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Predicate;
 
@@ -2239,17 +2243,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                                 }
                             })
-                            .onErrorComplete(new Predicate<Throwable>() {
-                                @Override
-                                public boolean test(Throwable throwable) throws Throwable {
-                                    Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                    new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(throwable.toString(), this.getClass().getName(),
-                                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                    return false;
-                                }
-                            })
-                            .subscribe(new Consumer<Boolean>() {
+                            .doOnNext(new Consumer<Boolean>() {
                                 @Override
                                 public void accept(Boolean aBoolean) throws Throwable {
 
@@ -2260,39 +2254,55 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                     if (      !EditTextДАнные.equalsIgnoreCase(ЗначениеДняTag)) {
                                         // TODO: 11.04.2023 Оперция Обновлнения ЯЧЕЕК
                                         SubClassUpdatesCELL subClassUpdateSingletabel=new SubClassUpdatesCELL(getApplicationContext());
-                                        message.getTarget().post(()->{
-                                            Integer РезультатОбновлениеЯчейки=   subClassUpdateSingletabel.МетодВалидацияЯчеек(v);
-                                            if (РезультатОбновлениеЯчейки>0) {
-                                                // TODO: 24.04.2023  после обновление ячейки Считаем Часы
-                                                методПослеОбновлениеЯчейкиСчитаемЧасы();
-                                                message.getTarget().postDelayed(()->{
+                                        // TODO: 10.05.2023  ЗАВПИСЫАЕМ НОВЫЕ ДАННЫВЕ В БАЗУ
+                                      Integer   РезультатОбновлениеЯчейки =   subClassUpdateSingletabel.МетодВалидацияЯчеек(v);
+                                        // TODO: 10.05.2023
+                                        if (РезультатОбновлениеЯчейки>0) {
+                                            context.getMainExecutor().execute(()->{
+                                                if (РезультатОбновлениеЯчейки>0) {
+                                                    // TODO: 24.04.2023  после обновление ячейки Считаем Часы
+                                                    методПослеОбновлениеЯчейкиСчитаемЧасы();
                                                     ((EditText) v).startAnimation(animationVibr2);
-                                                },150);
-                                            }else {
-                                                Toast aa = Toast.makeText(context, "OPEN", Toast.LENGTH_LONG);
-                                                ImageView cc = new ImageView( context);
-                                                cc.setImageResource(R.drawable.icon_dsu1_add_organisazio_error);//icon_dsu1_synchronisazia_dsu1_success
-                                                aa.setView(cc);
-                                                aa.show();
-                                            }
+                                                }else {
+                                                    Toast aa = Toast.makeText(context, "OPEN", Toast.LENGTH_LONG);
+                                                    ImageView cc = new ImageView( context);
+                                                    cc.setImageResource(R.drawable.icon_dsu1_add_organisazio_error);//icon_dsu1_synchronisazia_dsu1_success
+                                                    aa.setView(cc);
+                                                    aa.show();
+                                                }
+                                                // TODO: 10.05.2023 clear
+                                                v.clearFocus();
+                                            });
+                                        }
 
-                                            Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v"+ v +
-                                                    " bundleДанныеTag " +bundleДанныеTag + " EditTextДАнные " +EditTextДАнные+  "ЗначениеДняTag " +ЗначениеДняTag+
-                                                    " РезультатОбновлениеЯчейки " +РезультатОбновлениеЯчейки);
-
-                                        });
+                                        Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v"+ v +
+                                                " bundleДанныеTag " +bundleДанныеTag + " EditTextДАнные " +EditTextДАнные+  "ЗначениеДняTag " +ЗначениеДняTag+
+                                                " РезультатОбновлениеЯчейки " + РезультатОбновлениеЯчейки );
                                     } else {
                                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v"+ v +
                                                 " bundleДанныеTag " +bundleДанныеTag + " EditTextДАнные " +EditTextДАнные);
                                     }
-                                    // TODO: 10.05.2023
-                                    v.clearFocus();
+                                    Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v"+ v +
+                                            " aBoolean " +aBoolean );
                                 }
-                            });
+                            })
+                            .onErrorComplete(new Predicate<Throwable>() {
+                                @Override
+                                public boolean test(Throwable throwable) throws Throwable {
+                                    Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                    new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(throwable.toString(), this.getClass().getName(),
+                                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                    return false;
+                                }
+                            })
+                            .subscribe(e->System.out.println( "RxView--> "+e.toString()));
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
