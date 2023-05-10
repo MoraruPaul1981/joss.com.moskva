@@ -205,7 +205,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private TextView TextViewФИОПрофессия;
     private  Cursor   cursor;
 
-    ValueAnimator    valueAnimator;
+  private   ValueAnimator    valueAnimator;
+  private    InputMethodManager imm;
 
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
     @Override
@@ -1346,14 +1347,14 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 @Override
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                     try{
-                               InputMethodManager imm = (InputMethodManager) recyclerView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                      imm.hideSoftInputFromWindow(recyclerView.getWindowToken(), 0);
-
-                      recyclerView.scrollToPosition(0);
-
                         valueAnimator.start();
 
                         recyclerView.getAdapter().notifyDataSetChanged();
+
+
+                        imm = (InputMethodManager) recyclerView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(recyclerView.getWindowToken(), 0);
+
                         // TODO: 20.04.2023 Данные
                         cursor =    new SubClassGetCursor().МетодSwipesКурсор();
 
@@ -1421,15 +1422,14 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     @Override
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         try{
-
-                            InputMethodManager imm = (InputMethodManager) recyclerView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(recyclerView.getWindowToken(), 0);
-
-                            recyclerView.scrollToPosition(0);
-
                             valueAnimator.start();
 
                             recyclerView.getAdapter().notifyDataSetChanged();
+
+
+                            imm = (InputMethodManager) recyclerView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(recyclerView.getWindowToken(), 0);
+
                             // TODO: 20.04.2023 Данные
                             cursor =    new SubClassGetCursor().МетодSwipesКурсор();
 
@@ -1622,7 +1622,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 System.out.println("Scrolling now");
                       /*InputMethodManager imm = (InputMethodManager) recyclerView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                       imm.hideSoftInputFromWindow(recyclerView.getWindowToken(), 0);*/
-                                InputMethodManager imm = (InputMethodManager) recyclerView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                              imm = (InputMethodManager) recyclerView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                                 imm.showSoftInput(recyclerView, InputMethodManager.SHOW_IMPLICIT);
                                 break;
                             case RecyclerView.SCROLL_STATE_SETTLING:
@@ -2303,11 +2303,11 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         @Override
                         public void onFocusChange(View v, boolean hasFocus) {
                             try{
-                            if (hasFocus) {
+                                 imm=(InputMethodManager)
+                                        recyclerView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                                 EditText editText=(EditText)v;
+                            if (hasFocus) {
                                 editText.requestFocus();
-                                getSystemService(Context.INPUT_METHOD_SERVICE);
-                                InputMethodManager imm = (InputMethodManager) recyclerView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                                 imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
                             }
                         } catch (Exception e) {
