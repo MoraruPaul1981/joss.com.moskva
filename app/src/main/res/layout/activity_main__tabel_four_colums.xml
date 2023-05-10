@@ -201,26 +201,12 @@
             app:strokeColor="#F5FFFA" />
 
 
-        <ScrollView
-            android:id="@+id/scrollviewsingletabel"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="2dp"
-            android:fillViewport="true"
-            android:scrollbars="horizontal|vertical"
-            android:stackFromBottom="true"
-            android:transcriptMode="alwaysScroll"
-            app:layout_constraintBottom_toTopOf="@+id/СпинерТабельДепратамент"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/TextViewФИОПрофессия">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/RecyclerViewSingleTabel"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_margin="5dp"
+                    android:layout_margin="3dp"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:layout_marginStart="3dp"
@@ -228,15 +214,15 @@
                     android:background="#F1EDED"
                     android:minHeight="500dp"
                     android:visibility="visible"
-                    app:layout_constraintBottom_toTopOf="@+id/СпинерТабельДепратамент"
+                    app:layout_constraintBottom_toTopOf="@+id/ProgressBarSingleTabel"
+                    app:layout_constraintTop_toBottomOf="@+id/TextViewФИОПрофессия"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view2Линия"
                     app:layout_constraintVertical_bias="0.0"
                     tools:ignore="MissingConstraints" />
 
-        </ScrollView>
+
 
         <ProgressBar
             android:id="@+id/ProgressBarSingleTabel"
