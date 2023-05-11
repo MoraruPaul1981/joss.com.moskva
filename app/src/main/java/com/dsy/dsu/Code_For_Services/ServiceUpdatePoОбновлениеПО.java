@@ -345,7 +345,7 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
             progressBar.setVisibility(View.GONE);
             promptsView.forceLayout();
             promptsView.refreshDrawableState();
-            AlertDialog alertDialog = new MaterialAlertDialogBuilder(activity)///       final AlertDialog alertDialog =new AlertDialog.Builder( MainActivity_Face_App.КонтекстFaceApp)
+            AlertDialog alertDialogЗагрущик = new MaterialAlertDialogBuilder(activity)///       final AlertDialog alertDialog =new AlertDialog.Builder( MainActivity_Face_App.КонтекстFaceApp)
                     .setTitle("Загрущик")
                     .setView(promptsView)
                     .setMessage("Обновление ПО"
@@ -356,19 +356,19 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                     .setIcon(R.drawable.icon_dsu1_update_success)
                     .show();
             // TODO: 06.05.2023 ДВЕ КНОПКИ
-            final Button MessageBoxUpdateНеуСтанавливатьПО = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+            final Button MessageBoxUpdateНеуСтанавливатьПО = alertDialogЗагрущик.getButton(AlertDialog.BUTTON_NEGATIVE);
             MessageBoxUpdateНеуСтанавливатьПО.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    alertDialog.dismiss();
-                    alertDialog.cancel();
+                    alertDialogЗагрущик.dismiss();
+                    alertDialogЗагрущик.cancel();
                     Log.i(this.getClass().getName(),  "Установщик ПО..." + Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
                 }
             });
 
 
 /////////кнопка
-            final Button MessageBoxЗагрущикПО = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            final Button MessageBoxЗагрущикПО = alertDialogЗагрущик.getButton(AlertDialog.BUTTON_POSITIVE);
             Integer finalСервернаяВерсияПОВнутри = СервернаяВерсияПОВнутри;
             MessageBoxЗагрущикПО.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -417,28 +417,31 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                                         return false;
                                     }
                                 })
-                                .observeOn(AndroidSchedulers.mainThread())
                                 .doOnComplete(new Action() {
                                     @Override
                                     public void run() throws Throwable {
-                                        progressBar.setIndeterminate(false);
-                                        alertDialog.dismiss();
-                                        alertDialog.cancel();
-                                        if (FileAPK[0] !=null && FileAPK[0].length()>0) {
-                                            МетодУстановкиНовойВерсииПО(СервернаяВерсияПОВнутри,FileAPK[0]);
-                                        }else{
+                                        activity.runOnUiThread(()->{
+                                            progressBar.setIndeterminate(false);
+                                            alertDialogЗагрущик.dismiss();
+                                            alertDialogЗагрущик.cancel();
+                                            if (FileAPK[0] !=null && FileAPK[0].length()>0) {
+                                                МетодУстановкиНовойВерсииПО(СервернаяВерсияПОВнутри,FileAPK[0] ,alertDialogЗагрущик );
+                                            }else{
 
+                                                Log.w(getApplicationContext().getClass().getName(),
+                                                        Thread.currentThread().getStackTrace()[2].getMethodName()+
+                                                                " ЛокальнаяВерсияПО "+ЛокальнаяВерсияПО+
+                                                                " СервернаяВерсияПОВнутри  "+СервернаяВерсияПОВнутри +
+                                                                " POOLS" + " FileAPK[0] " +FileAPK[0] );
+                                            }
                                             Log.w(getApplicationContext().getClass().getName(),
                                                     Thread.currentThread().getStackTrace()[2].getMethodName()+
                                                             " ЛокальнаяВерсияПО "+ЛокальнаяВерсияПО+
                                                             " СервернаяВерсияПОВнутри  "+СервернаяВерсияПОВнутри +
                                                             " POOLS" + " FileAPK[0] " +FileAPK[0] );
-                                        }
-                                        Log.w(getApplicationContext().getClass().getName(),
-                                                Thread.currentThread().getStackTrace()[2].getMethodName()+
-                                                " ЛокальнаяВерсияПО "+ЛокальнаяВерсияПО+
-                                                " СервернаяВерсияПОВнутри  "+СервернаяВерсияПОВнутри +
-                                                " POOLS" + " FileAPK[0] " +FileAPK[0] );
+
+                                        });
+
                                     }
                                 })
                                 .subscribe();
@@ -465,7 +468,8 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
     }
     @UiThread
     private void МетодУстановкиНовойВерсииПО(@NonNull Integer СервернаяВерсияПОВнутри,
-                                             @NonNull File ЗагрузкиФайлаОбновенияПОДополнительный) {
+                                             @NonNull File ЗагрузкиФайлаОбновенияПОДополнительный,
+                                             @NonNull AlertDialog alertDialogЗагрущик){
         try {
             Log.w(getApplicationContext().getClass().getName(),    Thread.currentThread().getStackTrace()[2].getMethodName()+
                     " ЛокальнаяВерсияПО "+ЛокальнаяВерсияПО+  " СервернаяВерсияПОВнутри  "+СервернаяВерсияПОВнутри + " POOLS"
@@ -479,7 +483,7 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                 fullPath = Environment.getExternalStorageDirectory() + "/" + apkName;
             }
             fullPath = Environment.DIRECTORY_DOWNLOADS + "/" + apkName;
-            AlertDialog alertDialog = new MaterialAlertDialogBuilder(activity)///       final AlertDialog alertDialog =new AlertDialog.Builder( MainActivity_Face_App.КонтекстFaceApp)
+            AlertDialog alertDialogУстановка = new MaterialAlertDialogBuilder(activity)///       final AlertDialog alertDialog =new AlertDialog.Builder( MainActivity_Face_App.КонтекстFaceApp)
                     .setTitle("Установщик")
                     .setMessage("Обновление ПО"
                             + "\n" + "ООО Союз-Автодор"
@@ -489,15 +493,13 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                     .setIcon(R.drawable.icon_dsu1_updates_po_success)
                     .show();
 /////////кнопка
-            final Button MessageBoxУстановкаНовогоПО = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            final Button MessageBoxУстановкаНовогоПО = alertDialogУстановка.getButton(AlertDialog.BUTTON_POSITIVE);
             MessageBoxУстановкаНовогоПО.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    activity.runOnUiThread(()->{
                         ((Button)v).setEnabled(false);
                         Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                         v2.vibrate(VibrationEffect.createOneShot(150, VibrationEffect.DEFAULT_AMPLITUDE));
-                    });
                     Log.i(this.getClass().getName(),  "Установка Обновления .APK СЛУЖБА "
                             + Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
                   String ФинальныйПутьДляЗагрузкиФайлаОбновения = null;
@@ -535,13 +537,13 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                     }
                 }
             });
-            final Button MessageBoxUpdateНеуСтанавливатьПО = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+            final Button MessageBoxUpdateНеуСтанавливатьПО = alertDialogУстановка.getButton(AlertDialog.BUTTON_NEGATIVE);
             MessageBoxUpdateНеуСтанавливатьПО.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    alertDialog.dismiss();
+                    alertDialogУстановка.dismiss();
                     Log.d(this.getClass().getName(), "MessageBoxUpdateНеуСтанавливатьПО  ОТМЕНА УСТАНВОКИ НОВГО ПО   dismiss ");
-                    alertDialog.cancel();
+                    alertDialogУстановка.cancel();
                 }
             });
         } catch (Exception e) {
