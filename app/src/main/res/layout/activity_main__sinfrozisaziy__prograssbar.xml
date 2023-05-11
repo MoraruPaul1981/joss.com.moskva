@@ -11,35 +11,6 @@
     android:backgroundTint="@color/cardview_light_background"
     tools:context=".For_Code_Settings_DSU1.MainActivity_Visible_Async">
 
-
-
-    <!--TODO НАчало Боллоковой Панели-->
-
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigator_asyncapp"
-        android:layout_width="230dp"
-        android:layout_height="match_parent"
-        android:background="#FFFFFF"
-        android:layout_gravity="left"
-        android:layout_marginRight="160dp"
-        android:fitsSystemWindows="true"
-        app:itemIconSize="35dp"
-        app:itemIconTint="#00ACC1"
-        android:visibility="visible"
-        android:backgroundTint="@color/cardview_light_background"
-        app:itemTextColor="@color/cardview_dark_background"
-        app:menu="@menu/menu_for_asynsapp_navigationview">
-    </com.google.android.material.navigation.NavigationView>
-
-
-
-
-
-
-
-
-
-
 <!--//TODO Начало Основного Экрана-->
 
 
@@ -47,6 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
+        tools:context=".For_Code_Settings_DSU1.MainActivity_Visible_Async"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -55,6 +27,7 @@
             android:layout_height="50dp"
             android:layout_margin="5dp"
             android:padding="5dp"
+            tools:context=".For_Code_Settings_DSU1.MainActivity_Visible_Async"
             android:backgroundTint="@color/cardview_light_background">
 
 
@@ -85,6 +58,7 @@
             android:layout_margin="5dp"
             android:padding="5dp"
             tools:layout_editor_absoluteX="5dp"
+            tools:context=".For_Code_Settings_DSU1.MainActivity_Visible_Async"
             tools:layout_editor_absoluteY="5dp">
 
             <ProgressBar
@@ -166,6 +140,24 @@
 
 
 
+    <!--TODO НАчало Боллоковой Панели-->
+
+    <com.google.android.material.navigation.NavigationView
+        tools:context=".For_Code_Settings_DSU1.MainActivity_Visible_Async"
+        android:id="@+id/navigator_asyncapp"
+        android:layout_width="230dp"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:layout_gravity="left"
+        android:layout_marginRight="160dp"
+        android:fitsSystemWindows="true"
+        app:itemIconSize="35dp"
+        app:itemIconTint="#00ACC1"
+        android:visibility="visible"
+        android:backgroundTint="@color/cardview_light_background"
+        app:itemTextColor="@color/cardview_dark_background"
+        app:menu="@menu/menu_for_asynsapp_navigationview">
+    </com.google.android.material.navigation.NavigationView>
 
 
 
