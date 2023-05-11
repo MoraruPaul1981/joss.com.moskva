@@ -202,24 +202,7 @@
             app:strokeColor="#F5FFFA" />
 
 
-        <HorizontalScrollView
-            android:id="@+id/horizontalScrollView1"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:minHeight="500dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:background="#283593"
-            android:fillViewport="true"
-            android:scrollbars="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/ProgressBarSingleTabel"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/TextViewФИОПрофессия"
-            app:layout_constraintVertical_bias="0.0"
-            tools:ignore="MissingConstraints">
-        </HorizontalScrollView>
+
 
 
 
@@ -244,12 +227,6 @@
                     app:layout_constraintVertical_bias="0.0"
                     tools:ignore="MissingConstraints" >
                 </androidx.recyclerview.widget.RecyclerView>
-
-
-
-
-
-
 
 
 

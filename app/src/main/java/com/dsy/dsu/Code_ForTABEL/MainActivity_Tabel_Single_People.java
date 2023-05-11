@@ -88,6 +88,7 @@ import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.dsy.dsu.R;
+import com.google.android.gms.actions.ItemListIntents;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
@@ -300,8 +301,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             subClassSingleTabelRecycreView.   методWorkManagerLifecycleOwner();
 
             subClassSingleTabelRecycreView.        методАнимацияRecyreView();
-
-            subClassSingleTabelRecycreView. МетодаScrollViewПоtableRow();
 
 
 // TODO: 25.04.2023 тест код
@@ -1306,8 +1305,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
         private void МетодИнициализацииRecycreView() {
             try{
-
-
                 DividerItemDecoration dividerItemDecoration=
                         new DividerItemDecoration(activity,LinearLayoutManager.HORIZONTAL);
                 dividerItemDecoration.setDrawable(getDrawable(R.drawable.divider_for_single_tabel));
@@ -1315,17 +1312,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 GridLayoutManager layoutManager
                         = new GridLayoutManager(activity, 1);
                layoutManager.setOrientation(GridLayoutManager.VERTICAL);
-                layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                    @Override
-                    public int getSpanSize(int position) {
-                        switch(recyclerView.getAdapter().getItemViewType(position)) {
-                            case RecyclerView.TEXT_ALIGNMENT_VIEW_START:
-                                return 2;
-                            default:
-                                return 1;
-                        }
-                    }
-                });
                recyclerView.addItemDecoration(dividerItemDecoration);
                 recyclerView.setLayoutManager(layoutManager);
                recyclerView.setHasFixedSize(true);
@@ -1546,12 +1532,12 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     }
 
                 };
-            /*    ItemTouchHelper itemTouchHelperLEFT = new ItemTouchHelper(simpleItemTouchCallbackLEFT);
+                ItemTouchHelper itemTouchHelperLEFT = new ItemTouchHelper(simpleItemTouchCallbackLEFT);
                 itemTouchHelperLEFT.attachToRecyclerView(recyclerView);
                 ItemTouchHelper itemTouchHelperRIGHT = new ItemTouchHelper(simpleItemTouchCallbackRIGHT);
                 itemTouchHelperRIGHT.attachToRecyclerView(recyclerView);
                 ItemTouchHelper itemTouchHelperAll = new ItemTouchHelper(simpleItemTouchCallbackAll);
-                itemTouchHelperAll.attachToRecyclerView(recyclerView);*/
+                itemTouchHelperAll.attachToRecyclerView(recyclerView);
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1615,57 +1601,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
-
-
-        // TODO: 08.11.2022 метод КЛИК ПО ДАННЫМ
-        private void МетодаScrollViewПоtableRow(   ) {
-            try{
-                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                        super.onScrollStateChanged(recyclerView, newState);
-                        switch (newState) {
-                            case RecyclerView.SCROLL_STATE_IDLE:
-                                System.out.println("The RecyclerView is not scrolling");
-                                break;
-                            case RecyclerView.SCROLL_STATE_DRAGGING:
-                                System.out.println("Scrolling now");
-                      /*InputMethodManager imm = (InputMethodManager) recyclerView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                      imm.hideSoftInputFromWindow(recyclerView.getWindowToken(), 0);*/
-                                break;
-                            case RecyclerView.SCROLL_STATE_SETTLING:
-                                System.out.println("Scroll Settling");
-                                /*         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);*/
-                                break;
-
-                        }
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                    }
-
-                    @Override
-                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                        super.onScrolled(recyclerView, dx, dy);
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                    }
-                });
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(getApplicationContext().getClass().getName(),
-                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
-
 
         // TODO: 28.02.2022 начало  MyViewHolderДляЧата
         protected class MyViewHolder extends RecyclerView.ViewHolder {
