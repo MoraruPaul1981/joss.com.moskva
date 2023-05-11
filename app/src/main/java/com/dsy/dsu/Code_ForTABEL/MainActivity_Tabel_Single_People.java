@@ -70,7 +70,9 @@ import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.work.WorkInfo;
@@ -264,8 +266,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             animationRows = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row_scroll_for_singletabel);
             animationRich = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_swipe_r);//R.anim.slide_in_row)
             animationLesft = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_swipe_l);//R.anim.slide_in_row)R.anim.slide_in_row_newscanner1
-
-        /*    Scrollviewsingletabel.pageScroll(View.FOCUS_UP);*/
 
 
             // TODO: 29.03.2023  Метод обсуживаюшие
@@ -1306,16 +1306,31 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
         private void МетодИнициализацииRecycreView() {
             try{
-                StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL);
-                DividerItemDecoration dividerItemDecoration=
-                        new DividerItemDecoration(activity,StaggeredGridLayoutManager.HORIZONTAL);
-                dividerItemDecoration.setDrawable(getDrawable(R.drawable.divider_for_single_tabel));
-               recyclerView.addItemDecoration(dividerItemDecoration);
-                recyclerView.setLayoutManager(staggeredGridLayoutManager);
-               recyclerView.setHasFixedSize(true);
-                staggeredGridLayoutManager.    invalidateSpanAssignments();
-                staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
 
+
+                DividerItemDecoration dividerItemDecoration=
+                        new DividerItemDecoration(activity,LinearLayoutManager.HORIZONTAL);
+                dividerItemDecoration.setDrawable(getDrawable(R.drawable.divider_for_single_tabel));
+
+                GridLayoutManager layoutManager
+                        = new GridLayoutManager(activity, 1);
+               layoutManager.setOrientation(GridLayoutManager.VERTICAL);
+                layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                    @Override
+                    public int getSpanSize(int position) {
+                        switch(recyclerView.getAdapter().getItemViewType(position)) {
+                            case RecyclerView.TEXT_ALIGNMENT_VIEW_START:
+                                return 2;
+                            default:
+                                return 1;
+                        }
+                    }
+                });
+               recyclerView.addItemDecoration(dividerItemDecoration);
+                recyclerView.setLayoutManager(layoutManager);
+               recyclerView.setHasFixedSize(true);
+               recyclerView.setAnimation(animationVibr1);
+                layoutManager.setSmoothScrollbarEnabled(true);
                 imm = (InputMethodManager) recyclerView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(recyclerView, InputMethodManager.SHOW_FORCED);
 
@@ -1338,6 +1353,8 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
         // TODO: 11.04.2023 метод SWIPES лева и право
         private void методДляSimpeCallbacks(   ) {
             try{
+
+                // TODO: 11.05.2023 SWIPE:
             ItemTouchHelper.SimpleCallback simpleItemTouchCallbackRIGHT = new ItemTouchHelper.SimpleCallback(10,
                       ItemTouchHelper.RIGHT   ) {
 
@@ -1529,12 +1546,12 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     }
 
                 };
-                ItemTouchHelper itemTouchHelperLEFT = new ItemTouchHelper(simpleItemTouchCallbackLEFT);
+            /*    ItemTouchHelper itemTouchHelperLEFT = new ItemTouchHelper(simpleItemTouchCallbackLEFT);
                 itemTouchHelperLEFT.attachToRecyclerView(recyclerView);
                 ItemTouchHelper itemTouchHelperRIGHT = new ItemTouchHelper(simpleItemTouchCallbackRIGHT);
                 itemTouchHelperRIGHT.attachToRecyclerView(recyclerView);
                 ItemTouchHelper itemTouchHelperAll = new ItemTouchHelper(simpleItemTouchCallbackAll);
-                itemTouchHelperAll.attachToRecyclerView(recyclerView);
+                itemTouchHelperAll.attachToRecyclerView(recyclerView);*/
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1622,6 +1639,14 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 break;
 
                         }
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    }
+
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
