@@ -76,7 +76,7 @@
             android:hint="d1"
             android:layout_width="80dp"
             android:layout_height="6mm"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:background="#FFFFFF"/>
 
         <com.google.android.material.textview.MaterialTextView
@@ -89,7 +89,7 @@
             android:hint="d2"
             android:layout_width="80dp"
             android:layout_height="6mm"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:background="#FFFFFF" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -103,7 +103,7 @@
             android:hint="d3"
             android:layout_width="80dp"
             android:layout_height="6mm"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:background="#FFFFFF" />
         <com.google.android.material.textview.MaterialTextView
             android:layout_column="3"
@@ -116,7 +116,7 @@
             android:hint="d4"
             android:layout_width="80dp"
             android:layout_height="6mm"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:background="#FFFFFF" />
     </TableRow>
 <!--//TODO конец первой строки Названия -->
@@ -135,8 +135,8 @@
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:minWidth="100dp"
-            android:layout_marginStart="2dp"
-            android:layout_marginEnd="2dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="20dp"
             android:clickable="true"
             android:focusable="auto"
             android:fontFamily="sans-serif-medium"
@@ -182,7 +182,7 @@
             android:padding="0dp"
             android:textAlignment="center"
             android:textColorHint="#00ACC1"
-            android:textSize="24sp"
+            android:textSize="25sp"
             android:tooltipText="V1"
               android:visibility="visible"
             android:textStyle="bold" />
@@ -204,7 +204,7 @@
             android:padding="0dp"
             android:textAlignment="center"
             android:textColorHint="#00ACC1"
-            android:textSize="24sp"
+            android:textSize="25sp"
               android:visibility="visible"
             android:textStyle="bold" />
 
@@ -225,7 +225,7 @@
             android:padding="0dp"
             android:textAlignment="center"
             android:textColorHint="#00ACC1"
-            android:textSize="24sp"
+            android:textSize="25sp"
               android:visibility="visible"
             android:textStyle="bold" />
 
@@ -246,7 +246,7 @@
             android:padding="0dp"
             android:textAlignment="center"
             android:textColorHint="#00ACC1"
-            android:textSize="24sp"
+            android:textSize="25sp"
               android:visibility="visible"
             android:textStyle="bold" />
     </TableRow>
@@ -275,8 +275,8 @@
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:minWidth="100dp"
-            android:layout_marginStart="2dp"
-            android:layout_marginEnd="2dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="20dp"
             android:clickable="true"
             android:focusable="auto"
             android:fontFamily="sans-serif-medium"
