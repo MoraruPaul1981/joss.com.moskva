@@ -35,11 +35,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.GridView;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -92,6 +94,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
     private     SubClassNewOrderTransport subClassNewOrderTransport;
     private  Animation animationvibr1;
+    private HorizontalScrollView horizontalScrollViewOrderTransport;
 
 
     @Override
@@ -132,9 +135,11 @@ public class FragmentOrderTransportOneChane extends Fragment {
             bottomNavigationItemView3обновить = BottomNavigationOrderTransport.findViewById(R.id.id_async);
             progressBarСканирование=  (ProgressBar)  container. findViewById(R.id.ProgressBar);
             // TODO: 01.05.2023
-            gridViewOrderTransport = container.findViewById(R.id.gridViewOrderTransport);
-            TextViewHadler = container.findViewById(R.id.TextViewHadler);
-            animationvibr1 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_singletable2);//  ani = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row);
+            gridViewOrderTransport =  (GridView) container.findViewById(R.id.gridViewOrderTransport);
+            TextViewHadler = (TextView) container.findViewById(R.id.TextViewHadler);
+            animationvibr1 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_singletable2);//
+            // TODO: 11.05.2023 горизонтальеный Сколлл
+            horizontalScrollViewOrderTransport= (HorizontalScrollView) container.findViewById(R.id.horizontalScrollViewOrderTransport);
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +

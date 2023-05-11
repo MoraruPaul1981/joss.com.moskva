@@ -8,11 +8,15 @@ import androidx.fragment.app.FragmentTransaction;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
@@ -42,6 +46,8 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
     private BottomNavigationItemView bottomNavigationItemView3обновить;
 
     private ProgressBar progressBarСканирование;
+
+    private HorizontalScrollView horizontalScrollViewOrderTransport;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,9 +79,20 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
             bottomNavigationItemView3обновить.setIconSize(50);
             progressBarСканирование=  (ProgressBar) findViewById(R.id.ProgressBar);
             progressBarСканирование.setVisibility(View.VISIBLE);
+
+
+            horizontalScrollViewOrderTransport= findViewById(R.id.horizontalScrollViewOrderTransport);
+            horizontalScrollViewOrderTransport.setFillViewport(true);
+            horizontalScrollViewOrderTransport.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+            horizontalScrollViewOrderTransport.setLeftEdgeEffectColor(Color.parseColor("#CB2377"));
+            horizontalScrollViewOrderTransport.setRightEdgeEffectColor(Color.parseColor("#688DC4"));
+            horizontalScrollViewOrderTransport.setSmoothScrollingEnabled(true);
+            // ani = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row);
             // TODO: 26.04.2023 Запускаем Ордер Транпорта
             SubClassStartingFragmentOrderTran subClassStartingFragmentOrderTran=new SubClassStartingFragmentOrderTran();
             subClassStartingFragmentOrderTran.методЗапускаФрагментаОрдерТранспорта();
+            // TODO: 11.05.2023 Горизотнтальная Прокрутка
+            методГоризонтальнаяПрокрутка();
             Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date()+"\n+" +
                     " Класс в процессе... " +  getApplicationContext().getClass().getName()+"\n"+
@@ -90,8 +107,37 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
     }
     }
 
+    private void методГоризонтальнаяПрокрутка() {
+        try {
+        ViewTreeObserver viewTreeObserver = horizontalScrollViewOrderTransport.getViewTreeObserver();
+        if (viewTreeObserver.isAlive()) {
+            viewTreeObserver
+                    .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                        @Override
+                        public void onGlobalLayout() {
+                            // interestedInView is ready for size and position
+                            // queries because it has been laid out
+                            horizontalScrollViewOrderTransport
+                                    .fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+                            Log.d(getApplicationContext().getClass().getName(), "\n"
+                                    + " время: " + new Date()+"\n+" +
+                                    " Класс в процессе... " +  getApplicationContext().getClass().getName()+"\n"+
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                        }
+                    });
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        // TODO: 01.09.2021 метод вызова
+        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+    }
 
-// TODO: 26.04.2023  класс для запуска
+
+    // TODO: 26.04.2023  класс для запуска
     class  SubClassStartingFragmentOrderTran{
 
 
