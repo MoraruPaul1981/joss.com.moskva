@@ -9,6 +9,7 @@
     android:background="#FFFFFF"
     android:minHeight="150dp"
     android:gravity="center"
+    android:layout_margin="5dp"
     android:padding="5dp"
     tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
     android:orientation="vertical">

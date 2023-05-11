@@ -58,11 +58,9 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/TextViewHadler"
             />
-
-
-
-
     </RelativeLayout>
+
+
     <RelativeLayout
         android:id="@+id/activitynain_for_Taskslinelayoutrela3"
         android:layout_width="match_parent"
