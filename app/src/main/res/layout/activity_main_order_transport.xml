@@ -70,6 +70,15 @@
         android:orientation="vertical"
         android:background="#FFFFFF">
 
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollView1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:scrollbars="horizontal">
+
+
+
         <!--   НАЧАЛО САМИХ ДАННЫХ ВСЕ ТАБЕЛЯ -->
         <GridView
             android:id="@+id/gridViewOrderTransport"
@@ -89,11 +98,10 @@
             android:numColumns="auto_fit"
             android:scrollIndicators="left|right"
             android:scrollbars="horizontal|vertical"
-
             tools:ignore="MissingConstraints">
-
         </GridView>
 
+        </HorizontalScrollView>
 
 
 
