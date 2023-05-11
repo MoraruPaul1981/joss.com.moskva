@@ -6,7 +6,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:background="#FFFFFF"
     tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
     android:orientation="vertical">
@@ -58,50 +57,49 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/TextViewHadler"
             />
+
+
+
+
     </RelativeLayout>
-
-
     <RelativeLayout
         android:id="@+id/activitynain_for_Taskslinelayoutrela3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:layout_gravity="center_horizontal|center_vertical"
         android:orientation="vertical"
         android:background="#FFFFFF">
 
         <HorizontalScrollView
             android:id="@+id/horizontalScrollViewOrderTransport"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:layout_margin="5dp"
-            android:padding="2dp"
             android:fillViewport="true"
             android:scrollbars="horizontal">
 
 
 
-        <!--   НАЧАЛО САМИХ ДАННЫХ ВСЕ ТАБЕЛЯ -->
-        <GridView
-            android:id="@+id/gridViewOrderTransport"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/BottomNavigationOrderTransport"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="5dp"
-            android:padding="2dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:horizontalSpacing="5dp"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="30dp"
-            android:numColumns="1"
-            android:scrollIndicators="left|right"
-            android:scrollbars="horizontal|vertical"
-            tools:ignore="MissingConstraints">
-        </GridView>
+            <!--   НАЧАЛО САМИХ ДАННЫХ ВСЕ ТАБЕЛЯ -->
+            <GridView
+                android:id="@+id/gridViewOrderTransport"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/BottomNavigationOrderTransport"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
+                android:padding="2dp"
+                android:background="#FFFFFF"
+                android:columnWidth="700dp"
+                android:gravity="center"
+                android:horizontalSpacing="5dp"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="30dp"
+                android:numColumns="auto_fit"
+                android:scrollIndicators="left|right"
+                android:scrollbars="horizontal|vertical"
+                tools:ignore="MissingConstraints">
+            </GridView>
 
         </HorizontalScrollView>
 
