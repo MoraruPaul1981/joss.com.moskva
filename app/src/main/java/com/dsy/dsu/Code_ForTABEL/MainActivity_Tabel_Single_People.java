@@ -1315,6 +1315,12 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                recyclerView.setHasFixedSize(true);
                 staggeredGridLayoutManager.    invalidateSpanAssignments();
                 staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+
+                imm = (InputMethodManager) recyclerView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(recyclerView, InputMethodManager.SHOW_FORCED);
+
+
+
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+  "cursor " +cursor);
@@ -1348,13 +1354,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                     try{
                         valueAnimator.start();
-
                         recyclerView.getAdapter().notifyDataSetChanged();
-
-
-                        imm = (InputMethodManager) recyclerView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(recyclerView.getWindowToken(), 0);
-
                         // TODO: 20.04.2023 Данные
                         cursor =    new SubClassGetCursor().МетодSwipesКурсор();
 
@@ -1423,16 +1423,9 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         try{
                             valueAnimator.start();
-
                             recyclerView.getAdapter().notifyDataSetChanged();
-
-
-                            imm = (InputMethodManager) recyclerView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(recyclerView.getWindowToken(), 0);
-
                             // TODO: 20.04.2023 Данные
                             cursor =    new SubClassGetCursor().МетодSwipesКурсор();
-
                             recyclerView.smoothScrollToPosition(0);
                             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
                             message.getTarget().postDelayed(()->{
@@ -1622,8 +1615,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 System.out.println("Scrolling now");
                       /*InputMethodManager imm = (InputMethodManager) recyclerView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                       imm.hideSoftInputFromWindow(recyclerView.getWindowToken(), 0);*/
-                              imm = (InputMethodManager) recyclerView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                                imm.showSoftInput(recyclerView, InputMethodManager.SHOW_IMPLICIT);
                                 break;
                             case RecyclerView.SCROLL_STATE_SETTLING:
                                 System.out.println("Scroll Settling");
@@ -2309,6 +2300,12 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                             if (hasFocus) {
                                 editText.requestFocus();
                                 imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
+                            }else {
+                                message.getTarget().postDelayed(() -> {
+                                    imm.hideSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+                                }, 2000);
+
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -2374,7 +2371,11 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                                     // TODO: 24.04.2023  после обновление ячейки Считаем Часы
                                                     методПослеОбновлениеЯчейкиСчитаемЧасы();
                                                     ((EditText) v).startAnimation(animationVibr2);
-                                                    recyclerView.smoothScrollToPosition( myViewHolder.getAbsoluteAdapterPosition());
+                                                    if (myViewHolder.getAbsoluteAdapterPosition()>=0) {
+                                                        recyclerView.scrollToPosition(myViewHolder.getAbsoluteAdapterPosition());
+                                                    }else{
+                                                        recyclerView.scrollToPosition(0);
+                                                    }
                                                 }else {
                                                     Toast aa = Toast.makeText(context, "OPEN", Toast.LENGTH_LONG);
                                                     ImageView cc = new ImageView( context);
