@@ -24,6 +24,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
@@ -140,6 +141,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
             animationvibr1 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_singletable2);//
             // TODO: 11.05.2023 горизонтальеный Сколлл
             horizontalScrollViewOrderTransport= (HorizontalScrollView) container.findViewById(R.id.horizontalScrollViewOrderTransport);
+
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +

@@ -66,14 +66,19 @@
         android:id="@+id/activitynain_for_Taskslinelayoutrela3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="1dp"
+        android:layout_margin="1dp"
         android:layout_gravity="center_horizontal|center_vertical"
         android:orientation="vertical"
         android:background="#FFFFFF">
 
         <HorizontalScrollView
             android:id="@+id/horizontalScrollViewOrderTransport"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/BottomNavigationOrderTransport"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             android:fillViewport="true"
             android:scrollbars="horizontal">
 
@@ -90,12 +95,12 @@
                 android:layout_margin="5dp"
                 android:padding="2dp"
                 android:background="#FFFFFF"
-                android:columnWidth="700dp"
+                android:columnWidth="0dp"
                 android:gravity="center"
                 android:horizontalSpacing="5dp"
                 android:stretchMode="columnWidth"
                 android:verticalSpacing="30dp"
-                android:numColumns="auto_fit"
+                android:numColumns="1"
                 android:scrollIndicators="left|right"
                 android:scrollbars="horizontal|vertical"
                 tools:ignore="MissingConstraints">

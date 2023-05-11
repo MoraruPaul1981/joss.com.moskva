@@ -87,12 +87,14 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
             horizontalScrollViewOrderTransport.setLeftEdgeEffectColor(Color.parseColor("#CB2377"));
             horizontalScrollViewOrderTransport.setRightEdgeEffectColor(Color.parseColor("#688DC4"));
             horizontalScrollViewOrderTransport.setSmoothScrollingEnabled(true);
+
             // ani = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row);
             // TODO: 26.04.2023 Запускаем Ордер Транпорта
             SubClassStartingFragmentOrderTran subClassStartingFragmentOrderTran=new SubClassStartingFragmentOrderTran();
             subClassStartingFragmentOrderTran.методЗапускаФрагментаОрдерТранспорта();
             // TODO: 11.05.2023 Горизотнтальная Прокрутка
             методГоризонтальнаяПрокрутка();
+            методScroolViewListers();
             Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date()+"\n+" +
                     " Класс в процессе... " +  getApplicationContext().getClass().getName()+"\n"+
@@ -126,6 +128,30 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
                         }
                     });
         }
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        // TODO: 01.09.2021 метод вызова
+        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+    }
+
+    void методScroolViewListers(){
+        try{
+        horizontalScrollViewOrderTransport.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+            }
+        });
+            Log.d(getApplicationContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() );
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
