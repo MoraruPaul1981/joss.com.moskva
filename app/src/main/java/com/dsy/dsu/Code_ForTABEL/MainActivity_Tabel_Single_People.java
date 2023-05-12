@@ -31,6 +31,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -286,6 +287,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
                 LifecycleOwner  lifecycleOwnerОбщая=this;
                 SubClassSingleTabelRecycreView subClassSingleTabelRecycreView=
                     new SubClassSingleTabelRecycreView(lifecycleOwner,lifecycleOwnerОбщая,activity,cursor);
+
+
                 subClassSingleTabelRecycreView.МетодИнициализацииRecycreView();
 
 
@@ -1305,21 +1308,70 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
         private void МетодИнициализацииRecycreView() {
             try{
-                DividerItemDecoration dividerItemDecoration=
-                        new DividerItemDecoration(activity,LinearLayoutManager.HORIZONTAL);
-                dividerItemDecoration.setDrawable(getDrawable(R.drawable.divider_for_single_tabel));
-
+                DividerItemDecoration dividerItemDecorationHor=
+                        new DividerItemDecoration(activity,GridLayoutManager.HORIZONTAL);
+                dividerItemDecorationHor.setDrawable(getDrawable(R.drawable.divider_for_single_tabel));///R.dimen.activity_horizontal_margin
+                DividerItemDecoration dividerItemDecorationVer=
+                        new DividerItemDecoration(activity,GridLayoutManager.VERTICAL);
                 GridLayoutManager layoutManager
                         = new GridLayoutManager(activity, 1);
                layoutManager.setOrientation(GridLayoutManager.VERTICAL);
-               recyclerView.addItemDecoration(dividerItemDecoration);
+               recyclerView.addItemDecoration(dividerItemDecorationHor);
+               recyclerView.addItemDecoration(dividerItemDecorationVer);
                 recyclerView.setLayoutManager(layoutManager);
                recyclerView.setHasFixedSize(true);
                recyclerView.setAnimation(animationVibr1);
                 layoutManager.setSmoothScrollbarEnabled(true);
+                // TODO: 12.05.2023 Клаиатура
                 imm = (InputMethodManager) recyclerView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(recyclerView, InputMethodManager.SHOW_FORCED);
 
+                recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+                    @Override
+                    public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                        rv.setOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View v) {
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+  "cursor " +cursor);
+                                return false;
+                            }
+                        });
+
+                        rv.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                            @Override
+                            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+  "cursor " +cursor);
+                            }
+                        });
+                        rv.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+  "cursor " +cursor);
+                            }
+                        });
+                        return false;
+                    }
+
+                    @Override
+                    public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+  "cursor " +cursor);
+                    }
+
+                    @Override
+                    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+  "cursor " +cursor);
+                    }
+                });
 
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

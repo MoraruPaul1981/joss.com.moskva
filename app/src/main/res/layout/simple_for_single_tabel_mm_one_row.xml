@@ -288,7 +288,6 @@
             app:cardElevation="5dp"
             tools:visibility="visible"
             android:translationZ="100dp"
-            android:background="@drawable/textlines_tabel_row_name_value"
             android:animateLayoutChanges="true" />
     </TableRow>
 
