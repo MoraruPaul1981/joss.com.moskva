@@ -61,12 +61,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textview.MaterialTextView;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
@@ -925,6 +928,10 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 String CFO= cursor.getString(cursor.getColumnIndex("cfo")).trim();
                 Integer Status= cursor.getInt(cursor.getColumnIndex("status"));
                 String GosNomer= cursor.getString(cursor.getColumnIndex("fullname")).trim();
+                // TODO: 12.05.2023 ПАРСИНГА  DATE
+                DateOrder = методПарсингаДатыЗаказа(DateOrder);
+                // TODO: 12.05.2023 ПАРСИНГА  СТАТУСА
+                String Статус=методПарсингаСтатуса(Status);
                 // TODO: 18.04.2023 Данные Заказы Трансопрта
                 bundleOrderTransport.putLong("MainParentUUID", MainParentUUID);
                 bundleOrderTransport.putInt("Position", cursor.getPosition());
@@ -934,13 +941,15 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 bundleOrderTransport.putString("NumberOrder", NumberOrder);
                 bundleOrderTransport.putInt("IDPublic", IDPublic);
                 bundleOrderTransport.putString("CFO", CFO);
-                bundleOrderTransport.putInt("Status", Status);
+                bundleOrderTransport.putString("Status", Статус);
                 bundleOrderTransport.putString("GosNomer", GosNomer);
+                // TODO: 12.05.2023 ДАННЫЕ
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
                         + "  cursor " + cursor  +  "bundleOrderTransport " +bundleOrderTransport);
+
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -953,6 +962,61 @@ public class FragmentOrderTransportOneChane extends Fragment {
             return  bundleOrderTransport;
         }
 
+        @NonNull
+        private String методПарсингаДатыЗаказа(String DateOrder) throws ParseException {
+            try{
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", new Locale("ru"));
+            Date breamy= simpleDateFormat.parse(DateOrder);
+            DateOrder = simpleDateFormat.format(breamy);
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                        + "  DateOrder " + DateOrder  );
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+
+        }
+            return DateOrder;
+        }
+        private String методПарсингаСтатуса(Integer Status) throws ParseException {
+            String Статус=null;
+            try{
+                switch (Status){
+                    case 0:
+                        Статус="Созданно";
+                        break;
+                    case 1:
+                        Статус="В работе";
+                        break;
+                    case 2:
+                        Статус="Закончено";
+                        break;
+                    case 3:
+                        Статус="Отмена";
+                        break;
+                }
+
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                        + "  Status " + Status  );
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+            return Статус;
+        }
 
 
         private void методПоGridView( ) {
