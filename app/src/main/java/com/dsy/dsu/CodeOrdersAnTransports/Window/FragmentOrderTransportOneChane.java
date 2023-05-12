@@ -438,6 +438,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                         if (CallBaskОтWorkManager>0) {
                                             onStart();
                                             методПерегрузкаДанные();
+                                            методАнимацииGridView();
                                             WorkManager.getInstance(getContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая) ;
 
                                             // TODO: 21.11.2022  запускаем удаление
@@ -471,6 +472,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                     if (CallBaskОтWorkManager>0) {
                                         onStart();
                                         методПерегрузкаДанные();
+                                        методАнимацииGridView();
                                     }
                                 }
                                 progressBarСканирование.setVisibility(View.INVISIBLE);
