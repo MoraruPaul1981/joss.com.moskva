@@ -66,8 +66,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
 
 
 // TODO: 29.09.2022 фрагмент для получение материалов
@@ -789,20 +792,55 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                         LinearLayout linearLayoutЗаказыТранспорта= (LinearLayout)
                                                 view.findViewById(android.R.id.text1);
 
-                                        String      NameOrder= cursor.getString(cursor.getColumnIndex("name")).trim();
-
+                                        // TODO: 12.05.2023  Получаем Данные
                                         Bundle bundleOrderTransport=    методДанныеBungle(cursor);
-                                        MaterialTextView values;
-                                        // TODO: 05.05.2023  сами данные
-                                              values  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue0);
-                                        // TODO: 09.04.2023  ВставлЯем Данные
-                                        методЗаполенияЗаказаТранспорта(NameOrder, bundleOrderTransport, (MaterialTextView) values);
-                                        // TODO: 18.04.2023  Внешниц вид
+                                        // TODO: 12.05.2023
+                                        CopyOnWriteArrayList<MaterialTextView> materialTextViews=new CopyOnWriteArrayList<>();
+                                        materialTextViews.add(   linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue2));//ВИД ТС
+                                        materialTextViews.add(  linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue4));//ДАТА
+                                        materialTextViews.add(   linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue3));//ГОС.НОМЕР
+                                        materialTextViews.add(   linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue0));///номер заказа
+                                        materialTextViews.add(   linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue1));///ЦФО
+                                        materialTextViews.add(   linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue5));//СТАТУС
 
+                                 ListIterator<MaterialTextView> listIterator= materialTextViews.listIterator();
+                                        while (listIterator.hasNext()) {
+                                            MaterialTextView  materialTextViewvalues = listIterator.next();
+                                        Integer Индекс=    listIterator.nextIndex();
+                                            Object ЗначениеВставки = null;
+                                        switch (Индекс){
+                                            case  1 :
+                                            ЗначениеВставки=        bundleOrderTransport.get("NameOrder");
+                                                break;
+                                            case  2 :
+                                                ЗначениеВставки=       bundleOrderTransport.get("DateOrder");
+                                                break;
+                                            case  3 :
+                                                ЗначениеВставки=       bundleOrderTransport.get("GosNomer");
+                                                break;
+                                            case  4 :
+                                                ЗначениеВставки=       bundleOrderTransport.get("NumberOrder");
+                                                break;
+                                            case  5 :
+                                                ЗначениеВставки=        bundleOrderTransport.get("CFO");
+                                                break;
+                                            case  6 :
+                                                ЗначениеВставки=        bundleOrderTransport.get("Status");
+                                                break;
+
+                                        }
+                                            методЗаполенияЗаказаТранспорта( bundleOrderTransport,  materialTextViewvalues,ЗначениеВставки);
+                                            // TODO: 18.04.2023  Внешниц вид
+                                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                                                    "  bundleOrderTransport " +bundleOrderTransport +  "materialTextViewvalues " +materialTextViewvalues + " ЗначениеВставки " +ЗначениеВставки);
+                                        }
+                                        // TODO: 18.04.2023  Внешниц вид
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                                                "  bundleOrderTransport " +bundleOrderTransport +  "values " +values);
+                                                "  bundleOrderTransport " +bundleOrderTransport);
                                         return true;
                                 }
 
@@ -847,10 +885,17 @@ public class FragmentOrderTransportOneChane extends Fragment {
         }
         }
 
-        private void методЗаполенияЗаказаТранспорта(String NameOrder, Bundle bundleOrderTransport, MaterialTextView values) {
+        private void методЗаполенияЗаказаТранспорта( @NonNull Bundle bundleOrderTransport,
+                                                     @NonNull MaterialTextView values,
+                                                     @NonNull Object ЗначениеВставки) {
             try{
+                if (ЗначениеВставки==null){
+                    values.setHint("не заполнено");
+                    values.setText("");
+                }else {
+                    values.setText(ЗначениеВставки.toString());
+                }
                 values.setTag(bundleOrderTransport);
-                values.setText(NameOrder);
                 values.startAnimation(animationvibr1);
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
@@ -876,6 +921,10 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 String DateOrder= cursor.getString(cursor.getColumnIndex("dateorders")).trim();
                 Integer IdOrder= cursor.getInt(cursor.getColumnIndex("_id"));
                 Integer NumberOrder= cursor.getInt(cursor.getColumnIndex("number_order"));
+                Integer IDPublic= cursor.getInt(cursor.getColumnIndex("user_update"));
+                String CFO= cursor.getString(cursor.getColumnIndex("cfo")).trim();
+                Integer Status= cursor.getInt(cursor.getColumnIndex("status"));
+                String GosNomer= cursor.getString(cursor.getColumnIndex("gos_nomer"));
                 // TODO: 18.04.2023 Данные Заказы Трансопрта
                 bundleOrderTransport.putLong("MainParentUUID", MainParentUUID);
                 bundleOrderTransport.putInt("Position", cursor.getPosition());
@@ -883,11 +932,15 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 bundleOrderTransport.putString("DateOrder",  DateOrder);
                 bundleOrderTransport.putInt("IdOrder", IdOrder);
                 bundleOrderTransport.putInt("NumberOrder", NumberOrder);
+                bundleOrderTransport.putInt("IDPublic", IDPublic);
+                bundleOrderTransport.putString("CFO", CFO);
+                bundleOrderTransport.putInt("Status", Status);
+                bundleOrderTransport.putString("GosNomer", GosNomer);
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                        + "  cursor " + cursor);
+                        + "  cursor " + cursor  +  "bundleOrderTransport " +bundleOrderTransport);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

@@ -1025,8 +1025,8 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
                     "vid_trasport  INTEGER ," +
                     "dateorders TEXT ," +
                     "gos_nomer  INTEGER ," +
-                    "number_order  INTEGER ," +
-                    "status  INTEGER ," +
+                    "number_order  TEXT ," +
+                    "status  INTEGER  DEFAULT 0  ," +
 
                     "date_update TEXT ," +
                     "uuid NUMERIC UNIQUE," +
@@ -1124,21 +1124,15 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         try{
             ССылкаНаСозданнуюБазу.execSQL("drop view  if exists view_ordertransport");//test
             ССылкаНаСозданнуюБазу.execSQL("CREATE VIEW if not exists view_ordertransport AS" +
-                    " SELECT           order_tc._id,  \n" +
-                    "  vid_tc.name,  \n" +
-                    "  order_tc.dateorders,   \n" +
-                    "  order_tc.gos_nomer,\n" +
-                    "                        order_tc.number_order,  \n" +
-                    " order_tc.date_update, \n" +
-                    " order_tc.uuid,\n" +
-                    " order_tc.user_update,\n" +
-                    "                        order_tc.current_table, \n" +
-                    "                                                cfo.name AS cfo, \n" +
-                    " order_tc.status\n" +
-                    "                    FROM               order_tc INNER JOIN\n" +
-                    "                                                vid_tc ON    order_tc.vid_trasport =    vid_tc._id INNER JOIN\n" +
-                    "                                                cfo ON    order_tc.cfo =    cfo._id\n" +
-                    "                    WHERE        (   vid_tc.name IS NOT NULL)" );
+                    "       SELECT         order_tc._id,  vid_tc.name,  order_tc.dateorders, " +
+                    " order_tc.number_order,  order_tc.date_update,  order_tc.uuid, " +
+                    " order_tc.user_update,  order_tc.current_table,  track.fullname, \n" +
+                    "                          cfo.name AS cfo,  order_tc.status\n" +
+                    "FROM             order_tc INNER JOIN\n" +
+                    "                          vid_tc ON  order_tc.vid_trasport =  vid_tc._id INNER JOIN\n" +
+                    "                          cfo ON  order_tc.cfo =  cfo.id INNER JOIN\n" +
+                    "                          track ON  order_tc.gos_nomer =  track._id\n" +
+                    "WHERE        ( vid_tc.name IS NOT NULL)" );
 
             Log.d(this.getClass().getName(), " сработала ...  создание view  view_ordertransport ");
         } catch (SQLException e) {
