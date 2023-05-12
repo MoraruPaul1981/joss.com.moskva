@@ -438,14 +438,15 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                         if (CallBaskОтWorkManager>0) {
                                             onStart();
                                             методПерегрузкаДанные();
-                                            методАнимацииGridView();
                                             WorkManager.getInstance(getContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая) ;
 
                                             // TODO: 21.11.2022  запускаем удаление
                                         }
                                     }
                                 }
-                                progressBarСканирование.setVisibility(View.INVISIBLE);
+                                message.getTarget().postDelayed(()->{
+                                    progressBarСканирование.setVisibility(View.INVISIBLE);
+                                },1000);
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -472,10 +473,11 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                     if (CallBaskОтWorkManager>0) {
                                         onStart();
                                         методПерегрузкаДанные();
-                                        методАнимацииGridView();
                                     }
                                 }
-                                progressBarСканирование.setVisibility(View.INVISIBLE);
+                                message.getTarget().postDelayed(()->{
+                                    progressBarСканирование.setVisibility(View.INVISIBLE);
+                                },1000);
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -887,6 +889,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
                                         }
                                             методЗаполенияЗаказаТранспорта( bundleOrderTransport,  materialTextViewvalues,ЗначениеВставки);
+                                            // TODO: 12.05.2023
+                                            materialTextViewvalues.startAnimation(animationvibr1);
                                             // TODO: 18.04.2023  Внешниц вид
                                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
