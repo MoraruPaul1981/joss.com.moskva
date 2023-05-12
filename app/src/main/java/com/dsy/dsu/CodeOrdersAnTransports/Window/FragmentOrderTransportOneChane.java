@@ -96,7 +96,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
     private  Cursor cursorOrderTransport;
     private GridView gridViewOrderTransport;
 
-    private     SubClassNewOrderTransport subClassNewOrderTransport;
+    private SubClassOrdersTransport subClassOrdersTransport;
     private  Animation animationvibr1;
     private HorizontalScrollView horizontalScrollViewOrderTransport;
     private LifecycleOwner lifecycleOwner  ;
@@ -110,8 +110,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
         try{
             super.onCreate(savedInstanceState);
             // TODO: 27.04.2023  Запускаем Заказ Транпорта
-            subClassNewOrderTransport    =new SubClassNewOrderTransport(getActivity());
-            subClassNewOrderTransport.   МетодБиндингOrderTransport();
+            subClassOrdersTransport =new SubClassOrdersTransport(getActivity());
+            subClassOrdersTransport.   МетодБиндингOrderTransport();
             lifecycleOwner =this;
             lifecycleOwnerОбщая=this;
             // TODO: 04.05.2023
@@ -174,15 +174,15 @@ public class FragmentOrderTransportOneChane extends Fragment {
             start=     Calendar.getInstance().getTimeInMillis();
             startДляОбноразвовной=     Calendar.getInstance().getTimeInMillis();
             //todo запуск методов в фрагменте
-            subClassNewOrderTransport.   МетодHandlerCallBack();
-            subClassNewOrderTransport.   МетодВыходНаAppBack();
+            subClassOrdersTransport.   МетодHandlerCallBack();
+            subClassOrdersTransport.   МетодВыходНаAppBack();
             // TODO: 04.05.2023 Анимация
-            subClassNewOrderTransport.методАнимацииGridView();
+            subClassOrdersTransport.методАнимацииGridView();
 
             // TODO: 12.05.2023 слушатель
-            subClassNewOrderTransport.    методСлушателяWorkManager(lifecycleOwner,lifecycleOwnerОбщая);
+            subClassOrdersTransport.    методСлушателяWorkManager(lifecycleOwner,lifecycleOwnerОбщая);
 
-            subClassNewOrderTransport.МетодСлушательКурсора();
+            subClassOrdersTransport.МетодСлушательКурсора();
 
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
@@ -207,26 +207,26 @@ public class FragmentOrderTransportOneChane extends Fragment {
         super.onStart();
         try{
             if( cursorOrderTransport==null) {
-                subClassNewOrderTransport.методПредварительнаяЗагрузкаGridView(R.layout.list_item_progressing_ordertransport,
+                subClassOrdersTransport.методПредварительнаяЗагрузкаGridView(R.layout.list_item_progressing_ordertransport,
                         "Загрузка...", R.drawable.icon_dsu1_ordertransport_down);
             }else {
                 if( cursorOrderTransport.getCount()>0) {
-                    subClassNewOrderTransport.методФиналЗагрузкиGridView(R.layout.fragment_ordertransport1);
+                    subClassOrdersTransport.методФиналЗагрузкиGridView(R.layout.fragment_ordertransport1);
                 }else{
-                    subClassNewOrderTransport.методПредварительнаяЗагрузкаGridView( R.layout.list_item_isnull_ordertransport,
+                    subClassOrdersTransport.методПредварительнаяЗагрузкаGridView( R.layout.list_item_isnull_ordertransport,
                             "Нет заказов !!!", R.drawable.icon_rdertransport2);
                 }
                 // TODO: 04.05.2023 Получаем Данные что обработка данных закончена
-                subClassNewOrderTransport.    МетодДизайнПрограссБара();
+                subClassOrdersTransport.    МетодДизайнПрограссБара();
             }
 
             // TODO: 12.05.2023
-            subClassNewOrderTransport. МетодКпопкиЗначков(cursorOrderTransport);
+            subClassOrdersTransport. МетодКпопкиЗначков(cursorOrderTransport);
             // TODO: 19.04.2023 слушаелти
             // TODO: 18.04.2023 Слушаиель Клика
-            subClassNewOrderTransport.    методПоGridView( );
+            subClassOrdersTransport.    методПоGridView( );
             // TODO: 18.04.2023 Слушатель Удалание
-            subClassNewOrderTransport.    методУдалениеТабеля( );
+            subClassOrdersTransport.    методУдалениеТабеля( );
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
@@ -254,7 +254,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
             datasendMap.putIfAbsent("3"," 0 ");
             datasendMap.putIfAbsent("4"," view_ordertransport ");
             // TODO: 05.05.2023  ПОЛУЧАЕМ ДАННЫЕ
-            cursorOrderTransport=       subClassNewOrderTransport.       методGetCursor( datasendMap);
+            cursorOrderTransport=       subClassOrdersTransport.       методGetCursor( datasendMap);
 
             // TODO: 12.05.2023 Adapter
             АдаптерЗаказыТарнпорта.changeCursor(cursorOrderTransport);
@@ -281,10 +281,10 @@ public class FragmentOrderTransportOneChane extends Fragment {
     }
 
     // TODO: 27.04.2023  новый код Заказ Транспорта
-    class   SubClassNewOrderTransport{
+    class SubClassOrdersTransport {
  private Activity activity;
 
-        public SubClassNewOrderTransport(Activity activity) {
+        public SubClassOrdersTransport(Activity activity) {
             this.activity = activity;
         }
 
@@ -446,7 +446,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                             onStart();
                                             методПерегрузкаДанные();
                                             // TODO: 12.05.2023
-                                            subClassNewOrderTransport. МетодКпопкиЗначков(cursorOrderTransport);
+                                            subClassOrdersTransport. МетодКпопкиЗначков(cursorOrderTransport);
                                             WorkManager.getInstance(getContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая) ;
 
                                             // TODO: 21.11.2022  запускаем удаление
@@ -483,7 +483,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                         onStart();
                                         методПерегрузкаДанные();
                                         // TODO: 12.05.2023
-                                        subClassNewOrderTransport. МетодКпопкиЗначков(cursorOrderTransport);
+                                        subClassOrdersTransport. МетодКпопкиЗначков(cursorOrderTransport);
                                     }
                                 }
                                 message.getTarget().postDelayed(()->{
@@ -670,7 +670,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 Bundle bundleNewOrderTransport=new Bundle();
                 bundleNewOrderTransport.putBinder("binder",localBinderOrderTransport);
                 fragmentNewЗаказТранспорта.setArguments(bundleNewOrderTransport);
-                fragmentTransaction.add(R.id.linear_main_ordertransport, fragmentNewЗаказТранспорта).commit();//.layout.activity_for_fragemtb_history_tasks
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.replace(R.id.linear_main_ordertransport, fragmentNewЗаказТранспорта).commit();//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.show(fragmentNewЗаказТранспорта);
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

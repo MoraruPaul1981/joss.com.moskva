@@ -185,7 +185,7 @@ public class FragmentNewOrderTransport extends Fragment {
             subClassNewOrderTransport.методАнимацииGridView();
 
             // TODO: 12.05.2023 слушатель
-            subClassNewOrderTransport.    методСлушателяWorkManager(lifecycleOwner,lifecycleOwnerОбщая);
+            //subClassNewOrderTransport.    методСлушателяWorkManager(lifecycleOwner,lifecycleOwnerОбщая);
 
             subClassNewOrderTransport.МетодСлушательКурсора();
 
@@ -343,7 +343,8 @@ public class FragmentNewOrderTransport extends Fragment {
                             fragmentTransaction = fragmentManager.beginTransaction();
                             fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                             fragmentBackListOrderTransport = new FragmentOrderTransportOneChane();
-                            fragmentTransaction.add(R.id.linear_main_ordertransport, fragmentBackListOrderTransport).commit();//.layout.activity_for_fragemtb_history_tasks
+                            fragmentTransaction.addToBackStack(null);//.layout.activity_for_fragemtb_history_tasks
+                            fragmentTransaction.replace(R.id.linear_main_ordertransport, fragmentBackListOrderTransport).commit();//.layout.activity_for_fragemtb_history_tasks
                             fragmentTransaction.show(fragmentBackListOrderTransport);
                             Log.d(this.getClass().getName(), "\n" + " class " +
                                     Thread.currentThread().getStackTrace()[2].getClassName()
@@ -778,7 +779,7 @@ public class FragmentNewOrderTransport extends Fragment {
                                 datasendMap.putIfAbsent("3"," 0 ");
                                 datasendMap.putIfAbsent("4"," view_ordertransport ");
                                 // TODO: 05.05.2023  ПОЛУЧАЕМ ДАННЫЕ
-                                cursorOrderTransport=              методGetCursor( datasendMap);
+                              //  cursorOrderTransport=              методGetCursor( datasendMap);
                                 // TODO: 04.05.2023  перегружаем экран
 
                                 onStart();
