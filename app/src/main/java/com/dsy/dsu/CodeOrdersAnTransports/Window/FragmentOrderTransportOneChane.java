@@ -45,6 +45,7 @@ import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
@@ -102,6 +103,10 @@ public class FragmentOrderTransportOneChane extends Fragment {
     private     SubClassNewOrderTransport subClassNewOrderTransport;
     private  Animation animationvibr1;
     private HorizontalScrollView horizontalScrollViewOrderTransport;
+    private LifecycleOwner lifecycleOwner  ;
+    private LifecycleOwner lifecycleOwnerОбщая ;
+
+    private   SimpleCursorAdapter АдаптерЗаказыТарнпорта;
 
 
     @Override
@@ -111,6 +116,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
             // TODO: 27.04.2023  Запускаем Заказ Транпорта
             subClassNewOrderTransport    =new SubClassNewOrderTransport(getActivity());
             subClassNewOrderTransport.   МетодБиндингOrderTransport();
+            lifecycleOwner =this;
+            lifecycleOwnerОбщая=this;
             // TODO: 04.05.2023
             ПубличныйID = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
             Log.d(getContext().getClass().getName(), "\n"
@@ -176,6 +183,11 @@ public class FragmentOrderTransportOneChane extends Fragment {
             // TODO: 04.05.2023 Анимация
             subClassNewOrderTransport.методАнимацииGridView();
 
+            // TODO: 12.05.2023 слушатель
+            subClassNewOrderTransport.    методСлушателяWorkManager(lifecycleOwner,lifecycleOwnerОбщая);
+
+            subClassNewOrderTransport.МетодСлушательКурсора();
+
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
@@ -226,6 +238,39 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
+    }
+
+    // TODO: 12.05.2023
+    void  методПерегрузкаДанные(){
+        try{
+            // TODO: 04.05.2023  получаем первоночальыне Данные  #1
+            HashMap<String,String> datasendMap=new HashMap();
+            datasendMap.putIfAbsent("1","  SELECT  *  FROM  view_ordertransport  ");
+            datasendMap.putIfAbsent("2"," WHERE name  IS NOT NULL  AND _id >?  ORDER BY _id ");
+            datasendMap.putIfAbsent("3"," 0 ");
+            datasendMap.putIfAbsent("4"," view_ordertransport ");
+            // TODO: 05.05.2023  ПОЛУЧАЕМ ДАННЫЕ
+            cursorOrderTransport=       subClassNewOrderTransport.       методGetCursor( datasendMap);
+            АдаптерЗаказыТарнпорта.changeCursor(cursorOrderTransport);
+            АдаптерЗаказыТарнпорта.notifyDataSetChanged();
+            gridViewOrderTransport.setAdapter(АдаптерЗаказыТарнпорта);
+            gridViewOrderTransport.refreshDrawableState();
+            gridViewOrderTransport.requestLayout();
+                    Log.d(this.getClass().getName(), "\n" + " class " +
+                            Thread.currentThread().getStackTrace()[2].getClassName()
+                            + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                            + " cursorOrderTransport " +cursorOrderTransport);
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(getContext().getClass().getName(),
+                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
     }
 
     // TODO: 27.04.2023  новый код Заказ Транспорта
@@ -356,7 +401,9 @@ public class FragmentOrderTransportOneChane extends Fragment {
         // TODO: 28.04.2023
         // TODO: 18.10.2021  СИНХРОНИАЗЦИЯ ЧАТА ПО РАСПИСАНИЮ ЧАТ
         @SuppressLint("FragmentLiveDataObserve")
-        void методСлушателяWorkManager(@NonNull  LifecycleOwner lifecycleOwner , @NonNull LifecycleOwner lifecycleOwnerОбщая ) throws ExecutionException, InterruptedException {
+        void методСлушателяWorkManager(@NonNull  LifecycleOwner lifecycleOwner ,
+                                       @NonNull LifecycleOwner lifecycleOwnerОбщая )
+                throws ExecutionException, InterruptedException {
 // TODO: 11.05.2021 ЗПУСКАЕМ СЛУЖБУ через брдкастер синхронизхации и уведомления
             try {
                 String ИмяСлужбыСинхронизациОдноразовая="WorkManager Synchronizasiy_Data Disposable";
@@ -376,26 +423,31 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     }
                 });
 
-                WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).observe(lifecycleOwner, new Observer<List<WorkInfo>>() {
+                WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая)
+                        .observe(lifecycleOwner, new Observer<List<WorkInfo>>() {
                     @Override
                     public void onChanged(List<WorkInfo> workInfos) {
-                        workInfos.forEach((СтастусWorkMangerДляФрагментаЧитатьИПисать) -> {
+                        workInfos.forEach((StatusWork) -> {
                             try {
-                                if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.SUCCEEDED) == 0)         {
-                                    Long CallBaskОтWorkManagerОдноразового =
-                                            СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getLong("ОтветПослеВыполения_MyWork_Async_Синхронизация_Одноразовая",
-                                                    0l);
+                                if(StatusWork.getState().compareTo(WorkInfo.State.SUCCEEDED) == 0)         {
+                                    Integer CallBaskОтWorkManager =
+                                            StatusWork.getOutputData().getInt("ReturnSingleAsyncWork", 0);
                                     long end = Calendar.getInstance().getTimeInMillis();
                                     long РазницаВоврмени=end-startДляОбноразвовной;
                                     if (РазницаВоврмени>5000) {
-                                        if (CallBaskОтWorkManagerОдноразового>0) {
+                                        if (CallBaskОтWorkManager>0) {
                                             onStart();
-                                            onResume();
+                                            методПерегрузкаДанные();
+                                            WorkManager.getInstance(getContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая) ;
+
                                             // TODO: 21.11.2022  запускаем удаление
                                         }
                                     }
                                 }
                                 progressBarСканирование.setVisibility(View.INVISIBLE);
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -409,22 +461,22 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая).observe(lifecycleOwnerОбщая, new Observer<List<WorkInfo>>() {
                     @Override
                     public void onChanged(List<WorkInfo> workInfos) {
-                        workInfos.forEach((СтастусWorkMangerДляФрагментаЧитатьИПисать) -> {
+                        workInfos.forEach((StatusWork) -> {
                             try {
-                                if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.RUNNING) != 0) {
-                                    long end = Calendar.getInstance().getTimeInMillis();
-                                    Integer CallBaskОтWorkManageОбщая =
-                                            СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnPublicAsyncWorkMananger", 0);
-                                    Long РелультатОбщеегоWorkMAnger =
-                                            СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getLong("WorkManangerVipolil", 0l);
-                                    long РазницаВоврмени=end-start;
-                                    if (РазницаВоврмени>6000) {
+                                if(StatusWork.getState().compareTo(WorkInfo.State.SUCCEEDED) == 0
+                                        || StatusWork.getState().compareTo(WorkInfo.State.ENQUEUED) == 0) {
+                                    Integer CallBaskОтWorkManager =
+                                            StatusWork.
+                                                    getOutputData().getInt("ReturnSingleAsyncWork", 0);
+                                    if (CallBaskОтWorkManager>0) {
                                         onStart();
-                                        onResume();
+                                        методПерегрузкаДанные();
                                     }
                                 }
-                                // WorkManager.getInstance(getContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая).getResult();
                                 progressBarСканирование.setVisibility(View.INVISIBLE);
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -781,7 +833,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
         // TODO: 28.04.2023
       void методФиналЗагрузкиGridView(@NonNull Integer Макет){
             try{
-                    SimpleCursorAdapter АдаптерЗаказыТарнпорта=
+                      АдаптерЗаказыТарнпорта=
                             new SimpleCursorAdapter(getContext(), Макет,
                                     cursorOrderTransport, new String[]{"_id","name"},
                                     new int[]{android.R.id.text1,android.R.id.text2},

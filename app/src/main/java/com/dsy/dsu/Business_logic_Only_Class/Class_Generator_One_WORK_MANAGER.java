@@ -60,7 +60,7 @@ public class Class_Generator_One_WORK_MANAGER extends  Class_GRUD_SQL_Operations
                                     TimeUnit.MILLISECONDS)
                             .build();//      .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
             WorkManager.getInstance(context).enqueueUniqueWork(ИмяСлужбыСинхронизацииОдноразовая,
-                    ExistingWorkPolicy.APPEND_OR_REPLACE, OneTimeWorkЗапускФОновойСинхрониазциииИзНУтриТабеля);
+                    ExistingWorkPolicy.KEEP, OneTimeWorkЗапускФОновойСинхрониазциииИзНУтриТабеля);
 //////////20.15
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

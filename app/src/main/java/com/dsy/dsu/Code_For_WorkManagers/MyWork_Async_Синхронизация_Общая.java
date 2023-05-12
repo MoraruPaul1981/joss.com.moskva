@@ -171,7 +171,10 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
                         + " РешениеЗапускатьWorkManagerИлиНетАктивтиКакое "+РешениеЗапускатьWorkManagerИлиНетАктивтиКакое  + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
             }
 
-            myDataОтветОбщейСлужбы = new Data.Builder().putInt("ReturnPublicAsyncWork", ФинальныйРезультатAsyncBackgroud).build();
+            myDataОтветОбщейСлужбы = new Data.Builder()
+                    .putInt("ReturnSingleAsyncWork", ФинальныйРезультатAsyncBackgroud)
+                    .build();
+
             if (serviceConnection!=null) {
                 getApplicationContext().unbindService(serviceConnection);
                 localBinderAsync=null;

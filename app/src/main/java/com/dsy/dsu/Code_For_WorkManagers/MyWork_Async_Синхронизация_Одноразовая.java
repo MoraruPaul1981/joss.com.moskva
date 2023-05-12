@@ -125,14 +125,14 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
         Integer     ФинальныйРезультатAsyncBackgroud = 0;
         Data   myDataОтветОдноразовойСлужбы=null;
         try{
-     class_generation_sendBroadcastReceiver_and_firebase_oneSignallass=
-             new Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal(context);
-     // TODO: 12.10.2022  КТО ЗАПУСТИЛ
+     class_generation_sendBroadcastReceiver_and_firebase_oneSignallass= new Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal(context);
+
       Integer ПубличныйID = getInputData().getInt("СообщениеЧатаДляКонктерногоСотрудника",0);
-      Boolean СтатусЗапускаОдноразованаяWorkManger= getInputData().getBoolean("StatusOneWokManagers",false);
-     Log.i(context.getClass().getName(), "ПубличныйID"+"\n" + ПубличныйID  + " СтатусЗапускаОдноразованаяWorkManger "+СтатусЗапускаОдноразованаяWorkManger);
-     if (ПубличныйID>0 && СтатусЗапускаОдноразованаяWorkManger==true) {
+
+     if (ПубличныйID>0 ) {
+
        Boolean РешениеЗапускатьWorkManagerИлиНетАктивтиКакое=   МетодОценкаЗапускатьWorkMangerИзАктивтитиИлиНет();
+
          if(РешениеЗапускатьWorkManagerИлиНетАктивтиКакое==true) {
 
           ФинальныйРезультатAsyncBackgroud= МетодЗапускаОднаразовая();
@@ -140,10 +140,12 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
          Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                  " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                  " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                 + " РешениеЗапускатьWorkManagerИлиНетАктивтиКакое "+РешениеЗапускатьWorkManagerИлиНетАктивтиКакое  + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
+                 + " РешениеЗапускатьWorkManagerИлиНетАктивтиКакое "+РешениеЗапускатьWorkManagerИлиНетАктивтиКакое
+                 + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
      }
-       myDataОтветОдноразовойСлужбы = new Data.Builder().putInt("ReturnSingleAsyncWork",
-                     ФинальныйРезультатAsyncBackgroud).build();
+       myDataОтветОдноразовойСлужбы = new Data.Builder()
+               .putInt("ReturnSingleAsyncWork", ФинальныйРезультатAsyncBackgroud)
+               .build();
      if (serviceConnection!=null) {
          context.unbindService(serviceConnection);
          localBinderAsync=null;
