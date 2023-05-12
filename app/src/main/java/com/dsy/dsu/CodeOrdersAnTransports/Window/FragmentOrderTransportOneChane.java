@@ -223,6 +223,9 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 // TODO: 04.05.2023 Получаем Данные что обработка данных закончена
                 subClassNewOrderTransport.    МетодДизайнПрограссБара();
             }
+
+            // TODO: 12.05.2023
+            subClassNewOrderTransport. МетодКпопкиЗначков(cursorOrderTransport);
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
