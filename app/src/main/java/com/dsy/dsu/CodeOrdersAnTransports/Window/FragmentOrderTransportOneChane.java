@@ -24,7 +24,6 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
@@ -36,7 +35,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -45,7 +43,6 @@ import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
@@ -74,7 +71,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
-import java.util.function.Consumer;
 
 
 // TODO: 29.09.2022 фрагмент для получение материалов
@@ -89,7 +85,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
-    private Fragment fragment_СозданиеНовогоМатериалов;
+    private Fragment fragmentNewЗаказТранспорта;
     private  TextView TextViewHadler;
     long start;
     long startДляОбноразвовной;
@@ -226,6 +222,11 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
             // TODO: 12.05.2023
             subClassNewOrderTransport. МетодКпопкиЗначков(cursorOrderTransport);
+            // TODO: 19.04.2023 слушаелти
+            // TODO: 18.04.2023 Слушаиель Клика
+            subClassNewOrderTransport.    методПоGridView( );
+            // TODO: 18.04.2023 Слушатель Удалание
+            subClassNewOrderTransport.    методУдалениеТабеля( );
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
@@ -254,9 +255,12 @@ public class FragmentOrderTransportOneChane extends Fragment {
             datasendMap.putIfAbsent("4"," view_ordertransport ");
             // TODO: 05.05.2023  ПОЛУЧАЕМ ДАННЫЕ
             cursorOrderTransport=       subClassNewOrderTransport.       методGetCursor( datasendMap);
+
+            // TODO: 12.05.2023 Adapter
             АдаптерЗаказыТарнпорта.changeCursor(cursorOrderTransport);
             АдаптерЗаказыТарнпорта.notifyDataSetChanged();
             gridViewOrderTransport.setAdapter(АдаптерЗаказыТарнпорта);
+            gridViewOrderTransport.smoothScrollToPosition(0);
             gridViewOrderTransport.refreshDrawableState();
             gridViewOrderTransport.requestLayout();
                     Log.d(this.getClass().getName(), "\n" + " class " +
@@ -441,6 +445,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                         if (CallBaskОтWorkManager>0) {
                                             onStart();
                                             методПерегрузкаДанные();
+                                            // TODO: 12.05.2023
+                                            subClassNewOrderTransport. МетодКпопкиЗначков(cursorOrderTransport);
                                             WorkManager.getInstance(getContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая) ;
 
                                             // TODO: 21.11.2022  запускаем удаление
@@ -476,6 +482,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                     if (CallBaskОтWorkManager>0) {
                                         onStart();
                                         методПерегрузкаДанные();
+                                        // TODO: 12.05.2023
+                                        subClassNewOrderTransport. МетодКпопкиЗначков(cursorOrderTransport);
                                     }
                                 }
                                 message.getTarget().postDelayed(()->{
@@ -658,12 +666,12 @@ public class FragmentOrderTransportOneChane extends Fragment {
             try{
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                //   fragment_СозданиеНовогоМатериалов = new FragmentMaretialNew();
-                Bundle data=new Bundle();
-                data.putBinder("binder",localBinderOrderTransport);
-                fragment_СозданиеНовогоМатериалов.setArguments(data);
-                fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragment_СозданиеНовогоМатериалов).commit();//.layout.activity_for_fragemtb_history_task
-                fragmentTransaction.show(fragment_СозданиеНовогоМатериалов);
+                fragmentNewЗаказТранспорта = new FragmentNewOrderTransport();
+                Bundle bundleNewOrderTransport=new Bundle();
+                bundleNewOrderTransport.putBinder("binder",localBinderOrderTransport);
+                fragmentNewЗаказТранспорта.setArguments(bundleNewOrderTransport);
+                fragmentTransaction.add(R.id.linear_main_ordertransport, fragmentNewЗаказТранспорта).commit();//.layout.activity_for_fragemtb_history_tasks
+                fragmentTransaction.show(fragmentNewЗаказТранспорта);
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -925,14 +933,9 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     АдаптерЗаказыТарнпорта.setViewBinder(binding);
                    АдаптерЗаказыТарнпорта.notifyDataSetChanged();
                     gridViewOrderTransport.setAdapter(АдаптерЗаказыТарнпорта);
+                    gridViewOrderTransport.smoothScrollToPosition(0);
                     gridViewOrderTransport.refreshDrawableState();
                     gridViewOrderTransport.requestLayout();
-                    // TODO: 19.04.2023 слушаелти
-                    // TODO: 18.04.2023 Слушаиель Клика
-                    методПоGridView( );
-                    // TODO: 18.04.2023 Слушатель Удалание
-                    методУдалениеТабеля( );
-
                     Log.d(getContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
                             " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1124,16 +1127,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                 view.findViewById(android.R.id.text1);
                         ImageView imageView  = (ImageView) linearLayoutЗаказыТранспорта.getChildAt(0);
                         MaterialTextView materialTextView  = (MaterialTextView) linearLayoutЗаказыТранспорта.getChildAt(1);
-                        materialTextView.setBackgroundColor(Color.GRAY);
-
-                     /*   message.getTarget().postDelayed(()->{
-                            Bundle bundleДЛяListTabels=(Bundle)           materialTextView.getTag();
-                            Long    MainParentUUID=      bundleДЛяListTabels.getLong("MainParentUUID");
-                            String    FullNameCFO=      bundleДЛяListTabels.getString("FullNameCFO");
-                            ///todo Удаление
-                            //МетодУдалениеТАбеляСообщениеПередЭтим(MainParentUUID, FullNameCFO,view);
-                        },200);*/
-
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -1206,6 +1199,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     АдаптерКогдаНетданных.setViewBinder(БиндингКогдаНетДАнных);
                     АдаптерКогдаНетданных.notifyDataSetChanged();
                     gridViewOrderTransport.setAdapter(АдаптерКогдаНетданных);
+                     gridViewOrderTransport.smoothScrollToPosition(0);
                     gridViewOrderTransport.refreshDrawableState();
                     gridViewOrderTransport.requestLayout();
                     // TODO: 19.04.2023 слушаелти
