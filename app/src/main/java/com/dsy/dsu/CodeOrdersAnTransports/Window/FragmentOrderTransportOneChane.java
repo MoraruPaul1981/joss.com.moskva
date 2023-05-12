@@ -920,18 +920,18 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 String      NameOrder= cursor.getString(cursor.getColumnIndex("name")).trim();
                 String DateOrder= cursor.getString(cursor.getColumnIndex("dateorders")).trim();
                 Integer IdOrder= cursor.getInt(cursor.getColumnIndex("_id"));
-                Integer NumberOrder= cursor.getInt(cursor.getColumnIndex("number_order"));
+                String NumberOrder= cursor.getString(cursor.getColumnIndex("number_order"));
                 Integer IDPublic= cursor.getInt(cursor.getColumnIndex("user_update"));
                 String CFO= cursor.getString(cursor.getColumnIndex("cfo")).trim();
                 Integer Status= cursor.getInt(cursor.getColumnIndex("status"));
-                String GosNomer= cursor.getString(cursor.getColumnIndex("gos_nomer"));
+                String GosNomer= cursor.getString(cursor.getColumnIndex("fullname")).trim();
                 // TODO: 18.04.2023 Данные Заказы Трансопрта
                 bundleOrderTransport.putLong("MainParentUUID", MainParentUUID);
                 bundleOrderTransport.putInt("Position", cursor.getPosition());
                 bundleOrderTransport.putString("NameOrder",NameOrder );
                 bundleOrderTransport.putString("DateOrder",  DateOrder);
                 bundleOrderTransport.putInt("IdOrder", IdOrder);
-                bundleOrderTransport.putInt("NumberOrder", NumberOrder);
+                bundleOrderTransport.putString("NumberOrder", NumberOrder);
                 bundleOrderTransport.putInt("IDPublic", IDPublic);
                 bundleOrderTransport.putString("CFO", CFO);
                 bundleOrderTransport.putInt("Status", Status);
