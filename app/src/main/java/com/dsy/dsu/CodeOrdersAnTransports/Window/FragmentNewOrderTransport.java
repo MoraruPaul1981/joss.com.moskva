@@ -578,6 +578,7 @@ public class FragmentNewOrderTransport extends Fragment {
                 fragmentBackListOrderTransport = new FragmentOrderTransportOneChane();
                 Bundle bundleNewOrderTransport=new Bundle();
                 bundleNewOrderTransport.putBinder("binder",localBinderNewOrderTransport);
+                bundleNewOrderTransport.putInt("isalive",2);
                 fragmentBackListOrderTransport.setArguments(bundleNewOrderTransport);
                 fragmentTransaction.replace(R.id.linear_main_ordertransport, fragmentBackListOrderTransport).setReorderingAllowed(true).commit();//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.show(fragmentBackListOrderTransport);
@@ -1026,9 +1027,20 @@ public class FragmentNewOrderTransport extends Fragment {
                         long end = Calendar.getInstance().getTimeInMillis();
                         long РазницаВоврмени=end-startДляОбноразвовной;
                         if (РазницаВоврмени>2000) {
-                                if(scrollX>2 || oldScrollX>2){
+                           Fragment fragmentisNeworderisAlive=       fragmentManager.getFragments().get(0);
+                     Bundle bundle=(Bundle)       fragmentisNeworderisAlive.getArguments();
+                         Integer ИндексТекущийФрагмент=   bundle.getInt("isalive")   ;
+                                Log.d(getContext().getClass().getName(), "\n"
+                                        + " время: " + new Date()+"\n+" +
+                                        " Класс в процессе... " +  getContext().getClass().getName()+"\n"+
+                                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                                        " scrollX " +scrollX + " oldScrollX " +oldScrollX);
+
+                            if(scrollX>2 || oldScrollX>2){
+                                if (ИндексТекущийФрагмент==1) {
                                     методBackOrdersTransport();
                                 }
+                            }
 
                         }
                         Log.d(getContext().getClass().getName(), "\n"

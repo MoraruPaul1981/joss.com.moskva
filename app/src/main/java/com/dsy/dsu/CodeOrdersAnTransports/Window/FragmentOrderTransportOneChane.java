@@ -708,6 +708,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 fragmentNewЗаказТранспорта = new FragmentNewOrderTransport();
                 Bundle bundleNewOrderTransport=new Bundle();
                 bundleNewOrderTransport.putBinder("binder",localBinderOrderTransport);
+                bundleNewOrderTransport.putInt("isalive",1);
                 fragmentNewЗаказТранспорта.setArguments(bundleNewOrderTransport);
                 fragmentTransaction.replace(R.id.linear_main_ordertransport, fragmentNewЗаказТранспорта).setReorderingAllowed(true).commit();//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.show(fragmentNewЗаказТранспорта);
