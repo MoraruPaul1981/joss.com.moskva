@@ -1124,20 +1124,18 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         LinearLayout linearLayoutЗаказыТранспорта= (LinearLayout)
                                 view.findViewById(android.R.id.text1);
 
-                        ImageView imageView  = (ImageView) linearLayoutЗаказыТранспорта.getChildAt(0);
-                        MaterialTextView materialTextView  = (MaterialTextView) linearLayoutЗаказыТранспорта.getChildAt(1);
+                        MaterialTextView materialTextView1  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue2);//ВИД ТС
+                        MaterialTextView materialTextView2  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue4);//ДАТА
+                        MaterialTextView materialTextView3  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue3);//ГОС.НОМЕР
+                        MaterialTextView materialTextView4  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue0);///номер заказа
+                        MaterialTextView materialTextView5  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue1);///ЦФО
+                        MaterialTextView materialTextView6  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue5);//СТАТУС
 
-
-                     /*   materialTextView.setBackgroundColor(Color.GRAY);
-                        message.getTarget().postDelayed(()->{
-                            // TODO: 09.04.2023  перехеод после клика Items
-                            МетодПереходMainActivity_List_Peoples(materialTextView);
-                        },100);*/
 
 /////TODO одинатрный клик для загрузки в этот табель всех сотрудников
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1158,8 +1156,14 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     try{
                         LinearLayout linearLayoutЗаказыТранспорта= (LinearLayout)
                                 view.findViewById(android.R.id.text1);
-                        ImageView imageView  = (ImageView) linearLayoutЗаказыТранспорта.getChildAt(0);
-                        MaterialTextView materialTextView  = (MaterialTextView) linearLayoutЗаказыТранспорта.getChildAt(1);
+
+                        MaterialTextView materialTextView1  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue2);//ВИД ТС
+                        MaterialTextView materialTextView2  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue4);//ДАТА
+                        MaterialTextView materialTextView3  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue3);//ГОС.НОМЕР
+                        MaterialTextView materialTextView4  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue0);///номер заказа
+                        MaterialTextView materialTextView5  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue1);///ЦФО
+                        MaterialTextView materialTextView6  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue5);//СТАТУС
+
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -1259,7 +1263,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         long end = Calendar.getInstance().getTimeInMillis();
                         long РазницаВоврмени=end-startДляОбноразвовной;
                         if (РазницаВоврмени>2000) {
-                            if (scrollX > 0 || oldScrollX > 0) {
+                            if (scrollX > 1 || oldScrollX > 1) {
                                 методNewOrderTransport();
                             }
                         }

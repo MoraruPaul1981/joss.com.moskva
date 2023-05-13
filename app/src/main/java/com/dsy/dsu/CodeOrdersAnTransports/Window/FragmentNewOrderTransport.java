@@ -186,8 +186,6 @@ public class FragmentNewOrderTransport extends Fragment {
             // TODO: 04.05.2023 Анимация
             subClassNewOrderTransport.методАнимацииGridView();
 
-
-
             subClassNewOrderTransport.МетодСлушательКурсора();
 
             subClassNewOrderTransport.  методScroollAttach();
@@ -422,6 +420,8 @@ public class FragmentNewOrderTransport extends Fragment {
 
 
         }
+
+        // TODO: 28.04.2023
         //TODO метод делает callback с ответом на экран
         private void методПерегрузкаЭкрана() {
             try {
@@ -1000,20 +1000,6 @@ public class FragmentNewOrderTransport extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     try{
-                        LinearLayout linearLayoutЗаказыТранспорта= (LinearLayout)
-                                view.findViewById(android.R.id.text1);
-
-                        ImageView imageView  = (ImageView) linearLayoutЗаказыТранспорта.getChildAt(0);
-                        MaterialTextView materialTextView  = (MaterialTextView) linearLayoutЗаказыТранспорта.getChildAt(1);
-
-
-                     /*   materialTextView.setBackgroundColor(Color.GRAY);
-                        message.getTarget().postDelayed(()->{
-                            // TODO: 09.04.2023  перехеод после клика Items
-                            МетодПереходMainActivity_List_Peoples(materialTextView);
-                        },100);*/
-
-/////TODO одинатрный клик для загрузки в этот табель всех сотрудников
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -1035,10 +1021,6 @@ public class FragmentNewOrderTransport extends Fragment {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                     try{
-                        LinearLayout linearLayoutЗаказыТранспорта= (LinearLayout)
-                                view.findViewById(android.R.id.text1);
-                        ImageView imageView  = (ImageView) linearLayoutЗаказыТранспорта.getChildAt(0);
-                        MaterialTextView materialTextView  = (MaterialTextView) linearLayoutЗаказыТранспорта.getChildAt(1);
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -1138,7 +1120,7 @@ public class FragmentNewOrderTransport extends Fragment {
                         long end = Calendar.getInstance().getTimeInMillis();
                         long РазницаВоврмени=end-startДляОбноразвовной;
                         if (РазницаВоврмени>2000) {
-                                if(scrollX>0 || oldScrollX>0){
+                                if(scrollX>1 || oldScrollX>1){
                                     методBackOrdersTransport();
                                 }
 
