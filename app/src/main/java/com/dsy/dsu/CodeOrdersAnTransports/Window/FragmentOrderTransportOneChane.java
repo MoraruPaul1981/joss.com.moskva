@@ -1256,11 +1256,19 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 horizontalScrollViewOrderTransport.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                     @Override
                     public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                        long end = Calendar.getInstance().getTimeInMillis();
+                        long РазницаВоврмени=end-startДляОбноразвовной;
+                        if (РазницаВоврмени>2000) {
+                            if( scrollX>0){
+                                методNewOrderTransport();
+                            }
+                        }
+
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date()+"\n+" +
                                 " Класс в процессе... " +  getContext().getClass().getName()+"\n"+
                                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                                 " scrollX " +scrollX + " oldScrollX " +oldScrollX);
+                                " scrollX " +scrollX + " oldScrollX " +oldScrollX);
                     }
                 });
             } catch (Exception e) {

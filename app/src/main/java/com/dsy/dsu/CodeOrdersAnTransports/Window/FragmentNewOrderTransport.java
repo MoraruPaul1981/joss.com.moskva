@@ -23,7 +23,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -377,7 +376,7 @@ public class FragmentNewOrderTransport extends Fragment {
                     public void onClick(View v) {
                         try {
                             МетодЗапускаАнимацииКнопок(v);
-                            message.getTarget().postDelayed(()->{ методNewOrderTransport();},500);
+                            message.getTarget().postDelayed(()->{ методBackOrdersTransport();},500);
                             Log.d(this.getClass().getName(), "  v  " + v);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -681,13 +680,16 @@ public class FragmentNewOrderTransport extends Fragment {
         // TODO: 28.04.2023
 
 
-        protected void методNewOrderTransport() {
+        protected void методBackOrdersTransport() {
             try{
                 fragmentManager.clearBackStack(null);
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                fragmentBackListOrderTransport = new FragmentNewOrderTransport();
+                fragmentBackListOrderTransport = new FragmentOrderTransportOneChane();
+                Bundle bundleNewOrderTransport=new Bundle();
+                bundleNewOrderTransport.putBinder("binder",localBinderNewOrderTransport);
+                fragmentBackListOrderTransport.setArguments(bundleNewOrderTransport);
                 fragmentTransaction.replace(R.id.linear_main_ordertransport, fragmentBackListOrderTransport).commit();//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.show(fragmentBackListOrderTransport);
                 linear_main_ordertransport.refreshDrawableState();
@@ -1241,6 +1243,14 @@ public class FragmentNewOrderTransport extends Fragment {
                 horizontalScrollViewOrderTransport.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                     @Override
                     public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                        long end = Calendar.getInstance().getTimeInMillis();
+                        long РазницаВоврмени=end-startДляОбноразвовной;
+                        if (РазницаВоврмени>2000) {
+                                if(scrollX>0){
+                                    методBackOrdersTransport();
+                                }
+
+                        }
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date()+"\n+" +
                                 " Класс в процессе... " +  getContext().getClass().getName()+"\n"+
