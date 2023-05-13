@@ -186,8 +186,7 @@ public class FragmentNewOrderTransport extends Fragment {
             // TODO: 04.05.2023 Анимация
             subClassNewOrderTransport.методАнимацииGridView();
 
-            // TODO: 12.05.2023 слушатель
-            //subClassNewOrderTransport.    методСлушателяWorkManager(lifecycleOwner,lifecycleOwnerОбщая);
+
 
             subClassNewOrderTransport.МетодСлушательКурсора();
 
@@ -423,113 +422,6 @@ public class FragmentNewOrderTransport extends Fragment {
 
 
         }
-        // TODO: 28.04.2023
-        // TODO: 18.10.2021  СИНХРОНИАЗЦИЯ ЧАТА ПО РАСПИСАНИЮ ЧАТ
-        @SuppressLint("FragmentLiveDataObserve")
-        void методСлушателяWorkManager(@NonNull  LifecycleOwner lifecycleOwner ,
-                                       @NonNull LifecycleOwner lifecycleOwnerОбщая )
-                throws ExecutionException, InterruptedException {
-// TODO: 11.05.2021 ЗПУСКАЕМ СЛУЖБУ через брдкастер синхронизхации и уведомления
-            try {
-                String ИмяСлужбыСинхронизациОдноразовая="WorkManager Synchronizasiy_Data Disposable";
-                String ИмяСлужбыСинхронизацииОбщая="WorkManager Synchronizasiy_Data";
-                lifecycleOwner.getLifecycle().addObserver(new LifecycleEventObserver() {
-                    @Override
-                    public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
-                        source.getLifecycle().getCurrentState();
-                        event.getTargetState().name();
-                    }
-                });
-                lifecycleOwnerОбщая.getLifecycle().addObserver(new LifecycleEventObserver() {
-                    @Override
-                    public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
-                        source.getLifecycle().getCurrentState();
-                        event.getTargetState().name();
-                    }
-                });
-
-                WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая)
-                        .observe(lifecycleOwner, new Observer<List<WorkInfo>>() {
-                    @Override
-                    public void onChanged(List<WorkInfo> workInfos) {
-                        workInfos.forEach((StatusWork) -> {
-                            try {
-                                if(StatusWork.getState().compareTo(WorkInfo.State.SUCCEEDED) == 0)         {
-                                    Integer CallBaskОтWorkManager =
-                                            StatusWork.getOutputData().getInt("ReturnSingleAsyncWork", 0);
-                                    long end = Calendar.getInstance().getTimeInMillis();
-                                    long РазницаВоврмени=end-startДляОбноразвовной;
-                                    if (РазницаВоврмени>5000) {
-                                        if (CallBaskОтWorkManager>0) {
-                                            onStart();
-                                            методПерегрузкаДанные();
-                                            // TODO: 12.05.2023
-                                            subClassNewOrderTransport. МетодКпопкиЗначков(cursorOrderTransport);
-                                            WorkManager.getInstance(getContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая) ;
-
-                                            // TODO: 21.11.2022  запускаем удаление
-                                        }
-                                    }
-                                }
-                                message.getTarget().postDelayed(()->{
-                                    progressBarСканирование.setVisibility(View.INVISIBLE);
-                                },1000);
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            }
-                        });
-                    }
-                });
-                WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая).observe(lifecycleOwnerОбщая, new Observer<List<WorkInfo>>() {
-                    @Override
-                    public void onChanged(List<WorkInfo> workInfos) {
-                        workInfos.forEach((StatusWork) -> {
-                            try {
-                                if(StatusWork.getState().compareTo(WorkInfo.State.SUCCEEDED) == 0
-                                        || StatusWork.getState().compareTo(WorkInfo.State.ENQUEUED) == 0) {
-                                    Integer CallBaskОтWorkManager =
-                                            StatusWork.
-                                                    getOutputData().getInt("ReturnSingleAsyncWork", 0);
-                                    if (CallBaskОтWorkManager>0) {
-                                        onStart();
-                                        методПерегрузкаДанные();
-                                        // TODO: 12.05.2023
-                                        subClassNewOrderTransport. МетодКпопкиЗначков(cursorOrderTransport);
-                                    }
-                                }
-                                message.getTarget().postDelayed(()->{
-                                    progressBarСканирование.setVisibility(View.INVISIBLE);
-                                },1000);
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            }
-                        });
-                    }
-                });
-                // TODO: 29.09.2021  конец синхрониазции по раписанию
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
-        // TODO: 28.04.2023
         //TODO метод делает callback с ответом на экран
         private void методПерегрузкаЭкрана() {
             try {

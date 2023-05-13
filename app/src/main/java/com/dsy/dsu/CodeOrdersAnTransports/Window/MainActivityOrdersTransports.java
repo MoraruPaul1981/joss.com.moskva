@@ -1,11 +1,13 @@
 package com.dsy.dsu.CodeOrdersAnTransports.Window;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -93,6 +95,7 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
             subClassStartingFragmentOrderTran=new SubClassStartingFragmentOrderTran();
             subClassStartingFragmentOrderTran.методЗапускаФрагментаОрдерТранспорта();
             subClassStartingFragmentOrderTran.методГоризонтальнаяПрокрутка();
+            subClassStartingFragmentOrderTran.  методСлушательCallsBackFragmentManagers();
             // TODO: 11.05.2023 Горизотнтальная Прокрутка
             Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date()+"\n+" +
@@ -145,6 +148,72 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
+
+        private void методСлушательCallsBackFragmentManagers() {
+        try{
+            fragmentManager.registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
+                @Override
+                public void onFragmentPreAttached(@NonNull FragmentManager fm, @NonNull Fragment f, @NonNull Context context) {
+                    super.onFragmentPreAttached(fm, f, context);
+                    Log.d(getApplicationContext().getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                            + "   fragment_СозданиеЗаказаТранспорта " + fragment_СозданиеЗаказаТранспорта);
+                }
+
+                @Override
+                public void onFragmentStopped(@NonNull FragmentManager fm, @NonNull Fragment f) {
+                    super.onFragmentStopped(fm, f);
+                    Log.d(getApplicationContext().getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                            + "   fragment_СозданиеЗаказаТранспорта " + fragment_СозданиеЗаказаТранспорта);
+                }
+
+                @Override
+                public void onFragmentViewDestroyed(@NonNull FragmentManager fm, @NonNull Fragment f) {
+                    super.onFragmentViewDestroyed(fm, f);
+                    Log.d(getApplicationContext().getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                            + "   fragment_СозданиеЗаказаТранспорта " + fragment_СозданиеЗаказаТранспорта);
+                }
+
+                @Override
+                public void onFragmentDestroyed(@NonNull FragmentManager fm, @NonNull Fragment f) {
+                    super.onFragmentDestroyed(fm, f);
+                    Log.d(getApplicationContext().getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                            + "   fragment_СозданиеЗаказаТранспорта " + fragment_СозданиеЗаказаТранспорта);
+                }
+
+                @Override
+                public void onFragmentDetached(@NonNull FragmentManager fm, @NonNull Fragment f) {
+                    super.onFragmentDetached(fm, f);
+                    Log.d(getApplicationContext().getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                            + "   fragment_СозданиеЗаказаТранспорта " + fragment_СозданиеЗаказаТранспорта);
+                }
+            },true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
+                    + Thread.currentThread().getStackTrace()[2].getMethodName().toString() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getApplicationContext()).
+                    МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName().toString(),
+                            Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        }
 
         private void методГоризонтальнаяПрокрутка() {
             try {
