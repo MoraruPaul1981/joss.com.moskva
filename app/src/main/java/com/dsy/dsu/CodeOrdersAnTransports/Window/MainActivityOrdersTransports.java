@@ -48,6 +48,8 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
     private ProgressBar progressBarСканирование;
 
     private HorizontalScrollView horizontalScrollViewOrderTransport;
+
+    private   SubClassStartingFragmentOrderTran subClassStartingFragmentOrderTran;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +66,6 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
                     | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                     | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-            fragmentManager = getSupportFragmentManager();
             linear_main_ordertransport =  (LinearLayout) findViewById(R.id.linear_main_ordertransport);
             ViewGroup.LayoutParams params = linear_main_ordertransport.getLayoutParams();
             params.height= ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -80,17 +81,18 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
             progressBarСканирование=  (ProgressBar) findViewById(R.id.ProgressBar);
             progressBarСканирование.setVisibility(View.VISIBLE);
 
-      /*      horizontalScrollViewOrderTransport= (HorizontalScrollView)  findViewById(R.id.horizontalScrollViewOrderTransport);
+            horizontalScrollViewOrderTransport= (HorizontalScrollView)  findViewById(R.id.horizontalScrollViewOrderTransport);
             horizontalScrollViewOrderTransport.setFillViewport(true);
-            horizontalScrollViewOrderTransport.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+            horizontalScrollViewOrderTransport.fullScroll(HorizontalScrollView.FOCUS_FORWARD);
             horizontalScrollViewOrderTransport.setLeftEdgeEffectColor(Color.parseColor("#CB2377"));
             horizontalScrollViewOrderTransport.setRightEdgeEffectColor(Color.parseColor("#688DC4"));
-            horizontalScrollViewOrderTransport.setSmoothScrollingEnabled(false);*/
+            horizontalScrollViewOrderTransport.setSmoothScrollingEnabled(false);
 
             // ani = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row);
             // TODO: 26.04.2023 Запускаем Ордер Транпорта
-            SubClassStartingFragmentOrderTran subClassStartingFragmentOrderTran=new SubClassStartingFragmentOrderTran();
+            subClassStartingFragmentOrderTran=new SubClassStartingFragmentOrderTran();
             subClassStartingFragmentOrderTran.методЗапускаФрагментаОрдерТранспорта();
+            subClassStartingFragmentOrderTran.методГоризонтальнаяПрокрутка();
             // TODO: 11.05.2023 Горизотнтальная Прокрутка
             Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date()+"\n+" +
@@ -120,6 +122,7 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
     protected void методЗапускаФрагментаОрдерТранспорта() {
         try{
             fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentManager.clearBackStack(null);
             fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             fragment_СозданиеЗаказаТранспорта = new FragmentOrderTransportOneChane();
             fragmentTransaction.addToBackStack(null);
@@ -143,15 +146,44 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
         }
     }
 
+        private void методГоризонтальнаяПрокрутка() {
+            try {
+                ViewTreeObserver viewTreeObserver = horizontalScrollViewOrderTransport.getViewTreeObserver();
+                if (viewTreeObserver.isAlive()) {
+                    viewTreeObserver
+                            .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                                @Override
+                                public void onGlobalLayout() {
+                                    // interestedInView is ready for size and position
+                                    // queries because it has been laid out
+                                    horizontalScrollViewOrderTransport
+                                            .fullScroll(   HorizontalScrollView.FOCUS_FORWARD);
+                                    Log.d(getApplicationContext().getClass().getName(), "\n"
+                                            + " время: " + new Date()+"\n+" +
+                                            " Класс в процессе... " +  getApplicationContext().getClass().getName()+"\n"+
+                                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                                }
+                            });
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                // TODO: 01.09.2021 метод вызова
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
 
 
+        private void МетодДизайнПрограссБара() {
+            progressBarСканирование.postDelayed(()->{
+                progressBarСканирование.setVisibility(View.INVISIBLE);
+                progressBarСканирование.setIndeterminate(true);
+            },1000);
+        }
 }
 
 
-    private void МетодДизайнПрограссБара() {
-        progressBarСканирование.postDelayed(()->{
-            progressBarСканирование.setVisibility(View.INVISIBLE);
-            progressBarСканирование.setIndeterminate(true);
-        },1000);
-    }
+
 }
