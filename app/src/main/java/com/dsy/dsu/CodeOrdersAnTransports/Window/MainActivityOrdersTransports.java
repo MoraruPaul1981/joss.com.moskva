@@ -84,8 +84,6 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
             progressBarСканирование.setVisibility(View.VISIBLE);
 
             horizontalScrollViewOrderTransport= (HorizontalScrollView)  findViewById(R.id.horizontalScrollViewOrderTransport);
-            horizontalScrollViewOrderTransport.setFillViewport(true);
-            horizontalScrollViewOrderTransport.fullScroll(HorizontalScrollView.FOCUS_FORWARD);
             horizontalScrollViewOrderTransport.setLeftEdgeEffectColor(Color.parseColor("#CB2377"));
             horizontalScrollViewOrderTransport.setRightEdgeEffectColor(Color.parseColor("#688DC4"));
             horizontalScrollViewOrderTransport.setSmoothScrollingEnabled(false);
@@ -129,7 +127,9 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
             fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             fragment_СозданиеЗаказаТранспорта = new FragmentOrderTransportOneChane();
             fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.add(R.id.linear_main_ordertransport, fragment_СозданиеЗаказаТранспорта).commit();//.layout.activity_for_fragemtb_history_tasks
+            fragmentTransaction.add(R.id.linear_main_ordertransport, fragment_СозданиеЗаказаТранспорта)
+                    .setPrimaryNavigationFragment(fragment_СозданиеЗаказаТранспорта)
+                    .setReorderingAllowed(true).commit();//.layout.activity_for_fragemtb_history_tasks
             fragmentTransaction.show(fragment_СозданиеЗаказаТранспорта);
             Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
@@ -226,7 +226,8 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
                                     // interestedInView is ready for size and position
                                     // queries because it has been laid out
                                     horizontalScrollViewOrderTransport
-                                            .fullScroll(   HorizontalScrollView.FOCUS_FORWARD);
+                                            .scrollTo(50,50);
+                                    // TODO: 13.05.2023
                                     Log.d(getApplicationContext().getClass().getName(), "\n"
                                             + " время: " + new Date()+"\n+" +
                                             " Класс в процессе... " +  getApplicationContext().getClass().getName()+"\n"+

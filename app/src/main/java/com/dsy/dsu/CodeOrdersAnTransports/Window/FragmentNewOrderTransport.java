@@ -55,6 +55,7 @@ import com.dsy.dsu.CodeOrdersAnTransports.Background.ServiceOrserTransportServic
 import com.dsy.dsu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.text.ParseException;
@@ -102,6 +103,7 @@ public class FragmentNewOrderTransport extends Fragment {
 
     private  ServiceOrserTransportService.  LocalBinderOrderTransport localBinderNewOrderTransport;
     private HorizontalScrollView horizontalScrollViewOrderTransport;
+    private    MaterialTextView       textViewHadler;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -109,7 +111,6 @@ public class FragmentNewOrderTransport extends Fragment {
             super.onCreate(savedInstanceState);
             // TODO: 27.04.2023  Запускаем Заказ Транпорта
             subClassNewOrderTransport    =new SubClassNewOrderTransport(getActivity());
-            subClassNewOrderTransport.   МетодБиндингOrderTransport();
             lifecycleOwner =this;
             lifecycleOwnerОбщая=this;
             // TODO: 04.05.2023
@@ -156,6 +157,9 @@ public class FragmentNewOrderTransport extends Fragment {
             animationvibr1 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_singletable2);//
 
             horizontalScrollViewOrderTransport= (HorizontalScrollView) container. findViewById(R.id.horizontalScrollViewOrderTransport);
+
+            textViewHadler=(MaterialTextView)  container.findViewById(R.id.TextViewHadler);
+            textViewHadler.setHint("Новый заказ");
 
             // TODO: 11.05.2023 горизонтальеный Сколлл
             Log.d(getContext().getClass().getName(), "\n"
@@ -575,7 +579,7 @@ public class FragmentNewOrderTransport extends Fragment {
                 Bundle bundleNewOrderTransport=new Bundle();
                 bundleNewOrderTransport.putBinder("binder",localBinderNewOrderTransport);
                 fragmentBackListOrderTransport.setArguments(bundleNewOrderTransport);
-                fragmentTransaction.replace(R.id.linear_main_ordertransport, fragmentBackListOrderTransport).commit();//.layout.activity_for_fragemtb_history_tasks
+                fragmentTransaction.replace(R.id.linear_main_ordertransport, fragmentBackListOrderTransport).setReorderingAllowed(true).commit();//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.show(fragmentBackListOrderTransport);
                 linear_main_ordertransport.refreshDrawableState();
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -658,98 +662,7 @@ public class FragmentNewOrderTransport extends Fragment {
                 progressBarСканирование.setIndeterminate(true);
             },250);
         }
-        // TODO: 28.04.2023
-        public void МетодБиндингOrderTransport() {
-            try {
-                Intent intentЗапускOrserTransportService = new Intent(getContext(), ServiceOrserTransportService.class);
-                intentЗапускOrserTransportService.setAction("intentЗапускOrserTransportService");
-                serviceConnection=     new ServiceConnection() {
-                    @Override
-                    public void onServiceConnected(ComponentName name, IBinder service) {
-                        try {
-                            if (service.isBinderAlive()) {
-                                localBinderNewOrderTransport = (ServiceOrserTransportService.  LocalBinderOrderTransport) service;
 
-                            // TODO: 04.05.2023  получаем первоночальыне Данные  #1
-                                HashMap<String,String> datasendMap=new HashMap();
-                                datasendMap.putIfAbsent("1","  SELECT  *  FROM  view_ordertransport  ");
-                                datasendMap.putIfAbsent("2"," WHERE name  IS NOT NULL  AND _id >?  ORDER BY _id ");
-                                datasendMap.putIfAbsent("3"," 0 ");
-                                datasendMap.putIfAbsent("4"," view_ordertransport ");
-                                // TODO: 05.05.2023  ПОЛУЧАЕМ ДАННЫЕ
-                              //  cursorOrderTransport=              методGetCursor( datasendMap);
-                                // TODO: 04.05.2023  перегружаем экран
-
-                                onStart();
-                                
-                                Log.d(getContext().getClass().getName(), "\n"
-                                        + " время: " + new Date() + "\n+" +
-                                        " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                        + "   service.isBinderAlive()" + service.isBinderAlive()+
-                                        " localBinderNewOrderTransport " +localBinderNewOrderTransport
-                                        + " cursorOrderTransport " +cursorOrderTransport
-                                        + "   service.isBinderAlive()" + service.isBinderAlive());
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
-                                    Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    }
-
-                    @Override
-                    public void onServiceDisconnected(ComponentName name) {
-                        try {
-                            localBinderNewOrderTransport = null;
-                            Log.d(getContext().getClass().getName(), "\n"
-                                    + " время: " + new Date() + "\n+" +
-                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
-                                    Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                    Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            // TODO: 11.05.2021 запись ошибок
-
-                        }
-                    }
-                };
-                Boolean   isBound =    getContext(). bindService(intentЗапускOrserTransportService, serviceConnection , Context.BIND_AUTO_CREATE);
-                getContext().registerComponentCallbacks(new ComponentCallbacks() {
-                    @Override
-                    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-                        Log.d(getContext().getClass().getName(), "\n"
-                                + " время: " + new Date() + "\n+" +
-                                " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-                    }
-
-                    @Override
-                    public void onLowMemory() {
-                        Log.d(getContext().getClass().getName(), "\n"
-                                + " время: " + new Date() + "\n+" +
-                                " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                        this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
         // TODO: 28.04.2023
       void методФиналЗагрузкиGridView(@NonNull Integer Макет){
             try{
@@ -764,7 +677,7 @@ public class FragmentNewOrderTransport extends Fragment {
                             try{
                                 switch (view.getId()) {
                                     case android.R.id.text1:
-                                        LinearLayout linearLayoutЗаказыТранспорта= (LinearLayout)
+                                        MaterialCardView linearLayoutЗаказыТранспорта= (MaterialCardView)
                                                 view.findViewById(android.R.id.text1);
 
                                         // TODO: 12.05.2023  Получаем Данные

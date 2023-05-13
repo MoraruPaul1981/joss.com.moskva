@@ -57,6 +57,7 @@ import com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_App;
 import com.dsy.dsu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 
 
@@ -105,6 +106,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
     private   SimpleCursorAdapter АдаптерЗаказыТарнпорта;
 
     private HorizontalScrollView horizontalScrollViewOrderTransport;
+
+    private    MaterialTextView       textViewHadler;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         try{
@@ -157,6 +160,10 @@ public class FragmentOrderTransportOneChane extends Fragment {
             animationvibr1 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_singletable2);//
 
             horizontalScrollViewOrderTransport= (HorizontalScrollView) container. findViewById(R.id.horizontalScrollViewOrderTransport);
+
+            textViewHadler=(MaterialTextView)  container.findViewById(R.id.TextViewHadler);
+            textViewHadler.setHint("Заказы Транспорта");
+
             // TODO: 11.05.2023 горизонтальеный Сколлл
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
@@ -191,7 +198,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
             subClassOrdersTransport.МетодСлушательКурсора();
 
-            subClassOrdersTransport.  методScroollAttach();
 
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
@@ -703,7 +709,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 Bundle bundleNewOrderTransport=new Bundle();
                 bundleNewOrderTransport.putBinder("binder",localBinderOrderTransport);
                 fragmentNewЗаказТранспорта.setArguments(bundleNewOrderTransport);
-                fragmentTransaction.replace(R.id.linear_main_ordertransport, fragmentNewЗаказТранспорта).commit();//.layout.activity_for_fragemtb_history_tasks
+                fragmentTransaction.replace(R.id.linear_main_ordertransport, fragmentNewЗаказТранспорта).setReorderingAllowed(true).commit();//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.show(fragmentNewЗаказТранспорта);
                 linear_main_ordertransport.refreshDrawableState();
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -892,7 +898,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                             try{
                                 switch (view.getId()) {
                                     case android.R.id.text1:
-                                        LinearLayout linearLayoutЗаказыТранспорта= (LinearLayout)
+                                        MaterialCardView linearLayoutЗаказыТранспорта= (MaterialCardView)
                                                 view.findViewById(android.R.id.text1);
 
                                         // TODO: 12.05.2023  Получаем Данные
@@ -1121,7 +1127,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     try{
-                        LinearLayout linearLayoutЗаказыТранспорта= (LinearLayout)
+                        MaterialCardView linearLayoutЗаказыТранспорта= (MaterialCardView)
                                 view.findViewById(android.R.id.text1);
 
                         MaterialTextView materialTextView1  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue2);//ВИД ТС
@@ -1154,7 +1160,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                     try{
-                        LinearLayout linearLayoutЗаказыТранспорта= (LinearLayout)
+                        MaterialCardView linearLayoutЗаказыТранспорта= (MaterialCardView)
                                 view.findViewById(android.R.id.text1);
 
                         MaterialTextView materialTextView1  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue2);//ВИД ТС
@@ -1255,34 +1261,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
         }
 
-        private void методScroollAttach() {
-            try {
-                horizontalScrollViewOrderTransport.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                    @Override
-                    public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                        long end = Calendar.getInstance().getTimeInMillis();
-                        long РазницаВоврмени=end-startДляОбноразвовной;
-                        if (РазницаВоврмени>2000) {
-                            if (scrollX > 2 || oldScrollX > 2) {
-                                методNewOrderTransport();
-                            }
-                        }
-                        Log.d(getContext().getClass().getName(), "\n"
-                                + " время: " + new Date()+"\n+" +
-                                " Класс в процессе... " +  getContext().getClass().getName()+"\n"+
-                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                                " scrollX " +scrollX + " oldScrollX " +oldScrollX);
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                // TODO: 01.09.2021 метод вызова
-                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
+
 // TODO: 28.04.2023  КОНЕЦ SubClassNewOrderTranport           //// TODO: 28.04.2023  КОНЕЦ SubClassNewOrderTranport   //// TODO: 28.04.2023  КОНЕЦ SubClassNewOrderTranport
 
 
