@@ -2389,11 +2389,10 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                                         recyclerView.scrollToPosition(0);
                                                     }
                                                 }else {
-                                                    Toast aa = Toast.makeText(context, "OPEN", Toast.LENGTH_LONG);
-                                                    ImageView cc = new ImageView( context);
-                                                    cc.setImageResource(R.drawable.icon_dsu1_add_organisazio_error);//icon_dsu1_synchronisazia_dsu1_success
-                                                    aa.setView(cc);
-                                                    aa.show();
+                                                    ((EditText) v).setBackgroundColor(Color.RED);
+                                                    message.getTarget().postDelayed(() -> {
+                                                        ((EditText) v).setBackgroundColor(Color.WHITE);
+                                                    }, 500);
                                                 }
                                                 // TODO: 10.05.2023 clear
                                                 v.clearFocus();

@@ -61,7 +61,7 @@ public class SubClassUpdatesCELL {
                         ImageView cc = new ImageView( context);
                         cc.setImageResource(R.drawable.icon_dsu1_add_organisazio_error);//icon_dsu1_synchronisazia_dsu1_success
                         aa.setView(cc);
-                        aa.show();
+                      //  aa.show();
                     }else {
                         editTextЯчейкаОбновление.setText(ЗначениеИзЯчейки.toString());
                         Bundle bundleперезаписьЯчейки= (Bundle)  editTextЯчейкаОбновление.getTag();
