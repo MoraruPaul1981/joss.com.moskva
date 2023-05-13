@@ -217,7 +217,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
         try{
             if( cursorOrderTransport==null) {
                 subClassOrdersTransport.методПредварительнаяЗагрузкаGridView(R.layout.list_item_progressing_ordertransport,
-                        "Загрузка...", R.drawable.icon_dsu1_ordertransport_down);
+                        "Заказы...", R.drawable.icon_dsu1_ordertransport_down);
             }else {
                 if( cursorOrderTransport.getCount()>0) {
                     subClassOrdersTransport.методФиналЗагрузкиGridView(R.layout.fragment_ordertransport1);
@@ -1263,7 +1263,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         long end = Calendar.getInstance().getTimeInMillis();
                         long РазницаВоврмени=end-startДляОбноразвовной;
                         if (РазницаВоврмени>2000) {
-                            if (scrollX > 1 || oldScrollX > 1) {
+                            if (scrollX > 2 || oldScrollX > 2) {
                                 методNewOrderTransport();
                             }
                         }

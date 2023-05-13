@@ -213,14 +213,14 @@ public class FragmentNewOrderTransport extends Fragment {
         super.onStart();
         try{
             if( cursorOrderTransport==null) {
-                subClassNewOrderTransport.методПредварительнаяЗагрузкаGridView(R.layout.list_item_progressing_ordertransport,
-                        "Загрузка...", R.drawable.icon_dsu1_ordertransport_down);
+                subClassNewOrderTransport.методПредварительнаяЗагрузкаGridView(R.layout.list_item_progressing_newordertransport,
+                        "Справочники...", R.drawable.icon_dsu1_ordertransport_down);
             }else {
                 if( cursorOrderTransport.getCount()>0) {
                     subClassNewOrderTransport.методФиналЗагрузкиGridView(R.layout.fragment_ordertransport1);
                 }else{
-                    subClassNewOrderTransport.методПредварительнаяЗагрузкаGridView( R.layout.list_item_isnull_ordertransport,
-                            "Нет заказов !!!", R.drawable.icon_rdertransport2);
+                    subClassNewOrderTransport.методПредварительнаяЗагрузкаGridView( R.layout.list_item_isnull_newordertransport,
+                            "Нет справочников !!!", R.drawable.icon_rdertransport2);
                 }
                 // TODO: 04.05.2023 Получаем Данные что обработка данных закончена
                 subClassNewOrderTransport.    МетодДизайнПрограссБара();
@@ -343,14 +343,7 @@ public class FragmentNewOrderTransport extends Fragment {
                     @Override
                     public void onClick(View v) {
                         try {
-                            fragmentManager.clearBackStack(null);
-                            fragmentTransaction = fragmentManager.beginTransaction();
-                            fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                            fragmentBackListOrderTransport = new FragmentOrderTransportOneChane();
-                            fragmentTransaction.addToBackStack(null);//.layout.activity_for_fragemtb_history_tasks
-                            fragmentTransaction.replace(R.id.linear_main_ordertransport, fragmentBackListOrderTransport).commit();//.layout.activity_for_fragemtb_history_tasks
-                            fragmentTransaction.show(fragmentBackListOrderTransport);
-                            linear_main_ordertransport.refreshDrawableState();
+                            методBackOrdersTransport();
                             Log.d(this.getClass().getName(), "\n" + " class " +
                                     Thread.currentThread().getStackTrace()[2].getClassName()
                                     + "\n" +
@@ -1120,7 +1113,7 @@ public class FragmentNewOrderTransport extends Fragment {
                         long end = Calendar.getInstance().getTimeInMillis();
                         long РазницаВоврмени=end-startДляОбноразвовной;
                         if (РазницаВоврмени>2000) {
-                                if(scrollX>1 || oldScrollX>1){
+                                if(scrollX>2 || oldScrollX>2){
                                     методBackOrdersTransport();
                                 }
 
