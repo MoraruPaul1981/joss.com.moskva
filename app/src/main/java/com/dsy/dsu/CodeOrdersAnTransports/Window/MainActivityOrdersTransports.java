@@ -80,21 +80,18 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
             progressBarСканирование=  (ProgressBar) findViewById(R.id.ProgressBar);
             progressBarСканирование.setVisibility(View.VISIBLE);
 
-
-            horizontalScrollViewOrderTransport= findViewById(R.id.horizontalScrollViewOrderTransport);
+      /*      horizontalScrollViewOrderTransport= (HorizontalScrollView)  findViewById(R.id.horizontalScrollViewOrderTransport);
             horizontalScrollViewOrderTransport.setFillViewport(true);
             horizontalScrollViewOrderTransport.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
             horizontalScrollViewOrderTransport.setLeftEdgeEffectColor(Color.parseColor("#CB2377"));
             horizontalScrollViewOrderTransport.setRightEdgeEffectColor(Color.parseColor("#688DC4"));
-            horizontalScrollViewOrderTransport.setSmoothScrollingEnabled(true);
+            horizontalScrollViewOrderTransport.setSmoothScrollingEnabled(false);*/
 
             // ani = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row);
             // TODO: 26.04.2023 Запускаем Ордер Транпорта
             SubClassStartingFragmentOrderTran subClassStartingFragmentOrderTran=new SubClassStartingFragmentOrderTran();
             subClassStartingFragmentOrderTran.методЗапускаФрагментаОрдерТранспорта();
             // TODO: 11.05.2023 Горизотнтальная Прокрутка
-            методГоризонтальнаяПрокрутка();
-            методScroolViewListers();
             Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date()+"\n+" +
                     " Класс в процессе... " +  getApplicationContext().getClass().getName()+"\n"+
@@ -109,58 +106,9 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
     }
     }
 
-    private void методГоризонтальнаяПрокрутка() {
-        try {
-        ViewTreeObserver viewTreeObserver = horizontalScrollViewOrderTransport.getViewTreeObserver();
-        if (viewTreeObserver.isAlive()) {
-            viewTreeObserver
-                    .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                        @Override
-                        public void onGlobalLayout() {
-                            // interestedInView is ready for size and position
-                            // queries because it has been laid out
-                            horizontalScrollViewOrderTransport
-                                    .fullScroll(HorizontalScrollView.FOCUS_RIGHT);
-                            Log.d(getApplicationContext().getClass().getName(), "\n"
-                                    + " время: " + new Date()+"\n+" +
-                                    " Класс в процессе... " +  getApplicationContext().getClass().getName()+"\n"+
-                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-                        }
-                    });
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        // TODO: 01.09.2021 метод вызова
-        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-    }
-    }
 
-    void методScroolViewListers(){
-        try{
-        horizontalScrollViewOrderTransport.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-            }
-        });
-            Log.d(getApplicationContext().getClass().getName(), "\n"
-                    + " время: " + new Date() + "\n+" +
-                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() );
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        // TODO: 01.09.2021 метод вызова
-        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-    }
-    }
+
+
 
 
     // TODO: 26.04.2023  класс для запуска
@@ -174,6 +122,7 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             fragment_СозданиеЗаказаТранспорта = new FragmentOrderTransportOneChane();
+            fragmentTransaction.addToBackStack(null);
             fragmentTransaction.add(R.id.linear_main_ordertransport, fragment_СозданиеЗаказаТранспорта).commit();//.layout.activity_for_fragemtb_history_tasks
             fragmentTransaction.show(fragment_СозданиеЗаказаТранспорта);
             Log.d(getApplicationContext().getClass().getName(), "\n"
