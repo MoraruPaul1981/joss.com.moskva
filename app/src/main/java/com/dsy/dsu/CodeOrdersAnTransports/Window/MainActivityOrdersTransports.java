@@ -122,8 +122,8 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
 
     protected void методЗапускаФрагментаОрдерТранспорта() {
         try{
-            fragmentTransaction = fragmentManager.beginTransaction();
             fragmentManager.clearBackStack(null);
+            fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             fragment_СозданиеЗаказаТранспорта = new FragmentOrderTransportOneChane();
             fragmentTransaction.addToBackStack(null);

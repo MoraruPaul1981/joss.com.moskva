@@ -136,7 +136,7 @@ public class FragmentNewOrderTransport extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View    view=null;
         try {
-            view= inflater.inflate(R.layout.activity_main_orders_transports, container, false);
+            view= inflater.inflate(R.layout.fragment_ordertransport2, container, false);
           // view= inflater.inflate(R.layout.list_item_progressing_ordertransport, container, false);
            /// view= inflater.inflate(R.layout.list_item_progressing_ordertransport, container, false);
             linear_main_ordertransport=(LinearLayout)  container.findViewById(R.id.linear_main_ordertransport);
