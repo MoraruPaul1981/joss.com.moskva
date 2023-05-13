@@ -1246,7 +1246,7 @@ public class FragmentNewOrderTransport extends Fragment {
                         long end = Calendar.getInstance().getTimeInMillis();
                         long РазницаВоврмени=end-startДляОбноразвовной;
                         if (РазницаВоврмени>2000) {
-                                if(scrollX>0){
+                                if(scrollX>0 || oldScrollX>0){
                                     методBackOrdersTransport();
                                 }
 

@@ -1259,11 +1259,10 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         long end = Calendar.getInstance().getTimeInMillis();
                         long РазницаВоврмени=end-startДляОбноразвовной;
                         if (РазницаВоврмени>2000) {
-                            if( scrollX>0){
+                            if (scrollX > 0 || oldScrollX > 0) {
                                 методNewOrderTransport();
                             }
                         }
-
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date()+"\n+" +
                                 " Класс в процессе... " +  getContext().getClass().getName()+"\n"+
