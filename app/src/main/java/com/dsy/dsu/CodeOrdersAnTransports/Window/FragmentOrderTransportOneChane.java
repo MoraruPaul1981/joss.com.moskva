@@ -293,7 +293,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
             АдаптерЗаказыТарнпорта.changeCursor(cursorOrderTransport);
             АдаптерЗаказыТарнпорта.notifyDataSetChanged();
             gridViewOrderTransport.setAdapter(АдаптерЗаказыТарнпорта);
-            gridViewOrderTransport.smoothScrollToPosition(0);
+            //gridViewOrderTransport.setSelection(0);
+            gridViewOrderTransport.smoothScrollByOffset(0);
             gridViewOrderTransport.refreshDrawableState();
             gridViewOrderTransport.requestLayout();
                     Log.d(this.getClass().getName(), "\n" + " class " +
@@ -1006,7 +1007,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     АдаптерЗаказыТарнпорта.setViewBinder(binding);
                    АдаптерЗаказыТарнпорта.notifyDataSetChanged();
                     gridViewOrderTransport.setAdapter(АдаптерЗаказыТарнпорта);
-                    gridViewOrderTransport.smoothScrollToPosition(0);
+                    gridViewOrderTransport.setSelection(0);
                     gridViewOrderTransport.refreshDrawableState();
                     gridViewOrderTransport.requestLayout();
                     Log.d(getContext().getClass().getName(), "\n"
@@ -1276,7 +1277,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     АдаптерКогдаНетданных.setViewBinder(БиндингКогдаНетДАнных);
                     АдаптерКогдаНетданных.notifyDataSetChanged();
                     gridViewOrderTransport.setAdapter(АдаптерКогдаНетданных);
-                     gridViewOrderTransport.smoothScrollToPosition(0);
+                     gridViewOrderTransport.setSelection(0);
                     gridViewOrderTransport.refreshDrawableState();
                     gridViewOrderTransport.requestLayout();
                     // TODO: 19.04.2023 слушаелти

@@ -5,12 +5,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="550dp"
     app:layout_gravity="center"
     app:cardCornerRadius="5dp"
     app:cardElevation="10dp"
     app:cardMaxElevation="100dp"
     app:strokeWidth="0dp"
+    android:padding="2dp"
     android:translationZ="150dp"
     android:animateLayoutChanges="true"
     app:cardBackgroundColor="#D5D0D8"
@@ -29,21 +30,17 @@
         android:orientation="vertical">
 <!--todo новый код созданиеновой задачи-->
 
-
-
-
-
-
+            
         <!--   todo сами элементы начало -->
         <!-- todo#1-->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textviewnamecfo"
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:layout_marginStart="80dp"
-            android:layout_marginEnd="80dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginStart="120dp"
+            android:layout_marginEnd="120dp"
+            android:layout_marginTop="10dp"
+           android:layout_marginBottom="5dp"
             android:background="@drawable/style_for_assitiionmatrial_create_name"
             android:gravity="center_vertical|center_horizontal"
             android:hint="Цфо"
@@ -60,7 +57,7 @@
             android:id="@+id/cfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="37dp"
+            android:minHeight="30dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_centerHorizontal="true"
@@ -74,7 +71,7 @@
             android:textColorHint="#80807C"
             android:textSize="15sp"
             android:textStyle="bold"
-            android:hint="Выберете цфо"
+            android:hint="цфо"
             android:visibility="visible" />
 
 
@@ -104,7 +101,7 @@
             android:id="@+id/marerialtextgroupmaterial"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="37dp"
+            android:minHeight="30dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_centerHorizontal="true"
@@ -118,7 +115,7 @@
             android:textColorHint="#80807C"
             android:textSize="15sp"
             android:textStyle="bold"
-            android:hint="Выберете группу материалов"
+            android:hint="группу материалов"
             android:visibility="visible" />
 
 
@@ -162,8 +159,8 @@
             android:layout_marginBottom="-3dp"
             android:background="@drawable/style_forpolymaterialb_cycle_createspinner"
             android:gravity="center"
-            android:hint="Выберете материал"
-            android:minHeight="37dp"
+            android:hint="материал"
+            android:minHeight="30dp"
             android:textAlignment="gravity"
             android:textColor="#000000"
             android:textColorHighlight="#80807C"
@@ -202,7 +199,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:minHeight="37dp"
+            android:minHeight="30dp"
             android:background="@drawable/style_forpolymaterialb_cycle_createspinner"
             android:gravity="center"
             android:textAlignment="gravity"
@@ -212,7 +209,7 @@
             android:textSize="15sp"
             android:textStyle="bold"
             android:padding="5dp"
-            android:hint="Выберете Контрагент"
+            android:hint="контрагент"
             android:visibility="visible" />
 
 
@@ -263,7 +260,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:minHeight="37dp"
+            android:minHeight="30dp"
             android:background="@drawable/style_forpolymaterialb_cycle_createspinner"
             android:gravity="center"
             android:textAlignment="gravity"
@@ -273,7 +270,7 @@
             android:textSize="15sp"
             android:textStyle="bold"
             android:padding="5dp"
-            android:hint="Выберете Автомобиль"
+            android:hint="автомобиль"
             android:visibility="visible" />
 
 
@@ -313,9 +310,9 @@
             android:background="@drawable/style_forpolymaterialb_cycle_createspinner"
             android:foregroundGravity="center"
             android:gravity="center_horizontal|center_vertical"
-            android:hint="Номер ттн"
+            android:hint="номер ттн"
             android:inputType="textCapSentences"
-            android:minHeight="37dp"
+            android:minHeight="30dp"
             android:textColor="#000000"
             android:textColorHighlight="#80807C"
             android:textColorHint="#80807C"
@@ -359,9 +356,9 @@
             android:background="@drawable/style_forpolymaterialb_cycle_createspinner"
             android:foregroundGravity="center"
             android:gravity="center_horizontal|center_vertical"
-            android:hint="Дата ттн"
+            android:hint="дата ттн"
             android:inputType="date"
-            android:minHeight="37dp"
+            android:minHeight="30dp"
             android:textColor="#000000"
             android:textColorHighlight="#80807C"
             android:textColorHint="#80807C"
@@ -409,9 +406,9 @@
             android:background="@drawable/style_forpolymaterialb_cycle_createspinner"
             android:foregroundGravity="center"
             android:gravity="center_horizontal|center_vertical"
-            android:hint="Количество"
+            android:hint="количество"
             android:inputType="number|numberDecimal"
-            android:minHeight="37dp"
+            android:minHeight="30dp"
             android:textColorHighlight="#80807C"
             android:textColor="#000000"
             android:textColorHint="#80807C"
@@ -428,6 +425,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="120dp"
             android:layout_marginEnd="120dp"
+            android:layout_marginBottom="10dp"
             android:clickable="true"
             android:enabled="true"
             android:focusable="auto"
@@ -446,17 +444,7 @@
             android:translationZ="150dp"
             tools:visibility="visible" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/textView19"
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:layout_alignParentBottom="true"
-            android:background="#FFFAFA"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="35dp"
-            android:padding="20dp"
-            android:visibility="invisible"
-            android:text="TextView666" />
+
     </LinearLayout>
     <!--  КОНЕЦ ПЯТОГО БЛОКА -->
 

@@ -3,8 +3,6 @@ package com.dsy.dsu.CodeOrdersAnTransports.Window;
 import android.app.Activity;
 import android.database.Cursor;
 import android.database.DataSetObserver;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -18,7 +16,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.CursorAdapter;
 import android.widget.GridView;
 import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
@@ -48,8 +45,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.Consumer;
 
 
 // TODO: 29.09.2022 фрагмент для получение материалов
@@ -194,22 +189,19 @@ public class FragmentNewOrderTransport extends Fragment {
         super.onStart();
         try{
             if( cursorCfo ==null) {
-              /*  subClassNewOrderTransport.методПредварительнаяЗагрузкаGridView(R.layout.list_item_progressing_newordertransport,
-                        "Справочники...", R.drawable.icon_dsu1_ordertransport_down);*/
-                subClassNewOrderTransport.методSimpleCFOGridView(R.layout.fragment_ordertransport2);
+                subClassNewOrderTransport.методAdapterNewOrderTransportGridView(R.layout.list_item_progressing_newordertransport,
+                        "Справочники...", R.drawable.icon_dsu1_ordertransport_down);
             }else {
                 if( cursorCfo.getCount()>0) {
-                    subClassNewOrderTransport.методSimpleCFOGridView(R.layout.fragment_ordertransport2);
+                    subClassNewOrderTransport.методAdapterNewOrderTransportGridView(R.layout.fragment_ordertransport2,
+                            "Создаем заказ !!!", R.drawable.icon_rdertransport2);
                 }else{
-                    subClassNewOrderTransport.методПредварительнаяЗагрузкаGridView( R.layout.list_item_isnull_newordertransport,
+                    subClassNewOrderTransport.методAdapterNewOrderTransportGridView( R.layout.list_item_isnull_newordertransport,
                             "Нет справочников !!!", R.drawable.icon_rdertransport2);
                 }
                 // TODO: 04.05.2023 Получаем Данные что обработка данных закончена
                 subClassNewOrderTransport.    МетодДизайнПрограссБара();
             }
-
-            // TODO: 12.05.2023
-            subClassNewOrderTransport. МетодКпопкиЗначков(cursorCfo);
             // TODO: 19.04.2023 слушаелти
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
@@ -330,37 +322,6 @@ public class FragmentNewOrderTransport extends Fragment {
                 v.animate().rotationX(0);
             },300);
         }
-        private void МетодКпопкиЗначков(@NonNull Cursor cursor) {
-            try {
-                if (cursor!=null) {
-                    if (cursor.getCount()> 0) {
-                        Log.d(this.getClass().getName(), "  cursor" + cursor.getCount());
-                        BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setNumber( cursor.getCount());//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
-                        BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.parseColor("#15958A"));
-                    } else {
-                        BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
-                        BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.RED);
-                    }
-                }else
-                {
-                    BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
-                    BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.RED);
-                }
-                //TODO
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(getContext().getClass().getName(),
-                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
-        // TODO: 28.04.2023
-
-
-
         // TODO: 10.03.2022 БИЗНЕС-КОД для ФРАГМЕНТА ПОСТУПЛЕНИЯ МАТЕРИАЛА
 
         void методСлушательGridView() {  // TODO: 04.03.2022  класс в котором находяться слушатели
@@ -475,7 +436,7 @@ public class FragmentNewOrderTransport extends Fragment {
         // TODO: 28.04.2023
       void методSimpleCFOGridView(@NonNull Integer Макет){
             try{
-                SimpleCursorAdapter     simpleCursorAdapterCFO=
+/*                SimpleCursorAdapter     simpleCursorAdapterCFO=
                             new SimpleCursorAdapter(getContext(), Макет,
                                     cursorCfo, new String[]{"_id","name"},
                                     new int[]{android.R.id.text1,android.R.id.text2},
@@ -488,23 +449,17 @@ public class FragmentNewOrderTransport extends Fragment {
                                     case android.R.id.text1:
                                         MaterialCardView linearLayoutЗаказыТранспорта= (MaterialCardView)
                                                 view.findViewById(android.R.id.text1);
-
-                                        // TODO: 12.05.2023  Получаем Данные
-                                        Bundle bundleCFOBungle=    методДанныеCFOBungle(cursor);
                                         // TODO: 12.05.202
-
                                         MaterialTextView materialTextViewvalues     = (MaterialTextView)   linearLayoutЗаказыТранспорта.findViewById(R.id.cfo);//ВИД CFO
 
-                                        методЗаполенияЦФО( bundleCFOBungle,  materialTextViewvalues);
+                                        методЗаполенияЦФО(    materialTextViewvalues);
                                         // TODO: 12.05.2023
                                         materialTextViewvalues.startAnimation(animationvibr1);
-
 
                                         // TODO: 18.04.2023  Внешниц вид
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                                                "  bundleCFOBungle " +bundleCFOBungle);
+                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
                                         return true;
                                 }
 
@@ -525,14 +480,13 @@ public class FragmentNewOrderTransport extends Fragment {
                    simpleCursorAdapterCFO.setViewBinder(binding);
                    simpleCursorAdapterCFO.notifyDataSetChanged();
                 gridViewNewOrderTransport.setAdapter(simpleCursorAdapterCFO);
-                gridViewNewOrderTransport.smoothScrollToPosition(0);
                 gridViewNewOrderTransport.refreshDrawableState();
                 gridViewNewOrderTransport.requestLayout();
                     Log.d(getContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
                             " Класс в процессе... " + this.getClass().getName() + "\n" +
                             " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                            + "  cursorCfo " + cursorCfo);
+                            + "  cursorCfo " + cursorCfo);*/
 
       } catch (Exception e) {
             e.printStackTrace();
@@ -544,17 +498,14 @@ public class FragmentNewOrderTransport extends Fragment {
         }
         }
 
-        private void методЗаполенияЦФО(@NonNull Bundle bundleOrderTransport,
-                                       @NonNull MaterialTextView values) {
+        private void методЗаполенияЦФО(@NonNull MaterialTextView values) {
             try{
-                values.setText(bundleOrderTransport.getString("NameCFO").trim());
-                values.setTag(bundleOrderTransport);
+                values.setHint("цфо");
                 values.startAnimation(animationvibr1);
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
-                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                        + "  bundleOrderTransport " + bundleOrderTransport);
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -621,14 +572,14 @@ public class FragmentNewOrderTransport extends Fragment {
 
 
         // TODO: 28.04.2023
-        void методПредварительнаяЗагрузкаGridView(@NonNull Integer Макет , @NonNull String Сообщение, @NonNull Integer Значек){///      R.layout.list_item_progressing_ordertransport
+        void методAdapterNewOrderTransportGridView(@NonNull Integer Макет , @NonNull String Сообщение, @NonNull Integer Значек){///      R.layout.list_item_progressing_ordertransport
             try{
                     ArrayList<HashMap<String, Object>> ЛистНетданных= new ArrayList<HashMap<String, Object>> ();
                     HashMap<String, Object> map = new HashMap<>();
                     map.put("alldonttbels", Сообщение);
                     map.put("allimage", " dont");
                     ЛистНетданных.add(map);
-                    SimpleAdapter АдаптерКогдаНетданных = new SimpleAdapter(getContext(),
+                    SimpleAdapter simpleAdapterCFO = new SimpleAdapter(getContext(),
                             ЛистНетданных,Макет,
                             new String[]{"alldonttbels","allimage"},
                             new int[]{android.R.id.text2,android.R.id.text1});
@@ -638,23 +589,17 @@ public class FragmentNewOrderTransport extends Fragment {
                         public boolean setViewValue(View view, Object data, String textRepresentation) {
                             try{
                                 switch (view.getId()) {
-                                    case android.R.id.text2:
-                                        // TODO: 09.04.2023  ВставлЯем Данные
-                                        ((MaterialTextView) view).setText(data.toString());
-                                        ((MaterialTextView) view).setTextColor(Color.GRAY);
-                                        ((MaterialTextView) view).setTextSize(18l);
-
-                                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n"  );
-                                        return  true;
                                     case android.R.id.text1:
-                                     Drawable icon2 = getResources().getDrawable(   Значек);
-                                        ((ImageView) view).setImageDrawable(icon2);
-                                        ((ImageView) view).setImageResource(Значек);
-
+                                        MaterialCardView linearLayoutЗаказыТранспорта= (MaterialCardView)
+                                                view.findViewById(android.R.id.text1);
+                                        MaterialTextView materialTextViewvalues     = (MaterialTextView)   linearLayoutЗаказыТранспорта.findViewById(R.id.cfo);//ВИД CFO
+                                        методЗаполенияЦФО(   materialTextViewvalues);
+                                        // TODO: 12.05.2023
+                                        materialTextViewvalues.startAnimation(animationvibr1);
+                                        // TODO: 18.04.2023  Внешниц вид
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()  );
+                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
                                         return true;
                                 }
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -669,12 +614,26 @@ public class FragmentNewOrderTransport extends Fragment {
                             return false;
                         }
                     };
-                    АдаптерКогдаНетданных.setViewBinder(БиндингКогдаНетДАнных);
-                    АдаптерКогдаНетданных.notifyDataSetChanged();
-                gridViewNewOrderTransport.setAdapter(АдаптерКогдаНетданных);
-                gridViewNewOrderTransport.smoothScrollToPosition(0);
+                simpleAdapterCFO.setViewBinder(БиндингКогдаНетДАнных);
+                simpleAdapterCFO.notifyDataSetChanged();
+                gridViewNewOrderTransport.setAdapter(simpleAdapterCFO);
                 gridViewNewOrderTransport.refreshDrawableState();
                 gridViewNewOrderTransport.requestLayout();
+                // TODO: 14.05.2023 smmo
+              //  gridViewNewOrderTransport.setSelection(0);
+                gridViewNewOrderTransport.smoothScrollByOffset(0);
+                gridViewNewOrderTransport.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                    @Override
+                    public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                        Log.d(getContext().getClass().getName(), "\n"
+                                + " время: " + new Date() + "\n+" +
+                                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                + "  cursorCfo " + cursorCfo);
+                   //     gridViewNewOrderTransport.smoothScrollToPosition(10);
+
+                    }
+                });
                     // TODO: 19.04.2023 слушаелти
                     Log.d(getContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
