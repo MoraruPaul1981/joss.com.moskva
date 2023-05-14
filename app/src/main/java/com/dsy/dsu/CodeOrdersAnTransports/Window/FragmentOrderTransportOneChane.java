@@ -113,17 +113,20 @@ public class FragmentOrderTransportOneChane extends Fragment {
         try{
             super.onCreate(savedInstanceState);
             // TODO: 27.04.2023  Запускаем Заказ Транпорта
+         Bundle bundleBoundOrserTran=(Bundle)        getArguments();
+         if(bundleBoundOrserTran!=null){
+             localBinderOrderTransport= (ServiceOrserTransportService.  LocalBinderOrderTransport)    bundleBoundOrserTran.getBinder("binder");
+         }
             subClassOrdersTransport =new SubClassOrdersTransport(getActivity());
             subClassOrdersTransport.   МетодБиндингOrderTransport();
             lifecycleOwner =this;
             lifecycleOwnerОбщая=this;
             // TODO: 04.05.2023
             ПубличныйID = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
-
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
-                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+ "  localBinderOrderTransport " +localBinderOrderTransport);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -163,6 +166,20 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
             textViewHadler=(MaterialTextView)  container.findViewById(R.id.TextViewHadler);
             textViewHadler.setHint("Заказы Транспорта");
+
+
+            if (localBinderOrderTransport!=null) {
+                subClassOrdersTransport.  методGetCursorBounds();
+
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                        + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive()+
+                        " localBinderOrderTransport " +localBinderOrderTransport
+                        + " cursorOrderTransport " +cursorOrderTransport
+                        + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive());
+            }
 
             // TODO: 11.05.2023 горизонтальеный Сколлл
             Log.d(getContext().getClass().getName(), "\n"
@@ -707,7 +724,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 fragmentNewЗаказТранспорта = new FragmentNewOrderTransport();
                 Bundle bundleNewOrderTransport=new Bundle();
-                bundleNewOrderTransport.putBinder("binder",localBinderOrderTransport);
+                bundleNewOrderTransport.putBinder("binder", (ServiceOrserTransportService.  LocalBinderOrderTransport) localBinderOrderTransport);
                 bundleNewOrderTransport.putInt("isalive",1);
                 fragmentNewЗаказТранспорта.setArguments(bundleNewOrderTransport);
                 fragmentTransaction.replace(R.id.linear_main_ordertransport, fragmentNewЗаказТранспорта).setReorderingAllowed(true).commit();//.layout.activity_for_fragemtb_history_tasks
@@ -805,26 +822,16 @@ public class FragmentOrderTransportOneChane extends Fragment {
                             if (service.isBinderAlive()) {
                                 localBinderOrderTransport = (ServiceOrserTransportService.  LocalBinderOrderTransport) service;
 
-                            // TODO: 04.05.2023  получаем первоночальыне Данные  #1
-                                HashMap<String,String> datasendMap=new HashMap();
-                                datasendMap.putIfAbsent("1","  SELECT  *  FROM  view_ordertransport  ");
-                                datasendMap.putIfAbsent("2"," WHERE name  IS NOT NULL  AND _id >?  ORDER BY _id ");
-                                datasendMap.putIfAbsent("3"," 0 ");
-                                datasendMap.putIfAbsent("4"," view_ordertransport ");
-                                // TODO: 05.05.2023  ПОЛУЧАЕМ ДАННЫЕ
-                                cursorOrderTransport=              методGetCursor( datasendMap);
-                                // TODO: 04.05.2023  перегружаем экран
+                                методGetCursorBounds();
 
-                                onStart();
-                                
                                 Log.d(getContext().getClass().getName(), "\n"
                                         + " время: " + new Date() + "\n+" +
                                         " Класс в процессе... " + this.getClass().getName() + "\n" +
                                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                        + "   service.isBinderAlive()" + service.isBinderAlive()+
-                                        " localBinderOrderTransport " +localBinderOrderTransport 
+                                        + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive()+
+                                        " localBinderOrderTransport " +localBinderOrderTransport
                                         + " cursorOrderTransport " +cursorOrderTransport
-                                        + "   service.isBinderAlive()" + service.isBinderAlive());
+                                        + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive());
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -858,14 +865,17 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         }
                     }
                 };
-                Boolean   isBound =    getContext(). bindService(intentЗапускOrserTransportService, serviceConnection , Context.BIND_AUTO_CREATE);
+                if (localBinderOrderTransport==null) {
+                    Boolean   isBound =    getContext(). bindService(intentЗапускOrserTransportService, serviceConnection , Context.BIND_AUTO_CREATE);
+                }
                 getContext().registerComponentCallbacks(new ComponentCallbacks() {
                     @Override
                     public void onConfigurationChanged(@NonNull Configuration newConfig) {
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
                                 " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()  + "localBinderOrderTransport " +
+                                localBinderOrderTransport);
                     }
 
                     @Override
@@ -885,6 +895,29 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
+
+        private void методGetCursorBounds() throws Exception {
+            // TODO: 04.05.2023  получаем первоночальыне Данные  #1
+            HashMap<String,String> datasendMap=new HashMap();
+            datasendMap.putIfAbsent("1","  SELECT  *  FROM  view_ordertransport  ");
+            datasendMap.putIfAbsent("2"," WHERE name  IS NOT NULL  AND _id >?  ORDER BY _id ");
+            datasendMap.putIfAbsent("3"," 0 ");
+            datasendMap.putIfAbsent("4"," view_ordertransport ");
+            // TODO: 05.05.2023  ПОЛУЧАЕМ ДАННЫЕ
+            cursorOrderTransport=              методGetCursor( datasendMap);
+            // TODO: 04.05.2023  перегружаем экран
+
+            onStart();
+            Log.d(getContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                    + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive()+
+                    " localBinderOrderTransport " +localBinderOrderTransport
+                    + " cursorOrderTransport " +cursorOrderTransport
+                    + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive());
+        }
+
         // TODO: 28.04.2023
       void методФиналЗагрузкиGridView(@NonNull Integer Макет){
             try{

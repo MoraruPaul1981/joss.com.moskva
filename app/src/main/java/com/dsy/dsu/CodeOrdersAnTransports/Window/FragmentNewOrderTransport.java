@@ -577,7 +577,7 @@ public class FragmentNewOrderTransport extends Fragment {
                 fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 fragmentBackListOrderTransport = new FragmentOrderTransportOneChane();
                 Bundle bundleNewOrderTransport=new Bundle();
-                bundleNewOrderTransport.putBinder("binder",localBinderNewOrderTransport);
+                bundleNewOrderTransport.putBinder("binder", (ServiceOrserTransportService.  LocalBinderOrderTransport) localBinderNewOrderTransport);
                 bundleNewOrderTransport.putInt("isalive",2);
                 fragmentBackListOrderTransport.setArguments(bundleNewOrderTransport);
                 fragmentTransaction.replace(R.id.linear_main_ordertransport, fragmentBackListOrderTransport).setReorderingAllowed(true).commit();//.layout.activity_for_fragemtb_history_tasks
