@@ -66,7 +66,6 @@ public class FragmentNewOrderTransport extends Fragment {
     long startДляОбноразвовной;
     private  Message message;
 
-    private  Cursor cursorCfo;
     private GridView gridViewNewOrderTransport;
 
     private     SubClassNewOrderTransport subClassNewOrderTransport;
@@ -75,6 +74,11 @@ public class FragmentNewOrderTransport extends Fragment {
     private  ServiceOrserTransportService.  LocalBinderOrderTransport localBinderNewOrderTransport;
     private HorizontalScrollView horizontalScrollViewOrderTransport;
     private    MaterialTextView       textViewHadler;
+    private  Cursor cursorCfo;
+
+    private  Cursor cursorTypeTS;
+
+    private  Cursor cursorGosNomer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
