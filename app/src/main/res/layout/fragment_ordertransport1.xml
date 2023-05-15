@@ -16,7 +16,7 @@
     app:strokeWidth="0dp"
     android:translationZ="150dp"
     android:animateLayoutChanges="true"
-    app:cardBackgroundColor="#5C8A8E"
+    app:cardBackgroundColor="#F0FFFF"
     tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
     app:strokeColor="#326760">
 

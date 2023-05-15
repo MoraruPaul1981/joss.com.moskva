@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="340dp"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
+    android:layout_margin="5dp"
     android:padding="2dp"
     app:layout_gravity="center"
     android:minHeight="150dp"
@@ -16,17 +16,17 @@
     app:strokeWidth="0dp"
     android:translationZ="150dp"
     android:animateLayoutChanges="true"
-    app:cardBackgroundColor="#5C8A8E"
+    app:cardBackgroundColor="#F0FFFF"
     tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
-    app:strokeColor="#326760">
+    app:strokeColor="#FBFBFB">
 
 
     <!--  НАЧАЛО ПЕРВОГО БЛОКА -->
     <LinearLayout
         android:id="@+id/linearLayoutordertransfport0"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#FFFFFF"
+        android:layout_height="600dp"
+        android:background="#F0FFFF"
         android:gravity="center"
         android:orientation="vertical"
         android:layout_margin="1dp"
