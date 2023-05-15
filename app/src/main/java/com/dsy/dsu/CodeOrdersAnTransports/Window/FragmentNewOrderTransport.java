@@ -35,6 +35,7 @@ import com.dsy.dsu.CodeOrdersAnTransports.Background.ServiceOrserTransportServic
 import com.dsy.dsu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -79,6 +80,7 @@ public class FragmentNewOrderTransport extends Fragment {
     private  Cursor cursorTypeTS;
 
     private  Cursor cursorGosNomer;
+    private  MaterialButton bottomnewordertransport;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -138,9 +140,24 @@ public class FragmentNewOrderTransport extends Fragment {
             textViewHadler=(MaterialTextView)  container.findViewById(R.id.TextViewHadler);
             textViewHadler.setHint("Новый заказ");
 
+            MaterialTextView  materialTextView=(MaterialTextView) view.findViewById(R.id.valuecfo);
+            materialTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "materialTextView "+materialTextView  );
+                }
+            });
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "materialTextView "+materialTextView  );
+
+
+
             // TODO: 14.05.2023  методы получение ДАнных
             subClassNewOrderTransport .  методGetCFO();
-
             // TODO: 11.05.2023 горизонтальеный Сколлл
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
@@ -200,8 +217,6 @@ public class FragmentNewOrderTransport extends Fragment {
                 if( cursorCfo.getCount()>0) {
                     subClassNewOrderTransport.методAdapterNewOrderTransportGridView(R.layout.fragment_ordertransport2,
                             "Создаем заказ !!!", R.drawable.icon_rdertransport2);
-                    // TODO: 14.05.2023  слушатель GridView
-                    subClassNewOrderTransport.   методСлушательGridViews();
 
                 }else{
                     subClassNewOrderTransport.методAdapterNewOrderTransportGridView( R.layout.list_item_isnull_newordertransport,
@@ -611,7 +626,7 @@ public class FragmentNewOrderTransport extends Fragment {
                                         MaterialCardView родительскийCardView= (MaterialCardView)
                                                 view.findViewById(android.R.id.text1);
                                         MaterialTextView materialTextViewvalues
-                                                = (MaterialTextView)   родительскийCardView.findViewById(R.id.cfo);//ВИД CFO
+                                                = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuecfo);//ВИД CFO
                                         методЗаполенияЦФО(   materialTextViewvalues);
                                         // TODO: 12.05.2023
                                         // TODO: 18.04.2023  Внешниц вид
@@ -705,7 +720,7 @@ public class FragmentNewOrderTransport extends Fragment {
                         MaterialCardView linearLayoutЗаказыТранспорта= (MaterialCardView)
                                 view.findViewById(android.R.id.text1);
 
-                        MaterialTextView materialTextView1  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.cfo);//ВИД ТС
+                        MaterialTextView materialTextView1  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.valuecfo);//ВИД ТС
 /////TODO одинатрный клик для загрузки в этот табель всех сотрудников
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -728,7 +743,7 @@ public class FragmentNewOrderTransport extends Fragment {
                         MaterialCardView linearLayoutЗаказыТранспорта= (MaterialCardView)
                                 view.findViewById(android.R.id.text1);
 
-                        MaterialTextView materialTextView1  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.cfo);//ВИД ТС
+                        MaterialTextView materialTextView1  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.valuecfo);//ВИД ТС
 /////TODO одинатрный клик для загрузки в этот табель всех сотрудников
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -739,6 +754,28 @@ public class FragmentNewOrderTransport extends Fragment {
                                 + " время: " + new Date()+"\n+" +
                                 " Класс в процессе... " +  getContext().getClass().getName()+"\n"+
                                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                // TODO: 01.09.2021 метод вызова
+                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+
+        // TODO: 15.05.2023
+        private void методСлушательКнопкиNewOrderTra() {
+            try {
+                bottomnewordertransport.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ////TODO одинатрный клик для загрузки в этот табель всех сотрудников
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
                     }
                 });
             } catch (Exception e) {
