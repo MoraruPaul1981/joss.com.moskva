@@ -58,7 +58,7 @@
             app:cardElevation="1dp" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/cfo"
+            android:id="@+id/valuecfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -101,7 +101,7 @@
 
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/marerialtextgroupmaterial"
+            android:id="@+id/valuetypetc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -147,7 +147,7 @@
         <!-- todo старрт добавление еще двух полей стак и компания-->
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/materialtext_onematerial_ves"
+            android:id="@+id/valuegosnomer"
             style="@android:style/Widget.Holo.TextView.SpinnerItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -193,7 +193,7 @@
             app:cardElevation="1dp" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/valuekontragent"
+            android:id="@+id/valuedate"
             style="@android:style/Widget.Holo.TextView.SpinnerItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -227,7 +227,7 @@
 
         <!--  todo кнопка для сохранения-->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/bottomcreateassionmaterial"
+            android:id="@+id/bottomnewordertransport"
             style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
             android:layout_width="120dp"
             android:layout_height="35dp"
