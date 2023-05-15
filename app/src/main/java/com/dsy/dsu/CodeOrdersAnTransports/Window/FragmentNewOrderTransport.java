@@ -848,9 +848,33 @@ public class FragmentNewOrderTransport extends Fragment {
                     @Override
                     public void onClick(View v) {
                         МетодЗапускаАнимацииAllvalues(v);
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                        // TODO: 15.05.2023 закрывает
+
+                        MaterialTextView materialTextcfo
+                                = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuecfo);//ВИД CFO
+                        MaterialTextView materialTexttypetc
+                                = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuetypetc);//ВИД type tc
+                        MaterialTextView materialTextgosnumber
+                                = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuegosnomer);//ВИД gos numer
+                        MaterialTextView materialTextdate
+                                = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuedate);//ВИД Dates
+                        // TODO: 15.05.2023
+                        if(materialTextcfo.getText().length()>0
+                        &&  materialTexttypetc.getText().length()>0
+                        &&  materialTextgosnumber.getText().length()>0
+                        &&  materialTextdate.getText().length()>0) {
+                            // TODO: 15.05.2023
+                            subClassNewOrderTransport.   методBackOrdersTransport();
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                        }else{
+                            // TODO: 15.05.2023
+                            subClassNewOrderTransport.   методBackOrdersTransport();
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                        }
                     }
                 });
             } catch (Exception e) {
@@ -1211,7 +1235,7 @@ public class FragmentNewOrderTransport extends Fragment {
                     @Override
                     public void onClick(View v) {
 
-                        alertDialog.cancel();
+                        alertDialog.dismiss();
                         alertDialog.cancel();
                         Log.d(materialButton.getContext().getClass().getName(), "\n"
                                 + " время: " + new Date()+"\n+" +
