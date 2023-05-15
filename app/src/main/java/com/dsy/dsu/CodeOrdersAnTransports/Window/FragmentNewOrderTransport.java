@@ -140,29 +140,13 @@ public class FragmentNewOrderTransport extends Fragment {
             textViewHadler=(MaterialTextView)  container.findViewById(R.id.TextViewHadler);
             textViewHadler.setHint("Новый заказ");
 
-            MaterialTextView  materialTextView=(MaterialTextView) view.findViewById(R.id.valuecfo);
-            materialTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "materialTextView "+materialTextView  );
-                }
-            });
-
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "materialTextView "+materialTextView  );
-
-
-
             // TODO: 14.05.2023  методы получение ДАнных
             subClassNewOrderTransport .  методGetCFO();
             // TODO: 11.05.2023 горизонтальеный Сколлл
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
-                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " view " +view);
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " view " +view + " container " +container) ;
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -343,7 +327,13 @@ public class FragmentNewOrderTransport extends Fragment {
             v.animate().rotationX(-40l);
             message.getTarget() .postDelayed(()->{
                 v.animate().rotationX(0);
-            },300);
+            },200);
+        }
+        private void МетодЗапускаАнимацииAllvalues(View v) {
+            v.animate().rotationX(+40l);
+            message.getTarget() .postDelayed(()->{
+                v.animate().rotationX(0);
+            },200);
         }
         // TODO: 10.03.2022 БИЗНЕС-КОД для ФРАГМЕНТА ПОСТУПЛЕНИЯ МАТЕРИАЛА
 
@@ -621,14 +611,11 @@ public class FragmentNewOrderTransport extends Fragment {
                         @Override
                         public boolean setViewValue(View view, Object data, String textRepresentation) {
                             try{
+                                MaterialCardView родительскийCardView= (MaterialCardView)
+                                        view.findViewById(android.R.id.text1);
                                 switch (view.getId()) {
                                     case android.R.id.text1:
-                                        MaterialCardView родительскийCardView= (MaterialCardView)
-                                                view.findViewById(android.R.id.text1);
-                                        MaterialTextView materialTextViewvalues
-                                                = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuecfo);//ВИД CFO
-                                        методЗаполенияЦФО(   materialTextViewvalues);
-                                        // TODO: 12.05.2023
+                                        методСправочникЦФО(родительскийCardView);
                                         // TODO: 18.04.2023  Внешниц вид
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -669,6 +656,29 @@ public class FragmentNewOrderTransport extends Fragment {
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
 
+        }
+        private void методСправочникЦФО(MaterialCardView родительскийCardView) {
+            try{
+                MaterialTextView materialTextCFO
+                        = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuecfo);//ВИД CFO
+                методЗаполенияЦФО(   materialTextCFO);
+                // TODO: 12.05.2023
+                materialTextCFO.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        МетодЗапускаАнимацииAllvalues(v);
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
         }
 
         private void методScroollAttach() {
