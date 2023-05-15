@@ -255,8 +255,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
             // TODO: 12.05.2023
             subClassOrdersTransport. МетодКпопкиЗначков(cursorOrderTransport);
             // TODO: 19.04.2023 слушаелти
-            // TODO: 18.04.2023 Слушаиель Клика
-            subClassOrdersTransport.    методПоGridView( );
             // TODO: 18.04.2023 Слушатель Удалание
             subClassOrdersTransport.    методУдалениеТабеля( );
             Log.d(this.getClass().getName(), "\n" + " class " +
@@ -1155,40 +1153,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
             }
             return Статус;
         }
-
-
-        private void методПоGridView( ) {
-            gridViewOrderTransport.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    try{
-                        MaterialCardView linearLayoutЗаказыТранспорта= (MaterialCardView)
-                                view.findViewById(android.R.id.text1);
-
-                        MaterialTextView materialTextView1  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue2);//ВИД ТС
-                        MaterialTextView materialTextView2  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue4);//ДАТА
-                        MaterialTextView materialTextView3  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue3);//ГОС.НОМЕР
-                        MaterialTextView materialTextView4  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue0);///номер заказа
-                        MaterialTextView materialTextView5  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue1);///ЦФО
-                        MaterialTextView materialTextView6  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue5);//СТАТУС
-
-
-/////TODO одинатрный клик для загрузки в этот табель всех сотрудников
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                }
-            });
-        }
-
 
         private void методУдалениеТабеля( ) {
             gridViewOrderTransport.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {

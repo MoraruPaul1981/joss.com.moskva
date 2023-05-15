@@ -701,10 +701,15 @@ public class FragmentNewOrderTransport extends Fragment {
                 gridViewNewOrderTransport.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        Log.d(getContext().getClass().getName(), "\n"
-                                + " время: " + new Date()+"\n+" +
-                                " Класс в процессе... " +  getContext().getClass().getName()+"\n"+
-                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+
+                        MaterialCardView linearLayoutЗаказыТранспорта= (MaterialCardView)
+                                view.findViewById(android.R.id.text1);
+
+                        MaterialTextView materialTextView1  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.cfo);//ВИД ТС
+/////TODO одинатрный клик для загрузки в этот табель всех сотрудников
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
                     }
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
@@ -718,6 +723,18 @@ public class FragmentNewOrderTransport extends Fragment {
                 gridViewNewOrderTransport.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                        MaterialCardView linearLayoutЗаказыТранспорта= (MaterialCardView)
+                                view.findViewById(android.R.id.text1);
+
+                        MaterialTextView materialTextView1  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.cfo);//ВИД ТС
+/////TODO одинатрный клик для загрузки в этот табель всех сотрудников
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
+
+
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date()+"\n+" +
                                 " Класс в процессе... " +  getContext().getClass().getName()+"\n"+
