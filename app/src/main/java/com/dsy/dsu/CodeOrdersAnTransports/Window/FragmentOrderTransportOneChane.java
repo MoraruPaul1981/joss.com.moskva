@@ -281,9 +281,10 @@ public class FragmentOrderTransportOneChane extends Fragment {
             // TODO: 04.05.2023  получаем первоночальыне Данные  #1
             HashMap<String,String> datasendMap=new HashMap();
             datasendMap.putIfAbsent("1","  SELECT  *  FROM  view_ordertransport  ");
-            datasendMap.putIfAbsent("2"," WHERE name  IS NOT NULL  AND _id >?  ORDER BY _id ");
-            datasendMap.putIfAbsent("3"," 0 ");
-            datasendMap.putIfAbsent("4"," view_ordertransport ");
+            datasendMap.putIfAbsent("2"," WHERE name  IS NOT NULL  AND _id >?  AND status!=? ORDER BY _id,status ");
+            datasendMap.putIfAbsent("3"," 0");
+            datasendMap.putIfAbsent("4","5");
+            datasendMap.putIfAbsent("5"," view_ordertransport ");
             // TODO: 05.05.2023  ПОЛУЧАЕМ ДАННЫЕ
             cursorOrderTransport=       subClassOrdersTransport.       методGetCursor( datasendMap);
 
@@ -896,14 +897,16 @@ public class FragmentOrderTransportOneChane extends Fragment {
         }
 
         private void методGetCursorBounds() throws Exception {
+            try{
             // TODO: 04.05.2023  получаем первоночальыне Данные  #1
             HashMap<String,String> datasendMap=new HashMap();
             datasendMap.putIfAbsent("1","  SELECT  *  FROM  view_ordertransport  ");
-            datasendMap.putIfAbsent("2"," WHERE name  IS NOT NULL  AND _id >?  ORDER BY _id ");
-            datasendMap.putIfAbsent("3"," 0 ");
-            datasendMap.putIfAbsent("4"," view_ordertransport ");
+            datasendMap.putIfAbsent("2"," WHERE name  IS NOT NULL  AND _id >?  AND status!=? ORDER BY _id,status ");
+            datasendMap.putIfAbsent("3","0");
+            datasendMap.putIfAbsent("4","5");
+            datasendMap.putIfAbsent("5"," view_ordertransport ");
             // TODO: 05.05.2023  ПОЛУЧАЕМ ДАННЫЕ
-            cursorOrderTransport=              методGetCursor( datasendMap);
+            cursorOrderTransport=       subClassOrdersTransport.       методGetCursor( datasendMap);
             // TODO: 04.05.2023  перегружаем экран
 
             onStart();
@@ -915,6 +918,14 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     " localBinderOrderTransport " +localBinderOrderTransport
                     + " cursorOrderTransport " +cursorOrderTransport
                     + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive());
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
         }
 
         // TODO: 28.04.2023

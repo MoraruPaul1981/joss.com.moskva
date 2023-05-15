@@ -22,6 +22,7 @@ import com.google.firebase.annotations.concurrent.Background;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -204,6 +205,58 @@ public class ServiceOrserTransportService extends IntentService {
         }
             return  mapRetry;
         }
+        // TODO: 04.05.2023 Главный метод Службы Заказы Транспота
+        @BinderThread
+        @Background
+        public  Map<String,Object> методГлавныйNeworderTranportTraffic(@NonNull  HashMap<String,String> dataMap  ){
+            Map<String,Object>  mapRetry= new HashMap<>();
+            try{
+                Cursor cursor=   subClassOrderTransport.new SubClassGetCursor().методGetNewOrderCursor( dataMap);
+                // TODO: 04.05.2023  ответ Курсором Из Службы
+                mapRetry.put("replyget1",cursor);
+                Log.d(getApplicationContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +  " mapBoundService " +
+                        " mapRetry " +mapRetry + " Thread 1   "
+                        + Thread.currentThread().getName()+ " Thread 2"
+                        + Thread.getAllStackTraces().values().toString() );
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
+            }
+            return  mapRetry;
+        }
+        // TODO: 04.05.2023 Главный метод Службы Заказы Транспота LIKE
+        @BinderThread
+        @Background
+        public  Map<String,Object> методГлавныйLikeNeworderTranportTraffic(@NonNull  HashMap<String,String> dataMap  ){
+            Map<String,Object>  mapRetry= new HashMap<>();
+            try{
+                Cursor cursor=   subClassOrderTransport.new SubClassGetCursor().методGetLikeNewOrderCursor( dataMap);
+                // TODO: 04.05.2023  ответ Курсором Из Службы
+                mapRetry.put("replyget1",cursor);
+                Log.d(getApplicationContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +  " mapBoundService " +
+                        " mapRetry " +mapRetry + " Thread 1   "
+                        + Thread.currentThread().getName()+ " Thread 2"
+                        + Thread.getAllStackTraces().values().toString() );
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
+            }
+            return  mapRetry;
+        }
     }
 
 
@@ -255,11 +308,12 @@ public class ServiceOrserTransportService extends IntentService {
                 try{
                String    СамЗапрос = mapBoundService.get("1").trim();
                 String УсловияВыборки=    mapBoundService.get("2").trim();
-                String ФильтрУсловияВыборки=    mapBoundService.get("3").trim();
-                String Таблица=    mapBoundService.get("4").trim();
+                String ФильтрУсловияВыборки1= Optional.ofNullable(mapBoundService.get("3")) .orElse("") ;
+                String ФильтрУсловияВыборки2=   Optional.ofNullable( mapBoundService.get("4")).orElse("") ;
+                String Таблица=    mapBoundService.get("5").trim();
                     Bundle bundleЗаказТранспорт=new Bundle();
                     bundleЗаказТранспорт.putString("СамЗапрос", СамЗапрос + " "+ УсловияВыборки);
-                    bundleЗаказТранспорт.putStringArray("УсловияВыборки" ,new String[]{ФильтрУсловияВыборки});
+                    bundleЗаказТранспорт.putStringArray("УсловияВыборки" ,new String[]{ФильтрУсловияВыборки1,ФильтрУсловияВыборки2});
                     bundleЗаказТранспорт.putString("Таблица",Таблица);
                     cursor=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(getApplicationContext(), bundleЗаказТранспорт);
 
@@ -280,7 +334,65 @@ public class ServiceOrserTransportService extends IntentService {
                 return  cursor;
             }
 
+            Cursor методGetNewOrderCursor(@NonNull   HashMap<String,String>  mapBoundService){
+                Cursor cursor = null;
+                try{
+                    String    СамЗапрос = mapBoundService.get("1").trim();
+                    String УсловияВыборки=    mapBoundService.get("2").trim();
+                    String ФильтрУсловияВыборки1= Optional.ofNullable(mapBoundService.get("3")) .orElse("") ;
+                    String Таблица=    mapBoundService.get("4").trim();
+                    Bundle bundleЗаказТранспорт=new Bundle();
+                    bundleЗаказТранспорт.putString("СамЗапрос", СамЗапрос + " "+ УсловияВыборки);
+                    bundleЗаказТранспорт.putStringArray("УсловияВыборки" ,new String[]{ФильтрУсловияВыборки1});
+                    bundleЗаказТранспорт.putString("Таблица",Таблица);
+                    cursor=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(getApplicationContext(), bundleЗаказТранспорт);
 
+                    Log.d(getApplicationContext().getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "mapBoundService " +mapBoundService+
+                            "cursor " +cursor);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
+                }
+                return  cursor;
+            }
+            // TODO: 15.05.2023 LIKE
+            Cursor методGetLikeNewOrderCursor(@NonNull   HashMap<String,String>  mapBoundService){
+                Cursor cursor = null;
+                try{
+                    String    СамЗапрос = mapBoundService.get("1").trim();
+                    String УсловияВыборки=    mapBoundService.get("2").trim();
+                    String ФильтрУсловияВыборки1= Optional.ofNullable(mapBoundService.get("3")) .orElse("") ;
+                    String Таблица=    mapBoundService.get("4").trim();
+                    Bundle bundleЗаказТранспорт=new Bundle();
+                    bundleЗаказТранспорт.putString("СамЗапрос", СамЗапрос + " "+ УсловияВыборки);
+                    bundleЗаказТранспорт.putStringArray("УсловияВыборки" ,new String[]{ФильтрУсловияВыборки1});
+                    bundleЗаказТранспорт.putString("Таблица",Таблица);
+                    cursor=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(getApplicationContext(), bundleЗаказТранспорт);
+
+                    Log.d(getApplicationContext().getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "mapBoundService " +mapBoundService+
+                            "cursor " +cursor);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
+                }
+                return  cursor;
+            }
         }
         // TODO: 25.04.2023 END CLASS   SubClassOrderTransport
     }
