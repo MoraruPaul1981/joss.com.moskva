@@ -707,11 +707,9 @@ public class FragmentNewOrderTransport extends Fragment {
             try{
                 // TODO: 04.05.2023  получаем первоночальыне Данные  #1
                 HashMap<String,String> datasendMap=new HashMap();
-                datasendMap.putIfAbsent("1","  SELECT  *  FROM   "+ТекущеаяТаблица+"");
-                datasendMap.putIfAbsent("2"," WHERE "+ТекущейСтолбик+"   LIKE ?     IS NOT NULL  AND _id >?  ORDER BY _id ");
-                datasendMap.putIfAbsent("3","0");
-                datasendMap.putIfAbsent("4", "%"+ValueForLike+"%");
-                datasendMap.putIfAbsent("4",""+ТекущеаяТаблица+"");
+                datasendMap.putIfAbsent("Таблица",ТекущеаяТаблица);
+                datasendMap.putIfAbsent("ТекущийLike",ValueForLike);
+                datasendMap.putIfAbsent("ТекущейСтолбик",ТекущейСтолбик);
                 // TODO: 05.05.2023  ПОЛУЧАЕМ ДАННЫЕ
                 cursor =         subClassNewOrderTransport.     методGetNewOTCursorметодGetCursor( datasendMap,"like");
                 Log.d(getContext().getClass().getName(), "\n"
@@ -1205,13 +1203,15 @@ public class FragmentNewOrderTransport extends Fragment {
                     public Cursor runQuery(CharSequence constraint) {
                         Log.d(this.getClass().getName()," position");
                         try{
+                            message.getTarget().post(()->{
                             // TODO: 15.05.2023 В Фильтре переопределить Данные Курсор
                             cursor=          subClassNewOrderTransport .методGetAllLike(ТаблицаТекущая,Столбик,constraint.toString());
                             // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР
+                                Log.d(materialTextView.getContext().getClass().getName(), "\n"
+                                        + " время: " + new Date()+"\n+" +
+                                        " Класс в процессе... " +  materialTextView.getContext().getClass().getName()+"\n"+
+                                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " cursor "+cursor);
                             // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР
-                            simpleCursorAdapterЦФО.swapCursor(cursor);
-                            simpleCursorAdapterЦФО.notifyDataSetChanged();
-                            listViewForNewOrderTranport.setSelection(0);
                             if (cursor.getCount()==0) {
                                 searchViewДляНовогоЦФО.setBackgroundColor(Color.RED);
                                 message.getTarget().postDelayed(() -> {
@@ -1219,8 +1219,14 @@ public class FragmentNewOrderTransport extends Fragment {
                                 }, 250);
                                 materialButtonЗакрытьДиалог.setText("Закрыть");
                             }else{
+                                simpleCursorAdapterЦФО.swapCursor(cursor);
+                                simpleCursorAdapterЦФО.notifyDataSetChanged();
+                                listViewForNewOrderTranport.setSelection(0);
+                                listViewForNewOrderTranport.refreshDrawableState();
+                                listViewForNewOrderTranport.requestLayout();
                                 materialButtonЗакрытьДиалог.setText("Сохранить");
                             }
+                            });
                             Log.d(materialTextView.getContext().getClass().getName(), "\n"
                                     + " время: " + new Date()+"\n+" +
                                     " Класс в процессе... " +  materialTextView.getContext().getClass().getName()+"\n"+

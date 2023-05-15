@@ -1,9 +1,11 @@
 package com.dsy.dsu.CodeOrdersAnTransports.Background;
 
 import android.app.IntentService;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -367,16 +369,18 @@ public class ServiceOrserTransportService extends IntentService {
             Cursor методGetLikeNewOrderCursor(@NonNull   HashMap<String,String>  mapBoundService){
                 Cursor cursor = null;
                 try{
-                    String    СамЗапрос = mapBoundService.get("1").trim();
-                    String УсловияВыборки=    mapBoundService.get("2").trim();
-                    String ФильтрУсловияВыборки1= Optional.ofNullable(mapBoundService.get("3")) .orElse("") ;
-                    String Таблица=    mapBoundService.get("4").trim();
-                    Bundle bundleЗаказТранспорт=new Bundle();
-                    bundleЗаказТранспорт.putString("СамЗапрос", СамЗапрос + " "+ УсловияВыборки);
-                    bundleЗаказТранспорт.putStringArray("УсловияВыборки" ,new String[]{ФильтрУсловияВыборки1});
-                    bundleЗаказТранспорт.putString("Таблица",Таблица);
-                    cursor=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(getApplicationContext(), bundleЗаказТранспорт);
+                                 String Таблица=    mapBoundService.get("Таблица").trim();
+                                Bundle data=new Bundle();
+                                String  ТекущийLike=mapBoundService.get("ТекущийLike").trim();
+                                String  ТекущийСтолбик=mapBoundService.get("ТекущейСтолбик").trim();
+                                Log.w(this.getClass().getName(), "   Таблица  " +Таблица);
+                                Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabase/" + Таблица.trim() + "");
+                                ContentResolver resolver = getApplicationContext().getContentResolver();
+                              //  data.putString("selection"," fullname  LIKE  ? AND fullname!=? ");
+                                data.putString("selection"," "+ТекущийСтолбик+"  LIKE  ? AND "+ТекущийСтолбик+"!=? ");
+                                data.putStringArray("selectionArgs",new String[]{"%"+ТекущийLike+"%",""});
 
+                    cursor = resolver.query(uri,new String[]{"*"},data,null);// TODO: 13.10.2022 ,"Удаленная"
                     Log.d(getApplicationContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
                             " Класс в процессе... " + this.getClass().getName() + "\n" +
