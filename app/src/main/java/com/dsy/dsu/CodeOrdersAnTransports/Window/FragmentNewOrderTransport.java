@@ -511,22 +511,22 @@ public class FragmentNewOrderTransport extends Fragment {
         }
         }
 
-        private void методЗаполенияЦФО(@NonNull MaterialTextView values) {
+        private void методЗаполенияСправочника(@NonNull MaterialTextView values,@NonNull Cursor cursor,@NonNull String ФлагНаличияСпра) {
             try{
-                Bundle bundle=new Bundle();
-                bundle.putInt("cursorCfo",cursorCfo.getCount());
-                values.setTag(bundle);
                 values.startAnimation(animationvibr1);
-                if (cursorCfo!=null && cursorCfo.getCount()>0) {
-                    values.setHint(    "выберете цфо");
-                }else {
+                if (cursor==null || cursor.getCount()==0) {
                     values.setHint( "нет справочника");
+                }else {
+                    Bundle bundle=new Bundle();
+                    bundle.putInt("cursor",cursor.getCount());
+                    values.setTag(bundle);
+                    values.setHint(ФлагНаличияСпра);
                 }
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                         "cursorCfo " +cursorCfo);
+                         "cursor " +cursor);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -535,6 +535,24 @@ public class FragmentNewOrderTransport extends Fragment {
                     this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
+        }
+        private void методЗаполенияСправочникДата(@NonNull MaterialTextView values, @NonNull String ФлагНаличияСпра) {
+            try{
+                    Bundle bundle=new Bundle();
+                    values.setTag(bundle);
+                    values.setHint(ФлагНаличияСпра);
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
         }
 
         // TODO: 05.05.2023
@@ -615,8 +633,18 @@ public class FragmentNewOrderTransport extends Fragment {
                                         view.findViewById(android.R.id.text1);
                                 switch (view.getId()) {
                                     case android.R.id.text1:
+                                        // TODO: 15.05.2023  CFO
                                         методСправочникЦФО(родительскийCardView);
-                                        // TODO: 18.04.2023  Внешниц вид
+                                        // TODO: 15.05.2023  Вид ТС
+                                        методСправочникВидТС(родительскийCardView);
+                                        // TODO: 15.05.2023  ГОС Номер
+                                        методСправочникГосНомер(родительскийCardView);
+                                        // TODO: 15.05.2023  Дата Будущего Времени
+                                        методСправочникДатаБудущая(родительскийCardView);
+                                        // TODO: 15.05.2023  Кнопка Создания
+                                        методСправочникКнопкаСоздания(родительскийCardView);
+
+                                        // TODO: 18.04.2023  Simple Adapter Кдик по Элементы
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
@@ -659,11 +687,11 @@ public class FragmentNewOrderTransport extends Fragment {
         }
         private void методСправочникЦФО(MaterialCardView родительскийCardView) {
             try{
-                MaterialTextView materialTextCFO
+                MaterialTextView materialText
                         = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuecfo);//ВИД CFO
-                методЗаполенияЦФО(   materialTextCFO);
+                методЗаполенияСправочника(   materialText,cursorCfo,"выберете цфо");
                 // TODO: 12.05.2023
-                materialTextCFO.setOnClickListener(new View.OnClickListener() {
+                materialText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         МетодЗапускаАнимацииAllvalues(v);
@@ -680,6 +708,102 @@ public class FragmentNewOrderTransport extends Fragment {
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
+        private void методСправочникВидТС(MaterialCardView родительскийCardView) {
+            try{
+                MaterialTextView materialText
+                        = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuetypetc);//ВИД CFO
+                методЗаполенияСправочника(   materialText,cursorTypeTS,"выберете вид тс");
+                // TODO: 12.05.2023
+                materialText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        МетодЗапускаАнимацииAllvalues(v);
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+        private void методСправочникГосНомер(MaterialCardView родительскийCardView) {
+            try{
+                MaterialTextView materialText
+                        = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuegosnomer);//ВИД CFO
+                методЗаполенияСправочника(   materialText,cursorGosNomer,"выберете гос.номер");
+                // TODO: 12.05.2023
+                materialText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        МетодЗапускаАнимацииAllvalues(v);
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+
+        private void методСправочникДатаБудущая(MaterialCardView родительскийCardView) {
+            try{
+                MaterialTextView materialText
+                        = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuedate);//ВИД CFO
+                методЗаполенияСправочникДата(   materialText,"выберете дату");
+                // TODO: 12.05.2023
+                materialText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        МетодЗапускаАнимацииAllvalues(v);
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+
+        private void методСправочникКнопкаСоздания(MaterialCardView родительскийCardView) {
+            try{
+                MaterialButton materialButton
+                        = (MaterialButton)   родительскийCardView.findViewById(R.id.bottomnewordertransport);//ВИД CFO
+                // TODO: 12.05.2023
+                materialButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        МетодЗапускаАнимацииAllvalues(v);
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+
+
+
 
         private void методScroollAttach() {
             try {
