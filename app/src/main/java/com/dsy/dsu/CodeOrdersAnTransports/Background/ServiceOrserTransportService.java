@@ -377,9 +377,10 @@ public class ServiceOrserTransportService extends IntentService {
                                 Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabase/" + Таблица.trim() + "");
                                 ContentResolver resolver = getApplicationContext().getContentResolver();
                               //  data.putString("selection"," fullname  LIKE  ? AND fullname!=? ");
-                                data.putString("selection"," "+ТекущийСтолбик+"  LIKE  ? AND "+ТекущийСтолбик+"!=? ");
+                                data.putString("selection"," "+ТекущийСтолбик+"  LIKE  ? AND "+ТекущийСтолбик+"!=?  ");
                                 data.putStringArray("selectionArgs",new String[]{"%"+ТекущийLike+"%",""});
-
+                                data.putString(   "sortOrder",ТекущийСтолбик);
+                    // TODO: 16.05.2023
                     cursor = resolver.query(uri,new String[]{"*"},data,null);// TODO: 13.10.2022 ,"Удаленная"
                     Log.d(getApplicationContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +

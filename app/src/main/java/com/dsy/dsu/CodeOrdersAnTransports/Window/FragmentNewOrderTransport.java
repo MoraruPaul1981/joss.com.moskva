@@ -1027,7 +1027,7 @@ public class FragmentNewOrderTransport extends Fragment {
                                                     @Override
                                                     public void onClick(View v) {
                                                         try{
-                                                            ((MaterialTextView)view).startAnimation(animation1);
+                                                            ((MaterialTextView)view).startAnimation(animationvibr1);
                                                             Bundle bundle=(Bundle)   ((MaterialTextView)view).getTag();
                                                             Integer IDЦфоДЛяПередачи=      bundle.getInt("ПолучаемIDЦфо",0);
                                                             String НазваниеЦФО=   bundle.getString("НазваниеЦФО","");
@@ -1178,6 +1178,14 @@ public class FragmentNewOrderTransport extends Fragment {
                                     FilterQueryProvider filter = simpleCursorSeachViewNewOrderTranport.getFilterQueryProvider();
                                     filter.runQuery(newText);
                                     return true;
+                                }else {
+                                    // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР
+                                    методПерезаполенияПоискаИзФилтра(cursor);
+                                    Log.d(getContext() .getClass().getName(), "\n"
+                                            + " время: " + new Date()+"\n+" +
+                                            " Класс в процессе... " +   getContext().getClass().getName()+"\n"+
+                                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " cursor "+ cursor);
+                                    return true;
                                 }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -1193,66 +1201,25 @@ public class FragmentNewOrderTransport extends Fragment {
                 simpleCursorSeachViewNewOrderTranport.setFilterQueryProvider(new FilterQueryProvider() {
                     @Override
                     public Cursor runQuery(CharSequence constraint) {
-                        Log.d(this.getClass().getName()," position");
+                        final Cursor[] cursorFilter = {null};
                         try{
-
-                            //constraint="(закрыто) АБЗ 2 Сысерть (ЕКБ)";
-                        //    constraint=" АБЗ 2 ";
-                              /*  cursor=    simpleCursorSeachView.getCursor();*/
-                            // TODO: 15.05.2023 В Фильтре переопределить Данные Курсор
-                            cursor=    simpleCursorSeachViewNewOrderTranport.getCursor();
-                       cursor=          subClassNewOrderTransport
+                            message.getTarget().post(()->{
+                               cursorFilter[0] =    simpleCursorSeachViewNewOrderTranport.getCursor();
+                                cursorFilter[0] =          subClassNewOrderTransport
                                     .методGetAllLike(ТаблицаТекущая,Столбик,constraint.toString());
-                            // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР
+
+                                // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР
+                                методПерезаполенияПоискаИзФилтра(cursorFilter[0]);
                                 Log.d(getContext() .getClass().getName(), "\n"
                                         + " время: " + new Date()+"\n+" +
-                                        " Класс в процессе... " +  getContext() .getClass().getName()+"\n"+
-                                        " метод в процессе... "
-                                        + Thread.currentThread().getStackTrace()[2].getMethodName() + " cursorLIke "+cursor);
-                            // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР
+                                        " Класс в процессе... " +   getContext().getClass().getName()+"\n"+
+                                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " cursorFilter "+ cursorFilter[0]);
 
-
-                            message.getTarget().postDelayed(()->{
-                                simpleCursorSeachViewNewOrderTranport.swapCursor(cursor);
-                                simpleCursorSeachViewNewOrderTranport.notifyDataSetChanged();
-                                ListViewForNewOrderTransport.setSelection(0);
-                         View filter=       ListViewForNewOrderTransport.getChildAt(0);
-                         if(filter!=null){
-                             ((MaterialTextView)filter).startAnimation(animationvibr1);
-                         }
-                                ListViewForNewOrderTransport.requestLayout();
-
-                            },2000);
-
-
-
-
-
-
-                 /*           message.getTarget().post(()->{
-                            if (cursor.getCount()==0) {
-                                searchViewДляНовогоЦФО.setBackgroundColor(Color.RED);
-                                message.getTarget().postDelayed(() -> {
-                                    searchViewДляНовогоЦФО.setBackgroundColor(Color.parseColor("#F2F5F5"));
-                                   /// materialButtonЗакрытьДиалог.setText("Закрыть");
-                                }, 250);
-                            }else{
-                                simpleCursorSeachViewNewOrderTranport.swapCursor(cursorCfo);
-                                simpleCursorSeachViewNewOrderTranport.notifyDataSetChanged();
-                             *//*   ListViewForNewOrderTransport.setAdapter(simpleCursorSeachViewNewOrderTranport);*//*
-                                ListViewForNewOrderTransport.startAnimation(animationvibr1);
-                                ListViewForNewOrderTransport.setSelection(10);
-                                ListViewForNewOrderTransport.requestLayout();
-                                ListViewForNewOrderTransport.refreshDrawableState();
-                                //materialButtonЗакрытьДиалог.setText("Сохранить");
-                            }
-                              *//*  ListViewForNewOrderTransport.requestLayout();
-                                ListViewForNewOrderTransport.refreshDrawableState();*//*
-                            });*/
+                            });
                             Log.d(getContext() .getClass().getName(), "\n"
                                     + " время: " + new Date()+"\n+" +
                                     " Класс в процессе... " +   getContext().getClass().getName()+"\n"+
-                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " cursor "+cursor);
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " cursorFilter "+ cursorFilter[0]);
                         } catch (Exception e) {
                             e.printStackTrace();
                             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -1261,7 +1228,7 @@ public class FragmentNewOrderTransport extends Fragment {
                                     this.getClass().getName(),
                                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
-                        return  cursor;
+                        return cursorFilter[0];
                     }
                 });
             } catch (Exception e) {
@@ -1273,6 +1240,44 @@ public class FragmentNewOrderTransport extends Fragment {
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
+
+
+        // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР
+        private void методПерезаполенияПоискаИзФилтра(Cursor cursorFilter) {
+            try {
+            simpleCursorSeachViewNewOrderTranport.swapCursor(cursorFilter);
+            // TODO: 16.05.2023 reboot disain
+            simpleCursorSeachViewNewOrderTranport.notifyDataSetChanged();
+            // TODO: 16.05.2023 Если данные Естьв Фильтре
+            if(cursorFilter !=null && cursorFilter.getCount()>0) {
+                ListViewForNewOrderTransport.setSelection(0);
+                View filter=       ListViewForNewOrderTransport.getChildAt(0);
+                if(filter!=null){
+                    ((MaterialTextView)filter).startAnimation(animationvibr1);
+                }
+            }else{
+                searchViewДляNewOrderTransport.setBackgroundColor(Color.RED);
+                message.getTarget().postDelayed(() -> {
+                    searchViewДляNewOrderTransport.setBackgroundColor(Color.parseColor("#F2F5F5"));
+                }, 500);
+            }
+            // TODO: 16.05.2023
+            ListViewForNewOrderTransport.refreshDrawableState();
+            ListViewForNewOrderTransport.requestLayout();
+                Log.d(getContext() .getClass().getName(), "\n"
+                        + " время: " + new Date()+"\n+" +
+                        " Класс в процессе... " +   getContext().getClass().getName()+"\n"+
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " cursorFilter "+ cursorFilter);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors( getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        }
+
         private void методКликДейсвиеКнопкиСохранить(@NonNull MaterialTextView materialTextViewДанныеДляСохранения) {
             try{
                 materialButtonЗакрытьДиалог.setOnClickListener(new View.OnClickListener() {
