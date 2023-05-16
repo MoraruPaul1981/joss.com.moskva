@@ -970,6 +970,7 @@ public class FragmentNewOrderTransport extends Fragment {
                         animation1= AnimationUtils.loadAnimation(materialTextViewТекущийСправочник.getContext(),R.anim.slide_in_row_newscanner1);
                         materialButtonЗакрытьДиалог =    (MaterialButton) view.findViewById(R.id.bottom_newscanner1);
                         ListViewForNewOrderTransport =    (ListView) view.findViewById(R.id.ListViewForNewOrderTransport);
+                        searchViewДляNewOrderTransport =    (SearchView) view.findViewById(R.id.searchview_newordertransport);
                         ListViewForNewOrderTransport.setTextFilterEnabled(true);
                         searchViewДляNewOrderTransport.setDrawingCacheBackgroundColor(Color.GRAY);
                         searchViewДляNewOrderTransport.setDrawingCacheEnabled(true);

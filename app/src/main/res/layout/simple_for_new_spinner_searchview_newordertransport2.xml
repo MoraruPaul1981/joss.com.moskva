@@ -16,7 +16,7 @@
         tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports">
 
         <SearchView
-            android:id="@+id/searchview_newscanner"
+            android:id="@+id/searchview_newordertransport"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_alignParentLeft="true"
@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/bottom_newscanner1"
-            android:layout_below="@id/searchview_newscanner"
+            android:layout_below="@id/searchview_newordertransport"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_centerHorizontal="true"
