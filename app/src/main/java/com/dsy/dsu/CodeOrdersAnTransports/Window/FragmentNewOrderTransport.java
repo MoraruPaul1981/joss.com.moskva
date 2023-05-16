@@ -759,12 +759,11 @@ public class FragmentNewOrderTransport extends Fragment {
                     public void onClick(View v) {
                         MaterialButton materialButtonExitOrSave
                                 = (MaterialButton)   родительскийCardView.findViewById(R.id.bottomnewordertransport);
-
                         v.animate().rotationX(+40l);
                         message.getTarget() .postDelayed(()->{
                             v.animate().rotationX(0);
                             searchViewForNewOT.методПоискаНовыйЗаказТранспорта( (MaterialTextView) v,cursorCfo,"name","cfo","цфо",materialButtonExitOrSave);
-                        },100);
+                        },200);
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
@@ -793,7 +792,7 @@ public class FragmentNewOrderTransport extends Fragment {
                         message.getTarget() .postDelayed(()->{
                             v.animate().rotationX(0);
                             searchViewForNewOT.методПоискаНовыйЗаказТранспорта( (MaterialTextView) v,cursorTypeTS,"name","vid_tc","вид тс",materialButtonExitOrSave);
-                        },100);
+                        },200);
 
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -850,6 +849,9 @@ public class FragmentNewOrderTransport extends Fragment {
                         v.animate().rotationX(+40l);
                         message.getTarget() .postDelayed(()->{
                             v.animate().rotationX(0);
+                            // TODO: 16.05.2023 создание Даты
+                            СlassGetDateForNewOrderTranport classGetDateForNewOrderTranport=new СlassGetDateForNewOrderTranport();
+                            classGetDateForNewOrderTranport.методGetDateForNewOrder(getActivity(),(MaterialTextView ) v);
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
@@ -908,7 +910,7 @@ public class FragmentNewOrderTransport extends Fragment {
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
                         }
                             // TODO: 15.05.2023
-                        },200);
+                        },150);
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
@@ -1093,67 +1095,9 @@ public class FragmentNewOrderTransport extends Fragment {
 
                         методКликДейсвиеКнопкиСохранить(materialTextViewТекущийСправочник);
 
-                        // TODO: 16.05.2023  КЛИК
+                        // TODO: 16.05.2023  КЛИК СЛУШАТЕЛЬ ПО ЕЛЕМЕНТУ
+                        методКликПоЗаказуOrder();
 
-                        ListViewForNewOrderTransport.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                try{
-                                MaterialTextView materialTextViewGetElement=(MaterialTextView)       parent.getAdapter().getView(position, view,parent );
-                                if(materialTextViewGetElement!=null){
-                                    Bundle bundlePepoles= (Bundle) materialTextViewGetElement.getTag();
-                                    materialTextViewGetElement.startAnimation(animationvibr1);
-                                    // TODO: 16.05.2023 Из Выбраного Элемента Получаеним ДАнные
-                                    Integer getId=      bundlePepoles.getInt("getId",0);
-                                    String getName=   bundlePepoles.getString("getName","").trim();
-                                    Long getUUID =   bundlePepoles.getLong("getUUID",0l);
-                                    materialTextViewТекущийСправочник.setTag(bundlePepoles);
-                                    materialTextViewТекущийСправочник.setText(getName);
-                                        // TODO: 15.05.2023 ЗАПОЛЕНИЕ ДАННЫМИ КЛИК
-                                    message.getTarget().postDelayed(()->{
-                                        if (    materialTextViewТекущийСправочник.getText().toString().length()>0) {
-                                            materialTextViewТекущийСправочник.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-                                            materialTextViewТекущийСправочник.setTextColor(Color.BLACK);
-                                            materialButtonExitOrSave.setText("Сохранить");
-                                            // TODO: 15.05.2023  ЗАКРЫВАЕТ
-                                            // TODO: 15.05.2023 Закрываем
-                                            alertDialogNewOrderTranport.cancel();
-                                            alertDialogNewOrderTranport.dismiss();
-                                        } else {
-                                            materialTextViewТекущийСправочник.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-                                            materialTextViewТекущийСправочник.setTextColor(Color.GRAY);
-                                            materialButtonExitOrSave.setText("Закрыть");
-                                        }
-                                        materialTextViewТекущийСправочник.refreshDrawableState();
-                                        materialTextViewТекущийСправочник.requestLayout();
-                                        materialButtonExitOrSave.refreshDrawableState();
-                                        materialButtonExitOrSave.requestLayout();
-                                        Log.d(getContext().getClass().getName(), "\n"
-                                                + " время: " + new Date() + "\n+" +
-                                                " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                                "materialTextViewТекущийСправочник " +materialTextViewТекущийСправочник);
-                                    },150);
-
-                                }
-                                Log.d(materialTextViewТекущийСправочник.getContext().getClass().getName(), "\n"
-                                        + " время: " + new Date()+"\n+" +
-                                        " Класс в процессе... " +
-                                        materialTextViewТекущийСправочник.getContext().getClass().getName()+"\n"+
-                                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
-                                        Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                new   Class_Generation_Errors(materialTextViewТекущийСправочник.getContext())
-                                        .МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                                this.getClass().getName(),
-                                                Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            }
-                            }
-                        });
                         Log.d(materialTextViewТекущийСправочник.getContext().getClass().getName(), "\n"
                                 + " время: " + new Date()+"\n+" +
                                 " Класс в процессе... " +
@@ -1173,6 +1117,82 @@ public class FragmentNewOrderTransport extends Fragment {
 
                     return super.setView(view);
                     // TODO: 20.12.2022  тут конец выбеленого
+                }
+
+
+                // TODO: 16.05.2023  КЛИК ПО ЕЛЕМЕНТУ
+                private void методКликПоЗаказуOrder() {
+                    try{
+                    ListViewForNewOrderTransport.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            try{
+                            MaterialTextView materialTextViewGetElement=(MaterialTextView)       parent.getAdapter().getView(position, view,parent );
+                            if(materialTextViewGetElement!=null){
+                                Bundle bundlePepoles= (Bundle) materialTextViewGetElement.getTag();
+                                materialTextViewGetElement.startAnimation(animationvibr1);
+                                // TODO: 16.05.2023 Из Выбраного Элемента Получаеним ДАнные
+                                Integer getId=      bundlePepoles.getInt("getId",0);
+                                String getName=   bundlePepoles.getString("getName","").trim();
+                                Long getUUID =   bundlePepoles.getLong("getUUID",0l);
+                                materialTextViewТекущийСправочник.setTag(bundlePepoles);
+                                materialTextViewТекущийСправочник.setText(getName);
+                                    // TODO: 15.05.2023 ЗАПОЛЕНИЕ ДАННЫМИ КЛИК
+                                message.getTarget().postDelayed(()->{
+                                    if (    materialTextViewТекущийСправочник.getText().toString().length()>0) {
+                                        materialTextViewТекущийСправочник.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                                        materialTextViewТекущийСправочник.setTextColor(Color.BLACK);
+                                        materialButtonExitOrSave.setText("Сохранить");
+                                        // TODO: 15.05.2023  ЗАКРЫВАЕТ
+                                        // TODO: 15.05.2023 Закрываем
+                                        alertDialogNewOrderTranport.cancel();
+                                        alertDialogNewOrderTranport.dismiss();
+                                    } else {
+                                        materialTextViewТекущийСправочник.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                                        materialTextViewТекущийСправочник.setTextColor(Color.GRAY);
+                                        materialButtonExitOrSave.setText("Закрыть");
+                                    }
+                                    materialTextViewТекущийСправочник.refreshDrawableState();
+                                    materialTextViewТекущийСправочник.requestLayout();
+                                    materialButtonExitOrSave.refreshDrawableState();
+                                    materialButtonExitOrSave.requestLayout();
+                                    Log.d(getContext().getClass().getName(), "\n"
+                                            + " время: " + new Date() + "\n+" +
+                                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            "materialTextViewТекущийСправочник " +materialTextViewТекущийСправочник);
+                                },150);
+
+                            }
+                            Log.d(materialTextViewТекущийСправочник.getContext().getClass().getName(), "\n"
+                                    + " время: " + new Date()+"\n+" +
+                                    " Класс в процессе... " +
+                                    materialTextViewТекущийСправочник.getContext().getClass().getName()+"\n"+
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
+                                    Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new   Class_Generation_Errors(materialTextViewТекущийСправочник.getContext())
+                                    .МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                            this.getClass().getName(),
+                                            Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
+                            Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new   Class_Generation_Errors(materialTextViewТекущийСправочник.getContext())
+                            .МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName(),
+                                    Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
                 }
 
 
@@ -1368,66 +1388,50 @@ public class FragmentNewOrderTransport extends Fragment {
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
+        // TODO: 15.05.2023 КОНЕЦ НОВОГО ПОСИКА
+    }
+    // TODO: 16.05.2023 Класс Для Порлучение Даты Для Новго Заказа
+    class  СlassGetDateForNewOrderTranport{
+        void  методGetDateForNewOrder(@NonNull Activity activity,@NonNull      MaterialTextView materialTextViewКликДата){
+            try{
+                final String[] FullNameCFO = new String[1];
+                final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", new Locale("ru"));
+                Calendar newDate = Calendar.getInstance();
+                //TODODATA
+                DatePickerDialog ДатаДляКалендаря =
+                        new DatePickerDialog(activity, android.R.style.Theme_Holo_InputMethod , new DatePickerDialog.OnDateSetListener() {////Theme_Holo_Dialog_MinWidth  //Theme_Holo_Panel
+                            public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                newDate.set(year, monthOfYear, dayOfMonth);
+                                try {
+                                    String ДатаДляНовогоЗаказаТраспорта= DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(newDate.getTime());
+                                    materialTextViewКликДата.setTag(ДатаДляНовогоЗаказаТраспорта);
+                                    materialTextViewКликДата.setText(ДатаДляНовогоЗаказаТраспорта);
+                                    Log.d(getContext() .getClass().getName(), "\n"
+                                            + " время: " + new Date()+"\n+" +
+                                            " Класс в процессе... " +   getContext().getClass().getName()+"\n"+
+                                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                            + " ДатаДляНовогоЗаказаТраспорта "+ ДатаДляНовогоЗаказаТраспорта);
 
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                    new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                }
+                            }
 
-        // TODO: 16.05.2023 Класс Для Порлучение Даты Для Новго Заказа
-        class  classGetDateForNewOrderTranport{
-  void  методGetDateForNewOrder(@NonNull Activity activity){
-      try{
-          final String[] FullNameCFO = new String[1];
-      final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", new Locale("ru"));
-      Calendar newDate = Calendar.getInstance();
-      //TODODATA
-      DatePickerDialog ДатаДляКалендаря =
-              new DatePickerDialog(activity, android.R.style.Theme_Holo_InputMethod , new DatePickerDialog.OnDateSetListener() {////Theme_Holo_Dialog_MinWidth  //Theme_Holo_Panel
-                  public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                      newDate.set(year, monthOfYear, dayOfMonth);
-                      try {
-                          view.setBackgroundColor(Color.RED);
-                          view.animate().rotationXBy(5);
-                          view.animate().rotationX(10);
-                          String ФинальныйПолученаяДата= DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(newDate.getTime());
-                          Log.d(this.getClass().getName()," year " +year+" month " +monthOfYear+" dayOfMonth " +dayOfMonth  +  "  ФинальныйПолученаяДата " +ФинальныйПолученаяДата);
-                          // TODO: 22.09.2021 после того как мы получил даты запускаме сомо приложения
-                          String МесяцИзКолендаря = String.valueOf(monthOfYear + 1);////ТЕКУЩИЙ МЕСЯЦ ИЗ КАЛЕНДАРЯ
-                          if (МесяцИзКолендаря.length() == 2) {
-
-                            FullNameCFO[0] = dayOfMonth + "-" + МесяцИзКолендаря + "-" + year;////ДАННОЕ ЗНАЧЕНИЕ ПЕРЕДАЕМ НА ВСЕ ПРОГРАММУ В ДАЛЬНЕЙШЕМ
-                              Log.d(this.getClass().getName(), "  FullNameCFO" + FullNameCFO[0]);
-                          } else {
-                              FullNameCFO[0] = dayOfMonth + "-" + "0" + МесяцИзКолендаря + "-" + year;////ДАННОЕ ЗНАЧЕНИЕ ПЕРЕДАЕМ НА ВСЕ ПРОГРАММУ В ДАЛЬНЕЙШЕМ
-                              Log.d(this.getClass().getName(), "  FullNameCFO" + FullNameCFO[0]);
-                          }
-                          Date ПрасингДаты = new Date();
-                          if ( FullNameCFO[0] !=null) {
-                              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                  ПрасингДаты = new android.icu.text.SimpleDateFormat("dd-MM-yyyy", new Locale("ru")).parse(FullNameCFO[0]);
-                              }else {
-                                  ПрасингДаты = new SimpleDateFormat("dd-MM-yyyy", new Locale("ru")).parse(FullNameCFO[0]);
-                              }
-                              Log.d(this.getClass().getName()," ПрасингДаты " +ПрасингДаты.toString());
-                              Log.d(this.getClass().getName(),"   FullNameCFO" + FullNameCFO[0]);
-                          }
-                      } catch (Exception e) {
-                          e.printStackTrace();
-                          Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                  " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                          new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                  Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                      }
-                  }
-
-              }, newDate.get(Calendar.YEAR), newDate.get(Calendar.MONTH), newDate.get(Calendar.DAY_OF_MONTH));
-      ДатаДляКалендаря.setTitle("Календарь");
-      ДатаДляКалендаря.setButton(DatePickerDialog.BUTTON_POSITIVE, "Создать", ДатаДляКалендаря);
-      ДатаДляКалендаря.setButton(DatePickerDialog.BUTTON_NEGATIVE, "Закрыть", ДатаДляКалендаря);
-      ДатаДляКалендаря.show();
-      ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
-      ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_NEGATIVE).setBackgroundColor(Color.WHITE);
-      ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
-      ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_POSITIVE).setBackgroundColor(Color.WHITE);
-      ////
-  } catch (Exception e) {
+                        }, newDate.get(Calendar.YEAR), newDate.get(Calendar.MONTH), newDate.get(Calendar.DAY_OF_MONTH) +1);
+                ДатаДляКалендаря.setTitle("Календарь");
+                ДатаДляКалендаря.setButton(DatePickerDialog.BUTTON_POSITIVE, "Создать", ДатаДляКалендаря);
+                ДатаДляКалендаря.setButton(DatePickerDialog.BUTTON_NEGATIVE, "Закрыть", ДатаДляКалендаря);
+                ДатаДляКалендаря.show();
+                ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+                ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_NEGATIVE).setBackgroundColor(Color.WHITE);
+                ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_POSITIVE).setBackgroundColor(Color.WHITE);
+                ////
+            } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                         " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
@@ -1435,10 +1439,8 @@ public class FragmentNewOrderTransport extends Fragment {
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
 
-            }
-            
         }
-        // TODO: 15.05.2023 КОНЕЦ НОВОГО ПОСИКА
+
     }
 
     // TODO: 26.04.2023 Конец Фрагмента FragmentOrderTransportOne     // TODO: 26.04.2023 Конец Фрагмента FragmentOrderTransportOne     // TODO: 26.04.2023 Конец Фрагмента FragmentOrderTransportOne
