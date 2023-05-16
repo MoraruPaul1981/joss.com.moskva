@@ -1091,8 +1091,7 @@ public class FragmentNewOrderTransport extends Fragment {
                         ListViewForNewOrderTransport.refreshDrawableState();
 
                         // TODO: 13.12.2022  Поиск и его слушель
-                        МетодПоискаФильтр(searchViewДляNewOrderTransport,simpleCursorSeachViewNewOrderTranport,
-                                materialTextViewТекущийСправочник,ТаблицаТекущая);
+                        МетодПоискаФильтр(  ТаблицаТекущая);
 
                         // TODO: 15.05.2023 Слушатель Действия Кнопки Сохранить
 
@@ -1134,13 +1133,10 @@ public class FragmentNewOrderTransport extends Fragment {
             // TODO: 13.12.2022 ВТОРОЙ СЛУШАТЕЛЬ НА КНОПКУ
         }
 
-        private void МетодПоискаФильтр(@NonNull   SearchView searchViewДляНовогоЦФО,
-                                       @NonNull SimpleCursorAdapter simpleCursorAdapterЦФО,
-                                       @NonNull MaterialTextView  materialTextView,
-                                       @NonNull String ТаблицаДляФильтра) {
+        private void МетодПоискаФильтр(@NonNull String ТаблицаДляФильтра) {
             try{
 
-                searchViewДляНовогоЦФО.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+                searchViewДляNewOrderTransport.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
                         try{
@@ -1159,7 +1155,7 @@ public class FragmentNewOrderTransport extends Fragment {
                     }
                 });
 
-                searchViewДляНовогоЦФО.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                searchViewДляNewOrderTransport.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
                         try{
@@ -1168,7 +1164,7 @@ public class FragmentNewOrderTransport extends Fragment {
                             e.printStackTrace();
                             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(materialTextView.getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            new   Class_Generation_Errors( getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                                     this.getClass().getName(),
                                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
@@ -1178,40 +1174,56 @@ public class FragmentNewOrderTransport extends Fragment {
                     public boolean onQueryTextChange(String newText) {
                         try{
                             Log.d(this.getClass().getName()," position");
-                            if (newText.length()>0) {
-                                Filter filter= simpleCursorAdapterЦФО.getFilter();
-                                filter.filter(newText);
-                            }
+                                if (newText.length() > 0) {
+                                    FilterQueryProvider filter = simpleCursorSeachViewNewOrderTranport.getFilterQueryProvider();
+                                    filter.runQuery(newText);
+                                }
                         } catch (Exception e) {
                             e.printStackTrace();
                             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(materialTextView.getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            new   Class_Generation_Errors(getContext() ).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                                     this.getClass().getName(),
                                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
                         return true;
                     }
                 });
-                simpleCursorAdapterЦФО.setFilterQueryProvider(new FilterQueryProvider() {
+                simpleCursorSeachViewNewOrderTranport.setFilterQueryProvider(new FilterQueryProvider() {
                     @Override
                     public Cursor runQuery(CharSequence constraint) {
                         Log.d(this.getClass().getName()," position");
                         try{
 
+                            //constraint="(закрыто) АБЗ 2 Сысерть (ЕКБ)";
+                        //    constraint=" АБЗ 2 ";
                               /*  cursor=    simpleCursorSeachView.getCursor();*/
                             // TODO: 15.05.2023 В Фильтре переопределить Данные Курсор
                        cursorCfo=          subClassNewOrderTransport
                                     .методGetAllLike(ТаблицаТекущая,Столбик,constraint.toString());
                             // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР
-                                Log.d(materialTextView.getContext().getClass().getName(), "\n"
+                                Log.d(getContext() .getClass().getName(), "\n"
                                         + " время: " + new Date()+"\n+" +
-                                        " Класс в процессе... " +  materialTextView.getContext().getClass().getName()+"\n"+
+                                        " Класс в процессе... " +  getContext() .getClass().getName()+"\n"+
                                         " метод в процессе... "
                                         + Thread.currentThread().getStackTrace()[2].getMethodName() + " cursorLIke "+cursor);
                             // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР
 
-                            message.getTarget().post(()->{
+
+                            message.getTarget().postDelayed(()->{
+                                simpleCursorSeachViewNewOrderTranport.swapCursor(cursorCfo);
+                                simpleCursorSeachViewNewOrderTranport.notifyDataSetChanged();
+                                ListViewForNewOrderTransport.setSelection(10);
+                                ListViewForNewOrderTransport.requestLayout();
+
+                            },2000);
+
+
+
+
+
+
+                 /*           message.getTarget().post(()->{
                             if (cursor.getCount()==0) {
                                 searchViewДляНовогоЦФО.setBackgroundColor(Color.RED);
                                 message.getTarget().postDelayed(() -> {
@@ -1221,36 +1233,36 @@ public class FragmentNewOrderTransport extends Fragment {
                             }else{
                                 simpleCursorSeachViewNewOrderTranport.swapCursor(cursorCfo);
                                 simpleCursorSeachViewNewOrderTranport.notifyDataSetChanged();
-                             /*   ListViewForNewOrderTransport.setAdapter(simpleCursorSeachViewNewOrderTranport);*/
+                             *//*   ListViewForNewOrderTransport.setAdapter(simpleCursorSeachViewNewOrderTranport);*//*
                                 ListViewForNewOrderTransport.startAnimation(animationvibr1);
-                                ListViewForNewOrderTransport.setSelection(0);
+                                ListViewForNewOrderTransport.setSelection(10);
                                 ListViewForNewOrderTransport.requestLayout();
                                 ListViewForNewOrderTransport.refreshDrawableState();
                                 //materialButtonЗакрытьДиалог.setText("Сохранить");
                             }
-                              /*  ListViewForNewOrderTransport.requestLayout();
-                                ListViewForNewOrderTransport.refreshDrawableState();*/
-                            });
-                            Log.d(materialTextView.getContext().getClass().getName(), "\n"
+                              *//*  ListViewForNewOrderTransport.requestLayout();
+                                ListViewForNewOrderTransport.refreshDrawableState();*//*
+                            });*/
+                            Log.d(getContext() .getClass().getName(), "\n"
                                     + " время: " + new Date()+"\n+" +
-                                    " Класс в процессе... " +  materialTextView.getContext().getClass().getName()+"\n"+
+                                    " Класс в процессе... " +   getContext().getClass().getName()+"\n"+
                                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " cursor "+cursor);
                         } catch (Exception e) {
                             e.printStackTrace();
                             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(materialTextView.getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            new   Class_Generation_Errors( getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                                     this.getClass().getName(),
                                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
-                        return  cursor;
+                        return  cursorCfo;
                     }
                 });
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                         " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(materialTextView.getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                new   Class_Generation_Errors( getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                         this.getClass().getName(),
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }

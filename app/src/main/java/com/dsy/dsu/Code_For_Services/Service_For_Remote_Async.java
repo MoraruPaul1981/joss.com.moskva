@@ -1290,7 +1290,7 @@ try{
                             @Override
                             public void accept(List<Map<String, String>> maps) throws Throwable {
 
-                                maps.spliterator().forEachRemaining(new Consumer<Map<String, String>>() {
+                                maps.forEach(new Consumer<Map<String, String>>() {
                                     @Override
                                     public void accept(Map<String, String> stringStringMap) {
                                         // TODO: 28.04.2023  Parent
