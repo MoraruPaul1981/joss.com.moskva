@@ -1370,14 +1370,16 @@ try{
                                                 Log.d(this.getClass().getName(), " getKeys " + getKeys +
                                                         " getValues" + getValues);
                                                 // TODO: 27.10.2022  UUID есть Обновление
-                                                ТекущийАдаптерДляВсего.put(getKeys, getValues);//
 
-                                                Log.d(this.getClass().getName(), "\n" + " class " +
+                                                    if (ТекущийАдаптерДляВсего.containsKey(getKeys)==false) {
+                                                        ТекущийАдаптерДляВсего.put(getKeys, getValues);//
+                                                    }
+                                                    Log.d(this.getClass().getName(), "\n" + " class " +
                                                         Thread.currentThread().getStackTrace()[2].getClassName()
                                                         + "\n" +
                                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                        + " ТекущийАдаптерДляВсего " + ТекущийАдаптерДляВсего.size());
+                                                        + " ТекущийАдаптерДляВсего " + ТекущийАдаптерДляВсего.size()  + " getKeys " +getKeys  + " getValues " +getValues);
                                             } catch (Exception e) {
                                                 e.printStackTrace();
                                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +

@@ -1177,6 +1177,7 @@ public class FragmentNewOrderTransport extends Fragment {
                                 if (newText.length() > 0) {
                                     FilterQueryProvider filter = simpleCursorSeachViewNewOrderTranport.getFilterQueryProvider();
                                     filter.runQuery(newText);
+                                    return true;
                                 }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -1186,7 +1187,7 @@ public class FragmentNewOrderTransport extends Fragment {
                                     this.getClass().getName(),
                                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
-                        return true;
+                        return false;
                     }
                 });
                 simpleCursorSeachViewNewOrderTranport.setFilterQueryProvider(new FilterQueryProvider() {
@@ -1213,7 +1214,11 @@ public class FragmentNewOrderTransport extends Fragment {
                             message.getTarget().postDelayed(()->{
                                 simpleCursorSeachViewNewOrderTranport.swapCursor(cursorCfo);
                                 simpleCursorSeachViewNewOrderTranport.notifyDataSetChanged();
-                                ListViewForNewOrderTransport.setSelection(10);
+                                ListViewForNewOrderTransport.setSelection(0);
+                         View filter=       ListViewForNewOrderTransport.getFocusedChild();
+                         if(filter!=null){
+                             ((MaterialTextView)filter).startAnimation(animationvibr1);
+                         }
                                 ListViewForNewOrderTransport.requestLayout();
 
                             },2000);
