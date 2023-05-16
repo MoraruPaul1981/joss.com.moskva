@@ -1200,7 +1200,8 @@ public class FragmentNewOrderTransport extends Fragment {
                         //    constraint=" АБЗ 2 ";
                               /*  cursor=    simpleCursorSeachView.getCursor();*/
                             // TODO: 15.05.2023 В Фильтре переопределить Данные Курсор
-                       cursorCfo=          subClassNewOrderTransport
+                            cursor=    simpleCursorSeachViewNewOrderTranport.getCursor();
+                       cursor=          subClassNewOrderTransport
                                     .методGetAllLike(ТаблицаТекущая,Столбик,constraint.toString());
                             // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР
                                 Log.d(getContext() .getClass().getName(), "\n"
@@ -1212,10 +1213,10 @@ public class FragmentNewOrderTransport extends Fragment {
 
 
                             message.getTarget().postDelayed(()->{
-                                simpleCursorSeachViewNewOrderTranport.swapCursor(cursorCfo);
+                                simpleCursorSeachViewNewOrderTranport.swapCursor(cursor);
                                 simpleCursorSeachViewNewOrderTranport.notifyDataSetChanged();
                                 ListViewForNewOrderTransport.setSelection(0);
-                         View filter=       ListViewForNewOrderTransport.getFocusedChild();
+                         View filter=       ListViewForNewOrderTransport.getChildAt(0);
                          if(filter!=null){
                              ((MaterialTextView)filter).startAnimation(animationvibr1);
                          }
@@ -1260,7 +1261,7 @@ public class FragmentNewOrderTransport extends Fragment {
                                     this.getClass().getName(),
                                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
-                        return  cursorCfo;
+                        return  cursor;
                     }
                 });
             } catch (Exception e) {
