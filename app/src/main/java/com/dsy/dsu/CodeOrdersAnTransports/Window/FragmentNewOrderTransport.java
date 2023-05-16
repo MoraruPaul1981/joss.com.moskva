@@ -100,6 +100,12 @@ public class FragmentNewOrderTransport extends Fragment {
 
     private AlertDialog alertDialogNewOrderTranport;
 
+    private MaterialTextView materialTextDate;
+    private MaterialTextView materialTextCFO;
+    private MaterialTextView materialTextTypeTS;
+    private MaterialButton materialButtonExitOrSave ;
+    private MaterialTextView materialTextGosNomer ;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         try{
@@ -255,8 +261,7 @@ public class FragmentNewOrderTransport extends Fragment {
 
     // TODO: 27.04.2023  новый код Заказ Транспорта
     class   SubClassNewOrderTransport{
- private Activity activity;
-
+        private Activity activity;
         public SubClassNewOrderTransport(Activity activity) {
             this.activity = activity;
         }
@@ -589,7 +594,6 @@ public class FragmentNewOrderTransport extends Fragment {
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-                                        return true;
                                 }
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n");
@@ -600,12 +604,13 @@ public class FragmentNewOrderTransport extends Fragment {
                                 new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                             }
-                            return false;
+                            return true;
                         }
                     };
                 simpleAdapterAllElement.setViewBinder(БиндингКогдаНетДАнных);
                 simpleAdapterAllElement.notifyDataSetChanged();
                 gridViewNewOrderTransport.setAdapter(simpleAdapterAllElement);
+                gridViewNewOrderTransport.getAdapter().areAllItemsEnabled();
                 gridViewNewOrderTransport.refreshDrawableState();
                 gridViewNewOrderTransport.requestLayout();
                 // TODO: 14.05.2023 smmo
@@ -647,11 +652,11 @@ public class FragmentNewOrderTransport extends Fragment {
                                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
                                         " scrollX " +scrollX + " oldScrollX " +oldScrollX);
 
-                            if(scrollX>2 || oldScrollX>2){
+                          /*  if(scrollX>2 || oldScrollX>2){
                                 if (ИндексТекущийФрагмент==1) {
                                     методBackOrdersTransport();
                                 }
-                            }
+                            }*/
 
                         }
                         Log.d(getContext().getClass().getName(), "\n"
@@ -734,6 +739,7 @@ public class FragmentNewOrderTransport extends Fragment {
     }
     // TODO: 14.05.2023 НАЧАЛО КЛАСС ПОСИКА SEARCHVIEW
     class SubClassSetAllSprabochnik {
+
         public SubClassSetAllSprabochnik() {
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
@@ -743,15 +749,15 @@ public class FragmentNewOrderTransport extends Fragment {
         }
         private void методСправочникЦФО(@NonNull View родительскийCardView) {
             try{
-                MaterialTextView materialText
-                        = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuecfo);//ВИД CFO
-                методЗаполенияСправочника(   materialText,cursorCfo,"выберете цфо");
+                if (materialTextCFO==null) {
+                    materialTextCFO = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuecfo);//ВИД CFO
+                    методЗаполенияСправочника(   materialTextCFO,cursorCfo,"выберете цфо");
+                    materialButtonExitOrSave = (MaterialButton)   родительскийCardView.findViewById(R.id.bottomnewordertransport);
+                }
                 // TODO: 12.05.2023
-                materialText.setOnClickListener(new View.OnClickListener() {
+                materialTextCFO.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        MaterialButton materialButtonExitOrSave
-                                = (MaterialButton)   родительскийCardView.findViewById(R.id.bottomnewordertransport);
                         v.animate().rotationX(+40l);
                         message.getTarget() .postDelayed(()->{
                             v.animate().rotationX(0);
@@ -777,15 +783,15 @@ public class FragmentNewOrderTransport extends Fragment {
         }
         private void методСправочникВидТС(@NonNull  View родительскийCardView) {
             try{
-                MaterialTextView materialText
-                        = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuetypetc);//ВИД CFO
-                методЗаполенияСправочника(   materialText,cursorTypeTS,"выберете вид тс");
+                if (materialTextTypeTS==null) {
+                    materialTextTypeTS = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuetypetc);//ВИД CFO
+                    методЗаполенияСправочника(   materialTextTypeTS,cursorTypeTS,"выберете вид тс");
+                   materialButtonExitOrSave = (MaterialButton)   родительскийCardView.findViewById(R.id.bottomnewordertransport);
+                }
                 // TODO: 12.05.2023
-                materialText.setOnClickListener(new View.OnClickListener() {
+                materialTextTypeTS.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        MaterialButton materialButtonExitOrSave
-                                = (MaterialButton)   родительскийCardView.findViewById(R.id.bottomnewordertransport);
                         v.animate().rotationX(+40l);
                         message.getTarget() .postDelayed(()->{
                             v.animate().rotationX(0);
@@ -806,15 +812,15 @@ public class FragmentNewOrderTransport extends Fragment {
         }
         private void методСправочникГосНомер(@NonNull  View родительскийCardView) {
             try{
-                MaterialTextView materialText
-                        = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuegosnomer);//ВИД CFO
-                методЗаполенияСправочника(   materialText,cursorGosNomer,"выберете гос.номер");
+                if (materialTextGosNomer==null) {
+                    materialTextGosNomer = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuegosnomer);
+                }
+                методЗаполенияСправочника(   materialTextGosNomer,cursorGosNomer,"выберете гос.номер");
+                materialButtonExitOrSave = (MaterialButton)   родительскийCardView.findViewById(R.id.bottomnewordertransport);
                 // TODO: 12.05.2023
-                materialText.setOnClickListener(new View.OnClickListener() {
+                materialTextGosNomer.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        MaterialButton materialButtonExitOrSave
-                                = (MaterialButton)   родительскийCardView.findViewById(R.id.bottomnewordertransport);
                         v.animate().rotationX(+40l);
                         message.getTarget() .postDelayed(()->{
                             v.animate().rotationX(0);
@@ -836,11 +842,13 @@ public class FragmentNewOrderTransport extends Fragment {
 
         private void методСправочникДатаБудущая(@NonNull  View родительскийCardView) {
             try{
-                MaterialTextView materialText
-                        = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuedate);//ВИД CFO
-                методЗаполенияСправочникДата(   materialText,"выберете дату");
+                if (materialTextDate==null) {
+                    materialTextDate = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuedate);//ВИД CFO
+                    методЗаполенияСправочникДата(   materialTextDate,"выберете дату");
+                    materialButtonExitOrSave = (MaterialButton)   родительскийCardView.findViewById(R.id.bottomnewordertransport);
+                }
                 // TODO: 12.05.2023
-                materialText.setOnClickListener(new View.OnClickListener() {
+                materialTextDate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         v.animate().rotationX(+40l);
@@ -848,7 +856,7 @@ public class FragmentNewOrderTransport extends Fragment {
                             v.animate().rotationX(0);
                             // TODO: 16.05.2023 создание Даты
                             СlassGetDateForNewOrderTranport classGetDateForNewOrderTranport=new СlassGetDateForNewOrderTranport();
-                            classGetDateForNewOrderTranport.методGetDateForNewOrder(getActivity(),(MaterialTextView ) v);
+                            classGetDateForNewOrderTranport.методGetDateForNewOrder( (MaterialTextView ) v);
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
@@ -870,10 +878,11 @@ public class FragmentNewOrderTransport extends Fragment {
 
         private void методСправочникКнопкаСоздания(@NonNull  View родительскийCardView) {
             try{
-                MaterialButton materialButton
-                        = (MaterialButton)   родительскийCardView.findViewById(R.id.bottomnewordertransport);//ВИД CFO
+                if (materialButtonExitOrSave==null) {
+                    materialButtonExitOrSave = (MaterialButton)   родительскийCardView.findViewById(R.id.bottomnewordertransport);
+                }
                 // TODO: 12.05.2023
-                materialButton.setOnClickListener(new View.OnClickListener() {
+                materialButtonExitOrSave.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // TODO: 15.05.2023 закрывает или сохраняем
@@ -908,7 +917,7 @@ public class FragmentNewOrderTransport extends Fragment {
                             valuesNewOrderTransport.put("date_update",ДатаОбновления);
                             ContentResolver contentResolver=getContext().getContentResolver();
                             // TODO: 16.05.2023 Сама Вставка
-                            Uri РезультатNewOrderTranport=  contentResolver.insert(uri,  valuesNewOrderTransport);
+                           /// Uri РезультатNewOrderTranport=  contentResolver.insert(uri,  valuesNewOrderTransport);
 
 
 
@@ -1415,20 +1424,22 @@ public class FragmentNewOrderTransport extends Fragment {
     }
     // TODO: 16.05.2023 Класс Для Порлучение Даты Для Новго Заказа
     class  СlassGetDateForNewOrderTranport{
-        void  методGetDateForNewOrder(@NonNull Activity activity,@NonNull      MaterialTextView materialTextViewКликДата){
+        void  методGetDateForNewOrder( @NonNull      MaterialTextView materialTextViewКликДата){
             try{
                 final String[] FullNameCFO = new String[1];
                 final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", new Locale("ru"));
                 Calendar newDate = Calendar.getInstance();
                 //TODODATA
                 DatePickerDialog ДатаДляКалендаря =
-                        new DatePickerDialog(activity, android.R.style.Theme_Holo_InputMethod , new DatePickerDialog.OnDateSetListener() {////Theme_Holo_Dialog_MinWidth  //Theme_Holo_Panel
+                        new DatePickerDialog(getContext(), android.R.style.Theme_Holo_InputMethod , new DatePickerDialog.OnDateSetListener() {////Theme_Holo_Dialog_MinWidth  //Theme_Holo_Panel
                             public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 newDate.set(year, monthOfYear, dayOfMonth);
                                 try {
                                     String ДатаДляНовогоЗаказаТраспорта= DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(newDate.getTime());
                                     materialTextViewКликДата.setTag(ДатаДляНовогоЗаказаТраспорта);
                                     materialTextViewКликДата.setText(ДатаДляНовогоЗаказаТраспорта);
+                                    materialTextViewКликДата.refreshDrawableState();
+                                    materialTextViewКликДата.requestLayout();
                                     Log.d(getContext() .getClass().getName(), "\n"
                                             + " время: " + new Date()+"\n+" +
                                             " Класс в процессе... " +   getContext().getClass().getName()+"\n"+
