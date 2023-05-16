@@ -752,9 +752,11 @@ public class FragmentNewOrderTransport extends Fragment {
                 materialText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        МетодЗапускаАнимацииAllvalues(v);
-                        searchViewForNewOT.методПоискаНовыйЗаказТранспорта( (MaterialTextView) v,cursorCfo,"name","cfo","ЦФО");
-
+                        v.animate().rotationX(+40l);
+                        message.getTarget() .postDelayed(()->{
+                            v.animate().rotationX(0);
+                            searchViewForNewOT.методПоискаНовыйЗаказТранспорта( (MaterialTextView) v,cursorCfo,"name","cfo","цфо");
+                        },100);
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
@@ -777,7 +779,12 @@ public class FragmentNewOrderTransport extends Fragment {
                 materialText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        МетодЗапускаАнимацииAllvalues(v);
+                        v.animate().rotationX(+40l);
+                        message.getTarget() .postDelayed(()->{
+                            v.animate().rotationX(0);
+                            searchViewForNewOT.методПоискаНовыйЗаказТранспорта( (MaterialTextView) v,cursorTypeTS,"name","vid_tc","вид тс");
+                        },100);
+
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
@@ -800,7 +807,11 @@ public class FragmentNewOrderTransport extends Fragment {
                 materialText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        МетодЗапускаАнимацииAllvalues(v);
+                        v.animate().rotationX(+40l);
+                        message.getTarget() .postDelayed(()->{
+                            v.animate().rotationX(0);
+                            searchViewForNewOT.методПоискаНовыйЗаказТранспорта( (MaterialTextView) v,cursorGosNomer,"fullname","track","гос.номер");
+                        },200);
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
@@ -954,6 +965,7 @@ public class FragmentNewOrderTransport extends Fragment {
         private SimpleCursorAdapter simpleCursorSeachViewNewOrderTranport;
         private   SearchView searchViewДляNewOrderTransport ;
         private  Cursor cursor;
+        private  String Спровочник;
         void методПоискаНовыйЗаказТранспорта(@NonNull MaterialTextView materialTextViewТекущийСправочник,
                                              @NonNull Cursor cursor,
                                              @NonNull String Столбик,
@@ -962,6 +974,7 @@ public class FragmentNewOrderTransport extends Fragment {
             this.cursor=cursor;
             this.Столбик=Столбик;
             this.ТаблицаТекущая=ТаблицаТекущая;
+            this.Спровочник=Спровочник;
             alertDialogNewOrderTranport = new MaterialAlertDialogBuilder(materialTextViewТекущийСправочник.getContext()){
                 @NonNull
                 @Override
@@ -1142,7 +1155,7 @@ public class FragmentNewOrderTransport extends Fragment {
                         try{
                             Log.d(this.getClass().getName()," position");
                             if (hasFocus==true) {
-                                ((SearchView) v).setQueryHint("Поиск цфо");
+                                ((SearchView) v).setQueryHint("Поиск "+Спровочник);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
