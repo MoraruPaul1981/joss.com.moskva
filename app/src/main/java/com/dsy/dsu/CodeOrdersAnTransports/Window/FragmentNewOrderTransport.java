@@ -45,6 +45,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.text.ParseException;
@@ -841,12 +842,19 @@ public class FragmentNewOrderTransport extends Fragment {
                 materialText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        МетодЗапускаАнимацииAllvalues(v);
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                        v.animate().rotationX(+40l);
+                        message.getTarget() .postDelayed(()->{
+                            v.animate().rotationX(0);
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                        },200);
+
                     }
                 });
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -864,9 +872,11 @@ public class FragmentNewOrderTransport extends Fragment {
                 materialButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        МетодЗапускаАнимацииAllvalues(v);
-                        // TODO: 15.05.2023 закрывает
-                        message.getTarget().postDelayed(()->{
+                        // TODO: 15.05.2023 закрывает или сохраняем
+                        v.animate().rotationX(+40l);
+                        message.getTarget() .postDelayed(()->{
+                            v.animate().rotationX(0);
+                            // TODO: 16.05.2023  CLICK SAVE or EXIT 
                         MaterialTextView materialTextcfo
                                 = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuecfo);//ВИД CFO
                         MaterialTextView materialTexttypetc
@@ -886,13 +896,14 @@ public class FragmentNewOrderTransport extends Fragment {
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
                         }else{
                             // TODO: 15.05.2023
-                            subClassNewOrderTransport.   методBackOrdersTransport();
+                            Snackbar.make(v, "Вы не заполнили заказ !!! ",Snackbar.LENGTH_LONG).setAction("Action",null).show();
+                           /// subClassNewOrderTransport.   методBackOrdersTransport();
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
                         }
                             // TODO: 15.05.2023
-                        },150);
+                        },200);
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
