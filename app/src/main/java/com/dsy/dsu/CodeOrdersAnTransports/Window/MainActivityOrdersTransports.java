@@ -49,7 +49,7 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
 
     private ProgressBar progressBarСканирование;
 
-    private HorizontalScrollView horizontalScrollViewOrderTransport;
+
 
     private   SubClassStartingFragmentOrderTran subClassStartingFragmentOrderTran;
     @Override
@@ -83,16 +83,12 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
             progressBarСканирование=  (ProgressBar) findViewById(R.id.ProgressBar);
             progressBarСканирование.setVisibility(View.VISIBLE);
 
-            horizontalScrollViewOrderTransport= (HorizontalScrollView)  findViewById(R.id.horizontalScrollViewOrderTransport);
-            horizontalScrollViewOrderTransport.setLeftEdgeEffectColor(Color.parseColor("#CB2377"));
-            horizontalScrollViewOrderTransport.setRightEdgeEffectColor(Color.parseColor("#688DC4"));
-            horizontalScrollViewOrderTransport.setSmoothScrollingEnabled(false);
+
 
             // ani = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row);
             // TODO: 26.04.2023 Запускаем Ордер Транпорта
             subClassStartingFragmentOrderTran=new SubClassStartingFragmentOrderTran();
             subClassStartingFragmentOrderTran.методЗапускаФрагментаОрдерТранспорта();
-            subClassStartingFragmentOrderTran.методГоризонтальнаяПрокрутка();
             subClassStartingFragmentOrderTran.  методСлушательCallsBackFragmentManagers();
             // TODO: 11.05.2023 Горизотнтальная Прокрутка
             Log.d(getApplicationContext().getClass().getName(), "\n"
@@ -215,35 +211,7 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
         }
         }
 
-        private void методГоризонтальнаяПрокрутка() {
-            try {
-                ViewTreeObserver viewTreeObserver = horizontalScrollViewOrderTransport.getViewTreeObserver();
-                if (viewTreeObserver.isAlive()) {
-                    viewTreeObserver
-                            .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                                @Override
-                                public void onGlobalLayout() {
-                                    // interestedInView is ready for size and position
-                                    // queries because it has been laid out
-                                    horizontalScrollViewOrderTransport
-                                            .scrollTo(50,50);
-                                    // TODO: 13.05.2023
-                                    Log.d(getApplicationContext().getClass().getName(), "\n"
-                                            + " время: " + new Date()+"\n+" +
-                                            " Класс в процессе... " +  getApplicationContext().getClass().getName()+"\n"+
-                                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-                                }
-                            });
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                // TODO: 01.09.2021 метод вызова
-                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
+
 
 
         private void МетодДизайнПрограссБара() {

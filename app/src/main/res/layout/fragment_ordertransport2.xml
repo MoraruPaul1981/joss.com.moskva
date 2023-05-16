@@ -1,24 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
+<LinearLayout
     android:id="@android:id/text1"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:minHeight="150dp"
+    android:layout_margin="10dp"
+    android:padding="2dp"
+    android:gravity="center"
+    tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
+    android:orientation="vertical">
+
+
+
+
+
+<com.google.android.material.card.MaterialCardView
+    android:id="@+id/cardviewnewnewordermateril2"
     android:layout_width="340dp"
     android:layout_height="match_parent"
-    android:layout_margin="5dp"
+    android:layout_margin="10dp"
     android:padding="2dp"
     app:layout_gravity="center"
     android:minHeight="150dp"
     app:cardCornerRadius="5dp"
-    app:cardElevation="10dp"
-    app:cardMaxElevation="100dp"
-    app:strokeWidth="0dp"
-    android:translationZ="150dp"
+    app:cardElevation="1dp"
+    app:cardMaxElevation="10dp"
+    app:strokeWidth="1dp"
+    android:translationZ="100dp"
     android:animateLayoutChanges="true"
     app:cardBackgroundColor="#F0FFFF"
-    tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
-    app:strokeColor="#FBFBFB">
+    app:strokeColor="#D2D8D8"
+    tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports">
 
 
     <!--  НАЧАЛО ПЕРВОГО БЛОКА -->
@@ -257,13 +273,8 @@
     </LinearLayout>
     <!--  КОНЕЦ ПЯТОГО БЛОКА -->
 
-
-
-
-
-
 </com.google.android.material.card.MaterialCardView>
-
+</LinearLayout>
 
 
 

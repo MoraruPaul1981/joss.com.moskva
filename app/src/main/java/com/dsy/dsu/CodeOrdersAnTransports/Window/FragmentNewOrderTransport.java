@@ -91,7 +91,6 @@ public class FragmentNewOrderTransport extends Fragment {
     private  Animation animationvibr1;
 
     private  ServiceOrserTransportService.  LocalBinderOrderTransport localBinderNewOrderTransport;
-    private HorizontalScrollView horizontalScrollViewOrderTransport;
     private    MaterialTextView       textViewHadler;
     private  Cursor cursorCfo;
 
@@ -147,7 +146,7 @@ public class FragmentNewOrderTransport extends Fragment {
             bottomNavigationItemView2BackListOrderTransport.setVisibility(View.GONE);
             bottomNavigationItemView3обновить.setVisibility(View.GONE);
             BottomNavigationOrderTransport.refreshDrawableState();
-            BottomNavigationOrderTransport.requestLayout();
+            BottomNavigationOrderTransport.forceLayout();
             // TODO: 12.05.2023 progrssbar
             progressBarСканирование=  (ProgressBar)  container. findViewById(R.id.ProgressBar);
             progressBarСканирование.setVisibility(View.INVISIBLE);
@@ -155,7 +154,6 @@ public class FragmentNewOrderTransport extends Fragment {
             gridViewNewOrderTransport =  (GridView) container.findViewById(R.id.gridViewOrderTransport);
             TextViewHadler = (TextView) container.findViewById(R.id.TextViewHadler);
             animationvibr1 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_singletable2);//
-            horizontalScrollViewOrderTransport= (HorizontalScrollView) container. findViewById(R.id.horizontalScrollViewOrderTransport);
             textViewHadler=(MaterialTextView)  container.findViewById(R.id.TextViewHadler);
             textViewHadler.setHint("Заказ транспорта");
             // TODO: 14.05.2023  методы получение ДАнных ЦФО
@@ -192,7 +190,6 @@ public class FragmentNewOrderTransport extends Fragment {
             subClassNewOrderTransport.   МетодВыходНаAppBack();
             // TODO: 04.05.2023 Анимация
             subClassNewOrderTransport.методАнимацииGridView();
-            subClassNewOrderTransport.  методScroollAttach();
 
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
@@ -621,49 +618,6 @@ public class FragmentNewOrderTransport extends Fragment {
 
         }
 
-
-
-
-        private void методScroollAttach() {
-            try {
-                horizontalScrollViewOrderTransport.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                    @Override
-                    public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                        long end = Calendar.getInstance().getTimeInMillis();
-                        long РазницаВоврмени=end-startДляОбноразвовной;
-                        if (РазницаВоврмени>2000) {
-                           Fragment fragmentisNeworderisAlive=       fragmentManager.getFragments().get(0);
-                     Bundle bundle=(Bundle)       fragmentisNeworderisAlive.getArguments();
-                         Integer ИндексТекущийФрагмент=   bundle.getInt("isalive")   ;
-                                Log.d(getContext().getClass().getName(), "\n"
-                                        + " время: " + new Date()+"\n+" +
-                                        " Класс в процессе... " +  getContext().getClass().getName()+"\n"+
-                                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                                        " scrollX " +scrollX + " oldScrollX " +oldScrollX);
-
-                          /*  if(scrollX>2 || oldScrollX>2){
-                                if (ИндексТекущийФрагмент==1) {
-                                    методBackOrdersTransport();
-                                }
-                            }*/
-
-                        }
-                        Log.d(getContext().getClass().getName(), "\n"
-                                + " время: " + new Date()+"\n+" +
-                                " Класс в процессе... " +  getContext().getClass().getName()+"\n"+
-                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                                " scrollX " +scrollX + " oldScrollX " +oldScrollX);
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                // TODO: 01.09.2021 метод вызова
-                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
         // TODO: 15.05.2023
         private Cursor методGetAll(@NonNull String ТекущеаяТаблица,@NonNull String ТекущейСтолбик) {
             Cursor cursor = null;
@@ -1102,7 +1056,7 @@ public class FragmentNewOrderTransport extends Fragment {
                         ListViewForSearchView.setAdapter(simpleCursorForSearchView);
                         ListViewForSearchView.startAnimation(animationvibr1);
                         ListViewForSearchView.setSelection(0);
-                        ListViewForSearchView.requestLayout();
+                        ListViewForSearchView.forceLayout();
                         ListViewForSearchView.refreshDrawableState();
 
                         // TODO: 13.12.2022  Поиск и его слушель
@@ -1170,9 +1124,8 @@ public class FragmentNewOrderTransport extends Fragment {
                                         materialButtonExitOrSave.setText("Закрыть");
                                     }
                                     materialTextViewТекущийСправочник.refreshDrawableState();
-                                    materialTextViewТекущийСправочник.requestLayout();
+                                    materialTextViewТекущийСправочник.forceLayout();
                                     materialButtonExitOrSave.refreshDrawableState();
-                                    materialButtonExitOrSave.requestLayout();
                                     Log.d(getContext().getClass().getName(), "\n"
                                             + " время: " + new Date() + "\n+" +
                                             " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1277,7 +1230,7 @@ public class FragmentNewOrderTransport extends Fragment {
                                     методПерезаполенияПоискаИзФилтра(cursor);
                                     // TODO: 16.05.2023
                                     materialButtonFilterЗакрытьДиалог.setText("Закрыть");
-                                    materialButtonFilterЗакрытьДиалог.requestLayout();
+                                    materialButtonFilterЗакрытьДиалог.forceLayout();
                                     Log.d(getContext() .getClass().getName(), "\n"
                                             + " время: " + new Date()+"\n+" +
                                             " Класс в процессе... " +   getContext().getClass().getName()+"\n"+
@@ -1310,7 +1263,7 @@ public class FragmentNewOrderTransport extends Fragment {
                                 // TODO: 16.05.2023
                                 if(cursorFilter[0] !=null && cursorFilter[0].getCount()>0) {
                                     materialButtonFilterЗакрытьДиалог.setText("Cохранить");
-                                    materialButtonFilterЗакрытьДиалог.requestLayout();
+                                    materialButtonFilterЗакрытьДиалог.forceLayout();
                                 }
                                 Log.d(getContext() .getClass().getName(), "\n"
                                         + " время: " + new Date()+"\n+" +
@@ -1366,7 +1319,7 @@ public class FragmentNewOrderTransport extends Fragment {
             }
             // TODO: 16.05.2023
             ListViewForSearchView.refreshDrawableState();
-            ListViewForSearchView.requestLayout();
+            ListViewForSearchView.forceLayout();
                 Log.d(getContext() .getClass().getName(), "\n"
                         + " время: " + new Date()+"\n+" +
                         " Класс в процессе... " +   getContext().getClass().getName()+"\n"+

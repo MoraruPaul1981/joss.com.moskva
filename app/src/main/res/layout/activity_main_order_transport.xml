@@ -62,15 +62,6 @@
         android:orientation="vertical"
         android:background="#FFFFFF">
 
-        <HorizontalScrollView
-            android:id="@+id/horizontalScrollViewOrderTransport"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/BottomNavigationOrderTransport"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:fillViewport="true"
-            android:scrollbars="horizontal">
 
 
 
@@ -82,21 +73,20 @@
                 android:layout_above="@+id/BottomNavigationOrderTransport"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_margin="5dp"
-                android:padding="2dp"
                 android:background="#FFFFFF"
-                android:columnWidth="400dp"
                 android:gravity="center"
-                android:horizontalSpacing="10dp"
-                android:stretchMode="none"
-                android:verticalSpacing="20dp"
-                android:numColumns="1"
+                android:layout_margin="5dp"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="30dp"
+                android:horizontalSpacing="5dp"
+                android:columnWidth="380dp"
+                android:numColumns="auto_fit"
                 android:scrollIndicators="left|right"
-                android:scrollbars="horizontal|vertical"
+                android:scrollbars="vertical"
                 tools:ignore="MissingConstraints">
             </GridView>
 
-        </HorizontalScrollView>
+
 
 
 

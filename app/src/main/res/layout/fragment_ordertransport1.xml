@@ -1,35 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
+
+<LinearLayout
     android:id="@android:id/text1"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="340dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:minHeight="150dp"
     android:layout_margin="10dp"
     android:padding="2dp"
+    android:gravity="center"
+    tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
+    android:orientation="vertical">
+
+
+
+
+
+
+
+
+
+<com.google.android.material.card.MaterialCardView
+    android:id="@+id/cardveiwnewordertraport"
+    android:layout_width="340dp"
+    android:layout_height="wrap_content"
     app:layout_gravity="center"
     android:minHeight="150dp"
     app:cardCornerRadius="5dp"
-    app:cardElevation="10dp"
-    app:cardMaxElevation="100dp"
-    app:strokeWidth="0dp"
-    android:translationZ="150dp"
+    app:cardElevation="1dp"
+    app:cardMaxElevation="10dp"
+    app:strokeWidth="1dp"
+    android:translationZ="100dp"
     android:animateLayoutChanges="true"
     app:cardBackgroundColor="#F0FFFF"
     tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
-    app:strokeColor="#326760">
+    app:strokeColor="#D2D8D8">
 
 
     <LinearLayout
         android:id="@+id/linearLayoutorderstransport"
-        android:layout_width="match_parent"
+        android:layout_width="340dp"
         android:layout_height="wrap_content"
         android:background="#F0FFFF"
         android:minHeight="150dp"
         android:gravity="center"
-        android:padding="2dp"
-        android:layout_margin="1dp"
         tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
         android:orientation="vertical">
 
@@ -419,7 +436,7 @@
 
 
 
-
+</LinearLayout>
 
 
 

@@ -105,8 +105,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
     private   SimpleCursorAdapter АдаптерЗаказыТарнпорта;
 
-    private HorizontalScrollView horizontalScrollViewOrderTransport;
-
     private    MaterialTextView       textViewHadler;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -154,16 +152,13 @@ public class FragmentOrderTransportOneChane extends Fragment {
             bottomNavigationItemView2создать.setVisibility(View.VISIBLE);
             bottomNavigationItemView3обновить.setVisibility(View.VISIBLE);
             BottomNavigationOrderTransport.refreshDrawableState();
-            BottomNavigationOrderTransport.requestLayout();
+            BottomNavigationOrderTransport.forceLayout();
 
             progressBarСканирование=  (ProgressBar)  container. findViewById(R.id.ProgressBar);
             // TODO: 01.05.2023
             gridViewOrderTransport =  (GridView) container.findViewById(R.id.gridViewOrderTransport);
             TextViewHadler = (TextView) container.findViewById(R.id.TextViewHadler);
             animationvibr1 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_singletable2);//
-
-            horizontalScrollViewOrderTransport= (HorizontalScrollView) container. findViewById(R.id.horizontalScrollViewOrderTransport);
-
             textViewHadler=(MaterialTextView)  container.findViewById(R.id.TextViewHadler);
             textViewHadler.setHint("Заказы Транспорта");
 
@@ -295,7 +290,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
             //gridViewOrderTransport.setSelection(0);
             gridViewOrderTransport.smoothScrollByOffset(0);
             gridViewOrderTransport.refreshDrawableState();
-            gridViewOrderTransport.requestLayout();
+            gridViewOrderTransport.forceLayout();
                     Log.d(this.getClass().getName(), "\n" + " class " +
                             Thread.currentThread().getStackTrace()[2].getClassName()
                             + "\n" +
@@ -569,11 +564,11 @@ public class FragmentOrderTransportOneChane extends Fragment {
         //TODO метод делает callback с ответом на экран
         private void методПерегрузкаЭкрана() {
             try {
-                BottomNavigationOrderTransport.requestLayout();
+                BottomNavigationOrderTransport.forceLayout();
                 BottomNavigationOrderTransport.refreshDrawableState();
-                gridViewOrderTransport.requestLayout();
+                gridViewOrderTransport.forceLayout();
                 gridViewOrderTransport.refreshDrawableState();
-                linear_main_ordertransport.requestLayout();
+                linear_main_ordertransport.forceLayout();
                 linear_main_ordertransport.refreshDrawableState();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -942,7 +937,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                             try{
                                 switch (view.getId()) {
                                     case android.R.id.text1:
-                                        MaterialCardView linearLayoutЗаказыТранспорта= (MaterialCardView)
+                                        LinearLayout linearLayoutЗаказыТранспорта= ( LinearLayout)
                                                 view.findViewById(android.R.id.text1);
 
                                         // TODO: 12.05.2023  Получаем Данные
@@ -1018,7 +1013,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     gridViewOrderTransport.setAdapter(АдаптерЗаказыТарнпорта);
                     gridViewOrderTransport.setSelection(0);
                     gridViewOrderTransport.refreshDrawableState();
-                    gridViewOrderTransport.requestLayout();
+                    gridViewOrderTransport.forceLayout();
                     Log.d(getContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
                             " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1170,7 +1165,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                     try{
-                        MaterialCardView linearLayoutЗаказыТранспорта= (MaterialCardView)
+                        LinearLayout linearLayoutЗаказыТранспорта= ( LinearLayout)
                                 view.findViewById(android.R.id.text1);
 
                         MaterialTextView materialTextView1  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.otvalue2);//ВИД ТС
@@ -1254,7 +1249,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     gridViewOrderTransport.setAdapter(АдаптерКогдаНетданных);
                      gridViewOrderTransport.setSelection(0);
                     gridViewOrderTransport.refreshDrawableState();
-                    gridViewOrderTransport.requestLayout();
+                    gridViewOrderTransport.forceLayout();
                     // TODO: 19.04.2023 слушаелти
                     Log.d(getContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
