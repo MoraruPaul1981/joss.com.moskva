@@ -713,7 +713,8 @@ try{
                         + БуферModification_server.toString().toCharArray().length);
                 // TODO: 03.09.2021
                 if (БуферModification_server != null) {
-                    if (БуферModification_server.toString().toCharArray().length > 3) {
+                    if (БуферModification_server.toString().toCharArray().length > 3
+                    && ! БуферModification_server.toString().matches("(.*)Server Running...... Don't Login(.*)")) {
                         Log.d(this.getClass().getName(), "  ID  " + this.ID +
                                 " БуферModification_server " + БуферModification_server.toString());
                         //TODO БУфер JSON от Сервера
