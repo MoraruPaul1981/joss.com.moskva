@@ -94,6 +94,7 @@ public class ContentProviderSynsInsert extends ContentProvider {
         }
     }
 
+
     /*@Override
     public int delete(@NonNull Uri uri, @Nullable Bundle extras) {
         Integer РезультатУдалениеСтатуса=0;
