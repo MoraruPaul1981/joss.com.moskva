@@ -54,6 +54,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.common.util.concurrent.AtomicDouble;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -97,14 +98,7 @@ public class FragmentNewOrderTransport extends Fragment {
     private  Cursor cursorTypeTS;
 
     private  Cursor cursorGosNomer;
-
     private AlertDialog alertDialogNewOrderTranport;
-
-    private MaterialTextView materialTextDate;
-    private MaterialTextView materialTextCFO;
-    private MaterialTextView materialTextTypeTS;
-    private MaterialButton materialButtonExitOrSave ;
-    private MaterialTextView materialTextGosNomer ;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -158,12 +152,9 @@ public class FragmentNewOrderTransport extends Fragment {
             gridViewNewOrderTransport =  (GridView) container.findViewById(R.id.gridViewOrderTransport);
             TextViewHadler = (TextView) container.findViewById(R.id.TextViewHadler);
             animationvibr1 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_singletable2);//
-
             horizontalScrollViewOrderTransport= (HorizontalScrollView) container. findViewById(R.id.horizontalScrollViewOrderTransport);
-
             textViewHadler=(MaterialTextView)  container.findViewById(R.id.TextViewHadler);
             textViewHadler.setHint("Заказ транспорта");
-
             // TODO: 14.05.2023  методы получение ДАнных ЦФО
             cursorCfo=     subClassNewOrderTransport .методGetAll("cfo","name");
             // TODO: 14.05.2023  методы получение ДАнных Виды ТС
@@ -610,12 +601,8 @@ public class FragmentNewOrderTransport extends Fragment {
                 simpleAdapterAllElement.setViewBinder(БиндингКогдаНетДАнных);
                 simpleAdapterAllElement.notifyDataSetChanged();
                 gridViewNewOrderTransport.setAdapter(simpleAdapterAllElement);
-                gridViewNewOrderTransport.getAdapter().areAllItemsEnabled();
                 gridViewNewOrderTransport.refreshDrawableState();
                 gridViewNewOrderTransport.requestLayout();
-                // TODO: 14.05.2023 smmo
-              //  gridViewNewOrderTransport.setSelection(0);
-                gridViewNewOrderTransport.smoothScrollByOffset(0);
                     // TODO: 19.04.2023 слушаелти
                     Log.d(getContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
@@ -749,11 +736,9 @@ public class FragmentNewOrderTransport extends Fragment {
         }
         private void методСправочникЦФО(@NonNull View родительскийCardView) {
             try{
-                if (materialTextCFO==null) {
-                    materialTextCFO = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuecfo);//ВИД CFO
+                MaterialTextView     materialTextCFO = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuecfo);//ВИД CFO
                     методЗаполенияСправочника(   materialTextCFO,cursorCfo,"выберете цфо");
-                    materialButtonExitOrSave = (MaterialButton)   родительскийCardView.findViewById(R.id.bottomnewordertransport);
-                }
+              MaterialButton      materialButtonExitOrSave = (MaterialButton)   родительскийCardView.findViewById(R.id.bottomnewordertransport);
                 // TODO: 12.05.2023
                 materialTextCFO.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -783,11 +768,9 @@ public class FragmentNewOrderTransport extends Fragment {
         }
         private void методСправочникВидТС(@NonNull  View родительскийCardView) {
             try{
-                if (materialTextTypeTS==null) {
-                    materialTextTypeTS = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuetypetc);//ВИД CFO
+                MaterialTextView    materialTextTypeTS = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuetypetc);//ВИД CFO
                     методЗаполенияСправочника(   materialTextTypeTS,cursorTypeTS,"выберете вид тс");
-                   materialButtonExitOrSave = (MaterialButton)   родительскийCardView.findViewById(R.id.bottomnewordertransport);
-                }
+               MaterialButton    materialButtonExitOrSave = (MaterialButton)   родительскийCardView.findViewById(R.id.bottomnewordertransport);
                 // TODO: 12.05.2023
                 materialTextTypeTS.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -812,11 +795,9 @@ public class FragmentNewOrderTransport extends Fragment {
         }
         private void методСправочникГосНомер(@NonNull  View родительскийCardView) {
             try{
-                if (materialTextGosNomer==null) {
-                    materialTextGosNomer = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuegosnomer);
-                }
+                MaterialTextView       materialTextGosNomer = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuegosnomer);
                 методЗаполенияСправочника(   materialTextGosNomer,cursorGosNomer,"выберете гос.номер");
-                materialButtonExitOrSave = (MaterialButton)   родительскийCardView.findViewById(R.id.bottomnewordertransport);
+            MaterialButton    materialButtonExitOrSave = (MaterialButton)   родительскийCardView.findViewById(R.id.bottomnewordertransport);
                 // TODO: 12.05.2023
                 materialTextGosNomer.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -842,25 +823,29 @@ public class FragmentNewOrderTransport extends Fragment {
 
         private void методСправочникДатаБудущая(@NonNull  View родительскийCardView) {
             try{
-                if (materialTextDate==null) {
-                    materialTextDate = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuedate);//ВИД CFO
-                    методЗаполенияСправочникДата(   materialTextDate,"выберете дату");
-                    materialButtonExitOrSave = (MaterialButton)   родительскийCardView.findViewById(R.id.bottomnewordertransport);
-                }
+            MaterialTextView        materialTextDate = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuedate);//ВИД CFO
+                методЗаполенияСправочникДата(   materialTextDate,"выберете дату");
+                // TODO: 16.05.2023 Первоночальная Запись даты
+                СlassGetDateForNewOrderTranport classGetDateForNewOrderTranport=new СlassGetDateForNewOrderTranport();
+                classGetDateForNewOrderTranport.   методGetFirstDateForNewOrder(materialTextDate);
                 // TODO: 12.05.2023
                 materialTextDate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        v.animate().rotationX(+40l);
-                        message.getTarget() .postDelayed(()->{
-                            v.animate().rotationX(0);
+                        try{
                             // TODO: 16.05.2023 создание Даты
                             СlassGetDateForNewOrderTranport classGetDateForNewOrderTranport=new СlassGetDateForNewOrderTranport();
                             classGetDateForNewOrderTranport.методGetDateForNewOrder( (MaterialTextView ) v);
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-                        },200);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
 
                     }
                 });
@@ -878,9 +863,7 @@ public class FragmentNewOrderTransport extends Fragment {
 
         private void методСправочникКнопкаСоздания(@NonNull  View родительскийCardView) {
             try{
-                if (materialButtonExitOrSave==null) {
-                    materialButtonExitOrSave = (MaterialButton)   родительскийCardView.findViewById(R.id.bottomnewordertransport);
-                }
+                MaterialButton     materialButtonExitOrSave = (MaterialButton)   родительскийCardView.findViewById(R.id.bottomnewordertransport);
                 // TODO: 12.05.2023
                 materialButtonExitOrSave.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -900,7 +883,7 @@ public class FragmentNewOrderTransport extends Fragment {
                         if(materialTextcfo.getText().length()>3
                         &&  materialTexttypetc.getText().length()>3
                         &&  materialTextdate.getText().length()>3) {
-                            // TODO: 16.05.2023 Вставляем Новый Заказ Транпорта 
+                            // TODO: 16.05.2023 Вставляем Новый Заказ Транпорта
                             String table="order_tc";
                             Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" +table + "");
                             ContentValues valuesNewOrderTransport=new ContentValues();
@@ -935,8 +918,8 @@ public class FragmentNewOrderTransport extends Fragment {
                                     + " materialTextdate.getText().length() "+ materialTextdate.getText().length());
                         }else{
                             // TODO: 15.05.2023
-                            Snackbar.make(v, "Вы не заполнили заказ !!! ",Snackbar.LENGTH_LONG).setAction("Action",null).show();
-                           /// subClassNewOrderTransport.   методBackOrdersTransport();
+                           // Snackbar.make(v, "Вы не заполнили заказ !!! ",Snackbar.LENGTH_LONG).setAction("Action",null).show();
+                            subClassNewOrderTransport.   методBackOrdersTransport();
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
@@ -1436,10 +1419,8 @@ public class FragmentNewOrderTransport extends Fragment {
                                 newDate.set(year, monthOfYear, dayOfMonth);
                                 try {
                                     String ДатаДляНовогоЗаказаТраспорта= DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(newDate.getTime());
-                                    materialTextViewКликДата.setTag(ДатаДляНовогоЗаказаТраспорта);
-                                    materialTextViewКликДата.setText(ДатаДляНовогоЗаказаТраспорта);
-                                    materialTextViewКликДата.refreshDrawableState();
-                                    materialTextViewКликДата.requestLayout();
+                                    // TODO: 16.05.2023 дата 
+                                    методЗаписиНовуюДату(ДатаДляНовогоЗаказаТраспорта, materialTextViewКликДата);
                                     Log.d(getContext() .getClass().getName(), "\n"
                                             + " время: " + new Date()+"\n+" +
                                             " Класс в процессе... " +   getContext().getClass().getName()+"\n"+
@@ -1459,12 +1440,55 @@ public class FragmentNewOrderTransport extends Fragment {
                 ДатаДляКалендаря.setTitle("Календарь");
                 ДатаДляКалендаря.setButton(DatePickerDialog.BUTTON_POSITIVE, "Создать", ДатаДляКалендаря);
                 ДатаДляКалендаря.setButton(DatePickerDialog.BUTTON_NEGATIVE, "Закрыть", ДатаДляКалендаря);
-                ДатаДляКалендаря.show();
+                if (!ДатаДляКалендаря.isShowing()) {
+                    ДатаДляКалендаря .show();
+                }
                 ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
                 ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_NEGATIVE).setBackgroundColor(Color.WHITE);
                 ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
                 ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_POSITIVE).setBackgroundColor(Color.WHITE);
                 ////
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+
+        }
+
+        private void методЗаписиНовуюДату(String ДатаДляНовогоЗаказаТраспорта, @NonNull MaterialTextView materialTextViewКликДата) {
+            try{
+            materialTextViewКликДата.setTag(ДатаДляНовогоЗаказаТраспорта);
+            materialTextViewКликДата.setText(ДатаДляНовогоЗаказаТраспорта);
+            materialTextViewКликДата.refreshDrawableState();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        }
+
+        void  методGetFirstDateForNewOrder(@NonNull MaterialTextView        materialTextDate){
+            try{
+                final String[] FullNameCFO = new String[1];
+                final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", new Locale("ru"));
+                Calendar newDate = Calendar.getInstance();
+                newDate.get(Calendar.YEAR) ;
+                newDate.get( Calendar.MONTH);
+                newDate.add(Calendar.DAY_OF_MONTH,1);
+                //TODODATA
+                String ДатаДляНовогоЗаказаТраспорта= DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(newDate.getTime());
+                // TODO: 16.05.2023  Записи Новой Даты 
+                методЗаписиНовуюДату(ДатаДляНовогоЗаказаТраспорта, materialTextDate);
+                Log.d(getContext() .getClass().getName(), "\n"
+                        + " время: " + new Date()+"\n+" +
+                        " Класс в процессе... " +   getContext().getClass().getName()+"\n"+
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                        + " ДатаДляНовогоЗаказаТраспорта "+ ДатаДляНовогоЗаказаТраспорта);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
