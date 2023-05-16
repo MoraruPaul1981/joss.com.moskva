@@ -100,12 +100,15 @@ public class FragmentNewOrderTransport extends Fragment {
     private  Cursor cursorGosNomer;
     private AlertDialog alertDialogNewOrderTranport;
 
+    private   SubClassSetAllSprabochnik subClassSetAllSprabochnik;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         try{
             super.onCreate(savedInstanceState);
             // TODO: 27.04.2023  Запускаем Заказ Транпорта
             subClassNewOrderTransport    =new SubClassNewOrderTransport(getActivity());
+            subClassSetAllSprabochnik=           new SubClassSetAllSprabochnik();
             // TODO: 04.05.2023
             ПубличныйID = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
 
@@ -571,15 +574,15 @@ public class FragmentNewOrderTransport extends Fragment {
                                 switch (view.getId()) {
                                     case android.R.id.text1:
                                         // TODO: 15.05.2023  CFO
-                                        new SubClassSetAllSprabochnik().методСправочникЦФО(view);
+                                        subClassSetAllSprabochnik.методСправочникЦФО(view);
                                         // TODO: 15.05.2023  Вид ТС
-                                        new SubClassSetAllSprabochnik().   методСправочникВидТС(view);
+                                        subClassSetAllSprabochnik.   методСправочникВидТС(view);
                                         // TODO: 15.05.2023  ГОС Номер
-                                        new SubClassSetAllSprabochnik().    методСправочникГосНомер(view);
+                                        subClassSetAllSprabochnik.    методСправочникГосНомер(view);
                                         // TODO: 15.05.2023  Дата Будущего Времени
-                                        new SubClassSetAllSprabochnik().      методСправочникДатаБудущая(view);
+                                        subClassSetAllSprabochnik.      методСправочникДатаБудущая(view);
                                         // TODO: 15.05.2023  Кнопка Создания
-                                        new SubClassSetAllSprabochnik().      методСправочникКнопкаСоздания(view);
+                                        subClassSetAllSprabochnik.      методСправочникКнопкаСоздания(view);
 
                                         // TODO: 18.04.2023  Simple Adapter Кдик по Элементы
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -602,7 +605,6 @@ public class FragmentNewOrderTransport extends Fragment {
                 simpleAdapterAllElement.notifyDataSetChanged();
                 gridViewNewOrderTransport.setAdapter(simpleAdapterAllElement);
                 gridViewNewOrderTransport.refreshDrawableState();
-                gridViewNewOrderTransport.requestLayout();
                     // TODO: 19.04.2023 слушаелти
                     Log.d(getContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
