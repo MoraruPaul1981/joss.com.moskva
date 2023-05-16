@@ -1109,29 +1109,32 @@ public class FragmentNewOrderTransport extends Fragment {
                                     Long getUUID =   bundlePepoles.getLong("getUUID",0l);
                                     materialTextViewТекущийСправочник.setTag(bundlePepoles);
                                     materialTextViewТекущийСправочник.setText(getName);
-                                    // TODO: 15.05.2023 ЗАПОЛЕНИЕ ДАННЫМИ
-                                    if (    materialTextViewТекущийСправочник.getText().toString().length()>0) {
-                                        materialTextViewТекущийСправочник.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-                                        materialTextViewТекущийСправочник.setTextColor(Color.BLACK);
-                                        materialButtonExitOrSave.setText("Сохранить");
-                                        // TODO: 15.05.2023  ЗАКРЫВАЕТ
-                                        // TODO: 15.05.2023 Закрываем
-                                        alertDialogNewOrderTranport.cancel();
-                                        alertDialogNewOrderTranport.dismiss();
-                                    } else {
-                                        materialTextViewТекущийСправочник.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-                                        materialTextViewТекущийСправочник.setTextColor(Color.GRAY);
-                                        materialButtonExitOrSave.setText("Закрыть");
-                                    }
-                                    materialTextViewТекущийСправочник.refreshDrawableState();
-                                    materialTextViewТекущийСправочник.requestLayout();
-                                    materialButtonExitOrSave.refreshDrawableState();
-                                    materialButtonExitOrSave.requestLayout();
-                                    Log.d(getContext().getClass().getName(), "\n"
-                                            + " время: " + new Date() + "\n+" +
-                                            " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            "materialTextViewТекущийСправочник " +materialTextViewТекущийСправочник);
+                                        // TODO: 15.05.2023 ЗАПОЛЕНИЕ ДАННЫМИ КЛИК
+                                    message.getTarget().postDelayed(()->{
+                                        if (    materialTextViewТекущийСправочник.getText().toString().length()>0) {
+                                            materialTextViewТекущийСправочник.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                                            materialTextViewТекущийСправочник.setTextColor(Color.BLACK);
+                                            materialButtonExitOrSave.setText("Сохранить");
+                                            // TODO: 15.05.2023  ЗАКРЫВАЕТ
+                                            // TODO: 15.05.2023 Закрываем
+                                            alertDialogNewOrderTranport.cancel();
+                                            alertDialogNewOrderTranport.dismiss();
+                                        } else {
+                                            materialTextViewТекущийСправочник.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                                            materialTextViewТекущийСправочник.setTextColor(Color.GRAY);
+                                            materialButtonExitOrSave.setText("Закрыть");
+                                        }
+                                        materialTextViewТекущийСправочник.refreshDrawableState();
+                                        materialTextViewТекущийСправочник.requestLayout();
+                                        materialButtonExitOrSave.refreshDrawableState();
+                                        materialButtonExitOrSave.requestLayout();
+                                        Log.d(getContext().getClass().getName(), "\n"
+                                                + " время: " + new Date() + "\n+" +
+                                                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                                "materialTextViewТекущийСправочник " +materialTextViewТекущийСправочник);
+                                    },150);
+
                                 }
                                 Log.d(materialTextViewТекущийСправочник.getContext().getClass().getName(), "\n"
                                         + " время: " + new Date()+"\n+" +
