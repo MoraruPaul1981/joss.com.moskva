@@ -789,12 +789,16 @@ public class FragmentNewOrderTransport extends Fragment {
                     @Override
                     public void onClick(View v) {
                         try{
-                            // TODO: 16.05.2023 создание Даты
-                            СlassGetDateForNewOrderTranport classGetDateForNewOrderTranport=new СlassGetDateForNewOrderTranport();
-                            classGetDateForNewOrderTranport.методGetDateForNewOrder( (MaterialTextView ) v);
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                            v.animate().rotationX(+40l);
+                            message.getTarget() .postDelayed(()-> {
+                                v.animate().rotationX(0);
+                                // TODO: 16.05.2023 создание Даты
+                                СlassGetDateForNewOrderTranport classGetDateForNewOrderTranport = new СlassGetDateForNewOrderTranport();
+                                classGetDateForNewOrderTranport.методGetDateForNewOrder((MaterialTextView) v);
+                                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                            },200);
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -825,9 +829,6 @@ public class FragmentNewOrderTransport extends Fragment {
                     @Override
                     public void onClick(View v) {
                         // TODO: 15.05.2023 закрывает или сохраняем
-                        v.animate().rotationX(+40l);
-                        message.getTarget() .postDelayed(()->{
-                            v.animate().rotationX(0);
                             // TODO: 16.05.2023  CLICK SAVE or EXIT
                         MaterialTextView materialTextcfo
                                 = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuecfo);//ВИД CFO
@@ -839,32 +840,39 @@ public class FragmentNewOrderTransport extends Fragment {
                         if(materialTextcfo.getText().length()>3
                         &&  materialTexttypetc.getText().length()>3
                         &&  materialTextdate.getText().length()>3) {
-                            // TODO: 16.05.2023 Вставляем Новый Заказ Транпорта
-                            String table="order_tc";
-                            Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" +table + "");
-                            ContentValues valuesNewOrderTransport=new ContentValues();
+
+                            v.animate().rotationX(+40l);
+                            message.getTarget() .postDelayed(()-> {
+                                        v.animate().rotationX(0);
+
+
+                                        // TODO: 16.05.2023 Вставляем Новый Заказ Транпорта
+                                        String table = "order_tc";
+                                        Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" + table + "");
+                                        ContentValues valuesNewOrderTransport = new ContentValues();
+
+
+                                        valuesNewOrderTransport.put("user_update", ПубличныйID);
+                                        Long ВерсияДанныхUp = new SubClassUpVersionDATA().МетодПовышаемВерсииCurrentTable(table, getContext(),
+                                                new CREATE_DATABASE(getContext()).getССылкаНаСозданнуюБазу());
+                                        valuesNewOrderTransport.put("current_table", ВерсияДанныхUp);
+                                        String ДатаОбновления = new Class_Generation_Data(getContext()).ГлавнаяДатаИВремяОперацийСБазойДанных();
+                                        valuesNewOrderTransport.put("date_update", ДатаОбновления);
+                                        ContentResolver contentResolver = getContext().getContentResolver();
+                                        // TODO: 16.05.2023 Сама Вставка
+                                        /// Uri РезультатNewOrderTranport=  contentResolver.insert(uri,  valuesNewOrderTransport);
 
 
 
+                                // TODO: 15.05.2023  Сохранчем Выбраные Данные
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                        + " materialTextcfo.getText().length() " +materialTextcfo.getText().length()
+                                        + " materialTexttypetc.getText().length() " +materialTexttypetc.getText().length()
+                                        + " materialTextdate.getText().length() "+ materialTextdate.getText().length());
 
-
-                            valuesNewOrderTransport.put("user_update",ПубличныйID);
-                            Long ВерсияДанныхUp = new SubClassUpVersionDATA().МетодПовышаемВерсииCurrentTable(table,getContext(),
-                                    new CREATE_DATABASE(getContext()).getССылкаНаСозданнуюБазу());
-                            valuesNewOrderTransport.put("current_table",ВерсияДанныхUp);
-                            String ДатаОбновления=     new Class_Generation_Data(getContext()).ГлавнаяДатаИВремяОперацийСБазойДанных();
-                            valuesNewOrderTransport.put("date_update",ДатаОбновления);
-                            ContentResolver contentResolver=getContext().getContentResolver();
-                            // TODO: 16.05.2023 Сама Вставка
-                           /// Uri РезультатNewOrderTranport=  contentResolver.insert(uri,  valuesNewOrderTransport);
-
-
-
-
-
-
-
-
+                                    },200);
                             // TODO: 15.05.2023  Сохранчем Выбраные Данные
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -880,8 +888,6 @@ public class FragmentNewOrderTransport extends Fragment {
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
                         }
-                            // TODO: 15.05.2023
-                        },150);
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );

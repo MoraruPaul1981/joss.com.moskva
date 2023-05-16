@@ -1029,7 +1029,9 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             ДатаДляКалендаря.setTitle("Календарь");
             ДатаДляКалендаря.setButton(DatePickerDialog.BUTTON_POSITIVE, "Создать", ДатаДляКалендаря);
             ДатаДляКалендаря.setButton(DatePickerDialog.BUTTON_NEGATIVE, "Закрыть", ДатаДляКалендаря);
-            ДатаДляКалендаря.show();
+            if (!ДатаДляКалендаря.isShowing()) {
+                ДатаДляКалендаря.show();
+            }
             ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
             ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_NEGATIVE).setBackgroundColor(Color.WHITE);
             ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
