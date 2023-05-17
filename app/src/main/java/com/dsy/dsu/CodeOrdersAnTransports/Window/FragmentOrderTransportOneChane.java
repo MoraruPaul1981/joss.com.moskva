@@ -176,7 +176,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
             TextViewHadler = (TextView) view.findViewById(R.id.TextViewHadler);
             animationvibr1 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_singletable2);//
             textViewHadler=(MaterialTextView)  view.findViewById(R.id.TextViewHadler);
-            textViewHadler.setHint("Заказы Транспорта");
+
 
 
             if (localBinderOrderTransport!=null) {
@@ -303,7 +303,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
             АдаптерЗаказыТарнпорта.changeCursor(cursorOrderTransport);
             АдаптерЗаказыТарнпорта.notifyDataSetChanged();
             gridViewOrderTransport.setAdapter(АдаптерЗаказыТарнпорта);
-            //gridViewOrderTransport.setSelection(0);
+            gridViewOrderTransport.startAnimation(animationvibr1);
             gridViewOrderTransport.smoothScrollByOffset(0);
             gridViewOrderTransport.refreshDrawableState();
             gridViewOrderTransport.forceLayout();
@@ -738,7 +738,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 bundleNewOrderTransport.putBinder("binder", (ServiceOrserTransportService.  LocalBinderOrderTransport) localBinderOrderTransport);
                 bundleNewOrderTransport.putInt("isalive",1);
                 fragmentNewЗаказТранспорта.setArguments(bundleNewOrderTransport);
-                fragmentTransaction.replace(R.id.linear_main_ordertransport, fragmentNewЗаказТранспорта).setReorderingAllowed(true).commit();//.layout.activity_for_fragemtb_history_tasks
+                fragmentTransaction.replace(R.id.linearLayout_root_activity_main, fragmentNewЗаказТранспорта).setReorderingAllowed(true).commit();//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.show(fragmentNewЗаказТранспорта);
                 linearLayout_orders_transport.refreshDrawableState();
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1027,7 +1027,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     АдаптерЗаказыТарнпорта.setViewBinder(binding);
                    АдаптерЗаказыТарнпорта.notifyDataSetChanged();
                     gridViewOrderTransport.setAdapter(АдаптерЗаказыТарнпорта);
-                    gridViewOrderTransport.setSelection(0);
+                gridViewOrderTransport.startAnimation(animationvibr1);
+                gridViewOrderTransport.smoothScrollByOffset(0);
                     gridViewOrderTransport.refreshDrawableState();
                     gridViewOrderTransport.forceLayout();
                     Log.d(getContext().getClass().getName(), "\n"
@@ -1263,7 +1264,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     АдаптерКогдаНетданных.setViewBinder(БиндингКогдаНетДАнных);
                     АдаптерКогдаНетданных.notifyDataSetChanged();
                     gridViewOrderTransport.setAdapter(АдаптерКогдаНетданных);
-                     gridViewOrderTransport.setSelection(0);
+                gridViewOrderTransport.startAnimation(animationvibr1);
+                gridViewOrderTransport.smoothScrollByOffset(0);
                     gridViewOrderTransport.refreshDrawableState();
                     gridViewOrderTransport.forceLayout();
                     // TODO: 19.04.2023 слушаелти

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:id="@+id/linearLayout_orders_transport"
+    android:id="@+id/linearLayout_new_create_order_transport"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -24,7 +24,7 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="5dp"
             android:gravity="center"
-            android:hint="Заказы транспорта"
+            android:hint="Новый заказ"
             android:minWidth="100dp"
             android:minHeight="35dp"
             android:text=""
@@ -60,31 +60,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal|center_vertical"
         android:orientation="vertical"
-        android:background="#FFFFFF">
+        android:background="#283593">
 
 
-
-
-            <!--   НАЧАЛО САМИХ ДАННЫХ ВСЕ ТАБЕЛЯ -->
-            <GridView
-                android:id="@+id/gridViewOrderTransport"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/BottomNavigationOrderTransport"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:background="#FFFFFF"
-                android:gravity="center"
-                android:layout_margin="5dp"
-                android:stretchMode="columnWidth"
-                android:verticalSpacing="30dp"
-                android:horizontalSpacing="5dp"
-                android:columnWidth="500dp"
-                android:numColumns="auto_fit"
-                android:scrollIndicators="left|right"
-                android:scrollbars="vertical"
-                tools:ignore="MissingConstraints">
-            </GridView>
 
 
 
@@ -107,7 +85,7 @@
             android:background="#0A524B"
             android:translationZ="5dp"
             app:itemIconTint="#F2F5F5"
-            app:menu="@menu/menuadmissionmaterisls"
+            app:menu="@menu/menu_for_new_order_transport"
             tools:ignore="MissingConstraints" />
         <ProgressBar
             android:id="@+id/ProgressBar"

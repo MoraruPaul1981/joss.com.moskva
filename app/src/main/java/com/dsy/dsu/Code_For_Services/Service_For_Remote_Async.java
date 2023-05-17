@@ -1616,6 +1616,8 @@ try{
                     case "prof":
                     case "chats":
                     case "data_chat":
+                    case "order_tc":
+                    case "vid_tc":
                         Log.d(this.getClass().getName(), " имяТаблицыОтАндройда_локальноая  Для tabels  chat_users  fio  tabel  data_tabels  " + имяТаблицыОтАндройда_локальноая);
                         class_grud_sql_operationsГенерируемКурсорДляОтправки = new Class_GRUD_SQL_Operations(context);
                         class_grud_sql_operationsГенерируемКурсорДляОтправки.

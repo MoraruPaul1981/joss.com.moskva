@@ -31,7 +31,8 @@ public class GeneratorJSONSerializer extends JsonSerializer<Cursor> {
             // TODO: 14.03.2023  генериуем по столбцам
             for (int ИндексСтолбикаJson = 0; ИндексСтолбикаJson < КурсорДляОтправкиДанныхНаСерверОтАндройда.getColumnCount(); ИндексСтолбикаJson++) {
                 String НазваниеСтолбикаJson = КурсорДляОтправкиДанныхНаСерверОтАндройда.getColumnName(ИндексСтолбикаJson);// TODO: 14.03.2023 Название как текст столбика в JSON  NAme
-                Object СодержимоеСтолбикаJson= КурсорДляОтправкиДанныхНаСерверОтАндройда.getString(ИндексСтолбикаJson) ;// TODO: 14.03.2023  Само Полученое содеожимое столбика Value
+                String СодержимоеСтолбикаJson= КурсорДляОтправкиДанныхНаСерверОтАндройда.getString(ИндексСтолбикаJson) ;// TODO: 14.03.2023  Само Полученое содеожимое столбика Value
+                СодержимоеСтолбикаJson=Optional.ofNullable(СодержимоеСтолбикаJson).orElse("");
                 switch (НазваниеСтолбикаJson.trim()){
                     case "_id":
                     case "id":
@@ -39,21 +40,12 @@ public class GeneratorJSONSerializer extends JsonSerializer<Cursor> {
                         break;
                     case "uuid":
                     case "current_table":
-                        Long UUIDandCurrenttableValue=  Long.parseLong(СодержимоеСтолбикаJson.toString());
+                        Long UUIDandCurrenttableValue=  Long.parseLong(СодержимоеСтолбикаJson);
                         serializers.defaultSerializeField(НазваниеСтолбикаJson,UUIDandCurrenttableValue.toString(), jsonGenerator);
                         Log.d(this.getClass().getName(), " НазваниеСтолбикаJson   " + НазваниеСтолбикаJson);
                         break;
                     default:
-                        serializers.defaultSerializeField(НазваниеСтолбикаJson,String.valueOf(Optional.ofNullable(СодержимоеСтолбикаJson)
-                                .map(new java.util.function.Function<Object, Object>() {
-                            @Override
-                            public Object apply(Object o) {
-                                if(o==null){
-                                    o="";
-                                }
-                                return o;
-                            }
-                        }).orElse("")), jsonGenerator);
+                        serializers.defaultSerializeField(НазваниеСтолбикаJson,СодержимоеСтолбикаJson.toString(), jsonGenerator);
                         Log.d(this.getClass().getName(), " НазваниеСтолбикаJson  " + НазваниеСтолбикаJson);
                         break;
                 }
