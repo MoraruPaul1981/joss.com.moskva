@@ -107,6 +107,7 @@ public class FragmentNewOrderTransport extends Fragment {
             subClassSetAllSprabochnik=           new SubClassSetAllSprabochnik();
             ПубличныйID = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
             localBinderNewOrderTransport =  (ServiceOrserTransportService.  LocalBinderOrderTransport) getArguments().getBinder("binder");
+            animationvibr1 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_singletable2);//
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -132,6 +133,7 @@ public class FragmentNewOrderTransport extends Fragment {
            /// view= inflater.inflate(R.layout.list_item_progressing_ordertransport, container, false);
             linearLayout_new_create_order_transport =(LinearLayout)  view.findViewById(R.id.linearLayout_new_create_order_transport);
             relativeLayout_pool_inseder =(RelativeLayout)  linearLayout_new_create_order_transport.findViewById(R.id.relativeLayout_pool_inseder);
+            relativeLayout_pool_inseder.startAnimation(animationvibr1);
             scrollview_pool_new_order_trasport =(ScrollView)  linearLayout_new_create_order_transport.findViewById(R.id.scrollview_pool_new_order_trasport);
             // TODO: 01.05.2023  Кнопки
             BottomNavigationOrderTransport=  (BottomNavigationView) view. findViewById(R.id.BottomNavigationOrderTransport);
@@ -144,15 +146,7 @@ public class FragmentNewOrderTransport extends Fragment {
             progressBarСканирование=  (ProgressBar)  view. findViewById(R.id.ProgressBar);
             progressBarСканирование.setVisibility(View.VISIBLE);
             TextViewHadler = (TextView) view.findViewById(R.id.TextViewHadler);
-            animationvibr1 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_singletable2);//
             textViewHadler=(MaterialTextView)  view.findViewById(R.id.TextViewHadler);
-            // TODO: 14.05.2023  методы получение ДАнных ЦФО
-            cursorCfo=     subClassNewOrderTransport .методGetAll("cfo","name");
-            // TODO: 14.05.2023  методы получение ДАнных Виды ТС
-            cursorTypeTS=     subClassNewOrderTransport .методGetAll("vid_tc","name");
-            // TODO: 14.05.2023  методы получение ДАнных ЦФО
-            cursorGosNomer=   subClassNewOrderTransport .методGetAll("track","fullname");
-            // TODO: 11.05.2023 горизонтальеный Сколлл
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -175,10 +169,17 @@ public class FragmentNewOrderTransport extends Fragment {
             fragmentManager = getActivity().getSupportFragmentManager();
             start=     Calendar.getInstance().getTimeInMillis();
             startДляОбноразвовной=     Calendar.getInstance().getTimeInMillis();
+            // TODO: 04.05.2023 Procsseing// TODO: 04.05.2023 Procsseing// TODO: 04.05.2023 Procsseing// TODO: 04.05.2023 Procsseing// TODO: 04.05.2023 Procsseing
             //todo запуск методов в фрагменте
             subClassNewOrderTransport.   МетодHandlerCallBack();
             subClassNewOrderTransport.   МетодВыходНаAppBack();
-            // TODO: 04.05.2023 Анимация
+            // TODO: 14.05.2023  методы получение ДАнных ЦФО
+            cursorCfo=     subClassNewOrderTransport .методGetAll("cfo","name");
+            // TODO: 14.05.2023  методы получение ДАнных Виды ТС
+            cursorTypeTS=     subClassNewOrderTransport .методGetAll("vid_tc","name");
+            // TODO: 14.05.2023  методы получение ДАнных ЦФО
+            cursorGosNomer=   subClassNewOrderTransport .методGetAll("track","fullname");
+            // TODO: 11.05.2023 горизонтальеный Сколлл
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
@@ -200,24 +201,39 @@ public class FragmentNewOrderTransport extends Fragment {
     public void onStart() {
         super.onStart();
         try{
+            Log.d(this.getClass().getName(), "\n" + " class " +
+                    Thread.currentThread().getStackTrace()[2].getClassName()
+                    + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " cursorCfo " + cursorCfo);
             View   viewChilderNewOrderTranport;
             if( cursorCfo ==null) {
                 viewChilderNewOrderTranport = LayoutInflater.from(getContext()).
                         inflate(R.layout.list_item_progressing_newordertransport, relativeLayout_pool_inseder, false);
-                /*subClassNewOrderTransport.методIsNullAdapterGridView(R.layout.list_item_progressing_newordertransport,
-                        "Справочники...", R.drawable.icon_dsu1_ordertransport_down);*/
+
             }else {
                 if( cursorCfo.getCount()>0) {
                     viewChilderNewOrderTranport = LayoutInflater.from(getContext()).
                             inflate(R.layout.fragment_ordertransport2, relativeLayout_pool_inseder, false);
-                       /*subClassNewOrderTransport.методSuccessAdapterGridView(R.layout.fragment_ordertransport2,
-                            "Создаем заказ !!!", R.drawable.icon_rdertransport2);*/
+                    // TODO: 17.05.2023 Клики По Данными New order Transport
+                    subClassSetAllSprabochnik.методСправочникЦФО(viewChilderNewOrderTranport);
+                    // TODO: 15.05.2023  Вид ТС
+                    subClassSetAllSprabochnik.   методСправочникВидТС(viewChilderNewOrderTranport);
+                    // TODO: 15.05.2023  ГОС Номер
+                    subClassSetAllSprabochnik.    методСправочникГосНомер(viewChilderNewOrderTranport);
+                    // TODO: 15.05.2023  Дата Будущего Времени
+                    subClassSetAllSprabochnik.      методСправочникДатаБудущая(viewChilderNewOrderTranport);
+                    // TODO: 15.05.2023  Кнопка Создания
+                    subClassSetAllSprabochnik.      методСправочникКнопкаСоздания(viewChilderNewOrderTranport);
 
+                    // TODO: 18.04.2023  Simple Adapter Кдик по Элементы
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
                 }else{
                     viewChilderNewOrderTranport = LayoutInflater.from(getContext()).
                             inflate(R.layout.list_item_isnull_newordertransport, relativeLayout_pool_inseder, false);
-                   /* subClassNewOrderTransport.методIsNullAdapterGridView( R.layout.list_item_isnull_newordertransport,
-                            "Нет справочников !!!", R.drawable.icon_rdertransport2);*/
                 }
                 // TODO: 04.05.2023 Получаем Данные что обработка данных закончена
                 subClassNewOrderTransport.    МетодДизайнПрограссБара();
@@ -230,6 +246,8 @@ public class FragmentNewOrderTransport extends Fragment {
             relativeLayout_pool_inseder.refreshDrawableState();
             scrollview_pool_new_order_trasport.pageScroll(ScrollView.FOCUS_UP);
             linearLayout_new_create_order_transport.requestLayout();
+
+
 
             // TODO: 19.04.2023 слушаелти
             Log.d(this.getClass().getName(), "\n" + " class " +
@@ -286,8 +304,12 @@ public class FragmentNewOrderTransport extends Fragment {
                     @Override
                     public void onClick(View v) {
                         try {
-                            МетодЗапускаАнимацииКнопок(v);
-                            message.getTarget().postDelayed(()->{методBackOrdersTransport();},500);
+                            v.animate().rotationX(-40l);
+                            message.getTarget() .postDelayed(()->{
+                                v.animate().rotationX(0);
+                                // TODO: 17.05.2023
+                                методBackOrdersTransport();
+                            },200);
                             Log.d(this.getClass().getName(), "\n" + " class " +
                                     Thread.currentThread().getStackTrace()[2].getClassName()
                                     + "\n" +
@@ -318,22 +340,13 @@ public class FragmentNewOrderTransport extends Fragment {
 
         }
 
-
-// TODO: 28.04.2023
-        private void МетодЗапускаАнимацииКнопок(View v) {
-            v.animate().rotationX(-40l);
-            message.getTarget() .postDelayed(()->{
-                v.animate().rotationX(0);
-            },200);
-        }
-
         // TODO: 28.04.2023
         protected void методBackOrdersTransport() {
             try{
                 fragmentManager.clearBackStack(null);
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.setCustomAnimations(android.R.anim.slide_out_right,android.R.anim.slide_in_left);
+                fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
                 fragmentBackListOrderTransport = new FragmentOrderTransportOneChane();
                 Bundle bundleBackOrdersTransport=new Bundle();
                 bundleBackOrdersTransport.putBinder("binder", (ServiceOrserTransportService.  LocalBinderOrderTransport) localBinderNewOrderTransport);
@@ -482,216 +495,6 @@ public class FragmentNewOrderTransport extends Fragment {
             return DateOrder;
         }
 
-
-
-        // TODO: 28.04.2023
-        void методIsNullAdapterGridView(@NonNull Integer Макет ,
-                                        @NonNull String Сообщение,
-                                        @NonNull Integer Значек){///      R.layout.list_item_progressing_ordertransport
-            try{
-                    ArrayList<HashMap<String, Object>> ЛистНетданных= new ArrayList<HashMap<String, Object>> ();
-                    HashMap<String, Object> map = new HashMap<>();
-                    map.put("alldonttbels", Сообщение);
-                    map.put("allimage", " dont");
-                    ЛистНетданных.add(map);
-                    SimpleAdapter simpleAdapterAllElement = new SimpleAdapter(getContext(),
-                            ЛистНетданных,Макет,
-                            new String[]{"alldonttbels","allimage"},
-                            new int[]{android.R.id.text2,android.R.id.text1});
-
-                    SimpleAdapter.ViewBinder БиндингКогдаНетДАнных = new SimpleAdapter.ViewBinder() {
-                        @Override
-                        public boolean setViewValue(View view, Object data, String textRepresentation) {
-                            try{
-                                switch (view.getId()) {
-                                    case android.R.id.text1:
-                                        // TODO: 15.05.2023  CFO
-                                        subClassSetAllSprabochnik.методСправочникЦФО(view);
-                                        // TODO: 15.05.2023  Вид ТС
-                                        subClassSetAllSprabochnik.   методСправочникВидТС(view);
-                                        // TODO: 15.05.2023  ГОС Номер
-                                        subClassSetAllSprabochnik.    методСправочникГосНомер(view);
-                                        // TODO: 15.05.2023  Дата Будущего Времени
-                                        subClassSetAllSprabochnik.      методСправочникДатаБудущая(view);
-                                        // TODO: 15.05.2023  Кнопка Создания
-                                        subClassSetAllSprabochnik.      методСправочникКнопкаСоздания(view);
-
-                                        // TODO: 18.04.2023  Simple Adapter Кдик по Элементы
-                                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-                                }
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n");
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            }
-                            return true;
-                        }
-                    };
-                simpleAdapterAllElement.setViewBinder(БиндингКогдаНетДАнных);
-                simpleAdapterAllElement.notifyDataSetChanged();
-
-                    // TODO: 19.04.2023 слушаелти
-                    Log.d(getContext().getClass().getName(), "\n"
-                            + " время: " + new Date() + "\n+" +
-                            " Класс в процессе... " + this.getClass().getName() + "\n" +
-                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorCfo  " + cursorCfo);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-
-        }
-
-        // TODO: 16.05.2023 сама данные
-
-        // TODO: 28.04.2023  АДАПТЕР СЦО
-        void методSuccessAdapterGridView(@NonNull Integer Макет ,
-                                         @NonNull String Сообщение,
-                                         @NonNull Integer Значек){///      R.layout.list_item_progressing_ordertransport
-            try{
-                ArrayList<HashMap<String, Object>> ЛистНетданных= new ArrayList<HashMap<String, Object>> ();
-                HashMap<String, Object> map = new HashMap<>();
-                map.put("alldonttbels", Сообщение);
-                ЛистНетданных.add(map);
-                SimpleAdapter simpleAdapterAllElement = new SimpleAdapter(getContext(),
-                        ЛистНетданных,Макет,
-                        new String[]{"alldonttbels","allimage"},
-                        new int[]{android.R.id.text2,android.R.id.text1});
-
-                SimpleAdapter.ViewBinder БиндингКогдаНетДАнных = new SimpleAdapter.ViewBinder() {
-                    @Override
-                    public boolean setViewValue(View view, Object data, String textRepresentation) {
-                        try{
-                            switch (view.getId()) {
-                                case android.R.id.text1:
-                                    // TODO: 15.05.2023  CFO
-                                    subClassSetAllSprabochnik.методСправочникЦФО(view);
-                                    // TODO: 15.05.2023  Вид ТС
-                                    subClassSetAllSprabochnik.   методСправочникВидТС(view);
-                                    // TODO: 15.05.2023  ГОС Номер
-                                    subClassSetAllSprabochnik.    методСправочникГосНомер(view);
-                                    // TODO: 15.05.2023  Дата Будущего Времени
-                                    subClassSetAllSprabochnik.      методСправочникДатаБудущая(view);
-                                    // TODO: 15.05.2023  Кнопка Создания
-                                    subClassSetAllSprabochnik.      методСправочникКнопкаСоздания(view);
-
-                                    // TODO: 18.04.2023  Simple Adapter Кдик по Элементы
-                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-                            }
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                        return true;
-                    }
-                };
-              /*  simpleAdapterAllElement.setViewBinder(БиндингКогдаНетДАнных);
-                simpleAdapterAllElement.notifyDataSetChanged();
-                gridViewNewOrderTransport.setAdapter(simpleAdapterAllElement);*/
-
-
-                // TODO: 16.05.2023 test sart
-
-
-                class CustomListAdapter extends BaseAdapter {
-                    private Context context; //context
-                    private ArrayList<String> items; //data source of the list adapter
-
-                    //public constructor
-                    public CustomListAdapter(Context context, ArrayList<String> items) {
-                        this.context = context;
-                        this.items = items;
-                    }
-
-                    @Override
-                    public int getCount() {
-                        return items.size(); //returns total of items in the list
-                    }
-
-                    @Override
-                    public Object getItem(int position) {
-                        return items.get(position); //returns list item at the specified position
-                    }
-
-                    @Override
-                    public long getItemId(int position) {
-                        return position;
-                    }
-
-                    @Override
-                    public View getView(int position, View convertView, ViewGroup parent) {
-                        // inflate the layout for each list row
-                        if (convertView == null) {
-                            convertView = LayoutInflater.from(context).
-                                    inflate(R.layout.fragment_ordertransport2, parent, false);
-
-                            if (position==0) {
-                              //  materialTextCFO = (MaterialTextView)   convertView.findViewById(R.id.valuecfo);//ВИД CFO
-
-                                // TODO: 15.05.2023  CFO
-                                subClassSetAllSprabochnik.методСправочникЦФО(convertView);
-
-                            }
-                        }
-
-                        // get current item to be displayed
-                        String currentItem = (String) getItem(position);
-
-                     //  materialTextCFO.setText(currentItem);
-
-                        Log.d(getContext().getClass().getName(), "\n"
-                                + " время: " + new Date() + "\n+" +
-                                " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorCfo  " + cursorCfo);
-
-
-                        // returns the view for the current row
-                        return convertView;
-                    }
-                }
-                // Setup the data source
-                ArrayList<String> itemsArrayList = new ArrayList<>(); // calls function to get items list
-                itemsArrayList.add("www1");
-                itemsArrayList.add("www2");
-                itemsArrayList.add("www3");
-// instantiate the custom list adapter
-                CustomListAdapter adapter = new CustomListAdapter(getContext(), itemsArrayList);
-                // TODO: 16.05.2023 end tests
-             /*   gridViewNewOrderTransport.setAdapter(adapter);
-
-                gridViewNewOrderTransport.refreshDrawableState();*/
-                // TODO: 19.04.2023 слушаелти
-                Log.d(getContext().getClass().getName(), "\n"
-                        + " время: " + new Date() + "\n+" +
-                        " Класс в процессе... " + this.getClass().getName() + "\n" +
-                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorCfo  " + cursorCfo);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                        this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-
-        }
 
 
         // TODO: 15.05.2023
@@ -858,6 +661,7 @@ public class FragmentNewOrderTransport extends Fragment {
             try{
             MaterialTextView        materialTextDate = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuedate);//ВИД CFO
                 методЗаполенияСправочникДата(   materialTextDate,"выберете дату");
+                MaterialButton    materialButtonExitOrSave = (MaterialButton)   родительскийCardView.findViewById(R.id.bottomnewordertransport);
                 // TODO: 16.05.2023 Первоночальная Запись даты
                 СlassGetDateForNewOrderTranport classGetDateForNewOrderTranport=new СlassGetDateForNewOrderTranport();
                 classGetDateForNewOrderTranport.   методGetFirstDateForNewOrder(materialTextDate);
