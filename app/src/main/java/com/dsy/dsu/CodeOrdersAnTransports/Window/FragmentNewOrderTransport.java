@@ -42,11 +42,14 @@ import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.loader.content.CursorLoader;
 
 import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
+import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_UUID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.Class_Generation_Data;
+import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.dsy.dsu.CodeOrdersAnTransports.Background.ServiceOrserTransportService;
 import com.dsy.dsu.R;
@@ -55,6 +58,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.text.DateFormat;
@@ -92,11 +96,10 @@ public class FragmentNewOrderTransport extends Fragment {
     private  Cursor cursorGosNomer;
     private AlertDialog alertDialogNewOrderTranport;
     private   SubClassSetAllSprabochnik subClassSetAllSprabochnik;
-    LinearLayout linearLayout_new_create_order_transport;
-
-    RelativeLayout relativeLayout_pool_inseder;
-
-    ScrollView scrollview_pool_new_order_trasport;
+    private LinearLayout linearLayout_new_create_order_transport;
+    private   RelativeLayout relativeLayout_pool_inseder;
+    private  ScrollView scrollview_pool_new_order_trasport;
+    private     View   родительскийCardView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -201,46 +204,39 @@ public class FragmentNewOrderTransport extends Fragment {
     public void onStart() {
         super.onStart();
         try{
-            Log.d(this.getClass().getName(), "\n" + " class " +
-                    Thread.currentThread().getStackTrace()[2].getClassName()
-                    + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " cursorCfo " + cursorCfo);
-            View   viewChilderNewOrderTranport;
             if( cursorCfo ==null) {
-                viewChilderNewOrderTranport = LayoutInflater.from(getContext()).
+                родительскийCardView = LayoutInflater.from(getContext()).
                         inflate(R.layout.list_item_progressing_newordertransport, relativeLayout_pool_inseder, false);
 
             }else {
                 if( cursorCfo.getCount()>0) {
-                    viewChilderNewOrderTranport = LayoutInflater.from(getContext()).
+                    родительскийCardView = LayoutInflater.from(getContext()).
                             inflate(R.layout.fragment_ordertransport2, relativeLayout_pool_inseder, false);
                     // TODO: 17.05.2023 Клики По Данными New order Transport
-                    subClassSetAllSprabochnik.методСправочникЦФО(viewChilderNewOrderTranport);
+                    subClassSetAllSprabochnik.методСправочникЦФО(родительскийCardView);
                     // TODO: 15.05.2023  Вид ТС
-                    subClassSetAllSprabochnik.   методСправочникВидТС(viewChilderNewOrderTranport);
+                    subClassSetAllSprabochnik.   методСправочникВидТС(родительскийCardView);
                     // TODO: 15.05.2023  ГОС Номер
-                    subClassSetAllSprabochnik.    методСправочникГосНомер(viewChilderNewOrderTranport);
+                    subClassSetAllSprabochnik.    методСправочникГосНомер(родительскийCardView);
                     // TODO: 15.05.2023  Дата Будущего Времени
-                    subClassSetAllSprabochnik.      методСправочникДатаБудущая(viewChilderNewOrderTranport);
+                    subClassSetAllSprabochnik.      методСправочникДатаБудущая(родительскийCardView);
                     // TODO: 15.05.2023  Кнопка Создания
-                    subClassSetAllSprabochnik.      методСправочникКнопкаСоздания(viewChilderNewOrderTranport);
+                    subClassSetAllSprabochnik.      методСправочникКнопкаСоздания(родительскийCardView);
 
                     // TODO: 18.04.2023  Simple Adapter Кдик по Элементы
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
                 }else{
-                    viewChilderNewOrderTranport = LayoutInflater.from(getContext()).
+                    родительскийCardView = LayoutInflater.from(getContext()).
                             inflate(R.layout.list_item_isnull_newordertransport, relativeLayout_pool_inseder, false);
                 }
                 // TODO: 04.05.2023 Получаем Данные что обработка данных закончена
                 subClassNewOrderTransport.    МетодДизайнПрограссБара();
             }
 
-            relativeLayout_pool_inseder.removeView(viewChilderNewOrderTranport);
-            relativeLayout_pool_inseder.addView(viewChilderNewOrderTranport);
+            relativeLayout_pool_inseder.removeView(родительскийCardView);
+            relativeLayout_pool_inseder.addView(родительскийCardView);
             relativeLayout_pool_inseder.requestLayout();
             relativeLayout_pool_inseder.invalidate();
             relativeLayout_pool_inseder.refreshDrawableState();
@@ -730,6 +726,8 @@ public class FragmentNewOrderTransport extends Fragment {
                                 = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuetypetc);//ВИД type tc
                         MaterialTextView materialTextdate
                                 = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuedate);//ВИД Dates
+
+                        Snackbar snackbar=      Snackbar.make(v, "Вы не заполнили заказ !!! ",Snackbar.LENGTH_LONG).setAction("Action",null);
                         // TODO: 15.05.2023
                         if(materialTextcfo.getText().length()>3
                         &&  materialTexttypetc.getText().length()>3
@@ -744,14 +742,15 @@ public class FragmentNewOrderTransport extends Fragment {
                                         String table = "order_tc";
                                         Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" + table + "");
                                         ContentValues valuesNewOrderTransport = new ContentValues();
-
-
                                         valuesNewOrderTransport.put("user_update", ПубличныйID);
                                         Long ВерсияДанныхUp = new SubClassUpVersionDATA().МетодПовышаемВерсииCurrentTable(table, getContext(),
                                                 new CREATE_DATABASE(getContext()).getССылкаНаСозданнуюБазу());
                                         valuesNewOrderTransport.put("current_table", ВерсияДанныхUp);
                                         String ДатаОбновления = new Class_Generation_Data(getContext()).ГлавнаяДатаИВремяОперацийСБазойДанных();
                                         valuesNewOrderTransport.put("date_update", ДатаОбновления);
+                                      Long   UUIDGenetetorNewCustoner= (Long) new Class_Generation_UUID(getContext()).МетодГенерацииUUID(getContext());
+                                      valuesNewOrderTransport.put("uuid", UUIDGenetetorNewCustoner);
+
                                         ContentResolver contentResolver = getContext().getContentResolver();
                                         // TODO: 16.05.2023 Сама Вставка
                                         /// Uri РезультатNewOrderTranport=  contentResolver.insert(uri,  valuesNewOrderTransport);
@@ -776,7 +775,7 @@ public class FragmentNewOrderTransport extends Fragment {
                                     + " materialTextdate.getText().length() "+ materialTextdate.getText().length());
                         }else{
                             // TODO: 15.05.2023
-                           // Snackbar.make(v, "Вы не заполнили заказ !!! ",Snackbar.LENGTH_LONG).setAction("Action",null).show();
+                            snackbar.show();
                             subClassNewOrderTransport.   методBackOrdersTransport();
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -914,6 +913,10 @@ public class FragmentNewOrderTransport extends Fragment {
                                                     bundle.putInt("getId",getId);
                                                     bundle.putString("getName",getName);
                                                     bundle.putLong("getUUID",UUIDGetFilter);
+                                                    // TODO: 17.05.2023  вытаскиваем данные из курсора
+                                                    методВытаскиваемДанныеСцоТранспорт(Столбик,getName);
+                                                    
+                                                    
                                                     // TODO: 16.05.2023 Элемент Заполяем данными  TAG
                                                     ((MaterialTextView)view).setTag(bundle);
                                                 // TODO: 20.01.2022
@@ -1020,6 +1023,9 @@ public class FragmentNewOrderTransport extends Fragment {
                                         materialTextViewParent.setTextColor(Color.GRAY);
                                         materialButtonExitParent.setText("Закрыть");
                                     }
+                                    // TODO: 17.05.2023 Если Заполенеы Все Нужные Элементы
+                                    методПроверкаВсёЗаполено(materialButtonExitParent);
+
                                     materialTextViewParent.refreshDrawableState();
                                     materialButtonExitParent.refreshDrawableState();
                                     Log.d(getContext().getClass().getName(), "\n"
@@ -1074,6 +1080,77 @@ public class FragmentNewOrderTransport extends Fragment {
             layoutParams.gravity = Gravity.CENTER;
             alertDialogNewOrderTranport.getWindow().setAttributes(layoutParams);
             // TODO: 13.12.2022 ВТОРОЙ СЛУШАТЕЛЬ НА КНОПКУ
+        }
+
+
+        // TODO: 17.05.2023  Метод Ищем Значение для Вставки Из Строки В Значниея
+        private void методВытаскиваемДанныеСцоТранспорт(@NonNull String Столбик,@NonNull String getName) {
+            try{
+                String table = null;
+                switch (Столбик){
+                    case "name":
+                        table="vid_tc";
+                        break;
+                    case "cfo":
+                        table="cfo";
+                        break;
+                }
+                Bundle bundleПосик=new Bundle();
+                bundleПосик.putString("СамЗапрос","  SELECT *  FROM  " +table+ " WHERE   "+Столбик+"=?" +
+                        "     ORDER BY " +Столбик+ "  LIMIT   1  ");
+                bundleПосик.putStringArray("УсловияВыборки" ,new String[]{getName});
+                bundleПосик.putString("Таблица",table);
+                Cursor Курсор=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(getContext(), bundleПосик);
+
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +  " getName " +getName + " Курсор " +Курсор);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
+                    Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors( getContext())
+                    .МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName(),
+                            Thread.currentThread().getStackTrace()[2].getMethodName(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        }
+
+        private void методПроверкаВсёЗаполено(@NonNull MaterialButton materialButtonExitParent ) {
+            try{
+                MaterialTextView materialTextcfo
+                        = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuecfo);//ВИД CFO
+                MaterialTextView materialTexttypetc
+                        = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuetypetc);//ВИД type tc
+                MaterialTextView materialTextdate
+                        = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuedate);//ВИД Dates
+                // TODO: 15.05.2023
+                if(materialTextcfo.getText().length()>3
+                        &&  materialTexttypetc.getText().length()>3) {
+                    materialButtonExitParent.setText("Сохранить");
+                }else {
+                    materialButtonExitParent.setText("Закрыть");
+                }
+                materialButtonExitParent.forceLayout();
+                materialButtonExitParent.refreshDrawableState();
+                // TODO: 18.04.2023  Simple Adapter Кдик по Элементы
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "materialTextcfo " +materialTextcfo  + " materialTexttypetc " +materialTexttypetc);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
+                    Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors( getContext())
+                    .МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName(),
+                            Thread.currentThread().getStackTrace()[2].getMethodName(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
         }
 
         private void МетодПоискаФильтр(@NonNull String ТаблицаДляФильтра,@NonNull     SimpleCursorAdapter          simpleCursorForSearchView ) {

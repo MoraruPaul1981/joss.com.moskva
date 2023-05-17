@@ -22,13 +22,13 @@
     android:layout_height="match_parent"
     app:layout_gravity="center"
     android:minHeight="150dp"
-    app:cardCornerRadius="5dp"
-    app:cardElevation="1dp"
-    app:cardMaxElevation="10dp"
     app:strokeWidth="1dp"
     android:layout_margin="10dp"
     android:padding="2dp"
     android:translationZ="100dp"
+    app:cardElevation="1dp"
+    app:cardMaxElevation="10dp"
+    app:cardCornerRadius="5dp"
     android:animateLayoutChanges="true"
     app:cardBackgroundColor="#F0FFFF"
     app:strokeColor="#D2D8D8"
@@ -91,6 +91,7 @@
             android:textColorHint="#80807C"
             android:textSize="15sp"
             android:textStyle="bold"
+            android:padding="2dp"
             android:layout_above="@+id/textviewnamematerial"
             android:visibility="visible" />
 
@@ -129,6 +130,7 @@
             android:background="@drawable/style_forpolymaterialb_cycle_createspinner"
             android:gravity="center"
             android:hint="вид"
+            android:padding="2dp"
           android:minHeight="40dp"
             android:textAlignment="gravity"
             android:textColor="#000000"
@@ -227,8 +229,8 @@
             android:background="@drawable/style_forpolymaterialb_cycle_createspinner"
             android:gravity="center"
             android:hint="дата"
+            android:padding="2dp"
           android:minHeight="40dp"
-            android:padding="5dp"
             android:textAlignment="gravity"
             android:textColor="#000000"
             android:textColorHighlight="#80807C"
@@ -271,6 +273,8 @@
             android:visibility="visible"
             app:backgroundTint="#00E5FF"
             app:cornerRadius="20dp"
+            app:cardElevation="1dp"
+            app:cardMaxElevation="10dp"
             tools:visibility="visible" />
 
 
