@@ -69,7 +69,6 @@ import java.util.Map;
 // TODO: 29.09.2022 фрагмент для получение материалов
 public class FragmentNewOrderTransport extends Fragment {
     private Integer ПубличныйID;
-    LinearLayout    linear_main_ordertransport;
     private BottomNavigationView BottomNavigationOrderTransport;
     private BottomNavigationItemView bottomNavigationItemViewвыход;
 
@@ -313,15 +312,16 @@ public class FragmentNewOrderTransport extends Fragment {
                 fragmentManager.clearBackStack(null);
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                fragmentTransaction.setCustomAnimations(android.R.anim.slide_out_right,android.R.anim.slide_in_left);
                 fragmentBackListOrderTransport = new FragmentOrderTransportOneChane();
-                Bundle bundleNewOrderTransport=new Bundle();
-                bundleNewOrderTransport.putBinder("binder", (ServiceOrserTransportService.  LocalBinderOrderTransport) localBinderNewOrderTransport);
-                bundleNewOrderTransport.putInt("isalive",2);
-                fragmentBackListOrderTransport.setArguments(bundleNewOrderTransport);
+                Bundle bundleBackOrdersTransport=new Bundle();
+                bundleBackOrdersTransport.putBinder("binder", (ServiceOrserTransportService.  LocalBinderOrderTransport) localBinderNewOrderTransport);
+                bundleBackOrdersTransport.putInt("isalive",2);
+                fragmentBackListOrderTransport.setArguments(bundleBackOrdersTransport);
+                fragmentTransaction.remove(fragmentManager.getFragments().get(0));
                 fragmentTransaction.replace(R.id.linearLayout_root_activity_main, fragmentBackListOrderTransport).setReorderingAllowed(true).commit();//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.show(fragmentBackListOrderTransport);
-                linear_main_ordertransport.refreshDrawableState();
+                linearLayout_new_create_order_transport.refreshDrawableState();
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
