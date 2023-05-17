@@ -1379,7 +1379,7 @@ public class FragmentNewOrderTransport extends Fragment {
                         final Cursor[] cursorFilter = {null};
                         try{
                             message.getTarget().post(()->{
-                               cursorFilter[0] =    simpleCursorForSearchView.getCursor();
+                            ///   cursorFilter[0] =    simpleCursorForSearchView.getCursor();
                                 cursorFilter[0] =          subClassNewOrderTransport
                                     .методGetAllLike(ТаблицаТекущая,Столбик,constraint.toString());
 

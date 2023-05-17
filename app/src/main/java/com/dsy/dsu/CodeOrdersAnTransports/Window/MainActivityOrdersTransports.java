@@ -8,28 +8,15 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.view.animation.AnimationUtils;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
-import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
-import com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_App;
 import com.dsy.dsu.R;
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomnavigation.LabelVisibilityMode;
-
 import java.util.Date;
 
 public class MainActivityOrdersTransports extends AppCompatActivity {
@@ -38,17 +25,7 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private Fragment fragment_СозданиеЗаказаТранспорта;
-    private LinearLayout linear_main_ordertransport;
-    private BottomNavigationView BottomNavigationOrderTransport;
-
-    private BottomNavigationItemView bottomNavigationItemViewвыход;
-
-    private BottomNavigationItemView bottomNavigationItemView2создать;
-
-    private BottomNavigationItemView bottomNavigationItemView3обновить;
-
-    private ProgressBar progressBarСканирование;
-
+    private LinearLayout linearLayout_root_activity_main;
 
 
     private   SubClassStartingFragmentOrderTran subClassStartingFragmentOrderTran;
@@ -68,23 +45,10 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
                     | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                     | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-            linear_main_ordertransport =  (LinearLayout) findViewById(R.id.linear_main_ordertransport);
-            ViewGroup.LayoutParams params = linear_main_ordertransport.getLayoutParams();
+            linearLayout_root_activity_main =  (LinearLayout) findViewById(R.id.linearLayout_root_activity_main);
+            ViewGroup.LayoutParams params = linearLayout_root_activity_main.getLayoutParams();
             params.height= ViewGroup.LayoutParams.WRAP_CONTENT;
-            linear_main_ordertransport.setLayoutParams(params);
-            BottomNavigationOrderTransport =  (BottomNavigationView) findViewById(R.id.BottomNavigationOrderTransport);
-            BottomNavigationOrderTransport.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED);
-            bottomNavigationItemViewвыход = (BottomNavigationItemView) BottomNavigationOrderTransport.findViewById(R.id.id_lback);
-            bottomNavigationItemViewвыход.setIconSize(50);
-            bottomNavigationItemView2создать =(BottomNavigationItemView) BottomNavigationOrderTransport.findViewById(R.id.id_create);
-            bottomNavigationItemView2создать.setIconSize(70);
-            bottomNavigationItemView3обновить = (BottomNavigationItemView) BottomNavigationOrderTransport.findViewById(R.id.id_async);
-            bottomNavigationItemView3обновить.setIconSize(50);
-            progressBarСканирование=  (ProgressBar) findViewById(R.id.ProgressBar);
-            progressBarСканирование.setVisibility(View.VISIBLE);
-
-
-
+            linearLayout_root_activity_main.setLayoutParams(params);
             // ani = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row);
             // TODO: 26.04.2023 Запускаем Ордер Транпорта
             subClassStartingFragmentOrderTran=new SubClassStartingFragmentOrderTran();
@@ -123,7 +87,7 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
             fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             fragment_СозданиеЗаказаТранспорта = new FragmentOrderTransportOneChane();
             fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.add(R.id.linear_main_ordertransport, fragment_СозданиеЗаказаТранспорта)
+            fragmentTransaction.add(R.id.linearLayout_root_activity_main, fragment_СозданиеЗаказаТранспорта)
                     .setPrimaryNavigationFragment(fragment_СозданиеЗаказаТранспорта)
                     .setReorderingAllowed(true).commit();//.layout.activity_for_fragemtb_history_tasks
             fragmentTransaction.show(fragment_СозданиеЗаказаТранспорта);
@@ -211,15 +175,6 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
         }
         }
 
-
-
-
-        private void МетодДизайнПрограссБара() {
-            progressBarСканирование.postDelayed(()->{
-                progressBarСканирование.setVisibility(View.INVISIBLE);
-                progressBarСканирование.setIndeterminate(true);
-            },1000);
-        }
 }
 
 

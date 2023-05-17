@@ -35,13 +35,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.GridView;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -57,7 +55,7 @@ import com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_App;
 import com.dsy.dsu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.textview.MaterialTextView;
 
 
@@ -78,7 +76,7 @@ import java.util.concurrent.ExecutionException;
 // TODO: 29.09.2022 фрагмент для получение материалов
 public class FragmentOrderTransportOneChane extends Fragment {
     private Integer ПубличныйID;
-    LinearLayout    linear_main_ordertransport;
+    LinearLayout linearLayout_orders_transport;
     private BottomNavigationView BottomNavigationOrderTransport;
     private BottomNavigationItemView bottomNavigationItemViewвыход;
     private BottomNavigationItemView bottomNavigationItemView2создать;
@@ -104,8 +102,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
     private LifecycleOwner lifecycleOwnerОбщая ;
 
     private   SimpleCursorAdapter АдаптерЗаказыТарнпорта;
-
     private    MaterialTextView       textViewHadler;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         try{
@@ -139,27 +137,45 @@ public class FragmentOrderTransportOneChane extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View    view=null;
         try {
-            view= inflater.inflate(R.layout.fragment_ordertransport1, container, false);
+            view= inflater.inflate(R.layout.simple_for_root_orders_transport, container, false);
           // view= inflater.inflate(R.layout.list_item_progressing_ordertransport, container, false);
            /// view= inflater.inflate(R.layout.list_item_progressing_ordertransport, container, false);
-            linear_main_ordertransport=(LinearLayout)  container.findViewById(R.id.linear_main_ordertransport);
+            linearLayout_orders_transport =(LinearLayout)  view.findViewById(R.id.linearLayout_orders_transport);
             // TODO: 01.05.2023  Кнопки
-            BottomNavigationOrderTransport=  (BottomNavigationView) container. findViewById(R.id.BottomNavigationOrderTransport);
+            BottomNavigationOrderTransport=  (BottomNavigationView) view. findViewById(R.id.BottomNavigationOrderTransport);
             bottomNavigationItemViewвыход = BottomNavigationOrderTransport.findViewById(R.id.id_lback);
             bottomNavigationItemView2создать = BottomNavigationOrderTransport.findViewById(R.id.id_create);
             bottomNavigationItemView3обновить = BottomNavigationOrderTransport.findViewById(R.id.id_async);
+
+            BottomNavigationOrderTransport.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED);
+            bottomNavigationItemViewвыход.setIconSize(50);
+            bottomNavigationItemView2создать.setIconSize(70);
+            bottomNavigationItemView3обновить.setIconSize(50);
+
+
             bottomNavigationItemViewвыход.setVisibility(View.VISIBLE);
             bottomNavigationItemView2создать.setVisibility(View.VISIBLE);
             bottomNavigationItemView3обновить.setVisibility(View.VISIBLE);
             BottomNavigationOrderTransport.refreshDrawableState();
             BottomNavigationOrderTransport.forceLayout();
 
-            progressBarСканирование=  (ProgressBar)  container. findViewById(R.id.ProgressBar);
+
+
+
+
+
+
+
+
+
+
+            progressBarСканирование=  (ProgressBar)  view. findViewById(R.id.ProgressBar);
+            progressBarСканирование.setVisibility(View.VISIBLE);
             // TODO: 01.05.2023
-            gridViewOrderTransport =  (GridView) container.findViewById(R.id.gridViewOrderTransport);
-            TextViewHadler = (TextView) container.findViewById(R.id.TextViewHadler);
+            gridViewOrderTransport =  (GridView) view.findViewById(R.id.gridViewOrderTransport);
+            TextViewHadler = (TextView) view.findViewById(R.id.TextViewHadler);
             animationvibr1 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_singletable2);//
-            textViewHadler=(MaterialTextView)  container.findViewById(R.id.TextViewHadler);
+            textViewHadler=(MaterialTextView)  view.findViewById(R.id.TextViewHadler);
             textViewHadler.setHint("Заказы Транспорта");
 
 
@@ -568,8 +584,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 BottomNavigationOrderTransport.refreshDrawableState();
                 gridViewOrderTransport.forceLayout();
                 gridViewOrderTransport.refreshDrawableState();
-                linear_main_ordertransport.forceLayout();
-                linear_main_ordertransport.refreshDrawableState();
+                linearLayout_orders_transport.forceLayout();
+                linearLayout_orders_transport.refreshDrawableState();
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -724,7 +740,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 fragmentNewЗаказТранспорта.setArguments(bundleNewOrderTransport);
                 fragmentTransaction.replace(R.id.linear_main_ordertransport, fragmentNewЗаказТранспорта).setReorderingAllowed(true).commit();//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.show(fragmentNewЗаказТранспорта);
-                linear_main_ordertransport.refreshDrawableState();
+                linearLayout_orders_transport.refreshDrawableState();
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
