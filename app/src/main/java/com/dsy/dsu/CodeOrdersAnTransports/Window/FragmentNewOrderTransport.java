@@ -287,10 +287,7 @@ public class FragmentNewOrderTransport extends Fragment {
                     public void onClick(View v) {
                         try {
                             МетодЗапускаАнимацииКнопок(v);
-                            message.getTarget().postDelayed(()->{
-                                // TODO: 14.05.2023
-                                методBackOrdersTransport();
-                            },300);
+                            message.getTarget().postDelayed(()->{методBackOrdersTransport();},500);
                             Log.d(this.getClass().getName(), "\n" + " class " +
                                     Thread.currentThread().getStackTrace()[2].getClassName()
                                     + "\n" +

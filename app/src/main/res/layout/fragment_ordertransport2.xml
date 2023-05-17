@@ -19,7 +19,7 @@
 <com.google.android.material.card.MaterialCardView
     android:id="@+id/cardviewnewnewordermateril2"
     android:layout_width="match_parent"
-    android:layout_height="800dp"
+    android:layout_height="match_parent"
     app:layout_gravity="center"
     android:minHeight="150dp"
     app:cardCornerRadius="5dp"
