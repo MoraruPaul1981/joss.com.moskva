@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.graphics.Color;
@@ -22,9 +23,10 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.Filter;
 import android.widget.FilterQueryProvider;
 import android.widget.GridView;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -52,9 +54,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
-import com.google.common.util.concurrent.AtomicDouble;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -100,6 +100,9 @@ public class FragmentNewOrderTransport extends Fragment {
     private AlertDialog alertDialogNewOrderTranport;
 
     private   SubClassSetAllSprabochnik subClassSetAllSprabochnik;
+
+    private  MaterialTextView     materialTextCFO ;
+    private   MaterialButton      materialButtonExitOrSave;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -214,15 +217,15 @@ public class FragmentNewOrderTransport extends Fragment {
         super.onStart();
         try{
             if( cursorCfo ==null) {
-                subClassNewOrderTransport.методAdapterNewOrderTransportGridView(R.layout.list_item_progressing_newordertransport,
+                subClassNewOrderTransport.методIsNullAdapterGridView(R.layout.list_item_progressing_newordertransport,
                         "Справочники...", R.drawable.icon_dsu1_ordertransport_down);
             }else {
                 if( cursorCfo.getCount()>0) {
-                    subClassNewOrderTransport.методAdapterNewOrderTransportGridView(R.layout.fragment_ordertransport2,
+                    subClassNewOrderTransport.методSuccessAdapterGridView(R.layout.fragment_ordertransport2,
                             "Создаем заказ !!!", R.drawable.icon_rdertransport2);
 
                 }else{
-                    subClassNewOrderTransport.методAdapterNewOrderTransportGridView( R.layout.list_item_isnull_newordertransport,
+                    subClassNewOrderTransport.методIsNullAdapterGridView( R.layout.list_item_isnull_newordertransport,
                             "Нет справочников !!!", R.drawable.icon_rdertransport2);
                 }
                 // TODO: 04.05.2023 Получаем Данные что обработка данных закончена
@@ -550,9 +553,9 @@ public class FragmentNewOrderTransport extends Fragment {
 
 
         // TODO: 28.04.2023
-        void методAdapterNewOrderTransportGridView(@NonNull Integer Макет ,
-                                                   @NonNull String Сообщение,
-                                                   @NonNull Integer Значек){///      R.layout.list_item_progressing_ordertransport
+        void методIsNullAdapterGridView(@NonNull Integer Макет ,
+                                        @NonNull String Сообщение,
+                                        @NonNull Integer Значек){///      R.layout.list_item_progressing_ordertransport
             try{
                     ArrayList<HashMap<String, Object>> ЛистНетданных= new ArrayList<HashMap<String, Object>> ();
                     HashMap<String, Object> map = new HashMap<>();
@@ -617,6 +620,148 @@ public class FragmentNewOrderTransport extends Fragment {
         }
 
         }
+
+        // TODO: 16.05.2023 сама данные
+
+        // TODO: 28.04.2023  АДАПТЕР СЦО
+        void методSuccessAdapterGridView(@NonNull Integer Макет ,
+                                         @NonNull String Сообщение,
+                                         @NonNull Integer Значек){///      R.layout.list_item_progressing_ordertransport
+            try{
+                ArrayList<HashMap<String, Object>> ЛистНетданных= new ArrayList<HashMap<String, Object>> ();
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("alldonttbels", Сообщение);
+                ЛистНетданных.add(map);
+                SimpleAdapter simpleAdapterAllElement = new SimpleAdapter(getContext(),
+                        ЛистНетданных,Макет,
+                        new String[]{"alldonttbels","allimage"},
+                        new int[]{android.R.id.text2,android.R.id.text1});
+
+                SimpleAdapter.ViewBinder БиндингКогдаНетДАнных = new SimpleAdapter.ViewBinder() {
+                    @Override
+                    public boolean setViewValue(View view, Object data, String textRepresentation) {
+                        try{
+                            switch (view.getId()) {
+                                case android.R.id.text1:
+                                    // TODO: 15.05.2023  CFO
+                                    subClassSetAllSprabochnik.методСправочникЦФО(view);
+                                    // TODO: 15.05.2023  Вид ТС
+                                    subClassSetAllSprabochnik.   методСправочникВидТС(view);
+                                    // TODO: 15.05.2023  ГОС Номер
+                                    subClassSetAllSprabochnik.    методСправочникГосНомер(view);
+                                    // TODO: 15.05.2023  Дата Будущего Времени
+                                    subClassSetAllSprabochnik.      методСправочникДатаБудущая(view);
+                                    // TODO: 15.05.2023  Кнопка Создания
+                                    subClassSetAllSprabochnik.      методСправочникКнопкаСоздания(view);
+
+                                    // TODO: 18.04.2023  Simple Adapter Кдик по Элементы
+                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                            }
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
+                        return true;
+                    }
+                };
+              /*  simpleAdapterAllElement.setViewBinder(БиндингКогдаНетДАнных);
+                simpleAdapterAllElement.notifyDataSetChanged();
+                gridViewNewOrderTransport.setAdapter(simpleAdapterAllElement);*/
+
+
+                // TODO: 16.05.2023 test sart
+
+
+                class CustomListAdapter extends BaseAdapter {
+                    private Context context; //context
+                    private ArrayList<String> items; //data source of the list adapter
+
+                    //public constructor
+                    public CustomListAdapter(Context context, ArrayList<String> items) {
+                        this.context = context;
+                        this.items = items;
+                    }
+
+                    @Override
+                    public int getCount() {
+                        return items.size(); //returns total of items in the list
+                    }
+
+                    @Override
+                    public Object getItem(int position) {
+                        return items.get(position); //returns list item at the specified position
+                    }
+
+                    @Override
+                    public long getItemId(int position) {
+                        return position;
+                    }
+
+                    @Override
+                    public View getView(int position, View convertView, ViewGroup parent) {
+                        // inflate the layout for each list row
+                        if (convertView == null) {
+                            convertView = LayoutInflater.from(context).
+                                    inflate(R.layout.fragment_ordertransport2, parent, false);
+
+                            if (position==0) {
+                              //  materialTextCFO = (MaterialTextView)   convertView.findViewById(R.id.valuecfo);//ВИД CFO
+
+                                // TODO: 15.05.2023  CFO
+                                subClassSetAllSprabochnik.методСправочникЦФО(convertView);
+
+                            }
+                        }
+
+                        // get current item to be displayed
+                        String currentItem = (String) getItem(position);
+
+                        materialTextCFO.setText(currentItem);
+
+                        Log.d(getContext().getClass().getName(), "\n"
+                                + " время: " + new Date() + "\n+" +
+                                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorCfo  " + cursorCfo);
+
+
+                        // returns the view for the current row
+                        return convertView;
+                    }
+                }
+                // Setup the data source
+                ArrayList<String> itemsArrayList = new ArrayList<>(); // calls function to get items list
+                itemsArrayList.add("www1");
+                itemsArrayList.add("www2");
+                itemsArrayList.add("www3");
+// instantiate the custom list adapter
+                CustomListAdapter adapter = new CustomListAdapter(getContext(), itemsArrayList);
+                // TODO: 16.05.2023 end tests
+                gridViewNewOrderTransport.setAdapter(adapter);
+
+                gridViewNewOrderTransport.refreshDrawableState();
+                // TODO: 19.04.2023 слушаелти
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorCfo  " + cursorCfo);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+
+        }
+
 
         // TODO: 15.05.2023
         private Cursor методGetAll(@NonNull String ТекущеаяТаблица,@NonNull String ТекущейСтолбик) {
@@ -692,9 +837,9 @@ public class FragmentNewOrderTransport extends Fragment {
         }
         private void методСправочникЦФО(@NonNull View родительскийCardView) {
             try{
-                MaterialTextView     materialTextCFO = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuecfo);//ВИД CFO
+                     materialTextCFO = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuecfo);//ВИД CFO
                     методЗаполенияСправочника(   materialTextCFO,cursorCfo,"выберете цфо");
-              MaterialButton      materialButtonExitOrSave = (MaterialButton)   родительскийCardView.findViewById(R.id.bottomnewordertransport);
+                    materialButtonExitOrSave = (MaterialButton)   родительскийCardView.findViewById(R.id.bottomnewordertransport);
                 // TODO: 12.05.2023
                 materialTextCFO.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -703,7 +848,7 @@ public class FragmentNewOrderTransport extends Fragment {
                         message.getTarget() .postDelayed(()->{
                             v.animate().rotationX(0);
                             // TODO: 16.05.2023 запуск SEARCHVIEW CFO
-                            new SearchViewForNewOT().методПоискаНовыйЗаказТранспорта( (MaterialTextView) v,cursorCfo,"name","cfo","цфо",materialButtonExitOrSave);
+                            new SearchViewForNewOT().методПоискаНовыйЗаказТранспорта(  cursorCfo,"name","cfo","цфо" );
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
                                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -734,7 +879,7 @@ public class FragmentNewOrderTransport extends Fragment {
                         v.animate().rotationX(+40l);
                         message.getTarget() .postDelayed(()->{
                             v.animate().rotationX(0);
-                            new SearchViewForNewOT().методПоискаНовыйЗаказТранспорта( (MaterialTextView) v,cursorTypeTS,"name","vid_tc","вид тс",materialButtonExitOrSave);
+                           // new SearchViewForNewOT().методПоискаНовыйЗаказТранспорта( (MaterialTextView) v,cursorTypeTS,"name","vid_tc","вид тс",materialButtonExitOrSave);
                         },200);
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -761,7 +906,7 @@ public class FragmentNewOrderTransport extends Fragment {
                         v.animate().rotationX(+40l);
                         message.getTarget() .postDelayed(()->{
                             v.animate().rotationX(0);
-                            new SearchViewForNewOT().методПоискаНовыйЗаказТранспорта( (MaterialTextView) v,cursorGosNomer,"fullname","track","гос.номер",materialButtonExitOrSave);
+                          //  new SearchViewForNewOT().методПоискаНовыйЗаказТранспорта( (MaterialTextView) v,cursorGosNomer,"fullname","track","гос.номер",materialButtonExitOrSave);
                         },200);
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -963,16 +1108,13 @@ public class FragmentNewOrderTransport extends Fragment {
         private    ListView ListViewForSearchView;
         private  String Столбик;
         private String ТаблицаТекущая;
-        private SimpleCursorAdapter simpleCursorForSearchView;
         private   SearchView searchView;
         private  Cursor cursor;
         private  String Спровочник;
-        void методПоискаНовыйЗаказТранспорта(@NonNull MaterialTextView materialTextViewТекущийСправочник,
-                                             @NonNull Cursor cursor,
+        void методПоискаНовыйЗаказТранспорта(@NonNull Cursor cursor,
                                              @NonNull String Столбик,
                                              @NonNull String ТаблицаТекущая,
-                                             @NonNull String Спровочник,
-                                             @NonNull MaterialButton materialButtonExitOrSave){
+                                             @NonNull String Спровочник){
             this.cursor=cursor;
             this.Столбик=Столбик;
             this.ТаблицаТекущая=ТаблицаТекущая;
@@ -986,6 +1128,7 @@ public class FragmentNewOrderTransport extends Fragment {
                         materialButtonFilterЗакрытьДиалог =    (MaterialButton) view.findViewById(R.id.bottom_newscanner1);
                         ListViewForSearchView =    (ListView) view.findViewById(R.id.ListViewForNewOrderTransport);
                         searchView =    (SearchView) view.findViewById(R.id.searchview_newordertransport);
+                        searchView.setQueryHint("Поиск "+Спровочник);
                         ListViewForSearchView.setTextFilterEnabled(true);
                         searchView.setDrawingCacheBackgroundColor(Color.GRAY);
                         searchView.setDrawingCacheEnabled(true);
@@ -995,10 +1138,10 @@ public class FragmentNewOrderTransport extends Fragment {
                         TextView textView = (TextView) searchView.findViewById(id);
                         textView.setTextColor(Color.rgb(0,102,102));
                         textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-
+                        searchView.refreshDrawableState();
 
                         ///TODO ГЛАВНЫЙ АДАПТЕР чата
-                        simpleCursorForSearchView =
+                        SimpleCursorAdapter          simpleCursorForSearchView =
                                 new SimpleCursorAdapter(getContext(),
                                         R.layout.simple_newspinner_dwonload_newfiltersearch, cursor, new String[]{ Столбик,"_id"},
                                         new int[]{android.R.id.text1,android.R.id.text1}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
@@ -1061,31 +1204,28 @@ public class FragmentNewOrderTransport extends Fragment {
                         simpleCursorForSearchView.notifyDataSetChanged();
                         ListViewForSearchView.setAdapter(simpleCursorForSearchView);
                         ListViewForSearchView.startAnimation(animationvibr1);
-                        ListViewForSearchView.setSelection(0);
-                        ListViewForSearchView.forceLayout();
-                        ListViewForSearchView.refreshDrawableState();
 
                         // TODO: 13.12.2022  Поиск и его слушель
-                        МетодПоискаФильтр(  ТаблицаТекущая);
+                        МетодПоискаФильтр(  ТаблицаТекущая,             simpleCursorForSearchView );
 
                         // TODO: 15.05.2023 Слушатель Действия Кнопки Сохранить
 
-                        методКликДейсвиеКнопкиСохранить(materialTextViewТекущийСправочник);
+                        методКликДейсвиеКнопкиСохранить();
 
                         // TODO: 16.05.2023  КЛИК СЛУШАТЕЛЬ ПО ЕЛЕМЕНТУ
                         методКликПоЗаказуOrder();
 
-                        Log.d(materialTextViewТекущийСправочник.getContext().getClass().getName(), "\n"
+                        Log.d(this.getContext().getClass().getName(), "\n"
                                 + " время: " + new Date()+"\n+" +
                                 " Класс в процессе... " +
-                                materialTextViewТекущийСправочник.getContext().getClass().getName()+"\n"+
+                                this.getContext().getClass().getName()+"\n"+
                                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
                                 Thread.currentThread().getStackTrace()[2].getMethodName() +
                                 " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new   Class_Generation_Errors(materialTextViewТекущийСправочник.getContext())
+                        new   Class_Generation_Errors(this.getContext())
                                 .МетодЗаписиВЖурналНовойОшибки(e.toString(),
                                 this.getClass().getName(),
                                 Thread.currentThread().getStackTrace()[2].getMethodName(),
@@ -1112,45 +1252,44 @@ public class FragmentNewOrderTransport extends Fragment {
                                 Integer getId=      bundlePepoles.getInt("getId",0);
                                 String getName=   bundlePepoles.getString("getName","").trim();
                                 Long getUUID =   bundlePepoles.getLong("getUUID",0l);
-                                materialTextViewТекущийСправочник.setTag(bundlePepoles);
-                                materialTextViewТекущийСправочник.setText(getName);
+                                materialTextCFO.setTag(bundlePepoles);
+                                materialTextCFO.setText(getName);
                                     // TODO: 15.05.2023 ЗАПОЛЕНИЕ ДАННЫМИ КЛИК
                                 message.getTarget().postDelayed(()->{
-                                    if (    materialTextViewТекущийСправочник.getText().toString().length()>0) {
-                                        materialTextViewТекущийСправочник.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-                                        materialTextViewТекущийСправочник.setTextColor(Color.BLACK);
+                                    if (    materialTextCFO.getText().toString().length()>0) {
+                                        materialTextCFO.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                                        materialTextCFO.setTextColor(Color.BLACK);
                                         materialButtonExitOrSave.setText("Сохранить");
                                         // TODO: 15.05.2023  ЗАКРЫВАЕТ
                                         // TODO: 15.05.2023 Закрываем
                                         alertDialogNewOrderTranport.cancel();
                                         alertDialogNewOrderTranport.dismiss();
                                     } else {
-                                        materialTextViewТекущийСправочник.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-                                        materialTextViewТекущийСправочник.setTextColor(Color.GRAY);
+                                        materialTextCFO.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                                        materialTextCFO.setTextColor(Color.GRAY);
                                         materialButtonExitOrSave.setText("Закрыть");
                                     }
-                                    materialTextViewТекущийСправочник.refreshDrawableState();
-                                    materialTextViewТекущийСправочник.forceLayout();
+                                    materialTextCFO.refreshDrawableState();
                                     materialButtonExitOrSave.refreshDrawableState();
                                     Log.d(getContext().getClass().getName(), "\n"
                                             + " время: " + new Date() + "\n+" +
                                             " Класс в процессе... " + this.getClass().getName() + "\n" +
                                             " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            "materialTextViewТекущийСправочник " +materialTextViewТекущийСправочник);
+                                            "materialTextCFO " +materialTextCFO);
                                 },150);
 
                             }
-                            Log.d(materialTextViewТекущийСправочник.getContext().getClass().getName(), "\n"
+                            Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date()+"\n+" +
                                     " Класс в процессе... " +
-                                    materialTextViewТекущийСправочник.getContext().getClass().getName()+"\n"+
+                                   getContext().getClass().getName()+"\n"+
                                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
                         } catch (Exception e) {
                             e.printStackTrace();
                             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
                                     Thread.currentThread().getStackTrace()[2].getMethodName() +
                                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(materialTextViewТекущийСправочник.getContext())
+                            new   Class_Generation_Errors( getContext())
                                     .МетодЗаписиВЖурналНовойОшибки(e.toString(),
                                             this.getClass().getName(),
                                             Thread.currentThread().getStackTrace()[2].getMethodName(),
@@ -1163,7 +1302,7 @@ public class FragmentNewOrderTransport extends Fragment {
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
                             Thread.currentThread().getStackTrace()[2].getMethodName() +
                             " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new   Class_Generation_Errors(materialTextViewТекущийСправочник.getContext())
+                    new   Class_Generation_Errors( getContext())
                             .МетодЗаписиВЖурналНовойОшибки(e.toString(),
                                     this.getClass().getName(),
                                     Thread.currentThread().getStackTrace()[2].getMethodName(),
@@ -1186,28 +1325,8 @@ public class FragmentNewOrderTransport extends Fragment {
             // TODO: 13.12.2022 ВТОРОЙ СЛУШАТЕЛЬ НА КНОПКУ
         }
 
-        private void МетодПоискаФильтр(@NonNull String ТаблицаДляФильтра) {
+        private void МетодПоискаФильтр(@NonNull String ТаблицаДляФильтра,@NonNull     SimpleCursorAdapter          simpleCursorForSearchView ) {
             try{
-
-                searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        try{
-                            Log.d(this.getClass().getName()," position");
-                            if (hasFocus==true) {
-                                ((SearchView) v).setQueryHint("Поиск "+Спровочник);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(v.getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                    this.getClass().getName(),
-                                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    }
-                });
-
                 searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
@@ -1228,12 +1347,12 @@ public class FragmentNewOrderTransport extends Fragment {
                         try{
                             Log.d(this.getClass().getName()," position");
                                 if (newText.length() > 0) {
-                                    FilterQueryProvider filter = simpleCursorForSearchView.getFilterQueryProvider();
-                                    filter.runQuery(newText);
+                                    Filter filter = simpleCursorForSearchView.getFilter();
+                                    filter.filter(newText);
                                     return true;
                                 }else {
                                     // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР
-                                    методПерезаполенияПоискаИзФилтра(cursor);
+                                    методПерезаполенияПоискаИзФилтра(cursor,             simpleCursorForSearchView );
                                     // TODO: 16.05.2023
                                     materialButtonFilterЗакрытьДиалог.setText("Закрыть");
                                     materialButtonFilterЗакрытьДиалог.forceLayout();
@@ -1265,7 +1384,7 @@ public class FragmentNewOrderTransport extends Fragment {
                                     .методGetAllLike(ТаблицаТекущая,Столбик,constraint.toString());
 
                                 // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР
-                                методПерезаполенияПоискаИзФилтра(cursorFilter[0]);
+                                методПерезаполенияПоискаИзФилтра(cursorFilter[0],          simpleCursorForSearchView );
                                 // TODO: 16.05.2023
                                 if(cursorFilter[0] !=null && cursorFilter[0].getCount()>0) {
                                     materialButtonFilterЗакрытьДиалог.setText("Cохранить");
@@ -1304,7 +1423,7 @@ public class FragmentNewOrderTransport extends Fragment {
 
 
         // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР
-        private void методПерезаполенияПоискаИзФилтра(Cursor cursorFilter) {
+        private void методПерезаполенияПоискаИзФилтра(Cursor cursorFilter ,@NonNull     SimpleCursorAdapter          simpleCursorForSearchView ) {
             try {
             simpleCursorForSearchView.swapCursor(cursorFilter);
             // TODO: 16.05.2023 reboot disain
@@ -1340,7 +1459,7 @@ public class FragmentNewOrderTransport extends Fragment {
         }
         }
 
-        private void методКликДейсвиеКнопкиСохранить(@NonNull MaterialTextView materialTextViewДанныеДляСохранения) {
+        private void методКликДейсвиеКнопкиСохранить( ) {
             try{
                 materialButtonFilterЗакрытьДиалог.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -1351,8 +1470,7 @@ public class FragmentNewOrderTransport extends Fragment {
                         Log.d(materialButtonFilterЗакрытьДиалог.getContext().getClass().getName(), "\n"
                                 + " время: " + new Date()+"\n+" +
                                 " Класс в процессе... " +  materialButtonFilterЗакрытьДиалог.getContext().getClass().getName()+"\n"+
-                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                +  " materialTextViewДанныеДляСохранения " +materialTextViewДанныеДляСохранения);
+                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
                     }
                 });
             } catch (Exception e) {

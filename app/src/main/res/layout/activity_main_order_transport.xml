@@ -79,7 +79,7 @@
                 android:stretchMode="columnWidth"
                 android:verticalSpacing="30dp"
                 android:horizontalSpacing="5dp"
-                android:columnWidth="380dp"
+                android:columnWidth="500dp"
                 android:numColumns="auto_fit"
                 android:scrollIndicators="left|right"
                 android:scrollbars="vertical"
