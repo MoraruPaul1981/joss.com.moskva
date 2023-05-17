@@ -29,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -95,6 +96,8 @@ public class FragmentNewOrderTransport extends Fragment {
 
     RelativeLayout relativeLayout_pool_inseder;
 
+    ScrollView scrollview_pool_new_order_trasport;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         try{
@@ -129,6 +132,7 @@ public class FragmentNewOrderTransport extends Fragment {
            /// view= inflater.inflate(R.layout.list_item_progressing_ordertransport, container, false);
             linearLayout_new_create_order_transport =(LinearLayout)  view.findViewById(R.id.linearLayout_new_create_order_transport);
             relativeLayout_pool_inseder =(RelativeLayout)  linearLayout_new_create_order_transport.findViewById(R.id.relativeLayout_pool_inseder);
+            scrollview_pool_new_order_trasport =(ScrollView)  linearLayout_new_create_order_transport.findViewById(R.id.scrollview_pool_new_order_trasport);
             // TODO: 01.05.2023  Кнопки
             BottomNavigationOrderTransport=  (BottomNavigationView) view. findViewById(R.id.BottomNavigationOrderTransport);
             bottomNavigationItemViewвыход = BottomNavigationOrderTransport.findViewById(R.id.id_lback);
@@ -219,10 +223,12 @@ public class FragmentNewOrderTransport extends Fragment {
                 subClassNewOrderTransport.    МетодДизайнПрограссБара();
             }
 
+            relativeLayout_pool_inseder.removeView(viewChilderNewOrderTranport);
             relativeLayout_pool_inseder.addView(viewChilderNewOrderTranport);
             relativeLayout_pool_inseder.requestLayout();
             relativeLayout_pool_inseder.invalidate();
             relativeLayout_pool_inseder.refreshDrawableState();
+            scrollview_pool_new_order_trasport.pageScroll(ScrollView.FOCUS_UP);
             linearLayout_new_create_order_transport.requestLayout();
 
             // TODO: 19.04.2023 слушаелти
