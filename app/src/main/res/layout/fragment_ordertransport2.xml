@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:minHeight="150dp"
     android:layout_margin="10dp"
@@ -20,10 +20,8 @@
 
 <com.google.android.material.card.MaterialCardView
     android:id="@+id/cardviewnewnewordermateril2"
-    android:layout_width="340dp"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
-    android:padding="2dp"
     app:layout_gravity="center"
     android:minHeight="150dp"
     app:cardCornerRadius="5dp"
@@ -37,16 +35,16 @@
     tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports">
 
 
+
+
     <!--  НАЧАЛО ПЕРВОГО БЛОКА -->
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/linearLayoutordertransfport0"
         android:layout_width="match_parent"
-        android:layout_height="600dp"
+        android:layout_height="match_parent"
         android:background="#F0FFFF"
         android:gravity="center"
-        android:orientation="vertical"
         android:layout_margin="1dp"
-        android:padding="2dp"
         tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports">
         <!--todo новый код созданиеновой задачи-->
 
@@ -58,7 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:layout_marginStart="120dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="120dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/style_for_assitiionmatrial_create_name"
@@ -71,6 +69,7 @@
             android:translationZ="1dp"
             android:visibility="visible"
             app:cardCornerRadius="1dp"
+            android:layout_above="@+id/valuecfo"
             app:cardElevation="1dp" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -92,6 +91,7 @@
             android:textColorHint="#80807C"
             android:textSize="15sp"
             android:textStyle="bold"
+            android:layout_above="@+id/textviewnamematerial"
             android:visibility="visible" />
 
 
@@ -100,7 +100,7 @@
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:layout_marginStart="120dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="120dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/style_for_assitiionmatrial_create_name"
@@ -113,6 +113,7 @@
             android:translationZ="1dp"
             android:visibility="visible"
             app:cardCornerRadius="5dp"
+            android:layout_above="@+id/valuetypetc"
             app:cardElevation="1dp" />
 
 
@@ -135,6 +136,7 @@
             android:textColorHint="#80807C"
             android:textSize="15sp"
             android:textStyle="bold"
+            android:layout_above="@+id/textviewnamematerials"
             android:visibility="visible" />
 
 
@@ -157,6 +159,7 @@
             android:translationZ="1dp"
             android:visibility="gone"
             app:cardCornerRadius="5dp"
+            android:layout_above="@+id/valuegosnomer"
             app:cardElevation="1dp" />
 
 
@@ -185,6 +188,7 @@
             android:textColorHint="#80807C"
             android:textSize="15sp"
             android:textStyle="bold"
+            android:layout_above="@+id/textviewtcomnapy"
             android:visibility="gone" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -192,7 +196,8 @@
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:layout_marginStart="120dp"
-            android:layout_marginTop="10dp"
+            android:layout_above="@+id/valuedate"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="120dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/style_for_assitiionmatrial_create_name"
@@ -218,6 +223,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
+            android:layout_above="@+id/bottomnewordertransport"
             android:background="@drawable/style_forpolymaterialb_cycle_createspinner"
             android:gravity="center"
             android:hint="дата"
@@ -232,25 +238,23 @@
             android:visibility="visible" />
 
 
-        <!--   todo сами элементы конец -->
-
-
-        <!--todo  количество поле ввода данных -->
-
-
-        <!-- todo нижнии поля вввода КОЛИЧЕСТВО  -->
-
 
         <!--  todo кнопка для сохранения-->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/bottomnewordertransport"
             style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
-            android:layout_width="120dp"
+            android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:layout_marginStart="120dp"
-            android:layout_marginTop="200dp"
-            android:layout_marginEnd="120dp"
-            android:layout_marginBottom="5dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="100dp"
+            android:layout_marginLeft="104dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="100dp"
+            android:layout_marginRight="96dp"
+            android:layout_marginBottom="16dp"
             android:clickable="true"
             android:enabled="true"
             android:focusable="auto"
@@ -270,10 +274,11 @@
             tools:visibility="visible" />
 
 
-    </LinearLayout>
+    </RelativeLayout>
     <!--  КОНЕЦ ПЯТОГО БЛОКА -->
-
 </com.google.android.material.card.MaterialCardView>
+
+
 </LinearLayout>
 
 

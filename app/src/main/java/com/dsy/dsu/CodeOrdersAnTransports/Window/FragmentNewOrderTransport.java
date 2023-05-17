@@ -28,6 +28,7 @@ import android.widget.FilterQueryProvider;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -92,6 +93,8 @@ public class FragmentNewOrderTransport extends Fragment {
     private   SubClassSetAllSprabochnik subClassSetAllSprabochnik;
     LinearLayout linearLayout_new_create_order_transport;
 
+    RelativeLayout relativeLayout_pool_inseder;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         try{
@@ -125,6 +128,7 @@ public class FragmentNewOrderTransport extends Fragment {
           // view= inflater.inflate(R.layout.list_item_progressing_ordertransport, container, false);
            /// view= inflater.inflate(R.layout.list_item_progressing_ordertransport, container, false);
             linearLayout_new_create_order_transport =(LinearLayout)  view.findViewById(R.id.linearLayout_new_create_order_transport);
+            relativeLayout_pool_inseder =(RelativeLayout)  linearLayout_new_create_order_transport.findViewById(R.id.relativeLayout_pool_inseder);
             // TODO: 01.05.2023  Кнопки
             BottomNavigationOrderTransport=  (BottomNavigationView) view. findViewById(R.id.BottomNavigationOrderTransport);
             bottomNavigationItemViewвыход = BottomNavigationOrderTransport.findViewById(R.id.id_lback);
@@ -192,21 +196,35 @@ public class FragmentNewOrderTransport extends Fragment {
     public void onStart() {
         super.onStart();
         try{
+            View   viewChilderNewOrderTranport;
             if( cursorCfo ==null) {
-                subClassNewOrderTransport.методIsNullAdapterGridView(R.layout.list_item_progressing_newordertransport,
-                        "Справочники...", R.drawable.icon_dsu1_ordertransport_down);
+                viewChilderNewOrderTranport = LayoutInflater.from(getContext()).
+                        inflate(R.layout.list_item_progressing_newordertransport, relativeLayout_pool_inseder, false);
+                /*subClassNewOrderTransport.методIsNullAdapterGridView(R.layout.list_item_progressing_newordertransport,
+                        "Справочники...", R.drawable.icon_dsu1_ordertransport_down);*/
             }else {
                 if( cursorCfo.getCount()>0) {
-                    subClassNewOrderTransport.методSuccessAdapterGridView(R.layout.fragment_ordertransport2,
-                            "Создаем заказ !!!", R.drawable.icon_rdertransport2);
+                    viewChilderNewOrderTranport = LayoutInflater.from(getContext()).
+                            inflate(R.layout.fragment_ordertransport2, relativeLayout_pool_inseder, false);
+                       /*subClassNewOrderTransport.методSuccessAdapterGridView(R.layout.fragment_ordertransport2,
+                            "Создаем заказ !!!", R.drawable.icon_rdertransport2);*/
 
                 }else{
-                    subClassNewOrderTransport.методIsNullAdapterGridView( R.layout.list_item_isnull_newordertransport,
-                            "Нет справочников !!!", R.drawable.icon_rdertransport2);
+                    viewChilderNewOrderTranport = LayoutInflater.from(getContext()).
+                            inflate(R.layout.list_item_isnull_newordertransport, relativeLayout_pool_inseder, false);
+                   /* subClassNewOrderTransport.методIsNullAdapterGridView( R.layout.list_item_isnull_newordertransport,
+                            "Нет справочников !!!", R.drawable.icon_rdertransport2);*/
                 }
                 // TODO: 04.05.2023 Получаем Данные что обработка данных закончена
                 subClassNewOrderTransport.    МетодДизайнПрограссБара();
             }
+
+            relativeLayout_pool_inseder.addView(viewChilderNewOrderTranport);
+            relativeLayout_pool_inseder.requestLayout();
+            relativeLayout_pool_inseder.invalidate();
+            relativeLayout_pool_inseder.refreshDrawableState();
+            linearLayout_new_create_order_transport.requestLayout();
+
             // TODO: 19.04.2023 слушаелти
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
@@ -321,7 +339,6 @@ public class FragmentNewOrderTransport extends Fragment {
                 fragmentTransaction.remove(fragmentManager.getFragments().get(0));
                 fragmentTransaction.replace(R.id.linearLayout_root_activity_main, fragmentBackListOrderTransport).setReorderingAllowed(true).commit();//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.show(fragmentBackListOrderTransport);
-                linearLayout_new_create_order_transport.refreshDrawableState();
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"

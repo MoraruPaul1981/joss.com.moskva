@@ -13,7 +13,7 @@
     <RelativeLayout
         android:id="@+id/RelativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="center_horizontal|center_vertical"
         android:background="#FFFFFF">
 
@@ -51,8 +51,24 @@
             android:visibility="visible" />
 
 
+
+
+        <ScrollView
+            android:id="@+id/scrollview_pool_new_order_trasport"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_above="@+id/ProgressBar"
+            android:layout_below= "@+id/view2Линия"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:fillViewport="true"
+            android:background="#FFFFFF"
+            android:scrollbars="horizontal|vertical"
+            android:stackFromBottom="true"
+            android:transcriptMode="alwaysScroll">
+
         <RelativeLayout
-            android:id="@+id/relativeLayoutrootordertransport"
+            android:id="@+id/relativeLayout_pool_inseder"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/ProgressBar"
@@ -61,10 +77,10 @@
             android:layout_centerInParent="true"
             android:layout_gravity="center_horizontal|center_vertical"
             android:orientation="vertical"
-            android:background="#ACACAF">
+            android:background="#FFFFFF">
         </RelativeLayout>
 
-
+        </ScrollView>
 
 
         <ProgressBar
