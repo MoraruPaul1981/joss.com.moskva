@@ -63,7 +63,7 @@ public class Class_Connections_Server  extends  Class_GRUD_SQL_Operations {
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
                         " ИмяСервера"+ ИмяСервера+" ИмяПорта "+ИмяПорта);
                 // TODO: 10.11.2022  пинг к сервера
-                   Integer  БуферПолучениеДанныхРЕальныйСтатусРАботыSQLServer =
+                   Long  БуферПолучениеДанныхРЕальныйСтатусРАботыSQLServer =
                       new Class_MODEL_synchronized(КонтекстКоторыйДляСинхронизации).
                               МетодУниверсальногоПинга(new String(), "application/gzip",
                                       "Хотим Получить Статус Реальной Работы SQL SERVER"
@@ -72,10 +72,7 @@ public class Class_Connections_Server  extends  Class_GRUD_SQL_Operations {
                               ,ИмяСервера, ИмяПорта);//application/gzip
                 Log.d(Class_MODEL_synchronized.class.getName(), "  БуферПолучениеДанныхРЕальныйСтатусРАботыSQLServer" +
                         БуферПолучениеДанныхРЕальныйСтатусРАботыSQLServer);
-                    if (БуферПолучениеДанныхРЕальныйСтатусРАботыSQLServer==null) {
-                        БуферПолучениеДанныхРЕальныйСтатусРАботыSQLServer=0;
-                        Log.d(this.getClass().getName(), "РазмерПришедшегоПотока " + БуферПолучениеДанныхРЕальныйСтатусРАботыSQLServer);
-                    }
+
                     // TODO: 16.12.2021  положитльеный результат пинга
                     if (БуферПолучениеДанныхРЕальныйСтатусРАботыSQLServer>0) {
                         результатПрозвонаСокетом = true;

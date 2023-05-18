@@ -340,7 +340,7 @@ import okio.BufferedSink;
 
     //todo #GET     //#GET  только для ПИНГА     //#GET  только для ПИНГА  //#GET  только для ПИНГА //#GET  только для ПИНГА //#GET  только для ПИНГА //#GET  только для ПИНГА //#GET  только для ПИНГА //#GET  только для ПИНГА
     ///МЕТОД ПОЛУЧЕНИЕ ДАННЫХ С СЕРВЕРА
-    public Integer МетодУниверсальногоПинга(String NameTable,
+    public Long МетодУниверсальногоПинга(String NameTable,
                                             String Тип ,
                                             String JobForServer,
                                             Long VersionData,
@@ -349,7 +349,7 @@ import okio.BufferedSink;
                                             Integer ИмяПорта) throws IOException,
             ExecutionException, InterruptedException, TimeoutException, NoSuchAlgorithmException,
             KeyManagementException, InvalidKeyException, NoSuchPaddingException {
-        final Integer[] РазмерПришедшегоПотока = {0};
+        final Long[] РазмерПришедшегоПотока = {0l};
         try {
             StringBuffer БуферРезультатПингасСервером = null;
             String СтрокаСвязиСсервером = "http://" + ИмяСервера + ":" + ИмяПорта + "/"+ new PUBLIC_CONTENT(context).getСсылкаНаРежимСервераRuntime();
@@ -428,17 +428,17 @@ import okio.BufferedSink;
                 @Override
                 public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                     if (response.isSuccessful()) {
-                        Long РазмерПришедшегоПотока = Long.parseLong(   response.header("stream_size"));
+                        РазмерПришедшегоПотока[0] = Long.parseLong(   response.header("stream_size"));
                         StringBuffer БуферРезультатПингасСервером = null;
-                        if (РазмерПришедшегоПотока>0l) {
+                        if (РазмерПришедшегоПотока[0] >0l) {
                             InputStream inputStreamОтПинга = response.body().source().inputStream();
                             GZIPInputStream GZIPПотокОтСЕРВЕРА = new GZIPInputStream(inputStreamОтПинга);
                             BufferedReader РидерОтСервераМетодаGET = new BufferedReader(new InputStreamReader(GZIPПотокОтСЕРВЕРА, StandardCharsets.UTF_16));//
                             БуферРезультатПингасСервером = РидерОтСервераМетодаGET.lines().collect(StringBuffer::new, (sb, i) -> sb.append(i),
                                     StringBuffer::append);
-                            Log.d(this.getClass().getName(), "БуферРезультатПингасСервером " + БуферРезультатПингасСервером +  " РазмерПришедшегоПотока[0] " +РазмерПришедшегоПотока);
+                            Log.d(this.getClass().getName(), "БуферРезультатПингасСервером " + БуферРезультатПингасСервером +  " РазмерПришедшегоПотока[0] " + РазмерПришедшегоПотока[0]);
                         }
-                        Log.d(this.getClass().getName(), "БуферРезультатПингасСервером " + БуферРезультатПингасСервером +  " РазмерПришедшегоПотока[0] " +РазмерПришедшегоПотока);
+                        Log.d(this.getClass().getName(), "БуферРезультатПингасСервером " + БуферРезультатПингасСервером +  " РазмерПришедшегоПотока[0] " + РазмерПришедшегоПотока[0]);
                         // TODO: 31.05.2022
                         dispatcherПинг.executorService().shutdown();
                     }
