@@ -69,6 +69,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -1079,15 +1080,15 @@ public class FragmentOrderTransportOneChane extends Fragment {
         Bundle методДанныеBungle(@NonNull Cursor cursor) {
             Bundle bundleOrderTransport=new Bundle();
             try {
-                Long   MainParentUUID= cursor.getLong(cursor.getColumnIndex("uuid"));
-                String      NameOrder= cursor.getString(cursor.getColumnIndex("name")).trim();
-                String DateOrder= cursor.getString(cursor.getColumnIndex("dateorders")).trim();
-                Integer IdOrder= cursor.getInt(cursor.getColumnIndex("_id"));
-                String NumberOrder= cursor.getString(cursor.getColumnIndex("number_order"));
-                Integer IDPublic= cursor.getInt(cursor.getColumnIndex("user_update"));
-                String CFO= cursor.getString(cursor.getColumnIndex("cfo")).trim();
-                Integer Status= cursor.getInt(cursor.getColumnIndex("status"));
-                String GosNomer= cursor.getString(cursor.getColumnIndex("fullname")).trim();
+                Long   MainParentUUID= Optional.ofNullable(cursor.getLong(cursor.getColumnIndex("uuid"))).orElse(0l) ;
+                String      NameOrder= Optional.ofNullable(cursor.getString(cursor.getColumnIndex("name"))).orElse("");
+                String DateOrder= Optional.ofNullable(cursor.getString(cursor.getColumnIndex("dateorders"))).orElse("");
+                Integer IdOrder=Optional.ofNullable( cursor.getInt(cursor.getColumnIndex("_id"))).orElse(0);
+                String NumberOrder=Optional.ofNullable( cursor.getString(cursor.getColumnIndex("number_order"))).orElse("");
+                Integer IDPublic=Optional.ofNullable( cursor.getInt(cursor.getColumnIndex("user_update"))).orElse(0);
+                String CFO= Optional.ofNullable(cursor.getString(cursor.getColumnIndex("cfo"))).orElse("");
+                Integer Status= Optional.ofNullable(cursor.getInt(cursor.getColumnIndex("status"))).orElse(0);
+                String GosNomer= Optional.ofNullable(cursor.getString(cursor.getColumnIndex("fullname"))).orElse("");
                 // TODO: 12.05.2023 ПАРСИНГА  DATE
                 DateOrder = методПарсингаДатыЗаказа(DateOrder);
                 // TODO: 12.05.2023 ПАРСИНГА  СТАТУСА
@@ -1095,14 +1096,14 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 // TODO: 18.04.2023 Данные Заказы Трансопрта
                 bundleOrderTransport.putLong("MainParentUUID", MainParentUUID);
                 bundleOrderTransport.putInt("Position", cursor.getPosition());
-                bundleOrderTransport.putString("NameOrder",NameOrder );
-                bundleOrderTransport.putString("DateOrder",  DateOrder);
+                bundleOrderTransport.putString("NameOrder",NameOrder.trim() );
+                bundleOrderTransport.putString("DateOrder",  DateOrder.trim());
                 bundleOrderTransport.putInt("IdOrder", IdOrder);
-                bundleOrderTransport.putString("NumberOrder", NumberOrder);
+                bundleOrderTransport.putString("NumberOrder", NumberOrder.trim());
                 bundleOrderTransport.putInt("IDPublic", IDPublic);
-                bundleOrderTransport.putString("CFO", CFO);
-                bundleOrderTransport.putString("Status", Статус);
-                bundleOrderTransport.putString("GosNomer", GosNomer);
+                bundleOrderTransport.putString("CFO", CFO.trim());
+                bundleOrderTransport.putString("Status", Статус.trim());
+                bundleOrderTransport.putString("GosNomer", GosNomer.trim());
                 // TODO: 12.05.2023 ДАННЫЕ
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +

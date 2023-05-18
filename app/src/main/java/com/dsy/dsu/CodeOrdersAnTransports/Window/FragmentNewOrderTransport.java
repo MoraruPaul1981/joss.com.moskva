@@ -70,6 +70,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 
 // TODO: 29.09.2022 фрагмент для получение материалов
@@ -736,8 +737,6 @@ public class FragmentNewOrderTransport extends Fragment {
                             v.animate().rotationX(+40l);
                             message.getTarget() .postDelayed(()-> {
                                         v.animate().rotationX(0);
-
-
                                         // TODO: 16.05.2023 Вставляем Новый Заказ Транпорта
                                         String table = "order_tc";
                                         Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" + table + "");
@@ -750,20 +749,37 @@ public class FragmentNewOrderTransport extends Fragment {
                                         valuesNewOrderTransport.put("date_update", ДатаОбновления);
                                       Long   UUIDGenetetorNewCustoner= (Long) new Class_Generation_UUID(getContext()).МетодГенерацииUUID(getContext());
                                       valuesNewOrderTransport.put("uuid", UUIDGenetetorNewCustoner);
+                                         Bundle bundlegetCfo=(Bundle)       materialTextcfo.getTag();
+                                valuesNewOrderTransport.put("cfo", bundlegetCfo.getInt("getId"));
+                                         Bundle bundlegetTypeTC=(Bundle)       materialTexttypetc.getTag();
+                                valuesNewOrderTransport.put("vid_trasport", bundlegetTypeTC.getInt("getId"));
+                                         Bundle bundlegetDateOrder=(Bundle)       materialTextdate.getTag();
+                                valuesNewOrderTransport.put("dateorders", bundlegetDateOrder.getString("GetDateOrder"));
+
+
+
 
                                         ContentResolver contentResolver = getContext().getContentResolver();
                                         // TODO: 16.05.2023 Сама Вставка
-                                        /// Uri РезультатNewOrderTranport=  contentResolver.insert(uri,  valuesNewOrderTransport);
+                                       Uri urlРезультатNewOrderTranport=  contentResolver.insert(uri,  valuesNewOrderTransport);
 
+                                String ответОперцииВставки=    Optional.ofNullable(urlРезультатNewOrderTranport).map(Emmeter->Emmeter.toString().replace("content://","")).get();
+                          Integer      РезультатУдалениеСтатуса= Integer.parseInt(ответОперцииВставки);
 
-
+                                Snackbar snackbarОперацияДобавления=      Snackbar.make(v, "Ошибка заказ не добавлен !!! ",Snackbar.LENGTH_LONG).setAction("Action",null);
+                                if(РезультатУдалениеСтатуса<1){
+                                    snackbarОперацияДобавления.show();
+                                }else{
+                                 subClassNewOrderTransport.   методBackOrdersTransport();
+                                }
                                 // TODO: 15.05.2023  Сохранчем Выбраные Данные
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                         + " materialTextcfo.getText().length() " +materialTextcfo.getText().length()
                                         + " materialTexttypetc.getText().length() " +materialTexttypetc.getText().length()
-                                        + " materialTextdate.getText().length() "+ materialTextdate.getText().length());
+                                        + " materialTextdate.getText().length() "+ materialTextdate.getText().length()+
+                                        " РезультатУдалениеСтатуса " +РезультатУдалениеСтатуса);
 
                                     },200);
                             // TODO: 15.05.2023  Сохранчем Выбраные Данные
@@ -776,7 +792,7 @@ public class FragmentNewOrderTransport extends Fragment {
                         }else{
                             // TODO: 15.05.2023
                             snackbar.show();
-                            subClassNewOrderTransport.   методBackOrdersTransport();
+                         ///   subClassNewOrderTransport.   методBackOrdersTransport();
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
@@ -913,14 +929,10 @@ public class FragmentNewOrderTransport extends Fragment {
                                                     bundle.putInt("getId",getId);
                                                     bundle.putString("getName",getName);
                                                     bundle.putLong("getUUID",UUIDGetFilter);
-                                                    // TODO: 17.05.2023  вытаскиваем данные из курсора
-                                                    методВытаскиваемДанныеСцоТранспорт(Столбик,getName);
-                                                    
-                                                    
                                                     // TODO: 16.05.2023 Элемент Заполяем данными  TAG
                                                     ((MaterialTextView)view).setTag(bundle);
                                                 // TODO: 20.01.2022
-                                                Log.d(this.getClass().getName()," getName "+getName + " getId " +getId  + " UUIDGetFilter " +UUIDGetFilter);
+                                                Log.d(this.getClass().getName()," getName "+getName + " getId " +getId  + " UUIDGetFilter " +UUIDGetFilter+ " bundle "+bundle);
                                                 boolean ДлинаСтрокивСпиноре = getName.length() >40;
                                                 if (ДлинаСтрокивСпиноре==true) {
                                                     StringBuffer sb = new StringBuffer(getName);
@@ -989,8 +1001,6 @@ public class FragmentNewOrderTransport extends Fragment {
                     return super.setView(view);
                     // TODO: 20.12.2022  тут конец выбеленого
                 }
-
-
                 // TODO: 16.05.2023  КЛИК ПО ЕЛЕМЕНТУ
                 private void методКликПоЗаказуOrder() {
                     try{
@@ -1083,41 +1093,7 @@ public class FragmentNewOrderTransport extends Fragment {
         }
 
 
-        // TODO: 17.05.2023  Метод Ищем Значение для Вставки Из Строки В Значниея
-        private void методВытаскиваемДанныеСцоТранспорт(@NonNull String Столбик,@NonNull String getName) {
-            try{
-                String table = null;
-                switch (Столбик){
-                    case "name":
-                        table="vid_tc";
-                        break;
-                    case "cfo":
-                        table="cfo";
-                        break;
-                }
-                Bundle bundleПосик=new Bundle();
-                bundleПосик.putString("СамЗапрос","  SELECT *  FROM  " +table+ " WHERE   "+Столбик+"=?" +
-                        "     ORDER BY " +Столбик+ "  LIMIT   1  ");
-                bundleПосик.putStringArray("УсловияВыборки" ,new String[]{getName});
-                bundleПосик.putString("Таблица",table);
-                Cursor Курсор=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(getContext(), bundleПосик);
 
-                Log.d(getContext().getClass().getName(), "\n"
-                        + " время: " + new Date() + "\n+" +
-                        " Класс в процессе... " + this.getClass().getName() + "\n" +
-                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +  " getName " +getName + " Курсор " +Курсор);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
-                    Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors( getContext())
-                    .МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                            this.getClass().getName(),
-                            Thread.currentThread().getStackTrace()[2].getMethodName(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-        }
 
         private void методПроверкаВсёЗаполено(@NonNull MaterialButton materialButtonExitParent ) {
             try{
@@ -1325,8 +1301,9 @@ public class FragmentNewOrderTransport extends Fragment {
                             public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 newDate.set(year, monthOfYear, dayOfMonth);
                                 try {
-                                    String ДатаДляНовогоЗаказаТраспорта= DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(newDate.getTime());
-                                    // TODO: 16.05.2023 дата 
+                                  //  String ДатаДляНовогоЗаказаТраспорта= DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(newDate.getTime());
+                                    String ДатаДляНовогоЗаказаТраспорта= dateFormatter.format(newDate.getTime());
+                                    // TODO: 16.05.2023 дата
                                     методЗаписиНовуюДату(ДатаДляНовогоЗаказаТраспорта, materialTextViewКликДата);
                                     Log.d(getContext() .getClass().getName(), "\n"
                                             + " время: " + new Date()+"\n+" +
@@ -1367,7 +1344,9 @@ public class FragmentNewOrderTransport extends Fragment {
 
         private void методЗаписиНовуюДату(String ДатаДляНовогоЗаказаТраспорта, @NonNull MaterialTextView materialTextViewКликДата) {
             try{
-            materialTextViewКликДата.setTag(ДатаДляНовогоЗаказаТраспорта);
+                Bundle bundle=new Bundle();
+                bundle.putString("GetDateOrder",ДатаДляНовогоЗаказаТраспорта);
+                        materialTextViewКликДата.setTag(bundle);
             materialTextViewКликДата.setText(ДатаДляНовогоЗаказаТраспорта);
             materialTextViewКликДата.refreshDrawableState();
         } catch (Exception e) {
@@ -1388,7 +1367,7 @@ public class FragmentNewOrderTransport extends Fragment {
                 newDate.get( Calendar.MONTH);
                 newDate.add(Calendar.DAY_OF_MONTH,1);
                 //TODODATA
-                String ДатаДляНовогоЗаказаТраспорта= DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(newDate.getTime());
+                String ДатаДляНовогоЗаказаТраспорта= dateFormatter.format(newDate.getTime());
                 // TODO: 16.05.2023  Записи Новой Даты 
                 методЗаписиНовуюДату(ДатаДляНовогоЗаказаТраспорта, materialTextDate);
                 Log.d(getContext() .getClass().getName(), "\n"
