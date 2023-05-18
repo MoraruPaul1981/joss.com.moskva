@@ -57,22 +57,12 @@ public class BroadcastReceiver_Sous_Notificatioons_For_Chats extends BroadcastRe
 
             // TODO: 18.04.2021 запувскает широковещатель
 
-
-
                     // TODO: 29.09.2021     ЗАПУСК BROADCAST УВЕДОМЕЛНИЯ  ТОЛЬКО ДЛЯ ЧАТА
-
-
-
-                        // TODO: 03.01.2022
-
-                        МетодЗапускаWorkManager_УведомленияДляЧата_ОДНОРАЗОВЫЙ(context);
 
                         Log.i(this.getClass().getName(), "ПОСЛЕ ВЫХПОЛЕНИЯ МЕТОДА              " +
                                 "МетодЗапускаWorkManager_УведомленияДляЧата DESTROY (context); Broadcatrecever (intent.getAction()   СЛУЖБА кто ЗАПУСТИЛ САМ bRODCAST ? :::"
                                 +(intent.getAction().toString())+"\n"+
                                 " Build.BRAND.toString() Название Телефона " +Build.BRAND.toString());
-
-
 
 
 
@@ -91,105 +81,6 @@ public class BroadcastReceiver_Sous_Notificatioons_For_Chats extends BroadcastRe
         }
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // TODO: 02.04.2021 метод запуска службы из BroadCastas
-
-
-    private void МетодЗапускаWorkManager_УведомленияДляЧата_ОДНОРАЗОВЫЙ(@NotNull Context context ) {
-
-
-
-
-        try{
-
-
-            Log.i(context.getClass().getName(), "ЗАПУСК из BroadcastReceiver СЛУЖБА  УВЕДОМЛЕНИЯ одноразовые   ДЛя Чата doWork   время "+"\n"
-                    +new Date() + " СТАТУС WORKMANAGER" + WorkManager.getInstance(context.getApplicationContext()).getWorkInfosByTag(ИмяСлужбыУведомленияДляЧатаОдноразовая));
-
-
-            Constraints constraintsУведомленияДляЧата= new Constraints.Builder()
-                    .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
-                    .setRequiresBatteryNotLow(false)
-                    .setRequiresStorageNotLow(false)
-                    .build();
-///
-
-
-            OneTimeWorkRequest periodicWorkRequestУведомленияДляЧатаОдноразовая = new OneTimeWorkRequest.Builder(MyWork_Notifocations_Уведомления_Для_Чата.class)///  PeriodicWorkRequest.MIN_BACKOFF_MILLIS
-                    .setConstraints(constraintsУведомленияДляЧата)
-                    .addTag(ИмяСлужбыУведомленияДляЧатаОдноразовая)
-                    .setBackoffCriteria(
-                            BackoffPolicy.LINEAR,
-                            PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
-                            TimeUnit.MILLISECONDS)
-
-                    //.setInputData(new Data.Builder().putString("КтоЗапустилWorkmanager","BroadCastRecieve").build())
-                    .build();
-
-
-
-// Queue the work
-            WorkManager.getInstance(context.getApplicationContext()).enqueueUniqueWork(ИмяСлужбыУведомленияДляЧатаОдноразовая, ExistingWorkPolicy.APPEND_OR_REPLACE,
-                    periodicWorkRequestУведомленияДляЧатаОдноразовая);
-
-
-            //////////
-        } catch (Exception e) {
-            e.printStackTrace();
-            ///метод запись ошибок в таблицу
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(context.getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());;
-
-            Log.e(context.getClass().getName(), "ОШИБКА CATCH  из BroadcastReceiver  СЛУЖБА УВЕДОМЛЕНИЯ для ЧАТА в BroadCasrReciver    private void MyWork_Notifocations_Уведомления_Для_Чата" + e.toString());
-
-
-        }
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

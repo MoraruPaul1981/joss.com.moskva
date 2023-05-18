@@ -1063,8 +1063,9 @@ try{
                     Intent  intentЗапускОднорworkanager=new Intent();
                     intentЗапускОднорworkanager.putExtras(bundleДляПЕредачи);
                     // TODO: 02.08.2022
-                    new Class_Generator_One_WORK_MANAGER(getApplicationContext()).
-                            МетодИзFaceAppОдноразовыйЗапускВоерМенеджера(getApplicationContext(),intentЗапускОднорworkanager);
+
+                    // TODO: 02.08.2022
+                    new Class_Generator_One_WORK_MANAGER(getApplicationContext()).МетодОдноразовыйЗапускВоерМенеджера(getApplicationContext(),intentЗапускОднорworkanager);
                     // TODO: 26.06.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

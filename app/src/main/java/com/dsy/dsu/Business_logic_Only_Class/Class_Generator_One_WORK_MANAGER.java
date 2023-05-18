@@ -74,50 +74,7 @@ public class Class_Generator_One_WORK_MANAGER extends  Class_GRUD_SQL_Operations
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
-    // TODO: 28.12.2021 srart one work manager
-    public void МетодИзFaceAppОдноразовыйЗапускВоерМенеджера(@NotNull Context context, @NonNull Intent intentЗапускОднорworkanager) {
-        String ИмяСлужбыСинхронизацииОдноразовая = "WorkManager Synchronizasiy_Data Disposable";
-        // com.dsy.dsu.providerdatabase
-        Integer РезультатОноразовойСинхрониазции=0;
-        Uri uri = Uri.parse("content://data/data/com.dsy.dsu/databases/Database DSU-1.db");
-        try {
-            Bundle bundleДляПЕредачи=intentЗапускОднорworkanager.getExtras();
-            Integer КтоЗапуслилСинхронизацию=      bundleДляПЕредачи.getInt("IDПубличныйНеМойАСкемБылаПереписака");
-            Boolean StatusOneWokManagers=      bundleДляПЕредачи.getBoolean("StatusOneWokManagers");
-            Data myData = new Data.Builder()
-                    .putInt("СообщениеЧатаДляКонктерногоСотрудника", КтоЗапуслилСинхронизацию)
-                    .putBoolean("StatusOneWokManagers", StatusOneWokManagers)
-                    .build();
-            Constraints constraintsЗапускСинхОдноразоваяСлужба = new Constraints.Builder()
-                    .setRequiredNetworkType(NetworkType.CONNECTED)
-                    .setRequiresBatteryNotLow(false)
-                    .setRequiresStorageNotLow(false)
-                    .build();
-            OneTimeWorkRequest OneTimeWorkЗапускФОновойСинхрониазциииИзНУтриТабеля =
-                    new OneTimeWorkRequest.Builder(MyWork_Async_Синхронизация_Одноразовая.class)
-                            .setConstraints(constraintsЗапускСинхОдноразоваяСлужба)
-                            .setInputData(myData)
-                            .addTag(ИмяСлужбыСинхронизацииОдноразовая)
-                            .setBackoffCriteria(
-                                    BackoffPolicy.LINEAR,
-                                    PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
-                                    TimeUnit.MILLISECONDS)
-                            .build();//      .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
-            WorkManager.getInstance(context).enqueueUniqueWork(ИмяСлужбыСинхронизацииОдноразовая,
-                    ExistingWorkPolicy.APPEND_OR_REPLACE, OneTimeWorkЗапускФОновойСинхрониазциииИзНУтриТабеля);
-//////////20.15
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString()
-                    , this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
+
 
 
 }

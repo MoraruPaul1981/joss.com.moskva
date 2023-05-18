@@ -2067,8 +2067,9 @@ public class Fragment4_Now_Views_Task_For_Complete extends Fragment {
                        Intent  intentЗапускОднорworkanager=new Intent();
                        intentЗапускОднорworkanager.putExtras(bundleДляПЕредачи);
                        // TODO: 02.08.2022
-                       new Class_Generator_One_WORK_MANAGER(getContext()).
-                               МетодИзFaceAppОдноразовыйЗапускВоерМенеджера(getContext(),intentЗапускОднорworkanager);
+
+                       // TODO: 02.08.2022
+                       new Class_Generator_One_WORK_MANAGER(getContext()).МетодОдноразовыйЗапускВоерМенеджера(getContext(),intentЗапускОднорworkanager);
                        // TODO: 26.06.2022
                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

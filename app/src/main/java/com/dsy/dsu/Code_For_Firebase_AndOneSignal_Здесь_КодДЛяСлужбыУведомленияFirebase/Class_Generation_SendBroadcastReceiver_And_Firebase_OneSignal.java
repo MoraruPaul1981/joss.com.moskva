@@ -17,7 +17,6 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID
 import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generator_One_WORK_MANAGER;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
-import com.dsy.dsu.Business_logic_Only_Class.SubClass_Notificatioons_For_Tasks_Cancel_AndComplete;
 import com.dsy.dsu.Code_For_Starting_BroadcastReciever_ЗдесьКодЗапускаБроадКастеров.BroadcastReceiver_Sous_Asyns_Glassfish;
 import com.dsy.dsu.Code_For_Starting_BroadcastReciever_ЗдесьКодЗапускаБроадКастеров.BroadcastReceiver_Sous_Notificatioons_For_Chats;
 import com.dsy.dsu.Code_For_Starting_BroadcastReciever_ЗдесьКодЗапускаБроадКастеров.BroadcastReceiver_Sous_Notificatioons_For_Tasks;
@@ -106,9 +105,16 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
     }
      public void МетодЗапускаУведомленияДляЗАДАЧТолькоПриСменеСтатусаОтказВыполнил() {
          try {
-             SubClass_Notificatioons_For_Tasks_Cancel_AndComplete subClass_notificatioons_for_tasks_cancel_andComplete
-                     =new SubClass_Notificatioons_For_Tasks_Cancel_AndComplete(context);
-             subClass_notificatioons_for_tasks_cancel_andComplete.МетодЗапускаWorkManager_УведомленияДляЗадачаТОлькоПослеСменыСтатусаОтказИлиВыпоелнеа();
+             Integer  ПубличныйIDДляОдноразовойСинхрониазции=
+                     new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(context);
+
+             Bundle bundleДляПЕредачи=new Bundle();
+             bundleДляПЕредачи.putInt("IDПубличныйНеМойАСкемБылаПереписака", ПубличныйIDДляОдноразовойСинхрониазции);
+             bundleДляПЕредачи.putBoolean("StatusOneWokManagers", true);
+             Intent  intentЗапускОднорworkanager=new Intent();
+             intentЗапускОднорworkanager.putExtras(bundleДляПЕредачи);
+             // TODO: 02.08.2022
+             new Class_Generator_One_WORK_MANAGER(context).МетодОдноразовыйЗапускВоерМенеджера(context,intentЗапускОднорworkanager);
              // TODO: 11.01.2022
          } catch (Exception e) {
              e.printStackTrace();
@@ -641,8 +647,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                    Intent  intentЗапускОднорworkanager=new Intent();
                    intentЗапускОднорworkanager.putExtras(bundleДляПЕредачи);
                    // TODO: 02.08.2022
-                   new Class_Generator_One_WORK_MANAGER(context).
-                           МетодИзFaceAppОдноразовыйЗапускВоерМенеджера(context,intentЗапускОднорworkanager);
+                   new Class_Generator_One_WORK_MANAGER(context).МетодОдноразовыйЗапускВоерМенеджера(context,intentЗапускОднорworkanager);
                    // TODO: 26.06.2022
                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
