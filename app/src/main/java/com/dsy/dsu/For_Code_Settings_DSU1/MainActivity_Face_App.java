@@ -749,7 +749,7 @@ public class MainActivity_Face_App extends AppCompatActivity {
                             case "Пользователи Системы":
                                 try {
                                     // TODO: 24.04.2023  запускаем простую синхрониазцию
-                                    методЗапускСинхронизацииДоСменыПользователя();
+                                  ///  методЗапускСинхронизацииДоСменыПользователя();
                                     // TODO: 24.04.2023  запуск смены Пользоватедя Данные
                                     ProgressDialog prograssbarСменаДанныхПользователя;
                                     prograssbarСменаДанныхПользователя = new ProgressDialog(activity);

@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.loader.content.CursorLoader;
 
 import com.dsy.dsu.Business_logic_Only_Class.DATE.Class_Generation_Data;
@@ -122,11 +123,11 @@ public class Class_Clears_Tables {
                           .doOnComplete(new Action() {
                               @Override
                               public void run() throws Throwable {
-                                  if (РезультатСменыДанных.size()>0) {
-                                     методПослеСменыДанныхЗапускаемСНАчала(activity);
-                                  }
                                   // TODO: 24.04.2023 Конец Цикла
                              activity.runOnUiThread(()->{
+                                 if (РезультатСменыДанных.size()>0) {
+                                     методПослеСменыДанныхЗапускаемСНАчала(activity);
+                                 }
                                  progressDialogДляУдалениеТаблиц.dismiss();
                                  progressDialogДляУдалениеТаблиц.cancel();
                              });
@@ -149,7 +150,7 @@ public class Class_Clears_Tables {
 
     // TODO: 24.02.2022
 
- public void методПослеСменыДанныхЗапускаемСНАчала(Activity activity) {
+ public void методПослеСменыДанныхЗапускаемСНАчала(@NonNull Activity activity) {
         Intent Интент_Меню=new Intent();
         try {
                    Toast.makeText(activity, " Успешное смена данных !!! "    , Toast.LENGTH_SHORT).show();
@@ -159,7 +160,7 @@ public class Class_Clears_Tables {
                     editor.commit();
                     /////TODO ЗАПУСКАМ ОБНОЛВЕНИЕ ДАННЫХ С СЕРВЕРА ПЕРЕРД ЗАПУСКОМ ПРИЛОЖЕНИЯ ВСЕ ПРИЛОЖЕНИЯ ДСУ-1
                     Интент_Меню.setClass(activity, MainActivity_Tabels_Users_And_Passwords.class); //MainActivity_Visible_Async //MainActivity_Face_App
-                    Интент_Меню.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP );//////FLAG_ACTIVITY_SINGLE_TOP
+                    Интент_Меню.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK   );//////FLAG_ACTIVITY_SINGLE_TOP
                     activity. startActivity(Интент_Меню);
         } catch (Exception e) {
             e.printStackTrace();
