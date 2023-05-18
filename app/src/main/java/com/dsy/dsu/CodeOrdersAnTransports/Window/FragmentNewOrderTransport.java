@@ -71,6 +71,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 
 
 // TODO: 29.09.2022 фрагмент для получение материалов
@@ -550,7 +551,43 @@ public class FragmentNewOrderTransport extends Fragment {
             return  cursor;
         }
 
-
+        private String методGetNumberNewIDOrderTranport() {
+            String number_order = null;
+            try{
+                Bundle bundleПосик=new Bundle();
+                bundleПосик.putString("СамЗапрос","  SELECT MAX ( _id  ) AS MAX_R FROM  view_ordertransport ");
+                bundleПосик.putStringArray("УсловияВыборки" ,new String[]{""});
+                bundleПосик.putString("Таблица","view_ordertransport");
+                Cursor Курсор=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(getContext(), bundleПосик);
+                Integer  получаемGetId=Курсор.getInt(Курсор.getColumnIndex("MAX_R"));
+                if(получаемGetId!=null){
+                    получаемGetId=получаемGetId+1;
+                }else {
+                    получаемGetId=1;
+                }
+                number_order="зт" +ПубличныйID.toString()+  получаемGetId;
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                // TODO: 18.05.2023
+                if(!Курсор.isClosed()){
+                    Курсор.close();
+                }
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
+                        Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors( getContext())
+                        .МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                this.getClass().getName(),
+                                Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+            return number_order.trim();
+        }
 
 // TODO: 28.04.2023  КОНЕЦ SubClassNewOrderTranport           //// TODO: 28.04.2023  КОНЕЦ SubClassNewOrderTranport   //// TODO: 28.04.2023  КОНЕЦ SubClassNewOrderTranport
 
@@ -756,9 +793,9 @@ public class FragmentNewOrderTransport extends Fragment {
                                          Bundle bundlegetDateOrder=(Bundle)       materialTextdate.getTag();
                                 valuesNewOrderTransport.put("dateorders", bundlegetDateOrder.getString("GetDateOrder"));
 
-
-
-
+                                // TODO: 18.05.2023 генерируем номер заказа траспорта
+                                String number_order=       subClassNewOrderTransport.  методGetNumberNewIDOrderTranport();
+                                valuesNewOrderTransport.put("number_order",number_order  );
                                         ContentResolver contentResolver = getContext().getContentResolver();
                                         // TODO: 16.05.2023 Сама Вставка
                                        Uri urlРезультатNewOrderTranport=  contentResolver.insert(uri,  valuesNewOrderTransport);
@@ -1385,6 +1422,7 @@ public class FragmentNewOrderTransport extends Fragment {
 
         }
 
+        // TODO: 17.05.2023  Метод Ищем Значение для Вставки Из Строки В Значниея
     }
 
     // TODO: 26.04.2023 Конец Фрагмента FragmentOrderTransportOne     // TODO: 26.04.2023 Конец Фрагмента FragmentOrderTransportOne     // TODO: 26.04.2023 Конец Фрагмента FragmentOrderTransportOne
