@@ -84,8 +84,8 @@ public class Class_Clears_Tables {
                           .filter(e->!e.equalsIgnoreCase("type_materials"))
                           .filter(e->!e.equalsIgnoreCase("nomen_vesov"))
                           .filter(e->!e.equalsIgnoreCase("view_onesignal"))
-                          .delay(4,TimeUnit.SECONDS)
-                          .concatMap(i -> Observable.just(i).delay(300, TimeUnit.MILLISECONDS))
+                          .filter(e->!e.equalsIgnoreCase("vid_tc"))
+                          .concatMap(i -> Observable.just(i).delay(500, TimeUnit.MILLISECONDS))
                           .doOnNext(new Consumer<String>() {
                               @Override
                               public void accept(String текущаяТаблицаДляУдваления) throws Throwable {
@@ -95,16 +95,14 @@ public class Class_Clears_Tables {
                                                   context);
                                   Log.d(this.getClass().getName(), "РезультатУдалениеДанных " + РезультатУдалениеДанных+ " текущаяТаблицаДляУдваления "
                                           +текущаяТаблицаДляУдваления);
-                                  Integer РезультатУдалениеMODIFITATION_Client=
-                                          методСменыДанныхMODIFITATION_Client( текущаяТаблицаДляУдваления.toString().trim(),
-                                                  context);
-
-
                                   // TODO: 09.09.2021  действие второе добалянеим дату
                                   РезультатСменыДанных.add(РезультатУдалениеДанных);
                                   activity.runOnUiThread(()->{
                                       progressDialogДляУдалениеТаблиц.setMessage("Удаление таблицы ..."+текущаяТаблицаДляУдваления);
                                   });
+                                  Integer РезультатУдалениеMODIFITATION_Client=
+                                          методСменыДанныхMODIFITATION_Client( текущаяТаблицаДляУдваления.toString().trim(),
+                                                  context);
                               }
                           })
                           .doOnError(new Consumer<Throwable>() {
