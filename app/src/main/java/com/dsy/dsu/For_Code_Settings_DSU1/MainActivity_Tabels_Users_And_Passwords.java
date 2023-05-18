@@ -351,7 +351,7 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
             Интент_ЗапускСамогоПриложенияЕслиПользовательПослеУспешнойаунтификации.putExtra("ПубличноеИмяПользовательДлСервлета", ПубличноеЛогин);
             Интент_ЗапускСамогоПриложенияЕслиПользовательПослеУспешнойаунтификации.putExtra("ПубличноеПарольДлСервлета", ПубличноеПароль);
             Интент_ЗапускСамогоПриложенияЕслиПользовательПослеУспешнойаунтификации.setClass(getApplication(), MainActivity_Visible_Async.class);
-            Интент_ЗапускСамогоПриложенияЕслиПользовательПослеУспешнойаунтификации.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);/// FLAG_ACTIVITY_SINGLE_TOP
+            Интент_ЗапускСамогоПриложенияЕслиПользовательПослеУспешнойаунтификации.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);/// FLAG_ACTIVITY_SINGLE_TOP
             // TODO: 01.12.2022 записываем режим синъронизации
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString("РежимЗапускаСинхронизации","СамыйПервыйЗапускСинхронизации");
