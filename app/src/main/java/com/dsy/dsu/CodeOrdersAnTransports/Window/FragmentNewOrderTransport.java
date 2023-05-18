@@ -556,16 +556,16 @@ public class FragmentNewOrderTransport extends Fragment {
             try{
                 Bundle bundleПосик=new Bundle();
                 bundleПосик.putString("СамЗапрос","  SELECT MAX ( _id  ) AS MAX_R FROM  view_ordertransport ");
-                bundleПосик.putStringArray("УсловияВыборки" ,new String[]{""});
+                bundleПосик.putStringArray("УсловияВыборки" ,new String[]{"0"});
                 bundleПосик.putString("Таблица","view_ordertransport");
-                Cursor Курсор=      (Cursor)    new SubClassCursorLoader(). CursorLoaders(getContext(), bundleПосик);
+                Cursor Курсор=      (Cursor)    new SubClassCursorLoader(). CursorDontSelectionLoaders(getContext(), bundleПосик);
                 Integer  получаемGetId=Курсор.getInt(Курсор.getColumnIndex("MAX_R"));
                 if(получаемGetId!=null){
                     получаемGetId=получаемGetId+1;
                 }else {
                     получаемGetId=1;
                 }
-                number_order="зт" +ПубличныйID.toString()+  получаемGetId;
+                number_order="зт"+"#" +ПубличныйID.toString()+  получаемGetId;
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
