@@ -35,18 +35,21 @@
     app:strokeWidth="1dp"
     android:translationZ="100dp"
     android:animateLayoutChanges="true"
+    android:background="#F0FFFF"
     app:cardBackgroundColor="#F0FFFF"
-    tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
-    app:strokeColor="#D2D8D8">
+    app:strokeColor="#00838F"
+    tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports">
 
 
     <LinearLayout
         android:id="@+id/linearLayoutorderstransport"
         android:layout_width="340dp"
         android:layout_height="wrap_content"
-        android:background="#F0FFFF"
+        android:background="#316E6E"
         android:minHeight="150dp"
         android:gravity="center"
+        android:padding="1dp"
+        android:layout_margin="1dp"
         tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
         android:orientation="vertical">
 
@@ -76,66 +79,15 @@
         android:background="@drawable/divider_for_single_ordertransport"
         android:foregroundGravity="center"
         android:visibility="visible"
+        app:cardBackgroundColor="#F0FFFF"
+        app:strokeColor="#D2D8D8"
         android:layout_centerHorizontal="true" />
 
 
 
 
     <!--  НАЧАЛО ПЕРВОГО БЛОКА -->
-    <LinearLayout
-        android:id="@+id/linearLayoutordertransfport0"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:background="#FFFFFF"
-        tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
-        android:orientation="vertical">
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/otkey0"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:layout_marginEnd="100dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp"
-            android:padding="2dp"
-            android:minHeight="20dp"
-            android:hint="Номер заказа"
-            android:animateLayoutChanges="true"
-            android:background="@drawable/stylesingletablerowiine3"
-            android:gravity="center"
-            android:visibility="visible"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="10dp"
-            app:srcCompat="@drawable/icon_ordertransportorder1"
-            app:strokeColor="#F5FFFA" />
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/otvalue0"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="25dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="3dp"
-            android:padding="2dp"
-            android:background="@drawable/stylesingletablerowiineordertranport"
-            android:checkMark="?android:attr/textCheckMark"
-            android:foregroundGravity="center"
-            android:gravity="center"
-            android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-            android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-            android:hint="Номер Заказа  #1"
-            android:textAlignment="gravity"
-            android:textAppearance="?android:attr/textAppearanceListItemSmall"
-            android:textColor="#000000"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="10dp"
-            app:strokeColor="#F5FFFA"
-            android:animateLayoutChanges="true"
-            android:visibility="visible"/>
-    </LinearLayout>
+
     <!--  КОНЕЦ ПЕРВОГО БЛОКА -->
 
     <!--  НАЧАЛО ВТОРОЙ БЛОКА -->
@@ -167,7 +119,7 @@
             app:srcCompat="@drawable/icon_ordertransportorder1"
             app:strokeColor="#F5FFFA" />
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/otvalue1"
+            android:id="@+id/otvaluecfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="25dp"
@@ -225,7 +177,7 @@
             app:srcCompat="@drawable/icon_ordertransportorder1"
             app:strokeColor="#F5FFFA" />
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/otvalue2"
+            android:id="@+id/otvaluetypets"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="25dp"
@@ -284,7 +236,7 @@
             app:srcCompat="@drawable/icon_ordertransportorder1"
             app:strokeColor="#F5FFFA" />
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/otvalue3"
+            android:id="@+id/otvaluegosnomer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="25dp"
@@ -340,7 +292,7 @@
             app:srcCompat="@drawable/icon_ordertransportorder1"
             app:strokeColor="#F5FFFA" />
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/otvalue4"
+            android:id="@+id/otvaluedatesordert"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="25dp"
@@ -378,52 +330,7 @@
         android:background="#FFFFFF"
         android:gravity="center"
         tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
-        android:orientation="vertical">
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/otkey5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:layout_marginEnd="100dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp"
-            android:minHeight="20dp"
-            android:hint="Статус"
-            android:animateLayoutChanges="true"
-            android:background="@drawable/stylesingletablerowiine3"
-            android:gravity="center"
-            android:visibility="visible"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="10dp"
-            app:srcCompat="@drawable/icon_ordertransportorder1"
-            app:strokeColor="#F5FFFA" />
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/otvalue5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="25dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="3dp"
-            android:padding="2dp"
-            android:background="@drawable/stylesingletablerowiine"
-            android:checkMark="?android:attr/textCheckMark"
-            android:foregroundGravity="center"
-            android:gravity="center"
-            android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-            android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-            android:hint="Значение Статус #6"
-            android:textAlignment="gravity"
-            android:textAppearance="?android:attr/textAppearanceListItemSmall"
-            android:textColor="#000000"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="10dp"
-            app:strokeColor="#F5FFFA"
-            android:animateLayoutChanges="true"
-            android:visibility="visible"/>
-    </LinearLayout>
+        android:orientation="vertical"/>
     <!--  КОНЕЦ ПЯТОГО БЛОКА -->
 
 
