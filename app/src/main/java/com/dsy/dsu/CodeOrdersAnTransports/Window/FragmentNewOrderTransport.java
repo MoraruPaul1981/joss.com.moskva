@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -103,6 +104,8 @@ public class FragmentNewOrderTransport extends Fragment {
     private  ScrollView scrollview_pool_new_order_trasport;
     private     View   родительскийCardView;
 
+   private SharedPreferences preferencesМатериалы;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         try{
@@ -113,6 +116,7 @@ public class FragmentNewOrderTransport extends Fragment {
             ПубличныйID = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
             localBinderNewOrderTransport =  (ServiceOrserTransportService.  LocalBinderOrderTransport) getArguments().getBinder("binder");
             animationvibr1 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_singletable2);//
+            preferencesМатериалы = getContext().getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -369,6 +373,32 @@ public class FragmentNewOrderTransport extends Fragment {
                                 Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
+        // TODO: 19.05.2023
+      void   методЗаписьВыбраногоЦФО(@NonNull Integer IDДляВставкиЦФО,@NonNull String НазваниеВыбраногоЦФО){
+            try{
+                // TODO: 17.11.2022 запоманаем выбраное цфо
+                SharedPreferences.Editor editor = preferencesМатериалы.edit();
+                editor.putBoolean("ДляСпинераУжеВибиралЦФО",true);
+                // TODO: 09.12.2022 цфо
+                editor.putInt("ПозицияВыбраногоЦФО",IDДляВставкиЦФО);
+                editor.putString("НазваниеВыбраногоЦФО",НазваниеВыбраногоЦФО);
+                editor.commit();
+          Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                  " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                  " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                  + " НазваниеВыбраногоЦФО " +НазваниеВыбраногоЦФО + " IDДляВставкиЦФО " +IDДляВставкиЦФО);
+      } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
+                    + Thread.currentThread().getStackTrace()[2].getMethodName().toString() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getContext()).
+                    МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName().toString(),
+                            Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        }
 
         // TODO: 28.04.2023
 
@@ -606,7 +636,15 @@ public class FragmentNewOrderTransport extends Fragment {
         private void методСправочникЦФО(@NonNull View родительскийCardView) {
             try{
                 MaterialTextView           materialTextCFO = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuecfo);//ВИД CFO
+                Boolean ФлагВыбиралУжеЦФОИзСпинера=         preferencesМатериалы.getBoolean("ДляСпинераУжеВибиралЦФО",false);
+                if(ФлагВыбиралУжеЦФОИзСпинера==false){
                     методЗаполенияСправочника(   materialTextCFO,cursorCfo,"выберете цфо");
+                }else {
+                    методВытаскивваемGetCFOИзSharePre(materialTextCFO);
+                }
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " ФлагВыбиралУжеЦФОИзСпинера " +ФлагВыбиралУжеЦФОИзСпинера );
                 MaterialButton            materialButtonExitOrSave = (MaterialButton)   родительскийCardView.findViewById(R.id.bottomnewordertransport);
                 // TODO: 12.05.2023
                 materialTextCFO.setOnClickListener(new View.OnClickListener() {
@@ -634,6 +672,32 @@ public class FragmentNewOrderTransport extends Fragment {
                         " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
                 new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+        private void методВытаскивваемGetCFOИзSharePre(@NonNull MaterialTextView           materialTextCFO ) {
+            try{
+                // TODO: 17.11.2022  если пользователь уже выбирал
+                Boolean ФлагВыбиралУжеЦФОИзСпинера=         preferencesМатериалы.getBoolean("ДляСпинераУжеВибиралЦФО",false);
+                if(ФлагВыбиралУжеЦФОИзСпинера  ){
+                    Integer ПозицияВыбраногоЦФО=            preferencesМатериалы.getInt("ПозицияВыбраногоЦФО",0);
+                    String НазваниеВыбраногоЦФО=            preferencesМатериалы.getString("НазваниеВыбраногоЦФО","");
+                    Bundle bundle=new Bundle();
+                    bundle.putInt("getId",ПозицияВыбраногоЦФО);
+                    bundle.putString("getName",НазваниеВыбраногоЦФО);
+                    materialTextCFO.setTag(bundle);
+                    materialTextCFO.setText(НазваниеВыбраногоЦФО);
+                }
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
         private void методСправочникВидТС(@NonNull  View родительскийCardView) {
@@ -807,7 +871,14 @@ public class FragmentNewOrderTransport extends Fragment {
                                 if(РезультатУдалениеСтатуса<1){
                                     snackbarОперацияДобавления.show();
                                 }else{
+
+                                    // TODO: 19.05.2023 Если Успешно Записала Новай заказ Трспорта
                                  subClassNewOrderTransport.   методBackOrdersTransport();
+                                    // TODO: 19.05.2023  И далее Записали  Выбранный ЦФо в PreShare
+                               Integer getId=     bundlegetCfo.getInt("getId");
+                                    String getName=     bundlegetCfo.getString("getName");
+                                    subClassNewOrderTransport.     методЗаписьВыбраногоЦФО(getId,getName);
+
                                 }
                                 // TODO: 15.05.2023  Сохранчем Выбраные Данные
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -850,14 +921,19 @@ public class FragmentNewOrderTransport extends Fragment {
 
 
 
-        private void методЗаполенияСправочника(@NonNull MaterialTextView values,@NonNull Cursor cursor,@NonNull String ФлагНаличияСпра) {
+        private void методЗаполенияСправочника(@NonNull MaterialTextView values,
+                                               @NonNull Cursor cursor,
+                                               @NonNull String ФлагНаличияСпра) {
             try{
                 values.startAnimation(animationvibr1);
+                Bundle bundle=new Bundle();
                 if (cursor==null || cursor.getCount()==0) {
                     values.setHint( "нет справочника");
+                    bundle.putString("ФлагНаличияСпра","нет справочника");
+                    values.setTag(bundle);
                 }else {
-                    Bundle bundle=new Bundle();
                     bundle.putInt("cursor",cursor.getCount());
+                    bundle.putString("ФлагНаличияСпра",ФлагНаличияСпра);
                     values.setTag(bundle);
                     values.setHint(ФлагНаличияСпра);
                 }
