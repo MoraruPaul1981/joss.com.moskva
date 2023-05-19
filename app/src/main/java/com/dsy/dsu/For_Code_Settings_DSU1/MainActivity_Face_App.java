@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -74,9 +75,7 @@ public class MainActivity_Face_App extends AppCompatActivity {
     private PUBLIC_CONTENT Class_Engine_SQLГдеНаходитьсяМенеджерПотоков = null;
     private boolean РежимыПросмотраДанныхЭкрана;
     private Context context;
-    // private MaterialCardView КнопкаЗадачи, КнопкаТабель, КнопкаЧат,КнопкаСогласование,КнопкаОтгрузкаМатериалов;
-    private MaterialCardView КнопкаТабель, КнопкаСогласование, КнопкаПоступлениеМатериалов,КнопкаЗаявкаНаТранспорт;
-    // private ProgressBar progressBarTask, progressBarTabel, progressBarChat,progressCommitpay,progressShipment_of_Materials;
+    private TextView КнопкаТабель, КнопкаСогласование, КнопкаПоступлениеМатериалов,КнопкаЗаявкаНаТранспорт;
     private ProgressBar progressBarTabel, progressCommitpay,prograessbarOrderTransport,prograessbarControlAccess;
     private Handler handlerFaceAPP;
     private final String ИмяСлужбыСинхронизацииОдноразовая = "WorkManager Synchronizasiy_Data Disposable";//"WorkManager Synchronizasiy_Data";//  "WorkManager Synchronizasiy_Data"; ///"WorkManager Synchronizasiy_Data";
@@ -104,20 +103,23 @@ public class MainActivity_Face_App extends AppCompatActivity {
             ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
             Class_Engine_SQLГдеНаходитьсяМенеджерПотоков = new PUBLIC_CONTENT(getApplicationContext());
             Create_Database_СсылкаНАБазовыйКласс = new CREATE_DATABASE(getApplicationContext());
-            КнопкаТабель = (MaterialCardView) findViewById(R.id.cardview2_For_MainActivity); ///// TODO КНОПКА ТАБЕЛЬНОГО УЧЕТА
-            КнопкаСогласование = (MaterialCardView) findViewById(R.id.cardviewCommitPay_For_MainActivity); ///// TODO КНОПКА ТАБЕЛЬНОГО УЧЕТА
-            КнопкаПоступлениеМатериалов = (MaterialCardView) findViewById(R.id.cardviewControlAccess); /////TODO КОНТРОЛЬ ДОСТУПА
-            КнопкаЗаявкаНаТранспорт = (MaterialCardView) findViewById(R.id.cardviewOrderTransport); /////TODO КОНТРОЛЬ ДОСТУПА
-            КнопкаЗаявкаНаТранспорт.setVisibility(View.VISIBLE);
+
+            // TODO: 19.05.2023  Кнопки
+            КнопкаТабель = (TextView) findViewById(R.id.textViewtabel); ///// TODO КНОПКА ТАБЕЛЬНОГО УЧЕТА
+            КнопкаСогласование = (TextView) findViewById(R.id.textViewsogsovanie); ///// TODO КНОПКА ТАБЕЛЬНОГО УЧЕТА
+            КнопкаПоступлениеМатериалов = (TextView) findViewById(R.id.textViewGetMaretial); /////TODO КОНТРОЛЬ ДОСТУПА
+            КнопкаЗаявкаНаТранспорт = (TextView) findViewById(R.id.textViewZakazTrasport); /////TODO КОНТРОЛЬ ДОСТУПА
+            // TODO: 19.05.2023  ПрограссБары
+            progressBarTabel = (ProgressBar) findViewById(R.id.progressBarTabel); ///// TODO КНОПКА ТАБЕЛЬНОГО УЧЕТА
+            progressCommitpay = (ProgressBar) findViewById(R.id.progressCommitpay); ///// TODO КНОПКА ТАБЕЛЬНОГО УЧЕТА
+            prograessbarOrderTransport = (ProgressBar) findViewById(R.id.prograessbarOrderTransport); /////TODO КОНТРОЛЬ ДОСТУПА
+            prograessbarControlAccess = (ProgressBar) findViewById(R.id.prograessbarControlAccess); /////TODO КОНТРОЛЬ ДОСТУПА
+
             Log.d(this.getClass().getName(), "КнопкаЧат " + " КнопкаЗадачи "
                     + " КнопкаТабель " + КнопкаТабель + " КнопкаСогласование " + КнопкаСогласование + " КнопкаКонтрольДоступа " + КнопкаПоступлениеМатериалов);
             imageView_ЗначекApp = (ImageView) findViewById(R.id.imageView_ЗначекApp); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
             Drawable drawable = getResources().getDrawable(R.mipmap.icon_dsu1_for_mains_menu_faceapp111);///
             imageView_ЗначекApp.setImageDrawable(drawable);
-            progressBarTabel = (ProgressBar) findViewById(R.id.prograessbarTabel_inner_ardview_forMainActivity); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
-            progressCommitpay = (ProgressBar) findViewById(R.id.prograessbarCommitPay_inner_ardview_forMainActivity4); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
-            prograessbarOrderTransport = (ProgressBar) findViewById(R.id.prograessbarOrderTransport); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
-            prograessbarControlAccess = (ProgressBar) findViewById(R.id.prograessbarControlAccess); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
             drawerLayoutFaceApp = (DrawerLayout) findViewById(R.id.drawerLayout_faceapp_menu); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
             constraintLayoutFaceApp = (ConstraintLayout) findViewById(R.id.constraintLayout_faceapp22); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
             navigationViewFaceApp = (NavigationView) findViewById(R.id.navigator_faceapp_main); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
