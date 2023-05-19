@@ -686,6 +686,8 @@ public class FragmentNewOrderTransport extends Fragment {
                     bundle.putString("getName",НазваниеВыбраногоЦФО);
                     materialTextCFO.setTag(bundle);
                     materialTextCFO.setText(НазваниеВыбраногоЦФО);
+                    materialTextCFO.forceLayout();
+                    materialTextCFO.refreshDrawableState();
                 }
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
