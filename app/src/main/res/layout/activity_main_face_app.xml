@@ -379,7 +379,7 @@
         android:fitsSystemWindows="true"
         app:itemIconSize="35dp"
         app:itemIconTint="#00ACC1"
-        android:visibility="visible"
+        android:visibility="gone"
         app:itemTextColor="@color/cardview_dark_background"
         app:menu="@menu/menu_for_faceapp_navigationview"
         tools:ignore="MissingConstraints">

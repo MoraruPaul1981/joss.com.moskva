@@ -112,8 +112,8 @@ public class MainActivity_Face_App extends AppCompatActivity {
             // TODO: 19.05.2023  ПрограссБары
             progressBarTabel = (ProgressBar) findViewById(R.id.progressBarTabel); ///// TODO КНОПКА ТАБЕЛЬНОГО УЧЕТА
             progressCommitpay = (ProgressBar) findViewById(R.id.progressCommitpay); ///// TODO КНОПКА ТАБЕЛЬНОГО УЧЕТА
-            prograessbarOrderTransport = (ProgressBar) findViewById(R.id.prograessbarOrderTransport); /////TODO КОНТРОЛЬ ДОСТУПА
-            prograessbarControlAccess = (ProgressBar) findViewById(R.id.prograessbarControlAccess); /////TODO КОНТРОЛЬ ДОСТУПА
+            prograessbarControlAccess  = (ProgressBar) findViewById(R.id.prograessbarOrderTransport); /////TODO КОНТРОЛЬ ДОСТУПА
+            prograessbarOrderTransport      = (ProgressBar) findViewById(R.id.prograessbarControlAccess); /////TODO КОНТРОЛЬ ДОСТУПА
 
             Log.d(this.getClass().getName(), "КнопкаЧат " + " КнопкаЗадачи "
                     + " КнопкаТабель " + КнопкаТабель + " КнопкаСогласование " + КнопкаСогласование + " КнопкаКонтрольДоступа " + КнопкаПоступлениеМатериалов);
