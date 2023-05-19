@@ -2175,20 +2175,41 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
 
                             if (ВыходныеИлиПразничные!=null) {
-                                if(       ((TextView)v).getText().toString().matches("(.*)Вс(.*)")  || ((TextView)v).getText().toString().matches("(.*)Сб(.*)")) {
+                                Bundle bundleВыходнойIn= (Bundle) ((TextView)v).getTag();
+                                Integer ПроверкабылЛиВыходной= 0;
+                                if (bundleВыходнойIn!=null) {
+                                    ПроверкабылЛиВыходной = bundleВыходнойIn.getInt("StatusCell");
+                                }
+                                if(       ((TextView)v).getText().toString().matches("(.*)Вс(.*)")
+                                        || ((TextView)v).getText().toString().matches("(.*)Сб(.*)")
+                                ||ПроверкабылЛиВыходной==2) {
                                     ((TextView)v).setTextColor(Color.parseColor("#DC143C"));
+                                    Bundle bundleВыходной=new Bundle();
+                                    bundleВыходной.putInt("StatusCell",2);
+                                    ((TextView)v).setTag(bundleВыходной);
                                 }else {
 
-                                    if ( ((TextView)v).getText().toString().matches("(.*)###(.*)")){
+                                    Bundle bundleПразничныйIn= (Bundle) ((TextView)v).getTag();
+                                    Integer ПроверкабылЛиПразничного= 0;
+                                    if (bundleПразничныйIn!=null) {
+                                        ПроверкабылЛиПразничного = bundleВыходнойIn.getInt("StatusCell");
+                                    }
+                                    if ( ((TextView)v).getText().toString().matches("(.*)###(.*)")
+                                    || ПроверкабылЛиПразничного==3){
                                         String УдаляемДляПразничныхДней=     ((TextView)v).getText().toString();
                                         УдаляемДляПразничныхДней=           УдаляемДляПразничныхДней.replaceAll("###","");
                                         ((TextView)v).setText(УдаляемДляПразничныхДней);
                                         ((TextView)v).setTextColor(Color.parseColor("#9C112D"));
+                                        Bundle bundleПразничныйДень=new Bundle();
+                                        bundleПразничныйДень.putInt("StatusCell",3);
+                                        ((TextView)v).setTag(bundleПразничныйДень);
                                     }  else {
                                         ((TextView)v).setTextColor(Color.parseColor("#008080"));
+                                        Bundle bundleОбычныйДень=new Bundle();
+                                        bundleОбычныйДень.putInt("StatusCell",1);
+                                        ((TextView)v).setTag(bundleОбычныйДень);
                                     }
                                     }
-
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " TextViewRowКликПоНазваниям " +TextViewRowКликПоНазваниям);
