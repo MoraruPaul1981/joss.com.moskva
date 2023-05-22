@@ -997,20 +997,15 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                             методЗаполенияЗаказаТранспорта( bundleOrderTransport,  materialTextViewvalues,ЗначениеВставки);
                                             // TODO: 12.05.2023
                                             materialTextViewvalues.startAnimation(animationvibr1);
-                                            // TODO: 22.05.2023 Выраывния Дизайна
-                                            методВыравниваДизайнаЗаказаТранспорта(materialTextViewvalues,materialTextViews,Индекс-1);
-
-
-
-
-
-
                                             // TODO: 18.04.2023  Внешниц вид
                                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
                                                     "  bundleOrderTransport " +bundleOrderTransport +  "materialTextViewvalues " +materialTextViewvalues + " ЗначениеВставки " +ЗначениеВставки);
                                         }
+                                        // TODO: 22.05.2023 Выраывния Дизайна
+                                        методВыравниваДизайнаЗаказаТранспорта( materialTextViews );
+
                                         // TODO: 18.04.2023  Внешниц вид
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1084,26 +1079,49 @@ public class FragmentOrderTransportOneChane extends Fragment {
         }
         }
 
-        private void методВыравниваДизайнаЗаказаТранспорта(@NonNull MaterialTextView materialTextViewChilder,
-                                                           @NonNull CopyOnWriteArrayList<MaterialTextView> materialTextViewsParent,
-                                                           @NonNull Integer Индекс){
+        private void методВыравниваДизайнаЗаказаТранспорта(@NonNull CopyOnWriteArrayList<MaterialTextView> materialTextViewsParent){
             try{
 
-                ViewTreeObserver viewTreeObserver = materialTextViewChilder.getViewTreeObserver();
+                MaterialTextView materialTextViewOrder=    materialTextViewsParent.get(2);//TODO value
+                MaterialTextView materialTextViewOrderDate=     materialTextViewsParent.get(3);//TODO value
+                MaterialTextView materialTextViewOrderKey=    materialTextViewsParent.get(4);
+                MaterialTextView materialTextViewOrderDateKey=     materialTextViewsParent.get(5);
+
+
+                ViewTreeObserver viewTreeObserver = materialTextViewOrder.getViewTreeObserver();
                 if (viewTreeObserver.isAlive()) {
+                    materialTextViewOrder.forceLayout();
+                    materialTextViewOrder.requestLayout();
                     viewTreeObserver
                             .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                                                            @Override
                                                            public void onGlobalLayout() {
                                                                try{
-                                                               materialTextViewChilder.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                                                               int height = materialTextViewChilder.getHeight();
-                                                               int width = materialTextViewChilder.getWidth();
+                                                               int height = materialTextViewOrder.getHeight();
+                                                               int width = materialTextViewOrder.getWidth();
+                                                                   // TODO: 22.05.2023  set  Order
+                                                                   materialTextViewOrderDate.setHeight(height);
+                                                                   materialTextViewOrderKey.setWidth(width);
+                                                                   // TODO: 22.05.2023  set  Date  Order
+                                                                   height      = materialTextViewOrderDate.getHeight();
+                                                                   width = materialTextViewOrderDate.getWidth();
+                                                                   materialTextViewOrderDateKey.setWidth(height);
+
+                                                                   materialTextViewOrderDateKey.requestLayout();
+                                                                   materialTextViewOrderDate.requestLayout();
+                                                                   materialTextViewOrderKey.requestLayout();
+
+
                                                             /*   materialTextViewsParent.get(Индекс).setHeight(height);
                                                                materialTextViewsParent.get(Индекс).setWidth(width);
                                                                    materialTextViewChilder.requestLayout();
                                                                    materialTextViewChilder.forceLayout();
                                                                    materialTextViewChilder.refreshDrawableState();*/
+
+                                                                   Log.d(getContext().getClass().getName(), "\n"
+                                                                           + " время: " + new Date()+"\n+" +
+                                                                           " Класс в процессе... " +  getContext().getClass().getName()+"\n"+
+                                                                           " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
                                                            } catch (Exception e) {
                                                         e.printStackTrace();
                                                         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
@@ -1117,10 +1135,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
                                                        });
 
-                                    Log.d(getContext().getClass().getName(), "\n"
-                                            + " время: " + new Date()+"\n+" +
-                                            " Класс в процессе... " +  getContext().getClass().getName()+"\n"+
-                                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
                                 }
 
                 Log.d(getContext().getClass().getName(), "\n"
