@@ -332,7 +332,6 @@
                         android:layout_alignParentTop="true"
                         android:layout_alignParentRight="true"
                         android:layout_marginStart="1dp"
-                        android:layout_marginTop="1dp"
                         android:layout_marginEnd="10dp"
                         android:layout_toRightOf="@+id/otkey322"
                         android:animateLayoutChanges="true"
