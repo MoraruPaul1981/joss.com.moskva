@@ -5,12 +5,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="360dp"
     android:layout_height="wrap_content"
     android:background="#FFFFFF"
     android:minHeight="150dp"
-    android:layout_margin="10dp"
-    android:padding="2dp"
     android:gravity="center"
     tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
     android:orientation="vertical">
@@ -25,31 +23,28 @@
 
 <com.google.android.material.card.MaterialCardView
     android:id="@+id/cardveiwnewordertraport"
-    android:layout_width="340dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_gravity="center"
     android:minHeight="150dp"
     app:cardCornerRadius="5dp"
-    app:cardElevation="1dp"
+    app:cardElevation="2dp"
     app:cardMaxElevation="10dp"
     app:strokeWidth="1dp"
     android:translationZ="100dp"
     android:animateLayoutChanges="true"
     android:background="#F0FFFF"
     app:cardBackgroundColor="#F0FFFF"
-    app:strokeColor="#00838F"
+    app:strokeColor="#316E6E"
     tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports">
 
 
     <LinearLayout
         android:id="@+id/linearLayoutorderstransport"
-        android:layout_width="340dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#316E6E"
-        android:minHeight="150dp"
         android:gravity="center"
-        android:padding="1dp"
-        android:layout_margin="1dp"
         tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
         android:orientation="vertical">
 
@@ -112,11 +107,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="100dp"
                     android:layout_marginEnd="100dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="2dp"
-                    android:minHeight="20dp"
+                    android:minHeight="15dp"
                     android:hint="ЦФО"
-                    android:padding="2dp"
+                    android:padding="1dp"
                     android:animateLayoutChanges="true"
                     android:background="@drawable/stylesingletablerowiine3"
                     android:gravity="center"
@@ -135,13 +128,14 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/otvalueсr"
+                    android:id="@+id/otvaluecfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="25dp"
+                    android:minHeight="20dp"
+                    android:padding="1dp"
+                    android:layout_margin="1dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:padding="2dp"
                     android:background="@drawable/stylesingletablerowiine"
                     android:checkMark="?android:attr/textCheckMark"
                     android:foregroundGravity="center"
@@ -176,11 +170,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="100dp"
                     android:layout_marginEnd="100dp"
-                    android:layout_marginTop="2dp"
                     android:layout_marginBottom="2dp"
-                    android:minHeight="20dp"
+                    android:minHeight="15dp"
                     android:hint="Вид ТС"
-                    android:padding="2dp"
+                    android:padding="1dp"
                     android:animateLayoutChanges="true"
                     android:background="@drawable/stylesingletablerowiine3"
                     android:gravity="center"
@@ -200,14 +193,15 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/otvalue23"
+                    android:id="@+id/otvaluetypets"
                     android:layout_column="0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="25dp"
+                    android:minHeight="20dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:padding="2dp"
+                    android:padding="1dp"
+                    android:layout_margin="1dp"
                     android:background="@drawable/stylesingletablerowiine"
                     android:checkMark="?android:attr/textCheckMark"
                     android:foregroundGravity="center"
@@ -227,70 +221,6 @@
                     android:visibility="visible"/>
 
             </TableRow>
-
-
-            <!--  //TODO 5-->
-            <TableRow
-                android:id="@+id/tableRow5"
-                android:layout_width="match_parent"
-                android:gravity="center_vertical|center_horizontal"
-                android:layout_height="wrap_content">
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/otkey45"
-                    android:layout_column="0"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="100dp"
-                    android:layout_marginEnd="100dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="2dp"
-                    android:minHeight="20dp"
-                    android:hint="Дата"
-                    android:animateLayoutChanges="true"
-                    android:background="@drawable/stylesingletablerowiine3"
-                    android:gravity="center"
-                    android:visibility="visible"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="10dp"
-                    app:srcCompat="@drawable/icon_ordertransportorder1"
-                    app:strokeColor="#F5FFFA" />
-            </TableRow>
-
-            <!--  //TODO 6-->
-            <TableRow
-                android:id="@+id/tableRow6"
-                android:layout_width="match_parent"
-                android:gravity="center_vertical|center_horizontal"
-                android:layout_height="wrap_content">
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/otvalue46"
-                    android:layout_column="0"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="25dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:padding="2dp"
-                    android:background="@drawable/stylesingletablerowiine"
-                    android:checkMark="?android:attr/textCheckMark"
-                    android:foregroundGravity="center"
-                    android:gravity="center"
-                    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-                    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-                    android:hint="Значение Дата #5"
-                    android:textAlignment="gravity"
-                    android:textAppearance="?android:attr/textAppearanceListItemSmall"
-                    android:textColor="#000000"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="10dp"
-                    app:strokeColor="#F5FFFA"
-                    android:animateLayoutChanges="true"
-                    android:visibility="visible"/>
-            </TableRow>
-
-
             <!--  //TODO 7-->
             <TableRow
                 android:id="@+id/tableRow7"
@@ -303,20 +233,21 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/otkey322"
+                        android:id="@+id/otvaluegosnomerkey"
                         android:layout_column="0"
-                        android:layout_width="210dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:minHeight="15dp"
+                        android:minWidth="210dp"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentLeft="true"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="5dp"
-                        android:minHeight="20dp"
                         android:animateLayoutChanges="true"
                         android:background="@drawable/stylesingletablerowiine3"
                         android:gravity="center"
                         android:hint="Гос.номер"
-                        android:padding="2dp"
+                        android:padding="1dp"
                         android:visibility="visible"
                         app:cardCornerRadius="20dp"
                         app:cardElevation="10dp"
@@ -325,20 +256,22 @@
 
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/otkey39"
-                        android:layout_width="75dp"
+                        android:id="@+id/otvaluedatesordertkey"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:minHeight="15dp"
+                        android:minWidth="60dp"
                         android:layout_column="0"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentRight="true"
-                        android:layout_toRightOf="@+id/otkey322"
+                        android:layout_toRightOf="@+id/otvaluegosnomerkey"
                         android:layout_marginEnd="10dp"
+                        android:layout_marginStart="2dp"
                         android:animateLayoutChanges="true"
                         android:background="@drawable/stylesingletablerowiine3"
                         android:gravity="center"
                         android:hint="Дата"
-                        android:minHeight="20dp"
-                        android:padding="2dp"
+                        android:padding="1dp"
                         android:visibility="visible"
                         app:cardCornerRadius="20dp"
                         app:cardElevation="10dp"
@@ -347,20 +280,23 @@
 
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/otvalue367"
-                        android:layout_width="210dp"
+                        android:id="@+id/otvaluegosnomer"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/otkey322"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="5dp"
                         android:minHeight="20dp"
+                        android:minWidth="220dp"
+                        android:layout_below="@+id/otvaluegosnomerkey"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="5dp"
                         android:animateLayoutChanges="true"
                         android:background="@drawable/stylesingletablerowiine"
                         android:checkMark="?android:attr/textCheckMark"
                         android:foregroundGravity="center"
                         android:gravity="center"
                         android:hint="Значение Гос.номер #4"
+                        android:padding="1dp"
                         android:paddingStart="?android:attr/listPreferredItemPaddingStart"
                         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
                         android:textAlignment="gravity"
@@ -374,23 +310,23 @@
                         app:strokeColor="#F5FFFA" />
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/otvalue3679"
+                        android:id="@+id/otvaluedatesordert"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/otkey322"
+                        android:layout_below="@+id/otvaluegosnomerkey"
                         android:layout_alignParentRight="true"
                         android:layout_marginStart="1dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="1dp"
-                        android:layout_toRightOf="@+id/otkey322"
+                        android:layout_marginBottom="5dp"
+                        android:layout_toRightOf="@+id/otvaluegosnomerkey"
                         android:animateLayoutChanges="true"
                         android:background="@drawable/stylesingletablerowiine"
                         android:checkMark="?android:attr/textCheckMark"
                         android:foregroundGravity="center"
                         android:gravity="center"
                         android:hint="  Даты #5"
-                        android:minWidth="100dp"
+                        android:minWidth="60dp"
                         android:minHeight="20dp"
+                        android:padding="1dp"
                         android:paddingStart="?android:attr/listPreferredItemPaddingStart"
                         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
                         android:textAlignment="gravity"

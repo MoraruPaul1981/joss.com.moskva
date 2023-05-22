@@ -36,6 +36,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -58,6 +59,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.common.util.concurrent.AtomicDouble;
 
 
 import java.text.ParseException;
@@ -968,6 +970,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                         materialTextViews.add(   linearLayoutЗаказыТранспорта.findViewById(R.id.   otvaluetypets));//ВИД ТС
                                         materialTextViews.add(   linearLayoutЗаказыТранспорта.findViewById(R.id.otvaluegosnomer));//ГОС.НОМЕР
                                         materialTextViews.add(  linearLayoutЗаказыТранспорта.findViewById(R.id.otvaluedatesordert));//ДАТА
+                                        materialTextViews.add(  linearLayoutЗаказыТранспорта.findViewById(R.id.otvaluedatesordertkey));//ДАТА
+                                        materialTextViews.add(  linearLayoutЗаказыТранспорта.findViewById(R.id.otvaluegosnomerkey));//ДАТА
 
 
 
@@ -993,6 +997,14 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                             методЗаполенияЗаказаТранспорта( bundleOrderTransport,  materialTextViewvalues,ЗначениеВставки);
                                             // TODO: 12.05.2023
                                             materialTextViewvalues.startAnimation(animationvibr1);
+                                            // TODO: 22.05.2023 Выраывния Дизайна
+                                            методВыравниваДизайнаЗаказаТранспорта(materialTextViewvalues,materialTextViews,Индекс-1);
+
+
+
+
+
+
                                             // TODO: 18.04.2023  Внешниц вид
                                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1070,6 +1082,59 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
+        }
+
+        private void методВыравниваДизайнаЗаказаТранспорта(@NonNull MaterialTextView materialTextViewChilder,
+                                                           @NonNull CopyOnWriteArrayList<MaterialTextView> materialTextViewsParent,
+                                                           @NonNull Integer Индекс){
+            try{
+
+                ViewTreeObserver viewTreeObserver = materialTextViewChilder.getViewTreeObserver();
+                if (viewTreeObserver.isAlive()) {
+                    viewTreeObserver
+                            .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                                                           @Override
+                                                           public void onGlobalLayout() {
+                                                               try{
+                                                               materialTextViewChilder.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                                                               int height = materialTextViewChilder.getHeight();
+                                                               int width = materialTextViewChilder.getWidth();
+                                                            /*   materialTextViewsParent.get(Индекс).setHeight(height);
+                                                               materialTextViewsParent.get(Индекс).setWidth(width);
+                                                                   materialTextViewChilder.requestLayout();
+                                                                   materialTextViewChilder.forceLayout();
+                                                                   materialTextViewChilder.refreshDrawableState();*/
+                                                           } catch (Exception e) {
+                                                        e.printStackTrace();
+                                                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
+                                                                + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                                        new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                                                this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                }
+                                                           }
+
+                                                       });
+
+                                    Log.d(getContext().getClass().getName(), "\n"
+                                            + " время: " + new Date()+"\n+" +
+                                            " Класс в процессе... " +  getContext().getClass().getName()+"\n"+
+                                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                                }
+
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
         }
 
         // TODO: 05.05.2023
