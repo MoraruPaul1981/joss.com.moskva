@@ -440,6 +440,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                             методGetRebootScreen();
                                             // TODO: 12.05.2023
                                             WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).removeObservers(lifecycleOwner);
+                                            // TODO: 23.05.2023
                                         }
                                     }
                                 }
@@ -467,7 +468,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                     Integer CallBaskОтWorkManager =
                                             workInfos.get(0).
                                                     getOutputData().getInt("ReturnSingleAsyncWork", 0);
-                                    if (CallBaskОтWorkManager>0) {
+                                    if (CallBaskОтWorkManager>=0) {
                                         методGetCursorReboot();
                                         // TODO: 23.05.2023  экран
                                         методGetRebootScreen();
@@ -522,10 +523,10 @@ public class FragmentOrderTransportOneChane extends Fragment {
             try {
                 BottomNavigationOrderTransport.forceLayout();
                 BottomNavigationOrderTransport.refreshDrawableState();
-                gridViewOrderTransport.forceLayout();
+                gridViewOrderTransport.smoothScrollByOffset(0);
                 gridViewOrderTransport.refreshDrawableState();
-                linearLayout_orders_transport.forceLayout();
-                linearLayout_orders_transport.refreshDrawableState();
+                gridViewOrderTransport.forceLayout();
+                gridViewOrderTransport.requestLayout();
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -970,11 +971,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     АдаптерЗаказыТарнпорта.setViewBinder(binding);
                    АдаптерЗаказыТарнпорта.notifyDataSetChanged();
                     gridViewOrderTransport.setAdapter(АдаптерЗаказыТарнпорта);
-                gridViewOrderTransport.startAnimation(animationvibr1);
-                gridViewOrderTransport.smoothScrollByOffset(0);
-                gridViewOrderTransport.refreshDrawableState();
-                gridViewOrderTransport.forceLayout();
-
+                    методПерегрузкаЭкрана();
                 Log.d(getContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
                             " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1206,10 +1203,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     АдаптерКогдаНетданных.setViewBinder(БиндингКогдаНетДАнных);
                     АдаптерКогдаНетданных.notifyDataSetChanged();
                     gridViewOrderTransport.setAdapter(АдаптерКогдаНетданных);
-                    gridViewOrderTransport.startAnimation(animationvibr1);
-                    gridViewOrderTransport.smoothScrollByOffset(0);
-                    gridViewOrderTransport.refreshDrawableState();
-                    gridViewOrderTransport.forceLayout();
+                // TODO: 23.05.2023  ;
+                методПерегрузкаЭкрана();
                     // TODO: 19.04.2023 слушаелти
                     Log.d(getContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
@@ -1250,6 +1245,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     // TODO: 18.04.2023 Слушатель Удалание
                     subClassOrdersTransport.    методУдалениеТабеля( );
                 }
+                // TODO: 23.05.2023 перегка экрана
+                методПерегрузкаЭкрана();
                 Log.d(this.getClass().getName(), "\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
