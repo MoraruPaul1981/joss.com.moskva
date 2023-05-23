@@ -1220,7 +1220,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             Log.d(this.getClass().getName(), " после СЛУЖБА  содание базы newVersion==  652   (например)   " + new Date() + " newVersion " + newVersion);
 
             
-      if(newVersion ==     1026){
+      if(newVersion ==     1025){
                //TODO table создание
           МетодСозданиеViewЗаказыТранспорта(ССылкаНаСозданнуюБазу);
                    }else
