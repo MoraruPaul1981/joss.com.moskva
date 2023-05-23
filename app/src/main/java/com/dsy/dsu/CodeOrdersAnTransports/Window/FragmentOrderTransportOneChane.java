@@ -994,7 +994,9 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                                 ЗначениеВставки=       bundleOrderTransport.get("dateorders");
                                                 break;
                                         }
-                                            методЗаполенияЗаказаТранспорта( bundleOrderTransport,  materialTextViewvalues,ЗначениеВставки);
+                                            if (Индекс<=4) {
+                                                методЗаполенияЗаказаТранспорта( bundleOrderTransport,  materialTextViewvalues,ЗначениеВставки);
+                                            }
                                             // TODO: 12.05.2023
                                             materialTextViewvalues.startAnimation(animationvibr1);
                                             // TODO: 18.04.2023  Внешниц вид
@@ -1063,7 +1065,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     values.setText(ЗначениеВставки.toString());
                 }
                 values.setTag(bundleOrderTransport);
-                values.startAnimation(animationvibr1);
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +

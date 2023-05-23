@@ -53,6 +53,7 @@ import com.dsy.dsu.Business_logic_Only_Class.DATE.Class_Generation_Data;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.dsy.dsu.CodeOrdersAnTransports.Background.ServiceOrserTransportService;
+import com.dsy.dsu.Code_For_Firebase_AndOneSignal_Здесь_КодДЛяСлужбыУведомленияFirebase.Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal;
 import com.dsy.dsu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -873,7 +874,6 @@ public class FragmentNewOrderTransport extends Fragment {
                                 if(РезультатУдалениеСтатуса<1){
                                     snackbarОперацияДобавления.show();
                                 }else{
-
                                     // TODO: 19.05.2023 Если Успешно Записала Новай заказ Трспорта
                                  subClassNewOrderTransport.   методBackOrdersTransport();
                                     // TODO: 19.05.2023  И далее Записали  Выбранный ЦФо в PreShare
@@ -903,6 +903,11 @@ public class FragmentNewOrderTransport extends Fragment {
                             // TODO: 15.05.2023
                             snackbar.show();
                          ///   subClassNewOrderTransport.   методBackOrdersTransport();
+
+         /*                   // TODO: 16.11.2022  ПОСЛЕ УСТАНОВКИ РАБОТАЕТ ОДИН РАЗ ПРИ СТАРТЕ ЗАРУСК ОБЩЕГО WORK MANAGER
+                            new Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal(getContext()).МетодЗапускаетОБЩУЮСинхронизацию();
+*/
+
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );

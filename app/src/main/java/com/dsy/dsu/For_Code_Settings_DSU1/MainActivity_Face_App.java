@@ -585,6 +585,7 @@ public class MainActivity_Face_App extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     try {
+                        // TODO: 23.05.2023 тест код
                         prograessbarOrderTransport.setVisibility(View.VISIBLE);
                         КнопкаЗаявкаНаТранспорт.setBackgroundColor(Color.GRAY);
                         Log.d(this.getClass().getName(), "Запускает Согласния   ");
