@@ -57,6 +57,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.common.util.concurrent.ListenableFuture;
 
 
 import java.text.ParseException;
@@ -120,6 +121,9 @@ public class FragmentOrderTransportOneChane extends Fragment {
             lifecycleOwnerОбщая=this;
             // TODO: 04.05.2023
             ПубличныйID = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
+
+            // TODO: 12.05.2023 слушатель
+            subClassOrdersTransport.    методСлушателяWorkManager(lifecycleOwner,lifecycleOwnerОбщая);
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -417,15 +421,16 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     }
                 });
 
-                WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая)
+
+
+     WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая)
                         .observe(lifecycleOwner, new Observer<List<WorkInfo>>() {
                     @Override
                     public void onChanged(List<WorkInfo> workInfos) {
-                        workInfos.forEach((StatusWork) -> {
                             try {
-                                if(StatusWork.getState().compareTo(WorkInfo.State.SUCCEEDED) == 0)         {
+                                if(workInfos.get(0).getState().compareTo(WorkInfo.State.SUCCEEDED) == 0)         {
                                     Integer CallBaskОтWorkManager =
-                                            StatusWork.getOutputData().getInt("ReturnSingleAsyncWork", 0);
+                                            workInfos.get(0).getOutputData().getInt("ReturnSingleAsyncWork", 0);
                                     long end = Calendar.getInstance().getTimeInMillis();
                                     long РазницаВоврмени=end-startДляОбноразвовной;
                                     if (РазницаВоврмени>5000) {
@@ -434,16 +439,12 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                             // TODO: 23.05.2023  экран
                                             методGetRebootScreen();
                                             // TODO: 12.05.2023
-                                            subClassOrdersTransport. МетодКпопкиЗначков(cursorOrderTransport);
-                                            WorkManager.getInstance(getContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая) ;
-
-                                            // TODO: 21.11.2022  запускаем удаление
+                                            WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).removeObservers(lifecycleOwner);
                                         }
                                     }
                                 }
-                                message.getTarget().postDelayed(()->{
-                                    progressBarСканирование.setVisibility(View.INVISIBLE);
-                                },1000);
+                                // TODO: 23.05.2023  програсс бар
+                                методГазимПрогрессаБар();
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -454,30 +455,28 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                 new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                             }
-                        });
+
                     }
                 });
                 WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая).observe(lifecycleOwnerОбщая, new Observer<List<WorkInfo>>() {
                     @Override
                     public void onChanged(List<WorkInfo> workInfos) {
-                        workInfos.forEach((StatusWork) -> {
                             try {
-                                if(StatusWork.getState().compareTo(WorkInfo.State.SUCCEEDED) == 0
-                                        || StatusWork.getState().compareTo(WorkInfo.State.ENQUEUED) == 0) {
+                                if(workInfos.get(0).getState().compareTo(WorkInfo.State.SUCCEEDED) == 0
+                                        || workInfos.get(0).getState().compareTo(WorkInfo.State.ENQUEUED) == 0) {
                                     Integer CallBaskОтWorkManager =
-                                            StatusWork.
+                                            workInfos.get(0).
                                                     getOutputData().getInt("ReturnSingleAsyncWork", 0);
                                     if (CallBaskОтWorkManager>0) {
                                         методGetCursorReboot();
                                         // TODO: 23.05.2023  экран
                                         методGetRebootScreen();
-                                        // TODO: 12.05.2023
-                                        subClassOrdersTransport. МетодКпопкиЗначков(cursorOrderTransport);
+                                        WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая).removeObservers(lifecycleOwnerОбщая);
                                     }
                                 }
-                                message.getTarget().postDelayed(()->{
-                                    progressBarСканирование.setVisibility(View.INVISIBLE);
-                                },1000);
+                                // TODO: 23.05.2023  програсс бар
+                                методГазимПрогрессаБар();
+                                
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -488,7 +487,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                 new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                             }
-                        });
                     }
                 });
                 // TODO: 29.09.2021  конец синхрониазции по раписанию
@@ -500,6 +498,24 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
+
+        private void методГазимПрогрессаБар() {
+            try {
+            message.getTarget().postDelayed(()->{
+                progressBarСканирование.setVisibility(View.INVISIBLE);
+            },1000);
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        }
+
         // TODO: 28.04.2023
         //TODO метод делает callback с ответом на экран
         private void методПерегрузкаЭкрана() {
@@ -890,6 +906,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                         materialTextViews.add(   linearLayoutЗаказыТранспорта.findViewById(R.id.   otvaluetypets));//ВИД ТС
                                         materialTextViews.add(   linearLayoutЗаказыТранспорта.findViewById(R.id.otvaluegosnomer));//ГОС.НОМЕР
                                         materialTextViews.add(  linearLayoutЗаказыТранспорта.findViewById(R.id.otvaluedatesordert));//ДАТА
+                                        materialTextViews.add(  linearLayoutЗаказыТранспорта.findViewById(R.id.otvaluedatesordertkey));//ДАТА
+                                        materialTextViews.add(  linearLayoutЗаказыТранспорта.findViewById(R.id.otvaluegosnomerkey));//ДАТА
 
                                  ListIterator<MaterialTextView> listIterator= materialTextViews.listIterator();
                                         while (listIterator.hasNext()) {
@@ -899,32 +917,35 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                         switch (Индекс){
                                             case  1 :
                                                 ЗначениеВставки=        bundleOrderTransport.get("cfo");
+                                                // TODO: 18.04.2023  Заполение Данными
+                                                методЗаполенияЗаказаТранспорта( bundleOrderTransport,  materialTextViewvalues,ЗначениеВставки);
                                                 break;
                                             case  2 :
                                                 ЗначениеВставки=       bundleOrderTransport.get("name");
+                                                // TODO: 18.04.2023  Заполение Данными
+                                                методЗаполенияЗаказаТранспорта( bundleOrderTransport,  materialTextViewvalues,ЗначениеВставки);
                                                 break;
                                             case  3 :
                                                 ЗначениеВставки=       bundleOrderTransport.get("fullname");
+                                                // TODO: 18.04.2023  Заполение Данными
+                                                методЗаполенияЗаказаТранспорта( bundleOrderTransport,  materialTextViewvalues,ЗначениеВставки);
                                                 break;
                                             case  4 :
                                                 ЗначениеВставки=       bundleOrderTransport.get("dateorders");
+                                                // TODO: 18.04.2023  Заполение Данными
+                                                методЗаполенияЗаказаТранспорта( bundleOrderTransport,  materialTextViewvalues,ЗначениеВставки);
                                                 break;
                                         }
-
-                                                методЗаполенияЗаказаТранспорта( bundleOrderTransport,  materialTextViewvalues,ЗначениеВставки);
-
-                                            // TODO: 12.05.2023
+                                        // TODO: 12.05.2023
                                             materialTextViewvalues.startAnimation(animationvibr1);
-                                            // TODO: 18.04.2023  Внешниц вид
+
                                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
                                                     "  bundleOrderTransport " +bundleOrderTransport +  "materialTextViewvalues " +materialTextViewvalues + " ЗначениеВставки " +ЗначениеВставки);
                                         }
-                                        // TODO: 22.05.2023 Выраывния Дизайна
-                                    //    методВыравниваДизайнаЗаказаТранспорта( materialTextViews );
-
-                                        // TODO: 18.04.2023  Внешниц вид
+                                        //методВыравниваДизайнаЗаказаТранспорта(materialTextViews);
+                                        // TODO: 18.04.2023  Выход Из Цикла
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
@@ -982,6 +1003,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     values.setText(ЗначениеВставки.toString());
                 }
                 values.setTag(bundleOrderTransport);
+                values.refreshDrawableState();
+                values.requestLayout();
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -997,77 +1020,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
         }
         }
 
-        private void методВыравниваДизайнаЗаказаТранспорта(@NonNull CopyOnWriteArrayList<MaterialTextView> materialTextViewsParent){
-            try{
 
-                MaterialTextView materialTextViewOrder=    materialTextViewsParent.get(2);//TODO value
-                MaterialTextView materialTextViewOrderDate=     materialTextViewsParent.get(3);//TODO value
-                MaterialTextView materialTextViewOrderKey=    materialTextViewsParent.get(4);
-                MaterialTextView materialTextViewOrderDateKey=     materialTextViewsParent.get(5);
-
-
-                ViewTreeObserver viewTreeObserver = materialTextViewOrder.getViewTreeObserver();
-                if (viewTreeObserver.isAlive()) {
-                    materialTextViewOrder.forceLayout();
-                    materialTextViewOrder.requestLayout();
-                    viewTreeObserver
-                            .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                                                           @Override
-                                                           public void onGlobalLayout() {
-                                                               try{
-                                                               int height = materialTextViewOrder.getHeight();
-                                                               int width = materialTextViewOrder.getWidth();
-                                                                   // TODO: 22.05.2023  set  Order
-                                                                   materialTextViewOrderDate.setHeight(height);
-                                                                   materialTextViewOrderKey.setWidth(width);
-                                                                   // TODO: 22.05.2023  set  Date  Order
-                                                                   height      = materialTextViewOrderDate.getHeight();
-                                                                   width = materialTextViewOrderDate.getWidth();
-                                                                   materialTextViewOrderDateKey.setWidth(height);
-
-                                                                   materialTextViewOrderDateKey.requestLayout();
-                                                                   materialTextViewOrderDate.requestLayout();
-                                                                   materialTextViewOrderKey.requestLayout();
-
-
-                                                            /*   materialTextViewsParent.get(Индекс).setHeight(height);
-                                                               materialTextViewsParent.get(Индекс).setWidth(width);
-                                                                   materialTextViewChilder.requestLayout();
-                                                                   materialTextViewChilder.forceLayout();
-                                                                   materialTextViewChilder.refreshDrawableState();*/
-
-                                                                   Log.d(getContext().getClass().getName(), "\n"
-                                                                           + " время: " + new Date()+"\n+" +
-                                                                           " Класс в процессе... " +  getContext().getClass().getName()+"\n"+
-                                                                           " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-                                                           } catch (Exception e) {
-                                                        e.printStackTrace();
-                                                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
-                                                                + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                                        new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                                                this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                }
-                                                           }
-
-                                                       });
-
-                                }
-
-                Log.d(getContext().getClass().getName(), "\n"
-                        + " время: " + new Date() + "\n+" +
-                        " Класс в процессе... " + this.getClass().getName() + "\n" +
-                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                        this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
 
         // TODO: 05.05.2023
         Bundle методДанныеBungle(@NonNull Cursor cursor) {
@@ -1081,7 +1034,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 Integer user_update=Optional.ofNullable( cursor.getInt(cursor.getColumnIndex("user_update"))).orElse(0);
                 String cfo= Optional.ofNullable(cursor.getString(cursor.getColumnIndex("cfo"))).orElse("нет");
                 Integer status= Optional.ofNullable(cursor.getInt(cursor.getColumnIndex("status"))).orElse(0);
-                String fullname= Optional.ofNullable(cursor.getString(cursor.getColumnIndex("fullname"))).orElse("нет");
+                String gosmomer= Optional.ofNullable(cursor.getString(cursor.getColumnIndex("gosmomer"))).orElse("нет");
                 // TODO: 12.05.2023 ПАРСИНГА  DATE
                 dateorders = методПарсингаДатыЗаказа(dateorders);
                 // TODO: 12.05.2023 ПАРСИНГА  СТАТУСА
@@ -1096,7 +1049,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 bundleOrderTransport.putInt("user_update", user_update);
                 bundleOrderTransport.putString("cfo", cfo.trim());
                 bundleOrderTransport.putString("status", Статус.trim());
-                bundleOrderTransport.putString("fullname", fullname.trim());
+                bundleOrderTransport.putString("fullname", gosmomer.trim());
                 // TODO: 12.05.2023 ДАННЫЕ
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
@@ -1201,9 +1154,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
         }
 
-
-
-
         // TODO: 28.04.2023
         void методПредварительнаяЗагрузкаGridView(@NonNull Integer Макет , @NonNull String Сообщение, @NonNull Integer Значек){///      R.layout.list_item_progressing_ordertransport
             try{
@@ -1291,8 +1241,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     }
                     // TODO: 04.05.2023 Получаем Данные что обработка данных закончена
                     subClassOrdersTransport.    МетодДизайнПрограссБара();
-                    // TODO: 12.05.2023 слушатель
-                    subClassOrdersTransport.    методСлушателяWorkManager(lifecycleOwner,lifecycleOwnerОбщая);
 
                     subClassOrdersTransport.МетодСлушательКурсора();
 
@@ -1337,7 +1285,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 АдаптерЗаказыТарнпорта.changeCursor(cursorOrderTransport);
                 АдаптерЗаказыТарнпорта.notifyDataSetChanged();
                 gridViewOrderTransport.setAdapter(АдаптерЗаказыТарнпорта);
-                gridViewOrderTransport.startAnimation(animationvibr1);
+                gridViewOrderTransport.refreshDrawableState();
+                gridViewOrderTransport.requestLayout();
                 Log.d(this.getClass().getName(), "\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +

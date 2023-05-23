@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =      1023;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+     static final int VERSION =      1026;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
     private      SQLiteDatabase ССылкаНаСозданнуюБазу;
     private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
@@ -1126,7 +1126,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             ССылкаНаСозданнуюБазу.execSQL("CREATE VIEW if not exists view_ordertransport AS" +
                     "       SELECT         order_tc._id,  vid_tc.name,  order_tc.dateorders, " +
                     " order_tc.number_order,  order_tc.date_update,  order_tc.uuid, " +
-                    " order_tc.user_update,  order_tc.current_table,  track.fullname, \n" +
+                    " order_tc.user_update,  order_tc.current_table,  track.name AS gosmomer, \n" +
                     "                          cfo.name AS cfo,  order_tc.status ,  cfo._id AS id_cfo,  track._id AS id_track\n" +
                     "FROM             order_tc INNER JOIN\n" +
                     "                          vid_tc ON  order_tc.vid_trasport =  vid_tc._id INNER JOIN\n" +
@@ -1220,7 +1220,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             Log.d(this.getClass().getName(), " после СЛУЖБА  содание базы newVersion==  652   (например)   " + new Date() + " newVersion " + newVersion);
 
             
-      if(newVersion ==     1022){
+      if(newVersion ==     1026){
                //TODO table создание
           МетодСозданиеViewЗаказыТранспорта(ССылкаНаСозданнуюБазу);
                    }else
