@@ -860,9 +860,9 @@ public class FragmentNewOrderTransport extends Fragment {
                                          Bundle bundlegetDateOrder=(Bundle)       materialTextdate.getTag();
                                 valuesNewOrderTransport.put("dateorders", bundlegetDateOrder.getString("GetDateOrder"));
 
-                                // TODO: 18.05.2023 генерируем номер заказа траспорта
+                        /*        // TODO: 18.05.2023 генерируем номер заказа траспорта
                                 String number_order=       subClassNewOrderTransport.  методGetNumberNewIDOrderTranport();
-                                valuesNewOrderTransport.put("number_order",number_order  );
+                                valuesNewOrderTransport.put("number_order",number_order  );*/
                                         ContentResolver contentResolver = getContext().getContentResolver();
                                         // TODO: 16.05.2023 Сама Вставка
                                        Uri urlРезультатNewOrderTranport=  contentResolver.insert(uri,  valuesNewOrderTransport);

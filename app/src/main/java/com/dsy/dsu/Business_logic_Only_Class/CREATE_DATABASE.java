@@ -1031,7 +1031,9 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
                     "date_update TEXT ," +
                     "uuid NUMERIC UNIQUE," +
                     "user_update INTEGER," +
-                    " current_table NUMERIC UNIQUE )");
+                    " current_table NUMERIC UNIQUE, " +
+                    " UNIQUE ( dateorders,gos_nomer,vid_trasport)"+
+                    ")");
             Log.d(this.getClass().getName(), " сработала ...  создание таблицы order_tc ");
 
         } catch (SQLException e) {

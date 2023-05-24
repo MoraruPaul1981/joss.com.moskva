@@ -106,6 +106,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
     private   SimpleCursorAdapter АдаптерЗаказыТарнпорта;
     private    MaterialTextView       textViewHadler;
+    private  String ИмяСлужбыСинхронизациОдноразовая="WorkManager Synchronizasiy_Data Disposable";
+    private  String ИмяСлужбыСинхронизацииОбщая="WorkManager Synchronizasiy_Data";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -226,6 +228,31 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
 
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        try{
+            WorkManager.getInstance(getContext()).cancelUniqueWork(ИмяСлужбыСинхронизациОдноразовая);
+
+            WorkManager.getInstance(getContext()).cancelUniqueWork(ИмяСлужбыСинхронизацииОбщая);
+
+            Log.d(this.getClass().getName(), "\n" + " class " +
+                    Thread.currentThread().getStackTrace()[2].getClassName()
+                    + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " cursorOrderTransport " +cursorOrderTransport);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(getContext().getClass().getName(),
+                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
     }
 
     @Override
@@ -405,8 +432,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 throws ExecutionException, InterruptedException {
 // TODO: 11.05.2021 ЗПУСКАЕМ СЛУЖБУ через брдкастер синхронизхации и уведомления
             try {
-                String ИмяСлужбыСинхронизациОдноразовая="WorkManager Synchronizasiy_Data Disposable";
-                String ИмяСлужбыСинхронизацииОбщая="WorkManager Synchronizasiy_Data";
                 lifecycleOwnerSingle.getLifecycle().addObserver(new LifecycleEventObserver() {
                     @Override
                     public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
@@ -839,6 +864,13 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 };
                 if (localBinderOrderTransport==null) {
                     Boolean   isBound =    getContext(). bindService(intentЗапускOrserTransportService, serviceConnection , Context.BIND_AUTO_CREATE);
+                }else {
+// TODO: 24.05.2023 КОГДА УЖЕ БЫЛО ПОДКЛЮЧЕНИЕ 
+                    методGetCursorBounds();
+                    Log.d(getContext().getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
                 }
                 getContext().registerComponentCallbacks(new ComponentCallbacks() {
                     @Override
@@ -873,7 +905,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
             // TODO: 04.05.2023  получаем первоночальыне Данные  #1
             HashMap<String,String> datasendMap=new HashMap();
             datasendMap.putIfAbsent("1","  SELECT  *  FROM  view_ordertransport  ");
-            datasendMap.putIfAbsent("2"," WHERE name  IS NOT NULL  AND _id >?  AND status!=? ORDER BY _id,status ");
+            datasendMap.putIfAbsent("2"," WHERE name  IS NOT NULL  AND _id >?  AND status!=? ORDER BY dateorders ");
             datasendMap.putIfAbsent("3","0");
             datasendMap.putIfAbsent("4","5");
             datasendMap.putIfAbsent("5"," view_ordertransport ");
@@ -1288,7 +1320,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 // TODO: 04.05.2023  получаем первоночальыне Данные  #1
                 HashMap<String,String> datasendMap=new HashMap();
                 datasendMap.putIfAbsent("1","  SELECT  *  FROM  view_ordertransport  ");
-                datasendMap.putIfAbsent("2"," WHERE name  IS NOT NULL  AND _id >?  AND status!=? ORDER BY _id,status ");
+                datasendMap.putIfAbsent("2"," WHERE name  IS NOT NULL  AND _id >?  AND status!=? ORDER BY dateorders ");
                 datasendMap.putIfAbsent("3"," 0");
                 datasendMap.putIfAbsent("4","5");
                 datasendMap.putIfAbsent("5"," view_ordertransport ");
@@ -1299,8 +1331,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 АдаптерЗаказыТарнпорта.changeCursor(cursorOrderTransport);
                 АдаптерЗаказыТарнпорта.notifyDataSetChanged();
                 gridViewOrderTransport.setAdapter(АдаптерЗаказыТарнпорта);
-                gridViewOrderTransport.refreshDrawableState();
-                gridViewOrderTransport.requestLayout();
+               методПерегрузкаЭкрана();
                 Log.d(this.getClass().getName(), "\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
