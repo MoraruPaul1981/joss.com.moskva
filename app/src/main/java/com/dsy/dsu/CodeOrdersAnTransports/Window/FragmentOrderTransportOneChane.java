@@ -35,7 +35,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -57,7 +56,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.textview.MaterialTextView;
-import com.google.common.util.concurrent.ListenableFuture;
 
 
 import java.text.ParseException;
@@ -95,10 +93,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
     private  ServiceOrserTransportService.  LocalBinderOrderTransport localBinderOrderTransport;
     private ServiceConnection serviceConnection;
     private  Message message;
-
-    private  Cursor cursorOrderTransport;
-
-    private  Cursor cursorGroupByOrderTransport;
+    private  Cursor cursorGroupBy;
     private GridView gridViewOrderTransport;
 
     private SubClassOrdersTransport subClassOrdersTransport;
@@ -244,8 +239,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " cursorOrderTransport " +cursorOrderTransport);
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -265,8 +259,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " cursorOrderTransport " +cursorOrderTransport);
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -296,8 +289,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " cursorOrderTransport " +cursorOrderTransport);
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -666,8 +658,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
         private void МетодСлушательКурсора() {
             // TODO: 15.10.2022  слушатиель для курсора
             try {
-                if (cursorOrderTransport !=null) {
-                    cursorOrderTransport.registerDataSetObserver(new DataSetObserver() {
+                if (cursorGroupBy !=null) {
+                    cursorGroupBy.registerDataSetObserver(new DataSetObserver() {
                         @Override
                         public void onChanged() {
                             super.onChanged();
@@ -681,7 +673,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         }
                     });
                     // TODO: 15.10.2022
-                    cursorOrderTransport.registerContentObserver(new ContentObserver(message.getTarget()) {
+                    cursorGroupBy.registerContentObserver(new ContentObserver(message.getTarget()) {
                         @Override
                         public boolean deliverSelfNotifications() {
                             Log.d(this.getClass().getName(), "recyclerView   " + gridViewOrderTransport);
@@ -778,18 +770,19 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
         // TODO: 02.08.2022
         protected   Cursor методGetCursor(@NonNull   HashMap<String,String> datasendMap ){
+            Cursor cursorOrder = null;
             try{
                 // TODO: 03.05.2023 тест код
                 Map<String,Object>  mapRetry=       localBinderOrderTransport.методГлавныйTraffic(datasendMap);
                 // TODO: 04.05.2023 результат
-                cursorOrderTransport  =(Cursor) mapRetry.get("replyget1" );
+                 cursorOrder   =(Cursor) mapRetry.get("replyget1" );
 
                 Log.d(this.getClass().getName(), "\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " cursorOrderTransport " + cursorOrderTransport  + " ПубличныйID  "+ПубличныйID + " ФлагОперации " +
+                        + " cursorOrder " + cursorOrder  + " ПубличныйID  "+ПубличныйID + " ФлагОперации " +
                          " mapRetry " +mapRetry+ " ");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -798,7 +791,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
-            return  cursorOrderTransport;
+            return  cursorOrder;
         }
 
 
@@ -808,13 +801,13 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 // TODO: 03.05.2023 тест код
                 Map<String,Object>  mapRetry=       localBinderOrderTransport.методГлавныйGrpuopByOrderTrasport(datasendMap);
                 // TODO: 04.05.2023 результат
-                cursorGroupByOrderTransport  =(Cursor) mapRetry.get("replyget1" );
+                cursorGroupBy =(Cursor) mapRetry.get("replyget1" );
                 Log.d(this.getClass().getName(), "\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " cursorGroupByOrderTransport " + cursorGroupByOrderTransport  + " ПубличныйID  "+ПубличныйID + " ФлагОперации " +
+                        + " cursorGroupBy " + cursorGroupBy + " ПубличныйID  "+ПубличныйID + " ФлагОперации " +
                         " mapRetry " +mapRetry+ " ");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -823,7 +816,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
-            return  cursorOrderTransport;
+            return cursorGroupBy;
         }
 
         private void МетодДизайнПрограссБара() {
@@ -853,7 +846,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
                                         + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive()+
                                         " localBinderOrderTransport " +localBinderOrderTransport
-                                        + " cursorOrderTransport " +cursorOrderTransport
+                                        + " cursorGroupBy " +cursorGroupBy
                                         + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive());
                             }
                         } catch (Exception e) {
@@ -929,7 +922,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
             try{
                 // TODO: 04.05.2023  получаем первоночальыне Данные  #1
                 HashMap<String,String> datasendMap=new HashMap();
-                datasendMap.putIfAbsent("1","  SELECT   strftime('%Y', dateorders)  AS Year, strftime('%m', dateorders)  AS Month, strftime('%d', dateorders)  AS Day" +
+                datasendMap.putIfAbsent("1","  SELECT   strftime('%Y', dateorders)  AS Year, strftime('%m', dateorders)  AS Month," +
+                        " strftime('%d', dateorders)  AS Day, COUNT(*) AS getcounts" +
                         "  FROM  view_ordertransport ");
                 datasendMap.putIfAbsent("2"," WHERE dateorders  IS NOT NULL   ");//AND _id >?  AND status!=? ORDER BY dateorders
                 datasendMap.putIfAbsent("3"," GROUP BY strftime('%Y', dateorders)  ," +
@@ -938,8 +932,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 datasendMap.putIfAbsent("4"," HAVING        (COUNT(*) > 0)");
                 datasendMap.putIfAbsent("5","view_ordertransport");
               //  datasendMap.putIfAbsent("5"," view_ordertransport ");
-                // TODO: 05.05.2023  ПОЛУЧАЕМ ДАННЫЕ
-                cursorGroupByOrderTransport=       subClassOrdersTransport.       методGetGROUPBYCursor( datasendMap);
+                // TODO: 05.05.2023  ПОЛУЧАЕМ ДАННЫЕ ПЕРВЫЙ ЭТАП
+                cursorGroupBy =       subClassOrdersTransport.       методGetGROUPBYCursor( datasendMap);
                 // TODO: 04.05.2023  перегружаем экран
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
@@ -947,7 +941,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
                         + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive()+
                         " localBinderOrderTransport " +localBinderOrderTransport
-                        + " cursorGroupByOrderTransport " +cursorGroupByOrderTransport
+                        + " cursorGroupBy " + cursorGroupBy
                         + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -968,7 +962,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
             datasendMap.putIfAbsent("4","5");
             datasendMap.putIfAbsent("5"," view_ordertransport ");
             // TODO: 05.05.2023  ПОЛУЧАЕМ ДАННЫЕ
-            cursorOrderTransport=       subClassOrdersTransport.       методGetCursor( datasendMap);
+           Cursor cursorOrder =       subClassOrdersTransport.       методGetCursor( datasendMap);
             // TODO: 04.05.2023  перегружаем экран
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
@@ -976,7 +970,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
                     + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive()+
                     " localBinderOrderTransport " +localBinderOrderTransport
-                    + " cursorOrderTransport " +cursorOrderTransport
+                    + " cursorOrder " +cursorOrder
                     + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive());
         } catch (Exception e) {
             e.printStackTrace();
@@ -993,7 +987,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
             try{
                       АдаптерЗаказыТарнпорта=
                             new SimpleCursorAdapter(getContext(), Макет,
-                                    cursorOrderTransport, new String[]{"_id","name"},
+                                    cursorGroupBy, new String[]{"_id","name"},
                                     new int[]{android.R.id.text1,android.R.id.text2},
                                   0);  ///name
                     SimpleCursorAdapter.ViewBinder binding = new SimpleCursorAdapter.ViewBinder() {
@@ -1057,7 +1051,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                                                "  bundleOrderTransport " +bundleOrderTransport);
+                                                "  bundleOrderTransport " +bundleOrderTransport+ " cursorGroupBy " +cursorGroupBy);
                                         // TODO: 23.05.2023  exit
                                         return true;
                                 }
@@ -1082,8 +1076,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 Log.d(getContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
                             " Класс в процессе... " + this.getClass().getName() + "\n" +
-                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                            + "  cursorOrderTransport " + cursorOrderTransport);
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
 
       } catch (Exception e) {
             e.printStackTrace();
@@ -1316,7 +1309,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     Log.d(getContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
                             " Класс в процессе... " + this.getClass().getName() + "\n" +
-                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorOrderTransport  " + cursorOrderTransport);
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorGroupBy  " + cursorGroupBy);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1330,11 +1323,11 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
         private void методGetRebootScreen() {
             try{
-                if( cursorOrderTransport==null) {
+                if( cursorGroupBy==null) {
                     subClassOrdersTransport.методПредварительнаяЗагрузкаGridView(R.layout.list_item_progressing_ordertransport,
                             "Заказы...", R.drawable.icon_dsu1_ordertransport_down);
                 }else {
-                    if( cursorOrderTransport.getCount()>0) {
+                    if( cursorGroupBy.getCount()>0) {
                         subClassOrdersTransport.методФиналЗагрузкиGridView(R.layout.fragment_ordertransport1);
                         // TODO: 23.05.2023
                     }else{
@@ -1347,19 +1340,17 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     subClassOrdersTransport.МетодСлушательКурсора();
 
                     // TODO: 12.05.2023
-                    subClassOrdersTransport. МетодКпопкиЗначков(cursorOrderTransport);
+                    subClassOrdersTransport. МетодКпопкиЗначков(cursorGroupBy);
                     // TODO: 19.04.2023 слушаелти
                     // TODO: 18.04.2023 Слушатель Удалание
                     subClassOrdersTransport.    методУдалениеТабеля( );
                 }
-                // TODO: 23.05.2023 перегка экрана
-                методПерегрузкаЭкрана();
                 Log.d(this.getClass().getName(), "\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " cursorOrderTransport " +cursorOrderTransport);
+                        + " cursorGroupBy " +cursorGroupBy);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1375,27 +1366,20 @@ public class FragmentOrderTransportOneChane extends Fragment {
         // TODO: 12.05.2023
         void методGetCursorReboot(){
             try{
-                // TODO: 04.05.2023  получаем первоночальыне Данные  #1
-                HashMap<String,String> datasendMap=new HashMap();
-                datasendMap.putIfAbsent("1","  SELECT  *  FROM  view_ordertransport  ");
-                datasendMap.putIfAbsent("2"," WHERE name  IS NOT NULL  AND _id >?  AND status!=? ORDER BY dateorders ");
-                datasendMap.putIfAbsent("3"," 0");
-                datasendMap.putIfAbsent("4","5");
-                datasendMap.putIfAbsent("5"," view_ordertransport ");
-                // TODO: 05.05.2023  ПОЛУЧАЕМ ДАННЫЕ
-                cursorOrderTransport=       subClassOrdersTransport.       методGetCursor( datasendMap);
-
+                // TODO: 04.05.2023  получаем первоночальыне Данные  #2 Второй Этап
+                методGetCursorGROUPBYBounds(); //      методGetCursorBounds();
                 // TODO: 12.05.2023 Adapter
-                АдаптерЗаказыТарнпорта.changeCursor(cursorOrderTransport);
+                АдаптерЗаказыТарнпорта.changeCursor(cursorGroupBy);
                 АдаптерЗаказыТарнпорта.notifyDataSetChanged();
                 gridViewOrderTransport.setAdapter(АдаптерЗаказыТарнпорта);
+                // TODO: 24.05.2023  перегрузка Экрана
                методПерегрузкаЭкрана();
                 Log.d(this.getClass().getName(), "\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " cursorOrderTransport " +cursorOrderTransport);
+                        + " cursorGroupBy " +cursorGroupBy);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
