@@ -259,6 +259,33 @@ public class ServiceOrserTransportService extends IntentService {
             }
             return  mapRetry;
         }
+
+        // TODO: 24.05.2023 Grpuo By New order Trarnsport
+        @BinderThread
+        @Background
+        public  Map<String,Object> методГлавныйGrpuopByOrderTrasport(@NonNull  HashMap<String,String> dataMap  ){
+            Map<String,Object>  mapRetry= new HashMap<>();
+            try{
+                Cursor cursor=   subClassOrderTransport.new SubClassGetCursor().методGetGroupByOrderCursor( dataMap);
+                // TODO: 04.05.2023  ответ Курсором Из Службы
+                mapRetry.put("replyget1",cursor);
+                Log.d(getApplicationContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +  " mapBoundService " +
+                        " mapRetry " +mapRetry + " Thread 1   "
+                        + Thread.currentThread().getName()+ " Thread 2"
+                        + Thread.getAllStackTraces().values().toString() );
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
+            }
+            return  mapRetry;
+        }
     }
 
 
@@ -382,6 +409,37 @@ public class ServiceOrserTransportService extends IntentService {
                                 data.putString(   "sortOrder",ТекущийСтолбик);
                     // TODO: 16.05.2023
                     cursor = resolver.query(uri,new String[]{"*"},data,null);// TODO: 13.10.2022 ,"Удаленная"
+                    Log.d(getApplicationContext().getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "mapBoundService " +mapBoundService+
+                            "cursor " +cursor);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
+                }
+                return  cursor;
+            }
+            // TODO: 24.05.2023  Group By New Order Trasport
+            Cursor методGetGroupByOrderCursor(@NonNull   HashMap<String,String>  mapBoundService){
+                Cursor cursor = null;
+                try{
+                    String    СамЗапрос = mapBoundService.get("1").trim();
+                    String УсловияWhere=    mapBoundService.get("2").trim();
+                    String УсловияGroupBy= mapBoundService.get("3").trim();
+                    String УсловияHaving=    mapBoundService.get("4").trim();
+                    String Таблица=    mapBoundService.get("5").trim();
+                    Bundle bundleЗаказТранспорт=new Bundle();
+                    bundleЗаказТранспорт.putString("СамЗапрос", СамЗапрос + " "+ УсловияWhere + " "+УсловияGroupBy +  " " +   УсловияHaving+" " );
+                    bundleЗаказТранспорт.putStringArray("УсловияВыборки" ,new String[]{ });
+                    bundleЗаказТранспорт.putString("Таблица",Таблица);
+                    cursor=      (Cursor)    new SubClassCursorLoader(). CursorForGetgropuByLoaders(getApplicationContext(), bundleЗаказТранспорт);
+
                     Log.d(getApplicationContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
                             " Класс в процессе... " + this.getClass().getName() + "\n" +
