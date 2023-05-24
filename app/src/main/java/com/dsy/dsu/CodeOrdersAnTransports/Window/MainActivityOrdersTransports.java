@@ -86,7 +86,7 @@ public class MainActivityOrdersTransports extends AppCompatActivity {
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             fragment_СозданиеЗаказаТранспорта = new FragmentOrderTransportOneChane();
-            fragmentTransaction.addToBackStack(null);
+          //  fragmentTransaction.addToBackStack(null);
             fragmentTransaction.add(R.id.linearLayout_root_activity_main, fragment_СозданиеЗаказаТранспорта)
                     .setPrimaryNavigationFragment(fragment_СозданиеЗаказаТранспорта)
                     .setReorderingAllowed(true).commit();//.layout.activity_for_fragemtb_history_tasks

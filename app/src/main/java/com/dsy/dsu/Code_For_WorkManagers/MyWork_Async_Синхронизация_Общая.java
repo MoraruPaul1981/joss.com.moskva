@@ -28,7 +28,9 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID
 import com.dsy.dsu.Code_For_Firebase_AndOneSignal_Здесь_КодДЛяСлужбыУведомленияFirebase.Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal;
 import com.dsy.dsu.Code_For_Services.Service_For_Remote_Async;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -171,8 +173,13 @@ public class MyWork_Async_Синхронизация_Общая extends Worker {
                         + " РешениеЗапускатьWorkManagerИлиНетАктивтиКакое "+РешениеЗапускатьWorkManagerИлиНетАктивтиКакое  + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
             }
 
+
+            Map<String,Object> objectMap=new HashMap<>();
+            objectMap.putIfAbsent("dataPublicWork",ФинальныйРезультатAsyncBackgroud);
+
             myDataОтветОбщейСлужбы = new Data.Builder()
                     .putInt("ReturnSingleAsyncWork", ФинальныйРезультатAsyncBackgroud)
+                    .putAll(objectMap)
                     .build();
 
             if (serviceConnection!=null) {

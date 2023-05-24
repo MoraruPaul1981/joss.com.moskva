@@ -496,7 +496,7 @@ public class MainActivity_Face_App extends AppCompatActivity {
                         // TODO: 23.03.2022
                         progressBarTabel.setVisibility(View.VISIBLE);
                         // TODO: 23.03.2022
-                        КнопкаТабель.setBackgroundColor(Color.GRAY);
+                        КнопкаТабель.setBackgroundColor(Color.parseColor("#F0FFFF"));
                         Intent Интент_ЗапускТабельногоУчётаПервыйШаг = new Intent();
                         Bundle data = new Bundle();
                         Интент_ЗапускТабельногоУчётаПервыйШаг.putExtras(data);
@@ -526,7 +526,7 @@ public class MainActivity_Face_App extends AppCompatActivity {
                 public void onClick(View v) {
                     try {
                         progressCommitpay.setVisibility(View.VISIBLE);
-                        КнопкаСогласование.setBackgroundColor(Color.GRAY);
+                        КнопкаСогласование.setBackgroundColor(Color.parseColor("#F0FFFF"));
                         Log.d(this.getClass().getName(), "Запускает Согласния   ");
                         Intent intentЗапускСогласования1C = new Intent();
                         Bundle data = new Bundle();
@@ -556,7 +556,7 @@ public class MainActivity_Face_App extends AppCompatActivity {
                         public void onClick(View v) {
                             try {
                                 prograessbarControlAccess.setVisibility(View.VISIBLE);
-                                КнопкаПоступлениеМатериалов.setBackgroundColor(Color.GRAY);
+                                КнопкаПоступлениеМатериалов.setBackgroundColor(Color.parseColor("#F0FFFF"));
                                 Log.d(this.getClass().getName(), "Запускает Согласния   ");
                                 Intent ИнтентДляЗапускаПолуступлениеМатериалов = new Intent();
                                 Bundle data = new Bundle();
@@ -587,7 +587,7 @@ public class MainActivity_Face_App extends AppCompatActivity {
                     try {
                         // TODO: 23.05.2023 тест код
                         prograessbarOrderTransport.setVisibility(View.VISIBLE);
-                        КнопкаЗаявкаНаТранспорт.setBackgroundColor(Color.GRAY);
+                        КнопкаЗаявкаНаТранспорт.setBackgroundColor(Color.parseColor("#F0FFFF"));
                         Log.d(this.getClass().getName(), "Запускает Согласния   ");
                         Intent ИнтентЗаявкаНаТранспорт = new Intent();
                         Bundle data = new Bundle();

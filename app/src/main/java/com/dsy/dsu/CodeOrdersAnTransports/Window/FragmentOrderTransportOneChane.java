@@ -73,6 +73,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
 
 
 // TODO: 29.09.2022 фрагмент для получение материалов
@@ -399,14 +400,14 @@ public class FragmentOrderTransportOneChane extends Fragment {
         // TODO: 28.04.2023
         // TODO: 18.10.2021  СИНХРОНИАЗЦИЯ ЧАТА ПО РАСПИСАНИЮ ЧАТ
         @SuppressLint("FragmentLiveDataObserve")
-        void методСлушателяWorkManager(@NonNull  LifecycleOwner lifecycleOwner ,
+        void методСлушателяWorkManager(@NonNull  LifecycleOwner lifecycleOwnerSingle ,
                                        @NonNull LifecycleOwner lifecycleOwnerОбщая )
                 throws ExecutionException, InterruptedException {
 // TODO: 11.05.2021 ЗПУСКАЕМ СЛУЖБУ через брдкастер синхронизхации и уведомления
             try {
                 String ИмяСлужбыСинхронизациОдноразовая="WorkManager Synchronizasiy_Data Disposable";
                 String ИмяСлужбыСинхронизацииОбщая="WorkManager Synchronizasiy_Data";
-                lifecycleOwner.getLifecycle().addObserver(new LifecycleEventObserver() {
+                lifecycleOwnerSingle.getLifecycle().addObserver(new LifecycleEventObserver() {
                     @Override
                     public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
                         source.getLifecycle().getCurrentState();
@@ -424,26 +425,32 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
 
      WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая)
-                        .observe(lifecycleOwner, new Observer<List<WorkInfo>>() {
+                        .observe(lifecycleOwnerSingle, new Observer<List<WorkInfo>>() {
                     @Override
                     public void onChanged(List<WorkInfo> workInfos) {
                             try {
-                                if(workInfos.get(0).getState().compareTo(WorkInfo.State.SUCCEEDED) == 0)         {
-                                    Integer CallBaskОтWorkManager =
-                                            workInfos.get(0).getOutputData().getInt("ReturnSingleAsyncWork", 0);
-                                    long end = Calendar.getInstance().getTimeInMillis();
-                                    long РазницаВоврмени=end-startДляОбноразвовной;
-                                    if (РазницаВоврмени>5000) {
-                                        if (CallBaskОтWorkManager>0) {
-                                            методGetCursorReboot();
-                                            // TODO: 23.05.2023  экран
-                                            методGetRebootScreen();
-                                            // TODO: 12.05.2023
-                                            WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).removeObservers(lifecycleOwner);
-                                            // TODO: 23.05.2023
+                                workInfos.forEach(new Consumer<WorkInfo>() {
+                                    @Override
+                                    public void accept(WorkInfo workInfoSingle) {
+                                        if(workInfoSingle.getState().compareTo(WorkInfo.State.SUCCEEDED) == 0)         {
+                                            Integer CallBaskОтWorkManager =
+                                                    workInfoSingle.getOutputData().getInt("ReturnSingleAsyncWork", 0);
+                                            long end = Calendar.getInstance().getTimeInMillis();
+                                            long РазницаВоврмени=end-startДляОбноразвовной;
+                                            if (РазницаВоврмени>5000) {
+                                                if (CallBaskОтWorkManager>0) {
+                                                    методGetCursorReboot();
+                                                    // TODO: 23.05.2023  экран
+                                                    методGetRebootScreen();
+                                                    // TODO: 12.05.2023
+                                                    WorkManager.getInstance(getContext())
+                                                            .getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).removeObservers(lifecycleOwnerSingle);
+                                                    // TODO: 23.05.2023
+                                                }
+                                            }
                                         }
                                     }
-                                }
+                                });
                                 // TODO: 23.05.2023  програсс бар
                                 методГазимПрогрессаБар();
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -463,18 +470,28 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     @Override
                     public void onChanged(List<WorkInfo> workInfos) {
                             try {
-                                if(workInfos.get(0).getState().compareTo(WorkInfo.State.SUCCEEDED) == 0
-                                        || workInfos.get(0).getState().compareTo(WorkInfo.State.ENQUEUED) == 0) {
-                                    Integer CallBaskОтWorkManager =
-                                            workInfos.get(0).
-                                                    getOutputData().getInt("ReturnSingleAsyncWork", 0);
-                                    if (CallBaskОтWorkManager>=0) {
-                                        методGetCursorReboot();
-                                        // TODO: 23.05.2023  экран
-                                        методGetRebootScreen();
-                                        WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая).removeObservers(lifecycleOwnerОбщая);
+                                workInfos.forEach(new Consumer<WorkInfo>() {
+                                    @Override
+                                    public void accept(WorkInfo workInfoОбщая) {
+                                        if(workInfoОбщая.getState().compareTo(WorkInfo.State.SUCCEEDED) == 0
+                                                || workInfoОбщая.getState().compareTo(WorkInfo.State.ENQUEUED) == 0) {
+                                            Integer CallBaskОтWorkManager =
+                                                    workInfoОбщая.
+                                                            getOutputData().getInt("ReturnSingleAsyncWork", 0);
+                                            long end = Calendar.getInstance().getTimeInMillis();
+                                            long РазницаВоврмени = end - startДляОбноразвовной;
+                                            if (РазницаВоврмени > 10000) {
+                                                if (CallBaskОтWorkManager >= 0) {
+                                                    методGetCursorReboot();
+                                                    // TODO: 23.05.2023  экран
+                                                    методGetRebootScreen();
+                                                    WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая).removeObservers(lifecycleOwnerОбщая);
+                                                }
+                                            }
+                                        }
                                     }
-                                }
+                                });
+
                                 // TODO: 23.05.2023  програсс бар
                                 методГазимПрогрессаБар();
                                 
@@ -672,7 +689,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
             try{
                 fragmentManager.clearBackStack(null);
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.addToBackStack(null);
+              //  fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 fragmentNewЗаказТранспорта = new FragmentNewOrderTransport();
                 Bundle bundleNewOrderTransport=new Bundle();

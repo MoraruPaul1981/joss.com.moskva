@@ -348,7 +348,7 @@ public class FragmentNewOrderTransport extends Fragment {
             try{
                 fragmentManager.clearBackStack(null);
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.addToBackStack(null);
+              //  fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
                 fragmentBackListOrderTransport = new FragmentOrderTransportOneChane();
                 Bundle bundleBackOrdersTransport=new Bundle();
