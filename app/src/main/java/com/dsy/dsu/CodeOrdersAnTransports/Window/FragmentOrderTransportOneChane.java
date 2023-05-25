@@ -987,6 +987,14 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
 
         class SubClassAdapters{
+            private Context context; //context
+            public SubClassAdapters(@NonNull Context context) {
+                this.context=context;
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+            }
 
             // TODO: 25.05.2023 Adapter Simple
 
@@ -1100,15 +1108,13 @@ public class FragmentOrderTransportOneChane extends Fragment {
             }
             // TODO: 25.05.2023  BaseAdapter
             class SubClassBaseAdapter{
-void  методBaseAdapters(){
+void  методBaseAdapters(@NonNull Integer Макет){
     try{
     class CustomListAdapter extends BaseAdapter {
-        private Context context; //context
         private Cursor   items; //data source of the list adapter
 
         //public constructor
-        public CustomListAdapter(@NonNull Context context,@NonNull Cursor items) {
-            this.context = context;
+        public CustomListAdapter(@NonNull Cursor items) {
             this.items = items;
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
@@ -1151,8 +1157,7 @@ void  методBaseAdapters(){
         public View getView(int position, View convertView, ViewGroup parent) {
             // inflate the layout for each list row
             if (convertView == null) {
-                convertView = LayoutInflater.from(context).
-                        inflate(R.layout.fragment_ordertransport2, parent, false);
+                convertView = LayoutInflater.from(context).inflate(Макет, parent, false);
 
                 if (position==0) {
                     //  materialTextCFO = (MaterialTextView)   convertView.findViewById(R.id.valuecfo);//ВИД CFO
@@ -1160,6 +1165,10 @@ void  методBaseAdapters(){
                         case android.R.id.text1:
                             LinearLayout linearLayoutЗаказыТранспорта = (LinearLayout)
                                     convertView.findViewById(android.R.id.text1);
+
+                            // TODO: 12.05.2023  Получаем Данные
+                            Bundle bundleOrderTransport=    методДанныеBungle(cursorGroupByParent);
+
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
                                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1187,7 +1196,7 @@ void  методBaseAdapters(){
         }
     }
 // instantiate the custom list adapter
-    CustomListAdapter АдаптерЗаказыТарнпорта = new CustomListAdapter(getContext(), cursorGroupByParent);
+    CustomListAdapter АдаптерЗаказыТарнпорта = new CustomListAdapter(  cursorGroupByParent);
         АдаптерЗаказыТарнпорта.notifyDataSetChanged();
         gridViewOrderTransport.setAdapter(АдаптерЗаказыТарнпорта);
         методПерегрузкаЭкрана();
@@ -1452,7 +1461,16 @@ void  методBaseAdapters(){
                             "Заказы...", R.drawable.icon_dsu1_ordertransport_down);
                 }else {
                     if( cursorGroupByParent.getCount()>0) {
-                        subClassOrdersTransport.методФиналЗагрузкиGridView(R.layout.fragment_ordertransport1);
+                        // TODO: 25.05.2023 Simple
+                        SubClassAdapters subClassAdapters=new SubClassAdapters(getContext());
+
+                   SubClassAdapters.SubClassSimpleCursorAdapter  simpleCursorAdapter= subClassAdapters.new SubClassSimpleCursorAdapter();
+                                simpleCursorAdapter.методФиналЗагрузкиGridView(R.layout.fragment_ordertransport1);
+
+                        // TODO: 25.05.2023  BaseAdapter
+                        SubClassAdapters.SubClassBaseAdapter  subClassBaseAdapter= subClassAdapters.new SubClassBaseAdapter();
+                        subClassBaseAdapter.методBaseAdapters(R.layout.fragment_ordertransport1);
+
                         // TODO: 23.05.2023
                     }else{
                         subClassOrdersTransport.методПредварительнаяЗагрузкаGridView( R.layout.list_item_isnull_ordertransport,
