@@ -932,6 +932,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         " strftime('%d', dateorders)  ");
                 datasendMap.putIfAbsent("4"," HAVING        (COUNT(*) > 0)");
                 datasendMap.putIfAbsent("5","order_tc");///view_ordertransport
+                datasendMap.putIfAbsent("6"," ORDER by  strftime('%Y', dateorders) DESC , strftime('%m', dateorders) DESC  ,strftime('%d', dateorders) ");///view_ordertransport
               //  datasendMap.putIfAbsent("5"," view_ordertransport ");
                 // TODO: 05.05.2023  ПОЛУЧАЕМ ДАННЫЕ ПЕРВЫЙ ЭТАП
                 cursorGroupByParent =       subClassOrdersTransport.       методGetGROUPBYCursor( datasendMap);
@@ -1017,7 +1018,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                                     view.findViewById(android.R.id.text1);
 
                                             // TODO: 12.05.2023  Получаем Данные
-                                            Bundle bundleOrderTransport=    методДанныеBungle(cursor);
+                                            Bundle bundleOrderTransport=    методGosNomersДанныеBungle(cursor);
                                             // TODO: 12.05.2023
 
                                             CopyOnWriteArrayList<MaterialTextView> materialTextViews=new CopyOnWriteArrayList<>();
@@ -1158,33 +1159,27 @@ void  методBaseAdapters(@NonNull Integer Макет){
             // inflate the layout for each list row
             if (convertView == null) {
                 convertView = LayoutInflater.from(context).inflate(Макет, parent, false);
-
-                if (position==0) {
-                    //  materialTextCFO = (MaterialTextView)   convertView.findViewById(R.id.valuecfo);//ВИД CFO
                     switch (convertView.getId()) {
                         case android.R.id.text1:
                             LinearLayout linearLayoutЗаказыТранспорта = (LinearLayout)
                                     convertView.findViewById(android.R.id.text1);
 
-                            // TODO: 12.05.2023  Получаем Данные
-                            Bundle bundleOrderTransport=    методДанныеBungle(cursorGroupByParent);
+                            // TODO: 25.05.2023  Получаем Даные по позиции position
+                            getItem(position);
+                            
+                            // TODO: 12.05.2023  Получаем Данные Gropup By Первый Этап
+                            Bundle bundleGrpuopByOrder=    методGroupByДанныеBungle(cursorGroupByParent);
 
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
                                     " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorCfo  " + cursorGroupByParent);
-                    }
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                    + "  cursorCfo  " + cursorGroupByParent);
 
                     // TODO: 15.05.2023  CFO
-
                 }
             }
-
-            // get current item to be displayed
-            String currentItem = (String) getItem(position);
-
-            //  materialTextCFO.setText(currentItem);
-
+            
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1252,8 +1247,8 @@ void  методBaseAdapters(@NonNull Integer Макет){
 
 
 
-        // TODO: 05.05.2023
-        Bundle методДанныеBungle(@NonNull Cursor cursor) {
+        // TODO: 05.05.2023  треьтий этап
+        Bundle методGosNomersДанныеBungle(@NonNull Cursor cursor) {
             Bundle bundleOrderTransport=new Bundle();
             try {
                 Long   uuid= Optional.ofNullable(cursor.getLong(cursor.getColumnIndex("uuid"))).orElse(0l) ;
@@ -1299,10 +1294,45 @@ void  методBaseAdapters(@NonNull Integer Макет){
             return  bundleOrderTransport;
         }
 
+
+
+        // TODO: 05.05.2023  первый этап
+        Bundle методGroupByДанныеBungle(@NonNull Cursor cursor) {
+            Bundle bundleGrpuopByOrder =new Bundle();
+            try {
+                Integer   Year= Optional.ofNullable(cursor.getInt(cursor.getColumnIndex("Year"))).orElse(0) ;
+                Integer      Month= Optional.ofNullable(cursor.getInt(cursor.getColumnIndex("Month"))).orElse(0);
+                Integer Day= Optional.ofNullable(cursor.getInt(cursor.getColumnIndex("Day"))).orElse(0);
+                Integer getcounts=Optional.ofNullable( cursor.getInt(cursor.getColumnIndex("getcounts"))).orElse(0);
+                // TODO: 18.04.2023 Данные Заказы Трансопрта
+                bundleGrpuopByOrder.putInt("Year", Year);
+                bundleGrpuopByOrder.putInt("position", cursor.getPosition());
+                bundleGrpuopByOrder.putInt("Month",Month);
+                bundleGrpuopByOrder.putInt("Day",  Day);
+                bundleGrpuopByOrder.putInt("getcounts", getcounts);
+                // TODO: 12.05.2023 ДАННЫЕ
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                        + "  cursor " + cursor  +  "bundleGrpuopByOrder " +bundleGrpuopByOrder);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
+                        Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+
+            }
+            return  bundleGrpuopByOrder;
+        }
+
         @NonNull
         private String методПарсингаДатыЗаказа(String DateOrder) throws ParseException {
             try{
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", new Locale("ru"));
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", new Locale("ru"));
             Date breamy= simpleDateFormat.parse(DateOrder);
             DateOrder = simpleDateFormat.format(breamy);
                 Log.d(getContext().getClass().getName(), "\n"
@@ -1461,11 +1491,11 @@ void  методBaseAdapters(@NonNull Integer Макет){
                             "Заказы...", R.drawable.icon_dsu1_ordertransport_down);
                 }else {
                     if( cursorGroupByParent.getCount()>0) {
-                        // TODO: 25.05.2023 Simple
                         SubClassAdapters subClassAdapters=new SubClassAdapters(getContext());
 
+        /*                // TODO: 25.05.2023 Simple
                    SubClassAdapters.SubClassSimpleCursorAdapter  simpleCursorAdapter= subClassAdapters.new SubClassSimpleCursorAdapter();
-                                simpleCursorAdapter.методФиналЗагрузкиGridView(R.layout.fragment_ordertransport1);
+                                simpleCursorAdapter.методФиналЗагрузкиGridView(R.layout.fragment_ordertransport1);*/
 
                         // TODO: 25.05.2023  BaseAdapter
                         SubClassAdapters.SubClassBaseAdapter  subClassBaseAdapter= subClassAdapters.new SubClassBaseAdapter();
@@ -1478,12 +1508,9 @@ void  методBaseAdapters(@NonNull Integer Макет){
                     }
                     // TODO: 04.05.2023 Получаем Данные что обработка данных закончена
                     subClassOrdersTransport.    МетодДизайнПрограссБара();
-
                     subClassOrdersTransport.МетодСлушательКурсора();
-
                     // TODO: 12.05.2023
                     subClassOrdersTransport. МетодКпопкиЗначков(cursorGroupByParent);
-                    // TODO: 19.04.2023 слушаелти
                     // TODO: 18.04.2023 Слушатель Удалание
                     subClassOrdersTransport.    методУдалениеТабеля( );
                 }

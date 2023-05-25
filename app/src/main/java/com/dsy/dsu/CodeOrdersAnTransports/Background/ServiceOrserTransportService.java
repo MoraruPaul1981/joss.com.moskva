@@ -434,8 +434,9 @@ public class ServiceOrserTransportService extends IntentService {
                     String УсловияGroupBy= mapBoundService.get("3").trim();
                     String УсловияHaving=    mapBoundService.get("4").trim();
                     String Таблица=    mapBoundService.get("5").trim();
+                    String OrderBy=    mapBoundService.get("6").trim();
                     Bundle bundleЗаказТранспорт=new Bundle();
-                    bundleЗаказТранспорт.putString("СамЗапрос", СамЗапрос + " "+ УсловияWhere + " "+УсловияGroupBy +  " " +   УсловияHaving+" " );
+                    bundleЗаказТранспорт.putString("СамЗапрос", СамЗапрос + " "+ УсловияWhere + " "+УсловияGroupBy +  " " +   УсловияHaving+" "+OrderBy+" " );
                     bundleЗаказТранспорт.putStringArray("УсловияВыборки" ,new String[]{ });
                     bundleЗаказТранспорт.putString("Таблица",Таблица);
                     cursor=      (Cursor)    new SubClassCursorLoader(). CursorForGetgropuByLoaders(getApplicationContext(), bundleЗаказТранспорт);
