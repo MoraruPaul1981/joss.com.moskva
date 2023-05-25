@@ -38,6 +38,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -982,111 +983,234 @@ public class FragmentOrderTransportOneChane extends Fragment {
         }
         }
 
-        // TODO: 28.04.2023
-      void методФиналЗагрузкиGridView(@NonNull Integer Макет){
-            try{
-                      АдаптерЗаказыТарнпорта=
-                            new SimpleCursorAdapter(getContext(), Макет,
-                                    cursorGroupByParent, new String[]{"_id","name"},
-                                    new int[]{android.R.id.text1,android.R.id.text2},
-                                  0);  ///name
-                    SimpleCursorAdapter.ViewBinder binding = new SimpleCursorAdapter.ViewBinder() {
-                        @Override
-                        public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-                            try{
-                                switch (view.getId()) {
-                                    case android.R.id.text1:
-                                        LinearLayout linearLayoutЗаказыТранспорта= ( LinearLayout)
-                                                view.findViewById(android.R.id.text1);
+        // TODO: 28.04.2023  SimpleAdapter
 
-                                        // TODO: 12.05.2023  Получаем Данные
-                                        Bundle bundleOrderTransport=    методДанныеBungle(cursor);
-                                        // TODO: 12.05.2023
 
-                                        CopyOnWriteArrayList<MaterialTextView> materialTextViews=new CopyOnWriteArrayList<>();
-                                        materialTextViews.add(   linearLayoutЗаказыТранспорта.findViewById(R.id.otvaluecfo));///ЦФО
-                                        materialTextViews.add(   linearLayoutЗаказыТранспорта.findViewById(R.id.   otvaluetypets));//ВИД ТС
-                                        materialTextViews.add(   linearLayoutЗаказыТранспорта.findViewById(R.id.otvaluegosnomer));//ГОС.НОМЕР
-                                        materialTextViews.add(  linearLayoutЗаказыТранспорта.findViewById(R.id.otvaluedatesordert));//ДАТА
-                                        materialTextViews.add(  linearLayoutЗаказыТранспорта.findViewById(R.id.otvaluedatesordertkey));//ДАТА
-                                        materialTextViews.add(  linearLayoutЗаказыТранспорта.findViewById(R.id.otvaluegosnomerkey));//ДАТА
+        class SubClassAdapters{
 
-                                 ListIterator<MaterialTextView> listIterator= materialTextViews.listIterator();
-                                        while (listIterator.hasNext()) {
-                                            MaterialTextView  materialTextViewvalues = listIterator.next();
-                                        Integer Индекс=    listIterator.nextIndex();
-                                            Object ЗначениеВставки = null;
-                                        switch (Индекс){
-                                            case  1 :
-                                                ЗначениеВставки=        bundleOrderTransport.get("cfo");
-                                                // TODO: 18.04.2023  Заполение Данными
-                                                методЗаполенияЗаказаТранспорта( bundleOrderTransport,  materialTextViewvalues,ЗначениеВставки);
-                                                break;
-                                            case  2 :
-                                                ЗначениеВставки=       bundleOrderTransport.get("name");
-                                                // TODO: 18.04.2023  Заполение Данными
-                                                методЗаполенияЗаказаТранспорта( bundleOrderTransport,  materialTextViewvalues,ЗначениеВставки);
-                                                break;
-                                            case  3 :
-                                                ЗначениеВставки=       bundleOrderTransport.get("fullname");
-                                                // TODO: 18.04.2023  Заполение Данными
-                                                методЗаполенияЗаказаТранспорта( bundleOrderTransport,  materialTextViewvalues,ЗначениеВставки);
-                                                break;
-                                            case  4 :
-                                                ЗначениеВставки=       bundleOrderTransport.get("dateorders");
-                                                // TODO: 18.04.2023  Заполение Данными
-                                                методЗаполенияЗаказаТранспорта( bundleOrderTransport,  materialTextViewvalues,ЗначениеВставки);
-                                                break;
-                                        }
-                                        // TODO: 12.05.2023
-                                            materialTextViewvalues.startAnimation(animationvibr1);
+            // TODO: 25.05.2023 Adapter Simple
 
+            class SubClassSimpleCursorAdapter{
+
+                void методФиналЗагрузкиGridView(@NonNull Integer Макет){
+                    try{
+                        АдаптерЗаказыТарнпорта=
+                                new SimpleCursorAdapter(getContext(), Макет,
+                                        cursorGroupByParent, new String[]{"_id","name"},
+                                        new int[]{android.R.id.text1,android.R.id.text2},
+                                        0);  ///name
+                        SimpleCursorAdapter.ViewBinder binding = new SimpleCursorAdapter.ViewBinder() {
+                            @Override
+                            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+                                try{
+                                    switch (view.getId()) {
+                                        case android.R.id.text1:
+                                            LinearLayout linearLayoutЗаказыТранспорта= ( LinearLayout)
+                                                    view.findViewById(android.R.id.text1);
+
+                                            // TODO: 12.05.2023  Получаем Данные
+                                            Bundle bundleOrderTransport=    методДанныеBungle(cursor);
+                                            // TODO: 12.05.2023
+
+                                            CopyOnWriteArrayList<MaterialTextView> materialTextViews=new CopyOnWriteArrayList<>();
+                                            materialTextViews.add(   linearLayoutЗаказыТранспорта.findViewById(R.id.otvaluecfo));///ЦФО
+                                            materialTextViews.add(   linearLayoutЗаказыТранспорта.findViewById(R.id.   otvaluetypets));//ВИД ТС
+                                            materialTextViews.add(   linearLayoutЗаказыТранспорта.findViewById(R.id.otvaluegosnomer));//ГОС.НОМЕР
+                                            materialTextViews.add(  linearLayoutЗаказыТранспорта.findViewById(R.id.otvaluedatesordert));//ДАТА
+                                            materialTextViews.add(  linearLayoutЗаказыТранспорта.findViewById(R.id.otvaluedatesordertkey));//ДАТА
+                                            materialTextViews.add(  linearLayoutЗаказыТранспорта.findViewById(R.id.otvaluegosnomerkey));//ДАТА
+
+                                            ListIterator<MaterialTextView> listIterator= materialTextViews.listIterator();
+                                            while (listIterator.hasNext()) {
+                                                MaterialTextView  materialTextViewvalues = listIterator.next();
+                                                Integer Индекс=    listIterator.nextIndex();
+                                                Object ЗначениеВставки = null;
+                                                switch (Индекс){
+                                                    case  1 :
+                                                        ЗначениеВставки=        bundleOrderTransport.get("cfo");
+                                                        // TODO: 18.04.2023  Заполение Данными
+                                                        методЗаполенияЗаказаТранспорта( bundleOrderTransport,  materialTextViewvalues,ЗначениеВставки);
+                                                        break;
+                                                    case  2 :
+                                                        ЗначениеВставки=       bundleOrderTransport.get("name");
+                                                        // TODO: 18.04.2023  Заполение Данными
+                                                        методЗаполенияЗаказаТранспорта( bundleOrderTransport,  materialTextViewvalues,ЗначениеВставки);
+                                                        break;
+                                                    case  3 :
+                                                        ЗначениеВставки=       bundleOrderTransport.get("fullname");
+                                                        // TODO: 18.04.2023  Заполение Данными
+                                                        методЗаполенияЗаказаТранспорта( bundleOrderTransport,  materialTextViewvalues,ЗначениеВставки);
+                                                        break;
+                                                    case  4 :
+                                                        ЗначениеВставки=       bundleOrderTransport.get("dateorders");
+                                                        // TODO: 18.04.2023  Заполение Данными
+                                                        методЗаполенияЗаказаТранспорта( bundleOrderTransport,  materialTextViewvalues,ЗначениеВставки);
+                                                        break;
+                                                }
+                                                // TODO: 12.05.2023
+                                                materialTextViewvalues.startAnimation(animationvibr1);
+
+                                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                                                        "  bundleOrderTransport " +bundleOrderTransport +  "materialTextViewvalues " +materialTextViewvalues + " ЗначениеВставки " +ЗначениеВставки);
+                                            }
+                                            //методВыравниваДизайнаЗаказаТранспорта(materialTextViews);
+                                            // TODO: 18.04.2023  Выход Из Цикла
                                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                                                    "  bundleOrderTransport " +bundleOrderTransport +  "materialTextViewvalues " +materialTextViewvalues + " ЗначениеВставки " +ЗначениеВставки);
-                                        }
-                                        //методВыравниваДизайнаЗаказаТранспорта(materialTextViews);
-                                        // TODO: 18.04.2023  Выход Из Цикла
-                                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                                                "  bundleOrderTransport " +bundleOrderTransport+ " cursorGroupByParent " + cursorGroupByParent);
-                                        // TODO: 23.05.2023  exit
-                                        return true;
+                                                    "  bundleOrderTransport " +bundleOrderTransport+ " cursorGroupByParent " + cursorGroupByParent);
+                                            // TODO: 23.05.2023  exit
+                                            return true;
+                                    }
+
+                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                    new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                                 }
-
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                return false;
                             }
-                            return false;
-                        }
-                    };
-                    АдаптерЗаказыТарнпорта.setViewBinder(binding);
-                   АдаптерЗаказыТарнпорта.notifyDataSetChanged();
-                    gridViewOrderTransport.setAdapter(АдаптерЗаказыТарнпорта);
-                    методПерегрузкаЭкрана();
-                Log.d(getContext().getClass().getName(), "\n"
-                            + " время: " + new Date() + "\n+" +
-                            " Класс в процессе... " + this.getClass().getName() + "\n" +
-                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                        };
+                        АдаптерЗаказыТарнпорта.setViewBinder(binding);
+                        АдаптерЗаказыТарнпорта.notifyDataSetChanged();
+                        gridViewOrderTransport.setAdapter(АдаптерЗаказыТарнпорта);
+                        методПерегрузкаЭкрана();
+                        Log.d(getContext().getClass().getName(), "\n"
+                                + " время: " + new Date() + "\n+" +
+                                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
 
-      } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
+                }
+
+            }
+            // TODO: 25.05.2023  BaseAdapter
+            class SubClassBaseAdapter{
+void  методBaseAdapters(){
+    try{
+    class CustomListAdapter extends BaseAdapter {
+        private Context context; //context
+        private Cursor   items; //data source of the list adapter
+
+        //public constructor
+        public CustomListAdapter(@NonNull Context context,@NonNull Cursor items) {
+            this.context = context;
+            this.items = items;
+            Log.d(getContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorCfo  " + cursorGroupByParent);
+
         }
+
+        @Override
+        public int getCount() {
+            Log.d(getContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorCfo  " + cursorGroupByParent);
+
+            return items.getCount(); //returns total of items in the list
         }
+
+        @Override
+        public Object getItem(int position) {
+            Log.d(getContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorCfo  " + cursorGroupByParent);
+
+            return items.moveToPosition(position); //returns list item at the specified position
+        }
+
+        @Override
+        public long getItemId(int position) {
+            Log.d(getContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorCfo  " + cursorGroupByParent);
+
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            // inflate the layout for each list row
+            if (convertView == null) {
+                convertView = LayoutInflater.from(context).
+                        inflate(R.layout.fragment_ordertransport2, parent, false);
+
+                if (position==0) {
+                    //  materialTextCFO = (MaterialTextView)   convertView.findViewById(R.id.valuecfo);//ВИД CFO
+                    switch (convertView.getId()) {
+                        case android.R.id.text1:
+                            LinearLayout linearLayoutЗаказыТранспорта = (LinearLayout)
+                                    convertView.findViewById(android.R.id.text1);
+                            Log.d(getContext().getClass().getName(), "\n"
+                                    + " время: " + new Date() + "\n+" +
+                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorCfo  " + cursorGroupByParent);
+                    }
+
+                    // TODO: 15.05.2023  CFO
+
+                }
+            }
+
+            // get current item to be displayed
+            String currentItem = (String) getItem(position);
+
+            //  materialTextCFO.setText(currentItem);
+
+            Log.d(getContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorCfo  " + cursorGroupByParent);
+
+
+            // returns the view for the current row
+            return convertView;
+        }
+    }
+// instantiate the custom list adapter
+    CustomListAdapter АдаптерЗаказыТарнпорта = new CustomListAdapter(getContext(), cursorGroupByParent);
+        АдаптерЗаказыТарнпорта.notifyDataSetChanged();
+        gridViewOrderTransport.setAdapter(АдаптерЗаказыТарнпорта);
+        методПерегрузкаЭкрана();
+        Log.d(getContext().getClass().getName(), "\n"
+                + " время: " + new Date() + "\n+" +
+                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+
+} catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
+}
+
+            }
+
+        }
+
+
 
 
         private void методЗаполенияЗаказаТранспорта( @NonNull Bundle bundleOrderTransport,
