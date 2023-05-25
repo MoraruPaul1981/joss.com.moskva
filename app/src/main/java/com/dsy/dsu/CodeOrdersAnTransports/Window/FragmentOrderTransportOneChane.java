@@ -56,6 +56,7 @@ import com.dsy.dsu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 
 
@@ -124,7 +125,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
             ПубличныйID = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
 
             // TODO: 12.05.2023 слушатель
-            subClassOrdersTransport.    методСлушателяWorkManager(lifecycleOwner,lifecycleOwnerОбщая);
+          //  subClassOrdersTransport.    методСлушателяWorkManager(lifecycleOwner,lifecycleOwnerОбщая);
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -587,7 +588,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 if (cursor!=null) {
                     if (cursor.getCount()> 0) {
                         Log.d(this.getClass().getName(), "  cursor" + cursor.getCount());
-                        BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setNumber( cursor.getCount());//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
+                        BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setNumber( cursor.getCount()-1);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
                         BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.parseColor("#15958A"));
                     } else {
                         BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
@@ -1113,11 +1114,11 @@ public class FragmentOrderTransportOneChane extends Fragment {
 void  методBaseAdapters(@NonNull Integer Макет){
     try{
     class CustomListAdapter extends BaseAdapter {
-        private Cursor   items; //data source of the list adapter
+        private Cursor   cursor; //data source of the list adapter
 
         //public constructor
-        public CustomListAdapter(@NonNull Cursor items) {
-            this.items = items;
+        public CustomListAdapter(@NonNull Cursor cursor) {
+            this.cursor = cursor;
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1132,7 +1133,7 @@ void  методBaseAdapters(@NonNull Integer Макет){
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorCfo  " + cursorGroupByParent);
 
-            return items.getCount(); //returns total of items in the list
+            return cursor.getCount(); //returns total of items in the list
         }
 
         @Override
@@ -1142,7 +1143,7 @@ void  методBaseAdapters(@NonNull Integer Макет){
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorCfo  " + cursorGroupByParent);
 
-            return items.moveToPosition(position); //returns list item at the specified position
+            return cursor.moveToPosition(position); //returns list item at the specified position
         }
 
         @Override
@@ -1164,22 +1165,16 @@ void  методBaseAdapters(@NonNull Integer Макет){
                 // TODO: 25.05.2023  ГлавныйВненишнмий Вид
                 LinearLayout linearLayoutGroupBYЗаказыТранспорта = (LinearLayout)
                         convertView.findViewById(android.R.id.text1);
+                MaterialCardView materialCardView= linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.cardveiwnewordertraport);//cardview
                     switch (convertView.getId()) {
                         case android.R.id.text1:
                             // TODO: 25.05.2023  Получаем Даные по позиции position
-                              getItem(position);
+                            getItem(position);
                             // TODO: 12.05.2023  Получаем Данные Gropup By Первый Этап
                             Bundle bundleGrpuopByOrder=    методGroupByДанныеBungle(cursorGroupByParent);
 
-
-                            методЗаполенияGroupBy(linearLayoutGroupBYЗаказыТранспорта,bundleGrpuopByOrder);
-
-
-
-
-
-
-
+                            // TODO: 25.05.2023 Заполения данными
+                            методЗаполенияGroupBy(materialCardView,bundleGrpuopByOrder);
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
                                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1205,6 +1200,11 @@ void  методBaseAdapters(@NonNull Integer Макет){
             // returns the view for the current row
             return convertView;
         }
+
+        @Override
+        public int getItemViewType(int position) {
+            return super.getItemViewType(position);
+        }
     }
 // instantiate the custom list adapter
     CustomListAdapter АдаптерЗаказыТарнпорта = new CustomListAdapter(  cursorGroupByParent);
@@ -1228,14 +1228,14 @@ void  методBaseAdapters(@NonNull Integer Макет){
 
 
 
-void методЗаполенияGroupBy(@NonNull  LinearLayout linearLayoutGroupBYЗаказыТранспорта,@NonNull  Bundle bundleGrpuopByOrder) {
+void методЗаполенияGroupBy(@NonNull  MaterialCardView materialCardViewGroupBy,@NonNull  Bundle bundleGrpuopByOrder) {
 try{
-  MaterialTextView materialTextViewKeyДатаЗаказа= linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.otvaluedatesordertkey);//ДАТА
-    MaterialTextView materialTextViewДатаЗаказа=   linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.otvaluedatesordert);//ДАТА
+  MaterialTextView materialTextViewKeyДатаЗаказа= materialCardViewGroupBy.findViewById(R.id.otvaluedatesordertkey);//ДАТА
+    MaterialTextView materialTextViewДатаЗаказа=   materialCardViewGroupBy.findViewById(R.id.otvaluedatesordert);//ДАТА
 
-   String dateorders = (String) bundleGrpuopByOrder.get("dateorders");
+   String DateOrderGroupBy = (String) bundleGrpuopByOrder.get("dateorders");
     // TODO: 18.04.2023  Заполение Данными
-   // методЗаполенияЗаказаТранспорта(bundleGrpuopByOrder, materialTextViewKeyДатаЗаказа, ЗначениеВставки);
+    методЗаполенияЗаказаТранспорта(bundleGrpuopByOrder, materialTextViewKeyДатаЗаказа, DateOrderGroupBy);
         // TODO: 12.05.2023
     materialTextViewДатаЗаказа.startAnimation(animationvibr1);
 
@@ -1260,18 +1260,16 @@ try{
 
 
         private void методЗаполенияЗаказаТранспорта( @NonNull Bundle bundleOrderTransport,
-                                                     @NonNull MaterialTextView values,
+                                                     @NonNull MaterialTextView materialTextView,
                                                      @NonNull Object ЗначениеВставки) {
             try{
                 if (ЗначениеВставки==null){
-                    values.setHint("не заполнено");
-                    values.setText("");
+                    materialTextView.setHint("не заполнено");
+                    materialTextView.setText("");
                 }else {
-                    values.setText(ЗначениеВставки.toString());
+                    materialTextView.setText(ЗначениеВставки.toString());
                 }
-                values.setTag(bundleOrderTransport);
-                values.refreshDrawableState();
-                values.requestLayout();
+                materialTextView.setTag(bundleOrderTransport);
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1347,12 +1345,15 @@ try{
                 Integer Day= Optional.ofNullable(cursor.getInt(cursor.getColumnIndex("Day"))).orElse(0);
                 Integer getcounts=Optional.ofNullable( cursor.getInt(cursor.getColumnIndex("getcounts"))).orElse(0);
                 String dateorders=Optional.ofNullable( cursor.getString(cursor.getColumnIndex("dateorders"))).orElse("");
+              // TODO: 25.05.2023 Дата
+              dateorders=          методПарсингаДатыЗаказа(dateorders);
                 // TODO: 18.04.2023 Данные Заказы Трансопрта
                 bundleGrpuopByOrder.putInt("Year", Year);
                 bundleGrpuopByOrder.putInt("position", cursor.getPosition());
                 bundleGrpuopByOrder.putInt("Month",Month);
                 bundleGrpuopByOrder.putInt("Day",  Day);
                 bundleGrpuopByOrder.putInt("getcounts", getcounts);
+                bundleGrpuopByOrder.putString("dateorders", dateorders);
                 // TODO: 12.05.2023 ДАННЫЕ
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
@@ -1373,7 +1374,7 @@ try{
         }
 
         @NonNull
-        private String методПарсингаДатыЗаказа(String DateOrder) throws ParseException {
+        private String методПарсингаДатыЗаказа(@NonNull  String DateOrder) throws ParseException {
             try{
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", new Locale("ru"));
             Date breamy= simpleDateFormat.parse(DateOrder);
@@ -1542,7 +1543,7 @@ try{
 
                         // TODO: 25.05.2023  BaseAdapter
                         SubClassAdapters.SubClassBaseAdapter  subClassBaseAdapter= subClassAdapters.new SubClassBaseAdapter();
-                        subClassBaseAdapter.методBaseAdapters(R.layout.fragment_ordertransport1);
+                        subClassBaseAdapter.методBaseAdapters(R.layout.fragment_order_trasport_groupby1);
 
                         // TODO: 23.05.2023
                     }else{
