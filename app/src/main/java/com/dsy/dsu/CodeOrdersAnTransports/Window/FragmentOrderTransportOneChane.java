@@ -887,11 +887,18 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     Boolean   isBound =    getContext(). bindService(intentЗапускOrserTransportService, serviceConnection , Context.BIND_AUTO_CREATE);
                 }else {
 // TODO: 24.05.2023 КОГДА УЖЕ БЫЛО ПОДКЛЮЧЕНИЕ
+                    // TODO: 23.05.2023  даннеы
                     методGetCursorGROUPBYBounds(); //      методGetCursorBounds();
+                    // TODO: 23.05.2023  экран
+                    методGetRebootScreen();
                     Log.d(getContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
                             " Класс в процессе... " + this.getClass().getName() + "\n" +
-                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                            + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive()+
+                            " localBinderOrderTransport " +localBinderOrderTransport
+                            + " cursorGroupByParent " + cursorGroupByParent
+                            + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive());
                 }
                 getContext().registerComponentCallbacks(new ComponentCallbacks() {
                     @Override
@@ -1128,30 +1135,60 @@ void  методBaseAdapters(@NonNull Integer Макет){
 
         @Override
         public int getCount() {
+            int getCount=0;
+            try{
+             getCount=   cursor.getCount();
+                getCount=getCount-1;
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
-                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorCfo  " + cursorGroupByParent);
-
-            return cursor.getCount(); //returns total of items in the list
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursor  " + cursor);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+            return getCount; //returns total of items in the list
         }
 
         @Override
         public Object getItem(int position) {
+            try{
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorCfo  " + cursorGroupByParent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
 
             return cursor.moveToPosition(position); //returns list item at the specified position
         }
 
         @Override
         public long getItemId(int position) {
+            try{
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorCfo  " + cursorGroupByParent);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
 
             return position;
         }
@@ -1230,12 +1267,12 @@ void  методBaseAdapters(@NonNull Integer Макет){
 
 void методЗаполенияGroupBy(@NonNull  MaterialCardView materialCardViewGroupBy,@NonNull  Bundle bundleGrpuopByOrder) {
 try{
-  MaterialTextView materialTextViewKeyДатаЗаказа= materialCardViewGroupBy.findViewById(R.id.otvaluedatesordertkey);//ДАТА
-    MaterialTextView materialTextViewДатаЗаказа=   materialCardViewGroupBy.findViewById(R.id.otvaluedatesordert);//ДАТА
+  MaterialTextView materialTextViewKeyДатаЗаказа= materialCardViewGroupBy.findViewById(R.id.ot_date_order_key);//ДАТА
+    MaterialTextView materialTextViewДатаЗаказа=   materialCardViewGroupBy.findViewById(R.id.ot_date_order_value);//ДАТА
 
    String DateOrderGroupBy = (String) bundleGrpuopByOrder.get("dateorders");
     // TODO: 18.04.2023  Заполение Данными
-    методЗаполенияЗаказаТранспорта(bundleGrpuopByOrder, materialTextViewKeyДатаЗаказа, DateOrderGroupBy);
+    методЗаполенияЗаказаТранспорта(bundleGrpuopByOrder, materialTextViewДатаЗаказа, DateOrderGroupBy);
         // TODO: 12.05.2023
     materialTextViewДатаЗаказа.startAnimation(animationvibr1);
 
