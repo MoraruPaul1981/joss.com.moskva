@@ -923,13 +923,14 @@ public class FragmentOrderTransportOneChane extends Fragment {
             try{
                 // TODO: 04.05.2023  получаем первоночальыне Данные  #1
                 HashMap<String,String> datasendMap=new HashMap();
-                datasendMap.putIfAbsent("1","  SELECT   strftime('%Y', dateorders)  AS Year, strftime('%m', dateorders)  AS Month," +
+                datasendMap.putIfAbsent("1","  SELECT  dateorders,   strftime('%Y', dateorders)  AS Year, strftime('%m', dateorders)  AS Month," +
                         " strftime('%d', dateorders)  AS Day, COUNT(*) AS getcounts" +
                         "  FROM  order_tc ");
                 datasendMap.putIfAbsent("2"," WHERE dateorders  IS NOT NULL   ");//AND _id >?  AND status!=? ORDER BY dateorders
                 datasendMap.putIfAbsent("3"," GROUP BY strftime('%Y', dateorders)  ," +
                         " strftime('%m', dateorders)   ," +
-                        " strftime('%d', dateorders)  ");
+                        " strftime('%d', dateorders) ," +
+                        " dateorders ");
                 datasendMap.putIfAbsent("4"," HAVING        (COUNT(*) > 0)");
                 datasendMap.putIfAbsent("5","order_tc");///view_ordertransport
                 datasendMap.putIfAbsent("6"," ORDER by  strftime('%Y', dateorders) DESC , strftime('%m', dateorders) DESC  ,strftime('%d', dateorders) ");///view_ordertransport
@@ -1157,26 +1158,34 @@ void  методBaseAdapters(@NonNull Integer Макет){
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // inflate the layout for each list row
+            try{
             if (convertView == null) {
                 convertView = LayoutInflater.from(context).inflate(Макет, parent, false);
+                // TODO: 25.05.2023  ГлавныйВненишнмий Вид
+                LinearLayout linearLayoutGroupBYЗаказыТранспорта = (LinearLayout)
+                        convertView.findViewById(android.R.id.text1);
                     switch (convertView.getId()) {
                         case android.R.id.text1:
-                            LinearLayout linearLayoutЗаказыТранспорта = (LinearLayout)
-                                    convertView.findViewById(android.R.id.text1);
-
                             // TODO: 25.05.2023  Получаем Даные по позиции position
-                            getItem(position);
-                            
+                              getItem(position);
                             // TODO: 12.05.2023  Получаем Данные Gropup By Первый Этап
                             Bundle bundleGrpuopByOrder=    методGroupByДанныеBungle(cursorGroupByParent);
+
+
+                            методЗаполенияGroupBy(linearLayoutGroupBYЗаказыТранспорта,bundleGrpuopByOrder);
+
+
+
+
+
+
 
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
                                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
                                     + "  cursorCfo  " + cursorGroupByParent);
-
-                    // TODO: 15.05.2023  CFO
+                    // TODO: 15.05.2023  gruopby
                 }
             }
             
@@ -1185,7 +1194,14 @@ void  методBaseAdapters(@NonNull Integer Макет){
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorCfo  " + cursorGroupByParent);
 
-
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
             // returns the view for the current row
             return convertView;
         }
@@ -1210,6 +1226,32 @@ void  методBaseAdapters(@NonNull Integer Макет){
                 }
 }
 
+
+
+void методЗаполенияGroupBy(@NonNull  LinearLayout linearLayoutGroupBYЗаказыТранспорта,@NonNull  Bundle bundleGrpuopByOrder) {
+try{
+  MaterialTextView materialTextViewKeyДатаЗаказа= linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.otvaluedatesordertkey);//ДАТА
+    MaterialTextView materialTextViewДатаЗаказа=   linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.otvaluedatesordert);//ДАТА
+
+   String dateorders = (String) bundleGrpuopByOrder.get("dateorders");
+    // TODO: 18.04.2023  Заполение Данными
+   // методЗаполенияЗаказаТранспорта(bundleGrpuopByOrder, materialTextViewKeyДатаЗаказа, ЗначениеВставки);
+        // TODO: 12.05.2023
+    materialTextViewДатаЗаказа.startAnimation(animationvibr1);
+
+} catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
+
+}
+
+
+// TODO: 25.05.2023 END BaseAdapters
             }
 
         }
@@ -1304,6 +1346,7 @@ void  методBaseAdapters(@NonNull Integer Макет){
                 Integer      Month= Optional.ofNullable(cursor.getInt(cursor.getColumnIndex("Month"))).orElse(0);
                 Integer Day= Optional.ofNullable(cursor.getInt(cursor.getColumnIndex("Day"))).orElse(0);
                 Integer getcounts=Optional.ofNullable( cursor.getInt(cursor.getColumnIndex("getcounts"))).orElse(0);
+                String dateorders=Optional.ofNullable( cursor.getString(cursor.getColumnIndex("dateorders"))).orElse("");
                 // TODO: 18.04.2023 Данные Заказы Трансопрта
                 bundleGrpuopByOrder.putInt("Year", Year);
                 bundleGrpuopByOrder.putInt("position", cursor.getPosition());
