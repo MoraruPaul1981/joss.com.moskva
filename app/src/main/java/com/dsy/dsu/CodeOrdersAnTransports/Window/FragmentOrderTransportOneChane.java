@@ -45,6 +45,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
@@ -1202,16 +1203,22 @@ void  методBaseAdapters(@NonNull Integer Макет){
                 // TODO: 25.05.2023  ГлавныйВненишнмий Вид
                 LinearLayout linearLayoutGroupBYЗаказыТранспорта = (LinearLayout)
                         convertView.findViewById(android.R.id.text1);
-                MaterialCardView materialCardView= linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.cardveiwnewordertraport);//cardview
+                // TODO: 25.05.2023  для первого Grpou BY 
+                MaterialCardView materialCardView= (MaterialCardView) linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.cardveiwnewordertraport);//cardview
+                // TODO: 25.05.2023  Для вторго СЦО
+                TableLayout tableLayoutot=(TableLayout) linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.tableLayoutot);//cardview
                     switch (convertView.getId()) {
                         case android.R.id.text1:
                             // TODO: 25.05.2023  Получаем Даные по позиции position
                             getItem(position);
                             // TODO: 12.05.2023  Получаем Данные Gropup By Первый Этап
                             Bundle bundleGrpuopByOrder=    методGroupByДанныеBungle(cursorGroupByParent);
-
-                            // TODO: 25.05.2023 Заполения данными
+                            // TODO: 25.05.2023 первая часть GROUP BY
                             методЗаполенияGroupBy(materialCardView,bundleGrpuopByOrder);
+                            // TODO: 25.05.2023 первая часть ЦФО
+                            методЗаполенияЦФО(tableLayoutot,bundleGrpuopByOrder);
+
+                            // TODO: 25.05.2023 На Полученых
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
                                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1264,28 +1271,44 @@ void  методBaseAdapters(@NonNull Integer Макет){
 }
 
 
+                // TODO: 25.05.2023  метод первый
+            void методЗаполенияGroupBy(@NonNull  MaterialCardView materialCardViewGroupBy,@NonNull  Bundle bundleGrpuopByOrder) {
+            try{
+              MaterialTextView materialTextViewKeyДатаЗаказа= materialCardViewGroupBy.findViewById(R.id.ot_date_order_key);//ДАТА
+                MaterialTextView materialTextViewДатаЗаказа=   materialCardViewGroupBy.findViewById(R.id.ot_date_order_value);//ДАТА
+               String DateOrderGroupBy = (String) bundleGrpuopByOrder.get("dateorders");
+                // TODO: 18.04.2023  Заполение Данными
+                методЗаполенияЗаказаТранспорта(bundleGrpuopByOrder, materialTextViewДатаЗаказа, DateOrderGroupBy);
+                    // TODO: 12.05.2023
+                materialTextViewДатаЗаказа.startAnimation(animationvibr1);
+            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                        this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            }
 
-void методЗаполенияGroupBy(@NonNull  MaterialCardView materialCardViewGroupBy,@NonNull  Bundle bundleGrpuopByOrder) {
-try{
-  MaterialTextView materialTextViewKeyДатаЗаказа= materialCardViewGroupBy.findViewById(R.id.ot_date_order_key);//ДАТА
-    MaterialTextView materialTextViewДатаЗаказа=   materialCardViewGroupBy.findViewById(R.id.ot_date_order_value);//ДАТА
-
-   String DateOrderGroupBy = (String) bundleGrpuopByOrder.get("dateorders");
-    // TODO: 18.04.2023  Заполение Данными
-    методЗаполенияЗаказаТранспорта(bundleGrpuopByOrder, materialTextViewДатаЗаказа, DateOrderGroupBy);
+            }
+// TODO: 25.05.2023  метод для второй ЦФО Операции
+void методЗаполенияЦФО(@NonNull  TableLayout tableLayoutot,@NonNull  Bundle bundleGrpuopByOrder) {
+    try{
+        String DateOrderGroupBy = (String) bundleGrpuopByOrder.get("dateorders");
+        // TODO: 18.04.2023  Заполение Данными
+       /// методЗаполенияЗаказаТранспорта(bundleGrpuopByOrder, materialTextViewДатаЗаказа, DateOrderGroupBy);
         // TODO: 12.05.2023
-    materialTextViewДатаЗаказа.startAnimation(animationvibr1);
-
-} catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                            this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
 
 }
+
 
 
 // TODO: 25.05.2023 END BaseAdapters
