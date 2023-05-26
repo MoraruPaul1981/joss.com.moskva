@@ -44,7 +44,7 @@
                     tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
                     android:orientation="vertical">
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/ot_date_order_key"
+                    android:id="@+id/ot_key_order_singlevalue"
                     android:layout_column="0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

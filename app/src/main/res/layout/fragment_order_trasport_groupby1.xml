@@ -28,6 +28,10 @@
     android:background="#F0FFFF"
     app:cardBackgroundColor="#F0FFFF"
     app:strokeColor="#316E6E"
+    android:checkable="true"
+    android:clickable="true"
+    android:focusable="true"
+
     tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports">
 
 
