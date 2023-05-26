@@ -105,7 +105,7 @@
                     android:layout_marginStart="100dp"
                     android:layout_marginEnd="100dp"
                     android:layout_marginTop="1dp"
-                    android:minHeight="15dp"
+                    android:minHeight="20dp"
                     android:hint="Дата"
                     android:padding="1dp"
                     android:animateLayoutChanges="true"

@@ -936,14 +936,14 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 HashMap<String,String> datasendMap=new HashMap();
                 datasendMap.putIfAbsent("1","  SELECT  dateorders,   strftime('%Y', dateorders)  AS Year, strftime('%m', dateorders)  AS Month," +
                         " strftime('%d', dateorders)  AS Day, COUNT(*) AS getcounts" +
-                        "  FROM  order_tc ");
+                        "  FROM  view_ordertransport ");
                 datasendMap.putIfAbsent("2"," WHERE dateorders  IS NOT NULL   ");//AND _id >?  AND status!=? ORDER BY dateorders
                 datasendMap.putIfAbsent("3"," GROUP BY strftime('%Y', dateorders)  ," +
                         " strftime('%m', dateorders)   ," +
                         " strftime('%d', dateorders) ," +
                         " dateorders ");
                 datasendMap.putIfAbsent("4"," HAVING        (COUNT(*) > 0)");
-                datasendMap.putIfAbsent("5","order_tc");///view_ordertransport
+                datasendMap.putIfAbsent("5","view_ordertransport");///view_ordertransport
                 datasendMap.putIfAbsent("6"," ORDER by  strftime('%Y', dateorders) DESC , strftime('%m', dateorders) DESC  ,strftime('%d', dateorders) ");///view_ordertransport
               //  datasendMap.putIfAbsent("5"," view_ordertransport ");
                 // TODO: 05.05.2023  ПОЛУЧАЕМ ДАННЫЕ ПЕРВЫЙ ЭТАП
@@ -1203,14 +1203,13 @@ void  методBaseAdapters(@NonNull Integer Макет){
                             // TODO: 25.05.2023 вторая часть ЦФО get Cursor #4
                           Cursor cursorgetCFO=    subClassGetCFOOrder.методGetCursorCFO( );
                             // TODO: 26.05.2023 Заполнение ЦФО #5
-                            subClassGetCFOOrder.методЗаполениеДаннымиВЦиклеЦФО(cursorgetCFO,tableLayoutДочерная,tableLayoutРодительская);
-
+                                subClassGetCFOOrder.методЗаполениеДаннымиВЦиклеЦФО(cursorgetCFO,tableLayoutДочерная,tableLayoutРодительская);
                             // TODO: 25.05.2023 На Полученых
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
                                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                    + "  cursorCfo  " + cursorGroupByParent);
+                                    + "  cursorgetCFO  " + cursorgetCFO.getCount());
                     // TODO: 15.05.2023  gruopby
                 }
             }
@@ -1353,7 +1352,11 @@ class SubClassGetDateOrderGroupBy {
                                         + " cursorgetCFO.getPosition() " +cursorgetCFO.getPosition());
 
                             }
-
+                            Log.d(getContext().getClass().getName(), "\n"
+                                    + " время: " + new Date() + "\n+" +
+                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                    + " cursorgetCFO.getPosition() " +cursorgetCFO.getPosition());
                         }while (cursorgetCFO.moveToNext());
 
                         // TODO: 18.04.2023  Заполение Данными
@@ -1380,11 +1383,11 @@ class SubClassGetDateOrderGroupBy {
                                                  @NonNull MaterialTextView materialTextViewДанныеAddRow,
                                                  @NonNull  MaterialTextView materialTextViewШабкаAddRow) {
                         try{
-                        String dateordersCfo = (String) cursorgetCFO.getString(cursorgetCFO.getColumnIndex("dateorders"));
+                        String dateordersCfo = (String) cursorgetCFO.getString(cursorgetCFO.getColumnIndex("cfo"));
                         // TODO: 18.04.2023  Заполение Данными уже на экран
                         методЗаполенияЗаказаТранспорта(bundleGrpuopByOrder, materialTextViewДанныеAddRow, dateordersCfo);
                             // TODO: 26.05.2023 set Шабка Данных
-                         //   materialTextViewШабкаAddRow.set
+                         materialTextViewШабкаAddRow.setText("Цфо");
 
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
@@ -1440,7 +1443,7 @@ class SubClassGetDateOrderGroupBy {
                             tableLayoutДочерная.recomputeViewAttributes(tableRowДочерная);
                             tableLayoutДочерная.removeViewInLayout(tableRowДочерная);
                             tableLayoutДочерная.removeView(tableRowДочерная);
-                            tableRowДочерная.setId(new Random().nextInt(100));
+                            tableRowДочерная.setId(new Random().nextInt(10000));
                             tableLayoutДочерная.recomputeViewAttributes(tableRowДочерная);
                         }
                         Log.d(getContext().getClass().getName(), "\n"

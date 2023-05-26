@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =      1026;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+     static final int VERSION =      1027;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
     private      SQLiteDatabase ССылкаНаСозданнуюБазу;
     private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
@@ -1126,16 +1126,14 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         try{
             ССылкаНаСозданнуюБазу.execSQL("drop view  if exists view_ordertransport");//test
             ССылкаНаСозданнуюБазу.execSQL("CREATE VIEW if not exists view_ordertransport AS" +
-                    "       SELECT         order_tc._id,  vid_tc.name,  order_tc.dateorders, " +
-                    " order_tc.number_order,  order_tc.date_update,  order_tc.uuid, " +
-                    " order_tc.user_update,  order_tc.current_table,  track.name AS gosmomer, \n" +
-                    "                          cfo.name AS cfo,  order_tc.status ,  cfo._id AS id_cfo,  track._id AS id_track\n" +
-                    "FROM             order_tc INNER JOIN\n" +
-                    "                          vid_tc ON  order_tc.vid_trasport =  vid_tc._id INNER JOIN\n" +
-                    "                          cfo ON  order_tc.cfo =  cfo._id" +
-                    " LEFT JOIN\n" +
-                    "                          track ON  order_tc.gos_nomer =  track._id\n" +
-                    "WHERE        ( vid_tc.name IS NOT NULL)" );
+                    "            SELECT         Ord._id,    vid_tc.name,  Ord.dateorders,  Ord.number_order, Ord.date_update,\n" +
+                    "                      Ord.uuid,  Ord.user_update,  Ord.current_table,    track.name AS gosmomer, \n" +
+                    "                                               cfo.name AS cfo,  Ord.status,    cfo._id AS id_cfo,    track._id AS id_track \n" +
+                    "                     FROM               order_tc  as Ord \n" +
+                    "                     LEFT OUTER JOIN    vid_tc ON  Ord.vid_trasport =    vid_tc._id \n" +
+                    "                      LEFT OUTER JOIN     cfo ON  Ord.cfo =    cfo._id \n" +
+                    "                      LEFT OUTER JOIN    track ON  Ord.gos_nomer =    track._id \n" +
+                    "                      WHERE        (   vid_tc.name IS NOT NULL)" );
 
             Log.d(this.getClass().getName(), " сработала ...  создание view  view_ordertransport ");
         } catch (SQLException e) {
@@ -1221,7 +1219,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             Log.d(this.getClass().getName()," ИменаТаблицыОтАндройда " +ИменаТаблицыОтАндройда); // TODO: 28.09.2022 таблицы
             Log.d(this.getClass().getName(), " после СЛУЖБА  содание базы newVersion==  652   (например)   " + new Date() + " newVersion " + newVersion);
             
-      if(newVersion ==     1025){
+      if(newVersion ==     1027){
                //TODO table создание
           МетодСозданиеViewЗаказыТранспорта(ССылкаНаСозданнуюБазу);
                    }else
