@@ -944,7 +944,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         " dateorders ");
                 datasendMap.putIfAbsent("4"," HAVING        (COUNT(*) > 0)");
                 datasendMap.putIfAbsent("5","view_ordertransport");///view_ordertransport
-                datasendMap.putIfAbsent("6"," ORDER by  strftime('%Y', dateorders) DESC , strftime('%m', dateorders) DESC  ,strftime('%d', dateorders) ");///view_ordertransport
+                datasendMap.putIfAbsent("6"," ORDER by  strftime('%Y', dateorders) DESC , strftime('%m', dateorders) DESC  ,strftime('%d', dateorders) DESC ");///view_ordertransport
               //  datasendMap.putIfAbsent("5"," view_ordertransport ");
                 // TODO: 05.05.2023  ПОЛУЧАЕМ ДАННЫЕ ПЕРВЫЙ ЭТАП
                 cursorGroupByParent =       subClassOrdersTransport.       методGetGROUPBYCursor( datasendMap);
@@ -1751,11 +1751,6 @@ class SubClassGetDateOrderGroupBy {
                 }else {
                     if( cursorGroupByParent.getCount()>0) {
                         SubClassAdapters subClassAdapters=new SubClassAdapters(getContext());
-
-        /*                // TODO: 25.05.2023 Simple
-                   SubClassAdapters.SubClassSimpleCursorAdapter  simpleCursorAdapter= subClassAdapters.new SubClassSimpleCursorAdapter();
-                                simpleCursorAdapter.методФиналЗагрузкиGridView(R.layout.fragment_ordertransport1);*/
-
                         // TODO: 25.05.2023  BaseAdapter
                         SubClassAdapters.SubClassBaseAdapter  subClassBaseAdapter= subClassAdapters.new SubClassBaseAdapter();
                         subClassBaseAdapter.методBaseAdapters(R.layout.fragment_order_trasport_groupby1);

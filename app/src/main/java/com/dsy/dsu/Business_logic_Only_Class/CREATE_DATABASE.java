@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =      1027;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+     static final int VERSION =            1029;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
     private      SQLiteDatabase ССылкаНаСозданнуюБазу;
     private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
@@ -1021,7 +1021,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             ССылкаНаСозданнуюБазу.execSQL("Create table if not exists order_tc (" +
                     "_id INTEGER PRIMARY KEY  ," +
 
-                    "cfo INTEGER," +
+                    "cfo INTEGER  NOT NULL," +
                     "vid_trasport  INTEGER ," +
                     "dateorders TEXT ," +
                     "gos_nomer  INTEGER ," +
@@ -1125,15 +1125,17 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
     private void МетодСозданиеViewЗаказыТранспорта(SQLiteDatabase ССылкаНаСозданнуюБазу) {
         try{
             ССылкаНаСозданнуюБазу.execSQL("drop view  if exists view_ordertransport");//test
-            ССылкаНаСозданнуюБазу.execSQL("CREATE VIEW if not exists view_ordertransport AS" +
-                    "            SELECT         Ord._id,    vid_tc.name,  Ord.dateorders,  Ord.number_order, Ord.date_update,\n" +
+            ССылкаНаСозданнуюБазу.execSQL("CREATE VIEW if not exists view_ordertransport AS  " +
+                    " SELECT         Ord._id,    vid_tc.name,  Ord.dateorders,  Ord.number_order, Ord.date_update,\n" +
                     "                      Ord.uuid,  Ord.user_update,  Ord.current_table,    track.name AS gosmomer, \n" +
-                    "                                               cfo.name AS cfo,  Ord.status,    cfo._id AS id_cfo,    track._id AS id_track \n" +
+                    "                                               cfo.name AS cfo,  Ord.status,    cfo._id AS id_cfo, " +
+                    "   track._id AS id_track \n" +
                     "                     FROM               order_tc  as Ord \n" +
-                    "                     LEFT OUTER JOIN    vid_tc ON  Ord.vid_trasport =    vid_tc._id \n" +
-                    "                      LEFT OUTER JOIN     cfo ON  Ord.cfo =    cfo._id \n" +
-                    "                      LEFT OUTER JOIN    track ON  Ord.gos_nomer =    track._id \n" +
-                    "                      WHERE        (   vid_tc.name IS NOT NULL)" );
+                    "                    JOIN    vid_tc ON  Ord.vid_trasport =    vid_tc._id \n" +
+                    "                       JOIN     cfo ON  Ord.cfo =    cfo._id \n" +
+                    "                     JOIN    track ON  Ord.gos_nomer =    track._id \n" +
+                    "                      WHERE        (   vid_tc.name IS NOT NULL    )\n" +
+                    "\t" );
 
             Log.d(this.getClass().getName(), " сработала ...  создание view  view_ordertransport ");
         } catch (SQLException e) {
@@ -1219,8 +1221,9 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             Log.d(this.getClass().getName()," ИменаТаблицыОтАндройда " +ИменаТаблицыОтАндройда); // TODO: 28.09.2022 таблицы
             Log.d(this.getClass().getName(), " после СЛУЖБА  содание базы newVersion==  652   (например)   " + new Date() + " newVersion " + newVersion);
             
-      if(newVersion ==     1027){
+      if(newVersion ==           1029){
                //TODO table создание
+          МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
           МетодСозданиеViewЗаказыТранспорта(ССылкаНаСозданнуюБазу);
                    }else
             if (newVersion > oldVersion) {
