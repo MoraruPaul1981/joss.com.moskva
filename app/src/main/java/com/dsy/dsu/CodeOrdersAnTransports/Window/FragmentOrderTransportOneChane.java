@@ -1197,11 +1197,16 @@ void  методBaseAdapters(@NonNull Integer Макет){
                       new SubClassSapolnenyaGroupBy().      методЗаполенияGroupBy(materialCardView,bundleGrpuopByOrder);
 
                             // TODO: 26.05.2023 test
-                            TableRow tableRowДочерная = (TableRow)   tableLayoutДочерная.findViewById(R.id.tablelayout_singleotrow);
-                            TextView textView=  tableRowДочерная.findViewById(R.id.ot_date_order_value);
-                            textView.setText("dfdfdf");
+                            TableRow tableRowДочерная = (TableRow)   tableLayoutДочерная.findViewById(R.id.tableRowChildOt);
+                            tableLayoutДочерная.recomputeViewAttributes(tableRowДочерная);
+                            tableLayoutДочерная.removeViewInLayout(tableRowДочерная);
+                            tableLayoutДочерная.removeView(tableRowДочерная);
+                            tableRowДочерная.setId(new Random().nextInt());
+                            tableLayoutДочерная.recomputeViewAttributes(tableRowДочерная);
+                            TextView textView=  tableRowДочерная.findViewById(R.id.ot_date_order_singlevalue);
+                            textView.setText("dfdfdf"+new Random().nextInt());
 
-                            методAddtableRow(tableRowДочерная,tableLayoutДочерная);
+                            методAddtableRow(tableRowДочерная,tableLayoutРодительская);
 
 
                   /*          // TODO: 25.05.2023 вторая часть ЦФО get Cursor
@@ -1369,15 +1374,7 @@ class SubClassSapolnenyaGroupBy{
                 // TODO: 26.05.2023 заполение Строчки
                 private void методAddtableRow(TableRow rowПервыеДанные, @NonNull TableLayout tableLayoutРодительская) {
                     try {
-                        tableLayoutРодительская.recomputeViewAttributes(rowПервыеДанные);
-                        tableLayoutРодительская.removeViewInLayout(rowПервыеДанные);
-                        tableLayoutРодительская.removeView(rowПервыеДанные);
-                        rowПервыеДанные.setId(new Random().nextInt());
-                        tableLayoutРодительская.recomputeViewAttributes(rowПервыеДанные);
                         rowПервыеДанные.startAnimation(animationvibr1);
-
-
-
                         tableLayoutРодительская.removeView(rowПервыеДанные);
                         tableLayoutРодительская.removeViewInLayout(rowПервыеДанные);
                         tableLayoutРодительская.addView(rowПервыеДанные);
