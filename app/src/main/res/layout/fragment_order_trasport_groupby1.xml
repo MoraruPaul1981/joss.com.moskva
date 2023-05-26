@@ -75,7 +75,7 @@
 
     <!--  НАЧАЛО ПЕРВОГО БЛОКА -->
         <TableLayout
-            android:id="@+id/tableLayoutot"
+            android:id="@+id/tablelayoutot_groupby"
             android:shrinkColumns="*"
             android:stretchColumns="*"
             android:layout_width="match_parent"

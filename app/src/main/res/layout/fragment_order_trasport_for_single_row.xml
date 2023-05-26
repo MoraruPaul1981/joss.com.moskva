@@ -19,7 +19,7 @@
     tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports">
     <!--  НАЧАЛО ПЕРВОГО БЛОКА -->
         <TableLayout
-            android:id="@+id/tablelayoutot__otsinglerow"
+            android:id="@+id/tablelayout_singleotrow"
             android:shrinkColumns="*"
             android:stretchColumns="*"
             android:layout_width="match_parent"
@@ -36,6 +36,7 @@
                 android:layout_height="wrap_content">
                 <LinearLayout
                     android:id="@+id/linearlayout_otsinglerow"
+                    android:layout_column="0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#F0FFFF"
