@@ -62,6 +62,8 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 
 
+import org.checkerframework.checker.units.qual.C;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -973,7 +975,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
         class SubClassAdapters{
             private Context context; //context
-            public SubClassAdapters(@NonNull Context context) {
+            private  Cursor cursor;
+            public SubClassAdapters(@NonNull Context context , @NonNull Cursor cursor) {
                 this.context=context;
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
@@ -989,7 +992,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     try{
                         АдаптерЗаказыТарнпорта=
                                 new SimpleCursorAdapter(getContext(), Макет,
-                                        cursorGroupByParent, new String[]{"_id","name"},
+                                        cursor, new String[]{"_id","name"},
                                         new int[]{android.R.id.text1,android.R.id.text2},
                                         0);  ///name
                         SimpleCursorAdapter.ViewBinder binding = new SimpleCursorAdapter.ViewBinder() {
@@ -1151,10 +1154,11 @@ void  методBaseAdapters(@NonNull Integer Макет){
         @Override
         public long getItemId(int position) {
             try{
+                position=position+1;
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
-                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursorCfo  " + cursorGroupByParent);
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "  cursor  " + cursor);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -1178,7 +1182,7 @@ void  методBaseAdapters(@NonNull Integer Макет){
                 LinearLayout linearLayoutGroupBYЗаказыТранспорта = (LinearLayout)
                         convertView.findViewById(android.R.id.text1);
                 // TODO: 25.05.2023  для первого Grpou BY 
-                MaterialCardView materialCardView= (MaterialCardView) linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.cardveiwnewordertraport);//cardview
+                MaterialCardView materialCardView= (MaterialCardView) linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.materialCardView_single_ot);//cardview
                // materialCardView.setCheckedIcon();
                 // TODO: 25.05.2023  Для родителькая
                 TableLayout tableLayoutРодительская=(TableLayout) linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.tablelayoutot_groupby);//cardview
@@ -1190,6 +1194,8 @@ void  методBaseAdapters(@NonNull Integer Макет){
                 switch (convertView.getId()) {
                         case android.R.id.text1:
                             // TODO: 25.05.2023  Получаем Даные по позиции position
+                            getItemId(position);
+
                             getItem(position);
                             // TODO: 12.05.2023  Получаем Данные Gropup By Первый Этап
                             Bundle bundleGrpuopByOrder=    методGroupByДанныеBungle(cursorGroupByParent);
@@ -1750,7 +1756,7 @@ class SubClassGetDateOrderGroupBy {
                             "Заказы...", R.drawable.icon_dsu1_ordertransport_down);
                 }else {
                     if( cursorGroupByParent.getCount()>0) {
-                        SubClassAdapters subClassAdapters=new SubClassAdapters(getContext());
+                        SubClassAdapters subClassAdapters=new SubClassAdapters(getContext(),cursorGroupByParent);
                         // TODO: 25.05.2023  BaseAdapter
                         SubClassAdapters.SubClassBaseAdapter  subClassBaseAdapter= subClassAdapters.new SubClassBaseAdapter();
                         subClassBaseAdapter.методBaseAdapters(R.layout.fragment_order_trasport_groupby1);
