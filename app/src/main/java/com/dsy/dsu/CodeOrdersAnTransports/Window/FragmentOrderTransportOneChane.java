@@ -1088,8 +1088,11 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 try{
                     checkBoxot= (CheckBox) linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.checkBoxot);//cardview
                     checkBoxot.setChecked(true);
-                    checkBoxot.setBackgroundColor(Color.parseColor("#316E6E"));
-                    checkBoxot.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#316E6E")));
+                    //checkBoxot.toggle();
+                   /*  checkBoxot.setBackgroundColor(Color.parseColor("#316E6E"));
+                    Drawable drawablecheck = getResources().getDrawable(R.drawable.icon_dsu1_ordertransport4);
+                    checkBoxot.setButtonDrawable(drawablecheck);
+                     checkBoxot.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#316E6E")));*/
                     // TODO: 13.03.2022
                     //   materialCardView.toggle();
                     // TODO: 30.03.2022
