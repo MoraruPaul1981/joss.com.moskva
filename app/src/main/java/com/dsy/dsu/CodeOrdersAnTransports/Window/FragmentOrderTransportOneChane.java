@@ -593,7 +593,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 if (cursor!=null) {
                     if (cursor.getCount()> 0) {
                         Log.d(this.getClass().getName(), "  cursor" + cursor.getCount());
-                        BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setNumber( cursor.getCount()-1);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
+                        BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setNumber( cursor.getCount());//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
                         BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.parseColor("#15958A"));
                     } else {
                         BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
@@ -1116,7 +1116,7 @@ void  методBaseAdapters(@NonNull Integer Макет){
             int getCount=0;
             try{
              getCount=   cursor.getCount();
-                getCount=getCount-1;
+                //getCount=getCount-1;
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1148,13 +1148,13 @@ void  методBaseAdapters(@NonNull Integer Макет){
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
 
-            return cursor.moveToPosition(position); //returns list item at the specified position
-        }
+               // return cursor.moveToPosition(position); //returns list item at the specified position
+                return cursor.moveToNext(); //returns list item at the specified position
 
+        }
         @Override
         public long getItemId(int position) {
             try{
-                position=position+1;
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1194,9 +1194,11 @@ void  методBaseAdapters(@NonNull Integer Макет){
                 switch (convertView.getId()) {
                         case android.R.id.text1:
                             // TODO: 25.05.2023  Получаем Даные по позиции position
-                            getItemId(position);
 
-                            getItem(position);
+
+
+
+
                             // TODO: 12.05.2023  Получаем Данные Gropup By Первый Этап
                             Bundle bundleGrpuopByOrder=    методGroupByДанныеBungle(cursorGroupByParent);
                             // TODO: 25.05.2023 первая часть GROUP BY  #1
@@ -1217,6 +1219,12 @@ void  методBaseAdapters(@NonNull Integer Макет){
                                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
                                     + "  cursorgetCFO  " + cursorgetCFO.getCount());
                     // TODO: 15.05.2023  gruopby
+
+
+
+                            getItemId(position);
+                            getItem(position);
+
                 }
             }
             
