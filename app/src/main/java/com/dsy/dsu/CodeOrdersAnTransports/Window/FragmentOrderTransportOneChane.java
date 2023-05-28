@@ -70,6 +70,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -975,7 +976,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
         class SubClassAdapters{
             private Context context; //context
             private  Cursor cursor;
-            private CopyOnWriteArrayList<Long> copyOnWriteArrayListSuccessOperation=new CopyOnWriteArrayList<>();
+            private LinkedHashMap<String,String> stringStringLinkedHashMapSuccess=new LinkedHashMap<>();
             public SubClassAdapters(@NonNull Context context , @NonNull Cursor cursor) {
                 this.context=context;
                 this.cursor=cursor;
@@ -1209,7 +1210,7 @@ class SubClassGetDateOrderGroupBy {
                             // TODO: 28.05.2023  Проверка что уже было ставка это ROW
                             Boolean СтатусПроверкиВставкиRow = методПроверкаНаУжеЗаполенения( cursorgetForCurrentCFO);
                             // TODO: 26.05.2023  Элемент Для Данных
-                            if (СтатусПроверкиВставкиRow==true) {
+                            if (СтатусПроверкиВставкиRow==false) {
                                 TableRow   tableRowДочерная=   методGetChildRow(   );
                                 MaterialTextView    materialTextViewДанныеAddRow =  tableRowДочерная.findViewById(R.id.ot_date_order_singlevalue);
                                 // TODO: 26.05.2023  Элемент Для Шабки
@@ -1228,7 +1229,7 @@ class SubClassGetDateOrderGroupBy {
 
                                 // TODO: 26.05.2023 НаЧИНАЕМ ТРЕТИЙ ЦИКЛ  Gos NOmer
                                 // TODO: 28.05.2023 заполяем
-                                методSetпGosNomer( materialTextViewДанныеAddRow,materialTextViewШабкаAddRow,tableLayoutРодительская);
+                              ///  методSetпGosNomer( materialTextViewДанныеAddRow,materialTextViewШабкаAddRow,tableLayoutРодительская);
 
 
                                 // TODO: 28.05.2023 увеличиваем после успешног добаления
@@ -1273,14 +1274,14 @@ class SubClassGetDateOrderGroupBy {
                     // TODO: 28.05.2023  метод установки уже Успешно ДОбавденой СТРОЧКИ
                     private void методУстанвливаемУжеУспешноЗаполненойRow(@NonNull Cursor cursorgetForCurrentCFO) {
                         try{
-                            Long SetSuccessUuid=    cursorgetForCurrentCFO.getLong(cursorgetForCurrentCFO.getColumnIndex("uuid"));
-                            copyOnWriteArrayListSuccessOperation.add(SetSuccessUuid);
+                            String УсловиеПоискаЦФО = (String) bundleGrpuopByOrder.get("dateordersForCFO");
+                            String dateordersCfo = (String) cursorgetForCurrentCFO.getString(cursorgetForCurrentCFO.getColumnIndex("cfo")).trim();
+                            stringStringLinkedHashMapSuccess.put(dateordersCfo,УсловиеПоискаЦФО);
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
                                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                                "  SetSuccessUuid " +SetSuccessUuid+
-                                " copyOnWriteArrayListSuccessOperation "+ copyOnWriteArrayListSuccessOperation.size());
+                                "  stringStringLinkedHashMapSuccess " +stringStringLinkedHashMapSuccess);
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(getContext().getClass().getName(),
@@ -1295,21 +1296,21 @@ class SubClassGetDateOrderGroupBy {
 
                     @NonNull
                     private Boolean методПроверкаНаУжеЗаполенения( @NonNull Cursor cursorgetForCurrentCFO) {
-                        Boolean СтатусПроверки=true;
+                        Boolean СтатусПроверки=false;
                         try{
-                         Long getUUidCursor=   cursorgetForCurrentCFO.getLong(cursorgetForCurrentCFO.getColumnIndex("uuid"));
-                      Long getStreamSuccess=   copyOnWriteArrayListSuccessOperation
+                            String dateordersCfo = (String) cursorgetForCurrentCFO.getString(cursorgetForCurrentCFO.getColumnIndex("cfo")).trim();
+                            String УсловиеПоискаЦФО = (String) bundleGrpuopByOrder.get("dateordersForCFO");
+                            СтатусПроверки=   stringStringLinkedHashMapSuccess.entrySet()
                                  .stream()
-                                 .filter(getsucess->getsucess.compareTo(getUUidCursor)==0)
-                                 .findFirst().orElse(0l);
-                            if (getStreamSuccess>0) {
-                                СтатусПроверки=false;
-                            }
+                                 .filter(getsucess->getsucess.getKey().contentEquals(dateordersCfo))
+                                 .filter(getsucess->getsucess.getValue().contentEquals(УсловиеПоискаЦФО))
+                                    .findFirst().isPresent();
+
                             Log.d(getContext().getClass().getName(), "\n"
                                         + " время: " + new Date() + "\n+" +
                                         " Класс в процессе... " + this.getClass().getName() + "\n" +
                                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                        + " cursorgetCFO.getPosition() " + " СтатусПроверки " +СтатусПроверки + " getStreamSuccess " +getStreamSuccess);
+                                        + " cursorgetCFO.getPosition() " + " СтатусПроверки " +СтатусПроверки);
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(getContext().getClass().getName(),
