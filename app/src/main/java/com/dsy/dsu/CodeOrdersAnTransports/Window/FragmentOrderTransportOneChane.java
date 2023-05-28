@@ -1204,8 +1204,10 @@ class SubClassGetDateOrderGroupBy {
                     try{
                         // TODO: 26.05.2023  цикл может сказать главный идем по СЦО
                         do{
+                            // TODO: 28.05.2023  Проверка что уже было ставка это ROW
+                            Boolean СтатусПроверкиВставкиRow = методПроверкаНаУжеЗаполенения(tableLayoutРодительская,cursorgetForCurrentCFO);
                             // TODO: 26.05.2023  Элемент Для Данных
-                            if (0<cursorgetForCurrentCFO.getCount()) {
+                            if (СтатусПроверкиВставкиRow==true) {
                                 TableRow   tableRowДочерная=   методGetChildRow(   );
                                 MaterialTextView    materialTextViewДанныеAddRow =  tableRowДочерная.findViewById(R.id.ot_date_order_singlevalue);
                                 // TODO: 26.05.2023  Элемент Для Шабки
@@ -1228,13 +1230,8 @@ class SubClassGetDateOrderGroupBy {
 
 
                                 // TODO: 28.05.2023 увеличиваем после успешног добаления
-                                int SetSuccessCurrentOperasion=0;
-                                SetSuccessCurrentOperasion++;
-                                Bundle bundleСработалоИлиНет=new Bundle();
-                                bundleСработалоИлиНет.putInt("SuccessCurrentOperasion",SetSuccessCurrentOperasion);
-                                String УсловиеПоискаЦФО = (String) bundleGrpuopByOrder.get("dateordersForCFO");
-                                bundleСработалоИлиНет.putString("УсловиеПоискаЦФО",УсловиеПоискаЦФО);
-                                tableLayoutРодительская.setTag(bundleСработалоИлиНет);
+                                методУстанвливаемУжеУспешноЗаполненойRow(tableLayoutРодительская);
+
                                 Log.d(getContext().getClass().getName(), "\n"
                                         + " время: " + new Date() + "\n+" +
                                         " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1269,6 +1266,78 @@ class SubClassGetDateOrderGroupBy {
                                 Thread.currentThread().getStackTrace()[2].getLineNumber());
                     }
             }
+
+
+                    // TODO: 28.05.2023  метод установки уже Успешно ДОбавденой СТРОЧКИ
+                    private void методУстанвливаемУжеУспешноЗаполненойRow(@NonNull TableLayout tableLayoutРодительская) {
+                        try{
+                        int setSuccessCurrentOperasion=0;
+                        Bundle bundleРодительская= (Bundle)  tableLayoutРодительская.getTag();
+                        Integer getSuccessCurrentOperasion= 0;
+                        if (bundleРодительская==null) {
+                            setSuccessCurrentOperasion++;
+                        }else{
+                            setSuccessCurrentOperasion=  bundleРодительская.getInt("SuccessCurrentOperasion");
+                            setSuccessCurrentOperasion++;
+                        }
+                        bundleGrpuopByOrder.putInt("SuccessCurrentOperasion",setSuccessCurrentOperasion);
+                        String УсловиеПоискаЦФО = (String) bundleGrpuopByOrder.get("dateordersForCFO");
+                        bundleGrpuopByOrder.putString("GetSuccessCurrentУсловиеПоискаЦФО",УсловиеПоискаЦФО);
+                        tableLayoutРодительская.setTag(bundleGrpuopByOrder);
+                        Log.d(getContext().getClass().getName(), "\n"
+                                + " время: " + new Date() + "\n+" +
+                                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(getContext().getClass().getName(),
+                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
+                        
+                    }
+
+                    @NonNull
+                    private Boolean методПроверкаНаУжеЗаполенения(@NonNull TableLayout tableLayoutРодительская,@NonNull Cursor cursorgetForCurrentCFO) {
+                        Boolean СтатусПроверки=true;
+                        try{
+                        Bundle bundleРодительская= (Bundle)  tableLayoutРодительская.getTag();
+                        Integer getSuccessCurrentOperasion= 0;
+                        if (bundleРодительская!=null) {
+                            getSuccessCurrentOperasion = bundleРодительская.getInt("SuccessCurrentOperasion");
+                            String УсловиеПоискаЦФО = (String) bundleGrpuopByOrder.get("dateordersForCFO");
+                            String GetSuccessCurrentУсловиеПоискаЦФО = (String) bundleРодительская.get("GetSuccessCurrentУсловиеПоискаЦФО");
+                            
+                            if(УсловиеПоискаЦФО.equalsIgnoreCase(GetSuccessCurrentУсловиеПоискаЦФО)==true){
+                                if(getSuccessCurrentOperasion>=cursorgetForCurrentCFO.getCount()){
+                                    СтатусПроверки=false;
+                                }
+                                Log.d(getContext().getClass().getName(), "\n"
+                                        + " время: " + new Date() + "\n+" +
+                                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                        + " cursorgetCFO.getPosition() " + " СтатусПроверки " +СтатусПроверки);
+                            }
+                        }
+                        Log.d(getContext().getClass().getName(), "\n"
+                                + " время: " + new Date() + "\n+" +
+                                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                + " cursorgetCFO.getPosition() " + " cursorgetForCurrentCFO " +cursorgetForCurrentCFO);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(getContext().getClass().getName(),
+                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
+                        return СтатусПроверки;
+                    }
 
                     private void методSetDateCFO(@NonNull Cursor cursorgetCFO,
                                                  @NonNull MaterialTextView materialTextViewДанныеAddRow,
