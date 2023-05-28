@@ -998,23 +998,20 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                         new int[]{android.R.id.text2,android.R.id.text1},
                                         0);  ///name
                         SimpleCursorAdapter.ViewBinder binding = new SimpleCursorAdapter.ViewBinder() {
-                          private     LinearLayout linearLayoutGroupBYЗаказыТранспорта;
-                            private     MaterialCardView materialCardView;
-                            private     TableLayout tableLayoutРодительская;
                             private  CheckBox checkBoxot;
-
                             private    Bundle bundleGrpuopByOrder;
+                            private   Boolean Результат;
                             @Override
                             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
                                 try{
                                     switch (view.getId()) {
                                         case android.R.id.text1:
                                             // TODO: 25.05.2023  ГлавныйВненишнмий Вид
-                                                linearLayoutGroupBYЗаказыТранспорта = (LinearLayout) view.findViewById(android.R.id.text1);
+                                            LinearLayout    linearLayoutGroupBYЗаказыТранспорта = (LinearLayout) view.findViewById(android.R.id.text1);
                                             // TODO: 25.05.2023  для первого Grpou BY
-                                                materialCardView= (MaterialCardView) linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.materialCardView_single_ot);//cardview
+                                            MaterialCardView     materialCardView= (MaterialCardView) linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.materialCardView_single_ot);//cardview
                                             // TODO: 25.05.2023  Для родителькая
-                                            tableLayoutРодительская=(TableLayout) linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.tablelayoutot_groupby);//cardview
+                                            TableLayout   tableLayoutРодительская=(TableLayout) linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.tablelayoutot_groupby);//cardview
                                             // TODO: 25.05.2023  Для Оформление
                                             методОформеленияCheckBox(checkBoxot ,linearLayoutGroupBYЗаказыТранспорта);
                                             // TODO: 12.05.2023  Получаем Данные
@@ -1027,8 +1024,9 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                                     // TODO: 25.05.2023 вторая часть ЦФО get Cursor #4
                                                     Cursor cursorgetForCurrentCFO=    new SubClassGetCFOOrder( bundleGrpuopByOrder).методGetCursorCFO( );
                                                     // TODO: 26.05.2023 Заполнение ЦФО #5
-                                                    new SubClassGetCFOOrder( bundleGrpuopByOrder).методЗаполениеДаннымиВЦиклеЦФО(cursorgetForCurrentCFO, tableLayoutРодительская );
+                                                  new SubClassGetCFOOrder( bundleGrpuopByOrder).методЗаполениеДаннымиВЦиклеЦФО(cursorgetForCurrentCFO, tableLayoutРодительская );
                                                     // TODO: 25.05.2023 На Полученых
+                                                  cursorgetForCurrentCFO.close();
                                                     Log.d(getContext().getClass().getName(), "\n"
                                                             + " время: " + new Date() + "\n+" +
                                                             " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1231,7 +1229,6 @@ class SubClassGetDateOrderGroupBy {
                                 // TODO: 28.05.2023 заполяем
                               ///  методSetпGosNomer( materialTextViewДанныеAddRow,materialTextViewШабкаAddRow,tableLayoutРодительская);
 
-
                                 // TODO: 28.05.2023 увеличиваем после успешног добаления
                                 методУстанвливаемУжеУспешноЗаполненойRow( cursorgetForCurrentCFO);
 
@@ -1268,6 +1265,7 @@ class SubClassGetDateOrderGroupBy {
                                 this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                                 Thread.currentThread().getStackTrace()[2].getLineNumber());
                     }
+
             }
 
 
