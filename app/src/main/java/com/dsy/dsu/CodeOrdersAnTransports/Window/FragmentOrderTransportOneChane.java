@@ -986,9 +986,9 @@ public class FragmentOrderTransportOneChane extends Fragment {
             // TODO: 25.05.2023 Adapter Simple
 
             class SubClassSimpleCursorAdapter{
-
                 void методSimpleCursorAdapters(@NonNull Integer Макет){
                     try{
+                        // TODO: 26.05.2023  получение строчки Дочерней с Последующим Заполененим #2
                         АдаптерЗаказыТарнпорта=
                                 new SimpleCursorAdapter(getContext(), Макет,
                                         cursor, new String[]{"_id","dateorders"},
@@ -998,9 +998,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
                           private     LinearLayout linearLayoutGroupBYЗаказыТранспорта;
                             private     MaterialCardView materialCardView;
                             private     TableLayout tableLayoutРодительская;
-                            private     View   convertViewДочерния;
-                            private     TableLayout    tableLayoutДочерная;
-
                             private  CheckBox checkBoxot;
                             @Override
                             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
@@ -1011,30 +1008,21 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                                 linearLayoutGroupBYЗаказыТранспорта = (LinearLayout) view.findViewById(android.R.id.text1);
                                             // TODO: 25.05.2023  для первого Grpou BY
                                                 materialCardView= (MaterialCardView) linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.materialCardView_single_ot);//cardview
-
-                                            методОформеленияCheckBox(checkBoxot ,linearLayoutGroupBYЗаказыТранспорта);
-
                                             // TODO: 25.05.2023  Для родителькая
-                                                tableLayoutРодительская=(TableLayout) linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.tablelayoutot_groupby);//cardview
-                                            // TODO: 25.05.2023  Для дочерная
-                                                convertViewДочерния = LayoutInflater.from(context).inflate(R.layout.fragment_order_trasport_for_single_row, tableLayoutРодительская , false);
-
-                                                tableLayoutДочерная= (TableLayout) convertViewДочерния.findViewById( R.id.tablelayout_singleotrow);
-
-                                            // TODO: 26.05.2023  работа с элементами
-
+                                            tableLayoutРодительская=(TableLayout) linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.tablelayoutot_groupby);//cardview
+                                            // TODO: 25.05.2023  Для Оформление
+                                            методОформеленияCheckBox(checkBoxot ,linearLayoutGroupBYЗаказыТранспорта);
                                             // TODO: 12.05.2023  Получаем Данные
                                                     // TODO: 12.05.2023  Получаем Данные Gropup By Первый Этап
                                                     Bundle bundleGrpuopByOrder=    методGroupByДанныеBungle(cursor);
                                                     // TODO: 25.05.2023 первая часть GROUP BY  #1
                                                     new SubClassGetDateOrderGroupBy().методGetDateOrderGroupBy(materialCardView,bundleGrpuopByOrder);
 
-                                                 /*   // TODO: 25.05.2023 вторая часть СФО #3
-                                                    SubClassGetCFOOrder subClassGetCFOOrder=       new SubClassGetCFOOrder( bundleGrpuopByOrder);
+                                                    // TODO: 25.05.2023 вторая часть СФО #3
                                                     // TODO: 25.05.2023 вторая часть ЦФО get Cursor #4
-                                                    Cursor cursorgetCFO=    subClassGetCFOOrder.методGetCursorCFO( );
+                                                    Cursor cursorgetForCurrentCFO=    new SubClassGetCFOOrder( bundleGrpuopByOrder).методGetCursorCFO( );
                                                     // TODO: 26.05.2023 Заполнение ЦФО #5
-                                                    subClassGetCFOOrder.методЗаполениеДаннымиВЦиклеЦФО(cursorgetCFO,tableLayoutДочерная,tableLayoutРодительская);*/
+                                                    new SubClassGetCFOOrder( bundleGrpuopByOrder).методЗаполениеДаннымиВЦиклеЦФО(cursorgetForCurrentCFO, tableLayoutРодительская);
                                                     // TODO: 25.05.2023 На Полученых
                                                     Log.d(getContext().getClass().getName(), "\n"
                                                             + " время: " + new Date() + "\n+" +
@@ -1178,20 +1166,21 @@ class SubClassGetDateOrderGroupBy {
                     }
 
                     // TODO: 26.05.2023 заполненеи данных через ЦИКЛ
-                void методЗаполениеДаннымиВЦиклеЦФО(@NonNull   Cursor cursorgetCFO, @NonNull  TableLayout tableLayoutДочерная, @NonNull TableLayout tableLayoutРодительская ) {
+                void методЗаполениеДаннымиВЦиклеЦФО(@NonNull   Cursor cursorgetForCurrentCFO,   @NonNull TableLayout tableLayoutРодительская ) {
                     try{
                         // TODO: 26.05.2023  цикл может сказать главный идем по СЦО
                         do{
-                            // TODO: 26.05.2023  получение строчки Дочерней с Последующим Заполененим #2
-                            TableRow tableRowДочерная=   методGetChildRow(tableLayoutДочерная);
                             // TODO: 26.05.2023  Элемент Для Данных
-                            if (tableRowДочерная!=null) {
+                       int ParentCount=     tableLayoutРодительская.getChildCount();
+                            ParentCount=ParentCount-8;
+                            if (ParentCount<cursorgetForCurrentCFO.getCount()) {
+                                TableRow   tableRowДочерная=   методGetChildRow(   );
                                 MaterialTextView    materialTextViewДанныеAddRow =  tableRowДочерная.findViewById(R.id.ot_date_order_singlevalue);
                                 // TODO: 26.05.2023  Элемент Для Шабки
                                 MaterialTextView    materialTextViewШабкаAddRow =  tableRowДочерная.findViewById(R.id.ot_key_order_singlevalue);
 
                                 // TODO: 26.05.2023 Заполнение Данными СЦО
-                                методSetDateCFO(cursorgetCFO, materialTextViewДанныеAddRow,materialTextViewШабкаAddRow);
+                                методSetDateCFO(cursorgetForCurrentCFO, materialTextViewДанныеAddRow,materialTextViewШабкаAddRow);
 
                                 // TODO: 25.05.2023 ФИНАЛЬНОЕ ДЕЙСТВИЕ вСТАВКА СТРОКИ УЖЕ ЗАПОЛЕНО В tABLEPOUY
                                 методAddtableRow(tableRowДочерная,tableLayoutРодительская);
@@ -1200,15 +1189,15 @@ class SubClassGetDateOrderGroupBy {
                                         + " время: " + new Date() + "\n+" +
                                         " Класс в процессе... " + this.getClass().getName() + "\n" +
                                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                        + " cursorgetCFO.getPosition() " +cursorgetCFO.getPosition());
+                                        + " cursorgetCFO.getPosition() " +cursorgetForCurrentCFO.getPosition());
 
                             }
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
                                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                    + " cursorgetCFO.getPosition() " +cursorgetCFO.getPosition());
-                        }while (cursorgetCFO.moveToNext());
+                                    + " cursorgetCFO.getPosition() " +cursorgetForCurrentCFO.getPosition());
+                        }while (cursorgetForCurrentCFO.moveToNext());
 
                         // TODO: 18.04.2023  Заполение Данными
                         /// методЗаполенияЗаказаТранспорта(bundleGrpuopByOrder, materialTextViewДатаЗаказа, DateOrderGroupBy);
@@ -1218,7 +1207,7 @@ class SubClassGetDateOrderGroupBy {
                                 + " время: " + new Date() + "\n+" +
                                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                + " cursorgetCFO " +cursorgetCFO);
+                                + " cursorgetForCurrentCFO " +cursorgetForCurrentCFO);
                         // TODO: 12.05.2023
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -1266,9 +1255,6 @@ class SubClassGetDateOrderGroupBy {
                         tableLayoutРодительская.removeView(rowПервыеДанные);
                         tableLayoutРодительская.removeViewInLayout(rowПервыеДанные);
                         tableLayoutРодительская.addView(rowПервыеДанные);
-                        tableLayoutРодительская.requestLayout();
-                        tableLayoutРодительская.refreshDrawableState();
-                        tableLayoutРодительская.forceLayout();
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
                                 " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1285,18 +1271,19 @@ class SubClassGetDateOrderGroupBy {
                     }
                 }
                 // TODO: 26.05.2023 заполение Строчки
-                private TableRow методGetChildRow(  @NonNull TableLayout tableLayoutДочерная) {
-                    TableRow tableRowДочерная= null;
+                private TableRow методGetChildRow( ) {
+                    TableRow  tableRowДочерная = null;
                     try {
+                        View   convertViewДочерния  = LayoutInflater.from(context).inflate(R.layout.fragment_order_trasport_for_single_row,
+                                null , false);;
+                        TableLayout    tableLayoutДочерная= (TableLayout) convertViewДочерния.findViewById( R.id.tablelayout_singleotrow);
+                         tableRowДочерная = (TableRow)   tableLayoutДочерная.findViewById(R.id.tableRowChildOt);
                         // TODO: 26.05.2023 достаем Дочерний Элемент
-                        tableRowДочерная = (TableRow)   tableLayoutДочерная.findViewById(R.id.tableRowChildOt);
-                        if (tableRowДочерная!=null) {
                             tableLayoutДочерная.recomputeViewAttributes(tableRowДочерная);
                             tableLayoutДочерная.removeViewInLayout(tableRowДочерная);
                             tableLayoutДочерная.removeView(tableRowДочерная);
-                            tableRowДочерная.setId(new Random().nextInt(10000));
+                            tableRowДочерная.setId(new Random().nextInt(100));
                             tableLayoutДочерная.recomputeViewAttributes(tableRowДочерная);
-                        }
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
                                 " Класс в процессе... " + this.getClass().getName() + "\n" +
