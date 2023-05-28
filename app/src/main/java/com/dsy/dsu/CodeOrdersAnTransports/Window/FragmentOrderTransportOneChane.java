@@ -75,6 +75,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
@@ -974,6 +975,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
         class SubClassAdapters{
             private Context context; //context
             private  Cursor cursor;
+            private CopyOnWriteArrayList<Long> copyOnWriteArrayListSuccessOperation=new CopyOnWriteArrayList<>();
             public SubClassAdapters(@NonNull Context context , @NonNull Cursor cursor) {
                 this.context=context;
                 this.cursor=cursor;
@@ -1205,7 +1207,7 @@ class SubClassGetDateOrderGroupBy {
                         // TODO: 26.05.2023  цикл может сказать главный идем по СЦО
                         do{
                             // TODO: 28.05.2023  Проверка что уже было ставка это ROW
-                            Boolean СтатусПроверкиВставкиRow = методПроверкаНаУжеЗаполенения(tableLayoutРодительская,cursorgetForCurrentCFO);
+                            Boolean СтатусПроверкиВставкиRow = методПроверкаНаУжеЗаполенения( cursorgetForCurrentCFO);
                             // TODO: 26.05.2023  Элемент Для Данных
                             if (СтатусПроверкиВставкиRow==true) {
                                 TableRow   tableRowДочерная=   методGetChildRow(   );
@@ -1230,7 +1232,7 @@ class SubClassGetDateOrderGroupBy {
 
 
                                 // TODO: 28.05.2023 увеличиваем после успешног добаления
-                                методУстанвливаемУжеУспешноЗаполненойRow(tableLayoutРодительская);
+                                методУстанвливаемУжеУспешноЗаполненойRow( cursorgetForCurrentCFO);
 
                                 Log.d(getContext().getClass().getName(), "\n"
                                         + " время: " + new Date() + "\n+" +
@@ -1269,25 +1271,16 @@ class SubClassGetDateOrderGroupBy {
 
 
                     // TODO: 28.05.2023  метод установки уже Успешно ДОбавденой СТРОЧКИ
-                    private void методУстанвливаемУжеУспешноЗаполненойRow(@NonNull TableLayout tableLayoutРодительская) {
+                    private void методУстанвливаемУжеУспешноЗаполненойRow(@NonNull Cursor cursorgetForCurrentCFO) {
                         try{
-                        int setSuccessCurrentOperasion=0;
-                        Bundle bundleРодительская= (Bundle)  tableLayoutРодительская.getTag();
-                        Integer getSuccessCurrentOperasion= 0;
-                        if (bundleРодительская==null) {
-                            setSuccessCurrentOperasion++;
-                        }else{
-                            setSuccessCurrentOperasion=  bundleРодительская.getInt("SuccessCurrentOperasion");
-                            setSuccessCurrentOperasion++;
-                        }
-                        bundleGrpuopByOrder.putInt("SuccessCurrentOperasion",setSuccessCurrentOperasion);
-                        String УсловиеПоискаЦФО = (String) bundleGrpuopByOrder.get("dateordersForCFO");
-                        bundleGrpuopByOrder.putString("GetSuccessCurrentУсловиеПоискаЦФО",УсловиеПоискаЦФО);
-                        tableLayoutРодительская.setTag(bundleGrpuopByOrder);
+                            Long SetSuccessUuid=    cursorgetForCurrentCFO.getLong(cursorgetForCurrentCFO.getColumnIndex("uuid"));
+                            copyOnWriteArrayListSuccessOperation.add(SetSuccessUuid);
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
                                 " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                                "  SetSuccessUuid " +SetSuccessUuid+
+                                " copyOnWriteArrayListSuccessOperation "+ copyOnWriteArrayListSuccessOperation.size());
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(getContext().getClass().getName(),
@@ -1301,32 +1294,22 @@ class SubClassGetDateOrderGroupBy {
                     }
 
                     @NonNull
-                    private Boolean методПроверкаНаУжеЗаполенения(@NonNull TableLayout tableLayoutРодительская,@NonNull Cursor cursorgetForCurrentCFO) {
+                    private Boolean методПроверкаНаУжеЗаполенения( @NonNull Cursor cursorgetForCurrentCFO) {
                         Boolean СтатусПроверки=true;
                         try{
-                        Bundle bundleРодительская= (Bundle)  tableLayoutРодительская.getTag();
-                        Integer getSuccessCurrentOperasion= 0;
-                        if (bundleРодительская!=null) {
-                            getSuccessCurrentOperasion = bundleРодительская.getInt("SuccessCurrentOperasion");
-                            String УсловиеПоискаЦФО = (String) bundleGrpuopByOrder.get("dateordersForCFO");
-                            String GetSuccessCurrentУсловиеПоискаЦФО = (String) bundleРодительская.get("GetSuccessCurrentУсловиеПоискаЦФО");
-                            
-                            if(УсловиеПоискаЦФО.equalsIgnoreCase(GetSuccessCurrentУсловиеПоискаЦФО)==true){
-                                if(getSuccessCurrentOperasion>=cursorgetForCurrentCFO.getCount()){
-                                    СтатусПроверки=false;
-                                }
-                                Log.d(getContext().getClass().getName(), "\n"
+                         Long getUUidCursor=   cursorgetForCurrentCFO.getLong(cursorgetForCurrentCFO.getColumnIndex("uuid"));
+                      Long getStreamSuccess=   copyOnWriteArrayListSuccessOperation
+                                 .stream()
+                                 .filter(getsucess->getsucess.compareTo(getUUidCursor)==0)
+                                 .findFirst().orElse(0l);
+                            if (getStreamSuccess>0) {
+                                СтатусПроверки=false;
+                            }
+                            Log.d(getContext().getClass().getName(), "\n"
                                         + " время: " + new Date() + "\n+" +
                                         " Класс в процессе... " + this.getClass().getName() + "\n" +
                                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                        + " cursorgetCFO.getPosition() " + " СтатусПроверки " +СтатусПроверки);
-                            }
-                        }
-                        Log.d(getContext().getClass().getName(), "\n"
-                                + " время: " + new Date() + "\n+" +
-                                " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                + " cursorgetCFO.getPosition() " + " cursorgetForCurrentCFO " +cursorgetForCurrentCFO);
+                                        + " cursorgetCFO.getPosition() " + " СтатусПроверки " +СтатусПроверки + " getStreamSuccess " +getStreamSuccess);
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(getContext().getClass().getName(),
