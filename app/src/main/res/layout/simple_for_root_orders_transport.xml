@@ -64,27 +64,32 @@
 
 
 
-
-            <!--   НАЧАЛО САМИХ ДАННЫХ ВСЕ ТАБЕЛЯ -->
-            <GridView
-                android:id="@+id/gridViewOrderTransport"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+        <ScrollView
+            android:id="@+id/scrollview_OrderTransport"
+            android:layout_width="match_parent"
+            android:layout_height="631dp"
+            android:layout_centerHorizontal="true"
+            android:fillViewport="true"
+            android:scrollbars="horizontal|vertical"
+            android:stackFromBottom="true"
+            android:transcriptMode="alwaysScroll">
+            <!--   НАЧАЛО главный для созадного воного ЗАказа Тарсопрта -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView_OrderTransport"
                 android:layout_above="@+id/BottomNavigationOrderTransport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
                 android:background="#FFFFFF"
-                android:gravity="center"
-                android:layout_margin="5dp"
-                android:stretchMode="columnWidth"
-                android:verticalSpacing="10dp"
-                android:horizontalSpacing="0dp"
-                android:columnWidth="450dp"
-                android:numColumns="auto_fit"
-                android:scrollIndicators="left|right"
-                android:scrollbars="vertical"
-                tools:ignore="MissingConstraints">
-            </GridView>
+                android:minHeight="500dp"
+                android:visibility="visible"
+                tools:ignore="MissingConstraints" />
+        </ScrollView>
 
 
 

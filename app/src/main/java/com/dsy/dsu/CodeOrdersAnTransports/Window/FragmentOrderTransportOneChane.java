@@ -25,6 +25,9 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
@@ -101,7 +104,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
     private ServiceConnection serviceConnection;
     private  Message message;
     private  Cursor cursorGroupByParent;
-    private GridView gridViewOrderTransport;
+    private RecyclerView recyclerView_OrderTransport;
 
     private SubClassOrdersTransport subClassOrdersTransport;
     private  Animation animationvibr1;
@@ -176,7 +179,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
             progressBarСканирование=  (ProgressBar)  view. findViewById(R.id.ProgressBar);
             progressBarСканирование.setVisibility(View.VISIBLE);
             // TODO: 01.05.2023
-            gridViewOrderTransport =  (GridView) view.findViewById(R.id.gridViewOrderTransport);
+            recyclerView_OrderTransport =  (RecyclerView) view.findViewById(R.id.recyclerView_OrderTransport);
             TextViewHadler = (TextView) view.findViewById(R.id.TextViewHadler);
             animationvibr1 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_singletable2);//
             textViewHadler=(MaterialTextView)  view.findViewById(R.id.TextViewHadler);
@@ -214,14 +217,14 @@ public class FragmentOrderTransportOneChane extends Fragment {
             subClassOrdersTransport.   МетодHandlerCallBack();
             subClassOrdersTransport.   МетодВыходНаAppBack();
             // TODO: 04.05.2023 Анимация
+       //todo recyrview
+            subClassOrdersTransport.МетодИнициализацииRecycreView();
             subClassOrdersTransport.методАнимацииGridView();
-
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " gridViewOrderTransport " +gridViewOrderTransport);
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -291,7 +294,36 @@ public class FragmentOrderTransportOneChane extends Fragment {
         // TODO: 28.04.2023
         private void методАнимацииGridView() {
             try{
-                gridViewOrderTransport.startAnimation(animationvibr1);
+                recyclerView_OrderTransport.startAnimation(animationvibr1);
+                Log.d(this.getClass().getName(), "\n" + " class " +
+                        Thread.currentThread().getStackTrace()[2].getClassName()
+                        + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+        private void МетодИнициализацииRecycreView() {
+            try{
+                recyclerView_OrderTransport.setVisibility(View.VISIBLE);
+                DividerItemDecoration dividerItemDecorationHor=
+                        new DividerItemDecoration(activity,LinearLayoutManager.HORIZONTAL);
+                dividerItemDecorationHor.setDrawable(getContext().getDrawable(R.drawable.divider_for_order_transport1));///R.dimen.activity_horizontal_margin
+                DividerItemDecoration dividerItemDecorationVer=
+                        new DividerItemDecoration(activity,LinearLayoutManager.VERTICAL);
+                recyclerView_OrderTransport.addItemDecoration(dividerItemDecorationHor);
+                recyclerView_OrderTransport.addItemDecoration(dividerItemDecorationVer);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+                linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                linearLayoutManager.setSmoothScrollbarEnabled(true);
+                recyclerView_OrderTransport.setLayoutManager(linearLayoutManager);
                 Log.d(this.getClass().getName(), "\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
