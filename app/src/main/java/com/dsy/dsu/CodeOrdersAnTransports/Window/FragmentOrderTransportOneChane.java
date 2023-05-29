@@ -1574,6 +1574,10 @@ class SubClassGetDateOrderGroupBy {
                             if (cursor!=null && cursor.getCount() > 0) {
                                     // TODO: 29.05.2023 Главный Метод ЗАполнения Данными
                                     методГлавныйЗаполениеДанными(holder, cursor);
+
+
+                                // TODO: 29.05.2023 Перегрузка Вида Экрана  После Заполенеия
+                                методПерегрузкаReyreView();
                             }
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
@@ -1598,8 +1602,6 @@ class SubClassGetDateOrderGroupBy {
                                 // TODO: 18.10.2022 заполеняем данныими
                                 МетодДобавленеиЕлементоввRecycreView(holder,cursor);
                             }
-                            // TODO: 29.05.2023 Перегрузка Вида Экрана  После Заполенеия
-                            методПерегрузкаReyreView();
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
                                     " Класс в процессе... " + this.getClass().getName() + "\n" +
