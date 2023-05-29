@@ -257,6 +257,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
         super.onStart();
         try{
             getsubClassAdapterMyRecyclerview.new SubClassAdapterMyRecyclerview(getContext(),cursorGroupByParent).      методЗаполенияRecycleView();
+            // TODO: 29.05.2023
+            subClassOrdersTransport.   МетодКпопкиЗначков(cursorGroupByParent);
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
@@ -307,7 +309,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 recyclerView_OrderTransport.setVisibility(View.VISIBLE);
                 DividerItemDecoration dividerItemDecorationHor=
                         new DividerItemDecoration(activity,LinearLayoutManager.HORIZONTAL);
-                dividerItemDecorationHor.setDrawable(getContext().getDrawable(R.drawable.divider_for_order_transport1));///R.dimen.activity_horizontal_margin
+                dividerItemDecorationHor.setDrawable(getContext().getDrawable(R.drawable.divider_for_order_transport2));///R.dimen.activity_horizontal_margin
                 DividerItemDecoration dividerItemDecorationVer=
                         new DividerItemDecoration(activity,LinearLayoutManager.VERTICAL);
                 recyclerView_OrderTransport.addItemDecoration(dividerItemDecorationHor);
@@ -608,44 +610,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
             }
         }
 // TODO: 28.04.2023
-
-        private void МетодЗапускаАнимацииКнопок(View v) {
-            v.animate().rotationX(-40l);
-            message.getTarget() .postDelayed(()->{
-                v.animate().rotationX(0);
-            },300);
-        }
-        private void МетодКпопкиЗначков(@NonNull Cursor cursor) {
-            try {
-                if (cursor!=null) {
-                    if (cursor.getCount()> 0) {
-                        Log.d(this.getClass().getName(), "  cursor" + cursor.getCount());
-                        BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setNumber( cursor.getCount());//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
-                        BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.parseColor("#15958A"));
-                    } else {
-                        BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
-                        BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.RED);
-                    }
-                }else
-                {
-                    BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
-                    BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.RED);
-                }
-                //TODO
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(getContext().getClass().getName(),
-                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
-        // TODO: 28.04.2023
-
-
-
 // TODO: 28.04.2023
 
         private void МетодСлушательКурсора() {
@@ -2189,6 +2153,43 @@ class SubClassGetDateOrderGroupBy {
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
+
+
+
+        private void МетодЗапускаАнимацииКнопок(View v) {
+            v.animate().rotationX(-40l);
+            message.getTarget() .postDelayed(()->{
+                v.animate().rotationX(0);
+            },300);
+        }
+        private void МетодКпопкиЗначков(@NonNull Cursor cursor) {
+            try {
+                if (cursor!=null && cursor.getCount()> 0) {
+                        Log.d(this.getClass().getName(), "  cursor" + cursor.getCount());
+                        BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setNumber( cursor.getCount());//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
+                        BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.parseColor("#15958A"));
+                }else {
+                    BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
+                    BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.RED);
+                }
+                //TODO
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+
+
+
 // TODO: 28.04.2023  КОНЕЦ SubClassNewOrderTranport           //// TODO: 28.04.2023  КОНЕЦ SubClassNewOrderTranport   //// TODO: 28.04.2023  КОНЕЦ SubClassNewOrderTranport
     }
     // TODO: 26.04.2023 Конец Фрагмента FragmentOrderTransportOne     // TODO: 26.04.2023 Конец Фрагмента FragmentOrderTransportOne     // TODO: 26.04.2023 Конец Фрагмента FragmentOrderTransportOne

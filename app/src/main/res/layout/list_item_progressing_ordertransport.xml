@@ -3,14 +3,13 @@
     android:id="@+id/cardviewisnullordertransport"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="340dp"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:padding="2dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     app:layout_gravity="center"
-    android:minHeight="150dp"
     android:orientation="horizontal"
     app:cardElevation="10dp"
+    android:padding="5dp"
+    android:layout_margin="30dp"
     android:animateLayoutChanges="true"
     android:background="#FFFFFF"
     android:gravity="center">
@@ -18,7 +17,6 @@
                 <ImageView
                     android:id="@android:id/text1"
                     android:layout_height="match_parent"
-                    android:minHeight="520dp"
                     android:layout_width="35dp"
                     android:animateLayoutChanges="true"
                     android:background="@drawable/stylesingletablerowiine"
@@ -27,15 +25,14 @@
                     android:visibility="visible"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="10dp"
-                    app:srcCompat="@drawable/icon_dsu1_ordertransport_down"
+                    app:srcCompat="@drawable/icon_rdertransport1"
                     app:strokeColor="#FFFFFF" />
 
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@android:id/text2"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:minHeight="520dp"
-                    android:layout_width="250dp"
                     android:background="@drawable/stylesingletablerowiine"
                     android:checkMark="?android:attr/textCheckMark"
                     android:foregroundGravity="center"

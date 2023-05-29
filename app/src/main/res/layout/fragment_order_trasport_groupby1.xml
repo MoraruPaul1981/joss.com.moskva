@@ -5,12 +5,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="350dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#FFFFFF"
     android:gravity="center"
-    android:layout_margin="1dp"
-    android:padding="1dp"
+    android:padding="5dp"
+    android:layout_margin="5dp"
     tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
     android:orientation="vertical">
 
@@ -31,7 +31,6 @@
     android:checkable="true"
     android:clickable="true"
     android:focusable="true"
-
     tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports">
 
 
@@ -63,21 +62,17 @@
                 app:strokeColor="#F5FFFA" />
 <CheckBox
     android:id="@+id/checkBoxot"
-    android:layout_width="wrap_content"
+    android:layout_width="25dp"
     android:layout_height="20dp"
     android:layout_alignParentTop="true"
+    android:layout_alignParentRight="true"
+    android:layout_marginEnd="5dp"
     android:layout_marginTop="2dp"
-    android:checked="true"
-    android:layout_marginStart="120dp"
-    android:layout_toRightOf="@+id/imageview"
-    android:layout_alignParentRight="true">
+    android:checked="true">
 
 </CheckBox>
 
         </RelativeLayout>
-
-
-
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/texviewordertransport2"
         android:layout_width="match_parent"
@@ -172,93 +167,8 @@
                     android:visibility="visible"/>
 
             </TableRow>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <!--//TODO начало    строчки ЦФО-->
-            <TableRow
-                android:id="@+id/tableRow1"
-                android:layout_width="match_parent"
-                android:gravity="center_vertical|center_horizontal"
-                android:layout_height="wrap_content"/>
-            <!--//TODO начало    строчки ТС-->
-            <TableRow
-                android:id="@+id/tableRow2"
-                android:layout_width="match_parent"
-                android:gravity="center_vertical|center_horizontal"
-                android:layout_height="wrap_content"/>
-
-<!--  //TODO 3-->
-            <TableRow
-                android:id="@+id/tableRow3"
-                android:layout_width="match_parent"
-                android:gravity="center_vertical|center_horizontal"
-                android:layout_height="wrap_content"/>
-
-            <!--  //TODO 4-->
-            <TableRow
-                android:id="@+id/tableRow4"
-                android:layout_width="match_parent"
-                android:gravity="center_vertical|center_horizontal"
-                android:layout_height="wrap_content"/>
-
-
-
-
-
-
-
-
-
-            <!--  //TODO  начало    строчки Гос Номер-->
-            <TableRow
-                android:id="@+id/tableRow7"
-                android:layout_width="match_parent"
-                android:background="#F0FFFF"
-                android:gravity="center_vertical|center_horizontal"
-                android:layout_height="wrap_content">
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-            </TableRow>
-            <!--//TODO конец первой строки Названия -->
-            <!--  //TODO Линия-->
-            <TableRow
-                android:id="@+id/tableRow8"
-                android:layout_width="match_parent"
-                android:gravity="center_vertical|center_horizontal"
-                android:background="#FFFFFF"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:background="#FFFFFF"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                </LinearLayout>
-            </TableRow>
-            <!--//TODO конец первой строки Названия -->
         </TableLayout>
     </LinearLayout>
-
-
 </com.google.android.material.card.MaterialCardView>
 
 
