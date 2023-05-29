@@ -309,11 +309,11 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 recyclerView_OrderTransport.setVisibility(View.VISIBLE);
                 DividerItemDecoration dividerItemDecorationHor=
                         new DividerItemDecoration(activity,LinearLayoutManager.HORIZONTAL);
-                dividerItemDecorationHor.setDrawable(getContext().getDrawable(R.drawable.divider_for_order_transport2));///R.dimen.activity_horizontal_margin
+                dividerItemDecorationHor.setDrawable(getContext().getDrawable(R.drawable.divider_for_order_transport1));///R.dimen.activity_horizontal_margin
                 DividerItemDecoration dividerItemDecorationVer=
                         new DividerItemDecoration(activity,LinearLayoutManager.VERTICAL);
                 recyclerView_OrderTransport.addItemDecoration(dividerItemDecorationHor);
-                recyclerView_OrderTransport.addItemDecoration(dividerItemDecorationVer);
+                //recyclerView_OrderTransport.addItemDecoration(dividerItemDecorationVer);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
                 linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                 linearLayoutManager.setSmoothScrollbarEnabled(true);
@@ -842,6 +842,10 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     Boolean   isBound =    getContext(). bindService(intentЗапускOrserTransportService, serviceConnection , Context.BIND_AUTO_CREATE);
                 }else {
 // TODO: 24.05.2023 КОГДА УЖЕ БЫЛО ПОДКЛЮЧЕНИЕ
+                    // TODO: 23.05.2023  даннеы
+                    методGetCursorGROUPBYBounds(); //      методGetCursorBounds();
+                    // TODO: 23.05.2023  экран
+                    onStart();
                     Log.d(getContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
                             " Класс в процессе... " + this.getClass().getName() + "\n" +
