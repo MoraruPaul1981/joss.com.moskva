@@ -888,7 +888,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
             try{
                 // TODO: 04.05.2023  получаем первоночальыне Данные  #1
                 HashMap<String,String> datasendMap=new HashMap();
-                datasendMap.putIfAbsent("1","  SELECT  _id, dateorders,   strftime('%Y', dateorders)  AS Year, strftime('%m', dateorders)  AS Month," +
+                datasendMap.putIfAbsent("1","  SELECT  _id, dateorders, status,  strftime('%Y', dateorders)  AS Year, strftime('%m', dateorders)  AS Month," +
                         " strftime('%d', dateorders)  AS Day, COUNT(*) AS getcounts" +
                         "  FROM  view_ordertransport ");
                 datasendMap.putIfAbsent("2"," WHERE dateorders  IS NOT NULL   ");//AND _id >?  AND status!=? ORDER BY dateorders
@@ -1363,8 +1363,6 @@ class SubClassGetDateOrderGroupBy {
                          linearLayoutGroupBYЗаказыТранспорта = (LinearLayout) itemView.findViewById(android.R.id.text1);
                          materialCardView= (MaterialCardView) linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.materialCardView_single_ot);//cardview
                          tableLayoutРодительская=(TableLayout) linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.tablelayoutot_groupby);//cardview
-                            // TODO: 29.05.2023  методы предварительного ОФРМЛЕНЕИЯ
-                            методОформеленияCheckBox(checkBoxot ,linearLayoutGroupBYЗаказыТранспорта);
                             Log.d(getContext().getClass().getName(), "\n"
                                             + " время: " + new Date() + "\n+" +
                                             " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1382,32 +1380,7 @@ class SubClassGetDateOrderGroupBy {
                     }
                     // TODO: 29.05.2023  
 
-                    void методОформеленияCheckBox(CheckBox checkBoxot,LinearLayout linearLayoutGroupBYЗаказыТранспорта) {
-                        try{
-                            checkBoxot= (CheckBox) linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.checkBoxot);//cardview
-                            checkBoxot.setChecked(true);
-                            //checkBoxot.toggle();
-                   /*  checkBoxot.setBackgroundColor(Color.parseColor("#316E6E"));
-                    Drawable drawablecheck = getResources().getDrawable(R.drawable.icon_dsu1_ordertransport4);
-                    checkBoxot.setButtonDrawable(drawablecheck);
-                     checkBoxot.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#316E6E")));*/
-                            // TODO: 13.03.2022
-                            //   materialCardView.toggle();
-                            // TODO: 30.03.2022
-                            /*  materialCardView.setCheckedIconTint(ColorStateList.valueOf(Color.parseColor("#1C9CA8")));*/
-                            Log.d(getContext().getClass().getName(), "\n"
-                                    + " время: " + new Date() + "\n+" +
-                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    }
+
                 }
 
                 class MyRecycleViewAdapter extends RecyclerView.Adapter<MyViewHolder> {
@@ -1603,6 +1576,9 @@ class SubClassGetDateOrderGroupBy {
                                 методForRecyreViewSetDate(holder,cursor);
                                 // TODO: 29.05.2023  заполение   set ЦФО
                                 методForRecyreViewSetCFO(holder,cursor);
+                                // TODO: 29.05.2023  Обораюотываем Чек сверху справа
+                                методОформеленияCheckBox(holder );
+
                             }
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
@@ -1697,7 +1673,37 @@ class SubClassGetDateOrderGroupBy {
                                     Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
                     }
-
+                    void методОформеленияCheckBox(@NonNull  MyViewHolder holder ) {
+                        try{
+                        CheckBox   checkBoxot= (CheckBox) holder.linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.checkBoxot);//cardview
+                       Integer СтатусЗаказаТраспорта=     cursorGroupByParent.getInt(cursorGroupByParent.getColumnIndex("status"));
+                            if(СтатусЗаказаТраспорта==0){
+                                checkBoxot.setChecked(true);
+                            }else {
+                                checkBoxot.setChecked(false);
+                            }
+                            Log.d(getContext().getClass().getName(), "\n"
+                                    + " время: " + new Date() + "\n+" +
+                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " СтатусЗаказаТраспорта " +СтатусЗаказаТраспорта);
+                            //checkBoxot.toggle();
+                   /*  checkBoxot.setBackgroundColor(Color.parseColor("#316E6E"));
+                    Drawable drawablecheck = getResources().getDrawable(R.drawable.icon_dsu1_ordertransport4);
+                    checkBoxot.setButtonDrawable(drawablecheck);
+                     checkBoxot.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#316E6E")));*/
+                            // TODO: 13.03.2022
+                            //   materialCardView.toggle();
+                            // TODO: 30.03.2022
+                            /*  materialCardView.setCheckedIconTint(ColorStateList.valueOf(Color.parseColor("#1C9CA8")));*/
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
+                    }
                     private void МетодДанныеПолучениеМатериалов(@NonNull TableLayout tableLayoutРодительская , @NonNull Cursor cursorСамиДанныеGroupBy) {
                         // TODO: 18.10.2022  ДАННЫЕ
                         try {
@@ -1931,9 +1937,11 @@ class SubClassGetDateOrderGroupBy {
                 void методЗаполенияRecycleView() {
                     try {
                         myRecycleViewAdapter = new MyRecycleViewAdapter(cursor);
+                        //myRecycleViewAdapter.notifyDataSetChanged();
                         recyclerView_OrderTransport.setAdapter(myRecycleViewAdapter);
-                        recyclerView_OrderTransport.requestLayout();
+                        recyclerView_OrderTransport.getAdapter().notifyDataSetChanged();
                         recyclerView_OrderTransport.refreshDrawableState();
+                        recyclerView_OrderTransport.forceLayout();
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
                                 " Класс в процессе... " + this.getClass().getName() + "\n" +
