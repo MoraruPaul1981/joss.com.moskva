@@ -42,6 +42,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -112,6 +113,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
     private SubClassOrdersTransport.SubClassAdapters.SubClassAdapterMyRecyclerview.MyRecycleViewAdapter myRecycleViewAdapter;
     private SubClassOrdersTransport.SubClassAdapters.SubClassAdapterMyRecyclerview.MyViewHolder myViewHolder;
 
+    private ScrollView scrollview_OrderTransport;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         try{
@@ -167,10 +170,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
             bottomNavigationItemViewвыход.setVisibility(View.VISIBLE);
             bottomNavigationItemView2создать.setVisibility(View.VISIBLE);
             bottomNavigationItemView3обновить.setVisibility(View.VISIBLE);
-            BottomNavigationOrderTransport.refreshDrawableState();
-            BottomNavigationOrderTransport.forceLayout();
-
-
 
             progressBarСканирование=  (ProgressBar)  view. findViewById(R.id.ProgressBar);
             progressBarСканирование.setVisibility(View.VISIBLE);
@@ -179,6 +178,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
             TextViewHadler = (TextView) view.findViewById(R.id.TextViewHadler);
             animationvibr1 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_singletable2);//
             textViewHadler=(MaterialTextView)  view.findViewById(R.id.TextViewHadler);
+            scrollview_OrderTransport=(ScrollView)  view.findViewById(R.id.scrollview_OrderTransport);
             // TODO: 11.05.2023 горизонтальеный Сколлл
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
@@ -318,6 +318,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                 linearLayoutManager.setSmoothScrollbarEnabled(true);
                 recyclerView_OrderTransport.setLayoutManager(linearLayoutManager);
+                recyclerView_OrderTransport.startAnimation(animationvibr1);
                 Log.d(this.getClass().getName(), "\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
@@ -595,6 +596,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 recyclerView_OrderTransport.scrollToPosition(0);
                 recyclerView_OrderTransport.refreshDrawableState();
                 recyclerView_OrderTransport.requestLayout();
+                scrollview_OrderTransport.pageScroll(View.FOCUS_UP);
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1361,7 +1363,6 @@ class SubClassGetDateOrderGroupBy {
                          linearLayoutGroupBYЗаказыТранспорта = (LinearLayout) itemView.findViewById(android.R.id.text1);
                          materialCardView= (MaterialCardView) linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.materialCardView_single_ot);//cardview
                          tableLayoutРодительская=(TableLayout) linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.tablelayoutot_groupby);//cardview
-
                             // TODO: 29.05.2023  методы предварительного ОФРМЛЕНЕИЯ
                             методОформеленияCheckBox(checkBoxot ,linearLayoutGroupBYЗаказыТранспорта);
                             Log.d(getContext().getClass().getName(), "\n"
@@ -1430,11 +1431,12 @@ class SubClassGetDateOrderGroupBy {
                                     cursor.moveToPosition(position);
                                     // TODO: 12.05.2023  Получаем Данные Gropup By Первый Этап
                                     bundleGrpuopByOrder=    методGroupByДанныеBungle(cursor);
-
+                                    // TODO: 29.05.2023
                                     Log.d(getContext().getClass().getName(), "\n"
                                                     + " время: " + new Date() + "\n+" +
                                                     " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+ "   position   " + position);
+                                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+ "   position   " + position + " bundleGrpuopByOrder "
+                                            +bundleGrpuopByOrder);
                                 }
                             }
                         } catch (Exception e) {
@@ -1569,11 +1571,9 @@ class SubClassGetDateOrderGroupBy {
                     @Override
                     public void onBindViewHolder(@NonNull  MyViewHolder holder, int position) {
                         try {
-                            if (cursor!=null) {
-                                if (cursor.getCount() > 0) {
+                            if (cursor!=null && cursor.getCount() > 0) {
                                     // TODO: 29.05.2023 Главный Метод ЗАполнения Данными
                                     методГлавныйЗаполениеДанными(holder, cursor);
-                                }
                             }
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
@@ -1598,11 +1598,7 @@ class SubClassGetDateOrderGroupBy {
                                 // TODO: 18.10.2022 заполеняем данныими
                                 МетодДобавленеиЕлементоввRecycreView(holder,cursor);
                             }
-
-
-
-
-                            // TODO: 29.05.2023 Перегрузка Вида Экрана 
+                            // TODO: 29.05.2023 Перегрузка Вида Экрана  После Заполенеия
                             методПерегрузкаReyreView();
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
@@ -1624,6 +1620,11 @@ class SubClassGetDateOrderGroupBy {
 
                     private void МетодДобавленеиЕлементоввRecycreView(@NonNull  MyViewHolder holder, @NonNull Cursor cursor) {
                         try {
+
+                            // TODO: 25.05.2023 первая часть GROUP BY  #1
+                            new SubClassGetDateOrderGroupBy().методGetDateOrderGroupBy(holder.materialCardView,bundleGrpuopByOrder);
+
+
                         /*    // TODO: 07.11.2022   ВТОРОЙ ЭТАП ПОЛУЧАЕМ НОМЕР ЦФО
                             if (binderДляПолучениеМатериалов!=null && cursor!=null && ТекущаяЦФО>0) {
                                 // TODO: 03.11.2022 Второй Запрос Получем САМО Цифра Полученого Материла

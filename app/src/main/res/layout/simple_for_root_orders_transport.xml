@@ -99,22 +99,6 @@
 
 
 
-
-
-
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/BottomNavigationOrderTransport"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:scrollbarFadeDuration="@integer/config_navAnimTime"
-            android:background="#0A524B"
-            android:translationZ="5dp"
-            app:itemIconTint="#F2F5F5"
-            app:menu="@menu/menuadmissionmaterisls"
-            tools:ignore="MissingConstraints" />
         <ProgressBar
             android:id="@+id/ProgressBar"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
@@ -127,6 +111,22 @@
             android:layout_centerHorizontal="true"
             android:indeterminate="true"
             android:visibility="visible" />
+
+
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/BottomNavigationOrderTransport"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:scrollbarFadeDuration="@integer/config_navAnimTime"
+            android:background="#0A524B"
+            android:translationZ="5dp"
+            app:itemIconTint="#F2F5F5"
+            app:menu="@menu/menuadmissionmaterisls"
+            tools:ignore="MissingConstraints" />
+
     </RelativeLayout>
 
 
