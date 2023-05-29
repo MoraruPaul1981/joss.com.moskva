@@ -1357,7 +1357,11 @@ class SubClassGetDateOrderGroupBy {
 
 
 
-            // TODO: 29.05.2023  Class Adapter RecyreView
+
+
+
+
+            // TODO: 29.05.2023  Class Adapter RecyreView New New Order Transport
             class SubClassAdapterMyRecyclerview{
                 Cursor cursor;
                 public SubClassAdapterMyRecyclerview(@NonNull Cursor cursor) {
@@ -1365,13 +1369,18 @@ class SubClassGetDateOrderGroupBy {
                 }
                 // TODO: 28.02.2022 начало  MyViewHolderДляЧата
                 protected class MyViewHolder extends RecyclerView.ViewHolder {
-                    private TableLayout tableLayoutМатериалРодительная;
-                    private MaterialCardView cardViewМатериалРодительная;
+                    private TableLayout tableLayout ;
+                    private MaterialCardView cardView ;
                     public MyViewHolder(@NonNull View itemView) {
                         super(itemView);
                         try {
+                            // TODO: 29.05.2023
                             МетодИнициализацииКомпонетовЗаданияCardView(itemView);
-                            Log.d(this.getClass().getName(), "   itemView   " + itemView);
+                            Log.d(getContext().getClass().getName(), "\n"
+                                    + " время: " + new Date() + "\n+" +
+                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                    "   itemView   " + itemView);
                         } catch (Exception e) {
                             e.printStackTrace();
                             Log.e(getContext().getClass().getName(),
@@ -1387,7 +1396,11 @@ class SubClassGetDateOrderGroupBy {
                             Log.d(this.getClass().getName(), " отработоатл new SubClassBuccessLogin_ГлавныйКлассБизнесЛогикиФрагмент1 itemView   " + itemView);
                             tableLayoutМатериалРодительная = itemView.findViewById(R.id.TableLayoutAdmissionLayoutInflater);
                             cardViewМатериалРодительная = itemView.findViewById(R.id.CardviewassibAmaterial);
-                            Log.d(this.getClass().getName(), " cardViewМатериал   " + cardViewМатериалРодительная);
+                            Log.d(getContext().getClass().getName(), "\n"
+                                            + " время: " + new Date() + "\n+" +
+                                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                    "   itemView   " + itemView);
                         } catch (Exception e) {
                             e.printStackTrace();
                             Log.e(getContext().getClass().getName(),
@@ -1400,7 +1413,7 @@ class SubClassGetDateOrderGroupBy {
                     }
                 }
 
-                class MyRecycleViewAdapter extends RecyclerView.Adapter<FragmentAdmissionMaterials.MyViewHolder> {
+                class MyRecycleViewAdapter extends RecyclerView.Adapter<MyViewHolder> {
                     private Cursor cursor;
                     public MyRecycleViewAdapter(@NotNull Cursor cursor) {
                         this.cursor = cursor;
@@ -1412,7 +1425,7 @@ class SubClassGetDateOrderGroupBy {
                     }
 
                     @Override
-                    public void onBindViewHolder(@NonNull FragmentAdmissionMaterials.MyViewHolder holder, @SuppressLint("RecyclerView") int position, @NonNull List<Object> payloads) {
+                    public void onBindViewHolder(@NonNull  MyViewHolder holder, @SuppressLint("RecyclerView") int position, @NonNull List<Object> payloads) {
                         try {
                             ///todo ЩЕЛКАЕМ КАЖДУЮ СТРОЧКУ ОТДЕЛЬНО
                             if (cursor!=null) {
@@ -1420,7 +1433,11 @@ class SubClassGetDateOrderGroupBy {
                                     cursor.moveToPosition(position);
                                     ТекущаяЦФО=        МетодВытаскиваемТекущийЦФО(cursor);    // TODO: 17.10.2022  метод который вытаскиваем Текущее Значение ЦФО для получение дальнейших данных
                                     //  ХэшДааныеСтрока = (ConcurrentSkipListMap<String, String>) ArrayListДанныеОтСканироваиниеДивайсов.get(position);
-                                    Log.i(this.getClass().getName(), "   onBindViewHolder  position" + position + " cursor " + cursor);
+                                    Log.d(getContext().getClass().getName(), "\n"
+                                                    + " время: " + new Date() + "\n+" +
+                                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                            "   position   " + position);
                                 }
                             }
                         } catch (Exception e) {
@@ -1441,31 +1458,43 @@ class SubClassGetDateOrderGroupBy {
                     }
 
                     @Override
-                    public void onViewRecycled(@NonNull FragmentAdmissionMaterials.MyViewHolder holder) {
+                    public void onViewRecycled(@NonNull  MyViewHolder holder) {
                         super.onViewRecycled(holder);
                     }
 
                     @Override
-                    public boolean onFailedToRecycleView(@NonNull FragmentAdmissionMaterials.MyViewHolder holder) {
+                    public boolean onFailedToRecycleView(@NonNull  MyViewHolder holder) {
                         return super.onFailedToRecycleView(holder);
                     }
 
                     @Override
-                    public void onViewAttachedToWindow(@NonNull FragmentAdmissionMaterials.MyViewHolder holder) {
+                    public void onViewAttachedToWindow(@NonNull  MyViewHolder holder) {
                         super.onViewAttachedToWindow(holder);
                     }
 
                     @Override
-                    public void onViewDetachedFromWindow(@NonNull FragmentAdmissionMaterials.MyViewHolder holder) {
+                    public void onViewDetachedFromWindow(@NonNull  MyViewHolder holder) {
                         super.onViewDetachedFromWindow(holder);
                     }
 
                     @Override
                     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-
+                        try {
                         recyclerView.removeAllViews();
-
                         recyclerView.getRecycledViewPool().clear();
+                            Log.d(getContext().getClass().getName(), "\n"
+                                            + " время: " + new Date() + "\n+" +
+                                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(getContext().getClass().getName(),
+                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
                         super.onAttachedToRecyclerView(recyclerView);
                     }
 
@@ -1478,7 +1507,11 @@ class SubClassGetDateOrderGroupBy {
                     public int getItemViewType(int position) {
                         Log.i(this.getClass().getName(), "      holder.textView1  position " + position);
                         try {
-                            Log.i(this.getClass().getName(), "   getItemViewType  position" + position);
+                            Log.d(getContext().getClass().getName(), "\n"
+                                            + " время: " + new Date() + "\n+" +
+                                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                                    "   position   " + position);
                         } catch (Exception e) {
                             e.printStackTrace();
                             Log.e(getContext().getClass().getName(),
@@ -1493,25 +1526,30 @@ class SubClassGetDateOrderGroupBy {
 
                     @NonNull
                     @Override
-                    public FragmentAdmissionMaterials.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                        View viewПолучениеМатериалов = null;
+                    public  MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                        View viewЗаказыМатериалов = null;
                         try {
-                            if(   binderДляПолучениеМатериалов==null || cursor==null){
-                                viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov, parent, false);//todo old simple_for_takst_cardview1
-                                Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов);
+                            if(   localBinderOrderTransport==null || cursor==null){
+                                viewЗаказыМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov, parent, false);//todo old simple_for_takst_cardview1
+                                Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewЗаказыМатериалов);
 
                             }else {
                                 if (cursor.getCount() > 0) {
-                                    viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_assionamaterial, parent, false);//todo old  simple_for_assionamaterial
-                                    Log.i(this.getClass().getName(), "   viewПолучениеМатериалов" + viewПолучениеМатериалов+ "  sqLiteCursor.getCount()  " + cursor.getCount());
+                                    viewЗаказыМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_assionamaterial, parent, false);//todo old  simple_for_assionamaterial
+                                    Log.i(this.getClass().getName(), "   viewЗаказыМатериалов" + viewЗаказыМатериалов+ "  sqLiteCursor.getCount()  " + cursor.getCount());
                                 } else {
-                                    viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_isnull_dm_materials, parent, false);//todo old simple_for_takst_cardview1
-                                    Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов+ "  sqLiteCursor.getCount()  " + cursor.getCount() );
+                                    viewЗаказыМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_isnull_dm_materials, parent, false);//todo old simple_for_takst_cardview1
+                                    Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewЗаказыМатериалов+ "  sqLiteCursor.getCount()  " + cursor.getCount() );
                                 }
                             }
                             // TODO: 13.10.2022  добавляем новый компонент в Нащ RecycreView
-                            myViewHolder = new FragmentAdmissionMaterials.MyViewHolder(viewПолучениеМатериалов);
-                            Log.i(this.getClass().getName(), "   myViewHolder" + myViewHolder + "  binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
+                            myViewHolder = new  MyViewHolder(viewЗаказыМатериалов);
+
+                            Log.d(getContext().getClass().getName(), "\n"
+                                    + " время: " + new Date() + "\n+" +
+                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                                    "   cursor   " + cursor +  "  myViewHolder  " +myViewHolder);
                         } catch (Exception e) {
                             e.printStackTrace();
                             Log.e(getContext().getClass().getName(),
@@ -1545,7 +1583,7 @@ class SubClassGetDateOrderGroupBy {
                     }
 
                     @Override
-                    public void onBindViewHolder(@NonNull FragmentAdmissionMaterials.MyViewHolder holder, int position) {
+                    public void onBindViewHolder(@NonNull  MyViewHolder holder, int position) {
                         try {
                             Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor);
                             if (cursor!=null) {
@@ -1567,7 +1605,7 @@ class SubClassGetDateOrderGroupBy {
                         }
                     }
 
-                    private void МетодАнимации(FragmentAdmissionMaterials.MyViewHolder holder) {
+                    private void МетодАнимации( MyViewHolder holder) {
                         try {
                             holder.cardViewМатериалРодительная.startAnimation(animationПолучениеМатериалов);
                         } catch (Exception e) {
@@ -1581,7 +1619,7 @@ class SubClassGetDateOrderGroupBy {
                         }
                     }
                     ///todo первый метод #1
-                    private void МетодЗаполняемДаннымиПолучениеМАтериалов(@NonNull FragmentAdmissionMaterials.MyViewHolder holder, @NonNull Cursor cursor) {
+                    private void МетодЗаполняемДаннымиПолучениеМАтериалов(@NonNull  MyViewHolder holder, @NonNull Cursor cursor) {
                         try {
                             if (cursor != null && holder.cardViewМатериалРодительная != null) {
                                 // TODO: 18.10.2022 заполеняем данныими
@@ -1872,6 +1910,8 @@ class SubClassGetDateOrderGroupBy {
                     try {
                         myRecycleViewAdapter =  MyRecycleViewAdapter(cursor);
                         recyclerView_OrderTransport.setAdapter(myRecycleViewAdapter);
+                        recyclerView_OrderTransport.requestLayout();
+                        recyclerView_OrderTransport.refreshDrawableState();
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
                                 " Класс в процессе... " + this.getClass().getName() + "\n" +
