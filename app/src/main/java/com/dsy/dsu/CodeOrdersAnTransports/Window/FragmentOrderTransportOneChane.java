@@ -1283,7 +1283,7 @@ class SubClassGetDateOrderGroupBy {
                             tableLayoutДочерная.recomputeViewAttributes(tableRowДочерная);
                             tableLayoutДочерная.removeViewInLayout(tableRowДочерная);
                             tableLayoutДочерная.removeView(tableRowДочерная);
-                            tableRowДочерная.setId(new Random().nextInt(100));
+                            tableRowДочерная.setId(new Random().nextInt());
                             tableLayoutДочерная.recomputeViewAttributes(tableRowДочерная);
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
@@ -1599,8 +1599,10 @@ class SubClassGetDateOrderGroupBy {
                     private void методГлавныйЗаполениеДанными(@NonNull  MyViewHolder holder, @NonNull Cursor cursor) {
                         try {
                             if (cursor != null) {
-                                // TODO: 18.10.2022 заполеняем данныими
-                                МетодДобавленеиЕлементоввRecycreView(holder,cursor);
+                                // TODO: 29.05.2023  заполение   set ДАте
+                                методForRecyreViewSetDate(holder,cursor);
+                                // TODO: 29.05.2023  заполение   set ЦФО
+                                методForRecyreViewSetCFO(holder,cursor);
                             }
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
@@ -1620,11 +1622,35 @@ class SubClassGetDateOrderGroupBy {
                     }
 
 
-                    private void МетодДобавленеиЕлементоввRecycreView(@NonNull  MyViewHolder holder, @NonNull Cursor cursor) {
+                    private void методForRecyreViewSetDate(@NonNull  MyViewHolder holder, @NonNull Cursor cursor) {
                         try {
-
                             // TODO: 25.05.2023 первая часть GROUP BY  #1
                             new SubClassGetDateOrderGroupBy().методGetDateOrderGroupBy(holder.materialCardView,bundleGrpuopByOrder);
+                            Log.d(getContext().getClass().getName(), "\n"
+                                    + " время: " + new Date() + "\n+" +
+                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                                    "   cursor   " + cursor);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(getContext().getClass().getName(),
+                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
+                    }
+
+                    private void методForRecyreViewSetCFO(@NonNull  MyViewHolder holder, @NonNull Cursor cursor) {
+                        try {
+                            // TODO: 25.05.2023 вторая часть ЦФО get Cursor #2
+                            Cursor cursorgetForCurrentCFO=    new SubClassGetCFOOrder( bundleGrpuopByOrder).методGetCursorCFO( );
+
+                            // TODO: 26.05.2023 Заполнение ЦФО #3
+                            new SubClassGetCFOOrder( bundleGrpuopByOrder).методЗаполениеДаннымиВЦиклеЦФО(cursorgetForCurrentCFO, holder.tableLayoutРодительская );
+                            // TODO: 25.05.2023 На Полученых
+                            cursorgetForCurrentCFO.close();
 
 
                         /*    // TODO: 07.11.2022   ВТОРОЙ ЭТАП ПОЛУЧАЕМ НОМЕР ЦФО
