@@ -259,6 +259,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
     public void onStart() {
         super.onStart();
         try{
+            subClassOrdersTransport.new SubClassAdapters().new SubClassAdapterMyRecyclerview(getContext(),cursorGroupByParent).      методЗаполенияRecycleView();
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
@@ -954,20 +955,20 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
 
         class SubClassAdapters{
-            private Context context; //context
-            private  Cursor cursor;
-            public SubClassAdapters(@NonNull Context context , @NonNull Cursor cursor) {
-                this.context=context;
-                this.cursor=cursor;
-                Log.d(getContext().getClass().getName(), "\n"
-                        + " время: " + new Date() + "\n+" +
-                        " Класс в процессе... " + this.getClass().getName() + "\n" +
-                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+ " cursor " +cursor);
-            }
-
             // TODO: 25.05.2023 Adapter Simple
 
             class SubClassSimpleCursorAdapter{
+                private Context context; //context
+                private  Cursor cursor;
+                public SubClassSimpleCursorAdapter(@NonNull Context context , @NonNull Cursor cursor) {
+                    this.context=context;
+                    this.cursor=cursor;
+                    Log.d(getContext().getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+ " cursor " +cursor);
+                }
+
                 void методSimpleCursorAdapters(@NonNull Integer Макет){
                     try{
                         // TODO: 26.05.2023  получение строчки Дочерней с Последующим Заполененим #2
@@ -1364,8 +1365,10 @@ class SubClassGetDateOrderGroupBy {
             // TODO: 29.05.2023  Class Adapter RecyreView New New Order Transport
             class SubClassAdapterMyRecyclerview{
                 Cursor cursor;
-                public SubClassAdapterMyRecyclerview(@NonNull Cursor cursor) {
+                Context context;
+                public SubClassAdapterMyRecyclerview(@NonNull Context context,@NonNull Cursor cursor) {
                     this.cursor=cursor;
+                    this.context=context;
                 }
                 // TODO: 28.02.2022 начало  MyViewHolderДляЧата
                 protected class MyViewHolder extends RecyclerView.ViewHolder {
@@ -1527,23 +1530,23 @@ class SubClassGetDateOrderGroupBy {
                     @NonNull
                     @Override
                     public  MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                        View viewЗаказыМатериалов = null;
+                        View viewЗаказыТраспорта = null;
                         try {
                             if(   localBinderOrderTransport==null || cursor==null){
-                                viewЗаказыМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov, parent, false);//todo old simple_for_takst_cardview1
-                                Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewЗаказыМатериалов);
+                                viewЗаказыТраспорта = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_progressing_ordertransport, parent, false);//todo old simple_for_takst_cardview1
+                                Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewЗаказыТраспорта);
 
                             }else {
                                 if (cursor.getCount() > 0) {
-                                    viewЗаказыМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_assionamaterial, parent, false);//todo old  simple_for_assionamaterial
-                                    Log.i(this.getClass().getName(), "   viewЗаказыМатериалов" + viewЗаказыМатериалов+ "  sqLiteCursor.getCount()  " + cursor.getCount());
+                                    viewЗаказыТраспорта = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_order_trasport_groupby1, parent, false);//todo old  simple_for_assionamaterial
+                                    Log.i(this.getClass().getName(), "   viewЗаказыТраспорта" + viewЗаказыТраспорта+ "  sqLiteCursor.getCount()  " + cursor.getCount());
                                 } else {
-                                    viewЗаказыМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_isnull_dm_materials, parent, false);//todo old simple_for_takst_cardview1
-                                    Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewЗаказыМатериалов+ "  sqLiteCursor.getCount()  " + cursor.getCount() );
+                                    viewЗаказыТраспорта = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_isnull_ordertransport, parent, false);//todo old simple_for_takst_cardview1
+                                    Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewЗаказыТраспорта+ "  sqLiteCursor.getCount()  " + cursor.getCount() );
                                 }
                             }
                             // TODO: 13.10.2022  добавляем новый компонент в Нащ RecycreView
-                            myViewHolder = new  MyViewHolder(viewЗаказыМатериалов);
+                            myViewHolder = new  MyViewHolder(viewЗаказыТраспорта);
 
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
@@ -1732,7 +1735,7 @@ class SubClassGetDateOrderGroupBy {
                             tableLayout.removeView(rowПервыеДанные);
                             rowПервыеДанные.setId(new Random().nextInt());
                             tableLayout.recomputeViewAttributes(rowПервыеДанные);
-                            rowПервыеДанные.startAnimation(animationПолучениеМатериалов);
+                            rowПервыеДанные.startAnimation(animationvibr1);
                             // TODO: 18.10.2022 добавляем  сами данные
                             МетодДобаленияНовыхСтрокДанных(rowПервыеДанные, tableLayoutРодительская);
                             // TODO: 19.10.2022
@@ -1758,7 +1761,7 @@ class SubClassGetDateOrderGroupBy {
                                 public void onClick(View v) {
                                     Bundle bundleПереходДетализацию=(Bundle) v.getTag();
                                     Log.d(this.getClass().getName(), "МетодаКликаПоtableRow v  " + v+ " bundleПереходДетализацию "+bundleПереходДетализацию);
-                                    if (bundleПереходДетализацию != null) {
+                                /*    if (bundleПереходДетализацию != null) {
                                         МетодЗапускаАнимацииКнопок((View) rowПервыеДанные);
                                         // TODO: 09.11.2022  переходим на детализацию Полученихы Материалов
                                         fragmentTransaction = fragmentManager.beginTransaction();
@@ -1771,7 +1774,7 @@ class SubClassGetDateOrderGroupBy {
                                         fragmentTransaction.show(fragmentAdmissionMaterialsDetailing);
                                         Log.d(this.getClass().getName(), " fragmentAdmissionMaterialsDetailing " + fragmentAdmissionMaterialsDetailing);
                                         Log.d(this.getClass().getName(), "  v  " + v);
-                                    }
+                                    }*/
                                 }
                             });
                         } catch (Exception e) {
@@ -1891,8 +1894,13 @@ class SubClassGetDateOrderGroupBy {
                                 }
                             }else {
                                 КоличесвоСтрок = 1;
-                                Log.d(this.getClass().getName(), "sqLiteCursor.getCount()  " + cursor+"  binderДляПолучениеМатериалов "+ binderДляПолучениеМатериалов);
+                                Log.d(this.getClass().getName(), "sqLiteCursor.getCount()  " + cursor);
                             }
+                            Log.d(getContext().getClass().getName(), "\n"
+                                    + " время: " + new Date() + "\n+" +
+                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                                    "  cursor " +cursor);
                         } catch (Exception e) {
                             e.printStackTrace();
                             Log.e(getContext().getClass().getName(),
@@ -1908,7 +1916,7 @@ class SubClassGetDateOrderGroupBy {
                 // TODO: 29.05.2023  Заполение RecyView
                 void методЗаполенияRecycleView() {
                     try {
-                        myRecycleViewAdapter =  MyRecycleViewAdapter(cursor);
+                        myRecycleViewAdapter = new MyRecycleViewAdapter(cursor);
                         recyclerView_OrderTransport.setAdapter(myRecycleViewAdapter);
                         recyclerView_OrderTransport.requestLayout();
                         recyclerView_OrderTransport.refreshDrawableState();
