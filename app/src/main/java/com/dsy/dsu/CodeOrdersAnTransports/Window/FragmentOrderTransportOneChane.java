@@ -23,9 +23,12 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
@@ -319,11 +322,15 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         new DividerItemDecoration(activity,LinearLayoutManager.VERTICAL);
                 recyclerView_OrderTransport.addItemDecoration(dividerItemDecorationHor);
                 //recyclerView_OrderTransport.addItemDecoration(dividerItemDecorationVer);
+                recyclerView_OrderTransport.startAnimation(animationvibr1);
+                recyclerView_OrderTransport.setHasFixedSize(false);
+                recyclerView_OrderTransport.setItemAnimator(new DefaultItemAnimator());
+                SnapHelper snapHelper = new LinearSnapHelper();
+                snapHelper.attachToRecyclerView(recyclerView_OrderTransport);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
                 linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                 linearLayoutManager.setSmoothScrollbarEnabled(true);
                 recyclerView_OrderTransport.setLayoutManager(linearLayoutManager);
-                recyclerView_OrderTransport.startAnimation(animationvibr1);
                 Log.d(this.getClass().getName(), "\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
@@ -1480,6 +1487,8 @@ class SubClassGetDateOrderGroupBy {
                             TableLayout tableLayout=  holder.tableLayoutРодительская;
                             if (tableLayout!=null && tableLayout.getChildCount()>2) {
                                 recyclerView_OrderTransport.removeView(holder.tableLayoutРодительская);
+                                // TODO: 30.05.2023
+                                recyclerView_OrderTransport.removeViewAt(0);
 
                                // recyclerView_OrderTransport.getAdapter().     notifyDataSetChanged();
                             }
@@ -1574,6 +1583,7 @@ class SubClassGetDateOrderGroupBy {
                                     методГазимПрогрессаБар();
                                 }
                             }
+                            recyclerView_OrderTransport.scrollToPosition(5);
                             // TODO: 13.10.2022  добавляем новый компонент в Нащ RecycreView
                             myViewHolder = new  MyViewHolder(viewЗаказыТраспорта);
 
