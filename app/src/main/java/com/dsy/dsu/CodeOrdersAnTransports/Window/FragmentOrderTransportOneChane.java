@@ -114,6 +114,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
     private SubClassOrdersTransport.SubClassAdapters.SubClassAdapterMyRecyclerview.MyViewHolder myViewHolder;
 
     private ScrollView scrollview_OrderTransport;
+    private    TableLayout    tableLayoutДочернная;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -179,6 +180,10 @@ public class FragmentOrderTransportOneChane extends Fragment {
             animationvibr1 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_singletable2);//
             textViewHadler=(MaterialTextView)  view.findViewById(R.id.TextViewHadler);
             scrollview_OrderTransport=(ScrollView)  view.findViewById(R.id.scrollview_OrderTransport);
+            // TODO: 26.05.2023  ДочернийЭлемиент
+            View   convertViewДочерния  = LayoutInflater.from(getContext()).inflate(R.layout.fragment_order_trasport_for_single_row,
+                    null , false);
+            tableLayoutДочернная       = (TableLayout) convertViewДочерния.findViewById( R.id.tablelayout_singleotrow);
             // TODO: 11.05.2023 горизонтальеный Сколлл
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
@@ -256,7 +261,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
     public void onStart() {
         super.onStart();
         try{
-            getsubClassAdapterMyRecyclerview.new SubClassAdapterMyRecyclerview(getContext(),cursorGroupByParent).      методЗаполенияRecycleView();
+            getsubClassAdapterMyRecyclerview.new SubClassAdapterMyRecyclerview(getContext(),cursorGroupByParent,tableLayoutДочернная ).      методЗаполенияRecycleView();
             // TODO: 29.05.2023
             subClassOrdersTransport.   МетодКпопкиЗначков(cursorGroupByParent);
             Log.d(this.getClass().getName(), "\n" + " class " +
@@ -334,6 +339,98 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
+
+        private void МетодСлушательRecycleView() {
+            try{
+
+                myRecycleViewAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                    @Override
+                    public void onChanged() {
+                        super.onChanged();
+                        Log.d(this.getClass().getName(), "\n" + " class " +
+                                Thread.currentThread().getStackTrace()[2].getClassName()
+                                + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    }
+
+                    @Override
+                    public void onItemRangeChanged(int positionStart, int itemCount) {
+                        super.onItemRangeChanged(positionStart, itemCount);
+                        Log.d(this.getClass().getName(), "\n" + " class " +
+                                Thread.currentThread().getStackTrace()[2].getClassName()
+                                + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    }
+
+                    @Override
+                    public void onItemRangeChanged(int positionStart, int itemCount, @Nullable Object payload) {
+                        super.onItemRangeChanged(positionStart, itemCount, payload);
+                        Log.d(this.getClass().getName(), "\n" + " class " +
+                                Thread.currentThread().getStackTrace()[2].getClassName()
+                                + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    }
+
+                    @Override
+                    public void onItemRangeInserted(int positionStart, int itemCount) {
+                        super.onItemRangeInserted(positionStart, itemCount);
+                        Log.d(this.getClass().getName(), "\n" + " class " +
+                                Thread.currentThread().getStackTrace()[2].getClassName()
+                                + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    }
+
+                    @Override
+                    public void onItemRangeRemoved(int positionStart, int itemCount) {
+                        super.onItemRangeRemoved(positionStart, itemCount);
+                        Log.d(this.getClass().getName(), "\n" + " class " +
+                                Thread.currentThread().getStackTrace()[2].getClassName()
+                                + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    }
+
+                    @Override
+                    public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
+                        super.onItemRangeMoved(fromPosition, toPosition, itemCount);
+                        Log.d(this.getClass().getName(), "\n" + " class " +
+                                Thread.currentThread().getStackTrace()[2].getClassName()
+                                + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    }
+
+                    @Override
+                    public void onStateRestorationPolicyChanged() {
+                        super.onStateRestorationPolicyChanged();
+                        Log.d(this.getClass().getName(), "\n" + " class " +
+                                Thread.currentThread().getStackTrace()[2].getClassName()
+                                + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    }
+                });
+                Log.d(this.getClass().getName(), "\n" + " class " +
+                        Thread.currentThread().getStackTrace()[2].getClassName()
+                        + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+
+
         // TODO: 28.04.2023
         void МетодHandlerCallBack() {
             try{
@@ -899,8 +996,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
 
         class SubClassAdapters{
-            private ViewGroup tableLayoutДочернная;
-            private     TableRow        rowПервыеДанные;
+            // TODO: 25.05.2023 Adapter Simple
+
 
                 // TODO: 25.05.2023 класс Первое Действие Заполения Gruop BY
 class SubClassGetDateOrderGroupBy {
@@ -1004,51 +1101,57 @@ class SubClassGetDateOrderGroupBy {
                     }
 
                     // TODO: 26.05.2023 заполненеи данных через ЦИКЛ
-                void методЗаполениеДаннымиВЦиклеЦФО(@NonNull   Cursor cursorgetForCurrentCFO,
-                                                    @NonNull TableLayout tableLayoutРодительская ,
-                                                    @NonNull SubClassAdapterMyRecyclerview.MyViewHolder holder,
-                                                    @NonNull  int position) {
+                void методЗаполениеДаннымиВЦиклеЦФО(@NonNull   Cursor cursorListCFO,
+                                                    @NonNull TableLayout tableLayoutРодительская) {
                     try{
                         // TODO: 26.05.2023  цикл может сказать главный идем по СЦО
                         do{
+                            // TODO: 26.05.2023  цикл может сказать главный идем по СЦО #1
+                        /*    TableRow        tableRowДочерная = (TableRow)   tableLayoutДочернная.findViewById(R.id.tableRowChildOt);
+                            tableRowДочерная.setId(new Random().nextInt());
+                            if(tableRowДочерная.getParent() != null) {
+                                ((ViewGroup)tableRowДочерная.getParent()).removeView(tableRowДочерная); // <- fix
+                            }*/
 
-                                MaterialTextView    materialTextViewДанныеAddRow =  rowПервыеДанные.findViewById(R.id.ot_date_order_singlevalue);
-                                // TODO: 26.05.2023  Элемент Для Шабки
-                                MaterialTextView    materialTextViewШабкаAddRow =  rowПервыеДанные.findViewById(R.id.ot_key_order_singlevalue);
-                                // TODO: 26.05.2023 Заполнение Данными СЦО #1
-                                методSetDateCFO(cursorgetForCurrentCFO, materialTextViewДанныеAddRow,materialTextViewШабкаAddRow);
-
-
-                            // TODO: 06.11.2022 удаление
-                            tableLayoutДочернная.removeAllViews();
-                            tableLayoutДочернная.removeAllViewsInLayout();
-                            tableLayoutДочернная.recomputeViewAttributes(rowПервыеДанные);
-                            tableLayoutДочернная.removeViewInLayout(rowПервыеДанные);
-                            tableLayoutДочернная.removeView(rowПервыеДанные);
-                            rowПервыеДанные.setId(new Random().nextInt());
-                            tableLayoutДочернная.recomputeViewAttributes(rowПервыеДанные);
+                      /*      if (tableRowДочерная != null) {
+                                ViewGroup parent = (ViewGroup) tableLayoutДочернная.getParent();
+                                if (parent != null) {
+                                    parent.removeView(tableRowДочерная);
+                                }*/
 
 
+
+                          /*      MaterialTextView    materialTextViewДанныеAddRow =  tableRowДочерная.findViewById(R.id.ot_date_order_singlevalue);
+                                MaterialTextView    materialTextViewШабкаAddRow =  tableRowДочерная.findViewById(R.id.ot_key_order_singlevalue);
+                            // TODO: 30.05.2023  заполяем ЦФО
+                                методSetDateCFO(cursorListCFO, materialTextViewДанныеAddRow,materialTextViewШабкаAddRow);
+*/
                                 // TODO: 25.05.2023 ФИНАЛЬНОЕ ДЕЙСТВИЕ вСТАВКА СТРОКИ УЖЕ ЗАПОЛЕНО В tABLEPOUY
-                                методAddtableRow(rowПервыеДанные,tableLayoutРодительская, holder,position);
+                              //  методAddtableRow(tableRowДочерная,tableLayoutРодительская );
+                            // TODO: 06.11.2022 удаление
+                            /*tableLayoutДочернная.removeAllViewsInLayout();
+                            tableLayoutДочернная.removeAllViews();
+                            tableLayoutДочернная.setId(new Random().nextInt());*/
+
+
 
 
                                // TODO: 26.05.2023 Заполнение Данными Вид Траспорта и Гос Номер #2
-                                  методSeTypeTSAndGosNomers(cursorgetForCurrentCFO,tableLayoutРодительская, holder,position);
+                                //  методSeTypeTSAndGosNomers(cursorListCFO,tableLayoutРодительская,tableLayoutДочернная,rowПервыеДанные);
 
                                 Log.d(getContext().getClass().getName(), "\n"
                                         + " время: " + new Date() + "\n+" +
                                         " Класс в процессе... " + this.getClass().getName() + "\n" +
                                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                        + " cursorgetCFO.getPosition() " +cursorgetForCurrentCFO.getPosition());
-                        }while (cursorgetForCurrentCFO.moveToNext());
+                                        + " cursorgetCFO.getPosition() " +cursorListCFO.getPosition());
+                        }while (cursorListCFO.moveToNext());
                         // TODO: 29.05.2023 clear cursor
-                        cursorgetForCurrentCFO.close();
+                        cursorListCFO.close();
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
                                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                + " cursorgetForCurrentCFO " +cursorgetForCurrentCFO);
+                                + " cursorListCFO " +cursorListCFO);
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1086,19 +1189,20 @@ class SubClassGetDateOrderGroupBy {
                     }
 
                     // TODO: 28.05.2023 третий цикл Гос.Номер  и Вид Траспорта
-                    private void методSeTypeTSAndGosNomers(@NonNull  Cursor cursorgetForCurrentCFO ,@NonNull TableLayout tableLayoutРодительская,
-                                                           @NonNull SubClassAdapterMyRecyclerview.MyViewHolder holder,
-                                                           @NonNull  int position) {
+                    private void методSeTypeTSAndGosNomers(@NonNull  Cursor cursorgetForCurrentCFO
+                            ,@NonNull TableLayout tableLayoutРодительская,
+                             @NonNull  TableLayout    tableLayoutДочернная,
+                           @NonNull   TableRow        rowПервыеДанные) {
                         try{
                  String getDateOrdersForGosNomers = cursorgetForCurrentCFO.getString(cursorgetForCurrentCFO.getColumnIndex("dateorders"));
                  Integer getCFOGosNomers = cursorgetForCurrentCFO.getInt(cursorgetForCurrentCFO.getColumnIndex("id_cfo"));
                         Cursor cursorgetTypeTSAndGosNomers=методGetCursorGosNomer( getDateOrdersForGosNomers,getCFOGosNomers);
                             do{
                                 // TODO: 26.05.2023  метод Заполнение Вида ТС
-                                методВставкаВидТС(tableLayoutРодительская, cursorgetTypeTSAndGosNomers, holder,position );
+                                методВставкаВидТС(tableLayoutРодительская, cursorgetTypeTSAndGosNomers ,tableLayoutДочернная,rowПервыеДанные);
 
                                 // TODO: 26.05.2023  метод Заполнение Гос.Номер
-                                методВставкаГосНомер(tableLayoutРодительская, cursorgetTypeTSAndGosNomers, holder,position);
+                               // методВставкаГосНомер(tableLayoutРодительская, cursorgetTypeTSAndGosNomers);
 
                                 Log.d(getContext().getClass().getName(), "\n"
                                         + " время: " + new Date() + "\n+" +
@@ -1121,15 +1225,9 @@ class SubClassGetDateOrderGroupBy {
 
                     private void методВставкаВидТС(@NonNull TableLayout tableLayoutРодительская,
                                                    @NonNull Cursor cursorgetTypeTSAndGosNomers,
-                                                   @NonNull SubClassAdapterMyRecyclerview.MyViewHolder holder,
-                                                   @NonNull  int position) {
+                                                   @NonNull TableLayout tableLayoutДочернная,
+                                                   @NonNull  TableRow        rowПервыеДанные ) {
                         try{
-                            TableLayout tableLayoutДочернная=new TableLayout(getContext());
-                            // TODO: 26.05.2023  Элемент Для Данных
-                            View   convertViewДочерния  = LayoutInflater.from(getContext()).inflate(R.layout.fragment_order_trasport_for_single_row,
-                                    null , false);
-                            tableLayoutДочернная       = (TableLayout) convertViewДочерния.findViewById( R.id.tablelayout_singleotrow);
-                            TableRow        rowПервыеДанные = (TableRow)   tableLayoutДочернная.findViewById(R.id.tableRowChildOt);
                         MaterialTextView    materialTextViewДанныеAddRow =  rowПервыеДанные.findViewById(R.id.ot_date_order_singlevalue);
                         // TODO: 26.05.2023  Элемент Для Шабки
                         MaterialTextView    materialTextViewШабкаAddRow =  rowПервыеДанные.findViewById(R.id.ot_key_order_singlevalue);
@@ -1141,18 +1239,18 @@ class SubClassGetDateOrderGroupBy {
 
 
                             // TODO: 26.05.2023 достаем Дочерний Элемент
-                            tableLayoutДочернная.removeAllViews();
                             tableLayoutДочернная.removeAllViewsInLayout();
+                            tableLayoutДочернная.removeAllViews();
                             tableLayoutДочернная.recomputeViewAttributes(rowПервыеДанные);
                             tableLayoutДочернная.removeViewInLayout(rowПервыеДанные);
                             tableLayoutДочернная.removeView(rowПервыеДанные);
                             rowПервыеДанные.setId(new Random().nextInt());
-                            tableLayoutДочернная.recomputeViewAttributes(rowПервыеДанные);
 
 
 
-                            // TODO: 25.05.2023 ФИНАЛЬНОЕ ДЕЙСТВИЕ вСТАВКА СТРОКИ УЖЕ ЗАПОЛЕНО В tABLEPOUY
-                            методAddtableRow(rowПервыеДанные,tableLayoutРодительская, holder,position);
+
+                        // TODO: 29.05.2023  Вставка новой строки
+                        методAddtableRow(rowПервыеДанные, tableLayoutРодительская);
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
                                 " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1168,10 +1266,36 @@ class SubClassGetDateOrderGroupBy {
                                 Thread.currentThread().getStackTrace()[2].getLineNumber());
                     }
                     }
+
+                    // TODO: 26.05.2023 заполение Строчки
+                    private void методAddtableRow(@NonNull TableRow tableRowДочерная,
+                                                  @NonNull TableLayout tableLayoutРодительская) {
+                        try {
+                            if(tableRowДочерная.getParent() != null) {
+                                ((ViewGroup)tableRowДочерная.getParent()).removeView(tableRowДочерная); // <- fix
+                            }
+
+                            tableLayoutРодительская.recomputeViewAttributes(tableRowДочерная);
+                            tableLayoutРодительская.removeView(tableRowДочерная);
+                            tableLayoutРодительская.removeViewInLayout(tableRowДочерная);
+                            tableLayoutРодительская.addView(tableRowДочерная);
+                            Log.d(getContext().getClass().getName(), "\n"
+                                    + " время: " + new Date() + "\n+" +
+                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                    + " tableLayoutРодительская " +tableLayoutРодительская.getChildCount());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(getContext().getClass().getName(),
+                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
+                    }
                     private void методВставкаГосНомер(@NonNull TableLayout tableLayoutРодительская,
-                                                      @NonNull Cursor cursorgetTypeTSAndGosNomers,
-                                                    @NonNull SubClassAdapterMyRecyclerview.MyViewHolder holder,
-                                                      @NonNull  int position) {
+                                                      @NonNull Cursor cursorgetTypeTSAndGosNomers) {
                         try{
                             TableLayout tableLayoutДочернная=new TableLayout(getContext());
                             // TODO: 26.05.2023  Элемент Для Данных
@@ -1190,8 +1314,6 @@ class SubClassGetDateOrderGroupBy {
 
 
                             // TODO: 26.05.2023 достаем Дочерний Элемент
-                            tableLayoutДочернная.removeAllViews();
-                            tableLayoutДочернная.removeAllViewsInLayout();
                             tableLayoutДочернная.recomputeViewAttributes(rowПервыеДанные);
                             tableLayoutДочернная.removeViewInLayout(rowПервыеДанные);
                             tableLayoutДочернная.removeView(rowПервыеДанные);
@@ -1200,8 +1322,8 @@ class SubClassGetDateOrderGroupBy {
 
 
 
-                            // TODO: 25.05.2023 ФИНАЛЬНОЕ ДЕЙСТВИЕ вСТАВКА СТРОКИ УЖЕ ЗАПОЛЕНО В tABLEPOUY
-                            методAddtableRow(rowПервыеДанные,tableLayoutРодительская, holder,position);
+                            // TODO: 29.05.2023  Вставка новой строки
+                            методAddtableRow(rowПервыеДанные, tableLayoutРодительская);
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
                                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1220,82 +1342,6 @@ class SubClassGetDateOrderGroupBy {
                     // TODO: 29.05.2023 КОНЕЦ КЛАССА
 
 }
-                // TODO: 26.05.2023 заполение Строчки
-                private void методAddtableRow(@NonNull TableRow rowПервыеДанные,
-                                              @NonNull TableLayout tableLayoutРодительская,
-                                              @NonNull SubClassAdapterMyRecyclerview.MyViewHolder holder,
-                                              @NonNull     int position) {
-                    try {
-            /*            View child = recyclerView_OrderTransport.getFocusedChild();
-
-                     LinearLayout   linearLayout = (LinearLayout) child.findViewById(android.R.id.text1);
-                     MaterialCardView materialCardView= (MaterialCardView) linearLayout.findViewById(R.id.materialCardView_single_ot);//cardview
-                        tableLayoutРодительская=(TableLayout) linearLayout.findViewById(R.id.tablelayoutot_groupby);//cardview*/
-
-         /*               recyclerView_OrderTransport.getAdapter().bindViewHolder();*/
-                    /*    tableLayoutРодительская.removeAllViews();
-                        tableLayoutРодительская.removeAllViewsInLayout();*/
-                        tableLayoutРодительская.removeView(rowПервыеДанные);
-                        tableLayoutРодительская.removeViewInLayout(rowПервыеДанные);
-                        tableLayoutРодительская.addView(rowПервыеДанные);
-                        tableLayoutРодительская.requestLayout();
-                        tableLayoutРодительская.refreshDrawableState();
-                        tableLayoutРодительская.forceLayout();
-                        Log.d(getContext().getClass().getName(), "\n"
-                                + " время: " + new Date() + "\n+" +
-                                " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                + " tableLayoutРодительская " +tableLayoutРодительская.getChildCount());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(getContext().getClass().getName(),
-                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                }
-                // TODO: 26.05.2023 заполение Строчки
-            private TableRow методGetRecyViewChildRow( ) {
-                TableRow  tableRowДочерная = null;
-                try {
-                    TableLayout    tableLayoutДочерная       = (TableLayout) LayoutInflater.from(getContext()).inflate(R.layout.simple_for_assionamaterial_row,null);
-                    tableRowДочерная = (TableRow)   tableLayoutДочерная.findViewById(R.id.tableRowChildOt);
-                    // TODO: 26.05.2023 достаем Дочерний Элемент
-                    tableLayoutДочерная.recomputeViewAttributes(tableRowДочерная);
-                    tableLayoutДочерная.removeViewInLayout(tableRowДочерная);
-                    tableLayoutДочерная.removeView(tableRowДочерная);
-                    tableRowДочерная.setId(new Random().nextInt());
-                    tableLayoutДочерная.recomputeViewAttributes(tableRowДочерная);
-                    Log.d(getContext().getClass().getName(), "\n"
-                            + " время: " + new Date() + "\n+" +
-                            " Класс в процессе... " + this.getClass().getName() + "\n" +
-                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                            + " tableLayoutДочерная " +tableLayoutДочерная.getChildCount());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(getContext().getClass().getName(),
-                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
-                return tableRowДочерная;
-            }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1304,18 +1350,23 @@ class SubClassGetDateOrderGroupBy {
 
             // TODO: 29.05.2023  Class Adapter RecyreView New New Order Transport
             class SubClassAdapterMyRecyclerview{
-                Cursor cursor;
-                Context context;
-                private   TableLayout   tableLayoutРодительская;
-                private  CheckBox checkBoxot;
-                public SubClassAdapterMyRecyclerview(@NonNull Context context,@NonNull Cursor cursor) {
+                private     Cursor cursor;
+                private   Context context;
+                private     TableLayout    tableLayoutДочернная   ;
+                public SubClassAdapterMyRecyclerview(@NonNull Context context,@NonNull Cursor cursor
+                        ,@NonNull TableLayout    tableLayoutДочернная ) {
                     this.cursor=cursor;
                     this.context=context;
+                    this.tableLayoutДочернная=tableLayoutДочернная;
                 }
 
 
                 // TODO: 28.02.2022 начало  MyViewHolder для Заказы Материалов
                 protected class MyViewHolder extends RecyclerView.ViewHolder {
+                    private    MaterialCardView     materialCardView ;
+                    private   TableLayout   tableLayoutРодительская;
+
+                    private  CheckBox checkBoxot;
                     public MyViewHolder(@NonNull View itemView) {
                         super(itemView);
                         try {
@@ -1340,20 +1391,11 @@ class SubClassGetDateOrderGroupBy {
                     }
                     private void МетодИнициализацииКомпонетовЗаданияCardView(@NonNull View itemView) {
                         try {
-                            // TODO: 30.05.2023  РОДИТЕЛЬСКАЯ
-                       LinearLayout  linearLayoutOT = (LinearLayout) itemView.findViewById(android.R.id.text1);
-                     MaterialCardView    materialCardViewOT= (MaterialCardView) linearLayoutOT.findViewById(R.id.materialCardView_single_ot);//cardview
-                         tableLayoutРодительская=(TableLayout) materialCardViewOT.findViewById(R.id.tablelayoutot_groupby);//cardview
-
-                            // TODO: 30.05.2023  ДОЧЕРНАЯ
-                           tableLayoutДочернная=new TableLayout(getContext());
-                            // TODO: 26.05.2023  Элемент Для Данных
-                            View   convertViewДочерния  = LayoutInflater.from(getContext()).inflate(R.layout.fragment_order_trasport_for_single_row,
-                                    null , false);
-                            tableLayoutДочернная       = (TableLayout) convertViewДочерния.findViewById( R.id.tablelayout_singleotrow);
-                            rowПервыеДанные = (TableRow)   tableLayoutДочернная.findViewById(R.id.tableRowChildOt);
-
-
+                            // TODO: 30.05.2023  родительская
+                        LinearLayout    linearLayoutGroupBYЗаказыТранспорта = (LinearLayout) itemView.findViewById(android.R.id.text1);
+                         materialCardView= (MaterialCardView) linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.materialCardView_single_ot);//cardview
+                         tableLayoutРодительская=(TableLayout) linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.tablelayoutot_groupby);//cardview
+// TODO: 30.05.2023  дочерная
                             Log.d(getContext().getClass().getName(), "\n"
                                             + " время: " + new Date() + "\n+" +
                                             " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1432,7 +1474,26 @@ class SubClassGetDateOrderGroupBy {
 
                     @Override
                     public void onViewAttachedToWindow(@NonNull  MyViewHolder holder) {
-                        super.onViewAttachedToWindow(holder);
+                        try{
+                            super.onViewAttachedToWindow(holder);
+                            // TODO: 30.05.2023  Удаление Если Есть
+                            TableLayout tableLayout=  holder.tableLayoutРодительская;
+                            if (tableLayout!=null) {
+                                recyclerView_OrderTransport.removeView(holder.tableLayoutРодительская);
+                            }
+                            Log.d(getContext().getClass().getName(), "\n"
+                                    + " время: " + new Date() + "\n+" +
+                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(getContext().getClass().getName(),
+                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
                     }
 
                     @Override
@@ -1538,7 +1599,6 @@ class SubClassGetDateOrderGroupBy {
                             if (cursor!=null && cursor.getCount() > 0) {
                                     // TODO: 29.05.2023 Главный Метод ЗАполнения Данными
                                     методГлавныйЗаполениеДанными(holder, cursor,position);
-
                             }
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
@@ -1612,10 +1672,8 @@ class SubClassGetDateOrderGroupBy {
                             Cursor cursorgetForCurrentCFO=    new SubClassGetCFOOrder( bundleGrpuopByOrder).методGetCursorCFO( );
 
                             // TODO: 26.05.2023 Заполнение ЦФО #3
-                            new SubClassGetCFOOrder( bundleGrpuopByOrder).методЗаполениеДаннымиВЦиклеЦФО(cursorgetForCurrentCFO, holder.tableLayoutРодительская,  holder, position);
+                            new SubClassGetCFOOrder( bundleGrpuopByOrder).методЗаполениеДаннымиВЦиклеЦФО(cursorgetForCurrentCFO, holder.tableLayoutРодительская );
 
-                            // TODO: 25.05.2023 Закрыакем Курсор Всатвки ДАнных Через Курсор ЦФО
-                            cursorgetForCurrentCFO.close();
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
                                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1633,7 +1691,7 @@ class SubClassGetDateOrderGroupBy {
                     }
                     void методОформеленияCheckBox(@NonNull  MyViewHolder holder ) {
                         try{
-    /*                    CheckBox   checkBoxot= (CheckBox) holder.linearLayoutGroupBYЗаказыТранспорта.findViewById(R.id.checkBoxot);//cardview
+                        CheckBox   checkBoxot= (CheckBox) holder.materialCardView.findViewById(R.id.checkBoxot);//cardview
                        Integer СтатусЗаказаТраспорта=     cursorGroupByParent.getInt(cursorGroupByParent.getColumnIndex("status"));
                             if(СтатусЗаказаТраспорта==0){
                                 checkBoxot.setChecked(true);
@@ -1645,14 +1703,14 @@ class SubClassGetDateOrderGroupBy {
                                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " СтатусЗаказаТраспорта " +СтатусЗаказаТраспорта);
                             //checkBoxot.toggle();
-                   *//*  checkBoxot.setBackgroundColor(Color.parseColor("#316E6E"));
+                   /*  checkBoxot.setBackgroundColor(Color.parseColor("#316E6E"));
                     Drawable drawablecheck = getResources().getDrawable(R.drawable.icon_dsu1_ordertransport4);
                     checkBoxot.setButtonDrawable(drawablecheck);
-                     checkBoxot.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#316E6E")));*//*
+                     checkBoxot.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#316E6E")));*/
                             // TODO: 13.03.2022
                             //   materialCardView.toggle();
                             // TODO: 30.03.2022
-                            *//*  materialCardView.setCheckedIconTint(ColorStateList.valueOf(Color.parseColor("#1C9CA8")));*/
+                            /*  materialCardView.setCheckedIconTint(ColorStateList.valueOf(Color.parseColor("#1C9CA8")));*/
                         } catch (Exception e) {
                             e.printStackTrace();
                             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1662,6 +1720,7 @@ class SubClassGetDateOrderGroupBy {
                                     Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
                     }
+
 
 
                     // TODO: 08.11.2022 метод перехода на дитализацию
@@ -1751,6 +1810,7 @@ class SubClassGetDateOrderGroupBy {
                         recyclerView_OrderTransport.setAdapter(myRecycleViewAdapter);
                         recyclerView_OrderTransport.refreshDrawableState();
                         recyclerView_OrderTransport.forceLayout();
+                        subClassOrdersTransport. МетодСлушательRecycleView();
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
                                 " Класс в процессе... " + this.getClass().getName() + "\n" +
