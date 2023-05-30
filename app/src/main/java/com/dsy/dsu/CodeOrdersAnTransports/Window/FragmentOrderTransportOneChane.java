@@ -1123,7 +1123,7 @@ class SubClassGetDateOrderGroupBy {
                                 методВставкаВидТС(tableLayoutРодительская, cursorgetTypeTSAndGosNomers );
 
                                 // TODO: 26.05.2023  метод Заполнение Гос.Номер
-                            //    методВставкаГосНомер(tableLayoutРодительская, cursorgetTypeTSAndGosNomers,tableLayoutДочернная);
+                                методВставкаГосНомер(tableLayoutРодительская, cursorgetTypeTSAndGosNomers);
 
                                 Log.d(getContext().getClass().getName(), "\n"
                                         + " время: " + new Date() + "\n+" +
@@ -1189,18 +1189,36 @@ class SubClassGetDateOrderGroupBy {
                                 Thread.currentThread().getStackTrace()[2].getLineNumber());
                     }
                     }
-                    private void методВставкаГосНомер(@NonNull TableLayout tableLayoutРодительская, Cursor cursorgetTypeTSAndGosNomers) {
+                    private void методВставкаГосНомер(@NonNull TableLayout tableLayoutРодительская,
+                                                      @NonNull Cursor cursorgetTypeTSAndGosNomers) {
                         try{
-                      /*      TableRow   tableRowДочерная=   методGetChildRow(   );
-                            MaterialTextView    materialTextViewДанныеAddRow =  tableRowДочерная.findViewById(R.id.ot_date_order_singlevalue);
+                            TableLayout tableLayoutДочернная=new TableLayout(getContext());
+                            // TODO: 26.05.2023  Элемент Для Данных
+                            View   convertViewДочерния  = LayoutInflater.from(getContext()).inflate(R.layout.fragment_order_trasport_for_single_row,
+                                    null , false);
+                            tableLayoutДочернная       = (TableLayout) convertViewДочерния.findViewById( R.id.tablelayout_singleotrow);
+                            TableRow        rowПервыеДанные = (TableRow)   tableLayoutДочернная.findViewById(R.id.tableRowChildOt);
+                            MaterialTextView    materialTextViewДанныеAddRow =  rowПервыеДанные.findViewById(R.id.ot_date_order_singlevalue);
                             // TODO: 26.05.2023  Элемент Для Шабки
-                            MaterialTextView    materialTextViewШабкаAddRow =  tableRowДочерная.findViewById(R.id.ot_key_order_singlevalue);
+                            MaterialTextView    materialTextViewШабкаAddRow =  rowПервыеДанные.findViewById(R.id.ot_key_order_singlevalue);
                             // TODO: 29.05.2023 Заполеяем  Вид ТС
-                            String ГосНомер=     cursorgetTypeTSAndGosNomers.getString(cursorgetTypeTSAndGosNomers.getColumnIndex("gosmomer"));
+                            String ГосНомер=     cursorgetTypeTSAndGosNomers.getString(cursorgetTypeTSAndGosNomers.getColumnIndex("gosmomer")).trim();
                             materialTextViewДанныеAddRow.setText(ГосНомер.trim());
                             materialTextViewШабкаAddRow.setText("Гос.номер");
+
+
+
+                            // TODO: 26.05.2023 достаем Дочерний Элемент
+                            tableLayoutДочернная.recomputeViewAttributes(rowПервыеДанные);
+                            tableLayoutДочернная.removeViewInLayout(rowПервыеДанные);
+                            tableLayoutДочернная.removeView(rowПервыеДанные);
+                            rowПервыеДанные.setId(new Random().nextInt());
+                            tableLayoutДочернная.recomputeViewAttributes(rowПервыеДанные);
+
+
+
                             // TODO: 29.05.2023  Вставка новой строки
-                            методAddtableRow(tableRowДочерная, tableLayoutРодительская);*/
+                            методAddtableRow(rowПервыеДанные, tableLayoutРодительская);
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
                                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1216,7 +1234,6 @@ class SubClassGetDateOrderGroupBy {
                                     Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
                     }
-
                     // TODO: 29.05.2023 КОНЕЦ КЛАССА
 
 }
