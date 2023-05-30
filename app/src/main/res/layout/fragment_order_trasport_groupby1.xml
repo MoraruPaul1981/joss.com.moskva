@@ -17,7 +17,7 @@
 <com.google.android.material.card.MaterialCardView
     android:id="@+id/materialCardView_single_ot"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="wrap_content"
     app:layout_gravity="center"
     app:cardCornerRadius="2dp"
     app:cardElevation="2dp"
