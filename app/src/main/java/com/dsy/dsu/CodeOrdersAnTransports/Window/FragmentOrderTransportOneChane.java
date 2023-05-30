@@ -1480,6 +1480,8 @@ class SubClassGetDateOrderGroupBy {
                             TableLayout tableLayout=  holder.tableLayoutРодительская;
                             if (tableLayout!=null) {
                                 recyclerView_OrderTransport.removeView(holder.tableLayoutРодительская);
+
+                               // recyclerView_OrderTransport.getAdapter().     notifyDataSetChanged();
                             }
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
