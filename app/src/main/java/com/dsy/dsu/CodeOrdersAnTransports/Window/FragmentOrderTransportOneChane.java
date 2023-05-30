@@ -1478,7 +1478,7 @@ class SubClassGetDateOrderGroupBy {
                             super.onViewAttachedToWindow(holder);
                             // TODO: 30.05.2023  Удаление Если Есть
                             TableLayout tableLayout=  holder.tableLayoutРодительская;
-                            if (tableLayout!=null) {
+                            if (tableLayout!=null && tableLayout.getChildCount()>2) {
                                 recyclerView_OrderTransport.removeView(holder.tableLayoutРодительская);
 
                                // recyclerView_OrderTransport.getAdapter().     notifyDataSetChanged();
