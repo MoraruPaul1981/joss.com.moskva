@@ -1479,7 +1479,8 @@ class SubClassGetDateOrderGroupBy {
                             if (tableLayoutРодительска!=null && tableLayoutРодительска.getChildCount()>0) {
                                 TableRow tableRowДочернная = (TableRow) tableLayoutРодительска.findViewById(R.id.tableRowChildOt);
                                 if (tableRowДочернная != null) {
-                                    tableLayoutРодительска.removeView(tableRowДочернная);
+                                   // tableLayoutРодительска.removeView(tableRowДочернная);
+                                    recyclerView_OrderTransport.removeView(tableLayoutРодительска);
                                 }
                                 Log.d(getContext().getClass().getName(), "\n"
                                         + " время: " + new Date() + "\n+" +
