@@ -214,7 +214,9 @@ public class FragmentOrderTransportOneChane extends Fragment {
             subClassOrdersTransport.МетодИнициализацииRecycreView();
             subClassOrdersTransport.методАнимацииGridView();
             // TODO: 12.05.2023 слушатель
-            //  subClassOrdersTransport.    методСлушателяWorkManager(lifecycleOwner,lifecycleOwnerОбщая);
+            message.getTarget().postDelayed(()->{
+                subClassOrdersTransport.    методСлушателяWorkManager(lifecycleOwner,lifecycleOwnerОбщая);
+            },10000);
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
@@ -328,6 +330,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 linearLayoutManager.setSmoothScrollbarEnabled(true);
                 recyclerView_OrderTransport.setLayoutManager(linearLayoutManager);
                 // TODO: 30.05.2023
+                recyclerView_OrderTransport.scrollToPosition(0);
+                scrollview_OrderTransport.pageScroll(View.FOCUS_UP);
                 Log.d(this.getClass().getName(), "\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
@@ -557,8 +561,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
         // TODO: 18.10.2021  СИНХРОНИАЗЦИЯ ЧАТА ПО РАСПИСАНИЮ ЧАТ
         @SuppressLint("FragmentLiveDataObserve")
         void методСлушателяWorkManager(@NonNull  LifecycleOwner lifecycleOwnerSingle ,
-                                       @NonNull LifecycleOwner lifecycleOwnerОбщая )
-                throws ExecutionException, InterruptedException {
+                                       @NonNull LifecycleOwner lifecycleOwnerОбщая ) {
 // TODO: 11.05.2021 ЗПУСКАЕМ СЛУЖБУ через брдкастер синхронизхации и уведомления
             try {
                 lifecycleOwnerSingle.getLifecycle().addObserver(new LifecycleEventObserver() {
@@ -594,8 +597,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                             if (РазницаВоврмени>5000) {
                                                 if (CallBaskОтWorkManager>0) {
                                                     методGetCursorReboot();
-                                                    // TODO: 23.05.2023  экран
-                                                   // методGetRebootScreen();
                                                     // TODO: 12.05.2023
                                                     WorkManager.getInstance(getContext())
                                                             .getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).removeObservers(lifecycleOwnerSingle);
@@ -605,8 +606,11 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                         }
                                     }
                                 });
-                                // TODO: 23.05.2023  програсс бар
-                                методГазимПрогрессаБар();
+                                if(workInfos.get(0).getState().compareTo(WorkInfo.State.RUNNING) != 0) {
+                                    // TODO: 23.05.2023  програсс бар
+                                    методГазимПрогрессаБар();
+                                }
+
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -638,7 +642,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                                 if (CallBaskОтWorkManager >= 0) {
                                                     методGetCursorReboot();
                                                     // TODO: 23.05.2023  экран
-                                                    //методGetRebootScreen();
                                                     WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая).removeObservers(lifecycleOwnerОбщая);
                                                 }
                                             }
@@ -646,8 +649,10 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                     }
                                 });
 
-                                // TODO: 23.05.2023  програсс бар
-                                методГазимПрогрессаБар();
+                                if(workInfos.get(0).getState().compareTo(WorkInfo.State.RUNNING) != 0) {
+                                    // TODO: 23.05.2023  програсс бар
+                                    методГазимПрогрессаБар();
+                                }
                                 
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -670,6 +675,30 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
+
+        private void МетодПерегрузкаRecyceView() {
+            try {
+                recyclerView_OrderTransport.requestLayout();
+                recyclerView_OrderTransport.forceLayout();
+                recyclerView_OrderTransport.refreshDrawableState();
+                BottomNavigationOrderTransport.refreshDrawableState();
+                BottomNavigationOrderTransport.requestLayout();
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+
+
 
         private void методГазимПрогрессаБар() {
             try {
@@ -1472,15 +1501,12 @@ class SubClassGetDateOrderGroupBy {
                                         }
                                     }
                                 }
-                                // TODO: 30.05.2023
+                                // TODO: 30.05.2023 Вставка Строчки ROW 
                                 if (ФлагВставлятьИлИнет==true) {
                                     tableLayoutРодительская.addView(tableRowДочерная);
-                                    tableLayoutРодительская.requestLayout();
-                                    tableLayoutРодительская.refreshDrawableState();
                                 }else {
+                                    // TODO: 31.05.2023  Удаление Строчки ROW
                                     tableLayoutРодительская.removeView(tableRowДочерная);
-                                    tableLayoutРодительская.refreshDrawableState();
-                                    // tableLayoutРодительская.requestLayout();
                                 }
                             }
                             Log.d(getContext().getClass().getName(), "\n"
@@ -1970,6 +1996,8 @@ class SubClassGetDateOrderGroupBy {
                             if (cursor!=null && cursor.getCount() > 0) {
                                     // TODO: 29.05.2023 Главный Метод ЗАполнения Данными
                                     методГлавныйЗаполениеДанными(holder, cursor,position);
+                                // TODO: 31.05.2023
+                                МетодПерегрузкаRecyceView();
                             }
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
@@ -2426,6 +2454,7 @@ class SubClassGetDateOrderGroupBy {
             try{
                 методGetCursorGROUPBYBounds();
                 // TODO: 24.05.2023  перегрузка Экрана
+                onStart();
                 Log.d(this.getClass().getName(), "\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
