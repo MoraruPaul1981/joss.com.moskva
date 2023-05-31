@@ -30,7 +30,7 @@
             tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports">
             <!--//TODO начало    строчки ЦФО-->
             <TableRow
-                android:id="@+id/tableRowChildOt"
+                android:id="@+id/tableRowChildOt_typets"
                 android:layout_width="match_parent"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_height="wrap_content">

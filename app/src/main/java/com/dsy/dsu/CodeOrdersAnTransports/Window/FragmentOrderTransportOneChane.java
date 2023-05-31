@@ -1111,9 +1111,9 @@ class SubClassGetDateOrderGroupBy {
                         do{
                             // TODO: 26.05.2023  ДочернийЭлемиент
                             TableRow tableRowДочерная =
-                                    методGettableДочерная(null,
+                                    методGettableДочерная(cursorListCFO,
                                             R.layout.fragment_order_trasport_for_single_row_cfo,
-                                            R.id.tablelayout_singleotrow_cfo);
+                                            R.id.tablelayout_singleotrow_cfo,R.id.tableRowChildOtCFO);
 
                             // TODO: 30.05.2023  заполяем ЦФО
                                 методSetDateCFO(cursorListCFO,tableRowДочерная);
@@ -1125,7 +1125,7 @@ class SubClassGetDateOrderGroupBy {
 
 
                                // TODO: 26.05.2023 Заполнение Данными Вид Траспорта и Гос Номер #2
-                                  методSeTypeTSAndGosNomers(cursorListCFO,tableLayoutРодительская );
+                                //  методSeTypeTSAndGosNomers(cursorListCFO,tableLayoutРодительская );
 
                                 Log.d(getContext().getClass().getName(), "\n"
                                         + " время: " + new Date() + "\n+" +
@@ -1222,7 +1222,7 @@ class SubClassGetDateOrderGroupBy {
                             // TODO: 26.05.2023  ДочернийЭлемиент
                             TableRow tableRowДочерная = методGettableДочерная(cursorgetTypeTSAndGosNomers,
                                     R.layout.fragment_order_trasport_for_single_row_type_tc,
-                                    R.id.tablelayout_singleotrow_type_tc);
+                                    R.id.tablelayout_singleotrow_type_tc,R.id.tableRowChildOt_typets);
 
                         MaterialTextView    materialTextViewДанныеAddRow =  tableRowДочерная.findViewById(R.id.ot_date_order_singlevalue);
                         // TODO: 26.05.2023  Элемент Для Шабки
@@ -1263,6 +1263,12 @@ class SubClassGetDateOrderGroupBy {
                             if(tableRowДочерная.getParent() != null) {
                                 ((ViewGroup)tableRowДочерная.getParent()).removeView(tableRowДочерная); // <- fix
                             }
+                        Integer IdRowДочернегоВставляемого=    tableRowДочерная.getId();
+                            Log.d(getContext().getClass().getName(), "\n"
+                                    + " время: " + new Date() + "\n+" +
+                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                    + " tableLayoutРодительская " +tableLayoutРодительская.getChildCount()+ " IdRowДочернегоВставляемого "+IdRowДочернегоВставляемого);
                            // TODO: 30.05.2023  clear PArent
                             if (tableLayoutРодительская!=null && tableLayoutРодительская.getChildCount()>0) {
                                 Boolean ФлагВставлятьИлИнет=true;
@@ -1276,6 +1282,7 @@ class SubClassGetDateOrderGroupBy {
                                            // TODO: 30.05.2023  get Chilred
                                             if(UUidРодительской.compareTo(UUIDДочернийская)==0){
                                                 ФлагВставлятьИлИнет=false;
+                                                break;
                                             }
                                         }
                                     }
@@ -1283,9 +1290,10 @@ class SubClassGetDateOrderGroupBy {
                                 // TODO: 30.05.2023
                                 if (ФлагВставлятьИлИнет==true) {
                                     tableLayoutРодительская.addView(tableRowДочерная);
+                                    tableLayoutРодительская.requestLayout();
+                                    tableLayoutРодительская.refreshDrawableState();
                                 }else {
                                     tableLayoutРодительская.refreshDrawableState();
-                                    tableLayoutРодительская.forceLayout();
                                    // tableLayoutРодительская.requestLayout();
                                 }
                             }
@@ -1367,7 +1375,7 @@ class SubClassGetDateOrderGroupBy {
                         null , false);
                 TableLayout   tableLayoutДочернная       = (TableLayout) convertViewДочерния.findViewById(rowМакет);
                 // TODO: 26.05.2023  цикл может сказать главный идем по СЦО #1
-                      tableRowДочерная = (TableRow)   tableLayoutДочернная.findViewById(R.id.tableRowChildOtCFO);
+                      tableRowДочерная = (TableRow)   tableLayoutДочернная.findViewById(ФиналRowмакет);
                 if(tableRowДочерная.getParent() != null) {
              /*       ((ViewGroup)tableRowДочерная.getParent()).recomputeViewAttributes(tableRowДочерная); // <- fix
                *//*     ((ViewGroup)tableRowДочерная.getParent()).removeViewInLayout(tableRowДочерная); // <- fix*/
@@ -1378,6 +1386,11 @@ class SubClassGetDateOrderGroupBy {
                        Bundle bundleДочерний=new Bundle();
                        bundleДочерний.putLong("SuccessAddRow",SuccessAddRow);
                        tableRowДочерная.setTag(bundleДочерний);
+                       tableRowДочерная.setId(SuccessAddRow.intValue());
+                       Log.d(getContext().getClass().getName(), "\n"
+                               + " время: " + new Date() + "\n+" +
+                               " Класс в процессе... " + this.getClass().getName() + "\n" +
+                               " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+ "  SuccessAddRow " +SuccessAddRow);
                    }
                    Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
