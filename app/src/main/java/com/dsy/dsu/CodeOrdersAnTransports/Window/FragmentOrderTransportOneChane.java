@@ -1192,7 +1192,7 @@ class SubClassGetDateOrderGroupBy {
                                         + " cursorgetCFO.getPosition() " + cursorgetTypeTSAndGosNomers.getPosition());
 
                                 // TODO: 26.05.2023  метод Заполнение Гос.Номер
-                              //  методВставкаГосНомер(tableLayoutРодительская, cursorgetTypeTSAndGosNomers);
+                                методВставкаГосНомер(tableLayoutРодительская, cursorgetTypeTSAndGosNomers);
 
                                 Log.d(getContext().getClass().getName(), "\n"
                                         + " время: " + new Date() + "\n+" +
@@ -1256,7 +1256,7 @@ class SubClassGetDateOrderGroupBy {
                             // TODO: 29.05.2023 Заполеяем  Вид ТС
                             String ГосНомер=     cursorgetGosNomers.getString(cursorgetGosNomers.getColumnIndex("gosmomer"));
                             materialTextViewДанныеAddRow.setText(ГосНомер.trim());
-                            materialTextViewШабкаAddRow.setText("Вид тс");
+                            materialTextViewШабкаAddRow.setText("Гос.номер");
 
                             // TODO: 29.05.2023  Вставка новой строки
                             методAddtableRowГосНомер(tableRowДочерная, tableLayoutРодительская);
@@ -1451,7 +1451,6 @@ class SubClassGetDateOrderGroupBy {
                                                 if (Successid_Gosnomer.compareTo(Successid_GosnomerРодительская)==0) {
                                                     ФлагВставлятьИлИнет=false;
                                                 }
-                                                break;
                                             }
                                         }
                                     }
@@ -1462,8 +1461,8 @@ class SubClassGetDateOrderGroupBy {
                                     tableLayoutРодительская.requestLayout();
                                     tableLayoutРодительская.refreshDrawableState();
                                 }else {
+                                    tableLayoutРодительская.removeView(tableRowДочерная);
                                     tableLayoutРодительская.refreshDrawableState();
-                                    // tableLayoutРодительская.requestLayout();
                                 }
                             }
                             Log.d(getContext().getClass().getName(), "\n"
