@@ -70,6 +70,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -320,8 +321,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 recyclerView_OrderTransport.startAnimation(animationvibr1);
                 recyclerView_OrderTransport.setHasFixedSize(false);
                 recyclerView_OrderTransport.setItemAnimator(new DefaultItemAnimator());
-                SnapHelper snapHelper = new LinearSnapHelper();
-                snapHelper.attachToRecyclerView(recyclerView_OrderTransport);
+              /*  SnapHelper snapHelper = new LinearSnapHelper();
+                snapHelper.attachToRecyclerView(recyclerView_OrderTransport);*/
                 linearLayoutManager = new LinearLayoutManager(getActivity());
                 linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                 linearLayoutManager.setSmoothScrollbarEnabled(true);
@@ -2238,9 +2239,16 @@ class SubClassGetDateOrderGroupBy {
         @NonNull
         private String методПарсингаДатыЗаказа(@NonNull  String DateOrder) throws ParseException {
             try{
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", new Locale("ru"));
+               // SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd-yyyy", new Locale("ru"));
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd" , new Locale("ru"));
             Date breamy= simpleDateFormat.parse(DateOrder);
             DateOrder = simpleDateFormat.format(breamy);
+
+
+                Calendar myCal = new GregorianCalendar();
+                myCal.setTime(breamy);
+                DateOrder=        new SimpleDateFormat("dd, MMM yyyy").format(myCal.getTime());
+
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
