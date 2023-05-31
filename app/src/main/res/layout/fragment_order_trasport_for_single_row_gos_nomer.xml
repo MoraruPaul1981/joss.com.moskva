@@ -19,7 +19,7 @@
     tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports">
     <!--  НАЧАЛО ПЕРВОГО БЛОКА -->
         <TableLayout
-            android:id="@+id/tablelayout_singleotrow"
+            android:id="@+id/tablelayout_singleot_gosnomer"
             android:shrinkColumns="*"
             android:stretchColumns="*"
             android:layout_width="match_parent"
@@ -30,7 +30,7 @@
             tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports">
             <!--//TODO начало    строчки ЦФО-->
             <TableRow
-                android:id="@+id/tableRowChildOt"
+                android:id="@+id/tableRowChildOt_gosnomer"
                 android:layout_width="match_parent"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_height="wrap_content">

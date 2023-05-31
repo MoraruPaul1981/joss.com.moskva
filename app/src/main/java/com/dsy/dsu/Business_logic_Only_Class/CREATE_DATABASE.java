@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =            1029;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+     static final int VERSION =             1030;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
     private      SQLiteDatabase ССылкаНаСозданнуюБазу;
     private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
@@ -1129,7 +1129,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
                     " SELECT         Ord._id,    vid_tc.name,  Ord.dateorders,  Ord.number_order, Ord.date_update,\n" +
                     "                      Ord.uuid,  Ord.user_update,  Ord.current_table,    track.name AS gosmomer, \n" +
                     "                                               cfo.name AS cfo,  Ord.status,    cfo._id AS id_cfo, " +
-                    "   track._id AS id_track \n" +
+                    "   track._id AS id_track   ,  vid_tc.uuid AS uuid_vid_tc,  track.uuid AS uuid_track,  cfo.uuid AS uuid_cfo \n" +
                     "                     FROM               order_tc  as Ord \n" +
                     "                    JOIN    vid_tc ON  Ord.vid_trasport =    vid_tc._id \n" +
                     "                       JOIN     cfo ON  Ord.cfo =    cfo._id \n" +
@@ -1221,9 +1221,9 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             Log.d(this.getClass().getName()," ИменаТаблицыОтАндройда " +ИменаТаблицыОтАндройда); // TODO: 28.09.2022 таблицы
             Log.d(this.getClass().getName(), " после СЛУЖБА  содание базы newVersion==  652   (например)   " + new Date() + " newVersion " + newVersion);
             
-      if(newVersion ==           1029){
+      if(newVersion ==            1030){
                //TODO table создание
-          МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
+          //МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
           МетодСозданиеViewЗаказыТранспорта(ССылкаНаСозданнуюБазу);
                    }else
             if (newVersion > oldVersion) {
