@@ -1219,10 +1219,9 @@ class SubClassGetDateOrderGroupBy {
                         try{
                             // TODO: 26.05.2023  ДочернийЭлемиент
                             TableRow tableRowДочерная = методGettableДочернаяForTypeTC(cursorgetTypeTS);
-
-                        MaterialTextView    materialTextViewДанныеAddRow =  tableRowДочерная.findViewById(R.id.ot_date_order_singlevalue);
-                        // TODO: 26.05.2023  Элемент Для Шабки
-                        MaterialTextView    materialTextViewШабкаAddRow =  tableRowДочерная.findViewById(R.id.ot_key_order_singlevalue);
+                            // TODO: 26.05.2023  Элемент Для Шабки
+                            MaterialTextView    materialTextViewШабкаAddRow =  tableRowДочерная.findViewById(R.id.ot_key_ordertype_ts);
+                            MaterialTextView    materialTextViewДанныеAddRow =  tableRowДочерная.findViewById(R.id.ot_value_ordertype_ts);
                         // TODO: 29.05.2023 Заполеяем  Вид ТС
                         String ВидТС=     cursorgetTypeTS.getString(cursorgetTypeTS.getColumnIndex("name"));
                         materialTextViewДанныеAddRow.setText(ВидТС.trim());
