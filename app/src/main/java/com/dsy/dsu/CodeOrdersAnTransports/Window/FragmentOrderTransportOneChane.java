@@ -2247,7 +2247,7 @@ class SubClassGetDateOrderGroupBy {
 
                 Calendar myCal = new GregorianCalendar();
                 myCal.setTime(breamy);
-                DateOrder=        new SimpleDateFormat("dd, MMM yyyy").format(myCal.getTime());
+                DateOrder=        new SimpleDateFormat("dd,MMM yyyy").format(myCal.getTime());
 
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
