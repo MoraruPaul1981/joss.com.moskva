@@ -1313,6 +1313,7 @@ class SubClassGetDateOrderGroupBy {
                                             if(UUidРодительской.compareTo(UUIDДочернийская)==0){
                                                 if (Successid_cfo.compareTo(Successid_cfoРодительская)==0) {
                                                     ФлагВставлятьИлИнет=false;
+                                                    break;
                                                 }
                                             }
                                         }
@@ -1382,6 +1383,7 @@ class SubClassGetDateOrderGroupBy {
                                             if(UUidРодительской.compareTo(UUIDДочернийская)==0){
                                                 if (Successid_uuid_track.compareTo(Successid_uuid_trackРодительская)==0) {
                                                     ФлагВставлятьИлИнет=false;
+                                                    break;
                                                 }
                                             }
                                         }
@@ -1451,6 +1453,7 @@ class SubClassGetDateOrderGroupBy {
                                             if(UUidРодительской.compareTo(UUIDДочернийская)==0){
                                                 if (Successid_Gosnomer.compareTo(Successid_GosnomerРодительская)==0) {
                                                     ФлагВставлятьИлИнет=false;
+                                                    break;
                                                 }
                                             }
                                         }
