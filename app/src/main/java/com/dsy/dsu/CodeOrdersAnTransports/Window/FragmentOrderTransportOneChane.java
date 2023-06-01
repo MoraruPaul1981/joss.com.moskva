@@ -133,8 +133,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
             // TODO: 29.05.2023  new Классов
             subClassOrdersTransport =new SubClassOrdersTransport(getActivity());
             getsubClassAdapterMyRecyclerview= subClassOrdersTransport.new SubClassAdapters() ;
-            // TODO: 23.05.2023 Биндинг
-            subClassOrdersTransport.   МетодБиндингOrderTransport();
             lifecycleOwner =this;
             lifecycleOwnerОбщая=this;
             // TODO: 04.05.2023
@@ -209,6 +207,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
             start=     Calendar.getInstance().getTimeInMillis();
             startДляОбноразвовной=     Calendar.getInstance().getTimeInMillis();
             //todo запуск методов в фрагменте
+            // TODO: 23.05.2023 Биндинг
+            subClassOrdersTransport.   МетодБиндингOrderTransport();
             subClassOrdersTransport.   МетодHandlerCallBack();
             subClassOrdersTransport.   МетодВыходНаAppBack();
             // TODO: 04.05.2023 Анимация
@@ -989,7 +989,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 LinkedHashMap<String,String> linkedHashMapДеньМесяцГод=     localBinderOrderTransport.   методGetТриЗначениеГодМесяцДень();
                 // TODO: 04.05.2023  получаем первоночальыне Данные  #1
                 HashMap<String,String> datasendMap=new HashMap();
-                datasendMap.putIfAbsent("1","  SELECT  _id, dateorders, status,  strftime('%Y', dateorders)  AS Year, strftime('%m', dateorders)  AS Month," +
+                datasendMap.putIfAbsent("1","  SELECT DISTINCT  _id, dateorders, status,  strftime('%Y', dateorders)  AS Year, strftime('%m', dateorders)  AS Month," +
                         " strftime('%d', dateorders)  AS Day, COUNT(*) AS getcounts" +
                         "  FROM  view_ordertransport ");
                 datasendMap.putIfAbsent("2"," WHERE dateorders  IS NOT NULL " +
@@ -1235,7 +1235,7 @@ class SubClassGetDateOrderGroupBy {
                                 методAddtableRowВидТСAndГосНомер(tableRowДочерная, tableLayoutРодительская);
 
                                 // TODO: 01.06.2023   Выравниваем Линнии  в  Row
-                                методВыравнивемЛиниюДизайнВСтавлнойRow(tableRowДочерная);
+                                методВыравнивемЛиниюДизайнВСтавлнойRow(tableRowДочерная,tableLayoutРодительская);
 
                                 Log.d(getContext().getClass().getName(), "\n"
                                         + " время: " + new Date() + "\n+" +
@@ -1267,8 +1267,10 @@ class SubClassGetDateOrderGroupBy {
                             MaterialTextView    materialTextViewДанныеAddRow =  tableRowДочерная.findViewById(R.id.ot_value_ordertype_ts);
                         // TODO: 29.05.2023 Заполеяем  Вид ТС
                         String ВидТС=     cursorgetTypeTS.getString(cursorgetTypeTS.getColumnIndex("name"));
-                        materialTextViewДанныеAddRow.setText(ВидТС.trim());
-                        materialTextViewШабкаAddRow.setText("Вид тс");
+                            if (ВидТС!=null) {
+                                materialTextViewДанныеAddRow.setText(ВидТС.trim());
+                            }
+                            materialTextViewШабкаAddRow.setText("Вид тс");
                         
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
@@ -1297,7 +1299,9 @@ class SubClassGetDateOrderGroupBy {
                             MaterialTextView    materialTextViewДанныеAddRow =  tableRowДочерная.findViewById(R.id.ot_value_ordertype_gos_nomer);
                             // TODO: 29.05.2023 Заполеяем  Вид ТС
                             String ГосНомер=     cursorgetGosNomers.getString(cursorgetGosNomers.getColumnIndex("gosmomer"));
-                            materialTextViewДанныеAddRow.setText(ГосНомер.trim());
+                            if (ГосНомер!=null) {
+                                materialTextViewДанныеAddRow.setText(ГосНомер.trim());
+                            }
                             materialTextViewШабкаAddRow.setText("Гос.номер");
 
                             // TODO: 29.05.2023  Вставка новой строки
@@ -1326,9 +1330,11 @@ class SubClassGetDateOrderGroupBy {
                             Bundle bundletablДочернийскаяBungle=(Bundle)        tableRowДочернаяВсталяемая.getTag();
                             Long  UUIDДочернийская= 0l;
                             Long  Successid_cfo= 0l;
+                            String  Successname_cfo = null;
                             if (bundletablДочернийскаяBungle!=null) {
                                 UUIDДочернийская = bundletablДочернийскаяBungle.getLong("SuccessAddRow");
                                 Successid_cfo = bundletablДочернийскаяBungle.getLong("Successid_cfo");
+                                Successname_cfo = bundletablДочернийскаяBungle.getString("Successname_cfo");
                             }
                             if(tableRowДочернаяВсталяемая.getParent() != null) {
                                 ((ViewGroup)tableRowДочернаяВсталяемая.getParent()).removeView(tableRowДочернаяВсталяемая); // <- fix
@@ -1340,30 +1346,47 @@ class SubClassGetDateOrderGroupBy {
                                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
                                     + " tableLayoutРодительская " +tableLayoutРодительская.getChildCount()+ " IdRowДочернегоВставляемого "+IdRowДочернегоВставляемого);
                            // TODO: 30.05.2023  clear PArent
+                            Boolean ФлагЧтоНадоНовыйЭлемент=true;
                             if (tableLayoutРодительская!=null && tableLayoutРодительская.getChildCount()>0) {
                                 for (int i = 0; i < tableLayoutРодительская.getChildCount(); i++) {
                                     TableRow tableRowродительскаяУжеСуществует = (TableRow) tableLayoutРодительская.getChildAt(i);
                                     if (tableRowродительскаяУжеСуществует!=null) {
-                                        Bundle bundletableRowродительскаяBungle=(Bundle)      tableRowродительскаяУжеСуществует.getTag();
-                                        if (bundletableRowродительскаяBungle!=null) {
-                                            Long  UUidРодительской=   bundletableRowродительскаяBungle.getLong("SuccessAddRow");
-                                            Long  Successid_cfoРодительская=   bundletableRowродительскаяBungle.getLong("Successid_cfo");
-                                            Long  Successid_uuid_trackРодительская=   bundletableRowродительскаяBungle.getLong("Successid_uuid_track");
+                                        Bundle bundletableRowродительскаяУжеСуществует=(Bundle)      tableRowродительскаяУжеСуществует.getTag();
+                                        if (bundletableRowродительскаяУжеСуществует!=null) {
+                                            Long  UUidУжеСуществует=   bundletableRowродительскаяУжеСуществует.getLong("SuccessAddRow");
+                                            Long  Successid_cfoУжеСуществует=   bundletableRowродительскаяУжеСуществует.getLong("Successid_cfo");
+                                            String  Successname_cfoУжеСуществует=   bundletableRowродительскаяУжеСуществует.getString("Successname_cfo");
+                                            // TODO: 01.06.2023  Ещу Одно Условие
+                                            if (Successname_cfoУжеСуществует.equalsIgnoreCase(Successname_cfo)==true ){
+                                                ФлагЧтоНадоНовыйЭлемент=false;
+                                                break;
+                                            }
+                                            
                                            // TODO: 30.05.2023  get Chilred
-                                            if(UUidРодительской.compareTo(UUIDДочернийская)==0){
-                                                if (Successid_cfo.compareTo(Successid_cfoРодительская)==0) {
-                                                    tableLayoutРодительская.removeView(tableRowродительскаяУжеСуществует);
-                                                    break;
+                                            if(UUidУжеСуществует.compareTo(UUIDДочернийская)==0){
+                                                if (Successid_cfoУжеСуществует>0) {
+                                                    if (Successid_cfo.compareTo(Successid_cfoУжеСуществует)==0) {
+                                                        tableLayoutРодительская.removeView(tableRowродительскаяУжеСуществует);
+                                                        ФлагЧтоНадоНовыйЭлемент=false;
+                                                        break;
+                                                    }
                                                 }
                                             }
+                                            Log.d(getContext().getClass().getName(), "\n"
+                                                    + " время: " + new Date() + "\n+" +
+                                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                                    + " UUidУжеСуществует " +UUidУжеСуществует + "Successid_cfo "+ " Successid_cfoУжеСуществует "+Successid_cfoУжеСуществует+
+                                                    " Successname_cfoУжеСуществует "+Successname_cfoУжеСуществует+" Successname_cfo "+Successname_cfo + " ФлагЧтоНадоНовыйЭлемент " +ФлагЧтоНадоНовыйЭлемент);
+                                            // TODO: 01.06.2023   второе условие
                                         }
                                     }
                                 }
-                                // TODO: 30.05.2023
-
+                                if (     ФлагЧтоНадоНовыйЭлемент==true) {
+                                    // TODO: 30.05.2023
                                     tableLayoutРодительская.addView(tableRowДочернаяВсталяемая);
-                                    tableLayoutРодительская.requestLayout();
-                                    tableLayoutРодительская.refreshDrawableState();
+                                }
+
 
                                 // TODO: 01.06.2023 refre screen
                             }
@@ -1481,20 +1504,24 @@ class SubClassGetDateOrderGroupBy {
                                 for (int i = 0; i < tableLayoutРодительская.getChildCount(); i++) {
                                     TableRow tableRowродительскаяУжеСуществует = (TableRow) tableLayoutРодительская.getChildAt(i);
                                     if (tableRowродительскаяУжеСуществует!=null) {
-                                        Bundle bundletableRowродительскаяBungle=(Bundle)      tableRowродительскаяУжеСуществует.getTag();
-                                        if (bundletableRowродительскаяBungle!=null) {
-                                            Long  UUidРодительской=   bundletableRowродительскаяBungle.getLong("SuccessAddRow");
-                                            Long  Successid_uuid_trackРодительская=   bundletableRowродительскаяBungle.getLong("Successid_uuid_track");
-                                            Long  Successid_GosnomerРодительская=   bundletableRowродительскаяBungle.getLong("Successid_Gosnomer");
+                                        Bundle bundletableRowродительскаяУжеСуществует=(Bundle)      tableRowродительскаяУжеСуществует.getTag();
+                                        if (bundletableRowродительскаяУжеСуществует!=null) {
+                                            Long  UUidУжеСуществует=   bundletableRowродительскаяУжеСуществует.getLong("SuccessAddRow");
+                                            Long  Successid_uuid_УжеСуществует=   bundletableRowродительскаяУжеСуществует.getLong("Successid_uuid_track");
+                                            Long  Successid_GosnomerУжеСуществует=   bundletableRowродительскаяУжеСуществует.getLong("Successid_Gosnomer");
                                             // TODO: 30.05.2023  get Chilred
-                                            if(UUidРодительской.compareTo(UUIDДочернийская)==0){
-                                                if (Successid_uuid_track.compareTo(Successid_uuid_trackРодительская)==0) {
-                                                    tableLayoutРодительская.removeView(tableRowродительскаяУжеСуществует);
-                                                    break;
+                                            if(UUidУжеСуществует.compareTo(UUIDДочернийская)==0){
+                                                if (Successid_uuid_УжеСуществует>0) {
+                                                    if (Successid_uuid_track.compareTo(Successid_uuid_УжеСуществует)==0) {
+                                                        tableLayoutРодительская.removeView(tableRowродительскаяУжеСуществует);
+                                                        break;
+                                                    }
                                                 }
-                                                if (Successid_Gosnomer.compareTo(Successid_GosnomerРодительская)==0) {
-                                                    tableLayoutРодительская.removeView(tableRowродительскаяУжеСуществует);
-                                                    break;
+                                                if (Successid_GosnomerУжеСуществует>0) {
+                                                    if (Successid_Gosnomer.compareTo(Successid_GosnomerУжеСуществует)==0) {
+                                                        tableLayoutРодительская.removeView(tableRowродительскаяУжеСуществует);
+                                                        break;
+                                                    }
                                                 }
                                             }
                                         }
@@ -1502,9 +1529,6 @@ class SubClassGetDateOrderGroupBy {
                                 }
                                 // TODO: 30.05.2023 Вставка Строчки ROW
                                     tableLayoutРодительская.addView(tableRowДочернаяВсталяемая);
-                                    tableLayoutРодительская.requestLayout();
-                                    tableLayoutРодительская.refreshDrawableState();
-
                             }
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
@@ -1600,7 +1624,8 @@ class SubClassGetDateOrderGroupBy {
 
 
             // TODO: 01.06.2023  выравниваем дизайн линию
-            private void методВыравнивемЛиниюДизайнВСтавлнойRow(@NonNull TableRow tableRowДочернаяУжеВсатвновое) {
+            private void методВыравнивемЛиниюДизайнВСтавлнойRow(@NonNull TableRow tableRowДочернаяУжеВсатвновое
+                    ,@NonNull TableLayout tableLayoutРодительская) {
              try{
                  // TODO: 26.05.2023  Элемент Для Шабки
                  MaterialTextView    materialTextViewДанныеAddRowГосНомер =  tableRowДочернаяУжеВсатвновое.findViewById(R.id.ot_value_ordertype_gos_nomer);
@@ -1620,8 +1645,8 @@ class SubClassGetDateOrderGroupBy {
                                  materialTextViewДанныеAddRowГосНомер.setHeight( heightТипТС);
                              }
                          }
-                         materialTextViewДанныеAddRowГосНомер.requestLayout();
-                         materialTextViewДанныеAddRowВидТс.requestLayout();
+                         tableLayoutРодительская.requestLayout();
+                         tableLayoutРодительская.refreshDrawableState();
                      }
                  });
 
@@ -1660,11 +1685,12 @@ class SubClassGetDateOrderGroupBy {
                    if (cursorListCFO!=null && cursorListCFO.getCount()>0) {
                        Long SuccessAddRow=     cursorListCFO.getLong(cursorListCFO.getColumnIndex("uuid"));
                        Long Successid_cfo=     cursorListCFO.getLong(cursorListCFO.getColumnIndex("uuid_cfo"));
+                       String Successname_cfo=     cursorListCFO.getString(cursorListCFO.getColumnIndex("cfo")).trim();
                        Bundle bundleДочерний=new Bundle();
                        bundleДочерний.putLong("SuccessAddRow",SuccessAddRow);
                        bundleДочерний.putLong("Successid_cfo",Successid_cfo);
+                       bundleДочерний.putString("Successname_cfo",Successname_cfo);
                        tableRowДочерная.setTag(bundleДочерний);
-                       tableRowДочерная.setId(SuccessAddRow.intValue());
                        Log.d(getContext().getClass().getName(), "\n"
                                + " время: " + new Date() + "\n+" +
                                " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1710,7 +1736,6 @@ class SubClassGetDateOrderGroupBy {
                         bundleДочерний.putLong("Successid_uuid_track",Successid_uuid_track);
                         bundleДочерний.putLong("Successid_Gosnomer",Successid_Gosnomer);
                         tableRowДочерная.setTag(bundleДочерний);
-                        tableRowДочерная.setId(SuccessAddRow.intValue());
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
                                 " Класс в процессе... " + this.getClass().getName() + "\n" +
