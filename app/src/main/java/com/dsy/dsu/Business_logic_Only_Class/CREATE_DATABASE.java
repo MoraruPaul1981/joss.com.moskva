@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =             1030;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+     static final int VERSION =             1031;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
     private      SQLiteDatabase ССылкаНаСозданнуюБазу;
     private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
@@ -1131,9 +1131,9 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
                     "                                               cfo.name AS cfo,  Ord.status,    cfo._id AS id_cfo, " +
                     "   track._id AS id_track   ,  vid_tc.uuid AS uuid_vid_tc,  track.uuid AS uuid_track,  cfo.uuid AS uuid_cfo \n" +
                     "                     FROM               order_tc  as Ord \n" +
-                    "                    JOIN    vid_tc ON  Ord.vid_trasport =    vid_tc._id \n" +
+                    "                     LEFT JOIN    vid_tc ON  Ord.vid_trasport =    vid_tc._id \n" +
+                    "                      LEFT JOIN    track ON  Ord.gos_nomer =    track._id \n" +
                     "                       JOIN     cfo ON  Ord.cfo =    cfo._id \n" +
-                    "                     JOIN    track ON  Ord.gos_nomer =    track._id \n" +
                     "                      WHERE        (   vid_tc.name IS NOT NULL    )\n" +
                     "\t" );
 
@@ -1221,7 +1221,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             Log.d(this.getClass().getName()," ИменаТаблицыОтАндройда " +ИменаТаблицыОтАндройда); // TODO: 28.09.2022 таблицы
             Log.d(this.getClass().getName(), " после СЛУЖБА  содание базы newVersion==  652   (например)   " + new Date() + " newVersion " + newVersion);
             
-      if(newVersion ==            1030){
+      if(newVersion ==            1031){
                //TODO table создание
           //МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
           МетодСозданиеViewЗаказыТранспорта(ССылкаНаСозданнуюБазу);
