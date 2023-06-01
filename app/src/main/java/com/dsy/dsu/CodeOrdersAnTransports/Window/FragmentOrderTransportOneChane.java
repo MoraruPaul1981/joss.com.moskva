@@ -40,6 +40,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
@@ -240,9 +241,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
         super.onStop();
         try{
             WorkManager.getInstance(getContext()).cancelUniqueWork(ИмяСлужбыСинхронизациОдноразовая);
-
-            WorkManager.getInstance(getContext()).cancelUniqueWork(ИмяСлужбыСинхронизацииОбщая);
-
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
@@ -640,11 +638,9 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                             long end = Calendar.getInstance().getTimeInMillis();
                                             long РазницаВоврмени = end - startДляОбноразвовной;
                                             if (РазницаВоврмени > 10000) {
-                                                if (CallBaskОтWorkManager >= 0) {
                                                     методGetCursorReboot();
                                                     // TODO: 23.05.2023  экран
                                                     WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая).removeObservers(lifecycleOwnerОбщая);
-                                                }
                                             }
                                         }
                                     }
@@ -1238,6 +1234,9 @@ class SubClassGetDateOrderGroupBy {
                                 // TODO: 29.05.2023  Вставка новой строки
                                 методAddtableRowВидТСAndГосНомер(tableRowДочерная, tableLayoutРодительская);
 
+                                // TODO: 01.06.2023   Выравниваем Линнии  в  Row
+                                методВыравнивемЛиниюДизайнВСтавлнойRow(tableRowДочерная);
+
                                 Log.d(getContext().getClass().getName(), "\n"
                                         + " время: " + new Date() + "\n+" +
                                         " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1270,9 +1269,7 @@ class SubClassGetDateOrderGroupBy {
                         String ВидТС=     cursorgetTypeTS.getString(cursorgetTypeTS.getColumnIndex("name"));
                         materialTextViewДанныеAddRow.setText(ВидТС.trim());
                         materialTextViewШабкаAddRow.setText("Вид тс");
-
-                     /*   // TODO: 29.05.2023  Вставка новой строки
-                            методAddtableRowВидТС(tableRowДочерная, tableLayoutРодительская);*/
+                        
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
                                 " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1600,6 +1597,49 @@ class SubClassGetDateOrderGroupBy {
                     // TODO: 29.05.2023 КОНЕЦ КЛАССА
 
 }
+
+
+            // TODO: 01.06.2023  выравниваем дизайн линию
+            private void методВыравнивемЛиниюДизайнВСтавлнойRow(@NonNull TableRow tableRowДочернаяУжеВсатвновое) {
+             try{
+                 // TODO: 26.05.2023  Элемент Для Шабки
+                 MaterialTextView    materialTextViewДанныеAddRowГосНомер =  tableRowДочернаяУжеВсатвновое.findViewById(R.id.ot_value_ordertype_gos_nomer);
+                 // TODO: 26.05.2023  Элемент Для Шабки
+                 MaterialTextView    materialTextViewДанныеAddRowВидТс =  tableRowДочернаяУжеВсатвновое.findViewById(R.id.ot_value_ordertype_ts);
+
+                 materialTextViewДанныеAddRowГосНомер.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                     @Override
+                     public void onGlobalLayout() {
+                         materialTextViewДанныеAddRowГосНомер.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                         int heightГосНомер =  materialTextViewДанныеAddRowГосНомер.getHeight();
+                         int heightТипТС =  materialTextViewДанныеAddRowВидТс.getHeight();
+                         if(heightГосНомер>heightТипТС){
+                             materialTextViewДанныеAddRowВидТс.setHeight( heightГосНомер);
+                         }else {
+                             if(heightТипТС>heightГосНомер) {
+                                 materialTextViewДанныеAddRowГосНомер.setHeight( heightТипТС);
+                             }
+                         }
+                         materialTextViewДанныеAddRowГосНомер.requestLayout();
+                         materialTextViewДанныеAddRowВидТс.requestLayout();
+                     }
+                 });
+
+
+                 Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " tableRowДочернаяУжеВсатвновое " +tableRowДочернаяУжеВсатвновое);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+            }
 
 
             // TODO: 30.05.2023 Получение Get получение Дочерненго Элемента
