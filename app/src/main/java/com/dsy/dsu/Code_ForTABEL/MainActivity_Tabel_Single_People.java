@@ -557,7 +557,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private void МетодЗаполениеЭкранНАзваниеФИоИПрофесиии() {
         try{
             textViewчасыsimgletabel.setText("");
-            textViewчасыsimgletabel.setText(ФИОТекущегоСотрудника.trim() + "\n"+ "( "+Профессия.trim()+ " )"); ///строго имя
+            textViewчасыsimgletabel.setText(ФИОТекущегоСотрудника.trim() + "\n"+ "("+Профессия.trim()+ " )"); ///строго имя
             Log.d(this.getClass().getName(), " ФИО " + ФИОТекущегоСотрудника + " Профессия " +Профессия);
         } catch (Exception e) {
             e.printStackTrace();
@@ -2832,7 +2832,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 //TODO ЗАПОЛЯНЕМ ПОЛУЧЕННЫЙ МЕСЯ Ц ПЛУС КОЛИЧЕСТВО ЧАСОВ СОТРУДНИКА КОНКРЕТНОГО
                 Integer   ЧасыТекущегоСОтрудника = new Class_MODEL_synchronized(getApplicationContext()).МетодПосчётаЧасовПоСотруднику(cursor);
                 Log.d(this.getClass().getName(), "  ЧасыТекущегоСОтрудника " + ЧасыТекущегоСОтрудника);
-                textViewчасыsimgletabel.setText(" (" + " " + ЧасыТекущегоСОтрудника + "/часы)  "
+                textViewчасыsimgletabel.setText("(" + ЧасыТекущегоСОтрудника + "/часы)  "
                         + ""+ ПозицуияВыбраногоСОтрудника+" из "+  cursor.getCount()+"");
                 Log.d(Class_MODEL_synchronized.class.getName()," RowNumber  " + " cursor " +cursor.getPosition()
                         +"myViewHolder.getLayoutPosition()   "+myViewHolder.getLayoutPosition() + "PositionCustomer  " + PositionCustomer);
@@ -2853,7 +2853,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 //TODO ЗАПОЛЯНЕМ ПОЛУЧЕННЫЙ МЕСЯ Ц ПЛУС КОЛИЧЕСТВО ЧАСОВ СОТРУДНИКА КОНКРЕТНОГО
                 Integer   ЧасыТекущегоСОтрудника = new Class_MODEL_synchronized(getApplicationContext()).МетодПосчётаЧасовПоСотруднику(cursorЧасы);
                 Log.d(this.getClass().getName(), "  ЧасыТекущегоСОтрудника " + ЧасыТекущегоСОтрудника);
-                textViewчасыsimgletabel.setText(" (" + " " + ЧасыТекущегоСОтрудника + "/часы)  "
+                textViewчасыsimgletabel.setText("("+ ЧасыТекущегоСОтрудника + "/часы)"
                         + ""+ позицияЧасы+" из "+  cursor.getCount()+"");
                 Log.d(Class_MODEL_synchronized.class.getName()," RowNumber  " + " cursor " +cursor.getPosition()
                         +"myViewHolder.getLayoutPosition()   "+holder.getLayoutPosition() + "cursorЧасы  " + cursorЧасы + " cursor  "+cursor);
@@ -2898,7 +2898,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                         СообщениеИнформацияОСотруднике("Данные",  "ФИО: " +ФИОИнфо+
                                                 "\n"+"День рождения: " +ДеньРОжденияИНФО+
                                                 "\n"+"СНИЛС: " +СНИЛСИНфо+
-                                                "\n" +"Должость: " + "( "+bundleTabelViewПрофессияФИО.getString("Профессия").trim()+ " )");
+                                                "\n" +"Должость: " + "("+bundleTabelViewПрофессияФИО.getString("Профессия").trim()+ " )");
 
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
