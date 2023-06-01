@@ -1315,21 +1315,21 @@ class SubClassGetDateOrderGroupBy {
                     }
 
                     // TODO: 26.05.2023 заполение Строчки
-                    private void методAddtableRowЦФО(@NonNull TableRow tableRowДочерная,
+                    private void методAddtableRowЦФО(@NonNull TableRow tableRowДочернаяВсталяемая,
                                                   @NonNull TableLayout tableLayoutРодительская) {
                         try {
                             // TODO: 30.05.2023 clear child
-                            Bundle bundletablДочернийскаяBungle=(Bundle)        tableRowДочерная.getTag();
+                            Bundle bundletablДочернийскаяBungle=(Bundle)        tableRowДочернаяВсталяемая.getTag();
                             Long  UUIDДочернийская= 0l;
                             Long  Successid_cfo= 0l;
                             if (bundletablДочернийскаяBungle!=null) {
                                 UUIDДочернийская = bundletablДочернийскаяBungle.getLong("SuccessAddRow");
                                 Successid_cfo = bundletablДочернийскаяBungle.getLong("Successid_cfo");
                             }
-                            if(tableRowДочерная.getParent() != null) {
-                                ((ViewGroup)tableRowДочерная.getParent()).removeView(tableRowДочерная); // <- fix
+                            if(tableRowДочернаяВсталяемая.getParent() != null) {
+                                ((ViewGroup)tableRowДочернаяВсталяемая.getParent()).removeView(tableRowДочернаяВсталяемая); // <- fix
                             }
-                        Integer IdRowДочернегоВставляемого=    tableRowДочерная.getId();
+                        Integer IdRowДочернегоВставляемого=    tableRowДочернаяВсталяемая.getId();
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
                                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1337,11 +1337,10 @@ class SubClassGetDateOrderGroupBy {
                                     + " tableLayoutРодительская " +tableLayoutРодительская.getChildCount()+ " IdRowДочернегоВставляемого "+IdRowДочернегоВставляемого);
                            // TODO: 30.05.2023  clear PArent
                             if (tableLayoutРодительская!=null && tableLayoutРодительская.getChildCount()>0) {
-                                Boolean ФлагВставлятьИлИнет=true;
                                 for (int i = 0; i < tableLayoutРодительская.getChildCount(); i++) {
-                                    TableRow tableRowродительскаяBungle = (TableRow) tableLayoutРодительская.getChildAt(i);
-                                    if (tableRowродительскаяBungle!=null) {
-                                        Bundle bundletableRowродительскаяBungle=(Bundle)      tableRowродительскаяBungle.getTag();
+                                    TableRow tableRowродительскаяУжеСуществует = (TableRow) tableLayoutРодительская.getChildAt(i);
+                                    if (tableRowродительскаяУжеСуществует!=null) {
+                                        Bundle bundletableRowродительскаяBungle=(Bundle)      tableRowродительскаяУжеСуществует.getTag();
                                         if (bundletableRowродительскаяBungle!=null) {
                                             Long  UUidРодительской=   bundletableRowродительскаяBungle.getLong("SuccessAddRow");
                                             Long  Successid_cfoРодительская=   bundletableRowродительскаяBungle.getLong("Successid_cfo");
@@ -1349,7 +1348,7 @@ class SubClassGetDateOrderGroupBy {
                                            // TODO: 30.05.2023  get Chilred
                                             if(UUidРодительской.compareTo(UUIDДочернийская)==0){
                                                 if (Successid_cfo.compareTo(Successid_cfoРодительская)==0) {
-                                                    ФлагВставлятьИлИнет=false;
+                                                    tableLayoutРодительская.removeView(tableRowродительскаяУжеСуществует);
                                                     break;
                                                 }
                                             }
@@ -1357,15 +1356,12 @@ class SubClassGetDateOrderGroupBy {
                                     }
                                 }
                                 // TODO: 30.05.2023
-                                if (ФлагВставлятьИлИнет==true) {
-                                    tableLayoutРодительская.addView(tableRowДочерная);
+
+                                    tableLayoutРодительская.addView(tableRowДочернаяВсталяемая);
                                     tableLayoutРодительская.requestLayout();
                                     tableLayoutРодительская.refreshDrawableState();
-                                }else {
-                                    tableLayoutРодительская.removeView(tableRowДочерная);
-                                    tableLayoutРодительская.refreshDrawableState();
-                                   // tableLayoutРодительская.requestLayout();
-                                }
+
+                                // TODO: 01.06.2023 refre screen
                             }
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
@@ -1454,11 +1450,11 @@ class SubClassGetDateOrderGroupBy {
                     }
 
                     // TODO: 26.05.2023 заполение Строчки
-                    private void методAddtableRowВидТСAndГосНомер(@NonNull TableRow tableRowДочерная,
+                    private void методAddtableRowВидТСAndГосНомер(@NonNull TableRow tableRowДочернаяВсталяемая,
                                                        @NonNull TableLayout tableLayoutРодительская) {
                         try {
                             // TODO: 30.05.2023 clear child
-                            Bundle bundletablДочернийскаяBungle=(Bundle)        tableRowДочерная.getTag();
+                            Bundle bundletablДочернийскаяBungle=(Bundle)        tableRowДочернаяВсталяемая.getTag();
                             Long  UUIDДочернийская= 0l;
                             Long  Successid_uuid_track= 0l;
                             Long  Successid_Gosnomer= 0l;
@@ -1467,10 +1463,10 @@ class SubClassGetDateOrderGroupBy {
                                 Successid_uuid_track = bundletablДочернийскаяBungle.getLong("Successid_uuid_track");
                                 Successid_Gosnomer = bundletablДочернийскаяBungle.getLong("Successid_Gosnomer");
                             }
-                            if(tableRowДочерная.getParent() != null) {
-                                ((ViewGroup)tableRowДочерная.getParent()).removeView(tableRowДочерная); // <- fix
+                            if(tableRowДочернаяВсталяемая.getParent() != null) {
+                                ((ViewGroup)tableRowДочернаяВсталяемая.getParent()).removeView(tableRowДочернаяВсталяемая); // <- fix
                             }
-                            Integer IdRowДочернегоВставляемого=    tableRowДочерная.getId();
+                            Integer IdRowДочернегоВставляемого=    tableRowДочернаяВсталяемая.getId();
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
                                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1478,11 +1474,10 @@ class SubClassGetDateOrderGroupBy {
                                     + " tableLayoutРодительская " +tableLayoutРодительская.getChildCount()+ " IdRowДочернегоВставляемого "+IdRowДочернегоВставляемого);
                             // TODO: 30.05.2023  clear PArent
                             if (tableLayoutРодительская!=null && tableLayoutРодительская.getChildCount()>0) {
-                                Boolean ФлагВставлятьИлИнет=true;
                                 for (int i = 0; i < tableLayoutРодительская.getChildCount(); i++) {
-                                    TableRow tableRowродительскаяBungle = (TableRow) tableLayoutРодительская.getChildAt(i);
-                                    if (tableRowродительскаяBungle!=null) {
-                                        Bundle bundletableRowродительскаяBungle=(Bundle)      tableRowродительскаяBungle.getTag();
+                                    TableRow tableRowродительскаяУжеСуществует = (TableRow) tableLayoutРодительская.getChildAt(i);
+                                    if (tableRowродительскаяУжеСуществует!=null) {
+                                        Bundle bundletableRowродительскаяBungle=(Bundle)      tableRowродительскаяУжеСуществует.getTag();
                                         if (bundletableRowродительскаяBungle!=null) {
                                             Long  UUidРодительской=   bundletableRowродительскаяBungle.getLong("SuccessAddRow");
                                             Long  Successid_uuid_trackРодительская=   bundletableRowродительскаяBungle.getLong("Successid_uuid_track");
@@ -1490,24 +1485,22 @@ class SubClassGetDateOrderGroupBy {
                                             // TODO: 30.05.2023  get Chilred
                                             if(UUidРодительской.compareTo(UUIDДочернийская)==0){
                                                 if (Successid_uuid_track.compareTo(Successid_uuid_trackРодительская)==0) {
-                                                    ФлагВставлятьИлИнет=false;
+                                                    tableLayoutРодительская.removeView(tableRowродительскаяУжеСуществует);
                                                     break;
                                                 }
                                                 if (Successid_Gosnomer.compareTo(Successid_GosnomerРодительская)==0) {
-                                                    ФлагВставлятьИлИнет=false;
+                                                    tableLayoutРодительская.removeView(tableRowродительскаяУжеСуществует);
                                                     break;
                                                 }
                                             }
                                         }
                                     }
                                 }
-                                // TODO: 30.05.2023 Вставка Строчки ROW 
-                                if (ФлагВставлятьИлИнет==true) {
-                                    tableLayoutРодительская.addView(tableRowДочерная);
-                                }else {
-                                    // TODO: 31.05.2023  Удаление Строчки ROW
-                                    tableLayoutРодительская.removeView(tableRowДочерная);
-                                }
+                                // TODO: 30.05.2023 Вставка Строчки ROW
+                                    tableLayoutРодительская.addView(tableRowДочернаяВсталяемая);
+                                    tableLayoutРодительская.requestLayout();
+                                    tableLayoutРодительская.refreshDrawableState();
+
                             }
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
