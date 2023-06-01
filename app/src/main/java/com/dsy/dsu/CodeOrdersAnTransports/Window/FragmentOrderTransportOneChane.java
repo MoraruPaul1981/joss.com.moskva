@@ -1357,12 +1357,14 @@ class SubClassGetDateOrderGroupBy {
                                             Long  Successid_cfoУжеСуществует=   bundletableRowродительскаяУжеСуществует.getLong("Successid_cfo");
                                             String  Successname_cfoУжеСуществует=   bundletableRowродительскаяУжеСуществует.getString("Successname_cfo");
                                             // TODO: 01.06.2023  Ещу Одно Условие
-                                            if (Successname_cfoУжеСуществует.equalsIgnoreCase(Successname_cfo)==true ){
-                                                ФлагЧтоНадоНовыйЭлемент=false;
-                                                break;
+                                            if (Successname_cfoУжеСуществует!=null) {
+                                                if (Successname_cfoУжеСуществует.equalsIgnoreCase(Successname_cfo)==true ){
+                                                    ФлагЧтоНадоНовыйЭлемент=false;
+                                                    break;
+                                                }
                                             }
-                                            
-                                           // TODO: 30.05.2023  get Chilred
+
+                                            // TODO: 30.05.2023  get Chilred
                                             if(UUidУжеСуществует.compareTo(UUIDДочернийская)==0){
                                                 if (Successid_cfoУжеСуществует>0) {
                                                     if (Successid_cfo.compareTo(Successid_cfoУжеСуществует)==0) {
