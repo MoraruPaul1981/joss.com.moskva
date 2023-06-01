@@ -41,18 +41,22 @@
         <ScrollView
             android:id="@+id/ScrollFaceApp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_height="620dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageView_ЗначекApp">
+            app:layout_constraintTop_toBottomOf="@id/imageView_ЗначекApp"
+            app:layout_constraintVertical_bias="0.52">
 
             <LinearLayout
                 android:id="@+id/LineLayFaceApp"
                 android:layout_width="match_parent"
-                android:layout_height="650dp"
+                android:layout_height="match_parent"
                 android:layout_marginTop="1dp"
                 android:layout_marginBottom="50dp"
                 android:gravity="center"
@@ -68,7 +72,7 @@
                 <!--todo ТАБЕЛЬ-->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
-                    android:layout_height="140dp"
+                    android:layout_height="130dp"
                     android:animateLayoutChanges="true"
                     android:checkable="true"
                     android:clickable="true"
@@ -80,11 +84,11 @@
                     android:textSize="10sp"
                     android:translationZ="15dp"
                     app:cardBackgroundColor="#FFFFFF"
-                    app:strokeColor="#DCDADA"
                     app:cardCornerRadius="1dp"
                     app:cardElevation="2dp"
                     app:cardMaxElevation="100dp"
-                    app:strokeWidth="1dp">
+                    app:strokeColor="#DCDADA"
+                    app:strokeWidth="2dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -143,7 +147,7 @@
                 <!--todo СОГЛАСОВАНИЕ-->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
-                    android:layout_height="140dp"
+                    android:layout_height="130dp"
                     android:layout_marginTop="30dp"
                     android:animateLayoutChanges="true"
                     android:checkable="true"
@@ -156,11 +160,11 @@
                     android:textSize="10sp"
                     android:translationZ="15dp"
                     app:cardBackgroundColor="#FFFFFF"
-                    app:strokeColor="#DCDADA"
                     app:cardCornerRadius="1dp"
                     app:cardElevation="2dp"
                     app:cardMaxElevation="100dp"
-                    app:strokeWidth="1dp">
+                    app:strokeColor="#DCDADA"
+                    app:strokeWidth="2dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -219,9 +223,9 @@
                 <!--todo  ПОСТУПЛЕНИЕ МАТЕРИАЛОВ-->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
-                    android:layout_height="140dp"
-                    android:animateLayoutChanges="true"
+                    android:layout_height="130dp"
                     android:layout_marginTop="30dp"
+                    android:animateLayoutChanges="true"
                     android:checkable="true"
                     android:clickable="true"
                     android:focusable="true"
@@ -232,11 +236,11 @@
                     android:textSize="10sp"
                     android:translationZ="15dp"
                     app:cardBackgroundColor="#FFFFFF"
-                    app:strokeColor="#DCDADA"
                     app:cardCornerRadius="1dp"
                     app:cardElevation="2dp"
                     app:cardMaxElevation="100dp"
-                    app:strokeWidth="1dp">
+                    app:strokeColor="#DCDADA"
+                    app:strokeWidth="2dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -293,7 +297,7 @@
                 <!--todo ЗАЯВКА НА ТРАСПОРТ-->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
-                    android:layout_height="140dp"
+                    android:layout_height="130dp"
                     android:layout_marginTop="30dp"
                     android:animateLayoutChanges="true"
                     android:checkable="true"
@@ -306,11 +310,11 @@
                     android:textSize="10sp"
                     android:translationZ="15dp"
                     app:cardBackgroundColor="#FFFFFF"
-                    app:strokeColor="#DCDADA"
                     app:cardCornerRadius="1dp"
                     app:cardElevation="2dp"
                     app:cardMaxElevation="100dp"
-                    app:strokeWidth="1dp">
+                    app:strokeColor="#DCDADA"
+                    app:strokeWidth="2dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"

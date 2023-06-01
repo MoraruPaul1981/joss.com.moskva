@@ -593,7 +593,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                                     workInfoSingle.getOutputData().getInt("ReturnSingleAsyncWork", 0);
                                             long end = Calendar.getInstance().getTimeInMillis();
                                             long РазницаВоврмени=end-startДляОбноразвовной;
-                                            if (РазницаВоврмени>5000) {
+                                            if (РазницаВоврмени>10000) {
                                                 if (CallBaskОтWorkManager>0) {
                                                     методGetCursorReboot();
                                                     // TODO: 12.05.2023
