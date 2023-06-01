@@ -21,8 +21,11 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.google.firebase.annotations.concurrent.Background;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
@@ -286,6 +289,33 @@ public class ServiceOrserTransportService extends IntentService {
             }
             return  mapRetry;
         }
+        // TODO: 01.06.2023  метод получение трех значений день месяц год
+        public LinkedHashMap<String,Integer> методGetТриЗначениеГодМесяцДень() {
+            LinkedHashMap<String,Integer> linkedHashMapДеньМесяцГод=new LinkedHashMap<>();
+            try{
+                Calendar myCal = new GregorianCalendar();
+                int День = myCal.get(Calendar.DAY_OF_MONTH);
+                int Месяц = myCal.get(Calendar.MONTH);
+                int Год = myCal.get(Calendar.YEAR);
+                // TODO: 01.06.2023  Заполяем
+                linkedHashMapДеньМесяцГод.put("День",День);
+                linkedHashMapДеньМесяцГод.put("Месяц",Месяц+1);
+                linkedHashMapДеньМесяцГод.put("Год",Год);
+                Log.d(getApplicationContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                        " linkedHashMapДеньМесяцГод " +linkedHashMapДеньМесяцГод);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+            return  linkedHashMapДеньМесяцГод;
+        }
     }
 
 
@@ -458,7 +488,18 @@ public class ServiceOrserTransportService extends IntentService {
                 return  cursor;
             }
         }
-        // TODO: 25.04.2023 END CLASS   SubClassOrderTransport
+
+
+
+
+
+
+
+
+
+
+        // TODO: 25.04.2023 END CLASS   SubClassOrderTransport  // TODO: 25.04.2023 END CLASS   SubClassOrderTransport  // TODO: 25.04.2023 END CLASS   SubClassOrderTransport  // TODO: 25.04.2023 END CLASS   SubClassOrderTransport
+        // TODO: 25.04.2023 END CLASS   SubClassOrderTransport   // TODO: 25.04.2023 END CLASS   SubClassOrderTransport  // TODO: 25.04.2023 END CLASS   SubClassOrderTransport  // TODO: 25.04.2023 END CLASS   SubClassOrderTransport
     }
 
 }

@@ -72,6 +72,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -989,12 +990,17 @@ public class FragmentOrderTransportOneChane extends Fragment {
         }
         private void методGetCursorGROUPBYBounds() throws Exception {
             try{
+                LinkedHashMap<String,Integer> linkedHashMapДеньМесяцГод=     localBinderOrderTransport.   методGetТриЗначениеГодМесяцДень();
                 // TODO: 04.05.2023  получаем первоночальыне Данные  #1
                 HashMap<String,String> datasendMap=new HashMap();
                 datasendMap.putIfAbsent("1","  SELECT  _id, dateorders, status,  strftime('%Y', dateorders)  AS Year, strftime('%m', dateorders)  AS Month," +
                         " strftime('%d', dateorders)  AS Day, COUNT(*) AS getcounts" +
                         "  FROM  view_ordertransport ");
-                datasendMap.putIfAbsent("2"," WHERE dateorders  IS NOT NULL   ");//AND _id >?  AND status!=? ORDER BY dateorders
+                datasendMap.putIfAbsent("2"," WHERE dateorders  IS NOT NULL " +
+                        " AND Year >= "+linkedHashMapДеньМесяцГод.get("Год")+
+                        " AND Month >= "+linkedHashMapДеньМесяцГод.get("Месяц")+
+                        " AND Day >= "+linkedHashMapДеньМесяцГод.get("День")
+                        +"  ");//AND _id >?  AND status!=? ORDER BY dateorders
                 datasendMap.putIfAbsent("3"," GROUP BY strftime('%Y', dateorders)  ," +
                         " strftime('%m', dateorders)   ," +
                         " strftime('%d', dateorders) ," +
@@ -1011,9 +1017,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
                         + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive()+
-                        " localBinderOrderTransport " +localBinderOrderTransport
-                        + " cursorGroupByParent " + cursorGroupByParent
-                        + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive());
+                        " linkedHashMapДеньМесяцГод " +linkedHashMapДеньМесяцГод
+                        + " cursorGroupByParent " + cursorGroupByParent);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1023,6 +1028,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
+
+
 
 
         // TODO: 28.04.2023  ALL Adapters
