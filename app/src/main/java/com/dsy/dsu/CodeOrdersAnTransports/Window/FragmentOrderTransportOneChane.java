@@ -990,17 +990,17 @@ public class FragmentOrderTransportOneChane extends Fragment {
         }
         private void методGetCursorGROUPBYBounds() throws Exception {
             try{
-                LinkedHashMap<String,Integer> linkedHashMapДеньМесяцГод=     localBinderOrderTransport.   методGetТриЗначениеГодМесяцДень();
+                LinkedHashMap<String,String> linkedHashMapДеньМесяцГод=     localBinderOrderTransport.   методGetТриЗначениеГодМесяцДень();
                 // TODO: 04.05.2023  получаем первоночальыне Данные  #1
                 HashMap<String,String> datasendMap=new HashMap();
                 datasendMap.putIfAbsent("1","  SELECT  _id, dateorders, status,  strftime('%Y', dateorders)  AS Year, strftime('%m', dateorders)  AS Month," +
                         " strftime('%d', dateorders)  AS Day, COUNT(*) AS getcounts" +
                         "  FROM  view_ordertransport ");
                 datasendMap.putIfAbsent("2"," WHERE dateorders  IS NOT NULL " +
-                        " AND Year >= "+linkedHashMapДеньМесяцГод.get("Год")+
-                        " AND Month >= "+linkedHashMapДеньМесяцГод.get("Месяц")+
-                        " AND Day >= "+linkedHashMapДеньМесяцГод.get("День")
-                        +"  ");//AND _id >?  AND status!=? ORDER BY dateorders
+                        " AND    date(dateorders) >= date('"+linkedHashMapДеньМесяцГод.get("Год")+"-"+
+                        linkedHashMapДеньМесяцГод.get("Месяц")+"-"
+                        +linkedHashMapДеньМесяцГод.get("День")+"')  "
+                        +"  ");
                 datasendMap.putIfAbsent("3"," GROUP BY strftime('%Y', dateorders)  ," +
                         " strftime('%m', dateorders)   ," +
                         " strftime('%d', dateorders) ," +

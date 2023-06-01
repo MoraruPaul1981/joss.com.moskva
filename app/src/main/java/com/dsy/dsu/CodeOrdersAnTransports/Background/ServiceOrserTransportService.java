@@ -21,11 +21,13 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.google.firebase.annotations.concurrent.Background;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
@@ -290,17 +292,20 @@ public class ServiceOrserTransportService extends IntentService {
             return  mapRetry;
         }
         // TODO: 01.06.2023  метод получение трех значений день месяц год
-        public LinkedHashMap<String,Integer> методGetТриЗначениеГодМесяцДень() {
-            LinkedHashMap<String,Integer> linkedHashMapДеньМесяцГод=new LinkedHashMap<>();
+        public LinkedHashMap<String,String> методGetТриЗначениеГодМесяцДень() {
+            LinkedHashMap<String,String> linkedHashMapДеньМесяцГод=new LinkedHashMap<>();
             try{
-                Calendar myCal = new GregorianCalendar();
-                int День = myCal.get(Calendar.DAY_OF_MONTH);
-                int Месяц = myCal.get(Calendar.MONTH);
-                int Год = myCal.get(Calendar.YEAR);
+                Calendar myCalмесяц = new GregorianCalendar();
+                Calendar myCalдень = new GregorianCalendar();
+                SimpleDateFormat simpleDateFormatмесяц=    new SimpleDateFormat("MM", new Locale("ru"));
+                SimpleDateFormat simpleDateFormatдень=    new SimpleDateFormat("dd", new Locale("ru"));
+               String Dateмесяц=      simpleDateFormatмесяц.format(myCalмесяц.getTime());
+               String Dateдень=       simpleDateFormatдень.format(myCalдень.getTime());
+                Integer Год = myCalмесяц.get(Calendar.YEAR);
                 // TODO: 01.06.2023  Заполяем
-                linkedHashMapДеньМесяцГод.put("День",День);
-                linkedHashMapДеньМесяцГод.put("Месяц",Месяц+1);
-                linkedHashMapДеньМесяцГод.put("Год",Год);
+                linkedHashMapДеньМесяцГод.put("День", Dateдень);
+                linkedHashMapДеньМесяцГод.put("Месяц",  Dateмесяц);
+                linkedHashMapДеньМесяцГод.put("Год",Год.toString());
                 Log.d(getApplicationContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
