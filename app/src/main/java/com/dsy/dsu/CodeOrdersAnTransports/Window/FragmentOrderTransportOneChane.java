@@ -1502,6 +1502,8 @@ class SubClassGetDateOrderGroupBy {
                                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
                                     + " tableLayoutРодительская " +tableLayoutРодительская.getChildCount()+ " IdRowДочернегоВставляемого "+IdRowДочернегоВставляемого);
                             // TODO: 30.05.2023  clear PArent
+                            // TODO: 30.05.2023  clear PArent
+                            Boolean ФлагЧтоНадоНовыйЭлемент=true;
                             if (tableLayoutРодительская!=null && tableLayoutРодительская.getChildCount()>0) {
                                 for (int i = 0; i < tableLayoutРодительская.getChildCount(); i++) {
                                     TableRow tableRowродительскаяУжеСуществует = (TableRow) tableLayoutРодительская.getChildAt(i);
@@ -1515,13 +1517,13 @@ class SubClassGetDateOrderGroupBy {
                                             if(UUidУжеСуществует.compareTo(UUIDДочернийская)==0){
                                                 if (Successid_uuid_УжеСуществует>0) {
                                                     if (Successid_uuid_track.compareTo(Successid_uuid_УжеСуществует)==0) {
-                                                        tableLayoutРодительская.removeView(tableRowродительскаяУжеСуществует);
+                                                        ФлагЧтоНадоНовыйЭлемент=false;
                                                         break;
                                                     }
                                                 }
                                                 if (Successid_GosnomerУжеСуществует>0) {
                                                     if (Successid_Gosnomer.compareTo(Successid_GosnomerУжеСуществует)==0) {
-                                                        tableLayoutРодительская.removeView(tableRowродительскаяУжеСуществует);
+                                                        ФлагЧтоНадоНовыйЭлемент=false;
                                                         break;
                                                     }
                                                 }
@@ -1529,8 +1531,10 @@ class SubClassGetDateOrderGroupBy {
                                         }
                                     }
                                 }
-                                // TODO: 30.05.2023 Вставка Строчки ROW
+                                if (     ФлагЧтоНадоНовыйЭлемент==true) {
+                                    // TODO: 30.05.2023 Вставка Строчки ROW
                                     tableLayoutРодительская.addView(tableRowДочернаяВсталяемая);
+                                }
                             }
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
@@ -2157,26 +2161,17 @@ class SubClassGetDateOrderGroupBy {
                     }
                     void методОформеленияCheckBox(@NonNull  MyViewHolder holder ) {
                         try{
-                        CheckBox   checkBoxot= (CheckBox) holder.materialCardView.findViewById(R.id.checkBoxot);//cardview
+               /*         CheckBox   checkBoxot= (CheckBox) holder.materialCardView.findViewById(R.id.checkBoxot);//cardview
                        Integer СтатусЗаказаТраспорта=     cursorGroupByParent.getInt(cursorGroupByParent.getColumnIndex("status"));
                             if(СтатусЗаказаТраспорта==0){
                                 checkBoxot.setChecked(true);
                             }else {
                                 checkBoxot.setChecked(false);
-                            }
+                            }*/
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
                                     " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " СтатусЗаказаТраспорта " +СтатусЗаказаТраспорта);
-                            //checkBoxot.toggle();
-                   /*  checkBoxot.setBackgroundColor(Color.parseColor("#316E6E"));
-                    Drawable drawablecheck = getResources().getDrawable(R.drawable.icon_dsu1_ordertransport4);
-                    checkBoxot.setButtonDrawable(drawablecheck);
-                     checkBoxot.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#316E6E")));*/
-                            // TODO: 13.03.2022
-                            //   materialCardView.toggle();
-                            // TODO: 30.03.2022
-                            /*  materialCardView.setCheckedIconTint(ColorStateList.valueOf(Color.parseColor("#1C9CA8")));*/
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()  );
                         } catch (Exception e) {
                             e.printStackTrace();
                             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

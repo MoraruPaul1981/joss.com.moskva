@@ -60,17 +60,7 @@
                 app:cardElevation="10dp"
                 app:srcCompat="@drawable/icon_rdertransport1"
                 app:strokeColor="#F5FFFA" />
-<CheckBox
-    android:id="@+id/checkBoxot"
-    android:layout_width="25dp"
-    android:layout_height="20dp"
-    android:layout_alignParentTop="true"
-    android:layout_alignParentRight="true"
-    android:layout_marginEnd="5dp"
-    android:layout_marginTop="2dp"
-    android:checked="true">
 
-</CheckBox>
 
         </RelativeLayout>
     <com.google.android.material.textview.MaterialTextView
