@@ -1151,9 +1151,6 @@ class SubClassGetDateOrderGroupBy {
                                 // TODO: 25.05.2023 ФИНАЛЬНОЕ ДЕЙСТВИЕ вСТАВКА СТРОКИ УЖЕ ЗАПОЛЕНО В tABLEPOUY
                                  методAddtableRowЦФО(tableRowДочерная,tableLayoutРодительская );
 
-
-
-
                                // TODO: 26.05.2023 Заполнение Данными Вид Траспорта и Гос Номер #2
                                   методSeTypeTSAndGosNomers(cursorListCFO,tableLayoutРодительская );
 
