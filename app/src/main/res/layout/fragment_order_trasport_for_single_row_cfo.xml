@@ -34,6 +34,35 @@
                 android:layout_width="match_parent"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_height="wrap_content">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/materialcardview_get_cfo_for_ot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_gravity="center"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="0dp"
+                    app:cardMaxElevation="10dp"
+                    app:strokeWidth="0dp"
+
+                     android:layout_margin="10dp"
+                     android:padding="2dp"
+
+                    android:translationZ="100dp"
+                    android:animateLayoutChanges="true"
+                    android:background="#F0FFFF"
+                    app:cardBackgroundColor="#F0FFFF"
+                    app:strokeColor="#316E6E"
+                    android:checkable="true"
+                    android:clickable="true"
+                    android:focusable="true">
+
+
+
+
+
+
+
                 <LinearLayout
                     android:id="@+id/linearlayout_otsinglerow"
                     android:layout_column="0"
@@ -46,16 +75,16 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/ot_key_order_singlevalue"
                     android:layout_column="0"
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="100dp"
-                    android:layout_marginEnd="100dp"
+                    android:layout_width="100dp"
+                    android:layout_height="25dp"
                     android:layout_marginTop="1dp"
-                    android:layout_marginBottom="1dp"
                     android:hint="Цфо"
+                    android:text="Цфо"
+                    android:textSize="14sp"
+                    android:textColor="#F0FFFF"
                     android:padding="1dp"
                     android:animateLayoutChanges="true"
-                    android:background="@drawable/style_for_assitiionmatrial_create_name"
+                    android:background="@drawable/style_for_akaz_trasport1"
                     android:gravity="center"
                     android:visibility="visible"
                     app:cardCornerRadius="20dp"
@@ -67,15 +96,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="20dp"
-                    android:padding="1dp"
-                    android:layout_marginTop="1dp"
-                    android:layout_marginBottom="2dp"
-                    android:background="@drawable/stylesingletablerowiine4"
+                    android:background="@drawable/stylesingletablerowiine10"
                     android:checkMark="?android:attr/textCheckMark"
                     android:foregroundGravity="center"
                     android:gravity="center"
-                    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-                    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginTop="1dp"
                     android:hint="цфо"
                     android:textAlignment="gravity"
                     android:textAppearance="?android:attr/textAppearanceListItemSmall"
@@ -88,7 +114,7 @@
                     android:animateLayoutChanges="true"
                     android:visibility="visible"/>
                  </LinearLayout>
-
+                </com.google.android.material.card.MaterialCardView>
             </TableRow>
             <!--//TODO начало    строчки ТС-->
             <!--//TODO конец первой строки Названия -->

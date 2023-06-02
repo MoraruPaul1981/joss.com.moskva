@@ -102,18 +102,29 @@
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_height="wrap_content">
 
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_ot_for_cfo"
+                    android:layout_column="0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#F0FFFF"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/ot_date_order_key"
                     android:layout_column="0"
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="100dp"
-                    android:layout_marginEnd="100dp"
+                    android:layout_width="100dp"
+                    android:layout_height="25dp"
                     android:layout_marginTop="1dp"
                     android:hint="Дата"
+                    android:text="Дата"
+                    android:textSize="14sp"
+                    android:textColor="#FFFFFF"
                     android:padding="1dp"
                     android:animateLayoutChanges="true"
-                    android:background="@drawable/style_for_assitiionmatrial_create_name"
+                    android:background="@drawable/style_for_akaz_trasport1"
                     android:gravity="center"
                     android:visibility="visible"
                     app:cardCornerRadius="20dp"
@@ -121,13 +132,7 @@
                     app:srcCompat="@drawable/icon_ordertransportorder1"
                     app:strokeColor="#F5FFFA" />
 
-            </TableRow>
-            <!--//TODO начало    строчки ТС-->
-            <TableRow
-                android:id="@+id/tableRow00"
-                android:layout_width="match_parent"
-                android:gravity="center_vertical|center_horizontal"
-                android:layout_height="wrap_content">
+
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/ot_date_order_value"
@@ -136,8 +141,6 @@
                     android:minHeight="20dp"
                     android:padding="1dp"
                     android:layout_margin="1dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
                     android:background="@drawable/stylesingletablerowiine4"
                     android:checkMark="?android:attr/textCheckMark"
                     android:foregroundGravity="center"
@@ -156,7 +159,11 @@
                     android:animateLayoutChanges="true"
                     android:visibility="visible"/>
 
+
+                </LinearLayout>
             </TableRow>
+            <!--//TODO начало    строчки ТС-->
+
         </TableLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
