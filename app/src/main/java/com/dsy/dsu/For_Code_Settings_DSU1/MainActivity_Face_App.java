@@ -85,7 +85,6 @@ public class MainActivity_Face_App extends AppCompatActivity {
     private Animation animation;
     protected SharedPreferences preferences;
     private Message message;
-
     private ServiceUpdatePoОбновлениеПО.localBinderОбновлениеПО localBinderОбновлениеПО;//TODO новаЯ
 
     // TODO: 03.11.2022 FaceApp
