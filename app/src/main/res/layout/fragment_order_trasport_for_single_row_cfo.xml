@@ -40,7 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_gravity="center"
-                    app:cardCornerRadius="5dp"
+                    app:cardCornerRadius="0dp"
                     app:cardElevation="0dp"
                     app:cardMaxElevation="10dp"
                     app:strokeWidth="0dp"
@@ -113,6 +113,54 @@
                     app:strokeColor="#F5FFFA"
                     android:animateLayoutChanges="true"
                     android:visibility="visible"/>
+
+
+<!--
+//TODOвтуртерий  tableyout-->
+                    <TableLayout
+                        android:id="@+id/tablelayout_singleotrow_cfo_bnytri"
+                        android:shrinkColumns="*"
+                        android:stretchColumns="*"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="#F5FFFA"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
+                        tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports">
+
+
+
+                        <TableRow
+                            android:id="@+id/tableRowChildOtCFO22"
+                            android:layout_width="match_parent"
+                            android:gravity="center_vertical|center_horizontal"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/ot_key_order_singlevalue"
+                                android:layout_column="0"
+                                android:layout_width="100dp"
+                                android:layout_height="25dp"
+                                android:layout_marginTop="1dp"
+                                android:hint="Цфо2222"
+                                android:text="Цфо2222"
+                                android:textSize="14sp"
+                                android:textColor="#F0FFFF"
+                                android:padding="1dp"
+                                android:animateLayoutChanges="true"
+                                android:background="@drawable/style_for_akaz_trasport1"
+                                android:gravity="center"
+                                android:visibility="visible"
+                                app:cardCornerRadius="20dp"
+                                app:cardElevation="10dp"
+                                app:srcCompat="@drawable/icon_ordertransportorder1"
+                                app:strokeColor="#F5FFFA" />
+
+                        </TableRow>
+
+
+                    </TableLayout>
+
                  </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
             </TableRow>
