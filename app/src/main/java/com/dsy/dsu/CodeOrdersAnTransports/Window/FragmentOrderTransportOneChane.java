@@ -1142,17 +1142,25 @@ class SubClassGetDateOrderGroupBy {
                     try{
                         // TODO: 26.05.2023  цикл может сказать главный идем по СЦО
                         do{
+                            View   convertViewДочерния  = LayoutInflater.from(getContext()).inflate(  R.layout.fragment_order_trasport_for_single_row_cfo,
+                                    tableLayoutРодительская , false);
+                            TableLayout   tableLayoutДочерннаяCFO       = (TableLayout) convertViewДочерния.findViewById(     R.id.tablelayout_singleotrow_cfo_bnytri);
+
                             // TODO: 26.05.2023  ДочернийЭлемиент
-                            TableRow tableRowДочерная = методGettableДочернаяForCFO(cursorListCFO);
+                            TableRow tableRowДочерная = методGettableДочернаяForCFO(cursorListCFO,convertViewДочерния);
 
                             // TODO: 30.05.2023  заполяем ЦФО
                                 методSetDateCFO(cursorListCFO,tableRowДочерная);
 
-                                // TODO: 25.05.2023 ФИНАЛЬНОЕ ДЕЙСТВИЕ вСТАВКА СТРОКИ УЖЕ ЗАПОЛЕНО В tABLEPOUY
-                                 методAddtableRowЦФО(tableRowДочерная,tableLayoutРодительская );
+
 
                                // TODO: 26.05.2023 Заполнение Данными Вид Траспорта и Гос Номер #2
-                                  методSeTypeTSAndGosNomers(cursorListCFO,tableLayoutРодительская );
+                                  методSeTypeTSAndGosNomers(cursorListCFO,tableLayoutДочерннаяCFO );
+
+
+
+                            // TODO: 25.05.2023 ФИНАЛЬНОЕ ДЕЙСТВИЕ вСТАВКА СТРОКИ УЖЕ ЗАПОЛЕНО В tABLEPOUY
+                            методAddtableRowЦФО(tableRowДочерная,tableLayoutРодительская );
 
                                 Log.d(getContext().getClass().getName(), "\n"
                                         + " время: " + new Date() + "\n+" +
@@ -1215,7 +1223,7 @@ class SubClassGetDateOrderGroupBy {
                                 // TODO: 26.05.2023  ДочернийЭлемиент
                                 TableRow tableRowДочерная = методGettableДочернаяForTypeTC(cursorgetTypeTSAndGosNomers);
                                 // TODO: 26.05.2023  метод Заполнение Вида ТС
-                                методВставкаВидТС(tableLayoutРодительская, cursorgetTypeTSAndGosNomers,tableRowДочерная);
+                                методВставкаВидТС(cursorgetTypeTSAndGosNomers,tableRowДочерная);
 
                                 Log.d(getContext().getClass().getName(), "\n"
                                         + " время: " + new Date() + "\n+" +
@@ -1224,7 +1232,7 @@ class SubClassGetDateOrderGroupBy {
                                         + " cursorgetCFO.getPosition() " + cursorgetTypeTSAndGosNomers.getPosition());
 
                                 // TODO: 26.05.2023  метод Заполнение Гос.Номер
-                                методВставкаГосНомер(tableLayoutРодительская, cursorgetTypeTSAndGosNomers,tableRowДочерная);
+                                методВставкаГосНомер(  cursorgetTypeTSAndGosNomers,tableRowДочерная);
 
                                 // TODO: 31.05.2023
 
@@ -1253,8 +1261,7 @@ class SubClassGetDateOrderGroupBy {
                         }
                     }
 
-                    private void методВставкаВидТС(@NonNull TableLayout tableLayoutРодительская,
-                                                   @NonNull Cursor cursorgetTypeTS,
+                    private void методВставкаВидТС(@NonNull Cursor cursorgetTypeTS,
                                                    @NonNull TableRow tableRowДочерная) {
                         try{
                   /*          // TODO: 26.05.2023  ДочернийЭлемиент
@@ -1284,8 +1291,7 @@ class SubClassGetDateOrderGroupBy {
                                 Thread.currentThread().getStackTrace()[2].getLineNumber());
                     }
                     }
-                    private void методВставкаГосНомер(@NonNull TableLayout tableLayoutРодительская,
-                                                   @NonNull Cursor cursorgetGosNomers,
+                    private void методВставкаГосНомер(@NonNull Cursor cursorgetGosNomers,
                                                       @NonNull   TableRow tableRowДочерная) {
                         try{
                             // TODO: 26.05.2023  ДочернийЭлемиент
@@ -1501,7 +1507,7 @@ class SubClassGetDateOrderGroupBy {
                             // TODO: 30.05.2023  clear PArent
                             // TODO: 30.05.2023  clear PArent
                             Boolean ФлагЧтоНадоНовыйЭлемент=true;
-                            if (tableLayoutРодительская!=null && tableLayoutРодительская.getChildCount()>0) {
+                            if ( tableLayoutРодительская.getChildCount()>0) {
                                 for (int i = 0; i < tableLayoutРодительская.getChildCount(); i++) {
                                     TableRow tableRowродительскаяУжеСуществует = (TableRow) tableLayoutРодительская.getChildAt(i);
                                     if (tableRowродительскаяУжеСуществует!=null) {
@@ -1528,6 +1534,12 @@ class SubClassGetDateOrderGroupBy {
                                         }
                                     }
                                 }
+                                if (     ФлагЧтоНадоНовыйЭлемент==true) {
+                                    // TODO: 30.05.2023 Вставка Строчки ROW
+                                    tableLayoutРодительская.addView(tableRowДочернаяВсталяемая);
+                                }
+                            }else {
+
                                 if (     ФлагЧтоНадоНовыйЭлемент==true) {
                                     // TODO: 30.05.2023 Вставка Строчки ROW
                                     tableLayoutРодительская.addView(tableRowДочернаяВсталяемая);
@@ -1672,12 +1684,10 @@ class SubClassGetDateOrderGroupBy {
 
             // TODO: 30.05.2023 Получение Get получение Дочерненго Элемента
             @NonNull
-            private TableRow методGettableДочернаяForCFO(@NonNull Cursor cursorListCFO) {
+            private TableRow методGettableДочернаяForCFO(@NonNull Cursor cursorListCFO,@NonNull  View   convertViewДочерния  ) {
                 TableRow        tableRowДочерная = null;
                try {
-                View   convertViewДочерния  = LayoutInflater.from(getContext()).inflate(  R.layout.fragment_order_trasport_for_single_row_cfo,
-                        null , false);
-                TableLayout   tableLayoutДочернная       = (TableLayout) convertViewДочерния.findViewById(     R.id.tablelayout_singleotrow_cfo);
+                   TableLayout  tableLayoutДочернная       = (TableLayout) convertViewДочерния.findViewById(     R.id.tablelayout_singleotrow_cfo);
                 // TODO: 26.05.2023  цикл может сказать главный идем по СЦО #1
                       tableRowДочерная = (TableRow)   tableLayoutДочернная.findViewById(R.id.tableRowChildOtCFO);
                 if(tableRowДочерная.getParent() != null) {
