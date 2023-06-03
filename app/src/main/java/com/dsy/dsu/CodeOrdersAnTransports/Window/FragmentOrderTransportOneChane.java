@@ -215,10 +215,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
        //todo recyrview
             subClassOrdersTransport.МетодИнициализацииRecycreView();
             subClassOrdersTransport.методАнимацииGridView();
-            // TODO: 12.05.2023 слушатель
-            message.getTarget().postDelayed(()->{
-                subClassOrdersTransport.    методСлушателяWorkManager(lifecycleOwner,lifecycleOwnerОбщая);
-            },10000);
+
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
@@ -504,6 +501,9 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     @Override
                     public void onClick(View v) {
                         try {
+// TODO: 12.05.2023 слушатель
+                            subClassOrdersTransport.
+                                    методСлушателяWorkManager(lifecycleOwner,lifecycleOwnerОбщая);
                             progressBarСканирование.setVisibility(View.VISIBLE);
                             МетодЗапускаАнимацииКнопок(v);
                             Integer ПубличныйIDДляФрагмента =
@@ -1075,7 +1075,7 @@ class SubClassGetDateOrderGroupBy {
                             // TODO: 04.05.2023  получаем первоночальыне Данные  #1
                             HashMap<String,String> datasendMap=new HashMap();
                             datasendMap.putIfAbsent("1","  SELECT  *  FROM  view_ordertransport  ");
-                            datasendMap.putIfAbsent("2"," WHERE name  IS NOT NULL  AND dateorders = ?  AND status!=? ORDER BY dateorders ");
+                            datasendMap.putIfAbsent("2"," WHERE name  IS NOT NULL  AND dateorders = ?  AND status!=? ORDER BY  dateorders");
                             datasendMap.putIfAbsent("3",УсловиеПоискаЦФО);
                             datasendMap.putIfAbsent("4","5");
                             datasendMap.putIfAbsent("5"," view_ordertransport ");
@@ -1110,7 +1110,7 @@ class SubClassGetDateOrderGroupBy {
             datasendMap.putIfAbsent("1","  SELECT  *  FROM  view_ordertransport  ");
             datasendMap.putIfAbsent("2"," WHERE name  IS NOT NULL  AND id_cfo != ? AND dateorders='"+getDateOrdersForGosNomers.trim()+"'  " +
                           " AND id_cfo='"+getCFOGosNomers.toString()+"'  " +
-                                 "  AND status!=? ORDER BY dateorders ");
+                                 "  AND status!=? ORDER BY date_update ");
             datasendMap.putIfAbsent("3","0");
             datasendMap.putIfAbsent("4","5");
             datasendMap.putIfAbsent("5"," view_ordertransport ");
