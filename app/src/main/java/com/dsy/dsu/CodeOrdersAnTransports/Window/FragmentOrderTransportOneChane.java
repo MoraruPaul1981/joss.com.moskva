@@ -238,6 +238,9 @@ public class FragmentOrderTransportOneChane extends Fragment {
         super.onStop();
         try{
             WorkManager.getInstance(getContext()).cancelUniqueWork(ИмяСлужбыСинхронизациОдноразовая);
+            if (cursorGroupByParent!=null) {
+                cursorGroupByParent.close();
+            }
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
