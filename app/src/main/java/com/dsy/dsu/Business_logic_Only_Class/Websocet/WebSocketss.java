@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
+import com.onesignal.TLS12SocketFactory;
 
 import java.io.IOException;
 import java.util.Date;
@@ -14,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.ConnectionPool;
 import okhttp3.Credentials;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
