@@ -26,55 +26,49 @@ import okio.ByteString;
 public class WebSocketss {
     OkHttpClient okHttpClient;
     public class  классИнициализацииКлиентаWebSocerts{
-        private  final class WebLister extends WebSocketListener {
-            @Override
-            public void onOpen(WebSocket webSocket, Response response) {
-                super.onOpen(webSocket, response);
-                webSocket.send("Android WebSocets !!!"+new Date().toLocaleString());
-                Log.d(this.getClass().getName(), "   методДляТетсирования1С");
-            }
-
-            @Override
-            public void onMessage(WebSocket webSocket, String text) {
-                super.onMessage(webSocket, text);
-                Log.d(this.getClass().getName(), "   методДляТетсирования1С");
-            }
-
-            @Override
-            public void onMessage(WebSocket webSocket, ByteString bytes) {
-                super.onMessage(webSocket, bytes);
-                Log.d(this.getClass().getName(), "   методДляТетсирования1С");
-            }
-
-            @Override
-            public void onClosing(WebSocket webSocket, int code, String reason) {
-                super.onClosing(webSocket, code, reason);
-                Log.d(this.getClass().getName(), "   методДляТетсирования1С");
-            }
-
-            @Override
-            public void onClosed(WebSocket webSocket, int code, String reason) {
-                super.onClosed(webSocket, code, reason);
-                Log.d(this.getClass().getName(), "   методДляТетсирования1С");
-            }
-
-            @Override
-            public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-                super.onFailure(webSocket, t, response);
-                Log.d(this.getClass().getName(), "   методДляТетсирования1С");
-            }
-        }
-
-
-
-
-
    public   void методИнициализацииwebsocets (@NonNull Context context){
          try{
              okHttpClient=new OkHttpClient();
              Request request=new Request.Builder().url("ws://192.168.254.40:8080/websocet/gEt").build();
-             WebLister webLister=new WebLister();
-             WebSocket wsandroid=okHttpClient.newWebSocket(request,webLister);
+            // Request request=new Request.Builder().url("ws://localhost:8080/jboss-1.0-SNAPSHOT/gEt").build();
+             WebSocket wsandroid=okHttpClient.newWebSocket(request, new WebSocketListener() {
+                 @Override
+                 public void onOpen(WebSocket webSocket, Response response) {
+                     super.onOpen(webSocket, response);
+                     webSocket.send("Android WebSocets !!!"+new Date().toLocaleString());
+                     Log.d(this.getClass().getName(), "   методДляТетсирования1С");
+                 }
+
+                 @Override
+                 public void onMessage(WebSocket webSocket, String text) {
+                     super.onMessage(webSocket, text);
+                     Log.d(this.getClass().getName(), "   методДляТетсирования1С");
+                 }
+
+                 @Override
+                 public void onMessage(WebSocket webSocket, ByteString bytes) {
+                     super.onMessage(webSocket, bytes);
+                     Log.d(this.getClass().getName(), "   методДляТетсирования1С");
+                 }
+
+                 @Override
+                 public void onClosing(WebSocket webSocket, int code, String reason) {
+                     super.onClosing(webSocket, code, reason);
+                     Log.d(this.getClass().getName(), "   методДляТетсирования1С");
+                 }
+
+                 @Override
+                 public void onClosed(WebSocket webSocket, int code, String reason) {
+                     super.onClosed(webSocket, code, reason);
+                     Log.d(this.getClass().getName(), "   методДляТетсирования1С");
+                 }
+
+                 @Override
+                 public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+                     super.onFailure(webSocket, t, response);
+                     Log.d(this.getClass().getName(), "   методДляТетсирования1С");
+                 }
+             });
              okHttpClient.dispatcher().executorService().shutdown();
 
          Log.d(this.getClass().getName(), "   методДляТетсирования1С");
