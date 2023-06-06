@@ -1217,14 +1217,22 @@ class SubClassGetDateOrderGroupBy {
 
                     // TODO: 28.05.2023 третий цикл Гос.Номер  и Вид Траспорта
                     private void методSeTypeTSAndGosNomers(@NonNull  Cursor cursorgetForCurrentCFO
-                            ,@NonNull TableLayout tableLayoutРодительская) {
+                            ,@NonNull TableLayout tableLayoutДочерннаяCFO) {
                         try{
                  String getDateOrdersForGosNomers = cursorgetForCurrentCFO.getString(cursorgetForCurrentCFO.getColumnIndex("dateorders"));
                  Integer getCFOGosNomers = cursorgetForCurrentCFO.getInt(cursorgetForCurrentCFO.getColumnIndex("id_cfo"));
                         Cursor cursorgetTypeTSAndGosNomers=методGetCursorGosNomer( getDateOrdersForGosNomers,getCFOGosNomers);
+                            // TODO: 06.06.2023
+
+                            TableRow tableRowДочернаяUP =            методGettableДочернаяForTypeTCUP(cursorgetTypeTSAndGosNomers);
+                            // TODO: 29.05.2023  Вставка новой строки
+                            методAddtableRowВидТСAndГосНомер(tableRowДочернаяUP, tableLayoutДочерннаяCFO);
+
                             do{
                                 // TODO: 26.05.2023  ДочернийЭлемиент
                                 TableRow tableRowДочерная = методGettableДочернаяForTypeTC(cursorgetTypeTSAndGosNomers);
+
+
                                 // TODO: 26.05.2023  метод Заполнение Вида ТС
                                 методВставкаВидТС(cursorgetTypeTSAndGosNomers,tableRowДочерная);
 
@@ -1240,10 +1248,10 @@ class SubClassGetDateOrderGroupBy {
                                 // TODO: 31.05.2023
 
                                 // TODO: 29.05.2023  Вставка новой строки
-                                методAddtableRowВидТСAndГосНомер(tableRowДочерная, tableLayoutРодительская);
+                                методAddtableRowВидТСAndГосНомер(tableRowДочерная, tableLayoutДочерннаяCFO);
 
                                 // TODO: 01.06.2023   Выравниваем Линнии  в  Row
-                                методВыравнивемЛиниюДизайнВСтавлнойRow(tableRowДочерная,tableLayoutРодительская);
+                                методВыравнивемЛиниюДизайнВСтавлнойRow(tableRowДочерная,tableLayoutДочерннаяCFO);
 
                                 Log.d(getContext().getClass().getName(), "\n"
                                         + " время: " + new Date() + "\n+" +
@@ -1270,14 +1278,14 @@ class SubClassGetDateOrderGroupBy {
                   /*          // TODO: 26.05.2023  ДочернийЭлемиент
                             TableRow tableRowДочерная = методGettableДочернаяForTypeTC(cursorgetTypeTS);*/
                             // TODO: 26.05.2023  Элемент Для Шабки
-                            MaterialTextView    materialTextViewШабкаAddRow =  tableRowДочерная.findViewById(R.id.ot_key_ordertype_ts);
+                           // MaterialTextView    materialTextViewШабкаAddRow =  tableRowДочерная.findViewById(R.id.ot_key_ordertype_ts);
                             MaterialTextView    materialTextViewДанныеAddRow =  tableRowДочерная.findViewById(R.id.ot_value_ordertype_ts);
                         // TODO: 29.05.2023 Заполеяем  Вид ТС
                         String ВидТС=     cursorgetTypeTS.getString(cursorgetTypeTS.getColumnIndex("name"));
                             if (ВидТС!=null) {
                                 materialTextViewДанныеAddRow.setText(ВидТС.trim());
                             }
-                            materialTextViewШабкаAddRow.setText("Вид тс");
+                          //  materialTextViewШабкаAddRow.setText("Вид тс");
                         
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
@@ -1301,14 +1309,14 @@ class SubClassGetDateOrderGroupBy {
                         /*    TableRow tableRowДочерная = методGettableДочернаяForGosNomer(cursorgetGosNomers);*/
 
                             // TODO: 26.05.2023  Элемент Для Шабки
-                            MaterialTextView    materialTextViewШабкаAddRow =  tableRowДочерная.findViewById(R.id.ot_key_ordertype_godnomer);
+                           // MaterialTextView    materialTextViewШабкаAddRow =  tableRowДочерная.findViewById(R.id.ot_key_ordertype_godnomer);
                             MaterialTextView    materialTextViewДанныеAddRow =  tableRowДочерная.findViewById(R.id.ot_value_ordertype_gos_nomer);
                             // TODO: 29.05.2023 Заполеяем  Вид ТС
                             String ГосНомер=     cursorgetGosNomers.getString(cursorgetGosNomers.getColumnIndex("gosmomer"));
                             if (ГосНомер!=null) {
                                 materialTextViewДанныеAddRow.setText(ГосНомер.trim());
                             }
-                            materialTextViewШабкаAddRow.setText("Гос.номер");
+                          //  materialTextViewШабкаAddRow.setText("Гос.номер");
 
                             // TODO: 29.05.2023  Вставка новой строки
                         /*    методAddtableRowГосНомер(tableRowДочерная, tableLayoutРодительская);*/
@@ -1772,7 +1780,44 @@ class SubClassGetDateOrderGroupBy {
                 }
                 return tableRowДочерная;
             }
+            @NonNull
+            private TableRow методGettableДочернаяForTypeTCUP(@NonNull Cursor cursorgetTypeTSAndGosNomers) {
+                TableRow        tableRowДочерная = null;
+                try {
+                    View   convertViewДочерния  = LayoutInflater.from(getContext()).inflate(   R.layout.fragment_order_trasport_for_single_row_type_tc_up,
+                            null , false);
+                    TableRow   tableLayoutДочернная       = (TableRow) convertViewДочерния.findViewById(R.id.tableRowChildOt_typets_up);
+                    // TODO: 26.05.2023  цикл может сказать главный идем по СЦО #1
+                    tableRowДочерная = (TableRow)   tableLayoutДочернная.findViewById(R.id.tableRowChildOt_typets_up);
+                    if(tableRowДочерная.getParent() != null) {
+                        /*       ((ViewGroup)tableRowДочерная.getParent()).recomputeViewAttributes(tableRowДочерная); // <- fix
+                         *//*     ((ViewGroup)tableRowДочерная.getParent()).removeViewInLayout(tableRowДочерная); // <- fix*/
+                        ((ViewGroup)tableRowДочерная.getParent()).removeView(tableRowДочерная); // <- fix
+                    }
 
+                    MaterialTextView    materialTextViewДанныеAddRowType =  tableRowДочерная.findViewById(R.id.ot_key_ordertype_ts);
+                    MaterialTextView    materialTextViewДанныеAddRowGosNomer =  tableRowДочерная.findViewById(R.id.ot_key_ordertype_godnomer);
+                    // TODO: 29.05.2023 Заполеяем  Вид ТС
+
+                        materialTextViewДанныеAddRowType.setText("Вид тс");
+                        materialTextViewДанныеAddRowGosNomer.setText("Гос.номер");
+
+
+                    Log.d(getContext().getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(getContext().getClass().getName(),
+                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
+                return tableRowДочерная;
+            }
             // TODO: 30.05.2023 Получение Get получение Дочерненго Элемента
             @NonNull
             private TableRow методGettableДочернаяForGosNomer(@NonNull Cursor cursorgetTypeTSAndGosNomers) {

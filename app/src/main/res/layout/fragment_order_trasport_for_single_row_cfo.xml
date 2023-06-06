@@ -49,7 +49,7 @@
                      android:padding="1dp"
 
 
-                    app:cardCornerRadius="1dp"
+                    app:cardCornerRadius="2dp"
                     app:cardElevation="5dp"
                     app:cardMaxElevation="10dp"
                     app:strokeWidth="1dp"

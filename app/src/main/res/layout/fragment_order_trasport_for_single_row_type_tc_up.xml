@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cardveiw_otsinglerow"
+    android:id="@+id/cardveiw_otsinglerow_up"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_gravity="center"
@@ -19,7 +19,7 @@
     tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports">
     <!--  НАЧАЛО ПЕРВОГО БЛОКА -->
     <TableLayout
-        android:id="@+id/tablelayout_singleotrow_type_tc"
+        android:id="@+id/tablelayout_singleotrow_type_tc_up"
         android:shrinkColumns="*"
         android:stretchColumns="*"
         android:layout_width="wrap_content"
@@ -30,7 +30,7 @@
         tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports">
         <!--//TODO начало    строчки ЦФО-->
         <TableRow
-            android:id="@+id/tableRowChildOt_typets"
+            android:id="@+id/tableRowChildOt_typets_up"
             android:layout_width="match_parent"
             android:gravity="center_vertical|center_horizontal"
             android:layout_height="wrap_content">
@@ -42,69 +42,54 @@
                 android:layout_height="wrap_content"
                 android:background="#F0FFFF"
                 android:gravity="center"
-                android:padding="1dp"
-                android:layout_margin="1dp"
                 tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports">
 
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/ot_value_ordertype_ts"
+                    android:id="@+id/ot_key_ordertype_ts"
                     android:layout_width="210dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="20dp"
                     android:layout_column="0"
                     android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
                     android:layout_margin="1dp"
                     android:padding="1dp"
                     android:animateLayoutChanges="true"
-                    android:background="@drawable/stylesingletablerowiine4"
-                    android:checkMark="?android:attr/textCheckMark"
-                    android:foregroundGravity="center"
+                    android:background="@drawable/style_for_assitiionmatrial_create_name"
                     android:gravity="center"
-                    android:hint="нет типа тс"
-                    android:minHeight="20dp"
-                    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-                    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-                    android:textAlignment="gravity"
-                    android:textAppearance="?android:attr/textAppearanceListItemSmall"
-                    android:textColor="#000000"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
+                    android:hint="Шабка Новой  "
+                    android:text="Шабка Новой"
+                    android:textSize="12sp"
+                    android:textColor="#646C6C"
                     android:visibility="visible"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="10dp"
+                    app:srcCompat="@drawable/icon_ordertransportorder1"
                     app:strokeColor="#F5FFFA" />
 
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/ot_value_ordertype_gos_nomer"
+                    android:id="@+id/ot_key_ordertype_godnomer"
                     android:layout_width="70dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="20dp"
                     android:layout_column="1"
+                    android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:layout_margin="1dp"
                     android:padding="1dp"
-                    android:layout_toRightOf="@+id/ot_value_ordertype_ts"
+                    android:layout_toRightOf="@+id/ot_key_ordertype_ts"
                     android:animateLayoutChanges="true"
-                    android:background="@drawable/stylesingletablerowiine4"
-                    android:checkMark="?android:attr/textCheckMark"
-                    android:foregroundGravity="center"
+                    android:background="@drawable/style_for_assitiionmatrial_create_name"
                     android:gravity="center"
-                    android:hint="нет гос.номера"
-                    android:minHeight="20dp"
-                    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-                    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-                    android:textAlignment="gravity"
-                    android:textAppearance="?android:attr/textAppearanceListItemSmall"
-                    android:textColor="#000000"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
+                    android:hint="Шабка Новой 2 "
+                    android:text="Шабка Новой2"
+                    android:textSize="12sp"
+                    android:textColor="#646C6C"
                     android:visibility="visible"
                     app:cardCornerRadius="20dp"
-                    app:cardElevation="10dp"
+                    app:cardElevation="150dp"
+                    app:srcCompat="@drawable/icon_ordertransportorder1"
                     app:strokeColor="#F5FFFA" />
-
-
-
 
 
             </RelativeLayout>
