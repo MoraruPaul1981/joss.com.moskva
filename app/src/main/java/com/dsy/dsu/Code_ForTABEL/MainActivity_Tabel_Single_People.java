@@ -1969,11 +1969,13 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 // TODO: 06.04.2023  НАЗВАНИЕ ROW
                                 if (editTextRowКликПоДАнными != null) {
                                     // TODO: 05.04.2023  ЗАПОЛЯНИЕМ ДНЯМИ ROW 1
-                                    if (ДнейСодержимое.equalsIgnoreCase("d32")==false) {
+                                    if (ДниВыходные.containsKey(ДнейСодержимое.trim())) {
                                         методЗаполениеСодеримомRowData(editTextRowКликПоДАнными, cursor, ДнейСодержимое);
                                     }else {
+                                   /*     EditText editTextДень31=     holder. rowName.findViewById(R.id.v3);
+                                        editTextДень31.setVisibility(View.GONE);*/
                                         // TODO: 16.04.2023  анимация
-                                        editTextRowКликПоДАнными.setVisibility(View.INVISIBLE);
+                                        editTextRowКликПоДАнными.setVisibility(View.GONE);
                                     }
 
                                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -2074,11 +2076,17 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 // TODO: 06.04.2023  НАЗВАНИЕ ROW
                                 if (viewtextRowКликПоШабка != null) {
                                     // TODO: 06.04.2023 Названия
-                                    if (ДнейНазвание.equalsIgnoreCase("d32")==false) {
+                                    if (ДниВыходные.containsKey(ДнейНазвание.trim())) {
                                         методЗаполениеНазванияRowData(viewtextRowКликПоШабка, ДнейНазвание);
                                     }else {
+                            /*      TextView textViewДень31=     holder. rowName.findViewById(R.id.d3);
+                                        textViewДень31.setVisibility(View.GONE);*/
+                                        TableRow tableRowДАнные = holder.rowData;
+                                        // TODO: 06.04.2023  СОДЕРДИМОЕ ROW
+                                        EditText editTextRowКликПоДАнными = (EditText) tableRowДАнные.getChildAt(ИндексСтрочкиДней);
                                         // TODO: 16.04.2023  анимация
-                                        viewtextRowКликПоШабка.setVisibility(View.INVISIBLE);
+                                        viewtextRowКликПоШабка.setVisibility(View.GONE);
+                                        editTextRowКликПоДАнными.setVisibility(View.GONE);
                                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"

@@ -74,7 +74,8 @@
                         android:textStyle="bold"
                         android:visibility="visible"
                         android:hint="d1"
-                        android:layout_width="80dp"
+                        android:layout_width="wrap_content"
+                        android:minWidth="80dp"
                         android:layout_height="6mm"
                         android:textSize="16sp"
                         android:background="#FFFFFF"/>
@@ -87,7 +88,8 @@
                         android:padding="2dp"
                         android:visibility="visible"
                         android:hint="d2"
-                        android:layout_width="80dp"
+                        android:layout_width="wrap_content"
+                        android:minWidth="80dp"
                         android:layout_height="6mm"
                         android:textSize="16sp"
                         android:background="#FFFFFF" />
@@ -101,7 +103,8 @@
                         android:padding="2dp"
                         android:visibility="visible"
                         android:hint="d3"
-                        android:layout_width="80dp"
+                        android:layout_width="wrap_content"
+                        android:minWidth="80dp"
                         android:layout_height="6mm"
                         android:textSize="16sp"
                         android:background="#FFFFFF" />
@@ -155,7 +158,8 @@
                     <EditText
                         android:id="@+id/v1"
                         android:layout_column="0"
-                        android:layout_width="87dp"
+                        android:layout_width="wrap_content"
+                        android:minWidth="80dp"
                         android:layout_height="6mm"
                         android:foregroundGravity="center"
                         android:hint="0"
@@ -177,7 +181,8 @@
                     <EditText
                         android:id="@+id/v2"
                         android:layout_column="1"
-                        android:layout_width="87dp"
+                        android:layout_width="wrap_content"
+                        android:minWidth="80dp"
                         android:layout_height="6mm"
                         android:foregroundGravity="center"
                         android:hint="0"
@@ -198,7 +203,8 @@
                     <EditText
                         android:id="@+id/v3"
                         android:layout_column="2"
-                        android:layout_width="87dp"
+                        android:layout_width="wrap_content"
+                        android:minWidth="80dp"
                         android:layout_height="6mm"
                         android:foregroundGravity="center"
                         android:hint="0"
