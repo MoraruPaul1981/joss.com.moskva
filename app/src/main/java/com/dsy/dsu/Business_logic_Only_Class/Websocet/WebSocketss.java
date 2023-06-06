@@ -31,7 +31,8 @@ public class WebSocketss {
    public   void методИнициализацииwebsocets (@NonNull Context context){
          try{
              okHttpClient=new OkHttpClient();
-             Request request=new Request.Builder().url("ws://192.168.254.40:8080/websocet/gEt").build();
+             Request request=new Request.Builder().url("ws://192.168.254.40:8080/jboss-1.0-SNAPSHOT/gEt").build();
+             //Request request=new Request.Builder().url("ws://192.168.254.40:8080/websocet/gEt").build();
             // Request request=new Request.Builder().url("ws://localhost:8080/jboss-1.0-SNAPSHOT/gEt").build();
              WebSocket wsandroid=okHttpClient.newWebSocket(request, new WebSocketListener() {
                  @Override
