@@ -380,7 +380,7 @@ public class MainActivity_Face_App extends AppCompatActivity {
                             break;
                         case R.id.four:
                             item.setChecked(true);
-                            Log.w(getPackageName().getClass().getName(), "item.getItemId()  Синхронизация Данных с Web-сервера ДСУ-1  " + item.getItemId() + "\n");/////////
+                            Log.w(getPackageName().getClass().getName(), "item.getItemId()  Синхронизация Данных с WebSocketListener-сервера ДСУ-1  " + item.getItemId() + "\n");/////////
                             try {
                                 Boolean ЕслиСвязьсСервером =
                                         new Class_Connections_Server(getApplicationContext()).МетодПингаСервераРаботаетИлиНет(getApplicationContext());
@@ -406,7 +406,7 @@ public class MainActivity_Face_App extends AppCompatActivity {
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                             + " ЕслиСвязьсСервером " + ЕслиСвязьсСервером);
                                 }
-                                Log.d(this.getClass().getName(), "Отработала синх.. Из Меню Активти FACEAPP Синхронизация Данных с Web-сервера ДСУ-1 ?");
+                                Log.d(this.getClass().getName(), "Отработала синх.. Из Меню Активти FACEAPP Синхронизация Данных с WebSocketListener-сервера ДСУ-1 ?");
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

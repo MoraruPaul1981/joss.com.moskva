@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -49,6 +50,7 @@ import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_UUID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
+import com.dsy.dsu.Business_logic_Only_Class.Class_Generator_One_WORK_MANAGER;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.Class_Generation_Data;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
@@ -875,11 +877,7 @@ public class FragmentNewOrderTransport extends Fragment {
                                     snackbarОперацияДобавления.show();
                                 }else{
                                     // TODO: 19.05.2023 Если Успешно Записала Новай заказ Трспорта
-                                 subClassNewOrderTransport.   методBackOrdersTransport();
-                                    // TODO: 19.05.2023  И далее Записали  Выбранный ЦФо в PreShare
-                               Integer getId=     bundlegetCfo.getInt("getId");
-                                    String getName=     bundlegetCfo.getString("getName");
-                                    subClassNewOrderTransport.     методЗаписьВыбраногоЦФО(getId,getName);
+                                    методПослеУспешногоСозданогоЗаказа(bundlegetCfo);
 
                                 }
                                 // TODO: 15.05.2023  Сохранчем Выбраные Данные
@@ -925,6 +923,73 @@ public class FragmentNewOrderTransport extends Fragment {
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
+        private void методПослеУспешногоСозданогоЗаказа(Bundle bundlegetCfo) {
+            try{
+                subClassNewOrderTransport.   методBackOrdersTransport();
+                // TODO: 19.05.2023  И далее Записали  Выбранный ЦФо в PreShare
+                Integer getId=     bundlegetCfo.getInt("getId");
+                String getName=     bundlegetCfo.getString("getName");
+                subClassNewOrderTransport.     методЗаписьВыбраногоЦФО(getId,getName);
+                // TODO: 06.06.2023 запускаем сихорнизацию одноразовую
+                Integer ПубличныйIDДляФрагмента =
+                        new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
+                методЗапускаSingleWorkManager(ПубличныйIDДляФрагмента);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+
+
+        // TODO: 02.08.2022
+        void методЗапускаSingleWorkManager(@NonNull  Integer ПубличныйIDДляФрагмента ){
+            try{
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " ПубличныйID: " + ПубличныйIDДляФрагмента);
+                // TODO: 01.02.2022 заПУСКАЕМ сИНХРОНИАЗАЦИЮ С ВСЕХ ЛИСТ ТАБЕЛЕЙ
+                Integer  ПубличныйIDДляАсих=   new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
+                Bundle bundleДляПЕредачи=new Bundle();
+                bundleДляПЕредачи.putInt("IDПубличныйНеМойАСкемБылаПереписака", ПубличныйIDДляАсих);
+                Intent intentЗапускОднорworkanager=new Intent();
+                intentЗапускОднорworkanager.putExtras(bundleДляПЕредачи);
+                // TODO: 02.08.2022
+                new Class_Generator_One_WORK_MANAGER(getActivity()).
+                        МетодОдноразовыйЗапускВоерМенеджера(getContext(),intentЗапускОднорworkanager);
+                // TODO: 26.06.2022
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " ПубличныйIDДляОдноразовойСинхронПубличныйIDДляФрагментаиазции "+ПубличныйIDДляФрагмента );
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+
+                // TODO: 11.05.2021 запись ошибок
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

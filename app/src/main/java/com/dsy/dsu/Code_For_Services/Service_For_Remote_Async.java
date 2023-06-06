@@ -42,6 +42,7 @@ import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.dsy.dsu.Business_logic_Only_Class.SubClass_Connection_BroadcastReceiver_Sous_Asyns_Glassfish;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.firebase.annotations.concurrent.Background;
@@ -1284,10 +1285,10 @@ try{
                 CopyOnWriteArrayList<ContentValues>   contentValuesCopyOnWriteArrayList=new CopyOnWriteArrayList<>();
 
                 ObjectMapper jsonGenerator = new PUBLIC_CONTENT(context).getGeneratorJackson();
-               // JsonNode jsonNodeParent=   jsonGenerator.readTree(БуферПолученныйJSON.toString());
-              // JsonNode jsonNodeParent = jsonGenerator.readValue(БуферПолученныйJSON.toString(), JsonNode.class);
                 TypeReference< CopyOnWriteArrayList<Map<String,String>>> typeReference=   new TypeReference< CopyOnWriteArrayList<Map<String,String>>>() {};
                CopyOnWriteArrayList<Map<String,String>> jsonNodeParentMAP= jsonGenerator.readValue(БуферПолученныйJSON.toString(), typeReference);
+                // JsonNode jsonNodeParentMAP=   jsonGenerator.readTree(БуферПолученныйJSON.toString());
+               //  JsonNode jsonNodeParentMAP = jsonGenerator.readValue(БуферПолученныйJSON.toString(), JsonNode.class);
 
                 Log.d(this.getClass().getName(),"\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
@@ -1295,7 +1296,6 @@ try{
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
                         " БуферПолученныйJSON " +БуферПолученныйJSON + " jsonNodeParentMAP " +jsonNodeParentMAP);
-
                 // TODO: 26.03.2023  Количество Максимальное СТРОК
                 МаксималноеКоличествоСтрочекJSON = jsonNodeParentMAP.size();
                 // TODO: 11.10.2022 callback метод обратно в актвити #1
