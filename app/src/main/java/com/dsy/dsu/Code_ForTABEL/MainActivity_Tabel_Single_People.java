@@ -1638,7 +1638,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
                         float fractionAnim = new Random().nextFloat();
 
-                    recyclerView.setBackgroundColor(ColorUtils.blendARGB(Color.parseColor("#C0C0C0")
+                    recyclerView.setBackgroundColor(ColorUtils.blendARGB(Color.parseColor("#FFFFFF")
                                 , Color.parseColor("#FFFFFF")
                                 , fractionAnim));
                     }
