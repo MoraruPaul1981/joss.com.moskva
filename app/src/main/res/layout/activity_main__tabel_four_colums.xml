@@ -180,14 +180,13 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/RecyclerViewSingleTabel"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="90dp"
+            android:layout_marginBottom="46dp"
             android:background="#FFFFFF"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="2dp"
             android:keyboardNavigationCluster="true"
-            android:minHeight="570dp"
             android:visibility="visible"
             android:windowSoftInputMode="stateVisible|adjustPan"
             app:layout_constraintBottom_toTopOf="@+id/ProgressBarSingleTabel"
@@ -195,7 +194,9 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/TextViewФИОПрофессия"
-            tools:ignore="MissingConstraints"></androidx.recyclerview.widget.RecyclerView>
+            tools:ignore="MissingConstraints">
+
+        </androidx.recyclerview.widget.RecyclerView>
 
         <Spinner
             android:id="@+id/СпинерТабельДепратамент"

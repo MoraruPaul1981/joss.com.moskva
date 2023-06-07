@@ -77,31 +77,13 @@
                     android:gravity="center"
                     tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports"
                     android:orientation="vertical">
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/ot_key_order_singlevalue"
-                    android:layout_column="0"
-                    android:layout_width="100dp"
-                    android:layout_height="25dp"
-                    android:layout_marginTop="3dp"
-                    android:hint="Цфо"
-                    android:text="Цфо"
-                    android:textSize="14sp"
-                    android:textColor="#F0FFFF"
-                    android:padding="1dp"
-                    android:animateLayoutChanges="true"
-                    android:background="@drawable/style_for_akaz_trasport1"
-                    android:gravity="center"
-                    android:visibility="visible"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="10dp"
-                    app:srcCompat="@drawable/icon_ordertransportorder1"
-                    app:strokeColor="#F5FFFA" />
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/ot_date_order_singlevalue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="20dp"
-                    android:background="@drawable/stylesingletablerowiine10"
+                    android:background="@drawable/stylesingletablerowiine11"
                     android:checkMark="?android:attr/textCheckMark"
                     android:foregroundGravity="center"
                     android:gravity="center"

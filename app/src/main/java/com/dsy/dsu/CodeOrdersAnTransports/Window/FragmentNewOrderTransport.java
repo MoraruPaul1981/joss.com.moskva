@@ -836,9 +836,9 @@ public class FragmentNewOrderTransport extends Fragment {
 
                         Snackbar snackbar=      Snackbar.make(v, "Вы не заполнили заказ !!! ",Snackbar.LENGTH_LONG).setAction("Action",null);
                         // TODO: 15.05.2023
-                        if(materialTextcfo.getText().length()>3
-                        &&  materialTexttypetc.getText().length()>3
-                        &&  materialTextdate.getText().length()>3) {
+                        if(materialTextcfo.getText().length()>1
+                        &&  materialTexttypetc.getText().length()>1
+                        &&  materialTextdate.getText().length()>1) {
 
                             v.animate().rotationX(+40l);
                             message.getTarget() .postDelayed(()-> {
@@ -1289,8 +1289,8 @@ public class FragmentNewOrderTransport extends Fragment {
                 MaterialTextView materialTextdate
                         = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuedate);//ВИД Dates
                 // TODO: 15.05.2023
-                if(materialTextcfo.getText().length()>3
-                        &&  materialTexttypetc.getText().length()>3) {
+                if(materialTextcfo.getText().length()>1
+                        &&  materialTexttypetc.getText().length()>1) {
                     materialButtonExitParent.setText("Сохранить");
                 }else {
                     materialButtonExitParent.setText("Закрыть");

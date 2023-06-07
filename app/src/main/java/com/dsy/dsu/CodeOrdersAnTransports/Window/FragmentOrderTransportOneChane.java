@@ -1192,12 +1192,12 @@ class SubClassGetDateOrderGroupBy {
                                                  @NonNull   TableRow        tableRowДочерная) {
                         try{
                             MaterialTextView    materialTextViewДанныеAddRow =  tableRowДочерная.findViewById(R.id.ot_date_order_singlevalue);
-                            MaterialTextView    materialTextViewШабкаAddRow =  tableRowДочерная.findViewById(R.id.ot_key_order_singlevalue);
+                          //  MaterialTextView    materialTextViewШабкаAddRow =  tableRowДочерная.findViewById(R.id.ot_key_order_singlevalue);
                         String dateordersCfo = (String) cursorgetCFO.getString(cursorgetCFO.getColumnIndex("cfo")).trim();
                         // TODO: 18.04.2023  Заполение Данными уже на экран
                         методЗаполенияЗаказаТранспорта(bundleGrpuopByOrder, materialTextViewДанныеAddRow, dateordersCfo);
                             // TODO: 26.05.2023 set Шабка Данных
-                         materialTextViewШабкаAddRow.setText("Цфо");
+                       //  materialTextViewШабкаAddRow.setText("Цфо");
 
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
