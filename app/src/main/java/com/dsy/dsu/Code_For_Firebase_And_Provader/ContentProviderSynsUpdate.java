@@ -993,6 +993,17 @@ class SubClassJsonTwoParserOtServer{
                                     " РезультатОперацииBurkUPDATE.size() " + РезультатОперацииBurkUPDATE.size());
                         }
                     })
+                               .onErrorComplete(new Predicate<Throwable>() {
+                                   @Override
+                                   public boolean test(Throwable throwable) throws Throwable {
+                                       throwable.printStackTrace();
+                                       Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                               " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                       new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(throwable.toString(), this.getClass().getName(),
+                                               Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                       return false;
+                                   }
+                               })
                     .blockingSubscribe();
             // TODO: 28.04.2023
         } catch (Exception e) {

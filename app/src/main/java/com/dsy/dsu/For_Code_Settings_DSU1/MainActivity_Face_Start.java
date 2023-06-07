@@ -539,7 +539,7 @@ try{
 
             //// TODO ЗАПУСКАЕМ СНАЧАЛА АУНТИФКАУИЮ И ЕСЛИ УСПЕШНО ЗАПУСКАМ ДАННЫЕ   -----ЭТО ПЕРВЫЙ ЗАПУСК ПРИЛОЖЕНИЯ
             Интент_ЗапускаетFaceApp=new Intent();
-            Интент_ЗапускаетFaceApp.putExtra("РежимЗапускаСинхронизации","СамыйПервыйЗапускСинхронизации");
+         /*   Интент_ЗапускаетFaceApp.putExtra("РежимЗапускаСинхронизации","СамыйПервыйЗапускСинхронизации");*/
             Интент_ЗапускаетFaceApp.setClass(getApplicationContext(),
                     MainActivity_Tabels_Users_And_Passwords.class);/////
             Интент_ЗапускаетFaceApp.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_FROM_BACKGROUND);///

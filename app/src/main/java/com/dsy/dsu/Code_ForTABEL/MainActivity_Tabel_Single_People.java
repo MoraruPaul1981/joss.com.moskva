@@ -2140,7 +2140,13 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         dataRowData.putLong("CurrenrsSelectFio", CurrenrsSelectFio);
                         editTextRowКликПоДАнными.setTag(dataRowData);
                         editTextRowКликПоДАнными.setVisibility(View.VISIBLE);
-                        editTextRowКликПоДАнными.setText(День.trim());
+                    editTextRowКликПоДАнными.setText(День.trim());
+                    // TODO: 07.06.2023
+                    char ЕслиБуквывДнеСодержимое=     День.charAt(0);
+                    if(Character.isLetter( ЕслиБуквывДнеСодержимое )){
+                        editTextRowКликПоДАнными.setTextColor(Color.GRAY);
+                    }
+
                     // TODO: 19.10.2022
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
