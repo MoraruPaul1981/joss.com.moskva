@@ -601,11 +601,11 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
         try{
             // TODO: 09.04.2023  курсор самим создаваемых табеляПОСИК ДАННЫХ ЧЕРЕЗ UUID
             Bundle bundleListTabels=new Bundle();
-            bundleListTabels.putString("СамЗапрос","  SELECT * FROM viewtabel" +
+            bundleListTabels.putString("СамЗапрос","  SELECT * FROM tabel" +
                     " WHERE status_send!=? AND month_tabels =?  AND year_tabels =? " +
                     " ORDER BY year_tabels DESC ,month_tabels DESC LIMIT 6  ");
             bundleListTabels.putStringArray("УсловияВыборки" ,new String[]{String.valueOf("Удаленная"),String.valueOf(МЕсяцТабелей),String.valueOf(ГодТабелей)});
-            bundleListTabels.putString("Таблица","viewtabel");
+            bundleListTabels.putString("Таблица","tabel");
             Курсор_Main_ListTabels=      (Cursor)    subClassCursorLoader. CursorLoaders(context, bundleListTabels);
             Log.d(this.getClass().getName(), "GetData "+Курсор_Main_ListTabels  );
 
@@ -668,7 +668,11 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
                                 // TODO: 09.04.2023  ВставлЯем Данные
                                 ((MaterialTextView) view).setTag(bundleДЛяListTabels);
-                                ((MaterialTextView) view).setText(FullNameCFO.trim());
+                                if (FullNameCFO!=null && FullNameCFO.length()>0) {
+                                    ((MaterialTextView) view).setText(FullNameCFO.trim());
+                                }else{
+                                    ((MaterialTextView) view).setText("нет цфо !!!");
+                                }
                                 ((MaterialTextView) view).setTextSize(15l);
                                 ((MaterialTextView) view).startAnimation(animationvibr1);
                                 // TODO: 18.04.2023  Внешниц вид
