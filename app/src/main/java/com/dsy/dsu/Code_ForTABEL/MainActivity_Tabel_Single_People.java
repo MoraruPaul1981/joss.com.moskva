@@ -2175,6 +2175,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     TextViewRowКликПоНазваниям.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
                         @Override
                         public void onViewAttachedToWindow(View v) {
+                            try{
                             // TODO: 19.10.202
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2183,45 +2184,30 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
 
                             if (ВыходныеИлиПразничные!=null) {
-                                Bundle bundleВыходнойIn= (Bundle) ((TextView)v).getTag();
-                                Integer ПроверкабылЛиВыходной= 0;
-                                if (bundleВыходнойIn!=null) {
-                                    ПроверкабылЛиВыходной = bundleВыходнойIn.getInt("StatusCell");
-                                }
-                                if(       ((TextView)v).getText().toString().matches("(.*)Вс(.*)")
-                                        || ((TextView)v).getText().toString().matches("(.*)Сб(.*)")
-                                ||ПроверкабылЛиВыходной==2) {
-                                    ((TextView)v).setTextColor(Color.parseColor("#DC143C"));
-                                    Bundle bundleВыходной=new Bundle();
-                                    bundleВыходной.putInt("StatusCell",2);
-                                    ((TextView)v).setTag(bundleВыходной);
+                              Bundle bundleВыходныеИПразничные=(Bundle)        ((MaterialTextView)v).getTag();
+                                String ЗначениеДней= null;
+                                if (bundleВыходныеИПразничные==null) {
+                                    ЗначениеДней = ((MaterialTextView)v).getText() .toString();
+                                    // TODO: 07.06.2023
+                                    методОбработкиВыходныхиПразничные(ЗначениеДней,((MaterialTextView)v));
                                 }else {
-
-                                    Bundle bundleПразничныйIn= (Bundle) ((TextView)v).getTag();
-                                    Integer ПроверкабылЛиПразничного= 0;
-                                    if (bundleПразничныйIn!=null) {
-                                        ПроверкабылЛиПразничного = bundleВыходнойIn.getInt("StatusCell");
-                                    }
-                                    if ( ((TextView)v).getText().toString().matches("(.*)###(.*)")
-                                    || ПроверкабылЛиПразничного==3){
-                                        String УдаляемДляПразничныхДней=     ((TextView)v).getText().toString();
-                                        УдаляемДляПразничныхДней=           УдаляемДляПразничныхДней.replaceAll("###","");
-                                        ((TextView)v).setText(УдаляемДляПразничныхДней);
-                                        ((TextView)v).setTextColor(Color.parseColor("#9C112D"));
-                                        Bundle bundleПразничныйДень=new Bundle();
-                                        bundleПразничныйДень.putInt("StatusCell",3);
-                                        ((TextView)v).setTag(bundleПразничныйДень);
-                                    }  else {
-                                        ((TextView)v).setTextColor(Color.parseColor("#008080"));
-                                        Bundle bundleОбычныйДень=new Bundle();
-                                        bundleОбычныйДень.putInt("StatusCell",1);
-                                        ((TextView)v).setTag(bundleОбычныйДень);
-                                    }
-                                    }
+                                Integer ЗначениеДнейУжеЗаполнено=    bundleВыходныеИПразничные.getInt("StatusCell");
+                                    методОбработкиВыходныхиПразничные(ЗначениеДнейУжеЗаполнено,((MaterialTextView)v));
+                                }
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " TextViewRowКликПоНазваниям " +TextViewRowКликПоНазваниям);
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " TextViewRowКликПоНазваниям " +TextViewRowКликПоНазваниям+
+                                        "  ЗначениеДней " +ЗначениеДней + " bundleВыходныеИПразничные " +bundleВыходныеИПразничные);
                             }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(getApplicationContext().getClass().getName(),
+                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
                         }
                         @Override
                         public void onViewDetachedFromWindow(View v) {
@@ -2236,6 +2222,78 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " TextViewRowКликПоНазваниям " +TextViewRowКликПоНазваниям);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(getApplicationContext().getClass().getName(),
+                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
+            }
+
+            private void методОбработкиВыходныхиПразничные(@NonNull String ЗначениеДней,@NonNull MaterialTextView materialTextView) {
+                try{
+                if (ЗначениеДней.matches("(.*)Вс(.*)")
+                        || ЗначениеДней.matches("(.*)Сб(.*)")
+                        && ! ЗначениеДней.matches("(.*)###(.*)")) {
+                    materialTextView.setTextColor(Color.parseColor("#DC143C"));
+                    Bundle bundleВыходной=new Bundle();
+                    bundleВыходной.putInt("StatusCell",2);
+                    materialTextView.setTag(bundleВыходной);
+                }else{
+                    if (ЗначениеДней.matches("(.*)###(.*)") ) {
+                        ЗначениеДней=           ЗначениеДней.replaceAll("###","");
+                        materialTextView.setText(ЗначениеДней);
+                        materialTextView.setTextColor(Color.parseColor("#9C112D"));
+                        Bundle bundleПразничныйДень=new Bundle();
+                        bundleПразничныйДень.putInt("StatusCell",3);
+                        materialTextView.setTag(bundleПразничныйДень);
+                    }else{
+                        materialTextView.setTextColor(Color.parseColor("#008080"));
+                        Bundle bundleОбычныйДень=new Bundle();
+                        bundleОбычныйДень.putInt("StatusCell",1);
+                        materialTextView.setTag(bundleОбычныйДень);
+                    }
+                }
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getApplicationContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+            }
+            // TODO: 07.06.2023 2
+            private void методОбработкиВыходныхиПразничные(@NonNull Integer ЗначениеДней,@NonNull MaterialTextView materialTextView) {
+                try{
+                    if (ЗначениеДней==2){
+                        Bundle bundleВыходной=new Bundle();
+                        materialTextView.setTextColor(Color.parseColor("#DC143C"));
+                        bundleВыходной.putInt("StatusCell",2);
+                        materialTextView.setTag(bundleВыходной);
+                    }else{
+                        if (ЗначениеДней==3) {
+                            materialTextView.setTextColor(Color.parseColor("#9C112D"));
+                            Bundle bundleПразничныйДень=new Bundle();
+                            bundleПразничныйДень.putInt("StatusCell",3);
+                            materialTextView.setTag(bundleПразничныйДень);
+                        }else{
+                            materialTextView.setTextColor(Color.parseColor("#008080"));
+                            Bundle bundleОбычныйДень=new Bundle();
+                            bundleОбычныйДень.putInt("StatusCell",1);
+                            materialTextView.setTag(bundleОбычныйДень);
+                        }
+                    }
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getApplicationContext().getClass().getName(),
