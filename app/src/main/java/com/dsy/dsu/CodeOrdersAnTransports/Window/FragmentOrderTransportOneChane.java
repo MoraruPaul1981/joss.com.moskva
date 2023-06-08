@@ -238,9 +238,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
         super.onStop();
         try{
             WorkManager.getInstance(getContext()).cancelUniqueWork(ИмяСлужбыСинхронизациОдноразовая);
-            if (cursorGroupByParent!=null) {
-                cursorGroupByParent.close();
-            }
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
@@ -1863,11 +1860,11 @@ class SubClassGetDateOrderGroupBy {
             }
             // TODO: 29.05.2023  Class Adapter RecyreView New New Order Transport
             class SubClassAdapterMyRecyclerview{
-                private     Cursor cursor;
+                private     Cursor cursorGroupByParent;
                 private   Context context;
                 private     TableLayout    tableLayoutДочернная   ;
-                public SubClassAdapterMyRecyclerview(@NonNull Context context,@NonNull Cursor cursor) {
-                    this.cursor=cursor;
+                public SubClassAdapterMyRecyclerview(@NonNull Context context,@NonNull Cursor cursorGroupByParent) {
+                    this.cursorGroupByParent=cursorGroupByParent;
                     this.context=context;
                     this.tableLayoutДочернная=tableLayoutДочернная;
                 }
@@ -1882,7 +1879,7 @@ class SubClassGetDateOrderGroupBy {
                     public MyViewHolder(@NonNull View itemView) {
                         super(itemView);
                         try {
-                            if ( cursor!=null  && cursor.getCount() >0) {
+                            if ( cursorGroupByParent!=null  && cursorGroupByParent.getCount() >0) {
                                 // TODO: 29.05.2023
                                 МетодИнициализацииКомпонетовЗаданияCardView(itemView);
                                 Log.d(getContext().getClass().getName(), "\n"
@@ -2322,7 +2319,7 @@ class SubClassGetDateOrderGroupBy {
                 // TODO: 29.05.2023  Заполение RecyView
                 void методЗаполенияRecycleView() {
                     try {
-                        myRecycleViewAdapter = new MyRecycleViewAdapter(cursor);
+                        myRecycleViewAdapter = new MyRecycleViewAdapter(cursorGroupByParent);
                         recyclerView_OrderTransport.setAdapter(myRecycleViewAdapter);
                         recyclerView_OrderTransport.refreshDrawableState();
                         recyclerView_OrderTransport.forceLayout();
@@ -2331,7 +2328,7 @@ class SubClassGetDateOrderGroupBy {
                                 + " время: " + new Date() + "\n+" +
                                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                + " cursor " +cursor +  "  myRecycleViewAdapter " +myRecycleViewAdapter);
+                                + " cursorGroupByParent " +cursorGroupByParent +  "  myRecycleViewAdapter " +myRecycleViewAdapter);
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(getContext().getClass().getName(),
