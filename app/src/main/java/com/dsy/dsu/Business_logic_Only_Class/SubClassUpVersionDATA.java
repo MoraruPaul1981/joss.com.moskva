@@ -2,6 +2,7 @@ package com.dsy.dsu.Business_logic_Only_Class;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
@@ -90,12 +91,19 @@ public class SubClassUpVersionDATA {
                                                  @NotNull Context context,
                                                  @NotNull SQLiteDatabase getБазаДанныхДЛяОперацийВнутри) {
         Long  ПовышенняВерсияMAXCurrentTable=0l;
-        try  (SQLiteCursor         Курсор_АнализMODIFITATION_Client= (SQLiteCursor)
-                         getБазаДанныхДЛяОперацийВнутри.rawQuery(" SELECT  localversionandroid_version  FROM " +
-                                 "  MODIFITATION_Client  WHERE  name = ? ", new String[]{ Текущаятаблицы.trim().toLowerCase()});) {
+        try  ( Cursor Курсор_АнализMODIFITATION_Client= ( Cursor) getБазаДанныхДЛяОперацийВнутри.rawQuery(" SELECT *  FROM " +
+                "  MODIFITATION_Client  WHERE  name = '"+Текущаятаблицы+"' ", null);)    {
+
             if(Курсор_АнализMODIFITATION_Client.getCount()>0 && Курсор_АнализMODIFITATION_Client!=null){
                 Курсор_АнализMODIFITATION_Client.moveToFirst();
-                ПовышенняВерсияMAXCurrentTable=Курсор_АнализMODIFITATION_Client.getLong(0);
+              String  ПовышенняВерсияMAXCurrddentTable=Курсор_АнализMODIFITATION_Client.getString(0);
+              ПовышенняВерсияMAXCurrentTable=(Long) Курсор_АнализMODIFITATION_Client.getLong(3);
+
+                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                        " ПовышенняВерсияMAXCurrddentTable  " + ПовышенняВерсияMAXCurrddentTable);
+
                 // TODO: 22.11.2022
                     ПовышенняВерсияMAXCurrentTable++;
             }else {

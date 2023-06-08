@@ -255,6 +255,27 @@ public class FragmentOrderTransportOneChane extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        try{
+        subClassOrdersTransport.  методGetCursorReboot();
+        Log.d(this.getClass().getName(), "\n" + " class " +
+                Thread.currentThread().getStackTrace()[2].getClassName()
+                + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(getContext().getClass().getName(),
+                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         try{
@@ -1025,7 +1046,33 @@ public class FragmentOrderTransportOneChane extends Fragment {
             }
         }
 
+        void методGetCursorReboot(){
+            try{
+                if (cursorGroupByParent!=null) {
+                    cursorGroupByParent.deactivate();
+                }
+                // TODO: 23.05.2023  даннеы
+                методGetCursorGROUPBYBounds(); //      методGetCursorBounds();
 
+                if (cursorGroupByParent!=null) {
+                    recyclerView_OrderTransport.getAdapter().notifyDataSetChanged();
+                }
+
+                Log.d(this.getClass().getName(), "\n" + " class " +
+                        Thread.currentThread().getStackTrace()[2].getClassName()
+                        + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
 
 
         // TODO: 28.04.2023  ALL Adapters
@@ -2564,30 +2611,6 @@ class SubClassGetDateOrderGroupBy {
         }
 
         // TODO: 12.05.2023
-        void методGetCursorReboot(){
-            try{
-                методGetCursorGROUPBYBounds();
-                // TODO: 24.05.2023  перегрузка Экрана
-                onStart();
-                Log.d(this.getClass().getName(), "\n" + " class " +
-                        Thread.currentThread().getStackTrace()[2].getClassName()
-                        + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " cursorGroupByParent " + cursorGroupByParent);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(getContext().getClass().getName(),
-                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
-
-
-
         private void МетодЗапускаАнимацииКнопок(View v) {
             v.animate().rotationX(-40l);
             message.getTarget() .postDelayed(()->{
