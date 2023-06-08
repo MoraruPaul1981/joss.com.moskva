@@ -178,9 +178,8 @@
             android:layout_height="0dp"
             android:layout_centerHorizontal="true"
             android:background="#FFFFFF"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:keyboardNavigationCluster="true"
-            android:padding="2dp"
             android:visibility="visible"
             android:windowSoftInputMode="stateVisible|adjustPan"
             app:layout_constraintBottom_toTopOf="@+id/ProgressBarSingleTabel"
@@ -188,7 +187,6 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/TextViewФИОПрофессия"
-            app:layout_goneMarginTop="10dp"
             app:layout_optimizationLevel="standard|barrier|chains"
             tools:ignore="MissingConstraints">
 

@@ -19,6 +19,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -208,8 +210,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
     private TextView TextViewФИОПрофессия;
     private  Cursor   cursor;
-
-  private   ValueAnimator    valueAnimator;
   private    InputMethodManager imm;
 
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
@@ -303,7 +303,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             subClassSingleTabelRecycreView.   методWorkManagerLifecycleOwner();
 
-            subClassSingleTabelRecycreView.        методАнимацияRecyreView();
+
 
 
 // TODO: 25.04.2023 тест код
@@ -1408,7 +1408,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 @Override
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                     try{
-                        valueAnimator.start();
+
                         recyclerView.getAdapter().notifyDataSetChanged();
                         // TODO: 20.04.2023 Данные
                         cursor =    new SubClassGetCursor().МетодSwipesКурсор();
@@ -1437,6 +1437,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
                                     " posio " +posio  + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
                         },50);
+
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor);
@@ -1450,6 +1451,23 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
                 }
+
+                @Override
+                public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                    super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+
+                    методАнимацияRecyreView(viewHolder);
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor
+                            + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
+                }
+
+                @Override
+                public void onChildDrawOver(@NonNull Canvas c, @NonNull RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                    super.onChildDrawOver(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                }
+
                 @Override
                 public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                                       RecyclerView.ViewHolder target) {
@@ -1477,7 +1495,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     @Override
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         try{
-                            valueAnimator.start();
                             recyclerView.getAdapter().notifyDataSetChanged();
                             // TODO: 20.04.2023 Данные
                             cursor =    new SubClassGetCursor().МетодSwipesКурсор();
@@ -1498,12 +1515,13 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 // TODO: 20.04.2023
                               МетодЗаполениеRecycleView( cursor );
 
+
+
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
                                         " posio " +posio  + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
                             },50);
-
 
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1528,6 +1546,11 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     @Override
                     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                        методАнимацияRecyreView(viewHolder);
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor
+                                + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
                     }
 
                     @Override
@@ -1545,52 +1568,11 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     }
 
                 };
-                ItemTouchHelper.SimpleCallback simpleItemTouchCallbackAll = new ItemTouchHelper.SimpleCallback(10,
-                        ItemTouchHelper.ACTION_STATE_IDLE ) {
 
-                    @Override
-                    public boolean isItemViewSwipeEnabled() {
-                        return true;
-                    }
-                    @Override
-                    public boolean isLongPressDragEnabled() {
-                        return false;
-                    }
-                    @Override
-                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                        try{
-                        Integer posio= myViewHolder.getAbsoluteAdapterPosition();
-                        // remove item from adapter
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"recyclerView   " + recyclerView+ " cursor " +cursor);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(getApplicationContext().getClass().getName(),
-                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                    }
-                    @Override
-                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                                          RecyclerView.ViewHolder target) {
-                        final int fromPos = viewHolder.getAdapterPosition();
-                        final int toPos = target.getAdapterPosition();
-                        // move item in `fromPos` to `toPos` in adapter.
-                        return true;// true if moved, false otherwise
-                    }
-
-                };
                 ItemTouchHelper itemTouchHelperLEFT = new ItemTouchHelper(simpleItemTouchCallbackLEFT);
                 itemTouchHelperLEFT.attachToRecyclerView(recyclerView);
                 ItemTouchHelper itemTouchHelperRIGHT = new ItemTouchHelper(simpleItemTouchCallbackRIGHT);
                 itemTouchHelperRIGHT.attachToRecyclerView(recyclerView);
-                ItemTouchHelper itemTouchHelperAll = new ItemTouchHelper(simpleItemTouchCallbackAll);
-                itemTouchHelperAll.attachToRecyclerView(recyclerView);
-
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"recyclerView   " + recyclerView);
@@ -1629,22 +1611,13 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
         }
 
 
-        private void методАнимацияRecyreView() {
+        private void методАнимацияRecyreView(@NonNull  RecyclerView.ViewHolder viewHolder) {
             try{
-                valueAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
-                valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
-
-                        float fractionAnim = new Random().nextFloat();
-
-                    recyclerView.setBackgroundColor(ColorUtils.blendARGB(Color.parseColor("#FFFFFF")
-                                , Color.parseColor("#FFFFFF")
-                                , fractionAnim));
-                    }
-                });
-                // TODO: 25.04.2023
-                valueAnimator.start();
+                viewHolder.itemView.setBackgroundColor(Color.GRAY);
+                viewHolder.itemView.refreshDrawableState();
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
