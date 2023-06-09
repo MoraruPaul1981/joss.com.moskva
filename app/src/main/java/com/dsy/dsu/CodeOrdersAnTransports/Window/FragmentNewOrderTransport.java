@@ -64,6 +64,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.common.util.concurrent.AtomicDouble;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -71,6 +72,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -247,7 +249,6 @@ public class FragmentNewOrderTransport extends Fragment {
             relativeLayout_pool_inseder.removeView(родительскийCardView);
             relativeLayout_pool_inseder.addView(родительскийCardView);
             relativeLayout_pool_inseder.requestLayout();
-            relativeLayout_pool_inseder.invalidate();
             relativeLayout_pool_inseder.refreshDrawableState();
             scrollview_pool_new_order_trasport.pageScroll(ScrollView.FOCUS_UP);
             linearLayout_new_create_order_transport.requestLayout();
@@ -860,11 +861,13 @@ public class FragmentNewOrderTransport extends Fragment {
                                          Bundle bundlegetTypeTC=(Bundle)       materialTexttypetc.getTag();
                                 valuesNewOrderTransport.put("vid_trasport", bundlegetTypeTC.getInt("getId"));
                                          Bundle bundlegetDateOrder=(Bundle)       materialTextdate.getTag();
-                                valuesNewOrderTransport.put("dateorders", bundlegetDateOrder.getString("GetDateOrder"));
 
-                        /*        // TODO: 18.05.2023 генерируем номер заказа траспорта
-                                String number_order=       subClassNewOrderTransport.  методGetNumberNewIDOrderTranport();
-                                valuesNewOrderTransport.put("number_order",number_order  );*/
+
+                                // TODO: 09.06.2023 Дата Время Для Вставки нового Заказа
+                       String ДатаДляСозданияЗаказа=         bundlegetDateOrder.getString("GetDateOrder");
+                                valuesNewOrderTransport.put("dateorders", ДатаДляСозданияЗаказа);
+                                // TODO: 09.06.2023  сама ВСТАВКА НОВОГО ЗАКАЗА ТРАСПОРТА
+                                
                                         ContentResolver contentResolver = getContext().getContentResolver();
                                         // TODO: 16.05.2023 Сама Вставка
                                        Uri urlРезультатNewOrderTranport=  contentResolver.insert(uri,  valuesNewOrderTransport);
@@ -889,7 +892,7 @@ public class FragmentNewOrderTransport extends Fragment {
                                         + " materialTextdate.getText().length() "+ materialTextdate.getText().length()+
                                         " РезультатУдалениеСтатуса " +РезультатУдалениеСтатуса);
 
-                                    },200);
+                                    },150);
                             // TODO: 15.05.2023  Сохранчем Выбраные Данные
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1487,15 +1490,28 @@ public class FragmentNewOrderTransport extends Fragment {
                                 newDate.set(year, monthOfYear, dayOfMonth);
                                 try {
                                   //  String ДатаДляНовогоЗаказаТраспорта= DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(newDate.getTime());
-                                    String ДатаДляНовогоЗаказаТраспорта= dateFormatter.format(newDate.getTime());
-                                    // TODO: 16.05.2023 дата
-                                    методЗаписиНовуюДату(ДатаДляНовогоЗаказаТраспорта, materialTextViewКликДата);
+                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd,MMM yyyy" , new Locale("ru"));
+                                    SimpleDateFormat simpleDateFormatBungle = new SimpleDateFormat("yyyy-MM-dd" , new Locale("ru"));
+                                    Date ДатаВыбранаяПользователь= newDate.getTime();
+                                    // TODO: 09.06.2023
+                                    Calendar myCal = new GregorianCalendar();
+                                    Date ДатаСейчасСитемная= myCal.getTime();
+                                    // TODO: 09.06.2023  проверяем что выбрана дата старше чем сейчас
+                                    if (        ДатаВыбранаяПользователь.after(ДатаСейчасСитемная)) {
+                                        String    ДатаДляНовогоЗаказаТраспорта = simpleDateFormat.format(ДатаВыбранаяПользователь);
+                                        String    ДатаДляНовогоЗаказаТраспортаBungle = simpleDateFormatBungle.format(ДатаВыбранаяПользователь);
+                                        // TODO: 16.05.2023 дата
+                                        методЗаписиНовуюДату(ДатаДляНовогоЗаказаТраспорта, materialTextViewКликДата,ДатаДляНовогоЗаказаТраспортаBungle);
+                                        Log.d(getContext() .getClass().getName(), "\n"
+                                                + " время: " + new Date()+"\n+" +
+                                                " Класс в процессе... " +   getContext().getClass().getName()+"\n"+
+                                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+" ДатаДляНовогоЗаказаТраспорта " +ДатаДляНовогоЗаказаТраспорта);
+                                    }
+
                                     Log.d(getContext() .getClass().getName(), "\n"
                                             + " время: " + new Date()+"\n+" +
                                             " Класс в процессе... " +   getContext().getClass().getName()+"\n"+
-                                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                            + " ДатаДляНовогоЗаказаТраспорта "+ ДатаДляНовогоЗаказаТраспорта);
-
+                                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -1527,12 +1543,14 @@ public class FragmentNewOrderTransport extends Fragment {
 
         }
 
-        private void методЗаписиНовуюДату(String ДатаДляНовогоЗаказаТраспорта, @NonNull MaterialTextView materialTextViewКликДата) {
+        private void методЗаписиНовуюДату(String ДатаДляНовогоЗаказаТраспорта,
+                                          @NonNull MaterialTextView materialTextViewКликДата,
+                                          @NonNull  String ДатаДляНовогоЗаказаТраспортаBungle) {
             try{
                 Bundle bundle=new Bundle();
-                bundle.putString("GetDateOrder",ДатаДляНовогоЗаказаТраспорта);
+                bundle.putString("GetDateOrder",ДатаДляНовогоЗаказаТраспортаBungle.trim());
                         materialTextViewКликДата.setTag(bundle);
-            materialTextViewКликДата.setText(ДатаДляНовогоЗаказаТраспорта);
+            materialTextViewКликДата.setText(ДатаДляНовогоЗаказаТраспорта.toString());
             materialTextViewКликДата.refreshDrawableState();
         } catch (Exception e) {
             e.printStackTrace();
@@ -1545,16 +1563,18 @@ public class FragmentNewOrderTransport extends Fragment {
 
         void  методGetFirstDateForNewOrder(@NonNull MaterialTextView        materialTextDate){
             try{
-                final String[] FullNameCFO = new String[1];
-                final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", new Locale("ru"));
-                Calendar newDate = Calendar.getInstance();
-                newDate.get(Calendar.YEAR) ;
-                newDate.get( Calendar.MONTH);
-                newDate.add(Calendar.DAY_OF_MONTH,1);
-                //TODODATA
-                String ДатаДляНовогоЗаказаТраспорта= dateFormatter.format(newDate.getTime());
+                // SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd-yyyy", new Locale("ru"));
+                Calendar myCal = new GregorianCalendar();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd,MMM yyyy" , new Locale("ru"));
+                          SimpleDateFormat simpleDateFormatBungle = new SimpleDateFormat("yyyy-MM-dd" , new Locale("ru"));
+                myCal.add(Calendar.DAY_OF_MONTH, 1);
+                Date breamy= myCal.getTime();
+
+            String    ДатаДляНовогоЗаказаТраспорта=        simpleDateFormat .format(breamy);
+            String    ДатаДляНовогоЗаказаТраспортаBungle=       simpleDateFormatBungle.format(breamy);
+
                 // TODO: 16.05.2023  Записи Новой Даты 
-                методЗаписиНовуюДату(ДатаДляНовогоЗаказаТраспорта, materialTextDate);
+                методЗаписиНовуюДату(ДатаДляНовогоЗаказаТраспорта, materialTextDate,ДатаДляНовогоЗаказаТраспортаBungle);
                 Log.d(getContext() .getClass().getName(), "\n"
                         + " время: " + new Date()+"\n+" +
                         " Класс в процессе... " +   getContext().getClass().getName()+"\n"+

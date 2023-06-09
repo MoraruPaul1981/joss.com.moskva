@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =             1035;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+     static final int VERSION =             1040;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
     private      SQLiteDatabase ССылкаНаСозданнуюБазу;
     private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
@@ -1032,7 +1032,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
                     "uuid NUMERIC UNIQUE," +
                     "user_update INTEGER," +
                     " current_table NUMERIC UNIQUE, " +
-                    " UNIQUE ( dateorders,cfo,vid_trasport)"+
+                    " UNIQUE ( dateorders,date_update,user_update)"+
                     ")");
             Log.d(this.getClass().getName(), " сработала ...  создание таблицы order_tc ");
 
@@ -1221,7 +1221,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             Log.d(this.getClass().getName()," ИменаТаблицыОтАндройда " +ИменаТаблицыОтАндройда); // TODO: 28.09.2022 таблицы
             Log.d(this.getClass().getName(), " после СЛУЖБА  содание базы newVersion==  652   (например)   " + new Date() + " newVersion " + newVersion);
             
-      if(newVersion ==            1035){
+      if(newVersion ==            1040){
                //TODO table создание
           //МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
           МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
