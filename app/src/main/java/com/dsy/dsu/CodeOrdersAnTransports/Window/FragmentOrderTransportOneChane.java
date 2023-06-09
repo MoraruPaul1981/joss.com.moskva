@@ -1088,7 +1088,6 @@ class SubClassGetDateOrderGroupBy {
     // TODO: 25.05.2023  метод первый 
     void методGetDateOrderGroupBy(@NonNull  MaterialCardView materialCardViewGroupBy, @NonNull  Bundle bundleGrpuopByOrder) {
         try{
-            MaterialTextView materialTextViewKeyДатаЗаказа= materialCardViewGroupBy.findViewById(R.id.ot_date_order_key);//ДАТА
             MaterialTextView materialTextViewДатаЗаказа=   materialCardViewGroupBy.findViewById(R.id.ot_date_order_value);//ДАТА
             String DateOrderGroupBy = (String) bundleGrpuopByOrder.get("dateorders");
             // TODO: 18.04.2023  Заполение Данными уже на экран
