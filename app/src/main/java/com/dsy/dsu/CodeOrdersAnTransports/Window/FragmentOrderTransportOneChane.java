@@ -215,6 +215,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
        //todo recyrview
             subClassOrdersTransport.МетодИнициализацииRecycreView();
             subClassOrdersTransport.методАнимацииGridView();
+            subClassOrdersTransport.  методУдалениеДанныхИзRecycReView();
 
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
@@ -2574,7 +2575,7 @@ class SubClassGetDateOrderGroupBy {
             return Статус;
         }
 
-        private void методУдалениеТабеля( ) {
+        private void методУдалениеДанныхИзRecycReView( ) {
             recyclerView_OrderTransport.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -2584,6 +2585,13 @@ class SubClassGetDateOrderGroupBy {
                         @Override
                         public boolean onLongClick(View v) {
                             try{
+                                TableLayout   tableLayoutДочернная       = (TableLayout) v.findViewById(R.id.tablelayout_singleotrow_type_tc);
+
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
+
          /*                       LinearLayout linearLayoutЗаказыТранспорта= ( LinearLayout)
                                         v.findViewById(android.R.id.text1);
                                 MaterialTextView materialTextView5  = (MaterialTextView) linearLayoutЗаказыТранспорта.findViewById(R.id.otvaluecfo);///ЦФО
