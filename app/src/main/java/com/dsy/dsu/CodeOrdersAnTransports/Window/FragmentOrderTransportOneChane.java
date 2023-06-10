@@ -70,6 +70,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -1064,19 +1065,18 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
         void методGetCursorReboot(){
             try{
-                Cursor cursor=    myRecycleViewAdapter.cursor;
-                if(cursor!=null  && cursor.isClosed()==false){
-                    cursor.close();
+                if( myRecycleViewAdapter.cursor!=null  &&  myRecycleViewAdapter.cursor.isClosed()==false){
+                    myRecycleViewAdapter.cursor.close();
                 }
-                // TODO: 23.05.2023  даннеы
 
-                cursor =      методGetCursorGROUPBYBounds(); //      методGetCursorBounds();
-                  //  recyclerView_OrderTransport.getAdapter().notifyDataSetChanged();
-                // TODO: 23.05.2023  экран
-              ///  onStart();
-              /*      myRecycleViewAdapter.notifyDataSetChanged();*/
-                recyclerView_OrderTransport.getAdapter().notifyDataSetChanged();
+                Cursor cursorПереполучаемДанные=      методGetCursorGROUPBYBounds(); //      методGetCursorBounds();
+                myRecycleViewAdapter.cursor=cursorПереполучаемДанные;
                 myRecycleViewAdapter.notifyDataSetChanged();
+                // TODO: 23.05.2023  даннеы
+                RecyclerView.Adapter recyclerView=         recyclerView_OrderTransport.getAdapter();
+                recyclerView_OrderTransport.swapAdapter(recyclerView,true);
+                recyclerView_OrderTransport.getAdapter().notifyDataSetChanged();
+
                 // TODO: 10.06.2023
                 МетодПерегрузкаRecyceView();
                 Log.d(this.getClass().getName(), "\n" + " class " +
