@@ -284,6 +284,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
             getsubClassAdapterMyRecyclerview.new SubClassAdapterMyRecyclerview(getContext() ).      методЗаполенияRecycleView(cursor);
             subClassOrdersTransport. МетодСлушательRecycleView();
             subClassOrdersTransport.  МетодСлушательКурсора();
+            subClassOrdersTransport.    МетодКпопкиЗначков();
             subClassOrdersTransport. МетодПерегрузкаRecyceView();
 
             Log.d(this.getClass().getName(), "\n" + " class " +
@@ -2620,11 +2621,11 @@ class SubClassGetDateOrderGroupBy {
                 v.animate().rotationX(0);
             },300);
         }
-        private void МетодКпопкиЗначков(@NonNull Cursor cursor) {
+        private void МетодКпопкиЗначков( ) {
             try {
-                if (cursor!=null && cursor.getCount()> 0) {
-                        Log.d(this.getClass().getName(), "  cursor" + cursor.getCount());
-                        BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setNumber( cursor.getCount());//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
+                if (myRecycleViewAdapter.cursor!=null && myRecycleViewAdapter.cursor.getCount()> 0 && myRecycleViewAdapter.cursor.isClosed()==false) {
+                        Log.d(this.getClass().getName(), "  myRecycleViewAdapter.cursor" + myRecycleViewAdapter.cursor.getCount());
+                        BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setNumber( myRecycleViewAdapter.cursor.getCount());//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
                         BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.parseColor("#15958A"));
                 }else {
                     BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
@@ -2634,7 +2635,7 @@ class SubClassGetDateOrderGroupBy {
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
-                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+ " myRecycleViewAdapter.cursor " +myRecycleViewAdapter.cursor);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
