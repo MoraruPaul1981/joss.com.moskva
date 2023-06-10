@@ -1076,8 +1076,7 @@ class SubClassJsonTwoParserOtServer{
         Long      ОперацияInsert=0l;
         try{
             if(ОперацияUPDATE ==0 && ТекущийАдаптерДляВсего.size()>0){
-                ОперацияInsert = Create_Database_СамаБАзаSQLite.insertOrThrow(имяТаблицаAsync,
-                        null, ТекущийАдаптерДляВсего);
+                ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
                 if (ОперацияInsert>0) {
                     РезультатОперацииBurkUPDATE.add(Integer.parseInt(ОперацияInsert.toString()));
                     // TODO: 27.04.2023  повышаем верисю данных
