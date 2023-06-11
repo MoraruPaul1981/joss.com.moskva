@@ -238,6 +238,9 @@ public class FragmentOrderTransportOneChane extends Fragment {
     public void onStop() {
         super.onStop();
         try{
+            if (  myRecycleViewAdapter.cursor!=null) {
+                myRecycleViewAdapter.cursor.close();
+            }
             WorkManager.getInstance(getContext()).cancelUniqueWork(ИмяСлужбыСинхронизациОдноразовая);
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
