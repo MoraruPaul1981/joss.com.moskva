@@ -239,7 +239,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
             if (recyclerView_OrderTransport!=null) {
                 recyclerView_OrderTransport.removeAllViewsInLayout();
             }
-            WorkManager.getInstance(getContext()).cancelUniqueWork(ИмяСлужбыСинхронизациОдноразовая);
+           ///WorkManager.getInstance(getContext()).cancelUniqueWork(ИмяСлужбыСинхронизациОдноразовая);
 
             WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая).removeObservers(lifecycleOwnerОбщая);
             WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).removeObservers(lifecycleOwnerОдноразовая);
