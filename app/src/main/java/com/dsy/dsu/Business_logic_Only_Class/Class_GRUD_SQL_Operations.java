@@ -1532,7 +1532,9 @@ Context context;
 
                         }
                         // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
-                        getfreedata= (SQLiteCursor) getБазаДанныхДЛяОперацийВнутри.rawQuery(СамFreeSQLКОд, null);
+                        if (getБазаДанныхДЛяОперацийВнутри!=null) {
+                            getfreedata= (SQLiteCursor) getБазаДанныхДЛяОперацийВнутри.rawQuery(СамFreeSQLКОд, null);
+                        }
                         Log.d(this.getClass().getName(), "getfreedata "+getfreedata  );
                     } catch (Exception e) {
                         e.printStackTrace();

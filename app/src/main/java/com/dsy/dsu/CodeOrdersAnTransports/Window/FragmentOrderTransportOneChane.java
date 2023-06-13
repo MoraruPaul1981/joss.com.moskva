@@ -632,12 +632,13 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                                 }
                                             }
                                         }
+                                        if(workInfoSingle.getState().compareTo(WorkInfo.State.RUNNING) != 0) {
+                                            // TODO: 23.05.2023  програсс бар
+                                            методГазимПрогрессаБар();
+                                        }
                                     }
                                 });
-                                if(workInfos.get(0).getState().compareTo(WorkInfo.State.RUNNING) != 0) {
-                                    // TODO: 23.05.2023  програсс бар
-                                    методГазимПрогрессаБар();
-                                }
+
 
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -691,19 +692,21 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                                         getOutputData().getInt("ReturnSingleAsyncWork", 0);
                                         long end = Calendar.getInstance().getTimeInMillis();
                                         long РазницаВоврмени = end - startДляОбноразвовной;
-                                        if (РазницаВоврмени > 20000) {
+                                        if (РазницаВоврмени > 5000) {
                                             методGetCursorReboot();
                                       /*      // TODO: 23.05.2023  экран
                                             WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая).removeObservers(lifecycleOwnerОбщая);*/
                                         }
                                     }
+                                    if(workInfoОбщая.getState().compareTo(WorkInfo.State.RUNNING) != 0) {
+                                        // TODO: 23.05.2023  програсс бар
+                                        методГазимПрогрессаБар();
+                                    }
                                 }
+
                             });
 
-                            if(workInfosОбщая.get(0).getState().compareTo(WorkInfo.State.RUNNING) != 0) {
-                                // TODO: 23.05.2023  програсс бар
-                                методГазимПрогрессаБар();
-                            }
+
 
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1043,11 +1046,13 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     linkedHashMapДеньМесяцГод = localBinderOrderTransport.   методGetТриЗначениеГодМесяцДень();
                     // TODO: 04.05.2023  получаем первоночальыне Данные  #1
                     HashMap<String,String> datasendMap=new HashMap();
-                    datasendMap.putIfAbsent("1","  SELECT DISTINCT  _id, dateorders, status,  strftime('%Y', dateorders)  AS Year, strftime('%m', dateorders)  AS Month," +
+                    datasendMap.putIfAbsent("1","  SELECT DISTINCT  _id, dateorders, status," +
+                            "  strftime('%Y', dateorders)  AS Year, strftime('%m', dateorders)  AS Month," +
                             " strftime('%d', dateorders)  AS Day, COUNT(*) AS getcounts" +
                             "  FROM  view_ordertransport ");
                     datasendMap.putIfAbsent("2"," WHERE dateorders  IS NOT NULL " +
-                            " AND    date(dateorders) >= date('"+linkedHashMapДеньМесяцГод.get("Год")+"-"+
+                            " AND    date(dateorders) >=" +
+                            " date('"+linkedHashMapДеньМесяцГод.get("Год")+"-"+
                             linkedHashMapДеньМесяцГод.get("Месяц")+"-"
                             +linkedHashMapДеньМесяцГод.get("День")+"')  "
                             +"  ");
@@ -1057,8 +1062,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
                             " dateorders ");
                     datasendMap.putIfAbsent("4"," HAVING        (COUNT(*) > 0)");
                     datasendMap.putIfAbsent("5","view_ordertransport");///view_ordertransport
-                    datasendMap.putIfAbsent("6"," ORDER by  strftime('%Y', dateorders) DESC , strftime('%m', dateorders) DESC  ,strftime('%d', dateorders) DESC ");///view_ordertransport
-                    //  datasendMap.putIfAbsent("5"," view_ordertransport ");
+                    datasendMap.putIfAbsent("6"," ORDER by  strftime('%Y', dateorders) DESC , " +
+                            "strftime('%m', dateorders) DESC  ,strftime('%d', dateorders) DESC ");///view_ordertransport
                     // TODO: 05.05.2023  ПОЛУЧАЕМ ДАННЫЕ ПЕРВЫЙ ЭТАП
                     cursorGroupByParent =       subClassOrdersTransport.       методGetGROUPBYCursor( datasendMap);
                     // TODO: 04.05.2023  перегружаем экран
