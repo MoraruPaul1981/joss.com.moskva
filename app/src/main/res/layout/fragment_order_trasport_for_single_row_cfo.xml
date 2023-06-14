@@ -15,7 +15,7 @@
     android:animateLayoutChanges="true"
     android:background="#F0FFFF"
     app:cardBackgroundColor="#F0FFFF"
-    app:strokeColor="#316E6E"
+    app:strokeColor="#F0FFFF"
     android:checkable="true"
     android:clickable="true"
     android:focusable="true"
@@ -57,7 +57,7 @@
                     android:animateLayoutChanges="true"
                     android:background="#F0FFFF"
                     app:cardBackgroundColor="#F0FFFF"
-                    app:strokeColor="#316E6E"
+                    app:strokeColor="#F2F8F8"
                     android:checkable="true"
                     android:clickable="true"
                     android:focusable="true">
