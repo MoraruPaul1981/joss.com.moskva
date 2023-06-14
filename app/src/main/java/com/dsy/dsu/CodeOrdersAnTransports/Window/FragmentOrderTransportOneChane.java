@@ -1759,16 +1759,18 @@ class SubClassGetDateOrderGroupBy {
             // TODO: 09.06.2023 Метод Клика Для Удаления  Строка
             private void методКликаПоДочернейRow(@NonNull TableRow tableRowДочерная) {
     try{
-        tableRowДочерная.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View tableRowВытаскиваемДляУдаления) {
-                    Log.d(this.getClass().getName(), "\n" + " class " +
-                            Thread.currentThread().getStackTrace()[2].getClassName()
-                            + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + " tableRowВытаскиваемДляУдаления " +tableRowВытаскиваемДляУдаления);
-                }
-            });
+        tableRowДочерная.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                // TODO: 14.06.2023
+           Bundle bundleУдалениСтрочки=(Bundle)     v.getTag();
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " bundleУдалениСтрочки " +bundleУдалениСтрочки);
+                return true;
+            }
+        });
             // TODO: 14.06.2023
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
