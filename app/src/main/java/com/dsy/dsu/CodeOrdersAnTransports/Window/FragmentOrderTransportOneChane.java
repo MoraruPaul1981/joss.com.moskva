@@ -1764,10 +1764,16 @@ class SubClassGetDateOrderGroupBy {
             public boolean onLongClick(View v) {
                 // TODO: 14.06.2023
            Bundle bundleУдалениСтрочки=(Bundle)     v.getTag();
-                Log.d(getContext().getClass().getName(), "\n"
-                        + " время: " + new Date() + "\n+" +
-                        " Класс в процессе... " + this.getClass().getName() + "\n" +
-                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " bundleУдалениСтрочки " +bundleУдалениСтрочки);
+           v.startAnimation(animationvibr1);
+                // TODO: 14.06.2023 удалание
+                message.getTarget().postDelayed(()->{
+                    Log.d(getContext().getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                            + " bundleУдалениСтрочки " +bundleУдалениСтрочки);
+
+                },250);
                 return true;
             }
         });
