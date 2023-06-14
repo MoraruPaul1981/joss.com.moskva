@@ -36,6 +36,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -67,6 +68,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -215,6 +217,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
        //todo recyrview
             subClassOrdersTransport.МетодИнициализацииRecycreView();
             subClassOrdersTransport.методАнимацииGridView();
+            subClassOrdersTransport.    МетодКликRecycreView();
+
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
@@ -379,6 +383,79 @@ public class FragmentOrderTransportOneChane extends Fragment {
             }
         }
 
+        // TODO: 14.06.2023 клик по recycreview
+
+        private void МетодКликRecycreView() {
+            try{
+                recyclerView_OrderTransport.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+                    @Override
+                    public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+
+                        Log.d(this.getClass().getName(), "\n" + " class " +
+                                Thread.currentThread().getStackTrace()[2].getClassName()
+                                + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
+
+                        return true;
+                    }
+
+                    @Override
+                    public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+
+
+                        View child = rv.findChildViewUnder(e.getX(), e.getY());
+                        if (child != null && child != null) {
+                           // MaterialTextView materialTextViewДатаЗаказа=  child.findViewById(R.id.ot_date_order_value);
+
+                            // MaterialTextView    materialTextViewШабкаAddRow =  tableRowДочерная.findViewById(R.id.ot_key_ordertype_godnomer);
+                            MaterialTextView    materialTextViewДанныеAddRow =  child.findViewById(R.id.ot_value_ordertype_gos_nomer);
+
+                            TableLayout   tableLayoutДочернная       = (TableLayout) child.findViewById(R.id.tableRowChildOt_typets);
+                            // TODO: 14.06.2023
+                            if (materialTextViewДанныеAddRow!=null) {
+                                Log.d(this.getClass().getName(), "\n" + " class " +
+                                        Thread.currentThread().getStackTrace()[2].getClassName()
+                                        + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + " tableLayoutДочернная " +tableLayoutДочернная);
+                            }
+
+                            Log.d(this.getClass().getName(), "\n" + " class " +
+                                    Thread.currentThread().getStackTrace()[2].getClassName()
+                                    + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                        }
+
+                    }
+
+                    @Override
+                    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+                        Log.d(this.getClass().getName(), "\n" + " class " +
+                                Thread.currentThread().getStackTrace()[2].getClassName()
+                                + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
+                    }
+                });
+                Log.d(this.getClass().getName(), "\n" + " class " +
+                        Thread.currentThread().getStackTrace()[2].getClassName()
+                        + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
         private void МетодСлушательRecycleView() {
             try{
 
@@ -1876,10 +1953,14 @@ class SubClassGetDateOrderGroupBy {
                         Long SuccessAddRow=     cursorgetTypeTSAndGosNomers.getLong(cursorgetTypeTSAndGosNomers.getColumnIndex("uuid"));
                         Long Successid_uuid_track=     cursorgetTypeTSAndGosNomers.getLong(cursorgetTypeTSAndGosNomers.getColumnIndex("uuid_vid_tc"));
                         Long Successid_Gosnomer=     cursorgetTypeTSAndGosNomers.getLong(cursorgetTypeTSAndGosNomers.getColumnIndex("uuid_track"));
+                        Integer Successid_Status=     cursorgetTypeTSAndGosNomers.getInt(cursorgetTypeTSAndGosNomers.getColumnIndex("status"));
+                        Integer Successid_Id=     cursorgetTypeTSAndGosNomers.getInt(cursorgetTypeTSAndGosNomers.getColumnIndex("_id"));
                         Bundle bundleДочерний=new Bundle();
                         bundleДочерний.putLong("SuccessAddRow",SuccessAddRow);
                         bundleДочерний.putLong("Successid_uuid_track",Successid_uuid_track);
                         bundleДочерний.putLong("Successid_Gosnomer",Successid_Gosnomer);
+                        bundleДочерний.putInt("Successid_Status",Successid_Status);
+                        bundleДочерний.putInt("Successid_Id",Successid_Id);
                         tableRowДочерная.setTag(bundleДочерний);
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
