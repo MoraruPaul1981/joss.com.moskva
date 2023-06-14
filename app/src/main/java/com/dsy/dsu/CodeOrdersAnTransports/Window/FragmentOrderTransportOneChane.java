@@ -1054,7 +1054,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                             " AND    date(dateorders) >=" +
                             " date('"+linkedHashMapДеньМесяцГод.get("Год")+"-"+
                             linkedHashMapДеньМесяцГод.get("Месяц")+"-"
-                            +linkedHashMapДеньМесяцГод.get("День")+"')  "
+                            +linkedHashMapДеньМесяцГод.get("День")+"') AND status!='5'  "
                             +"  ");
                     datasendMap.putIfAbsent("3"," GROUP BY strftime('%Y', dateorders)  ," +
                             " strftime('%m', dateorders)   ," +
