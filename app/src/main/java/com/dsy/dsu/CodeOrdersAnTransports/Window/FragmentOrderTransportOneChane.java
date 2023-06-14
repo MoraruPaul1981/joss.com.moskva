@@ -347,7 +347,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 dividerItemDecorationHor.setDrawable(getContext().getDrawable(R.drawable.divider_for_order_transport1));///R.dimen.activity_horizontal_margin
                 DividerItemDecoration dividerItemDecorationVer=
                         new DividerItemDecoration(activity,LinearLayoutManager.VERTICAL);
-                recyclerView_OrderTransport.addItemDecoration(dividerItemDecorationHor);
+                //recyclerView_OrderTransport.addItemDecoration(dividerItemDecorationHor);
                 //recyclerView_OrderTransport.addItemDecoration(dividerItemDecorationVer);
                 recyclerView_OrderTransport.startAnimation(animationvibr1);
                 recyclerView_OrderTransport.setHasFixedSize(false);

@@ -1316,7 +1316,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 GridLayoutManager layoutManager
                         = new GridLayoutManager(activity, 1);
                layoutManager.setOrientation(GridLayoutManager.VERTICAL);
-               recyclerView.addItemDecoration(dividerItemDecorationHor);
+             //  recyclerView.addItemDecoration(dividerItemDecorationHor);
                //recyclerView.addItemDecoration(dividerItemDecorationVer);
                 recyclerView.setLayoutManager(layoutManager);
                recyclerView.setHasFixedSize(true);
