@@ -217,8 +217,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
        //todo recyrview
             subClassOrdersTransport.МетодИнициализацииRecycreView();
             subClassOrdersTransport.методАнимацииGridView();
-            subClassOrdersTransport.    МетодКликRecycreView();
-
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
@@ -385,77 +383,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
         // TODO: 14.06.2023 клик по recycreview
 
-        private void МетодКликRecycreView() {
-            try{
-                recyclerView_OrderTransport.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-                    @Override
-                    public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
 
-                        Log.d(this.getClass().getName(), "\n" + " class " +
-                                Thread.currentThread().getStackTrace()[2].getClassName()
-                                + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-
-                        return true;
-                    }
-
-                    @Override
-                    public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-
-
-                        View child = rv.findChildViewUnder(e.getX(), e.getY());
-                        if (child != null && child != null) {
-                           // MaterialTextView materialTextViewДатаЗаказа=  child.findViewById(R.id.ot_date_order_value);
-
-                            // MaterialTextView    materialTextViewШабкаAddRow =  tableRowДочерная.findViewById(R.id.ot_key_ordertype_godnomer);
-                            MaterialTextView    materialTextViewДанныеAddRow =  child.findViewById(R.id.ot_value_ordertype_gos_nomer);
-
-                            TableLayout   tableLayoutДочернная       = (TableLayout) child.findViewById(R.id.tableRowChildOt_typets);
-                            // TODO: 14.06.2023
-                            if (materialTextViewДанныеAddRow!=null) {
-                                Log.d(this.getClass().getName(), "\n" + " class " +
-                                        Thread.currentThread().getStackTrace()[2].getClassName()
-                                        + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + " tableLayoutДочернная " +tableLayoutДочернная);
-                            }
-
-                            Log.d(this.getClass().getName(), "\n" + " class " +
-                                    Thread.currentThread().getStackTrace()[2].getClassName()
-                                    + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-                        }
-
-                    }
-
-                    @Override
-                    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-                        Log.d(this.getClass().getName(), "\n" + " class " +
-                                Thread.currentThread().getStackTrace()[2].getClassName()
-                                + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-                    }
-                });
-                Log.d(this.getClass().getName(), "\n" + " class " +
-                        Thread.currentThread().getStackTrace()[2].getClassName()
-                        + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(getContext().getClass().getName(),
-                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
         private void МетодСлушательRecycleView() {
             try{
 
@@ -1831,6 +1759,17 @@ class SubClassGetDateOrderGroupBy {
             // TODO: 09.06.2023 Метод Клика Для Удаления  Строка
             private void методКликаПоДочернейRow(@NonNull TableRow tableRowДочерная) {
     try{
+        tableRowДочерная.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View tableRowВытаскиваемДляУдаления) {
+                    Log.d(this.getClass().getName(), "\n" + " class " +
+                            Thread.currentThread().getStackTrace()[2].getClassName()
+                            + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + " tableRowВытаскиваемДляУдаления " +tableRowВытаскиваемДляУдаления);
+                }
+            });
+            // TODO: 14.06.2023
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
