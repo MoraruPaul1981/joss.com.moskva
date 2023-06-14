@@ -43,21 +43,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_gravity="center"
-
-
                      android:layout_margin="5dp"
                      android:padding="1dp"
-
-
-                    app:cardCornerRadius="2dp"
+                    app:cardCornerRadius="0dp"
                     app:cardElevation="5dp"
-                    app:cardMaxElevation="10dp"
-                    app:strokeWidth="1dp"
-                    android:translationZ="100dp"
+                    app:cardMaxElevation="1dp"
+                    app:strokeWidth="0dp"
+                    android:translationZ="5dp"
                     android:animateLayoutChanges="true"
                     android:background="#F0FFFF"
                     app:cardBackgroundColor="#F0FFFF"
-                    app:strokeColor="#F2F8F8"
+                    app:strokeColor="#F0FFFF"
                     android:checkable="true"
                     android:clickable="true"
                     android:focusable="true">

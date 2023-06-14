@@ -103,6 +103,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
     private SubClassOrdersTransport subClassOrdersTransport;
     private  Animation animationvibr1;
+    private  Animation animationvibrRow;
     private LifecycleOwner lifecycleOwnerОдноразовая;
     private LifecycleOwner lifecycleOwnerОбщая ;
 
@@ -179,6 +180,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
             recyclerView_OrderTransport =  (RecyclerView) view.findViewById(R.id.recyclerView_OrderTransport);
             TextViewHadler = (TextView) view.findViewById(R.id.TextViewHadler);
             animationvibr1 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_singletable2);//
+            animationvibrRow = AnimationUtils.loadAnimation(getContext(),R.anim.slide_in_row_tabellist);//
+          //  animationvibrRow = AnimationUtils.loadAnimation(getContext(),R.anim.slide_in_row);//
             textViewHadler=(MaterialTextView)  view.findViewById(R.id.TextViewHadler);
             scrollview_OrderTransport=(ScrollView)  view.findViewById(R.id.scrollview_OrderTransport);
             // TODO: 11.05.2023 горизонтальеный Сколлл
@@ -323,7 +326,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
         // TODO: 28.04.2023
         private void методАнимацииGridView() {
             try{
-                recyclerView_OrderTransport.startAnimation(animationvibr1);
+                recyclerView_OrderTransport.startAnimation(animationvibrRow);
                 Log.d(this.getClass().getName(), "\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
@@ -349,7 +352,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         new DividerItemDecoration(activity,LinearLayoutManager.VERTICAL);
                 //recyclerView_OrderTransport.addItemDecoration(dividerItemDecorationHor);
                 //recyclerView_OrderTransport.addItemDecoration(dividerItemDecorationVer);
-                recyclerView_OrderTransport.startAnimation(animationvibr1);
                 recyclerView_OrderTransport.setHasFixedSize(false);
                 recyclerView_OrderTransport.setItemAnimator(new DefaultItemAnimator());
               /*  SnapHelper snapHelper = new LinearSnapHelper();
@@ -1142,7 +1144,6 @@ class SubClassGetDateOrderGroupBy {
             // TODO: 18.04.2023  Заполение Данными уже на экран
             методЗаполенияЗаказаТранспорта(bundleGrpuopByOrder, materialTextViewДатаЗаказа, DateOrderGroupBy);
             // TODO: 12.05.2023
-            materialTextViewДатаЗаказа.startAnimation(animationvibr1);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1498,6 +1499,10 @@ class SubClassGetDateOrderGroupBy {
                                 if (     ФлагЧтоНадоНовыйЭлемент==true) {
                                     // TODO: 30.05.2023
                                     tableLayoutРодительская.addView(tableRowДочернаяВсталяемая);
+                                    // TODO: 14.06.2023
+                                    tableRowДочернаяВсталяемая.startAnimation(animationvibrRow);
+
+
                                 }
 
 

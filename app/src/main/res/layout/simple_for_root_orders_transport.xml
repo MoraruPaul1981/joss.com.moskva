@@ -43,7 +43,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="3dp"
-            android:background="#00ACC1"
+            android:background="#0A524B"
             android:foregroundGravity="center"
             android:visibility="visible"
             android:layout_centerHorizontal="true"

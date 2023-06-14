@@ -1219,19 +1219,21 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             Log.d(this.getClass().getName()," ИменаТаблицыОтАндройда " +ИменаТаблицыОтАндройда); // TODO: 28.09.2022 таблицы
             Log.d(this.getClass().getName(), " после СЛУЖБА  содание базы newVersion==  652   (например)   " + new Date() + " newVersion " + newVersion);
             
-      if(newVersion ==            1044){
-               //TODO table создание
-          //МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
-          МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
 
-          // TODO: 12.10.2022  создание Trigers
-          МетодСозданиеТрирераМодификаценКлиент(ССылкаНаСозданнуюБазу,ИменаТаблицыОтАндройда);
-
-                   }else
             if (newVersion > oldVersion) {
-                   // TODO: 08.06.2021 создание Базы Данных
-                   onCreate(ССылкаНаСозданнуюБазу);
-                   Log.d(this.getClass().getName(), " СЛУЖБА  содание базы newVersion > oldVersion   " + new Date());
+                if(newVersion ==            1044){
+                    //TODO table создание  УСТАНОВКА ВЫБОРОЧНАЯ ПО ТАБЛИЦАМ
+                    //МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
+                    МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
+
+                    // TODO: 12.10.2022  создание Trigers
+                    МетодСозданиеТрирераМодификаценКлиент(ССылкаНаСозданнуюБазу,ИменаТаблицыОтАндройда);
+
+                }else {
+                    // TODO: 08.06.2021 создание Базы Данных  ЧИСТАЯ УСТАНОВКА
+                    onCreate(ССылкаНаСозданнуюБазу);
+                    Log.d(this.getClass().getName(), " СЛУЖБА  содание базы newVersion > oldVersion   " + new Date());
+                }
              }
             Log.d(this.getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
