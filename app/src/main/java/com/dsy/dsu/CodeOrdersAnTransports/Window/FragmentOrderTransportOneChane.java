@@ -1764,6 +1764,9 @@ class SubClassGetDateOrderGroupBy {
             public boolean onLongClick(View v) {
                 // TODO: 14.06.2023
            Bundle bundleУдалениСтрочки=(Bundle)     v.getTag();
+
+             Long UUIDДляУдалениеRow=   bundleУдалениСтрочки.getLong("uuid_track");
+             Integer Successid_Status=   bundleУдалениСтрочки.getInt("Successid_Status");
            v.startAnimation(animationvibr1);
                 // TODO: 14.06.2023 удалание
                 message.getTarget().postDelayed(()->{
@@ -1901,13 +1904,15 @@ class SubClassGetDateOrderGroupBy {
                         Long Successid_uuid_track=     cursorgetTypeTSAndGosNomers.getLong(cursorgetTypeTSAndGosNomers.getColumnIndex("uuid_vid_tc"));
                         Long Successid_Gosnomer=     cursorgetTypeTSAndGosNomers.getLong(cursorgetTypeTSAndGosNomers.getColumnIndex("uuid_track"));
                         Integer Successid_Status=     cursorgetTypeTSAndGosNomers.getInt(cursorgetTypeTSAndGosNomers.getColumnIndex("status"));
-                        Integer Successid_Id=     cursorgetTypeTSAndGosNomers.getInt(cursorgetTypeTSAndGosNomers.getColumnIndex("_id"));
+                        Integer Successid_UUID=     cursorgetTypeTSAndGosNomers.getInt(cursorgetTypeTSAndGosNomers.getColumnIndex("uuid"));
+                        String Successid_Name=     cursorgetTypeTSAndGosNomers.getString(cursorgetTypeTSAndGosNomers.getColumnIndex("name"));
                         Bundle bundleДочерний=new Bundle();
                         bundleДочерний.putLong("SuccessAddRow",SuccessAddRow);
                         bundleДочерний.putLong("Successid_uuid_track",Successid_uuid_track);
                         bundleДочерний.putLong("Successid_Gosnomer",Successid_Gosnomer);
                         bundleДочерний.putInt("Successid_Status",Successid_Status);
-                        bundleДочерний.putInt("Successid_Id",Successid_Id);
+                        bundleДочерний.putLong("Successid_UUID",Successid_UUID);
+                        bundleДочерний.putString("Successid_Name",Successid_Name);
                         tableRowДочерная.setTag(bundleДочерний);
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
