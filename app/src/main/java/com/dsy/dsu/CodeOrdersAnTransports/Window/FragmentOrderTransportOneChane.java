@@ -1769,40 +1769,57 @@ class SubClassGetDateOrderGroupBy {
              Long UUIDДляУдалениеRow=   bundleУдалениСтрочки.getLong("SuccessAddRow");
              Integer Successid_Status=   bundleУдалениСтрочки.getInt("Successid_Status");
              String Successid_Name=   bundleУдалениСтрочки.getString("Successid_Name").trim();
-
              if(Successid_Status==0){
                  // TODO: 14.06.2023 удалание
                      // TODO: 15.06.2023 Удаление Строчки Вфыбраной ЗАКАЗА
 
-                     Snackbar snackbar = Snackbar.make(v, "Text to display", Snackbar.LENGTH_LONG);
+                     Snackbar snackbar = Snackbar.make(v, "Удаление заказа ", Snackbar.LENGTH_INDEFINITE).addCallback(new Snackbar.Callback(){
+
+
+                         @Override
+                         public void onShown(Snackbar sb) {
+                             super.onShown(sb);
+                             Log.d(getContext().getClass().getName(), "\n"
+                                     + " время: " + new Date() + "\n+" +
+                                     " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                     + " Successid_Status " +Successid_Status);
+                         }
+
+                         @Override
+                         public void onDismissed(Snackbar transientBottomBar, int event) {
+                             super.onDismissed(transientBottomBar, event);
+                             Log.d(getContext().getClass().getName(), "\n"
+                                     + " время: " + new Date() + "\n+" +
+                                     " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                     + " Successid_Status " +Successid_Status);
+                         }
+                     });
+                 /*                     Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();*/
+                 snackbar.setActionTextColor(Color.WHITE)
+                         .setTextColor(Color.GRAY)
+                         .setDuration(3000);
                      View view = snackbar .getView();
                      TextView textView = (TextView) view.findViewById(R.id.snackbar_text);
-                     TextView viewУдалитьRow = (TextView) view.findViewById(R.id.snackbar_action);
-                     textView.setTextColor(Color.parseColor("#FF4500"));
+                      textView.setTextColor(Color.parseColor("#F0FFFF"));
                      textView.setText(Successid_Name);
-                     Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
-                     snackbar
-                             .setAction("Удалить заказ ? ", new View.OnClickListener() {
-                                 @Override
-                                 public void onClick(View v) {
-                                     message.getTarget().post(()->{
-                                         SubClassDeleteУдаланиеRow subClassDeleteУдаланиеRow=new SubClassDeleteУдаланиеRow();
-                                         Integer РезультатаУдалениеRow=         subClassDeleteУдаланиеRow.методУдалениеВыбранойRow();
-                                         if (РезультатаУдалениеRow>0) {
-                                             v.startAnimation(animationvibr1);
-                                             tableRowДочерная.setVisibility(View.GONE);
-                                         }
-                                         Log.d(getContext().getClass().getName(), "\n"
-                                                 + " время: " + new Date() + "\n+" +
-                                                 " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                                 + " Successid_Status " +Successid_Status);
-                                     });
-                                 }
-                             }).setActionTextColor(Color.WHITE)
-                             .setTextColor(Color.GRAY)
-                             .setDuration(6000000)
-                             .show();
+                 // TODO: 15.06.2023  Кнопа Действие
+                 snackbar.setAction("Удалить ?", new View.OnClickListener() {
+                     @Override
+                     public void onClick(View v) {
+
+                         snackbar.dismiss();
+
+                         Log.d(getContext().getClass().getName(), "\n"
+                                 + " время: " + new Date() + "\n+" +
+                                 " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                 + " Successid_Status " +Successid_Status);
+                     }
+                 }).isShown();
+
+                 snackbar.show();
                      Log.d(getContext().getClass().getName(), "\n"
                              + " время: " + new Date() + "\n+" +
                              " Класс в процессе... " + this.getClass().getName() + "\n" +
