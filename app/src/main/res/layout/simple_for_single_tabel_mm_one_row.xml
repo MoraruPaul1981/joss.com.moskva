@@ -151,7 +151,7 @@
             app:cardElevation="5dp"
             tools:visibility="visible"
             android:translationZ="100dp"
-            android:background="@drawable/textlines_tabel_row_name_value"
+            android:background="@drawable/textlines_tabel_row_name_value3"
             android:animateLayoutChanges="true" />
     </TableRow>
 

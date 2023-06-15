@@ -34,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -256,6 +257,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             horizontalScrollView_tabel_single.setLeftEdgeEffectColor(Color.RED);
             horizontalScrollView_tabel_single.setRightEdgeEffectColor(Color.BLUE);
             horizontalScrollView_tabel_single.setSmoothScrollingEnabled(true);
+
 
             animationПрофессия400 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_rowsingletabel);
             animationПрофессия300 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row2);
@@ -1536,11 +1538,25 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
         }
 
        private void методДляSimpeScroolsRecyreView(   ) {
+            try{
+                horizontalScrollView_tabel_single.getViewTreeObserver()
+                        .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        horizontalScrollView_tabel_single.smoothScrollTo(0,0);
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName()
+                                + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   "
+                                + PositionCustomer+ " cursor " +cursor+
+                                " oldScrollY ");
+                    }
+                });
            horizontalScrollView_tabel_single.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                @Override
                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                    // TODO: 15.06.2023
-                   horizontalScrollView_tabel_single.scrollTo(0,0);
+               //    horizontalScrollView_tabel_single.scrollTo(0,0);
                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
@@ -1580,7 +1596,20 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor
                        + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
+       } catch (Exception e) {
+           e.printStackTrace();
+           Log.e(getApplicationContext().getClass().getName(),
+                   "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                           " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+           new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                   this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                   Thread.currentThread().getStackTrace()[2].getLineNumber());
        }
+       }
+
+
+
+
 
 
        // TODO: 15.06.2023  скоол левый внутри reryvreview
