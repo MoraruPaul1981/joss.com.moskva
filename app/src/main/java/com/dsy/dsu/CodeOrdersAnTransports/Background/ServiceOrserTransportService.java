@@ -2,6 +2,7 @@ package com.dsy.dsu.CodeOrdersAnTransports.Background;
 
 import android.app.IntentService;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.Context;
 import android.database.Cursor;
@@ -17,8 +18,12 @@ import androidx.annotation.BinderThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
+import com.dsy.dsu.Business_logic_Only_Class.DATE.Class_Generation_Data;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
+import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
+import com.google.common.util.concurrent.AtomicDouble;
 import com.google.firebase.annotations.concurrent.Background;
 
 import java.text.SimpleDateFormat;
@@ -538,11 +543,24 @@ public class ServiceOrserTransportService extends IntentService {
         Integer методУдалениеВыбранойRow(@NonNull  Long UUIDДляУдалениеRow){
             Integer РезультатаУдалениеRow=0;
             try{
+                String ТаблицаОбработки="order_tc";
+                Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" +ТаблицаОбработки + "");
+                ContentValues contentValuesУданиеЗаказаТраспорта=new ContentValues();
+                contentValuesУданиеЗаказаТраспорта.put("status",5);
+                String Дата =     new Class_Generation_Data(getApplicationContext()).ГлавнаяДатаИВремяОперацийСБазойДанныхДОП();
+                contentValuesУданиеЗаказаТраспорта.put("date_update", Дата);
+                Long Версия = new SubClassUpVersionDATA().МетодПовышаемВерсииCurrentTable(    ТаблицаОбработки
+                        ,getApplicationContext(),new CREATE_DATABASE(getApplicationContext()).getССылкаНаСозданнуюБазу());
+                contentValuesУданиеЗаказаТраспорта.put("current_table", Версия);
+                // TODO: 12.04.2023 удаление ЗАказа Траспрта
+                ContentResolver contentResolver=getApplicationContext().getContentResolver();
+                РезультатаУдалениеRow= contentResolver.update(uri, contentValuesУданиеЗаказаТраспорта,"uuid=?",new String[]{String.valueOf(UUIDДляУдалениеRow)});
+                // TODO: 15.06.2023
                 Log.d(getApplicationContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                        " UUIDДляУдалениеRow" +UUIDДляУдалениеRow);
+                        " UUIDДляУдалениеRow" +UUIDДляУдалениеRow+ "\n"+" РЕЗУЛЬТАТ РезультатаУдалениеRow  " +  РезультатаУдалениеRow);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getApplicationContext().getClass().getName(),

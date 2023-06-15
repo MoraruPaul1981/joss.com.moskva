@@ -1812,11 +1812,13 @@ class SubClassGetDateOrderGroupBy {
                      public void onClick(View v) {
                          snackbar.dismiss();
                          message.getTarget().post(()->{
-                             // TODO: 15.06.2023 удаление Заказа ROW 
+                             // TODO: 15.06.2023 удаление Заказа ROW
                              Integer РезультатаУдалениеRow=     localBinderOrderTransport.методВиндингУдалениеЗаказа(UUIDДляУдалениеRow);
                              if (РезультатаУдалениеRow>0) {
                                  v.startAnimation(animationvibr1);
-                                 tableRowДочерная.setVisibility(View.GONE);
+                                 message.getTarget().postDelayed(()->{
+                                     tableRowДочерная.setVisibility(View.GONE);
+                                 },1000);
                              }
                              Log.d(getContext().getClass().getName(), "\n"
                                      + " время: " + new Date() + "\n+" +
