@@ -1772,7 +1772,6 @@ class SubClassGetDateOrderGroupBy {
              if(Successid_Status==0){
                  // TODO: 14.06.2023 удалание
                      // TODO: 15.06.2023 Удаление Строчки Вфыбраной ЗАКАЗА
-
                      Snackbar snackbar = Snackbar.make(v, "Удаление заказа ", Snackbar.LENGTH_INDEFINITE).addCallback(new Snackbar.Callback(){
 
 
@@ -1804,6 +1803,9 @@ class SubClassGetDateOrderGroupBy {
                      TextView textView = (TextView) view.findViewById(R.id.snackbar_text);
                       textView.setTextColor(Color.parseColor("#F0FFFF"));
                      textView.setText(Successid_Name);
+                 // TODO: 15.06.2023
+                 TextView viewСохранеие = (TextView) view.findViewById(R.id.snackbar_action);
+                 viewСохранеие.setTextColor(Color.parseColor("#FFFFFF"));
                  // TODO: 15.06.2023  Кнопа Действие
                  snackbar.setAction("Удалить ?", new View.OnClickListener() {
                      @Override
