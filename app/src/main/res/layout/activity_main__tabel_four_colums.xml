@@ -172,25 +172,51 @@
             tools:visibility="visible" />
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RecyclerViewSingleTabel"
+
+
+
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollView_tabel_single"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_centerHorizontal="true"
-            android:background="#FFFFFF"
-            android:layout_marginTop="5dp"
-            android:keyboardNavigationCluster="true"
-            android:visibility="visible"
-            android:windowSoftInputMode="stateVisible|adjustPan"
+            android:background="#00ACC1"
             app:layout_constraintBottom_toTopOf="@+id/ProgressBarSingleTabel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/TextViewФИОПрофессия"
-            app:layout_optimizationLevel="standard|barrier|chains"
-            tools:ignore="MissingConstraints">
+            tools:ignore="UselessLeaf">
 
-        </androidx.recyclerview.widget.RecyclerView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_single_tabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:background="#FFFFFF"
+                    android:scrollbars="vertical|horizontal"
+                    android:keyboardNavigationCluster="true"
+                    android:visibility="visible"
+                    app:layout_optimizationLevel="standard|barrier|chains"
+                    android:windowSoftInputMode="stateVisible|adjustPan"
+                    android:layout_margin="1dp"
+                    android:padding="1dp"
+                    app:layout_constraintBottom_toTopOf="@+id/ProgressBarSingleTabel"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/TextViewФИОПрофессия"
+                    />
+        </HorizontalScrollView>
+
+
+
+
+
+
+
+
 
         <Spinner
             android:id="@+id/СпинерТабельДепратамент"
@@ -234,7 +260,6 @@
             android:scaleY="2"
             android:scrollIndicators="top"
             android:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@+id/RecyclerViewSingleTabel"
             app:layout_constraintBottom_toTopOf="@+id/СпинерТабельДепратамент"
             tools:ignore="MissingConstraints" />
 

@@ -1,7 +1,6 @@
 package com.dsy.dsu.Code_ForTABEL;
 
 
-import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -31,7 +30,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -48,10 +46,8 @@ import android.widget.Filter;
 import android.widget.FilterQueryProvider;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -65,7 +61,6 @@ import androidx.annotation.UiThread;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.graphics.ColorUtils;
 import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.lifecycle.Lifecycle;
@@ -75,9 +70,7 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
@@ -91,7 +84,6 @@ import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.dsy.dsu.R;
-import com.google.android.gms.actions.ItemListIntents;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
@@ -114,13 +106,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.Random;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Predicate;
@@ -196,7 +185,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private ProgressBar ProgressBarSingleTabel;
 
 
-    private RecyclerView recyclerView;
+    private RecyclerView recycler_view_single_tabel;
     private SubClassSingleTabelRecycreView. MyRecycleViewAdapter myRecycleViewAdapter;
     private SubClassSingleTabelRecycreView. MyViewHolder myViewHolder;
 
@@ -212,6 +201,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private  Cursor   cursor;
   private    InputMethodManager imm;
 
+  private  HorizontalScrollView horizontalScrollView_tabel_single;
+
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -219,7 +210,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             super.onCreate(savedInstanceState);
             ////todo запрещает поворот экрана
             setContentView(R.layout.activity_main__tabel_four_colums);
-            recyclerView =  (RecyclerView) findViewById(R.id.RecyclerViewSingleTabel);
+            recycler_view_single_tabel =  (RecyclerView) findViewById(R.id.recycler_view_single_tabel);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
                     | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                     | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -261,6 +252,11 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
             TextViewФИОПрофессия = (TextView)  findViewById(R.id.TextViewФИОПрофессия);
 
+            horizontalScrollView_tabel_single= (HorizontalScrollView)  findViewById(R.id.horizontalScrollView_tabel_single);
+            horizontalScrollView_tabel_single.setLeftEdgeEffectColor(Color.RED);
+            horizontalScrollView_tabel_single.setRightEdgeEffectColor(Color.BLUE);
+            horizontalScrollView_tabel_single.setSmoothScrollingEnabled(true);
+
             animationПрофессия400 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_rowsingletabel);
             animationПрофессия300 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row2);
             animationVibr1 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_singletable);
@@ -294,8 +290,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
                 subClassSingleTabelRecycreView.МетодЗаполениеRecycleView( cursor );
 
-                subClassSingleTabelRecycreView. методДляSimpeCallbacks( );
-
+            //  subClassSingleTabelRecycreView. методДляSimpeCallbacks( );
             // TODO: 14.04.2023 доделываем single tabel
             subClassSingleTabelRecycreView.МетодСлушательRecycleView();
 
@@ -304,7 +299,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             subClassSingleTabelRecycreView.   методWorkManagerLifecycleOwner();
 
 
-
+            // TODO: 15.06.2023 Scroll
+      subClassSingleTabelRecycreView. методДляSimpeScroolsRecyreView( );
 
 // TODO: 25.04.2023 тест код
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1290,7 +1286,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
     //TODO класс визуализации внешнего вида
 
-    class SubClassSingleTabelRecycreView  {
+   public class SubClassSingleTabelRecycreView  {
          private     Cursor cursor;
         private   LifecycleOwner lifecycleOwner;
         private   LifecycleOwner  lifecycleOwnerОбщая;
@@ -1316,63 +1312,15 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 GridLayoutManager layoutManager
                         = new GridLayoutManager(activity, 1);
                layoutManager.setOrientation(GridLayoutManager.VERTICAL);
-             //  recyclerView.addItemDecoration(dividerItemDecorationHor);
-               //recyclerView.addItemDecoration(dividerItemDecorationVer);
-                recyclerView.setLayoutManager(layoutManager);
-               recyclerView.setHasFixedSize(true);
-               recyclerView.setAnimation(animationVibr1);
+             //  recycler_view_single_tabel.addItemDecoration(dividerItemDecorationHor);
+               //recycler_view_single_tabel.addItemDecoration(dividerItemDecorationVer);
+                recycler_view_single_tabel.setLayoutManager(layoutManager);
+               recycler_view_single_tabel.setHasFixedSize(true);
+               recycler_view_single_tabel.setAnimation(animationVibr1);
                 layoutManager.setSmoothScrollbarEnabled(true);
                 // TODO: 12.05.2023 Клаиатура
-                imm = (InputMethodManager) recyclerView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(recyclerView, InputMethodManager.SHOW_FORCED);
-
-                recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-                    @Override
-                    public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-                        rv.setOnLongClickListener(new View.OnLongClickListener() {
-                            @Override
-                            public boolean onLongClick(View v) {
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+  "cursor " +cursor);
-                                return false;
-                            }
-                        });
-
-                        rv.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                            @Override
-                            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+  "cursor " +cursor);
-                            }
-                        });
-                        rv.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+  "cursor " +cursor);
-                            }
-                        });
-                        return false;
-                    }
-
-                    @Override
-                    public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+  "cursor " +cursor);
-                    }
-
-                    @Override
-                    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+  "cursor " +cursor);
-                    }
-                });
-
+                imm = (InputMethodManager) recycler_view_single_tabel.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(recycler_view_single_tabel, InputMethodManager.SHOW_FORCED);
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1388,98 +1336,98 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             }
         }
 
-        // TODO: 11.04.2023 метод SWIPES лева и право
+        // TODO: 15.06.2023 свайвы
         private void методДляSimpeCallbacks(   ) {
             try{
 
                 // TODO: 11.05.2023 SWIPE:
-            ItemTouchHelper.SimpleCallback simpleItemTouchCallbackRIGHT = new ItemTouchHelper.SimpleCallback(10,
-                      ItemTouchHelper.RIGHT   ) {
+                ItemTouchHelper.SimpleCallback simpleItemTouchCallbackRIGHT = new ItemTouchHelper.SimpleCallback(10,
+                        ItemTouchHelper.RIGHT   ) {
 
-                @Override
-                public boolean isItemViewSwipeEnabled() {
-                    return true;
-                }
-                @Override
-                public boolean isLongPressDragEnabled() {
-                    return false;
-                }
+                    @Override
+                    public boolean isItemViewSwipeEnabled() {
+                        return true;
+                    }
+                    @Override
+                    public boolean isLongPressDragEnabled() {
+                        return false;
+                    }
 
-                @Override
-                public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                    try{
+                    @Override
+                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                        try{
 
-                        recyclerView.getAdapter().notifyDataSetChanged();
-                        // TODO: 20.04.2023 Данные
-                        cursor =    new SubClassGetCursor().МетодSwipesКурсор();
+                            recycler_view_single_tabel.getAdapter().notifyDataSetChanged();
+                            // TODO: 20.04.2023 Данные
+                            cursor =    new SubClassGetCursor().МетодSwipesКурсор();
 
-                        recyclerView.smoothScrollToPosition(0);
-                        ProgressBarSingleTabel.setVisibility(View.VISIBLE);
-                        message.getTarget().postDelayed(()->{
-                    Integer posio= myViewHolder.getAbsoluteAdapterPosition();
-                        if (PositionCustomer>0) {
-                            PositionCustomer=PositionCustomer-1;
-                            cursor.moveToPosition(PositionCustomer);
-                        }else {
-                            cursor.moveToLast();
-                            PositionCustomer=cursor.getCount()-1;
-                        }
-                            CurrenrsСhildUUID=       cursor.getLong(cursor.getColumnIndex("uuid"));
-                            CurrenrsSelectFio=       cursor.getLong(cursor.getColumnIndex("fio"));
-                            ФИО=       cursor.getString(cursor.getColumnIndex("name"));
+                            recycler_view_single_tabel.smoothScrollToPosition(0);
+                            ProgressBarSingleTabel.setVisibility(View.VISIBLE);
+                            message.getTarget().postDelayed(()->{
+                                Integer posio= myViewHolder.getAbsoluteAdapterPosition();
+                                if (PositionCustomer>0) {
+                                    PositionCustomer=PositionCustomer-1;
+                                    cursor.moveToPosition(PositionCustomer);
+                                }else {
+                                    cursor.moveToLast();
+                                    PositionCustomer=cursor.getCount()-1;
+                                }
+                                CurrenrsСhildUUID=       cursor.getLong(cursor.getColumnIndex("uuid"));
+                                CurrenrsSelectFio=       cursor.getLong(cursor.getColumnIndex("fio"));
+                                ФИО=       cursor.getString(cursor.getColumnIndex("name"));
 
-                            МетодЗаполениеRecycleView( cursor );
+                                МетодЗаполениеRecycleView( cursor );
 
 
+
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
+                                        " posio " +posio  + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
+                            },50);
 
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
-                                    " posio " +posio  + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
-                        },50);
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(getApplicationContext().getClass().getName(),
+                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
+                    }
 
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(getApplicationContext().getClass().getName(),
-                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
-                }
+                    @Override
+                    public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 
-                @Override
-                public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                    super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                        методАнимацияRecyreView(viewHolder);
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor
+                                + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
+                    }
 
-                    методАнимацияRecyreView(viewHolder);
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor
-                            + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
-                }
+                    @Override
+                    public void onChildDrawOver(@NonNull Canvas c, @NonNull RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                        super.onChildDrawOver(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                    }
 
-                @Override
-                public void onChildDrawOver(@NonNull Canvas c, @NonNull RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                    super.onChildDrawOver(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-                }
-
-                @Override
-                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                                      RecyclerView.ViewHolder target) {
-                    final int fromPos = viewHolder.getAdapterPosition();
-                    final int toPos = target.getAdapterPosition();
-                    // move item in `fromPos` to `toPos` in adapter.
-                    return true;// true if moved, false otherwise
-                }
+                    @Override
+                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                          RecyclerView.ViewHolder target) {
+                        final int fromPos = viewHolder.getAdapterPosition();
+                        final int toPos = target.getAdapterPosition();
+                        // move item in `fromPos` to `toPos` in adapter.
+                        return true;// true if moved, false otherwise
+                    }
 
 
 
-            };
+                };
                 ItemTouchHelper.SimpleCallback simpleItemTouchCallbackLEFT = new ItemTouchHelper.SimpleCallback(10,
                         ItemTouchHelper.LEFT  ) {
 
@@ -1495,10 +1443,10 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     @Override
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         try{
-                            recyclerView.getAdapter().notifyDataSetChanged();
+                            recycler_view_single_tabel.getAdapter().notifyDataSetChanged();
                             // TODO: 20.04.2023 Данные
                             cursor =    new SubClassGetCursor().МетодSwipesКурсор();
-                            recyclerView.smoothScrollToPosition(0);
+                            recycler_view_single_tabel.smoothScrollToPosition(0);
                             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
                             message.getTarget().postDelayed(()->{
                                 Integer posio= myViewHolder.getAbsoluteAdapterPosition();
@@ -1513,7 +1461,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 CurrenrsSelectFio=       cursor.getLong(cursor.getColumnIndex("fio"));
                                 ФИО=       cursor.getString(cursor.getColumnIndex("name"));
                                 // TODO: 20.04.2023
-                              МетодЗаполениеRecycleView( cursor );
+                                МетодЗаполениеRecycleView( cursor );
 
 
 
@@ -1523,19 +1471,19 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                         " posio " +posio  + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
                             },50);
 
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"recyclerView   " + recyclerView+ " cursor " +cursor);
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"recycler_view_single_tabel   " + recycler_view_single_tabel + " cursor " +cursor);
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(getApplicationContext().getClass().getName(),
-                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(getApplicationContext().getClass().getName(),
+                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
                     }
 
                     @Override
@@ -1570,31 +1518,126 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 };
 
                 ItemTouchHelper itemTouchHelperLEFT = new ItemTouchHelper(simpleItemTouchCallbackLEFT);
-                itemTouchHelperLEFT.attachToRecyclerView(recyclerView);
+                itemTouchHelperLEFT.attachToRecyclerView(recycler_view_single_tabel);
                 ItemTouchHelper itemTouchHelperRIGHT = new ItemTouchHelper(simpleItemTouchCallbackRIGHT);
-                itemTouchHelperRIGHT.attachToRecyclerView(recyclerView);
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"recyclerView   " + recyclerView);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(getApplicationContext().getClass().getName(),
-                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
+                itemTouchHelperRIGHT.attachToRecyclerView(recycler_view_single_tabel);
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"recycler_view_single_tabel   " + recycler_view_single_tabel);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getApplicationContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
         }
 
+       private void методДляSimpeScroolsRecyreView(   ) {
+           horizontalScrollView_tabel_single.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+               @Override
+               public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                   // TODO: 15.06.2023
+                   horizontalScrollView_tabel_single.scrollTo(0,0);
+                   Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                           " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                           " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
+                           " oldScrollY ");
+               }
+           });
+            /*   horizontalScrollView_tabel_single.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                   @Override
+                   public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                       try {
+               *//*            // TODO: 15.06.2023 Scroll Left RecyreView
+                           методScrollsLeftRecyreView();
 
-        // TODO: 04.03.2022 прозвомжность Заполения RecycleView
+
+                           message.getTarget().postDelayed(()-> {
+                                       // TODO: 15.06.2023  после операции Меняем Дизайн
+                                       методАнимацияRecyreView(myViewHolder);
+                                   },100);*//*
+                           
+                       // TODO: 15.06.2023  
+                       Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                               " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                               " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
+                               " oldScrollY " +oldScrollY  + " oldScrollX " +oldScrollX + " scrollY " +scrollY + "  scrollX " + scrollX);
+                   } catch (Exception e) {
+                       e.printStackTrace();
+                       Log.e(getApplicationContext().getClass().getName(),
+                               "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                       " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                       new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                               this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                               Thread.currentThread().getStackTrace()[2].getLineNumber());
+                   }
+                   }
+               });*/
+               Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                       " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                       " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor
+                       + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
+       }
+
+
+       // TODO: 15.06.2023  скоол левый внутри reryvreview
+       private void методScrollsLeftRecyreView() {
+            try {
+           recycler_view_single_tabel.getAdapter().notifyDataSetChanged();
+           // TODO: 20.04.2023 Данные
+           cursor =    new SubClassGetCursor().МетодSwipesКурсор();
+
+           recycler_view_single_tabel.smoothScrollToPosition(0);
+           ProgressBarSingleTabel.setVisibility(View.VISIBLE);
+           message.getTarget().postDelayed(()->{
+               Integer posio= myViewHolder.getAbsoluteAdapterPosition();
+               if (PositionCustomer>0) {
+                   PositionCustomer=PositionCustomer-1;
+                   cursor.moveToPosition(PositionCustomer);
+               }else {
+                   cursor.moveToLast();
+                   PositionCustomer=cursor.getCount()-1;
+               }
+               CurrenrsСhildUUID=       cursor.getLong(cursor.getColumnIndex("uuid"));
+               CurrenrsSelectFio=       cursor.getLong(cursor.getColumnIndex("fio"));
+               ФИО=       cursor.getString(cursor.getColumnIndex("name"));
+
+               МетодЗаполениеRecycleView( cursor );
+
+               Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                       " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                       " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
+                       " posio " +posio  + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
+           },50);
+
+           Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                   " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                   " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor);
+
+       } catch (Exception e) {
+           e.printStackTrace();
+           Log.e(getApplicationContext().getClass().getName(),
+                   "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                           " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+           new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                   this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                   Thread.currentThread().getStackTrace()[2].getLineNumber());
+       }
+       }
+
+
+       // TODO: 04.03.2022 прозвомжность Заполения RecycleView
         void МетодЗаполениеRecycleView(  @NonNull Cursor cursor) {
             try {
                 // remove item from adapter
                 myRecycleViewAdapter = new  MyRecycleViewAdapter(cursor );
-                recyclerView.setAdapter(myRecycleViewAdapter);
-                recyclerView.requestLayout();
+                recycler_view_single_tabel.setAdapter(myRecycleViewAdapter);
+                recycler_view_single_tabel.requestLayout();
+                recycler_view_single_tabel.refreshDrawableState();
+
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
@@ -1738,8 +1781,8 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 try {
                     textViewчасыsimgletabel.refreshDrawableState();
                     textViewчасыsimgletabel.requestLayout();
-                    recyclerView.requestLayout();
-                    recyclerView.refreshDrawableState();
+                    recycler_view_single_tabel.requestLayout();
+                    recycler_view_single_tabel.refreshDrawableState();
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -2373,7 +2416,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         public void onFocusChange(View v, boolean hasFocus) {
                             try{
                                  imm=(InputMethodManager)
-                                        recyclerView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                        recycler_view_single_tabel.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                                 EditText editText=(EditText)v;
                             if (hasFocus) {
                                 editText.requestFocus();
@@ -2450,9 +2493,9 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                                     методПослеОбновлениеЯчейкиСчитаемЧасы();
                                                     ((EditText) v).startAnimation(animationVibr2);
                                                     if (myViewHolder.getAbsoluteAdapterPosition()>=0) {
-                                                        recyclerView.scrollToPosition(myViewHolder.getAbsoluteAdapterPosition());
+                                                        recycler_view_single_tabel.scrollToPosition(myViewHolder.getAbsoluteAdapterPosition());
                                                     }else{
-                                                        recyclerView.scrollToPosition(0);
+                                                        recycler_view_single_tabel.scrollToPosition(0);
                                                     }
                                                 }else {
                                                     ((EditText) v).setBackgroundColor(Color.RED);
@@ -2615,32 +2658,32 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         @Override
                         public void onChanged() {
                             super.onChanged();
-                            Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
+                            Log.d(this.getClass().getName(), "recycler_view_single_tabel   " + recycler_view_single_tabel);
                         }
 
                         @Override
                         public void onInvalidated() {
                             super.onInvalidated();
-                            Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
+                            Log.d(this.getClass().getName(), "recycler_view_single_tabel   " + recycler_view_single_tabel);
                         }
                     });
                     // TODO: 15.10.2022
                     cursor.registerContentObserver(new ContentObserver(message.getTarget()) {
                         @Override
                         public boolean deliverSelfNotifications() {
-                            Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
+                            Log.d(this.getClass().getName(), "recycler_view_single_tabel   " + recycler_view_single_tabel);
                             return super.deliverSelfNotifications();
                         }
 
                         @Override
                         public void onChange(boolean selfChange) {
-                            Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
+                            Log.d(this.getClass().getName(), "recycler_view_single_tabel   " + recycler_view_single_tabel);
                             super.onChange(selfChange);
                         }
 
                         @Override
                         public void onChange(boolean selfChange, @Nullable Uri uri) {
-                            Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
+                            Log.d(this.getClass().getName(), "recycler_view_single_tabel   " + recycler_view_single_tabel);
                             super.onChange(selfChange, uri);
                         }
                     });
@@ -2689,9 +2732,9 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.SUCCEEDED) == 0)         {
                                     Integer     ReturnCallSingle = СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnSingleAsyncWork", 0);
                                     if (ReturnCallSingle>0) {
-                                   /*     recyclerView.getAdapter().notifyDataSetChanged();
-                                        recyclerView.requestLayout();
-                                        recyclerView.refreshDrawableState();*/
+                                   /*     recycler_view_single_tabel.getAdapter().notifyDataSetChanged();
+                                        recycler_view_single_tabel.requestLayout();
+                                        recycler_view_single_tabel.refreshDrawableState();*/
                                     }
                                     WorkManager.getInstance(getApplicationContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая);
                                 }
@@ -2718,9 +2761,9 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                             long end = Calendar.getInstance().getTimeInMillis();
                                             Integer ReturnCallPublic = СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnPublicAsyncWork", 0);
                                             if (ReturnCallPublic>0) {
-                                                recyclerView.getAdapter().notifyDataSetChanged();
-                                                recyclerView.requestLayout();
-                                                recyclerView.refreshDrawableState();
+                                                recycler_view_single_tabel.getAdapter().notifyDataSetChanged();
+                                                recycler_view_single_tabel.requestLayout();
+                                                recycler_view_single_tabel.refreshDrawableState();
                                             }
                                         }
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -2984,8 +3027,8 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 message.getTarget().postDelayed(()->{
                     ProgressBarSingleTabel.setVisibility(View.INVISIBLE);
                 },150);
-                recyclerView.requestLayout();
-                recyclerView.refreshDrawableState();
+                recycler_view_single_tabel.requestLayout();
+                recycler_view_single_tabel.refreshDrawableState();
                 textViewчасыsimgletabel.refreshDrawableState();
                 textViewчасыsimgletabel.requestLayout();
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
