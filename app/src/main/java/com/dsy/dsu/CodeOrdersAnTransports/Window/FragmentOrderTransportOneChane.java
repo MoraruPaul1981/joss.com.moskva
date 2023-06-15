@@ -61,6 +61,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
 
 
@@ -1762,29 +1763,73 @@ class SubClassGetDateOrderGroupBy {
         tableRowДочерная.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                try{
                 // TODO: 14.06.2023
            Bundle bundleУдалениСтрочки=(Bundle)     v.getTag();
-
-             Long UUIDДляУдалениеRow=   bundleУдалениСтрочки.getLong("uuid_track");
+             Long UUIDДляУдалениеRow=   bundleУдалениСтрочки.getLong("SuccessAddRow");
              Integer Successid_Status=   bundleУдалениСтрочки.getInt("Successid_Status");
-           v.startAnimation(animationvibr1);
-                // TODO: 14.06.2023 удалание
-                message.getTarget().postDelayed(()->{
-                    Log.d(getContext().getClass().getName(), "\n"
-                            + " время: " + new Date() + "\n+" +
-                            " Класс в процессе... " + this.getClass().getName() + "\n" +
-                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                            + " bundleУдалениСтрочки " +bundleУдалениСтрочки);
+             String Successid_Name=   bundleУдалениСтрочки.getString("Successid_Name").trim();
 
-                },250);
+             if(Successid_Status==0){
+                 // TODO: 14.06.2023 удалание
+                     // TODO: 15.06.2023 Удаление Строчки Вфыбраной ЗАКАЗА
+
+                     Snackbar snackbar = Snackbar.make(v, "Text to display", Snackbar.LENGTH_LONG);
+                     View view = snackbar .getView();
+                     TextView textView = (TextView) view.findViewById(R.id.snackbar_text);
+                     TextView viewУдалитьRow = (TextView) view.findViewById(R.id.snackbar_action);
+                     textView.setTextColor(Color.parseColor("#FF4500"));
+                     textView.setText(Successid_Name);
+                     Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
+                     snackbar
+                             .setAction("Удалить заказ ? ", new View.OnClickListener() {
+                                 @Override
+                                 public void onClick(View v) {
+                                     message.getTarget().post(()->{
+                                         SubClassDeleteУдаланиеRow subClassDeleteУдаланиеRow=new SubClassDeleteУдаланиеRow();
+                                         Integer РезультатаУдалениеRow=         subClassDeleteУдаланиеRow.методУдалениеВыбранойRow();
+                                         if (РезультатаУдалениеRow>0) {
+                                             v.startAnimation(animationvibr1);
+                                             tableRowДочерная.setVisibility(View.GONE);
+                                         }
+                                         Log.d(getContext().getClass().getName(), "\n"
+                                                 + " время: " + new Date() + "\n+" +
+                                                 " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                                 + " Successid_Status " +Successid_Status);
+                                     });
+                                 }
+                             }).setActionTextColor(Color.WHITE)
+                             .setTextColor(Color.GRAY)
+                             .setDuration(6000000)
+                             .show();
+                     Log.d(getContext().getClass().getName(), "\n"
+                             + " время: " + new Date() + "\n+" +
+                             " Класс в процессе... " + this.getClass().getName() + "\n" +
+                             " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                             + " Successid_Status " +Successid_Status);
+             }else {
+                 Snackbar snackbar=      Snackbar.make(v, "Заказ нельзя удалить !!!",Snackbar.LENGTH_LONG).setAction("Action",null);
+                 snackbar.show();
+                 Log.d(getContext().getClass().getName(), "\n"
+                         + " время: " + new Date() + "\n+" +
+                         " Класс в процессе... " + this.getClass().getName() + "\n" +
+                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                         + " bundleУдалениСтрочки " +bundleУдалениСтрочки);
+
+             }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
                 return true;
             }
         });
-            // TODO: 14.06.2023
-                Log.d(getContext().getClass().getName(), "\n"
-                        + " время: " + new Date() + "\n+" +
-                        " Класс в процессе... " + this.getClass().getName() + "\n" +
-                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1904,14 +1949,12 @@ class SubClassGetDateOrderGroupBy {
                         Long Successid_uuid_track=     cursorgetTypeTSAndGosNomers.getLong(cursorgetTypeTSAndGosNomers.getColumnIndex("uuid_vid_tc"));
                         Long Successid_Gosnomer=     cursorgetTypeTSAndGosNomers.getLong(cursorgetTypeTSAndGosNomers.getColumnIndex("uuid_track"));
                         Integer Successid_Status=     cursorgetTypeTSAndGosNomers.getInt(cursorgetTypeTSAndGosNomers.getColumnIndex("status"));
-                        Integer Successid_UUID=     cursorgetTypeTSAndGosNomers.getInt(cursorgetTypeTSAndGosNomers.getColumnIndex("uuid"));
                         String Successid_Name=     cursorgetTypeTSAndGosNomers.getString(cursorgetTypeTSAndGosNomers.getColumnIndex("name"));
                         Bundle bundleДочерний=new Bundle();
                         bundleДочерний.putLong("SuccessAddRow",SuccessAddRow);
                         bundleДочерний.putLong("Successid_uuid_track",Successid_uuid_track);
                         bundleДочерний.putLong("Successid_Gosnomer",Successid_Gosnomer);
                         bundleДочерний.putInt("Successid_Status",Successid_Status);
-                        bundleДочерний.putLong("Successid_UUID",Successid_UUID);
                         bundleДочерний.putString("Successid_Name",Successid_Name);
                         tableRowДочерная.setTag(bundleДочерний);
                         Log.d(getContext().getClass().getName(), "\n"
@@ -2717,5 +2760,32 @@ class SubClassGetDateOrderGroupBy {
 
 // TODO: 28.04.2023  КОНЕЦ SubClassNewOrderTranport           //// TODO: 28.04.2023  КОНЕЦ SubClassNewOrderTranport   //// TODO: 28.04.2023  КОНЕЦ SubClassNewOrderTranport
     }
+
+
+    // TODO: 15.06.2023  Удаление Выбраного СТрочки ЗАказа 
+    class SubClassDeleteУдаланиеRow{
+Integer методУдалениеВыбранойRow(){
+    Integer РезультатаУдалениеRow=0;
+    try{
+    Log.d(getContext().getClass().getName(), "\n"
+            + " время: " + new Date() + "\n+" +
+            " Класс в процессе... " + this.getClass().getName() + "\n" +
+            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+ " myRecycleViewAdapter.cursor " +myRecycleViewAdapter.cursor);
+} catch (Exception e) {
+            e.printStackTrace();
+            Log.e(getContext().getClass().getName(),
+                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    return  РезультатаУдалениеRow;
+    
+}
+    }
+    // TODO: 15.06.2023  конец КЛАССА Удаление выьраного Row Заказа
+    
+    
     // TODO: 26.04.2023 Конец Фрагмента FragmentOrderTransportOne     // TODO: 26.04.2023 Конец Фрагмента FragmentOrderTransportOne     // TODO: 26.04.2023 Конец Фрагмента FragmentOrderTransportOne
 }
