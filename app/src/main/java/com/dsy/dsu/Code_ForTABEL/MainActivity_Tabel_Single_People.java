@@ -1543,7 +1543,9 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
-                        horizontalScrollView_tabel_single.smoothScrollTo(0,0);
+                  //      horizontalScrollView_tabel_single.pageScroll(View.FOCUS_UP);
+                        recycler_view_single_tabel.setClickable(true);
+                        recycler_view_single_tabel.setFocusable(true);
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName()
                                 + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1555,43 +1557,24 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
            horizontalScrollView_tabel_single.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                @Override
                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                   // TODO: 15.06.2023
-               //    horizontalScrollView_tabel_single.scrollTo(0,0);
+                   // TODO: 15.06.2023 Scroll Left RecyreView
+                   recycler_view_single_tabel.setClickable(false);
+                   recycler_view_single_tabel.setFocusable(false);
+                   message.getTarget().postDelayed(()->{
+                       Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                               " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                               " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
+                               " oldScrollY ");
+
+
+                   },1000);
+                //   методScrollsLeftRecyreView();
                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
                            " oldScrollY ");
                }
            });
-            /*   horizontalScrollView_tabel_single.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                   @Override
-                   public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                       try {
-               *//*            // TODO: 15.06.2023 Scroll Left RecyreView
-                           методScrollsLeftRecyreView();
-
-
-                           message.getTarget().postDelayed(()-> {
-                                       // TODO: 15.06.2023  после операции Меняем Дизайн
-                                       методАнимацияRecyreView(myViewHolder);
-                                   },100);*//*
-                           
-                       // TODO: 15.06.2023  
-                       Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                               " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                               " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
-                               " oldScrollY " +oldScrollY  + " oldScrollX " +oldScrollX + " scrollY " +scrollY + "  scrollX " + scrollX);
-                   } catch (Exception e) {
-                       e.printStackTrace();
-                       Log.e(getApplicationContext().getClass().getName(),
-                               "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                       " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                       new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                               this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                               Thread.currentThread().getStackTrace()[2].getLineNumber());
-                   }
-                   }
-               });*/
                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor
@@ -1615,13 +1598,15 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
        // TODO: 15.06.2023  скоол левый внутри reryvreview
        private void методScrollsLeftRecyreView() {
             try {
-           recycler_view_single_tabel.getAdapter().notifyDataSetChanged();
            // TODO: 20.04.2023 Данные
            cursor =    new SubClassGetCursor().МетодSwipesКурсор();
+                myRecycleViewAdapter.cursor=cursor;
+                // TODO: 15.06.2023 перегрузка данныех
+                myRecycleViewAdapter.notifyDataSetChanged();
+                recycler_view_single_tabel.getAdapter().notifyDataSetChanged();
+                recycler_view_single_tabel.smoothScrollToPosition(0);
 
-           recycler_view_single_tabel.smoothScrollToPosition(0);
-           ProgressBarSingleTabel.setVisibility(View.VISIBLE);
-           message.getTarget().postDelayed(()->{
+
                Integer posio= myViewHolder.getAbsoluteAdapterPosition();
                if (PositionCustomer>0) {
                    PositionCustomer=PositionCustomer-1;
@@ -1640,7 +1625,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
                        " posio " +posio  + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
-           },50);
+
 
            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
