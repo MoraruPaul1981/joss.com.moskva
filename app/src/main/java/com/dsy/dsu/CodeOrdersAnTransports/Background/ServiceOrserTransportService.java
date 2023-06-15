@@ -186,6 +186,40 @@ public class ServiceOrserTransportService extends IntentService {
             return    true;
         }
 
+
+
+
+        // TODO: 04.05.2023 Главный метод Службы Заказы Транспота
+        @BinderThread
+        @Background
+        public  Integer методВиндингУдалениеЗаказа(@NonNull  Long UUIDДляУдалениеRow  ){
+            Integer РезультатаУдалениеRow=0;
+            try{
+                SubClassDeleteУдаланиеRow subClassDeleteУдаланиеRow=new SubClassDeleteУдаланиеRow();
+                 РезультатаУдалениеRow=         subClassDeleteУдаланиеRow.методУдалениеВыбранойRow(UUIDДляУдалениеRow);
+                Log.d(getApplicationContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +  " mapBoundService " +
+                        " mapRetry " +РезультатаУдалениеRow + " Thread 1   "
+                        + Thread.currentThread().getName()+ " Thread 2"
+                        + Thread.getAllStackTraces().values().toString() );
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
+            }
+            return  РезультатаУдалениеRow;
+        }
+
+
+
+
+
+
         // TODO: 04.05.2023 Главный метод Службы Заказы Транспота
         @BinderThread
         @Background
@@ -493,18 +527,35 @@ public class ServiceOrserTransportService extends IntentService {
                 return  cursor;
             }
         }
-
-
-
-
-
-
-
-
-
-
         // TODO: 25.04.2023 END CLASS   SubClassOrderTransport  // TODO: 25.04.2023 END CLASS   SubClassOrderTransport  // TODO: 25.04.2023 END CLASS   SubClassOrderTransport  // TODO: 25.04.2023 END CLASS   SubClassOrderTransport
         // TODO: 25.04.2023 END CLASS   SubClassOrderTransport   // TODO: 25.04.2023 END CLASS   SubClassOrderTransport  // TODO: 25.04.2023 END CLASS   SubClassOrderTransport  // TODO: 25.04.2023 END CLASS   SubClassOrderTransport
     }
+
+
+
+    // TODO: 15.06.2023  Удаление Выбраного СТрочки ЗАказа
+    class SubClassDeleteУдаланиеRow{
+        Integer методУдалениеВыбранойRow(@NonNull  Long UUIDДляУдалениеRow){
+            Integer РезультатаУдалениеRow=0;
+            try{
+                Log.d(getApplicationContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                        " UUIDДляУдалениеRow" +UUIDДляУдалениеRow);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getApplicationContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+            return  РезультатаУдалениеRow;
+
+        }
+    }
+
 
 }

@@ -1798,7 +1798,7 @@ class SubClassGetDateOrderGroupBy {
                  /*                     Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();*/
                  snackbar.setActionTextColor(Color.WHITE)
                          .setTextColor(Color.GRAY)
-                         .setDuration(3000);
+                         .setDuration(4000);
                      View view = snackbar .getView();
                      TextView textView = (TextView) view.findViewById(R.id.snackbar_text);
                       textView.setTextColor(Color.parseColor("#F0FFFF"));
@@ -1807,11 +1807,23 @@ class SubClassGetDateOrderGroupBy {
                  TextView viewСохранеие = (TextView) view.findViewById(R.id.snackbar_action);
                  viewСохранеие.setTextColor(Color.parseColor("#FFFFFF"));
                  // TODO: 15.06.2023  Кнопа Действие
-                 snackbar.setAction("Удалить ?", new View.OnClickListener() {
+                 snackbar.setAction("Удалить заказ ?", new View.OnClickListener() {
                      @Override
                      public void onClick(View v) {
-
                          snackbar.dismiss();
+                         message.getTarget().post(()->{
+                             // TODO: 15.06.2023 удаление Заказа ROW 
+                             Integer РезультатаУдалениеRow=     localBinderOrderTransport.методВиндингУдалениеЗаказа(UUIDДляУдалениеRow);
+                             if (РезультатаУдалениеRow>0) {
+                                 v.startAnimation(animationvibr1);
+                                 tableRowДочерная.setVisibility(View.GONE);
+                             }
+                             Log.d(getContext().getClass().getName(), "\n"
+                                     + " время: " + new Date() + "\n+" +
+                                     " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                     + " Successid_Status " +Successid_Status +  "РезультатаУдалениеRow " +РезультатаУдалениеRow);
+                         });
 
                          Log.d(getContext().getClass().getName(), "\n"
                                  + " время: " + new Date() + "\n+" +
@@ -2781,28 +2793,7 @@ class SubClassGetDateOrderGroupBy {
     }
 
 
-    // TODO: 15.06.2023  Удаление Выбраного СТрочки ЗАказа 
-    class SubClassDeleteУдаланиеRow{
-Integer методУдалениеВыбранойRow(){
-    Integer РезультатаУдалениеRow=0;
-    try{
-    Log.d(getContext().getClass().getName(), "\n"
-            + " время: " + new Date() + "\n+" +
-            " Класс в процессе... " + this.getClass().getName() + "\n" +
-            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+ " myRecycleViewAdapter.cursor " +myRecycleViewAdapter.cursor);
-} catch (Exception e) {
-            e.printStackTrace();
-            Log.e(getContext().getClass().getName(),
-                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    return  РезультатаУдалениеRow;
-    
-}
-    }
+
     // TODO: 15.06.2023  конец КЛАССА Удаление выьраного Row Заказа
     
     
