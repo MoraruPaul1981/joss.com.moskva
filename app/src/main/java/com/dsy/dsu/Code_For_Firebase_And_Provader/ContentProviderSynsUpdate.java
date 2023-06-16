@@ -359,13 +359,12 @@ public class ContentProviderSynsUpdate extends ContentProvider {
     public Bundle call(@NonNull String method, @Nullable String БуферПолученныйJSON, @Nullable Bundle extras) {
         Bundle bundleОперацииUpdateOrinsert = null;
         try{
-        final ObjectMapper[] jsonGenerator = {new PUBLIC_CONTENT(getContext()).getGeneratorJackson()};
             CopyOnWriteArrayList<ContentValues> contentValuesCopyOnWriteArrayLis= (CopyOnWriteArrayList<ContentValues> ) extras.getSerializable("getjson");
 
-      //  SubClassJsonParserOtServer subClassJsonParserOtServer=new SubClassJsonParserOtServer(jsonNodeParent,method);
             SubClassJsonTwoParserOtServer subClassJsonParserOtServer=new SubClassJsonTwoParserOtServer(contentValuesCopyOnWriteArrayLis,method);
-            // TODO: 27.04.2023 запуск вставки данных от СЕРВЕРА
+
         bundleОперацииUpdateOrinsert=     subClassJsonParserOtServer.методUpdateПарсингаJson();
+
         Log.d(this.getClass().getName(),"\n" + " class " +
                 Thread.currentThread().getStackTrace()[2].getClassName()
                 + "\n" +
@@ -878,8 +877,8 @@ class SubClassJsonTwoParserOtServer{
 
             // TODO: 28.04.2023
                        Flowable.fromIterable(contentValuesCopyOnWriteArrayList)
-                    .onBackpressureBuffer(contentValuesCopyOnWriteArrayList.size())
-                               .filter(contentValues -> contentValues.isEmpty()==false)
+                               .filter(filter->filter.size()>0)
+                    .onBackpressureBuffer(contentValuesCopyOnWriteArrayList.size(),true)
                     .doOnNext(new Consumer<ContentValues>() {
                         @Override
                         public void accept(ContentValues ТекущийАдаптерДляВсего) throws Throwable {
