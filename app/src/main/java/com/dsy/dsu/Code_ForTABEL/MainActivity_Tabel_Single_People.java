@@ -3178,10 +3178,12 @@ class SubClassChanegeSetNameProffesio{
 //TODO Перерождения Данных recycreView Отдельный Класс
   public   class SubClassReBornDataRecyreView{
         void методПереРоденияRevireViewScroll () {
+            try{
             // TODO: 15.06.2023 Scroll Left RecyreView
             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
             recycler_view_single_tabel.setClickable(false);
             recycler_view_single_tabel.setFocusable(false);
+            imm.hideSoftInputFromWindow(recycler_view_single_tabel.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 // TODO: 16.06.2023  ПРОИЗВОДИМ САМ СВАЙП
             message.getTarget().post(()->{
                 // TODO: 16.06.2023
@@ -3197,6 +3199,15 @@ class SubClassChanegeSetNameProffesio{
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
                         " oldScrollY ");
             });
+        } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(getApplicationContext().getClass().getName(),
+                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
 
         }
 
