@@ -18,7 +18,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,10 +30,8 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -89,7 +86,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
-import com.google.common.util.concurrent.AtomicDouble;
 import com.jakewharton.rxbinding4.view.RxView;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
@@ -204,6 +200,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
   private  HorizontalScrollView horizontalScrollView_tabel_single;
 
+  private  ConstraintLayout constraintLayoutsingletabel;
+
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -252,6 +250,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             view2Линия=(View) findViewById(R.id.view2Линия);
             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
             TextViewФИОПрофессия = (TextView)  findViewById(R.id.TextViewФИОПрофессия);
+
+            constraintLayoutsingletabel= (ConstraintLayout)  findViewById(R.id.constraintLayoutsingletabel);
 
             horizontalScrollView_tabel_single= (HorizontalScrollView)  findViewById(R.id.horizontalScrollView_tabel_single);
             horizontalScrollView_tabel_single.setLeftEdgeEffectColor(Color.RED);
@@ -1539,36 +1539,11 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
        private void методДляSimpeScroolsRecyreView(   ) {
             try{
-                horizontalScrollView_tabel_single.getViewTreeObserver()
-                        .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                  //      horizontalScrollView_tabel_single.pageScroll(View.FOCUS_UP);
-                        recycler_view_single_tabel.setClickable(true);
-                        recycler_view_single_tabel.setFocusable(true);
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName()
-                                + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   "
-                                + PositionCustomer+ " cursor " +cursor+
-                                " oldScrollY ");
-                    }
-                });
            horizontalScrollView_tabel_single.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                @Override
                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                    // TODO: 15.06.2023 Scroll Left RecyreView
-                   recycler_view_single_tabel.setClickable(false);
-                   recycler_view_single_tabel.setFocusable(false);
-                   message.getTarget().postDelayed(()->{
-                       Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                               " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                               " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
-                               " oldScrollY ");
-
-
-                   },3000);
-                //   методScrollsLeftRecyreView();
+                   методScrollsLeftRecyreView();
                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
@@ -1599,14 +1574,9 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
        private void методScrollsLeftRecyreView() {
             try {
            // TODO: 20.04.2023 Данные
-           cursor =    new SubClassGetCursor().МетодSwipesКурсор();
-                myRecycleViewAdapter.cursor=cursor;
-                // TODO: 15.06.2023 перегрузка данныех
-                myRecycleViewAdapter.notifyDataSetChanged();
-                recycler_view_single_tabel.getAdapter().notifyDataSetChanged();
-                recycler_view_single_tabel.smoothScrollToPosition(0);
+           Cursor cursorSwipe=     myRecycleViewAdapter.cursor;
 
-
+                cursorSwipe =    new SubClassGetCursor().МетодSwipesКурсор();
                Integer posio= myViewHolder.getAbsoluteAdapterPosition();
                if (PositionCustomer>0) {
                    PositionCustomer=PositionCustomer-1;
@@ -1619,7 +1589,13 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                CurrenrsSelectFio=       cursor.getLong(cursor.getColumnIndex("fio"));
                ФИО=       cursor.getString(cursor.getColumnIndex("name"));
 
-               МетодЗаполениеRecycleView( cursor );
+             ///  МетодЗаполениеRecycleView( cursor );
+
+                myRecycleViewAdapter.cursor=cursorSwipe;
+                // TODO: 15.06.2023 перегрузка данныех
+                myRecycleViewAdapter.notifyDataSetChanged();
+
+                методПерегрузкиRecycreView();
 
                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2775,9 +2751,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                             long end = Calendar.getInstance().getTimeInMillis();
                                             Integer ReturnCallPublic = СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnPublicAsyncWork", 0);
                                             if (ReturnCallPublic>0) {
-                                                recycler_view_single_tabel.getAdapter().notifyDataSetChanged();
-                                                recycler_view_single_tabel.requestLayout();
-                                                recycler_view_single_tabel.refreshDrawableState();
+                                                методПерегрузкиRecycreView();
                                             }
                                         }
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -2802,7 +2776,23 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             }
         }
 
-        // TODO: 14.04.2023  слушатель Recycreviwe
+       private void методПерегрузкиRecycreView() {
+            try{
+           recycler_view_single_tabel.getAdapter().notifyDataSetChanged();
+           recycler_view_single_tabel.requestLayout();
+           recycler_view_single_tabel.refreshDrawableState();
+                recycler_view_single_tabel.smoothScrollToPosition(0);
+                constraintLayoutsingletabel.requestLayout();
+       } catch (Exception e) {
+           e.printStackTrace();
+           Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                   " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+           new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                   Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+       }
+       }
+
+       // TODO: 14.04.2023  слушатель Recycreviwe
         void МетодСлушательRecycleView() {  // TODO: 04.03.2022  класс в котором находяться слушатели
             try {
                 myRecycleViewAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
