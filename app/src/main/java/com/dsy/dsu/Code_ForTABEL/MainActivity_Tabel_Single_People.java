@@ -86,6 +86,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.common.util.concurrent.AtomicDouble;
 import com.google.type.TimeOfDayOrBuilder;
 import com.jakewharton.rxbinding4.view.RxView;
 
@@ -1635,8 +1636,8 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 // remove item from adapter
                 myRecycleViewAdapter = new  MyRecycleViewAdapter(cursor );
                 recycler_view_single_tabel.setAdapter(myRecycleViewAdapter);
-                recycler_view_single_tabel.requestLayout();
-                recycler_view_single_tabel.refreshDrawableState();
+                // TODO: 16.06.2023  перегрузка экрана 
+                методПерегрузкиRecycreView();
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2166,6 +2167,10 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 }else {
                     editTextRowКликПоДАнными.setTextColor(Color.BLACK);
                 }
+                    // TODO: 19.10.2022
+                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " НазваниеДляДень ");
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getApplicationContext().getClass().getName(),
