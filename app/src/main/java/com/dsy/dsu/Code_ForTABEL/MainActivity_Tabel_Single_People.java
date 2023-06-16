@@ -197,7 +197,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private  Bundle bundleИзMainActitivy_List_Tables;
 
     private TextView TextViewФИОПрофессия;
-    private  Cursor   cursor;
+
   private    InputMethodManager imm;
 
   private  HorizontalScrollView horizontalScrollView_tabel_single;
@@ -282,25 +282,25 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
 
             // TODO: 20.04.2023 Данные
-            cursor =    new SubClassGetCursor().МетодSwipesКурсор();
+       Cursor     cursorForRecycreView =    new SubClassGetCursor().МетодSwipesКурсор();
 
                 // TODO: 29.03.2023  Метод RerecyView RerecyView RerecyView RerecyView RerecyView
                 LifecycleOwner lifecycleOwner=this;
                 LifecycleOwner  lifecycleOwnerОбщая=this;
             subClassSingleTabelRecycreView=
-                    new SubClassSingleTabelRecycreView(lifecycleOwner,lifecycleOwnerОбщая,activity,cursor);
+                    new SubClassSingleTabelRecycreView(lifecycleOwner,lifecycleOwnerОбщая,activity,cursorForRecycreView);
 
 
                 subClassSingleTabelRecycreView.МетодИнициализацииRecycreView();
 
 
-                subClassSingleTabelRecycreView.МетодЗаполениеRecycleView( cursor );
+                subClassSingleTabelRecycreView.МетодЗаполениеRecycleView( cursorForRecycreView );
 
             //  subClassSingleTabelRecycreView. методДляSimpeCallbacks( );
             // TODO: 14.04.2023 доделываем single tabel
             subClassSingleTabelRecycreView.МетодСлушательRecycleView();
 
-            subClassSingleTabelRecycreView.   МетодСлушательКурсора(cursor );
+            subClassSingleTabelRecycreView.   МетодСлушательКурсора(cursorForRecycreView );
 
             subClassSingleTabelRecycreView.   методWorkManagerLifecycleOwner();
 
@@ -1326,7 +1326,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 layoutManager.setSmoothScrollbarEnabled(true);
                 // TODO: 12.05.2023 Клаиатура
                 imm = (InputMethodManager) recycler_view_single_tabel.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(recycler_view_single_tabel, InputMethodManager.SHOW_FORCED);
+               // imm.showSoftInput(recycler_view_single_tabel, InputMethodManager.SHOW_FORCED);
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1585,12 +1585,14 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
        // TODO: 15.06.2023  скоол левый внутри reryvreview
        private void методScrollsLeftRecyreView() {
             try {
+        Integer Позиция=        myRecycleViewAdapter.cursor.getPosition();
            // TODO: 20.04.2023 Данные
-                cursor=     myRecycleViewAdapter.cursor;
-          if (cursor.isLast()){
+                cursor =    new SubClassGetCursor().МетодSwipesКурсор();
+          if (myRecycleViewAdapter.cursor.isLast()){
               cursor.moveToFirst();
           }else {
-              cursor.moveToNext();
+              Позиция=Позиция+1;
+              cursor.moveToPosition(Позиция);
           }
                CurrenrsСhildUUID=       cursor.getLong(cursor.getColumnIndex("uuid"));
                CurrenrsSelectFio=       cursor.getLong(cursor.getColumnIndex("fio"));
@@ -2417,9 +2419,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         @Override
                         public void onFocusChange(View v, boolean hasFocus) {
                             try{
-                                 imm=(InputMethodManager)
-                                        recycler_view_single_tabel.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                                EditText editText=(EditText)v;
+                                EditText editText=(EditText) v;
                             if (hasFocus) {
                                 editText.requestFocus();
                                 imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
@@ -2499,6 +2499,13 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                                     }else{
                                                         recycler_view_single_tabel.scrollToPosition(0);
                                                     }
+                                                    imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                                                    imm.hideSoftInputFromWindow(recycler_view_single_tabel.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+                                                    Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v"+ v +
+                                                            " РезультатОбновлениеЯчейки " +РезультатОбновлениеЯчейки );
                                                 }else {
                                                     ((EditText) v).setBackgroundColor(Color.RED);
                                                     message.getTarget().postDelayed(() -> {
@@ -3183,7 +3190,8 @@ class SubClassChanegeSetNameProffesio{
             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
             recycler_view_single_tabel.setClickable(false);
             recycler_view_single_tabel.setFocusable(false);
-            imm.hideSoftInputFromWindow(recycler_view_single_tabel.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            imm.hideSoftInputFromWindow(recycler_view_single_tabel.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+            recycler_view_single_tabel.clearFocus();
 // TODO: 16.06.2023  ПРОИЗВОДИМ САМ СВАЙП
             message.getTarget().post(()->{
                 // TODO: 16.06.2023
@@ -3196,7 +3204,7 @@ class SubClassChanegeSetNameProffesio{
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+
                         " oldScrollY ");
             });
         } catch (Exception e) {
