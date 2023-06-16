@@ -1636,7 +1636,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 // remove item from adapter
                 myRecycleViewAdapter = new  MyRecycleViewAdapter(cursor );
                 recycler_view_single_tabel.setAdapter(myRecycleViewAdapter);
-                // TODO: 16.06.2023  перегрузка экрана 
+                // TODO: 16.06.2023  перегрузка экрана
                 методПерегрузкиRecycreView();
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -2212,7 +2212,10 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                             if (ВыходныеИлиПразничные!=null) {
                               Bundle bundleВыходныеИПразничные=(Bundle)        ((MaterialTextView)v).getTag();
                                 String ЗначениеДней= null;
-                                if (bundleВыходныеИПразничные==null) {
+                                if (bundleВыходныеИПразничные==null ||
+                                        ВыходныеИлиПразничные.matches("(.*)Вс(.*)")
+                                        || ВыходныеИлиПразничные.matches("(.*)Сб(.*)")
+                                        && ! ВыходныеИлиПразничные.matches("(.*)###(.*)")) {
                                     ЗначениеДней = ((MaterialTextView)v).getText() .toString();
                                     // TODO: 07.06.2023
                                     методОбработкиВыходныхиПразничные(ЗначениеДней,((MaterialTextView)v));
@@ -2267,6 +2270,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     materialTextView.setTextColor(Color.parseColor("#DC143C"));
                     Bundle bundleВыходной=new Bundle();
                     bundleВыходной.putInt("StatusCell",2);
+                    materialTextView.setText(ЗначениеДней);
                     materialTextView.setTag(bundleВыходной);
                 }else{
                     if (ЗначениеДней.matches("(.*)###(.*)") ) {
@@ -2280,6 +2284,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         materialTextView.setTextColor(Color.parseColor("#008080"));
                         Bundle bundleОбычныйДень=new Bundle();
                         bundleОбычныйДень.putInt("StatusCell",1);
+                        materialTextView.setText(ЗначениеДней);
                         materialTextView.setTag(bundleОбычныйДень);
                     }
                 }
@@ -2299,24 +2304,27 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             // TODO: 07.06.2023 2
             private void методОбработкиВыходныхиПразничные(@NonNull Integer ЗначениеДней,@NonNull MaterialTextView materialTextView) {
                 try{
+                    if (ЗначениеДней==1) {
+                        materialTextView.setTextColor(Color.parseColor("#008080"));
+                        Bundle bundleОбычныйДень = new Bundle();
+                        bundleОбычныйДень.putInt("StatusCell", 1);
+                        materialTextView.setTag(bundleОбычныйДень);
+
+                    }
                     if (ЗначениеДней==2){
                         Bundle bundleВыходной=new Bundle();
                         materialTextView.setTextColor(Color.parseColor("#DC143C"));
                         bundleВыходной.putInt("StatusCell",2);
                         materialTextView.setTag(bundleВыходной);
-                    }else{
-                        if (ЗначениеДней==3) {
-                            materialTextView.setTextColor(Color.parseColor("#9C112D"));
-                            Bundle bundleПразничныйДень=new Bundle();
-                            bundleПразничныйДень.putInt("StatusCell",3);
-                            materialTextView.setTag(bundleПразничныйДень);
-                        }else{
-                            materialTextView.setTextColor(Color.parseColor("#008080"));
-                            Bundle bundleОбычныйДень=new Bundle();
-                            bundleОбычныйДень.putInt("StatusCell",1);
-                            materialTextView.setTag(bundleОбычныйДень);
-                        }
                     }
+
+                    if (ЗначениеДней==3) {
+                        materialTextView.setTextColor(Color.parseColor("#9C112D"));
+                        Bundle bundleПразничныйДень=new Bundle();
+                        bundleПразничныйДень.putInt("StatusCell",3);
+                        materialTextView.setTag(bundleПразничныйДень);
+                    }
+
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
