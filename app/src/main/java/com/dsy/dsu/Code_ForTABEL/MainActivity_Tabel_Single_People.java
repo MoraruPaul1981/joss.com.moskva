@@ -308,6 +308,10 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             // TODO: 15.06.2023 Scroll
       subClassSingleTabelRecycreView. методДляSimpeScroolsRecyreView( );
 
+            subClassSingleTabelRecycreView.    методИницаллизацииКлавиаотуры();
+
+
+
 // TODO: 25.04.2023 тест код
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1323,11 +1327,9 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 recycler_view_single_tabel.setLayoutManager(layoutManager);
                recycler_view_single_tabel.setHasFixedSize(true);
                recycler_view_single_tabel.setAnimation(animationVibr1);
+                recycler_view_single_tabel.smoothScrollToPosition(0);
                 layoutManager.setSmoothScrollbarEnabled(true);
                 // TODO: 12.05.2023 Клаиатура
-                imm = (InputMethodManager) recycler_view_single_tabel.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-               // imm.showSoftInput(recycler_view_single_tabel, InputMethodManager.SHOW_FORCED);
-
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+  "cursor " +cursor);
@@ -1341,6 +1343,26 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
+
+        void методИницаллизацииКлавиаотуры(){
+try{
+            imm = (InputMethodManager) recycler_view_single_tabel.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            // imm.showSoftInput(recycler_view_single_tabel, InputMethodManager.SHOW_FORCED);
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+  "cursor " +cursor);
+        } catch (Exception e) {
+           e.printStackTrace();
+           Log.e(getApplicationContext().getClass().getName(),
+                   "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                           " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+           new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                   this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                   Thread.currentThread().getStackTrace()[2].getLineNumber());
+       }
+   }
+
 
         // TODO: 15.06.2023 свайвы
         private void методДляSimpeCallbacks(   ) {
@@ -1618,6 +1640,39 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
        }
        }
 
+
+       // TODO: 15.06.2023  скоол левый внутри reryvreview
+       private void методAlterSaveCellRecyreView(@NonNull View  v) {
+           try {
+
+               imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+               imm.hideSoftInputFromWindow(recycler_view_single_tabel.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+               // TODO: 20.04.2023 Данные
+               cursor =    new SubClassGetCursor().МетодSwipesКурсор();
+
+               CurrenrsСhildUUID=       cursor.getLong(cursor.getColumnIndex("uuid"));
+               CurrenrsSelectFio=       cursor.getLong(cursor.getColumnIndex("fio"));
+               ФИО=       cursor.getString(cursor.getColumnIndex("name"));
+
+               myRecycleViewAdapter.cursor=cursor;
+               // TODO: 15.06.2023 перегрузка данныех
+               myRecycleViewAdapter.notifyDataSetChanged();
+               Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                       " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                       " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
+                       " posio " +myViewHolder.getLayoutPosition()  + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО
+                       + " cursor " +cursor.getPosition());
+
+           } catch (Exception e) {
+               e.printStackTrace();
+               Log.e(getApplicationContext().getClass().getName(),
+                       "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                               " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+               new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                       this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                       Thread.currentThread().getStackTrace()[2].getLineNumber());
+           }
+       }
 
        // TODO: 04.03.2022 прозвомжность Заполения RecycleView
         void МетодЗаполениеRecycleView(  @NonNull Cursor cursor) {
@@ -2421,7 +2476,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                 EditText editText=(EditText) v;
                             if (hasFocus) {
                                 editText.requestFocus();
-                                imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
+                                imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
                             }else {
                                 message.getTarget().postDelayed(() -> {
                                     imm.hideSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
@@ -2498,8 +2553,11 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                                     }else{
                                                         recycler_view_single_tabel.scrollToPosition(0);
                                                     }
-                                                    imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                                                    imm.hideSoftInputFromWindow(recycler_view_single_tabel.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                                                    // TODO: 16.06.2023 После Сохранение CELL
+                                                    // TODO: 16.06.2023
+                                                    subClassSingleTabelRecycreView.      методAlterSaveCellRecyreView(v);
+                                                    // TODO: 16.06.2023  после переполуение данныз перегрузка экрана
+                                                    subClassSingleTabelRecycreView.     методПерегрузкиRecycreView();
 
                                                     Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2750,7 +2808,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
            recycler_view_single_tabel.getAdapter().notifyDataSetChanged();
            recycler_view_single_tabel.requestLayout();
            recycler_view_single_tabel.refreshDrawableState();
-                recycler_view_single_tabel.smoothScrollToPosition(0);
                 ProgressBarSingleTabel.setVisibility(View.INVISIBLE);
                 recycler_view_single_tabel.setClickable(true);
                 recycler_view_single_tabel.setFocusable(true);
