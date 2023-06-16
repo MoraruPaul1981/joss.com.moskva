@@ -1547,26 +1547,12 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                @Override
                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
 
-                   if(scrollX>6){
-                       // TODO: 15.06.2023 Scroll Left RecyreView
-                       ProgressBarSingleTabel.setVisibility(View.VISIBLE);
-                       recycler_view_single_tabel.setClickable(false);
-// TODO: 16.06.2023  ПРОИЗВОДИМ САМ СВАЙП
-                       message.getTarget().post(()->{
-                           // TODO: 16.06.2023
-                           методScrollsLeftRecyreView();
+                   if(scrollX>6  && scrollY==0  && oldScrollY==0){
 
-                           subClassSingleTabelRecycreView.   методПослеОбновлениеЯчейкиСчитаемЧасы();
 
-                           // TODO: 16.06.2023  после переполуение данныз перегрузка экрана
-                           методПерегрузкиRecycreView();
+                       SubClassReBornDataRecyreView subClassReBornDataRecyreView=new SubClassReBornDataRecyreView();
 
-                           Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                   " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                   " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
-                                   " oldScrollY ");
-
-                       });
+                       subClassReBornDataRecyreView.методПереРоденияRevireViewScroll();
 
                    }
 
@@ -1600,24 +1586,24 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
        private void методScrollsLeftRecyreView() {
             try {
            // TODO: 20.04.2023 Данные
-           Cursor cursorSwipe=     myRecycleViewAdapter.cursor;
-          if (cursorSwipe.isLast()){
-              cursorSwipe.moveToFirst();
+                cursor=     myRecycleViewAdapter.cursor;
+          if (cursor.isLast()){
+              cursor.moveToFirst();
           }else {
-              cursorSwipe.moveToNext();
+              cursor.moveToNext();
           }
                CurrenrsСhildUUID=       cursor.getLong(cursor.getColumnIndex("uuid"));
                CurrenrsSelectFio=       cursor.getLong(cursor.getColumnIndex("fio"));
                ФИО=       cursor.getString(cursor.getColumnIndex("name"));
 
-                myRecycleViewAdapter.cursor=cursorSwipe;
+                myRecycleViewAdapter.cursor=cursor;
                 // TODO: 15.06.2023 перегрузка данныех
                 myRecycleViewAdapter.notifyDataSetChanged();
                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
                        " posio " +myViewHolder.getLayoutPosition()  + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО
-                       + " cursorSwipe " +cursorSwipe.getPosition());
+                       + " cursor " +cursor.getPosition());
 
        } catch (Exception e) {
            e.printStackTrace();
@@ -1858,14 +1844,13 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     case 6:
                     case 7:
                         viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm_last_row, parent, false);
-                        break;
-                    case 0:
+                        // TODO: 16.06.2023
                         // TODO: 14.04.2023 ЧАСЫ
                         методПослеОбновлениеЯчейкиСчитаемЧасы();
 
-                       //  методСчитаемЧасы(cursor );
+                        //  методСчитаемЧасы(cursor );
                         // TODO: 04.04.2023  ФИО
-                        new SubClassChanegeSetNameProffesio().    МетодЗаполняемФИОRow(cursor);
+                        new SubClassChanegeSetNameProffesio().    МетодЗаполняемФИОRow( cursor);
                         // TODO: 16.04.2023 Професии Професии Професии Професии
                         МетодаКликаTableRowФИО( );
                         break;
@@ -2762,6 +2747,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 recycler_view_single_tabel.smoothScrollToPosition(0);
                 ProgressBarSingleTabel.setVisibility(View.INVISIBLE);
                 recycler_view_single_tabel.setClickable(true);
+                recycler_view_single_tabel.setFocusable(true);
                 constraintLayoutsingletabel.requestLayout();
 
        } catch (Exception e) {
@@ -3187,6 +3173,37 @@ class SubClassChanegeSetNameProffesio{
         }
     }
 }
+
+
+//TODO Перерождения Данных recycreView Отдельный Класс
+  public   class SubClassReBornDataRecyreView{
+        void методПереРоденияRevireViewScroll () {
+            // TODO: 15.06.2023 Scroll Left RecyreView
+            ProgressBarSingleTabel.setVisibility(View.VISIBLE);
+            recycler_view_single_tabel.setClickable(false);
+            recycler_view_single_tabel.setFocusable(false);
+// TODO: 16.06.2023  ПРОИЗВОДИМ САМ СВАЙП
+            message.getTarget().post(()->{
+                // TODO: 16.06.2023
+                subClassSingleTabelRecycreView.      методScrollsLeftRecyreView();
+
+                subClassSingleTabelRecycreView.   методПослеОбновлениеЯчейкиСчитаемЧасы();
+
+                // TODO: 16.06.2023  после переполуение данныз перегрузка экрана
+                subClassSingleTabelRecycreView.     методПерегрузкиRecycreView();
+
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
+                        " oldScrollY ");
+            });
+
+        }
+
+    }
+
+
+
 }
 
 
