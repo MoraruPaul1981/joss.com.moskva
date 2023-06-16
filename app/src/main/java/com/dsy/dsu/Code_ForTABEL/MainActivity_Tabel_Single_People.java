@@ -1550,8 +1550,9 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                    if(scrollX>6){
                        // TODO: 15.06.2023 Scroll Left RecyreView
                        ProgressBarSingleTabel.setVisibility(View.VISIBLE);
+                       recycler_view_single_tabel.setClickable(false);
 // TODO: 16.06.2023  ПРОИЗВОДИМ САМ СВАЙП
-                       message.getTarget().postDelayed(()->{
+                       message.getTarget().post(()->{
                            // TODO: 16.06.2023
                            методScrollsLeftRecyreView();
 
@@ -1565,7 +1566,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
                                    " oldScrollY ");
 
-                       },200);
+                       });
 
                    }
 
@@ -1860,7 +1861,9 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         break;
                     case 0:
                         // TODO: 14.04.2023 ЧАСЫ
-                         методСчитаемЧасы(cursor );
+                        методПослеОбновлениеЯчейкиСчитаемЧасы();
+
+                       //  методСчитаемЧасы(cursor );
                         // TODO: 04.04.2023  ФИО
                         new SubClassChanegeSetNameProffesio().    МетодЗаполняемФИОRow(cursor);
                         // TODO: 16.04.2023 Професии Професии Професии Професии
@@ -2758,6 +2761,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
            recycler_view_single_tabel.refreshDrawableState();
                 recycler_view_single_tabel.smoothScrollToPosition(0);
                 ProgressBarSingleTabel.setVisibility(View.INVISIBLE);
+                recycler_view_single_tabel.setClickable(true);
                 constraintLayoutsingletabel.requestLayout();
 
        } catch (Exception e) {
