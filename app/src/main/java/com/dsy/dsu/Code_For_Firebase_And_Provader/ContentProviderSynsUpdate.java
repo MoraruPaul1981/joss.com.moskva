@@ -879,6 +879,7 @@ class SubClassJsonTwoParserOtServer{
             // TODO: 28.04.2023
                        Flowable.fromIterable(contentValuesCopyOnWriteArrayList)
                     .onBackpressureBuffer(contentValuesCopyOnWriteArrayList.size())
+                               .filter(contentValues -> contentValues.isEmpty()==false)
                     .doOnNext(new Consumer<ContentValues>() {
                         @Override
                         public void accept(ContentValues ТекущийАдаптерДляВсего) throws Throwable {
