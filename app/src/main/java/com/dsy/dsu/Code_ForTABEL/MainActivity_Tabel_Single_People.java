@@ -1844,8 +1844,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             if (myViewHolder!=null) {
                 switch (   myViewHolder.getAbsoluteAdapterPosition()){
                     case 6:
-                    case 7:
-                        viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm_last_row, parent, false);
+                      //  viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm_last_row, parent, false);
                         // TODO: 16.06.2023
                         // TODO: 14.04.2023 ЧАСЫ
                         методПослеОбновлениеЯчейкиСчитаемЧасы();

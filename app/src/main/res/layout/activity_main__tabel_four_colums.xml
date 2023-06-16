@@ -198,6 +198,7 @@
                     android:scrollbars="vertical|horizontal"
                     android:keyboardNavigationCluster="true"
                     android:visibility="visible"
+                    android:layout_marginTop="5dp"
                     app:layout_optimizationLevel="standard|barrier|chains"
                     android:windowSoftInputMode="stateVisible|adjustPan"
                     android:padding="1dp"
