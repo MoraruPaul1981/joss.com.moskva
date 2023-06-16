@@ -1765,6 +1765,11 @@ class SubClassGetDateOrderGroupBy {
             public boolean onLongClick(View v) {
                 try{
                 // TODO: 14.06.2023
+                    v.setBackgroundColor(Color.GRAY);
+                    message.getTarget().postDelayed(()->{
+                        v.setBackgroundColor(Color.WHITE);
+                    },1000);
+
            Bundle bundleУдалениСтрочки=(Bundle)     v.getTag();
              Long UUIDДляУдалениеRow=   bundleУдалениСтрочки.getLong("SuccessAddRow");
              Integer Successid_Status=   bundleУдалениСтрочки.getInt("Successid_Status");
