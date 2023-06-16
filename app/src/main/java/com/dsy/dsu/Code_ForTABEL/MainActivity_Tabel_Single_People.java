@@ -2140,10 +2140,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         editTextRowКликПоДАнными.setVisibility(View.VISIBLE);
                     editTextRowКликПоДАнными.setText(День.trim());
                     // TODO: 07.06.2023
-                    char ЕслиБуквывДнеСодержимое=     День.charAt(0);
-                    if(Character.isLetter( ЕслиБуквывДнеСодержимое )){
-                        editTextRowКликПоДАнными.setTextColor(Color.GRAY);
-                    }
+                    методИзменяемЦветСодержимоваЦифраИлиБуква(editTextRowКликПоДАнными, День);
 
                     // TODO: 19.10.2022
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -2160,6 +2157,26 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
             }
+
+            private void методИзменяемЦветСодержимоваЦифраИлиБуква(@NonNull EditText editTextRowКликПоДАнными,@NonNull String День) {
+                try {
+                char ЕслиБуквывДнеСодержимое=     День.charAt(0);
+                if(Character.isLetter( ЕслиБуквывДнеСодержимое )){
+                    editTextRowКликПоДАнными.setTextColor(Color.GRAY);
+                }else {
+                    editTextRowКликПоДАнными.setTextColor(Color.BLACK);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getApplicationContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+            }
+
             private void методЗаполениеНазванияRowData(@NonNull  TextView TextViewRowКликПоНазваниям,String s) {
                 try {
                     // TODO: 11.04.2023 Ставим Дни
