@@ -1335,6 +1335,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 layoutManager.setSmoothScrollbarEnabled(true);
                 recycler_view_single_tabel.setHorizontalFadingEdgeEnabled(true);
                 recycler_view_single_tabel.setHorizontalScrollBarEnabled(true);
+                recycler_view_single_tabel.setNestedScrollingEnabled(true);
                 // TODO: 12.05.2023 Клаиатура
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2065,6 +2066,9 @@ try{
             ///todo первый метод #1
             private void МетодЗаполняемДаннымиRecycreViewSingleTable(@NonNull  MyViewHolder holder, @NonNull Cursor cursor) {
                 try {
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+holder.getLayoutPosition()+  " "+myViewHolder.getLayoutPosition());
                     // TODO: 04.04.2023   DATA
                     МетодЗаполняемДаннымиTableRow(cursor ,holder  );
                     // TODO: 04.04.2023   Name
@@ -2096,10 +2100,12 @@ try{
                                 // TODO: 06.04.2023  СОДЕРДИМОЕ ROW
                                 EditText editTextRowКликПоДАнными = (EditText) tableRowДАнные.getChildAt(ИндексСтрочкиДней);
                                 Integer ИндексСтрочкиДнейФинал= ИндексСтрочкиДней+ИндексСтрочкиOffSet;
-                                String ДнейСодержимое =            "d"+ИндексСтрочкиДнейФинал;
+                                Integer ПозицияДня=holder.getLayoutPosition();
+                                ПозицияДня=ПозицияДня+1;
+                                String ДнейСодержимое =            "d"+ПозицияДня;
+
                                 // TODO: 06.04.2023  НАЗВАНИЕ ROW
                                 if (editTextRowКликПоДАнными != null) {
-
                                     // TODO: 05.04.2023  ЗАПОЛЯНИЕМ ДНЯМИ ROW 1
                                     if (ДниВыходные.containsKey(ДнейСодержимое.trim())) {
 
@@ -2116,14 +2122,13 @@ try{
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                             + " editTextRowКликПоДАнными " + editTextRowКликПоДАнными + " ДнейСодержимое " + ДнейСодержимое);
                                     // TODO: 20.04.2023
+                                    // TODO: 10.05.2023 Зепляем Слушатель
+                                    // TODO: 05.04.2023 Вешаем на Ячекку ДАнных Слушатель
+                                    МетодаКликаПоtableRow(editTextRowКликПоДАнными );
+                                    // TODO: 19.10.2022 ScroolView
+                                    // TODO: 10.05.2023
+                                    МетодаScrollViewEdittext(editTextRowКликПоДАнными);
                                 }
-                                // TODO: 10.05.2023 Зепляем Слушатель
-                                // TODO: 05.04.2023 Вешаем на Ячекку ДАнных Слушатель
-                                МетодаКликаПоtableRow(editTextRowКликПоДАнными );
-                                // TODO: 19.10.2022 ScroolView
-                                // TODO: 10.05.2023
-                               МетодаScrollViewEdittext(editTextRowКликПоДАнными);
-
                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cursor  " + cursor);
@@ -2198,8 +2203,9 @@ try{
                                 // TODO: 06.04.2023  СОДЕРДИМОЕ ROW
                                 TextView viewtextRowКликПоШабка = (TextView) tableRowШабка.getChildAt(ИндексСтрочкиДней);
                                 //String ДнейНазвание = Optional.ofNullable(viewtextRowКликПоШабка.getHint()).map(Objects::toString).orElse("");
-                                Integer ИндексСтрочкиДнейФинал = ИндексСтрочкиДней + ИндексСтрочкиOffSet;
-                                String ДнейНазвание = "d" + ИндексСтрочкиДнейФинал;
+                                Integer ПозицияДня=holder.getLayoutPosition();
+                                ПозицияДня=ПозицияДня+1;
+                                String ДнейНазвание = "d" + ПозицияДня;
                                 // TODO: 06.04.2023  НАЗВАНИЕ ROW
                                 if (viewtextRowКликПоШабка != null) {
                                     // TODO: 06.04.2023 Названия
@@ -2264,6 +2270,8 @@ try{
                     // TODO: 07.06.2023
                     методИзменяемЦветСодержимоваЦифраИлиБуква(editTextRowКликПоДАнными, День);
 
+                    editTextRowКликПоДАнными.startAnimation(animationRows);
+
                     // TODO: 19.10.2022
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2313,6 +2321,7 @@ try{
                     }else {
                         TextViewRowКликПоНазваниям.setVisibility(View.INVISIBLE);
                     }
+                    TextViewRowКликПоНазваниям.startAnimation(animationVibr1);
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2727,7 +2736,7 @@ try{
             @Override
             public int getItemCount() {
                 //int КоличесвоСтрок = 1;
-                int КоличесвоСтрок =8;
+                int КоличесвоСтрок =35;
                 try {
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
