@@ -1331,7 +1331,8 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                recycler_view_single_tabel.setAnimation(animationVibr1);
                 recycler_view_single_tabel.smoothScrollToPosition(0);
                 layoutManager.setSmoothScrollbarEnabled(true);
-                recycler_view_single_tabel.setNestedScrollingEnabled(true);
+                recycler_view_single_tabel.setHorizontalFadingEdgeEnabled(true);
+                recycler_view_single_tabel.setHorizontalScrollBarEnabled(true);
                 // TODO: 12.05.2023 Клаиатура
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1574,6 +1575,39 @@ try{
                     @Override
                     public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                         super.onScrollStateChanged(recyclerView, newState);
+                        recyclerView.setFocusable(false);
+                        recyclerView.setClickable(false);
+
+                        if(recyclerView.SCROLL_STATE_DRAGGING==newState){
+                                               SubClassReBornDataRecyreView subClassReBornDataRecyreView=new SubClassReBornDataRecyreView();
+
+                        subClassReBornDataRecyreView.методПереРоденияRevireViewScroll();
+
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
+                                    " oldScrollY ");
+                        }
+                        if(recyclerView.SCROLL_STATE_IDLE==newState){
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
+                                    " oldScrollY ");
+
+                            }
+                        if(recyclerView.SCROLL_STATE_SETTLING==newState){
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
+                                    " oldScrollY ");
+
+                        }
+
+
+          /*              SubClassReBornDataRecyreView subClassReBornDataRecyreView=new SubClassReBornDataRecyreView();
+
+                        subClassReBornDataRecyreView.методПереРоденияRevireViewScroll();
+*/
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
@@ -1583,6 +1617,17 @@ try{
                     @Override
                     public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                         super.onScrolled(recyclerView, dx, dy);
+
+                  View recyreviewcholde=      recycler_view_single_tabel.findChildViewUnder(dx,dy);
+                        recyreviewcholde.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                            @Override
+                            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
+                                        " oldScrollY ");
+                            }
+                        });
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
