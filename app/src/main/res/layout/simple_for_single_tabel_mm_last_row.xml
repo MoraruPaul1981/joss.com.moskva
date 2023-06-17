@@ -102,6 +102,7 @@
                         android:layout_height="3mm"
                         android:textSize="13sp"
                         android:background="#FFFFFF" />
+
                 </TableRow>
                 <!--//TODO конец первой строки Названия -->
 
@@ -131,7 +132,7 @@
                         app:cardElevation="5dp"
                         tools:visibility="visible"
                         android:translationZ="100dp"
-                        android:background="@drawable/textlines_tabel_row_name_value3"
+                        android:background="@drawable/textlines_tabel_row_name_value"
                         android:animateLayoutChanges="true" />
                 </TableRow>
 

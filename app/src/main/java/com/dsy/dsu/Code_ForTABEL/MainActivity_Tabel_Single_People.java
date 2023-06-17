@@ -1397,11 +1397,9 @@ try{
                         try{
                             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
                             recycler_view_single_tabel.setBackgroundColor(Color.GRAY);
-                            message.getTarget().postDelayed(()->{
-                                SubClassReBornDataRecyreView subClassReBornDataRecyreView=new SubClassReBornDataRecyreView();
-                                subClassReBornDataRecyreView.методПереРоденияRevireViewScroll();
-                                recycler_view_single_tabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                            },100);
+                            // TODO: 17.06.2023 сама свайп
+                            SubClassReBornDataRecyreView subClassReBornDataRecyreView=new SubClassReBornDataRecyreView();
+                            subClassReBornDataRecyreView.методПереРоденияRevireViewScroll();
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor);
@@ -1459,13 +1457,11 @@ try{
                     @Override
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         try{
-                         ProgressBarSingleTabel.setVisibility(View.VISIBLE);
+                            ProgressBarSingleTabel.setVisibility(View.VISIBLE);
                             recycler_view_single_tabel.setBackgroundColor(Color.GRAY);
-                            message.getTarget().postDelayed(()->{
-                                SubClassReBornDataRecyreView subClassReBornDataRecyreView=new SubClassReBornDataRecyreView();
-                                subClassReBornDataRecyreView.методПереРоденияRevireViewScroll();
-                                recycler_view_single_tabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                            },100);
+                            // TODO: 17.06.2023 сама свайп
+                            SubClassReBornDataRecyreView subClassReBornDataRecyreView=new SubClassReBornDataRecyreView();
+                            subClassReBornDataRecyreView.методПереРоденияRevireViewScroll();
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"recycler_view_single_tabel   " + recycler_view_single_tabel + " cursor " +cursor);
@@ -1939,7 +1935,7 @@ try{
             if (myViewHolder!=null) {
                 switch (   myViewHolder.getAbsoluteAdapterPosition()){
                     case 6:
-                      //  viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm_last_row, parent, false);
+                        //viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm_last_row, parent, false);
                         // TODO: 16.06.2023
                         // TODO: 14.04.2023 ЧАСЫ
                         методПослеОбновлениеЯчейкиСчитаемЧасы();
@@ -2819,7 +2815,7 @@ try{
 
                                             // TODO: 17.06.2023  если прошло время нужное  
                                             long РазницаВоврмени=end-startДляОбноразвовной;
-                                            if (РазницаВоврмени>10000) {
+                                            if (РазницаВоврмени>20000) {
                                                 методПерегрузкиRecycreView();
                                             }
                                         }
@@ -2852,10 +2848,12 @@ try{
                 ProgressBarSingleTabel.setVisibility(View.INVISIBLE);
                 recycler_view_single_tabel.setClickable(true);
                 recycler_view_single_tabel.setFocusable(true);
+                recycler_view_single_tabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 recycler_view_single_tabel.requestLayout();
                 recycler_view_single_tabel.refreshDrawableState();
 
                 constraintLayoutsingletabel.requestLayout();
+                constraintLayoutsingletabel.refreshDrawableState();
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
