@@ -207,6 +207,12 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
   private    SubClassSingleTabelRecycreView subClassSingleTabelRecycreView;
 
+    private   String ИмяСлужбыСинхронизациОдноразовая="WorkManager Synchronizasiy_Data Disposable";
+    private String ИмяСлужбыСинхронизацииОбщая="WorkManager Synchronizasiy_Data";
+    private   LifecycleOwner lifecycleOwner;
+    private   LifecycleOwner  lifecycleOwnerОбщая;
+    private    long startДляОбноразвовной;
+
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -272,7 +278,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             animationRows = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row_scroll_for_singletabel);
             animationRich = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_swipe_r);//R.anim.slide_in_row)
             animationLesft = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_swipe_l);//R.anim.slide_in_row)R.anim.slide_in_row_newscanner1
-
+           startДляОбноразвовной= Calendar.getInstance().getTimeInMillis();
 
             // TODO: 29.03.2023  Метод обсуживаюшие
             методGETДанныеИзДругихАктивити();
@@ -287,8 +293,8 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
        Cursor     cursorForRecycreView =    new SubClassGetCursor().МетодSwipesКурсор();
 
                 // TODO: 29.03.2023  Метод RerecyView RerecyView RerecyView RerecyView RerecyView
-                LifecycleOwner lifecycleOwner=this;
-                LifecycleOwner  lifecycleOwnerОбщая=this;
+            lifecycleOwner=this;
+                lifecycleOwnerОбщая=this;
             subClassSingleTabelRecycreView=
                     new SubClassSingleTabelRecycreView(lifecycleOwner,lifecycleOwnerОбщая,activity,cursorForRecycreView);
 
@@ -372,7 +378,10 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     protected void onStop() {
         super.onStop();
         try{
-            WorkManager.getInstance(getApplicationContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОдноразовая).removeObservers(null);
+            WorkManager.getInstance(getApplicationContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая).removeObservers(lifecycleOwnerОбщая);
+            WorkManager.getInstance(getApplicationContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).removeObservers(lifecycleOwner);
+            WorkManager.getInstance(getApplicationContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая);
+
             // TODO: 17.08.2022  after peossesuinbg
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1300,17 +1309,12 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
    public class SubClassSingleTabelRecycreView  {
          private     Cursor cursor;
-        private   LifecycleOwner lifecycleOwner;
-        private   LifecycleOwner  lifecycleOwnerОбщая;
-
         private LinkedHashMap< String,String> ДниВыходные=new LinkedHashMap<>();
 
         public SubClassSingleTabelRecycreView(@NonNull  LifecycleOwner lifecycleOwner,
                                               @NonNull  LifecycleOwner  lifecycleOwnerОбщая,
                                               @NonNull Activity activity,
                                               @NonNull Cursor cursor) {
-            this.lifecycleOwner=lifecycleOwner;
-            this.lifecycleOwnerОбщая=lifecycleOwnerОбщая;
             this.cursor=cursor;
         }
 
@@ -2787,8 +2791,6 @@ try{
         void методWorkManagerLifecycleOwner() {
 // TODO: 11.05.2021 ЗПУСКАЕМ СЛУЖБУ через брдкастер синхронизхации и уведомления
             try {
-                String ИмяСлужбыСинхронизациОдноразовая="WorkManager Synchronizasiy_Data Disposable";
-                String ИмяСлужбыСинхронизацииОбщая="WorkManager Synchronizasiy_Data";
                 lifecycleOwner.getLifecycle().addObserver(new LifecycleEventObserver() {
                     @Override
                     public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
@@ -2804,43 +2806,20 @@ try{
                     }
                 });
 
-                WorkManager.getInstance(getApplicationContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).observe(lifecycleOwner, new Observer<List<WorkInfo>>() {
-                    @Override
-                    public void onChanged(List<WorkInfo> workInfos) {
-                        workInfos.forEach((СтастусWorkMangerДляФрагментаЧитатьИПисать) -> {
-                            try {
-                                if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.SUCCEEDED) == 0)         {
-                                    Integer     ReturnCallSingle = СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnSingleAsyncWork", 0);
-                                    if (ReturnCallSingle>0) {
-                                   /*     recycler_view_single_tabel.getAdapter().notifyDataSetChanged();
-                                        recycler_view_single_tabel.requestLayout();
-                                        recycler_view_single_tabel.refreshDrawableState();*/
-                                    }
-                                    WorkManager.getInstance(getApplicationContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая);
-                                }
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            }
-                        });
-                    }
-                });
                 WorkManager.getInstance(getApplicationContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая)
                         .observe(lifecycleOwnerОбщая, new Observer<List<WorkInfo>>() {
                             @Override
                             public void onChanged(List<WorkInfo> workInfos) {
                                 workInfos.forEach((СтастусWorkMangerДляФрагментаЧитатьИПисать) -> {
                                     try {
-                                        if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.RUNNING) != 0) {
+                                        if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.ENQUEUED) == 0 ||
+                                                СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.SUCCEEDED) == 0) {
                                             long end = Calendar.getInstance().getTimeInMillis();
                                             Integer ReturnCallPublic = СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnPublicAsyncWork", 0);
-                                            if (ReturnCallPublic>0) {
+
+                                            // TODO: 17.06.2023  если прошло время нужное  
+                                            long РазницаВоврмени=end-startДляОбноразвовной;
+                                            if (РазницаВоврмени>10000) {
                                                 методПерегрузкиRecycreView();
                                             }
                                         }
