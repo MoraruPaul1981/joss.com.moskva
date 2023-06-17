@@ -1323,6 +1323,8 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                 dividerItemDecorationHor.setDrawable(getDrawable(R.drawable.divider_for_single_tabel));///R.dimen.activity_horizontal_margin*/
 
                 GridLayoutManager layoutManager = new GridLayoutManager(activity, 4);
+
+
            /*    layoutManager.setOrientation(GridLayoutManager.VERTICAL);*/
                recycler_view_single_tabel.addItemDecoration(dividerItemDecorationHor);
                //recycler_view_single_tabel.addItemDecoration(dividerItemDecorationVer);
@@ -1569,8 +1571,6 @@ try{
 
        private void методДляSimpeScroolsRecyreView(   ) {
             try{
-
-
                 recycler_view_single_tabel.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
                     public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -1617,57 +1617,12 @@ try{
                     @Override
                     public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                         super.onScrolled(recyclerView, dx, dy);
-
-                  View recyreviewcholde=      recycler_view_single_tabel.findChildViewUnder(dx,dy);
-                        recyreviewcholde.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                            @Override
-                            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
-                                        " oldScrollY ");
-                            }
-                        });
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
                                 " oldScrollY ");
                     }
                 });
-/*           horizontalScrollView_tabel_single.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-               @Override
-               public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-
-                   if(scrollX>3  && scrollY==0  && oldScrollY==0){
-
-
-                       SubClassReBornDataRecyreView subClassReBornDataRecyreView=new SubClassReBornDataRecyreView();
-
-                       subClassReBornDataRecyreView.методПереРоденияRevireViewScroll();
-
-                   }
-
-                   Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                           " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                           " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
-                           " oldScrollY ");
-               }
-           });
-                // TODO: 17.06.2023
-                horizontalScrollView_tabel_single.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        horizontalScrollView_tabel_single.post(()->{
-
-                           horizontalScrollView_tabel_single.fling(1);
-
-                        });
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor
-                                + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
-                    }
-                });*/
                 // TODO: 17.06.2023
                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
