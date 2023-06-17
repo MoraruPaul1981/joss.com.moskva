@@ -1396,7 +1396,6 @@ try{
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         try{
                             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
-                            recycler_view_single_tabel.setBackgroundColor(Color.GRAY);
                             // TODO: 17.06.2023 сама свайп
                             SubClassReBornDataRecyreView subClassReBornDataRecyreView=new SubClassReBornDataRecyreView();
                             subClassReBornDataRecyreView.методПереРоденияRevireViewScroll();
@@ -1458,7 +1457,6 @@ try{
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         try{
                             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
-                            recycler_view_single_tabel.setBackgroundColor(Color.GRAY);
                             // TODO: 17.06.2023 сама свайп
                             SubClassReBornDataRecyreView subClassReBornDataRecyreView=new SubClassReBornDataRecyreView();
                             subClassReBornDataRecyreView.методПереРоденияRevireViewScroll();
