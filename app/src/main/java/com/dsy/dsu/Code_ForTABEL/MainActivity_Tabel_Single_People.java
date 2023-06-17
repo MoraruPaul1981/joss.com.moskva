@@ -1786,7 +1786,6 @@ try{
                             // TODO: 04.04.2023   Data
                             rowData= (TableRow) TableLayoutSingleTabel.findViewById(R.id.TableData1Row);
                         }
-
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" TableLayoutSingleTabel   " + TableLayoutSingleTabel+
@@ -2417,6 +2416,7 @@ try{
 
             // TODO: 08.11.2022 метод КЛИК ПО ДАННЫМ
             private void МетодаКликаПоtableRow(@NonNull   EditText editTextRowКликПоДАнными  ) {
+                final String[] ЗначениеДоЗаполениясОшибкой = {null};
                 try{
                         if (editTextRowКликПоДАнными!=null) {
                             // TODO: 19.10.2022  ЛОНГ КЛИК
@@ -2428,7 +2428,7 @@ try{
                                                 public void afterTextChanged(Editable s) {
                                                     try {
                                                         // TODO: 10.05.2023  ГЛАВНЫЙ МЕТОД ЗАПИСИ ДАННЫХ update
-                                                    методЗаписьЯчейкиRxView(editTextRowКликПоДАнными);
+                                                    методЗаписьЯчейкиRxView(editTextRowКликПоДАнными,   ЗначениеДоЗаполениясОшибкой[0]);
                                                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -2445,9 +2445,11 @@ try{
 
                                                 public void beforeTextChanged(CharSequence s, int start,
                                                                               int count, int after) {
-                                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                    ЗначениеДоЗаполениясОшибкой[0] =s.toString();
+                                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
+                                                         + "\n"  + " ЗначениеДоЗаполениясОшибкой[0]"+ЗначениеДоЗаполениясОшибкой[0]);
                                                 }
 
                                                 public void onTextChanged(CharSequence s, int start,
@@ -2543,7 +2545,7 @@ try{
 
 
             // TODO: 21.04.2023  записб данных в ячейку
-            private void методЗаписьЯчейкиRxView(@NonNull View v) {
+            private void методЗаписьЯчейкиRxView(@NonNull View v,@NonNull String    ЗначениеДоЗаполениясОшибкой) {
                 try {
                     RxView.focusChanges(v)
                             .throttleLast(2, TimeUnit.SECONDS)
@@ -2602,6 +2604,13 @@ try{
                                                     ((EditText) v).setBackgroundColor(Color.RED);
                                                     message.getTarget().postDelayed(() -> {
                                                         ((EditText) v).setBackgroundColor(Color.WHITE);
+                                                        ((EditText) v).setText(   ЗначениеДоЗаполениясОшибкой);
+                                                        // TODO: 17.06.2023 КОГДА ОШИБКА ПРМ ЗАПОДЛЕН ЗНАЧЕНИМЕМ НЕ ПОРАВИЛЬНМ 
+                                                        Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v"+ v +
+                                                                " ЗначениеДоЗаполениясОшибкой " +ЗначениеДоЗаполениясОшибкой);
+
                                                     }, 500);
                                                 }
                                                 // TODO: 10.05.2023 clear
