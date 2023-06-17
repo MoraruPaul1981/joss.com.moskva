@@ -298,7 +298,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
                 subClassSingleTabelRecycreView.МетодЗаполениеRecycleView( cursorForRecycreView );
 
-            //  subClassSingleTabelRecycreView. методДляSimpeCallbacks( );
+              subClassSingleTabelRecycreView. методДляSimpeCallbacks( );
             // TODO: 14.04.2023 доделываем single tabel
             subClassSingleTabelRecycreView.МетодСлушательRecycleView();
 
@@ -308,7 +308,7 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
 
             // TODO: 15.06.2023 Scroll
-      subClassSingleTabelRecycreView. методДляSimpeScroolsRecyreView( );
+//      subClassSingleTabelRecycreView. методДляSimpeScroolsRecyreView( );
 
             subClassSingleTabelRecycreView.    методИницаллизацииКлавиаотуры();
 
@@ -1391,36 +1391,13 @@ try{
                     @Override
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         try{
-
-                            recycler_view_single_tabel.getAdapter().notifyDataSetChanged();
-                            // TODO: 20.04.2023 Данные
-                            cursor =    new SubClassGetCursor().МетодSwipesКурсор();
-
-                            recycler_view_single_tabel.smoothScrollToPosition(0);
                             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
+                            recycler_view_single_tabel.setBackgroundColor(Color.GRAY);
                             message.getTarget().postDelayed(()->{
-                                Integer posio= myViewHolder.getAbsoluteAdapterPosition();
-                                if (PositionCustomer>0) {
-                                    PositionCustomer=PositionCustomer-1;
-                                    cursor.moveToPosition(PositionCustomer);
-                                }else {
-                                    cursor.moveToLast();
-                                    PositionCustomer=cursor.getCount()-1;
-                                }
-                                CurrenrsСhildUUID=       cursor.getLong(cursor.getColumnIndex("uuid"));
-                                CurrenrsSelectFio=       cursor.getLong(cursor.getColumnIndex("fio"));
-                                ФИО=       cursor.getString(cursor.getColumnIndex("name"));
-
-                                МетодЗаполениеRecycleView( cursor );
-
-
-
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
-                                        " posio " +posio  + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
-                            },50);
-
+                                SubClassReBornDataRecyreView subClassReBornDataRecyreView=new SubClassReBornDataRecyreView();
+                                subClassReBornDataRecyreView.методПереРоденияRevireViewScroll();
+                                recycler_view_single_tabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                            },100);
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor);
@@ -1439,7 +1416,7 @@ try{
                     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 
-                        методАнимацияRecyreView(viewHolder);
+                        //методАнимацияRecyreView(viewHolder);
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor
@@ -1478,34 +1455,13 @@ try{
                     @Override
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         try{
-                            recycler_view_single_tabel.getAdapter().notifyDataSetChanged();
-                            // TODO: 20.04.2023 Данные
-                            cursor =    new SubClassGetCursor().МетодSwipesКурсор();
-                            recycler_view_single_tabel.smoothScrollToPosition(0);
-                            ProgressBarSingleTabel.setVisibility(View.VISIBLE);
+                         ProgressBarSingleTabel.setVisibility(View.VISIBLE);
+                            recycler_view_single_tabel.setBackgroundColor(Color.GRAY);
                             message.getTarget().postDelayed(()->{
-                                Integer posio= myViewHolder.getAbsoluteAdapterPosition();
-                                if (PositionCustomer<cursor.getCount()-1) {
-                                    PositionCustomer=PositionCustomer+1;
-                                    cursor.moveToPosition(PositionCustomer);
-                                }else {
-                                    cursor.moveToFirst();
-                                    PositionCustomer=0;
-                                }
-                                CurrenrsСhildUUID=       cursor.getLong(cursor.getColumnIndex("uuid"));
-                                CurrenrsSelectFio=       cursor.getLong(cursor.getColumnIndex("fio"));
-                                ФИО=       cursor.getString(cursor.getColumnIndex("name"));
-                                // TODO: 20.04.2023
-                                МетодЗаполениеRecycleView( cursor );
-
-
-
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
-                                        " posio " +posio  + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
-                            },50);
-
+                                SubClassReBornDataRecyreView subClassReBornDataRecyreView=new SubClassReBornDataRecyreView();
+                                subClassReBornDataRecyreView.методПереРоденияRevireViewScroll();
+                                recycler_view_single_tabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                            },100);
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"recycler_view_single_tabel   " + recycler_view_single_tabel + " cursor " +cursor);
@@ -1529,7 +1485,7 @@ try{
                     @Override
                     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-                        методАнимацияRecyreView(viewHolder);
+                      //  методАнимацияRecyreView(viewHolder);
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor
@@ -1878,7 +1834,6 @@ try{
                                     if (cursor.getCount() > 0 && holder.TableLayoutSingleTabel != null) {
                                         МетодЗаполняемДаннымиRecycreViewSingleTable(holder, cursor);
                                      // TODO: 07.04.2023 переопрелделния Вида Табеля
-                                       МетодПерегрузкаSingletabel();
                                         Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
                                         Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
                                     } else {
@@ -3160,37 +3115,11 @@ try{
         }
 
 
-        private void МетодПерегрузкаSingletabel() {
-            try {
-                message.getTarget().postDelayed(()->{
-                    ProgressBarSingleTabel.setVisibility(View.INVISIBLE);
-                },150);
-                recycler_view_single_tabel.requestLayout();
-                recycler_view_single_tabel.refreshDrawableState();
-                textViewчасыsimgletabel.refreshDrawableState();
-                textViewчасыsimgletabel.requestLayout();
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                        Thread.currentThread().getStackTrace()[2].getMethodName(),
-                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
-
-
-
 
        private void МетодПерегрузкаЧасыSingletabel() {
            try {
                textViewчасыsimgletabel.refreshDrawableState();
                textViewчасыsimgletabel.requestLayout();
-               recycler_view_single_tabel.requestLayout();
-               recycler_view_single_tabel.refreshDrawableState();
                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
