@@ -32,6 +32,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -257,10 +258,11 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
 
             constraintLayoutsingletabel= (ConstraintLayout)  findViewById(R.id.constraintLayoutsingletabel);
 
-            horizontalScrollView_tabel_single= (HorizontalScrollView)  findViewById(R.id.horizontalScrollView_tabel_single);
+        /*    horizontalScrollView_tabel_single= (HorizontalScrollView)  findViewById(R.id.horizontalScrollView_tabel_single);
             horizontalScrollView_tabel_single.setLeftEdgeEffectColor(Color.parseColor("#00ACC1"));
             horizontalScrollView_tabel_single.setRightEdgeEffectColor(Color.parseColor("#00ACC1"));
             horizontalScrollView_tabel_single.setSmoothScrollingEnabled(true);
+            horizontalScrollView_tabel_single.pageScroll(View.FOCUS_UP);*/
 
 
             animationПрофессия400 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_rowsingletabel);
@@ -1315,21 +1317,21 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
         private void МетодИнициализацииRecycreView() {
             try{
                 DividerItemDecoration dividerItemDecorationHor=
-                        new DividerItemDecoration(activity,GridLayoutManager.HORIZONTAL);
-                dividerItemDecorationHor.setDrawable(getDrawable(R.drawable.divider_for_single_tabel));///R.dimen.activity_horizontal_margin
-                DividerItemDecoration dividerItemDecorationVer=
                         new DividerItemDecoration(activity,GridLayoutManager.VERTICAL);
-                GridLayoutManager layoutManager
-                        = new GridLayoutManager(activity, 1);
-               layoutManager.setOrientation(GridLayoutManager.VERTICAL);
-             //  recycler_view_single_tabel.addItemDecoration(dividerItemDecorationHor);
+                /*DividerItemDecoration dividerItemDecorationVer=
+                        new DividerItemDecoration(activity,GridLayoutManager.VERTICAL);
+                dividerItemDecorationHor.setDrawable(getDrawable(R.drawable.divider_for_single_tabel));///R.dimen.activity_horizontal_margin*/
+
+                GridLayoutManager layoutManager = new GridLayoutManager(activity, 4);
+           /*    layoutManager.setOrientation(GridLayoutManager.VERTICAL);*/
+               recycler_view_single_tabel.addItemDecoration(dividerItemDecorationHor);
                //recycler_view_single_tabel.addItemDecoration(dividerItemDecorationVer);
                 recycler_view_single_tabel.setLayoutManager(layoutManager);
                recycler_view_single_tabel.setHasFixedSize(true);
                recycler_view_single_tabel.setAnimation(animationVibr1);
                 recycler_view_single_tabel.smoothScrollToPosition(0);
                 layoutManager.setSmoothScrollbarEnabled(true);
-                horizontalScrollView_tabel_single.pageScroll(View.FOCUS_UP);
+                recycler_view_single_tabel.setNestedScrollingEnabled(true);
                 // TODO: 12.05.2023 Клаиатура
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1566,11 +1568,32 @@ try{
 
        private void методДляSimpeScroolsRecyreView(   ) {
             try{
-           horizontalScrollView_tabel_single.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+
+
+                recycler_view_single_tabel.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                        super.onScrollStateChanged(recyclerView, newState);
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
+                                " oldScrollY ");
+                    }
+
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor+
+                                " oldScrollY ");
+                    }
+                });
+/*           horizontalScrollView_tabel_single.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                @Override
                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
 
-                   if(scrollX>5  && scrollY==0  && oldScrollY==0){
+                   if(scrollX>3  && scrollY==0  && oldScrollY==0){
 
 
                        SubClassReBornDataRecyreView subClassReBornDataRecyreView=new SubClassReBornDataRecyreView();
@@ -1585,6 +1608,22 @@ try{
                            " oldScrollY ");
                }
            });
+                // TODO: 17.06.2023
+                horizontalScrollView_tabel_single.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        horizontalScrollView_tabel_single.post(()->{
+
+                           horizontalScrollView_tabel_single.fling(1);
+
+                        });
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor
+                                + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
+                    }
+                });*/
+                // TODO: 17.06.2023
                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor
@@ -2053,7 +2092,7 @@ try{
                             // TODO: 06.04.2023
                     Integer  ИндексСтрочкиOffSet = getИндексСтрочкиДней(holder);
                             TableRow tableRowДАнные = holder.rowData;
-                            for (int ИндексСтрочкиДней = 0; ИндексСтрочкиДней < tableRowДАнные.getChildCount(); ИндексСтрочкиДней++) {
+                            for (int ИндексСтрочкиДней = 0; ИндексСтрочкиДней < 1; ИндексСтрочкиДней++) {//tableRowДАнные.getChildCount()
                                 // TODO: 06.04.2023  СОДЕРДИМОЕ ROW
                                 EditText editTextRowКликПоДАнными = (EditText) tableRowДАнные.getChildAt(ИндексСтрочкиДней);
                                 Integer ИндексСтрочкиДнейФинал= ИндексСтрочкиДней+ИндексСтрочкиOffSet;
@@ -2155,7 +2194,7 @@ try{
                             // TODO: 06.04.2023
                     Integer  ИндексСтрочкиOffSet = getИндексСтрочкиДней(holder);
                             TableRow tableRowШабка = holder.rowName;
-                            for (int ИндексСтрочкиДней = 0; ИндексСтрочкиДней < tableRowШабка.getChildCount(); ИндексСтрочкиДней++) {
+                            for (int ИндексСтрочкиДней = 0; ИндексСтрочкиДней < 1; ИндексСтрочкиДней++) {//tableRowШабка.getChildCount()
                                 // TODO: 06.04.2023  СОДЕРДИМОЕ ROW
                                 TextView viewtextRowКликПоШабка = (TextView) tableRowШабка.getChildAt(ИндексСтрочкиДней);
                                 //String ДнейНазвание = Optional.ofNullable(viewtextRowКликПоШабка.getHint()).map(Objects::toString).orElse("");
@@ -2873,8 +2912,7 @@ try{
                     public void onChanged() {
                         super.onChanged();
                         try {
-                       cursor =    new SubClassGetCursor().МетодSwipesКурсор();
-
+                     //  cursor =    new SubClassGetCursor().МетодSwipesКурсор();
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"

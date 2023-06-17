@@ -175,24 +175,13 @@
 
 
 
-        <HorizontalScrollView
-            android:id="@+id/horizontalScrollView_tabel_single"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_centerHorizontal="true"
-            android:background="#FFFFFF"
-            app:layout_constraintBottom_toTopOf="@+id/ProgressBarSingleTabel"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/TextViewФИОПрофессия"
-            tools:ignore="UselessLeaf">
+
 
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_single_tabel"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
                     android:layout_centerHorizontal="true"
                     android:background="#FFFFFF"
                     android:scrollbars="vertical|horizontal"
@@ -208,7 +197,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/TextViewФИОПрофессия"
                     />
-        </HorizontalScrollView>
+
 
 
 
