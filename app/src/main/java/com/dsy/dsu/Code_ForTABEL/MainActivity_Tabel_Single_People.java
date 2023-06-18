@@ -45,6 +45,7 @@ import android.widget.Filter;
 import android.widget.FilterQueryProvider;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
@@ -1396,6 +1397,7 @@ try{
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         try{
                             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
+                            subClassSingleTabelRecycreView.       методЗакрываемКлавитатуру(recycler_view_single_tabel);
                             // TODO: 17.06.2023 сама свайп
                             SubClassReBornDataRecyreView subClassReBornDataRecyreView=new SubClassReBornDataRecyreView();
                             subClassReBornDataRecyreView.методПереРоденияRevireViewScroll();
@@ -1414,14 +1416,59 @@ try{
                     }
 
                     @Override
-                    public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                    public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
+                                            @NonNull RecyclerView.ViewHolder viewHolder,
+                                            float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+
+                        методИзмененияЦветаSwipes(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 
                         //методАнимацияRecyreView(viewHolder);
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor
                                 + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
+                    }
+
+                    private void методИзмененияЦветаSwipes(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
+                                                           @NonNull    RecyclerView.ViewHolder viewHolder,
+                                                           float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                        try{
+                        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+                            // Get RecyclerView item from the ViewHolder
+                            View itemView = viewHolder.itemView;
+
+                            Paint p = new Paint();
+                            if(dX > 0) {
+                                p.setColor(Color.parseColor("#1C9CA8")) ;
+                            } else {
+                                p.setColor(Color.parseColor("#48D1CC")) ;
+                            }
+                            if (dX > 0) {
+                                /* Set your color for positive displacement */
+
+                                // Draw Rect with varying right side, equal to displacement dX
+                                c.drawRect((float) itemView.getLeft(), (float) itemView.getTop(), dX,
+                                        (float) itemView.getBottom(), p);
+                            } else {
+                                /* Set your color for negative displacement */
+
+                                // Draw Rect with varying left side, equal to the item's right side plus negative displacement dX
+                                c.drawRect((float) itemView.getRight() + dX, (float) itemView.getTop(),
+                                        (float) itemView.getRight(), (float) itemView.getBottom(), p);
+                            }
+
+                            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(getApplicationContext().getClass().getName(),
+                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
                     }
 
                     @Override
@@ -1457,6 +1504,7 @@ try{
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         try{
                             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
+                            subClassSingleTabelRecycreView.       методЗакрываемКлавитатуру(recycler_view_single_tabel);
                             // TODO: 17.06.2023 сама свайп
                             SubClassReBornDataRecyreView subClassReBornDataRecyreView=new SubClassReBornDataRecyreView();
                             subClassReBornDataRecyreView.методПереРоденияRevireViewScroll();
@@ -1482,12 +1530,53 @@ try{
 
                     @Override
                     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                      //  super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                        методИзмененияЦветаSwipes(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                       //  методАнимацияRecyreView(viewHolder);
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"PositionCustomer   " + PositionCustomer+ " cursor " +cursor
                                 + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
+                    }
+                    private void методИзмененияЦветаSwipes(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
+                                                           @NonNull    RecyclerView.ViewHolder viewHolder,
+                                                           float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                        try{
+                            if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+                                // Get RecyclerView item from the ViewHolder
+                                View itemView = viewHolder.itemView;
+
+                                Paint p = new Paint();
+                                if(dX > 0) {
+                                    p.setColor(Color.parseColor("#48D1CC")) ;
+                                } else {
+                                    p.setColor(Color.parseColor("#1C9CA8")) ;
+                                }
+                                if (dX > 0) {
+                                    /* Set your color for positive displacement */
+
+                                    // Draw Rect with varying right side, equal to displacement dX
+                                    c.drawRect((float) itemView.getLeft(), (float) itemView.getTop(), dX,
+                                            (float) itemView.getBottom(), p);
+                                } else {
+                                    /* Set your color for negative displacement */
+
+                                    // Draw Rect with varying left side, equal to the item's right side plus negative displacement dX
+                                    c.drawRect((float) itemView.getRight() + dX, (float) itemView.getTop(),
+                                            (float) itemView.getRight(), (float) itemView.getBottom(), p);
+                                }
+
+                                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(getApplicationContext().getClass().getName(),
+                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
                     }
 
                     @Override
@@ -1933,8 +2022,6 @@ try{
             if (myViewHolder!=null) {
                 switch (   myViewHolder.getAbsoluteAdapterPosition()){
                     case 6:
-                        //viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm_last_row, parent, false);
-                        // TODO: 16.06.2023
                         // TODO: 14.04.2023 ЧАСЫ
                         методПослеОбновлениеЯчейкиСчитаемЧасы();
 
@@ -1944,6 +2031,13 @@ try{
                         // TODO: 16.04.2023 Професии Професии Професии Професии
                         МетодаКликаTableRowФИО( );
                         break;
+                    // TODO: 18.06.2023
+                /*    case 29:
+                    case 30:
+                    case 31:
+                        viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm_last_row, parent, false);
+                        // TODO: 16.06.2023
+                        break;*/
                 }
             }
                     }else{
@@ -2587,7 +2681,7 @@ try{
                                                         // TODO: 17.06.2023 подсчет часов
                                                        subClassSingleTabelRecycreView.   методПослеОбновлениеЯчейкиСчитаемЧасы();
                                                         // TODO: 16.06.2023  после переполуение данныз перегрузка экрана
-                                                        subClassSingleTabelRecycreView.       методЗакрываемКлавитатуру(v);
+                                                        //subClassSingleTabelRecycreView.       методЗакрываемКлавитатуру(v);
                                                         // TODO: 20.04.2023 Данные
 
                                                        // subClassSingleTabelRecycreView.     методПерегрузкиRecycreView();
