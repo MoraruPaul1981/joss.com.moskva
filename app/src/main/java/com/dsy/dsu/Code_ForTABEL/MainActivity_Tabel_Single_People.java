@@ -1349,7 +1349,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
         void методИницаллизацииКлавиаотуры(){
 try{
             imm = (InputMethodManager) recycler_view_single_tabel.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            // imm.showSoftInput(recycler_view_single_tabel, InputMethodManager.SHOW_FORCED);
+              imm.showSoftInput(recycler_view_single_tabel, InputMethodManager.SHOW_IMPLICIT);
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2101,7 +2101,7 @@ try{
                                     МетодаКликаПоtableRow(editTextRowКликПоДАнными );
                                     // TODO: 19.10.2022 ScroolView
                                     // TODO: 10.05.2023
-                                    МетодаScrollViewEdittext(editTextRowКликПоДАнными);
+                                   // МетодаScrollViewEdittext(editTextRowКликПоДАнными);
                                 }
                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2173,7 +2173,7 @@ try{
                     //Integer  ИндексСтрочкиOffSet = getИндексСтрочкиДней(holder);
                             TableRow tableRowШабка = holder.rowName;
                                 // TODO: 06.04.2023  СОДЕРДИМОЕ ROW
-                                TextView viewtextRowКликПоШабка = (TextView) tableRowШабка.getChildAt(0);
+                             MaterialTextView viewtextRowКликПоШабка = (MaterialTextView) tableRowШабка.getChildAt(0);
                                 //String ДнейНазвание = Optional.ofNullable(viewtextRowКликПоШабка.getHint()).map(Objects::toString).orElse("");
                                 Integer ПозицияДня=holder.getLayoutPosition();
                                 ПозицияДня=ПозицияДня+1;
@@ -2284,78 +2284,33 @@ try{
             }
             }
 
-            private void методЗаполениеНазванияRowData(@NonNull  TextView TextViewRowКликПоНазваниям,String s) {
+            private void методЗаполениеНазванияRowData(@NonNull  MaterialTextView TextViewRowКликПоНазваниям,String s) {
                 try {
                     // TODO: 11.04.2023 Ставим Дни
                 String ВыходныеИлиПразничные=    ДниВыходные.get(s.trim());
                     TextViewRowКликПоНазваниям.setText( ВыходныеИлиПразничные);
                     if (ВыходныеИлиПразничные!=null) {
                         TextViewRowКликПоНазваниям.setVisibility(View.VISIBLE);
-                    }else {
-                        TextViewRowКликПоНазваниям.setVisibility(View.INVISIBLE);
-                    }
+
                     TextViewRowКликПоНазваниям.startAnimation(animationVibr1);
+
+
+                        Bundle bundleВыходныеИПразничные=(Bundle)       TextViewRowКликПоНазваниям.getTag();
+                        // TODO: 07.06.2023
+                        методОбработкиВыходныхиПразничные(ВыходныеИлиПразничные,TextViewRowКликПоНазваниям);
+
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " TextViewRowКликПоНазваниям " +TextViewRowКликПоНазваниям+
+                                "  ВыходныеИлиПразничные " +ВыходныеИлиПразничные + " bundleВыходныеИПразничные " +bundleВыходныеИПразничные);
+                    }
+
+
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " s.trim() " +s.trim() + "  ДниВыходные.get(s.trim()) "
                             + ДниВыходные.get(s.trim()));
-                    
-                    TextViewRowКликПоНазваниям.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
-                        @Override
-                        public void onViewAttachedToWindow(View v) {
-                            try{
-                            // TODO: 19.10.202
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " ДниВыходные " +ДниВыходные);
-                            // TODO: 11.04.2023 меняем Цвет и Убираем *** если празничные
-
-
-                            if (ВыходныеИлиПразничные!=null) {
-                              Bundle bundleВыходныеИПразничные=(Bundle)        ((MaterialTextView)v).getTag();
-                                // TODO: 07.06.2023
-                                методОбработкиВыходныхиПразничные(ВыходныеИлиПразничные,((MaterialTextView)v));
-
-
-                        /*        if (ВыходныеИлиПразничные.matches("(.*)Вс(.*)")
-                                        || ВыходныеИлиПразничные.matches("(.*)Сб(.*)")
-                                        && ! ВыходныеИлиПразничные.matches("(.*)###(.*)")) {
-                                    ЗначениеДней = ((MaterialTextView)v).getText() .toString();
-                                    // TODO: 07.06.2023
-                                    методОбработкиВыходныхиПразничные(ЗначениеДней,((MaterialTextView)v));
-                                }else {
-                                Integer ЗначениеДнейУжеЗаполнено=    bundleВыходныеИПразничные.getInt("StatusCell");
-                                    методОбработкиВыходныхиПразничные(ЗначениеДнейУжеЗаполнено,((MaterialTextView)v));
-                                }*/
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " TextViewRowКликПоНазваниям " +TextViewRowКликПоНазваниям+
-                                        "  ВыходныеИлиПразничные " +ВыходныеИлиПразничные + " bundleВыходныеИПразничные " +bundleВыходныеИПразничные);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(getApplicationContext().getClass().getName(),
-                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                        }
-                        @Override
-                        public void onViewDetachedFromWindow(View v) {
-                            // TODO: 19.10.2022
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " TextViewRowКликПоНазваниям " +TextViewRowКликПоНазваниям);
-                        }
-                    });
-
-                    // TODO: 19.10.2022
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " TextViewRowКликПоНазваниям " +TextViewRowКликПоНазваниям);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getApplicationContext().getClass().getName(),
@@ -2528,52 +2483,6 @@ try{
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
             }
-            // TODO: 08.11.2022 метод КЛИК ПО ДАННЫМ
-            private void МетодаScrollViewEdittext(@NonNull   EditText editTextRowКликПоДАнными  ) {
-                try{
-                    editTextRowКликПоДАнными.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                        @Override
-                        public void onFocusChange(View v, boolean hasFocus) {
-                            try{
-                                EditText editText=(EditText) v;
-                            if (hasFocus) {
-                                editText.requestFocus();
-                                imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
-                            }else {
-                                message.getTarget().postDelayed(() -> {
-                                    imm.hideSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-
-                                }, 2000);
-
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(getApplicationContext().getClass().getName(),
-                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                        }
-                    });
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(getApplicationContext().getClass().getName(),
-                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
-            }
-
-
-
-
             // TODO: 21.04.2023  записб данных в ячейку
             private void методЗаписьЯчейкиRxView(@NonNull View v,@NonNull String    ЗначениеДоЗаполениясОшибкой) {
                 try {
@@ -2643,8 +2552,6 @@ try{
 
                                                     }, 500);
                                                 }
-                                                // TODO: 10.05.2023 clear
-                                                v.clearFocus();
                                         });
 
                                         Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -3251,7 +3158,7 @@ class SubClassChanegeSetNameProffesio{
             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
             recycler_view_single_tabel.setClickable(false);
             recycler_view_single_tabel.setFocusable(false);
-            imm.hideSoftInputFromWindow(recycler_view_single_tabel.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+            subClassSingleTabelRecycreView.    методЗакрываемКлавитатуру(recycler_view_single_tabel);
             recycler_view_single_tabel.clearFocus();
 // TODO: 16.06.2023  ПРОИЗВОДИМ САМ СВАЙП
             message.getTarget().post(()->{
