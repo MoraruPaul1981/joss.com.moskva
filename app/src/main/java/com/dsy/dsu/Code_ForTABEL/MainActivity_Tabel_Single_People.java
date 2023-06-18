@@ -2637,7 +2637,7 @@ try{
        private void методЗакрываемКлавитатуру(@NonNull View v) {
             try{
            imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-         //  imm.hideSoftInputFromWindow(recycler_view_single_tabel.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+           imm.hideSoftInputFromWindow(recycler_view_single_tabel.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
