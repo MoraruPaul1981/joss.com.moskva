@@ -6,18 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    android:backgroundTintMode="screen"
-    android:clickable="false"
-    android:drawingCacheQuality="auto"
-    android:focusable="false"
-    android:focusableInTouchMode="false"
-    android:persistentDrawingCache="scrolling"
-    android:scrollbarAlwaysDrawHorizontalTrack="true"
-    android:touchscreenBlocksFocus="false"
-    app:layout_collapseMode="pin"
-    app:layout_gravity="fill"
-    app:layout_scrollFlags="snapMargins|scroll|enterAlways|enterAlwaysCollapsed|exitUntilCollapsed|snap"
-    tools:context=".Code_ForTABEL.MainActivity_List_Peoples"
+    tools:context=".Code_ForTABEL.MainActivity_Tabel_Single_People"
     tools:visibility="visible">
 
 
