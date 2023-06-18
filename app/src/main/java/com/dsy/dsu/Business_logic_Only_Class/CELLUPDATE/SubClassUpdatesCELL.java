@@ -51,6 +51,9 @@ public class SubClassUpdatesCELL {
                 List<Integer> ЛистДопустимоеСодержание = new ArrayList();
                 IntStream.iterate(1, i -> i + 1).limit(24).forEachOrdered(ЛистДопустимоеСодержание::add);
                 String ЗначениеИзЯчейки=editTextЯчейкаОбновление.getText().toString().trim();
+                if(ЗначениеИзЯчейки.length()==0){
+                    ЗначениеИзЯчейки="0";
+                }
                 boolean ФлагНовоеЗначение=        ЗначениеИзЯчейки.matches("(.*)[0-9](.*)");/////TODO   viewДанные.toString().matches("(.*)[^0-9](.*)");
 
                 // TODO: 12.04.2023 ТОкльЧисло ОБновдение

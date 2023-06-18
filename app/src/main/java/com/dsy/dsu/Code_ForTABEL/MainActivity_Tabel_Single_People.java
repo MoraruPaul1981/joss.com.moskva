@@ -2219,7 +2219,8 @@ try{
                 try {
                     Bundle dataRowData = null;
                         String День = Optional.ofNullable(cursor.getString(cursor.getColumnIndex(НазваниеДляДень))).orElse("0");
-                        if(День.length()==0){День="0";}
+                        if(День.length()==0)
+                        {День="0";}
                         CurrenrsСhildUUID= Optional.ofNullable(cursor.getLong(cursor.getColumnIndex("uuid"))).orElse(0l);
                         dataRowData = new Bundle();
                         dataRowData.putString("ЗначениеДня", День);
@@ -2577,7 +2578,7 @@ try{
             private void методЗаписьЯчейкиRxView(@NonNull View v,@NonNull String    ЗначениеДоЗаполениясОшибкой) {
                 try {
                     RxView.focusChanges(v)
-                            .throttleLast(2, TimeUnit.SECONDS)
+                            .throttleLast(3, TimeUnit.SECONDS)
                             .doOnError(new Consumer<Throwable>() {
                                 @Override
                                 public void accept(Throwable throwable) throws Throwable {

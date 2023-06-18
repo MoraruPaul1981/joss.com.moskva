@@ -37,6 +37,7 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID
 import com.dsy.dsu.Business_logic_Only_Class.Class_MODEL_synchronized;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Visible_Processing_Async;
 import com.dsy.dsu.Business_logic_Only_Class.Class__Generation_Genetal_Tables;
+import com.dsy.dsu.Business_logic_Only_Class.Jakson.GeneratorJSONDeserializer;
 import com.dsy.dsu.Business_logic_Only_Class.Jakson.GeneratorJSONSerializer;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
@@ -1283,13 +1284,16 @@ try{
                 Log.d(this.getClass().getName(), " имяТаблицаAsync " + имяТаблицаAsync + " БуферПолученныйJSON " +БуферПолученныйJSON.toString() );
                     //TODO БУфер JSON от Сервера
                 CopyOnWriteArrayList<ContentValues>   contentValuesCopyOnWriteArrayList=new CopyOnWriteArrayList<>();
-
                 ObjectMapper jsonGenerator = new PUBLIC_CONTENT(context).getGeneratorJackson();
+
+            /*    SimpleModule module = new SimpleModule();
+                module.addDeserializer(  CopyOnWriteArrayList .class , new GeneratorJSONDeserializer(context));
+                jsonGenerator.registerModule(module);*/
+
                 TypeReference< CopyOnWriteArrayList<Map<String,String>>> typeReference=   new TypeReference< CopyOnWriteArrayList<Map<String,String>>>() {};
                CopyOnWriteArrayList<Map<String,String>> jsonNodeParentMAP= jsonGenerator.readValue(БуферПолученныйJSON.toString(), typeReference);
                 // JsonNode jsonNodeParentMAP=   jsonGenerator.readTree(БуферПолученныйJSON.toString());
                //  JsonNode jsonNodeParentMAP = jsonGenerator.readValue(БуферПолученныйJSON.toString(), JsonNode.class);
-
                 Log.d(this.getClass().getName(),"\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
