@@ -201,13 +201,9 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
     private  Bundle bundleИзMainActitivy_List_Tables;
 
     private TextView TextViewФИОПрофессия;
-
   private    InputMethodManager imm;
 
   private  HorizontalScrollView horizontalScrollView_tabel_single;
-
-  private  ConstraintLayout constraintLayoutsingletabel;
-
   private    SubClassSingleTabelRecycreView subClassSingleTabelRecycreView;
 
     private   String ИмяСлужбыСинхронизациОдноразовая="WorkManager Synchronizasiy_Data Disposable";
@@ -264,14 +260,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             view2Линия=(View) findViewById(R.id.view2Линия);
             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
             TextViewФИОПрофессия = (TextView)  findViewById(R.id.TextViewФИОПрофессия);
-
-            constraintLayoutsingletabel= (ConstraintLayout)  findViewById(R.id.constraintLayoutsingletabel);
-
-        /*    horizontalScrollView_tabel_single= (HorizontalScrollView)  findViewById(R.id.horizontalScrollView_tabel_single);
-            horizontalScrollView_tabel_single.setLeftEdgeEffectColor(Color.parseColor("#00ACC1"));
-            horizontalScrollView_tabel_single.setRightEdgeEffectColor(Color.parseColor("#00ACC1"));
-            horizontalScrollView_tabel_single.setSmoothScrollingEnabled(true);
-            horizontalScrollView_tabel_single.pageScroll(View.FOCUS_UP);*/
 
 
             animationПрофессия400 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_rowsingletabel);
@@ -2892,8 +2880,8 @@ try{
                 recycler_view_single_tabel.requestLayout();
                 recycler_view_single_tabel.refreshDrawableState();
 
-                constraintLayoutsingletabel.requestLayout();
-                constraintLayoutsingletabel.refreshDrawableState();
+                textViewчасыsimgletabel.requestLayout();
+                textViewчасыsimgletabel.refreshDrawableState();
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

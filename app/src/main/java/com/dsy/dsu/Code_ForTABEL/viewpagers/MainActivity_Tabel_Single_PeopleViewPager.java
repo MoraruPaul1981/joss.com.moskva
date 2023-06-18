@@ -143,6 +143,9 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
             viewPager_single_tabel_viewpagers =  (ViewPager) findViewById(R.id.viewPager_single_tabel_viewpagers);
             // TODO: 29.03.2023  Метод обсуживаюшие
             методGETДанныеИзДругихАктивити();
+            //viewPager_single_tabel_viewpagers.setAdapter(new ViewAdapterModel());
+
+
 // TODO: 25.04.2023 тест код
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

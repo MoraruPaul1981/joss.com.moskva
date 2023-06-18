@@ -16,7 +16,7 @@
             android:id="@+id/viewPager_single_tabel_viewpagers"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="2dp"
+            android:layout_margin="10dp"
             android:background="#F0FFFF"
             >
         </androidx.viewpager.widget.ViewPager>
