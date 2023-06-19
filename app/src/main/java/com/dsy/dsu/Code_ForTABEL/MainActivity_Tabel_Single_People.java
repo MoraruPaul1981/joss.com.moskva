@@ -2408,7 +2408,7 @@ try{
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                               /*             editTextRowКликПоДАнными.addTextChangedListener(new TextWatcher() {
+                                            editTextRowКликПоДАнными.addTextChangedListener(new TextWatcher() {
 
                                                 public void afterTextChanged(Editable s) {
                                                     try {
@@ -2443,7 +2443,7 @@ try{
                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                                                 }
-                                            });*/
+                                            });
 
                                             editTextRowКликПоДАнными.setOnLongClickListener(new View.OnLongClickListener() {
                                                 @Override
@@ -2466,43 +2466,8 @@ try{
                                                     return true;
                                                 }
                                             });
-                            // TODO: 10.05.2023 Просток CLICK
-                  /*          editTextRowКликПоДАнными.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-                                @Override
-                                public void onLayoutChange(View v, int left, int top, int right,
-                                                           int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                                    try {
-                                        ЗначениеДоЗаполениясОшибкой[0] = ((EditText) v).getText().toString();
-                                        if(v.hasFocus()) {
-                                            message.getTarget().postDelayed(() -> {
-                                                // TODO: 10.05.2023  ГЛАВНЫЙ МЕТОД ЗАПИСИ ДАННЫХ update
-                                                методЗаписьЯчейкиRxView(editTextRowКликПоДАнными, ЗначениеДоЗаполениясОшибкой[0]);
-                                                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                                                        "  ЗначениеДоЗаполениясОшибкой[0] " + ЗначениеДоЗаполениясОшибкой[0]);
 
-                                            }, 5000);
                                         }
-
-                                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                                "  ЗначениеДоЗаполениясОшибкой[0] " + ЗначениеДоЗаполениясОшибкой[0]);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                        Log.e(getApplicationContext().getClass().getName(),
-                                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                    }
-
-                                }
-                            });*/
-                                        }
-
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -2517,63 +2482,101 @@ try{
                 }
             }
             // TODO: 21.04.2023  записб данных в ячейку
+            // TODO: 21.04.2023  записб данных в ячейку
             private void методЗаписьЯчейкиRxView(@NonNull View v,@NonNull String    ЗначениеДоЗаполениясОшибкой) {
                 try {
-                    Bundle bundleДанныеTag=        (Bundle)      v.getTag();
-                    String ЗначениеДняTag=       bundleДанныеTag.getString("ЗначениеДня").trim();
-                    String EditTextДАнные=       ((EditText) v).getText().toString().trim();
-                    // TODO: 06.04.2023 Принимаем Решение Если ДАные РАзные ЗАпускаем Обновление
-                    if (      !EditTextДАнные.equalsIgnoreCase(ЗначениеДняTag)) {
-                        // TODO: 11.04.2023 Оперция Обновлнения ЯЧЕЕК
-                        SubClassUpdatesCELL subClassUpdateSingletabel=new SubClassUpdatesCELL(getApplicationContext());
-                            // TODO: 10.05.2023  ЗАВПИСЫАЕМ НОВЫЕ ДАННЫВЕ В БАЗУ
-                            Integer   РезультатОбновлениеЯчейки =   subClassUpdateSingletabel.МетодВалидацияЯчеек(v);
-                            // TODO: 10.05.2023
-                            if (РезультатОбновлениеЯчейки>0) {
-                                // TODO: 24.04.2023  после обновление ячейки Считаем Часы
-                                message.getTarget().post(()->{
-                                    ((EditText) v).startAnimation(animationVibr2);
-                                    методЗакрываемКлавитатуру(v);
-                                    методИзменяемЦветСодержимоваЦифраИлиБуква(((EditText) v),EditTextДАнные);
-                                    // subClassSingleTabelRecycreView.      методAlterSaveCellRecyreView(v);
-                                    // subClassSingleTabelRecycreView.       методЗакрываемКлавитатуру(v);
-                                    // TODO: 17.06.2023 подсчет часов
-                                    subClassSingleTabelRecycreView.   методПослеОбновлениеЯчейкиСчитаемЧасы();
-                                    // TODO: 16.06.2023  после переполуение данныз перегрузка экрана
-                                    //subClassSingleTabelRecycreView.       методЗакрываемКлавитатуру(v);
-                                    // TODO: 20.04.2023 Данные
-                                    // subClassSingleTabelRecycreView.     методПерегрузкиRecycreView();
-                                });
-                                Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v"+ v +
-                                        " РезультатОбновлениеЯчейки " +РезультатОбновлениеЯчейки );
-                            }else {
-                                ((EditText) v).setBackgroundColor(Color.RED);
-                                message.getTarget().postDelayed(() -> {
-                                    ((EditText) v).setBackgroundColor(Color.WHITE);
-                                    ((EditText) v).setText(   ЗначениеДоЗаполениясОшибкой);
-                                    // TODO: 17.06.2023 КОГДА ОШИБКА ПРМ ЗАПОДЛЕН ЗНАЧЕНИМЕМ НЕ ПОРАВИЛЬНМ
+                    RxView.focusChanges(v)
+                            .throttleLast(5, TimeUnit.SECONDS)
+                            .doOnError(new Consumer<Throwable>() {
+                                @Override
+                                public void accept(Throwable throwable) throws Throwable {
+                                    throwable.printStackTrace();
+                                    Log.e(getApplicationContext().getClass().getName(),
+                                            "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(throwable.toString(),
+                                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                }
+                            })
+                            .doOnNext(new Consumer<Boolean>() {
+                                @Override
+                                public void accept(Boolean aBoolean) throws Throwable {
+                                    // TODO: 19.06.2023
+                                    message.getTarget().post(()-> {
+                                                Bundle bundleДанныеTag = (Bundle) v.getTag();
+                                                String ЗначениеДняTag = bundleДанныеTag.getString("ЗначениеДня").trim();
+                                                String EditTextДАнные = ((EditText) v).getText().toString().trim();
+                                                // TODO: 06.04.2023 Принимаем Решение Если ДАные РАзные ЗАпускаем Обновление
+                                                if (!EditTextДАнные.equalsIgnoreCase(ЗначениеДняTag) && v.hasFocus()) {
+                                                    // TODO: 11.04.2023 Оперция Обновлнения ЯЧЕЕК
+                                                    SubClassUpdatesCELL subClassUpdateSingletabel = new SubClassUpdatesCELL(getApplicationContext());
+                                                    // TODO: 10.05.2023  ЗАВПИСЫАЕМ НОВЫЕ ДАННЫВЕ В БАЗУ
+                                                    Integer РезультатОбновлениеЯчейки = subClassUpdateSingletabel.МетодВалидацияЯчеек(v);
+
+
+                                                    // TODO: 10.05.2023 После операции Сохранение в Ячкейке
+
+                                                    if (РезультатОбновлениеЯчейки > 0) {
+                                                        // TODO: 24.04.2023  после обновление ячейки Считаем Часы
+                                                        ((EditText) v).startAnimation(animationVibr2);
+
+                                                        методЗакрываемКлавитатуру(v);
+                                                        методИзменяемЦветСодержимоваЦифраИлиБуква(((EditText) v), EditTextДАнные);
+                                                        // TODO: 17.06.2023 подсчет часов
+                                                        subClassSingleTabelRecycreView.методПослеОбновлениеЯчейкиСчитаемЧасы();
+                                                        // TODO: 16.06.2023  после переполуение данныз перегрузка экрана
+                                                        recycler_view_single_tabel.scrollTo(0, v.getTop());
+                                                        recycler_view_single_tabel.clearFocus();
+                                                        //subClassSingleTabelRecycreView.       методЗакрываемКлавитатуру(v);
+                                                        // TODO: 20.04.2023 Данные
+                                                        // subClassSingleTabelRecycreView.     методПерегрузкиRecycreView();
+                                                        // subClassSingleTabelRecycreView.      методAlterSaveCellRecyreView(v);
+                                                        // subClassSingleTabelRecycreView.       методЗакрываемКлавитатуру(v);
+
+                                                        Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v" + v +
+                                                                " РезультатОбновлениеЯчейки " + РезультатОбновлениеЯчейки);
+
+
+                                                        // TODO: 19.06.2023 код когда данные в ячейке не сохранились
+                                                    } else {
+                                                        методКогдаДанныеНеСохранились(v, ЗначениеДоЗаполениясОшибкой);
+                                                    }
+
+                                                    Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v" + v +
+                                                            " bundleДанныеTag " + bundleДанныеTag + " EditTextДАнные " + EditTextДАнные + "ЗначениеДняTag " + ЗначениеДняTag);
+                                                }
+
+                                            });
                                     Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v"+ v +
-                                            " ЗначениеДоЗаполениясОшибкой " +ЗначениеДоЗаполениясОшибкой);
-
-                                }, 500);
-                            }
-
-
-
-                        Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v"+ v +
-                                " bundleДанныеTag " +bundleДанныеTag + " EditTextДАнные " +EditTextДАнные+  "ЗначениеДняTag " +ЗначениеДняTag);
-                    } else {
-                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v"+ v +
-                                " bundleДанныеTag " +bundleДанныеTag + " EditTextДАнные " +EditTextДАнные);
-                    }
+                                            " aBoolean " +aBoolean );
+                                }
+                            })
+                            .onErrorComplete(new Predicate<Throwable>() {
+                                @Override
+                                public boolean test(Throwable throwable) throws Throwable {
+                                    Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                    new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(throwable.toString(), this.getClass().getName(),
+                                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                    return false;
+                                }
+                            })
+                            .doOnComplete(new Action() {
+                                @Override
+                                public void run() throws Throwable {
+                                    Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v"+ v);
+                                }
+                            })
+                            .subscribe(e->System.out.println( "RxView--> "+e.toString()));
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -2581,6 +2584,28 @@ try{
                     new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                             Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
+            }
+
+            private void методКогдаДанныеНеСохранились(@NonNull View v, @NonNull String ЗначениеДоЗаполениясОшибкой) {
+                try{
+                ((EditText) v).setBackgroundColor(Color.RED);
+                message.getTarget().postDelayed(() -> {
+                    ((EditText) v).setBackgroundColor(Color.WHITE);
+                    ((EditText) v).setText(ЗначениеДоЗаполениясОшибкой);
+                    // TODO: 17.06.2023 КОГДА ОШИБКА ПРМ ЗАПОДЛЕН ЗНАЧЕНИМЕМ НЕ ПОРАВИЛЬНМ
+                    Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v"+ v +
+                            " ЗначениеДоЗаполениясОшибкой " + ЗначениеДоЗаполениясОшибкой);
+
+                }, 500);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
             }
 
 
