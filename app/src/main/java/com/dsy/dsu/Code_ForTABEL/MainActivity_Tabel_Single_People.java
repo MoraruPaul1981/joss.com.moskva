@@ -1314,19 +1314,18 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             try{
                 DividerItemDecoration dividerItemDecorationHor=
                         new DividerItemDecoration(activity,GridLayoutManager.VERTICAL);
-                /*DividerItemDecoration dividerItemDecorationVer=
-                        new DividerItemDecoration(activity,GridLayoutManager.VERTICAL);
-                dividerItemDecorationHor.setDrawable(getDrawable(R.drawable.divider_for_single_tabel));///R.dimen.activity_horizontal_margin*/
-
                 GridLayoutManager layoutManager = new GridLayoutManager(activity, 4);
-
-
-           /*    layoutManager.setOrientation(GridLayoutManager.VERTICAL);*/
                recycler_view_single_tabel.addItemDecoration(dividerItemDecorationHor);
-               //recycler_view_single_tabel.addItemDecoration(dividerItemDecorationVer);
                 recycler_view_single_tabel.setLayoutManager(layoutManager);
                recycler_view_single_tabel.setHasFixedSize(true);
                recycler_view_single_tabel.setAnimation(animationVibr1);
+           //    recycler_view_single_tabel.setItemAnimator();
+                //recycler_view_single_tabel.addItemDecoration(dividerItemDecorationVer);
+                /*    layoutManager.setOrientation(GridLayoutManager.VERTICAL);*/
+
+                 /*DividerItemDecoration dividerItemDecorationVer=
+                        new DividerItemDecoration(activity,GridLayoutManager.VERTICAL);
+                dividerItemDecorationHor.setDrawable(getDrawable(R.drawable.divider_for_single_tabel));///R.dimen.activity_horizontal_margin*/
                 // TODO: 12.05.2023 Клаиатура
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1341,30 +1340,10 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
-
-        void методИницаллизацииКлавиаотурыRecycleView(){
-try{
-            imm = (InputMethodManager) recycler_view_single_tabel.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-              imm.showSoftInput(recycler_view_single_tabel, InputMethodManager.SHOW_IMPLICIT);
-
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+  "cursor " +cursor);
-        } catch (Exception e) {
-           e.printStackTrace();
-           Log.e(getApplicationContext().getClass().getName(),
-                   "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                           " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-           new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                   this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                   Thread.currentThread().getStackTrace()[2].getLineNumber());
-       }
-   }
        void методИницаллизацииКлавиаотурыЯчейка(@NonNull EditText  editText){
            try{
-               imm = (InputMethodManager) editText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-               imm.showSoftInput( editText, InputMethodManager.SHOW_IMPLICIT);
-
+                   imm = (InputMethodManager) editText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                   imm.showSoftInput( editText, InputMethodManager.SHOW_IMPLICIT);
                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+  "cursor " +cursor);
@@ -1400,7 +1379,7 @@ try{
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         try{
                             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
-                            subClassSingleTabelRecycreView.       методЗакрываемКлавитатуру(recycler_view_single_tabel);
+                            subClassSingleTabelRecycreView. методЗакрываемКлавитатуру();
                             // TODO: 17.06.2023 сама свайп
                             SubClassReBornDataRecyreView subClassReBornDataRecyreView=new SubClassReBornDataRecyreView();
                             subClassReBornDataRecyreView.методПереРоденияRevireViewScroll();
@@ -1519,7 +1498,7 @@ try{
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         try{
                             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
-                            subClassSingleTabelRecycreView.       методЗакрываемКлавитатуру(recycler_view_single_tabel);
+                            subClassSingleTabelRecycreView. методЗакрываемКлавитатуру();
                             // TODO: 17.06.2023 сама свайп
                             SubClassReBornDataRecyreView subClassReBornDataRecyreView=new SubClassReBornDataRecyreView();
                             subClassReBornDataRecyreView.методПереРоденияRevireViewScroll();
@@ -1751,6 +1730,7 @@ try{
             try {
                 // remove item from adapter
                 myRecycleViewAdapter = new  MyRecycleViewAdapter(cursor );
+                myRecycleViewAdapter.notifyDataSetChanged();
                 recycler_view_single_tabel.setAdapter(myRecycleViewAdapter);
                 // TODO: 16.06.2023  перегрузка экрана
                 методПерегрузкиRecycreView();
@@ -2526,6 +2506,7 @@ try{
                                                         // TODO: 17.06.2023 подсчет часов
                                                         subClassSingleTabelRecycreView.методПослеОбновлениеЯчейкиСчитаемЧасы();
                                                         // TODO: 16.06.2023  после переполуение данныз перегрузка экрана
+                                                        // TODO: 16.06.2023  после переполуение данныз перегрузка экрана
                                                         recycler_view_single_tabel.scrollTo(0, v.getTop());
                                                         recycler_view_single_tabel.clearFocus();
                                                         //subClassSingleTabelRecycreView.       методЗакрываемКлавитатуру(v);
@@ -2677,6 +2658,26 @@ try{
        }
        }
 
+
+       private void методЗакрываемКлавитатуру( ) {
+           try{
+               getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+               imm.hideSoftInputFromWindow(recycler_view_single_tabel.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+               recycler_view_single_tabel.clearFocus();
+               Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                       " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                       " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
+           } catch (Exception e) {
+               e.printStackTrace();
+               Log.e(getApplicationContext().getClass().getName(),
+                       "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                               " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+               new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                       this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                       Thread.currentThread().getStackTrace()[2].getLineNumber());
+           }
+       }
+
        // TODO: 03.04.2023 перенесеный RecycreView
         private void МетодСлушательКурсора( @NonNull Cursor cursor) {
             // TODO: 15.10.2022  слушатиель для курсора
@@ -2792,14 +2793,12 @@ try{
             try{
                 recycler_view_single_tabel.smoothScrollToPosition(0);
                 ProgressBarSingleTabel.setVisibility(View.INVISIBLE);
-                recycler_view_single_tabel.setClickable(true);
-                recycler_view_single_tabel.setFocusable(true);
                 recycler_view_single_tabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
+
+                textViewчасыsimgletabel.refreshDrawableState();
+
                 recycler_view_single_tabel.requestLayout();
                 recycler_view_single_tabel.refreshDrawableState();
-
-                textViewчасыsimgletabel.requestLayout();
-                textViewчасыsimgletabel.refreshDrawableState();
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -3166,9 +3165,6 @@ class SubClassChanegeSetNameProffesio{
             try{
             // TODO: 15.06.2023 Scroll Left RecyreView
             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
-            recycler_view_single_tabel.setClickable(false);
-            recycler_view_single_tabel.setFocusable(false);
-            subClassSingleTabelRecycreView.    методЗакрываемКлавитатуру(recycler_view_single_tabel);
             recycler_view_single_tabel.clearFocus();
 // TODO: 16.06.2023  ПРОИЗВОДИМ САМ СВАЙП
             message.getTarget().post(()->{
