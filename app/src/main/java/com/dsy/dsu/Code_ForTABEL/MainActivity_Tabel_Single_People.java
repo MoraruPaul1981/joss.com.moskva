@@ -31,6 +31,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -1982,8 +1983,6 @@ try{
                     // TODO: 04.04.2023  Запускаем ПОлучений Вид View
                     myViewHolder = new  MyViewHolder(viewSingleTabel);
                     // TODO: 18.06.2023
-                    // TODO: 16.06.2023  перегрузка экрана
-                    методПерегрузкиRecycreView();
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+  "myViewHolder " +myViewHolder+
@@ -2262,12 +2261,14 @@ try{
 
             private void методИзменяемЦветСодержимоваЦифраИлиБуква(@NonNull EditText editTextRowКликПоДАнными,@NonNull String День) {
                 try {
-                char ЕслиБуквывДнеСодержимое=     День.charAt(0);
-                if(Character.isLetter( ЕслиБуквывДнеСодержимое )){
-                    editTextRowКликПоДАнными.setTextColor(Color.GRAY);
-                }else {
-                    editTextRowКликПоДАнными.setTextColor(Color.BLACK);
-                }
+                    if (День.length()>0) {
+                        char ЕслиБуквывДнеСодержимое=     День.charAt(0);
+                        if(Character.isLetter( ЕслиБуквывДнеСодержимое )){
+                            editTextRowКликПоДАнными.setTextColor(Color.GRAY);
+                        }else {
+                            editTextRowКликПоДАнными.setTextColor(Color.BLACK);
+                        }
+                    }
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2466,20 +2467,23 @@ try{
                                                 }
                                             });
                             // TODO: 10.05.2023 Просток CLICK
-                            editTextRowКликПоДАнными.setOnClickListener(new View.OnClickListener() {
+                  /*          editTextRowКликПоДАнными.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
                                 @Override
-                                public void onClick(View v) {
+                                public void onLayoutChange(View v, int left, int top, int right,
+                                                           int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
                                     try {
                                         ЗначениеДоЗаполениясОшибкой[0] = ((EditText) v).getText().toString();
-                                            message.getTarget().postDelayed(()->{
+                                        if(v.hasFocus()) {
+                                            message.getTarget().postDelayed(() -> {
                                                 // TODO: 10.05.2023  ГЛАВНЫЙ МЕТОД ЗАПИСИ ДАННЫХ update
-                                                методЗаписьЯчейкиRxView(editTextRowКликПоДАнными,   ЗначениеДоЗаполениясОшибкой[0]);
+                                                методЗаписьЯчейкиRxView(editTextRowКликПоДАнными, ЗначениеДоЗаполениясОшибкой[0]);
                                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
                                                         "  ЗначениеДоЗаполениясОшибкой[0] " + ЗначениеДоЗаполениясОшибкой[0]);
 
-                                            },5000);
+                                            }, 5000);
+                                        }
 
                                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2494,8 +2498,9 @@ try{
                                                 this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                                                 Thread.currentThread().getStackTrace()[2].getLineNumber());
                                     }
+
                                 }
-                            });
+                            });*/
                                         }
 
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -2529,11 +2534,6 @@ try{
                                 message.getTarget().post(()->{
                                     ((EditText) v).startAnimation(animationVibr2);
                                     методЗакрываемКлавитатуру(v);
-                                });
-
-                                message.getTarget().postDelayed(()->{
-                                    // TODO: 16.06.2023 После Сохранение CELL
-
                                     методИзменяемЦветСодержимоваЦифраИлиБуква(((EditText) v),EditTextДАнные);
                                     // subClassSingleTabelRecycreView.      методAlterSaveCellRecyreView(v);
                                     // subClassSingleTabelRecycreView.       методЗакрываемКлавитатуру(v);
@@ -2542,9 +2542,8 @@ try{
                                     // TODO: 16.06.2023  после переполуение данныз перегрузка экрана
                                     //subClassSingleTabelRecycreView.       методЗакрываемКлавитатуру(v);
                                     // TODO: 20.04.2023 Данные
-
                                     // subClassSingleTabelRecycreView.     методПерегрузкиRecycreView();
-                                },300);
+                                });
                                 Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v"+ v +
@@ -2739,7 +2738,7 @@ try{
                                             // TODO: 17.06.2023  если прошло время нужное  
                                             long РазницаВоврмени=end-startДляОбноразвовной;
                                             if (РазницаВоврмени>20000) {
-                                                методПерегрузкиRecycreView();
+                                               /// методПерегрузкиRecycreView();
                                             }
                                         }
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
