@@ -2474,7 +2474,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
             private void методЗаписьЯчейкиRxView(@NonNull View v,@NonNull String    ЗначениеДоЗаполениясОшибкой) {
                 try {
                     RxView.focusChanges(v)
-                            .throttleLast(5, TimeUnit.SECONDS)
+                            .throttleLast(2, TimeUnit.SECONDS)
                             .doOnError(new Consumer<Throwable>() {
                                 @Override
                                 public void accept(Throwable throwable) throws Throwable {
@@ -2501,16 +2501,9 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                                     SubClassUpdatesCELL subClassUpdateSingletabel = new SubClassUpdatesCELL(getApplicationContext());
                                                     // TODO: 10.05.2023  ЗАВПИСЫАЕМ НОВЫЕ ДАННЫВЕ В БАЗУ
                                                     Integer РезультатОбновлениеЯчейки = subClassUpdateSingletabel.МетодВалидацияЯчеек(v);
-
-
                                                     // TODO: 10.05.2023 После операции Сохранение в Ячкейке
-
                                                     if (РезультатОбновлениеЯчейки > 0) {
-
-                                                        ((EditText) v).startAnimation(animationVibr2);
                                                         // TODO: 24.04.2023  после обновление ячейки Считаем Часы
-                                                        message.getTarget().postDelayed(()->{
-
                                                         методЗакрываемКлавитатуру(v);
                                                         методИзменяемЦветСодержимоваЦифраИлиБуква(((EditText) v), EditTextДАнные);
                                                         // TODO: 17.06.2023 подсчет часов
@@ -2524,13 +2517,8 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                                         // subClassSingleTabelRecycreView.     методПерегрузкиRecycreView();
                                                         // subClassSingleTabelRecycreView.      методAlterSaveCellRecyreView(v);
                                                         // subClassSingleTabelRecycreView.       методЗакрываемКлавитатуру(v);
-
-                                                        Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v" + v +
-                                                                " РезультатОбновлениеЯчейки " + РезультатОбновлениеЯчейки);
-
-
+                                                        message.getTarget().postDelayed(()->{
+                                                            ((EditText) v).startAnimation(animationVibr2);
                                                         },1000);
                                                         // TODO: 19.06.2023 код когда данные в ячейке не сохранились
                                                     } else {
