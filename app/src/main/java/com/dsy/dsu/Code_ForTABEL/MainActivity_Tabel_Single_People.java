@@ -1378,8 +1378,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     @Override
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         try{
-                            ProgressBarSingleTabel.setVisibility(View.VISIBLE);
-                            subClassSingleTabelRecycreView. методЗакрываемКлавитатуру();
                             // TODO: 17.06.2023 сама свайп
                             SubClassReBornDataRecyreView subClassReBornDataRecyreView=new SubClassReBornDataRecyreView();
                             subClassReBornDataRecyreView.методПереРоденияRevireViewScroll();
@@ -1497,8 +1495,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     @Override
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         try{
-                            ProgressBarSingleTabel.setVisibility(View.VISIBLE);
-                            subClassSingleTabelRecycreView. методЗакрываемКлавитатуру();
                             // TODO: 17.06.2023 сама свайп
                             SubClassReBornDataRecyreView subClassReBornDataRecyreView=new SubClassReBornDataRecyreView();
                             subClassReBornDataRecyreView.методПереРоденияRevireViewScroll();
@@ -2791,6 +2787,8 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
 
        private void методПерегрузкиRecycreView() {
             try{
+                recycler_view_single_tabel.setFocusable(true);
+                recycler_view_single_tabel.setClickable(true);
                 recycler_view_single_tabel.smoothScrollToPosition(0);
                 ProgressBarSingleTabel.setVisibility(View.INVISIBLE);
                 recycler_view_single_tabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
@@ -3164,8 +3162,10 @@ class SubClassChanegeSetNameProffesio{
         void методПереРоденияRevireViewScroll () {
             try{
             // TODO: 15.06.2023 Scroll Left RecyreView
-            ProgressBarSingleTabel.setVisibility(View.VISIBLE);
-            recycler_view_single_tabel.clearFocus();
+                ProgressBarSingleTabel.setVisibility(View.VISIBLE);
+                subClassSingleTabelRecycreView. методЗакрываемКлавитатуру();
+                recycler_view_single_tabel.setFocusable(false);
+                recycler_view_single_tabel.setClickable(false);
 // TODO: 16.06.2023  ПРОИЗВОДИМ САМ СВАЙП
             message.getTarget().post(()->{
                 // TODO: 16.06.2023
