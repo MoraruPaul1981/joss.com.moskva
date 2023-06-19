@@ -1821,8 +1821,9 @@ class SubClassGetDateOrderGroupBy {
                              Integer РезультатаУдалениеRow=     localBinderOrderTransport.методВиндингУдалениеЗаказа(UUIDДляУдалениеRow);
                              if (РезультатаУдалениеRow>0) {
                                  v.startAnimation(animationvibr1);
+                                 tableRowДочерная.setVisibility(View.GONE);
                                  message.getTarget().postDelayed(()->{
-                                     tableRowДочерная.setVisibility(View.GONE);
+                                     методGetCursorReboot();
                                  },1000);
                              }
                              Log.d(getContext().getClass().getName(), "\n"

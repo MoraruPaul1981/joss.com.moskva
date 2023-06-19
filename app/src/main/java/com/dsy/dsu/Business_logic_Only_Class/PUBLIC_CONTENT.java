@@ -117,7 +117,7 @@ public Gson gson = new GsonBuilder()
 
     public LinkedHashMap<Integer,String> getМассивПортовСервера() {
 
-     /*   МассивПортовСервера.putIfAbsent(8080,"192.168.254.40");// TODO: 10.11.2022 Debug
+   /*     МассивПортовСервера.putIfAbsent(8080,"192.168.254.40");// TODO: 10.11.2022 Debug
         МассивПортовСервера.putIfAbsent(8084,"192.168.254.40");// TODO: 10.11.2022 Debug
         МассивПортовСервера.putIfAbsent(8085,"192.168.254.40");// TODO: 10.11.2022 Debug*/
         // TODO: 18.03.2023 московский сервер

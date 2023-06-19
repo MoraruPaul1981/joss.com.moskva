@@ -142,7 +142,7 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
             ((Activity) getApplicationContext()) .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
             viewPager_single_tabel_viewpagers =  (ViewPager) findViewById(R.id.viewPager_single_tabel_viewpagers);
             // TODO: 29.03.2023  Метод обсуживаюшие
-            методGETДанныеИзДругихАктивити();
+          new SubClassBissnessLogicTableSingleWithViewPager().  методGETДанныеИзДругихАктивити();
             //viewPager_single_tabel_viewpagers.setAdapter(new ViewAdapterModel());
 
 
@@ -158,47 +158,6 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
-
-
-
-
-    private void методGETДанныеИзДругихАктивити() {
-        try {
-            Intent intent =  getIntent();
-           Bundle   bundle_single_tabel_viewpagers=intent.getExtras();
-            // TODO: 10.04.2023
-            if (bundle_single_tabel_viewpagers!=null) {
-            Long    MainParentUUID=    bundle_single_tabel_viewpagers.getLong("MainParentUUID", 0l);
-             Integer   PositionCustomer=    bundle_single_tabel_viewpagers.getInt("Position", 0);
-                Integer    ГодТабелей=  bundle_single_tabel_viewpagers.getInt("ГодТабелей", 0);
-                Integer    МЕсяцТабелей=  bundle_single_tabel_viewpagers.getInt("МЕсяцТабелей",0);
-                Integer     DigitalNameCFO=   bundle_single_tabel_viewpagers.getInt("DigitalNameCFO", 0);
-               String      FullNameCFO=  bundle_single_tabel_viewpagers.getString("FullNameCFO", "").trim();
-                String    ИмесяцвИГодСразу= bundle_single_tabel_viewpagers.getString("ИмесяцвИГодСразу", "").trim();
-                Long       CurrenrsСhildUUID= bundle_single_tabel_viewpagers.getLong("CurrenrsСhildUUID", 0l);
-                String     ФИО= bundle_single_tabel_viewpagers.getString("ФИО", "").trim();
-                Long  CurrenrsSelectFio= bundle_single_tabel_viewpagers.getLong("CurrenrsSelectFio", 0l);
-
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " FullNameCFO "+FullNameCFO+ " CurrenrsСhildUUID " +CurrenrsСhildUUID
-                        + " ГодТабелей " +ГодТабелей +" МЕсяцТабелей " +МЕсяцТабелей   + " DigitalNameCFO "+DigitalNameCFO+
-                        " PositionCustomer " +PositionCustomer+ " ИмесяцвИГодСразу " +ИмесяцвИГодСразу);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
-
-
-
-
 
 
     @Override
@@ -221,6 +180,60 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
+
+
+
+
+
+
+    // TODO: 19.06.2023  Бизнес Класс Новой Активтив ТАбель Single Через ViewPager
+    class  SubClassBissnessLogicTableSingleWithViewPager {
+        public SubClassBissnessLogicTableSingleWithViewPager() {
+        }
+        private void методGETДанныеИзДругихАктивити() {
+            try {
+                Intent intent =  getIntent();
+                Bundle   bundle_single_tabel_viewpagers=intent.getExtras();
+                // TODO: 10.04.2023
+                if (bundle_single_tabel_viewpagers!=null) {
+                    Long    MainParentUUID=    bundle_single_tabel_viewpagers.getLong("MainParentUUID", 0l);
+                    Integer   PositionCustomer=    bundle_single_tabel_viewpagers.getInt("Position", 0);
+                    Integer    ГодТабелей=  bundle_single_tabel_viewpagers.getInt("ГодТабелей", 0);
+                    Integer    МЕсяцТабелей=  bundle_single_tabel_viewpagers.getInt("МЕсяцТабелей",0);
+                    Integer     DigitalNameCFO=   bundle_single_tabel_viewpagers.getInt("DigitalNameCFO", 0);
+                    String      FullNameCFO=  bundle_single_tabel_viewpagers.getString("FullNameCFO", "").trim();
+                    String    ИмесяцвИГодСразу= bundle_single_tabel_viewpagers.getString("ИмесяцвИГодСразу", "").trim();
+                    Long       CurrenrsСhildUUID= bundle_single_tabel_viewpagers.getLong("CurrenrsСhildUUID", 0l);
+                    String     ФИО= bundle_single_tabel_viewpagers.getString("ФИО", "").trim();
+                    Long  CurrenrsSelectFio= bundle_single_tabel_viewpagers.getLong("CurrenrsSelectFio", 0l);
+
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                            + " FullNameCFO "+FullNameCFO+ " CurrenrsСhildUUID " +CurrenrsСhildUUID
+                            + " ГодТабелей " +ГодТабелей +" МЕсяцТабелей " +МЕсяцТабелей   + " DigitalNameCFO "+DigitalNameCFO+
+                            " PositionCustomer " +PositionCustomer+ " ИмесяцвИГодСразу " +ИмесяцвИГодСразу);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+
+
+
+    }
+
+
+
+
+
+
+
 
 
 
