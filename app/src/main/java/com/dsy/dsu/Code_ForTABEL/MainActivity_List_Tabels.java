@@ -433,7 +433,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
                         // TODO: 09.04.2023  Главный Треитий Последние Получение Данных Для Конктерного Месяца И Года
                       Cursor    Курсор_Main_ListTabelsFinal=    методИниЦиализацииSimpleCursor(МЕсяцТабелей,ГодТабелей);
-                            if (Курсор_Main_ListTabelsFinal.getCount()>0) {
+                            if (Курсор_Main_ListTabelsFinal.getCount()>0 && Курсор_Main_ListTabelsFinal!=null) {
                                 методзаполненияSimplrCursor(Курсор_Main_ListTabelsFinal);
                                 // TODO: 19.04.2023  внешний вид
                                 gridViewAllTabes.smoothScrollByOffset(position);
@@ -626,6 +626,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
     private void методзаполненияSimplrCursor(Cursor Курсор_Main_ListTabels) {
         try {
+            SubClassCursorLoader subClassCursorLoader1ПОсикНазваниеЦФО=      new SubClassCursorLoader();
             SimpleCursorAdapter simpleCursorAdapterAllTAbels =
                     new SimpleCursorAdapter(getApplicationContext(), R.layout.list_item_all_customer_tabel3,
                     Курсор_Main_ListTabels, new String[]{"_id","cfo"}, new int[]{android.R.id.text1,android.R.id.text2},
@@ -645,15 +646,18 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                                 bundleНазваниеЦФО.putStringArray("УсловияВыборки" ,new String[]{  String.valueOf(DigitalNameCFO)});
                                 bundleНазваниеЦФО.putString("Таблица","cfo");
                                 // TODO: 07.06.2023 вытаскиваем названеи ЦФО
-                                try ( Cursor КурсорПОискНазваниеЦФО = (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleНазваниеЦФО);){
+                                   Cursor КурсорПОискНазваниеЦФО = (Cursor)    subClassCursorLoader1ПОсикНазваниеЦФО. CursorLoaders(context, bundleНазваниеЦФО);
+                                if (КурсорПОискНазваниеЦФО.getCount()>0) {
                                     FullNameCFO=КурсорПОискНазваниеЦФО.getString(КурсорПОискНазваниеЦФО.getColumnIndex("name")).trim();
-                                } catch (SQLException e) {
-                                    e.printStackTrace();
-                                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                }else {
+                                    FullNameCFO="Нет сцо !!!";
                                 }
+                                // TODO: 19.06.2023 close
+                                КурсорПОискНазваниеЦФО.close();
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                        " ID " +ID+ " FullNameCFO "+FullNameCFO);
                                 МЕсяцТабелей = cursor.getInt(cursor.getColumnIndex("month_tabels"));
                                 ГодТабелей= cursor.getInt(cursor.getColumnIndex("year_tabels"));
                                 // TODO: 15.12.2022  Давные Bundle
