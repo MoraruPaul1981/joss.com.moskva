@@ -17,6 +17,8 @@
             android:layout_height="wrap_content"
             android:minHeight="250dp"
             android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:padding="2dp"
             android:background="#F0FFFF"
             android:textSize="50sp" />
         <!-- TODO: Update blank fragment layout -->
@@ -25,6 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:layout_margin="5dp"
+            android:padding="2dp"
             android:background="#F0DFFF"
             android:textSize="50sp" />
 

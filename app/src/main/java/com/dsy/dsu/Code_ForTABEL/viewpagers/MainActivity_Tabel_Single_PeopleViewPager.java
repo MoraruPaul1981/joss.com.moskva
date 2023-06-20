@@ -70,6 +70,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
@@ -247,7 +248,7 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
         ViewAdapterModel viewAdapterДанные=new ViewAdapterModel(getSupportFragmentManager());
                 CopyOnWriteArrayList<Fragment> fragments=new CopyOnWriteArrayList<>();
 
-                IntStream.iterate(1, i -> i + 1).parallel().limit(500).forEachOrdered(new IntConsumer() {
+                IntStream.iterate(1, i -> i + 1).parallel().limit(5000).forEachOrdered(new IntConsumer() {
                     @Override
                     public void accept(int value) {
                         FragmentSingleTabel fragmentSingleTabel=FragmentSingleTabel.newInstance(value,"первый фрагмент ####"+value);
@@ -260,6 +261,29 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
                 viewAdapterДанные.setFragments(fragments);
                 // TODO: 20.06.2023  Заполеяем Адампетре
          viewPager.setAdapter(viewAdapterДанные);
+         viewPager.getAdapter().notifyDataSetChanged();
+                viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    }
+
+                    @Override
+                    public void onPageSelected(int position) {
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int state) {
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    }
+                });
 
 
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
