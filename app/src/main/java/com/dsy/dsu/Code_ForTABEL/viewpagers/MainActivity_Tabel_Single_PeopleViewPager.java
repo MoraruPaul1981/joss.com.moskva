@@ -109,6 +109,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
@@ -245,10 +246,17 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
             try {
         ViewAdapterModel viewAdapterДанные=new ViewAdapterModel(getSupportFragmentManager());
                 CopyOnWriteArrayList<Fragment> fragments=new CopyOnWriteArrayList<>();
-        FragmentSingleTabel fragmentSingleTabel=FragmentSingleTabel.newInstance(1,"первый фрагмент ####");
-        FragmentSingleTabel fragmentSingleTabel2=FragmentSingleTabel.newInstance(2,"первый фрагмент $$$$");
-                fragments.add(fragmentSingleTabel);
-                fragments.add(fragmentSingleTabel2);
+
+                IntStream.iterate(1, i -> i + 1).parallel().limit(500).forEachOrdered(new IntConsumer() {
+                    @Override
+                    public void accept(int value) {
+                        FragmentSingleTabel fragmentSingleTabel=FragmentSingleTabel.newInstance(value,"первый фрагмент ####"+value);
+
+                        fragments.add(fragmentSingleTabel);
+                    }
+                });
+
+
                 viewAdapterДанные.setFragments(fragments);
                 // TODO: 20.06.2023  Заполеяем Адампетре
          viewPager.setAdapter(viewAdapterДанные);
