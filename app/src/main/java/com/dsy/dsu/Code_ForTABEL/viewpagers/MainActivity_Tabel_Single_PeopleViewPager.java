@@ -255,24 +255,26 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
             try {
         ViewAdapterModel viewAdapterДанные=new ViewAdapterModel(getSupportFragmentManager());
                 CopyOnWriteArrayList<Fragment> fragments=new CopyOnWriteArrayList<>();
-                IntStream.iterate(0, i -> i + 1).parallel().limit(cursorForViewPager.getCount()).forEachOrdered(new IntConsumer() {
+
+                IntStream.iterate(0, i -> i + 1).limit(cursorForViewPager.getCount()).forEachOrdered(new IntConsumer() {
                     @Override
                     public void accept(int value) {
                         // TODO: 13.04.2023 делаем смещение по курсору
-                        cursorForViewPager.move(value);
-                        FragmentSingleTabel fragmentSingleTabel=FragmentSingleTabel.newInstance(bundleNewViewPager,value,cursorForViewPager  );
+                        FragmentSingleTabel fragmentSingleTabel=FragmentSingleTabel.newInstance(bundleNewViewPager,value);
                         fragments.add(fragmentSingleTabel);
                         // TODO: 20.06.2023
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + " cursorForViewPager.getPosition() " +cursorForViewPager.getPosition());
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                + " cursorForViewPager.getPosition() " +cursorForViewPager.getPosition());
                     }
                 });
-                viewAdapterДанные.setFragments(fragments);
-                viewAdapterДанные.notifyDataSetChanged();
                 // TODO: 20.06.2023  Заполеяем Адампетре
+                viewAdapterДанные.setFragments(fragments);
+               // viewAdapterДанные.notifyDataSetChanged();
          viewPager.setAdapter(viewAdapterДанные);
-         viewPager.getAdapter().notifyDataSetChanged();
+      //   viewPager.getAdapter().notifyDataSetChanged();
+         cursorForViewPager.close();
          Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
