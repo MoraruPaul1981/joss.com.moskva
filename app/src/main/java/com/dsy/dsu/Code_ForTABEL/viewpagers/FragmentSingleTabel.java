@@ -1,5 +1,6 @@
 package com.dsy.dsu.Code_ForTABEL.viewpagers;
 
+import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,12 +21,12 @@ import com.dsy.dsu.R;
  */
 public class FragmentSingleTabel extends Fragment {
     // TODO: Rename and change types and number of parameters
-    public static FragmentSingleTabel newInstance(Integer position,@NonNull String s) {
+    public static FragmentSingleTabel newInstance(@NonNull Bundle   bundleNewViewPager,
+                                                  @NonNull int value,
+                                                  @NonNull Cursor cursor) {
         FragmentSingleTabel fragment = new FragmentSingleTabel();
-        Bundle args = new Bundle();
-        args.putInt("position",position);
-        args.putString("s",s);
-        fragment.setArguments(args);
+        bundleNewViewPager.putInt("positionViewPager",value);
+        fragment.setArguments(bundleNewViewPager);
         return fragment;
     }
 
@@ -44,12 +45,14 @@ public class FragmentSingleTabel extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Long    MainParentUUID=    getArguments().getLong("MainParentUUID", 0l);
+        Integer   PositionCustomer=    getArguments().getInt("Position", 0);
+
         TextView textfragnetviewpager = (TextView)  view.findViewById(R.id.textfragnetviewpager);
-        Integer position =getArguments().getInt("position");
-        textfragnetviewpager.setText(position.toString());
+        textfragnetviewpager.setText(MainParentUUID.toString());
         // TODO: 20.06.2023
         TextView textfragnetviewpager2 = (TextView)  view.findViewById(R.id.textfragnetviewpager2);
-        String s =getArguments().getString("s");
-        textfragnetviewpager2.setText(s);
+        textfragnetviewpager2.setText(PositionCustomer.toString());
     }
 }

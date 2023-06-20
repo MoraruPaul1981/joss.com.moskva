@@ -84,6 +84,7 @@ import com.dsy.dsu.Business_logic_Only_Class.DATE.Class_Generation_Data;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
+import com.dsy.dsu.Code_ForTABEL.MainActivity_Tabel_Single_People;
 import com.dsy.dsu.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -123,7 +124,9 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
 
     private ViewPager viewPager ;
     private  SubClassBissnessLogicTableSingleWithViewPager singleWithViewPager;
-
+    private Integer    ГодТабелей=0 ;
+    private  Integer    МЕсяцТабелей=0 ;
+    private  Integer     DigitalNameCFO=0;
 
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
     @Override
@@ -165,12 +168,15 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
     protected void onStart() {
         super.onStart();
         try {
-            // TODO: 29.03.2023  Метод обсуживаюшие
-            singleWithViewPager.  методGETДанныеИзДругихАктивити();
-            singleWithViewPager.    методИницмализвцияViewAdapters();
+            // TODO: 29.03.2023  Пришли ДАнные
+            Bundle   bundleNewViewPager=    singleWithViewPager.  методGETДанныеИзДругихАктивити();
+            // TODO: 20.04.2023 Данные
+            Cursor     cursorForViewPager =    singleWithViewPager.new SubClassGetCursor() .МетодSwipesКурсор();
+            singleWithViewPager.    методИницмализвцияViewAdapters(bundleNewViewPager,cursorForViewPager);
+            singleWithViewPager.  методСлушательViewPager();
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + " cursorForViewPager " +cursorForViewPager);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -210,22 +216,23 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
     class  SubClassBissnessLogicTableSingleWithViewPager {
         public SubClassBissnessLogicTableSingleWithViewPager(@NonNull ViewPager viewPager) {
         }
-        private void методGETДанныеИзДругихАктивити() {
+        private Bundle методGETДанныеИзДругихАктивити() {
+            Bundle   bundle=null;
             try {
                 Intent intent =  getIntent();
-                Bundle   bundle_single_tabel_viewpagers=intent.getExtras();
+                  bundle=intent.getExtras();
                 // TODO: 10.04.2023
-                if (bundle_single_tabel_viewpagers!=null) {
-                    Long    MainParentUUID=    bundle_single_tabel_viewpagers.getLong("MainParentUUID", 0l);
-                    Integer   PositionCustomer=    bundle_single_tabel_viewpagers.getInt("Position", 0);
-                    Integer    ГодТабелей=  bundle_single_tabel_viewpagers.getInt("ГодТабелей", 0);
-                    Integer    МЕсяцТабелей=  bundle_single_tabel_viewpagers.getInt("МЕсяцТабелей",0);
-                    Integer     DigitalNameCFO=   bundle_single_tabel_viewpagers.getInt("DigitalNameCFO", 0);
-                    String      FullNameCFO=  bundle_single_tabel_viewpagers.getString("FullNameCFO", "").trim();
-                    String    ИмесяцвИГодСразу= bundle_single_tabel_viewpagers.getString("ИмесяцвИГодСразу", "").trim();
-                    Long       CurrenrsСhildUUID= bundle_single_tabel_viewpagers.getLong("CurrenrsСhildUUID", 0l);
-                    String     ФИО= bundle_single_tabel_viewpagers.getString("ФИО", "").trim();
-                    Long  CurrenrsSelectFio= bundle_single_tabel_viewpagers.getLong("CurrenrsSelectFio", 0l);
+                if (bundle!=null) {
+                    Long    MainParentUUID=    bundle.getLong("MainParentUUID", 0l);
+                    Integer   PositionCustomer=    bundle.getInt("Position", 0);
+                       ГодТабелей=  bundle.getInt("ГодТабелей", 0);
+                       МЕсяцТабелей=  bundle.getInt("МЕсяцТабелей",0);
+                       DigitalNameCFO=   bundle.getInt("DigitalNameCFO", 0);
+                    String      FullNameCFO=  bundle.getString("FullNameCFO", "").trim();
+                    String    ИмесяцвИГодСразу= bundle.getString("ИмесяцвИГодСразу", "").trim();
+                    Long       CurrenrsСhildUUID= bundle.getLong("CurrenrsСhildUUID", 0l);
+                    String     ФИО= bundle.getString("ФИО", "").trim();
+                    Long  CurrenrsSelectFio= bundle.getLong("CurrenrsSelectFio", 0l);
 
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -242,54 +249,33 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
                         Thread.currentThread().getStackTrace()[2].getMethodName(),
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
+            return bundle;
         }
-        private void методИницмализвцияViewAdapters() {
+        private void методИницмализвцияViewAdapters(@NonNull   Bundle   bundleNewViewPager,@NonNull Cursor     cursorForViewPager) {
             try {
         ViewAdapterModel viewAdapterДанные=new ViewAdapterModel(getSupportFragmentManager());
                 CopyOnWriteArrayList<Fragment> fragments=new CopyOnWriteArrayList<>();
-
-                IntStream.iterate(1, i -> i + 1).parallel().limit(5000).forEachOrdered(new IntConsumer() {
+                IntStream.iterate(0, i -> i + 1).parallel().limit(cursorForViewPager.getCount()).forEachOrdered(new IntConsumer() {
                     @Override
                     public void accept(int value) {
-                        FragmentSingleTabel fragmentSingleTabel=FragmentSingleTabel.newInstance(value,"первый фрагмент ####"+value);
-
+                        // TODO: 13.04.2023 делаем смещение по курсору
+                        cursorForViewPager.move(value);
+                        FragmentSingleTabel fragmentSingleTabel=FragmentSingleTabel.newInstance(bundleNewViewPager,value,cursorForViewPager  );
                         fragments.add(fragmentSingleTabel);
+                        // TODO: 20.06.2023
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + " cursorForViewPager.getPosition() " +cursorForViewPager.getPosition());
                     }
                 });
-
-
                 viewAdapterДанные.setFragments(fragments);
+                viewAdapterДанные.notifyDataSetChanged();
                 // TODO: 20.06.2023  Заполеяем Адампетре
          viewPager.setAdapter(viewAdapterДанные);
          viewPager.getAdapter().notifyDataSetChanged();
-                viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                    @Override
-                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                    }
-
-                    @Override
-                    public void onPageSelected(int position) {
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                    }
-
-                    @Override
-                    public void onPageScrollStateChanged(int state) {
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                    }
-                });
-
-
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -299,6 +285,83 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
+
+        private void методСлушательViewPager() {
+            try{
+            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                }
+            });
+// TODO: 20.06.2023
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        }
+
+
+        // TODO: 20.06.2023 Класс получение данных CURSOR
+
+        class SubClassGetCursor{
+            Cursor          cursor = null;
+            String  СамЗапрос;
+            String[] УсловияВыборки;
+            protected Cursor МетодSwipesКурсор() {
+                try{
+                    СамЗапрос=" SELECT  *   FROM viewtabel AS t" +
+                            " WHERE t.cfo=? AND t.month_tabels  =?  AND t.year_tabels = ?  AND t.status_send !=?  AND t.fio IS NOT NULL  ORDER BY   t._id  " ;
+                    УсловияВыборки=new String[]{String.valueOf(DigitalNameCFO),
+                            String.valueOf(  МЕсяцТабелей),
+                            String.valueOf(   ГодТабелей),
+                            String.valueOf(  "Удаленная") };
+                    //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
+                    Bundle bundleГлавныйКурсорMultiДанныеSwipes= new Bundle();
+                    bundleГлавныйКурсорMultiДанныеSwipes.putString("СамЗапрос",СамЗапрос);
+                    bundleГлавныйКурсорMultiДанныеSwipes.putStringArray("УсловияВыборки" ,УсловияВыборки);
+                    bundleГлавныйКурсорMultiДанныеSwipes.putString("Таблица","viewtabel");
+                    cursor =      (Cursor)    new SubClassCursorLoader(). CursorLoaders(getApplicationContext(), bundleГлавныйКурсорMultiДанныеSwipes);
+
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "cursor " +cursor );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
+                return  cursor;
+            }
+
+        }
+
         //TODO SubClassBissnessLogicTableSingleWithViewPager
     }//TODO SubClassBissnessLogicTableSingleWithViewPager
 
