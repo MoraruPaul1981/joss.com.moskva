@@ -2,24 +2,31 @@ package com.dsy.dsu.Code_ForTABEL.viewpagers;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.FragmentPagerAdapter;
 
-public class ViewAdapterModel extends androidx.viewpager2.adapter.FragmentStateAdapter {
+import java.util.concurrent.CopyOnWriteArrayList;
 
-    public ViewAdapterModel(@NonNull FragmentActivity fragmentActivity) {
+public class ViewAdapterModel extends FragmentPagerAdapter {//androidx.viewpager2.adapter.FragmentStateAdapter
+    CopyOnWriteArrayList<Fragment> fragments=new CopyOnWriteArrayList<>();
+
+    public void setFragments(CopyOnWriteArrayList<Fragment> fragments) {
+        this.fragments = fragments;
+        notifyDataSetChanged();
+    }
+
+    public ViewAdapterModel(@NonNull FragmentManager fragmentActivity) {
         super(fragmentActivity);
     }
 
     @NonNull
     @Override
-    public Fragment createFragment(int position) {
-        return null;
+    public Fragment getItem(int position) {
+        return fragments.get(position);
     }
 
     @Override
-    public int getItemCount() {
-        return 0;
+    public int getCount() {
+        return fragments.size();
     }
 }

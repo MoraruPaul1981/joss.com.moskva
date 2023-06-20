@@ -61,6 +61,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
@@ -104,6 +105,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
@@ -141,6 +143,7 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
             Configuration   config = getBaseContext().getResources().getConfiguration();
             config.setLocale(locale);
             createConfigurationContext(config);
+            // TODO: 20.06.2023 Инизиализация
             viewPager =  (ViewPager) findViewById(R.id.viewPager_single_tabel_viewpagers);
             // TODO: 20.06.2023
             singleWithViewPager=  new SubClassBissnessLogicTableSingleWithViewPager(viewPager);
@@ -162,6 +165,7 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
         try {
             // TODO: 29.03.2023  Метод обсуживаюшие
             singleWithViewPager.  методGETДанныеИзДругихАктивити();
+            singleWithViewPager.    методИницмализвцияViewAdapters();
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -228,6 +232,32 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
                             + " ГодТабелей " +ГодТабелей +" МЕсяцТабелей " +МЕсяцТабелей   + " DigitalNameCFO "+DigitalNameCFO+
                             " PositionCustomer " +PositionCustomer+ " ИмесяцвИГодСразу " +ИмесяцвИГодСразу);
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+        private void методИницмализвцияViewAdapters() {
+            try {
+        ViewAdapterModel viewAdapterДанные=new ViewAdapterModel(getSupportFragmentManager());
+                CopyOnWriteArrayList<Fragment> fragments=new CopyOnWriteArrayList<>();
+        FragmentSingleTabel fragmentSingleTabel=FragmentSingleTabel.newInstance(1,"первый фрагмент ####");
+        FragmentSingleTabel fragmentSingleTabel2=FragmentSingleTabel.newInstance(2,"первый фрагмент $$$$");
+                fragments.add(fragmentSingleTabel);
+                fragments.add(fragmentSingleTabel2);
+                viewAdapterДанные.setFragments(fragments);
+                // TODO: 20.06.2023  Заполеяем Адампетре
+         viewPager.setAdapter(viewAdapterДанные);
+
+
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
