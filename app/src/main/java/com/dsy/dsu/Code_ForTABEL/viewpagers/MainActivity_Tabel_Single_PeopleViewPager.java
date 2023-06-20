@@ -114,10 +114,11 @@ import io.reactivex.rxjava3.functions.Predicate;
 
 
 public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity  {
-
     private   String ИмяСлужбыСинхронизациОдноразовая="WorkManager Synchronizasiy_Data Disposable";
     private String ИмяСлужбыСинхронизацииОбщая="WorkManager Synchronizasiy_Data";
-    private ViewPager viewPager_single_tabel_viewpagers;
+
+    private ViewPager viewPager ;
+    private  SubClassBissnessLogicTableSingleWithViewPager singleWithViewPager;
 
 
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
@@ -130,23 +131,19 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
                     | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                     | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-            ((Activity) getApplicationContext()) .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
             getSupportActionBar().hide(); ///скрывать тул бар
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
             Log.d(this.getClass().getName(), "  onCreate(Bundle savedInstanceState)   MainActivity_Tabel_Single_People  ");
             Locale locale = new Locale("rus");
             Locale.setDefault(locale);
-         Configuration   config = getBaseContext().getResources().getConfiguration();
+            Configuration   config = getBaseContext().getResources().getConfiguration();
             config.setLocale(locale);
             createConfigurationContext(config);
-            ((Activity) getApplicationContext()) .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
-            viewPager_single_tabel_viewpagers =  (ViewPager) findViewById(R.id.viewPager_single_tabel_viewpagers);
-            // TODO: 29.03.2023  Метод обсуживаюшие
-          new SubClassBissnessLogicTableSingleWithViewPager().  методGETДанныеИзДругихАктивити();
-            //viewPager_single_tabel_viewpagers.setAdapter(new ViewAdapterModel());
-
-
-// TODO: 25.04.2023 тест код
+            viewPager =  (ViewPager) findViewById(R.id.viewPager_single_tabel_viewpagers);
+            // TODO: 20.06.2023
+            singleWithViewPager=  new SubClassBissnessLogicTableSingleWithViewPager(viewPager);
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -159,6 +156,23 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        try {
+            // TODO: 29.03.2023  Метод обсуживаюшие
+            singleWithViewPager.  методGETДанныеИзДругихАктивити();
+        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+    }
 
     @Override
     protected void onStop() {
@@ -188,7 +202,7 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
 
     // TODO: 19.06.2023  Бизнес Класс Новой Активтив ТАбель Single Через ViewPager
     class  SubClassBissnessLogicTableSingleWithViewPager {
-        public SubClassBissnessLogicTableSingleWithViewPager() {
+        public SubClassBissnessLogicTableSingleWithViewPager(@NonNull ViewPager viewPager) {
         }
         private void методGETДанныеИзДругихАктивити() {
             try {
@@ -223,10 +237,8 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
-
-
-
-    }
+        //TODO SubClassBissnessLogicTableSingleWithViewPager
+    }//TODO SubClassBissnessLogicTableSingleWithViewPager
 
 
 
