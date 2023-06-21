@@ -89,6 +89,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.common.util.concurrent.AtomicDouble;
 import com.jakewharton.rxbinding4.view.RxView;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
@@ -119,9 +120,6 @@ import io.reactivex.rxjava3.functions.Predicate;
 
 
 public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity  implements Busable {
-    private   String ИмяСлужбыСинхронизациОдноразовая="WorkManager Synchronizasiy_Data Disposable";
-    private String ИмяСлужбыСинхронизацииОбщая="WorkManager Synchronizasiy_Data";
-
     private ViewPager viewPager ;
     private  SubClassBissnessLogicTableSingleWithViewPager singleWithViewPager;
     private  Integer    ГодТабелей=  0;
@@ -190,27 +188,6 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        try{
-            WorkManager.getInstance(getApplicationContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая).removeObservers(null);
-            WorkManager.getInstance(getApplicationContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).removeObservers(null);
-            WorkManager.getInstance(getApplicationContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая);
-
-            // TODO: 17.08.2022  after peossesuinbg
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
-
-    @Override
     public ViewPager viewPager() {
         return viewPager;
     }
@@ -219,6 +196,21 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
     public Cursor getcorsor() {
         return cursorForViewPager;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     // TODO: 19.06.2023  Бизнес Класс Новой Активтив ТАбель Single Через ViewPager
@@ -262,7 +254,7 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
             try {
                 ViewAdapterModel viewAdapterДанные=new ViewAdapterModel(getSupportFragmentManager());
                 CopyOnWriteArrayList<Fragment> copyOnWriteArrayListfragments=new CopyOnWriteArrayList<>();
-                IntStream.iterate(0, i -> i + 1).parallel().limit(cursorForViewPager.getCount()+10000)
+                IntStream.iterate(0, i -> i + 1).parallel().limit(cursorForViewPager.getCount())
                         .forEachOrdered(new IntConsumer() {
                     @Override
                     public void accept(int value) {
@@ -270,13 +262,13 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
                         bundle_single_tabel_viewpagers.putInt("value",value);
                             if (value<cursorForViewPager.getCount()) {
                                 cursorForViewPager.move(value);
-                            }
                             Long    uuid=    cursorForViewPager.getLong(cursorForViewPager.getColumnIndex("uuid"));
                         bundle_single_tabel_viewpagers.putLong("uuid",uuid);
                         bundle_single_tabel_viewpagers.putInt("getpositioncursor",cursorForViewPager.getPosition());
                             // TODO: 21.06.2023 перердаем параметры для создание нового фрагмента
                         FragmentSingleTabel fragmentSingleTabel=FragmentSingleTabel.newInstance( bundle_single_tabel_viewpagers);
                         copyOnWriteArrayListfragments.add(fragmentSingleTabel);
+                            }
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -294,8 +286,10 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
                 viewAdapterДанные.notifyDataSetChanged();
                 // TODO: 20.06.2023  Заполеяем Адампетре
                 viewPager.setAdapter(viewAdapterДанные);
+                viewPager.getAdapter().notifyDataSetChanged();
                 viewPager.refreshDrawableState();
                 viewPager.forceLayout();
+                // TODO: 21.06.2023  clear
              ///   viewPager.getAdapter().notifyDataSetChanged();
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

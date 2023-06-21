@@ -151,6 +151,11 @@ public class FragmentSingleTabel extends Fragment {
 
     // TODO: 21.06.2023 Class Бизнес Код Для Фрагмента Single Tabel 
     class  SubClassBisscessFragmentSingleTabel{
+
+
+
+
+
         // TODO: 21.06.2023  Класс Тестовый По выгрузке Данныз НА экран
         class  SubClassTestDataAnScreen{
             void  методТестовыйВЫгрузкаДанныхНаЭкран(@NonNull View view){
@@ -183,14 +188,8 @@ public class FragmentSingleTabel extends Fragment {
                             Thread.currentThread().getStackTrace()[2].getMethodName(),
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
-                
-                
             }
-            
-            
-            
         }
-        
         
         
         
@@ -238,7 +237,7 @@ public class FragmentSingleTabel extends Fragment {
             
             
             
-        }
+        }//TODO class SubClassListerViewPager class SubClassListerViewPager
     }//TODO END  class  SubClassBisscessFragmentSingleTabel //TODO END  class  SubClassBisscessFragmentSingleTabel //TODO END  class  SubClassBisscessFragmentSingleTabel
 
 
