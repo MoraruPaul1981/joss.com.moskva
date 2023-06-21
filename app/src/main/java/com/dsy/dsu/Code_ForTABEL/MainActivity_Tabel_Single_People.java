@@ -680,6 +680,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
      *
      */
     private  int МетодПолучениеСколькоДнейВКонкретномМесяце(int Год,int Месяц) {
+        int КоличествоДнейНаВыбраныйМесяц=0;
         try{
         Date date = null;
         int КонктетныйМесяцВВидеЦифры;
@@ -689,8 +690,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
         // Create a calendar object and set year and month
         Calendar mycal = new GregorianCalendar(Год, Месяц, 0);
         // Get the number of days in that month
-        int КоличествоДнейНаВыбраныйМесяц = mycal.getActualMaximum(Calendar.DAY_OF_MONTH); // 28
-
+      КоличествоДнейНаВыбраныйМесяц = mycal.getActualMaximum(Calendar.DAY_OF_MONTH); // 28
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
