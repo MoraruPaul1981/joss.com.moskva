@@ -298,13 +298,6 @@ public class MainActivity_Tabel_Single_People extends AppCompatActivity  {
             subClassSingleTabelRecycreView.   методWorkManagerLifecycleOwner();
 
 
-            // TODO: 15.06.2023 Scroll
-//      subClassSingleTabelRecycreView. методДляSimpeScroolsRecyreView( );
-
-            //subClassSingleTabelRecycreView.    методИницаллизацииКлавиаотурыRecycleView();
-
-
-
 // TODO: 25.04.2023 тест код
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
