@@ -50,7 +50,13 @@ public class FragmentSingleTabel extends Fragment {
         textfragnetviewpager.setText(value.toString());
         // TODO: 20.06.2023
         TextView textfragnetviewpager2 = (TextView)  view.findViewById(R.id.textfragnetviewpager2);
-        String date =getArguments().getString("date");;
-        textfragnetviewpager2.setText(date);
+        Long uuid =getArguments().getLong("uuid");;
+        textfragnetviewpager2.setText(uuid.toString());
+        // TODO: 20.06.2023
+        TextView textfragnetviewpager3 = (TextView)  view.findViewById(R.id.textfragnetviewpager3);
+         Integer getpositioncursor =getArguments().getInt(   "getpositioncursor");;
+        textfragnetviewpager3.setText(getpositioncursor.toString());
+
+
     }
 }

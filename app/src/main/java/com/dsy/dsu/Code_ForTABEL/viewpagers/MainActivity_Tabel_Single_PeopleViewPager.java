@@ -253,15 +253,29 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
             try {
                 ViewAdapterModel viewAdapterДанные=new ViewAdapterModel(getSupportFragmentManager());
                 CopyOnWriteArrayList<Fragment> copyOnWriteArrayListfragments=new CopyOnWriteArrayList<>();
-
-                IntStream.iterate(0, i -> i + 1).parallel().limit(cursorForViewPager.getCount()).forEachOrdered(new IntConsumer() {
+                IntStream.iterate(0, i -> i + 1).parallel().limit(cursorForViewPager.getCount())
+                        .forEachOrdered(new IntConsumer() {
                     @Override
                     public void accept(int value) {
+                        try{
                         bundle_single_tabel_viewpagers.putInt("value",value);
-                        bundle_single_tabel_viewpagers.putString("date",new Date().toLocaleString());
+                        cursorForViewPager.move(value);
+                        Long    uuid=    cursorForViewPager.getLong(cursorForViewPager.getColumnIndex("uuid"));
+                        bundle_single_tabel_viewpagers.putLong("uuid",uuid);
+                        bundle_single_tabel_viewpagers.putInt("getpositioncursor",cursorForViewPager.getPosition());
                         FragmentSingleTabel fragmentSingleTabel=FragmentSingleTabel.newInstance( bundle_single_tabel_viewpagers);
-
                         copyOnWriteArrayListfragments.add(fragmentSingleTabel);
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
                     }
                 });
                 viewAdapterДанные.setFragments(copyOnWriteArrayListfragments);
