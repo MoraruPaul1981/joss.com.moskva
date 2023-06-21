@@ -129,6 +129,8 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
     private  Integer     DigitalNameCFO=0;
     private       Bundle   bundle_single_tabel_viewpagers;
 
+    private     Cursor     cursorForViewPager;
+
 
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
     @Override
@@ -172,10 +174,9 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
         try {
             // TODO: 29.03.2023  Метод обсуживаюшие
             singleWithViewPager.  методGETДанныеИзДругихАктивити();
-            Cursor     cursorForViewPager =    singleWithViewPager.new SubClassGetCursor().МетодSwipesКурсор();
+             cursorForViewPager =    singleWithViewPager.new SubClassGetCursor().МетодSwipesКурсор();
             viewPager.setOffscreenPageLimit(cursorForViewPager.getCount());
             singleWithViewPager.    методИницмализвцияViewAdapters(cursorForViewPager);
-            //singleWithViewPager.  методСлушательViewPager();
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -212,6 +213,11 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
     @Override
     public ViewPager viewPager() {
         return viewPager;
+    }
+
+    @Override
+    public Cursor getcorsor() {
+        return cursorForViewPager;
     }
 
 

@@ -2,6 +2,7 @@ package com.dsy.dsu.Code_ForTABEL.viewpagers;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,8 @@ import java.util.Date;
 public class FragmentSingleTabel extends Fragment {
     Busable mainActivity;
     private ViewPager viewPager ;
+
+    private Cursor cursorForViewPager;
     private  SubClassBisscessFragmentSingleTabel fragmentSingleTabel;
     // TODO: Rename and change types and number of parameters
     public static FragmentSingleTabel newInstance(@NonNull Bundle bundle_single_tabel_viewpagers ) {
@@ -45,6 +48,7 @@ public class FragmentSingleTabel extends Fragment {
         super.onAttach(context);
         mainActivity = (Busable) context;
         viewPager=(ViewPager)  mainActivity.viewPager();
+        cursorForViewPager=(Cursor)  mainActivity.getcorsor();
     }
 
     @Override
