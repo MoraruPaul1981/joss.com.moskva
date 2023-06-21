@@ -28,7 +28,7 @@ import java.util.Date;
  * create an instance of this fragment.
  */
 public class FragmentSingleTabel extends Fragment {
-    Busable mainActivity;
+    private  Busable busable;
     private ViewPager viewPager ;
 
     private Cursor cursorForViewPager;
@@ -45,10 +45,23 @@ public class FragmentSingleTabel extends Fragment {
 
     @Override
     public void onAttach(@NonNull Context context) {
+        try {
         super.onAttach(context);
-        mainActivity = (Busable) context;
-        viewPager=(ViewPager)  mainActivity.viewPager();
-        cursorForViewPager=(Cursor)  mainActivity.getcorsor();
+        busable = (Busable) context;
+        viewPager=(ViewPager)  busable.viewPager();
+        cursorForViewPager=(Cursor)  busable.getcorsor();
+        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
+                + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
     }
 
     @Override
@@ -147,7 +160,9 @@ public class FragmentSingleTabel extends Fragment {
                     textfragnetviewpager.setText(value.toString());
                     // TODO: 20.06.2023
                     TextView textfragnetviewpager2 = (TextView)  view.findViewById(R.id.textfragnetviewpager2);
-                    Long uuid =getArguments().getLong("uuid");;
+                   // Long uuid =getArguments().getLong("uuid");;
+                    cursorForViewPager.moveToPosition(value);
+                    Long uuid =cursorForViewPager.getLong(cursorForViewPager.getColumnIndex("uuid"));
                     textfragnetviewpager2.setText(uuid.toString());
                     // TODO: 20.06.2023
                     TextView textfragnetviewpager3 = (TextView)  view.findViewById(R.id.textfragnetviewpager3);
