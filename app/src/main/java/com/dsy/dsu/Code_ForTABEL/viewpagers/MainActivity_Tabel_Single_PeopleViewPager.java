@@ -257,15 +257,20 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
                 IntStream.iterate(0, i -> i + 1).parallel().limit(cursorForViewPager.getCount()).forEachOrdered(new IntConsumer() {
                     @Override
                     public void accept(int value) {
-                        FragmentSingleTabel fragmentSingleTabel=FragmentSingleTabel.newInstance(value);
+                        bundle_single_tabel_viewpagers.putInt("value",value);
+                        bundle_single_tabel_viewpagers.putString("date",new Date().toLocaleString());
+                        FragmentSingleTabel fragmentSingleTabel=FragmentSingleTabel.newInstance( bundle_single_tabel_viewpagers);
 
                         copyOnWriteArrayListfragments.add(fragmentSingleTabel);
                     }
                 });
                 viewAdapterДанные.setFragments(copyOnWriteArrayListfragments);
+                viewAdapterДанные.notifyDataSetChanged();
                 // TODO: 20.06.2023  Заполеяем Адампетре
                 viewPager.setAdapter(viewAdapterДанные);
-                viewPager.getAdapter().notifyDataSetChanged();
+                viewPager.refreshDrawableState();
+                viewPager.forceLayout();
+             ///   viewPager.getAdapter().notifyDataSetChanged();
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");

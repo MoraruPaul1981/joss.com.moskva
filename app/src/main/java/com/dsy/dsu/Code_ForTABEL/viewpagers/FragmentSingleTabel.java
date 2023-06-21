@@ -22,11 +22,10 @@ import java.util.Date;
  */
 public class FragmentSingleTabel extends Fragment {
     // TODO: Rename and change types and number of parameters
-    public static FragmentSingleTabel newInstance(Integer value ) {
+    public static FragmentSingleTabel newInstance(@NonNull Bundle bundle_single_tabel_viewpagers ) {
         FragmentSingleTabel fragment = new FragmentSingleTabel();
         Bundle args = new Bundle();
-        args.putInt("value",value);
-        args.putString("date",new Date().toLocaleString());
+        args=bundle_single_tabel_viewpagers.deepCopy();
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,7 +50,7 @@ public class FragmentSingleTabel extends Fragment {
         textfragnetviewpager.setText(value.toString());
         // TODO: 20.06.2023
         TextView textfragnetviewpager2 = (TextView)  view.findViewById(R.id.textfragnetviewpager2);
-        String date =getArguments().getString("date");
+        String date =getArguments().getString("date");;
         textfragnetviewpager2.setText(date);
     }
 }
