@@ -161,7 +161,9 @@ public class FragmentSingleTabel extends Fragment {
                     // TODO: 20.06.2023
                     TextView textfragnetviewpager2 = (TextView)  view.findViewById(R.id.textfragnetviewpager2);
                    // Long uuid =getArguments().getLong("uuid");;
-                    cursorForViewPager.moveToPosition(value);
+                    if (value<cursorForViewPager.getCount()) {
+                        cursorForViewPager.moveToPosition(value);
+                    }
                     Long uuid =cursorForViewPager.getLong(cursorForViewPager.getColumnIndex("uuid"));
                     textfragnetviewpager2.setText(uuid.toString());
                     // TODO: 20.06.2023

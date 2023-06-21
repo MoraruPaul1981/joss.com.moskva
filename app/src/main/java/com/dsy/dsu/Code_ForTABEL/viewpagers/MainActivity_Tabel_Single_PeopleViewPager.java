@@ -262,14 +262,16 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
             try {
                 ViewAdapterModel viewAdapterДанные=new ViewAdapterModel(getSupportFragmentManager());
                 CopyOnWriteArrayList<Fragment> copyOnWriteArrayListfragments=new CopyOnWriteArrayList<>();
-                IntStream.iterate(0, i -> i + 1).parallel().limit(cursorForViewPager.getCount())
+                IntStream.iterate(0, i -> i + 1).parallel().limit(cursorForViewPager.getCount()+10000)
                         .forEachOrdered(new IntConsumer() {
                     @Override
                     public void accept(int value) {
                         try{
                         bundle_single_tabel_viewpagers.putInt("value",value);
-                        cursorForViewPager.move(value);
-                        Long    uuid=    cursorForViewPager.getLong(cursorForViewPager.getColumnIndex("uuid"));
+                            if (value<cursorForViewPager.getCount()) {
+                                cursorForViewPager.move(value);
+                            }
+                            Long    uuid=    cursorForViewPager.getLong(cursorForViewPager.getColumnIndex("uuid"));
                         bundle_single_tabel_viewpagers.putLong("uuid",uuid);
                         bundle_single_tabel_viewpagers.putInt("getpositioncursor",cursorForViewPager.getPosition());
                             // TODO: 21.06.2023 перердаем параметры для создание нового фрагмента
