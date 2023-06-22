@@ -580,14 +580,15 @@ public class FragmentSingleTabel extends Fragment {
                 }
             }
 
-
+            // TODO: 22.06.2023  траспормация при переключении
             void методViewPager(){
 
-                viewPager.setPageTransformer(true, new ViewPager.PageTransformer() {
+                viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
+          /*      viewPager.setPageTransformer(true, new ViewPager.PageTransformer() {
                     @Override
                     public void transformPage(@NonNull View page, float position) {
                         try{
-                     /*   int pageWidth = page.getWidth();
+                     *//*   int pageWidth = page.getWidth();
                         int pageHeight = page.getHeight();
                         float scaleFactor = Math.max( 0.85f, 1 - Math.abs( position ) );
                         float vertMargin = pageHeight * ( 1 - scaleFactor ) / 2;
@@ -596,18 +597,18 @@ public class FragmentSingleTabel extends Fragment {
                             page.setTranslationX( horzMargin - vertMargin / 2 );
                         } else {
                             page.setTranslationX( -horzMargin + vertMargin / 2 );
-                        }*/
+                        }*//*
 
 
                         // Rotate the fragment on the left or right edge
-                  /*      page.setPivotX( position > 0 ? 0 : page.getWidth() );
+                  *//*      page.setPivotX( position > 0 ? 0 : page.getWidth() );
                         page.setPivotY( 0 );
                         page.setRotationY( -90f * position );
-*//*
+*//**//*
                         page.setPivotX( position < 0f ? page.getWidth() : 0f );
                         page.setPivotY( page.getHeight() * 0.5f );
-                        page.setRotationY( 90f * position );*/
-       /*                 int pageWidth = page.getWidth();
+                        page.setRotationY( 90f * position );*//*
+       *//*                 int pageWidth = page.getWidth();
                         int pageHeight = page.getHeight();
 
                         if ( position < -1 ) { // [ -Infinity,-1 )
@@ -637,15 +638,15 @@ public class FragmentSingleTabel extends Fragment {
                         } else { // ( 1,+Infinity ]
                             // This page is way off-screen to the right.
                             page.setAlpha( 0 );
-                        }*/
+                        }*//*
 
 
-                   /*     final float scale = position < 0 ? position + 1f : Math.abs( 1f - position );
+                   *//*     final float scale = position < 0 ? position + 1f : Math.abs( 1f - position );
                         page.setScaleX( scale );
                         page.setScaleY( scale );
                         page.setPivotX( page.getWidth() * 0.5f );
                         page.setPivotY( page.getHeight() * 0.5f );
-                        page.setAlpha( position < -1f || position > 1f ? 0f : 1f - (scale - 1f) );*/
+                        page.setAlpha( position < -1f || position > 1f ? 0f : 1f - (scale - 1f) );*//*
                         page.setPivotX( position < 0f ? page.getWidth() : 0f );
                         page.setPivotY( page.getHeight() * 0.5f );
                         page.setRotationY( 90f * position );
@@ -665,7 +666,47 @@ public class FragmentSingleTabel extends Fragment {
                     }
 
 
-                });
+                });*/
+            }
+
+            // TODO: 22.06.2023
+            public class ZoomOutPageTransformer implements ViewPager.PageTransformer {
+                private static final float MIN_SCALE = 0.85f;
+                private static final float MIN_ALPHA = 0.5f;
+
+                public void transformPage(View view, float position) {
+                    int pageWidth = view.getWidth();
+                    int pageHeight = view.getHeight();
+
+                    if (position < -1) { // [-Infinity,-1)
+                        // This page is way off-screen to the left.
+                        view.setAlpha(0f);
+
+                    } else if (position <= 1) { // [-1,1]
+                        // Modify the default slide transition to shrink the page as well
+                        float scaleFactor = Math.max(MIN_SCALE, 1 - Math.abs(position));
+                        float vertMargin = pageHeight * (1 - scaleFactor) / 2;
+                        float horzMargin = pageWidth * (1 - scaleFactor) / 2;
+                        if (position < 0) {
+                            view.setTranslationX(horzMargin - vertMargin / 2);
+                        } else {
+                            view.setTranslationX(-horzMargin + vertMargin / 2);
+                        }
+
+                        // Scale the page down (between MIN_SCALE and 1)
+                        view.setScaleX(scaleFactor);
+                        view.setScaleY(scaleFactor);
+
+                        // Fade the page relative to its size.
+                        view.setAlpha(MIN_ALPHA +
+                                (scaleFactor - MIN_SCALE) /
+                                        (1 - MIN_SCALE) * (1 - MIN_ALPHA));
+
+                    } else { // (1,+Infinity]
+                        // This page is way off-screen to the right.
+                        view.setAlpha(0f);
+                    }
+                }
             }
 
 
