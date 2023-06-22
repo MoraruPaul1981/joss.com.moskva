@@ -2010,7 +2010,6 @@ public class FragmentSingleTabel extends Fragment {
                                             // TODO: 10.05.2023 После операции Сохранение в Ячкейке
                                             if (РезультатОбновлениеЯчейки > 0) {
                                                 // TODO: 24.04.2023  после обновление ячейки Считаем Часы
-                                                методЗакрываемКлавитатуру(v);
                                                 методИзменяемЦветСодержимоваЦифраИлиБуква(((EditText) v), EditTextДАнные);
                                                 // TODO: 17.06.2023 подсчет часов
                                                 singleTabelRecycreView.методПослеОбновлениеЯчейкиСчитаемЧасы();
@@ -2021,16 +2020,17 @@ public class FragmentSingleTabel extends Fragment {
                                                 // subClassSingleTabelRecycreView.      методAlterSaveCellRecyreView(v);
                                                 // subClassSingleTabelRecycreView.       методЗакрываемКлавитатуру(v);
                                                 // TODO: 16.06.2023  после переполуение данныз перегрузка экрана
-                                                МетодПослеСахранениеИлиНетЯчейки(v);
                                                 message.getTarget().postDelayed(()->{
                                                     ((EditText) v).startAnimation(animationVibr2);
                                                 },1000);
                                                 // TODO: 19.06.2023 код когда данные в ячейке не сохранились
                                             } else {
                                                 методКогдаДанныеНеСохранились(v, ЗначениеДоЗаполениясОшибкой);
-                                                // TODO: 16.06.2023  после переполуение данныз перегрузка экрана
-                                                МетодПослеСахранениеИлиНетЯчейки(v);
+
                                             }
+                                            методЗакрываемКлавитатуру(v);
+                                            // TODO: 16.06.2023  После Операции Теряем Фокус
+                                            МетодПослеСахранениеИлиНетЯчейки(v);
                                             // TODO: 22.06.2023  метод потеря хокуса послу сохранения ячейки
                                             // TODO: 22.06.2023  clear
                                             Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
