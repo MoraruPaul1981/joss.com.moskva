@@ -2095,9 +2095,10 @@ public class FragmentSingleTabel extends Fragment {
             private void методКогдаДанныеНеСохранились(@NonNull View v, @NonNull String ЗначениеДоЗаполениясОшибкой) {
                 try{
                     ((EditText) v).setBackgroundColor(Color.RED);
-                    ((EditText) v).setText(ЗначениеДоЗаполениясОшибкой);
+                    ((EditText) v).setText(  ((EditText) v).getText().toString());
                     message.getTarget().postDelayed(() -> {
                         ((EditText) v).setBackgroundColor(Color.WHITE);
+                        ((EditText) v).setText(ЗначениеДоЗаполениясОшибкой);
                     }, 500);
                     // TODO: 17.06.2023 КОГДА ОШИБКА ПРМ ЗАПОДЛЕН ЗНАЧЕНИМЕМ НЕ ПОРАВИЛЬНМ
                     Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
