@@ -262,9 +262,9 @@ public class FragmentSingleTabel extends Fragment {
             lifecycleOwnerОбщая=this;
 
             // TODO: 21.06.2023 Смещения Курсоора
-            if (PositionCustomer<cursorForViewPager.getCount()) {
+        /*    if (PositionCustomer<cursorForViewPager.getCount()) {
                 cursorForViewPager.moveToPosition(PositionCustomer);
-            }
+            }*/
             // TODO: 21.06.2023
             singleTabelRecycreView=
                     new SubClassSingleTabelRecycreView(lifecycleOwner,lifecycleOwnerОбщая,getActivity(),cursorForViewPager);
@@ -272,7 +272,7 @@ public class FragmentSingleTabel extends Fragment {
 
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" cursorForViewPager.getPosition() " +cursorForViewPager.getPosition());
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
@@ -409,16 +409,15 @@ public class FragmentSingleTabel extends Fragment {
 
                     singleTabelRecycreView.МетодЗаполениеRecycleView( cursorForViewPager );
 
-                    singleTabelRecycreView. методДляSimpeCallbacks( );
+                //    singleTabelRecycreView. методДляSimpeCallbacks( );
                     // TODO: 14.04.2023 доделываем single tabel
                     singleTabelRecycreView.МетодСлушательRecycleView();
 
                     singleTabelRecycreView.   МетодСлушательКурсора(cursorForViewPager );
 
                     singleTabelRecycreView.   методWorkManagerLifecycleOwner();
-                
-                
-                
+
+
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + " PositionCustomer " +PositionCustomer);
@@ -441,7 +440,7 @@ public class FragmentSingleTabel extends Fragment {
                   // TODO: 10.04.2023
                   if (bundleИзMainActitivy_List_Tables!=null) {
                       MainParentUUID=    bundleИзMainActitivy_List_Tables.getLong("MainParentUUID", 0l);
-                      PositionCustomer=    bundleИзMainActitivy_List_Tables.getInt("Position", 0);
+                      PositionCustomer=    bundleИзMainActitivy_List_Tables.getInt("getpositioncursor", 0);
                       ГодТабелей=  bundleИзMainActitivy_List_Tables.getInt("ГодТабелей", 0);
                       МЕсяцТабелей=  bundleИзMainActitivy_List_Tables.getInt("МЕсяцТабелей",0);
                       DigitalNameCFO=   bundleИзMainActitivy_List_Tables.getInt("DigitalNameCFO", 0);
@@ -450,14 +449,14 @@ public class FragmentSingleTabel extends Fragment {
                       CurrenrsСhildUUID= bundleИзMainActitivy_List_Tables.getLong("CurrenrsСhildUUID", 0l);
                       ФИО= bundleИзMainActitivy_List_Tables.getString("ФИО", "").trim();
                       CurrenrsSelectFio= bundleИзMainActitivy_List_Tables.getLong("CurrenrsSelectFio", 0l);
-                      PositionCustomer =bundleИзMainActitivy_List_Tables.getInt("value");
+                    Integer  value =bundleИзMainActitivy_List_Tables.getInt("value");
+                      Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                              " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                              " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                              + " FullNameCFO "+FullNameCFO+ " CurrenrsСhildUUID " +CurrenrsСhildUUID
+                              + " ГодТабелей " +ГодТабелей +" МЕсяцТабелей " +МЕсяцТабелей   + " DigitalNameCFO "+DigitalNameCFO+
+                              " PositionCustomer " +PositionCustomer+ " ИмесяцвИГодСразу " +ИмесяцвИГодСразу + "  value " +value);
                   }
-                  Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                          " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                          " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                          + " FullNameCFO "+FullNameCFO+ " CurrenrsСhildUUID " +CurrenrsСhildUUID
-                          + " ГодТабелей " +ГодТабелей +" МЕсяцТабелей " +МЕсяцТабелей   + " DigitalNameCFO "+DigitalNameCFO+
-                          " PositionCustomer " +PositionCustomer+ " ИмесяцвИГодСразу " +ИмесяцвИГодСразу);
               } catch (Exception e) {
                   e.printStackTrace();
                   Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1745,7 +1744,10 @@ public class FragmentSingleTabel extends Fragment {
                         }else {
                             editTextRowКликПоДАнными.setTextColor(Color.BLACK);
                         }
+                    }else{
+                        editTextRowКликПоДАнными.setTextColor(Color.BLACK);
                     }
+                    editTextRowКликПоДАнными.requestLayout();
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2013,22 +2015,24 @@ public class FragmentSingleTabel extends Fragment {
                                                 // TODO: 17.06.2023 подсчет часов
                                                 singleTabelRecycreView.методПослеОбновлениеЯчейкиСчитаемЧасы();
                                                 // TODO: 16.06.2023  после переполуение данныз перегрузка экрана
-                                                // TODO: 16.06.2023  после переполуение данныз перегрузка экрана
-                                                recycler_view_single_tabel.scrollTo(0, v.getTop());
-                                                recycler_view_single_tabel.clearFocus();
                                                 //subClassSingleTabelRecycreView.       методЗакрываемКлавитатуру(v);
                                                 // TODO: 20.04.2023 Данные
                                                 // subClassSingleTabelRecycreView.     методПерегрузкиRecycreView();
                                                 // subClassSingleTabelRecycreView.      методAlterSaveCellRecyreView(v);
                                                 // subClassSingleTabelRecycreView.       методЗакрываемКлавитатуру(v);
+                                                // TODO: 16.06.2023  после переполуение данныз перегрузка экрана
+                                                МетодПослеСахранениеИлиНетЯчейки(v);
                                                 message.getTarget().postDelayed(()->{
                                                     ((EditText) v).startAnimation(animationVibr2);
                                                 },1000);
                                                 // TODO: 19.06.2023 код когда данные в ячейке не сохранились
                                             } else {
                                                 методКогдаДанныеНеСохранились(v, ЗначениеДоЗаполениясОшибкой);
+                                                // TODO: 16.06.2023  после переполуение данныз перегрузка экрана
+                                                МетодПослеСахранениеИлиНетЯчейки(v);
                                             }
-
+                                            // TODO: 22.06.2023  метод потеря хокуса послу сохранения ячейки
+                                            // TODO: 22.06.2023  clear
                                             Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v" + v +
@@ -2070,19 +2074,36 @@ public class FragmentSingleTabel extends Fragment {
                 }
             }
 
+            private void МетодПослеСахранениеИлиНетЯчейки(@NonNull View v) {
+                try{
+                recycler_view_single_tabel.scrollTo(0, v.getTop());
+                ((EditText) v).clearFocus();
+                recycler_view_single_tabel.clearFocus();
+
+                    Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v"+ v);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+            }
+
             private void методКогдаДанныеНеСохранились(@NonNull View v, @NonNull String ЗначениеДоЗаполениясОшибкой) {
                 try{
                     ((EditText) v).setBackgroundColor(Color.RED);
+                    ((EditText) v).setText(ЗначениеДоЗаполениясОшибкой);
                     message.getTarget().postDelayed(() -> {
                         ((EditText) v).setBackgroundColor(Color.WHITE);
-                        ((EditText) v).setText(ЗначениеДоЗаполениясОшибкой);
-                        // TODO: 17.06.2023 КОГДА ОШИБКА ПРМ ЗАПОДЛЕН ЗНАЧЕНИМЕМ НЕ ПОРАВИЛЬНМ
-                        Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v"+ v +
-                                " ЗначениеДоЗаполениясОшибкой " + ЗначениеДоЗаполениясОшибкой);
-
                     }, 500);
+                    // TODO: 17.06.2023 КОГДА ОШИБКА ПРМ ЗАПОДЛЕН ЗНАЧЕНИМЕМ НЕ ПОРАВИЛЬНМ
+                    Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v"+ v +
+                            " ЗначениеДоЗаполениясОшибкой " + ЗначениеДоЗаполениясОшибкой);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +

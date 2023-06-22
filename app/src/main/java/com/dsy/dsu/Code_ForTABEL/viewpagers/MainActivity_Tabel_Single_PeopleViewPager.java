@@ -35,6 +35,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.Transformation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -72,6 +73,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
@@ -173,7 +175,6 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
             // TODO: 29.03.2023  Метод обсуживаюшие
             singleWithViewPager.  методGETДанныеИзДругихАктивити();
              cursorForViewPager =    singleWithViewPager.new SubClassGetCursor().МетодSwipesКурсор();
-            viewPager.setOffscreenPageLimit(cursorForViewPager.getCount());
             singleWithViewPager.    методИницмализвцияViewAdapters(cursorForViewPager);
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -194,6 +195,7 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
 
     @Override
     public Cursor getcorsor() {
+        //cursorForViewPager.moveToFirst();
         return cursorForViewPager;
     }
 
@@ -254,21 +256,13 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
             try {
                 ViewAdapterModel viewAdapterДанные=new ViewAdapterModel(getSupportFragmentManager());
                 CopyOnWriteArrayList<Fragment> copyOnWriteArrayListfragments=new CopyOnWriteArrayList<>();
-                IntStream.iterate(0, i -> i + 1).parallel().limit(cursorForViewPager.getCount())
+                IntStream.iterate(0, i -> i + 1) .limit(cursorForViewPager.getCount() )
                         .forEachOrdered(new IntConsumer() {
                     @Override
                     public void accept(int value) {
                         try{
-                        bundle_single_tabel_viewpagers.putInt("value",value);
-                            if (value<cursorForViewPager.getCount()) {
-                                cursorForViewPager.move(value);
-                            Long    uuid=    cursorForViewPager.getLong(cursorForViewPager.getColumnIndex("uuid"));
-                        bundle_single_tabel_viewpagers.putLong("uuid",uuid);
-                        bundle_single_tabel_viewpagers.putInt("getpositioncursor",cursorForViewPager.getPosition());
-                            // TODO: 21.06.2023 перердаем параметры для создание нового фрагмента
-                        FragmentSingleTabel fragmentSingleTabel=FragmentSingleTabel.newInstance( bundle_single_tabel_viewpagers);
-                        copyOnWriteArrayListfragments.add(fragmentSingleTabel);
-                            }
+                            // TODO: 22.06.2023  метод генерируем будущие фрагменты  для Sinle Tabel
+                            методГенерацииФрагментовДляSingleTabel(value, cursorForViewPager, copyOnWriteArrayListfragments);
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -283,12 +277,11 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
                     }
                 });
                 viewAdapterДанные.setFragments(copyOnWriteArrayListfragments);
-                viewAdapterДанные.notifyDataSetChanged();
                 // TODO: 20.06.2023  Заполеяем Адампетре
                 viewPager.setAdapter(viewAdapterДанные);
-                viewPager.getAdapter().notifyDataSetChanged();
+                viewPager.setPageTransformer(true,View::setTranslationX,0 );
                 viewPager.refreshDrawableState();
-                viewPager.forceLayout();
+                viewPager.requestLayout() ;
                 // TODO: 21.06.2023  clear
              ///   viewPager.getAdapter().notifyDataSetChanged();
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -302,6 +295,36 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
                         Thread.currentThread().getStackTrace()[2].getMethodName(),
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
+        }
+
+
+
+        private void методГенерацииФрагментовДляSingleTabel(int value, @NonNull Cursor cursorForViewPager,
+                                                            CopyOnWriteArrayList<Fragment> copyOnWriteArrayListfragments) {
+            try{
+            bundle_single_tabel_viewpagers.putInt("value", value);
+            if (value < cursorForViewPager.getCount()) {
+                cursorForViewPager.move(value);
+            Long    uuid=    cursorForViewPager.getLong(cursorForViewPager.getColumnIndex("uuid"));
+        bundle_single_tabel_viewpagers.putLong("uuid",uuid);
+        bundle_single_tabel_viewpagers.putInt("getpositioncursor", cursorForViewPager.getPosition());
+        bundle_single_tabel_viewpagers.putInt("value", value);
+            // TODO: 21.06.2023 перердаем параметры для создание нового фрагмента
+        FragmentSingleTabel fragmentSingleTabel=FragmentSingleTabel.newInstance( bundle_single_tabel_viewpagers);
+        copyOnWriteArrayListfragments.add(fragmentSingleTabel);
+            }
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
         }
         // TODO: 20.06.2023 Класс получение данных CURSOR
 
