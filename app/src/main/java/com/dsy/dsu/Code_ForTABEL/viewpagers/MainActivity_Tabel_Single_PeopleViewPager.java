@@ -279,6 +279,7 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
                 viewPager.setPageTransformer(true,View::setTranslationX,0 );
                 viewPager.refreshDrawableState();
                 viewPager.requestLayout() ;
+                cursorForViewPager.close();
                 // TODO: 21.06.2023  clear
              ///   viewPager.getAdapter().notifyDataSetChanged();
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

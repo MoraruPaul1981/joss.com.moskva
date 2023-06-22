@@ -249,6 +249,7 @@ public class FragmentSingleTabel extends Fragment {
         super.onCreate(savedInstanceState);
             fragmentSingleTabel=new SubClassBisscessFragmentSingleTabel();
             fragmentSingleTabel.new SubClassListerViewPager().методСлушательViewPager();
+            fragmentSingleTabel.new SubClassListerViewPager().методViewPager();
             fragmentSingleTabel.new SubClassBungleSingle().методGETДанныеИзДругихАктивити();
             fragmentSingleTabel.МетодGetmessage();
             // TODO: 29.03.2023  Метод RerecyView RerecyView RerecyView RerecyView RerecyView
@@ -544,6 +545,7 @@ public class FragmentSingleTabel extends Fragment {
                     viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                         @Override
                         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -578,6 +580,93 @@ public class FragmentSingleTabel extends Fragment {
                 }
             }
 
+
+            void методViewPager(){
+
+                viewPager.setPageTransformer(true, new ViewPager.PageTransformer() {
+                    @Override
+                    public void transformPage(@NonNull View page, float position) {
+                        try{
+                     /*   int pageWidth = page.getWidth();
+                        int pageHeight = page.getHeight();
+                        float scaleFactor = Math.max( 0.85f, 1 - Math.abs( position ) );
+                        float vertMargin = pageHeight * ( 1 - scaleFactor ) / 2;
+                        float horzMargin = pageWidth * ( 1 - scaleFactor ) / 2;
+                        if ( position < 0 ) {
+                            page.setTranslationX( horzMargin - vertMargin / 2 );
+                        } else {
+                            page.setTranslationX( -horzMargin + vertMargin / 2 );
+                        }*/
+
+
+                        // Rotate the fragment on the left or right edge
+                  /*      page.setPivotX( position > 0 ? 0 : page.getWidth() );
+                        page.setPivotY( 0 );
+                        page.setRotationY( -90f * position );
+*//*
+                        page.setPivotX( position < 0f ? page.getWidth() : 0f );
+                        page.setPivotY( page.getHeight() * 0.5f );
+                        page.setRotationY( 90f * position );*/
+       /*                 int pageWidth = page.getWidth();
+                        int pageHeight = page.getHeight();
+
+                        if ( position < -1 ) { // [ -Infinity,-1 )
+                            // This page is way off-screen to the left.
+                            page.setAlpha( 0 );
+                        }
+                        else if ( position <= 1 ) { // [ -1,1 ]
+                            // Modify the default slide transition to shrink the page as well
+                            float scaleFactor = Math.max( 0.85f, 1 - Math.abs( position ) );
+                            float vertMargin = pageHeight * ( 1 - scaleFactor ) / 2;
+                            float horzMargin = pageWidth * ( 1 - scaleFactor ) / 2;
+                            if ( position < 0 ) {
+                                page.setTranslationX( horzMargin - vertMargin / 2 );
+                            } else {
+                                page.setTranslationX( -horzMargin + vertMargin / 2 );
+                            }
+
+                            // Scale the page down ( between MIN_SCALE and 1 )
+                            page.setScaleX( scaleFactor );
+                            page.setScaleY( scaleFactor );
+
+                            // Fade the page relative to its size.
+                            page.setAlpha( 0.5f +
+                                    ( scaleFactor - 0.85f ) /
+                                            ( 1 - 0.85f ) * ( 1 - 0.5f ));
+
+                        } else { // ( 1,+Infinity ]
+                            // This page is way off-screen to the right.
+                            page.setAlpha( 0 );
+                        }*/
+
+
+                   /*     final float scale = position < 0 ? position + 1f : Math.abs( 1f - position );
+                        page.setScaleX( scale );
+                        page.setScaleY( scale );
+                        page.setPivotX( page.getWidth() * 0.5f );
+                        page.setPivotY( page.getHeight() * 0.5f );
+                        page.setAlpha( position < -1f || position > 1f ? 0f : 1f - (scale - 1f) );*/
+                        page.setPivotX( position < 0f ? page.getWidth() : 0f );
+                        page.setPivotY( page.getHeight() * 0.5f );
+                        page.setRotationY( 90f * position );
+
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
+                        // TODO: 22.06.2023 end
+                    }
+
+
+                });
+            }
 
 
         }//TODO class SubClassListerViewPager class SubClassListerViewPager
@@ -2531,7 +2620,9 @@ public class FragmentSingleTabel extends Fragment {
                         if (bundleПереходДетализацию != null) {
                             // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
                             try{
-                                TextViewФИОПрофессия.setBackgroundColor(Color.GRAY);
+                                message.getTarget().postDelayed(()->{
+                                    TextViewФИОПрофессия.startAnimation(animationVibr2);
+                                },300);
                                 TextView TextViewФИОДляУдаление = (TextView) v;
                                 Log.d(this.getClass().getName(), " v " + v.getTag() + " TextViewФИОДляУдаление.getText() " + TextViewФИОДляУдаление.getText() +
                                         "  TextViewФИОДляУдаление.getTag() " +TextViewФИОДляУдаление.getTag());
