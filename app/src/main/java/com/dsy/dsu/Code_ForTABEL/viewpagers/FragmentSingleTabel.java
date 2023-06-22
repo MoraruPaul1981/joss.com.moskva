@@ -209,8 +209,6 @@ public class FragmentSingleTabel extends Fragment {
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
     private  Busable busable;
     private ViewPager viewPager ;
-
-    private Cursor cursorForViewPager;
     private  SubClassBisscessFragmentSingleTabel fragmentSingleTabel;
     private  ViewGroup contGruop;
 
@@ -231,7 +229,6 @@ public class FragmentSingleTabel extends Fragment {
         super.onAttach(context);
         busable = (Busable) context;
         viewPager=(ViewPager)  busable.viewPager();
-        cursorForViewPager=(Cursor)  busable.getcorsor(getArguments().getInt("getpositioncursor"));
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -257,18 +254,13 @@ public class FragmentSingleTabel extends Fragment {
             // TODO: 29.03.2023  Метод RerecyView RerecyView RerecyView RerecyView RerecyView
             lifecycleOwner=this;
             lifecycleOwnerОбщая=this;
-//
-//            // TODO: 21.06.2023 Смещения Курсоора
-//            if (PositionCustomer<cursorForViewPager.getCount()) {
-//                cursorForViewPager.moveToPosition(2);
-//            }
-            // TODO: 21.06.2023
-            singleTabelRecycreView= new SubClassSingleTabelRecycreView(lifecycleOwner,lifecycleOwnerОбщая,getActivity(),cursorForViewPager);
 
+            // TODO: 21.06.2023
+            singleTabelRecycreView= new SubClassSingleTabelRecycreView(lifecycleOwner,lifecycleOwnerОбщая,getActivity());
 
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" cursorForViewPager.getPosition() " +cursorForViewPager.getPosition());
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" cursorForViewPager.getPosition() ");
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
@@ -311,6 +303,23 @@ public class FragmentSingleTabel extends Fragment {
         super.onViewCreated(view, savedInstanceState);
             // TODO: 21.06.2023 КОДЕ
             fragmentSingleTabel.new SubClassNewDataSingleTabel().методВнешнийВидФрагмента(view);
+
+            singleTabelRecycreView.МетодИнициализацииRecycreView();
+
+
+            Cursor cursorForViewPager  =   singleTabelRecycreView.  new SubClassGetCursor().МетодSwipesКурсор();
+            // TODO: 21.06.2023 Смещения Курсоора
+            // cursorForViewPager.moveToPosition(PositionCustomer);
+
+            singleTabelRecycreView.МетодЗаполениеRecycleView(cursorForViewPager );
+
+            //    singleTabelRecycreView. методДляSimpeCallbacks( );
+            // TODO: 14.04.2023 доделываем single tabel
+            singleTabelRecycreView.МетодСлушательRecycleView();
+
+            singleTabelRecycreView.   МетодСлушательКурсора(cursorForViewPager );
+
+            singleTabelRecycreView.   методWorkManagerLifecycleOwner();
            // fragmentSingleTabel.new SubClassTestDataAnScreen().методТестовыйВЫгрузкаДанныхНаЭкран(view);
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -396,23 +405,6 @@ public class FragmentSingleTabel extends Fragment {
                     fragmentSingleTabel.    МетодСпинерДепартамент();
                     fragmentSingleTabel.    МетодОтработкиПоднятияКлавиатуры();
                     fragmentSingleTabel.    МетодПриНАжатииНаКнопкуBACK();
-
-
-
-
-                    singleTabelRecycreView.МетодИнициализацииRecycreView();
-
-
-                    singleTabelRecycreView.МетодЗаполениеRecycleView( cursorForViewPager );
-
-                //    singleTabelRecycreView. методДляSimpeCallbacks( );
-                    // TODO: 14.04.2023 доделываем single tabel
-                    singleTabelRecycreView.МетодСлушательRecycleView();
-
-                    singleTabelRecycreView.   МетодСлушательКурсора(cursorForViewPager );
-
-                    singleTabelRecycreView.   методWorkManagerLifecycleOwner();
-
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -822,9 +814,7 @@ public class FragmentSingleTabel extends Fragment {
 
         public SubClassSingleTabelRecycreView(@NonNull  LifecycleOwner lifecycleOwner,
                                               @NonNull  LifecycleOwner  lifecycleOwnerОбщая,
-                                              @NonNull Activity activity,
-                                              @NonNull Cursor cursorForViewPager) {
-            this.cursorForViewPager = this.cursorForViewPager;
+                                              @NonNull Activity activity) {
         }
 
         private void МетодИнициализацииRecycreView() {
@@ -1244,10 +1234,11 @@ public class FragmentSingleTabel extends Fragment {
             }
         }
         // TODO: 04.03.2022 прозвомжность Заполения RecycleView
-        void МетодЗаполениеRecycleView(  @NonNull Cursor cursor) {
+        void МетодЗаполениеRecycleView(  @NonNull Cursor cursorForViewPager) {
             try {
+                this.cursorForViewPager=cursorForViewPager;
                 // remove item from adapter
-                myRecycleViewAdapter = new  SubClassSingleTabelRecycreView.MyRecycleViewAdapter(cursor );
+                myRecycleViewAdapter = new  SubClassSingleTabelRecycreView.MyRecycleViewAdapter(cursorForViewPager );
                 myRecycleViewAdapter.notifyDataSetChanged();
                 recycler_view_single_tabel.setAdapter(myRecycleViewAdapter);
                 // TODO: 16.06.2023  перегрузка экрана
@@ -1256,7 +1247,7 @@ public class FragmentSingleTabel extends Fragment {
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                        "cursorForViewPager  " + cursor );
+                        "cursorForViewPager  " + cursorForViewPager );
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1349,7 +1340,7 @@ public class FragmentSingleTabel extends Fragment {
                 try {
                     Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor);
                         if (cursor.getCount() > 0 && holder.TableLayoutSingleTabel != null  && cursor!=null && cursor.getCount()>cursor.getPosition() ) {
-
+                            // TODO: 22.06.2023 данные
                             МетодЗаполняемДаннымиRecycreViewSingleTable(holder, cursor);
                             // TODO: 07.04.2023 переопрелделния Вида Табеля
                             Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
@@ -1447,24 +1438,25 @@ public class FragmentSingleTabel extends Fragment {
                 try {
                     viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov, parent, false);
 
-                    if (cursor.getCount()>0  ) {
+                    if (cursor.getCount()>0) {
                         // viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm, parent, false);
                         viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm_one_row, parent, false);
                         if (myViewHolder!=null) {
-                            // TODO: 22.06.2023
-                            fragmentSingleTabel.new SubClassBungleSingle().методGETДанныеRunTimeИзCursor(cursor);
                             switch (   myViewHolder.getAbsoluteAdapterPosition()){
                                 case 6:
                                     // TODO: 14.04.2023 ЧАСЫ
                                     методПослеОбновлениеЯчейкиСчитаемЧасы();
-
-                                    //  методСчитаемЧасы(cursorForViewPager );
                                     // TODO: 04.04.2023  ФИО
                                     new  SubClassChanegeSetNameProffesio().    МетодЗаполняемФИОRow( cursor);
                                     // TODO: 16.04.2023 Професии Професии Професии Професии
                                     МетодаКликаTableRowФИО( );
                                     break;
                                 // TODO: 18.06.2023
+                                case 0:
+                                    // TODO: 22.06.2023
+                                    fragmentSingleTabel.new SubClassBungleSingle().методGETДанныеRunTimeИзCursor(cursor );
+
+                                    break;
                 /*    case 29:
                     case 30:
                     case 31:
@@ -2721,42 +2713,6 @@ public class FragmentSingleTabel extends Fragment {
             }
 
         }
-
-
-        class SubClassGetCursor{
-            Cursor          cursor = null;
-            String  СамЗапрос;
-            String[] УсловияВыборки;
-            protected Cursor МетодSwipesКурсор() {
-                try{
-                    СамЗапрос=" SELECT  *   FROM viewtabel AS t" +
-                            " WHERE t.cfo=? AND t.month_tabels  =?  AND t.year_tabels = ?  AND t.status_send !=?  AND t.fio IS NOT NULL  ORDER BY   t._id  " ;
-                    УсловияВыборки=new String[]{String.valueOf(DigitalNameCFO),
-                            String.valueOf(  МЕсяцТабелей),
-                            String.valueOf(   ГодТабелей),
-                            String.valueOf(  "Удаленная") };
-                    //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
-                    Bundle bundleГлавныйКурсорMultiДанныеSwipes= new Bundle();
-                    bundleГлавныйКурсорMultiДанныеSwipes.putString("СамЗапрос",СамЗапрос);
-                    bundleГлавныйКурсорMultiДанныеSwipes.putStringArray("УсловияВыборки" ,УсловияВыборки);
-                    bundleГлавныйКурсорMultiДанныеSwipes.putString("Таблица","viewtabel");
-                    cursor =      (Cursor)    new SubClassCursorLoader(). CursorLoaders(getContext(), bundleГлавныйКурсорMultiДанныеSwipes);
-                    // TODO: 13.04.2023 делаем смещение по курсору
-                    cursor.move(PositionCustomer);
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "cursorForViewPager " +cursor );
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
-                return  cursor;
-            }
-
-        }
         class SubClassSearchProfessia {
             Cursor cursorДанные;
             MaterialButton alertDialogНовыйПосикКнопкаЗакрыть;
@@ -3329,6 +3285,41 @@ public class FragmentSingleTabel extends Fragment {
                         this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
+        }
+
+        public    class SubClassGetCursor{
+            Cursor          cursor = null;
+            String  СамЗапрос;
+            String[] УсловияВыборки;
+            protected Cursor МетодSwipesКурсор() {
+                try{
+                    СамЗапрос=" SELECT  *   FROM viewtabel AS t" +
+                            " WHERE t.cfo=? AND t.month_tabels  =?  AND t.year_tabels = ?  AND t.status_send !=?  AND t.fio IS NOT NULL  ORDER BY   t._id  " ;
+                    УсловияВыборки=new String[]{String.valueOf(DigitalNameCFO),
+                            String.valueOf(  МЕсяцТабелей),
+                            String.valueOf(   ГодТабелей),
+                            String.valueOf(  "Удаленная") };
+                    //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
+                    Bundle bundleГлавныйКурсорMultiДанныеSwipes= new Bundle();
+                    bundleГлавныйКурсорMultiДанныеSwipes.putString("СамЗапрос",СамЗапрос);
+                    bundleГлавныйКурсорMultiДанныеSwipes.putStringArray("УсловияВыборки" ,УсловияВыборки);
+                    bundleГлавныйКурсорMultiДанныеSwipes.putString("Таблица","viewtabel");
+                    cursor =      (Cursor)    new SubClassCursorLoader(). CursorLoaders(getContext(), bundleГлавныйКурсорMultiДанныеSwipes);
+                    // TODO: 13.04.2023 делаем смещение по курсору
+                    cursor.move(PositionCustomer);
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "cursorForViewPager " +cursor );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
+                return  cursor;
+            }
+
         }
 
     }//TODO КОНЕЦ КЛАССА визуального оформление Recycreview

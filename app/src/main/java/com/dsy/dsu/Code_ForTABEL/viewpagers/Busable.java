@@ -7,5 +7,4 @@ import androidx.viewpager.widget.ViewPager;
 
 public interface Busable {
     ViewPager viewPager();
-    Cursor getcorsor(@NonNull Integer integer);
 }
