@@ -131,6 +131,8 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
 
     private     Cursor     cursorForViewPager;
 
+    private       Integer   PositionOffsetSingleTabel;
+
 
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
     @Override
@@ -221,7 +223,7 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
                 // TODO: 10.04.2023
                 if (bundle_single_tabel_viewpagers!=null) {
                     Long    MainParentUUID=    bundle_single_tabel_viewpagers.getLong("MainParentUUID", 0l);
-                    Integer   PositionCustomer=    bundle_single_tabel_viewpagers.getInt("Position", 0);
+                      PositionOffsetSingleTabel=    bundle_single_tabel_viewpagers.getInt("Position", 0);
                       ГодТабелей=  bundle_single_tabel_viewpagers.getInt("ГодТабелей", 0);
                        МЕсяцТабелей=  bundle_single_tabel_viewpagers.getInt("МЕсяцТабелей",0);
                            DigitalNameCFO=   bundle_single_tabel_viewpagers.getInt("DigitalNameCFO", 0);
@@ -236,7 +238,7 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                             + " FullNameCFO "+FullNameCFO+ " CurrenrsСhildUUID " +CurrenrsСhildUUID
                             + " ГодТабелей " +ГодТабелей +" МЕсяцТабелей " +МЕсяцТабелей   + " DigitalNameCFO "+DigitalNameCFO+
-                            " PositionCustomer " +PositionCustomer+ " ИмесяцвИГодСразу " +ИмесяцвИГодСразу);
+                            " PositionOffsetSingleTabel " +PositionOffsetSingleTabel+ " ИмесяцвИГодСразу " +ИмесяцвИГодСразу);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -251,38 +253,21 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
             try {
                 ViewAdapterModel viewAdapterДанные=new ViewAdapterModel(getSupportFragmentManager());
                 CopyOnWriteArrayList<Fragment> copyOnWriteArrayListfragments=new CopyOnWriteArrayList<>();
-                IntStream.iterate(0, i -> i + 1) .limit(cursorForViewPager.getCount() )
-                        .forEachOrdered(new IntConsumer() {
-                    @Override
-                    public void accept(int value) {
-                        try{
-                            // TODO: 22.06.2023  метод генерируем будущие фрагменты  для Sinle Tabel
-                            методГенерацииФрагментовДляSingleTabel(value, cursorForViewPager, copyOnWriteArrayListfragments);
-                            // TODO: 22.06.2023
-                            cursorForViewPager.moveToNext();
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                    }
-                });
+                // TODO: 23.06.2023
+                do{
+                        // TODO: 22.06.2023  метод генерируем будущие фрагменты  для Sinle Tabel
+                        методГенерацииФрагментовДляSingleTabel(  cursorForViewPager, copyOnWriteArrayListfragments);
+                }while (cursorForViewPager.moveToNext());
                 viewAdapterДанные.setFragments(copyOnWriteArrayListfragments);
                 // TODO: 20.06.2023  Заполеяем Адампетре
                 viewPager.setAdapter(viewAdapterДанные);
-                viewPager.setPageTransformer(true,View::setTranslationX,0 );
+             //   viewPager.setCurrentItem(PositionOffsetSingleTabel);
                 viewPager.refreshDrawableState();
                 viewPager.requestLayout() ;
                 cursorForViewPager.close();
                 // TODO: 21.06.2023  clear
-             ///   viewPager.getAdapter().notifyDataSetChanged();
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                Log.d(this.getClass().getName(),"\n" + " class " +
+                        Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
             } catch (Exception e) {
@@ -297,19 +282,17 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
 
 
 
-        private void методГенерацииФрагментовДляSingleTabel(int value, @NonNull Cursor cursorForViewPager,
+        private void методГенерацииФрагментовДляSingleTabel( @NonNull Cursor cursorForViewPager,
                                                             CopyOnWriteArrayList<Fragment> copyOnWriteArrayListfragments) {
             try{
-            bundle_single_tabel_viewpagers.putInt("value", value);
-            if (value < cursorForViewPager.getCount()) {
+            bundle_single_tabel_viewpagers.putInt("PositionOffsetSingleTabel",       PositionOffsetSingleTabel);
             Long    uuid=    cursorForViewPager.getLong(cursorForViewPager.getColumnIndex("uuid"));
         bundle_single_tabel_viewpagers.putLong("uuid",uuid);
         bundle_single_tabel_viewpagers.putInt("getpositioncursor", cursorForViewPager.getPosition());
-        bundle_single_tabel_viewpagers.putInt("value", value);
             // TODO: 21.06.2023 перердаем параметры для создание нового фрагмента
         FragmentSingleTabel fragmentSingleTabel=FragmentSingleTabel.newInstance( bundle_single_tabel_viewpagers);
         copyOnWriteArrayListfragments.add(fragmentSingleTabel);
-            }
+
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
