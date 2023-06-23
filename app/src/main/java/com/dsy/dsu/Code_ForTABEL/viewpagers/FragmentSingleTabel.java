@@ -232,6 +232,7 @@ public class FragmentSingleTabel extends Fragment {
         super.onAttach(context);
         busable = (Busable) context;
         viewPager=(ViewPager)  busable.viewPager();
+            viewPager.setOffscreenPageLimit(0);
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -551,6 +552,8 @@ public class FragmentSingleTabel extends Fragment {
                         @Override
                         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                             // TODO: 21.06.2023 Смещения Курсоора
+                            // TODO: 16.06.2023  перегрузка экрана
+                           // singleTabelRecycreView.   методПерегрузкиRecycreView();
                             // TODO: 21.06.2023 Смещения Курсоора
                           //  cursorForViewPager.moveToPosition(CurrentFragmentMaxItem);
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -561,7 +564,6 @@ public class FragmentSingleTabel extends Fragment {
                         @Override
                         public void onPageSelected(int position) {
                             // TODO: 21.06.2023 Смещения Курсоора
-                            singleTabelRecycreView.методВиузуацииПрогрессБара();
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -570,10 +572,26 @@ public class FragmentSingleTabel extends Fragment {
                         @Override
                         public void onPageScrollStateChanged(int state) {
                             // TODO: 21.06.2023 Смещения Курсоора
-                            if (ProgressBarSingleTabel!=null) {
-                                ProgressBarSingleTabel.setVisibility(View.VISIBLE);
+                            if (state>0) {
+                                message.getTarget().post(()->{
+
+                                if (ProgressBarSingleTabel!=null) {
+                                    ProgressBarSingleTabel.setVisibility(View.VISIBLE);
+                                }
+                                // TODO: 16.06.2023
+                                singleTabelRecycreView.      методScrollsLeftRecyreView();
+
+                                singleTabelRecycreView.   методПослеОбновлениеЯчейкиСчитаемЧасы();
+                                // TODO: 16.06.2023  после переполуение данныз перегрузка экрана
+                                singleTabelRecycreView.     методПерегрузкиRecycreView();
+                                singleTabelRecycreView.методВиузуацииПрогрессБара();
+
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
+                                });
                             }
-                            singleTabelRecycreView.методВиузуацииПрогрессБара();
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -597,7 +615,7 @@ public class FragmentSingleTabel extends Fragment {
             // TODO: 22.06.2023  траспормация при переключении
             void методViewPager(){
 
-             //   viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
+                viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
           /*      viewPager.setPageTransformer(true, new ViewPager.PageTransformer() {
                     @Override
                     public void transformPage(@NonNull View page, float position) {
@@ -1277,18 +1295,20 @@ public class FragmentSingleTabel extends Fragment {
             try {
                 Integer Позиция=        myRecycleViewAdapter.cursor.getPosition();
                 // TODO: 20.04.2023 Данные
-                cursorForViewPager =    new  SubClassGetCursor().МетодSwipesКурсор();
-                if (myRecycleViewAdapter.cursor.isLast()){
-                    cursorForViewPager.moveToFirst();
+                ///cursorForViewPager =    new  SubClassGetCursor().МетодSwipesКурсор();
+             Cursor cursorSwipeViewPager=   myRecycleViewAdapter.cursor;
+                if (cursorSwipeViewPager.isLast()){
+                    cursorSwipeViewPager.moveToFirst();
                 }else {
                     Позиция=Позиция+1;
-                    cursorForViewPager.moveToPosition(Позиция);
+                    cursorSwipeViewPager.moveToPosition(Позиция);
                 }
+                myRecycleViewAdapter.cursor= cursorSwipeViewPager;
                 CurrenrsСhildUUID=       cursorForViewPager.getLong(cursorForViewPager.getColumnIndex("uuid"));
                 CurrenrsSelectFio=       cursorForViewPager.getLong(cursorForViewPager.getColumnIndex("fio"));
                 ФИО=       cursorForViewPager.getString(cursorForViewPager.getColumnIndex("name"));
 
-                myRecycleViewAdapter.cursor= cursorForViewPager;
+
                 // TODO: 15.06.2023 перегрузка данныех
                 myRecycleViewAdapter.notifyDataSetChanged();
                 // TODO: 18.06.2023
@@ -2345,7 +2365,7 @@ public class FragmentSingleTabel extends Fragment {
                 if (ProgressBarSingleTabel!=null) {
                     ProgressBarSingleTabel.setVisibility(View.INVISIBLE);
                 }
-            },500);
+            },1000);
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
@@ -2532,7 +2552,6 @@ public class FragmentSingleTabel extends Fragment {
                 СпинерИгодИМесяц.requestLayout();
 
 
-                viewPager.setOffscreenPageLimit(0);
                 viewPager.refreshDrawableState();
                 viewPager.requestLayout() ;
 

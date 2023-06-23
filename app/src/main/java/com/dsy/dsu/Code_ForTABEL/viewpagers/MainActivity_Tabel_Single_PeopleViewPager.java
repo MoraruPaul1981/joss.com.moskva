@@ -156,6 +156,7 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
             createConfigurationContext(config);
             // TODO: 20.06.2023 Инизиализация
             viewPager =  (ViewPager) findViewById(R.id.viewPager_single_tabel_viewpagers);
+            viewPager.setOffscreenPageLimit(0);
             // TODO: 20.06.2023
             singleWithViewPager=  new SubClassBissnessLogicTableSingleWithViewPager(viewPager);
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -260,7 +261,6 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
                 viewAdapterДанные.setFragments(copyOnWriteArrayListfragments);
                 // TODO: 20.06.2023  Заполеяем Адампетре
                 viewPager.setAdapter(viewAdapterДанные);
-                viewPager.setOffscreenPageLimit(0);
                 viewPager.refreshDrawableState();
                 viewPager.requestLayout() ;
                 cursorForViewPager.close();
