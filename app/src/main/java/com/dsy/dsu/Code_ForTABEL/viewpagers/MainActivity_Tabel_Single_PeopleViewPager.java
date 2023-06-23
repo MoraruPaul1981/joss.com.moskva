@@ -254,10 +254,9 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
                 ViewAdapterModel viewAdapterДанные=new ViewAdapterModel(getSupportFragmentManager());
                 CopyOnWriteArrayList<Fragment> copyOnWriteArrayListfragments=new CopyOnWriteArrayList<>();
                 // TODO: 23.06.2023
-                do{
                         // TODO: 22.06.2023  метод генерируем будущие фрагменты  для Sinle Tabel
                         методГенерацииФрагментовДляSingleTabel(  cursorForViewPager, copyOnWriteArrayListfragments);
-                }while (cursorForViewPager.moveToNext());
+
                 viewAdapterДанные.setFragments(copyOnWriteArrayListfragments);
                 // TODO: 20.06.2023  Заполеяем Адампетре
                 viewPager.setAdapter(viewAdapterДанные);
@@ -285,10 +284,11 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
         private void методГенерацииФрагментовДляSingleTabel( @NonNull Cursor cursorForViewPager,
                                                             CopyOnWriteArrayList<Fragment> copyOnWriteArrayListfragments) {
             try{
-            bundle_single_tabel_viewpagers.putInt("PositionOffsetSingleTabel",       PositionOffsetSingleTabel);
+            bundle_single_tabel_viewpagers.putInt("CurrentFragmentSingleTabel",       PositionOffsetSingleTabel);
+                bundle_single_tabel_viewpagers.putInt("CurrentFragmentGetCursor", cursorForViewPager.getPosition());
+                bundle_single_tabel_viewpagers.putInt("CurrentFragmentMaxItem", cursorForViewPager.getCount());
             Long    uuid=    cursorForViewPager.getLong(cursorForViewPager.getColumnIndex("uuid"));
-        bundle_single_tabel_viewpagers.putLong("uuid",uuid);
-        bundle_single_tabel_viewpagers.putInt("getpositioncursor", cursorForViewPager.getPosition());
+             bundle_single_tabel_viewpagers.putLong("uuid",uuid);
             // TODO: 21.06.2023 перердаем параметры для создание нового фрагмента
         FragmentSingleTabel fragmentSingleTabel=FragmentSingleTabel.newInstance( bundle_single_tabel_viewpagers);
         copyOnWriteArrayListfragments.add(fragmentSingleTabel);

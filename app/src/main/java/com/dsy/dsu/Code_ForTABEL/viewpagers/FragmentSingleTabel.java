@@ -187,7 +187,7 @@ public class FragmentSingleTabel extends Fragment {
     private  SubClassSingleTabelRecycreView. MyRecycleViewAdapter myRecycleViewAdapter;
     private  SubClassSingleTabelRecycreView. MyViewHolder myViewHolder;
 
-    private  Integer getpositioncursor =0;
+    private  Integer CurrentFragmentMaxItem =0;
 
     private  String FullNameCFO = "";
     private  Integer ГодТабелей = 0;
@@ -212,7 +212,10 @@ public class FragmentSingleTabel extends Fragment {
 
     private        Cursor cursorForViewPager ;
     private  SubClassSingleTabelRecycreView singleTabelRecycreView;
-    private  Integer  PositionOffsetSingleTabel;
+    private  Integer  CurrentFragmentGetCursor;
+
+
+    private  Integer  CurrentFragmentSingleTabel;
     // TODO: Rename and change types and number of parameters
     public static FragmentSingleTabel newInstance(@NonNull Bundle bundle_single_tabel_viewpagers ) {
         FragmentSingleTabel fragment = new FragmentSingleTabel();
@@ -301,33 +304,23 @@ public class FragmentSingleTabel extends Fragment {
         try{
         super.onViewCreated(view, savedInstanceState);
             // TODO: 21.06.2023 КОДЕ
-
             fragmentSingleTabel.new SubClassBungleSingle().методGETДанныеИзДругихАктивити();
-
             fragmentSingleTabel.new SubClassNewDataSingleTabel().методВнешнийВидФрагмента(view);
-
             singleTabelRecycreView.МетодИнициализацииRecycreView();
-
-
              cursorForViewPager  =   singleTabelRecycreView.  new SubClassGetCursor().МетодSwipesКурсор();
             // TODO: 21.06.2023 Смещения Курсоора
-
-
-             cursorForViewPager.move(getpositioncursor);
-
-            singleTabelRecycreView.МетодЗаполениеRecycleView(cursorForViewPager );
+             cursorForViewPager.move( CurrentFragmentSingleTabel);
+                 singleTabelRecycreView.МетодЗаполениеRecycleView(cursorForViewPager );
 
             //    singleTabelRecycreView. методДляSimpeCallbacks( );
             // TODO: 14.04.2023 доделываем single tabel
             singleTabelRecycreView.МетодСлушательRecycleView();
             singleTabelRecycreView.   МетодСлушательКурсора(cursorForViewPager );
             singleTabelRecycreView.   методWorkManagerLifecycleOwner();
-
-
             singleTabelRecycreView.    методПроверяемБылаЛиУжеУстановленоСмещение();
-
             // TODO: 16.06.2023  перегрузка экрана
             singleTabelRecycreView.   методПерегрузкиRecycreView();
+
            // fragmentSingleTabel.new SubClassTestDataAnScreen().методТестовыйВЫгрузкаДанныхНаЭкран(view);
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -416,7 +409,7 @@ public class FragmentSingleTabel extends Fragment {
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + " getpositioncursor " + getpositioncursor);
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + " CurrentFragmentMaxItem " + CurrentFragmentMaxItem);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
@@ -435,8 +428,12 @@ public class FragmentSingleTabel extends Fragment {
                   Bundle     bundleИзMainActitivy_List_Tables=(Bundle) getArguments();
                   // TODO: 10.04.2023
                   if (bundleИзMainActitivy_List_Tables!=null) {
+                      // TODO: 23.06.2023  NEW
+                      CurrentFragmentSingleTabel =bundleИзMainActitivy_List_Tables.getInt("CurrentFragmentSingleTabel",0);
+                      CurrentFragmentGetCursor =bundleИзMainActitivy_List_Tables.getInt("CurrentFragmentGetCursor",0);
+                      CurrentFragmentMaxItem =    bundleИзMainActitivy_List_Tables.getInt("CurrentFragmentMaxItem", 0);
+                      // TODO: 23.06.2023 OLD
                       MainParentUUID=    bundleИзMainActitivy_List_Tables.getLong("MainParentUUID", 0l);
-                      getpositioncursor =    bundleИзMainActitivy_List_Tables.getInt("getpositioncursor", 0);
                       ГодТабелей=  bundleИзMainActitivy_List_Tables.getInt("ГодТабелей", 0);
                       МЕсяцТабелей=  bundleИзMainActitivy_List_Tables.getInt("МЕсяцТабелей",0);
                       DigitalNameCFO=   bundleИзMainActitivy_List_Tables.getInt("DigitalNameCFO", 0);
@@ -445,15 +442,14 @@ public class FragmentSingleTabel extends Fragment {
                       CurrenrsСhildUUID= bundleИзMainActitivy_List_Tables.getLong("CurrenrsСhildUUID", 0l);
                       ФИО= bundleИзMainActitivy_List_Tables.getString("ФИО", "").trim();
                       CurrenrsSelectFio= bundleИзMainActitivy_List_Tables.getLong("CurrenrsSelectFio", 0l);
-                      PositionOffsetSingleTabel =bundleИзMainActitivy_List_Tables.getInt("PositionOffsetSingleTabel");
                       Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                               " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                               " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                               + " FullNameCFO "+FullNameCFO+ " CurrenrsСhildUUID " +CurrenrsСhildUUID
                               + " ГодТабелей " +ГодТабелей +" МЕсяцТабелей " +МЕсяцТабелей   + " DigitalNameCFO "+DigitalNameCFO+
-                              " getpositioncursor " + getpositioncursor
+                              " CurrentFragmentMaxItem " + CurrentFragmentMaxItem
                               + " ИмесяцвИГодСразу " +ИмесяцвИГодСразу
-                              + "  PositionOffsetSingleTabel " +  PositionOffsetSingleTabel);
+                              + "  CurrentFragmentGetCursor " +  CurrentFragmentGetCursor);
                   }
               } catch (Exception e) {
                   e.printStackTrace();
@@ -470,7 +466,7 @@ public class FragmentSingleTabel extends Fragment {
                   // TODO: 10.04.2023
                   if (cursor!=null) {
                       MainParentUUID=    cursor.getLong(cursor.getColumnIndex("uuid_tabel"));
-                      getpositioncursor =     myViewHolder.getAbsoluteAdapterPosition();
+                      CurrentFragmentMaxItem =     myViewHolder.getAbsoluteAdapterPosition();
                       ГодТабелей=  cursor.getInt(cursor.getColumnIndex("year_tabels"));
                       МЕсяцТабелей= cursor.getInt(cursor.getColumnIndex("month_tabels"));
                       DigitalNameCFO=   cursor.getInt(cursor.getColumnIndex("uuid"));
@@ -483,7 +479,7 @@ public class FragmentSingleTabel extends Fragment {
                               " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                               + " FullNameCFO "+FullNameCFO+ " CurrenrsСhildUUID " +CurrenrsСhildUUID
                               + " ГодТабелей " +ГодТабелей +" МЕсяцТабелей " +МЕсяцТабелей   + " DigitalNameCFO "+DigitalNameCFO+
-                              " getpositioncursor " + getpositioncursor + " ИмесяцвИГодСразу " +ИмесяцвИГодСразу + "  cursor " +cursor);
+                              " CurrentFragmentMaxItem " + CurrentFragmentMaxItem + " ИмесяцвИГодСразу " +ИмесяцвИГодСразу + "  cursor " +cursor);
                   }
               } catch (Exception e) {
                   e.printStackTrace();
@@ -526,8 +522,8 @@ public class FragmentSingleTabel extends Fragment {
                     textfragnetviewpager2.setText(uuid.toString());
                     // TODO: 20.06.2023
                     TextView textfragnetviewpager3 = (TextView)  view.findViewById(R.id.textfragnetviewpager3);
-                    Integer getpositioncursor =getArguments().getInt(   "getpositioncursor");;
-                    textfragnetviewpager3.setText(getpositioncursor.toString());
+                    Integer CurrentFragmentMaxItem =getArguments().getInt(   "CurrentFragmentMaxItem");;
+                    textfragnetviewpager3.setText(CurrentFragmentMaxItem.toString());
                     // TODO: 21.06.2023
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -556,7 +552,7 @@ public class FragmentSingleTabel extends Fragment {
                         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                             // TODO: 21.06.2023 Смещения Курсоора
                             // TODO: 21.06.2023 Смещения Курсоора
-                          //  cursorForViewPager.moveToPosition(getpositioncursor);
+                          //  cursorForViewPager.moveToPosition(CurrentFragmentMaxItem);
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -574,7 +570,9 @@ public class FragmentSingleTabel extends Fragment {
                         @Override
                         public void onPageScrollStateChanged(int state) {
                             // TODO: 21.06.2023 Смещения Курсоора
-                            ProgressBarSingleTabel.setVisibility(View.VISIBLE);
+                            if (ProgressBarSingleTabel!=null) {
+                                ProgressBarSingleTabel.setVisibility(View.VISIBLE);
+                            }
                             singleTabelRecycreView.методВиузуацииПрогрессБара();
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -950,7 +948,7 @@ public class FragmentSingleTabel extends Fragment {
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                         + " FullNameCFO "+FullNameCFO+ " CurrenrsСhildUUID " +CurrenrsСhildUUID
                         + " ГодТабелей " +ГодТабелей +" МЕсяцТабелей " +МЕсяцТабелей   + " DigitalNameCFO "+DigitalNameCFO+
-                        " getpositioncursor " + getpositioncursor + " ИмесяцвИГодСразу " +ИмесяцвИГодСразу);
+                        " CurrentFragmentMaxItem " + CurrentFragmentMaxItem + " ИмесяцвИГодСразу " +ИмесяцвИГодСразу);
                 startActivity(Интент_ПереходаMainActivity_List_Peoples);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1054,7 +1052,7 @@ public class FragmentSingleTabel extends Fragment {
                             subClassReBornDataRecyreView.методПереРоденияRevireViewScroll();
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"getpositioncursor   " + getpositioncursor + " cursorForViewPager " + cursorForViewPager);
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"CurrentFragmentMaxItem   " + CurrentFragmentMaxItem + " cursorForViewPager " + cursorForViewPager);
                         } catch (Exception e) {
                             e.printStackTrace();
                             Log.e(getContext().getClass().getName(),
@@ -1077,7 +1075,7 @@ public class FragmentSingleTabel extends Fragment {
                         //методАнимацияRecyreView(viewHolder);
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"getpositioncursor   " + getpositioncursor + " cursorForViewPager " + cursorForViewPager
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"CurrentFragmentMaxItem   " + CurrentFragmentMaxItem + " cursorForViewPager " + cursorForViewPager
                                 + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
                     }
 
@@ -1196,7 +1194,7 @@ public class FragmentSingleTabel extends Fragment {
                         //  методАнимацияRecyreView(viewHolder);
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"getpositioncursor   " + getpositioncursor + " cursorForViewPager " + cursorForViewPager
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"CurrentFragmentMaxItem   " + CurrentFragmentMaxItem + " cursorForViewPager " + cursorForViewPager
                                 + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
                     }
                     private void методИзмененияЦветаSwipes(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
@@ -1297,7 +1295,7 @@ public class FragmentSingleTabel extends Fragment {
                 recycler_view_single_tabel.getAdapter().notifyDataSetChanged();
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"getpositioncursor   " + getpositioncursor + " cursorForViewPager " + cursorForViewPager +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"CurrentFragmentMaxItem   " + CurrentFragmentMaxItem + " cursorForViewPager " + cursorForViewPager +
                         " posio " +myViewHolder.getLayoutPosition()  + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО
                         + " cursorForViewPager " + cursorForViewPager.getPosition());
 
@@ -1334,7 +1332,7 @@ public class FragmentSingleTabel extends Fragment {
                 recycler_view_single_tabel.getAdapter().notifyDataSetChanged();
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"getpositioncursor   " + getpositioncursor + " cursorForViewPager " + cursorForViewPager +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"CurrentFragmentMaxItem   " + CurrentFragmentMaxItem + " cursorForViewPager " + cursorForViewPager +
                         " posio " +myViewHolder.getLayoutPosition()  + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО
                         + " cursorForViewPager " + cursorForViewPager.getPosition());
 
@@ -1403,8 +1401,6 @@ public class FragmentSingleTabel extends Fragment {
                 myRecycleViewAdapter = new  SubClassSingleTabelRecycreView.MyRecycleViewAdapter(cursorForViewPager );
                 myRecycleViewAdapter.notifyDataSetChanged();
                 recycler_view_single_tabel.setAdapter(myRecycleViewAdapter);
-                recycler_view_single_tabel.getAdapter().notifyDataSetChanged();
-                viewPager.getAdapter().notifyDataSetChanged();
                 // TODO: 16.06.2023  перегрузка экрана
                 методПерегрузкиRecycreView();
 
@@ -1502,9 +1498,10 @@ public class FragmentSingleTabel extends Fragment {
             @Override
             public void onBindViewHolder(@NonNull  SubClassSingleTabelRecycreView.MyViewHolder holder, @SuppressLint("RecyclerView") int position, @NonNull List<Object> payloads) {
                 try {
-                        // TODO: 22.06.2023 данные
-                        МетодЗаполняемДаннымиRecycreViewSingleTable(holder, cursor);
-                        // TODO: 06.04.2023
+                    // TODO: 23.06.2023
+                                // TODO: 22.06.2023 данные
+                                МетодЗаполняемДаннымиRecycreViewSingleTable(holder, cursor);
+                                // TODO: 06.04.2023
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cursorForViewPager " +cursor +
@@ -1880,7 +1877,7 @@ public class FragmentSingleTabel extends Fragment {
                     dataRowData.putString("День", НазваниеДляДень);
                     // TODO: 13.04.2023  дополнительные
                     dataRowData.putLong("MainParentUUID", MainParentUUID);
-                    dataRowData.putInt("Position", getpositioncursor);
+                    dataRowData.putInt("Position", CurrentFragmentMaxItem);
                     dataRowData.putInt("ГодТабелей",   ГодТабелей);
                     dataRowData.putInt("МЕсяцТабелей", МЕсяцТабелей);
                     dataRowData.putInt("DigitalNameCFO", DigitalNameCFO);
@@ -2345,7 +2342,9 @@ public class FragmentSingleTabel extends Fragment {
         private void методВиузуацииПрогрессБара() {
             try{
             message.getTarget().postDelayed(()->{
-                ProgressBarSingleTabel.setVisibility(View.INVISIBLE);
+                if (ProgressBarSingleTabel!=null) {
+                    ProgressBarSingleTabel.setVisibility(View.INVISIBLE);
+                }
             },500);
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2555,7 +2554,7 @@ public class FragmentSingleTabel extends Fragment {
             Bundle bundleOffsetSingleTabek=getArguments();
             Boolean EnableOffPosion=  bundleOffsetSingleTabek.getBoolean("EnableOffPosion",false);
             if (EnableOffPosion==false) {
-                viewPager.setCurrentItem(PositionOffsetSingleTabel,true);
+                viewPager.setCurrentItem(CurrentFragmentGetCursor,true);
                 // TODO: 23.06.2023
                 bundleOffsetSingleTabek.putBoolean("EnableOffPosion",true);
             }
@@ -2705,7 +2704,7 @@ public class FragmentSingleTabel extends Fragment {
                 textViewчасыsimgletabel.setText("(" + ЧасыТекущегоСОтрудника + "/часы)  "
                         + ""+ ПозицуияВыбраногоСОтрудника+" из "+  cursor.getCount()+"");
                 Log.d(Class_MODEL_synchronized.class.getName()," RowNumber  " + " cursorForViewPager " +cursor.getPosition()
-                        +"myViewHolder.getLayoutPosition()   "+myViewHolder.getLayoutPosition() + "getpositioncursor  " + getpositioncursor);
+                        +"myViewHolder.getLayoutPosition()   "+myViewHolder.getLayoutPosition() + "CurrentFragmentMaxItem  " + CurrentFragmentMaxItem);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -2914,7 +2913,7 @@ public class FragmentSingleTabel extends Fragment {
 
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"getpositioncursor   " + getpositioncursor +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"CurrentFragmentMaxItem   " + CurrentFragmentMaxItem +
                                 " oldScrollY ");
                     });
                 } catch (Exception e) {
@@ -3493,7 +3492,7 @@ public class FragmentSingleTabel extends Fragment {
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                         + " FullNameCFO " + FullNameCFO + " CurrenrsСhildUUID " + CurrenrsСhildUUID
                         + " ГодТабелей " + ГодТабелей + " МЕсяцТабелей " + МЕсяцТабелей + " DigitalNameCFO " + DigitalNameCFO +
-                        " getpositioncursor " + getpositioncursor + " ИмесяцвИГодСразу " + ИмесяцвИГодСразу+ " editTextЯчейка " +editTextЯчейка);
+                        " CurrentFragmentMaxItem " + CurrentFragmentMaxItem + " ИмесяцвИГодСразу " + ИмесяцвИГодСразу+ " editTextЯчейка " +editTextЯчейка);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
