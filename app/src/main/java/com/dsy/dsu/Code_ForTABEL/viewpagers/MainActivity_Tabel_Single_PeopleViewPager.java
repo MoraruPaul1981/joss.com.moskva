@@ -261,7 +261,6 @@ public class MainActivity_Tabel_Single_PeopleViewPager extends AppCompatActivity
                 viewAdapterДанные.setFragments(copyOnWriteArrayListfragments);
                 // TODO: 20.06.2023  Заполеяем Адампетре
                 viewPager.setAdapter(viewAdapterДанные);
-             //   viewPager.setCurrentItem(PositionOffsetSingleTabel);
                 viewPager.refreshDrawableState();
                 viewPager.requestLayout() ;
                 cursorForViewPager.close();

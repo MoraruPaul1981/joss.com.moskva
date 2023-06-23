@@ -213,8 +213,6 @@ public class FragmentSingleTabel extends Fragment {
     private        Cursor cursorForViewPager ;
     private  SubClassSingleTabelRecycreView singleTabelRecycreView;
     private  Integer  PositionOffsetSingleTabel;
-
-    private Boolean ФлагЧтоУжеБылВыбраеНеПервыйЭлемент=false;
     // TODO: Rename and change types and number of parameters
     public static FragmentSingleTabel newInstance(@NonNull Bundle bundle_single_tabel_viewpagers ) {
         FragmentSingleTabel fragment = new FragmentSingleTabel();
@@ -324,6 +322,9 @@ public class FragmentSingleTabel extends Fragment {
             singleTabelRecycreView.МетодСлушательRecycleView();
             singleTabelRecycreView.   МетодСлушательКурсора(cursorForViewPager );
             singleTabelRecycreView.   методWorkManagerLifecycleOwner();
+
+
+            singleTabelRecycreView.    методПроверяемБылаЛиУжеУстановленоСмещение();
 
             // TODO: 16.06.2023  перегрузка экрана
             singleTabelRecycreView.   методПерегрузкиRecycreView();
@@ -574,9 +575,7 @@ public class FragmentSingleTabel extends Fragment {
                         public void onPageScrollStateChanged(int state) {
                             // TODO: 21.06.2023 Смещения Курсоора
                             ProgressBarSingleTabel.setVisibility(View.VISIBLE);
-                            message.getTarget().postDelayed(()->{
-                                ProgressBarSingleTabel.setVisibility(View.INVISIBLE);
-                            },1000);
+                            singleTabelRecycreView.методВиузуацииПрогрессБара();
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -1404,6 +1403,8 @@ public class FragmentSingleTabel extends Fragment {
                 myRecycleViewAdapter = new  SubClassSingleTabelRecycreView.MyRecycleViewAdapter(cursorForViewPager );
                 myRecycleViewAdapter.notifyDataSetChanged();
                 recycler_view_single_tabel.setAdapter(myRecycleViewAdapter);
+                recycler_view_single_tabel.getAdapter().notifyDataSetChanged();
+                viewPager.getAdapter().notifyDataSetChanged();
                 // TODO: 16.06.2023  перегрузка экрана
                 методПерегрузкиRecycreView();
 
@@ -2531,17 +2532,10 @@ public class FragmentSingleTabel extends Fragment {
                 СпинерИгодИМесяц.refreshDrawableState();
                 СпинерИгодИМесяц.requestLayout();
 
-                if (ФлагЧтоУжеБылВыбраеНеПервыйЭлемент==false) {
-                    viewPager.setCurrentItem(PositionOffsetSingleTabel,true);
-                    // TODO: 23.06.2023
-                    ФлагЧтоУжеБылВыбраеНеПервыйЭлемент=true;
-                }
 
+                viewPager.setOffscreenPageLimit(0);
                 viewPager.refreshDrawableState();
                 viewPager.requestLayout() ;
-
-
-
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2554,6 +2548,28 @@ public class FragmentSingleTabel extends Fragment {
                 new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
+        }
+
+        private void методПроверяемБылаЛиУжеУстановленоСмещение() {
+            try{
+            Bundle bundleOffsetSingleTabek=getArguments();
+            Boolean EnableOffPosion=  bundleOffsetSingleTabek.getBoolean("EnableOffPosion",false);
+            if (EnableOffPosion==false) {
+                viewPager.setCurrentItem(PositionOffsetSingleTabel,true);
+                // TODO: 23.06.2023
+                bundleOffsetSingleTabek.putBoolean("EnableOffPosion",true);
+            }
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
         }
 
         // TODO: 14.04.2023  слушатель Recycreviwe
