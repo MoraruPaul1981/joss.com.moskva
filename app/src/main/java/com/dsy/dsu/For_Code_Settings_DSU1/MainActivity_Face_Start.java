@@ -22,6 +22,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
+import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE_ORM;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Connections_Server;
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
@@ -59,6 +60,7 @@ public class MainActivity_Face_Start extends AppCompatActivity {
 
     private  String      ДатаПоследенегоЗаходаУспешнойАунтификации;
     private  CREATE_DATABASE   Create_Database_СсылкаНАБазовыйКласс;
+    private CREATE_DATABASE_ORM Create_Database_СсылкаНАБазовыйКласс_ORM;
     private  Context КонтекстДляFAceapp;
     private  Activity activity;
     private  int ПубличныйIDТекущегоПользователя=0;
@@ -67,6 +69,7 @@ public class MainActivity_Face_Start extends AppCompatActivity {
     private   SQLiteCursor КурсорДаннныеПоСотрудникуБолее7Дней =null;
   
     private SQLiteDatabase sqLiteDatabaseСамаБазы;
+    private SQLiteDatabase sqLiteDatabaseСамаБазы_ORM;
     // TODO: 24.02.202
     private  Boolean СтатусРаботыСервера =false;
     private SharedPreferences preferences;
@@ -78,7 +81,9 @@ public class MainActivity_Face_Start extends AppCompatActivity {
 try{
     setContentView(R.layout.activity_main__face);
     Create_Database_СсылкаНАБазовыйКласс=new CREATE_DATABASE(getApplicationContext());
+    Create_Database_СсылкаНАБазовыйКласс_ORM=new CREATE_DATABASE_ORM(getApplicationContext());
     sqLiteDatabaseСамаБазы=Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу();
+    sqLiteDatabaseСамаБазы_ORM=Create_Database_СсылкаНАБазовыйКласс_ORM.getССылкаНаСозданнуюБазу();
 activity=this;
         КонтекстДляFAceapp=this;
         ((Activity) КонтекстДляFAceapp) .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
