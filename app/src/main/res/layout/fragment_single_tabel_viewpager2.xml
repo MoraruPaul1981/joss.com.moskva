@@ -162,7 +162,23 @@
 
 
 
-
+        <ScrollView
+            android:id="@+id/scrollview_recycler_view_single_tabel"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:minHeight="550dp"
+            android:fillViewport="true"
+            android:scrollbars="horizontal|vertical"
+            android:stackFromBottom="true"
+            android:visibility="visible"
+            android:layout_margin="1dp"
+            android:padding="1dp"
+            app:layout_constraintBottom_toTopOf="@+id/ProgressBarSingleTabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/TextViewФИОПрофессия"
+            android:transcriptMode="alwaysScroll">
 
 
 
@@ -171,15 +187,16 @@
                     android:id="@+id/recycler_view_single_tabel"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:minHeight="550dp"
                     android:layout_centerHorizontal="true"
                     android:background="#FFFFFF"
                     android:scrollbars="vertical|horizontal"
                     android:keyboardNavigationCluster="true"
                     android:visibility="visible"
-                    android:layout_marginTop="5dp"
+                     android:layout_margin="1dp"
+                    android:padding="1dp"
                     app:layout_optimizationLevel="standard|barrier|chains"
                     android:windowSoftInputMode="stateVisible|adjustPan"
-                    android:padding="1dp"
                     app:layout_constraintBottom_toTopOf="@+id/ProgressBarSingleTabel"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -189,7 +206,7 @@
 
 
 
-
+        </ScrollView>
 
 
 

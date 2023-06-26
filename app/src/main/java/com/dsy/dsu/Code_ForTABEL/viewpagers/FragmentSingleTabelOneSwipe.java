@@ -44,6 +44,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -209,6 +210,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
     private  ViewGroup contGruop;
     private  SubClassSingleTabelRecycreView singleTabelRecycreView;
     private  Integer  CurrentFragmentGetCursor;
+    private ScrollView scrollview_recycler_view_single_tabel;
 
 
     private  Integer GetPosition;
@@ -362,6 +364,8 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                 ProgressBarSingleTabel.setVisibility(View.VISIBLE);
                 TextViewФИОПрофессия = (TextView)  view.findViewById(R.id.TextViewФИОПрофессия);
                 recycleView = (RecyclerView)  view.findViewById(R.id.recycler_view_single_tabel);
+                scrollview_recycler_view_single_tabel = (ScrollView)  view.findViewById(R.id.scrollview_recycler_view_single_tabel);
+                scrollview_recycler_view_single_tabel.pageScroll(View.FOCUS_UP);
 
 
                 animationПрофессия400 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_in_rowsingletabel);
@@ -1433,19 +1437,17 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                         tableRowTableRowLinkedHashMap.forEach(new BiConsumer<TableRow, TableRow>() {
                             @Override
                             public void accept(TableRow tableRowНазвание, TableRow tableRowДанные) {
-
+                                // TODO: 26.06.2023 смешение на данных если TableRow
+                             Integer   ПозицияДляСмещениеДанных =      методСмещенияДляКурсораForTableRow(ПозицияДанныех[0]);
                                 // TODO: 04.04.2023   DATA ROW
-                                МетодЗаполняемДаннымиTableRow(cursor ,holder ,tableRowДанные, ПозицияДанныех[0]);
-
+                                МетодЗаполняемДаннымиTableRow(cursor ,holder ,tableRowДанные, ПозицияДляСмещениеДанных);
                                 // TODO: 04.04.2023   Name ROW
-                             //   МетодЗаполняеШабкаTableRow(cursor ,tableRowНазвание);
-
+                                МетодЗаполняеШабкаTableRow(cursor ,holder ,tableRowНазвание, ПозицияДляСмещениеДанных);
                                 // TODO: 26.06.2023  поднимае версию
-                                ПозицияДанныех[0] = ПозицияДанныех[0] +1;
-
+                                ПозицияДанныех[0] = ПозицияДанныех[0]+1;
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +  "  ПозицияДляСмещениеДанных   "+ПозицияДляСмещениеДанных);
                             }
                         });
                     }
@@ -1463,6 +1465,40 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                 }
             }
 
+            private Integer методСмещенияДляКурсораForTableRow( @NonNull Integer ПозицияДанныех) {
+                switch (ПозицияДанныех){
+                    case  0:
+                        ПозицияДанныех=1;
+                        break;
+                    case  1:
+                        ПозицияДанныех=5;
+                        break;
+                    case  2:
+                        ПозицияДанныех=9;
+                        break;
+                    case  3:
+                        ПозицияДанныех=13;
+                        break;
+                    case  4:
+                        ПозицияДанныех=17;
+                        break;
+                    case  5:
+                        ПозицияДанныех=21;
+                        break;
+                    case  6:
+                        ПозицияДанныех=25;
+                        break;
+                    case  7:
+                        ПозицияДанныех=29;
+                        break;
+                }
+                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " ПозицияДанныех " + ПозицияДанныех);
+                return  ПозицияДанныех;
+            }
+
 
             private void МетодЗаполняемДаннымиTableRow(@NonNull Cursor cursor,
                                                        @NonNull  MyViewHolder holder, @NonNull  TableRow tableRowДанные, @NonNull  Integer ПозицияДня) {
@@ -1472,7 +1508,6 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                         // TODO: 06.04.2023  СОДЕРДИМОЕ ROW
                         for (int i = 0; i < tableRowДанные.getChildCount(); i++) {
                             EditText editTextRowКликПоДАнными = (EditText) tableRowДанные.getChildAt(i);
-                            ПозицияДня=ПозицияДня+1;
                             String ДнейСодержимое =            "d"+ПозицияДня;
                             // TODO: 05.04.2023  ЗАПОЛЯНИЕМ ДНЯМИ ROW 1
                             if (ДниВыходные.containsKey(ДнейСодержимое.trim())) {
@@ -1493,6 +1528,14 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                             // TODO: 05.04.2023 Иниуиализация Клавиаьтуры Поднятие для кажой Ячейки
                             методИницаллизацииКлавиаотурыЯчейка(editTextRowКликПоДАнными);
                             // TODO: 10.05.2023
+
+
+
+                            // TODO: 26.06.2023
+                            ПозицияДня=ПозицияДня+1;
+                            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " ПозицияДня  " + ПозицияДня);
                         }
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1557,39 +1600,42 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                 return ИндексСтрочкиДней;
             }
 
-/*            private void МетодЗаполняеШабкаTableRow(@NonNull Cursor cursor,
-                                                    @NonNull  MyViewHolder holder) {
+            private void МетодЗаполняеШабкаTableRow(@NonNull Cursor cursor,
+                                                    @NonNull  MyViewHolder holder, @NonNull  TableRow tableRowНазвания, @NonNull  Integer ПозицияДня) {
                 try {
-                    TableRow tableRowШабка = holder.rowName;
-                    if (tableRowШабка!=null) {
+                    if (tableRowНазвания!=null) {
                         // TODO: 06.04.2023  СОДЕРДИМОЕ ROW
-                        MaterialTextView viewtextRowКликПоШабка = (MaterialTextView) tableRowШабка.getChildAt(0);
-                        //String ДнейНазвание = Optional.ofNullable(viewtextRowКликПоШабка.getHint()).map(Objects::toString).orElse("");
-                        Integer ПозицияДня=holder.getLayoutPosition();
-                        ПозицияДня=ПозицияДня+1;
-                        String ДнейНазвание = "d" + ПозицияДня;
-                        // TODO: 06.04.2023  НАЗВАНИЕ ROW
-                        if (viewtextRowКликПоШабка != null) {
-                            // TODO: 06.04.2023 Названия
+                        for (int i = 0; i < tableRowНазвания.getChildCount(); i++) {
+                            TextView textViewНазвание = (TextView) tableRowНазвания.getChildAt(i);
+                            String ДнейНазвание =            "d"+ПозицияДня;
+                            // TODO: 05.04.2023  ЗАПОЛЯНИЕМ ДНЯМИ ROW 1
                             if (ДниВыходные.containsKey(ДнейНазвание.trim())) {
-                                TableRow tableRowДАнные = holder.rowData;
-                                // TODO: 06.04.2023  СОДЕРДИМОЕ ROW
-                                EditText editTextRowКликПоДАнными = (EditText) tableRowДАнные.getChildAt(0);
-                                viewtextRowКликПоШабка.setVisibility(View.VISIBLE);
-                                editTextRowКликПоДАнными.setVisibility(View.VISIBLE);
+                                String ВыходныеИлиПразничные=    ДниВыходные.get(ДнейНазвание.trim());
+                                if (ВыходныеИлиПразничные!=null) {
+                                    textViewНазвание.setVisibility(View.VISIBLE);
+                                    textViewНазвание.startAnimation(animationVibr1);
+                                }
+                                    методЗаполениеНазванияRowData(textViewНазвание, ДнейНазвание);
 
-                                методЗаполениеНазванияRowData(viewtextRowКликПоШабка, ДнейНазвание);
                             }
-                            // TODO: 16.04.2023  анимация
                             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                    + " editTextRowКликПоШабка " + viewtextRowКликПоШабка + " ДнейНазвание " + ДнейНазвание);
+                                    + " textViewНазвание " + textViewНазвание + " ДнейНазвание " + ДнейНазвание);
+                            // TODO: 26.06.2023
+                            ПозицияДня=ПозицияДня+1;
+                            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " ПозицияДня  " + ПозицияДня);
                         }
-
-                        // TODO: 11.04.2023  оформление вида
-                        МетодАнимации(tableRowШабка);
+                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cursorForViewPager  " + cursor);
+                        // TODO: 10.05.2023  Слушатель ПО ЯЧЕЙКАМ
+                        // TODO: 19.10.2022
                     }
+
+
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1603,7 +1649,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                             this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
-            }*/
+            }
             private void методЗаполениеСодеримомRowData(@NonNull  EditText editTextRowКликПоДАнными,
                                                         @NonNull Cursor cursor,
                                                         @NonNull String НазваниеДляДень) {
@@ -1680,28 +1726,11 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                 }
             }
 
-            private void методЗаполениеНазванияRowData(@NonNull  MaterialTextView TextViewRowКликПоНазваниям,String s) {
+            private void методЗаполениеНазванияRowData(@NonNull  TextView TextViewRowКликПоНазваниям,String s) {
                 try {
                     // TODO: 11.04.2023 Ставим Дни
                     String ВыходныеИлиПразничные=    ДниВыходные.get(s.trim());
                     TextViewRowКликПоНазваниям.setText( ВыходныеИлиПразничные);
-                    if (ВыходныеИлиПразничные!=null) {
-                        TextViewRowКликПоНазваниям.setVisibility(View.VISIBLE);
-
-                        TextViewRowКликПоНазваниям.startAnimation(animationVibr1);
-
-
-                        Bundle bundleВыходныеИПразничные=(Bundle)       TextViewRowКликПоНазваниям.getTag();
-                        // TODO: 07.06.2023
-                        методОбработкиВыходныхиПразничные(ВыходныеИлиПразничные,TextViewRowКликПоНазваниям);
-
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " TextViewRowКликПоНазваниям " +TextViewRowКликПоНазваниям+
-                                "  ВыходныеИлиПразничные " +ВыходныеИлиПразничные + " bundleВыходныеИПразничные " +bundleВыходныеИПразничные);
-                    }
-
-
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1717,83 +1746,8 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
             }
-
-            private void методОбработкиВыходныхиПразничные(@NonNull String ЗначениеДней,@NonNull MaterialTextView materialTextView) {
-                try{
-                    if (ЗначениеДней.matches("(.*)Вс(.*)")
-                            || ЗначениеДней.matches("(.*)Сб(.*)")
-                            && ! ЗначениеДней.matches("(.*)###(.*)")) {
-                        materialTextView.setTextColor(Color.parseColor("#DC143C"));
-                        Bundle bundleВыходной=new Bundle();
-                        bundleВыходной.putInt("StatusCell",2);
-                        materialTextView.setText(ЗначениеДней);
-                        materialTextView.setTag(bundleВыходной);
-                    }else{
-                        if (ЗначениеДней.matches("(.*)###(.*)") ) {
-                            ЗначениеДней=           ЗначениеДней.replaceAll("###","");
-                            materialTextView.setText(ЗначениеДней);
-                            materialTextView.setTextColor(Color.parseColor("#9C112D"));
-                            Bundle bundleПразничныйДень=new Bundle();
-                            bundleПразничныйДень.putInt("StatusCell",3);
-                            materialTextView.setTag(bundleПразничныйДень);
-                        }else{
-                            materialTextView.setTextColor(Color.parseColor("#008080"));
-                            Bundle bundleОбычныйДень=new Bundle();
-                            bundleОбычныйДень.putInt("StatusCell",1);
-                            materialTextView.setText(ЗначениеДней);
-                            materialTextView.setTag(bundleОбычныйДень);
-                        }
-                    }
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(getContext().getClass().getName(),
-                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
-            }
             // TODO: 07.06.2023 2
-            private void методОбработкиВыходныхиПразничные(@NonNull Integer ЗначениеДней,@NonNull MaterialTextView materialTextView) {
-                try{
-                    if (ЗначениеДней==1) {
-                        materialTextView.setTextColor(Color.parseColor("#008080"));
-                        Bundle bundleОбычныйДень = new Bundle();
-                        bundleОбычныйДень.putInt("StatusCell", 1);
-                        materialTextView.setTag(bundleОбычныйДень);
 
-                    }
-                    if (ЗначениеДней==2){
-                        Bundle bundleВыходной=new Bundle();
-                        materialTextView.setTextColor(Color.parseColor("#DC143C"));
-                        bundleВыходной.putInt("StatusCell",2);
-                        materialTextView.setTag(bundleВыходной);
-                    }
-
-                    if (ЗначениеДней==3) {
-                        materialTextView.setTextColor(Color.parseColor("#9C112D"));
-                        Bundle bundleПразничныйДень=new Bundle();
-                        bundleПразничныйДень.putInt("StatusCell",3);
-                        materialTextView.setTag(bundleПразничныйДень);
-                    }
-
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(getContext().getClass().getName(),
-                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
-            }
 
             // TODO: 08.11.2022 метод КЛИК ПО ДАННЫМ
             private void МетодаСохранениеДанныхЯчейкиRow(@NonNull   EditText editTextRowКликПоДАнными  ) {
@@ -3116,25 +3070,36 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                         // TODO: 11.04.2023 празничные
                         Integer ИндексДнейФинал = (Integer) ИндексДней;
                         ///linkedHashMapДни.put("d" + ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
-
-                        if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТабелей ==11   ){
-
-                            if (МЕсяцТабелей ==5 ) {
-                                if(ИндексДней==1 || ИндексДней==9    ){
-                                    linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+                        if (СокращенныйДниМесяцаВТабеле.trim().matches("[Сб,](.*)")){
+                            linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+                        }else if(СокращенныйДниМесяцаВТабеле.trim().matches("[Вс,](.*)")){
+                            linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+                        }else {
+                            if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТабелей ==11   ){
+                                if (МЕсяцТабелей ==5 ) {
+                                    if(ИндексДней==1 || ИндексДней==9    ){
+                                        linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+                                    }
                                 }
-                            }
-                            if (МЕсяцТабелей==6) {
-                                if(  ИндексДней==12   ){
-                                    linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+                                if (МЕсяцТабелей==6) {
+                                    if(  ИндексДней==12   ){
+                                        linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+                                    }
                                 }
-                            }
-                            if (МЕсяцТабелей ==11) {
-                                if(  ИндексДней==4 ){
-                                    linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+                                if (МЕсяцТабелей ==11) {
+                                    if(  ИндексДней==4 ){
+                                        linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+                                    }
                                 }
                             }
                         }
+
+
+
+
+
+
+
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
