@@ -788,8 +788,9 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         try {
                             // TODO: 17.06.2023 сама свайп
-             /*               SubClassReBornDataRecyreView subClassReBornDataRecyreView=new SubClassReBornDataRecyreView();
-                            subClassReBornDataRecyreView.методПереРоденияRevireViewScroll();*/
+                            SubClassReBornDataRecyreView subClassReBornDataRecyreView=new SubClassReBornDataRecyreView();
+                            subClassReBornDataRecyreView.методПереРоденияRevireViewScroll();
+
                             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber());
