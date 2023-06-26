@@ -59,7 +59,7 @@ android {
         applicationId "com.dsy.dsu"
         minSdkVersion 26
         targetSdk defaultTargetSdkVersion
-        versionCode 864
+        versionCode 865
         versionName 'SousAvtodor 2023'
 
         //TODO настройки уведомлений
@@ -193,8 +193,7 @@ dependencies {
 
 
 
-// https://mvnrepository.com/artifact/org.greenrobot/greendao-gradle-plugin
-    implementation 'org.greenrobot:greendao-gradle-plugin:3.3.0'
+
 
 
 

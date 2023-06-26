@@ -4,29 +4,21 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 
-import androidx.lifecycle.Observer;
 import androidx.work.BackoffPolicy;
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.ExistingWorkPolicy;
 import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Code_For_WorkManagers.MyWork_Notifocations_Уведомления_Для_Задачи;
-import com.dsy.dsu.Code_For_WorkManagers.MyWork_Notifocations_Уведомления_Для_Задачи_ЛокальныйОтказВЫполнилПриСменеСтатуса;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class BroadcastReceiver_Sous_Notificatioons_For_Tasks extends BroadcastReceiver {
@@ -122,13 +114,9 @@ public class BroadcastReceiver_Sous_Notificatioons_For_Tasks extends BroadcastRe
 
             PeriodicWorkRequest periodicWorkRequestУведомленияДляЧата = new PeriodicWorkRequest.Builder(MyWork_Notifocations_Уведомления_Для_Задачи.class,
 
-                    PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MILLISECONDS)//MIN_PERIODIC_FLEX_MILLIS
+                    4, TimeUnit.HOURS)//MIN_PERIODIC_FLEX_MILLIS
                     .setConstraints(constraintsУведомленияДляЧата)
                     .addTag(ИмяСлужбыУведомленияДляЗадача)
-                    .setBackoffCriteria(
-                            BackoffPolicy.LINEAR,
-                            PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
-                            TimeUnit.MILLISECONDS)
                     //.setInputData(new Data.Builder().putString("КтоЗапустилWorkmanager","BroadCastRecieve").build())
                     .build();
 

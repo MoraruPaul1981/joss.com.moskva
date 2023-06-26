@@ -118,10 +118,6 @@ public class BroadcastReceiver_Sous_Notificatios_UpdateSoft extends BroadcastRec
                     .setConstraints(constraintsУведомленияДляОбновлениеПО)
                     .addTag(ИмяСлужбыУведомленияДляОбновлениеСофт)
                     .setInputData(myDataобновлениеПО)
-                    .setBackoffCriteria(
-                            BackoffPolicy.LINEAR,
-                            1,
-                            TimeUnit.HOURS)
                     //.setInputData(new Data.Builder().putString("КтоЗапустилWorkmanager","BroadCastRecieve").build())
                     .build();
 // Queue the work

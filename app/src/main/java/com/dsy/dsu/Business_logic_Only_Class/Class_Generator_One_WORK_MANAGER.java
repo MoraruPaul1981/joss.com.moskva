@@ -54,10 +54,6 @@ public class Class_Generator_One_WORK_MANAGER extends  Class_GRUD_SQL_Operations
                             .setConstraints(constraintsЗапускСинхОдноразоваяСлужба)
                             .setInputData(myData)
                             .addTag(ИмяСлужбыСинхронизацииОдноразовая)
-                            .setBackoffCriteria(
-                                    BackoffPolicy.LINEAR,
-                                    PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
-                                    TimeUnit.MILLISECONDS)
                             .build();//      .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
             WorkManager.getInstance(context).enqueueUniqueWork(ИмяСлужбыСинхронизацииОдноразовая,
                     ExistingWorkPolicy.KEEP, OneTimeWorkЗапускФОновойСинхрониазциииИзНУтриТабеля);

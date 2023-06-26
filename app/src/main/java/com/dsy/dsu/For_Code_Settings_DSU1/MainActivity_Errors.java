@@ -2,9 +2,11 @@ package com.dsy.dsu.For_Code_Settings_DSU1;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteCursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
@@ -37,129 +39,51 @@ import java.util.Date;
 
 //вывод данных на Автивити
 public class MainActivity_Errors extends AppCompatActivity  {
-
-//назначение полец и ссылки на другие классы
-//определяем дату вставки
-///create ProgressBar
-    /**
-     * todo данное активти показываем ошибки
-     *
-     */
-///////TODO
    private CREATE_DATABASE_Error create_database_error;
-    /////ЯЧЕЙКИ
-    private  TextView КонтейнерКудаЗагружаеютьсяОшибкиПрилоджения;//
-    ////////БИЛДЕР
+    private  TextView КонтейнерКудаЗагружаеютьсяОшибкиПрилоджения;
     private  StringBuffer БуерДляОшибок;
-    ///
-
-    private   Integer   ПубличноеIDПолученныйИзСервлетаДляUUID=0;
-//// для вставки данных
-
     private  MaterialButton materialButtonОтправкаОшибокНАпочту;
-    ////
-
+    private SharedPreferences preferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
-            Log.d(this.getClass().getName(), "Запущен.... метод  onCreate в классе MainActivity_Settings  ; ");
-
                 super.onCreate(savedInstanceState);
-                //TODO
-
-
             setContentView(R.layout.activitymain_viewlogin); ///activitymain_viewlogin  /// fragment_dashboard
-/////
-         //  setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
-            /////todo данная настрока запрещает при запуке активти подскаваать клавиатуре вверх на компонеты eedittext
-         //   getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-            //ссылка на схему базы данных;//ссылка на схему базы данных
-          //  ССылкаНаСозданнуюБазу = new CREATE_DATABASE(this).ССылкаНаСозданнуюБазу;//ссылка на схему базы данных;//ссылка на схему базы данных
-            //заполение TextView
             КонтейнерКудаЗагружаеютьсяОшибкиПрилоджения = (TextView) findViewById(R.id.textViewDATA);
-//////
-            ////
-            //создаем билдер
             БуерДляОшибок = new StringBuffer();
-            //////
-            //////todo настрока экрана
-        //    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-           /* JSONObject jsonObject=new JSONObject();
-
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                Stream<JSONObject> stream=Stream.of(jsonObject);
-                stream.parallel().forEachOrdered((Data)->{
-
-                });
-            }*/
-
-///////TODO
              create_database_error=new CREATE_DATABASE_Error(getApplicationContext());
-
-            //////todo  конец настрока экрана
-
-
-            /////todo данная настрока запрещает при запуке активти подскаваать клавиатуре вверх на компонеты eedittext
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-
             getSupportActionBar().hide(); ///скрывать тул бар
-
-
-
-
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
                     | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                     | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
-
-            //////todo настрока экрана
-
-
-
-
                         materialButtonОтправкаОшибокНАпочту   = (MaterialButton) findViewById(R.id.button3SendErrorEmal);
 
+            preferences=   getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
 
             Log.d(this.getClass().getName(), " materialButtonОтправкаОшибокНАпочту  " + materialButtonОтправкаОшибокНАпочту);
-
-
-            //////todo  конец настрока экрана
-
-///////errors
         } catch (Exception e) {
             e.printStackTrace();
-///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
              // TODO: 01.09.2021 метод вызова
             new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                     this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-
-
-
-    } // конец    protected void onCreate(Bundle savedInstanceState)
+    }
 
 
     @Override
     protected void onStart() {
         super.onStart();
-
 try{
-
-
     materialButtonОтправкаОшибокНАпочту.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
             //TODO полывоаем ошибки на почту
-
             Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-// Vibrate for 500 milliseconds
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
             } else {
@@ -167,14 +91,11 @@ try{
                 v2.vibrate(50);
             }
             МетодПосылаемОшибкиНапочту();
-
         }
     });
 
-        //////errors
     } catch (Exception e) {
         e.printStackTrace();
-///метод запись ошибок в таблицу
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
         // TODO: 01.09.2021 метод вызова
         new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
@@ -185,72 +106,18 @@ try{
 
 
     protected void МетодПосылаемОшибкиНапочту() {
-
-
        try{
-
-
-
-
-
-
+           Integer   ПубличноеID  = preferences.getInt("ПубличноеID",0);
         if (БуерДляОшибок.length()>300) {
-
-            Log.d(this.getClass().getName(), "   БуерДляОшибок"+БуерДляОшибок.toString());
-
-
-
-            // ID
-
-
-            // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
-            Class_GRUD_SQL_Operations class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ= new Class_GRUD_SQL_Operations(getApplicationContext());
-            ///
-            class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СамFreeSQLКОд",
-                    " SELECT id  FROM successlogin  ORDER BY date_update DESC  LIMIT 50;");
-
-
-            // TODO: 12.10.2021  Ссылка Менеджер Потоков
-
-            PUBLIC_CONTENT  Class_Engine_SQLГдеНаходитьсяМенеджерПотоков =new PUBLIC_CONTENT (getApplicationContext());
-
-
-            ///////
-            SQLiteCursor            Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО= (SQLiteCursor) class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ.
-                    new GetаFreeData(getApplicationContext()).getfreedata(class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
-                    Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,create_database_error.getССылкаНаСозданнуюБазу());
-
-            if(Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.getCount()>0){//
-                ////
-
-                Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.moveToFirst();
-
-                /////
-                ПубличноеIDПолученныйИзСервлетаДляUUID=         Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.getInt(0);
-///
-
-
-                Log.d(this.getClass().getName(), " ID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
-
-
-            }
-
-
-
                      БуерДляОшибок.append("\n")
                     .append(" текущий пользователь : ").append("\n")
-                    .append(ПубличноеIDПолученныйИзСервлетаДляUUID).append("\n")
+                    .append(ПубличноеID).append("\n")
                     .append(" время отправки: ").append("\n")
                     .append(new Date())
                              .append("\n");
-
             // TODO: 01.09.2021 ПОСЫЛАЕМ ОШИБКИ СИСТМЕНУМО АДМИНИСТАТОРУ
-
-            new Class_Sendiing_Errors(this).МетодПослываемОшибкиАдминистаторуПо(БуерДляОшибок,this,ПубличноеIDПолученныйИзСервлетаДляUUID);
-
+            new Class_Sendiing_Errors(this).МетодПослываемОшибкиАдминистаторуПо(БуерДляОшибок,this,ПубличноеID);
         }
-
-        ///////errors
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
@@ -262,70 +129,35 @@ try{
 
 }
 
-
-
-
-
-
-
-    //////////////////////////////////////////////////////////////
     @Override
     public void onResume() {
         super.onResume();
-// put your code here...
-//метод по  выводу даным на Ативити из SQLITE
         try {
-            ///
             МетодПросмотраОшибокПриложения();
-//метод по  выводу даным на Ативити из SQLITE
-
-///поймать ошибку
         } catch (Exception e) {
-//  Block of code to handle errors
             e.printStackTrace();
-///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
              // TODO: 01.09.2021 метод вызова
             new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), 
           this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
-///////
         }
     }
-
     /////////////
-//запуск метода вставки данных logins
     protected void МетодПросмотраОшибокПриложения() {
-
         ///////
         int ЕстьСтроки = 0;
         //
-
         Cursor Курсор_СамиДанные_Error = null;
-
         try {
-
-//сам код
-            Log.d(this.getClass().getName(), "Запущен.... метод  Просмотра ошибок MainActivity_Errors  ; ");
-
-///////////
                 ArrayList<EditText> editTextArrayList = new ArrayList<>();
-
                 StringBuffer stringBuffer = new StringBuffer();
-
-
 ///////////////////////////  TODO курсор для ПОКАЗА ОШИБОК УЖЕ СОЗДАННЫХ END AsyncTask-1
                     Курсор_СамиДанные_Error = null;
-
                     ////TODO ЗАПУСКАЕМ  МеханизмУправлениеПотокамиОграничеваемИхУжеСозданными
-
                             System.out.println("Another thread was executed");
-
                 Class_GRUD_SQL_Operations class_grud_sql_operationsПросмотраОшибокПриложения
                         =new Class_GRUD_SQL_Operations(getApplicationContext());
-
-
-
             ///
             class_grud_sql_operationsПросмотраОшибокПриложения. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","ErrorDSU1");
             ///////
@@ -559,19 +391,8 @@ try{
 
             Курсор_СамиДанные_Error.close();
 
-
-
-
-
-
-
-
-
-///поймать ошибку
         } catch (Exception e) {
-//  Block of code to handle errors
             e.printStackTrace();
-///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
              // TODO: 01.09.2021 метод вызова
             new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), 

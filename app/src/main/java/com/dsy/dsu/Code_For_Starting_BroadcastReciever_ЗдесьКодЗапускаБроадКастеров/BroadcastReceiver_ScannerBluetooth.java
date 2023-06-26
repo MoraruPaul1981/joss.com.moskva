@@ -40,14 +40,9 @@ public class BroadcastReceiver_ScannerBluetooth extends BroadcastReceiver {
                         .setRequiresStorageNotLow(false)
                         .build();
                 PeriodicWorkRequest periodicWorkRequestСинхронизация = new PeriodicWorkRequest.Builder(MyWork_ScannerBluetooth_ДляПосикаДевайсов.class,
-                        PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MILLISECONDS)//MIN_PERIODIC_FLEX_MILLIS////  PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MILLISECONDS
+                        4, TimeUnit.HOURS)//MIN_PERIODIC_FLEX_MILLIS////  PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MILLISECONDS
                         .addTag(ИмяСлужбыСинхронизации)
                         .setConstraints(constraintsСканированиеBluetooth)
-                        .setBackoffCriteria(
-                                BackoffPolicy.LINEAR,
-                                PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
-                                TimeUnit.MILLISECONDS)
-                        //    .setInputData(new Data.Builder().putString("КтоЗапустилWorkmanager","BroadCastRecieve").build())
                         .build();
                 WorkManager.getInstance(context.getApplicationContext()).enqueueUniquePeriodicWork(ИмяСлужбыСинхронизации,
                         ExistingPeriodicWorkPolicy.KEEP, periodicWorkRequestСинхронизация);

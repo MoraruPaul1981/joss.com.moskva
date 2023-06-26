@@ -155,8 +155,6 @@ public class MainActivity_Face_App extends AppCompatActivity {
             МетодFaceApp_СлушательПриНажатииНаКнопки();
             // TODO: 27.03.2023 Бинлинг Обновление ПО
             МетодБиндингаОбновлениеПО();
-
-
             // TODO: 06.04.2023  ТЕСТ КОД для 1С
             ///методДляТетсирования1С();
         } catch (Exception e) {

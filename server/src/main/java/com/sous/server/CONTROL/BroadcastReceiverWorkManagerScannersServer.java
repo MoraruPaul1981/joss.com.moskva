@@ -70,11 +70,6 @@ public class BroadcastReceiverWorkManagerScannersServer extends BroadcastReceive
                 .addTag(ИмяСлужбыСинхронизации)
                 .setInputData(myDataДляОбщейСинхрониазации)
                 .setConstraints(constraintsСинхронизация)
-                .setBackoffCriteria(
-                        BackoffPolicy.LINEAR,
-                        PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
-                        TimeUnit.MILLISECONDS)
-                //    .setInputData(new Data.Builder().putString("КтоЗапустилWorkmanager","BroadCastRecieve").build())
                 .build();
 
         Integer callbackRunnable = WorkManager.getInstance(context).getWorkInfosByTag(ИмяСлужбыСинхронизации).get().size();
@@ -118,11 +113,6 @@ public class BroadcastReceiverWorkManagerScannersServer extends BroadcastReceive
                     .addTag(ИмяСлужбыСинхронизации)
                     .setInputData(myDataДляОбщейСинхрониазации)
                     .setConstraints(constraintsПовторныйЗапскСлужбыServerScanner)
-                    .setBackoffCriteria(
-                            BackoffPolicy.LINEAR,
-                            PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
-                            TimeUnit.MILLISECONDS)
-                    //    .setInputData(new Data.Builder().putString("КтоЗапустилWorkmanager","BroadCastRecieve").build())
                     .build();
 
             Integer callbackRunnableПовторныйЗапуск = WorkManager.getInstance(context).getWorkInfosByTag(ИмяСлужбыСинхронизации).get().size();

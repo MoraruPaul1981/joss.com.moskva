@@ -361,7 +361,7 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
             Интент_ЗапускСамогоПриложенияЕслиПользовательПослеУспешнойаунтификации.setClass(getApplication(), MainActivity_Visible_Async.class);
             Интент_ЗапускСамогоПриложенияЕслиПользовательПослеУспешнойаунтификации.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);/// FLAG_ACTIVITY_SINGLE_TOP
 
-
+            editor.putInt("ПубличноеID", ПубличноеIDПолученныйИзСервлетаДляUUID);
             editor.commit();
             startActivity(Интент_ЗапускСамогоПриложенияЕслиПользовательПослеУспешнойаунтификации);
             finish();
