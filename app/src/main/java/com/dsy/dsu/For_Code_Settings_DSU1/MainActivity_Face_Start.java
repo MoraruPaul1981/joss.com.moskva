@@ -22,11 +22,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
-import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE_ORM;
+import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE_Error;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Connections_Server;
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
-import com.dsy.dsu.Business_logic_Only_Class.Class_Get_Json_1C;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Send_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.R;
@@ -60,7 +59,7 @@ public class MainActivity_Face_Start extends AppCompatActivity {
 
     private  String      ДатаПоследенегоЗаходаУспешнойАунтификации;
     private  CREATE_DATABASE   Create_Database_СсылкаНАБазовыйКласс;
-    private CREATE_DATABASE_ORM Create_Database_СсылкаНАБазовыйКласс_ORM;
+    private CREATE_DATABASE_Error Create_Database_СсылкаНАБазовыйКласс_Error;
     private  Context КонтекстДляFAceapp;
     private  Activity activity;
     private  int ПубличныйIDТекущегоПользователя=0;
@@ -69,7 +68,7 @@ public class MainActivity_Face_Start extends AppCompatActivity {
     private   SQLiteCursor КурсорДаннныеПоСотрудникуБолее7Дней =null;
   
     private SQLiteDatabase sqLiteDatabaseСамаБазы;
-    private SQLiteDatabase sqLiteDatabaseСамаБазы_ORM;
+    private SQLiteDatabase sqLiteDatabaseСамаБазы_Error;
     // TODO: 24.02.202
     private  Boolean СтатусРаботыСервера =false;
     private SharedPreferences preferences;
@@ -84,8 +83,8 @@ try{
     Create_Database_СсылкаНАБазовыйКласс=new CREATE_DATABASE(getApplicationContext());
     sqLiteDatabaseСамаБазы=Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу();
     // TODO: 26.06.2023 БАЗА ДАННЫХ ВСТМПОГАТЕЛЬЫНЕ
-    Create_Database_СсылкаНАБазовыйКласс_ORM=new CREATE_DATABASE_ORM(getApplicationContext());
-    sqLiteDatabaseСамаБазы_ORM=Create_Database_СсылкаНАБазовыйКласс_ORM.getССылкаНаСозданнуюБазу();
+    Create_Database_СсылкаНАБазовыйКласс_Error =new CREATE_DATABASE_Error(getApplicationContext());
+    sqLiteDatabaseСамаБазы_Error = Create_Database_СсылкаНАБазовыйКласс_Error.getССылкаНаСозданнуюБазу();
 activity=this;
         КонтекстДляFAceapp=this;
         ((Activity) КонтекстДляFAceapp) .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -108,13 +107,15 @@ activity=this;
         ((Activity) КонтекстДляFAceapp) .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
     preferences = getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
     // TODO: 24.02.2022
-    Log.d(this.getClass().getName(),  " date " +new Date().toGMTString().toString());
+    Log.d(this.getClass().getName(),  " date " +new Date().toGMTString().toString() + " preferences " +preferences.getAll());
     // TODO: 07.12.2022  test code
 } catch (Exception e) {
         e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
+                Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                 + Thread.currentThread().getStackTrace()[2].getLineNumber());
-    new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+    new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+            this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
             Thread.currentThread().getStackTrace()[2].getLineNumber());
 
     // TODO: 11.05.2021 запись ошибок

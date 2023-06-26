@@ -21,6 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
+import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE_Error;
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Sendiing_Errors;
@@ -45,7 +46,7 @@ public class MainActivity_Errors extends AppCompatActivity  {
      *
      */
 ///////TODO
-   private CREATE_DATABASE Create_Database_СсылкаНАБазовыйКласс;
+   private CREATE_DATABASE_Error create_database_error;
     /////ЯЧЕЙКИ
     private  TextView КонтейнерКудаЗагружаеютьсяОшибкиПрилоджения;//
     ////////БИЛДЕР
@@ -93,7 +94,7 @@ public class MainActivity_Errors extends AppCompatActivity  {
             }*/
 
 ///////TODO
-             Create_Database_СсылкаНАБазовыйКласс=new CREATE_DATABASE(getApplicationContext());
+             create_database_error=new CREATE_DATABASE_Error(getApplicationContext());
 
             //////todo  конец настрока экрана
 
@@ -217,7 +218,7 @@ try{
             ///////
             SQLiteCursor            Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО= (SQLiteCursor) class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ.
                     new GetаFreeData(getApplicationContext()).getfreedata(class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
-                    Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
+                    Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,create_database_error.getССылкаНаСозданнуюБазу());
 
             if(Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.getCount()>0){//
                 ////
@@ -252,7 +253,6 @@ try{
         ///////errors
     } catch (Exception e) {
         e.printStackTrace();
-///метод запись ошибок в таблицу
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
         // TODO: 01.09.2021 метод вызова
             new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), 
@@ -363,7 +363,7 @@ try{
 
             Курсор_СамиДанные_Error= (SQLiteCursor)  new Class_GRUD_SQL_Operations(getApplicationContext()).
                     new GetData(getApplicationContext()).getdata(class_grud_sql_operationsПросмотраОшибокПриложения. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
-                    Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
+                    Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,create_database_error.getССылкаНаСозданнуюБазу());
 
             Log.d(this.getClass().getName(), "GetData "+Курсор_СамиДанные_Error  );
 
@@ -417,13 +417,8 @@ try{
                     МетодЗапускаAsynTaskОшибки(ЕстьСтроки, Курсор_СамиДанные_Error);
 
                 }
-/////БАЗА НЕ ОТКРЫТА
-
-//поймать ошибку
         } catch (Exception e) {
-//  Block of code to handle errors
             e.printStackTrace();
-///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
              // TODO: 01.09.2021 метод вызова
             new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), 

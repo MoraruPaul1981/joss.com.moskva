@@ -24,7 +24,8 @@ public class Class_Generation_Errors {
     private Context context;
     private Class_GRUD_SQL_Operations classGrudSqlOperationsДляЗаписиНовойОшибки;
     private Integer ПубличноеIDПолученныйИзСервлетаДляUUID = 0;
-    private CREATE_DATABASE Create_Database_СсылкаНАБазовыйКласс;
+
+    private CREATE_DATABASE_Error create_database_error;
 
     public Class_Generation_Errors(@NonNull Context context) {
         this.context = context;
@@ -41,23 +42,8 @@ public class Class_Generation_Errors {
         Long PезультатВставкиНовойОшибки = 0l;
         try {
             if (context != null) {
-                Create_Database_СсылкаНАБазовыйКласс = new CREATE_DATABASE(context);
+                create_database_error = new CREATE_DATABASE_Error(context);
                 classGrudSqlOperationsДляЗаписиНовойОшибки = new Class_GRUD_SQL_Operations(context);
-                ;
-                Log.d(context.getClass().getName(), " сработала ... ВСТАВКА ОШИБОК В БАЗУ  МетодЗаписиВЖурналНовойОшибки ");
-                classGrudSqlOperationsДляЗаписиНовойОшибки.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СамFreeSQLКОд",
-                        " SELECT id  FROM successlogin  ORDER BY date_update DESC ;");
-                PUBLIC_CONTENT Class_Engine_SQLГдеНаходитьсяМенеджерПотоков = new PUBLIC_CONTENT(context);
-                SQLiteCursor Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО = (SQLiteCursor) classGrudSqlOperationsДляЗаписиНовойОшибки.
-                        new GetаFreeData(context).getfreedata(classGrudSqlOperationsДляЗаписиНовойОшибки.
-                                concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
-                        Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков, Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
-                Log.d(this.getClass().getName(), " Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО  " + Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО);
-                if (Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.getCount() > 0) {
-                    Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.moveToFirst();
-                    ПубличноеIDПолученныйИзСервлетаДляUUID = Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.getInt(0);
-                    Log.d(this.getClass().getName(), " ID  " + ПубличноеIDПолученныйИзСервлетаДляUUID);
-                }
                 classGrudSqlOperationsДляЗаписиНовойОшибки.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.clear();
                 classGrudSqlOperationsДляЗаписиНовойОшибки = new Class_GRUD_SQL_Operations(context);
                 classGrudSqlOperationsДляЗаписиНовойОшибки.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы", "ErrorDSU1");
@@ -91,8 +77,8 @@ public class Class_Generation_Errors {
                     PезультатВставкиНовойОшибки = (Long) classGrudSqlOperationsДляЗаписиНовойОшибки.
                             new InsertData(context).insertdata(classGrudSqlOperationsДляЗаписиНовойОшибки.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
                             classGrudSqlOperationsДляЗаписиНовойОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций,
-                            Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,
-                            Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
+                            new PUBLIC_CONTENT(context).МенеджерПотоков,
+                            create_database_error.getССылкаНаСозданнуюБазу());
                 }
                 Log.d(this.getClass().getName(), "PезультатВставкиНовойОшибки " + PезультатВставкиНовойОшибки);
                 if (PезультатВставкиНовойОшибки == null) {
@@ -109,7 +95,8 @@ public class Class_Generation_Errors {
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("  Ошибка в самом классе записи ошибок нет КОНТЕКСТА Class_Generation_Errors");
-            Log.e(context.getClass().getName(), "Ошибка в самом классе создание ОШИБКИ (записи новой ошибки) ERROR  inse ERROR" + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+            Log.e(context.getClass().getName(), "Ошибка в самом классе создание ОШИБКИ (записи новой ошибки) ERROR  inse ERROR" + e
+                    + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
 
