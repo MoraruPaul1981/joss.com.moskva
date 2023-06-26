@@ -694,6 +694,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
     public class SubClassSingleTabelRecycreView  {
         private     Cursor cursorForViewPager;
         private LinkedHashMap< String,String> ДниВыходные=new LinkedHashMap<>();
+        private LinkedHashMap< String,String> ДниПразничные=new LinkedHashMap<>();
 
         public SubClassSingleTabelRecycreView(@NonNull  LifecycleOwner lifecycleOwner,
                                               @NonNull  LifecycleOwner  lifecycleOwnerОбщая,
@@ -1206,13 +1207,15 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                     this.cursor = cursor;
                     if ( cursor!=null) {
                         if (cursor.getCount() > 0 ) {
-                            // TODO: 16.04.2023  празники и авходные
-                            ДниВыходные=методВсеДниЧерезКалендарь();
+                            // TODO: 16.04.2023  Выходыне Дни
+                            ДниВыходные= методВыходныеДниИзКалендарь();
+                            // TODO: 26.06.2023 Празничные Дни
+                            ДниПразничные= методПразничныеДниИзКалендаря();
                         }
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                " cursorForViewPager  " + cursor.getCount()+ " ДниВыходные " +ДниВыходные + " cursor "+cursor);
+                                " cursorForViewPager  " + cursor.getCount()+ " ДниВыходные " +ДниВыходные + " cursor "+cursor + " ДниПразничные " +ДниПразничные);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -2993,8 +2996,60 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
         }
 
         // TODO: 03.04.2023 Создание  Дней Недели Вс, Пон, Ср,Черт
-        private  LinkedHashMap< String,String> методВсеДниЧерезКалендарь() throws ParseException,RuntimeException {
-            LinkedHashMap< String,String> linkedHashMapДни=new LinkedHashMap<>();
+        private  LinkedHashMap< String,String> методВыходныеДниИзКалендарь() throws ParseException,RuntimeException {
+            LinkedHashMap< String,String> linkedHashMapВыходные=new LinkedHashMap<>();
+            try {
+                Integer ПолученоеКоличествоДнейНаКонкретныйМЕсяц=МетодПолучениеСколькоДнейВКонкретномМесяце(ГодТабелей,    МЕсяцТабелей );
+                IntStream.iterate(1, i -> i + 1).limit(ПолученоеКоличествоДнейНаКонкретныйМЕсяц ).forEachOrdered(new IntConsumer() {
+                    @Override
+                    public void accept(int ИндексДней) {
+                        SimpleDateFormat СозданияВычисляемВыходные = null;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            СозданияВычисляемВыходные = new SimpleDateFormat("yyyy-MM-dd", new Locale("rus"));
+                        } else {
+                            СозданияВычисляемВыходные = new SimpleDateFormat("yyyy-MM-dd", new Locale("rus"));
+                        }
+                        Date ДатаПосикаВыходныеДней = null;
+
+                        try {
+                            ДатаПосикаВыходныеДней = СозданияВычисляемВыходные.parse(ГодТабелей + "-" + МЕсяцТабелей + "-" + ИндексДней);
+                        } catch (ParseException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        String РезультатДатыДляКонктетногоТабеляТолькоЗанвание = new SimpleDateFormat("EEE", new Locale("ru")).format(ДатаПосикаВыходныеДней);
+                        Integer РезультатДатыДляКонктетногоТабеляТольокЧисло = Integer.parseInt(new SimpleDateFormat("dd", new Locale("ru")).format(ДатаПосикаВыходныеДней));
+                        StringBuffer БуферРезультатСокращенноВставкиВТабель = new StringBuffer();
+                        БуферРезультатСокращенноВставкиВТабель.append(РезультатДатыДляКонктетногоТабеляТолькоЗанвание).append(" ,").append(РезультатДатыДляКонктетногоТабеляТольокЧисло);
+                        String СокращенныйДниМесяцаВТабеле = БуферРезультатСокращенноВставкиВТабель.substring(0, 1).toUpperCase()
+                                + БуферРезультатСокращенноВставкиВТабель.substring(1, БуферРезультатСокращенноВставкиВТабель.length()).toLowerCase();
+
+
+                        // TODO: 26.06.2023  ТОЛЬКО  ВЫХОДНЫЕ
+                        Integer ИндексДнейФинал = (Integer) ИндексДней;
+                        ///linkedHashMapДни.put("d" + ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+                        linkedHashMapВыходные.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+
+                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                + " linkedHashMapВыходные " + linkedHashMapВыходные
+                                + " КоличествоДнейвЗагружаемойМесяце " + КоличествоДнейвЗагружаемойМесяце);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+            return  linkedHashMapВыходные;
+        }
+
+        // TODO: 03.04.2023 Создание  ПРАЗНИЧНЫЕ ДНИ
+        private  LinkedHashMap< String,String> методПразничныеДниИзКалендаря() throws ParseException,RuntimeException {
+            LinkedHashMap< String,String> linkedHashMapПраздничныеДни =new LinkedHashMap<>();
             try {
                 Integer ПолученоеКоличествоДнейНаКонкретныйМЕсяц=МетодПолучениеСколькоДнейВКонкретномМесяце(ГодТабелей,    МЕсяцТабелей );
                 IntStream.iterate(1, i -> i + 1).limit(ПолученоеКоличествоДнейНаКонкретныйМЕсяц ).forEachOrdered(new IntConsumer() {
@@ -3028,40 +3083,35 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                         if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТабелей ==11   ){
                             if (МЕсяцТабелей ==5 ) {
                                 if(ИндексДней==1 || ИндексДней==9    ){
-                                    linkedHashMapДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim()+"###");
+                                    linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
                                 }else {
                                     ///linkedHashMapДни.put("d" + ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
-                                    linkedHashMapДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
-
+                                    linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
                                 }
                             }
                             if (МЕсяцТабелей==6) {
                                 if(  ИндексДней==12   ){
-                                    linkedHashMapДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim()+"###");
+                                    linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim()+"###");
                                 }else {
                                     ///linkedHashMapДни.put("d" + ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
-                                    linkedHashMapДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+                                    linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
 
                                 }
                             }
                             if (МЕсяцТабелей ==11) {
                                 if(  ИндексДней==4 ){
-                                    linkedHashMapДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim()+"###");
+                                    linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim()+"###");
                                 }else {
                                     ///linkedHashMapДни.put("d" + ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
-                                    linkedHashMapДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+                                    linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
 
                                 }
                             }
-                        }else {
-                            ///linkedHashMapДни.put("d" + ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
-                            linkedHashMapДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
-
                         }
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                + " linkedHashMapДни " + linkedHashMapДни
+                                + " linkedHashMapПраздничныеДни " + linkedHashMapПраздничныеДни
                                 + " КоличествоДнейвЗагружаемойМесяце " + КоличествоДнейвЗагружаемойМесяце);
                     }
                 });
@@ -3072,7 +3122,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                 new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
-            return  linkedHashMapДни;
+            return  linkedHashMapПраздничныеДни;
         }
         /**
          *
