@@ -10,7 +10,7 @@
     android:visibility="visible"
     tools:context=".Code_ForTABEL.viewpagers.MainActivity_Tabel_Single_PeopleOneSwipe">
     <TableLayout
-        android:id="@+id/TableLayoutSingleTabelOneRow"
+        android:id="@+id/tableLayout_single_tabel_one_swipe"
         android:shrinkColumns="*"
         android:stretchColumns="*"
         android:layout_width="match_parent"
@@ -314,7 +314,7 @@
                 android:animateLayoutChanges="true" />
         </TableRow>
         <TableRow
-            android:id="@+id/TableData22Row"
+            android:id="@+id/TableData2Row"
             android:layout_width="match_parent"
             android:gravity="center"
             android:background="#FFFFFF"

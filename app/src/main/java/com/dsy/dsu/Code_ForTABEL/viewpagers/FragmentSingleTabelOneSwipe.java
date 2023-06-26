@@ -101,9 +101,12 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiConsumer;
 import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
 
@@ -1153,14 +1156,16 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
 
         // TODO: 28.02.2022 начало  MyViewHolderДляЧата
         protected class MyViewHolder extends RecyclerView.ViewHolder {
-            private TableLayout TableLayoutSingleTabel;
-            private TableRow rowName ;
-            private  TableRow rowData;
+            private TableLayout tableLayout_single_tabel_one_swipe;
+            private TableRow TableRow1Name,TableRow2Name ,TableRow3Name,TableRow4Name,TableRow5Name,TableRow6Name,TableRow7Name,TableRow8Name;
+            private  TableRow TableData1Row,TableData2Row,TableData3Row,TableData4Row,TableData5Row,TableData6Row,TableData7Row,TableData8Row;
+            private  CopyOnWriteArrayList<LinkedHashMap<TableRow,TableRow>> linkedHashMapsНазваниеиДанные =new CopyOnWriteArrayList<>();
+            private    LinkedHashMap<TableRow,TableRow> linkedHashMapНазвание=new LinkedHashMap<>();
             public MyViewHolder(@NonNull View itemView ) {
                 super(itemView);
                 try {
                     // TODO: 04.04.2023 Метод Иинициализации RecycreVIEW ALL ELEMENT
-                    МетодИнициализацииRecycreViewSingleTabel(itemView);
+                    методИнициализацииПеременыхRecureView(itemView);
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " itemView "+itemView);
@@ -1174,20 +1179,49 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
             }
-            private void МетодИнициализацииRecycreViewSingleTabel(@NonNull View itemView) {
+            private void методИнициализацииПеременыхRecureView(@NonNull View itemView) {
                 try {
                     // TODO: 04.04.2023  Иниуциализация Комепонетов
-                    TableLayoutSingleTabel = itemView.findViewById(R.id.TableLayoutSingleTabelOneRow);
-                    if (TableLayoutSingleTabel!=null) {
+                    tableLayout_single_tabel_one_swipe = itemView.findViewById(R.id.tableLayout_single_tabel_one_swipe);
+                    if (tableLayout_single_tabel_one_swipe !=null) {
                         // TODO: 04.04.2023   NAME
-                        rowName= (TableRow) TableLayoutSingleTabel.findViewById(R.id.TableRow1Name);
+                        TableRow1Name= (TableRow) tableLayout_single_tabel_one_swipe.findViewById(R.id.TableRow1Name);
+                        TableRow2Name= (TableRow) tableLayout_single_tabel_one_swipe.findViewById(R.id.TableRow2Name);
+                        TableRow3Name= (TableRow) tableLayout_single_tabel_one_swipe.findViewById(R.id.TableRow3Name);
+                        TableRow4Name= (TableRow) tableLayout_single_tabel_one_swipe.findViewById(R.id.TableRow4Name);
+                        TableRow5Name= (TableRow) tableLayout_single_tabel_one_swipe.findViewById(R.id.TableRow5Name);
+                        TableRow6Name= (TableRow) tableLayout_single_tabel_one_swipe.findViewById(R.id.TableRow6Name);
+                        TableRow7Name= (TableRow) tableLayout_single_tabel_one_swipe.findViewById(R.id.TableRow7Name);
+                        TableRow8Name= (TableRow) tableLayout_single_tabel_one_swipe.findViewById(R.id.TableRow8Name);
+                        // TODO: 26.06.2023
                         // TODO: 04.04.2023   Data
-                        rowData= (TableRow) TableLayoutSingleTabel.findViewById(R.id.TableData1Row);
+                        TableData1Row= (TableRow) tableLayout_single_tabel_one_swipe.findViewById(R.id.TableData1Row);
+                        TableData2Row= (TableRow) tableLayout_single_tabel_one_swipe.findViewById(R.id.TableData2Row);
+                        TableData3Row= (TableRow) tableLayout_single_tabel_one_swipe.findViewById(R.id.TableData3Row);
+                        TableData4Row= (TableRow) tableLayout_single_tabel_one_swipe.findViewById(R.id.TableData4Row);
+                        TableData5Row= (TableRow) tableLayout_single_tabel_one_swipe.findViewById(R.id.TableData5Row);
+                        TableData6Row= (TableRow) tableLayout_single_tabel_one_swipe.findViewById(R.id.TableData6Row);
+                        TableData7Row= (TableRow) tableLayout_single_tabel_one_swipe.findViewById(R.id.TableData7Row);
+                        TableData8Row= (TableRow) tableLayout_single_tabel_one_swipe.findViewById(R.id.TableData8Row);
+                        // TODO: 26.06.2023
+
+                        linkedHashMapНазвание.put(TableRow1Name,TableData1Row);
+                        linkedHashMapНазвание.put(TableRow2Name,TableData2Row);
+                        linkedHashMapНазвание.put(TableRow3Name,TableData3Row);
+                        linkedHashMapНазвание.put(TableRow4Name,TableData4Row);
+                        linkedHashMapНазвание.put(TableRow5Name,TableData5Row);
+                        linkedHashMapНазвание.put(TableRow6Name,TableData6Row);
+                        linkedHashMapНазвание.put(TableRow7Name,TableData7Row);
+                        linkedHashMapНазвание.put(TableRow8Name,TableData8Row);
+                        // TODO: 26.06.2023
+                        linkedHashMapsНазваниеиДанные.add(linkedHashMapНазвание);
+
                     }
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" TableLayoutSingleTabel   " + TableLayoutSingleTabel+
-                            " TableLayoutSingleTabel " +TableLayoutSingleTabel);
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" tableLayout_single_tabel_one_swipe   "
+                            + tableLayout_single_tabel_one_swipe +
+                            " tableLayout_single_tabel_one_swipe " + tableLayout_single_tabel_one_swipe);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getContext().getClass().getName(),
@@ -1395,14 +1429,27 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
             ///todo первый метод #1
             private void МетодЗаполняемДаннымиRecycreViewSingleTable(@NonNull  MyViewHolder holder, @NonNull Cursor cursor) {
                 try {
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+holder.getLayoutPosition()+  " "+myViewHolder.getLayoutPosition());
-                    // TODO: 04.04.2023   DATA
-                    МетодЗаполняемДаннымиTableRow(cursor ,holder  );
-                    // TODO: 04.04.2023   Name
-                    МетодЗаполняеШабкаTableRow(cursor ,holder);
+// TODO: 26.06.2023 Цикл Крутим Нахвание и Данные Экрана
+                ListIterator<LinkedHashMap<TableRow, TableRow>> linkedHashMapListIterator= holder.linkedHashMapsНазваниеиДанные.listIterator();
+                    while (linkedHashMapListIterator.hasNext()) {
+                        LinkedHashMap<TableRow, TableRow> tableRowTableRowLinkedHashMap=        linkedHashMapListIterator.next();
+                     Integer ПозицияДанныех=   linkedHashMapListIterator.nextIndex();
+                        tableRowTableRowLinkedHashMap.forEach(new BiConsumer<TableRow, TableRow>() {
+                            @Override
+                            public void accept(TableRow tableRowНазвание, TableRow tableRowДанные) {
 
+                                // TODO: 04.04.2023   DATA ROW
+                                МетодЗаполняемДаннымиTableRow(cursor ,holder ,tableRowДанные,ПозицияДанныех );
+
+                                // TODO: 04.04.2023   Name ROW
+                             //   МетодЗаполняеШабкаTableRow(cursor ,tableRowНазвание);
+
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                            }
+                        });
+                    }
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -1419,43 +1466,34 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
 
 
             private void МетодЗаполняемДаннымиTableRow(@NonNull Cursor cursor,
-                                                       @NonNull  MyViewHolder holder) {
+                                                       @NonNull  MyViewHolder holder, @NonNull  TableRow tableRowДанные, @NonNull  Integer ПозицияДня) {
                 try {
-                    TableRow tableRowДАнные = holder.rowData;
-                    if (tableRowДАнные!=null) {
-                        // TODO: 06.04.2023  СОДЕРДИМОЕ ROW
-                        EditText editTextRowКликПоДАнными = (EditText) tableRowДАнные.getChildAt(0);
-                        Integer ПозицияДня=holder.getLayoutPosition();
-                        ПозицияДня=ПозицияДня+1;
-                        String ДнейСодержимое =            "d"+ПозицияДня;
 
-                        // TODO: 06.04.2023  НАЗВАНИЕ ROW
-                        if (editTextRowКликПоДАнными != null) {
+                    if (tableRowДанные!=null) {
+                        // TODO: 06.04.2023  СОДЕРДИМОЕ ROW
+                        for (int i = 0; i < tableRowДанные.getChildCount(); i++) {
+                            EditText editTextRowКликПоДАнными = (EditText) tableRowДанные.getChildAt(i);
+                            ПозицияДня=ПозицияДня+1;
+                            String ДнейСодержимое =            "d"+ПозицияДня;
                             // TODO: 05.04.2023  ЗАПОЛЯНИЕМ ДНЯМИ ROW 1
                             if (ДниВыходные.containsKey(ДнейСодержимое.trim())) {
-
                                 String ВыходныеИлиПразничные=    ДниВыходные.get(ДнейСодержимое.trim());
                                 if (ВыходныеИлиПразничные!=null) {
                                     editTextRowКликПоДАнными.setVisibility(View.VISIBLE);
                                 }
-
                                 методЗаполениеСодеримомRowData(editTextRowКликПоДАнными, cursor, ДнейСодержимое);
                             }
-
                             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                     + " editTextRowКликПоДАнными " + editTextRowКликПоДАнными + " ДнейСодержимое " + ДнейСодержимое);
-
                             // TODO: 10.05.2023 Сохранение ДАнных Ячейки
                             МетодаСохранениеДанныхЯчейкиRow(editTextRowКликПоДАнными );
                             // TODO: 19.10.2022 Переход на Метки Табеля
                             методПереходНаМеткиТАбедяcRow(editTextRowКликПоДАнными);
-
                             // TODO: 05.04.2023 Иниуиализация Клавиаьтуры Поднятие для кажой Ячейки
                             методИницаллизацииКлавиаотурыЯчейка(editTextRowКликПоДАнными);
                             // TODO: 10.05.2023
-
                         }
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1520,7 +1558,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                 return ИндексСтрочкиДней;
             }
 
-            private void МетодЗаполняеШабкаTableRow(@NonNull Cursor cursor,
+/*            private void МетодЗаполняеШабкаTableRow(@NonNull Cursor cursor,
                                                     @NonNull  MyViewHolder holder) {
                 try {
                     TableRow tableRowШабка = holder.rowName;
@@ -1566,7 +1604,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                             this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
-            }
+            }*/
             private void методЗаполениеСодеримомRowData(@NonNull  EditText editTextRowКликПоДАнными,
                                                         @NonNull Cursor cursor,
                                                         @NonNull String НазваниеДляДень) {
@@ -3081,30 +3119,20 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                         ///linkedHashMapДни.put("d" + ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
 
                         if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТабелей ==11   ){
+
                             if (МЕсяцТабелей ==5 ) {
                                 if(ИндексДней==1 || ИндексДней==9    ){
-                                    linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
-                                }else {
-                                    ///linkedHashMapДни.put("d" + ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
                                     linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
                                 }
                             }
                             if (МЕсяцТабелей==6) {
                                 if(  ИндексДней==12   ){
-                                    linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim()+"###");
-                                }else {
-                                    ///linkedHashMapДни.put("d" + ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
                                     linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
-
                                 }
                             }
                             if (МЕсяцТабелей ==11) {
                                 if(  ИндексДней==4 ){
-                                    linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim()+"###");
-                                }else {
-                                    ///linkedHashMapДни.put("d" + ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
                                     linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
-
                                 }
                             }
                         }
