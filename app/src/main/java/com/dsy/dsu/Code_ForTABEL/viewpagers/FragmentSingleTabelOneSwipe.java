@@ -22,6 +22,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -2548,7 +2550,9 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                     ProgressBarSingleTabel.setVisibility(View.VISIBLE);
                     singleTabelRecycreView. методЗакрываемКлавитатуру();
                     recycleView.setFocusable(false);
-                    recycleView.setClickable(false);
+
+                    Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                    v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.EFFECT_HEAVY_CLICK));
 // TODO: 16.06.2023  ПРОИЗВОДИМ САМ СВАЙП
                     message.getTarget().post(()->{
                         // TODO: 16.06.2023
