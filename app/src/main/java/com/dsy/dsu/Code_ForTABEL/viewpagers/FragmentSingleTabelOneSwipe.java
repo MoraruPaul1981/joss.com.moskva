@@ -829,9 +829,9 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
 
                                 Paint p = new Paint();
                                 if (dX > 0) {
-                                    p.setColor(Color.parseColor("#1C9CA8"));
-                                } else {
                                     p.setColor(Color.parseColor("#48D1CC"));
+                                } else {
+                                    p.setColor(Color.parseColor("#1C9CA8"));
                                 }
 
                                 if (dX > 0) {
