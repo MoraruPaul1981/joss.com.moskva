@@ -207,13 +207,11 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
     // TODO: 12.10.2022  для одного сигг табеля сотрудника
     private  SubClassBisscessFragmentSingleTabel fragmentSingleTabel;
     private  ViewGroup contGruop;
-
-    private        Cursor cursorForViewPager ;
     private  SubClassSingleTabelRecycreView singleTabelRecycreView;
     private  Integer  CurrentFragmentGetCursor;
 
 
-    private  Integer  CurrentFragmentSingleTabel;
+    private  Integer GetPosition;
     // TODO: Rename and change types and number of parameters
     public static FragmentSingleTabelOneSwipe newInstance(@NonNull Bundle bundle_single_tabel_viewpagers ) {
         FragmentSingleTabelOneSwipe fragment = new FragmentSingleTabelOneSwipe();
@@ -235,6 +233,8 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
             lifecycleOwnerОбщая=this;
             // TODO: 22.06.2023
             singleTabelRecycreView= new SubClassSingleTabelRecycreView(lifecycleOwner,lifecycleOwnerОбщая,getActivity());
+
+            fragmentSingleTabel.new SubClassBungleSingle().методGETДанныеИзДругихАктивити();
 
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -280,12 +280,11 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
         try{
         super.onViewCreated(view, savedInstanceState);
             // TODO: 21.06.2023 КОДЕ
-            fragmentSingleTabel.new SubClassBungleSingle().методGETДанныеИзДругихАктивити();
             fragmentSingleTabel.new SubClassNewDataSingleTabel().методВнешнийВидФрагмента(view);
             singleTabelRecycreView.МетодИнициализацииRecycreView();
-             cursorForViewPager  =   singleTabelRecycreView.  new SubClassGetCursor().МетодSwipesКурсор();
+          Cursor    cursorForViewPager  =   singleTabelRecycreView.  new SubClassGetCursor().МетодSwipesКурсор();
             // TODO: 21.06.2023 Смещения Курсоора
-             cursorForViewPager.move( CurrentFragmentSingleTabel);
+             cursorForViewPager.moveToPosition(GetPosition);
                  singleTabelRecycreView.МетодЗаполениеRecycleView(cursorForViewPager );
 
             //    singleTabelRecycreView. методДляSimpeCallbacks( );
@@ -403,10 +402,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                   // TODO: 10.04.2023
                   if (bundleИзMainActitivy_List_Tables!=null) {
                       // TODO: 23.06.2023  NEW
-                      CurrentFragmentSingleTabel =bundleИзMainActitivy_List_Tables.getInt("CurrentFragmentSingleTabel",0);
-                      CurrentFragmentGetCursor =bundleИзMainActitivy_List_Tables.getInt("CurrentFragmentGetCursor",0);
-                      CurrentFragmentMaxItem =    bundleИзMainActitivy_List_Tables.getInt("CurrentFragmentMaxItem", 0);
-                      // TODO: 23.06.2023 OLD
+                      GetPosition =bundleИзMainActitivy_List_Tables.getInt("Position",0);
                       MainParentUUID=    bundleИзMainActitivy_List_Tables.getLong("MainParentUUID", 0l);
                       ГодТабелей=  bundleИзMainActitivy_List_Tables.getInt("ГодТабелей", 0);
                       МЕсяцТабелей=  bundleИзMainActitivy_List_Tables.getInt("МЕсяцТабелей",0);
@@ -1433,16 +1429,19 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                 ListIterator<LinkedHashMap<TableRow, TableRow>> linkedHashMapListIterator= holder.linkedHashMapsНазваниеиДанные.listIterator();
                     while (linkedHashMapListIterator.hasNext()) {
                         LinkedHashMap<TableRow, TableRow> tableRowTableRowLinkedHashMap=        linkedHashMapListIterator.next();
-                     Integer ПозицияДанныех=   linkedHashMapListIterator.nextIndex();
+                        final Integer[] ПозицияДанныех = {0};
                         tableRowTableRowLinkedHashMap.forEach(new BiConsumer<TableRow, TableRow>() {
                             @Override
                             public void accept(TableRow tableRowНазвание, TableRow tableRowДанные) {
 
                                 // TODO: 04.04.2023   DATA ROW
-                                МетодЗаполняемДаннымиTableRow(cursor ,holder ,tableRowДанные,ПозицияДанныех );
+                                МетодЗаполняемДаннымиTableRow(cursor ,holder ,tableRowДанные, ПозицияДанныех[0]);
 
                                 // TODO: 04.04.2023   Name ROW
                              //   МетодЗаполняеШабкаTableRow(cursor ,tableRowНазвание);
+
+                                // TODO: 26.06.2023  поднимае версию
+                                ПозицияДанныех[0] = ПозицияДанныех[0] +1;
 
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2063,9 +2062,9 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
             }
             @Override
             public int getItemCount() {
-                int КоличесвоСтрок=0;
+                int КоличесвоСтрок=1;
                 try {
-                    КоличесвоСтрок =ДниВыходные.size();
+                    ///КоличесвоСтрок =ДниВыходные.size();
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " КоличесвоСтрок "+КоличесвоСтрок);
