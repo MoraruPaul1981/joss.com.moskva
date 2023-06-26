@@ -16,10 +16,12 @@ import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASE_ORM extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =             1;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+     static final int VERSION =             4;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
     private      SQLiteDatabase ССылкаНаСозданнуюБазу;
     private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
+
+    private  String nameDAtBase="Database DSU-1-ORM.db";
 
     public SQLiteDatabase getССылкаНаСозданнуюБазу() {
         Log.d(this.getClass().getName()," get () БАЗА  ДАННЫХ   ДСУ-1 ОТКРЫТА ССылкаНаСозданнуюБазу.isOpen()  " +ССылкаНаСозданнуюБазу);
@@ -30,7 +32,10 @@ public class CREATE_DATABASE_ORM extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         super(context, "Database DSU-1-ORM.db", null, VERSION ); // определяем имя базы данных  и ее версию
         try{
             this.context =context;
-            if (ССылкаНаСозданнуюБазу == null ) {
+
+            context.deleteDatabase(nameDAtBase  );
+
+     /*       if (ССылкаНаСозданнуюБазу == null ) {
                 ССылкаНаСозданнуюБазу = this.getWritableDatabase(); //ссылка на схему базы данных;//ссылка на схему базы данных ГЛАВНАЯ ВСТАВКА НА БАЗУ ДСУ-1
                 Log.d(this.getClass().getName()," БАЗА  ДАННЫХ   ДСУ-1 ОТКРЫВАЕМ  ССылкаНаСозданнуюБазу==null   "
                         +ССылкаНаСозданнуюБазу.isOpen());
@@ -41,13 +46,12 @@ public class CREATE_DATABASE_ORM extends SQLiteOpenHelper{ ///SQLiteOpenHelper
                     Log.d(this.getClass().getName()," БАЗА  ДАННЫХ   ДСУ-1 ОТКРЫВАЕМ  ССылкаНаСозданнуюБазу.isOpen()  "
                             +ССылкаНаСозданнуюБазу.isOpen());
                 }
-            }
+            }*/
             Log.d(this.getClass().getName(),"\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                    " ССылкаНаСозданнуюБазу.isDbLockedByCurrentThread() " +ССылкаНаСозданнуюБазу.isDbLockedByCurrentThread());
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -1218,10 +1222,15 @@ public class CREATE_DATABASE_ORM extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             ИменаТаблицыОтАндройда=    new SubClassCreatingMainAllTables(context).  МетодТОлькоЗаполенияНазваниямиТаблицДляОмена(context);
             Log.d(this.getClass().getName()," ИменаТаблицыОтАндройда " +ИменаТаблицыОтАндройда); // TODO: 28.09.2022 таблицы
             Log.d(this.getClass().getName(), " после СЛУЖБА  содание базы newVersion==  652   (например)   " + new Date() + " newVersion " + newVersion);
-            
+
 
             if (newVersion > oldVersion) {
-                if(newVersion ==            1044){
+
+              /*  context.deleteDatabase(nameDAtBase  );*/
+
+
+
+             /*   if(newVersion ==            1044){
                     //TODO table создание  УСТАНОВКА ВЫБОРОЧНАЯ ПО ТАБЛИЦАМ
                     //МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
                     МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
@@ -1233,7 +1242,7 @@ public class CREATE_DATABASE_ORM extends SQLiteOpenHelper{ ///SQLiteOpenHelper
                     // TODO: 08.06.2021 создание Базы Данных  ЧИСТАЯ УСТАНОВКА
                     onCreate(ССылкаНаСозданнуюБазу);
                     Log.d(this.getClass().getName(), " СЛУЖБА  содание базы newVersion > oldVersion   " + new Date());
-                }
+                }*/
              }
             Log.d(this.getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
@@ -1255,6 +1264,8 @@ public class CREATE_DATABASE_ORM extends SQLiteOpenHelper{ ///SQLiteOpenHelper
     public void onDowngrade(SQLiteDatabase ССылкаНаСозданнуюБазу, int oldVersion, int newVersion) {
         onCreate(ССылкаНаСозданнуюБазу);
     }
+
+
 
 }// конец public class CREATE_DATABASE extends SQLiteOpenHelper
 

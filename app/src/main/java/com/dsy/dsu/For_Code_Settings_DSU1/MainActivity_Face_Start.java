@@ -80,9 +80,11 @@ public class MainActivity_Face_Start extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 try{
     setContentView(R.layout.activity_main__face);
+    // TODO: 26.06.2023 БАЗА ДАННЫХ ОСНОВНАЯ
     Create_Database_СсылкаНАБазовыйКласс=new CREATE_DATABASE(getApplicationContext());
-    Create_Database_СсылкаНАБазовыйКласс_ORM=new CREATE_DATABASE_ORM(getApplicationContext());
     sqLiteDatabaseСамаБазы=Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу();
+    // TODO: 26.06.2023 БАЗА ДАННЫХ ВСТМПОГАТЕЛЬЫНЕ
+    Create_Database_СсылкаНАБазовыйКласс_ORM=new CREATE_DATABASE_ORM(getApplicationContext());
     sqLiteDatabaseСамаБазы_ORM=Create_Database_СсылкаНАБазовыйКласс_ORM.getССылкаНаСозданнуюБазу();
 activity=this;
         КонтекстДляFAceapp=this;
