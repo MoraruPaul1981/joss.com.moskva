@@ -96,7 +96,7 @@
             android:id="@+id/line1singletabel"
             android:layout_span="4"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:minWidth="100dp"
             android:background="#FFFFFF"
             android:clickable="true"
@@ -123,7 +123,6 @@
 
         <EditText
             android:id="@+id/v1"
-            android:tag="v1"
             android:layout_column="0"
             android:layout_width="wrap_content"
             android:minWidth="80dp"
@@ -141,7 +140,6 @@
 
         <EditText
             android:id="@+id/v2"
-            android:tag="v2"
             android:layout_column="1"
             android:layout_width="wrap_content"
             android:minWidth="80dp"
@@ -159,7 +157,6 @@
 
         <EditText
             android:id="@+id/v3"
-            android:tag="v3"
             android:layout_column="2"
             android:layout_width="wrap_content"
             android:minWidth="80dp"
@@ -177,7 +174,6 @@
 
         <EditText
             android:id="@+id/v4"
-            android:tag="v4"
             android:layout_column="3"
             android:layout_width="wrap_content"
             android:minWidth="80dp"
@@ -204,9 +200,8 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/line2singletabel"
                 android:layout_span="4"
-                android:tag="line2"
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:minWidth="100dp"
                 android:background="#A19C9C"
                 android:clickable="true"
@@ -284,7 +279,7 @@
                 android:textStyle="bold"
                 android:layout_margin="2dp"
                 android:visibility="visible"
-                android:hint="d7"
+                android:hint="d8"
                 android:layout_width="wrap_content"
                 android:minWidth="80dp"
                 android:layout_height="3mm"
@@ -302,7 +297,7 @@
                 android:id="@+id/line22singletabel"
                 android:layout_span="4"
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:minWidth="100dp"
                 android:background="#FFFFFF"
                 android:clickable="true"
@@ -329,7 +324,6 @@
 
             <EditText
                 android:id="@+id/v5"
-                android:tag="v5"
                 android:layout_column="0"
                 android:layout_width="wrap_content"
                 android:minWidth="80dp"
@@ -347,7 +341,6 @@
 
             <EditText
                 android:id="@+id/v6"
-                android:tag="v6"
                 android:layout_column="1"
                 android:layout_width="wrap_content"
                 android:minWidth="80dp"
@@ -365,7 +358,6 @@
 
             <EditText
                 android:id="@+id/v7"
-                android:tag="v7"
                 android:layout_column="2"
                 android:layout_width="wrap_content"
                 android:minWidth="80dp"
@@ -383,7 +375,6 @@
 
             <EditText
                 android:id="@+id/v8"
-                android:tag="v8"
                 android:layout_column="3"
                 android:layout_width="wrap_content"
                 android:minWidth="80dp"
@@ -410,9 +401,8 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/line222singletabel"
                 android:layout_span="4"
-                android:tag="line2"
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:minWidth="100dp"
                 android:background="#A19C9C"
                 android:clickable="true"
@@ -432,12 +422,804 @@
 
 
 
+        <!--//TODO   НАЧАЛО ПЕРВАЯ СТРОЧКА ROW #3-->
+        <TableRow
+            android:id="@+id/TableRow3Name"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_marginTop="1dp"
+            android:background="#FFFFFF"
+            android:layout_height="wrap_content"
+            android:minHeight="15dp">
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_column="0"
+                android:id="@+id/d9"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_margin="2dp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                android:hint="d9"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="3mm"
+                android:textSize="13sp"
+                android:background="#FFFFFF"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_column="1"
+                android:id="@+id/d10"
+                android:gravity="center_vertical|center_horizontal"
+                android:textStyle="bold"
+                android:layout_margin="2dp"
+                android:visibility="visible"
+                android:hint="d10"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="3mm"
+                android:textSize="13sp"
+                android:background="#FFFFFF" />
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_column="2"
+                android:id="@+id/d11"
+                android:gravity="center_vertical|center_horizontal"
+                android:textStyle="bold"
+                android:layout_margin="2dp"
+                android:visibility="visible"
+                android:hint="d11"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="3mm"
+                android:textSize="13sp"
+                android:background="#FFFFFF" />
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_column="3"
+                android:id="@+id/d12"
+                android:gravity="center_vertical|center_horizontal"
+                android:textStyle="bold"
+                android:layout_margin="2dp"
+                android:visibility="visible"
+                android:hint="d12"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="3mm"
+                android:textSize="13sp"
+                android:background="#FFFFFF" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/TableOne3Line"
+            android:background="#FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:gravity="center_vertical|center_horizontal">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/line3singletabel"
+                android:layout_span="4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:minWidth="100dp"
+                android:background="#FFFFFF"
+                android:clickable="true"
+                android:focusable="auto"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center_horizontal|center_vertical"
+                android:textStyle="bold"
+                android:typeface="normal"
+                android:visibility="visible"
+                app:cornerRadius='150dp'
+                app:cardElevation="5dp"
+                tools:visibility="visible"
+                android:translationZ="100dp"
+                android:animateLayoutChanges="true" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/TableData3Row"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:background="#FFFFFF"
+            android:layout_margin="2dp"
+            android:layout_height="wrap_content"
+            android:minHeight="20dp">
+
+            <EditText
+                android:id="@+id/v9"
+                android:layout_column="0"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="6mm"
+                android:text="0"
+                android:gravity="center"
+                android:layout_margin="2dp"
+                android:background="@android:color/transparent"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:tooltipText="V1"
+                android:visibility="visible"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/v10"
+                android:layout_column="1"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="6mm"
+                android:text="0"
+                android:gravity="center"
+                android:layout_margin="2dp"
+                android:background="@android:color/transparent"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:tooltipText="V1"
+                android:visibility="visible"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/v11"
+                android:layout_column="2"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="6mm"
+                android:text="0"
+                android:gravity="center"
+                android:layout_margin="2dp"
+                android:background="@android:color/transparent"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:tooltipText="V1"
+                android:visibility="visible"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/v12"
+                android:layout_column="3"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="6mm"
+                android:text="0"
+                android:gravity="center"
+                android:layout_margin="2dp"
+                android:background="@android:color/transparent"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:tooltipText="V1"
+                android:visibility="visible"
+                android:textStyle="bold" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/TableTwo33Line"
+            android:background="#FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:gravity="center_vertical|center_horizontal">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/line33singletabel"
+                android:layout_span="4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:minWidth="100dp"
+                android:background="#A19C9C"
+                android:clickable="true"
+                android:focusable="auto"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center_horizontal|center_vertical"
+                android:textStyle="bold"
+                android:typeface="normal"
+                android:visibility="visible"
+                app:cornerRadius='150dp'
+                app:cardElevation="5dp"
+                tools:visibility="visible"
+                android:translationZ="100dp"
+                android:animateLayoutChanges="true" />
+        </TableRow>
+        <!--//TODO   КОНЕЦ ПЕРВАЯ СТРОЧКА ROW #3-->
 
 
 
 
 
 
+
+
+        <!--//TODO   НАЧАЛО ПЕРВАЯ СТРОЧКА ROW #4-->
+        <TableRow
+            android:id="@+id/TableRow4Name"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_marginTop="1dp"
+            android:background="#FFFFFF"
+            android:layout_height="wrap_content"
+            android:minHeight="15dp">
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_column="0"
+                android:id="@+id/d13"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_margin="2dp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                android:hint="d13"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="3mm"
+                android:textSize="13sp"
+                android:background="#FFFFFF"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_column="1"
+                android:id="@+id/d14"
+                android:gravity="center_vertical|center_horizontal"
+                android:textStyle="bold"
+                android:layout_margin="2dp"
+                android:visibility="visible"
+                android:hint="d14"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="3mm"
+                android:textSize="13sp"
+                android:background="#FFFFFF" />
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_column="2"
+                android:id="@+id/d15"
+                android:gravity="center_vertical|center_horizontal"
+                android:textStyle="bold"
+                android:layout_margin="2dp"
+                android:visibility="visible"
+                android:hint="d15"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="3mm"
+                android:textSize="13sp"
+                android:background="#FFFFFF" />
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_column="3"
+                android:id="@+id/d16"
+                android:gravity="center_vertical|center_horizontal"
+                android:textStyle="bold"
+                android:layout_margin="2dp"
+                android:visibility="visible"
+                android:hint="d16"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="3mm"
+                android:textSize="13sp"
+                android:background="#FFFFFF" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/TableOne4Line"
+            android:background="#FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:gravity="center_vertical|center_horizontal">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/line4singletabel"
+                android:layout_span="4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:minWidth="100dp"
+                android:background="#FFFFFF"
+                android:clickable="true"
+                android:focusable="auto"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center_horizontal|center_vertical"
+                android:textStyle="bold"
+                android:typeface="normal"
+                android:visibility="visible"
+                app:cornerRadius='150dp'
+                app:cardElevation="5dp"
+                tools:visibility="visible"
+                android:translationZ="100dp"
+                android:animateLayoutChanges="true" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/TableData4Row"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:background="#FFFFFF"
+            android:layout_margin="2dp"
+            android:layout_height="wrap_content"
+            android:minHeight="20dp">
+
+            <EditText
+                android:id="@+id/v13"
+                android:layout_column="0"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="6mm"
+                android:text="0"
+                android:gravity="center"
+                android:layout_margin="2dp"
+                android:background="@android:color/transparent"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:tooltipText="V1"
+                android:visibility="visible"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/v14"
+                android:layout_column="1"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="6mm"
+                android:text="0"
+                android:gravity="center"
+                android:layout_margin="2dp"
+                android:background="@android:color/transparent"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:tooltipText="V1"
+                android:visibility="visible"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/v15"
+                android:layout_column="2"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="6mm"
+                android:text="0"
+                android:gravity="center"
+                android:layout_margin="2dp"
+                android:background="@android:color/transparent"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:tooltipText="V1"
+                android:visibility="visible"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/v16"
+                android:layout_column="3"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="6mm"
+                android:text="0"
+                android:gravity="center"
+                android:layout_margin="2dp"
+                android:background="@android:color/transparent"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:tooltipText="V1"
+                android:visibility="visible"
+                android:textStyle="bold" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/TableTwo44Line"
+            android:background="#FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:gravity="center_vertical|center_horizontal">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/line44singletabel"
+                android:layout_span="4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:minWidth="100dp"
+                android:background="#A19C9C"
+                android:clickable="true"
+                android:focusable="auto"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center_horizontal|center_vertical"
+                android:textStyle="bold"
+                android:typeface="normal"
+                android:visibility="visible"
+                app:cornerRadius='150dp'
+                app:cardElevation="5dp"
+                tools:visibility="visible"
+                android:translationZ="100dp"
+                android:animateLayoutChanges="true" />
+        </TableRow>
+        <!--//TODO   КОНЕЦ ПЕРВАЯ СТРОЧКА ROW #4-->
+
+
+
+        <!--//TODO   НАЧАЛО ПЕРВАЯ СТРОЧКА ROW #5-->
+        <TableRow
+            android:id="@+id/TableRow5Name"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_marginTop="1dp"
+            android:background="#FFFFFF"
+            android:layout_height="wrap_content"
+            android:minHeight="15dp">
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_column="0"
+                android:id="@+id/d17"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_margin="2dp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                android:hint="d17"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="3mm"
+                android:textSize="13sp"
+                android:background="#FFFFFF"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_column="1"
+                android:id="@+id/d18"
+                android:gravity="center_vertical|center_horizontal"
+                android:textStyle="bold"
+                android:layout_margin="2dp"
+                android:visibility="visible"
+                android:hint="d18"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="3mm"
+                android:textSize="13sp"
+                android:background="#FFFFFF" />
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_column="2"
+                android:id="@+id/d19"
+                android:gravity="center_vertical|center_horizontal"
+                android:textStyle="bold"
+                android:layout_margin="2dp"
+                android:visibility="visible"
+                android:hint="d19"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="3mm"
+                android:textSize="13sp"
+                android:background="#FFFFFF" />
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_column="3"
+                android:id="@+id/d20"
+                android:gravity="center_vertical|center_horizontal"
+                android:textStyle="bold"
+                android:layout_margin="2dp"
+                android:visibility="visible"
+                android:hint="d20"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="3mm"
+                android:textSize="13sp"
+                android:background="#FFFFFF" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/TableOne5Line"
+            android:background="#FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:gravity="center_vertical|center_horizontal">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/line5singletabel"
+                android:layout_span="4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:minWidth="100dp"
+                android:background="#FFFFFF"
+                android:clickable="true"
+                android:focusable="auto"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center_horizontal|center_vertical"
+                android:textStyle="bold"
+                android:typeface="normal"
+                android:visibility="visible"
+                app:cornerRadius='150dp'
+                app:cardElevation="5dp"
+                tools:visibility="visible"
+                android:translationZ="100dp"
+                android:animateLayoutChanges="true" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/TableData5Row"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:background="#FFFFFF"
+            android:layout_margin="2dp"
+            android:layout_height="wrap_content"
+            android:minHeight="20dp">
+
+            <EditText
+                android:id="@+id/v17"
+                android:layout_column="0"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="6mm"
+                android:text="0"
+                android:gravity="center"
+                android:layout_margin="2dp"
+                android:background="@android:color/transparent"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:tooltipText="V1"
+                android:visibility="visible"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/v18"
+                android:layout_column="1"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="6mm"
+                android:text="0"
+                android:gravity="center"
+                android:layout_margin="2dp"
+                android:background="@android:color/transparent"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:tooltipText="V1"
+                android:visibility="visible"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/v19"
+                android:layout_column="2"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="6mm"
+                android:text="0"
+                android:gravity="center"
+                android:layout_margin="2dp"
+                android:background="@android:color/transparent"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:tooltipText="V1"
+                android:visibility="visible"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/v20"
+                android:layout_column="3"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="6mm"
+                android:text="0"
+                android:gravity="center"
+                android:layout_margin="2dp"
+                android:background="@android:color/transparent"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:tooltipText="V1"
+                android:visibility="visible"
+                android:textStyle="bold" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/TableTwo55Line"
+            android:background="#FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:gravity="center_vertical|center_horizontal">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/line55singletabel"
+                android:layout_span="4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:minWidth="100dp"
+                android:background="#A19C9C"
+                android:clickable="true"
+                android:focusable="auto"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center_horizontal|center_vertical"
+                android:textStyle="bold"
+                android:typeface="normal"
+                android:visibility="visible"
+                app:cornerRadius='150dp'
+                app:cardElevation="5dp"
+                tools:visibility="visible"
+                android:translationZ="100dp"
+                android:animateLayoutChanges="true" />
+        </TableRow>
+        <!--//TODO   КОНЕЦ ПЕРВАЯ СТРОЧКА ROW #5-->
+
+
+
+
+
+
+
+        <!--//TODO   НАЧАЛО ПЕРВАЯ СТРОЧКА ROW #6-->
+        <TableRow
+            android:id="@+id/TableRow6Name"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_marginTop="1dp"
+            android:background="#FFFFFF"
+            android:layout_height="wrap_content"
+            android:minHeight="15dp">
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_column="0"
+                android:id="@+id/d20"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_margin="2dp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                android:hint="d20"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="3mm"
+                android:textSize="13sp"
+                android:background="#FFFFFF"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_column="1"
+                android:id="@+id/d21"
+                android:gravity="center_vertical|center_horizontal"
+                android:textStyle="bold"
+                android:layout_margin="2dp"
+                android:visibility="visible"
+                android:hint="d21"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="3mm"
+                android:textSize="13sp"
+                android:background="#FFFFFF" />
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_column="2"
+                android:id="@+id/d22"
+                android:gravity="center_vertical|center_horizontal"
+                android:textStyle="bold"
+                android:layout_margin="2dp"
+                android:visibility="visible"
+                android:hint="d22"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="3mm"
+                android:textSize="13sp"
+                android:background="#FFFFFF" />
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_column="3"
+                android:id="@+id/d23"
+                android:gravity="center_vertical|center_horizontal"
+                android:textStyle="bold"
+                android:layout_margin="2dp"
+                android:visibility="visible"
+                android:hint="d23"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="3mm"
+                android:textSize="13sp"
+                android:background="#FFFFFF" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/TableOne6Line"
+            android:background="#FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:gravity="center_vertical|center_horizontal">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/line6singletabel"
+                android:layout_span="4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:minWidth="100dp"
+                android:background="#FFFFFF"
+                android:clickable="true"
+                android:focusable="auto"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center_horizontal|center_vertical"
+                android:textStyle="bold"
+                android:typeface="normal"
+                android:visibility="visible"
+                app:cornerRadius='150dp'
+                app:cardElevation="5dp"
+                tools:visibility="visible"
+                android:translationZ="100dp"
+                android:animateLayoutChanges="true" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/TableData6Row"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:background="#FFFFFF"
+            android:layout_margin="2dp"
+            android:layout_height="wrap_content"
+            android:minHeight="20dp">
+
+            <EditText
+                android:id="@+id/v21"
+                android:layout_column="0"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="6mm"
+                android:text="0"
+                android:gravity="center"
+                android:layout_margin="2dp"
+                android:background="@android:color/transparent"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:tooltipText="V1"
+                android:visibility="visible"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/v22"
+                android:layout_column="1"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="6mm"
+                android:text="0"
+                android:gravity="center"
+                android:layout_margin="2dp"
+                android:background="@android:color/transparent"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:tooltipText="V1"
+                android:visibility="visible"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/v23"
+                android:layout_column="2"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="6mm"
+                android:text="0"
+                android:gravity="center"
+                android:layout_margin="2dp"
+                android:background="@android:color/transparent"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:tooltipText="V1"
+                android:visibility="visible"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/v24"
+                android:layout_column="3"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="6mm"
+                android:text="0"
+                android:gravity="center"
+                android:layout_margin="2dp"
+                android:background="@android:color/transparent"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:tooltipText="V1"
+                android:visibility="visible"
+                android:textStyle="bold" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/TableTwo66Line"
+            android:background="#FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:gravity="center_vertical|center_horizontal">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/line66singletabel"
+                android:layout_span="4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:minWidth="100dp"
+                android:background="#A19C9C"
+                android:clickable="true"
+                android:focusable="auto"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center_horizontal|center_vertical"
+                android:textStyle="bold"
+                android:typeface="normal"
+                android:visibility="visible"
+                app:cornerRadius='150dp'
+                app:cardElevation="5dp"
+                tools:visibility="visible"
+                android:translationZ="100dp"
+                android:animateLayoutChanges="true" />
+        </TableRow>
+        <!--//TODO   КОНЕЦ ПЕРВАЯ СТРОЧКА ROW #6-->
 
 
 

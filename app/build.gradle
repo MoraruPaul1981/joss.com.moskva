@@ -193,6 +193,8 @@ dependencies {
 
 
 
+// https://mvnrepository.com/artifact/org.greenrobot/greendao-gradle-plugin
+    implementation 'org.greenrobot:greendao-gradle-plugin:3.3.0'
 
 
 
