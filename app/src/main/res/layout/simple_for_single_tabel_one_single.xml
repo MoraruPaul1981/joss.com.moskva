@@ -1441,7 +1441,7 @@
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_margin="2dp"
                 android:textStyle="bold"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:hint="d29"
                 android:layout_width="wrap_content"
                 android:minWidth="80dp"
@@ -1454,7 +1454,7 @@
                 android:gravity="center_vertical|center_horizontal"
                 android:textStyle="bold"
                 android:layout_margin="2dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:hint="d30"
                 android:layout_width="wrap_content"
                 android:minWidth="80dp"
@@ -1467,7 +1467,7 @@
                 android:gravity="center_vertical|center_horizontal"
                 android:textStyle="bold"
                 android:layout_margin="2dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:hint="d31"
                 android:layout_width="wrap_content"
                 android:minWidth="80dp"
@@ -1526,7 +1526,7 @@
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:tooltipText="V1"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:textStyle="bold" />
 
             <EditText
@@ -1543,7 +1543,7 @@
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:tooltipText="V1"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:textStyle="bold" />
 
             <EditText
@@ -1560,7 +1560,7 @@
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:tooltipText="V1"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:textStyle="bold" />
 
         </TableRow>

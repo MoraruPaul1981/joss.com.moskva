@@ -65,6 +65,7 @@ import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -109,6 +110,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.function.IntConsumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
 import io.reactivex.rxjava3.functions.Action;
@@ -289,7 +292,8 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
              cursorForViewPager.moveToPosition(GetPosition);
                  singleTabelRecycreView.МетодЗаполениеRecycleView(cursorForViewPager );
 
-            //    singleTabelRecycreView. методДляSimpeCallbacks( );
+            // TODO: 26.06.2023  созданнй CallBack
+                 singleTabelRecycreView. методДляSimpeCallbacks( );
             // TODO: 14.04.2023 доделываем single tabel
             singleTabelRecycreView.МетодСлушательRecycleView();
             singleTabelRecycreView.   МетодСлушательКурсора(cursorForViewPager );
@@ -717,7 +721,10 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                         new DividerItemDecoration(activity,GridLayoutManager.VERTICAL);
                 dividerItemDecorationHor.setDrawable(getDrawable(R.drawable.divider_for_single_tabel));///R.dimen.activity_horizontal_margin*/
 
-                LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity() , LinearLayoutManager.HORIZONTAL, false);
+                DividerItemDecoration dividerItemDecorationHor=
+                        new DividerItemDecoration(getActivity(), LinearLayoutManager.HORIZONTAL);
+                recycleView.addItemDecoration(dividerItemDecorationHor);
+                LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity() , LinearLayoutManager.VERTICAL, true);
                 recycleView.setLayoutManager(layoutManager);
                 recycleView.setItemAnimator(new DefaultItemAnimator());
                 recycleView.setHasFixedSize(true);
@@ -760,234 +767,50 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
         // TODO: 15.06.2023 свайвы
         private void методДляSimpeCallbacks(   ) {
             try{
-
                 // TODO: 11.05.2023 SWIPE:
-                ItemTouchHelper.SimpleCallback simpleItemTouchCallbackRIGHT = new ItemTouchHelper.SimpleCallback(10,
-                        ItemTouchHelper.RIGHT   ) {
+   ItemTouchHelper itemTouchHelper=new ItemTouchHelper(new ItemTouchHelper.Callback() {
+       @Override
+       public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
 
-                    @Override
-                    public boolean isItemViewSwipeEnabled() {
-                        return true;
-                    }
-                    @Override
-                    public boolean isLongPressDragEnabled() {
-                        return false;
-                    }
+           Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                   " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                   " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"recycleView   " + recycleView);
+           return makeMovementFlags(
+                    ItemTouchHelper.DOWN,
+                   ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT
+           );
+       }
 
-                    @Override
-                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                        try{
-                            // TODO: 17.06.2023 сама свайп
-                             SubClassReBornDataRecyreView subClassReBornDataRecyreView=new  SubClassReBornDataRecyreView();
-                            subClassReBornDataRecyreView.методПереРоденияRevireViewScroll();
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"CurrentFragmentMaxItem   " + CurrentFragmentMaxItem + " cursorForViewPager " + cursorForViewPager);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(getContext().getClass().getName(),
-                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    }
+       @Override
+       public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
 
-                    @Override
-                    public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
-                                            @NonNull RecyclerView.ViewHolder viewHolder,
-                                            float dX, float dY, int actionState, boolean isCurrentlyActive) {
-
-                        // TODO: 18.06.2023 первый вариант
-                        методИзмененияЦветаSwipes(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-
-                        //методАнимацияRecyreView(viewHolder);
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"CurrentFragmentMaxItem   " + CurrentFragmentMaxItem + " cursorForViewPager " + cursorForViewPager
-                                + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
-                    }
-
-                    private void методИзмененияЦветаSwipes(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
-                                                           @NonNull    RecyclerView.ViewHolder viewHolder,
-                                                           float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                        try{
-                            if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-                                // Get RecyclerView item from the ViewHolder
-                                View itemView = viewHolder.itemView;
-
-                                Paint p = new Paint();
-                                if(dX > 0) {
-                                    p.setColor(Color.parseColor("#1C9CA8")) ;
-                                } else {
-                                    p.setColor(Color.parseColor("#48D1CC")) ;
-                                }
-
-                                if (dX > 0) {
-                                    /* Set your color for positive displacement */
-
-                                    // Draw Rect with varying right side, equal to displacement dX
-                                    c.drawRect((float) itemView.getLeft(), (float) itemView.getTop(), dX,
-                                            (float) itemView.getBottom(), p);
-
-                                } else {
-                                    /* Set your color for negative displacement */
-
-                                    // Draw Rect with varying left side, equal to the item's right side plus negative displacement dX
-                                    c.drawRect((float) itemView.getRight() + dX, (float) itemView.getTop(),
-                                            (float) itemView.getRight(), (float) itemView.getBottom(), p);
-                                }
-                                // TODO: 18.06.2023
-                                /*      Bitmap    icon = BitmapFactory.decodeResource(getResources(), R.drawable.icon_account);
-                                 *//* Set your color for negative displacement *//*
-                            p.setARGB(255, 0, 255, 0);
-                            //Set the image icon for Left swipe
-                            c.drawBitmap(icon,
-                                    (float)  itemView.getRight()  - icon.getWidth(),
-                                    (float)  itemView.getTop() + ((float)  itemView.getBottom() - (float)
-                                            itemView.getTop() - icon.getHeight())/2,
-                                    p);*/
-
-                                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(getContext().getClass().getName(),
-                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    }
-
-                    @Override
-                    public void onChildDrawOver(@NonNull Canvas c, @NonNull RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                        super.onChildDrawOver(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-                    }
-
-                    @Override
-                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                                          RecyclerView.ViewHolder target) {
-                        final int fromPos = viewHolder.getAdapterPosition();
-                        final int toPos = target.getAdapterPosition();
-                        // move item in `fromPos` to `toPos` in adapter.
-                        return true;// true if moved, false otherwise
-                    }
+           Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                   " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                   " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"recycleView   " + recycleView);
 
 
 
-                };
-                ItemTouchHelper.SimpleCallback simpleItemTouchCallbackLEFT = new ItemTouchHelper.SimpleCallback(10,
-                        ItemTouchHelper.LEFT  ) {
+               View itemView = viewHolder.itemView;
+               Paint p = new Paint();
 
-                    @Override
-                    public boolean isItemViewSwipeEnabled() {
-                        return true;
-                    }
-                    @Override
-                    public boolean isLongPressDragEnabled() {
-                        return false;
-                    }
+                   p.setColor(Color.parseColor("#1C9CA8")) ;
+           itemView.setDra
 
-                    @Override
-                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                        try{
-                            // TODO: 17.06.2023 сама свайп
-                             SubClassReBornDataRecyreView subClassReBornDataRecyreView=new  SubClassReBornDataRecyreView();
-                            subClassReBornDataRecyreView.методПереРоденияRevireViewScroll();
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"recycleView   " + recycleView + " cursorForViewPager " + cursorForViewPager);
 
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(getContext().getClass().getName(),
-                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    }
+           return true;
+       }
 
-                    @Override
-                    public void onMoved(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, int fromPos, @NonNull RecyclerView.ViewHolder target, int toPos, int x, int y) {
-                        super.onMoved(recyclerView, viewHolder, fromPos, target, toPos, x, y);
-                    }
+       @Override
+       public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
-                    @Override
-                    public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                        //  super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-                        методИзмененияЦветаSwipes(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-                        //  методАнимацияRecyreView(viewHolder);
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"CurrentFragmentMaxItem   " + CurrentFragmentMaxItem + " cursorForViewPager " + cursorForViewPager
-                                + " CurrenrsСhildUUID " +CurrenrsСhildUUID + " CurrenrsSelectFio " +CurrenrsSelectFio + "  ФИО " + ФИО);
-                    }
-                    private void методИзмененияЦветаSwipes(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
-                                                           @NonNull    RecyclerView.ViewHolder viewHolder,
-                                                           float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                        try{
-                            if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-                                // Get RecyclerView item from the ViewHolder
-                                View itemView = viewHolder.itemView;
+           Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                   " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                   " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"recycleView   " + recycleView);
 
-                                Paint p = new Paint();
-                                if(dX > 0) {
-                                    p.setColor(Color.parseColor("#48D1CC")) ;
-                                } else {
-                                    p.setColor(Color.parseColor("#1C9CA8")) ;
-                                }
-                                if (dX > 0) {
-                                    /* Set your color for positive displacement */
+       }
+   });
+   itemTouchHelper.attachToRecyclerView(recycleView);
 
-                                    // Draw Rect with varying right side, equal to displacement dX
-                                    c.drawRect((float) itemView.getLeft(), (float) itemView.getTop(), dX,
-                                            (float) itemView.getBottom(), p);
-                                } else {
-                                    /* Set your color for negative displacement */
-
-                                    // Draw Rect with varying left side, equal to the item's right side plus negative displacement dX
-                                    c.drawRect((float) itemView.getRight() + dX, (float) itemView.getTop(),
-                                            (float) itemView.getRight(), (float) itemView.getBottom(), p);
-                                }
-
-                                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(getContext().getClass().getName(),
-                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    }
-
-                    @Override
-                    public long getAnimationDuration(@NonNull RecyclerView recyclerView, int animationType, float animateDx, float animateDy) {
-                        return super.getAnimationDuration(recyclerView, animationType, animateDx, animateDy);
-                    }
-
-                    @Override
-                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                                          RecyclerView.ViewHolder target) {
-                        final int fromPos = viewHolder.getAdapterPosition();
-                        final int toPos = target.getAdapterPosition();
-                        // move item in `fromPos` to `toPos` in adapter.
-                        return true;// true if moved, false otherwise
-                    }
-
-                };
-
-                ItemTouchHelper itemTouchHelperLEFT = new ItemTouchHelper(simpleItemTouchCallbackLEFT);
-                itemTouchHelperLEFT.attachToRecyclerView(recycleView);
-                ItemTouchHelper itemTouchHelperRIGHT = new ItemTouchHelper(simpleItemTouchCallbackRIGHT);
-                itemTouchHelperRIGHT.attachToRecyclerView(recycleView);
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"recycleView   " + recycleView);
@@ -1133,9 +956,6 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                 myRecycleViewAdapter = new  MyRecycleViewAdapter(cursorForViewPager );
                 myRecycleViewAdapter.notifyDataSetChanged();
                 recycleView.setAdapter(myRecycleViewAdapter);
-                // TODO: 16.06.2023  перегрузка экрана
-                методПерегрузкиRecycreView();
-
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
@@ -1267,6 +1087,21 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                 // TODO: 22.06.2023 данные
                                 МетодЗаполняемДаннымиRecycreViewSingleTable(holder, cursor);
                                 // TODO: 06.04.2023
+
+
+                    // TODO: 14.04.2023 ДОПОЛНИТЕЛЬНЫЕ МЕТОДЦ ПОСЛЕ ВСТАВКИ ЛДАННЫХ
+                    методПослеОбновлениеЯчейкиСчитаемЧасы();
+                    // TODO: 04.04.2023  ФИО
+                    new  SubClassChanegeSetNameProffesio().    МетодЗаполняемФИОRow( cursor);
+                    // TODO: 16.04.2023 Професии Професии Професии Професии
+                    МетодаКликаTableRowФИО( );
+                    // TODO: 22.06.2023
+                    fragmentSingleTabel.new SubClassBungleSingle().методGETДанныеRunTimeИзCursor(cursor );
+                    // TODO: 23.06.2023
+                    методВиузуацииПрогрессБара();
+                    // TODO: 26.06.2023  перегрузка
+                    методПерегрузкиRecycreView();
+
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cursorForViewPager " +cursor +
@@ -1451,6 +1286,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                             }
                         });
                     }
+                    // TODO: 26.06.2023
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -1514,9 +1350,10 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                 String ВыходныеИлиПразничные=    ДниВыходные.get(ДнейСодержимое.trim());
                                 if (ВыходныеИлиПразничные!=null) {
                                     editTextRowКликПоДАнными.setVisibility(View.VISIBLE);
+                                    editTextRowКликПоДАнными.startAnimation(animationVibr1);
                                 }
                                 методЗаполениеСодеримомRowData(editTextRowКликПоДАнными, cursor, ДнейСодержимое);
-                            }
+
                             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -1529,7 +1366,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                             методИницаллизацииКлавиаотурыЯчейка(editTextRowКликПоДАнными);
                             // TODO: 10.05.2023
 
-
+                            }
 
                             // TODO: 26.06.2023
                             ПозицияДня=ПозицияДня+1;
@@ -1615,7 +1452,9 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                     textViewНазвание.setVisibility(View.VISIBLE);
                                     textViewНазвание.startAnimation(animationVibr1);
                                 }
-                                    методЗаполениеНазванияRowData(textViewНазвание, ДнейНазвание);
+                               ВыходныеИлиПразничные =          методЗаполениеНазванияRowData(textViewНазвание, ДнейНазвание);
+                                // TODO: 26.06.2023
+                                 методЗаполениеНазванияЦвет(textViewНазвание,ВыходныеИлиПразничные);
 
                             }
                             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1726,10 +1565,11 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                 }
             }
 
-            private void методЗаполениеНазванияRowData(@NonNull  TextView TextViewRowКликПоНазваниям,String s) {
+            private String методЗаполениеНазванияRowData(@NonNull  TextView TextViewRowКликПоНазваниям,String s) {
+                String ВыходныеИлиПразничные = null;
                 try {
                     // TODO: 11.04.2023 Ставим Дни
-                    String ВыходныеИлиПразничные=    ДниВыходные.get(s.trim());
+                  ВыходныеИлиПразничные=    ДниВыходные.get(s.trim());
                     TextViewRowКликПоНазваниям.setText( ВыходныеИлиПразничные);
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1745,8 +1585,50 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                             this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
+                return ВыходныеИлиПразничные;
             }
-            // TODO: 07.06.2023 2
+            // TODO: 07.06.2023 цвет
+            private void методЗаполениеНазванияЦвет(@NonNull  TextView TextViewRowКликПоНазваниям,String ВыходныеИлиПразничные) {
+                try {
+                    // TODO: 11.04.2023 Ставим Дни
+                    if ( ДниПразничные.containsValue(ВыходныеИлиПразничные.trim())==true) {
+                        TextViewRowКликПоНазваниям.setTextColor(Color.parseColor("#DC143C"));
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+   "  ВыходныеИлиПразничные "
+                                + ВыходныеИлиПразничные);
+                    } else {
+                        TextViewRowКликПоНазваниям.setTextColor(Color.parseColor("#008080"));
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+   "  ВыходныеИлиПразничные "
+                                + ВыходныеИлиПразничные);
+                    }
+
+
+
+
+
+
+
+
+
+
+                    // TODO: 19.10.2022
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+   "  ВыходныеИлиПразничные "
+                            + ВыходныеИлиПразничные);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(getContext().getClass().getName(),
+                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
+            }
 
 
             // TODO: 08.11.2022 метод КЛИК ПО ДАННЫМ
@@ -2209,9 +2091,6 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                 recycleView.setFocusable(true);
                 recycleView.setClickable(true);
                 recycleView.smoothScrollToPosition(0);
-                recycleView.setBackgroundColor(Color.parseColor("#FFFFFF"));
-
-
 
 
                 textViewчасыsimgletabel.refreshDrawableState();
@@ -3070,35 +2949,41 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                         // TODO: 11.04.2023 празничные
                         Integer ИндексДнейФинал = (Integer) ИндексДней;
                         ///linkedHashMapДни.put("d" + ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
-                        if (СокращенныйДниМесяцаВТабеле.trim().matches("[Сб,](.*)")){
-                            linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
-                        }else if(СокращенныйДниМесяцаВТабеле.trim().matches("[Вс,](.*)")){
-                            linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
-                        }else {
-                            if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТабелей ==11   ){
-                                if (МЕсяцТабелей ==5 ) {
-                                    if(ИндексДней==1 || ИндексДней==9    ){
-                                        linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
-                                    }
-                                }
-                                if (МЕсяцТабелей==6) {
-                                    if(  ИндексДней==12   ){
-                                        linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
-                                    }
-                                }
-                                if (МЕсяцТабелей ==11) {
-                                    if(  ИндексДней==4 ){
-                                        linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
-                                    }
-                                }
-                            }
-                        }
 
+                     Integer integerСубота=   СокращенныйДниМесяцаВТабеле.trim().indexOf("Сб");
+                     Integer integerВоск=   СокращенныйДниМесяцаВТабеле.trim().indexOf("Вс");
 
-
-
-
-
+             if (integerСубота==0  || integerВоск==0){
+                 linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                         + " integerСубота " + integerСубота
+                         + " integerВоск " + integerВоск);
+             }else {
+                 if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТабелей ==11   ){
+                     if (МЕсяцТабелей ==5 ) {
+                         if(ИндексДней==1 || ИндексДней==9    ){
+                             linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+                         }
+                     }
+                     if (МЕсяцТабелей==6) {
+                         if(  ИндексДней==12   ){
+                             linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+                         }
+                     }
+                     if (МЕсяцТабелей ==11) {
+                         if(  ИндексДней==4 ){
+                             linkedHashMapПраздничныеДни.put("d"+ИндексДнейФинал.toString().trim(), СокращенныйДниМесяцаВТабеле.trim());
+                         }
+                     }
+                 }
+                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                         + " linkedHashMapПраздничныеДни " + linkedHashMapПраздничныеДни
+                         + " МЕсяцТабелей " + МЕсяцТабелей);
+             }
 
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
