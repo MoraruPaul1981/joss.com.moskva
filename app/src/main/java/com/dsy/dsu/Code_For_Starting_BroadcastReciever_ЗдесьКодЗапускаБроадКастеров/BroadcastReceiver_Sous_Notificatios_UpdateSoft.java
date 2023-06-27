@@ -5,37 +5,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
-import android.view.Gravity;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleEventObserver;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.work.BackoffPolicy;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.ExistingWorkPolicy;
 import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
-import com.dsy.dsu.Code_For_WorkManagers.MyWork_Notifocations_Уведомления_Для_ОбновлениеПО;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class BroadcastReceiver_Sous_Notificatios_UpdateSoft extends BroadcastReceiver {
