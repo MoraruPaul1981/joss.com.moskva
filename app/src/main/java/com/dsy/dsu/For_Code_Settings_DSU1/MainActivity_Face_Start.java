@@ -22,7 +22,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dsy.dsu.AllDatabases.CREATE_DATABASE;
-import com.dsy.dsu.AllDatabases.CREATE_DATABASE_Error;
+import com.dsy.dsu.AllDatabases.Error.CREATE_DATABASE_Error;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Connections_Server;
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
@@ -60,6 +60,7 @@ public class MainActivity_Face_Start extends AppCompatActivity {
     private  String      ДатаПоследенегоЗаходаУспешнойАунтификации;
     private  CREATE_DATABASE   Create_Database_СсылкаНАБазовыйКласс;
     private CREATE_DATABASE_Error Create_Database_СсылкаНАБазовыйКласс_Error;
+
     private  Context КонтекстДляFAceapp;
     private  Activity activity;
     private  int ПубличныйIDТекущегоПользователя=0;
@@ -85,7 +86,14 @@ try{
     // TODO: 26.06.2023 БАЗА ДАННЫХ ВСТМПОГАТЕЛЬЫНЕ
     Create_Database_СсылкаНАБазовыйКласс_Error =new CREATE_DATABASE_Error(getApplicationContext());
     sqLiteDatabaseСамаБазы_Error = Create_Database_СсылкаНАБазовыйКласс_Error.getССылкаНаСозданнуюБазу();
-activity=this;
+
+
+// TODO: 27.06.2023 test Code
+
+
+
+
+        activity=this;
         КонтекстДляFAceapp=this;
         ((Activity) КонтекстДляFAceapp) .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //////todo настрока экрана
@@ -99,7 +107,6 @@ activity=this;
         getSupportActionBar().setHomeButtonEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeAsUpIndicator(null);
-       Create_Database_СсылкаНАБазовыйКласс=new CREATE_DATABASE(getApplicationContext());
         ///TODO попытка открыть экран как full screan
         getSupportActionBar().hide(); ///скрывать тул бар
       /////todo данная настрока запрещает при запуке активти подскаваать клавиатуре вверх на компонеты eedittext

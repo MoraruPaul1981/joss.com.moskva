@@ -1,19 +1,15 @@
 
 //////КНАЧАЛО  КЛАССА ПО СОЗДАНИЮ СХЕМЫ ДАННЫХ
-package com.dsy.dsu.AllDatabases;
+package com.dsy.dsu.AllDatabases.Error;
 
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.dsy.dsu.AllDatabases.modelORM.FioOrm;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
-import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.support.ConnectionSource;
-import com.j256.ormlite.table.TableUtils;
+import com.dsy.dsu.Business_logic_Only_Class.SubClassCreatingMainAllTables;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -22,18 +18,38 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
-public class CREATE_DATABASE_ORM extends OrmLiteSqliteOpenHelper { ///SQLiteOpenHelper
-     static final int VERSION =             1;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+public class CREATE_DATABASE_Error extends SQLiteOpenHelper{ ///SQLiteOpenHelper
+     static final int VERSION =             5;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
+    private      SQLiteDatabase ССылкаНаСозданнуюБазу;
     private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
-    private CREATE_DATABASE_ORM getCREATE_DATABASE_ORM = null;
-    private Dao<FioOrm, Long> todoDao;
 
+    private  String nameDAtBase="Database DSU-1-ORM.db";
+
+    public SQLiteDatabase getССылкаНаСозданнуюБазу() {
+        Log.d(this.getClass().getName()," get () БАЗА  ДАННЫХ   ДСУ-1 ОТКРЫТА ССылкаНаСозданнуюБазу.isOpen()  " +ССылкаНаСозданнуюБазу);
+        return ССылкаНаСозданнуюБазу;
+    }
     ///////КОНСТРУКТОР главного класса по созданию базы данных
-    public CREATE_DATABASE_ORM(@NotNull Context context) {/////КОНСТРУКТОР КЛАССА ПО СОЗДАНИЮ БАЗЫ ДАННЫХ
-        super(context, "Database DSU-1-ORM.db", null, VERSION , 1); // определяем имя базы данных  и ее версию
+    public CREATE_DATABASE_Error(@NotNull Context context) {/////КОНСТРУКТОР КЛАССА ПО СОЗДАНИЮ БАЗЫ ДАННЫХ
+        super(context, "Database DSU-1-Error.db", null, VERSION ); // определяем имя базы данных  и ее версию
         try{
             this.context =context;
+
+            //context.deleteDatabase(nameDAtBase  );
+
+            if (ССылкаНаСозданнуюБазу == null ) {
+                ССылкаНаСозданнуюБазу = this.getWritableDatabase(); //ссылка на схему базы данных;//ссылка на схему базы данных ГЛАВНАЯ ВСТАВКА НА БАЗУ ДСУ-1
+                Log.d(this.getClass().getName()," БАЗА  ДАННЫХ   ДСУ-1 ОТКРЫВАЕМ  ССылкаНаСозданнуюБазу==null   "
+                        +ССылкаНаСозданнуюБазу.isOpen());
+            }else{
+                //TODO connection  else is onen false
+                if (!ССылкаНаСозданнуюБазу.isOpen()    )  {
+                    ССылкаНаСозданнуюБазу = this.getWritableDatabase(); //ссылка на схему базы данных;//ссылка на схему базы данных ГЛАВНАЯ ВСТАВКА НА БАЗУ ДСУ-1
+                    Log.d(this.getClass().getName()," БАЗА  ДАННЫХ   ДСУ-1 ОТКРЫВАЕМ  ССылкаНаСозданнуюБазу.isOpen()  "
+                            +ССылкаНаСозданнуюБазу.isOpen());
+                }
+            }
             Log.d(this.getClass().getName(),"\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
@@ -48,18 +64,16 @@ public class CREATE_DATABASE_ORM extends OrmLiteSqliteOpenHelper { ///SQLiteOpen
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
-
+    //  Cоздание ТАблиц
     @Override
-    public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
+    public void onCreate(SQLiteDatabase ССылкаНаСозданнуюБазу) {
         try {
-            /**
-             * creates the database table
-             */
-            TableUtils.createTable(connectionSource, FioOrm.class);
-            // TODO: 17.04.2023
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+            Log.d(this.getClass().getName(), "сработала ... НАЧАЛО  СОЗДАНИЯ ТАЛИЦ ");
+            // TODO: 24.10.2022 Генерируем Список Таблиц
+         //   ИменаТаблицыОтАндройда=    new SubClassCreatingMainAllTables(context).  МетодТОлькоЗаполенияНазваниямиТаблицДляОмена(context);
+            // TODO: 12.10.2022  СИСТЕМНЫЕ ТАБЛИЦЫ
+            МетодСозданиеТаблицыОшибок(ССылкаНаСозданнуюБазу);
+            Log.d(this.getClass().getName(), " сработала ... КОНЕЦ СОЗДАНИЯ ТАБЛИЦ " +new Date().toGMTString());
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -67,108 +81,7 @@ public class CREATE_DATABASE_ORM extends OrmLiteSqliteOpenHelper { ///SQLiteOpen
             new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                     this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
-        try{
-            if (newVersion > oldVersion) {
-                    // TODO: 08.06.2021 создание Базы Данных  ЧИСТАЯ УСТАНОВКА
-                /**
-                 * Recreates the database when onUpgrade is called by the framework
-                 */
-                TableUtils.dropTable(connectionSource, FioOrm.class, false);
-                onCreate(database, connectionSource);
-
-                Log.d(this.getClass().getName(), " СЛУЖБА  содание базы newVersion > oldVersion   " + new Date());
-            }
-
-            // TODO: 17.04.2023
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-            //  ИменаТаблицыОтАндройда=    new SubClassCreatingMainAllTables(context).  МетодТОлькоЗаполенияНазваниямиТаблицДляОмена(context);
-        } catch (SQLException | java.sql.SQLException e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
-
-
-
-    /**
-     * Returns an instance of the data access object
-     * @return
-     * @throws SQLException
-     */
-    public Dao<FioOrm, Long> getDao() throws SQLException {
-        try{
-        if(todoDao == null) {
-                todoDao = getDao(FioOrm.class);
-        }
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-    } catch (SQLException | java.sql.SQLException e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                Thread.currentThread().getStackTrace()[2].getLineNumber());
-    }
-        return todoDao;
-    }
-
-
-    /*
-    Provides the SQLite Helper Object among the application
-     */
-    public CREATE_DATABASE_ORM getHelper() {
-        try{
-        if (getCREATE_DATABASE_ORM == null) {
-            getCREATE_DATABASE_ORM = OpenHelperManager.getHelper(context, CREATE_DATABASE_ORM.class);
-        }
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-    } catch (SQLException e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                Thread.currentThread().getStackTrace()[2].getLineNumber());
-    }
-        return getCREATE_DATABASE_ORM;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // TODO: 27.06.2023  OLD TABLE
-
+        }}
 
     private void МетодСозданияТаблицыТемплейШаблон(SQLiteDatabase ССылкаНаСозданнуюБазу) {
         ССылкаНаСозданнуюБазу.execSQL("drop table  if exists templates");//test
@@ -194,7 +107,7 @@ public class CREATE_DATABASE_ORM extends OrmLiteSqliteOpenHelper { ///SQLiteOpen
                 " date_update NUMERIC)");
         /////todo встака данных по умолчанию
         /////todo встака данных по умолчанию
-        // ССылкаНаСозданнуюБазуORM.execSQL("INSERT INTO date_work (id) VALUES('1')");
+        // ССылкаНаСозданнуюБазу.execSQL("INSERT INTO date_work (id) VALUES('1')");
         ////////
         Log.d(this.getClass().getName(), " сработала ...  создание таблицы date_work");
     }
@@ -301,7 +214,7 @@ public class CREATE_DATABASE_ORM extends OrmLiteSqliteOpenHelper { ///SQLiteOpen
                 " status  TEXT," +
                 " symma NUMERIC ,"+
                 " statyadds TEXT  )");
-              /* ССылкаНаСозданнуюБазуORM.execSQL("Create table if not exists    data_pay  (" +
+              /* ССылкаНаСозданнуюБазу.execSQL("Create table if not exists    data_pay  (" +
                 "id  INTEGER )");
 */
 
@@ -901,7 +814,7 @@ public class CREATE_DATABASE_ORM extends OrmLiteSqliteOpenHelper { ///SQLiteOpen
                 " date_update  NUMERIC," +
                 " mode_weekend  TEXT DEFAULT 'Включить'," +///Включить   //  Выключить
                 "mode_connection TEXT DEFAULT 'Mobile' )");
-        //ССылкаНаСозданнуюБазуORM.execSQL("INSERT INTO SuccessLogin (id) VALUES('')");
+        //ССылкаНаСозданнуюБазу.execSQL("INSERT INTO SuccessLogin (id) VALUES('')");
         Log.d(this.getClass().getName(), " сработала ...  создание таблицы  successlogin");
     }
 
@@ -938,7 +851,6 @@ public class CREATE_DATABASE_ORM extends OrmLiteSqliteOpenHelper { ///SQLiteOpen
 
         } catch (SQLException e) {
             e.printStackTrace();
-            ///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
             // TODO: 01.09.2021 метод вызова
@@ -955,8 +867,8 @@ public class CREATE_DATABASE_ORM extends OrmLiteSqliteOpenHelper { ///SQLiteOpen
         try{
             ССылкаНаСозданнуюБазу.execSQL("drop table  if exists get_material ");//ТАБЛИЦА ГЕНЕРАЦИИ ОШИБОК
             ССылкаНаСозданнуюБазу.execSQL("DELETE FROM MODIFITATION_Client   WHERE name =  'get_material'");//ТАБЛИЦА ГЕНЕРАЦИИ ОШИБОК
-         //   ССылкаНаСозданнуюБазуORM.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'get_material'");//test
-         /*   ССылкаНаСозданнуюБазуORM.execSQL("Create table if not exists get_material (" +
+         //   ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'get_material'");//test
+         /*   ССылкаНаСозданнуюБазу.execSQL("Create table if not exists get_material (" +
                     "id INTEGER   ," +
                     "cfo  INTEGER ," +
                     "date_update TEXT ," +
@@ -1259,14 +1171,64 @@ public class CREATE_DATABASE_ORM extends OrmLiteSqliteOpenHelper { ///SQLiteOpen
 
 
 
+
+
+
+
+    @Override
+    public void onUpgrade(SQLiteDatabase ССылкаНаСозданнуюБазу, int oldVersion, int newVersion) {
+        try{
+            Log.d(this.getClass().getName(), " до СЛУЖБА  содание базы newVersion==  652   (например)  " +
+                    " " + new Date()+  " newVersion " +newVersion);
+            ИменаТаблицыОтАндройда=    new SubClassCreatingMainAllTables(context).  МетодТОлькоЗаполенияНазваниямиТаблицДляОмена(context);
+            Log.d(this.getClass().getName()," ИменаТаблицыОтАндройда " +ИменаТаблицыОтАндройда); // TODO: 28.09.2022 таблицы
+            Log.d(this.getClass().getName(), " после СЛУЖБА  содание базы newVersion==  652   (например)   " + new Date() + " newVersion " + newVersion);
+
+
+            if (newVersion > oldVersion) {
+
+              /*  context.deleteDatabase(nameDAtBase  );*/
+
+
+
+             /*   if(newVersion ==            1044){
+                    //TODO table создание  УСТАНОВКА ВЫБОРОЧНАЯ ПО ТАБЛИЦАМ
+                    //МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
+                    МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
+
+                    // TODO: 12.10.2022  создание Trigers
+                    МетодСозданиеТрирераМодификаценКлиент(ССылкаНаСозданнуюБазу,ИменаТаблицыОтАндройда);
+
+                }else {
+                    // TODO: 08.06.2021 создание Базы Данных  ЧИСТАЯ УСТАНОВКА
+                    onCreate(ССылкаНаСозданнуюБазу);
+                    Log.d(this.getClass().getName(), " СЛУЖБА  содание базы newVersion > oldVersion   " + new Date());
+                }*/
+             }
+            Log.d(this.getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                    + "  сработала ... КОНЕЦ СОЗДАНИЯ ТАБЛИЦ ВИЮ ТРИГЕР ");
+
+        } catch (SQLException | InterruptedException e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
+
     @Override
     public void onDowngrade(SQLiteDatabase ССылкаНаСозданнуюБазу, int oldVersion, int newVersion) {
         onCreate(ССылкаНаСозданнуюБазу);
     }
 
+
+
 }// конец public class CREATE_DATABASE extends SQLiteOpenHelper
-
-
 
 
 

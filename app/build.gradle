@@ -193,9 +193,11 @@ dependencies {
 
 
 
-// https://mvnrepository.com/artifact/com.j256.ormlite/ormlite-android
-    implementation 'com.j256.ormlite:ormlite-android:6.1'
+// https://mvnrepository.com/artifact/org.greenrobot/greendao
+    implementation 'org.greenrobot:greendao:3.2.0'
 
+// https://mvnrepository.com/artifact/org.greenrobot/greendao-generator
+    implementation 'org.greenrobot:greendao-generator:3.3.0'
 
 
 
