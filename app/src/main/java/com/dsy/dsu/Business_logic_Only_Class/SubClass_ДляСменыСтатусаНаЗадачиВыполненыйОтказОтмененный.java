@@ -3,14 +3,12 @@ package com.dsy.dsu.Business_logic_Only_Class;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.dsy.dsu.Business_logic_Only_Class.DATE.Class_Generation_Data;
+import com.dsy.dsu.AllDatabases.CREATE_DATABASE;
 
 import java.util.Date;
 

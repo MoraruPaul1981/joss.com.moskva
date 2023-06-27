@@ -5,7 +5,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteCursor;
 import android.util.Log;
 
-import java.util.Date;
+import com.dsy.dsu.AllDatabases.CREATE_DATABASE;
+
 import java.util.concurrent.ExecutionException;
 
 public class Class_Send_Generation_Errors {

@@ -1,23 +1,18 @@
 package com.dsy.dsu.Business_logic_Only_Class;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteCursor;
-import android.os.Build;
-import android.os.Environment;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.dsy.dsu.BuildConfig;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.Class_Generation_Data;
+import com.dsy.dsu.AllDatabases.CREATE_DATABASE_Error;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public class Class_Generation_Errors {
 

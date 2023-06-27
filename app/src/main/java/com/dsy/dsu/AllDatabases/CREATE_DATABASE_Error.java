@@ -1,12 +1,15 @@
 
 //////КНАЧАЛО  КЛАССА ПО СОЗДАНИЮ СХЕМЫ ДАННЫХ
-package com.dsy.dsu.Business_logic_Only_Class;
+package com.dsy.dsu.AllDatabases;
+
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
+import com.dsy.dsu.Business_logic_Only_Class.SubClassCreatingMainAllTables;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -15,21 +18,26 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
-public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =             1044;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+public class CREATE_DATABASE_Error extends SQLiteOpenHelper{ ///SQLiteOpenHelper
+     static final int VERSION =             5;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
     private      SQLiteDatabase ССылкаНаСозданнуюБазу;
     private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
+
+    private  String nameDAtBase="Database DSU-1-ORM.db";
 
     public SQLiteDatabase getССылкаНаСозданнуюБазу() {
         Log.d(this.getClass().getName()," get () БАЗА  ДАННЫХ   ДСУ-1 ОТКРЫТА ССылкаНаСозданнуюБазу.isOpen()  " +ССылкаНаСозданнуюБазу);
         return ССылкаНаСозданнуюБазу;
     }
     ///////КОНСТРУКТОР главного класса по созданию базы данных
-    public CREATE_DATABASE( @NotNull Context context) {/////КОНСТРУКТОР КЛАССА ПО СОЗДАНИЮ БАЗЫ ДАННЫХ
-        super(context, "Database DSU-1.db", null, VERSION ); // определяем имя базы данных  и ее версию
+    public CREATE_DATABASE_Error(@NotNull Context context) {/////КОНСТРУКТОР КЛАССА ПО СОЗДАНИЮ БАЗЫ ДАННЫХ
+        super(context, "Database DSU-1-Error.db", null, VERSION ); // определяем имя базы данных  и ее версию
         try{
             this.context =context;
+
+            //context.deleteDatabase(nameDAtBase  );
+
             if (ССылкаНаСозданнуюБазу == null ) {
                 ССылкаНаСозданнуюБазу = this.getWritableDatabase(); //ссылка на схему базы данных;//ссылка на схему базы данных ГЛАВНАЯ ВСТАВКА НА БАЗУ ДСУ-1
                 Log.d(this.getClass().getName()," БАЗА  ДАННЫХ   ДСУ-1 ОТКРЫВАЕМ  ССылкаНаСозданнуюБазу==null   "
@@ -46,8 +54,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                    " ССылкаНаСозданнуюБазу.isDbLockedByCurrentThread() " +ССылкаНаСозданнуюБазу.isDbLockedByCurrentThread());
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -63,50 +70,9 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         try {
             Log.d(this.getClass().getName(), "сработала ... НАЧАЛО  СОЗДАНИЯ ТАЛИЦ ");
             // TODO: 24.10.2022 Генерируем Список Таблиц
-            ИменаТаблицыОтАндройда=    new SubClassCreatingMainAllTables(context).  МетодТОлькоЗаполенияНазваниямиТаблицДляОмена(context);
-
+         //   ИменаТаблицыОтАндройда=    new SubClassCreatingMainAllTables(context).  МетодТОлькоЗаполенияНазваниямиТаблицДляОмена(context);
             // TODO: 12.10.2022  СИСТЕМНЫЕ ТАБЛИЦЫ
-            МетодТаблицаMODIFITATION_Client(ССылкаНаСозданнуюБазу);
             МетодСозданиеТаблицыОшибок(ССылкаНаСозданнуюБазу);
-            МетодСозданиеТаблицыЛогинов(ССылкаНаСозданнуюБазу);
-            // TODO: 22.03.2023 ТАБЛИЦЫ С ДАННЫМИ
-            МетодСозданияСистемнойТаблицыСФО(ССылкаНаСозданнуюБазу);
-            МетодСоздания_ТаблицыПрофесии(ССылкаНаСозданнуюБазу);
-            МетодСозданиеОрганизацииТаблицы(ССылкаНаСозданнуюБазу);
-            МетодСозданиеТаблицыДепартамент(ССылкаНаСозданнуюБазу);
-            МетодСозданиеТаблицыФИО(ССылкаНаСозданнуюБазу);
-            МетодСозданияТаблицыРегион(ССылкаНаСозданнуюБазу);
-            МетодСоздания_ТаблицыТабель(ССылкаНаСозданнуюБазу);
-            МетодСоздания_ТаблицыДатаТабель(ССылкаНаСозданнуюБазу);
-            МетодСозданиеМетокТабеля(ССылкаНаСозданнуюБазу);
-            МетодСозданиеSettingTabels(ССылкаНаСозданнуюБазу);
-            МетодСозданиеУведомленийИлиЗадания(ССылкаНаСозданнуюБазу);
-            МетодСозданииТаблицыДатаФорк(ССылкаНаСозданнуюБазу);
-            МетодСозданияТаблицыТемплейШаблон(ССылкаНаСозданнуюБазу);
-            МетодСозданиеТаблицыFio_TEmplay(ССылкаНаСозданнуюБазу);
-            МетодСозданияТаблицаChats(ССылкаНаСозданнуюБазу);
-            МетодСозданияТаблицыData_Chat(ССылкаНаСозданнуюБазу);
-            МетодСозданияПольЗовательДЛяЧата(ССылкаНаСозданнуюБазу);
-            МетодСозданиеУведомленийИлиДАТАЗадания(ССылкаНаСозданнуюБазу);
-            МетодСозданиеТаблицыСогласование(ССылкаНаСозданнуюБазу);
-            МетодСозданиеТаблицаДанныеПолученныхМатериалов(ССылкаНаСозданнуюБазу);
-            МетодСозданиеТаблицаType_materials(ССылкаНаСозданнуюБазу);
-            МетодСозданиеТаблицаСправочиникNomen_vesov(ССылкаНаСозданнуюБазу);
-            МетодСозданиеТаблицаДанныеТрак(ССылкаНаСозданнуюБазу);
-            МетодСозданиеТаблицаДанныеКомпания(ССылкаНаСозданнуюБазу);
-            МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
-            МетодСозданиеТаблицаЗаказы(ССылкаНаСозданнуюБазу);
-
-            // TODO: 12.10.2022  создание VIEW
-            МетодСозданияВидаЧатаViewChat(ССылкаНаСозданнуюБазу);
-            МетодСозданияВидаЗадания(ССылкаНаСозданнуюБазу);
-            МетодСозданиеview_onesignal(ССылкаНаСозданнуюБазу);
-            МетодСозданияViewТабеля(ССылкаНаСозданнуюБазу);
-            МетодСозданиеViewПолученныхМатериалов(ССылкаНаСозданнуюБазу);
-            МетодСозданиеViewПолученныхМатериаловGroup(ССылкаНаСозданнуюБазу);
-            МетодСозданиеViewЗаказыТранспорта(ССылкаНаСозданнуюБазу);
-// TODO: 12.10.2022  создание Trigers
-            МетодСозданиеТрирераМодификаценКлиент(ССылкаНаСозданнуюБазу,ИменаТаблицыОтАндройда);
             Log.d(this.getClass().getName(), " сработала ... КОНЕЦ СОЗДАНИЯ ТАБЛИЦ " +new Date().toGMTString());
         } catch (Exception e) {
             e.printStackTrace();
@@ -1218,10 +1184,15 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             ИменаТаблицыОтАндройда=    new SubClassCreatingMainAllTables(context).  МетодТОлькоЗаполенияНазваниямиТаблицДляОмена(context);
             Log.d(this.getClass().getName()," ИменаТаблицыОтАндройда " +ИменаТаблицыОтАндройда); // TODO: 28.09.2022 таблицы
             Log.d(this.getClass().getName(), " после СЛУЖБА  содание базы newVersion==  652   (например)   " + new Date() + " newVersion " + newVersion);
-            
+
 
             if (newVersion > oldVersion) {
-                if(newVersion ==            1044){
+
+              /*  context.deleteDatabase(nameDAtBase  );*/
+
+
+
+             /*   if(newVersion ==            1044){
                     //TODO table создание  УСТАНОВКА ВЫБОРОЧНАЯ ПО ТАБЛИЦАМ
                     //МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
                     МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
@@ -1233,7 +1204,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
                     // TODO: 08.06.2021 создание Базы Данных  ЧИСТАЯ УСТАНОВКА
                     onCreate(ССылкаНаСозданнуюБазу);
                     Log.d(this.getClass().getName(), " СЛУЖБА  содание базы newVersion > oldVersion   " + new Date());
-                }
+                }*/
              }
             Log.d(this.getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
@@ -1255,6 +1226,8 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
     public void onDowngrade(SQLiteDatabase ССылкаНаСозданнуюБазу, int oldVersion, int newVersion) {
         onCreate(ССылкаНаСозданнуюБазу);
     }
+
+
 
 }// конец public class CREATE_DATABASE extends SQLiteOpenHelper
 

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteCursor;
 import android.util.Log;
 
+import com.dsy.dsu.AllDatabases.CREATE_DATABASE;
+
 public class Class_Find_Setting_User_Network {
 
     Context contextДляКлассаПроверкаУстановкиПользователяРежимРаботыСети;

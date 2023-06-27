@@ -7,19 +7,16 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.database.SQLException;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.loader.content.CursorLoader;
 
 import com.dsy.dsu.Business_logic_Only_Class.DATE.Class_Generation_Data;
-import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassCursorLoader;
+import com.dsy.dsu.AllDatabases.CREATE_DATABASE;
 import com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Tabels_Users_And_Passwords;
 
 import java.security.InvalidKeyException;

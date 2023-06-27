@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.dsy.dsu.Business_logic_Only_Class.DATE.Class_Generation_Data;
+import com.dsy.dsu.AllDatabases.CREATE_DATABASE;
 
 import java.util.concurrent.ExecutionException;
 
@@ -91,7 +92,7 @@ public class Class_Begin_Update_End_Insert_Data_Project {
                     new UpdateData(contextДляКлассДляВставкиДанныхВПроектеСначалаМыПытаемсяОбновитьАПотомВставить).updatedata(concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
                     concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.contentValuesДляSQLBuilder_Для_GRUD_Операций,
                     public_contentcГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,
-                    Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
+                    Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазуORM());
 //
 
             Log.d(this.getClass().getName(), "        Результат_АдаптерДляДобавлениеПолученогоУспешноИмяиПарольДляСемидневнойАунтификации=0L; " +

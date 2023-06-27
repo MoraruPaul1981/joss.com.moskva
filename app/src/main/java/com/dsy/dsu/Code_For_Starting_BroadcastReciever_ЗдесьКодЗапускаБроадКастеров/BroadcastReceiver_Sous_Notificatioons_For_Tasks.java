@@ -114,7 +114,7 @@ public class BroadcastReceiver_Sous_Notificatioons_For_Tasks extends BroadcastRe
 
             PeriodicWorkRequest periodicWorkRequestУведомленияДляЧата = new PeriodicWorkRequest.Builder(MyWork_Notifocations_Уведомления_Для_Задачи.class,
 
-                    4, TimeUnit.HOURS)//MIN_PERIODIC_FLEX_MILLIS
+                    10, TimeUnit.HOURS)//MIN_PERIODIC_FLEX_MILLIS
                     .setConstraints(constraintsУведомленияДляЧата)
                     .addTag(ИмяСлужбыУведомленияДляЗадача)
                     //.setInputData(new Data.Builder().putString("КтоЗапустилWorkmanager","BroadCastRecieve").build())

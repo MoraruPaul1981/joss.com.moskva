@@ -1,11 +1,11 @@
 "main@19551" prio=5 tid=0x2 nid=NA runnable
   java.lang.Thread.State: RUNNABLE
-	  at com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE.��������������������Data_Chat(CREATE_DATABASE.java:736)
-	  at com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE.onCreate(CREATE_DATABASE.java:483)
+	  at com.dsy.dsu.Business_logic_Only_Class.DataBases.CREATE_DATABASE.��������������������Data_Chat(CREATE_DATABASE.java:736)
+	  at com.dsy.dsu.Business_logic_Only_Class.DataBases.CREATE_DATABASE.onCreate(CREATE_DATABASE.java:483)
 	  at android.database.sqlite.SQLiteOpenHelper.getDatabaseLocked(SQLiteOpenHelper.java:411)
 	  at android.database.sqlite.SQLiteOpenHelper.getWritableDatabase(SQLiteOpenHelper.java:316)
-	  - locked <0x4d94> (a com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE)
-	  at com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE.<init>(CREATE_DATABASE.java:95)
+	  - locked <0x4d94> (a com.dsy.dsu.Business_logic_Only_Class.DataBases.CREATE_DATABASE)
+	  at com.dsy.dsu.Business_logic_Only_Class.DataBases.CREATE_DATABASE.<init>(CREATE_DATABASE.java:95)
 	  at com.dsy.dsu.Code_For_Firebase_And_Provader.ContentProviderSynsInsert.onCreate(ContentProviderForDataBase.java:376)
 	  at android.content.ContentProvider.attachInfo(ContentProvider.java:2404)
 	  at android.content.ContentProvider.attachInfo(ContentProvider.java:2374)

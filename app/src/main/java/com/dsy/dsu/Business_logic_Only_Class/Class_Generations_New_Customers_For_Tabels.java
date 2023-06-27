@@ -6,6 +6,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteCursor;
 import android.util.Log;
 
+import com.dsy.dsu.AllDatabases.CREATE_DATABASE;
+
 public class Class_Generations_New_Customers_For_Tabels {
 
     Context contextДляКлассДляВставкиНовогоСотрудника;

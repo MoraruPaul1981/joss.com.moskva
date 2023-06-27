@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.dsy.dsu.AllDatabases.CREATE_DATABASE;
+
 public class SubClassGET_FIO {
 
     Context context;

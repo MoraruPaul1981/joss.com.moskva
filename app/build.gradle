@@ -193,6 +193,8 @@ dependencies {
 
 
 
+// https://mvnrepository.com/artifact/com.j256.ormlite/ormlite-android
+    implementation 'com.j256.ormlite:ormlite-android:6.1'
 
 
 

@@ -3,6 +3,8 @@ package com.dsy.dsu.Business_logic_Only_Class;
 import android.content.Context;
 import android.util.Log;
 
+import com.dsy.dsu.AllDatabases.CREATE_DATABASE;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -82,7 +84,7 @@ public class Class_Get_For_Server_All_Rows_Json {
             ///////
             SQLiteCursor Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО= (SQLiteCursor) class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ.
                     new GetаFreeData(contextДляКлассаПолученияВсехСтрочекJSON).getfreedata(class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
-                    Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
+                    Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазуORM());
 
 
             // TODO: 14.10.2021
@@ -185,7 +187,7 @@ public class Class_Get_For_Server_All_Rows_Json {
                     (SQLiteCursor) class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ.
                     new GetаFreeData(contextДляКлассаПолученияВсехСтрочекJSON).getfreedata(class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
                     Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков
-                    ,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
+                    ,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазуORM());
 
 
             /////////////

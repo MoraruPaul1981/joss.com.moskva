@@ -13,6 +13,7 @@ import android.util.Log;
 import androidx.loader.content.AsyncTaskLoader;
 
 import com.dsy.dsu.Business_logic_Only_Class.DATE.Class_Generation_Data;
+import com.dsy.dsu.AllDatabases.CREATE_DATABASE;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -918,7 +919,7 @@ Context context;
                             Log.w(this.getClass().getName(), "   deletedata   "+deletedata);
 
                             //
-                 *//*           deletedata =           Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу()
+                 *//*           deletedata =           Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазуORM()
                                     .delete(НазваниеОбрабоатываемойТаблицы,Флаг_ЧерезКакоеПолеУдаление + ""+ЗнакФлагУдаление+ "?", new String[]{ЗначениеФлагУдаление});*//*
                         }*/
 
@@ -1145,7 +1146,7 @@ Context context;
                             Log.w(this.getClass().getName(), "   deletedata   "+deletedata);
 
                             //
-                 *//*           deletedata =           Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу()
+                 *//*           deletedata =           Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазуORM()
                                     .delete(НазваниеОбрабоатываемойТаблицы,Флаг_ЧерезКакоеПолеУдаление + ""+ЗнакФлагУдаление+ "?", new String[]{ЗначениеФлагУдаление});*//*
                         }*/
 

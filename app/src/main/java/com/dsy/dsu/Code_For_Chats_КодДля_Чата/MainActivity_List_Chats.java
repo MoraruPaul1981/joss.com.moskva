@@ -19,11 +19,10 @@ import androidx.work.WorkManager;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
-import com.dsy.dsu.Business_logic_Only_Class.CREATE_DATABASE;
+import com.dsy.dsu.AllDatabases.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generator_One_WORK_MANAGER;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
-import com.dsy.dsu.Code_For_Firebase_AndOneSignal_Здесь_КодДЛяСлужбыУведомленияFirebase.Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal;
 import com.dsy.dsu.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -196,7 +195,7 @@ HashMap<String, Object> ХэщЗапусАктивтиИзФрагмента=nul
                         Курсор_ВычисляемПУбличныйIDПриСозданииНовогоСообщения = (SQLiteCursor) class_grud_sql_operationsРабоатемВФрагментечитатьПисатьШестаяЧасть.
                                 new GetаFreeData(getApplicationContext()).getfreedata(class_grud_sql_operationsРабоатемВФрагментечитатьПисатьШестаяЧасть.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
                                 new PUBLIC_CONTENT(getApplicationContext()).МенеджерПотоков
-                                , new CREATE_DATABASE(getApplicationContext()).getССылкаНаСозданнуюБазу());
+                                , new CREATE_DATABASE(getApplicationContext()).getССылкаНаСозданнуюБазуORM());
 
                         Log.d(this.getClass().getName(), "GetData " + Курсор_ВычисляемПУбличныйIDПриСозданииНовогоСообщения);
 

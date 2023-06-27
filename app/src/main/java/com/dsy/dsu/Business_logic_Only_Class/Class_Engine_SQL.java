@@ -106,7 +106,7 @@ public class Class_Engine_SQL extends Class_MODEL_synchronized {
         super(context);
         this.context=context;
         public_contentДатыДляГлавныхТаблицСинхронизации=new PUBLIC_CONTENT(context);
-        Create_Database_СамаБАзаSQLite_КЛОННастоящейБазы=new CREATE_DATABASE(context).getССылкаНаСозданнуюБазу();
+        Create_Database_СамаБАзаSQLite_КЛОННастоящейБазы=new CREATE_DATABASE(context).getССылкаНаСозданнуюБазуORM();
         Log.w(context.getClass().getName(), "Create_Database_СамаБАзаSQLite_КЛОННастоящейБазы" + Create_Database_СамаБАзаSQLite_КЛОННастоящейБазы);
     }
 
