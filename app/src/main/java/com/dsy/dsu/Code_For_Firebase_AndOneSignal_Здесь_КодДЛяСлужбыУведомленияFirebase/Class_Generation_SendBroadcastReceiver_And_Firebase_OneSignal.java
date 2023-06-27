@@ -178,52 +178,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
         }
-
-
-
-
     }
 
-
-
-
-
-
-
-
-
-     // TODO: 14.11.2021  ПОВТОРЫЙ ЗАПУСК ВОРК МЕНЕДЖЕР уведомления
-
-     public void МетодЗапускаУведомленияОбновленияПО(Boolean ПринудительныйЗапросОбновлениеПО,@NonNull Context context) {
-         try {
-             //TODO start broad caset receiver
-             BroadcastReceiver_Sous_Notificatios_UpdateSoft broadcastReceiver_sous_Notificatios_updateSoft = new BroadcastReceiver_Sous_Notificatios_UpdateSoft();
-             Intent ИнтретПоЗапускуПовторноШироковещательногоОбновлениеПО = new Intent(context, BroadcastReceiver_Sous_Notificatios_UpdateSoft.class);
-             ИнтретПоЗапускуПовторноШироковещательногоОбновлениеПО.setAction("BroadcastReceiver_Sous_Notificatios_UpdateSoft");
-             Bundle bundleДляОтправкиОбновлениеПО=new Bundle();
-             bundleДляОтправкиОбновлениеПО.putBoolean("ПринудительныйЗапросОбновлениеПО",ПринудительныйЗапросОбновлениеПО);
-             ИнтретПоЗапускуПовторноШироковещательногоОбновлениеПО.putExtras(bundleДляОтправкиОбновлениеПО);
-             ИнтретПоЗапускуПовторноШироковещательногоОбновлениеПО.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-             ИнтретПоЗапускуПовторноШироковещательногоОбновлениеПО.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-             // TODO: 25.11.2021
-             context. sendBroadcast(ИнтретПоЗапускуПовторноШироковещательногоОбновлениеПО);
-             // TODO: 16.12.2021
-         } catch (Exception e) {
-             e.printStackTrace();
-             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
-             new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                     Thread.currentThread().getStackTrace()[2].getLineNumber());
-
-         }
-     }
-
-
-
-
-
     // TODO: 14.11.2021  ПОВТОРЫЙ ЗАПУСК ВОРК МЕНЕДЖЕР
-
     public void МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal(@NonNull String КлючДляFirebaseNotification,
                                                                      Integer ОтправкаСообщенияТолькоСтрогоОдномуУказанномуСотрудника) {
 
