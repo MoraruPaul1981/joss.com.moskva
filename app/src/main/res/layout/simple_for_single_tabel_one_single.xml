@@ -195,6 +195,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="1dp"
+            tools:visibility="gone"
             android:gravity="center_vertical|center_horizontal">
 
             <com.google.android.material.textview.MaterialTextView
@@ -291,6 +292,7 @@
             android:background="#FFFFFF"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            tools:visibility="gone"
             android:layout_margin="2dp"
             android:gravity="center_vertical|center_horizontal">
             <com.google.android.material.textview.MaterialTextView
@@ -396,6 +398,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="1dp"
+            tools:visibility="gone"
             android:gravity="center_vertical|center_horizontal">
 
             <com.google.android.material.textview.MaterialTextView
@@ -490,6 +493,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
+            tools:visibility="gone"
             android:gravity="center_vertical|center_horizontal">
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/line3singletabel"
@@ -594,6 +598,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="1dp"
+            tools:visibility="gone"
             android:gravity="center_vertical|center_horizontal">
 
             <com.google.android.material.textview.MaterialTextView
@@ -797,6 +802,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="1dp"
+            tools:visibility="gone"
             android:gravity="center_vertical|center_horizontal">
 
             <com.google.android.material.textview.MaterialTextView
@@ -995,6 +1001,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="1dp"
+            tools:visibility="gone"
             android:gravity="center_vertical|center_horizontal">
 
             <com.google.android.material.textview.MaterialTextView
@@ -1197,6 +1204,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="1dp"
+            tools:visibility="gone"
             android:gravity="center_vertical|center_horizontal">
 
             <com.google.android.material.textview.MaterialTextView
@@ -1396,6 +1404,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="1dp"
+            tools:visibility="gone"
             android:gravity="center_vertical|center_horizontal">
 
             <com.google.android.material.textview.MaterialTextView
