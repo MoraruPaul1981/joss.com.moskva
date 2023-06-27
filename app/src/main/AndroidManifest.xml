@@ -435,19 +435,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver
-            android:name=".Code_For_Starting_BroadcastReciever_ЗдесьКодЗапускаБроадКастеров.BroadcastReceiver_Sous_Notificatios_UpdateSoft"
-            android:enabled="true"
-            android:exported="false"
-            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
-            <intent-filter android:priority="500">
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
 
         <service
             android:name=".Code_For_Firebase_And_Provader.MyFirebaseMessagingService"
