@@ -744,12 +744,14 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
 
                   DividerItemDecoration dividerItemDecorationVer=
                         new DividerItemDecoration(getContext(),LinearLayoutManager.VERTICAL);
-                dividerItemDecorationVer.setDrawable(getContext().getDrawable(R.drawable.divider_for_order_transport1));///R.dimen.activity_horizontal_margin
+               /// dividerItemDecorationVer.setDrawable(getContext().getDrawable(R.drawable.divider_for_order_transport1));///R.dimen.activity_horizontal_margin
                 recycleView.addItemDecoration(dividerItemDecorationVer);
 
                 DividerItemDecoration dividerItemDecorationHor=
                         new DividerItemDecoration(getActivity(), LinearLayoutManager.HORIZONTAL);
+                dividerItemDecorationHor.setDrawable(getContext().getDrawable(R.drawable.divider_for_order_transport1));///R.dimen.activity_horizontal_margin
                 recycleView.addItemDecoration(dividerItemDecorationHor);
+
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity() , LinearLayoutManager.VERTICAL, true);
                 recycleView.setLayoutManager(layoutManager);
                 recycleView.setItemAnimator(new DefaultItemAnimator());
@@ -850,15 +852,6 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                             if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
                                 // Get RecyclerView item from the ViewHolder
                                 View itemView = viewHolder.itemView;
-                                Paint p = new Paint();
-                                      Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.icon_account);
-
-
-                                p.setLinearText(true);
-                            //p.setARGB(255, 0, 255, 0);
-                            //Set the image icon for Left swipe
-                            c.drawBitmap(icon,500l,500l, p);
-
                                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                             }
                         } catch (Exception e) {
@@ -924,12 +917,11 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
 
         // TODO: 15.06.2023  скоол левый внутри reryvreview
         private Cursor методScrollsLeftRecyreView() {
-            Cursor cursorSwipeViewPager=null;
             try {
                 Integer Позиция=        myRecycleViewAdapter.cursor.getPosition();
                 // TODO: 20.04.2023 Данные
                 ///cursorForViewPager =    new  SubClassGetCursor().МетодSwipesКурсор();
-                cursorSwipeViewPager=   myRecycleViewAdapter.cursor;
+                Cursor       cursorSwipeViewPager=   myRecycleViewAdapter.cursor;
                 if (cursorSwipeViewPager.isLast()){
                     cursorSwipeViewPager.moveToFirst();
                 }else {
@@ -937,15 +929,11 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                     cursorSwipeViewPager.moveToPosition(Позиция);
                 }
                 myRecycleViewAdapter.cursor= cursorSwipeViewPager;
-                CurrenrsСhildUUID=       cursorForViewPager.getLong(cursorForViewPager.getColumnIndex("uuid"));
-                CurrenrsSelectFio=       cursorForViewPager.getLong(cursorForViewPager.getColumnIndex("fio"));
-                ФИО=       cursorForViewPager.getString(cursorForViewPager.getColumnIndex("name"));
-
-
                 // TODO: 15.06.2023 перегрузка данныех
                 myRecycleViewAdapter.notifyDataSetChanged();
                 // TODO: 18.06.2023
                 recycleView.getAdapter().notifyDataSetChanged();
+
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"CurrentFragmentMaxItem   " + CurrentFragmentMaxItem + " cursorForViewPager " + cursorForViewPager +
@@ -961,7 +949,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                         this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
-            return  cursorSwipeViewPager;
+            return   myRecycleViewAdapter.cursor;
         }
 
 
@@ -1000,53 +988,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
-        public void методПослеОбновлениеЯчейкиСчитаемЧасы() {
-            try{
-                // TODO: 14.04.2023 пересчитываем часы
-                class  SubClassGetCursorЧасы extends  SubClassGetCursor {
-                    @Override
-                    protected Cursor МетодSwipesКурсор() {
-                        Cursor cursorЧасы=null;
-                        try{
-                            СамЗапрос=" SELECT  *   FROM viewtabel AS t" +
-                                    " WHERE t.uuid=?   AND t.status_send !=?  AND t.fio IS NOT NULL  ORDER BY   t.date_update  " ;
-                            УсловияВыборки=new String[]{ String.valueOf(CurrenrsСhildUUID),
-                                    String.valueOf(  "Удаленная")};
-                            //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
-                            Bundle bundleГлавныйКурсорMultiДанныеSwipes= new Bundle();
-                            bundleГлавныйКурсорMultiДанныеSwipes.putString("СамЗапрос",СамЗапрос);
-                            bundleГлавныйКурсорMultiДанныеSwipes.putStringArray("УсловияВыборки" ,УсловияВыборки);
-                            bundleГлавныйКурсорMultiДанныеSwipes.putString("Таблица","viewtabel");
-                            cursorЧасы =      (Cursor)    new SubClassCursorLoader(). CursorLoaders(getContext(), bundleГлавныйКурсорMultiДанныеSwipes);
-                            // TODO: 13.04.2023 делаем смещение по курсору
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
-                                    Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                    Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                        return  cursorЧасы;
-                    }
-                }
-                // TODO: 16.06.2023 само выполение
-                Cursor    cursorДляЧасов =  new SubClassGetCursorЧасы().МетодSwipesКурсор();
-                // TODO: 14.04.2023 пересчитываем часы
-                методСчитаемЧасы(cursorДляЧасов,myViewHolder );
-                МетодПерегрузкаЧасыSingletabel();
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
+
         // TODO: 04.03.2022 прозвомжность Заполения RecycleView
         void МетодЗаполениеRecycleView(  @NonNull Cursor cursorForViewPager) {
             try {
@@ -1189,7 +1131,8 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
 
 
                     // TODO: 14.04.2023 ДОПОЛНИТЕЛЬНЫЕ МЕТОДЦ ПОСЛЕ ВСТАВКИ ЛДАННЫХ
-                    методПослеОбновлениеЯчейкиСчитаемЧасы();
+                    методСчитаемЧасы(myRecycleViewAdapter.cursor,myViewHolder );
+
                     // TODO: 04.04.2023  ФИО
                     new  SubClassChanegeSetNameProffesio().    МетодЗаполняемФИОRow( cursor);
                     // TODO: 16.04.2023 Професии Професии Професии Професии
@@ -1845,17 +1788,15 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                                 // TODO: 24.04.2023  после обновление ячейки Считаем Часы
                                                 методИзменяемЦветСодержимоваЦифраИлиБуква(((EditText) v), EditTextДАнные);
                                                 // TODO: 17.06.2023 подсчет часов
-                                                singleTabelRecycreView.методПослеОбновлениеЯчейкиСчитаемЧасы();
-                                                // TODO: 16.06.2023  после переполуение данныз перегрузка экрана
-                                                //subClassSingleTabelRecycreView.       методЗакрываемКлавитатуру(v);
-                                                // TODO: 20.04.2023 Данные
-                                                // subClassSingleTabelRecycreView.     методПерегрузкиRecycreView();
-                                                // subClassSingleTabelRecycreView.      методAlterSaveCellRecyreView(v);
-                                                // subClassSingleTabelRecycreView.       методЗакрываемКлавитатуру(v);
+
+                                                // TODO: 28.06.2023  перегрузка курчора для ЧАСОв 
+                                                методReebotCursorTabelSingle();
+                                                // TODO: 28.06.2023 считаем часы
+                                                методСчитаемЧасы(myRecycleViewAdapter.cursor,myViewHolder );
                                                 // TODO: 16.06.2023  после переполуение данныз перегрузка экрана
                                                 message.getTarget().postDelayed(()->{
                                                     ((EditText) v).startAnimation(animationForTextView);
-                                                },1000);
+                                                },500);
                                                 // TODO: 19.06.2023 код когда данные в ячейке не сохранились
                                             } else {
                                                 методКогдаДанныеНеСохранились(v, ЗначениеДоЗаполениясОшибкой);
@@ -1905,6 +1846,26 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                     new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                             Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
+            }
+
+
+            // TODO: 28.06.2023 перегрузка курсора refref();
+            private void методReebotCursorTabelSingle() {
+                try{
+                Cursor    cursorForViewPager     =  myRecycleViewAdapter.cursor;
+                cursorForViewPager  =   singleTabelRecycreView.  new SubClassGetCursor().МетодSwipesКурсор();
+                myRecycleViewAdapter.cursor=cursorForViewPager;
+                    // TODO: 28.06.2023  
+                    Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
             }
 
             private void МетодПослеСахранениеИлиНетЯчейки(@NonNull View v) {
@@ -2348,7 +2309,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
         void методСчитаемЧасы(@NonNull Cursor cursorЧасы,@NonNull  MyViewHolder holder ) {
             try{
                 Integer позицияЧасы=myRecycleViewAdapter.cursor.getPosition();
-                позицияЧасы=позицияЧасы+1;
+                cursorЧасы.moveToPosition(позицияЧасы);
                 //TODO ЗАПОЛЯНЕМ ПОЛУЧЕННЫЙ МЕСЯ Ц ПЛУС КОЛИЧЕСТВО ЧАСОВ СОТРУДНИКА КОНКРЕТНОГО
                 Integer   ЧасыТекущегоСОтрудника = new Class_MODEL_synchronized(getContext()).МетодПосчётаЧасовПоСотруднику(cursorЧасы);
                 Log.d(this.getClass().getName(), "  ЧасыТекущегоСОтрудника " + ЧасыТекущегоСОтрудника);
@@ -2544,7 +2505,8 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
 
                         fragmentSingleTabel.new SubClassBungleSingle().   методSetДанныеДляДругихАктивити();
 
-                        singleTabelRecycreView.   методПослеОбновлениеЯчейкиСчитаемЧасы();
+                        // TODO: 14.04.2023 ДОПОЛНИТЕЛЬНЫЕ МЕТОДЦ ПОСЛЕ ВСТАВКИ ЛДАННЫХ
+                        методСчитаемЧасы(myRecycleViewAdapter.cursor,myViewHolder );
 
                         // TODO: 16.06.2023  после переполуение данныз перегрузка экрана
                         singleTabelRecycreView.     методПерегрузкиRecycreView();
