@@ -1501,7 +1501,11 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                     dataRowData.putString("День", НазваниеДляДень);
                     // TODO: 13.04.2023  дополнительные
                     dataRowData.putLong("MainParentUUID", MainParentUUID);
-                    dataRowData.putInt("Position", CurrentFragmentMaxItem);
+
+                    Integer ПолощениеДанных=myRecycleViewAdapter.cursor.getPosition();
+
+
+                    dataRowData.putInt("Position",ПолощениеДанных );
                     dataRowData.putInt("ГодТабелей",   ГодТабелей);
                     dataRowData.putInt("МЕсяцТабелей", МЕсяцТабелей);
                     dataRowData.putInt("DigitalNameCFO", DigitalNameCFO);
@@ -1511,7 +1515,6 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                     dataRowData.putString("ФИО", ФИО);
                     dataRowData.putLong("CurrenrsSelectFio", CurrenrsSelectFio);
                     editTextRowКликПоДАнными.setTag(dataRowData);
-                    editTextRowКликПоДАнными.setVisibility(View.VISIBLE);
                     editTextRowКликПоДАнными.setText(День.trim());
                     // TODO: 07.06.2023
                     методИзменяемЦветСодержимоваЦифраИлиБуква(editTextRowКликПоДАнными, День);
@@ -3072,7 +3075,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                     // TODO: 10.04.2023  переход ИЗ MAINaCTITyTabelSingle Peolpe
                     // TODO: 10.04.2023  ОТПРАВЛЯЕММ ПЕРЕМЕННЫЕ
                     startActivity(intentПереХодНаМеткиТабеля);
-                },300);
+                },100);
 
                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
