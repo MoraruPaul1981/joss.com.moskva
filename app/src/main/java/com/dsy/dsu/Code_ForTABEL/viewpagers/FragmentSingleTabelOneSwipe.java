@@ -942,8 +942,8 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
 
                 myRecycleViewAdapter.cursor= cursorForViewPager;
                 // TODO: 15.06.2023 перегрузка данныех
-                myRecycleViewAdapter.notifyItemChanged(Позиция);
-              //  recycleView.getAdapter().notifyDataSetChanged();
+                myRecycleViewAdapter.notifyItemChanged(0);
+                recycleView.getAdapter().notifyItemChanged(0);
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"CurrentFragmentMaxItem   " + CurrentFragmentMaxItem + " cursorForViewPager " + cursorForViewPager +
