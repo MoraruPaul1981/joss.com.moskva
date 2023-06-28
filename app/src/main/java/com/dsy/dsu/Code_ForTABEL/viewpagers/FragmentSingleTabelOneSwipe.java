@@ -2649,12 +2649,27 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                     searchViewДляНовогоПоиска.refreshDrawableState();
                                     Integer ПровйдерСменаПрофесии=     МетодЗаписиСменыПрофесии( (SearchView)  searchViewДляНовогоПоиска,getActivity());
                                     if (ПровйдерСменаПрофесии>0) {
+
+                                        // TODO: 20.04.2023 Данные
+                                         Cursor     cursorПослеСменыПрофесии=    new SubClassGetCursor().МетодSwipesКурсор();
+                                        myRecycleViewAdapter.cursor=cursorПослеСменыПрофесии;
+                                        myRecycleViewAdapter.notifyItemChanged(0);
+                                        cursorПослеСменыПрофесии.moveToPosition(myRecycleViewAdapter.cursor.getPosition());
+                                        // TODO: 04.04.2023  ФИО
+                                        new  SubClassChanegeSetNameProffesio().    МетодЗаполняемФИОRow( cursorПослеСменыПрофесии);
+
                                         // TODO: 29.03.2023 Методы ПОсле усМешного Смены Професиии
-                                        МетодПерегрузкаВидаПрофесии(searchViewДляНовогоПоиска);
+                                        МетодПерегрузкаВидаПрофесии( );
                                     }else {
                                         Toast.makeText(getActivity(), "Профессия не сменилась !!! ", Toast.LENGTH_SHORT).show();
                                     }
                                 }
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                        + " listViewДляНовыйПосик[0] "+listViewДляНовыйПосик[0]+"\n+"+
+                                        " cursorДанные " +cursorДанные+"\n"+
+                                        " cursorДанные " +cursorДанные+"\n" );
                                 alertDialogНовыйПосикКнопкаЗакрыть.forceLayout();
                                 alertDialogНовыйПосик.dismiss();
                                 alertDialogНовыйПосик.cancel();
@@ -2828,16 +2843,14 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
 
 
 
-            private void МетодПерегрузкаВидаПрофесии(@NonNull SearchView searchViewДляНовогоПоиска) {
+            private void МетодПерегрузкаВидаПрофесии( ) {
                 try {
-                    Bundle bundleПослеУспешнойСменыПрофесии=   (Bundle)     searchViewДляНовогоПоиска.getTag();
-                    String УспешнаяСменПрофессия=   bundleПослеУспешнойСменыПрофесии.getString("НазваниеПрофесии");
-                    TextViewФИОПрофессия.setText(ФИО.trim() + "\n"+ УспешнаяСменПрофессия);
-                    textViewчасыsimgletabel.refreshDrawableState();
-                    textViewчасыsimgletabel.forceLayout();
+                    TextViewФИОПрофессия.setText(ФИО.trim() + "\n"+ Профессия);
+                    TextViewФИОПрофессия.refreshDrawableState();
+                    TextViewФИОПрофессия.requestLayout();
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "  УспешнаяСменПрофессия " +УспешнаяСменПрофессия);
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "  Профессия " +Профессия +  " ФИО " +ФИО);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -3016,7 +3029,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
 
 
         class SubClassChanegeSetNameProffesio{
-            private void МетодЗаполняемФИОRow( @NonNull  Cursor   cursor  ) {
+            private String МетодЗаполняемФИОRow( @NonNull  Cursor   cursor  ) {
                 try {
                     // TODO: 16.04.2023  посик по ФИО
                     Integer ПрофессияИзФИо = cursor.getInt(cursor.getColumnIndex("fio_prof"));
@@ -3063,6 +3076,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                             this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
+                return  Профессия;
             }
         }
         private void МетодПереходаНаМеткиТабеля(@NonNull EditText editTextЯчейка) {
