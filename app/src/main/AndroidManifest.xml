@@ -1173,29 +1173,6 @@
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Code_ForTABEL.MainActivity_Tabel_Single_People"
-            android:exported="true"
-            android:label="Табель"
-            android:windowSoftInputMode="stateVisible|adjustPan"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.dsy.dsu.Code_ForTABEL.MainActivity_Tabel_Single_People" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.EDIT" />
-                <action android:name="android.intent.action.INSERT" />
-                <action android:name="android.intent.action.DELETE" />
-                <action android:name="android.intent.action.WEB_SEARCH" />
-                <action android:name="android.intent.action.SEND" />
-                <action android:name="android.intent.action.APP_ERROR" />
-                <action android:name="android.intent.action.OPEN_DOCUMENT" />
-                <action android:name="android.intent.action.SYNC" />
-                <action android:name="android.intent.action.RUN" />
-                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
-            </intent-filter>
-        </activity>
 
         <activity
             android:name=".Code_ForTABEL.viewpagers.MainActivity_Tabel_Single_PeopleOneSwipe"
