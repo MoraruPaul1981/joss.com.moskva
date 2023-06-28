@@ -860,6 +860,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
         try{
             Intent    ИнтентпереходВMainActivityList_Peoples=new Intent(getApplicationContext(),MainActivity_List_Peoples.class);
             Bundle bundleИзMAinActivbity_List_Tabels=(Bundle) textView.getTag();
+            ИнтентпереходВMainActivityList_Peoples.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             ИнтентпереходВMainActivityList_Peoples      .putExtras(bundleИзMAinActivbity_List_Tabels);
             startActivity(ИнтентпереходВMainActivityList_Peoples);
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

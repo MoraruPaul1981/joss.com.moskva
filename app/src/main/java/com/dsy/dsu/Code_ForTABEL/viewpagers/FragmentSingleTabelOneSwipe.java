@@ -1754,7 +1754,8 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                         String ЗначениеДняTag = bundleДанныеTag.getString("ЗначениеДня").trim();
                                         String EditTextДАнные = ((EditText) v).getText().toString().trim();
                                         // TODO: 06.04.2023 Принимаем Решение Если ДАные РАзные ЗАпускаем Обновление
-                                        if (!EditTextДАнные.equalsIgnoreCase(ЗначениеДняTag) && v.hasFocus()) {
+                                        if (!EditTextДАнные.equalsIgnoreCase(ЗначениеДняTag)
+                                                && !EditTextДАнные.equalsIgnoreCase("0")) {
                                             // TODO: 11.04.2023 Оперция Обновлнения ЯЧЕЕК
                                             SubClassUpdatesCELL subClassUpdateSingletabel = new SubClassUpdatesCELL(getContext());
                                             // TODO: 10.05.2023  ЗАВПИСЫАЕМ НОВЫЕ ДАННЫВЕ В БАЗУ
@@ -1778,7 +1779,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                                 методКогдаДанныеНеСохранились(v, ЗначениеДоЗаполениясОшибкой);
 
                                             }
-                                            методЗакрываемКлавитатуру(v);
+                                           // методЗакрываемКлавитатуру(v);
                                             // TODO: 16.06.2023  После Операции Теряем Фокус
                                             МетодПослеСахранениеИлиНетЯчейки(v);
                                             // TODO: 22.06.2023  метод потеря хокуса послу сохранения ячейки
@@ -2658,8 +2659,6 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                         // TODO: 04.04.2023  ФИО
                                         new  SubClassChanegeSetNameProffesio().    МетодЗаполняемФИОRow( cursorПослеСменыПрофесии);
                                         // TODO: 28.06.2023 clear
-                                        cursorПослеСменыПрофесии.close();
-
                                         // TODO: 29.03.2023 Методы ПОсле усМешного Смены Професиии
                                         МетодПерегрузкаВидаПрофесии( );
                                     }else {

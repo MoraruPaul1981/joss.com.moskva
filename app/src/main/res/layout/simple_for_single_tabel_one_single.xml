@@ -133,7 +133,7 @@
             android:background="@android:color/transparent"
             android:inputType="number"
             android:textAlignment="center"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:tooltipText="V1"
             android:visibility="visible"
             android:textStyle="bold" />
@@ -150,7 +150,7 @@
             android:background="@android:color/transparent"
             android:inputType="number"
             android:textAlignment="center"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:tooltipText="V1"
             android:visibility="visible"
             android:textStyle="bold" />
@@ -167,7 +167,7 @@
             android:background="@android:color/transparent"
             android:inputType="number"
             android:textAlignment="center"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:tooltipText="V1"
             android:visibility="visible"
             android:textStyle="bold" />
@@ -184,7 +184,7 @@
             android:background="@android:color/transparent"
             android:inputType="number"
             android:textAlignment="center"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:tooltipText="V1"
             android:visibility="visible"
             android:textStyle="bold" />
@@ -336,7 +336,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="visible"
                 android:textStyle="bold" />
@@ -353,7 +353,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="visible"
                 android:textStyle="bold" />
@@ -370,7 +370,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="visible"
                 android:textStyle="bold" />
@@ -387,7 +387,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="visible"
                 android:textStyle="bold" />
@@ -536,7 +536,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="visible"
                 android:textStyle="bold" />
@@ -553,7 +553,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="visible"
                 android:textStyle="bold" />
@@ -570,7 +570,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="visible"
                 android:textStyle="bold" />
@@ -587,7 +587,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="visible"
                 android:textStyle="bold" />
@@ -740,7 +740,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="visible"
                 android:textStyle="bold" />
@@ -757,7 +757,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="visible"
                 android:textStyle="bold" />
@@ -774,7 +774,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="visible"
                 android:textStyle="bold" />
@@ -791,7 +791,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="visible"
                 android:textStyle="bold" />
@@ -939,7 +939,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="visible"
                 android:textStyle="bold" />
@@ -956,7 +956,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="visible"
                 android:textStyle="bold" />
@@ -973,7 +973,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="visible"
                 android:textStyle="bold" />
@@ -990,7 +990,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="visible"
                 android:textStyle="bold" />
@@ -1142,7 +1142,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="visible"
                 android:textStyle="bold" />
@@ -1159,7 +1159,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="visible"
                 android:textStyle="bold" />
@@ -1176,7 +1176,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="visible"
                 android:textStyle="bold" />
@@ -1193,7 +1193,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="visible"
                 android:textStyle="bold" />
@@ -1342,7 +1342,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="visible"
                 android:textStyle="bold" />
@@ -1359,7 +1359,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="visible"
                 android:textStyle="bold" />
@@ -1376,7 +1376,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="visible"
                 android:textStyle="bold" />
@@ -1393,7 +1393,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="visible"
                 android:textStyle="bold" />
@@ -1533,7 +1533,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="gone"
                 android:textStyle="bold" />
@@ -1550,7 +1550,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="gone"
                 android:textStyle="bold" />
@@ -1567,7 +1567,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:tooltipText="V1"
                 android:visibility="gone"
                 android:textStyle="bold" />
