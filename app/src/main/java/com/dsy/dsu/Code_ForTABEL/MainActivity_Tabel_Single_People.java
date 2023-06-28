@@ -1674,50 +1674,6 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                        Thread.currentThread().getStackTrace()[2].getLineNumber());
            }
        }
-       public void методПослеОбновлениеЯчейкиСчитаемЧасы() {
-           try{
-               // TODO: 14.04.2023 пересчитываем часы
-               class  SubClassGetCursorЧасы extends SubClassGetCursor {
-                   @Override
-                   protected Cursor МетодSwipesКурсор() {
-                       try{
-                           СамЗапрос=" SELECT  *   FROM viewtabel AS t" +
-                                   " WHERE t.uuid=?   AND t.status_send !=?  AND t.fio IS NOT NULL  ORDER BY   t.date_update  " ;
-                           УсловияВыборки=new String[]{ String.valueOf(CurrenrsСhildUUID),
-                                   String.valueOf(  "Удаленная")};
-                           //////TODO ГЛАВНЫЙ КУРСОР ДЛЯ НЕПОСРЕДТСВЕНОГО ЗАГРУЗКИ СОТРУДНИКА
-                           Bundle bundleГлавныйКурсорMultiДанныеSwipes= new Bundle();
-                           bundleГлавныйКурсорMultiДанныеSwipes.putString("СамЗапрос",СамЗапрос);
-                           bundleГлавныйКурсорMultiДанныеSwipes.putStringArray("УсловияВыборки" ,УсловияВыборки);
-                           bundleГлавныйКурсорMultiДанныеSwipes.putString("Таблица","viewtabel");
-                           cursor =      (Cursor)    new SubClassCursorLoader(). CursorLoaders(context, bundleГлавныйКурсорMultiДанныеSwipes);
-                           // TODO: 13.04.2023 делаем смещение по курсору
-                           Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                   " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                   " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-                       } catch (Exception e) {
-                           e.printStackTrace();
-                           Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                   " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                           new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                   Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                       }
-                       return  cursor;
-                   }
-               }
-               // TODO: 16.06.2023 само выполение
-               Cursor    cursorДляЧасов =  new SubClassGetCursorЧасы().МетодSwipesКурсор();
-               // TODO: 14.04.2023 пересчитываем часы
-               методСчитаемЧасы(cursorДляЧасов,myViewHolder );
-               МетодПерегрузкаЧасыSingletabel();
-           } catch (Exception e) {
-               e.printStackTrace();
-               Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                       " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-               new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                       Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-           }
-       }
        // TODO: 04.03.2022 прозвомжность Заполения RecycleView
         void МетодЗаполениеRecycleView(  @NonNull Cursor cursor) {
             try {
@@ -1925,27 +1881,7 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                     if (cursor.getCount()>0) {
                           // viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm, parent, false);
                             viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm_one_row, parent, false);
-            if (myViewHolder!=null) {
-                switch (   myViewHolder.getAbsoluteAdapterPosition()){
-                    case 6:
-                        // TODO: 14.04.2023 ЧАСЫ
-                        методПослеОбновлениеЯчейкиСчитаемЧасы();
 
-                        //  методСчитаемЧасы(cursor );
-                        // TODO: 04.04.2023  ФИО
-                        new SubClassChanegeSetNameProffesio().    МетодЗаполняемФИОRow( cursor);
-                        // TODO: 16.04.2023 Професии Професии Професии Професии
-                        МетодаКликаTableRowФИО( );
-                        break;
-                    // TODO: 18.06.2023
-                /*    case 29:
-                    case 30:
-                    case 31:
-                        viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_single_tabel_mm_last_row, parent, false);
-                        // TODO: 16.06.2023
-                        break;*/
-                }
-            }
                     }else{
                         viewSingleTabel = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_isnull_single_tabel, parent, false);
                         Log.d(this.getClass().getName(),"\n" + " НЕт ДАнных class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -2509,7 +2445,11 @@ if(МЕсяцТабелей ==5 || МЕсяцТабелей==6|| МЕсяцТа�
                                                         методЗакрываемКлавитатуру(v);
                                                         методИзменяемЦветСодержимоваЦифраИлиБуква(((EditText) v), EditTextДАнные);
                                                         // TODO: 17.06.2023 подсчет часов
-                                                        subClassSingleTabelRecycreView.методПослеОбновлениеЯчейкиСчитаемЧасы();
+                                                        // TODO: 16.06.2023 само выполение
+                                                        // TODO: 20.04.2023 Данные
+                                                        Cursor     cursorForЧАсов=    new SubClassGetCursor().МетодSwipesКурсор();
+                                                        cursorForЧАсов.moveToPosition(myRecycleViewAdapter.cursor.getPosition());
+                                                        методСчитаемЧасы(cursorForЧАсов,myViewHolder );
                                                         // TODO: 16.06.2023  после переполуение данныз перегрузка экрана
                                                         // TODO: 16.06.2023  после переполуение данныз перегрузка экрана
                                                         recycler_view_single_tabel.scrollTo(0, v.getTop());
@@ -3173,8 +3113,6 @@ class SubClassChanegeSetNameProffesio{
             message.getTarget().post(()->{
                 // TODO: 16.06.2023
                 subClassSingleTabelRecycreView.      методScrollsLeftRecyreView();
-
-                subClassSingleTabelRecycreView.   методПослеОбновлениеЯчейкиСчитаемЧасы();
 
                 // TODO: 16.06.2023  после переполуение данныз перегрузка экрана
                 subClassSingleTabelRecycreView.     методПерегрузкиRecycreView();
