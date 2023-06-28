@@ -811,6 +811,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                             @NonNull RecyclerView.ViewHolder viewHolder,
                                             float dX, float dY, int actionState, boolean isCurrentlyActive) {
 
+                        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                         // TODO: 18.06.2023 первый вариант
                         методИзмененияЦветаSwipes(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 
@@ -828,7 +829,6 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                             if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
                                 // Get RecyclerView item from the ViewHolder
                                 View itemView = viewHolder.itemView;
-                                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -2657,6 +2657,8 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                         cursorПослеСменыПрофесии.moveToPosition(myRecycleViewAdapter.cursor.getPosition());
                                         // TODO: 04.04.2023  ФИО
                                         new  SubClassChanegeSetNameProffesio().    МетодЗаполняемФИОRow( cursorПослеСменыПрофесии);
+                                        // TODO: 28.06.2023 clear
+                                        cursorПослеСменыПрофесии.close();
 
                                         // TODO: 29.03.2023 Методы ПОсле усМешного Смены Професиии
                                         МетодПерегрузкаВидаПрофесии( );
