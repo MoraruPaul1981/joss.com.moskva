@@ -644,7 +644,7 @@ public class MyWork_Notifocations_Уведомления_Для_Задачи ext
                             new NotificationCompat.MessagingStyle.Message("Всем привет!", System.currentTimeMillis(), "Ivan");*/
 
                /*     NotificationCompat.MessagingStyle.Message messagingStyle2 =
-                            new NotificationCompat.MessagingStyle.Message("  zЯЯЯ  Всем привет!", System.currentTimeMillis(), (Person) null);*/
+                            new NotificationCompat.MessagingStyle.Message("  zЯЯЯ  Всем привет!", System.currentTimeMillis(), (Person3) null);*/
 
 
                     PendingIntent ЗапускКОдаЧтоПОльзовательОзнаомленсЗаданиемss = null;

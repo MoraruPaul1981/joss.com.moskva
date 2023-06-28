@@ -9,6 +9,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.Build;
@@ -23,12 +24,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.dsy.dsu.AllDatabases.CREATE_DATABASE;
 import com.dsy.dsu.AllDatabases.Error.CREATE_DATABASE_Error;
+import com.dsy.dsu.AllDatabases.modelORM.Person;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Connections_Server;
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Send_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.R;
+import com.orm.SugarDb;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -86,12 +89,6 @@ try{
     // TODO: 26.06.2023 БАЗА ДАННЫХ ВСТМПОГАТЕЛЬЫНЕ
     Create_Database_СсылкаНАБазовыйКласс_Error =new CREATE_DATABASE_Error(getApplicationContext());
     sqLiteDatabaseСамаБазы_Error = Create_Database_СсылкаНАБазовыйКласс_Error.getССылкаНаСозданнуюБазу();
-
-
-// TODO: 27.06.2023 test Code
-
-
-
 
         activity=this;
         КонтекстДляFAceapp=this;

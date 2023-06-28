@@ -12,6 +12,8 @@ import android.content.res.Configuration;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.DataSetObserver;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -175,15 +177,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
     private  String ФИО;
     private Message message;
     private      Message messageRows;
-    private Animation animationПрофессия400;
-
-    private Animation animationПрофессия300;
-    private Animation animationRows;
     private         Long ПолученыйUUIDФИОСледующий=0l;
-    private   Animation animationRich;
-    private   Animation animationLesft;
-    private   Animation animationVibr1;
-    private   Animation animationVibr2;
     private Integer ВсеСтрокиТабеля=0;
     private  TextView    КонтейнерКудаЗагружаетьсяФИО;
     private ProgressBar ProgressBarSingleTabel;
@@ -214,9 +208,9 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
     private  SubClassSingleTabelRecycreView singleTabelRecycreView;
     private  Integer  CurrentFragmentGetCursor;
     private ScrollView scrollview_recycler_view_single_tabel;
-
-
     private  Integer GetPosition;
+    Animation   animationForTextView;
+
     // TODO: Rename and change types and number of parameters
     public static FragmentSingleTabelOneSwipe newInstance(@NonNull Bundle bundle_single_tabel_viewpagers ) {
         FragmentSingleTabelOneSwipe fragment = new FragmentSingleTabelOneSwipe();
@@ -372,13 +366,13 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                 scrollview_recycler_view_single_tabel.pageScroll(View.FOCUS_UP);
 
 
-                animationПрофессия400 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_in_rowsingletabel);
-                animationПрофессия300 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_in_row2);
+              animationForTextView = AnimationUtils.loadAnimation(getContext(),R.anim.slide_singletable2);
+           /*     animationПрофессия300 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_in_row2);
                 animationVibr1 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_singletable);
                 animationVibr2 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_singletable2);
                 animationRows = AnimationUtils.loadAnimation(getContext(),R.anim.slide_in_row_scroll_for_singletabel);
                 animationRich = AnimationUtils.loadAnimation(getContext(),R.anim.slide_in_swipe_r);//R.anim.slide_in_row)
-                animationLesft = AnimationUtils.loadAnimation(getContext(),R.anim.slide_in_swipe_l);//R.anim.slide_in_row)R.anim.slide_in_row_newscanner1
+                animationLesft = AnimationUtils.loadAnimation(getContext(),R.anim.slide_in_swipe_l);//R.anim.slide_in_row)R.anim.slide_in_row_newscanner1*/
                 startДляОбноразвовной= Calendar.getInstance().getTimeInMillis();
 
 
@@ -438,20 +432,43 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                           Thread.currentThread().getStackTrace()[2].getLineNumber());
               }
           }
+          private void методSetДанныеДляДругихАктивити() {
+              try {
+                  Bundle     bundleSETMainActitivy_List_Tables=(Bundle) getArguments();
+                  // TODO: 10.04.2023
+                  if (bundleSETMainActitivy_List_Tables!=null) {
+                      // TODO: 23.06.2023  NEW
+                      bundleSETMainActitivy_List_Tables.putInt("Position", myRecycleViewAdapter.cursor.getPosition());
+                      bundleSETMainActitivy_List_Tables.putLong("MainParentUUID",   MainParentUUID);
+                      bundleSETMainActitivy_List_Tables.putInt("ГодТабелей",   ГодТабелей);
+                      bundleSETMainActitivy_List_Tables.putInt("МЕсяцТабелей",  МЕсяцТабелей);
+                      bundleSETMainActitivy_List_Tables.putInt("DigitalNameCFO",DigitalNameCFO);
+                      bundleSETMainActitivy_List_Tables.putLong("CurrenrsСhildUUID", CurrenrsСhildUUID);
+                      bundleSETMainActitivy_List_Tables.putString("ФИО", ФИО) ;
+                      bundleSETMainActitivy_List_Tables.putLong("CurrenrsSelectFio", CurrenrsSelectFio);
+                  }
+              } catch (Exception e) {
+                  e.printStackTrace();
+                  Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                          + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                  new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                          Thread.currentThread().getStackTrace()[2].getMethodName(),
+                          Thread.currentThread().getStackTrace()[2].getLineNumber());
+              }
+          }
 
           private void методGETДанныеRunTimeИзCursor(@NonNull Cursor cursor ) {
               try {
                   // TODO: 10.04.2023
                   if (cursor!=null) {
                       MainParentUUID=    cursor.getLong(cursor.getColumnIndex("uuid_tabel"));
-                      CurrentFragmentMaxItem =     myViewHolder.getAbsoluteAdapterPosition();
+                      CurrentFragmentMaxItem =     myRecycleViewAdapter.cursor.getPosition();
                       ГодТабелей=  cursor.getInt(cursor.getColumnIndex("year_tabels"));
                       МЕсяцТабелей= cursor.getInt(cursor.getColumnIndex("month_tabels"));
                       DigitalNameCFO=   cursor.getInt(cursor.getColumnIndex("uuid"));
                       CurrenrsСhildUUID= cursor.getLong(cursor.getColumnIndex("uuid"));
                       ФИО= cursor.getString(cursor.getColumnIndex("name"));
                       CurrenrsSelectFio= cursor.getLong(cursor.getColumnIndex("fio"));
-
                       Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                               " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                               " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -599,8 +616,6 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                             new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                                     Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
-                        СпинерНазваниеЦФО.setClickable(false);
-                        СпинерНазваниеЦФО.setFocusable(false);
                     }
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
@@ -673,6 +688,9 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                 Интент_ПереходаMainActivity_List_Peoples.setClass(getContext(), MainActivity_List_Peoples.class);
                 Bundle bundleИзMainActitivy_List_Tables=getArguments();
                 Интент_ПереходаMainActivity_List_Peoples.putExtras(bundleИзMainActitivy_List_Tables);
+                // TODO: 28.06.2023 clear
+                myRecycleViewAdapter.cursor.close();
+                recycleView.removeAllViewsInLayout();
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -710,7 +728,9 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
 
         private void МетодИнициализацииRecycreView() {
             try{
-       /*         DividerItemDecoration dividerItemDecorationHor=
+       /*
+                  dividerItemDecorationVer.setDrawable(getContext().getDrawable(R.drawable.divider_for_order_transport1));
+             DividerItemDecoration dividerItemDecorationHor=
                         new DividerItemDecoration(getActivity(), GridLayoutManager.VERTICAL);*/
              //   recycleView.addItemDecoration(dividerItemDecorationHor);
                 //    recycleView.setItemAnimator();
@@ -721,6 +741,12 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                         new DividerItemDecoration(activity,GridLayoutManager.VERTICAL);
                 dividerItemDecorationHor.setDrawable(getDrawable(R.drawable.divider_for_single_tabel));///R.dimen.activity_horizontal_margin*/
 
+
+                  DividerItemDecoration dividerItemDecorationVer=
+                        new DividerItemDecoration(getContext(),LinearLayoutManager.VERTICAL);
+                dividerItemDecorationVer.setDrawable(getContext().getDrawable(R.drawable.divider_for_order_transport1));///R.dimen.activity_horizontal_margin
+                recycleView.addItemDecoration(dividerItemDecorationVer);
+
                 DividerItemDecoration dividerItemDecorationHor=
                         new DividerItemDecoration(getActivity(), LinearLayoutManager.HORIZONTAL);
                 recycleView.addItemDecoration(dividerItemDecorationHor);
@@ -728,8 +754,6 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                 recycleView.setLayoutManager(layoutManager);
                 recycleView.setItemAnimator(new DefaultItemAnimator());
                 recycleView.setHasFixedSize(true);
-                recycleView.setAnimation(animationVibr1);
-
                 // TODO: 12.05.2023 Клаиатура
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -826,38 +850,14 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                             if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
                                 // Get RecyclerView item from the ViewHolder
                                 View itemView = viewHolder.itemView;
-
                                 Paint p = new Paint();
-                                if (dX > 0) {
-                                    p.setColor(Color.parseColor("#48D1CC"));
-                                } else {
-                                    p.setColor(Color.parseColor("#1C9CA8"));
-                                }
+                                      Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.icon_account);
 
-                                if (dX > 0) {
-                                    /* Set your color for positive displacement */
 
-                                    // Draw Rect with varying right side, equal to displacement dX
-                                    c.drawRect((float) itemView.getLeft(), (float) itemView.getTop(), dX,
-                                            (float) itemView.getBottom(), p);
-
-                                } else {
-                                    /* Set your color for negative displacement */
-
-                                    // Draw Rect with varying left side, equal to the item's right side plus negative displacement dX
-                                    c.drawRect((float) itemView.getRight() + dX, (float) itemView.getTop(),
-                                            (float) itemView.getRight(), (float) itemView.getBottom(), p);
-                                }
-                                // TODO: 18.06.2023
-                                /*      Bitmap    icon = BitmapFactory.decodeResource(getResources(), R.drawable.icon_account);
-                                 *//* Set your color for negative displacement *//*
-                            p.setARGB(255, 0, 255, 0);
+                                p.setLinearText(true);
+                            //p.setARGB(255, 0, 255, 0);
                             //Set the image icon for Left swipe
-                            c.drawBitmap(icon,
-                                    (float)  itemView.getRight()  - icon.getWidth(),
-                                    (float)  itemView.getTop() + ((float)  itemView.getBottom() - (float)
-                                            itemView.getTop() - icon.getHeight())/2,
-                                    p);*/
+                            c.drawBitmap(icon,500l,500l, p);
 
                                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                             }
@@ -923,12 +923,13 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
 
 
         // TODO: 15.06.2023  скоол левый внутри reryvreview
-        private void методScrollsLeftRecyreView() {
+        private Cursor методScrollsLeftRecyreView() {
+            Cursor cursorSwipeViewPager=null;
             try {
                 Integer Позиция=        myRecycleViewAdapter.cursor.getPosition();
                 // TODO: 20.04.2023 Данные
                 ///cursorForViewPager =    new  SubClassGetCursor().МетодSwipesКурсор();
-             Cursor cursorSwipeViewPager=   myRecycleViewAdapter.cursor;
+                cursorSwipeViewPager=   myRecycleViewAdapter.cursor;
                 if (cursorSwipeViewPager.isLast()){
                     cursorSwipeViewPager.moveToFirst();
                 }else {
@@ -960,6 +961,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                         this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
+            return  cursorSwipeViewPager;
         }
 
 
@@ -1192,8 +1194,6 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                     new  SubClassChanegeSetNameProffesio().    МетодЗаполняемФИОRow( cursor);
                     // TODO: 16.04.2023 Професии Професии Професии Професии
                     МетодаКликаTableRowФИО( );
-                    // TODO: 22.06.2023
-                    fragmentSingleTabel.new SubClassBungleSingle().методGETДанныеRunTimeИзCursor(cursor );
                     // TODO: 23.06.2023
                     методВиузуацииПрогрессБара();
                     // TODO: 26.06.2023  перегрузка
@@ -1326,6 +1326,8 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
             @Override
             public void onBindViewHolder(@NonNull  MyViewHolder holder, int position) {
                 try {
+                    Animation animationFromRecyReview=AnimationUtils.loadAnimation(getContext(),R.anim.slide_in_row);
+                    holder.itemView.startAnimation(animationFromRecyReview);
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cursorForViewPager " +cursor +
@@ -1341,23 +1343,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                 }
             }
 
-            private void МетодАнимации(@NonNull  TableRow tableRow) {
-                try {
-                    tableRow.startAnimation(animationПрофессия300);
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cursorForViewPager " +cursor +
-                            " animationПрофессия300 " +animationПрофессия300);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(getContext().getClass().getName(),
-                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
-            }
+
             ///todo первый метод #1
             private void МетодЗаполняемДаннымиRecycreViewSingleTable(@NonNull  MyViewHolder holder, @NonNull Cursor cursor) {
                 try {
@@ -1447,7 +1433,6 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                 String ВыходныеИлиПразничные=    ДниВыходные.get(ДнейСодержимое.trim());
                                 if (ВыходныеИлиПразничные!=null) {
                                     editTextRowКликПоДАнными.setVisibility(View.VISIBLE);
-                                    editTextRowКликПоДАнными.startAnimation(animationVibr1);
                                 }
                                 методЗаполениеСодеримомRowData(editTextRowКликПоДАнными, cursor, ДнейСодержимое);
 
@@ -1547,7 +1532,6 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                 String ВыходныеИлиПразничные=    ДниВыходные.get(ДнейНазвание.trim());
                                 if (ВыходныеИлиПразничные!=null) {
                                     textViewНазвание.setVisibility(View.VISIBLE);
-                                    textViewНазвание.startAnimation(animationVibr1);
                                 }
                                ВыходныеИлиПразничные =          методЗаполениеНазванияRowData(textViewНазвание, ДнейНазвание);
                                 // TODO: 26.06.2023
@@ -1616,7 +1600,6 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                     // TODO: 07.06.2023
                     методИзменяемЦветСодержимоваЦифраИлиБуква(editTextRowКликПоДАнными, День);
 
-                    editTextRowКликПоДАнными.startAnimation(animationRows);
 
                     // TODO: 19.10.2022
                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1871,7 +1854,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                                 // subClassSingleTabelRecycreView.       методЗакрываемКлавитатуру(v);
                                                 // TODO: 16.06.2023  после переполуение данныз перегрузка экрана
                                                 message.getTarget().postDelayed(()->{
-                                                    ((EditText) v).startAnimation(animationVibr2);
+                                                    ((EditText) v).startAnimation(animationForTextView);
                                                 },1000);
                                                 // TODO: 19.06.2023 код когда данные в ячейке не сохранились
                                             } else {
@@ -2020,7 +2003,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                 if (ProgressBarSingleTabel!=null) {
                     ProgressBarSingleTabel.setVisibility(View.INVISIBLE);
                 }
-            },500);
+            },100);
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
@@ -2393,7 +2376,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                             // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
                             try{
                                 message.getTarget().postDelayed(()->{
-                                    TextViewФИОПрофессия.startAnimation(animationVibr2);
+                                    TextViewФИОПрофессия.startAnimation(animationForTextView);
                                 },300);
                                 TextView TextViewФИОДляУдаление = (TextView) v;
                                 Log.d(this.getClass().getName(), " v " + v.getTag() + " TextViewФИОДляУдаление.getText() " + TextViewФИОДляУдаление.getText() +
@@ -2546,14 +2529,20 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                     // TODO: 15.06.2023 Scroll Left RecyreView
                     ProgressBarSingleTabel.setVisibility(View.VISIBLE);
                     singleTabelRecycreView. методЗакрываемКлавитатуру();
-                    recycleView.setFocusable(false);
+                    СпинерНазваниеЦФО.setClickable(false);
+                    СпинерНазваниеЦФО.setFocusable(false);
 
                     Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
                     v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.EFFECT_HEAVY_CLICK));
 // TODO: 16.06.2023  ПРОИЗВОДИМ САМ СВАЙП
                     message.getTarget().post(()->{
                         // TODO: 16.06.2023
-                        singleTabelRecycreView.      методScrollsLeftRecyreView();
+                        Cursor cursorSwipeViewPager=      singleTabelRecycreView.      методScrollsLeftRecyreView();
+
+                        // TODO: 22.06.2023
+                        fragmentSingleTabel.new SubClassBungleSingle().методGETДанныеRunTimeИзCursor(cursorSwipeViewPager );
+
+                        fragmentSingleTabel.new SubClassBungleSingle().   методSetДанныеДляДругихАктивити();
 
                         singleTabelRecycreView.   методПослеОбновлениеЯчейкиСчитаемЧасы();
 
@@ -2665,7 +2654,6 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                                     ((MaterialTextView)view).setOnClickListener(new View.OnClickListener() {
                                                         @Override
                                                         public void onClick(View v) {
-                                                            ((MaterialTextView)view).startAnimation(animationПрофессия400);
                                                             Bundle bundle=(Bundle)   ((MaterialTextView)view).getTag();
                                                             Integer ПолучаемIDПрофессии=      bundle.getInt("ПолучаемIDПрофессии",0);
                                                             String НазваниеПрофесии=   bundle.getString("НазваниеПрофесии","");
@@ -2721,7 +2709,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                             simpleCursorAdapterЦФО.setViewBinder(БиндингДляНовогоПоиска);
                             listViewДляНовыйПосик[0].setAdapter(simpleCursorAdapterЦФО);
                             simpleCursorAdapterЦФО.notifyDataSetChanged();
-                            listViewДляНовыйПосик[0].startAnimation(animationПрофессия400);
+                            listViewДляНовыйПосик[0].startAnimation(animationForTextView);
                             listViewДляНовыйПосик[0].setSelection(0);
                             listViewДляНовыйПосик[0].forceLayout();
 
@@ -2944,8 +2932,6 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                     Bundle bundleПослеУспешнойСменыПрофесии=   (Bundle)     searchViewДляНовогоПоиска.getTag();
                     String УспешнаяСменПрофессия=   bundleПослеУспешнойСменыПрофесии.getString("НазваниеПрофесии");
                     TextViewФИОПрофессия.setText(ФИО.trim() + "\n"+ УспешнаяСменПрофессия);
-                    TextViewФИОПрофессия.startAnimation(animationПрофессия400) ;
-                    textViewчасыsimgletabel.startAnimation(animationПрофессия400);
                     textViewчасыsimgletabel.refreshDrawableState();
                     textViewчасыsimgletabel.forceLayout();
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -3155,7 +3141,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                         Профессия="(Должность)";
                         TextViewФИОПрофессия.setText(ФИО.trim() + "\n"+ Профессия);
                     }
-                    TextViewФИОПрофессия.startAnimation(animationПрофессия400) ;
+                    TextViewФИОПрофессия.startAnimation(animationForTextView) ;
                     // TODO: 17.04.2023 Tag
                     bundleTabelViewПосикПрофессия.putString("ФИО",ФИО);
                     bundleTabelViewПосикПрофессия.putString("Профессия",Профессия);

@@ -37,6 +37,8 @@ allprojects {
 
 apply plugin: 'com.android.application'
 
+
+
 android {
     signingConfigs {
         debug {
@@ -195,11 +197,10 @@ dependencies {
 
 
 
-// https://mvnrepository.com/artifact/org.greenrobot/greendao
-    implementation 'org.greenrobot:greendao:3.2.0'
 
-// https://mvnrepository.com/artifact/org.greenrobot/greendao-generator
-    implementation 'org.greenrobot:greendao-generator:3.3.0'
+    // https://mvnrepository.com/artifact/com.github.satyan/sugar
+    implementation 'com.github.satyan:sugar:1.5'
+
 
 
 

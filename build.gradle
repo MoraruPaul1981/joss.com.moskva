@@ -3,20 +3,19 @@ ext {
     var = 'C:\\Users\\moraru_pi\\AndroidStudioProjects\\dsu1_keys.jks'
     defaultTargetSdkVersion = 31
     defaultTargetSdkVersion1 = buildToolsVersion
+
+
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
     repositories {
         google()
         jcenter()
-        
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.4.0'
         classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.4.1'
-
-
-        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.0' // add plugin
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
