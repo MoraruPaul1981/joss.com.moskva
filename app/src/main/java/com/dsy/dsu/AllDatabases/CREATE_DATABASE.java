@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =             1044;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+     static final int VERSION =             1045;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
     private      SQLiteDatabase ССылкаНаСозданнуюБазу;
     private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
@@ -1224,11 +1224,11 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             
 
             if (newVersion > oldVersion) {
-                if(newVersion ==            1044){
+                if(newVersion ==            1045){
                     //TODO table создание  УСТАНОВКА ВЫБОРОЧНАЯ ПО ТАБЛИЦАМ
                     //МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
-                    МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
-
+                    //МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
+                    МетодСозданияСистемнойТаблицыСФО(ССылкаНаСозданнуюБазу);
                     // TODO: 12.10.2022  создание Trigers
                     МетодСозданиеТрирераМодификаценКлиент(ССылкаНаСозданнуюБазу,ИменаТаблицыОтАндройда);
 

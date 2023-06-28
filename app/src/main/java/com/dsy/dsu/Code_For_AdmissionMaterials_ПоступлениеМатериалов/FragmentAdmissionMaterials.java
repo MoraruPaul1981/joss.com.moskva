@@ -17,6 +17,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.WorkInfo;
@@ -81,7 +82,7 @@ public class FragmentAdmissionMaterials extends Fragment {
     private  Cursor cursorСамиДанныеGroupBy;
     private MyRecycleViewAdapter myRecycleViewAdapter;
     private MyViewHolder myViewHolder;
-    private Integer ТекущаяЦФО=0;
+    private Integer ТекущаяЦифраЦФО =0;
     private Integer ТекущаяНомерМатериала=0;
     private String ТекущаяИмяЦФО=new String();
     private  ViewGroup container;
@@ -205,6 +206,7 @@ public class FragmentAdmissionMaterials extends Fragment {
         try {
             Log.d(this.getClass().getName(), "sqLiteCursor  " + cursorНомерЦФО);
             myRecycleViewAdapter = new MyRecycleViewAdapter(cursorНомерЦФО);
+            myRecycleViewAdapter.notifyDataSetChanged();
             recyclerView.setAdapter(myRecycleViewAdapter);
             Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
         } catch (Exception e) {
@@ -265,11 +267,22 @@ public class FragmentAdmissionMaterials extends Fragment {
     private void МетодИнициализацииRecycreView() {
         try{
             Log.d(this.getClass().getName(), " recyclerView  "+recyclerView);
-            recyclerView.setVisibility(View.VISIBLE);
+            DividerItemDecoration dividerItemDecorationVer=
+                    new DividerItemDecoration(getContext(),LinearLayoutManager.VERTICAL);
+            /// dividerItemDecorationVer.setDrawable(getContext().getDrawable(R.drawable.divider_for_order_transport1));///R.dimen.activity_horizontal_margin
+            recyclerView.addItemDecoration(dividerItemDecorationVer);
+
+            DividerItemDecoration dividerItemDecorationHor=
+                    new DividerItemDecoration(getActivity(), LinearLayoutManager.HORIZONTAL);
+/*            dividerItemDecorationHor.setDrawable(getContext().getDrawable(R.drawable.divider_for_order_transport1));///R.dimen.activity_horizontal_margin*/
+            recyclerView.addItemDecoration(dividerItemDecorationHor);
+
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
             linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.startAnimation(animationПолучениеМатериалов);
+
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -787,7 +800,7 @@ public class FragmentAdmissionMaterials extends Fragment {
                     break;
             }
             bundleДляПЕредачи.putInt("ПубличныйIDДляФрагмента",ПубличныйIDДляФрагмента);
-            bundleДляПЕредачи.putInt("ТекущаяЦФО",ТекущаяЦФО);
+            bundleДляПЕредачи.putInt("ТекущаяЦифраЦФО",ТекущаяЦФО);
             bundleДляПЕредачи.putInt("ТекущаяНомерМатериала",ТекущаяНомерМатериала);
             bundleДляПЕредачи.putString("ФлагКакиеДанныеНужныПолучениеМатериалов",ФлагКакиеДанныеНужныПолучениеМатериалов);
             Intent intentПолучениеМатериалов = new Intent(getContext(), Service_for_AdminissionMaterial.class);
@@ -941,7 +954,7 @@ public class FragmentAdmissionMaterials extends Fragment {
                 if (cursor!=null) {
                     if (cursor.getCount() > 0) {
                         cursor.moveToPosition(position);
-                        ТекущаяЦФО=        МетодВытаскиваемТекущийЦФО(cursor);    // TODO: 17.10.2022  метод который вытаскиваем Текущее Значение ЦФО для получение дальнейших данных
+                        ТекущаяЦифраЦФО =        МетодВытаскиваемТекущийЦФО(cursor);    // TODO: 17.10.2022  метод который вытаскиваем Текущее Значение ЦФО для получение дальнейших данных
                         //  ХэшДааныеСтрока = (ConcurrentSkipListMap<String, String>) ArrayListДанныеОтСканироваиниеДивайсов.get(position);
                         Log.i(this.getClass().getName(), "   onBindViewHolder  position" + position + " cursor " + cursor);
                     }
@@ -1019,7 +1032,7 @@ public class FragmentAdmissionMaterials extends Fragment {
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View viewПолучениеМатериалов = null;
             try {
-                if(   binderДляПолучениеМатериалов==null || cursor==null){
+                if(    cursor==null){
                         viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov, parent, false);//todo old simple_for_takst_cardview1
                         Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов);
 
@@ -1034,6 +1047,7 @@ public class FragmentAdmissionMaterials extends Fragment {
                 }
                 // TODO: 13.10.2022  добавляем новый компонент в Нащ RecycreView
                 myViewHolder = new MyViewHolder(viewПолучениеМатериалов);
+                МетодПерегрузкаRecyceView();
                 Log.i(this.getClass().getName(), "   myViewHolder" + myViewHolder + "  binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1050,11 +1064,11 @@ public class FragmentAdmissionMaterials extends Fragment {
         private Integer МетодВытаскиваемТекущийЦФО(@NonNull Cursor cursor) {
             try{
                 Integer индексТекущаяЦФО =cursor.getColumnIndex("cfo");
-                ТекущаяЦФО =cursor.getInt(индексТекущаяЦФО);
+                ТекущаяЦифраЦФО =cursor.getInt(индексТекущаяЦФО);
                 // TODO: 19.10.2022 название ЦФО
                 Integer индексТекущаяНазваниеЦФО =cursor.getColumnIndex("name_cfo");
                 ТекущаяИмяЦФО =cursor.getString(индексТекущаяНазваниеЦФО);
-                Log.i(this.getClass().getName(),  "  ТекущаяЦФО " +ТекущаяЦФО+ " ТекущаяИмяЦФО " +ТекущаяИмяЦФО);
+                Log.i(this.getClass().getName(),  "  ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " ТекущаяИмяЦФО " +ТекущаяИмяЦФО);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1064,7 +1078,7 @@ public class FragmentAdmissionMaterials extends Fragment {
                         this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
-            return ТекущаяЦФО;
+            return ТекущаяЦифраЦФО;
         }
 
         @Override
@@ -1127,11 +1141,11 @@ public class FragmentAdmissionMaterials extends Fragment {
         private void МетодДобавленеиЕлементоввRecycreView(@NonNull TableLayout tableLayoutРодительская) {
             try {
                 // TODO: 07.11.2022   ВТОРОЙ ЭТАП ПОЛУЧАЕМ НОМЕР ЦФО
-                if (binderДляПолучениеМатериалов!=null && cursor!=null && ТекущаяЦФО>0) {
+                if (binderДляПолучениеМатериалов!=null && cursor!=null && ТекущаяЦифраЦФО >0) {
                     // TODO: 03.11.2022 Второй Запрос Получем САМО Цифра Полученого Материла
-                    МетодПолучениеДанныхДЛяПолучениеМатериалов("ПолучениеНомерМатериала",ТекущаяЦФО);
+                    МетодПолучениеДанныхДЛяПолучениеМатериалов("ПолучениеНомерМатериала", ТекущаяЦифраЦФО);
                 }
-                Log.i(this.getClass().getName(), "  ТекущаяЦФО " + ТекущаяЦФО + " cursorЦФО " + cursorНомерМатериала + " ТекущаяЦФО " +ТекущаяЦФО);
+                Log.i(this.getClass().getName(), "  ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " cursorЦФО " + cursorНомерМатериала + " ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО);
 
                 // TODO: 18.10.2022 название ЦФО
                 МетодДанныеНазваниеЦФО(tableLayoutРодительская);
@@ -1145,12 +1159,12 @@ public class FragmentAdmissionMaterials extends Fragment {
                          Integer ИндексМатериала=  cursorНомерМатериала.getColumnIndex("nomenvesov_zifra");
                          // Integer ИндексМатериала=  cursorНомерМатериала.getColumnIndex("nomen_vesov");
                             ТекущаяНомерМатериала=      cursorНомерМатериала.getInt(ИндексМатериала);
-                            Log.i(this.getClass().getName(), "  ТекущаяЦФО " + ТекущаяЦФО + " cursorЦФО " + cursor
-                                    + " ТекущаяЦФО " +ТекущаяЦФО+ " ТекущаяНомерМатериала " +ТекущаяНомерМатериала);
+                            Log.i(this.getClass().getName(), "  ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " cursorЦФО " + cursor
+                                    + " ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " ТекущаяНомерМатериала " +ТекущаяНомерМатериала);
                             // TODO: 07.11.2022 И ЗАПУСКАМ ФИЛЬНАЙ ТРЕИЙ ЭТАП ПОЛУЧЕНИЕ СГРУПИРОВАННЫХ ДАННЫХ
-                            МетодПолучениеДанныхДЛяПолучениеМатериалов("ПолучениеСгрупированныеСамиДанные",ТекущаяЦФО);
-                            Log.i(this.getClass().getName(), "  ТекущаяЦФО " + ТекущаяЦФО + " cursorСамиДанныеGroupBy " + cursorСамиДанныеGroupBy
-                                    + " ТекущаяЦФО " +ТекущаяЦФО+ " ТекущаяНомерМатериала " +ТекущаяНомерМатериала);
+                            МетодПолучениеДанныхДЛяПолучениеМатериалов("ПолучениеСгрупированныеСамиДанные", ТекущаяЦифраЦФО);
+                            Log.i(this.getClass().getName(), "  ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " cursorСамиДанныеGroupBy " + cursorСамиДанныеGroupBy
+                                    + " ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " ТекущаяНомерМатериала " +ТекущаяНомерМатериала);
                             // TODO: 18.10.2022 Добавяем Сами Данные Получение материалов
                             МетодДанныеПолучениеМатериалов(tableLayoutРодительская,cursorСамиДанныеGroupBy);
                             // TODO: 09.12.2022 делалем дополнительно движение
@@ -1319,7 +1333,11 @@ public class FragmentAdmissionMaterials extends Fragment {
                         .inflate(R.layout.simple_for_assionamaterial_row,null);//todo old  simple_for_assionamaterial
                 TableRow rowПервыеНазваниеЦФО = (TableRow)   tableLayoutНазваниеЦФО.findViewById(R.id.TableRowNameCFO);
                 TextView textViewНазваниеЦФО=  rowПервыеНазваниеЦФО.findViewById(R.id.textviewnameCFO);
-                textViewНазваниеЦФО.setText(ТекущаяИмяЦФО.trim());
+                if(ТекущаяИмяЦФО!=null && ТекущаяИмяЦФО.length()>0){
+                    textViewНазваниеЦФО.setText(ТекущаяИмяЦФО.trim() );
+                }else{
+                    textViewНазваниеЦФО.setText("Цфо закрыто !!!" );
+                }
                 tableLayoutНазваниеЦФО.recomputeViewAttributes(rowПервыеНазваниеЦФО);
                 tableLayoutНазваниеЦФО.removeViewInLayout(rowПервыеНазваниеЦФО);
                 tableLayoutНазваниеЦФО.removeView(rowПервыеНазваниеЦФО);
