@@ -1040,19 +1040,7 @@ public class FragmentDetailingMaterials extends Fragment {
             return myViewHolder;
         }
 
-        private void МетодАнимации(MyViewHolder holder) {
-            try {
-            //    holder.materialcardView_for_detalizaziy.startAnimation(animation);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(getContext().getClass().getName(),
-                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
+
         ///todo первый метод #1
         private void МетодЗаполняемДаннымиПолучениеМАтериалов(@NonNull MyViewHolder holder, @NonNull Cursor cursor) {
             try {
@@ -1077,29 +1065,21 @@ public class FragmentDetailingMaterials extends Fragment {
                 cursorДетализацияМатериала.moveToFirst();
                 // TODO: 18.10.2022 название ЦФО
                 if (tableLayoutРодительская!=null) {
-                    МетодДанныеНазваниеЦФО(tableLayoutРодительская,cursorДетализацияМатериала);
+
+                    МетодДанныеМатериалДетализация(tableLayoutРодительская,cursorДетализацияМатериала);
                     // TODO: 18.10.2022 дял линии
-                    МетодДанныеЛиния(tableLayoutРодительская);
+                    МетодДанныеЛинияДетализации(tableLayoutРодительская);
                     // TODO: 18.10.2022 Добавяем Названием Столбиков
-                    МетодДанныеНазваниеСтолбиков(tableLayoutРодительская);
+                    МетодДанныеНазваниеСтолбиковДетализация(tableLayoutРодительская);
                 }
 
-                if (cursorДетализацияМатериала.getCount()>0) {
+       /*         if (cursorДетализацияМатериала.getCount()>0) {
                     String НазваниеЦФОДляДетализации= Optional.ofNullable(cursorДетализацияМатериала.getString(cursorДетализацияМатериала.
                             getColumnIndex("name_cfo"))).orElse("");
                     textViewНазваниеФрагмента.setText(НазваниеЦФОДляДетализации.replace("\"", "").replace("\\n", "")
                             .replace("\\r", "").replace("\\", "")
                             .replace("\\t", "").toUpperCase().trim());
-                    // TODO: 07.11.2022 сами данные
-                            Integer ПозицияВнутриСТрочки=0;
-                            do{
-                                // TODO: 07.11.2022  ТРЕТИЙ ЭТАП ПОЛУЧАЕМ  НОМЕР ДОКУМЕНТА
-                                Log.i(this.getClass().getName(), "  ТекущаяЦФО " + ТекущаяЦФО + " cursorНомерМатериала " + cursorДетализацияМатериала
-                                        + " ТекущаяЦФО " +ТекущаяЦФО+ " ТекущаяНомерМатериала " +ТекущаяНомерМатериала);
-                                // TODO: 18.10.2022 Добавяем Сами Данные Получение материалов
-                                МетодДанныеПолучениеМатериалов(tableLayoutРодительская, cursorДетализацияМатериала,ПозицияВнутриСТрочки++);
-                            }while (cursorДетализацияМатериала.moveToNext());
-                        }
+                        }*/
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1111,75 +1091,8 @@ public class FragmentDetailingMaterials extends Fragment {
             }
         }
 
-        private void МетодДанныеПолучениеМатериалов(@NonNull TableLayout tableLayoutРодительская , @NonNull Cursor cursorНомерМатериалаДетализация,@NonNull Integer ПозицияВнутриСТрочки) {
-            // TODO: 18.10.2022  ДАННЫЕ
-            try {
-                            МетодВнутриСпинера( tableLayoutРодительская,cursorНомерМатериалаДетализация,ПозицияВнутриСТрочки);
-                // TODO: 06.11.2022 данные цикл
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(getContext().getClass().getName(),
-                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
-        private void МетодВнутриСпинера( @NonNull TableLayout tableLayoutРодительская, @NonNull Cursor cursorНомерМатериалаДетализация
-        , @NonNull Integer ПозицияВнутриСТрочки) {
-            try{
-                Log.d(this.getClass().getName(), "  выходим из задания МетодКпопкаВозвращениеНазадИзСогласованиии"
-                        + " cursorНомерМатериалаДетализация " +cursorНомерМатериалаДетализация);
-                TableLayout   tableLayout= (TableLayout) LayoutInflater.from(getContext()).inflate(R.layout.simple_for_assionamaterial_detelizaziy_row,null);//todo old  simple_for_assionamaterial
-               // tableLayout.setAnimation(animation);
-                TableRow rowПервыеДанные = (TableRow)   tableLayout.findViewById(R.id.TableData);
-                TextView textView=  rowПервыеДанные.findViewById(R.id.textview1);
-                String Материал= Optional.ofNullable(cursorНомерМатериалаДетализация.getString(cursorНомерМатериалаДетализация.
-                        getColumnIndex("nomenvesov"))).orElse("");
-                textView.setText(Материал.trim());
-                TextView textView2=  rowПервыеДанные.findViewById(R.id.textview2);
-                Float Деньги= Optional.ofNullable(cursorНомерМатериалаДетализация.getFloat(cursorНомерМатериалаДетализация.
-                        getColumnIndex("count"))).orElse(0f);
-                textView2.setText(Деньги.toString());
-                String Время= Optional.ofNullable(cursorНомерМатериалаДетализация.getString(cursorНомерМатериалаДетализация.
-                        getColumnIndex("date_update"))).orElse("");
-                Время=     new Class_Generation_Data_AssinaMaterial(getContext(),Время).ГлавнаяДатаИВремяОперацийСБазойДанных();
 
-                TextView textView3=  rowПервыеДанные.findViewById(R.id.textview3);
-                textView3.setText(Время.toString());
-                Long UUIDВыбраныйМатериал= Optional.ofNullable(cursorНомерМатериалаДетализация.getLong(cursorНомерМатериалаДетализация.
-                        getColumnIndex("uuid"))).orElse(0l);
-                // TODO: 10.11.2022
-                Bundle bundleДанныеДляСтрочки=new Bundle();
-                bundleДанныеДляСтрочки.putLong("UUIDВыбраныйМатериал",UUIDВыбраныйМатериал);
-                bundleДанныеДляСтрочки.putString("Материал",Материал);
-                bundleДанныеДляСтрочки.putFloat("Деньги",Деньги);
-                rowПервыеДанные.setTag(bundleДанныеДляСтрочки);
-                // TODO: 06.11.2022 удаление
-                tableLayout.recomputeViewAttributes(rowПервыеДанные);
-                tableLayout.removeViewInLayout(rowПервыеДанные);
-                tableLayout.removeView(rowПервыеДанные);
-                rowПервыеДанные.setId(ПозицияВнутриСТрочки);
-             //   rowПервыеДанные.setId(new Random().nextInt());
-                rowПервыеДанные.startAnimation(animation);
-                tableLayout.recomputeViewAttributes(rowПервыеДанные);
-                // TODO: 18.10.2022 добавляем  сами данные
-                МетодДобаленияНовыхСтрокДанных(rowПервыеДанные, tableLayoutРодительская);
-                // TODO: 16.11.2022  слушатель Удаление строк
-                МетодаКликаУдаленияМатериалаПоtableRow(rowПервыеДанные);
-                // TODO: 19.10.2022 Редактирование Данных
-              //  МетодаКликаРедактированиеМатериалаПоtableRow(rowПервыеДанные);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(getContext().getClass().getName(),
-                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
+
 
 
         // TODO: 08.11.2022 метод Удаление материала
@@ -1302,17 +1215,21 @@ public class FragmentDetailingMaterials extends Fragment {
             }
         }
 
-        private void МетодДанныеНазваниеСтолбиков(@NonNull TableLayout tableLayoutРодительская) {
+        private void МетодДанныеНазваниеСтолбиковДетализация(@NonNull TableLayout tableLayoutРодительская) {
             try {
                 TableLayout  tableLayoutНазваниеСтобликов= (TableLayout)
                         LayoutInflater.from(getContext()).inflate(R.layout.simple_for_assionamaterial_detelizaziy_row,null);
-                TableRow rowПервыеНазваниеСтобликов = (TableRow)   tableLayoutНазваниеСтобликов.findViewById(R.id.TableHendlers);
-                tableLayoutНазваниеСтобликов.recomputeViewAttributes(rowПервыеНазваниеСтобликов);
-                tableLayoutНазваниеСтобликов.removeViewInLayout(rowПервыеНазваниеСтобликов);
-                tableLayoutНазваниеСтобликов.removeView(rowПервыеНазваниеСтобликов);
-                rowПервыеНазваниеСтобликов.setId(new Random().nextInt());
+                TableRow tablerowNamecolumnt_detal = (TableRow)   tableLayoutНазваниеСтобликов.findViewById(R.id.tablerowNamecolumnt_detal);
+                tableLayoutНазваниеСтобликов.recomputeViewAttributes(tablerowNamecolumnt_detal);
+                tableLayoutНазваниеСтобликов.removeViewInLayout(tablerowNamecolumnt_detal);
+                tableLayoutНазваниеСтобликов.removeView(tablerowNamecolumnt_detal);
+                tablerowNamecolumnt_detal.setId(new Random().nextInt());
                 // TODO: 18.10.2022 добавляем  Линию
-                МетодДобаленияНовыхСтрокДанных(rowПервыеНазваниеСтобликов, tableLayoutРодительская);
+                МетодДобаленияНовыхСтрокДанных(tablerowNamecolumnt_detal, tableLayoutРодительская);
+                // TODO: 17.04.2023
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1324,17 +1241,22 @@ public class FragmentDetailingMaterials extends Fragment {
             }
         }
 
-        private void МетодДанныеЛиния(@NonNull TableLayout tableLayoutРодительская) {
+        private void МетодДанныеЛинияДетализации(@NonNull TableLayout tableLayoutРодительская) {
             try {
                 TableLayout  tableLayoutЛиния= (TableLayout) LayoutInflater.from(getContext())
                         .inflate(R.layout.simple_for_assionamaterial_detelizaziy_row,null);
-                TableRow rowПервыеЛиния = (TableRow)   tableLayoutЛиния.findViewById(R.id.TableRowLine);
-                tableLayoutЛиния.recomputeViewAttributes(rowПервыеЛиния);
-                tableLayoutЛиния.removeViewInLayout(rowПервыеЛиния);
-                tableLayoutЛиния.removeView(rowПервыеЛиния);
-                rowПервыеЛиния.setId(new Random().nextInt());
+                TableRow tablerowline_detaliz = (TableRow)   tableLayoutЛиния.findViewById(R.id.tablerowline_detaliz);
+                tableLayoutЛиния.recomputeViewAttributes(tablerowline_detaliz);
+                tableLayoutЛиния.removeViewInLayout(tablerowline_detaliz);
+                tableLayoutЛиния.removeView(tablerowline_detaliz);
+                tablerowline_detaliz.setId(new Random().nextInt());
                 // TODO: 18.10.2022 добавляем  Линию
-                МетодДобаленияНовыхСтрокДанных(rowПервыеЛиния, tableLayoutРодительская);
+                МетодДобаленияНовыхСтрокДанных(tablerowline_detaliz, tableLayoutРодительская);
+
+                // TODO: 17.04.2023
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1346,22 +1268,105 @@ public class FragmentDetailingMaterials extends Fragment {
             }
         }
 
-        private void МетодДанныеНазваниеЦФО(@NonNull TableLayout tableLayoutРодительская,@NonNull Cursor cursorДетализацияМатериала) {
+        private void МетодДанныеМатериалДетализация(@NonNull TableLayout tableLayoutРодительская, @NonNull Cursor cursorДетализацияМатериала) {
             try{
-                TableLayout  tableLayoutНазваниеЦФО= (TableLayout) LayoutInflater.from(getContext())
+
+
+                do{
+
+
+                TableLayout  tableLayoutДеталицация= (TableLayout) LayoutInflater.from(getContext())
                         .inflate(R.layout.simple_for_assionamaterial_detelizaziy_row,null);//todo old  simple_for_assionamaterial
-                TableRow rowПервыеНазваниеЦФО = (TableRow)   tableLayoutНазваниеЦФО.findViewById(R.id.TableRowNameCFO);
-                TextView textViewНазваниеЦФО=  rowПервыеНазваниеЦФО.findViewById(R.id.textviewnameCFO);
+                TableRow RowData_for_detalisaziy = (TableRow)   tableLayoutДеталицация.findViewById(R.id.tableData_for_detalisaziy);
+
+
+                    tableLayoutДеталицация.recomputeViewAttributes(RowData_for_detalisaziy);
+                    tableLayoutДеталицация.removeViewInLayout(RowData_for_detalisaziy);
+                    tableLayoutДеталицация.removeView(RowData_for_detalisaziy);
+                    RowData_for_detalisaziy.setId(new Random().nextInt());
+
+
+
+
+
+                // TODO: 29.06.2023 тим Детализации
+                TextView textview_det_type=  RowData_for_detalisaziy.findViewById(R.id.textview_det_type);
                 // TODO: 10.11.2022  данные для название ЦФО
-                String НазваниеЦФОДЛяДетализации= Optional.ofNullable(cursorДетализацияМатериала.getString(cursorДетализацияМатериала.
+                String типДеталиазции= Optional.ofNullable(cursorДетализацияМатериала.getString(cursorДетализацияМатериала.
                         getColumnIndex("typematerial"))).orElse("");
-                textViewНазваниеЦФО.setText(НазваниеЦФОДЛяДетализации.trim());
-                tableLayoutНазваниеЦФО.recomputeViewAttributes(rowПервыеНазваниеЦФО);
-                tableLayoutНазваниеЦФО.removeViewInLayout(rowПервыеНазваниеЦФО);
-                tableLayoutНазваниеЦФО.removeView(rowПервыеНазваниеЦФО);
-                rowПервыеНазваниеЦФО.setId(new Random().nextInt());
-                // TODO: 18.10.2022 добавляем  название ЦФО
-                //МетодДобаленияНовыхСтрокДанных(rowПервыеНазваниеЦФО, tableLayoutРодительская);
+                textview_det_type.setText(типДеталиазции.trim());
+
+
+
+
+
+
+
+           /*     // TODO: 29.06.2023 Материалоа Детализации
+                TextView textview_det_material=  RowData_for_detalisaziy.findViewById(R.id.textview_det_material);
+                // TODO: 10.11.2022  данные для название ЦФО
+                String nomenvesovДетадизации= Optional.ofNullable(cursorДетализацияМатериала.getString(cursorДетализацияМатериала.
+                        getColumnIndex("nomenvesov"))).orElse("");
+                textview_det_material.setText(nomenvesovДетадизации.trim());
+                tableLayoutДеталицация.recomputeViewAttributes(RowData_for_detalisaziy);
+                tableLayoutДеталицация.removeViewInLayout(RowData_for_detalisaziy);
+                tableLayoutДеталицация.removeView(RowData_for_detalisaziy);
+                textview_det_material.setId(new Random().nextInt());
+
+
+                // TODO: 29.06.2023 Материалоа Детализации
+                TextView textview_det_kilichestvo=  RowData_for_detalisaziy.findViewById(R.id.textview_det_kilichestvo);
+                // TODO: 10.11.2022  данные для название ЦФО
+                Integer КоличествоДетадизации= Optional.ofNullable(cursorДетализацияМатериала.getInt(cursorДетализацияМатериала.
+                        getColumnIndex("count"))).orElse(0);
+                textview_det_kilichestvo.setText(КоличествоДетадизации.toString() );
+                tableLayoutДеталицация.recomputeViewAttributes(textview_det_kilichestvo);
+                tableLayoutДеталицация.removeViewInLayout(RowData_for_detalisaziy);
+                tableLayoutДеталицация.removeView(RowData_for_detalisaziy);
+                textview_det_kilichestvo.setId(new Random().nextInt());
+*/
+
+
+
+
+
+
+
+
+
+                    String Время= Optional.ofNullable(cursorДетализацияМатериала.getString(cursorДетализацияМатериала.
+                            getColumnIndex("date_update"))).orElse("");
+                    Время=     new Class_Generation_Data_AssinaMaterial(getContext(),Время).ГлавнаяДатаИВремяОперацийСБазойДанных();
+
+
+                    Long UUIDВыбраныйМатериал= Optional.ofNullable(cursorДетализацияМатериала.getLong(cursorДетализацияМатериала.
+                            getColumnIndex("uuid"))).orElse(0l);
+                    // TODO: 10.11.2022
+                    Bundle bundleДанныеДляСтрочки=new Bundle();
+                    bundleДанныеДляСтрочки.putLong("UUIDВыбраныйМатериал",UUIDВыбраныйМатериал);
+                /*    bundleДанныеДляСтрочки.putString("Материал",nomenvesovДетадизации);
+                    bundleДанныеДляСтрочки.putFloat("Деньги",КоличествоДетадизации);*/
+                    RowData_for_detalisaziy.setTag(bundleДанныеДляСтрочки);
+
+
+
+
+
+
+
+
+                    // TODO: 16.11.2022  слушатель Удаление строк
+                    МетодаКликаУдаленияМатериалаПоtableRow(RowData_for_detalisaziy);
+                    // TODO: 19.10.2022 Редактирование Данных
+
+                    // TODO: 18.10.2022 добавляем  Линию
+                    МетодДобаленияНовыхСтрокДанных(RowData_for_detalisaziy, tableLayoutРодительская);
+
+                }while (cursorДетализацияМатериала.moveToNext());
+                // TODO: 17.04.2023
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
