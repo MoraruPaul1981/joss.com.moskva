@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =             1045;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+     static final int VERSION =             1049;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
     private      SQLiteDatabase ССылкаНаСозданнуюБазу;
     private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
@@ -1080,18 +1080,16 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
     private void МетодСозданиеViewПолученныхМатериалов(SQLiteDatabase ССылкаНаСозданнуюБазу) {
         try{
             ССылкаНаСозданнуюБазу.execSQL("drop view  if exists view_taterials");//test
-            ССылкаНаСозданнуюБазу.execSQL("CREATE VIEW if not exists view_taterials AS SELECT         get_materials_data.id," +
-                    "  get_materials_data.type_material,  get_materials_data.nomen_vesov,  get_materials_data.count," +
-                    "  get_materials_data.date_update,  get_materials_data.uuid, \n" +
-                    "                          get_materials_data.user_update,  get_materials_data.cfo," +
-                    "  get_materials_data.current_table,  get_materials_data.status_send,  type_materials.name AS typematerial, \n" +
+            ССылкаНаСозданнуюБазу.execSQL("CREATE VIEW if not exists view_taterials AS    SELECT         get_materials_data.id,  get_materials_data.type_material," +
+                    "  get_materials_data.nomen_vesov,  get_materials_data.count,  get_materials_data.date_update,  get_materials_data.uuid, \n" +
+                    "                          get_materials_data.user_update,  get_materials_data.cfo,  get_materials_data.current_table, " +
+                    " get_materials_data.status_send,  type_materials.name AS typematerial, \n" +
                     "                          nomen_vesov.name AS nomenvesov,  cfo.name AS name_cfo , nomen_vesov.type_material AS filters   \n" +
                     "FROM             get_materials_data LEFT OUTER JOIN\n" +
-                    "                          type_materials ON  get_materials_data.type_material = " +
-                    " type_materials._id LEFT OUTER JOIN\n" +
-                    "                          nomen_vesov ON  get_materials_data.nomen_vesov =" +
-                    "  nomen_vesov._id AND  get_materials_data.nomen_vesov =  nomen_vesov._id LEFT OUTER JOIN\n" +
-                    "                          cfo ON  get_materials_data.cfo =  cfo._id" );
+                    "                          type_materials ON  get_materials_data.type_material =  type_materials._id LEFT OUTER JOIN\n" +
+                    "                          nomen_vesov ON  get_materials_data.nomen_vesov =  nomen_vesov._id" +
+                    " AND  get_materials_data.nomen_vesov =  nomen_vesov._id LEFT OUTER JOIN\n" +
+                    "                          cfo ON  get_materials_data.cfo =  cfo._id  WHERE        (  name_cfo IS NOT NULL)");
            Log.d(this.getClass().getName(), " сработала ...  создание view  view_taterials ");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1107,11 +1105,11 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         try{
             ССылкаНаСозданнуюБазу.execSQL("drop view  if exists view_taterials_group");//test
             ССылкаНаСозданнуюБазу.execSQL("CREATE VIEW if not exists view_taterials_group AS" +
-                    " SELECT        get_mater.nomen_vesov AS nomenvesov_zifra, get_mater.nomenvesov, SUM(get_mater.count) AS moneys," +
+                    "   SELECT        get_mater.nomen_vesov AS nomenvesov_zifra, get_mater.nomenvesov, SUM(get_mater.count) AS moneys," +
                     " COUNT(get_mater.nomen_vesov) AS kolichstvo, get_mater.cfo, get_mater.typematerial\n" +
                     "FROM             view_taterials AS get_mater LEFT OUTER JOIN\n" +
                     "                          nomen_vesov AS t_m ON get_mater.nomen_vesov = t_m._id\n" +
-                    "WHERE        (get_mater.status_send <> 'Удаленная')\n" +
+                    "WHERE        ( status_send <> 'Удаленная')\n" +
                     "GROUP BY t_m.name, get_mater.cfo, get_mater.nomenvesov, get_mater.nomen_vesov, get_mater.typematerial" );
             Log.d(this.getClass().getName(), " сработала ...  создание view  view_taterials_group ");
         } catch (SQLException e) {
@@ -1224,11 +1222,13 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             
 
             if (newVersion > oldVersion) {
-                if(newVersion ==            1045){
+                if(newVersion ==            1049){
                     //TODO table создание  УСТАНОВКА ВЫБОРОЧНАЯ ПО ТАБЛИЦАМ
                     //МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
                     //МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
-                    МетодСозданияСистемнойТаблицыСФО(ССылкаНаСозданнуюБазу);
+                   // МетодСозданияСистемнойТаблицыСФО(ССылкаНаСозданнуюБазу);
+                   // МетодСозданиеViewПолученныхМатериалов(ССылкаНаСозданнуюБазу);
+                    МетодСозданиеViewПолученныхМатериаловGroup(ССылкаНаСозданнуюБазу);
                     // TODO: 12.10.2022  создание Trigers
                     МетодСозданиеТрирераМодификаценКлиент(ССылкаНаСозданнуюБазу,ИменаТаблицыОтАндройда);
 

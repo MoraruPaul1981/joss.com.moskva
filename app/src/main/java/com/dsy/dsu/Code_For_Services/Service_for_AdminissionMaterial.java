@@ -616,7 +616,7 @@ public class Service_for_AdminissionMaterial extends IntentService {
                 Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabase/" + Таблица.trim() + "");
                 ContentResolver resolver = context.getContentResolver();
                 // TODO Курсор
-                data.putString("selection","user_update=? AND status_send!=?");
+                data.putString("selection","user_update=? AND status_send!=?  AND name_cfo IS NOT NULL ");
                 data.putStringArray("selectionArgs",new String[]{String.valueOf(ПубличныйIDДляФрагмента),"Удаленная"});
                 data.putString("groupby","name_cfo");
                // курсор = resolver.query(uri,new String[]{"*"},"user_update=? AND status_send!=?",new String[]{String.valueOf(ПубличныйIDДляФрагмента),"Удаленная"},"name_cfo");// TODO: 13.10.2022 ,"Удаленная"

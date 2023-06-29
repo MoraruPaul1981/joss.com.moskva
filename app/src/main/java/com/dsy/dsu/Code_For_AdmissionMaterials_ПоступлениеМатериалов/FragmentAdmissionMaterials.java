@@ -879,12 +879,12 @@ public class FragmentAdmissionMaterials extends Fragment {
 
 
     class MyRecycleViewAdapter extends RecyclerView.Adapter<MyViewHolder> {
-        private Cursor cursor;
-        public MyRecycleViewAdapter(@NotNull Cursor cursor) {
-            this.cursor = cursor;
-            if ( cursor!=null) {
-                if (cursor.getCount() > 0 ) {
-                    Log.i(this.getClass().getName(), " cursor  " + cursor.getCount());
+        private Cursor cursorНомерЦФО;
+        public MyRecycleViewAdapter(@NotNull Cursor cursorНомерЦФО) {
+            this.cursorНомерЦФО = cursorНомерЦФО;
+            if ( cursorНомерЦФО!=null) {
+                if (cursorНомерЦФО.getCount() > 0 ) {
+                    Log.i(this.getClass().getName(), " cursorНомерЦФО  " + cursorНомерЦФО.getCount());
                 }
             }
         }
@@ -893,14 +893,14 @@ public class FragmentAdmissionMaterials extends Fragment {
         public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position, @NonNull List<Object> payloads) {
             try {
                 ///todo ЩЕЛКАЕМ КАЖДУЮ СТРОЧКУ ОТДЕЛЬНО
-                    if (cursor!=null && cursor.getCount() > 0 && holder.tableLayoutМатериалРодительная!=null) {
-                        cursor.moveToPosition(position);
+                    if (cursorНомерЦФО!=null && cursorНомерЦФО.getCount() > 0  ) {
+                        cursorНомерЦФО.moveToPosition(position);
                         // TODO: 29.06.2023
-                        ТекущаяЦифраЦФО =        МетодВытаскиваемЦифраТекущийЦФО(cursor);
+                        ТекущаяЦифраЦФО =        МетодВытаскиваемЦифраТекущийЦФО(cursorНомерЦФО);
 
-                        ТекущаяИмяЦФО =             МетодВытаскиваемНазваниеТекущийЦФО(cursor);
+                        ТекущаяИмяЦФО =             МетодВытаскиваемНазваниеТекущийЦФО(cursorНомерЦФО);
                         Log.i(this.getClass().getName(), "   onBindViewHolder  position" + position +
-                                " cursor " + cursor  + " ТекущаяЦифраЦФО " +ТекущаяЦифраЦФО + " ТекущаяИмяЦФО " +ТекущаяИмяЦФО);
+                                " cursor " + cursorНомерЦФО  + " ТекущаяЦифраЦФО " +ТекущаяЦифраЦФО + " ТекущаяИмяЦФО " +ТекущаяИмяЦФО);
                     }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -975,17 +975,17 @@ public class FragmentAdmissionMaterials extends Fragment {
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View viewПолучениеМатериалов = null;
             try {
-                if(    cursor==null){
+                if(    cursorНомерЦФО==null){
                         viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov, parent, false);//todo old simple_for_takst_cardview1
                         Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов);
 
                 }else {
-                    if (cursor.getCount() > 0) {
+                    if (cursorНомерЦФО.getCount() > 0) {
                         viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_assionamaterial, parent, false);//todo old  simple_for_assionamaterial
-                        Log.i(this.getClass().getName(), "   viewПолучениеМатериалов" + viewПолучениеМатериалов+ "  sqLiteCursor.getCount()  " + cursor.getCount());
+                        Log.i(this.getClass().getName(), "   viewПолучениеМатериалов" + viewПолучениеМатериалов+ "  sqLiteCursor.getCount()  " + cursorНомерЦФО.getCount());
                     } else {
                         viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_isnull_dm_materials, parent, false);//todo old simple_for_takst_cardview1
-                        Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов+ "  sqLiteCursor.getCount()  " + cursor.getCount() );
+                        Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов+ "  cursorНомерЦФО.getCount()  " + cursorНомерЦФО.getCount() );
                     }
                 }
                 // TODO: 13.10.2022  добавляем новый компонент в Нащ RecycreView
@@ -1049,8 +1049,8 @@ public class FragmentAdmissionMaterials extends Fragment {
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             try {
                   if(holder.tableLayoutМатериалРодительная!=null &&        ТекущаяЦифраЦФО >0 && ТекущаяИмяЦФО!=null)  {
-                        МетодЗаполняемДаннымиПолучениеМАтериалов(holder, cursor);
-                        Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
+                        МетодЗаполняемДаннымиПолучениеМАтериалов(holder, cursorНомерЦФО);
+                        Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " cursorНомерЦФО " + cursorНомерЦФО.getCount());
                     } else {
                       Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                               " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1114,7 +1114,7 @@ public class FragmentAdmissionMaterials extends Fragment {
                      Integer ИндексМатериала=  cursorНомерМатериала.getColumnIndex("nomenvesov_zifra");
                      // Integer ИндексМатериала=  cursorНомерМатериала.getColumnIndex("nomen_vesov");
                         ТекущаяНомерМатериала=      cursorНомерМатериала.getInt(ИндексМатериала);
-                        Log.i(this.getClass().getName(), "  ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " cursorЦФО " + cursor
+                        Log.i(this.getClass().getName(), "  ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " cursorНомерЦФО " + cursorНомерЦФО
                                 + " ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " ТекущаяНомерМатериала " +ТекущаяНомерМатериала);
                         // TODO: 07.11.2022 И ЗАПУСКАМ ФИЛЬНАЙ ТРЕИЙ ЭТАП ПОЛУЧЕНИЕ СГРУПИРОВАННЫХ ДАННЫХ
                         МетодПолучениеДанныхДЛяПолучениеМатериалов("ПолучениеСгрупированныеСамиДанные", ТекущаяЦифраЦФО);
@@ -1345,17 +1345,17 @@ public class FragmentAdmissionMaterials extends Fragment {
         public int getItemCount() {
             int КоличесвоСтрок = 0;
             try {
-                if (cursor!=null) {
-                    if (cursor.getCount() > 0) {
-                        КоличесвоСтрок = cursor.getCount();
-                        Log.d(this.getClass().getName(), "sqLiteCursor.getCount()  " + cursor.getCount());
+                if (cursorНомерЦФО!=null) {
+                    if (cursorНомерЦФО.getCount() > 0) {
+                        КоличесвоСтрок = cursorНомерЦФО.getCount();
+                        Log.d(this.getClass().getName(), "cursorНомерЦФО.getCount()  " + cursorНомерЦФО.getCount());
                     } else {
                         КоличесвоСтрок = 1;
-                        Log.d(this.getClass().getName(), "sqLiteCursor.getCount()  " + cursor.getCount());
+                        Log.d(this.getClass().getName(), "cursorНомерЦФО.getCount()  " + cursorНомерЦФО.getCount());
                     }
                 }else {
                     КоличесвоСтрок = 1;
-                    Log.d(this.getClass().getName(), "sqLiteCursor.getCount()  " + cursor+"  binderДляПолучениеМатериалов "+ binderДляПолучениеМатериалов);
+                    Log.d(this.getClass().getName(), "cursorНомерЦФО.getCount()  " + cursorНомерЦФО+"  binderДляПолучениеМатериалов "+ binderДляПолучениеМатериалов);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
