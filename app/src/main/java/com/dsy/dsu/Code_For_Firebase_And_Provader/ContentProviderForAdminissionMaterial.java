@@ -12,6 +12,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.database.sqlite.SQLiteStatement;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CancellationSignal;
@@ -32,8 +33,10 @@ import com.dsy.dsu.Business_logic_Only_Class.SubClassCreatingMainAllTables;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import io.reactivex.rxjava3.core.Flowable;
@@ -261,46 +264,52 @@ public class ContentProviderForAdminissionMaterial extends ContentProvider {
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable Bundle queryArgs, @Nullable CancellationSignal cancellationSignal) {
         Cursor cursor=null;
        try{
-           asyncTaskLoader=new AsyncTaskLoader<Object>(getContext()) {
-               @Nullable
+           CompletableFuture<Cursor> completableFutureПолучениеМатериаолов=
+                   CompletableFuture.supplyAsync(new Supplier<Cursor>() {
                @Override
-               public Object loadInBackground() {
-                   Cursor cursor=null;
-        //   Create_Database_СамаБАзаSQLite=new CREATE_DATABASE(getContext()).getССылкаНаСозданнуюБазуORM();
-           if (!Create_Database_СамаБАзаSQLite.inTransaction()) {
-               Create_Database_СамаБАзаSQLite.beginTransaction();
-           }
-        Integer  ПубличныйIDДляФрагмента=queryArgs.getInt("ПубличныйIDДляФрагмента",0);
-        Integer  ТекущаяЦФО=queryArgs.getInt("ТекущаяЦФО",0);
-        Integer  ТекущаяНомерМатериала=queryArgs.getInt("ТекущаяНомерМатериала",0);
-        String  Таблица=queryArgs.getString("Таблица","");
-        String  ФлагКакиеДанныеНужныПолучениеМатериалов=queryArgs.getString("ФлагКакиеДанныеНужныПолучениеМатериалов","");
-           SQLiteQueryBuilder          SQLBuilder_Для_GRUD_Операций =new SQLiteQueryBuilder();
-           SQLBuilder_Для_GRUD_Операций.setTables(Таблица);
-           // TODO: 07.11.2022  данные курсор для групировки
-           switch (ФлагКакиеДанныеНужныПолучениеМатериалов.trim()) {
-               case "ПолучениеНомерМатериала":
-               cursor=     SQLBuilder_Для_GRUD_Операций.query(Create_Database_СамаБАзаSQLite,new String[]{"*"},
-                       null,null
-                       ,"nomenvesov_zifra, nomenvesov, moneys, kolichstvo, cfo", "cfo="+ТекущаяЦФО, null,null);
-               break;
-               case "ПолучениеСгрупированныеСамиДанные":
-                   cursor=     SQLBuilder_Для_GRUD_Операций.query(Create_Database_СамаБАзаSQLite,new String[]{"*"},
-                           null,null
-                           ,"nomenvesov_zifra, nomenvesov, moneys, kolichstvo, cfo", "cfo="+ТекущаяЦФО+" AND nomenvesov_zifra="+ТекущаяНомерМатериала , null,null);
-                   break;
-           }
-
-           Log.w(getContext().getClass().getName(), " Полученый для Получение Материалов cursor  " + cursor);/////
-           if (Create_Database_СамаБАзаSQLite.inTransaction()) {
-               Create_Database_СамаБАзаSQLite.endTransaction();
-           }
-           commitContentChanged();
-                   return cursor;
+               public Cursor get() {
+                   if (!Create_Database_СамаБАзаSQLite.inTransaction()) {
+                       Create_Database_СамаБАзаSQLite.beginTransaction();
+                   }
+                   Cursor cursorins = null;
+                   Integer  ПубличныйIDДляФрагмента=queryArgs.getInt("ПубличныйIDДляФрагмента",0);
+                   Integer  ТекущаяЦифраЦФО=queryArgs.getInt("ТекущаяЦифраЦФО",0);
+                   Integer  ТекущаяНомерМатериала=queryArgs.getInt("ТекущаяНомерМатериала",0);
+                   String  Таблица=queryArgs.getString("Таблица","");
+                   String  ФлагКакиеДанныеНужныПолучениеМатериалов=queryArgs.getString("ФлагКакиеДанныеНужныПолучениеМатериалов","");
+                   SQLiteQueryBuilder          SQLBuilder_Для_GRUD_Операций =new SQLiteQueryBuilder();
+                   SQLBuilder_Для_GRUD_Операций.setTables(Таблица);
+                   // TODO: 07.11.2022  данные курсор для групировки
+                   switch (ФлагКакиеДанныеНужныПолучениеМатериалов.trim()) {
+                       case "ПолучениеНомерМатериала":
+                           cursorins=     SQLBuilder_Для_GRUD_Операций.query(Create_Database_СамаБАзаSQLite,new String[]{"*"},
+                                   null,null
+                                   ,"nomenvesov_zifra, nomenvesov, moneys, kolichstvo, cfo", "cfo="+ТекущаяЦифраЦФО, null,null);
+                           break;
+                       case "ПолучениеСгрупированныеСамиДанные":
+                           cursorins=     SQLBuilder_Для_GRUD_Операций.query(Create_Database_СамаБАзаSQLite,new String[]{"*"},
+                                   null,null
+                                   ,"nomenvesov_zifra, nomenvesov, moneys, kolichstvo, cfo", "cfo="+ТекущаяЦифраЦФО+" AND nomenvesov_zifra="+ТекущаяНомерМатериала , null,null);
+                           break;
+                   }
+                   Log.w(getContext().getClass().getName(), " Полученый для Получение Материалов cursor  " + cursorins);/////
+                   if (Create_Database_СамаБАзаSQLite.inTransaction()) {
+                       Create_Database_СамаБАзаSQLite.endTransaction();
+                   }
+                   return cursorins;
                }
-           };
-           asyncTaskLoader.startLoading();
-           cursor= (Cursor) asyncTaskLoader.loadInBackground();
+           }).exceptionally(throwable -> {
+                       throwable.printStackTrace();
+                       Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                               + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                       new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(throwable.toString(),
+                               this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                               Thread.currentThread().getStackTrace()[2].getLineNumber());
+               return  null;
+                   });
+
+           cursor=(Cursor)   completableFutureПолучениеМатериаолов.get();
+
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

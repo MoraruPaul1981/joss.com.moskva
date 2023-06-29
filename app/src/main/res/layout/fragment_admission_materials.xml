@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|center_vertical"
         android:background="#FFFFFF">
+
         <TextView
             android:id="@+id/TextView"
             android:layout_width="match_parent"
@@ -25,6 +26,7 @@
             android:minWidth="100dp"
             android:minHeight="35dp"
             android:text=""
+            android:hint="получение материалов"
             android:textAlignment="center"
             android:textColor="#00574B"
             android:textSize="14sp"

@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
-    android:background="#F5FFFA"
+    android:background="#FFFFFF"
     tools:context=".Code_For_AdmissionMaterials_ПоступлениеМатериалов.MainActivity_AdmissionMaterials">
 
 
@@ -15,7 +15,7 @@
         android:id="@+id/scrollviewmaterial"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#F5FFFA"
+        android:background="#FFFFFF"
         android:fillViewport="true"
         android:scrollbars="horizontal|vertical"
         android:stackFromBottom="true"
@@ -34,15 +34,16 @@
         android:layout_height="match_parent"
         android:minHeight="80dp"
         android:layout_margin="5dp"
+        android:padding="2dp"
         android:checkable="true"
         android:clickable="false"
         android:singleLine="false"
         android:focusable="true"
         android:textSize="10sp"
-        app:cardCornerRadius="10dp"
+        app:cardCornerRadius="2dp"
         app:cardElevation="5dp"
-        app:strokeColor="#F5FFFA"
-        android:translationZ="50dp"
+        android:background="#FFFFFF"
+        android:translationZ="10dp"
         android:animateLayoutChanges="true">
             <TableLayout
                 android:id="@+id/TableLayoutAdmissionLayoutInflater"
@@ -52,8 +53,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
-                app:cardBackgroundColor= "#AEBABA"
-                android:backgroundTint= "#AEBABA"
+                app:cardBackgroundColor= "#FFFFFF"
+                android:backgroundTint= "#FFFFFF"
                 android:layout_margin="1dp">
            <!--     тут код будет присоединет через Инфлайт-->
             </TableLayout>

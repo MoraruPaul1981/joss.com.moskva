@@ -35,7 +35,6 @@ public class SubClassCreatingMainAllTables {
             ИменаТаблицыОтАндройда.add("view_onesignal");
             ИменаТаблицыОтАндройда.add("data_notification");
             ИменаТаблицыОтАндройда.add("nomen_vesov");
-            ИменаТаблицыОтАндройда.add("type_materials");
             ИменаТаблицыОтАндройда.add("get_materials_data");
             ИменаТаблицыОтАндройда.add("company");
             ИменаТаблицыОтАндройда.add("track");

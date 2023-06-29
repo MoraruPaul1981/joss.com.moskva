@@ -272,10 +272,10 @@ public class FragmentAdmissionMaterials extends Fragment {
     private void МетодИнициализацииRecycreView() {
         try{
             Log.d(this.getClass().getName(), " recyclerView  "+recyclerView);
-            DividerItemDecoration dividerItemDecorationVer=
+            /*DividerItemDecoration dividerItemDecorationVer=
                     new DividerItemDecoration(getContext(),LinearLayoutManager.VERTICAL);
             /// dividerItemDecorationVer.setDrawable(getContext().getDrawable(R.drawable.divider_for_order_transport1));///R.dimen.activity_horizontal_margin
-            recyclerView.addItemDecoration(dividerItemDecorationVer);
+            recyclerView.addItemDecoration(dividerItemDecorationVer);*/
 
             DividerItemDecoration dividerItemDecorationHor=
                     new DividerItemDecoration(getActivity(), LinearLayoutManager.HORIZONTAL);
@@ -1077,7 +1077,7 @@ public class FragmentAdmissionMaterials extends Fragment {
         private void МетодЗаполняемДаннымиПолучениеМАтериалов(@NonNull MyViewHolder holder, @NonNull Cursor cursor) {
             try {
                     // TODO: 18.10.2022 заполеняем данныими
-                    МетодДобавленеиЕлементоввRecycreView(holder.tableLayoutМатериалРодительная);
+                    МетодДобавленеиЕлементоввRecycreView(holder.tableLayoutМатериалРодительная,holder);
 
                     МетодПерегрузкаRecyceView();
                 // TODO: 17.04.2023
@@ -1097,7 +1097,7 @@ public class FragmentAdmissionMaterials extends Fragment {
         }
 
 
-        private void МетодДобавленеиЕлементоввRecycreView(@NonNull TableLayout tableLayoutРодительская) {
+        private void МетодДобавленеиЕлементоввRecycreView(@NonNull TableLayout tableLayoutРодительская,@NonNull MyViewHolder holder) {
             try {
                 // TODO: 07.11.2022   ВТОРОЙ ЭТАП ПОЛУЧАЕМ НОМЕР ЦФО
                     МетодПолучениеДанныхДЛяПолучениеМатериалов("ПолучениеНомерМатериала", ТекущаяЦифраЦФО);
@@ -1111,21 +1111,24 @@ public class FragmentAdmissionMaterials extends Fragment {
                 if (cursorНомерМатериала.getCount()>0) {
                     do{
                         // TODO: 07.11.2022  ТРЕТИЙ ЭТАП ПОЛУЧАЕМ  НОМЕР ДОКУМЕНТА
-                     Integer ИндексМатериала=  cursorНомерМатериала.getColumnIndex("nomenvesov_zifra");
-                     // Integer ИндексМатериала=  cursorНомерМатериала.getColumnIndex("nomen_vesov");
+                         Integer ИндексМатериала=  cursorНомерМатериала.getColumnIndex("nomenvesov_zifra");
                         ТекущаяНомерМатериала=      cursorНомерМатериала.getInt(ИндексМатериала);
-                        Log.i(this.getClass().getName(), "  ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " cursorНомерЦФО " + cursorНомерЦФО
-                                + " ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " ТекущаяНомерМатериала " +ТекущаяНомерМатериала);
-                        // TODO: 07.11.2022 И ЗАПУСКАМ ФИЛЬНАЙ ТРЕИЙ ЭТАП ПОЛУЧЕНИЕ СГРУПИРОВАННЫХ ДАННЫХ
+
                         МетодПолучениеДанныхДЛяПолучениеМатериалов("ПолучениеСгрупированныеСамиДанные", ТекущаяЦифраЦФО);
-                        Log.i(this.getClass().getName(), "  ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " cursorСамиДанныеGroupBy " + cursorСамиДанныеGroupBy
-                                + " ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " ТекущаяНомерМатериала " +ТекущаяНомерМатериала);
-                        // TODO: 18.10.2022 Добавяем Сами Данные Получение материалов
+
+
                         МетодДанныеПолучениеМатериалов(tableLayoutРодительская,cursorСамиДанныеGroupBy);
-                        // TODO: 09.12.2022 делалем дополнительно движение
+
+                        // TODO: 17.04.2023
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                "  ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " cursorНомерЦФО " + cursorНомерЦФО
+                                + " ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " ТекущаяНомерМатериала " +ТекущаяНомерМатериала);
+
                     }while (cursorНомерМатериала.moveToNext());
                 }
-
+                cursorНомерМатериала.close();
                 // TODO: 17.04.2023
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
