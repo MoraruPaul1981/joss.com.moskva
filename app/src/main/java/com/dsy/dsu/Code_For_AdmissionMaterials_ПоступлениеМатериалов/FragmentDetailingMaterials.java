@@ -52,6 +52,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.util.concurrent.AtomicDouble;
 
 
 import org.jetbrains.annotations.NotNull;
@@ -1067,10 +1068,10 @@ public class FragmentDetailingMaterials extends Fragment {
                 if (tableLayoutРодительская!=null) {
 
                     МетодДанныеМатериалДетализация(tableLayoutРодительская,cursorДетализацияМатериала);
-                    // TODO: 18.10.2022 дял линии
+                  /*  // TODO: 18.10.2022 дял линии
                     МетодДанныеЛинияДетализации(tableLayoutРодительская);
                     // TODO: 18.10.2022 Добавяем Названием Столбиков
-                    МетодДанныеНазваниеСтолбиковДетализация(tableLayoutРодительская);
+                    МетодДанныеНазваниеСтолбиковДетализация(tableLayoutРодительская);*/
                 }
 
        /*         if (cursorДетализацияМатериала.getCount()>0) {
@@ -1270,27 +1271,18 @@ public class FragmentDetailingMaterials extends Fragment {
 
         private void МетодДанныеМатериалДетализация(@NonNull TableLayout tableLayoutРодительская, @NonNull Cursor cursorДетализацияМатериала) {
             try{
-
-
                 do{
-
-
                 TableLayout  tableLayoutДеталицация= (TableLayout) LayoutInflater.from(getContext())
                         .inflate(R.layout.simple_for_assionamaterial_detelizaziy_row,null);//todo old  simple_for_assionamaterial
                 TableRow RowData_for_detalisaziy = (TableRow)   tableLayoutДеталицация.findViewById(R.id.tableData_for_detalisaziy);
-
-
+                    // TODO: 29.06.2023  удаление данных из PARENT
                     tableLayoutДеталицация.recomputeViewAttributes(RowData_for_detalisaziy);
                     tableLayoutДеталицация.removeViewInLayout(RowData_for_detalisaziy);
                     tableLayoutДеталицация.removeView(RowData_for_detalisaziy);
                     RowData_for_detalisaziy.setId(new Random().nextInt());
 
-
-
-
-
                 // TODO: 29.06.2023 тим Детализации
-                TextView textview_det_type=  RowData_for_detalisaziy.findViewById(R.id.textview_det_type);
+                TextView textview_det_type=  RowData_for_detalisaziy.findViewById(R.id.textview_data_det_type);
                 // TODO: 10.11.2022  данные для название ЦФО
                 String типДеталиазции= Optional.ofNullable(cursorДетализацияМатериала.getString(cursorДетализацияМатериала.
                         getColumnIndex("typematerial"))).orElse("");
@@ -1302,29 +1294,21 @@ public class FragmentDetailingMaterials extends Fragment {
 
 
 
-           /*     // TODO: 29.06.2023 Материалоа Детализации
-                TextView textview_det_material=  RowData_for_detalisaziy.findViewById(R.id.textview_det_material);
+                // TODO: 29.06.2023 Материалоа Детализации
+                TextView textview_det_material=  RowData_for_detalisaziy.findViewById(R.id.textview_data_det_material);
                 // TODO: 10.11.2022  данные для название ЦФО
                 String nomenvesovДетадизации= Optional.ofNullable(cursorДетализацияМатериала.getString(cursorДетализацияМатериала.
                         getColumnIndex("nomenvesov"))).orElse("");
                 textview_det_material.setText(nomenvesovДетадизации.trim());
-                tableLayoutДеталицация.recomputeViewAttributes(RowData_for_detalisaziy);
-                tableLayoutДеталицация.removeViewInLayout(RowData_for_detalisaziy);
-                tableLayoutДеталицация.removeView(RowData_for_detalisaziy);
-                textview_det_material.setId(new Random().nextInt());
+
 
 
                 // TODO: 29.06.2023 Материалоа Детализации
-                TextView textview_det_kilichestvo=  RowData_for_detalisaziy.findViewById(R.id.textview_det_kilichestvo);
+                TextView textview_det_kilichestvo=  RowData_for_detalisaziy.findViewById(R.id.textview_data_det_kilichestvo);
                 // TODO: 10.11.2022  данные для название ЦФО
                 Integer КоличествоДетадизации= Optional.ofNullable(cursorДетализацияМатериала.getInt(cursorДетализацияМатериала.
                         getColumnIndex("count"))).orElse(0);
                 textview_det_kilichestvo.setText(КоличествоДетадизации.toString() );
-                tableLayoutДеталицация.recomputeViewAttributes(textview_det_kilichestvo);
-                tableLayoutДеталицация.removeViewInLayout(RowData_for_detalisaziy);
-                tableLayoutДеталицация.removeView(RowData_for_detalisaziy);
-                textview_det_kilichestvo.setId(new Random().nextInt());
-*/
 
 
 
@@ -1334,19 +1318,20 @@ public class FragmentDetailingMaterials extends Fragment {
 
 
 
-                    String Время= Optional.ofNullable(cursorДетализацияМатериала.getString(cursorДетализацияМатериала.
-                            getColumnIndex("date_update"))).orElse("");
-                    Время=     new Class_Generation_Data_AssinaMaterial(getContext(),Время).ГлавнаяДатаИВремяОперацийСБазойДанных();
 
+
+/*
 
                     Long UUIDВыбраныйМатериал= Optional.ofNullable(cursorДетализацияМатериала.getLong(cursorДетализацияМатериала.
                             getColumnIndex("uuid"))).orElse(0l);
                     // TODO: 10.11.2022
                     Bundle bundleДанныеДляСтрочки=new Bundle();
                     bundleДанныеДляСтрочки.putLong("UUIDВыбраныйМатериал",UUIDВыбраныйМатериал);
-                /*    bundleДанныеДляСтрочки.putString("Материал",nomenvesovДетадизации);
-                    bundleДанныеДляСтрочки.putFloat("Деньги",КоличествоДетадизации);*/
+                    bundleДанныеДляСтрочки.putString("Материал",nomenvesovДетадизации);
+                    bundleДанныеДляСтрочки.putFloat("Деньги",КоличествоДетадизации);
+                    bundleДанныеДляСтрочки.putFloat("Деньги",КоличествоДетадизации);
                     RowData_for_detalisaziy.setTag(bundleДанныеДляСтрочки);
+*/
 
 
 
@@ -1388,6 +1373,10 @@ public class FragmentDetailingMaterials extends Fragment {
                     tableLayoutРодительская.refreshDrawableState();
                     tableLayoutРодительская.forceLayout();
                 }
+                // TODO: 17.04.2023
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),

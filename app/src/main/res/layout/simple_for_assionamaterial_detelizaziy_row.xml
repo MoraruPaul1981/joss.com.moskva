@@ -169,7 +169,7 @@
         android:layout_height="wrap_content"
         android:minHeight="40dp">
         <TextView
-            android:id="@+id/textview_det_type"
+            android:id="@+id/textview_data_det_type"
             android:layout_column="0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -189,7 +189,7 @@
             android:visibility="visible" />
 
         <TextView
-            android:id="@+id/textview_det_material"
+            android:id="@+id/textview_data_det_material"
             android:layout_column="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -207,7 +207,7 @@
             android:lines="2"
             android:visibility="visible" />
         <TextView
-            android:id="@+id/textview_det_kilichestvo"
+            android:id="@+id/textview_data_det_kilichestvo"
             android:layout_column="2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
