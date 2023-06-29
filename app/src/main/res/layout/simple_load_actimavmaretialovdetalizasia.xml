@@ -34,7 +34,7 @@
         <RelativeLayout
             android:id="@+id/relativelayoutcardviewmatirealtask"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:paddingBottom="2dp"
             android:paddingTop="2dp"
             android:paddingLeft="2dp"

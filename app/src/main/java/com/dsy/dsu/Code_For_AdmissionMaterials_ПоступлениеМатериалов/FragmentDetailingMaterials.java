@@ -35,6 +35,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.loader.content.AsyncTaskLoader;
 import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.WorkInfo;
@@ -311,7 +312,11 @@ public class FragmentDetailingMaterials extends Fragment {
     private void МетодИнициализацииRecycreView() {
         try{
             Log.d(this.getClass().getName(), " recyclerView  "+recyclerView);
-            recyclerView.setVisibility(View.VISIBLE);
+
+            DividerItemDecoration dividerItemDecorationHor=
+                    new DividerItemDecoration(getActivity(), LinearLayoutManager.HORIZONTAL);
+            /*            dividerItemDecorationHor.setDrawable(getContext().getDrawable(R.drawable.divider_for_order_transport1));///R.dimen.activity_horizontal_margin*/
+            recyclerView.addItemDecoration(dividerItemDecorationHor);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
             linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(linearLayoutManager);
@@ -882,8 +887,8 @@ public class FragmentDetailingMaterials extends Fragment {
 
     // TODO: 28.02.2022 начало  MyViewHolderДляЧата
     protected class MyViewHolder extends RecyclerView.ViewHolder {
-        private TableLayout tableLayoutМатериалРодительная;
-        private MaterialCardView cardViewМатериалРодительная;
+        private TableLayout tableLayout_material_detalizaziy;
+        private MaterialCardView materialcardView_for_detalizaziy;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             try {
@@ -902,9 +907,10 @@ public class FragmentDetailingMaterials extends Fragment {
         private void МетодИнициализацииКомпонетовЗаданияCardView(@NonNull View itemView) {
             try {
                 Log.d(this.getClass().getName(), " отработоатл new SubClassBuccessLogin_ГлавныйКлассБизнесЛогикиФрагмент1 itemView   " + itemView);
-                tableLayoutМатериалРодительная = itemView.findViewById(R.id.TableLayoutAdmissionLayoutInflater);
-                cardViewМатериалРодительная = itemView.findViewById(R.id.CardviewassibAmaterial);
-                Log.d(this.getClass().getName(), " cardViewМатериал   " + cardViewМатериалРодительная);
+                tableLayout_material_detalizaziy = itemView.findViewById(R.id.tableLayout_material_detalizaziy);
+                // TODO: 29.06.2023
+                materialcardView_for_detalizaziy = itemView.findViewById(R.id.materialcardView_for_detalizaziy);
+                Log.d(this.getClass().getName(), " cardViewМатериал   " + materialcardView_for_detalizaziy);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1006,12 +1012,12 @@ public class FragmentDetailingMaterials extends Fragment {
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View viewПолучениеМатериалов = null;
             try {
-                if(asyncTaskLoaderДетализация.isStarted()){
+                if(cursorДетализацияМатериала==null){
                     viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialovdetalizasia, parent, false);//todo old simple_for_takst_cardview1
                     Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов);
                 }else {
                     if (cursorДетализацияМатериала.getCount() > 0) {
-                        viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_assionamaterial, parent, false);//todo old  simple_for_assionamaterial
+                        viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_assionamaterial_detalizay, parent, false);//todo old  simple_for_assionamaterial
                         Log.i(this.getClass().getName(), "   viewПолучениеМатериалов" + viewПолучениеМатериалов+ "  cursorДетализацияМатериала.getCount()  " + cursorДетализацияМатериала.getCount());
                     } else {
                         viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_isnull_actimavmaretisldetalizasia, parent, false);//todo old simple_for_takst_cardview1
@@ -1036,7 +1042,7 @@ public class FragmentDetailingMaterials extends Fragment {
 
         private void МетодАнимации(MyViewHolder holder) {
             try {
-            //    holder.cardViewМатериалРодительная.startAnimation(animation);
+            //    holder.materialcardView_for_detalizaziy.startAnimation(animation);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1051,7 +1057,7 @@ public class FragmentDetailingMaterials extends Fragment {
         private void МетодЗаполняемДаннымиПолучениеМАтериалов(@NonNull MyViewHolder holder, @NonNull Cursor cursor) {
             try {
                     // TODO: 18.10.2022 заполеняем данныими
-                    МетодДобавленеиЕлементоввRecycreView(holder.tableLayoutМатериалРодительная);
+                    МетодДобавленеиЕлементоввRecycreView(holder.tableLayout_material_detalizaziy);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1108,8 +1114,7 @@ public class FragmentDetailingMaterials extends Fragment {
         private void МетодДанныеПолучениеМатериалов(@NonNull TableLayout tableLayoutРодительская , @NonNull Cursor cursorНомерМатериалаДетализация,@NonNull Integer ПозицияВнутриСТрочки) {
             // TODO: 18.10.2022  ДАННЫЕ
             try {
-                TableLayout tableLayoutДочернная=new TableLayout(getContext());
-                            МетодВнутриСпинера(tableLayoutДочернная,tableLayoutРодительская,cursorНомерМатериалаДетализация,ПозицияВнутриСТрочки);
+                            МетодВнутриСпинера( tableLayoutРодительская,cursorНомерМатериалаДетализация,ПозицияВнутриСТрочки);
                 // TODO: 06.11.2022 данные цикл
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1121,12 +1126,12 @@ public class FragmentDetailingMaterials extends Fragment {
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
-        private void МетодВнутриСпинера(@NonNull TableLayout tableLayout ,@NonNull TableLayout tableLayoutРодительская, @NonNull Cursor cursorНомерМатериалаДетализация
+        private void МетодВнутриСпинера( @NonNull TableLayout tableLayoutРодительская, @NonNull Cursor cursorНомерМатериалаДетализация
         , @NonNull Integer ПозицияВнутриСТрочки) {
             try{
                 Log.d(this.getClass().getName(), "  выходим из задания МетодКпопкаВозвращениеНазадИзСогласованиии"
                         + " cursorНомерМатериалаДетализация " +cursorНомерМатериалаДетализация);
-                tableLayout= (TableLayout) LayoutInflater.from(getContext()).inflate(R.layout.simple_for_assionamaterial_detelizaziy_row,null);//todo old  simple_for_assionamaterial
+                TableLayout   tableLayout= (TableLayout) LayoutInflater.from(getContext()).inflate(R.layout.simple_for_assionamaterial_detelizaziy_row,null);//todo old  simple_for_assionamaterial
                // tableLayout.setAnimation(animation);
                 TableRow rowПервыеДанные = (TableRow)   tableLayout.findViewById(R.id.TableData);
                 TextView textView=  rowПервыеДанные.findViewById(R.id.textview1);
@@ -1299,7 +1304,8 @@ public class FragmentDetailingMaterials extends Fragment {
 
         private void МетодДанныеНазваниеСтолбиков(@NonNull TableLayout tableLayoutРодительская) {
             try {
-                TableLayout  tableLayoutНазваниеСтобликов= (TableLayout) LayoutInflater.from(getContext()).inflate(R.layout.simple_for_assionamaterial_detelizaziy_row,null);
+                TableLayout  tableLayoutНазваниеСтобликов= (TableLayout)
+                        LayoutInflater.from(getContext()).inflate(R.layout.simple_for_assionamaterial_detelizaziy_row,null);
                 TableRow rowПервыеНазваниеСтобликов = (TableRow)   tableLayoutНазваниеСтобликов.findViewById(R.id.TableHendlers);
                 tableLayoutНазваниеСтобликов.recomputeViewAttributes(rowПервыеНазваниеСтобликов);
                 tableLayoutНазваниеСтобликов.removeViewInLayout(rowПервыеНазваниеСтобликов);

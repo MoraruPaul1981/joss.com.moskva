@@ -9,16 +9,12 @@
     android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
     android:background="#FFFFFF"
     tools:context=".Code_For_AdmissionMaterials_ПоступлениеМатериалов.MainActivity_AdmissionMaterials">
-
-
-
-
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/CardviewassibAmaterial"
+        android:id="@+id/materialcardView_for_detalizaziy"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:minHeight="80dp"
-        android:layout_margin="5dp"
+        android:layout_margin="2dp"
         android:padding="2dp"
         android:checkable="true"
         android:clickable="false"
@@ -31,19 +27,17 @@
         android:translationZ="10dp"
         android:animateLayoutChanges="true">
             <TableLayout
-                android:id="@+id/TableLayoutAdmissionLayoutInflater"
+                android:id="@+id/tableLayout_material_detalizaziy"
                 android:stretchColumns="*"
                 android:shrinkColumns="*"
+                android:minHeight="80dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="80dp"
                 android:gravity="center_horizontal"
                 android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
                 app:cardBackgroundColor= "#FFFFFF"
                 android:backgroundTint= "#FFFFFF"
                 android:layout_margin="1dp">
-           <!--     тут код будет присоединет через Инфлайт-->
             </TableLayout>
     </com.google.android.material.card.MaterialCardView>
-
 </LinearLayout>
