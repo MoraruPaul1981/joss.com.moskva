@@ -1141,18 +1141,21 @@ public class FragmentAdmissionMaterials extends Fragment {
         private void МетодДобавленеиЕлементоввRecycreView(@NonNull TableLayout tableLayoutРодительская) {
             try {
                 // TODO: 07.11.2022   ВТОРОЙ ЭТАП ПОЛУЧАЕМ НОМЕР ЦФО
-                if (binderДляПолучениеМатериалов!=null && cursor!=null && ТекущаяЦифраЦФО >0) {
+                if (  ТекущаяЦифраЦФО >0 && ТекущаяЦифраЦФО!=null) {
                     // TODO: 03.11.2022 Второй Запрос Получем САМО Цифра Полученого Материла
                     МетодПолучениеДанныхДЛяПолучениеМатериалов("ПолучениеНомерМатериала", ТекущаяЦифраЦФО);
-                }
-                Log.i(this.getClass().getName(), "  ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " cursorЦФО " + cursorНомерМатериала + " ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО);
-
                 // TODO: 18.10.2022 название ЦФО
                 МетодДанныеНазваниеЦФО(tableLayoutРодительская);
                 // TODO: 18.10.2022 дял линии
                 МетодДанныеЛиния(tableLayoutРодительская);
                 // TODO: 18.10.2022 Добавяем Названием Столбиков
                 МетодДанныеНазваниеСтолбиков(tableLayoutРодительская);
+                    // TODO: 17.04.2023
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + " ТекущаяЦифраЦФО " +ТекущаяЦифраЦФО+
+                             "  cursorНомерМатериала " +cursorНомерМатериала);
+
                 // TODO: 07.11.2022 сами данные
                         do{
                             // TODO: 07.11.2022  ТРЕТИЙ ЭТАП ПОЛУЧАЕМ  НОМЕР ДОКУМЕНТА
@@ -1169,6 +1172,17 @@ public class FragmentAdmissionMaterials extends Fragment {
                             МетодДанныеПолучениеМатериалов(tableLayoutРодительская,cursorСамиДанныеGroupBy);
                             // TODO: 09.12.2022 делалем дополнительно движение
                         }while (cursorНомерМатериала.moveToNext());
+
+                }else {
+                    // TODO: 17.04.2023
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + " ТекущаяЦифраЦФО " +ТекущаяЦифраЦФО);
+                }
+                // TODO: 17.04.2023
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
