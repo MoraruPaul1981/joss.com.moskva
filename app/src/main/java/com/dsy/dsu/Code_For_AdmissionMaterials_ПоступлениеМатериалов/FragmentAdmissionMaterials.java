@@ -30,7 +30,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowInsets;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
@@ -183,12 +182,14 @@ public class FragmentAdmissionMaterials extends Fragment {
     public void onStart() {
         super.onStart();
         try{
-            МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
-            if (cursorНомерЦФО!=null) {
+              МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
                 МетодСлушательRecycleView();//todo создаем слушатель для recycreview для получение материалов
                 МетодСлушательКурсора();
-                МетодКпопкиЗначков(cursorНомерЦФО);
-            }
+                МетодКпопкиЗначков();
+            // TODO: 17.04.2023
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -252,6 +253,10 @@ public class FragmentAdmissionMaterials extends Fragment {
             recyclerView.refreshDrawableState();
             linearLayou.requestLayout();
             linearLayou.refreshDrawableState();
+            // TODO: 17.04.2023
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -454,24 +459,21 @@ public class FragmentAdmissionMaterials extends Fragment {
             v.animate().rotationX(0);
         },300);
     }
-    private void МетодКпопкиЗначков(@NonNull Cursor cursor)
-          {
+    private void МетодКпопкиЗначков( ) {
         try {
-            if (cursor!=null) {
-                if (cursor.getCount()> 0) {
-                    Log.d(this.getClass().getName(), "  cursor" + cursor.getCount());
-                    bottomNavigationView.getOrCreateBadge(R.id.id_async).setNumber( cursor.getCount());//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
+                if (   cursorНомерЦФО!=null  && cursorНомерЦФО.getCount()> 0 ) {
+                    Log.d(this.getClass().getName(), "  cursorНомерЦФО" + cursorНомерЦФО.getCount());
+                    bottomNavigationView.getOrCreateBadge(R.id.id_async).setNumber( cursorНомерЦФО.getCount());//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
                     bottomNavigationView.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.parseColor("#15958A"));
                 } else {
                     bottomNavigationView.getOrCreateBadge(R.id.id_async).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
                     bottomNavigationView.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.RED);
                 }
-            }else
-            {
-                bottomNavigationView.getOrCreateBadge(R.id.id_async).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
-                bottomNavigationView.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.RED);
-            }
             //TODO
+            // TODO: 17.04.2023
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -616,68 +618,6 @@ public class FragmentAdmissionMaterials extends Fragment {
                         }
                     }
                 });
-                recyclerView.setRecyclerListener(new RecyclerView.RecyclerListener() {
-                    @Override
-                    public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
-                        Log.d(this.getClass().getName(), "     holder "+holder);
-                        //   ContentProviderOperation.Builder builder = null;
-                    }
-                });
-                // TODO: 15.10.2022  дополнительные слушатели
-
-                recyclerView.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
-                    @Override
-                    public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
-                        Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
-                        return null;
-                    }
-                });
-                // TODO: 17.10.2022 метод внешний вид нижних строчек
-                recyclerView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
-                    @Override
-                    public void onChildViewAttachedToWindow(@NonNull View view) {
-                        Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
-                        try {
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(getContext().getClass().getName(),
-                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    }
-                    @Override
-                    public void onChildViewDetachedFromWindow(@NonNull View view) {
-                        Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
-                        try {
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(getContext().getClass().getName(),
-                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    }
-                });
-
-                recyclerView.setRecyclerListener(new RecyclerView.RecyclerListener() {
-                    @Override
-                    public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
-                        Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
-                    }
-                });
-                recyclerView.setOnFlingListener(new RecyclerView.OnFlingListener() {
-                    @Override
-                    public boolean onFling(int velocityX, int velocityY) {
-                        Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
-                        return false;
-                    }
-                });
             //TODO
         } catch (Exception e) {
             e.printStackTrace();
@@ -725,13 +665,13 @@ public class FragmentAdmissionMaterials extends Fragment {
                                                0l);
                                long end = Calendar.getInstance().getTimeInMillis();
                                long РазницаВоврмени=end-startДляОбноразвовной;
-                               if (РазницаВоврмени>5000) {
+                            /*   if (РазницаВоврмени>5000) {
                                    if (CallBaskОтWorkManagerОдноразового>0) {
                                        onStart();
                                        onResume();
                                        // TODO: 21.11.2022  запускаем удаление
                                    }
-                               }
+                               }*/
                                     }
                                     progressBarСканирование.setVisibility(View.INVISIBLE);
                                 } catch (Exception e) {
@@ -756,10 +696,10 @@ public class FragmentAdmissionMaterials extends Fragment {
                                         Long РелультатОбщеегоWorkMAnger =
                                                 СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getLong("WorkManangerVipolil", 0l);
                                         long РазницаВоврмени=end-start;
-                                        if (РазницаВоврмени>6000) {
+                                      /*  if (РазницаВоврмени>6000) {
                                             onStart();
                                             onResume();
-                                        }
+                                        }*/
                                     }
                                        // WorkManager.getInstance(getContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая).getResult();
                                     progressBarСканирование.setVisibility(View.INVISIBLE);
@@ -936,6 +876,8 @@ public class FragmentAdmissionMaterials extends Fragment {
         }
     }
 
+
+
     class MyRecycleViewAdapter extends RecyclerView.Adapter<MyViewHolder> {
         private Cursor cursor;
         public MyRecycleViewAdapter(@NotNull Cursor cursor) {
@@ -951,14 +893,15 @@ public class FragmentAdmissionMaterials extends Fragment {
         public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position, @NonNull List<Object> payloads) {
             try {
                 ///todo ЩЕЛКАЕМ КАЖДУЮ СТРОЧКУ ОТДЕЛЬНО
-                if (cursor!=null) {
-                    if (cursor.getCount() > 0) {
+                    if (cursor!=null && cursor.getCount() > 0 && holder.tableLayoutМатериалРодительная!=null) {
                         cursor.moveToPosition(position);
-                        ТекущаяЦифраЦФО =        МетодВытаскиваемТекущийЦФО(cursor);    // TODO: 17.10.2022  метод который вытаскиваем Текущее Значение ЦФО для получение дальнейших данных
-                        //  ХэшДааныеСтрока = (ConcurrentSkipListMap<String, String>) ArrayListДанныеОтСканироваиниеДивайсов.get(position);
-                        Log.i(this.getClass().getName(), "   onBindViewHolder  position" + position + " cursor " + cursor);
+                        // TODO: 29.06.2023
+                        ТекущаяЦифраЦФО =        МетодВытаскиваемЦифраТекущийЦФО(cursor);
+
+                        ТекущаяИмяЦФО =             МетодВытаскиваемНазваниеТекущийЦФО(cursor);
+                        Log.i(this.getClass().getName(), "   onBindViewHolder  position" + position +
+                                " cursor " + cursor  + " ТекущаяЦифраЦФО " +ТекущаяЦифраЦФО + " ТекущаяИмяЦФО " +ТекущаяИмяЦФО);
                     }
-                }
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1061,14 +1004,14 @@ public class FragmentAdmissionMaterials extends Fragment {
             return myViewHolder;
         }
 
-        private Integer МетодВытаскиваемТекущийЦФО(@NonNull Cursor cursor) {
+        private Integer МетодВытаскиваемЦифраТекущийЦФО(@NonNull Cursor cursor) {
             try{
                 Integer индексТекущаяЦФО =cursor.getColumnIndex("cfo");
                 ТекущаяЦифраЦФО =cursor.getInt(индексТекущаяЦФО);
-                // TODO: 19.10.2022 название ЦФО
-                Integer индексТекущаяНазваниеЦФО =cursor.getColumnIndex("name_cfo");
-                ТекущаяИмяЦФО =cursor.getString(индексТекущаяНазваниеЦФО);
-                Log.i(this.getClass().getName(),  "  ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " ТекущаяИмяЦФО " +ТекущаяИмяЦФО);
+                if(ТекущаяЦифраЦФО==null){
+                    ТекущаяЦифраЦФО=0;
+                }
+                Log.i(this.getClass().getName(),  "  ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО  );
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1081,18 +1024,44 @@ public class FragmentAdmissionMaterials extends Fragment {
             return ТекущаяЦифраЦФО;
         }
 
+        private String МетодВытаскиваемНазваниеТекущийЦФО(@NonNull Cursor cursor) {
+            try{
+                // TODO: 19.10.2022 название ЦФО
+                Integer индексТекущаяНазваниеЦФО =cursor.getColumnIndex("name_cfo");
+                ТекущаяИмяЦФО =cursor.getString(индексТекущаяНазваниеЦФО);
+                if(ТекущаяИмяЦФО==null){
+                    ТекущаяИмяЦФО="цфо закрыто !!! ";
+                }
+                Log.i(this.getClass().getName(),    " ТекущаяИмяЦФО " +ТекущаяИмяЦФО);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+            return ТекущаяИмяЦФО;
+        }
+
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             try {
-                Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor);
-                if (cursor!=null) {
-                    if (cursor.getCount() > 0) {
+                  if(holder.tableLayoutМатериалРодительная!=null &&        ТекущаяЦифраЦФО >0 && ТекущаяИмяЦФО!=null)  {
                         МетодЗаполняемДаннымиПолучениеМАтериалов(holder, cursor);
                         Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
                     } else {
-                        Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " sqLiteCursor " + cursor.getCount());
+                      Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                              " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                              " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                     }
-                }
+
+
+                // TODO: 17.04.2023
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1104,28 +1073,18 @@ public class FragmentAdmissionMaterials extends Fragment {
             }
         }
 
-        private void МетодАнимации(MyViewHolder holder) {
-            try {
-               holder.cardViewМатериалРодительная.startAnimation(animationПолучениеМатериалов);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(getContext().getClass().getName(),
-                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
         ///todo первый метод #1
         private void МетодЗаполняемДаннымиПолучениеМАтериалов(@NonNull MyViewHolder holder, @NonNull Cursor cursor) {
             try {
-                if (cursor != null && holder.cardViewМатериалРодительная != null) {
                     // TODO: 18.10.2022 заполеняем данныими
                     МетодДобавленеиЕлементоввRecycreView(holder.tableLayoutМатериалРодительная);
-                }
-                МетодПерегрузкаRecyceView();
 
+                    МетодПерегрузкаRecyceView();
+                // TODO: 17.04.2023
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
+                        + "\n" + " holder.tableLayoutМатериалРодительная " +holder.tableLayoutМатериалРодительная);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1141,8 +1100,6 @@ public class FragmentAdmissionMaterials extends Fragment {
         private void МетодДобавленеиЕлементоввRecycreView(@NonNull TableLayout tableLayoutРодительская) {
             try {
                 // TODO: 07.11.2022   ВТОРОЙ ЭТАП ПОЛУЧАЕМ НОМЕР ЦФО
-                if (  ТекущаяЦифраЦФО >0 && ТекущаяЦифраЦФО!=null) {
-                    // TODO: 03.11.2022 Второй Запрос Получем САМО Цифра Полученого Материла
                     МетодПолучениеДанныхДЛяПолучениеМатериалов("ПолучениеНомерМатериала", ТекущаяЦифраЦФО);
                 // TODO: 18.10.2022 название ЦФО
                 МетодДанныеНазваниеЦФО(tableLayoutРодительская);
@@ -1150,35 +1107,25 @@ public class FragmentAdmissionMaterials extends Fragment {
                 МетодДанныеЛиния(tableLayoutРодительская);
                 // TODO: 18.10.2022 Добавяем Названием Столбиков
                 МетодДанныеНазваниеСтолбиков(tableLayoutРодительская);
-                    // TODO: 17.04.2023
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + " ТекущаяЦифраЦФО " +ТекущаяЦифраЦФО+
-                             "  cursorНомерМатериала " +cursorНомерМатериала);
-
                 // TODO: 07.11.2022 сами данные
-                        do{
-                            // TODO: 07.11.2022  ТРЕТИЙ ЭТАП ПОЛУЧАЕМ  НОМЕР ДОКУМЕНТА
-                         Integer ИндексМатериала=  cursorНомерМатериала.getColumnIndex("nomenvesov_zifra");
-                         // Integer ИндексМатериала=  cursorНомерМатериала.getColumnIndex("nomen_vesov");
-                            ТекущаяНомерМатериала=      cursorНомерМатериала.getInt(ИндексМатериала);
-                            Log.i(this.getClass().getName(), "  ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " cursorЦФО " + cursor
-                                    + " ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " ТекущаяНомерМатериала " +ТекущаяНомерМатериала);
-                            // TODO: 07.11.2022 И ЗАПУСКАМ ФИЛЬНАЙ ТРЕИЙ ЭТАП ПОЛУЧЕНИЕ СГРУПИРОВАННЫХ ДАННЫХ
-                            МетодПолучениеДанныхДЛяПолучениеМатериалов("ПолучениеСгрупированныеСамиДанные", ТекущаяЦифраЦФО);
-                            Log.i(this.getClass().getName(), "  ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " cursorСамиДанныеGroupBy " + cursorСамиДанныеGroupBy
-                                    + " ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " ТекущаяНомерМатериала " +ТекущаяНомерМатериала);
-                            // TODO: 18.10.2022 Добавяем Сами Данные Получение материалов
-                            МетодДанныеПолучениеМатериалов(tableLayoutРодительская,cursorСамиДанныеGroupBy);
-                            // TODO: 09.12.2022 делалем дополнительно движение
-                        }while (cursorНомерМатериала.moveToNext());
-
-                }else {
-                    // TODO: 17.04.2023
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + " ТекущаяЦифраЦФО " +ТекущаяЦифраЦФО);
+                if (cursorНомерМатериала.getCount()>0) {
+                    do{
+                        // TODO: 07.11.2022  ТРЕТИЙ ЭТАП ПОЛУЧАЕМ  НОМЕР ДОКУМЕНТА
+                     Integer ИндексМатериала=  cursorНомерМатериала.getColumnIndex("nomenvesov_zifra");
+                     // Integer ИндексМатериала=  cursorНомерМатериала.getColumnIndex("nomen_vesov");
+                        ТекущаяНомерМатериала=      cursorНомерМатериала.getInt(ИндексМатериала);
+                        Log.i(this.getClass().getName(), "  ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " cursorЦФО " + cursor
+                                + " ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " ТекущаяНомерМатериала " +ТекущаяНомерМатериала);
+                        // TODO: 07.11.2022 И ЗАПУСКАМ ФИЛЬНАЙ ТРЕИЙ ЭТАП ПОЛУЧЕНИЕ СГРУПИРОВАННЫХ ДАННЫХ
+                        МетодПолучениеДанныхДЛяПолучениеМатериалов("ПолучениеСгрупированныеСамиДанные", ТекущаяЦифраЦФО);
+                        Log.i(this.getClass().getName(), "  ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " cursorСамиДанныеGroupBy " + cursorСамиДанныеGroupBy
+                                + " ТекущаяЦифраЦФО " + ТекущаяЦифраЦФО + " ТекущаяНомерМатериала " +ТекущаяНомерМатериала);
+                        // TODO: 18.10.2022 Добавяем Сами Данные Получение материалов
+                        МетодДанныеПолучениеМатериалов(tableLayoutРодительская,cursorСамиДанныеGroupBy);
+                        // TODO: 09.12.2022 делалем дополнительно движение
+                    }while (cursorНомерМатериала.moveToNext());
                 }
+
                 // TODO: 17.04.2023
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
