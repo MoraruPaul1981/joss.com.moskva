@@ -48,7 +48,7 @@
         <RelativeLayout
             android:id="@+id/relativelayoutcardviewmatirealtask"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:paddingBottom="2dp"
             android:paddingTop="2dp"
             android:paddingLeft="2dp"
@@ -64,7 +64,7 @@
                 android:checkMark="?android:attr/textCheckMark"
                 android:foregroundGravity="center"
                 android:gravity="left|center_vertical"
-                android:hint="Нет данных"
+                android:hint="Нет материалов !!!"
                 android:minHeight="25dp"
                 android:singleLine="false"
                 android:textAlignment="gravity"

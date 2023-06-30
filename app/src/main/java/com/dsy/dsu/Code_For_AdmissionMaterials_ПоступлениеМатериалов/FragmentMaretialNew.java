@@ -121,7 +121,7 @@ public class FragmentMaretialNew extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         try{
-            view= inflater.inflate(R.layout.fragment_admission_materials_detelizaziy, container, false);
+            view= inflater.inflate(R.layout.fragment_admission_new_material, container, false);
             Log.d(this.getClass().getName(), "  onCreateView  view   "+view);
         } catch (Exception e) {
             e.printStackTrace();
@@ -212,6 +212,7 @@ public class FragmentMaretialNew extends Fragment {
                     // TODO: 03.11.2022  запускаем после получение данных
                     asyncTaskLoader.reset();
                         onResume();
+                        progressBarСозданиеМатерила.setVisibility(View.GONE);
                 }
             });
 
