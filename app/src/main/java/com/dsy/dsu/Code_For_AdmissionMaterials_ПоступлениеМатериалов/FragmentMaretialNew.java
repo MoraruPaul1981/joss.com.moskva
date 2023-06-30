@@ -80,7 +80,7 @@ public class FragmentMaretialNew extends Fragment {
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private Fragment fragmentПолученыеМатериалов;
-    private TextView textViewНазваниеФрагмента;
+
     private LinkedHashMap<String, Object> cursorConcurrentSkipListMap=new LinkedHashMap<>();
     private Animation animation;
     private Animation animationscroll;
@@ -102,6 +102,7 @@ public class FragmentMaretialNew extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try{
+            fragmentManager = getActivity().getSupportFragmentManager();
             preferencesМатериалы = getContext().getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
             Bundle data=         getArguments();
             binderДляПолучениеМатериалов=  (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) data.getBinder("binder");
@@ -120,7 +121,7 @@ public class FragmentMaretialNew extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         try{
-            view= inflater.inflate(R.layout.fragment_admission_materials, container, false);
+            view= inflater.inflate(R.layout.fragment_admission_materials_detelizaziy, container, false);
             Log.d(this.getClass().getName(), "  onCreateView  view   "+view);
         } catch (Exception e) {
             e.printStackTrace();
@@ -139,9 +140,7 @@ public class FragmentMaretialNew extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         try{
             recyclerView = view.findViewById(R.id.RecyclerView);
-            textViewНазваниеФрагмента = view.findViewById(R.id.TextView);
-            textViewНазваниеФрагмента.setText("Новый Материал".toUpperCase());
-            fragmentManager = getActivity().getSupportFragmentManager();
+            recyclerView.setVisibility(View.VISIBLE);
             linearLayou = view.findViewById(R.id.fragmentadmissionmaterias);
             bottomNavigationView = view.findViewById(R.id.BottomNavigationView);
             bottomNavigationView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED);
@@ -164,6 +163,10 @@ public class FragmentMaretialNew extends Fragment {
             МетодHandlerCallBack();
             МетодИнициализацииRecycreView();
             МетоКликаПоКнопкеBack();
+            // TODO: 17.04.2023
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -209,7 +212,6 @@ public class FragmentMaretialNew extends Fragment {
                     // TODO: 03.11.2022  запускаем после получение данных
                     asyncTaskLoader.reset();
                         onResume();
-                        МетодДизайнПрограссБара();
                 }
             });
 
@@ -431,13 +433,6 @@ public class FragmentMaretialNew extends Fragment {
         }
     }
 
-    private void МетодДизайнПрограссБара() {
-        progressBarСозданиеМатерила.postDelayed(()->{
-            progressBarСозданиеМатерила.setVisibility(View.INVISIBLE);
-            progressBarСозданиеМатерила.setIndeterminate(true);
-        },100);
-    }
-
     // TODO: 02.08.2022
     protected   Cursor МетодДляПолучениеДанныхИзСлужбыДляСозданияНовогоМатериала(@NonNull String  ФлагКакаяТаблицаОбработки, @NonNull Intent intent,@NonNull String ФлагКакаяРаботаНужнаДляВыполнения){
         Cursor cursor = null;
@@ -516,7 +511,7 @@ public class FragmentMaretialNew extends Fragment {
                 if (textipputcountassinmaterail!=null) {
                     params = (LinearLayout.LayoutParams)textipputcountassinmaterail.getLayoutParams();
                 }
-                if (ФлагДляСкрытыхМатериалов==true) {
+   /*             if (ФлагДляСкрытыхМатериалов==true) {
                     if (textipputmaretialttn!=null) {
                         textipputmaretialttn.setVisibility(View.VISIBLE);
                         textipputmaretialttdata .setVisibility(View.VISIBLE);
@@ -534,11 +529,11 @@ public class FragmentMaretialNew extends Fragment {
                         textviewmaterialttndata.setVisibility(View.GONE);
                         textviewmaterialttn.setVisibility(View.GONE);
                         if (params!=null) {
-                            params.setMargins(5,0,5,250);
+                            params.setMargins(5,0,5,50);
                         }
                         textipputcountassinmaterail.setLayoutParams(params);
                     }
-                }
+                }*/
                 Log.d(this.getClass().getName(), " cardViewМатериал   " + bottomcreateassionmaterial);
             } catch (Exception e) {
                 e.printStackTrace();

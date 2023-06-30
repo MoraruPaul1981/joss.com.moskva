@@ -1,6 +1,9 @@
 package com.dsy.dsu.Code_For_AdmissionMaterials_ПоступлениеМатериалов;
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.DataSetObserver;
@@ -17,6 +20,8 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.loader.content.AsyncTaskLoader;
+import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +29,7 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
@@ -46,6 +52,7 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generator_One_WORK_MANAGER;
 import com.dsy.dsu.Code_For_Services.Service_for_AdminissionMaterial;
 import com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_App;
 import com.dsy.dsu.R;
+import com.google.android.datatransport.runtime.dagger.Provides;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
@@ -60,6 +67,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
+
+import javax.inject.Singleton;
 
 
 // TODO: 29.09.2022 фрагмент для получение материалов
@@ -93,6 +102,8 @@ public class FragmentAdmissionMaterials extends Fragment {
     long startДляОбноразвовной;
     private  Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binderДляПолучениеМатериалов;
     private  Message message;
+
+    private AsyncTaskLoader<Cursor> asyncTaskLoaderМатериалы;
 
     // TODO: 27.09.2022 Фрагмент Получение Материалов
     public FragmentAdmissionMaterials() {
@@ -1374,36 +1385,64 @@ public class FragmentAdmissionMaterials extends Fragment {
     }
     private void методБиндингСлужбы() {
         try {
-            if (binderДляПолучениеМатериалов==null) {
-                message= Message.obtain(new Handler(Looper.myLooper()),()->{
-                    Bundle bundle=   message.getData();
-                    binderДляПолучениеМатериалов= (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов)  bundle.getBinder("allbinders")  ;
-                    Log.i(this.getClass().getName(),  " биндинг материалов к службе "+
-                            Thread.currentThread().getStackTrace()[2].getMethodName()+
-                            " время " +new Date().toLocaleString() + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов );
-                    Log.i(this.getClass().getName(), "bundle " +bundle);
-                    // TODO: 18.04.2023
-                     МетодПолучениеДанныхДЛяПолучениеМатериалов("ПолучениеЦФО",0);
-                    // TODO: 18.04.2023
-                    onStart();
-                });
-                // TODO: 27.03.2023 биндинг службы
-                new AllBindingService(getContext(), message). МетодБиндингМатериалы() ;
+                    ServiceConnection serviceConnectionМатериалы = new ServiceConnection() {
+                        @Override
+                        public void onServiceConnected(ComponentName name, IBinder service) {
+                            try {
+                                if (service.isBinderAlive()) {
+                                            // TODO: 30.06.2023
+                                            binderДляПолучениеМатериалов = (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) service;
+
+                                            МетодПолучениеДанныхДЛяПолучениеМатериалов("ПолучениеЦФО",0);
+                                            // TODO: 18.04.2023
+                                            onStart();
+
+                                    }
+
+                                    Log.d(getContext().getClass().getName(), "\n"
+                                            + " время: " + new Date() + "\n+" +
+                                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                            " onServiceConnected  метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                            + "    onServiceDisconnected  Service_for_AdminissionMaterial" + " service "
+                                            + service.isBinderAlive());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                        Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            }
+                        }
+                        @Override
+                        public void onServiceDisconnected(ComponentName name) {
+                            try {
+                                Log.d(getContext().getClass().getName(), "\n"
+                                        + " время: " + new Date() + "\n+" +
+                                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                        "  onServiceDisconnected метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                        + "    onServiceDisconnected  bibinderСогласованияbinderМатериалыnder");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                        Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            }
+                        }
+                    };
+                    Intent intentЗапускБиндингаМатериалы = new Intent(getContext(), Service_for_AdminissionMaterial.class);
+                    intentЗапускБиндингаМатериалы.setAction("com.Service_for_AdminissionMaterial");
+                getActivity().  bindService(intentЗапускБиндингаМатериалы, serviceConnectionМатериалы, Context.BIND_AUTO_CREATE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                            Thread.currentThread().getStackTrace()[2].getMethodName(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
             }
 
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-            Log.d(this.getClass().getName(), "  Полусаем Ошибку e.toString() " + e.toString());
-        }
-
-    }
 }

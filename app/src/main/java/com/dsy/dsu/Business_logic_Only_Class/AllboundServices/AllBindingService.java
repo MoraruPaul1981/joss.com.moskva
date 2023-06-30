@@ -102,69 +102,7 @@ Context context;
     // TODO: 27.03.2023 BINDING#3
 
 
-    // TODO: 02.08.2022  код ля биндинга службы одноразовой синхронизации
-    @Provides
-    @Singleton
-    public void   МетодБиндингМатериалы() {
-        final Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов[] binderМатериалы =
-                new Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов[1];
-        try {
-            ServiceConnection    serviceConnectionМатериалы = new ServiceConnection() {
-                @Override
-                public void onServiceConnected(ComponentName name, IBinder service) {
-                    try {
-                           binderМатериалы[0] = (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) service;
-                        if (binderМатериалы[0].isBinderAlive()) {
-                            Bundle bundle=new Bundle();
-                            bundle.putBinder("allbinders",  binderМатериалы[0]);
-                            message.setData(bundle);
-                            message.getTarget().dispatchMessage(message);
-                            Log.d(context.getClass().getName(), "\n"
-                                    + " время: " + new Date() + "\n+" +
-                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                    " onServiceConnected  метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                    + "    onServiceDisconnected  Service_for_AdminissionMaterial" + " service "
-                                    + service.isBinderAlive());
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                }
-                @Override
-                public void onServiceDisconnected(ComponentName name) {
-                    try {
-                        Log.d(context.getClass().getName(), "\n"
-                                + " время: " + new Date() + "\n+" +
-                                " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                "  onServiceDisconnected метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                + "    onServiceDisconnected  bibinderСогласованияbinderМатериалыnder");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                }
-            };
-            Intent intentЗапускБиндингаМатериалы = new Intent(context, Service_for_AdminissionMaterial.class);
-            intentЗапускБиндингаМатериалы.setAction("com.Service_for_AdminissionMaterial");
-            context. bindService(intentЗапускБиндингаМатериалы, serviceConnectionМатериалы,Context.BIND_AUTO_CREATE);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
+
 
 
 
