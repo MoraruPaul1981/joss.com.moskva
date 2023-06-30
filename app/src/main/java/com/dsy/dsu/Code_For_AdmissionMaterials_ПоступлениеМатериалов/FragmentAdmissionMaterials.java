@@ -21,7 +21,6 @@ import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.loader.content.AsyncTaskLoader;
-import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,14 +44,12 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.dsy.dsu.Business_logic_Only_Class.AllboundServices.AllBindingService;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generator_One_WORK_MANAGER;
 import com.dsy.dsu.Code_For_Services.Service_for_AdminissionMaterial;
 import com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_App;
 import com.dsy.dsu.R;
-import com.google.android.datatransport.runtime.dagger.Provides;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
@@ -67,8 +64,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
-
-import javax.inject.Singleton;
 
 
 // TODO: 29.09.2022 фрагмент для получение материалов
@@ -86,7 +81,7 @@ public class FragmentAdmissionMaterials extends Fragment {
     private Animation animation1;
     private Animation animation2;
     private  Handler handler;
-    private  Cursor cursorНомерЦФО;
+
     private  Cursor cursorНомерМатериала;
     private  Cursor cursorСамиДанныеGroupBy;
     private MyRecycleViewAdapter myRecycleViewAdapter;
@@ -111,6 +106,7 @@ public class FragmentAdmissionMaterials extends Fragment {
 
     private  LifecycleOwner lifecycleOwner =this ;
     private LifecycleOwner lifecycleOwnerОбщая =this ;
+    private  Cursor cursorНомерЦФО;
     // TODO: 27.09.2022 Фрагмент Получение Материалов
     public FragmentAdmissionMaterials() {
         // Required empty public constructor
@@ -224,7 +220,6 @@ public class FragmentAdmissionMaterials extends Fragment {
     // TODO: 04.03.2022 прозвомжность Заполения RecycleView
     void МетодЗаполенияRecycleViewДляЗадач() {
         try {
-            Log.d(this.getClass().getName(), "sqLiteCursor  " + cursorНомерЦФО);
             myRecycleViewAdapter = new MyRecycleViewAdapter(cursorНомерЦФО);
             myRecycleViewAdapter.notifyDataSetChanged();
             recyclerView.setAdapter(myRecycleViewAdapter);
@@ -654,7 +649,7 @@ public class FragmentAdmissionMaterials extends Fragment {
 
     // TODO: 18.10.2021  СИНХРОНИАЗЦИЯ ЧАТА ПО РАСПИСАНИЮ ЧАТ
     @SuppressLint("FragmentLiveDataObserve")
-    void МетодСоздаенияСлушателяДляПолучениеМатериалаWorkMAnager() throws ExecutionException, InterruptedException {
+    void МетодСоздаенияСлушателяДляПолучениеМатериалаWorkMAnager()   {
 // TODO: 11.05.2021 ЗПУСКАЕМ СЛУЖБУ через брдкастер синхронизхации и уведомления
         try {
             lifecycleOwner.getLifecycle().addObserver(new LifecycleEventObserver() {
@@ -743,7 +738,7 @@ public class FragmentAdmissionMaterials extends Fragment {
     }
 
     // TODO: 02.08.2022
-    protected   void МетодПолучениеДанныхДЛяПолучениеМатериалов(@NonNull String  ФлагКакиеДанныеНужныПолучениеМатериалов,@NonNull Integer ТекущаяЦФО ){
+    protected   Cursor методGetCFOCursorFirst(@NonNull String  ФлагКакиеДанныеНужныПолучениеМатериалов, @NonNull Integer ТекущаяЦФО ){
         try{
             ПубличныйIDДляФрагмента     = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
             Log.d(getContext().getClass().getName(), "\n"
@@ -802,6 +797,7 @@ public class FragmentAdmissionMaterials extends Fragment {
             new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
+        return   cursorНомерЦФО;
     }
 
     private void МетодДизайнПрограссБара() {
@@ -1119,7 +1115,7 @@ public class FragmentAdmissionMaterials extends Fragment {
         private void МетодДобавленеиЕлементоввRecycreView(@NonNull TableLayout tableLayoutРодительская,@NonNull MyViewHolder holder) {
             try {
                 // TODO: 07.11.2022   ВТОРОЙ ЭТАП ПОЛУЧАЕМ НОМЕР ЦФО
-                    МетодПолучениеДанныхДЛяПолучениеМатериалов("ПолучениеНомерМатериала", ТекущаяЦифраЦФО);
+                    методGetCFOCursorFirst("ПолучениеНомерМатериала", ТекущаяЦифраЦФО);
                 // TODO: 18.10.2022 название ЦФО
                 МетодДанныеНазваниеЦФО(tableLayoutРодительская);
                 // TODO: 18.10.2022 дял линии
@@ -1133,7 +1129,7 @@ public class FragmentAdmissionMaterials extends Fragment {
                          Integer ИндексМатериала=  cursorНомерМатериала.getColumnIndex("nomenvesov_zifra");
                         ТекущаяНомерМатериала=      cursorНомерМатериала.getInt(ИндексМатериала);
 
-                        МетодПолучениеДанныхДЛяПолучениеМатериалов("ПолучениеСгрупированныеСамиДанные", ТекущаяЦифраЦФО);
+                        методGetCFOCursorFirst("ПолучениеСгрупированныеСамиДанные", ТекущаяЦифраЦФО);
 
 
                         МетодДанныеПолучениеМатериалов(tableLayoutРодительская,cursorСамиДанныеGroupBy);
@@ -1407,16 +1403,18 @@ public class FragmentAdmissionMaterials extends Fragment {
                         public void onServiceConnected(ComponentName name, IBinder service) {
                             try {
                                 if (service.isBinderAlive()) {
-                                            // TODO: 30.06.2023
-                                            binderДляПолучениеМатериалов = (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) service;
+                                                // TODO: 30.06.2023
+                                                binderДляПолучениеМатериалов = (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) service;
 
-                                            МетодПолучениеДанныхДЛяПолучениеМатериалов("ПолучениеЦФО",0);
-                                            // TODO: 18.04.2023
-                                            onStart();
+                                                методGetCFOCursorFirst("ПолучениеЦФО",0);
+
+                                                // TODO: 18.04.2023
+                                         onStart();
 
 
+                                                    МетодСоздаенияСлушателяДляПолучениеМатериалаWorkMAnager();
 
-                                    МетодСоздаенияСлушателяДляПолучениеМатериалаWorkMAnager();
+
 
 
                                 }
