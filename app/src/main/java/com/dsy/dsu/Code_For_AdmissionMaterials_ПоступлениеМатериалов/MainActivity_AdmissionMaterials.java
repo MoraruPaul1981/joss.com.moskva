@@ -96,35 +96,7 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
 
 
 
-    // TODO: 02.08.2022
-    void МетодНепосредственногоЗапускаБиндингаОдноразовойСдлужбы(@NonNull  Integer ПубличныйIDДляФрагмента ){
-        try{
-            Log.d(getApplicationContext().getClass().getName(), "\n"
-                    + " ПубличныйIDДляФрагмента: " + ПубличныйIDДляФрагмента);
-            // TODO: 01.02.2022 заПУСКАЕМ сИНХРОНИАЗАЦИЮ С ВСЕХ ЛИСТ ТАБЕЛЕЙ
-            Integer  ПубличныйIDДляАсинх=   new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
-            Bundle bundleДляПЕредачи=new Bundle();
-            bundleДляПЕредачи.putInt("IDПубличныйНеМойАСкемБылаПереписака", ПубличныйIDДляАсинх);
-            Intent  intentЗапускОднорworkanager=new Intent();
-            intentЗапускОднорworkanager.putExtras(bundleДляПЕредачи);
-            // TODO: 02.08.2022
-            new Class_Generator_One_WORK_MANAGER(getApplicationContext()).
-                    МетодОдноразовыйЗапускВоерМенеджера(getApplicationContext(),intentЗапускОднорworkanager);
-            // TODO: 26.06.2022
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " ПубличныйIDДляОдноразовойСинхронПубличныйIDДляФрагментаиазции "+ПубличныйIDДляФрагмента );
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
 
-            // TODO: 11.05.2021 запись ошибок
-        }
-    }
 
 
 }

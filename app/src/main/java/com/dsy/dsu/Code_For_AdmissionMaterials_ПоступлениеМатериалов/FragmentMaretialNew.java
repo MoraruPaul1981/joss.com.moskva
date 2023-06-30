@@ -44,6 +44,7 @@ import android.widget.TextView;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
+import com.dsy.dsu.Business_logic_Only_Class.Class_Generator_One_WORK_MANAGER;
 import com.dsy.dsu.Code_For_Services.Service_for_AdminissionMaterial;
 import com.dsy.dsu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
@@ -262,7 +263,8 @@ public class FragmentMaretialNew extends Fragment {
         Log.d(this.getClass().getName(), " CursorДляГруппаМатериалов " + CursorДляГруппаМатериалов);
     }
 
-    private void МетоПолучениеДанныхДляОдногоМатериала(Intent intentДляПолучениеСправочкинов, @NonNull Integer ФильтрВесовых) {
+    private Cursor МетоПолучениеДанныхДляОдногоМатериала(Intent intentДляПолучениеСправочкинов, @NonNull Integer ФильтрВесовых) {
+        CursorДляОдногоМатериалаБышВесов=null;
         Bundle bundle=new Bundle();
         bundle.putString("ТаблицаОбработкиСпинера","материал");
         bundle.putString("ФильтрКолонок","nomen_vesov");
@@ -271,6 +273,7 @@ public class FragmentMaretialNew extends Fragment {
         CursorДляОдногоМатериалаБышВесов=          МетодДляПолучениеДанныхИзСлужбыДляСозданияНовогоМатериала("nomen_vesov",intentДляПолучениеСправочкинов,
                 "ПолучениеМатериалоСозданиеНового");
         Log.d(this.getClass().getName(), " CursorДляОдногоМатериалаБышВесов " + CursorДляОдногоМатериалаБышВесов);
+        return  CursorДляОдногоМатериалаБышВесов;
     }
 
     // TODO: 26.12.2022  автомобили
@@ -743,7 +746,7 @@ public class FragmentMaretialNew extends Fragment {
                 Boolean ФлагВыбиралУжеЦФОИзСпинера=         preferencesМатериалы.getBoolean("ДляСпинераУжеВибиралЦФО",false);
                 if(ФлагВыбиралУжеЦФОИзСпинера && ФлагЧтоУжепервыйПрогоУжеПрошул==false) {
                     // TODO: 09.12.2022 возвраящяем данные для ЦФО
-                    String УжеВыбраннаяТТН = preferencesМатериалы.getString("ПозицияВыбраногоТТН", "");
+                    String УжеВыбраннаяТТН = preferencesМатериалы.getString("НазваниеВыбраногоДатаТТН", "");
                     // TODO: 09.12.2022 Востановление ТТН и ДатыТТН
                            holder.      textipputmaretialttdata.setText(УжеВыбраннаяТТН);
                     holder.      textipputmaretialttdata.refreshDrawableState();
@@ -766,7 +769,7 @@ public class FragmentMaretialNew extends Fragment {
                 Boolean ФлагВыбиралУжеЦФОИзСпинера=         preferencesМатериалы.getBoolean("ДляСпинераУжеВибиралЦФО",false);
                 if(ФлагВыбиралУжеЦФОИзСпинера && ФлагЧтоУжепервыйПрогоУжеПрошул==false) {
                     // TODO: 09.12.2022 возвраящяем данные для ЦФО
-                    String ВыбранаяДатаТТГУже = preferencesМатериалы.getString("НазваниеВыбраногоДатаТТН", "");
+                    String ВыбранаяДатаТТГУже = preferencesМатериалы.getString("ПозицияВыбраногоТТН", "");
                     // TODO: 09.12.2022 Востановление ТТН и ДатыТТН
                     holder. textipputmaretialttn.setText(ВыбранаяДатаТТГУже);
                     holder. textipputmaretialttn.refreshDrawableState();
@@ -1353,6 +1356,12 @@ public class FragmentMaretialNew extends Fragment {
                                     editor.putString("НазваниеВыбраногоКонтрагент",holder.valuekontragent .getText().toString());
                                     // TODO: 27.12.2022 запоминаем параметры
                                     editor.commit();
+
+
+                                    // TODO: 30.06.2023  Запуск Синхрониазции
+                                    методЗарускОдноразовойСнхрониазцииПослеСозданиеНовгоЗаказа();
+                                    
+                                    
                                 }else {
                                     Snackbar.make(v, "Материалал не добавился !!!" +
                                             " !!!",Snackbar.LENGTH_LONG).setAction("Action",null).show();
@@ -1364,7 +1373,7 @@ public class FragmentMaretialNew extends Fragment {
                                         " !!!",Snackbar.LENGTH_LONG).setAction("Action",null).show();
                             }
                             Log.d(this.getClass().getName(), "  v  " + v);
-                        },250);
+                        },150);
                     }
                 });
             } catch (Exception e) {
@@ -1470,11 +1479,23 @@ public class FragmentMaretialNew extends Fragment {
                                 }
 
 
-                                    if ( holder.cursorДляВсехМатериалов.getCount()==0) {
+
                                         if(materialTextView.getId()== holder.materialtext_onematerial_ves.getId()) {
-                                            методGetCursorForQuertyFilter(holder.marerialtextgroupmaterial.getText().toString());
+                                            if(      holder.cursorДляВсехМатериалов.getCount()==0) {
+                                                holder.cursorДляВсехМатериалов = методПолучениеДанныхЕслиУжеЗаполеныПоляВсахроненииВНАстройкахтелефона(holder);
+                                                // TODO: 17.04.2023
+                                                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " holder.cursorДляВсехМатериалов " + holder.cursorДляВсехМатериалов);
+                                            }
                                         }
-                                    }
+
+                                    // TODO: 17.04.2023
+                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " holder.cursorДляВсехМатериалов " +holder.cursorДляВсехМатериалов);
+
+
                                     ///TODO ГЛАВНЫЙ АДАПТЕР чата
                                     SimpleCursorAdapter    simpleCursorAdapterЦФО= new SimpleCursorAdapter(v.getContext(),  R.layout.simple_newspinner_dwonload_newfiltersearch,// R.layout.simple_newspinner_dwonload_cfo2,
                                             holder.cursorДляВсехМатериалов,
@@ -1657,9 +1678,7 @@ public class FragmentMaretialNew extends Fragment {
                                 try{
                                     Log.d(this.getClass().getName()," position");
                                     Log.d(this.getClass().getName(),"МетодСозданиеТабеля  v "+v);
-                                    materialTextView.setText("");
-                                    materialTextView.refreshDrawableState();
-                                    materialTextView.forceLayout();
+                                    materialTextView.clearFocus();
                                     holder.alertDialog.dismiss();
                                     holder.alertDialog.cancel();
                                 } catch (Exception e) {
@@ -1690,17 +1709,16 @@ public class FragmentMaretialNew extends Fragment {
             }
 
             // TODO: 19.12.2022  курсор текущий операйции  какой Спинер
-            protected void МетодКоторыйОперделянтТекуийКурсорТОлькоДляОдногОматериалаБывшейВсесовой(@NonNull MyViewHolder holder) {
+            protected Cursor методПолучениеДанныхЕслиУжеЗаполеныПоляВсахроненииВНАстройкахтелефона(@NonNull MyViewHolder holder) {
+                Cursor cursor1ОдногоМатериала=null;
                 try{
                     Intent intentДляПолучениеСправочкинов=new Intent("НовыеМатериалыПолучениеСправочников");
-                    if(      holder.cursorДляВсехМатериалов.getCount()==0){
                         Bundle bundle= (Bundle) holder.marerialtextgroupmaterial.getTag();
                         Integer ПолученеиеID=bundle.getInt("ПолучаемIDЦфо");
-                        МетоПолучениеДанныхДляОдногоМатериала(intentДляПолучениеСправочкинов,ПолученеиеID);
+                  cursor1ОдногоМатериала=       МетоПолучениеДанныхДляОдногоМатериала(intentДляПолучениеСправочкинов,ПолученеиеID);
                         Log.d(this.getClass().getName(),"    holder.cursorДляВсехМатериалов"+   holder.cursorДляВсехМатериалов
                                 +  "holder.marerialtextgroupmaterial.getTag() "+holder.marerialtextgroupmaterial.getTag()
-                                + "  binderДляПолучениеМатериалов.getService() " +binderДляПолучениеМатериалов.getService());
-                    }
+                                + "  binderДляПолучениеМатериалов.getService() " +binderДляПолучениеМатериалов.getService() + " cursor1ОдногоМатериала  " +cursor1ОдногоМатериала);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -1708,6 +1726,8 @@ public class FragmentMaretialNew extends Fragment {
                     new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                             Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
+
+                return  cursor1ОдногоМатериала;
             }
 
             // TODO: 16.12.2022  для Второго Компонета ГРУППА МАТЕРИАЛОВ, после ВЫБЫБОРА ГУРППЫ МАТЕРИАЛОВ ДАЛЕЕ ИНИЦИАЛИЗУЕМ ОДИН МАТЕРИАЛОВ
@@ -1800,6 +1820,36 @@ public class FragmentMaretialNew extends Fragment {
                     this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
+    }
+
+    // TODO: 02.08.2022
+    void методЗарускОдноразовойСнхрониазцииПослеСозданиеНовгоЗаказа( ){
+        
+        getActivity().getMainExecutor().execute(()->{
+            try{
+                Bundle bundleДляПЕредачи=new Bundle();
+                bundleДляПЕредачи.putInt("IDПубличныйНеМойАСкемБылаПереписака", ПубличныйIDДляФрагмента);
+                Intent  intentЗапускОднорworkanager=new Intent();
+                intentЗапускОднорworkanager.putExtras(bundleДляПЕредачи);
+                // TODO: 02.08.2022
+                new Class_Generator_One_WORK_MANAGER(getContext()).
+                        МетодОдноразовыйЗапускВоерМенеджера(getContext(),intentЗапускОднорworkanager);
+                // TODO: 26.06.2022
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " ПубличныйIDДляОдноразовойСинхронПубличныйIDДляФрагментаиазции "+ПубличныйIDДляФрагмента );
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+
+                // TODO: 11.05.2021 запись ошибок
+            }
+        });
+     
     }
     // TODO: 19.10.2022  end
 }
