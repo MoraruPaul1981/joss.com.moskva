@@ -118,7 +118,7 @@ public class FragmentAdmissionMaterials extends Fragment {
             // TODO: 27.09.2022  запускаем фрагмент получение материалов
              lifecycleOwner =this ;
             lifecycleOwnerОбщая =this ;
-            методБиндингСлужбы();
+      /*      методБиндингСлужбы();*/
             Log.d(this.getClass().getName(), "  onViewCreated  FragmentAdmissionMaterials  binderДляПолучениеМатериалов  "+binderДляПолучениеМатериалов);
 
         } catch (Exception e) {
@@ -993,6 +993,8 @@ public class FragmentAdmissionMaterials extends Fragment {
                 if(    cursorНомерЦФО==null){
                         viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov, parent, false);//todo old simple_for_takst_cardview1
                         Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов);
+
+                    методБиндингСлужбы();
 
                 }else {
                     if (cursorНомерЦФО.getCount() > 0) {
