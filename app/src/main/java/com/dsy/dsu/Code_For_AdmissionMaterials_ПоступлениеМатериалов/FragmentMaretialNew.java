@@ -100,7 +100,6 @@ public class FragmentMaretialNew extends Fragment {
     private   Cursor CursorДляЦФО;
     private  Object ВытаскиваемIDМатериаловИзСправочника;
     private  View view=null;
-    private      AsyncTaskLoader<Object> asyncTaskLoader;
     private SharedPreferences preferencesМатериалы;
     private Boolean ФлагЧтоУжепервыйПрогоУжеПрошул=false;
     private  ScrollView scrollViewНовыйматериал;
@@ -114,6 +113,28 @@ public class FragmentMaretialNew extends Fragment {
             preferencesМатериалы = getContext().getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
             Bundle data=         getArguments();
             binderДляПолучениеМатериалов=  (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) data.getBinder("binder");
+
+
+            МетодHandlerCallBack();
+
+
+            Intent intentДляПолучениеСправочкинов=new Intent("НовыеМатериалыПолучениеСправочников");
+            // TODO: 20.10.2022 #1
+            МетодПолучениеДанныхДляЦФО(intentДляПолучениеСправочкинов);
+            // TODO: 20.10.2022 #3
+            МетодПолучениеДляГруппыМатериалов(intentДляПолучениеСправочкинов);
+            // TODO: 20.10.2022 #4
+            МетоПолучениеДанныхДляОдногоМатериала(intentДляПолучениеСправочкинов, 0);
+            // TODO: 20.10.2022 #5 автомобили
+            МетоПолучениеДанныхДляАвтомобилей(intentДляПолучениеСправочкинов, "");
+            // TODO: 20.10.2022 #6 контргаенты
+            МетоПолучениеДанныхДляКонтрагент(intentДляПолучениеСправочкинов, "");
+            // TODO: 03.11.2022  ПОСЛЕ ПОЛУЧЕННЫХ ДАННЫХ
+            Log.d(getContext().getClass().getName(), "\n" + " CursorДляЦФО "
+                    + CursorДляЦФО + " CursorДляОдногоМатериалаБышВесов " + CursorДляОдногоМатериалаБышВесов +
+                    " CursorДляАвтомобиля " + CursorДляАвтомобиля + " CursorДляКонтрагента " +CursorДляКонтрагента
+                    + " CursorДляГруппаМатериалов " +CursorДляГруппаМатериалов );
+
             Log.d(this.getClass().getName(), "  onCreate  FragmentCreateAdmissionmaterialbinder    "+binderДляПолучениеМатериалов);
         } catch (Exception e) {
             e.printStackTrace();
@@ -168,9 +189,6 @@ public class FragmentMaretialNew extends Fragment {
             animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_tabellist);
             animationscroll = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_scrolls);
             // TODO: 19.10.2022 методы для фрагмета создание нового материалоа
-            МетодHandlerCallBack();
-            МетодИнициализацииRecycreView();
-            МетоКликаПоКнопкеBack();
             // TODO: 17.04.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -190,40 +208,16 @@ public class FragmentMaretialNew extends Fragment {
     public void onStart() {
         super.onStart();
         try {
-             asyncTaskLoader=new AsyncTaskLoader<Object>(getContext()) {
-                @Nullable
-                @Override
-                public Object loadInBackground() {
-                    Intent intentДляПолучениеСправочкинов=new Intent("НовыеМатериалыПолучениеСправочников");
-                    // TODO: 20.10.2022 #1
-                    МетодПолучениеДанныхДляЦФО(intentДляПолучениеСправочкинов);
-                    // TODO: 20.10.2022 #3
-                    МетодПолучениеДляГруппыМатериалов(intentДляПолучениеСправочкинов);
-                    // TODO: 20.10.2022 #4
-                    МетоПолучениеДанныхДляОдногоМатериала(intentДляПолучениеСправочкинов, 0);
-                    // TODO: 20.10.2022 #5 автомобили
-                    МетоПолучениеДанныхДляАвтомобилей(intentДляПолучениеСправочкинов, "");
-                    // TODO: 20.10.2022 #6 контргаенты
-                    МетоПолучениеДанныхДляКонтрагент(intentДляПолучениеСправочкинов, "");
-                    // TODO: 03.11.2022  ПОСЛЕ ПОЛУЧЕННЫХ ДАННЫХ
-                    Log.d(getContext().getClass().getName(), "\n" + " CursorДляЦФО "
-                            + CursorДляЦФО + " CursorДляОдногоМатериалаБышВесов " + CursorДляОдногоМатериалаБышВесов +
-                            " CursorДляАвтомобиля " + CursorДляАвтомобиля + " CursorДляКонтрагента " +CursorДляКонтрагента  + " CursorДляГруппаМатериалов " +CursorДляГруппаМатериалов );
-                    return new Object();
-                }
-            };
-            asyncTaskLoader.startLoading();
-            asyncTaskLoader.forceLoad();
-            asyncTaskLoader.registerListener(new Random().nextInt(), new Loader.OnLoadCompleteListener<Object>() {
-                @Override
-                public void onLoadComplete(@NonNull Loader<Object> loader, @Nullable Object data) {
-                    // TODO: 03.11.2022  запускаем после получение данных
-                    asyncTaskLoader.reset();
-                        onResume();
-                        progressBarСозданиеМатерила.setVisibility(View.GONE);
-                }
-            });
-
+            МетодИнициализацииRecycreView();
+            МетодКпопкиЗначков();
+            МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
+            МетодПерегрузкаRecyceView();
+            progressBarСозданиеМатерила.setVisibility(View.GONE);
+            МетоКликаПоКнопкеBack();
+            // TODO: 17.04.2023
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
             // TODO: 19.10.2022  слушатель после получение даннных в Курсом
         } catch (Exception e) {
             e.printStackTrace();
@@ -236,25 +230,6 @@ public class FragmentMaretialNew extends Fragment {
         }
 
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-        try {
-            МетодКпопкиЗначков();
-            МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
-            МетодПерегрузкаRecyceView();
-            Log.d(getContext().getClass().getName(), "\n" + " onResume ");
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(getContext().getClass().getName(),
-                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
-
 
     private void МетодПолучениеДанныхДляЦФО(Intent intentДляПолучениеСправочкинов) {
         Intent intent=new Intent();
@@ -694,7 +669,7 @@ public class FragmentMaretialNew extends Fragment {
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View viewПолучениеМатериалов = null;
             try {
-                if(asyncTaskLoader.isStarted()){
+                if(CursorДляЦФО ==null){
                     viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov, parent, false);//todo old simple_for_takst_cardview1
                     Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
                 }else {
@@ -724,10 +699,8 @@ public class FragmentMaretialNew extends Fragment {
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             try {
                 Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " binderДляПолучениеМатериалов " + binderДляПолучениеМатериалов);
-                if (!asyncTaskLoader.isStarted()) {
                     МетодЗаполняемДаннымиПолучениеМАтериалов(holder);
                     МетодАнимации(holder);
-                }
                 Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " binderДляПолучениеМатериалов " + binderДляПолучениеМатериалов);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -760,7 +733,6 @@ public class FragmentMaretialNew extends Fragment {
         private void МетодЗаполняемДаннымиПолучениеМАтериалов(@NonNull MyViewHolder holder) {
             try {
                 Log.i(this.getClass().getName(), "  holder "+holder  );
-                if (!asyncTaskLoader.isStarted()) {
                     МетодДанныеЦФО(holder);
                     МетодДанныеГруппаМатериалов(holder);
                     МетодДанныеОдинМатериалВесовые(holder);
@@ -776,8 +748,7 @@ public class FragmentMaretialNew extends Fragment {
                     // TODO: 16.12.2022  указываем флаг что мы один раз прошли по строчкем
                     ФлагЧтоУжепервыйПрогоУжеПрошул=true;
                     Log.i(this.getClass().getName(), "    holder. ФдагЧтоУжеОдинРАзБылПервыйПроход "+  ФлагЧтоУжепервыйПрогоУжеПрошул+
-                             " asyncTaskLoader.isStarted() " +asyncTaskLoader.isStarted());
-                }
+                             " asyncTaskLoader.isStarted() " );
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),

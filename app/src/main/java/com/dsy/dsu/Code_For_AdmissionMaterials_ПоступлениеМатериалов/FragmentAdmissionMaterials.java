@@ -1253,7 +1253,7 @@ public class FragmentAdmissionMaterials extends Fragment {
                         if (bundleПереходДетализацию != null) {
                             // TODO: 09.11.2022  переходим на детализацию Полученихы Материалов
                             fragmentTransaction = fragmentManager.beginTransaction();
-                         /*   fragmentTransaction.setCustomAnimations(android.R.anim.slide_out_right,android.R.anim.slide_in_left);*/
+                            fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
                             Fragment              fragmentAdmissionMaterialsDetailing = new FragmentDetailingMaterials();
                             bundleПереходДетализацию.putBinder("binder",binderДляПолучениеМатериалов);
                             fragmentAdmissionMaterialsDetailing.setArguments(bundleПереходДетализацию);

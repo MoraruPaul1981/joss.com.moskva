@@ -34,6 +34,24 @@
             android:textSize="14sp"
             android:visibility="visible"
             tools:ignore="MissingConstraints,RtlCompat" />
+
+
+        <View
+            android:id="@+id/view2Линия"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="3dp"
+            android:background="#0A524B"
+            android:foregroundGravity="center"
+            android:visibility="visible"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/TextView"
+            />
+
+
+
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/activitynain_for_Taskslinelayoutrela3"

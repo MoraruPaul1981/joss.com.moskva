@@ -77,7 +77,6 @@ public class FragmentDetailingMaterials extends Fragment {
     private LayoutAnimationController layoutAnimationController;
     private Animation animation;
     private  Handler handler;
-    private  Cursor cursorДетализацияМатериала;
     private MyRecycleViewAdapter myRecycleViewAdapter;
     private MyViewHolder myViewHolder;
     private  Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binderДляПолучениеМатериалов;
@@ -95,6 +94,7 @@ public class FragmentDetailingMaterials extends Fragment {
     private    Bundle data;
     long start;
     long startДляОбноразвовной;
+    private Cursor  cursorДетализацияМатериала;
     // TODO: 27.09.2022 Фрагмент Получение Материалов
     public FragmentDetailingMaterials() {
         // Required empty public constructor
@@ -112,9 +112,14 @@ public class FragmentDetailingMaterials extends Fragment {
                 СуммаВыбраногоМатериала=data.getFloat("Сумма");
                 ВыбранныйМатериал =data.getString("ВыбранныйМатериал");
                 // TODO: 10.11.2022
-                start=     Calendar.getInstance().getTimeInMillis();
-                startДляОбноразвовной=     Calendar.getInstance().getTimeInMillis();
+
             }
+            start=     Calendar.getInstance().getTimeInMillis();
+            startДляОбноразвовной=     Calendar.getInstance().getTimeInMillis();
+            cursorДетализацияМатериала=
+                    МетодПолучениеДанныхДЛяПолучениеМатериалов(
+                            "ПолучениеНомерМатериалаДетализация"
+                            ,ТекущаяЦФО,ТекущаяНомерМатериала);
             Log.d(this.getClass().getName(), "  onViewCreated  FragmentDetailingMaterials  binderДляПолучениеМатериалов  "+binderДляПолучениеМатериалов+
                     " ТекущаяЦФО " +ТекущаяЦФО+ " ТекущаяНомерМатериала "+ТекущаяНомерМатериала+
                     "ВыбранныйМатериал "+ВыбранныйМатериал+"СуммаВыбраногоМатериала "+СуммаВыбраногоМатериала);
@@ -190,32 +195,8 @@ public class FragmentDetailingMaterials extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        try{
-            asyncTaskLoaderДетализация =new AsyncTaskLoader(getContext()) {
-                @Nullable
-                @Override
-                public Object loadInBackground() {
-                    МетодПолучениеДанныхДЛяПолучениеМатериалов("ПолучениеНомерМатериалаДетализация",ТекущаяЦФО,ТекущаяНомерМатериала);
-                    return cursorДетализацияМатериала;
-                }
-            };
-            if (!asyncTaskLoaderДетализация.isStarted()) {
-                asyncTaskLoaderДетализация.startLoading();
-                asyncTaskLoaderДетализация.forceLoad();
-                asyncTaskLoaderДетализация.registerListener(new Random().nextInt(), new Loader.OnLoadCompleteListener() {
-                    @Override
-                    public void onLoadComplete(@NonNull Loader loader, @Nullable Object data) {
-                        if (data!=null) {
-                            asyncTaskLoaderДетализация.reset();
-                            if (data.toString().length()>0) {
-                                onResume();
-                                // TODO: 03.11.2022  после получение данных перересует Экран
-                                МетодДизайнПрограссБара();
-                            }
-                        }
-                    }
-                });
-            }
+        try{// TODO: 03.11.2022  после получение данных перересует Экран
+            МетодДизайнПрограссБара();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -267,14 +248,11 @@ public class FragmentDetailingMaterials extends Fragment {
     //TODO метод делает callback с ответом на экран
     private void МетодПерегрузкаRecyceView() {
         try {
+            bottomNavigationView.refreshDrawableState();
             bottomNavigationView.requestLayout();
             bottomNavigationView.forceLayout();
-            bottomNavigationView.refreshDrawableState();
-            recyclerView.requestLayout();
-            recyclerView.forceLayout();
             recyclerView.refreshDrawableState();
-            linearLayou.requestLayout();
-            linearLayou.forceLayout();
+            recyclerView.requestLayout();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -767,9 +745,10 @@ public class FragmentDetailingMaterials extends Fragment {
     }
 
     // TODO: 02.08.2022
-    protected   void МетодПолучениеДанныхДЛяПолучениеМатериалов(@NonNull String  ФлагКакиеДанныеНужныПолучениеМатериалов
+    protected   Cursor МетодПолучениеДанныхДЛяПолучениеМатериалов(@NonNull String  ФлагКакиеДанныеНужныПолучениеМатериалов
             ,@NonNull Integer ТекущаяЦФО
     , @NonNull Integer ТекущаяНомерМатериала ){
+        Cursor cursorДетализацияМатериала = null;
         try{
             ПубличныйIDДляФрагмента     = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
             Log.d(getContext().getClass().getName(), "\n"
@@ -805,6 +784,7 @@ public class FragmentDetailingMaterials extends Fragment {
                     this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
+        return  cursorДетализацияМатериала;
     }
 
     private void МетодДизайнПрограссБара() {
@@ -913,9 +893,9 @@ public class FragmentDetailingMaterials extends Fragment {
                 Log.i(this.getClass().getName(), "   onBindViewHolder  position" + position +
                         " linkedTransferQueueДетализация " + linkedTransferQueueДетализация+
                         " cursorДетализацияМатериала "+cursorДетализацияМатериала);
-                if (cursorДетализацияМатериала!=null) {
+
                     МетодЗаполняемДаннымиПолучениеМАтериалов(holder,cursorДетализацияМатериала);
-                }
+
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
