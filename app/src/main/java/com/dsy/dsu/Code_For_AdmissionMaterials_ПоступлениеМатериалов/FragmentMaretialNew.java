@@ -1824,16 +1824,14 @@ public class FragmentMaretialNew extends Fragment {
 
     // TODO: 02.08.2022
     void методЗарускОдноразовойСнхрониазцииПослеСозданиеНовгоЗаказа( ){
-        
-        getActivity().getMainExecutor().execute(()->{
             try{
                 Bundle bundleДляПЕредачи=new Bundle();
                 bundleДляПЕредачи.putInt("IDПубличныйНеМойАСкемБылаПереписака", ПубличныйIDДляФрагмента);
                 Intent  intentЗапускОднорworkanager=new Intent();
                 intentЗапускОднорworkanager.putExtras(bundleДляПЕредачи);
+                Class_Generator_One_WORK_MANAGER class_generator_one_work_manager=        new Class_Generator_One_WORK_MANAGER(getContext());
                 // TODO: 02.08.2022
-                new Class_Generator_One_WORK_MANAGER(getContext()).
-                        МетодОдноразовыйЗапускВоерМенеджера(getContext(),intentЗапускОднорworkanager);
+                class_generator_one_work_manager.МетодОдноразовыйЗапускВоерМенеджера(getContext(),intentЗапускОднорworkanager);
                 // TODO: 26.06.2022
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1848,8 +1846,6 @@ public class FragmentMaretialNew extends Fragment {
 
                 // TODO: 11.05.2021 запись ошибок
             }
-        });
-     
     }
     // TODO: 19.10.2022  end
 }

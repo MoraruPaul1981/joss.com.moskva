@@ -83,7 +83,8 @@ public class FragmentAdmissionMaterials extends Fragment {
     private BottomNavigationItemView bottomNavigationItemView3обновить;
     private ProgressBar progressBarСканирование;
     private LayoutAnimationController layoutAnimationController;
-    private Animation animationПолучениеМатериалов;
+    private Animation animation1;
+    private Animation animation2;
     private  Handler handler;
     private  Cursor cursorНомерЦФО;
     private  Cursor cursorНомерМатериала;
@@ -163,10 +164,10 @@ public class FragmentAdmissionMaterials extends Fragment {
             bottomNavigationItemView3обновить.setIconSize(50);
            // animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator1);
            // animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_tabellist);
-            animationПолучениеМатериалов = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row);
             progressBarСканирование=  view.findViewById(R.id.ProgressBar);
             progressBarСканирование.setVisibility(View.VISIBLE);
-
+            animation1 = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_tabellist);
+            animation2 = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_scrolls);
             //todo запуск методов в фрагменте
             МетодИнициализацииRecycreView();
             МетодHandlerCallBack();
@@ -296,7 +297,7 @@ public class FragmentAdmissionMaterials extends Fragment {
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
             linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(linearLayoutManager);
-            recyclerView.startAnimation(animationПолучениеМатериалов);
+            recyclerView.startAnimation(animation1);
 
 
 
@@ -1206,7 +1207,7 @@ public class FragmentAdmissionMaterials extends Fragment {
                 tableLayout.removeView(rowПервыеДанные);
                 rowПервыеДанные.setId(new Random().nextInt());
                 tableLayout.recomputeViewAttributes(rowПервыеДанные);
-                rowПервыеДанные.startAnimation(animationПолучениеМатериалов);
+                rowПервыеДанные.startAnimation(animation1);
                 // TODO: 18.10.2022 добавляем  сами данные
                 МетодДобаленияНовыхСтрокДанных(rowПервыеДанные, tableLayoutРодительская);
                 // TODO: 19.10.2022
@@ -1230,13 +1231,17 @@ public class FragmentAdmissionMaterials extends Fragment {
             rowПервыеДанные.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Bundle bundleПереходДетализацию=(Bundle) v.getTag();
-                    Log.d(this.getClass().getName(), "МетодаКликаПоtableRow v  " + v+ " bundleПереходДетализацию "+bundleПереходДетализацию);
-                    if (bundleПереходДетализацию != null) {
-                        МетодЗапускаАнимацииКнопок((View) rowПервыеДанные);
+
+                    v.startAnimation(animation2);
+                    handler.postDelayed(()->{
+
+                        Bundle bundleПереходДетализацию=(Bundle) v.getTag();
+                        Log.d(this.getClass().getName(), "МетодаКликаПоtableRow v  " + v+ " bundleПереходДетализацию "+bundleПереходДетализацию);
+                        if (bundleПереходДетализацию != null) {
+                            МетодЗапускаАнимацииКнопок((View) rowПервыеДанные);
                             // TODO: 09.11.2022  переходим на детализацию Полученихы Материалов
                             fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                            fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                             Fragment              fragmentAdmissionMaterialsDetailing = new FragmentDetailingMaterials();
                             bundleПереходДетализацию.putBinder("binder",binderДляПолучениеМатериалов);
                             fragmentAdmissionMaterialsDetailing.setArguments(bundleПереходДетализацию);
@@ -1244,8 +1249,12 @@ public class FragmentAdmissionMaterials extends Fragment {
                             fragmentTransaction.commit();
                             fragmentTransaction.show(fragmentAdmissionMaterialsDetailing);
                             Log.d(this.getClass().getName(), " fragmentAdmissionMaterialsDetailing " + fragmentAdmissionMaterialsDetailing);
-                        Log.d(this.getClass().getName(), "  v  " + v);
-                    }
+                            Log.d(this.getClass().getName(), "  v  " + v);
+                        }
+                    },150);
+
+
+
                 }
             });
         } catch (Exception e) {
