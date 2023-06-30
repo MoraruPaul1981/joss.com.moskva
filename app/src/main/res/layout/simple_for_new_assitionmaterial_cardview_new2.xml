@@ -10,12 +10,10 @@
     android:checkable="true"
     android:clickable="false"
     android:focusable="true"
-    app:cardBackgroundColor="#F0FFFF"
+    app:cardBackgroundColor="#FFFFFF"
     app:cardCornerRadius="3dp"
-    android:layout_margin="10dp"
-    android:padding="2dp"
     app:cardElevation="10dp"
-    app:strokeColor="#F5FFFA"
+    app:strokeColor="#FFFFFF"
     app:cardMaxElevation="100dp"
     app:strokeWidth="3dp"
     android:translationZ="150dp"
@@ -27,6 +25,9 @@
        android:id="@+id/scroll_new_assintalmaterial"
        android:layout_width="match_parent"
        android:layout_height="match_parent"
+       android:layout_margin="5dp"
+       android:background="#F0FFFF"
+       android:padding="2dp"
        android:orientation="vertical">
 
       <!--   todo сами элементы начало -->
@@ -37,7 +38,7 @@
         android:layout_height="wrap_content" 
           android:layout_alignParentLeft="true"
           android:layout_marginStart="20dp"
-          android:layout_marginTop="5dp"
+          android:layout_marginTop="20dp"
           android:layout_marginBottom="5dp"
           android:background="@drawable/style_for_assitiionmatrial_create_name"
           android:gravity="center_vertical|center_horizontal"
@@ -415,14 +416,13 @@
           android:visibility="visible" />
 
 
-   <LinearLayout
+   <RelativeLayout
        android:id="@+id/linearlayout2"
        android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:layout_margin="1dp"
+       android:layout_height="45dp"
+       android:layout_margin="10dp"
        android:padding="2dp"
-       android:background="#F0FFFF"
-       android:orientation="vertical">
+       android:background="#F0FFFF">
 
       <!--  todo кнопка для сохранения-->
       <com.google.android.material.button.MaterialButton
@@ -430,7 +430,7 @@
           style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
           android:layout_width="150dp"
           android:layout_height="40dp"
-          android:layout_marginStart="110dp"
+          android:layout_centerInParent="true"
           android:clickable="true"
           android:enabled="true"
           android:focusable="auto"
@@ -449,7 +449,7 @@
           tools:visibility="visible" />
 
 
-   </LinearLayout>
+   </RelativeLayout>
 
    </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

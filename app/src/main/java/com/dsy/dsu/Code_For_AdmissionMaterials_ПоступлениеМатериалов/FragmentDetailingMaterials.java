@@ -1291,8 +1291,6 @@ public class FragmentDetailingMaterials extends Fragment {
                     МетодДобаленияНовыхСтрокДанных(RowData_for_detalisaziy, tableLayoutРодительская);
 
                 }while (cursorДетализацияМатериала.moveToNext());
-// TODO: 29.06.2023 cliear
-                cursorДетализацияМатериала.close();
                 // TODO: 17.04.2023
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

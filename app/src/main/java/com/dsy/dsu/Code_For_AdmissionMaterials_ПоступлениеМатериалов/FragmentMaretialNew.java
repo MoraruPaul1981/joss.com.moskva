@@ -496,6 +496,8 @@ public class FragmentMaretialNew extends Fragment {
             try {
                 Log.d(this.getClass().getName(), " отработоатл new SubClassBuccessLogin_ГлавныйКлассБизнесЛогикиФрагмент1 itemView   " + itemView);
                 textViewcfo=itemView.findViewById(R.id.textViewcfo);
+               TextView   textviewnamecfo=itemView.findViewById(R.id.textviewnamecfo);
+
                 marerialtextgroupmaterial=itemView.findViewById(R.id.marerialtextgroupmaterial);
                 materialtext_onematerial_ves =itemView.findViewById(R.id.materialtext_onematerial_ves);
                 textipputcountassinmaterail = itemView.findViewById(R.id.textipputcountassinmaterail);
@@ -509,19 +511,21 @@ public class FragmentMaretialNew extends Fragment {
                 textviewmaterialttndata = itemView.findViewById(R.id.textviewmaterialttndata);
                 Boolean     ФлагДляСкрытыхМатериалов = preferencesМатериалы.getBoolean("ФлагДляСкрытыхМатериалов",false);
                 LinearLayout.LayoutParams params= null;
-                if (textipputcountassinmaterail!=null) {
-                    params = (LinearLayout.LayoutParams)textipputcountassinmaterail.getLayoutParams();
+                if (textviewnamecfo!=null) {
+                    params = (LinearLayout.LayoutParams)textviewnamecfo.getLayoutParams();
                 }
-   /*             if (ФлагДляСкрытыхМатериалов==true) {
+                if (ФлагДляСкрытыхМатериалов==true) {
                     if (textipputmaretialttn!=null) {
                         textipputmaretialttn.setVisibility(View.VISIBLE);
                         textipputmaretialttdata .setVisibility(View.VISIBLE);
                         textviewmaterialttndata.setVisibility(View.VISIBLE);
                         textviewmaterialttn.setVisibility(View.VISIBLE);
-                        if (params!=null) {
-                            params.setMargins(5,0,5,20);
-                        }
-                        textipputcountassinmaterail.setLayoutParams(params);
+                    }
+                    if (params!=null) {
+                        params.setMargins(0,50,0,0);
+                    }
+                    if (textviewnamecfo!=null) {
+                        textviewnamecfo.setLayoutParams(params);
                     }
                 } else {
                     if (textipputmaretialttn!=null) {
@@ -529,12 +533,14 @@ public class FragmentMaretialNew extends Fragment {
                         textipputmaretialttdata .setVisibility(View.GONE);
                         textviewmaterialttndata.setVisibility(View.GONE);
                         textviewmaterialttn.setVisibility(View.GONE);
-                        if (params!=null) {
-                            params.setMargins(5,0,5,50);
-                        }
-                        textipputcountassinmaterail.setLayoutParams(params);
                     }
-                }*/
+                    if (params!=null) {
+                        params.setMargins(0,150,0,0);
+                    }
+                    if (textviewnamecfo!=null) {
+                        textviewnamecfo.setLayoutParams(params);
+                    }
+                }
                 Log.d(this.getClass().getName(), " cardViewМатериал   " + bottomcreateassionmaterial);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -640,7 +646,7 @@ public class FragmentMaretialNew extends Fragment {
                     viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov, parent, false);//todo old simple_for_takst_cardview1
                     Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
                 }else {
-                    if(CursorДляЦФО !=null){
+                    if(CursorДляЦФО !=null && CursorДляЦФО.getCount()>0 ){
                     viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_new_assitionmaterial_cardview_new2, parent, false);//todo simple_for_new_assitionmaterial_cardview1_test
                     Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
                 } else {
