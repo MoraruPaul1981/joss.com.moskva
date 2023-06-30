@@ -74,10 +74,10 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
     protected void МетодЗапускФрагментаПриемМатериалов() {
         try{
             fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+           // fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             fragment_ДляПолучениеМатериалов = new FragmentAdmissionMaterials();
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            fragmentTransaction.add(R.id.activity_admissionmaterias_mainface, fragment_ДляПолучениеМатериалов);//.layout.activity_for_fragemtb_history_tasks
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragment_ДляПолучениеМатериалов);//.layout.activity_for_fragemtb_history_tasks
             fragmentTransaction.commit();
             fragmentTransaction.show(fragment_ДляПолучениеМатериалов);
             Log.d(this.getClass().getName(), " fragment_ДляПолучениеМатериалов " + fragment_ДляПолучениеМатериалов);

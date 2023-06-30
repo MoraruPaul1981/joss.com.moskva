@@ -38,7 +38,7 @@
         android:layout_height="wrap_content" 
           android:layout_alignParentLeft="true"
           android:layout_marginStart="20dp"
-          android:layout_marginTop="20dp"
+          android:layout_marginTop="30dp"
           android:layout_marginBottom="5dp"
           android:background="@drawable/style_for_assitiionmatrial_create_name"
           android:gravity="center_vertical|center_horizontal"
@@ -420,7 +420,7 @@
        android:id="@+id/linearlayout2"
        android:layout_width="match_parent"
        android:layout_height="45dp"
-       android:layout_margin="40dp"
+       android:layout_margin="30dp"
        android:padding="2dp"
        android:background="#F0FFFF">
 

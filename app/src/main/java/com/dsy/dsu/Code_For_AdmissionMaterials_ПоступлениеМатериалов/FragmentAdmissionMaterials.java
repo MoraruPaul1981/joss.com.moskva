@@ -107,6 +107,8 @@ public class FragmentAdmissionMaterials extends Fragment {
     private  LifecycleOwner lifecycleOwner =this ;
     private LifecycleOwner lifecycleOwnerОбщая =this ;
     private  Cursor cursorНомерЦФО;
+
+    private  ServiceConnection serviceConnectionМатериалы;
     // TODO: 27.09.2022 Фрагмент Получение Материалов
     public FragmentAdmissionMaterials() {
         // Required empty public constructor
@@ -247,6 +249,10 @@ public class FragmentAdmissionMaterials extends Fragment {
             }
             if (cursorСамиДанныеGroupBy !=null) {
                 cursorСамиДанныеGroupBy.close();
+            }
+
+            if (binderДляПолучениеМатериалов != null) {
+                getActivity().unbindService(serviceConnectionМатериалы);
             }
 
             WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая).removeObservers(lifecycleOwnerОбщая);
@@ -403,7 +409,7 @@ public class FragmentAdmissionMaterials extends Fragment {
     protected void МетодЗапускСозданиНовгоМатериалов() {
         try{
             fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+          //  fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             fragment_СозданиеНовогоМатериалов = new FragmentMaretialNew();
             Bundle data=new Bundle();
             data.putBinder("binder",binderДляПолучениеМатериалов);
@@ -1247,11 +1253,10 @@ public class FragmentAdmissionMaterials extends Fragment {
                         if (bundleПереходДетализацию != null) {
                             // TODO: 09.11.2022  переходим на детализацию Полученихы Материалов
                             fragmentTransaction = fragmentManager.beginTransaction();
-                            fragmentTransaction.setCustomAnimations(android.R.anim.slide_out_right,android.R.anim.slide_in_left);
+                         /*   fragmentTransaction.setCustomAnimations(android.R.anim.slide_out_right,android.R.anim.slide_in_left);*/
                             Fragment              fragmentAdmissionMaterialsDetailing = new FragmentDetailingMaterials();
                             bundleПереходДетализацию.putBinder("binder",binderДляПолучениеМатериалов);
                             fragmentAdmissionMaterialsDetailing.setArguments(bundleПереходДетализацию);
-                             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                             fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragmentAdmissionMaterialsDetailing);//.layout.activity_for_fragemtb_history_tasks
                             fragmentTransaction.commit();
                             fragmentTransaction.show(fragmentAdmissionMaterialsDetailing);
@@ -1400,7 +1405,7 @@ public class FragmentAdmissionMaterials extends Fragment {
     }
     private void методБиндингСлужбы() {
         try {
-                    ServiceConnection serviceConnectionМатериалы = new ServiceConnection() {
+                      serviceConnectionМатериалы = new ServiceConnection() {
                         @Override
                         public void onServiceConnected(ComponentName name, IBinder service) {
                             try {
