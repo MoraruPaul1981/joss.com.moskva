@@ -342,7 +342,7 @@
           app:cardElevation="1dp" />
 
 
-      <com.google.android.material.textfield.TextInputEditText
+      <TextView
           android:id="@+id/textipputmaretialttdata"
           style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
           android:layout_width="match_parent"

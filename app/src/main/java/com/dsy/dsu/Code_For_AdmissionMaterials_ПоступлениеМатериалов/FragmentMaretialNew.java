@@ -1,6 +1,7 @@
 package com.dsy.dsu.Code_For_AdmissionMaterials_ПоступлениеМатериалов;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,6 +28,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -61,8 +63,13 @@ import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventList
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
@@ -471,13 +478,14 @@ public class FragmentMaretialNew extends Fragment {
     // TODO: 28.02.2022 начало  MyViewHolderДляЧата
     protected class MyViewHolder extends RecyclerView.ViewHolder {
         private MaterialTextView textViewcfo,marerialtextgroupmaterial,materialtext_onematerial_ves,valueavtomobil,valuekontragent;
-        private TextInputEditText textipputcountassinmaterail,textipputmaretialttn,textipputmaretialttdata;
+        private TextInputEditText textipputcountassinmaterail,textipputmaretialttn;
         private MaterialTextView textviewmaterialttn ,textviewmaterialttndata;
         private MaterialButton bottomcreateassionmaterial;
         private ArrayAdapter<String> АдапетерЦФО;
         private AlertDialog alertDialog;
         private  final ListView[] listViewДляЦФО = new ListView[1];
         private  Cursor cursorДляВсехМатериалов;
+        private  TextView textipputmaretialttdata;
 
         // TODO: 28.10.2022
         public MyViewHolder(@NonNull View itemView) {
@@ -544,6 +552,10 @@ public class FragmentMaretialNew extends Fragment {
                         textviewnamecfo.setLayoutParams(params);
                     }
                 }
+                // TODO: 30.06.2023  слушатель
+                if (textipputmaretialttdata!=null) {
+                    методДатаКликаДляНовогоМатериала(textipputmaretialttdata);
+                }
                 Log.d(this.getClass().getName(), " cardViewМатериал   " + bottomcreateassionmaterial);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -556,6 +568,43 @@ public class FragmentMaretialNew extends Fragment {
             }
         }
     }
+
+    void методДатаКликаДляНовогоМатериала(@NonNull  TextView textipputmaretialttdata){
+  try{
+      textipputmaretialttdata.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              // TODO: 30.06.2023  создание новой даты
+            методGetDateForNewOrder(textipputmaretialttdata);
+              Log.d(this.getClass().getName(), "\n" + " class " +
+                      Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                      " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                      " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+          }
+      });
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(getContext().getClass().getName(),
+                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+
+
+    }
+
+
+
+
+
+
+
+
+
+
     class MyRecycleViewAdapter extends RecyclerView.Adapter<MyViewHolder> {
         private LinkedHashMap<String, Object> cursorConcurrentSkipListMap;
         public MyRecycleViewAdapter(@NotNull LinkedHashMap<String, Object> cursorConcurrentSkipListMap) {
@@ -1847,5 +1896,92 @@ public class FragmentMaretialNew extends Fragment {
                 // TODO: 11.05.2021 запись ошибок
             }
     }
-    // TODO: 19.10.2022  end
+    // TODO: 19.10.2022  Класс ДАты
+
+        void  методGetDateForNewOrder( @NonNull      TextView textipputmaretialttdata){
+            try{
+                final String[] FullNameCFO = new String[1];
+                final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", new Locale("ru"));
+                Calendar newDate = Calendar.getInstance();
+                //TODODATA
+                DatePickerDialog ДатаДляКалендаря =
+                        new DatePickerDialog(getContext(), android.R.style.Theme_Holo_InputMethod , new DatePickerDialog.OnDateSetListener() {////Theme_Holo_Dialog_MinWidth  //Theme_Holo_Panel
+                            public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                newDate.set(year, monthOfYear, dayOfMonth);
+                                try {
+                                    //  String ДатаДляНовогоЗаказаТраспорта= DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(newDate.getTime());
+                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd,MMM yyyy" , new Locale("ru"));
+                                    SimpleDateFormat simpleDateFormatBungle = new SimpleDateFormat("yyyy-MM-dd" , new Locale("ru"));
+                                    Date ДатаВыбранаяПользователь= newDate.getTime();
+                                    // TODO: 09.06.2023
+                                    Calendar myCal = new GregorianCalendar();
+                                    Date ДатаСейчасСитемная= myCal.getTime();
+                                    // TODO: 09.06.2023  проверяем что выбрана дата старше чем сейчас
+                                    if (        ДатаВыбранаяПользователь.after(ДатаСейчасСитемная)) {
+                                        String    ДатаДляНовогоЗаказаТраспорта = simpleDateFormat.format(ДатаВыбранаяПользователь);
+                                        String    ДатаДляНовогоЗаказаТраспортаBungle = simpleDateFormatBungle.format(ДатаВыбранаяПользователь);
+                                        // TODO: 16.05.2023 дата
+                                        методЗаписиНовуюДату(ДатаДляНовогоЗаказаТраспорта, textipputmaretialttdata,ДатаДляНовогоЗаказаТраспортаBungle);
+                                        Log.d(getContext() .getClass().getName(), "\n"
+                                                + " время: " + new Date()+"\n+" +
+                                                " Класс в процессе... " +   getContext().getClass().getName()+"\n"+
+                                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+" ДатаДляНовогоЗаказаТраспорта " +ДатаДляНовогоЗаказаТраспорта);
+                                    }
+
+                                    Log.d(getContext() .getClass().getName(), "\n"
+                                            + " время: " + new Date()+"\n+" +
+                                            " Класс в процессе... " +   getContext().getClass().getName()+"\n"+
+                                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                    new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                }
+                            }
+
+                        }, newDate.get(Calendar.YEAR), newDate.get(Calendar.MONTH), newDate.get(Calendar.DAY_OF_MONTH) +1);
+                ДатаДляКалендаря.setTitle("Календарь");
+                ДатаДляКалендаря.setButton(DatePickerDialog.BUTTON_POSITIVE, "Создать", ДатаДляКалендаря);
+                ДатаДляКалендаря.setButton(DatePickerDialog.BUTTON_NEGATIVE, "Закрыть", ДатаДляКалендаря);
+                if (!ДатаДляКалендаря.isShowing()) {
+                    ДатаДляКалендаря .show();
+                }
+                ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+                ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_NEGATIVE).setBackgroundColor(Color.WHITE);
+                ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_POSITIVE).setBackgroundColor(Color.WHITE);
+                ////
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+
+        }
+
+        private void методЗаписиНовуюДату(String ДатаДляНовогоЗаказаТраспорта,
+                                          @NonNull TextView textipputmaretialttdata,
+                                          @NonNull  String ДатаДляНовогоЗаказаТраспортаBungle) {
+            try{
+                Bundle bundle=new Bundle();
+                bundle.putString("GetDateOrder",ДатаДляНовогоЗаказаТраспортаBungle.trim());
+                textipputmaretialttdata.setTag(bundle);
+                textipputmaretialttdata.setText(ДатаДляНовогоЗаказаТраспорта.toString());
+                textipputmaretialttdata.refreshDrawableState();
+                textipputmaretialttdata.clearFocus();
+                recyclerView.clearFocus();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+
+
 }

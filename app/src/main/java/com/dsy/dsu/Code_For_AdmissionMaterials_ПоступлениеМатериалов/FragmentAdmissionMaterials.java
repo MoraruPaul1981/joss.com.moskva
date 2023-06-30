@@ -106,6 +106,11 @@ public class FragmentAdmissionMaterials extends Fragment {
 
     private AsyncTaskLoader<Cursor> asyncTaskLoaderМатериалы;
 
+    private String ИмяСлужбыСинхронизациОдноразовая="WorkManager Synchronizasiy_Data Disposable";
+    private String ИмяСлужбыСинхронизацииОбщая="WorkManager Synchronizasiy_Data";
+
+    private  LifecycleOwner lifecycleOwner =this ;
+    private LifecycleOwner lifecycleOwnerОбщая =this ;
     // TODO: 27.09.2022 Фрагмент Получение Материалов
     public FragmentAdmissionMaterials() {
         // Required empty public constructor
@@ -115,8 +120,11 @@ public class FragmentAdmissionMaterials extends Fragment {
         try{
             super.onCreate(savedInstanceState);
             // TODO: 27.09.2022  запускаем фрагмент получение материалов
+             lifecycleOwner =this ;
+            lifecycleOwnerОбщая =this ;
             методБиндингСлужбы();
             Log.d(this.getClass().getName(), "  onViewCreated  FragmentAdmissionMaterials  binderДляПолучениеМатериалов  "+binderДляПолучениеМатериалов);
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -172,7 +180,6 @@ public class FragmentAdmissionMaterials extends Fragment {
             МетодИнициализацииRecycreView();
             МетодHandlerCallBack();
             МетодВыходНаAppBack();
-            МетодСоздаенияСлушателяДляПолучениеМатериалаWorkMAnager();
             Log.d(this.getClass().getName(), "  onViewCreated  FragmentAdmissionMaterials  recyclerView  "+recyclerView+
                     " linearLayou "+linearLayou+"  fragmentManager "+fragmentManager);
        start=     Calendar.getInstance().getTimeInMillis();
@@ -246,6 +253,9 @@ public class FragmentAdmissionMaterials extends Fragment {
             if (cursorСамиДанныеGroupBy !=null) {
                 cursorСамиДанныеGroupBy.close();
             }
+
+            WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая).removeObservers(lifecycleOwnerОбщая);
+            WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).removeObservers(lifecycleOwner);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -469,7 +479,7 @@ public class FragmentAdmissionMaterials extends Fragment {
         v.animate().rotationX(-40l);
         handler .postDelayed(()->{
             v.animate().rotationX(0);
-        },300);
+        },150);
     }
     private void МетодКпопкиЗначков( ) {
         try {
@@ -647,10 +657,6 @@ public class FragmentAdmissionMaterials extends Fragment {
     void МетодСоздаенияСлушателяДляПолучениеМатериалаWorkMAnager() throws ExecutionException, InterruptedException {
 // TODO: 11.05.2021 ЗПУСКАЕМ СЛУЖБУ через брдкастер синхронизхации и уведомления
         try {
-            String ИмяСлужбыСинхронизациОдноразовая="WorkManager Synchronizasiy_Data Disposable";
-            String ИмяСлужбыСинхронизацииОбщая="WorkManager Synchronizasiy_Data";
-            LifecycleOwner lifecycleOwner =this ;
-            LifecycleOwner lifecycleOwnerОбщая =this ;
             lifecycleOwner.getLifecycle().addObserver(new LifecycleEventObserver() {
                 @Override
                 public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
@@ -677,13 +683,14 @@ public class FragmentAdmissionMaterials extends Fragment {
                                                0l);
                                long end = Calendar.getInstance().getTimeInMillis();
                                long РазницаВоврмени=end-startДляОбноразвовной;
-                            /*   if (РазницаВоврмени>5000) {
+                               if (РазницаВоврмени>10000) {
                                    if (CallBaskОтWorkManagerОдноразового>0) {
                                        onStart();
                                        onResume();
                                        // TODO: 21.11.2022  запускаем удаление
+                                       WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).removeObservers(lifecycleOwner);
                                    }
-                               }*/
+                               }
                                     }
                                     progressBarСканирование.setVisibility(View.INVISIBLE);
                                 } catch (Exception e) {
@@ -708,10 +715,10 @@ public class FragmentAdmissionMaterials extends Fragment {
                                         Long РелультатОбщеегоWorkMAnger =
                                                 СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getLong("WorkManangerVipolil", 0l);
                                         long РазницаВоврмени=end-start;
-                                      /*  if (РазницаВоврмени>6000) {
+                                        if (РазницаВоврмени>20000) {
                                             onStart();
                                             onResume();
-                                        }*/
+                                        }
                                     }
                                        // WorkManager.getInstance(getContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая).getResult();
                                     progressBarСканирование.setVisibility(View.INVISIBLE);
@@ -1232,28 +1239,29 @@ public class FragmentAdmissionMaterials extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    v.startAnimation(animation2);
-                    handler.postDelayed(()->{
+                    v.animate().rotationX(-40l);
+                    handler .postDelayed(()->{
+                        v.animate().rotationX(0);
+
 
                         Bundle bundleПереходДетализацию=(Bundle) v.getTag();
                         Log.d(this.getClass().getName(), "МетодаКликаПоtableRow v  " + v+ " bundleПереходДетализацию "+bundleПереходДетализацию);
                         if (bundleПереходДетализацию != null) {
-                            МетодЗапускаАнимацииКнопок((View) rowПервыеДанные);
                             // TODO: 09.11.2022  переходим на детализацию Полученихы Материалов
                             fragmentTransaction = fragmentManager.beginTransaction();
-                            fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                            fragmentTransaction.setCustomAnimations(android.R.anim.slide_out_right,android.R.anim.slide_in_left);
                             Fragment              fragmentAdmissionMaterialsDetailing = new FragmentDetailingMaterials();
                             bundleПереходДетализацию.putBinder("binder",binderДляПолучениеМатериалов);
                             fragmentAdmissionMaterialsDetailing.setArguments(bundleПереходДетализацию);
+                             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                             fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragmentAdmissionMaterialsDetailing);//.layout.activity_for_fragemtb_history_tasks
                             fragmentTransaction.commit();
                             fragmentTransaction.show(fragmentAdmissionMaterialsDetailing);
                             Log.d(this.getClass().getName(), " fragmentAdmissionMaterialsDetailing " + fragmentAdmissionMaterialsDetailing);
                             Log.d(this.getClass().getName(), "  v  " + v);
                         }
+
                     },150);
-
-
 
                 }
             });
@@ -1406,7 +1414,12 @@ public class FragmentAdmissionMaterials extends Fragment {
                                             // TODO: 18.04.2023
                                             onStart();
 
-                                    }
+
+
+                                    МетодСоздаенияСлушателяДляПолучениеМатериалаWorkMAnager();
+
+
+                                }
 
                                     Log.d(getContext().getClass().getName(), "\n"
                                             + " время: " + new Date() + "\n+" +
