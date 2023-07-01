@@ -34,7 +34,7 @@ public class SubClassUpVersionDATA {
                 contentValuesДляПоднятияВерсии.put("versionserveraandroid_version", ВерсияДанныхПослеСинхрониазацииДляЗаписи);
 
                 // TODO: 01.07.2023  после выравниванию повышаем Локальную версию
-                contentValuesДляПоднятияВерсии.put("localversionandroid_version", ВерсияДанныхПослеСинхрониазацииДляЗаписи);
+               /// contentValuesДляПоднятияВерсии.put("localversionandroid_version", ВерсияДанныхПослеСинхрониазацииДляЗаписи);
             }
 
             SQLBuilderВерсияДанныхСистемнаяТАблицы.setTables(ТаблицаСистемная);

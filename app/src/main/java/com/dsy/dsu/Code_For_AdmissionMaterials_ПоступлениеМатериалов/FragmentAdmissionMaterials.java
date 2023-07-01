@@ -680,15 +680,15 @@ public class FragmentAdmissionMaterials extends Fragment {
                     workInfos.forEach((СтастусWorkMangerДляФрагментаЧитатьИПисать) -> {
                                 try {
                            if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.SUCCEEDED) == 0)         {
-                               Long CallBaskОтWorkManagerОдноразового =
-                                       СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getLong("ОтветПослеВыполения_MyWork_Async_Синхронизация_Одноразовая",
-                                               0l);
+                               Integer  ReturnWorkManager = СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnSingleAsyncWork", 0);
                                long end = Calendar.getInstance().getTimeInMillis();
                                long РазницаВоврмени=end-startДляОбноразвовной;
                                if (РазницаВоврмени>10000) {
-                                   if (CallBaskОтWorkManagerОдноразового>0) {
+                                   if (ReturnWorkManager>0) {
+                                       методGetCFOCursorFirst("ПолучениеЦФО",0);
+
+                                       // TODO: 18.04.2023
                                        onStart();
-                                       onResume();
                                        // TODO: 21.11.2022  запускаем удаление
                                        WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).removeObservers(lifecycleOwner);
                                    }
@@ -712,15 +712,14 @@ public class FragmentAdmissionMaterials extends Fragment {
                                 try {
                                     if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.RUNNING) != 0) {
                                         long end = Calendar.getInstance().getTimeInMillis();
-                                        Integer CallBaskОтWorkManageОбщая =
-                                                СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnPublicAsyncWorkMananger", 0);
-                                        Long РелультатОбщеегоWorkMAnger =
-                                                СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getLong("WorkManangerVipolil", 0l);
+                                        Integer  ReturnWorkManager = СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnSingleAsyncWork", 0);
                                         long РазницаВоврмени=end-start;
-                                        if (РазницаВоврмени>20000) {
+
+                                            методGetCFOCursorFirst("ПолучениеЦФО",0);
+
+                                            // TODO: 18.04.2023
                                             onStart();
-                                            onResume();
-                                        }
+
                                     }
                                        // WorkManager.getInstance(getContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая).getResult();
                                     progressBarСканирование.setVisibility(View.INVISIBLE);
