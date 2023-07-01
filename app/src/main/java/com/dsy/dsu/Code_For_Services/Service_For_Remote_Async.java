@@ -1076,12 +1076,12 @@ try{
                                 + " ФлагКакуюЧастьСинхронизацииЗапускаем " + ФлагКакуюЧастьСинхронизацииЗапускаем+
                                 "  ДанныеПосылаемНаСервер " +ДанныеПосылаемНаСервер);
 
-                        if(ДанныеПосылаемНаСервер>0 ){
-                            ПубличныйРезультатОтветаОтСерврераУспешно=ДанныеПосылаемНаСервер;///"Серверный"
-                            // TODO: 19.11.2022 ПОДНИМАЕМ ВЕРИСЮ ДАННЫХ
-                          Integer РезультатПовышенииВерсииДанных = subClassUpVersionDATA.МетодVesrionUPMODIFITATION_Client(ИмяТаблицыОтАндройда_Локальноая,context,getССылкаНаСозданнуюБазу());
-                            Log.d(this.getClass().getName(), " РезультатПовышенииВерсииДанных  " + РезультатПовышенииВерсииДанных);
-                        }
+
+                        // TODO: 01.07.2023 После Успешно Посылании Данных На Сервер Повышаем Верисю Данных
+                        методПослеОтпаркиУспешноНаСерверПовышаемВерсию(ВерсияДанныхсСамогоSqlServer,
+                                ИмяТаблицыОтАндройда_Локальноая, subClassUpVersionDATA,
+                                ВерсияДанныхЛокальнаяСерверная, ДанныеПосылаемНаСервер);
+
 
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1134,7 +1134,48 @@ try{
             return  ПубличныйРезультатОтветаОтСерврераУспешно;
         }
 
+        private void методПослеОтпаркиУспешноНаСерверПовышаемВерсию(Long ВерсияДанныхсСамогоSqlServer
+                , String ИмяТаблицыОтАндройда_Локальноая,
+                                                                    SubClassUpVersionDATA subClassUpVersionDATA,
+                                                                    Long ВерсияДанныхЛокальнаяСерверная,
+                                                                    Integer ДанныеПосылаемНаСервер) {
 
+            try{
+            if(ДанныеПосылаемНаСервер >0 ){
+                ПубличныйРезультатОтветаОтСерврераУспешно= ДанныеПосылаемНаСервер;///"Серверный"
+                if (!getССылкаНаСозданнуюБазу().inTransaction()) {
+                    getССылкаНаСозданнуюБазу().beginTransaction();
+                }
+                // TODO: 19.11.2022 ПОДНИМАЕМ ВЕРИСЮ ДАННЫХ
+              Integer РезультатПовышенииВерсииДанных = subClassUpVersionDATA.МетодVesrionUPMODIFITATION_Client(ИмяТаблицыОтАндройда_Локальноая,context,getССылкаНаСозданнуюБазу());
+                Log.d(this.getClass().getName(), " РезультатПовышенииВерсииДанных  " + РезультатПовышенииВерсииДанных);
+
+                if (РезультатПовышенииВерсииДанных>0) {
+                    getССылкаНаСозданнуюБазу().setTransactionSuccessful();
+                }
+
+                if (getССылкаНаСозданнуюБазу().inTransaction()) {
+                    getССылкаНаСозданнуюБазу().endTransaction();
+                }
+
+            }
+
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                    " ВерсияДанныхсСамогоSqlServer  " + ВерсияДанныхсСамогоSqlServer +
+                    "  ВерсияДанныхЛокальнаяСерверная "
+                    + ВерсияДанныхЛокальнаяСерверная
+                    + " ФлагКакуюЧастьСинхронизацииЗапускаем " + ФлагКакуюЧастьСинхронизацииЗапускаем+
+                    "  ДанныеПосылаемНаСервер " + ДанныеПосылаемНаСервер);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        }
 
 
         // TODO: 20.03.2023  метод смены статуса при удаление на СЕРВРЕРЕ

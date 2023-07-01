@@ -1777,7 +1777,6 @@ public class FragmentMaretialNew extends Fragment {
                                 try{
                                     Log.d(this.getClass().getName()," position");
                                     Log.d(this.getClass().getName(),"МетодСозданиеТабеля  v "+v);
-                                    materialTextView.clearFocus();
                                     holder.alertDialog.dismiss();
                                     holder.alertDialog.cancel();
                                 } catch (Exception e) {
@@ -2022,8 +2021,6 @@ public class FragmentMaretialNew extends Fragment {
                 textipputmaretialttdata.setTag(bundle);
                 textipputmaretialttdata.setText(ДатаДляНовогоЗаказаТраспорта.toString());
                 textipputmaretialttdata.refreshDrawableState();
-                textipputmaretialttdata.clearFocus();
-                recyclerView.clearFocus();
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +

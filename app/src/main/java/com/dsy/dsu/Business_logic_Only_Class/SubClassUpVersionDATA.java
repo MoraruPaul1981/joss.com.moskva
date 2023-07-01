@@ -28,9 +28,17 @@ public class SubClassUpVersionDATA {
             ContentValues contentValuesДляПоднятияВерсии = new ContentValues();
 
             contentValuesДляПоднятияВерсии.put("versionserveraandroid", СгенерированованныйДата);
-            contentValuesДляПоднятияВерсии.put("versionserveraandroid_version", ВерсияДанныхПослеСинхрониазацииДляЗаписи);
+
+            if (ВерсияДанныхПослеСинхрониазацииДляЗаписи>0) {
+                // TODO: 01.07.2023  после выравниванию повышаем серверную версию
+                contentValuesДляПоднятияВерсии.put("versionserveraandroid_version", ВерсияДанныхПослеСинхрониазацииДляЗаписи);
+
+                // TODO: 01.07.2023  после выравниванию повышаем Локальную версию
+                contentValuesДляПоднятияВерсии.put("localversionandroid_version", ВерсияДанныхПослеСинхрониазацииДляЗаписи);
+            }
 
             SQLBuilderВерсияДанныхСистемнаяТАблицы.setTables(ТаблицаСистемная);
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 Результат_ПовышенаяВерсия = SQLBuilderВерсияДанныхСистемнаяТАблицы.
                         update(getССылкаНаСозданнуюБазу, contentValuesДляПоднятияВерсии, "name=?", new String[]{Таблица.toLowerCase()});

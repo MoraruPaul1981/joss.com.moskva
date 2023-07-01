@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =             1049;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+     static final int VERSION =             1051;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
     private      SQLiteDatabase ССылкаНаСозданнуюБазу;
     private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
@@ -435,7 +435,13 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
                             " BEGIN " +
                             " UPDATE MODIFITATION_Client SET  localversionandroid_version=(SELECT MAX(current_table) FROM " + НазваниеТаблицыДляТригера + "),localversionandroid= datetime() " +
                             " WHERE name = " + ФиналНазваниеТаблицыДляЗаполения + ";" +
-                            " END ;");//test
+                            " END ;" +
+                            " BEGIN  " +
+                            " UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0' , localversionandroid= datetime() , " +
+                            " versionserveraandroid= datetime()  WHERE name = " + ФиналНазваниеТаблицыДляЗаполения + "" +
+                            " AND (SELECT COUNT(current_table)=0 FROM " + НазваниеТаблицыДляТригера + "   ) " +
+                            "; " +
+                            " END;");//test
                     Log.d(this.getClass().getName(), " сработала ... создание тригера MODIFITATION_Client   TODO UPDATE  ФиналНазваниеТаблицыДляЗаполения " + ФиналНазваниеТаблицыДляЗаполения);
                     //TODO END UPDATE
 
@@ -1222,13 +1228,14 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             
 
             if (newVersion > oldVersion) {
-                if(newVersion ==            1049){
+                if(newVersion ==            1050){
                     //TODO table создание  УСТАНОВКА ВЫБОРОЧНАЯ ПО ТАБЛИЦАМ
                     //МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
                     //МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
                    // МетодСозданияСистемнойТаблицыСФО(ССылкаНаСозданнуюБазу);
-                    МетодСозданиеViewПолученныхМатериалов(ССылкаНаСозданнуюБазу);
-                    МетодСозданиеViewПолученныхМатериаловGroup(ССылкаНаСозданнуюБазу);
+                  /*  МетодСозданиеViewПолученныхМатериалов(ССылкаНаСозданнуюБазу);
+                    МетодСозданиеViewПолученныхМатериаловGroup(ССылкаНаСозданнуюБазу);*/
+                    
                     // TODO: 12.10.2022  создание Trigers
                     МетодСозданиеТрирераМодификаценКлиент(ССылкаНаСозданнуюБазу,ИменаТаблицыОтАндройда);
 

@@ -1034,6 +1034,11 @@ private class SubClassGetDataAdmissionMaterial_Автомобили {
 
                         // TODO: 18.11.2022
                         contentValuesСменыСтатусаВыбраногоМатериала.put("current_table",РезультатУвеличиваемВерсияПолучениеНовогоМатериала);
+
+
+                        String Дата =     new Class_Generation_Data(context).ГлавнаяДатаИВремяОперацийСБазойДанныхДОП();
+                        contentValuesСменыСтатусаВыбраногоМатериала.put("date_update", Дата);
+
                         // TODO: 21.10.2022 САМА ВСТАВКА
                         Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabase/" + НазваниеОбрабоатываемойТаблицы + "");
                         //  Uri uri = Uri.parse("content://MyContentProviderDatabase/" +НазваниеОбрабоатываемойТаблицы + "");
