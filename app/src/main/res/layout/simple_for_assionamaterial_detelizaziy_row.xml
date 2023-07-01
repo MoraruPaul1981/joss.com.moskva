@@ -94,16 +94,14 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textview1Name77"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="25dp"
             android:layout_column="0"
             android:layout_margin="1dp"
             android:text="Тип материала"
-            android:minHeight="25dp"
             android:textColor="#FFFFFF"
             android:background="@drawable/style_forpolymaterialb3"
             android:gravity="center_vertical|center_horizontal"
-            android:minWidth="70dp"
             android:padding="1dp"
             android:textAlignment="gravity"
             android:textSize="11sp"
@@ -112,16 +110,14 @@
 
         <TextView
             android:id="@+id/textviewНазваниеВесовой888"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="25dp"
             android:layout_column="1"
             android:layout_margin="1dp"
             android:background="@drawable/style_forpolymaterialb3"
             android:foregroundGravity="center"
             android:gravity="center"
             android:text="Материал"
-            android:minWidth="70dp"
-            android:minHeight="25dp"
             android:textColor="#FFFFFF"
 
             android:padding="1dp"
@@ -132,16 +128,14 @@
 
         <TextView
             android:id="@+id/textview3Количество444"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="25dp"
             android:layout_column="2"
             android:layout_margin="1dp"
             android:background="@drawable/style_forpolymaterialb3"
             android:gravity="center_vertical|center_horizontal"
-            android:minHeight="25dp"
             android:text="Количество"
             android:textColor="#FFFFFF"
-            android:minWidth="50dp"
             android:padding="1dp"
             android:textAlignment="gravity"
             android:textSize="11sp"
@@ -185,8 +179,7 @@
             android:textColor="#000000"
             android:textSize="12sp"
             android:textStyle="bold"
-            android:padding="1dp"
-            android:lines="2"
+            android:padding="2dp"
             android:visibility="visible" />
 
         <TextView
@@ -204,8 +197,7 @@
             android:textColor="#000000"
             android:textSize="12sp"
             android:textStyle="bold"
-            android:padding="1dp"
-            android:lines="2"
+            android:padding="2dp"
             android:visibility="visible" />
         <TextView
             android:id="@+id/textview_data_det_kilichestvo"
@@ -213,7 +205,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="40dp"
-            android:minWidth="50dp"
+            android:minWidth="70dp"
             android:layout_margin="1dp"
             android:gravity="center_vertical|center_horizontal"
             android:background="@drawable/style_forpolymaterialb_cycle"
@@ -222,8 +214,7 @@
             android:textColor="#000000"
             android:textSize="12sp"
             android:textStyle="bold"
-            android:padding="1dp"
-            android:lines="2"
+            android:padding="2dp"
             android:visibility="visible" />
     </TableRow>
 

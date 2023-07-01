@@ -56,6 +56,7 @@ import com.google.android.material.snackbar.Snackbar;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -95,6 +96,8 @@ public class FragmentDetailingMaterials extends Fragment {
     long start;
     long startДляОбноразвовной;
     private Cursor  cursorДетализацияМатериала;
+
+    private  AsyncTaskLoader asyncTaskLoader;
     // TODO: 27.09.2022 Фрагмент Получение Материалов
     public FragmentDetailingMaterials() {
         // Required empty public constructor
@@ -116,10 +119,7 @@ public class FragmentDetailingMaterials extends Fragment {
             }
             start=     Calendar.getInstance().getTimeInMillis();
             startДляОбноразвовной=     Calendar.getInstance().getTimeInMillis();
-            cursorДетализацияМатериала=
-                    МетодПолучениеДанныхДЛяПолучениеМатериалов(
-                            "ПолучениеНомерМатериалаДетализация"
-                            ,ТекущаяЦФО,ТекущаяНомерМатериала);
+
             Log.d(this.getClass().getName(), "  onViewCreated  FragmentDetailingMaterials  binderДляПолучениеМатериалов  "+binderДляПолучениеМатериалов+
                     " ТекущаяЦФО " +ТекущаяЦФО+ " ТекущаяНомерМатериала "+ТекущаяНомерМатериала+
                     "ВыбранныйМатериал "+ВыбранныйМатериал+"СуммаВыбраногоМатериала "+СуммаВыбраногоМатериала);
@@ -133,6 +133,58 @@ public class FragmentDetailingMaterials extends Fragment {
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
+
+    private void методGetCursorForDetalizaa() {
+        try{
+            if (asyncTaskLoader==null || !asyncTaskLoader.isReset()) {
+                progressBarСканирование.setVisibility(View.VISIBLE);
+                asyncTaskLoader = new AsyncTaskLoader(getContext()) {
+                    @Nullable
+                    @Override
+                    public Object loadInBackground() {
+                        try{
+                        cursorДетализацияМатериала=
+                                МетодПолучениеДанныхДЛяПолучениеМатериалов(
+                                        "ПолучениеНомерМатериалаДетализация"
+                                        ,ТекущаяЦФО,ТекущаяНомерМатериала);
+                        Log.d(this.getClass().getName(), "  onViewCreated  FragmentDetailingMaterials  binderДляПолучениеМатериалов  "+binderДляПолучениеМатериалов+
+                                " ТекущаяЦФО " +ТекущаяЦФО+ " ТекущаяНомерМатериала "+ТекущаяНомерМатериала+
+                                "ВыбранныйМатериал "+ВыбранныйМатериал+"СуммаВыбраногоМатериала "+СуммаВыбраногоМатериала  + " cursorДетализацияМатериала " +cursorДетализацияМатериала);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(getContext().getClass().getName(),
+                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
+                        return new Object();
+                    }
+                };
+                asyncTaskLoader.startLoading();
+                asyncTaskLoader.forceLoad();
+                asyncTaskLoader.registerListener(new Random().nextInt(), new Loader.OnLoadCompleteListener() {
+                    @Override
+                    public void onLoadComplete(@NonNull Loader loader, @Nullable Object data) {
+                        asyncTaskLoader.reset();
+                        onStart();
+                       progressBarСканирование.setVisibility(View.INVISIBLE);
+                    }
+                });
+
+            }
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(getContext().getClass().getName(),
+                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View    view=null;
@@ -173,11 +225,6 @@ public class FragmentDetailingMaterials extends Fragment {
            // bottomNavigationItemView3обновить.setVisibility(View.GONE);
             //todo запуск методов в фрагменте
             МетодИнициализацииRecycreView();
-            МетодHandlerCallBack();
-            МетодВыходНаAppBack();
-            МетодСоздаенияСлушателяДляПолучениеМатериалаWorkMAnager();
-            МетодСлушательКурсора();
-            МетодСлушательRecycleView();//todo создаем слушатель для recycreview для получение материалов
             Log.d(this.getClass().getName(), "  onViewCreated  FragmentDetailingMaterials  recyclerView  "+recyclerView+
                     " linearLayou "+linearLayou+"  fragmentManager "+fragmentManager);
         } catch (Exception e) {
@@ -197,6 +244,15 @@ public class FragmentDetailingMaterials extends Fragment {
         super.onStart();
         try{// TODO: 03.11.2022  после получение данных перересует Экран
             МетодДизайнПрограссБара();
+            МетодКпопкиЗначков(cursorДетализацияМатериала);
+            МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
+            // TODO: 01.07.2023  ДАннеы
+            методGetCursorForDetalizaa();
+            МетодHandlerCallBack();
+            МетодВыходНаAppBack();
+            МетодСоздаенияСлушателяДляПолучениеМатериалаWorkMAnager();
+            МетодСлушательКурсора();
+            МетодСлушательRecycleView();//todo создаем слушатель для recycreview для получение материалов
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -208,23 +264,7 @@ public class FragmentDetailingMaterials extends Fragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        try{
-            МетодКпопкиЗначков(cursorДетализацияМатериала);
-            МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
-            МетодПерегрузкаRecyceView();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(getContext().getClass().getName(),
-                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
+
 
     @Override
     public void onStop() {
@@ -267,10 +307,7 @@ public class FragmentDetailingMaterials extends Fragment {
     // TODO: 04.03.2022 прозвомжность Заполения RecycleView
     void МетодЗаполенияRecycleViewДляЗадач() {
         try {
-            Log.d(this.getClass().getName(), "cursorДетализацияМатериала " + cursorДетализацияМатериала);
-            LinkedTransferQueue<String> linkedTransferQueueДетализация=new LinkedTransferQueue();
-            linkedTransferQueueДетализация.offer("Делаем Детализацию");
-            myRecycleViewAdapter = new MyRecycleViewAdapter(linkedTransferQueueДетализация);
+            myRecycleViewAdapter = new MyRecycleViewAdapter(cursorДетализацияМатериала);
             myRecycleViewAdapter.notifyDataSetChanged();
             recyclerView.setAdapter(myRecycleViewAdapter);
             Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
@@ -656,32 +693,7 @@ public class FragmentDetailingMaterials extends Fragment {
                     }
                 });
 
-                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                        super.onScrollStateChanged(recyclerView, newState);
-                        Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
-                    }
 
-                    @Override
-                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                        super.onScrolled(recyclerView, dx, dy);
-                        Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
-                    }
-                });
-                recyclerView.setRecyclerListener(new RecyclerView.RecyclerListener() {
-                    @Override
-                    public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
-                        Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
-                    }
-                });
-                recyclerView.setOnFlingListener(new RecyclerView.OnFlingListener() {
-                    @Override
-                    public boolean onFling(int velocityX, int velocityY) {
-                        Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
-                        return false;
-                    }
-                });
             }
             //TODO
         } catch (Exception e) {
@@ -881,25 +893,20 @@ public class FragmentDetailingMaterials extends Fragment {
     }
 
     class MyRecycleViewAdapter extends RecyclerView.Adapter<MyViewHolder> {
-        private LinkedTransferQueue<String> linkedTransferQueueДетализация;
-        public MyRecycleViewAdapter(@NotNull LinkedTransferQueue<String> linkedTransferQueueДетализация) {
-            this.linkedTransferQueueДетализация = linkedTransferQueueДетализация;
-            if ( linkedTransferQueueДетализация!=null) {
-                    Log.i(this.getClass().getName(), " linkedTransferQueueДетализация  " + linkedTransferQueueДетализация.peek());
-            }
+        private Cursor  cursorДетализацияМатериала;
+        public MyRecycleViewAdapter(@NotNull Cursor cursorДетализацияМатериала) {
+            this.cursorДетализацияМатериала = cursorДетализацияМатериала;
+
         }
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             try {
                 Log.i(this.getClass().getName(), "   onBindViewHolder  position" + position +
-                        " linkedTransferQueueДетализация " + linkedTransferQueueДетализация+
                         " cursorДетализацияМатериала "+cursorДетализацияМатериала);
-                if(cursorДетализацияМатериала.getCount()>0){
+                if(!asyncTaskLoader.isStarted()){
                     МетодЗаполняемДаннымиПолучениеМАтериалов(holder,cursorДетализацияМатериала);
-
                 }
                 Log.i(this.getClass().getName(), "   onBindViewHolder  position" + position +
-                        " linkedTransferQueueДетализация " + linkedTransferQueueДетализация+
                         " cursorДетализацияМатериала "+cursorДетализацияМатериала);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -973,7 +980,7 @@ public class FragmentDetailingMaterials extends Fragment {
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View viewПолучениеМатериалов = null;
             try {
-                if(cursorДетализацияМатериала==null  ){
+                if(asyncTaskLoader.isStarted()){
                     viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialovdetalizasia, parent, false);//todo old simple_for_takst_cardview1
                     Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов);
                 }else {
@@ -1071,14 +1078,14 @@ public class FragmentDetailingMaterials extends Fragment {
                             if (bundleПереходУдалениеМатериала != null) {
                                 Long UUIDДляУдаления= bundleПереходУдалениеМатериала.getLong("UUIDВыбраныйМатериал",0l);
                                 String Материал= bundleПереходУдалениеМатериала.getString("Материал","");
-                                Float Деньги= bundleПереходУдалениеМатериала.getFloat("Количество",0f);
+                                Integer Количество= bundleПереходУдалениеМатериала.getInt("Количество",0);
                                 bundleПереходУдалениеМатериала.putString("selection","uuid=?");
                                 Log.d(this.getClass().getName(), "  v  " + v+ " UUIDДляУдаления " +UUIDДляУдаления);
                                 Snackbar snackbar = Snackbar.make(v, "Text to display", Snackbar.LENGTH_LONG);
                                 View view = snackbar .getView();
                                 TextView textView = (TextView) view.findViewById(R.id.snackbar_text);
                                 textView.setTextColor(Color.parseColor("#FF4500"));
-                                textView.setText(Материал+" : "+Деньги+"");
+                                textView.setText(Материал+" : "+Количество+"");
                                 snackbar
                                         .setAction("Удалить ? ", new View.OnClickListener() {
                                             @Override
@@ -1092,12 +1099,13 @@ public class FragmentDetailingMaterials extends Fragment {
                                                     Log.d(this.getClass().getName(), "  РезультатСменыСтатусаНАУдалнной  " + РезультатСменыСтатусаНАУдалнной);
                                                     if(РезультатСменыСтатусаНАУдалнной>0){
                                                         // TODO: 01.07.2023  метод после удланеи детализации
-
+                                                       asyncTaskLoader=null;
                                                         методПослеУдаленияЗаписиДетализации();
                                                     }
-
-
-
+                                                    Log.d(getContext().getClass().getName(), "\n"
+                                                            + " время: " + new Date() + "\n+" +
+                                                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " view " +view);
                                                 } catch (Exception e) {
                                                     e.printStackTrace();
                                                     Log.e(getContext().getClass().getName(),
@@ -1137,16 +1145,12 @@ public class FragmentDetailingMaterials extends Fragment {
             // TODO: 01.07.2023  метод после удаление
             try{
 
-            cursorДетализацияМатериала=
-                    МетодПолучениеДанныхДЛяПолучениеМатериалов(
-                            "ПолучениеНомерМатериалаДетализация"
-                            ,ТекущаяЦФО,ТекущаяНомерМатериала);
+                методGetCursorForDetalizaa();
 
-
-            recyclerView.getAdapter().createViewHolder(container,1);
-            recyclerView.getAdapter().notifyDataSetChanged();
-            recyclerView.refreshDrawableState();
-            recyclerView.requestLayout();
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " cursorДетализацияМатериала " +cursorДетализацияМатериала);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -1363,6 +1367,7 @@ public class FragmentDetailingMaterials extends Fragment {
         }
         @Override
         public int getItemCount() {
+            Integer getCountRow=1;
             try {
                 Log.d(this.getClass().getName(), "sqLiteCursor.getCount()  ");
             } catch (Exception e) {
@@ -1374,7 +1379,7 @@ public class FragmentDetailingMaterials extends Fragment {
                         this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
-            return linkedTransferQueueДетализация.size();
+            return getCountRow;
         }
     }
 
