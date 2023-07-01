@@ -843,7 +843,7 @@ private class SubClassGetDataAdmissionMaterial_Автомобили {
                      contentValuesСозданиеНовогоМатериала.put("cfo", data.getInt("cfo"));
                      contentValuesСозданиеНовогоМатериала.put("type_material", data.getInt("type_material"));
                      contentValuesСозданиеНовогоМатериала.put("nomen_vesov", data.getInt("nomen_vesov"));
-                     contentValuesСозданиеНовогоМатериала.put("count", data.getFloat("count"));
+                     contentValuesСозданиеНовогоМатериала.put("count", data.getInt("count"));
                      contentValuesСозданиеНовогоМатериала.put("ttn", data.getString("ttn"));
                      contentValuesСозданиеНовогоМатериала.put("datattn", data.getString("datattn"));
                      Integer  ПубличныйIDДляФрагмента = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(context);

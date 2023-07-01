@@ -271,6 +271,7 @@ public class FragmentDetailingMaterials extends Fragment {
             LinkedTransferQueue<String> linkedTransferQueueДетализация=new LinkedTransferQueue();
             linkedTransferQueueДетализация.offer("Делаем Детализацию");
             myRecycleViewAdapter = new MyRecycleViewAdapter(linkedTransferQueueДетализация);
+            myRecycleViewAdapter.notifyDataSetChanged();
             recyclerView.setAdapter(myRecycleViewAdapter);
             Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
         } catch (Exception e) {
@@ -893,9 +894,13 @@ public class FragmentDetailingMaterials extends Fragment {
                 Log.i(this.getClass().getName(), "   onBindViewHolder  position" + position +
                         " linkedTransferQueueДетализация " + linkedTransferQueueДетализация+
                         " cursorДетализацияМатериала "+cursorДетализацияМатериала);
-
+                if(cursorДетализацияМатериала.getCount()>0){
                     МетодЗаполняемДаннымиПолучениеМАтериалов(holder,cursorДетализацияМатериала);
 
+                }
+                Log.i(this.getClass().getName(), "   onBindViewHolder  position" + position +
+                        " linkedTransferQueueДетализация " + linkedTransferQueueДетализация+
+                        " cursorДетализацияМатериала "+cursorДетализацияМатериала);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -968,14 +973,14 @@ public class FragmentDetailingMaterials extends Fragment {
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View viewПолучениеМатериалов = null;
             try {
-                if(cursorДетализацияМатериала==null){
+                if(cursorДетализацияМатериала==null  ){
                     viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialovdetalizasia, parent, false);//todo old simple_for_takst_cardview1
                     Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов);
                 }else {
-                    if (cursorДетализацияМатериала.getCount() > 0 && cursorДетализацияМатериала.isClosed()==false ) {
+                    if (cursorДетализацияМатериала.getCount() > 0 ) {
                         viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_assionamaterial_detalizay, parent, false);//todo old  simple_for_assionamaterial
                         Log.i(this.getClass().getName(), "   viewПолучениеМатериалов" + viewПолучениеМатериалов+ "  cursorДетализацияМатериала.getCount()  " + cursorДетализацияМатериала.getCount());
-                    } else {
+                    } else  if ( cursorДетализацияМатериала.getCount()==-0 ){
                         viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_isnull_actimavmaretisldetalizasia, parent, false);//todo old simple_for_takst_cardview1
                         Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов+ "  cursorДетализацияМатериала.getCount()  " + cursorДетализацияМатериала.getCount() );
                     }
@@ -1026,7 +1031,7 @@ public class FragmentDetailingMaterials extends Fragment {
                     // TODO: 18.10.2022 Добавяем Названием Столбиков
                     МетодНазваниеСтолбиковДетализация(tableLayoutРодительская);
                     // TODO: 18.10.2022 Добавяем Данные
-                    МетодДанныеМатериалДетализация(tableLayoutРодительская,cursorДетализацияМатериала);
+                    МетодДанныеМатериалДетализация(tableLayoutРодительская );
 
                 }
                 // TODO: 17.04.2023
@@ -1055,54 +1060,66 @@ public class FragmentDetailingMaterials extends Fragment {
                 rowПервыеДанные.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Bundle bundleПереходУдалениеМатериала=(Bundle) v.getTag();
-                        Log.d(this.getClass().getName(), "МетодаКликаУдаленияМатериалаПоtableRow v  " + v+ " bundleПереходУдалениеМатериала "
-                                +bundleПереходУдалениеМатериала);
-                        if (bundleПереходУдалениеМатериала != null) {
-                        Long UUIDДляУдаления= bundleПереходУдалениеМатериала.getLong("UUIDВыбраныйМатериал",0l);
-                        String Материал= bundleПереходУдалениеМатериала.getString("Материал","");
-                        Float Деньги= bundleПереходУдалениеМатериала.getFloat("Деньги",0f);
-                            bundleПереходУдалениеМатериала.putString("selection","uuid=?");
-                            Log.d(this.getClass().getName(), "  v  " + v+ " UUIDДляУдаления " +UUIDДляУдаления);
-                            Snackbar snackbar = Snackbar.make(v, "Text to display", Snackbar.LENGTH_LONG);
-                            View view = snackbar .getView();
-                            TextView textView = (TextView) view.findViewById(R.id.snackbar_text);
-                            textView.setTextColor(Color.parseColor("#FF4500"));
-                            textView.setText(Материал+" : "+Деньги+"");
-                            snackbar
-                                    .setAction("Удалить ? ", new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            try{
-                                                progressBarСканирование.setVisibility(View.VISIBLE);
+                        progressBarСканирование.setVisibility(View.VISIBLE);
+                        v.animate().rotationX(-60l);
+                        handler .postDelayed(()->{
+                            v.animate().rotationX(0);
+                            // TODO: 01.07.2023 удаление
+                            Bundle bundleПереходУдалениеМатериала=(Bundle) v.getTag();
+                            Log.d(this.getClass().getName(), "МетодаКликаУдаленияМатериалаПоtableRow v  " + v+ " bundleПереходУдалениеМатериала "
+                                    +bundleПереходУдалениеМатериала);
+                            if (bundleПереходУдалениеМатериала != null) {
+                                Long UUIDДляУдаления= bundleПереходУдалениеМатериала.getLong("UUIDВыбраныйМатериал",0l);
+                                String Материал= bundleПереходУдалениеМатериала.getString("Материал","");
+                                Float Деньги= bundleПереходУдалениеМатериала.getFloat("Количество",0f);
+                                bundleПереходУдалениеМатериала.putString("selection","uuid=?");
+                                Log.d(this.getClass().getName(), "  v  " + v+ " UUIDДляУдаления " +UUIDДляУдаления);
+                                Snackbar snackbar = Snackbar.make(v, "Text to display", Snackbar.LENGTH_LONG);
+                                View view = snackbar .getView();
+                                TextView textView = (TextView) view.findViewById(R.id.snackbar_text);
+                                textView.setTextColor(Color.parseColor("#FF4500"));
+                                textView.setText(Материал+" : "+Деньги+"");
+                                snackbar
+                                        .setAction("Удалить ? ", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                try{
+
                                                     Intent intentДляУдалениеМатериалов=new Intent("УдалениеВыбранныеМатериалыДетализации");
                                                     intentДляУдалениеМатериалов.putExtras(bundleПереходУдалениеМатериала);
                                                     Log.d(this.getClass().getName(), "  v  " + v+ " UUIDДляУдаления " +UUIDДляУдаления);
                                                     Integer РезультатСменыСтатусаНАУдалнной=    binderДляПолучениеМатериалов.getService().МетодCлужбыУдалениеМатериалов(getContext(),intentДляУдалениеМатериалов);
                                                     Log.d(this.getClass().getName(), "  РезультатСменыСтатусаНАУдалнной  " + РезультатСменыСтатусаНАУдалнной);
                                                     if(РезультатСменыСтатусаНАУдалнной>0){
-                                                        recyclerView.getAdapter().notifyItemRemoved(myViewHolder.getAdapterPosition());
-                                                        onStart();
-                                                        onResume();
+                                                        // TODO: 01.07.2023  метод после удланеи детализации
+
+                                                        методПослеУдаленияЗаписиДетализации();
                                                     }
-                                                handler.postDelayed(()->{
-                                                    progressBarСканирование.setVisibility(View.INVISIBLE);
-                                                },200);
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                            Log.e(getContext().getClass().getName(),
-                                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                        }
-                                        }
-                                    }).setActionTextColor(Color.WHITE)
-                                    .setTextColor(Color.GRAY)
-                                    .setDuration(3000)
-                                    .show();
-                        }
+
+
+
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                    Log.e(getContext().getClass().getName(),
+                                                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                                    new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                                }
+                                            }
+                                        }).setActionTextColor(Color.WHITE)
+                                        .setTextColor(Color.GRAY)
+                                        .setDuration(3000)
+                                        .show();
+                            }
+
+
+                            progressBarСканирование.setVisibility(View.INVISIBLE);
+                        },150);
+
+
+
                     }
                 });
             } catch (Exception e) {
@@ -1115,6 +1132,32 @@ public class FragmentDetailingMaterials extends Fragment {
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
+
+        private void методПослеУдаленияЗаписиДетализации() {
+            // TODO: 01.07.2023  метод после удаление
+            try{
+
+            cursorДетализацияМатериала=
+                    МетодПолучениеДанныхДЛяПолучениеМатериалов(
+                            "ПолучениеНомерМатериалаДетализация"
+                            ,ТекущаяЦФО,ТекущаяНомерМатериала);
+
+
+            recyclerView.getAdapter().createViewHolder(container,1);
+            recyclerView.getAdapter().notifyDataSetChanged();
+            recyclerView.refreshDrawableState();
+            recyclerView.requestLayout();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(getContext().getClass().getName(),
+                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        }
+
         // TODO: 08.11.2022 метод редактирование
         private void МетодаКликаРедактированиеМатериалаПоtableRow(TableRow rowПервыеДанные) {
             try{
@@ -1127,7 +1170,7 @@ public class FragmentDetailingMaterials extends Fragment {
                         if (bundleПереходУдалениеМатериала != null) {
                             Long UUIDДляУдаления= bundleПереходУдалениеМатериала.getLong("UUIDВыбраныйМатериал",0l);
                             String Материал= bundleПереходУдалениеМатериала.getString("Материал","");
-                            Float Деньги= bundleПереходУдалениеМатериала.getFloat("Деньги",0f);
+                            Float Деньги= bundleПереходУдалениеМатериала.getFloat("Количество",0f);
                             Log.d(this.getClass().getName(), "  v  " + v+ " UUIDДляУдаления " +UUIDДляУдаления);
                             Snackbar snackbar = Snackbar.make(v, "Text to display", Snackbar.LENGTH_LONG);
                             View view = snackbar .getView();
@@ -1238,7 +1281,7 @@ public class FragmentDetailingMaterials extends Fragment {
             }
         }
 
-        private void МетодДанныеМатериалДетализация(@NonNull TableLayout tableLayoutРодительская, @NonNull Cursor cursorДетализацияМатериала) {
+        private void МетодДанныеМатериалДетализация(@NonNull TableLayout tableLayoutРодительская ) {
             try{
                 do{
                     TableRow RowData_for_detalisaziy = методGetDataTableRow();
@@ -1345,7 +1388,7 @@ public class FragmentDetailingMaterials extends Fragment {
         bundleДанныеДляСтрочки.putLong("UUIDВыбраныйМатериал",UUIDВыбраныйМатериал);
         bundleДанныеДляСтрочки.putString("Материал", nomenvesovДетадизации);
         bundleДанныеДляСтрочки.putString("Тип", типДеталиазции);
-        bundleДанныеДляСтрочки.putFloat("Деньги", КоличествоДетадизации);
+        bundleДанныеДляСтрочки.putInt("Количество", КоличествоДетадизации);
         RowData_for_detalisaziy.setTag(bundleДанныеДляСтрочки);
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

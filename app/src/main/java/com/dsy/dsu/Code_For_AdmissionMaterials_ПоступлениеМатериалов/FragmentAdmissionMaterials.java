@@ -250,7 +250,6 @@ public class FragmentAdmissionMaterials extends Fragment {
             if (cursorСамиДанныеGroupBy !=null) {
                 cursorСамиДанныеGroupBy.close();
             }
-
             if (binderДляПолучениеМатериалов != null) {
                 getActivity().unbindService(serviceConnectionМатериалы);
             }
@@ -359,7 +358,9 @@ public class FragmentAdmissionMaterials extends Fragment {
                 public void onClick(View v) {
                     try {
                         МетодЗапускаАнимацииКнопок(v);
-                        handler.postDelayed(()->{ МетодЗапускСозданиНовгоМатериалов();},500);
+                        handler.postDelayed(()->{
+                            МетодЗапускСозданиНовгоМатериалов()
+                            ;},150);
                         Log.d(this.getClass().getName(), "  v  " + v);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -409,7 +410,7 @@ public class FragmentAdmissionMaterials extends Fragment {
     protected void МетодЗапускСозданиНовгоМатериалов() {
         try{
             fragmentTransaction = fragmentManager.beginTransaction();
-          //  fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            //fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
             fragment_СозданиеНовогоМатериалов = new FragmentMaretialNew();
             Bundle data=new Bundle();
             data.putBinder("binder",binderДляПолучениеМатериалов);
@@ -1195,9 +1196,9 @@ public class FragmentAdmissionMaterials extends Fragment {
                 TextView textView2=  rowПервыеДанные.findViewById(R.id.textview2);
                 String Весовая= Optional.ofNullable(cursorСамиДанныеGroupBy.getString(cursorСамиДанныеGroupBy.getColumnIndex("nomenvesov"))).orElse("");
                 textView2.setText(Весовая.trim());
-                Float Сумма= Optional.ofNullable(cursorСамиДанныеGroupBy.getFloat(cursorСамиДанныеGroupBy.getColumnIndex("moneys"))).orElse(0f);
+                Integer Количество= Optional.ofNullable(cursorСамиДанныеGroupBy.getInt(cursorСамиДанныеGroupBy.getColumnIndex("moneys"))).orElse(0);
                 TextView textView3=  rowПервыеДанные.findViewById(R.id.textview3);
-                textView3.setText(Сумма.toString());
+                textView3.setText(Количество.toString());
                 // TODO: 08.11.2022  заполеним данными Строчку ДляДальнейшего Использование
                 Bundle data=new Bundle();
                 data.putString("Материал",Материал);
@@ -1209,7 +1210,7 @@ public class FragmentAdmissionMaterials extends Fragment {
                 String ВыбранныйМатериал=
                         Optional.ofNullable(cursorСамиДанныеGroupBy.getString(cursorСамиДанныеGroupBy.getColumnIndex("nomenvesov"))).orElse("");
                 data.putString("ВыбранныйМатериал",ВыбранныйМатериал);
-                data.putFloat("Сумма",Сумма);
+                data.putInt("Сумма",Количество);
                 rowПервыеДанные.setTag(data);
 
                 // TODO: 06.11.2022 удаление
