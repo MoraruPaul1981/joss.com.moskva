@@ -161,7 +161,7 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
 
 
             BottomNavigationOrderTransport.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED);
-            bottomNavigationItemViewвыход.setIconSize(70);
+            bottomNavigationItemViewвыход.setIconSize(50);
 
 
 
@@ -983,12 +983,7 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
                             "  strftime('%Y', dateorders)  AS Year, strftime('%m', dateorders)  AS Month," +
                             " strftime('%d', dateorders)  AS Day, COUNT(*) AS getcounts" +
                             "  FROM  view_ordertransport ");
-                    datasendMap.putIfAbsent("2"," WHERE dateorders  IS NOT NULL " +
-                            " AND    date(dateorders) >=" +
-                            " date('"+linkedHashMapДеньМесяцГод.get("Год")+"-"+
-                            linkedHashMapДеньМесяцГод.get("Месяц")+"-"
-                            +linkedHashMapДеньМесяцГод.get("День")+"') AND status!='5'  "
-                            +"  ");
+                    datasendMap.putIfAbsent("2"," WHERE dateorders  IS NOT NULL ");
                     datasendMap.putIfAbsent("3"," GROUP BY strftime('%Y', dateorders)  ," +
                             " strftime('%m', dateorders)   ," +
                             " strftime('%d', dateorders) ," +
@@ -2699,11 +2694,11 @@ class SubClassGetDateOrderGroupBy {
             try {
                 if (myRecycleViewAdapter.cursor!=null && myRecycleViewAdapter.cursor.getCount()> 0 && myRecycleViewAdapter.cursor.isClosed()==false) {
                         Log.d(this.getClass().getName(), "  myRecycleViewAdapter.cursor" + myRecycleViewAdapter.cursor.getCount());
-                        BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setNumber( myRecycleViewAdapter.cursor.getCount());//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
-                        BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.parseColor("#15958A"));
+                        BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_lback).setNumber( myRecycleViewAdapter.cursor.getCount());//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
+                        BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_lback).setBackgroundColor(Color.parseColor("#15958A"));
                 }else {
-                    BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
-                    BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.RED);
+                    BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_lback).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
+                    BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_lback).setBackgroundColor(Color.RED);
                 }
                 //TODO
                 Log.d(getContext().getClass().getName(), "\n"
