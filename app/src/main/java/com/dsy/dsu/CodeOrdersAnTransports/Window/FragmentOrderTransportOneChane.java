@@ -304,6 +304,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
             subClassOrdersTransport. МетодСлушательRecycleView();
             subClassOrdersTransport.  МетодСлушательКурсора();
             subClassOrdersTransport.    МетодКпопкиЗначков();
+            subClassOrdersTransport.    методИсторияFragment( );
             subClassOrdersTransport. МетодПерегрузкаRecyceView();
             // TODO: 12.05.2023 слушатель
             subClassOrdersTransport.методСлушателяWorkManagerОбщая(lifecycleOwnerОбщая);
@@ -2801,7 +2802,47 @@ class SubClassGetDateOrderGroupBy {
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
+// TODO: 02.07.2023 история
+private void методИсторияFragment( ) {
+    try {
+        bottomNavigationItemView4История.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                fragmentManager.clearBackStack(null);
+                fragmentTransaction = fragmentManager.beginTransaction();
+                //  fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                fragmentNewЗаказТранспорта = new FragmentOrderTransportOneChaneStory();
+                Bundle bundleNewOrderTransport=new Bundle();
+                bundleNewOrderTransport.putBinder("binder", (ServiceOrserTransportService.  LocalBinderOrderTransport) localBinderOrderTransport);
+                bundleNewOrderTransport.putInt("isalive",1);
+                fragmentNewЗаказТранспорта.setArguments(bundleNewOrderTransport);
+                fragmentTransaction.remove(fragmentManager.getFragments().get(0));
+                fragmentTransaction.replace(R.id.linearLayout_root_activity_main, fragmentNewЗаказТранспорта).setReorderingAllowed(true).commit();//.layout.activity_for_fragemtb_history_tasks
+                fragmentTransaction.show(fragmentNewЗаказТранспорта);
+                linearLayout_orders_transport.refreshDrawableState();
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+ " myRecycleViewAdapter.cursor " +myRecycleViewAdapter.cursor);
+            }
+        });
+        //TODO
+        Log.d(getContext().getClass().getName(), "\n"
+                + " время: " + new Date() + "\n+" +
+                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+ " myRecycleViewAdapter.cursor " +myRecycleViewAdapter.cursor);
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(getContext().getClass().getName(),
+                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+}
 
 
 // TODO: 28.04.2023  КОНЕЦ SubClassNewOrderTranport           //// TODO: 28.04.2023  КОНЕЦ SubClassNewOrderTranport   //// TODO: 28.04.2023  КОНЕЦ SubClassNewOrderTranport

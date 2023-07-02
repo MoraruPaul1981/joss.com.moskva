@@ -85,8 +85,6 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
     LinearLayout linearLayout_orders_transport;
     private BottomNavigationView BottomNavigationOrderTransport;
     private BottomNavigationItemView bottomNavigationItemViewвыход;
-    private BottomNavigationItemView bottomNavigationItemView2создать;
-    private BottomNavigationItemView bottomNavigationItemView3обновить;
     private ProgressBar progressBarСканирование;
 
     private FragmentManager fragmentManager;
@@ -161,18 +159,15 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
             // TODO: 01.05.2023  Кнопки
             BottomNavigationOrderTransport=  (BottomNavigationView) view. findViewById(R.id.BottomNavigationOrderTransport);
             bottomNavigationItemViewвыход = BottomNavigationOrderTransport.findViewById(R.id.id_lback);
-            bottomNavigationItemView2создать = BottomNavigationOrderTransport.findViewById(R.id.id_create);
-            bottomNavigationItemView3обновить = BottomNavigationOrderTransport.findViewById(R.id.id_async);
+
 
             BottomNavigationOrderTransport.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED);
-            bottomNavigationItemViewвыход.setIconSize(50);
-            bottomNavigationItemView2создать.setIconSize(70);
-            bottomNavigationItemView3обновить.setIconSize(50);
+            bottomNavigationItemViewвыход.setIconSize(70);
+
 
 
             bottomNavigationItemViewвыход.setVisibility(View.VISIBLE);
-            bottomNavigationItemView2создать.setVisibility(View.VISIBLE);
-            bottomNavigationItemView3обновить.setVisibility(View.VISIBLE);
+
 
             progressBarСканирование=  (ProgressBar)  view. findViewById(R.id.ProgressBar);
             progressBarСканирование.setVisibility(View.VISIBLE);
@@ -502,7 +497,7 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
                         try {
                             МетодЗапускаАнимацииКнопок(v);//todo только анимауия
 
-                            методBackActivityOrderTranport();
+                            методВозращениеBAck();
                             Log.i(this.getClass().getName(),  " Атоманически установкаОбновление ПО "+
                                     Thread.currentThread().getStackTrace()[2].getMethodName()+
                                     " время " +new Date().toLocaleString() + " message " +message );
@@ -517,54 +512,7 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
                         }
                     }
                 });
-                bottomNavigationItemView2создать.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        try {
-                            МетодЗапускаАнимацииКнопок(v);
-                            message.getTarget().postDelayed(()->{ методNewOrderTransport();},500);
-                            Log.d(this.getClass().getName(), "  v  " + v);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(getContext().getClass().getName(),
-                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    }
-                });
-                bottomNavigationItemView3обновить.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        try {
-                        message.getTarget().post(()->{
-                        // TODO: 12.05.2023 слушатель
-                            subClassOrdersTransport.
-                                    методСлушателяWorkManagerОдноразовая(lifecycleOwnerОдноразовая);
-                            progressBarСканирование.setVisibility(View.VISIBLE);
-                            МетодЗапускаАнимацииКнопок(v);
 
-                            Integer ПубличныйIDДляФрагмента =
-                                    new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
-                            // TODO: 16.11.2022  запуск синхронизации однорозовая
-                            методЗапускаSingleWorkManager(ПубличныйIDДляФрагмента);
-
-
-                        });
-                            Log.d(this.getClass().getName(), "  v  " + v);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(getContext().getClass().getName(),
-                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    }
-                });
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -578,28 +526,6 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
 
         }
 
-        private void методBackActivityOrderTranport( ) {
-           try{
-            Intent Интент_BackВозвращаемАктивти = getActivity().getIntent();
-            Интент_BackВозвращаемАктивти.setClass(getContext(), MainActivity_Face_App.class); // Т
-            Интент_BackВозвращаемАктивти.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(Интент_BackВозвращаемАктивти);
-               Log.i(this.getClass().getName(),  " Атоманически установкаОбновление ПО "+
-                       Thread.currentThread().getStackTrace()[2].getMethodName()+
-                       " время " +new Date().toLocaleString() + " message " +message );
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(getContext().getClass().getName(),
-                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-
-    }
-
-        // TODO: 28.04.2023
         // TODO: 18.10.2021  слушатель  work manager #1
         @SuppressLint("FragmentLiveDataObserve")
         void методСлушателяWorkManagerОдноразовая(@NonNull  LifecycleOwner lifecycleOwnerSingle ) {
@@ -826,7 +752,7 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
         }
 
 
-        protected void методNewOrderTransport() {
+        protected void методВозращениеBAck() {
             try{
                 fragmentManager.clearBackStack(null);
                 fragmentTransaction = fragmentManager.beginTransaction();
@@ -2319,7 +2245,7 @@ class SubClassGetDateOrderGroupBy {
                                     // TODO: 23.05.2023  програсс бар
                                     методГазимПрогрессаБар();
                                 } else {
-                                    viewЗаказыТраспорта = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_isnull_ordertransport, parent, false);//todo old simple_for_takst_cardview1
+                                    viewЗаказыТраспорта = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_isnull_ordertransport_history, parent, false);//todo old simple_for_takst_cardview1
                                     Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewЗаказыТраспорта+ "  sqLiteCursor.getCount()  " + cursor.getCount() );
                                     // TODO: 29.05.2023
                                     // TODO: 23.05.2023  програсс бар
