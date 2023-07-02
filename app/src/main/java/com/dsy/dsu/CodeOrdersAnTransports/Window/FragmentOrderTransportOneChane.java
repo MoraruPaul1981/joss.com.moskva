@@ -90,6 +90,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
     private BottomNavigationItemView bottomNavigationItemViewвыход;
     private BottomNavigationItemView bottomNavigationItemView2создать;
     private BottomNavigationItemView bottomNavigationItemView3обновить;
+    private BottomNavigationItemView bottomNavigationItemView4История;
     private ProgressBar progressBarСканирование;
 
     private FragmentManager fragmentManager;
@@ -121,6 +122,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
     private ScrollView scrollview_OrderTransport;
     private   LinearLayoutManager linearLayoutManager;
+    private  Class_Generator_One_WORK_MANAGER class_generator_one_work_manager;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         try{
@@ -139,6 +141,8 @@ public class FragmentOrderTransportOneChane extends Fragment {
             ПубличныйID = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
 
             subClassOrdersTransport.   МетодHandlerCallBack();
+
+            class_generator_one_work_manager = new Class_Generator_One_WORK_MANAGER(getActivity());
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -166,16 +170,20 @@ public class FragmentOrderTransportOneChane extends Fragment {
             bottomNavigationItemViewвыход = BottomNavigationOrderTransport.findViewById(R.id.id_lback);
             bottomNavigationItemView2создать = BottomNavigationOrderTransport.findViewById(R.id.id_create);
             bottomNavigationItemView3обновить = BottomNavigationOrderTransport.findViewById(R.id.id_async);
+            bottomNavigationItemView4История = BottomNavigationOrderTransport.findViewById(R.id.id_story);
 
             BottomNavigationOrderTransport.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED);
+
             bottomNavigationItemViewвыход.setIconSize(50);
-            bottomNavigationItemView2создать.setIconSize(70);
+            bottomNavigationItemView2создать.setIconSize(50);
             bottomNavigationItemView3обновить.setIconSize(50);
+            bottomNavigationItemView4История.setIconSize(50);
 
 
             bottomNavigationItemViewвыход.setVisibility(View.VISIBLE);
             bottomNavigationItemView2создать.setVisibility(View.VISIBLE);
             bottomNavigationItemView3обновить.setVisibility(View.VISIBLE);
+            bottomNavigationItemView4История.setVisibility(View.VISIBLE);
 
             progressBarСканирование=  (ProgressBar)  view. findViewById(R.id.ProgressBar);
             progressBarСканирование.setVisibility(View.VISIBLE);
@@ -835,7 +843,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 fragmentTransaction = fragmentManager.beginTransaction();
               //  fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                fragmentNewЗаказТранспорта = new FragmentNewOrderTransport();
+                fragmentNewЗаказТранспорта = new FragmentOrderTransportOneChane();
                 Bundle bundleNewOrderTransport=new Bundle();
                 bundleNewOrderTransport.putBinder("binder", (ServiceOrserTransportService.  LocalBinderOrderTransport) localBinderOrderTransport);
                 bundleNewOrderTransport.putInt("isalive",1);
@@ -872,8 +880,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 Intent  intentЗапускОднорworkanager=new Intent();
                 intentЗапускОднорworkanager.putExtras(bundleДляПЕредачи);
                 // TODO: 02.08.2022
-                new Class_Generator_One_WORK_MANAGER(getActivity()).
-                        МетодОдноразовыйЗапускВоерМенеджера(getContext(),intentЗапускОднорworkanager);
+                class_generator_one_work_manager .МетодОдноразовыйЗапускВоерМенеджера(getContext(),intentЗапускОднорworkanager);
                 // TODO: 26.06.2022
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

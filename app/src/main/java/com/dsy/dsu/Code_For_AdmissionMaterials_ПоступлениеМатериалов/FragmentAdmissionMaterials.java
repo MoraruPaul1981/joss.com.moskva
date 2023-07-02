@@ -97,7 +97,7 @@ public class FragmentAdmissionMaterials extends Fragment {
     long start;
     long startДляОбноразвовной;
     private  Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binderДляПолучениеМатериалов;
-    private  Message message;
+
 
     private AsyncTaskLoader<Cursor> asyncTaskLoaderМатериалы;
 
@@ -109,6 +109,7 @@ public class FragmentAdmissionMaterials extends Fragment {
     private  Cursor cursorНомерЦФО;
 
     private  ServiceConnection serviceConnectionМатериалы;
+    private  Class_Generator_One_WORK_MANAGER class_generator_one_work_manager;
     // TODO: 27.09.2022 Фрагмент Получение Материалов
     public FragmentAdmissionMaterials() {
         // Required empty public constructor
@@ -121,6 +122,8 @@ public class FragmentAdmissionMaterials extends Fragment {
              lifecycleOwner =this ;
             lifecycleOwnerОбщая =this ;
       /*      методБиндингСлужбы();*/
+
+            class_generator_one_work_manager= new Class_Generator_One_WORK_MANAGER(getActivity());
             Log.d(this.getClass().getName(), "  onViewCreated  FragmentAdmissionMaterials  binderДляПолучениеМатериалов  "+binderДляПолучениеМатериалов);
 
         } catch (Exception e) {
@@ -376,23 +379,26 @@ public class FragmentAdmissionMaterials extends Fragment {
             bottomNavigationItemView3обновить.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    try {
-                        progressBarСканирование.setVisibility(View.VISIBLE);
-                        МетодЗапускаАнимацииКнопок(v);
-                            Integer ПубличныйIDДляФрагмента =
-                                    new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
-                        // TODO: 16.11.2022  запуск синхронизации однорозовая
-                            МетодНепосредственногоЗапускаБиндингаОдноразовойСдлужбы(ПубличныйIDДляФрагмента);
-                        Log.d(this.getClass().getName(), "  v  " + v);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(getContext().getClass().getName(),
-                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
+                       handler.post(()->{
+                            try {
+                                progressBarСканирование.setVisibility(View.VISIBLE);
+                                МетодЗапускаАнимацииКнопок(v);
+                                Integer ПубличныйIDДляФрагмента =
+                                        new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
+                                // TODO: 16.11.2022  запуск синхронизации однорозовая
+                                МетодНепосредственногоЗапускаБиндингаОдноразовойСдлужбы(ПубличныйIDДляФрагмента);
+                                Log.d(this.getClass().getName(), "  v  " + v);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.e(getContext().getClass().getName(),
+                                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            }
+
+                        });
                 }
             });
         } catch (Exception e) {
@@ -446,8 +452,7 @@ public class FragmentAdmissionMaterials extends Fragment {
             Intent  intentЗапускОднорworkanager=new Intent();
             intentЗапускОднорworkanager.putExtras(bundleДляПЕредачи);
             // TODO: 02.08.2022
-            new Class_Generator_One_WORK_MANAGER(getActivity()).
-                    МетодОдноразовыйЗапускВоерМенеджера(getContext(),intentЗапускОднорworkanager);
+            class_generator_one_work_manager.МетодОдноразовыйЗапускВоерМенеджера(getContext(),intentЗапускОднорworkanager);
             // TODO: 26.06.2022
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
