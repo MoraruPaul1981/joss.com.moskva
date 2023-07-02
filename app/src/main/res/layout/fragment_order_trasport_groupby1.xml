@@ -46,43 +46,10 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/imageview"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentTop="true"
-                android:animateLayoutChanges="true"
-                android:gravity="center"
-                android:visibility="visible"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="10dp"
-                app:srcCompat="@drawable/icon_rdertransport1"
-                app:strokeColor="#F5FFFA" />
+            android:layout_height="wrap_content"/>
 
 
-        </RelativeLayout>
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/texviewordertransport2"
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="3dp"
-        android:gravity="center"
-        android:padding="2dp"
-        android:background="@drawable/divider_for_single_ordertransport"
-        android:foregroundGravity="center"
-        android:visibility="visible"
-        app:cardBackgroundColor="#FFFFFF"
-        app:strokeColor="#D2D8D8"
-        android:layout_centerHorizontal="true" />
-
-
-
-
-    <!--  НАЧАЛО ПЕРВОГО БЛОКА -->
+        <!--  НАЧАЛО ПЕРВОГО БЛОКА -->
         <TableLayout
             android:id="@+id/tablelayoutot_groupby"
             android:shrinkColumns="*"

@@ -177,7 +177,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
             bottomNavigationItemViewвыход.setIconSize(50);
             bottomNavigationItemView2создать.setIconSize(50);
             bottomNavigationItemView3обновить.setIconSize(50);
-            bottomNavigationItemView4История.setIconSize(60);
+            bottomNavigationItemView4История.setIconSize(55);
 
 
             bottomNavigationItemViewвыход.setVisibility(View.VISIBLE);
@@ -302,9 +302,10 @@ public class FragmentOrderTransportOneChane extends Fragment {
     public void onStart() {
         super.onStart();
         try{
-        Cursor    cursor =      subClassOrdersTransport.   методGetCursorGROUPBYBounds(); //      методGetCursorBounds();
+            Cursor        cursor =      subClassOrdersTransport.   методGetCursorGROUPBYBounds(); //      методGetCursorBounds();
 
-            getsubClassAdapterMyRecyclerview.new SubClassAdapterMyRecyclerview(getContext() ).      методЗаполенияRecycleView(cursor);
+                    getsubClassAdapterMyRecyclerview.new SubClassAdapterMyRecyclerview(getContext() ).      методЗаполенияRecycleView(cursor);
+
             subClassOrdersTransport. МетодСлушательRecycleView();
             subClassOrdersTransport.  МетодСлушательКурсора();
             subClassOrdersTransport.    МетодКпопкиЗначков();
@@ -2574,6 +2575,7 @@ class SubClassGetDateOrderGroupBy {
                 void методЗаполенияRecycleView(@NonNull Cursor cursor) {
                     try {
                         myRecycleViewAdapter = new MyRecycleViewAdapter(cursor);
+                        myRecycleViewAdapter.notifyDataSetChanged();
                         recyclerView_OrderTransport.setAdapter(myRecycleViewAdapter);
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +

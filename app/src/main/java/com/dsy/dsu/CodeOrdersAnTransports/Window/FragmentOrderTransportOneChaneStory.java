@@ -54,7 +54,6 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generator_One_WORK_MANAGER;
 import com.dsy.dsu.CodeOrdersAnTransports.Background.ServiceOrserTransportService;
-import com.dsy.dsu.For_Code_Settings_DSU1.MainActivity_Face_App;
 import com.dsy.dsu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -208,7 +207,6 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
             startДляОбноразвовной=     Calendar.getInstance().getTimeInMillis();
             //todo запуск методов в фрагменте
             // TODO: 23.05.2023 Биндинг
-            subClassOrdersTransport.   МетодБиндингOrderTransport();
             subClassOrdersTransport.   МетодВыходНаAppBack();
             // TODO: 04.05.2023 Анимация
        //todo recyrview
@@ -286,9 +284,9 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
     public void onStart() {
         super.onStart();
         try{
-        Cursor    cursor =      subClassOrdersTransport.   методGetCursorGROUPBYBounds(); //      методGetCursorBounds();
+        Cursor    cursorHistory =      subClassOrdersTransport.методGetCursorGROUPBYBoundsStory(); //      методGetCursorBounds();
 
-            getsubClassAdapterMyRecyclerview.new SubClassAdapterMyRecyclerview(getContext() ).      методЗаполенияRecycleView(cursor);
+            getsubClassAdapterMyRecyclerview.new SubClassAdapterMyRecyclerview(getContext() ).      методЗаполенияRecycleView(cursorHistory);
             subClassOrdersTransport. МетодСлушательRecycleView();
             subClassOrdersTransport.  МетодСлушательКурсора();
             subClassOrdersTransport.    МетодКпопкиЗначков();
@@ -300,7 +298,7 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+  "  cursor " +cursor);
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+  "  cursorHistory " +cursorHistory);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -973,7 +971,7 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
-        private Cursor методGetCursorGROUPBYBounds() throws Exception {
+        private Cursor методGetCursorGROUPBYBoundsStory() throws Exception {
             Cursor cursorGroupByParent = null;
             try{
                 LinkedHashMap<String,String> linkedHashMapДеньМесяцГод;
@@ -1033,7 +1031,7 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
                     myRecycleViewAdapter.cursor.close();
                 }
 
-                Cursor cursorПереполучаемДанные=      методGetCursorGROUPBYBounds(); //      методGetCursorBounds();
+                Cursor cursorПереполучаемДанные=      методGetCursorGROUPBYBoundsStory(); //      методGetCursorBounds();
                 myRecycleViewAdapter.cursor=cursorПереполучаемДанные;
                 myRecycleViewAdapter.notifyDataSetChanged();
                 // TODO: 23.05.2023  даннеы
@@ -2237,9 +2235,10 @@ class SubClassGetDateOrderGroupBy {
                     public  MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                         View viewЗаказыТраспорта = null;
                         try {
-                            if(   localBinderOrderTransport==null || cursor==null){
+                            if(     cursor==null){
                                 viewЗаказыТраспорта = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_progressing_ordertransport, parent, false);//todo old simple_for_takst_cardview1
                                 Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewЗаказыТраспорта);
+                                subClassOrdersTransport.   МетодБиндингOrderTransport();
 
                             }else {
                                 if (cursor.getCount() > 0 && cursor.isClosed()==false) {
