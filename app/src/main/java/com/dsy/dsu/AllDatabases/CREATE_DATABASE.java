@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =             1051;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+     static final int VERSION =             1052;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
     private      SQLiteDatabase ССылкаНаСозданнуюБазу;
     private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
@@ -431,31 +431,20 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
                     //TODO INSERT
                     ССылкаНаСозданнуюБазу.execSQL(" CREATE TRIGGER IF NOT EXISTS UPDATES" + НазваниеТаблицыДляТригера + "" +
                             "  AFTER UPDATE   ON " + НазваниеТаблицыДляТригера +
-                            " WHEN  new.current_table>old.current_table AND new.current_table >0 " +
+                            " WHEN  new.current_table>old.current_table" +
                             " BEGIN " +
-                            " UPDATE MODIFITATION_Client SET  localversionandroid_version=(SELECT MAX(current_table) FROM " + НазваниеТаблицыДляТригера + "),localversionandroid= datetime() " +
+                            " UPDATE MODIFITATION_Client SET  localversionandroid_version=(SELECT MAX(current_table) FROM " + НазваниеТаблицыДляТригера + ")," +
+                            "localversionandroid= datetime() " +
                             " WHERE name = " + ФиналНазваниеТаблицыДляЗаполения + ";" +
-                            " END ;" +
-                            " BEGIN  " +
-                            " UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0' , localversionandroid= datetime() , " +
-                            " versionserveraandroid= datetime()  WHERE name = " + ФиналНазваниеТаблицыДляЗаполения + "" +
-                            " AND (SELECT COUNT(current_table)=0 FROM " + НазваниеТаблицыДляТригера + "   ) " +
-                            "; " +
-                            " END;");//test
-                    Log.d(this.getClass().getName(), " сработала ... создание тригера MODIFITATION_Client   TODO UPDATE  ФиналНазваниеТаблицыДляЗаполения " + ФиналНазваниеТаблицыДляЗаполения);
+                            " END ;");//test
+                    Log.d(this.getClass().getName(), " сработала ... создание тригера MODIFITATION_Client   TODO UPDATE  ФиналНазваниеТаблицыДляЗаполения " +
+                            ФиналНазваниеТаблицыДляЗаполения);
                     //TODO END UPDATE
 
                     //TODO DELETE#1
                     ССылкаНаСозданнуюБазу.execSQL("  drop TRIGGER  if exists DELETES" + НазваниеТаблицыДляТригера + "");
                     ССылкаНаСозданнуюБазу.execSQL(" CREATE TRIGGER IF NOT EXISTS DELETES" + НазваниеТаблицыДляТригера + "" +
                             "  AFTER DELETE   ON " + НазваниеТаблицыДляТригера +
-                            " WHEN OLD.current_table >0 " +
-                            " BEGIN " +
-                            " UPDATE MODIFITATION_Client SET  localversionandroid_version=(SELECT MAX(current_table) FROM " + НазваниеТаблицыДляТригера + " ), localversionandroid= datetime() " +
-                            " WHERE name = " + ФиналНазваниеТаблицыДляЗаполения + "" +
-                            "   AND (SELECT COUNT(current_table)>0 FROM " + НазваниеТаблицыДляТригера + "   ) " +
-                            ";" +
-                            " END;  " +
                             " BEGIN  " +
                             " UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0' , localversionandroid= datetime() , " +
                             " versionserveraandroid= datetime()  WHERE name = " + ФиналНазваниеТаблицыДляЗаполения + "" +
