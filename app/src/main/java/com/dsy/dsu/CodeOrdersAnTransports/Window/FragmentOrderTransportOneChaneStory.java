@@ -173,6 +173,10 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
             progressBarСканирование.setVisibility(View.VISIBLE);
             // TODO: 01.05.2023
             recyclerView_OrderTransport =  (RecyclerView) view.findViewById(R.id.recyclerView_OrderTransport);
+            recyclerView_OrderTransport.setClickable(false);
+            recyclerView_OrderTransport.setFocusable(false);
+
+
             TextViewHadler = (TextView) view.findViewById(R.id.TextViewHadler);
             animationvibr1 = AnimationUtils.loadAnimation(getContext(),R.anim.slide_singletable2);//
             animationvibrRow = AnimationUtils.loadAnimation(getContext(),R.anim.slide_in_row_tabellist);//
@@ -757,7 +761,7 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
                 fragmentManager.clearBackStack(null);
                 fragmentTransaction = fragmentManager.beginTransaction();
               //  fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                fragmentTransaction.setCustomAnimations(android.R.anim.slide_out_right,android.R.anim.slide_in_left);
                 fragmentNewЗаказТранспорта = new FragmentOrderTransportOneChane();
                 Bundle bundleNewOrderTransport=new Bundle();
                 bundleNewOrderTransport.putBinder("binder", (ServiceOrserTransportService.  LocalBinderOrderTransport) localBinderOrderTransport);

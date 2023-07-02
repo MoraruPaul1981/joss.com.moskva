@@ -690,16 +690,19 @@ public class FragmentAdmissionMaterials extends Fragment {
                                long РазницаВоврмени=end-startДляОбноразвовной;
                                if (РазницаВоврмени>10000) {
                                    if (ReturnWorkManager>0) {
-                                       методGetCFOCursorFirst("ПолучениеЦФО",0);
 
+                                       методПослеУспешнойСинхронизацииДАнных();
                                        // TODO: 18.04.2023
-                                       onStart();
+                                      // onStart();
                                        // TODO: 21.11.2022  запускаем удаление
                                        WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).removeObservers(lifecycleOwner);
                                    }
                                }
                                     }
-                                    progressBarСканирование.setVisibility(View.INVISIBLE);
+                                    if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.RUNNING) != 0) {
+                                        // TODO: 23.05.2023  програсс бар
+                                        progressBarСканирование.setVisibility(View.INVISIBLE);
+                                    }
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -715,19 +718,22 @@ public class FragmentAdmissionMaterials extends Fragment {
                 public void onChanged(List<WorkInfo> workInfos) {
                     workInfos.forEach((СтастусWorkMangerДляФрагментаЧитатьИПисать) -> {
                                 try {
-                                    if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.RUNNING) != 0) {
+                                    if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.ENQUEUED) == 0
+                                    ||СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.SUCCEEDED) == 0 ) {
                                         long end = Calendar.getInstance().getTimeInMillis();
                                         Integer  ReturnWorkManager = СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnSingleAsyncWork", 0);
                                         long РазницаВоврмени=end-start;
-
-                                            методGetCFOCursorFirst("ПолучениеЦФО",0);
-
-                                            // TODO: 18.04.2023
-                                            onStart();
-
+                                        if (РазницаВоврмени>10000) {
+                                            методПослеУспешнойСинхронизацииДАнных();
+                                            // TODO: 18.04.2023notifyDataSetChanged();
+                                            МетодПерегрузкаRecyceView();
+                                        }
                                     }
                                        // WorkManager.getInstance(getContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая).getResult();
-                                    progressBarСканирование.setVisibility(View.INVISIBLE);
+                                    if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.RUNNING) != 0) {
+                                        // TODO: 23.05.2023  програсс бар
+                                        progressBarСканирование.setVisibility(View.INVISIBLE);
+                                    }
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -746,6 +752,29 @@ public class FragmentAdmissionMaterials extends Fragment {
             new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
+    }
+
+    private void методПослеУспешнойСинхронизацииДАнных() {
+        try{
+        Cursor cursorПослеОбновления=       myRecycleViewAdapter.cursorНомерЦФО;
+        cursorПослеОбновления=  методGetCFOCursorFirst("ПолучениеЦФО",0);
+
+        recyclerView.removeAllViews();
+        recyclerView.removeAllViewsInLayout();
+
+        myRecycleViewAdapter.cursorНомерЦФО=cursorПослеОбновления;
+        myRecycleViewAdapter.notifyDataSetChanged();
+        RecyclerView.Adapter recyclerViewОбновление=         recyclerView.getAdapter();
+        recyclerView.swapAdapter(recyclerViewОбновление,true);
+        recyclerView.getAdapter().notifyDataSetChanged();
+        МетодПерегрузкаRecyceView();
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
     }
 
     // TODO: 02.08.2022
