@@ -849,7 +849,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                 fragmentTransaction = fragmentManager.beginTransaction();
               //  fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                fragmentNewЗаказТранспорта = new FragmentOrderTransportOneChane();
+                fragmentNewЗаказТранспорта = new FragmentNewOrderTransport();
                 Bundle bundleNewOrderTransport=new Bundle();
                 bundleNewOrderTransport.putBinder("binder", (ServiceOrserTransportService.  LocalBinderOrderTransport) localBinderOrderTransport);
                 bundleNewOrderTransport.putInt("isalive",1);
