@@ -1185,6 +1185,10 @@ class SubClassGetDateOrderGroupBy {
                             // TODO: 25.05.2023 ФИНАЛЬНОЕ ДЕЙСТВИЕ вСТАВКА СТРОКИ УЖЕ ЗАПОЛЕНО В tABLEPOUY
                             методAddtableRowЦФО(tableRowДочерная,tableLayoutРодительская );
 
+                            // TODO: 02.07.2023 set clear
+                            tableRowДочерная.setClickable(false);
+                            tableRowДочерная.setFocusable(false);
+
                                 Log.d(getContext().getClass().getName(), "\n"
                                         + " время: " + new Date() + "\n+" +
                                         " Класс в процессе... " + this.getClass().getName() + "\n" +
