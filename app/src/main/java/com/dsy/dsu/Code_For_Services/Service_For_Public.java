@@ -34,6 +34,7 @@ import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassYEARONLY;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassYearHONLY_ТолькоАнализ;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.dsy.dsu.Code_ForTABEL.MainActivity_List_Peoples;
+import com.dsy.dsu.Code_ForTABEL.MainActivity_List_Tabels;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -408,6 +409,7 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                             public void run() throws Throwable {
                                 progressDialog.dismiss();
                                 progressDialog.cancel();
+                                Курсор_ВытаскиваемПоследнийМесяцТабеля[0].close();
                                     if ( ArrayListВставкиИзПрошлогоМесяца.size()==0) {
                                         Toast.makeText(context, "Нет создание!!!"
                                                 +"\n"+" (Табель может быть уже создан)  ", Toast.LENGTH_SHORT).show();
@@ -417,6 +419,9 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
 
                                         // TODO: 21.04.2023 после операции возврящемся на Activity List Peoples
                                         МетодПереходMainActivity_List_Peoples(intentОтActivityListPeoples);
+
+                                        Toast.makeText(context, "ТАбель"
+                                                +"\n"+" Успешно создан из прош.месяца ", Toast.LENGTH_SHORT).show();
                                     }
 
 
@@ -447,7 +452,7 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
         /////TODO метод запуска кода при однократорм нажатии просто загузка сотрудников табель
         private void МетодПереходMainActivity_List_Peoples( @NonNull Intent intentОтActivityListPeoples) {
             try{
-                Intent    ИнтентпереходВMainActivityList_Peoples=new Intent(getApplicationContext(), MainActivity_List_Peoples.class);
+                Intent    ИнтентпереходВMainActivityList_Peoples=new Intent(getApplicationContext(), MainActivity_List_Tabels.class);
                 ИнтентпереходВMainActivityList_Peoples      .putExtras(intentОтActivityListPeoples.getExtras());
                 ИнтентпереходВMainActivityList_Peoples.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getApplicationContext().startActivity(ИнтентпереходВMainActivityList_Peoples);
@@ -478,7 +483,7 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
               integerArrayListВствавкаИзПрошлогоМесяц=new ArrayList<>();
                 ReentrantLock reentrantLock = new ReentrantLock();
                 Condition condition = reentrantLock.newCondition();
-                Курсор_ВытаскиваемПоследнийМесяцТабеля.moveToFirst();
+                Курсор_ВытаскиваемПоследнийМесяцТабеля.moveToLast();
                 progressDialog.setMax(Курсор_ВытаскиваемПоследнийМесяцТабеля.getCount());
                 reentrantLock.lock();
                 Long ParentUUID = (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID(getApplicationContext());
@@ -530,7 +535,7 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                 + " integerArrayListВствавкаИзПрошлогоМесяц.size() "+integerArrayListВствавкаИзПрошлогоМесяц.size());
                     }
-                } while (Курсор_ВытаскиваемПоследнийМесяцТабеля.moveToNext());//TODO конец цикла заполения даными
+                } while (Курсор_ВытаскиваемПоследнийМесяцТабеля.moveToPrevious());//TODO конец цикла заполения даными
                 Курсор_ВытаскиваемПоследнийМесяцТабеля.close();
                 progressDialog.dismiss();
                 progressDialog.cancel();
@@ -564,6 +569,17 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                 contentValuesДляДатаТабель.put("fio", Курсор_ВытаскиваемПоследнийМесяцТабеля.getLong(ИндексСтолбикаДляЗаполненияФИО));
                 int ИндексFIOuser_update = Курсор_ВытаскиваемПоследнийМесяцТабеля.getColumnIndex("user_update");
                 contentValuesДляДатаТабель.put("user_update", Курсор_ВытаскиваемПоследнийМесяцТабеля.getInt(ИндексFIOuser_update));
+
+
+              Integer Профессия     = Курсор_ВытаскиваемПоследнийМесяцТабеля.getInt(Курсор_ВытаскиваемПоследнийМесяцТабеля.getColumnIndex("dt_prof"));
+
+                if (Профессия==0) {
+                    Профессия =  Курсор_ВытаскиваемПоследнийМесяцТабеля.getInt(Курсор_ВытаскиваемПоследнийМесяцТабеля.getColumnIndex("fio_prof"));
+                }
+
+                contentValuesДляДатаТабель.put("prof", Профессия);
+
+
                 String СгенерированованныйДатаДляДаннойОперации = new Class_Generation_Data(getApplicationContext()).ГлавнаяДатаИВремяОперацийСБазойДанных();
                 contentValuesДляДатаТабель.put("date_update", СгенерированованныйДатаДляДаннойОперации);
                 // TODO: 23.09.2022 сама вставка в таблиц ТАБЕЛЬ  #1
