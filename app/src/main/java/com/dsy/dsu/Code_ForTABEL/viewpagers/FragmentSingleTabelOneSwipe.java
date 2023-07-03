@@ -2652,10 +2652,13 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                     if (ПровйдерСменаПрофесии>0) {
 
                                         // TODO: 20.04.2023 Данные
-                                         Cursor     cursorПослеСменыПрофесии=    new SubClassGetCursor().МетодSwipesКурсор();
+                                        Cursor     cursorПослеСменыПрофесии=myRecycleViewAdapter.cursor;
+                                        cursorПослеСменыПрофесии=    new SubClassGetCursor().МетодSwipesКурсор();
+                                        cursorПослеСменыПрофесии.moveToPosition(myRecycleViewAdapter.cursor.getPosition());
+                                        // TODO: 03.07.2023  возврящем обратно
                                         myRecycleViewAdapter.cursor=cursorПослеСменыПрофесии;
                                         myRecycleViewAdapter.notifyItemChanged(0);
-                                        cursorПослеСменыПрофесии.moveToPosition(myRecycleViewAdapter.cursor.getPosition());
+
                                         // TODO: 04.04.2023  ФИО
                                         new  SubClassChanegeSetNameProffesio().    МетодЗаполняемФИОRow( cursorПослеСменыПрофесии);
                                         // TODO: 28.06.2023 clear

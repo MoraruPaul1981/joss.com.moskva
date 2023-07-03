@@ -420,8 +420,8 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                                         // TODO: 21.04.2023 после операции возврящемся на Activity List Peoples
                                         МетодПереходMainActivity_List_Peoples(intentОтActivityListPeoples);
 
-                                        Toast.makeText(context, "ТАбель"
-                                                +"\n"+" Успешно создан из прош.месяца ", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(context, "Успешно"
+                                                +"\n"+" Создан из прош.месяца ", Toast.LENGTH_SHORT).show();
                                     }
 
 
