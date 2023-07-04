@@ -13,42 +13,181 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.util.concurrent.AtomicDouble;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.functions.Action;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Predicate;
 
 public class OrganizationJsonDeserializer extends JsonMainDeseirialzer {
-
     private Context context;
+
+    // TODO: 04.07.2023  Главный метод Парсин таблицы ОРганизация
+    public void методOrganizationJsonDeserializer(@NonNull  JsonNode jsonNodeParentMAP,
+                                                  @NonNull Context context,
+                                                  @NonNull  String  имяТаблицаAsync ,
+                                                  @NonNull SQLiteDatabase Create_Database_СамаБАзаSQLite
+                                                  , @NonNull  String ФлагКакойСинхронизацияПерваяИлиНет  ) {
+ try {
+this.context=context;
+     Flowable.fromIterable(jsonNodeParentMAP)
+             .onBackpressureBuffer(jsonNodeParentMAP.size(),true)
+                     .buffer(200)
+                             .doOnNext(new Consumer<List<JsonNode>>() {
+                                 @Override
+                                 public void accept(List<JsonNode> jsonNodes) throws Throwable {
+                                     jsonNodes.forEach(new java.util.function.Consumer<JsonNode>() {
+                                         @Override
+                                         public void accept(JsonNode jsonNode) {
+                                             // TODO: 26.04.2023 Insert
+                                             CopyOnWriteArrayList<Integer> РезультатОперацииBurkUPDATE=new CopyOnWriteArrayList<>();
+
+
+                                             Integer ОперацияUpdate=0;
+
+                                             if (ФлагКакойСинхронизацияПерваяИлиНет.equalsIgnoreCase("ПовторныйЗапускСинхронизации") ||
+                                                     имяТаблицаAsync.equalsIgnoreCase("settings_tabels") ||
+                                                     имяТаблицаAsync.equalsIgnoreCase("view_onesignal")) {
+                                                 // TODO: 04.07.2023  Обновление
+                                                 ОперацияUpdate = OrganizationОбновлениеДанных(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite, jsonNode);
+
+                                                 if (ОперацияUpdate>0) {
+                                                     РезультатОперацииBurkUPDATE.add(ОперацияUpdate);
+
+                                                     Log.d(this.getClass().getName(), "\n" + " class " +
+                                                             Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                                             + имяТаблицаAsync  + " ОперацияUpdate " +ОперацияUpdate   );
+                                             }else {
+
+                                                 // TODO: 04.07.2023  Вставка  ПОСЛЕ ОБНОВЛЕНИЯ ЕСЛИ ОНО НЕ ПРОШЛО
+                                                 Long ОперацияInsert = OrganizationВставкаДанных(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite, jsonNode);
+                                                 if (ОперацияInsert>0) {
+                                                     РезультатОперацииBurkUPDATE.add(ОперацияInsert.intValue());
+                                                 }
+                                                 Log.d(this.getClass().getName(), "\n" + " class " +
+                                                         Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                                         + имяТаблицаAsync  + " ОперацияUpdate " +ОперацияUpdate + " ОперацияInsert " +ОперацияInsert  );
+                                             }
+
+// TODO: 04.07.2023 ТОЛЬКО ВСТАВКА   // TODO: 04.07.2023 ТОЛЬКО ВСТАВКА  // TODO: 04.07.2023 ТОЛЬКО ВСТАВКА  // TODO: 04.07.2023 ТОЛЬКО ВСТАВКА  // TODO: 04.07.2023 ТОЛЬКО ВСТАВКА
+                                             }else {
+
+                                                     // TODO: 04.07.2023  ТОЛЬКО ВСТАВКА
+                                                     Long ОперацияInsert = OrganizationВставкаДанных(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite, jsonNode);
+                                                     if (ОперацияInsert>0) {
+                                                         РезультатОперацииBurkUPDATE.add(ОперацияInsert.intValue());
+                                                     }
+                                                     Log.d(this.getClass().getName(), "\n" + " class " +
+                                                             Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                                             + имяТаблицаAsync  + " ОперацияUpdate " +ОперацияUpdate + " ОперацияInsert " +ОперацияInsert  );
+
+
+                                             }
+                                             Log.d(this.getClass().getName(), "\n" + " class " +
+                                                     Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                                     + имяТаблицаAsync  + " ОперацияUpdate " +ОперацияUpdate  + " РезультатОперацииBurkUPDATE " +РезультатОперацииBurkUPDATE);
+                                         }
+                                     });
+
+                                 }
+                             })
+             .doAfterNext(new Consumer<List<JsonNode>>() {
+                 @Override
+                 public void accept(List<JsonNode> jsonNodes) throws Throwable {
+                     Log.d(this.getClass().getName(), "\n" + " class " +
+                             Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " jsonNodeParentMAP " +jsonNodeParentMAP);
+                 }
+             })
+             .doOnComplete(new Action() {
+                 @Override
+                 public void run() throws Throwable {
+                     Log.e(this.getClass().getName(), "doOnComplete "  + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                             " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                 }
+             })
+             .onErrorComplete(new Predicate<Throwable>() {
+                 @Override
+                 public boolean test(Throwable throwable) throws Throwable {
+                     throwable.printStackTrace();
+                     Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                             " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                     new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(throwable.toString(), this.getClass().getName(),
+                             Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                     return false;
+                 }
+             })
+             .doOnError(new Consumer<Throwable>() {
+                 @Override
+                 public void accept(Throwable throwable) throws Throwable {
+                     throwable.printStackTrace();
+                     Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                             " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                     new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(throwable.toString(), this.getClass().getName(),
+                             Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                 }
+             })
+             .blockingSubscribe();
+
+        Log.d(this.getClass().getName(), "\n" + " class " +
+                Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " jsonNodeParentMAP " +jsonNodeParentMAP);
+} catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     // TODO: 04.07.2023 ВСТАВКА
-   CopyOnWriteArrayList<Long> OrganizationВставкаДанных(@NonNull Context context,
+    Long OrganizationВставкаДанных(@NonNull Context context,
                                  @NonNull String имяТаблицаAsync,
                                  @NonNull SQLiteDatabase Create_Database_СамаБАзаSQLite,
                                                         @NonNull JsonNode jsonNodeParentMAP) {
         // TODO: 26.04.2023 Insert
-        CopyOnWriteArrayList<Long> РезультатОперацииBurkUPDATE=new CopyOnWriteArrayList<>();
+        Long ОперацияInsert=0l;
         try{
             this.context=context;
                 // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
                 String  SQlOperInsert=  "INSERT INTO "+имяТаблицаAsync+" VALUES(?,?,?,?,?,?,?,?,?,? );";
 
-            SQLiteStatement sqLiteStatementInsert = методGetSqliteStatement(Create_Database_СамаБАзаSQLite, SQlOperInsert);
+            SQLiteStatement sqLiteStatementInsert = методGetSqliteStatement(Create_Database_СамаБАзаSQLite, SQlOperInsert,jsonNodeParentMAP);
 
             // TODO: 04.07.2023  INSERT  Organization
-            Long ОперацияInsert=      sqLiteStatementInsert.executeInsert();
+             ОперацияInsert=      sqLiteStatementInsert.executeInsert();
                 // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
-                if (ОперацияInsert>0) {
-                    РезультатОперацииBurkUPDATE.add(ОперацияInsert);
+
                     // TODO: 27.04.2023  повышаем верисю данных
                     Log.d(this.getClass().getName(), "\n" + " class " +
                             Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                            + имяТаблицаAsync  + " РезультатОперацииBurkUPDATE "
-                            + РезультатОперацииBurkUPDATE +
+                            + имяТаблицаAsync  +
                             " ОперацияInsert " +ОперацияInsert);
-                }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,36 +196,31 @@ public class OrganizationJsonDeserializer extends JsonMainDeseirialzer {
             new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-        return  РезультатОперацииBurkUPDATE;
+        return  ОперацияInsert;
     }
     // TODO: 04.07.2023 ОБНОВЛЕНИЕ
-    CopyOnWriteArrayList<Integer> OrganizationОбновлениеДанных(@NonNull Context context,
+    Integer  OrganizationОбновлениеДанных(@NonNull Context context,
                                                          @NonNull String имяТаблицаAsync,
                                                          @NonNull SQLiteDatabase Create_Database_СамаБАзаSQLite,
                                                          @NonNull JsonNode jsonNodeParentMAP) {
-        // TODO: 26.04.2023 Insert
-        CopyOnWriteArrayList<Integer> РезультатОперацииBurkUPDATE=new CopyOnWriteArrayList<>();
+        Integer ОперацияUpdate=0;
         try{
             this.context=context;
             // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
             String  SQlOperUpdate=  " UPDATE "+имяТаблицаAsync+" SET  id=?     WHERE  uuid=?  ;";
 
-            SQLiteStatement sqLiteStatementInsert = методGetSqliteStatement(Create_Database_СамаБАзаSQLite, SQlOperUpdate);
+            SQLiteStatement sqLiteStatementInsert = методGetSqliteStatement(Create_Database_СамаБАзаSQLite, SQlOperUpdate,jsonNodeParentMAP);
 
             // TODO: 04.07.2023  UPDARE Organization
-
-            Integer ОперацияUpdate=      sqLiteStatementInsert.executeUpdateDelete();
+            ОперацияUpdate=      sqLiteStatementInsert.executeUpdateDelete();
             // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
             if (ОперацияUpdate>0) {
-                РезультатОперацииBurkUPDATE.add(ОперацияUpdate);
                 // TODO: 27.04.2023  повышаем верисю данных
                 Log.d(this.getClass().getName(), "\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + имяТаблицаAsync  + " РезультатОперацииBurkUPDATE "
-                        + РезультатОперацииBurkUPDATE +
-                        " ОперацияUpdate " +ОперацияUpdate  +"  sqLiteStatementInsert " +sqLiteStatementInsert);
+                        + имяТаблицаAsync  + " ОперацияUpdate " +ОперацияUpdate  +"  sqLiteStatementInsert " +sqLiteStatementInsert);
             }
 
         } catch (Exception e) {
@@ -96,37 +230,35 @@ public class OrganizationJsonDeserializer extends JsonMainDeseirialzer {
             new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-        return  РезультатОперацииBurkUPDATE;
+        return  ОперацияUpdate;
     }
 
 
 
     @NonNull
-    private SQLiteStatement методGetSqliteStatement(@NonNull SQLiteDatabase Create_Database_СамаБАзаSQLite, String SQlOperUpdate) {
+    private SQLiteStatement методGetSqliteStatement(@NonNull SQLiteDatabase Create_Database_СамаБАзаSQLite,
+                                                    String SQlOperInsert,
+                                                    @NonNull JsonNode jsonNodeParentMAP) {
         SQLiteStatement sqLiteStatementInsert = null;
         try{
-        sqLiteStatementInsert= Create_Database_СамаБАзаSQLite.compileStatement(SQlOperUpdate);
+        sqLiteStatementInsert= Create_Database_СамаБАзаSQLite.compileStatement(SQlOperInsert);
         sqLiteStatementInsert.clearBindings();
-        sqLiteStatementInsert.bindLong(1,new Random().nextInt(888));//"id"
-        sqLiteStatementInsert.bindString(2,"name2");//"name"
-        sqLiteStatementInsert.bindString(3,"fullname3");//"fullname"
-        sqLiteStatementInsert.bindString(4,"inn4");//"inn"
-        String ddbyter="Морару Морару  Привет";
-        byte[] data =ddbyter.getBytes(StandardCharsets.UTF_16) ;
-        sqLiteStatementInsert.bindBlob(5,data);//"kpp"
-
-        sqLiteStatementInsert.bindString(6,"2022-11-27 22:54:19.150");//"date_update"
-        sqLiteStatementInsert.bindLong(7,5);//"user_update"
-        sqLiteStatementInsert.bindDouble(8,new Random().nextDouble());//"chosen_organization"
-        sqLiteStatementInsert.bindLong(9,new Random().nextInt(777));//"current_table"
-        sqLiteStatementInsert.bindLong(10,new Random().nextInt(999));//"uuid"
+            // TODO: 04.07.2023 цикл данных
+        sqLiteStatementInsert.bindLong(1,jsonNodeParentMAP.get("id").intValue());//"id"
+        sqLiteStatementInsert.bindString(2,jsonNodeParentMAP.get("name").asText());//"name"
+        sqLiteStatementInsert.bindString(3,jsonNodeParentMAP.get("fullname").asText());//"fullname"
+        sqLiteStatementInsert.bindString(4,jsonNodeParentMAP.get("inn").asText());//"inn"
+        sqLiteStatementInsert.bindString(5,jsonNodeParentMAP.get("kpp").asText());//"kpp"
+        sqLiteStatementInsert.bindString(6,jsonNodeParentMAP.get("date_update").asText());//"date_update"
+        sqLiteStatementInsert.bindLong(7,jsonNodeParentMAP.get("user_update").intValue());//"user_update"
+        sqLiteStatementInsert.bindDouble(8,jsonNodeParentMAP.get("chosen_organization").intValue());//"chosen_organization"
+        sqLiteStatementInsert.bindLong(9,jsonNodeParentMAP.get("current_table").longValue());//"current_table"
+        sqLiteStatementInsert.bindLong(10,jsonNodeParentMAP.get("uuid").longValue());//"uuid"
         Log.d(this.getClass().getName(), "\n" + " class " +
                 Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                 + sqLiteStatementInsert  + "sqLiteStatementInsert");
-
-
 } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -136,4 +268,6 @@ public class OrganizationJsonDeserializer extends JsonMainDeseirialzer {
         }
         return sqLiteStatementInsert;
     }
+
+
 }

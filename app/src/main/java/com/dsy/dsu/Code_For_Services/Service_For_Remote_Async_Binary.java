@@ -40,6 +40,7 @@ import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.dsy.dsu.Business_logic_Only_Class.SubClass_Connection_BroadcastReceiver_Sous_Asyns_Glassfish;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.firebase.annotations.concurrent.Background;
@@ -1287,10 +1288,10 @@ try{
                 module.addDeserializer(  CopyOnWriteArrayList .class , new GeneratorJSONDeserializer(context));
                 jsonGenerator.registerModule(module);*/
 
-                TypeReference< CopyOnWriteArrayList<Map<String,String>>> typeReference=   new TypeReference< CopyOnWriteArrayList<Map<String,String>>>() {};
-               CopyOnWriteArrayList<Map<String,String>> jsonNodeParentMAP= jsonGenerator.readValue(БуферПолученныйJSON.toString(), typeReference);
+             /*   TypeReference< CopyOnWriteArrayList<Map<String,String>>> typeReference=   new TypeReference< CopyOnWriteArrayList<Map<String,String>>>() {};
+               CopyOnWriteArrayList<Map<String,String>> jsonNodeParentMAP= jsonGenerator.readValue(БуферПолученныйJSON.toString(), typeReference);*/
                 // JsonNode jsonNodeParentMAP=   jsonGenerator.readTree(БуферПолученныйJSON.toString());
-               //  JsonNode jsonNodeParentMAP = jsonGenerator.readValue(БуферПолученныйJSON.toString(), JsonNode.class);
+                 JsonNode jsonNodeParentMAP = jsonGenerator.readValue(БуферПолученныйJSON.toString(), JsonNode.class);
                 Log.d(this.getClass().getName(),"\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
@@ -1301,8 +1302,41 @@ try{
                 МаксималноеКоличествоСтрочекJSON = jsonNodeParentMAP.size();
                 // TODO: 11.10.2022 callback метод обратно в актвити #1
                 ИндексВизуальнойДляPrograssBar=0;
+
+                Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasemirrorbinary/" + имяТаблицаAsync + "");
+
+                ContentResolver resolver = context.getContentResolver();
+                Bundle bundle=new Bundle();
+                bundle.putSerializable("jsonNodeParentMAP", (Serializable) jsonNodeParentMAP);
+                bundle.putString("nametable",имяТаблицаAsync);
+
+
+                Integer ПозицияТекущейТаблицы=  ГлавныеТаблицыСинхронизации.indexOf(имяТаблицаAsync);
+                ПозицияТекущейТаблицы=ПозицияТекущейТаблицы+1;
+                Проценты = new Class_Visible_Processing_Async(context).ГенерируемПРОЦЕНТЫДляAsync(ПозицияТекущейТаблицы, ГлавныеТаблицыСинхронизации.size());
+
+                методCallBackPrograssBars(7, Проценты,имяТаблицаAsync,ПозицияТекущейТаблицы);
+
+
+                Bundle bundleРезультатОбновлениеМассовой =resolver.call(uri,имяТаблицаAsync,БуферПолученныйJSON.toString(),bundle);
+
+                copyOnWriteArrayРезультатUpdateInsert.add(bundleРезультатОбновлениеМассовой.getLong("ResultAsync",0))    ;
+
+
+                Log.d(this.getClass().getName(),"\n" + " class " +
+                        Thread.currentThread().getStackTrace()[2].getClassName()
+                        + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                        " copyOnWriteArrayРезультатUpdateInsert " + copyOnWriteArrayРезультатUpdateInsert.size());
+
+                // TODO: 01.05.2023 clear
+                contentValuesCopyOnWriteArrayList.clear();
+                ТекущийАдаптерДляВсего.clear();
+
+
                 // TODO: 28.04.2023  начало тест кода
-                Flowable.fromIterable(jsonNodeParentMAP )
+               /* Flowable.fromIterable(jsonNodeParentMAP )
                         .onBackpressureBuffer(jsonNodeParentMAP.size(), new Action() {
                             @Override
                             public void run() throws Throwable {
@@ -1476,7 +1510,7 @@ try{
                                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                             }
                         })
-                        .subscribe();
+                        .subscribe();*/
 
             } catch (Exception e) {
                 e.printStackTrace();
