@@ -27,7 +27,6 @@ import androidx.annotation.BinderThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-
 import com.dsy.dsu.AllDatabases.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Connections_Server;
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
@@ -85,7 +84,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
-public class Service_For_Remote_Async extends IntentService {
+public class Service_For_Remote_Async_Binary extends IntentService {
     protected LocalBinderAsync binderBinderRemoteAsync = new LocalBinderAsync();
     private Context context;
     private  Integer МаксималноеКоличествоСтрочекJSON;
@@ -101,7 +100,7 @@ public class Service_For_Remote_Async extends IntentService {
 
     private   ContentValues       ТекущийАдаптерДляВсего;
 private  Message message;
-    public Service_For_Remote_Async() {
+    public Service_For_Remote_Async_Binary() {
         super("Service_For_Remote_Async");
     }
     @Override
@@ -131,11 +130,11 @@ private  Message message;
      * runs in the same process as its clients, we don't need to deal with IPC.
      */
    public class LocalBinderAsync extends Binder {
-        public Service_For_Remote_Async getService() {
+        public Service_For_Remote_Async_Binary getService() {
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-            return Service_For_Remote_Async.this;
+            return Service_For_Remote_Async_Binary.this;
         }
 
         @Override
