@@ -1425,7 +1425,7 @@ try{
                             @Override
                             public void accept(List<Map<String, String>> maps) throws Throwable {
                                 try{
-                                Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasemirror/" + имяТаблицаAsync + "");
+                                Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasemirrorbinary/" + имяТаблицаAsync + "");
 
                                 ContentResolver resolver = context.getContentResolver();
                                 Bundle bundle=new Bundle();

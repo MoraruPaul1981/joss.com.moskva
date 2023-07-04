@@ -12,6 +12,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.database.sqlite.SQLiteStatement;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CancellationSignal;
@@ -35,6 +36,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Stream;
@@ -347,7 +349,7 @@ public class ContentProviderSynsUpdateBinary extends ContentProvider {
 
             SubClassJsonTwoParserOtServer subClassJsonParserOtServer=new SubClassJsonTwoParserOtServer(contentValuesCopyOnWriteArrayLis,method);
 
-        bundleОперацииUpdateOrinsert=     subClassJsonParserOtServer.методUpdateПарсингаJson();
+        bundleОперацииUpdateOrinsert=     subClassJsonParserOtServer.методUpdateПарсингаJsonBinary();
 
         Log.d(this.getClass().getName(),"\n" + " class " +
                 Thread.currentThread().getStackTrace()[2].getClassName()
@@ -851,7 +853,7 @@ class SubClassJsonTwoParserOtServer{
         this.contentValuesCopyOnWriteArrayList=contentValuesCopyOnWriteArrayList;
     }
 
-     Bundle  методUpdateПарсингаJson() {
+     Bundle методUpdateПарсингаJsonBinary() {
         Bundle bundleОперацииUpdateOrinsert=new Bundle();
         try{
             String ФлагКакойСинхронизацияПерваяИлиНет = preferences.getString("РежимЗапускаСинхронизации", "");
@@ -1060,7 +1062,33 @@ class SubClassJsonTwoParserOtServer{
         Long      ОперацияInsert=0l;
         try{
             if(ОперацияUPDATE ==0 && ТекущийАдаптерДляВсего.size()>0){
-                ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
+               // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
+            String  SQlOper=  "INSERT INTO "+имяТаблицаAsync+" VALUES(?,?,?,?,?,?,?,?,?,? );";
+
+                SQLiteStatement sqLiteStatementInsert=Create_Database_СамаБАзаSQLite.compileStatement(SQlOper);
+                sqLiteStatementInsert.clearBindings();
+                sqLiteStatementInsert.bindLong(1,new Random().nextInt(888));//"id"
+                sqLiteStatementInsert.bindString(2,"name2");//"name"
+                sqLiteStatementInsert.bindString(3,"fullname3");//"fullname"
+                sqLiteStatementInsert.bindString(4,"inn4");//"inn"
+
+
+                String ddbyter="ffgblob";
+                byte[] data =ddbyter.getBytes() ;
+                sqLiteStatementInsert.bindBlob(5,data);//"kpp"
+
+                sqLiteStatementInsert.bindString(6,"2022-11-27 22:54:19.150");//"date_update"
+                sqLiteStatementInsert.bindLong(7,5);//"user_update"
+                sqLiteStatementInsert.bindDouble(8,new Random().nextDouble());//"chosen_organization"
+                sqLiteStatementInsert.bindLong(9,new Random().nextInt(777));//"current_table"
+                sqLiteStatementInsert.bindLong(10,new Random().nextInt(999));//"uuid"
+
+
+
+                ОперацияInsert=      sqLiteStatementInsert.executeInsert();
+
+
+               // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
                 if (ОперацияInsert>0) {
                     РезультатОперацииBurkUPDATE.add(Integer.parseInt(ОперацияInsert.toString()));
                     // TODO: 27.04.2023  повышаем верисю данных
