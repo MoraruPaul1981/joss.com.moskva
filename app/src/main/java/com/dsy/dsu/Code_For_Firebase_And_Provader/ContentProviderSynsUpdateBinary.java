@@ -31,6 +31,8 @@ import com.dsy.dsu.Business_logic_Only_Class.SubClassCreatingMainAllTables;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -1073,8 +1075,8 @@ class SubClassJsonTwoParserOtServer{
                 sqLiteStatementInsert.bindString(4,"inn4");//"inn"
 
 
-                String ddbyter="ffgblob";
-                byte[] data =ddbyter.getBytes() ;
+                String ddbyter="Морару Морару  Привет";
+                byte[] data =ddbyter.getBytes(StandardCharsets.UTF_16) ;
                 sqLiteStatementInsert.bindBlob(5,data);//"kpp"
 
                 sqLiteStatementInsert.bindString(6,"2022-11-27 22:54:19.150");//"date_update"
