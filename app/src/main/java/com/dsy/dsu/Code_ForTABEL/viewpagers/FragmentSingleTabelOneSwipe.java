@@ -169,8 +169,6 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
     private Integer   ПубличноеIDПолученныйИзСервлетаДляUUID=0;
     private PUBLIC_CONTENT Class_Engine_SQLГдеНаходитьсяМенеджерПотоков =null;
     private View view2Линия;
-    private    String ИмяСлужбыСинхронизацииОдноразовая = "WorkManager Synchronizasiy_Data Disposable";//
-    final private   String ИмяСлужбыОбщейСинхронизацииДляЗадачи = "WorkManager Synchronizasiy_Data";
     private  long CurrenrsСhildUUID =0l;
     private  long CurrenrsSelectFio =0l;
     private  long MainParentUUID =0l;
@@ -196,7 +194,6 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
 
     private  HorizontalScrollView horizontalScrollView_tabel_single;
 
-    private   String ИмяСлужбыСинхронизациОдноразовая="WorkManager Synchronizasiy_Data Disposable";
     private String ИмяСлужбыСинхронизацииОбщая="WorkManager Synchronizasiy_Data";
     private LifecycleOwner lifecycleOwner;
     private   LifecycleOwner  lifecycleOwnerОбщая;
@@ -2032,13 +2029,6 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
         void методWorkManagerLifecycleOwner() {
 // TODO: 11.05.2021 ЗПУСКАЕМ СЛУЖБУ через брдкастер синхронизхации и уведомления
             try {
-                lifecycleOwner.getLifecycle().addObserver(new LifecycleEventObserver() {
-                    @Override
-                    public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
-                        source.getLifecycle().getCurrentState();
-                        event.getTargetState().name();
-                    }
-                });
                 lifecycleOwnerОбщая.getLifecycle().addObserver(new LifecycleEventObserver() {
                     @Override
                     public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
@@ -2053,15 +2043,16 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                             public void onChanged(List<WorkInfo> workInfos) {
                                 workInfos.forEach((СтастусWorkMangerДляФрагментаЧитатьИПисать) -> {
                                     try {
-                                        if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.ENQUEUED) == 0 ||
-                                                СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.SUCCEEDED) == 0) {
+                                        if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.RUNNING)!=0) {
                                             long end = Calendar.getInstance().getTimeInMillis();
                                             Integer ReturnCallPublic = СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnPublicAsyncWork", 0);
 
                                             // TODO: 17.06.2023  если прошло время нужное
                                             long РазницаВоврмени=end-startДляОбноразвовной;
                                             if (РазницаВоврмени>20000) {
-                                                методПерегрузкиRecycreView();
+                                                // TODO: 04.07.2023 обновление данных их WorkManager
+                                                методОбновлениеДанныхИзWorkManager();
+                                                // TODO: 04.07.2023 перегрузка внешнего видаметодПерегрузкиRecycreView();
                                             }
                                         }
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -2084,6 +2075,29 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                 new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
+        }
+
+        private void методОбновлениеДанныхИзWorkManager() {
+            try{
+            Cursor    cursorForViewPager=        myRecycleViewAdapter.cursor;
+            cursorForViewPager  =   singleTabelRecycreView.  new SubClassGetCursor().МетодSwipesКурсор();
+            // TODO: 21.06.2023 Смещения Курсоора
+            cursorForViewPager.moveToPosition(myRecycleViewAdapter.cursor.getPosition());
+            myRecycleViewAdapter.cursor= cursorForViewPager;
+            // TODO: 15.06.2023 перегрузка данныех
+            myRecycleViewAdapter.notifyDataSetChanged();
+            // TODO: 18.06.2023
+            recycleView.getAdapter().notifyDataSetChanged();
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
         }
 
         private void методПерегрузкиRecycreView() {

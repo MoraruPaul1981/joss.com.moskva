@@ -61,7 +61,7 @@ android {
         applicationId "com.dsy.dsu"
         minSdkVersion 26
         targetSdk defaultTargetSdkVersion
-        versionCode 870
+        versionCode 871
         versionName 'SousAvtodor 2023'
 
         //TODO настройки уведомлений
@@ -197,9 +197,6 @@ dependencies {
 
 
 
-
-    // https://mvnrepository.com/artifact/com.github.satyan/sugar
-    implementation 'com.github.satyan:sugar:1.5'
 
 
 
