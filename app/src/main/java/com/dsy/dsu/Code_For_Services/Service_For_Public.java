@@ -688,11 +688,11 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
         // TODO: 25.09.2022 запуск метода
         public void МетодУдаленияСтатусаУдаленных(@NonNull Intent intent){
             try{
-                Stream<String> streamУдалениеСтатусаУдаленный=Stream.of("data_tabels","tabel","get_materials_data");
+                Stream<String> streamУдалениеСтатусаУдаленный=Stream.of("data_tabels","tabel","get_materials_data","order_tc");
                 streamУдалениеСтатусаУдаленный.forEach(Таблица->{
                     Uri  uri = Uri.parse("content://com.dsy.dsu.providerdatabase/" + Таблица + "");
                     ContentResolver resolver = context.getContentResolver();
-                    Integer  УдалениеДанныхСоСтатусомУдаленная=   resolver.delete(uri,"status_send=?",new String[]{"Удаленная"});
+                    Integer  УдалениеДанныхСоСтатусомУдаленная=   resolver.delete(uri,"status_send=? OR  status=?",new String[]{"1СУдалено","6"});
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
