@@ -1311,6 +1311,7 @@ try{
                 bundle.putString("nametable",имяТаблицаAsync);
 
 
+
                 Integer ПозицияТекущейТаблицы=  ГлавныеТаблицыСинхронизации.indexOf(имяТаблицаAsync);
                 ПозицияТекущейТаблицы=ПозицияТекущейТаблицы+1;
                 Проценты = new Class_Visible_Processing_Async(context).ГенерируемПРОЦЕНТЫДляAsync(ПозицияТекущейТаблицы, ГлавныеТаблицыСинхронизации.size());
@@ -1320,7 +1321,7 @@ try{
 
                 Bundle bundleРезультатОбновлениеМассовой =resolver.call(uri,имяТаблицаAsync,БуферПолученныйJSON.toString(),bundle);
 
-                copyOnWriteArrayРезультатUpdateInsert.add(bundleРезультатОбновлениеМассовой.getLong("ResultAsync",0))    ;
+                copyOnWriteArrayРезультатUpdateInsert.add(bundleРезультатОбновлениеМассовой.getLong("completeasync",0))    ;
 
 
                 Log.d(this.getClass().getName(),"\n" + " class " +

@@ -9,6 +9,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
+import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.util.concurrent.AtomicDouble;
 
@@ -27,26 +28,28 @@ public class OrganizationJsonDeserializer extends JsonMainDeseirialzer {
     private Context context;
 
     // TODO: 04.07.2023  Главный метод Парсин таблицы ОРганизация
-    public void методOrganizationJsonDeserializer(@NonNull  JsonNode jsonNodeParentMAP,
+    public Integer методOrganizationJsonDeserializer(@NonNull  JsonNode jsonNodeParentMAP,
                                                   @NonNull Context context,
                                                   @NonNull  String  имяТаблицаAsync ,
                                                   @NonNull SQLiteDatabase Create_Database_СамаБАзаSQLite
                                                   , @NonNull  String ФлагКакойСинхронизацияПерваяИлиНет  ) {
+        CopyOnWriteArrayList<Integer> РезультатОперацииBurkUPDATE=new CopyOnWriteArrayList<>();
  try {
 this.context=context;
      Flowable.fromIterable(jsonNodeParentMAP)
              .onBackpressureBuffer(jsonNodeParentMAP.size(),true)
-                     .buffer(200)
+                     .buffer(500)
                              .doOnNext(new Consumer<List<JsonNode>>() {
                                  @Override
                                  public void accept(List<JsonNode> jsonNodes) throws Throwable {
+                                     // TODO: 04.07.2023 ЗАпускаем ТРАНЗАКЦИЮ
+                                     if (!Create_Database_СамаБАзаSQLite.inTransaction()) {
+                                         Create_Database_СамаБАзаSQLite.beginTransaction();
+                                     }
                                      jsonNodes.forEach(new java.util.function.Consumer<JsonNode>() {
                                          @Override
                                          public void accept(JsonNode jsonNode) {
                                              // TODO: 26.04.2023 Insert
-                                             CopyOnWriteArrayList<Integer> РезультатОперацииBurkUPDATE=new CopyOnWriteArrayList<>();
-
-
                                              Integer ОперацияUpdate=0;
 
                                              if (ФлагКакойСинхронизацияПерваяИлиНет.equalsIgnoreCase("ПовторныйЗапускСинхронизации") ||
@@ -106,6 +109,19 @@ this.context=context;
              .doAfterNext(new Consumer<List<JsonNode>>() {
                  @Override
                  public void accept(List<JsonNode> jsonNodes) throws Throwable {
+                     // TODO: 04.07.2023  ОПЕРАЦИИ ПОСЛЕ УСПЕШНОЙ ОБРАБОТКИ 500 ЗАписей 
+                     if ( РезультатОперацииBurkUPDATE.size()>0) {
+                         // TODO: 04.07.2023 После Успешной Операции Повышаем Версию ДАнных Для Данной Тваблицы  
+                         Integer РезультатПовышенииВерсииДанных =
+                                 new SubClassUpVersionDATA().МетодVesrionUPMODIFITATION_Client(имяТаблицаAsync, context, Create_Database_СамаБАзаSQLite);
+                         Log.d(this.getClass().getName(), " РезультатПовышенииВерсииДанных  " + РезультатПовышенииВерсииДанных);
+                         // TODO: 04.07.2023 ЗАВЕРШАЕТ ТРНЗАКЦИЮ НА 50 СТРОЧКЕ
+                         Create_Database_СамаБАзаSQLite.setTransactionSuccessful();
+                         if (Create_Database_СамаБАзаSQLite.inTransaction()) {
+                             Create_Database_СамаБАзаSQLite.endTransaction();
+                         }
+                         РезультатОперацииBurkUPDATE.clear();
+                     }
                      Log.d(this.getClass().getName(), "\n" + " class " +
                              Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                              " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -153,6 +169,7 @@ this.context=context;
         new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
+ return  РезультатОперацииBurkUPDATE.size();
     }
     
     

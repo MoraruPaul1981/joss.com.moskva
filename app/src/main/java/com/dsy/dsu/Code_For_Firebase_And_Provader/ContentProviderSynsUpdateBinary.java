@@ -32,6 +32,7 @@ import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassCreatingMainAllTables;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.common.util.concurrent.AtomicDouble;
 
 import java.lang.invoke.ConstantCallSite;
 import java.nio.charset.Charset;
@@ -348,12 +349,8 @@ public class ContentProviderSynsUpdateBinary extends ContentProvider {
     @Nullable
     @Override
     public Bundle call(@NonNull String method, @Nullable String БуферПолученныйJSON, @Nullable Bundle extras) {
-        Bundle bundleОперацииUpdateOrinsert = null;
+        Bundle bundleОперацииUpdateOrinsert =new Bundle();
         try{
-            if (!Create_Database_СамаБАзаSQLite.inTransaction()) {
-                Create_Database_СамаБАзаSQLite.beginTransaction();
-            }
-
             JsonNode  jsonNodeParentMAP = (JsonNode) extras.getSerializable("jsonNodeParentMAP");
             String  имяТаблицаAsync = (String) extras.getSerializable("nametable");
             String ФлагКакойСинхронизацияПерваяИлиНет=         preferences.getString("РежимЗапускаСинхронизации", "");
@@ -366,7 +363,12 @@ public class ContentProviderSynsUpdateBinary extends ContentProvider {
             // TODO: 04.07.2023 всзависмомсти какая таблица такой и класс паасринга
                         switch (имяТаблицаAsync){
                             case "organization":
-                                new OrganizationJsonDeserializer() .методOrganizationJsonDeserializer( jsonNodeParentMAP, getContext(),имяТаблицаAsync, Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
+                                Integer РезультатOrganizationJsonDeserializer=
+                                new OrganizationJsonDeserializer()
+                                        .методOrganizationJsonDeserializer( jsonNodeParentMAP, getContext(),имяТаблицаAsync,
+                                                Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
+                                // TODO: 04.07.2023  ОТВЕТ КОНТЕНТ ПРОВАЙДЕРА
+                                bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатOrganizationJsonDeserializer);
                                 break;
                             default:
                                 break;
@@ -377,7 +379,7 @@ public class ContentProviderSynsUpdateBinary extends ContentProvider {
                 + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                " contentValuesCopyOnWriteArrayLis " +jsonNodeParentMAP + " bundleОперацииUpdateOrinsert "+bundleОперацииUpdateOrinsert);
+                " contentValuesCopyOnWriteArrayLis " +jsonNodeParentMAP + " bundleОперацииUpdateOrinsert "+bundleОперацииUpdateOrinsert );
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
