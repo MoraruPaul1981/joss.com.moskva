@@ -99,9 +99,6 @@ public class Service_For_Remote_Async_Binary extends IntentService {
     private Service_For_Public.LocalBinderОбщий localBinderОбщий;
     private      ServiceConnection connectionPUBLIC;
 
-    private LinkedBlockingQueue<ContentValues> АдаптерДляВставкиИОбновления;
-
-    private   ContentValues       ТекущийАдаптерДляВсего;
 private  Message message;
     public Service_For_Remote_Async_Binary() {
         super("Service_For_Remote_Async");
@@ -1278,8 +1275,8 @@ try{
         /////// TODO МЕТОД ПАСРИНГА ПРИШЕДШЕГО  С СЕРВЕРА ВНУТРИ ASYNSTASK В ФОНЕ
         Integer МетодПарсингJSONФайлаОтСервреравФоне(@NonNull  StringBuffer БуферПолученныйJSON,
                                                    @NonNull  String имяТаблицаAsync) throws InterruptedException, JSONException {
-            ///final Long[] РезультатРаботыСинхрониазциии = {0l};
-            CopyOnWriteArrayList<Long>   copyOnWriteArrayРезультатUpdateInsert=new CopyOnWriteArrayList<>();
+            // TODO: 05.07.2023 result suync
+            Integer РезультСинхрониазции=0;
             try {
                 Log.d(this.getClass().getName(), " имяТаблицаAsync " + имяТаблицаAsync + " БуферПолученныйJSON " +БуферПолученныйJSON.toString() );
                     //TODO БУфер JSON от Сервера
@@ -1287,11 +1284,10 @@ try{
                CopyOnWriteArrayList<Map<String,String>> jsonNodeParentMAP= jsonGenerator.readValue(БуферПолученныйJSON.toString(), typeReference);*/
                /*     CopyOnWriteArrayList<Organization>  jsonNodeParentMAP =
                         jsonGenerator.readValue(БуферПолученныйJSON.toString(), new TypeReference<CopyOnWriteArrayList<Organization>>() {});*/
-                CopyOnWriteArrayList<ContentValues>   contentValuesCopyOnWriteArrayList=new CopyOnWriteArrayList<>();
-                ObjectMapper jsonGenerator = new PUBLIC_CONTENT(context).getGeneratorJackson();
-                SimpleModule module = new SimpleModule();
+                 /* SimpleModule module = new SimpleModule();
                 module.addDeserializer(  Organization .class , new GeneratorJSONDeserializer(context));
-                jsonGenerator.registerModule(module);
+                jsonGenerator.registerModule(module);*/
+                ObjectMapper jsonGenerator = new PUBLIC_CONTENT(context).getGeneratorJackson();
                 JsonNode jsonNodeParentMAP=   jsonGenerator.readTree(БуферПолученныйJSON.toString());
 
                 Log.d(this.getClass().getName(),"\n" + " class " +
@@ -1323,7 +1319,7 @@ try{
 
                 Bundle bundleРезультатОбновлениеМассовой =resolver.call(uri,имяТаблицаAsync,БуферПолученныйJSON.toString(),bundle);
 
-                copyOnWriteArrayРезультатUpdateInsert.add(bundleРезультатОбновлениеМассовой.getLong("completeasync",0))    ;
+                РезультСинхрониазции=bundleРезультатОбновлениеМассовой.getInt("completeasync",0)   ;
 
 
                 Log.d(this.getClass().getName(),"\n" + " class " +
@@ -1331,190 +1327,9 @@ try{
                         + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                        " copyOnWriteArrayРезультатUpdateInsert " + copyOnWriteArrayРезультатUpdateInsert.size());
+                        " РезультСинхрониазции " + РезультСинхрониазции);
 
                 // TODO: 01.05.2023 clear
-                contentValuesCopyOnWriteArrayList.clear();
-                ТекущийАдаптерДляВсего.clear();
-
-
-                // TODO: 28.04.2023  начало тест кода
-               /* Flowable.fromIterable(jsonNodeParentMAP )
-                        .onBackpressureBuffer(jsonNodeParentMAP.size(), new Action() {
-                            @Override
-                            public void run() throws Throwable {
-
-                            }
-                        }, BackpressureOverflowStrategy.ERROR)
-                        .buffer(200)
-                        .doOnNext(new io.reactivex.rxjava3.functions.Consumer<List<Map<String, String>>>() {
-                            @Override
-                            public void accept(List<Map<String, String>> maps) throws Throwable {
-
-                                maps.forEach(new Consumer<Map<String, String>>() {
-                                    @Override
-                                    public void accept(Map<String, String> stringStringMap) {
-                                        // TODO: 28.04.2023  Parent
-                                        ТекущийАдаптерДляВсего = new ContentValues();
-                                        // TODO: 28.04.2023 Map
-                                        stringStringMap.entrySet().forEach(new Consumer<Map.Entry<String, String>>() {
-                                            @Override
-                                            public void accept(Map.Entry<String, String> stringJsonNodeEntryChild) {
-                                                String     getKeys=stringJsonNodeEntryChild.getKey().trim();
-                                                String getValues=       stringJsonNodeEntryChild.getValue() .trim();
-
-
-                                                        switch ( имяТаблицаAsync){
-                                                            //case "fio":
-                                                            case "fio":
-                                                            case "cfo":
-                                                            case "chat_users":
-                                                            case "nomen_vesov":
-                                                            case "type_materials":
-                                                            case "company":
-                                                            case "track":
-                                                            case "prof":
-                                                            case "chats":
-                                                            case "data_chat":
-                                                            case "tabel":
-                                                            case "data_tabels":
-                                                            case "order_tc":
-                                                            case "vid_tc":
-                                                                if (getKeys.contentEquals("id") == true) {
-                                                                    // TODO: 05.05.2023  вставка данных
-                                                                    getKeys = "_id";
-                                                                }
-                                                                // TODO: 05.05.2023  вставка данных  _id
-                                                                break;
-                                                        }
-                                                // TODO: 16.06.2023 САМА ВСТАВКА В КОНТЕЙЦНЕР ДАННЫХ
-                                                методВставкиДанныхБазу(getKeys,getValues);
-                                                Log.d(this.getClass().getName(), "\n" + " class " +
-                                                        Thread.currentThread().getStackTrace()[2].getClassName()
-                                                        + "\n" +
-                                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                        + " ТекущийАдаптерДляВсего " + ТекущийАдаптерДляВсего.size() + " имяТаблицаAsync " +имяТаблицаAsync
-                                                        + " getKeys  "  +getKeys  + " getValues " +getValues);
-
-                                            }
-
-                                            // TODO: 05.05.2023  класс вставки данных
-                                            private void методВставкиДанныхБазу(String getKeys, String getValues) {
-                                                try{
-                                                // TODO: 27.10.2022 Дополнительна Обработка
-                                                getValues.trim()
-                                                        .replace("\"", "").replace("\\n", "")
-                                                        .replace("\\r", "").replace("\\", "")
-                                                        .replace("\\t", "").trim();//todo .replaceAll("[^A-Za-zА-Яа-я0-9]", "")
-                                                if (getKeys.equalsIgnoreCase("status_carried_out") ||
-                                                        getKeys.equalsIgnoreCase("closed") ||
-                                                        getKeys.equalsIgnoreCase("locked")) {
-                                                    if (getValues.equalsIgnoreCase("false") ||
-                                                            getValues.equalsIgnoreCase("0")) {
-                                                        getValues = "False";
-                                                    }
-                                                    if (getValues.equalsIgnoreCase("true") ||
-                                                            getValues.equalsIgnoreCase("1")) {
-                                                        getValues = "True";
-                                                    }
-                                                }
-                                                Log.d(this.getClass().getName(), " getKeys " + getKeys +
-                                                        " getValues" + getValues);
-                                                // TODO: 27.10.2022  UUID есть Обновление
-
-                                                    if (ТекущийАдаптерДляВсего.containsKey(getKeys)==false) {
-                                                        ТекущийАдаптерДляВсего.put(getKeys, getValues);//
-                                                    }
-                                                    Log.d(this.getClass().getName(), "\n" + " class " +
-                                                        Thread.currentThread().getStackTrace()[2].getClassName()
-                                                        + "\n" +
-                                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                        + " ТекущийАдаптерДляВсего " + ТекущийАдаптерДляВсего.size()  + " getKeys " +getKeys  + " getValues " +getValues);
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
-                                                        Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                                new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                                        this.getClass().getName(),
-                                                        Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                            }
-                                            }
-                                        });
-                                        // TODO: 28.04.2023  end ROW
-                                        if ( contentValuesCopyOnWriteArrayList.contains(ТекущийАдаптерДляВсего)==false) {
-                                            contentValuesCopyOnWriteArrayList.add(ТекущийАдаптерДляВсего);
-                                        }
-                                        Log.d(this.getClass().getName(), "BUffer " + " Метод :" +
-                                                Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber() +
-                                                "  contentValuesCopyOnWriteArrayList " +contentValuesCopyOnWriteArrayList+
-                                            " ПОТОК"   + Thread.currentThread().getName());
-                                    }
-                                });
-
-                            }
-                        })
-                        .doAfterNext(new io.reactivex.rxjava3.functions.Consumer<List<Map<String, String>>>() {
-                            @Override
-                            public void accept(List<Map<String, String>> maps) throws Throwable {
-                                try{
-                                Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasemirrorbinary/" + имяТаблицаAsync + "");
-
-                                ContentResolver resolver = context.getContentResolver();
-                                Bundle bundle=new Bundle();
-                                bundle.putSerializable("getjson", (Serializable) contentValuesCopyOnWriteArrayList);
-                                bundle.putString("nametable",имяТаблицаAsync);
-
-
-
-                                    Integer ПозицияТекущейТаблицы=  ГлавныеТаблицыСинхронизации.indexOf(имяТаблицаAsync);
-                                    ПозицияТекущейТаблицы=ПозицияТекущейТаблицы+1;
-                                    Проценты = new Class_Visible_Processing_Async(context).ГенерируемПРОЦЕНТЫДляAsync(ПозицияТекущейТаблицы, ГлавныеТаблицыСинхронизации.size());
-
-                                    методCallBackPrograssBars(7, Проценты,имяТаблицаAsync,ПозицияТекущейТаблицы);
-
-
-                                Bundle bundleРезультатОбновлениеМассовой =resolver.call(uri,имяТаблицаAsync,БуферПолученныйJSON.toString(),bundle);
-
-                                    copyOnWriteArrayРезультатUpdateInsert.add(bundleРезультатОбновлениеМассовой.getLong("ResultAsync",0))    ;
-
-
-                                Log.d(this.getClass().getName(),"\n" + " class " +
-                                        Thread.currentThread().getStackTrace()[2].getClassName()
-                                        + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                        " copyOnWriteArrayРезультатUpdateInsert " + copyOnWriteArrayРезультатUpdateInsert.size());
-
-                                // TODO: 01.05.2023 clear
-                                contentValuesCopyOnWriteArrayList.clear();
-                                ТекущийАдаптерДляВсего.clear();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            }
-                            }
-
-                        })
-                        .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Throwable {
-                                throwable.printStackTrace();
-                                Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(throwable.toString(), this.getClass().getName(),
-                                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            }
-                        })
-                        .subscribe();*/
-
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -1522,7 +1337,7 @@ try{
                 new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
-            return   copyOnWriteArrayРезультатUpdateInsert.size();
+            return   РезультСинхрониазции;
         }
 
 
@@ -1572,34 +1387,7 @@ try{
         }
         }
 
-        private Long МетодBulkUPDATE(@NonNull String имяТаблицыОтАндройда_локальноая,@NonNull Context context) {
-            Long результат_ОбновлениенымисСервера=0l;
-            try{
-                Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasemirror/" + имяТаблицыОтАндройда_локальноая + "");
-                    if (АдаптерДляВставкиИОбновления.size()>0) {
-                        ContentResolver contentResolver  = context.getContentResolver();
-                        // TODO: 02.05.2023  Ответ Обратно ПрограссБару
-                        ContentValues[] contentValuesМассив=new ContentValues[АдаптерДляВставкиИОбновления.size()];
-                        contentValuesМассив=АдаптерДляВставкиИОбновления.toArray(contentValuesМассив);
-                        int РезультатОбновлениеМассовой = contentResolver.bulkInsert(uri, contentValuesМассив);
-                        // TODO: 27.10.2021
-                              if (РезультатОбновлениеМассовой>0) {
-                            ИндексТекущейОперацииРеальногРезультатОбработкиАтблицы++;
-                        }
-                        результат_ОбновлениенымисСервера = Long.valueOf(РезультатОбновлениеМассовой);
-                        Log.d(this.getClass().getName(), " РезультатОбновлениеМассовой :::  "
-                                + РезультатОбновлениеМассовой+"\n"+
-                                "  имяТаблицыОтАндройда_локальноая " +имяТаблицыОтАндройда_локальноая);
-                    }
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-            return результат_ОбновлениенымисСервера;
-        }
+
 
 
 

@@ -69,11 +69,14 @@ this.context=context;
                                              }else {
 
                                                  // TODO: 04.07.2023  Вставка  ПОСЛЕ ОБНОВЛЕНИЯ ЕСЛИ ОНО НЕ ПРОШЛО
-                                                 Long ОперацияInsert = OrganizationВставкаДанных(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite, jsonNode);
-                                                 if (ОперацияInsert>0) {
-                                                     РезультатОперацииBurkUPDATE.add(ОперацияInsert.intValue());
-                                                 }
-                                                 Log.d(this.getClass().getName(), "\n" + " class " +
+                                                     Long ОперацияInsert = null;
+                                                     if (ОперацияUpdate<0) {
+                                                         ОперацияInsert = OrganizationВставкаДанных(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite, jsonNode);
+                                                         if (ОперацияInsert>0) {
+                                                             РезультатОперацииBurkUPDATE.add(ОперацияInsert.intValue());
+                                                         }
+                                                     }
+                                                     Log.d(this.getClass().getName(), "\n" + " class " +
                                                          Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                          " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                          " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -191,7 +194,7 @@ this.context=context;
                 // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
                 String  SQlOperInsert=  "INSERT INTO "+имяТаблицаAsync+" VALUES(?,?,?,?,?,?,?,?,?,? );";
 
-            SQLiteStatement sqLiteStatementInsert = методGetSqliteStatement(Create_Database_СамаБАзаSQLite, SQlOperInsert,jsonNodeParentMAP);
+            SQLiteStatement sqLiteStatementInsert = методGetSqliteStatementForInsert(Create_Database_СамаБАзаSQLite, SQlOperInsert,jsonNodeParentMAP);
 
             // TODO: 04.07.2023  INSERT  Organization
              ОперацияInsert=      sqLiteStatementInsert.executeInsert();
@@ -226,7 +229,7 @@ this.context=context;
             String  SQlOperUpdate=  " UPDATE "+имяТаблицаAsync+" SET  id=?,name=?,fullname=?,inn=? ,kpp=? ," +
                     " date_update=?,user_update=? , chosen_organization=?, current_table=?,uuid=?      WHERE  uuid=?  ;";
 
-            SQLiteStatement sqLiteStatementInsert = методGetSqliteStatement(Create_Database_СамаБАзаSQLite, SQlOperUpdate,jsonNodeParentMAP);
+            SQLiteStatement sqLiteStatementInsert = методGetSqliteStatementForUpdate(Create_Database_СамаБАзаSQLite, SQlOperUpdate,jsonNodeParentMAP);
 
             // TODO: 04.07.2023  UPDARE Organization
             ОперацияUpdate=      sqLiteStatementInsert.executeUpdateDelete();
@@ -253,7 +256,7 @@ this.context=context;
 
 
     @NonNull
-    private SQLiteStatement методGetSqliteStatement(@NonNull SQLiteDatabase Create_Database_СамаБАзаSQLite,
+    private SQLiteStatement методGetSqliteStatementForInsert(@NonNull SQLiteDatabase Create_Database_СамаБАзаSQLite,
                                                     String SQlOperInsert,
                                                     @NonNull JsonNode jsonNodeParentMAP) {
         SQLiteStatement sqLiteStatementInsert = null;
@@ -271,7 +274,6 @@ this.context=context;
         sqLiteStatementInsert.bindDouble(8,jsonNodeParentMAP.get("chosen_organization").intValue());//"chosen_organization"
         sqLiteStatementInsert.bindLong(9,jsonNodeParentMAP.get("current_table").longValue());//"current_table"
         sqLiteStatementInsert.bindLong(10,jsonNodeParentMAP.get("uuid").longValue());//"uuid"
-        sqLiteStatementInsert.bindLong(11,jsonNodeParentMAP.get("uuid").longValue());//"uuid уже для UUID"
         Log.d(this.getClass().getName(), "\n" + " class " +
                 Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -286,6 +288,39 @@ this.context=context;
         }
         return sqLiteStatementInsert;
     }
-
+    @NonNull
+    private SQLiteStatement методGetSqliteStatementForUpdate(@NonNull SQLiteDatabase Create_Database_СамаБАзаSQLite,
+                                                             String SQlOperInsert,
+                                                             @NonNull JsonNode jsonNodeParentMAP) {
+        SQLiteStatement sqLiteStatementInsert = null;
+        try{
+            sqLiteStatementInsert= Create_Database_СамаБАзаSQLite.compileStatement(SQlOperInsert);
+            sqLiteStatementInsert.clearBindings();
+            // TODO: 04.07.2023 цикл данных
+            sqLiteStatementInsert.bindLong(1,jsonNodeParentMAP.get("id").intValue());//"id"
+            sqLiteStatementInsert.bindString(2,jsonNodeParentMAP.get("name").asText());//"name"
+            sqLiteStatementInsert.bindString(3,jsonNodeParentMAP.get("fullname").asText());//"fullname"
+            sqLiteStatementInsert.bindString(4,jsonNodeParentMAP.get("inn").asText());//"inn"
+            sqLiteStatementInsert.bindString(5,jsonNodeParentMAP.get("kpp").asText());//"kpp"
+            sqLiteStatementInsert.bindString(6,jsonNodeParentMAP.get("date_update").asText());//"date_update"
+            sqLiteStatementInsert.bindLong(7,jsonNodeParentMAP.get("user_update").intValue());//"user_update"
+            sqLiteStatementInsert.bindDouble(8,jsonNodeParentMAP.get("chosen_organization").intValue());//"chosen_organization"
+            sqLiteStatementInsert.bindLong(9,jsonNodeParentMAP.get("current_table").longValue());//"current_table"
+            sqLiteStatementInsert.bindLong(10,jsonNodeParentMAP.get("uuid").longValue());//"uuid"
+            sqLiteStatementInsert.bindLong(11,jsonNodeParentMAP.get("uuid").longValue());//"uuid уже для UUID"
+            Log.d(this.getClass().getName(), "\n" + " class " +
+                    Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + sqLiteStatementInsert  + "sqLiteStatementInsert");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        return sqLiteStatementInsert;
+    }
 
 }
