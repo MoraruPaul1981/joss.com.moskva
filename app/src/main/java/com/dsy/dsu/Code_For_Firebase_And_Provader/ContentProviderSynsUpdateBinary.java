@@ -35,6 +35,7 @@ import com.dsy.dsu.AllDatabases.JsonDeserializer.NotificationsJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.OrganizationJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.RegionJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.Settings_tabelsJsonDeserializer;
+import com.dsy.dsu.AllDatabases.JsonDeserializer.TabelJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.TemplatesJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.Сhat_usersJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.СhatsJsonDeserializer;
@@ -447,6 +448,13 @@ public class ContentProviderSynsUpdateBinary extends ContentProvider {
                             case "data_chat":
                                 РезультатJsonDeserializer=
                                         new Data_chatJsonDeserializer()
+                                                .методOrganizationJsonDeserializer( jsonNodeParentMAP, getContext(),имяТаблицаAsync,
+                                                        Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
+                                bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
+                                break;
+                            case "tabel":
+                                РезультатJsonDeserializer=
+                                        new TabelJsonDeserializer()
                                                 .методOrganizationJsonDeserializer( jsonNodeParentMAP, getContext(),имяТаблицаAsync,
                                                         Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
                                 bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
