@@ -27,6 +27,7 @@ import androidx.loader.content.AsyncTaskLoader;
 import com.dsy.dsu.AllDatabases.CREATE_DATABASE;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.CfoJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.Data_chatJsonDeserializer;
+import com.dsy.dsu.AllDatabases.JsonDeserializer.Data_tabelsJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.DepatmentJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.FioJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.Fio_templateJsonDeserializer;
@@ -455,6 +456,13 @@ public class ContentProviderSynsUpdateBinary extends ContentProvider {
                             case "tabel":
                                 РезультатJsonDeserializer=
                                         new TabelJsonDeserializer()
+                                                .методOrganizationJsonDeserializer( jsonNodeParentMAP, getContext(),имяТаблицаAsync,
+                                                        Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
+                                bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
+                                break;
+                            case "data_tabels":
+                                РезультатJsonDeserializer=
+                                        new Data_tabelsJsonDeserializer()
                                                 .методOrganizationJsonDeserializer( jsonNodeParentMAP, getContext(),имяТаблицаAsync,
                                                         Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
                                 bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);

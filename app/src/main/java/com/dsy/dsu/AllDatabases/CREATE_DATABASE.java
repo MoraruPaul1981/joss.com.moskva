@@ -124,7 +124,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         ССылкаНаСозданнуюБазу.execSQL("drop table  if exists templates");//test
         ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'templates'");//test
         ССылкаНаСозданнуюБазу.execSQL("Create table if not exists    templates  (" +
-                "id  INTEGER PRIMARY KEY AUTOINCREMENT ," +
+                "id  INTEGER PRIMARY KEY  ," +
                 " name_templates TEXT NOT NULL ," +
                 " user_update INTEGER ,"+
                 " date_update NUMERIC,"+
@@ -139,7 +139,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         ССылкаНаСозданнуюБазу.execSQL("drop table  if exists date_work");//test
         ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'date_work'");//test
         ССылкаНаСозданнуюБазу.execSQL("Create table if not exists    date_work  (" +
-                "id  INTEGER PRIMARY KEY ," +
+                "id  INTEGER PRIMARY KEY  ," +
                 "date_work NUMERIC,"+
                 " date_update NUMERIC)");
         /////todo встака данных по умолчанию
@@ -154,7 +154,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         ССылкаНаСозданнуюБазу.execSQL("drop table  if exists  region");//test
         ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'region'");//test
         ССылкаНаСозданнуюБазу.execSQL("Create table if not exists   region (" +
-                "id  INTEGER PRIMARY KEY    ," +
+                "id  INTEGER PRIMARY KEY   ," +
                 " name TEXT ," +
                 " date_update NUMERIC  ," +
                 " user_update INTEGER ," +
@@ -227,7 +227,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         ССылкаНаСозданнуюБазу.execSQL("drop table  if exists notifications");//test
         ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'notifications'");//test
         ССылкаНаСозданнуюБазу.execSQL("Create table if not exists    notifications  (" +
-                "id  INTEGER PRIMARY KEY ," +
+                "id  INTEGER PRIMARY KEY   ," +
                 " date_start NUMERIC,"+
                 " clock INTEGER ,"+
                 " date_update NUMERIC,"+
@@ -269,7 +269,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         ССылкаНаСозданнуюБазу.execSQL("drop table  if exists data_notification");//test
         ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'data_notification'");//test
         ССылкаНаСозданнуюБазу.execSQL("Create table if not exists    data_notification  (" +
-                "id  INTEGER PRIMARY KEY ," +
+                "id  INTEGER PRIMARY KEY   ," +
                 " message  TEXT ," +
                 " date_start NUMERIC ," +
                 " clock NUMERIC," +
@@ -303,7 +303,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         ССылкаНаСозданнуюБазу.execSQL("drop table  if exists fio_template");//test
         ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'fio_template'");//test
         ССылкаНаСозданнуюБазу.execSQL("Create table if not exists    fio_template  (" +
-                "id  INTEGER PRIMARY KEY AUTOINCREMENT  ," +
+                "id  INTEGER PRIMARY KEY   ," +
                 " uuid  NUMERIC UNIQUE," +
                 " fio_template NUMERIC ," +
                 "fio_uuid  NUMERIC   ,"+
@@ -325,7 +325,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         ССылкаНаСозданнуюБазу.execSQL("drop table  if exists  settings_tabels");//test
         ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0' ,versionserveraandroid_version='0' WHERE name =  'settings_tabels'");//test
         ССылкаНаСозданнуюБазу.execSQL("Create table if not exists    settings_tabels  (" +
-                "id  INTEGER PRIMARY KEY ," +
+                "id  INTEGER PRIMARY KEY AUTOINCREMENT ," +
                 " date_update NUMERIC  ," +
                 " user_update INTEGER  ," +
                 " version_dsu1 INTEGER ," +
@@ -475,7 +475,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
 
         ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'chat_users'");//test
         ССылкаНаСозданнуюБазу.execSQL("Create table if not exists    chat_users  (" +
-                "_id  INTEGER PRIMARY KEY ," +
+                "_id  INTEGER PRIMARY KEY   ," +
                 " name TEXT  ," +
                 " rights INTEGER ,"+
                 " telephone TEXT,"+
@@ -499,7 +499,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
 
         ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'data_chat'");//test
         ССылкаНаСозданнуюБазу.execSQL("Create table if not exists    data_chat  (" +
-                "_id  INTEGER PRIMARY KEY  ," +
+                "_id  INTEGER PRIMARY KEY    ," +
                 " uuid  NUMERIC UNIQUE," +
                 " message TEXT ," +
                 " image_chat BLOB ," +
@@ -843,7 +843,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
     private void МетодСозданиеТаблицыЛогинов(SQLiteDatabase ССылкаНаСозданнуюБазу) {
         ССылкаНаСозданнуюБазу.execSQL("drop table  if exists successlogin");//test
         ССылкаНаСозданнуюБазу.execSQL("Create table  if not exists successlogin (" +
-                " id   INTEGER PRIMARY KEY ," +
+                " id   INTEGER PRIMARY KEY AUTOINCREMENT ," +
                 " success_users  TEXT  ," +
                 " success_login  TEXT ,  " +
                 " date_update  NUMERIC," +
@@ -968,7 +968,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             ССылкаНаСозданнуюБазу.execSQL("drop table  if exists company ");//ТАБЛИЦА ГЕНЕРАЦИИ ОШИБОК
             ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'company'");//test
             ССылкаНаСозданнуюБазу.execSQL("Create table if not exists company (" +
-                    "_id INTEGER PRIMARY KEY  ," +
+                    "_id INTEGER PRIMARY KEY," +
                     "name  TEXT ," +
                     "fullname TEXT," +
                     "inn  TEXT ," +
