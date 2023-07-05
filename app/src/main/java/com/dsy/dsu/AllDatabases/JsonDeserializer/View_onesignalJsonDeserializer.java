@@ -19,7 +19,7 @@ import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Predicate;
 
-public class DepatmentJsonDeserializer extends JsonMainDeseirialzer {
+public class View_onesignalJsonDeserializer extends JsonMainDeseirialzer {
     private Context context;
 
     // TODO: 04.07.2023  Главный метод Парсин таблицы ОРганизация
@@ -51,7 +51,7 @@ this.context=context;
                                                      имяТаблицаAsync.equalsIgnoreCase("settings_tabels") ||
                                                      имяТаблицаAsync.equalsIgnoreCase("view_onesignal")) {
                                                  // TODO: 04.07.2023  Обновление
-                                                 ОперацияUpdate = OrganizationОбновлениеДанных(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite, jsonNode);
+                                                 ОперацияUpdate = ОбновлениеДанных(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite, jsonNode);
 
                                                  if (ОперацияUpdate>0) {
                                                      РезультатОперацииBurkUPDATE.add(ОперацияUpdate);
@@ -66,7 +66,7 @@ this.context=context;
                                                  // TODO: 04.07.2023  Вставка  ПОСЛЕ ОБНОВЛЕНИЯ ЕСЛИ ОНО НЕ ПРОШЛО
                                                      Long ОперацияInsert = null;
                                                      if (ОперацияUpdate<1) {
-                                                         ОперацияInsert = OrganizationВставкаДанных(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite, jsonNode);
+                                                         ОперацияInsert = ВставкаДанных(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite, jsonNode);
                                                          if (ОперацияInsert>0) {
                                                              РезультатОперацииBurkUPDATE.add(ОперацияInsert.intValue());
                                                          }
@@ -82,7 +82,7 @@ this.context=context;
                                              }else {
 
                                                      // TODO: 04.07.2023  ТОЛЬКО ВСТАВКА
-                                                     Long ОперацияInsert = OrganizationВставкаДанных(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite, jsonNode);
+                                                     Long ОперацияInsert = ВставкаДанных(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite, jsonNode);
                                                      if (ОперацияInsert>0) {
                                                          РезультатОперацииBurkUPDATE.add(ОперацияInsert.intValue());
                                                      }
@@ -178,18 +178,19 @@ this.context=context;
     
     
     // TODO: 04.07.2023 ВСТАВКА
-    Long OrganizationВставкаДанных(@NonNull Context context,
-                                 @NonNull String имяТаблицаAsync,
-                                 @NonNull SQLiteDatabase Create_Database_СамаБАзаSQLite,
-                                                        @NonNull JsonNode jsonNodeParentMAP) {
+    Long ВставкаДанных(@NonNull Context context,
+                       @NonNull String имяТаблицаAsync,
+                       @NonNull SQLiteDatabase Create_Database_СамаБАзаSQLite,
+                       @NonNull JsonNode jsonNodeParentMAP) {
         // TODO: 26.04.2023 Insert
         Long ОперацияInsert=0l;
         try{
             this.context=context;
                 // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
-                String  SQlOperInsert=  "INSERT INTO "+имяТаблицаAsync+" VALUES(?,?,?,?,?,?,? );";
+                String  SQlOperInsert=  " INSERT INTO "+имяТаблицаAsync+" VALUES (?,?,?,?,?,? ) ;";
 
-            String sql = "SELECT COUNT(*) FROM organization WHERE uuid='3'";
+
+            String sql = "SELECT COUNT(*) FROM view_onesignal WHERE uuid='0'";
             SQLiteStatement statement = Create_Database_СамаБАзаSQLite.compileStatement(sql);
             long ЕслиИлиНЕтUUID = statement.simpleQueryForLong();
 
@@ -227,16 +228,16 @@ this.context=context;
         return  ОперацияInsert;
     }
     // TODO: 04.07.2023 ОБНОВЛЕНИЕ
-    Integer  OrganizationОбновлениеДанных(@NonNull Context context,
-                                                         @NonNull String имяТаблицаAsync,
-                                                         @NonNull SQLiteDatabase Create_Database_СамаБАзаSQLite,
-                                                         @NonNull JsonNode jsonNodeParentMAP) {
+    Integer ОбновлениеДанных(@NonNull Context context,
+                             @NonNull String имяТаблицаAsync,
+                             @NonNull SQLiteDatabase Create_Database_СамаБАзаSQLite,
+                             @NonNull JsonNode jsonNodeParentMAP) {
         Integer ОперацияUpdate=0;
         try{
             this.context=context;
             // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
-            String  SQlOperUpdate=  " UPDATE "+имяТаблицаAsync+" SET  id=?,name=?,organization=?," +
-                    " date_update=?,user_update=? , current_table=?,uuid=?      WHERE  uuid=?  ;";
+            String  SQlOperUpdate=  " UPDATE "+имяТаблицаAsync+" SET  id=?, uuid=?," +
+                    " onesignal =?,current_table=?, user_update=? , date_update=?     WHERE  uuid=?  ;";
 
             SQLiteStatement sqLiteStatementInsert = методGetSqliteStatementForUpdate(Create_Database_СамаБАзаSQLite, SQlOperUpdate,jsonNodeParentMAP);
 
@@ -270,16 +271,18 @@ this.context=context;
                                                     @NonNull JsonNode jsonNodeParentMAP) {
         SQLiteStatement sqLiteStatementInsert = null;
         try{
-        sqLiteStatementInsert= Create_Database_СамаБАзаSQLite.compileStatement(SQlOperInsert);
-        sqLiteStatementInsert.clearBindings();
+            sqLiteStatementInsert = Create_Database_СамаБАзаSQLite.compileStatement(SQlOperInsert);
+            sqLiteStatementInsert.clearBindings();
             // TODO: 04.07.2023 цикл данных
-        sqLiteStatementInsert.bindLong(1,jsonNodeParentMAP.get("id").intValue());//"id"
-        sqLiteStatementInsert.bindString(2,jsonNodeParentMAP.get("name").asText());//"name"
-        sqLiteStatementInsert.bindLong(3,jsonNodeParentMAP.get("organization").intValue());//"fullname"
-        sqLiteStatementInsert.bindString(4,jsonNodeParentMAP.get("date_update").asText());//"date_update"
-        sqLiteStatementInsert.bindLong(5,jsonNodeParentMAP.get("user_update").intValue());//"user_update"
-        sqLiteStatementInsert.bindLong(6,jsonNodeParentMAP.get("current_table").longValue());//"current_table"
-        sqLiteStatementInsert.bindLong(7,jsonNodeParentMAP.get("uuid").longValue());//"uuid"
+            sqLiteStatementInsert.bindLong(1, jsonNodeParentMAP.get("id").intValue());//"id""
+            sqLiteStatementInsert.bindLong(2, jsonNodeParentMAP.get("uuid").longValue());//"uuid"
+            sqLiteStatementInsert.bindString(3, jsonNodeParentMAP.get("onesignal").asText());//"date_update"
+            sqLiteStatementInsert.bindLong(4, jsonNodeParentMAP.get("current_table").longValue());//"current_table"
+            sqLiteStatementInsert.bindLong(5, jsonNodeParentMAP.get("user_update").intValue());//"uuid"
+            sqLiteStatementInsert.bindString(6, jsonNodeParentMAP.get("date_update").asText());//"date_update"
+            // TODO: 05.07.2023 для INSERT состыковка
+            sqLiteStatementInsert.bindLong(7, jsonNodeParentMAP.get("uuid").longValue());//"date_update"
+
         Log.d(this.getClass().getName(), "\n" + " class " +
                 Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -303,14 +306,15 @@ this.context=context;
             sqLiteStatementInsert= Create_Database_СамаБАзаSQLite.compileStatement(SQlOperInsert);
             sqLiteStatementInsert.clearBindings();
             // TODO: 04.07.2023 цикл данных
-            sqLiteStatementInsert.bindLong(1,jsonNodeParentMAP.get("id").intValue());//"id"
-            sqLiteStatementInsert.bindString(2,jsonNodeParentMAP.get("name").asText());//"name"
-            sqLiteStatementInsert.bindLong(3,jsonNodeParentMAP.get("organization").intValue());//"fullname"
-            sqLiteStatementInsert.bindString(4,jsonNodeParentMAP.get("date_update").asText());//"date_update"
-            sqLiteStatementInsert.bindLong(5,jsonNodeParentMAP.get("user_update").intValue());//"user_update"
-            sqLiteStatementInsert.bindLong(6,jsonNodeParentMAP.get("current_table").longValue());//"current_table"
-            sqLiteStatementInsert.bindLong(7,jsonNodeParentMAP.get("uuid").longValue());//"uuid"
-            sqLiteStatementInsert.bindLong(8,jsonNodeParentMAP.get("uuid").longValue());//"uuid уже для UUID"
+            sqLiteStatementInsert.bindLong(1, jsonNodeParentMAP.get("id").intValue());//"id""
+            sqLiteStatementInsert.bindLong(2, jsonNodeParentMAP.get("uuid").longValue());//"uuid"
+            sqLiteStatementInsert.bindString(3, jsonNodeParentMAP.get("onesignal").asText());//"date_update"
+            sqLiteStatementInsert.bindLong(4, jsonNodeParentMAP.get("current_table").longValue());//"current_table"
+            sqLiteStatementInsert.bindLong(5, jsonNodeParentMAP.get("user_update").intValue());//"uuid"
+            sqLiteStatementInsert.bindString(6, jsonNodeParentMAP.get("date_update").asText());//"date_update"
+
+            // TODO: 05.07.2023  Для Состыковки
+            sqLiteStatementInsert.bindLong(7,jsonNodeParentMAP.get("uuid").longValue());//"uuid уже для UUID"
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
