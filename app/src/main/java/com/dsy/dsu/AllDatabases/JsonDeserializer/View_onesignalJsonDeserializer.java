@@ -64,8 +64,9 @@ this.context=context;
                                              }else {
 
                                                  // TODO: 04.07.2023  Вставка  ПОСЛЕ ОБНОВЛЕНИЯ ЕСЛИ ОНО НЕ ПРОШЛО
+                                                     long ЕслиИлиНЕтUUID=        new  FindEmptyUUID().методПосикаUUIDDeseializer(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite,jsonNode);
                                                      Long ОперацияInsert = null;
-                                                     if (ОперацияUpdate<1) {
+                                                     if (ОперацияUpdate<1 && ЕслиИлиНЕтUUID==0) {
                                                          ОперацияInsert = ВставкаДанных(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite, jsonNode);
                                                          if (ОперацияInsert>0) {
                                                              РезультатОперацииBurkUPDATE.add(ОперацияInsert.intValue());
@@ -189,21 +190,6 @@ this.context=context;
                 // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
                 String  SQlOperInsert=  " INSERT INTO "+имяТаблицаAsync+" VALUES (?,?,?,?,?,? ) ;";
 
-
-            String sql = "SELECT COUNT(*) FROM view_onesignal WHERE uuid='0'";
-            SQLiteStatement statement = Create_Database_СамаБАзаSQLite.compileStatement(sql);
-            long ЕслиИлиНЕтUUID = statement.simpleQueryForLong();
-
-            // TODO: 27.04.2023  повышаем верисю данных
-            Log.d(this.getClass().getName(), "\n" + " class " +
-                    Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + имяТаблицаAsync  +
-                    " ЕслиИлиНЕтUUID " +ЕслиИлиНЕтUUID);
-
-
-
             SQLiteStatement sqLiteStatementInsert = методGetSqliteStatementForInsert(Create_Database_СамаБАзаSQLite, SQlOperInsert,jsonNodeParentMAP);
 
             // TODO: 04.07.2023  INSERT  Organization
@@ -280,8 +266,6 @@ this.context=context;
             sqLiteStatementInsert.bindLong(4, jsonNodeParentMAP.get("current_table").longValue());//"current_table"
             sqLiteStatementInsert.bindLong(5, jsonNodeParentMAP.get("user_update").intValue());//"uuid"
             sqLiteStatementInsert.bindString(6, jsonNodeParentMAP.get("date_update").asText());//"date_update"
-            // TODO: 05.07.2023 для INSERT состыковка
-            sqLiteStatementInsert.bindLong(7, jsonNodeParentMAP.get("uuid").longValue());//"date_update"
 
         Log.d(this.getClass().getName(), "\n" + " class " +
                 Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

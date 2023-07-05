@@ -64,8 +64,9 @@ this.context=context;
                                              }else {
 
                                                  // TODO: 04.07.2023  Вставка  ПОСЛЕ ОБНОВЛЕНИЯ ЕСЛИ ОНО НЕ ПРОШЛО
+                                                     long ЕслиИлиНЕтUUID=        new  FindEmptyUUID().методПосикаUUIDDeseializer(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite,jsonNode);
                                                      Long ОперацияInsert = null;
-                                                     if (ОперацияUpdate<0) {
+                                                     if (ОперацияUpdate<1 && ЕслиИлиНЕтUUID==0) {
                                                          ОперацияInsert = ВставкаДанных(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite, jsonNode);
                                                          if (ОперацияInsert>0) {
                                                              РезультатОперацииBurkUPDATE.add(ОперацияInsert.intValue());

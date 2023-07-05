@@ -64,8 +64,9 @@ this.context=context;
                                              }else {
 
                                                  // TODO: 04.07.2023  Вставка  ПОСЛЕ ОБНОВЛЕНИЯ ЕСЛИ ОНО НЕ ПРОШЛО
+                                                     long ЕслиИлиНЕтUUID=        new  FindEmptyUUID().методПосикаUUIDDeseializer(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite,jsonNode);
                                                      Long ОперацияInsert = null;
-                                                     if (ОперацияUpdate<1) {
+                                                     if (ОперацияUpdate<1 && ЕслиИлиНЕтUUID==0) {
                                                          ОперацияInsert = OrganizationВставкаДанных(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite, jsonNode);
                                                          if (ОперацияInsert>0) {
                                                              РезультатОперацииBurkUPDATE.add(ОперацияInsert.intValue());
@@ -188,20 +189,6 @@ this.context=context;
             this.context=context;
                 // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
                 String  SQlOperInsert=  "INSERT INTO "+имяТаблицаAsync+" VALUES(?,?,?,?,?,?,? );";
-
-            String sql = "SELECT COUNT(*) FROM organization WHERE uuid='3'";
-            SQLiteStatement statement = Create_Database_СамаБАзаSQLite.compileStatement(sql);
-            long ЕслиИлиНЕтUUID = statement.simpleQueryForLong();
-
-            // TODO: 27.04.2023  повышаем верисю данных
-            Log.d(this.getClass().getName(), "\n" + " class " +
-                    Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + имяТаблицаAsync  +
-                    " ЕслиИлиНЕтUUID " +ЕслиИлиНЕтUUID);
-
-
 
             SQLiteStatement sqLiteStatementInsert = методGetSqliteStatementForInsert(Create_Database_СамаБАзаSQLite, SQlOperInsert,jsonNodeParentMAP);
 
