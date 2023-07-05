@@ -4,6 +4,7 @@ package com.dsy.dsu.Business_logic_Only_Class.Jakson;
 import android.content.Context;
 import android.util.Log;
 
+import com.dsy.dsu.AllDatabases.modelJSON.Organization;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -15,15 +16,14 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class GeneratorJSONDeserializer extends JsonDeserializer<CopyOnWriteArrayList<Map<String,String>>> {
+public class GeneratorJSONDeserializer extends JsonDeserializer<Organization> {
     Context context;
-    CopyOnWriteArrayList<Map<String,String>>   copyOnWriteArrayGeneratorJSONDeserializer=new CopyOnWriteArrayList<>();
     public GeneratorJSONDeserializer(Context context) {
 
         this.context=context;
     }
     @Override
-    public CopyOnWriteArrayList<Map<String, String>> deserialize(JsonParser p, DeserializationContext ctxt)
+    public Organization deserialize(JsonParser p, DeserializationContext ctxt)
             throws IOException, JsonProcessingException {
         try{
             JsonNode node = p.readValueAsTree();
@@ -37,7 +37,7 @@ public class GeneratorJSONDeserializer extends JsonDeserializer<CopyOnWriteArray
         new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                 Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
     }
-        return copyOnWriteArrayGeneratorJSONDeserializer;
+        return new Organization();
     }
 }
 

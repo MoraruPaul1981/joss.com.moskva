@@ -109,7 +109,7 @@ this.context=context;
              .doAfterNext(new Consumer<List<JsonNode>>() {
                  @Override
                  public void accept(List<JsonNode> jsonNodes) throws Throwable {
-                     // TODO: 04.07.2023  ОПЕРАЦИИ ПОСЛЕ УСПЕШНОЙ ОБРАБОТКИ 500 ЗАписей 
+                     // TODO: 04.07.2023  ОПЕРАЦИИ ПОСЛЕ УСПЕШНОЙ ОБРАБОТКИ 500 ЗАписей
                      if ( РезультатОперацииBurkUPDATE.size()>0) {
                          // TODO: 04.07.2023 После Успешной Операции Повышаем Версию ДАнных Для Данной Тваблицы  
                          Integer РезультатПовышенииВерсииДанных =
@@ -120,7 +120,6 @@ this.context=context;
                          if (Create_Database_СамаБАзаSQLite.inTransaction()) {
                              Create_Database_СамаБАзаSQLite.endTransaction();
                          }
-                         РезультатОперацииBurkUPDATE.clear();
                      }
                      Log.d(this.getClass().getName(), "\n" + " class " +
                              Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -224,7 +223,8 @@ this.context=context;
         try{
             this.context=context;
             // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
-            String  SQlOperUpdate=  " UPDATE "+имяТаблицаAsync+" SET  id=?     WHERE  uuid=?  ;";
+            String  SQlOperUpdate=  " UPDATE "+имяТаблицаAsync+" SET  id=?,name=?,fullname=?,inn=? ,kpp=? ," +
+                    " date_update=?,user_update=? , chosen_organization=?, current_table=?,uuid=?      WHERE  uuid=?  ;";
 
             SQLiteStatement sqLiteStatementInsert = методGetSqliteStatement(Create_Database_СамаБАзаSQLite, SQlOperUpdate,jsonNodeParentMAP);
 
@@ -271,6 +271,7 @@ this.context=context;
         sqLiteStatementInsert.bindDouble(8,jsonNodeParentMAP.get("chosen_organization").intValue());//"chosen_organization"
         sqLiteStatementInsert.bindLong(9,jsonNodeParentMAP.get("current_table").longValue());//"current_table"
         sqLiteStatementInsert.bindLong(10,jsonNodeParentMAP.get("uuid").longValue());//"uuid"
+        sqLiteStatementInsert.bindLong(11,jsonNodeParentMAP.get("uuid").longValue());//"uuid уже для UUID"
         Log.d(this.getClass().getName(), "\n" + " class " +
                 Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
