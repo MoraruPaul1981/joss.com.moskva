@@ -25,6 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.loader.content.AsyncTaskLoader;
 
 import com.dsy.dsu.AllDatabases.CREATE_DATABASE;
+import com.dsy.dsu.AllDatabases.JsonDeserializer.CfoJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.DepatmentJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.FioJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.JsonMainDeseirialzer;
@@ -390,6 +391,13 @@ public class ContentProviderSynsUpdateBinary extends ContentProvider {
                             case "region":
                                 РезультатJsonDeserializer=
                                         new RegionJsonDeserializer()
+                                                .методOrganizationJsonDeserializer( jsonNodeParentMAP, getContext(),имяТаблицаAsync,
+                                                        Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
+                                bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
+                                break;
+                            case "cfo":
+                                РезультатJsonDeserializer=
+                                        new CfoJsonDeserializer()
                                                 .методOrganizationJsonDeserializer( jsonNodeParentMAP, getContext(),имяТаблицаAsync,
                                                         Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
                                 bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);

@@ -19,7 +19,7 @@ import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Predicate;
 
-public class FioJsonDeserializer extends JsonMainDeseirialzer {
+public class CfoJsonDeserializer extends JsonMainDeseirialzer {
     private Context context;
 
     // TODO: 04.07.2023  Главный метод Парсин таблицы ОРганизация
@@ -187,7 +187,7 @@ this.context=context;
         try{
             this.context=context;
                 // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
-                String  SQlOperInsert=  "INSERT INTO "+имяТаблицаAsync+" VALUES(?,?,?,?,?,?,?, ?,?,?,?,?,?);";
+                String  SQlOperInsert=  "INSERT INTO "+имяТаблицаAsync+" VALUES(?,?,?,?,?,?,?,?,?,?,?);";
 
             SQLiteStatement sqLiteStatementInsert = методGetSqliteStatementForInsert(Create_Database_СамаБАзаSQLite, SQlOperInsert,jsonNodeParentMAP);
 
@@ -221,8 +221,8 @@ this.context=context;
         try{
             this.context=context;
             // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
-            String  SQlOperUpdate=  " UPDATE "+имяТаблицаAsync+" SET  _id=?,name=?,f=?,n=?,o=?,BirthDate=?,snils=?, " +
-                    " date_update=?,user_update=? , uuid=? ,current_organization=?  , current_table=?,prof=?   WHERE  uuid=?  ;";
+            String  SQlOperUpdate=  " UPDATE "+имяТаблицаAsync+" SET  id=?,name=?,  " +
+                    " date_update=?,user_update=?  , current_table=?,uuid=?    WHERE  uuid=?  ;";
 
             SQLiteStatement sqLiteStatementInsert = методGetSqliteStatementForUpdate(Create_Database_СамаБАзаSQLite, SQlOperUpdate,jsonNodeParentMAP);
 
@@ -261,17 +261,15 @@ this.context=context;
             // TODO: 04.07.2023 цикл данных
             sqLiteStatementInsert.bindLong(1, jsonNodeParentMAP.get("id").intValue());//"id"
             sqLiteStatementInsert.bindString(2, jsonNodeParentMAP.get("name").asText().trim());//"name"
-            sqLiteStatementInsert.bindString(3, jsonNodeParentMAP.get("f").asText());//"name"
-            sqLiteStatementInsert.bindString(4, jsonNodeParentMAP.get("n").asText());//"name"
-            sqLiteStatementInsert.bindString(5, jsonNodeParentMAP.get("o").asText());//"name"
-            sqLiteStatementInsert.bindString(6, jsonNodeParentMAP.get("BirthDate").asText());//"name"
-            sqLiteStatementInsert.bindString(7, jsonNodeParentMAP.get("snils").asText());//"name"
-            sqLiteStatementInsert.bindString(8, jsonNodeParentMAP.get("date_update").asText());//"date_update"
-            sqLiteStatementInsert.bindLong(9, jsonNodeParentMAP.get("user_update").intValue());//"user_update"
-            sqLiteStatementInsert.bindLong(10, jsonNodeParentMAP.get("uuid").longValue());//"uuid"
-            sqLiteStatementInsert.bindLong(11, jsonNodeParentMAP.get("current_organization").intValue());//"user_update"
-            sqLiteStatementInsert.bindLong(12, jsonNodeParentMAP.get("current_table").longValue());//"current_table"
-            sqLiteStatementInsert.bindLong(13, jsonNodeParentMAP.get("prof").intValue());//"user_update"
+            sqLiteStatementInsert.bindLong(3, jsonNodeParentMAP.get("region").intValue());//"name"
+            sqLiteStatementInsert.bindLong(4, jsonNodeParentMAP.get("boss").intValue());//"name"
+            sqLiteStatementInsert.bindString(5, jsonNodeParentMAP.get("kod").asText());//"name"
+            sqLiteStatementInsert.bindString(6, jsonNodeParentMAP.get("date_update").asText());//"date_update"
+            sqLiteStatementInsert.bindLong(7, jsonNodeParentMAP.get("user_update").intValue());//"user_update"
+            sqLiteStatementInsert.bindLong(8, jsonNodeParentMAP.get("closed").intValue());//"name"
+            sqLiteStatementInsert.bindLong(9, jsonNodeParentMAP.get("current_table").longValue());//"current_table"
+            sqLiteStatementInsert.bindLong(10, jsonNodeParentMAP.get("organization").intValue());//"name"
+            sqLiteStatementInsert.bindLong(11, jsonNodeParentMAP.get("uuid").longValue());//"uuid"
 
         Log.d(this.getClass().getName(), "\n" + " class " +
                 Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -296,21 +294,20 @@ this.context=context;
             sqLiteStatementInsert= Create_Database_СамаБАзаSQLite.compileStatement(SQlOperInsert);
             sqLiteStatementInsert.clearBindings();
             // TODO: 04.07.2023 цикл данных
-            sqLiteStatementInsert.bindLong(1, jsonNodeParentMAP.get("_id").intValue());//"id"
-            sqLiteStatementInsert.bindString(2, jsonNodeParentMAP.get("name").asText());//"name"
-            sqLiteStatementInsert.bindString(3, jsonNodeParentMAP.get("f").asText());//"name"
-            sqLiteStatementInsert.bindString(4, jsonNodeParentMAP.get("n").asText());//"name"
-            sqLiteStatementInsert.bindString(5, jsonNodeParentMAP.get("o").asText());//"name"
-            sqLiteStatementInsert.bindString(6, jsonNodeParentMAP.get("BirthDate").asText());//"name"
-            sqLiteStatementInsert.bindString(7, jsonNodeParentMAP.get("snils").asText());//"name"
-            sqLiteStatementInsert.bindString(8, jsonNodeParentMAP.get("date_update").asText());//"date_update"
-            sqLiteStatementInsert.bindLong(9, jsonNodeParentMAP.get("user_update").intValue());//"user_update"
-            sqLiteStatementInsert.bindLong(10, jsonNodeParentMAP.get("uuid").longValue());//"uuid"
-            sqLiteStatementInsert.bindLong(11, jsonNodeParentMAP.get("current_organization").intValue());//"user_update"
-            sqLiteStatementInsert.bindLong(12, jsonNodeParentMAP.get("current_table").longValue());//"current_table"
-            sqLiteStatementInsert.bindLong(13, jsonNodeParentMAP.get("prof").intValue());//"user_update"
+            sqLiteStatementInsert.bindLong(1, jsonNodeParentMAP.get("id").intValue());//"id"
+            sqLiteStatementInsert.bindString(2, jsonNodeParentMAP.get("name").asText().trim());//"name"
+            sqLiteStatementInsert.bindLong(3, jsonNodeParentMAP.get("region").intValue());//"name"
+            sqLiteStatementInsert.bindLong(4, jsonNodeParentMAP.get("boss").intValue());//"name"
+            sqLiteStatementInsert.bindString(5, jsonNodeParentMAP.get("kod").asText());//"name"
+            sqLiteStatementInsert.bindString(6, jsonNodeParentMAP.get("date_update").asText());//"date_update"
+            sqLiteStatementInsert.bindLong(7, jsonNodeParentMAP.get("user_update").intValue());//"user_update"
+            sqLiteStatementInsert.bindLong(8, jsonNodeParentMAP.get("closed").intValue());//"name"
+            sqLiteStatementInsert.bindLong(9, jsonNodeParentMAP.get("current_table").longValue());//"current_table"
+            sqLiteStatementInsert.bindLong(10, jsonNodeParentMAP.get("organization").intValue());//"name"
+            sqLiteStatementInsert.bindLong(11, jsonNodeParentMAP.get("uuid").longValue());//"uuid"
+
             // TODO: 05.07.2023  Для Состыковки
-            sqLiteStatementInsert.bindLong(14,jsonNodeParentMAP.get("uuid").longValue());//"uuid уже для UUID"
+            sqLiteStatementInsert.bindLong(12,jsonNodeParentMAP.get("uuid").longValue());//"uuid уже для UUID"
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
