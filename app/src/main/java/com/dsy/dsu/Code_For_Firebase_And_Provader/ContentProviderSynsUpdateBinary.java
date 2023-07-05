@@ -28,12 +28,14 @@ import com.dsy.dsu.AllDatabases.CREATE_DATABASE;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.CfoJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.DepatmentJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.FioJsonDeserializer;
+import com.dsy.dsu.AllDatabases.JsonDeserializer.Fio_templateJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.JsonMainDeseirialzer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.NotificationsJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.OrganizationJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.RegionJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.Settings_tabelsJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.TemplatesJsonDeserializer;
+import com.dsy.dsu.AllDatabases.JsonDeserializer.Сhat_usersJsonDeserializer;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassCreatingMainAllTables;
@@ -419,7 +421,20 @@ public class ContentProviderSynsUpdateBinary extends ContentProvider {
                                                         Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
                                 bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
                                 break;
-
+                            case "fio_template":
+                                РезультатJsonDeserializer=
+                                        new Fio_templateJsonDeserializer()
+                                                .методOrganizationJsonDeserializer( jsonNodeParentMAP, getContext(),имяТаблицаAsync,
+                                                        Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
+                                bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
+                                break;
+                            case "chat_users":
+                                РезультатJsonDeserializer=
+                                        new Сhat_usersJsonDeserializer()
+                                                .методOrganizationJsonDeserializer( jsonNodeParentMAP, getContext(),имяТаблицаAsync,
+                                                        Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
+                                bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
+                                break;
 
 
 
