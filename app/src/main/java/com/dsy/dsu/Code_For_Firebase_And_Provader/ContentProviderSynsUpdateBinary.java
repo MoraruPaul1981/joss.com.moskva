@@ -29,6 +29,7 @@ import com.dsy.dsu.AllDatabases.JsonDeserializer.DepatmentJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.FioJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.JsonMainDeseirialzer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.OrganizationJsonDeserializer;
+import com.dsy.dsu.AllDatabases.JsonDeserializer.RegionJsonDeserializer;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassCreatingMainAllTables;
@@ -382,6 +383,13 @@ public class ContentProviderSynsUpdateBinary extends ContentProvider {
                             case "fio":
                                 РезультатJsonDeserializer=
                                         new FioJsonDeserializer()
+                                                .методOrganizationJsonDeserializer( jsonNodeParentMAP, getContext(),имяТаблицаAsync,
+                                                        Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
+                                bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
+                                break;
+                            case "region":
+                                РезультатJsonDeserializer=
+                                        new RegionJsonDeserializer()
                                                 .методOrganizationJsonDeserializer( jsonNodeParentMAP, getContext(),имяТаблицаAsync,
                                                         Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
                                 bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
