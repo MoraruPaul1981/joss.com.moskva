@@ -1,6 +1,5 @@
 package com.dsy.dsu.AllDatabases.JsonDeserializer;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
@@ -11,12 +10,8 @@ import androidx.annotation.NonNull;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.google.common.util.concurrent.AtomicDouble;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import io.reactivex.rxjava3.core.Flowable;
@@ -24,7 +19,7 @@ import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Predicate;
 
-public class OrganizationJsonDeserializer extends JsonMainDeseirialzer {
+public class DepatmentJsonDeserializer extends JsonMainDeseirialzer {
     private Context context;
 
     // TODO: 04.07.2023  Главный метод Парсин таблицы ОРганизация
@@ -192,7 +187,7 @@ this.context=context;
         try{
             this.context=context;
                 // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
-                String  SQlOperInsert=  "INSERT INTO "+имяТаблицаAsync+" VALUES(?,?,?,?,?,?,?,?,?,? );";
+                String  SQlOperInsert=  "INSERT INTO "+имяТаблицаAsync+" VALUES(?,?,?,?,?,?,? );";
 
             SQLiteStatement sqLiteStatementInsert = методGetSqliteStatementForInsert(Create_Database_СамаБАзаSQLite, SQlOperInsert,jsonNodeParentMAP);
 
@@ -226,8 +221,8 @@ this.context=context;
         try{
             this.context=context;
             // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
-            String  SQlOperUpdate=  " UPDATE "+имяТаблицаAsync+" SET  id=?,name=?,fullname=?,inn=? ,kpp=? ," +
-                    " date_update=?,user_update=? , chosen_organization=?, current_table=?,uuid=?      WHERE  uuid=?  ;";
+            String  SQlOperUpdate=  " UPDATE "+имяТаблицаAsync+" SET  id=?,name=?,organization=?," +
+                    " date_update=?,user_update=? , current_table=?,uuid=?      WHERE  uuid=?  ;";
 
             SQLiteStatement sqLiteStatementInsert = методGetSqliteStatementForUpdate(Create_Database_СамаБАзаSQLite, SQlOperUpdate,jsonNodeParentMAP);
 
@@ -266,14 +261,11 @@ this.context=context;
             // TODO: 04.07.2023 цикл данных
         sqLiteStatementInsert.bindLong(1,jsonNodeParentMAP.get("id").intValue());//"id"
         sqLiteStatementInsert.bindString(2,jsonNodeParentMAP.get("name").asText());//"name"
-        sqLiteStatementInsert.bindString(3,jsonNodeParentMAP.get("fullname").asText());//"fullname"
-        sqLiteStatementInsert.bindString(4,jsonNodeParentMAP.get("inn").asText());//"inn"
-        sqLiteStatementInsert.bindString(5,jsonNodeParentMAP.get("kpp").asText());//"kpp"
-        sqLiteStatementInsert.bindString(6,jsonNodeParentMAP.get("date_update").asText());//"date_update"
-        sqLiteStatementInsert.bindLong(7,jsonNodeParentMAP.get("user_update").intValue());//"user_update"
-        sqLiteStatementInsert.bindLong(8,jsonNodeParentMAP.get("chosen_organization").intValue());//"chosen_organization"
-        sqLiteStatementInsert.bindLong(9,jsonNodeParentMAP.get("current_table").longValue());//"current_table"
-        sqLiteStatementInsert.bindLong(10,jsonNodeParentMAP.get("uuid").longValue());//"uuid"
+        sqLiteStatementInsert.bindLong(3,jsonNodeParentMAP.get("organization").intValue());//"fullname"
+        sqLiteStatementInsert.bindString(4,jsonNodeParentMAP.get("date_update").asText());//"date_update"
+        sqLiteStatementInsert.bindLong(5,jsonNodeParentMAP.get("user_update").intValue());//"user_update"
+        sqLiteStatementInsert.bindLong(6,jsonNodeParentMAP.get("current_table").longValue());//"current_table"
+        sqLiteStatementInsert.bindLong(7,jsonNodeParentMAP.get("uuid").longValue());//"uuid"
         Log.d(this.getClass().getName(), "\n" + " class " +
                 Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -299,15 +291,12 @@ this.context=context;
             // TODO: 04.07.2023 цикл данных
             sqLiteStatementInsert.bindLong(1,jsonNodeParentMAP.get("id").intValue());//"id"
             sqLiteStatementInsert.bindString(2,jsonNodeParentMAP.get("name").asText());//"name"
-            sqLiteStatementInsert.bindString(3,jsonNodeParentMAP.get("fullname").asText());//"fullname"
-            sqLiteStatementInsert.bindString(4,jsonNodeParentMAP.get("inn").asText());//"inn"
-            sqLiteStatementInsert.bindString(5,jsonNodeParentMAP.get("kpp").asText());//"kpp"
-            sqLiteStatementInsert.bindString(6,jsonNodeParentMAP.get("date_update").asText());//"date_update"
-            sqLiteStatementInsert.bindLong(7,jsonNodeParentMAP.get("user_update").intValue());//"user_update"
-            sqLiteStatementInsert.bindLong(8,jsonNodeParentMAP.get("chosen_organization").intValue());//"chosen_organization"
-            sqLiteStatementInsert.bindLong(9,jsonNodeParentMAP.get("current_table").longValue());//"current_table"
-            sqLiteStatementInsert.bindLong(10,jsonNodeParentMAP.get("uuid").longValue());//"uuid"
-            sqLiteStatementInsert.bindLong(11,jsonNodeParentMAP.get("uuid").longValue());//"uuid уже для UUID"
+            sqLiteStatementInsert.bindLong(3,jsonNodeParentMAP.get("organization").intValue());//"fullname"
+            sqLiteStatementInsert.bindString(4,jsonNodeParentMAP.get("date_update").asText());//"date_update"
+            sqLiteStatementInsert.bindLong(5,jsonNodeParentMAP.get("user_update").intValue());//"user_update"
+            sqLiteStatementInsert.bindLong(6,jsonNodeParentMAP.get("current_table").longValue());//"current_table"
+            sqLiteStatementInsert.bindLong(7,jsonNodeParentMAP.get("uuid").longValue());//"uuid"
+            sqLiteStatementInsert.bindLong(8,jsonNodeParentMAP.get("uuid").longValue());//"uuid уже для UUID"
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
