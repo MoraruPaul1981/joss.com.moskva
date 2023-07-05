@@ -36,6 +36,7 @@ import com.dsy.dsu.AllDatabases.JsonDeserializer.RegionJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.Settings_tabelsJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.TemplatesJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.Сhat_usersJsonDeserializer;
+import com.dsy.dsu.AllDatabases.JsonDeserializer.СhatsJsonDeserializer;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassCreatingMainAllTables;
@@ -435,6 +436,13 @@ public class ContentProviderSynsUpdateBinary extends ContentProvider {
                                                         Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
                                 bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
                                 break;
+                            case "chats":
+                                РезультатJsonDeserializer=
+                                        new СhatsJsonDeserializer()
+                                                .методOrganizationJsonDeserializer( jsonNodeParentMAP, getContext(),имяТаблицаAsync,
+                                                        Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
+                                bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
+                                break;
 
 
 
@@ -465,7 +473,7 @@ public class ContentProviderSynsUpdateBinary extends ContentProvider {
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
                 " contentValuesCopyOnWriteArrayLis " +jsonNodeParentMAP + " bundleОперацииUpdateOrinsert "+bundleОперацииUpdateOrinsert+
-                "  РезультатJsonDeserializer " +РезультатJsonDeserializer);
+                "  РезультатJsonDeserializer " +РезультатJsonDeserializer + " имяТаблицаAsync "+имяТаблицаAsync);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
