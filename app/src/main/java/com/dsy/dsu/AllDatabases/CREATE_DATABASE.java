@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =             1052;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+     static final int VERSION =             1053;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
     private      SQLiteDatabase ССылкаНаСозданнуюБазу;
     private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
@@ -228,8 +228,11 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'notifications'");//test
         ССылкаНаСозданнуюБазу.execSQL("Create table if not exists    notifications  (" +
                 "id  INTEGER PRIMARY KEY ," +
+                " date_start NUMERIC,"+
+                " clock INTEGER ,"+
                 " date_update NUMERIC,"+
                 " user_update INTEGER ,"+
+                " rights INTEGER   ," +
                 "uuid  NUMERIC UNIQUE ,"+
                 "current_table  NUMERIC UNIQUE  ," +
                 " id_user INTEGER  )");
@@ -1217,14 +1220,16 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             
 
             if (newVersion > oldVersion) {
-                if(newVersion ==            1050){
+                if(newVersion ==            1053){
                     //TODO table создание  УСТАНОВКА ВЫБОРОЧНАЯ ПО ТАБЛИЦАМ
                     //МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
                     //МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
                    // МетодСозданияСистемнойТаблицыСФО(ССылкаНаСозданнуюБазу);
                   /*  МетодСозданиеViewПолученныхМатериалов(ССылкаНаСозданнуюБазу);
                     МетодСозданиеViewПолученныхМатериаловGroup(ССылкаНаСозданнуюБазу);*/
-                    
+
+                    МетодСозданиеУведомленийИлиЗадания(ССылкаНаСозданнуюБазу);
+
                     // TODO: 12.10.2022  создание Trigers
                     МетодСозданиеТрирераМодификаценКлиент(ССылкаНаСозданнуюБазу,ИменаТаблицыОтАндройда);
 

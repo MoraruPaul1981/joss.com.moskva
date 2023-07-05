@@ -29,6 +29,7 @@ import com.dsy.dsu.AllDatabases.JsonDeserializer.CfoJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.DepatmentJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.FioJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.JsonMainDeseirialzer;
+import com.dsy.dsu.AllDatabases.JsonDeserializer.NotificationsJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.OrganizationJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.RegionJsonDeserializer;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
@@ -402,6 +403,17 @@ public class ContentProviderSynsUpdateBinary extends ContentProvider {
                                                         Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
                                 bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
                                 break;
+                            case "notifications":
+                                РезультатJsonDeserializer=
+                                        new NotificationsJsonDeserializer()
+                                                .методOrganizationJsonDeserializer( jsonNodeParentMAP, getContext(),имяТаблицаAsync,
+                                                        Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
+                                bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
+                                break;
+
+
+
+                            // TODO: 05.07.2023 no empty table
                             default:
                                 break;
 
