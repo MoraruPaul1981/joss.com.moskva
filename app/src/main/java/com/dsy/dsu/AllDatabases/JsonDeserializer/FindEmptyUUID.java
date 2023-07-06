@@ -21,7 +21,8 @@ public class FindEmptyUUID {
         String sql = "SELECT COUNT(*) FROM " + имяТаблицаAsync+" WHERE uuid='"+UUIDForFind.toString()+"'";
         SQLiteStatement statement = Create_Database_СамаБАзаSQLite.compileStatement(sql);
          ЕслиИлиНЕтUUID = statement.simpleQueryForLong();
-
+            // TODO: 06.07.2023 exit
+            statement.close();
         // TODO: 27.04.2023  повышаем верисю данных
         Log.d(this.getClass().getName(), "\n" + " class " +
                 Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
