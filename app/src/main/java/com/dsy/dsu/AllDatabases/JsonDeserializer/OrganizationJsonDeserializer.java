@@ -69,8 +69,9 @@ this.context=context;
                                              }else {
 
                                                  // TODO: 04.07.2023  Вставка  ПОСЛЕ ОБНОВЛЕНИЯ ЕСЛИ ОНО НЕ ПРОШЛО
+                                                     long ЕслиИлиНЕтUUID=        new  FindEmptyUUID().методПосикаUUIDDeseializer(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite,jsonNode);
                                                      Long ОперацияInsert = null;
-                                                     if (ОперацияUpdate<1) {
+                                                     if (ОперацияUpdate<1 && ЕслиИлиНЕтUUID==0) {
                                                          ОперацияInsert = OrganizationВставкаДанных(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite, jsonNode);
                                                          if (ОперацияInsert>0) {
                                                              РезультатОперацииBurkUPDATE.add(ОперацияInsert.intValue());
@@ -191,10 +192,6 @@ this.context=context;
         Long ОперацияInsert=0l;
         try{
             this.context=context;
-
-            long ЕслиИлиНЕтUUID=        new  FindEmptyUUID().методПосикаUUIDDeseializer(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite,jsonNodeParentMAP);
-
-            if (ЕслиИлиНЕтUUID==0) {
                 // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
                 String  SQlOperInsert=  "INSERT INTO "+имяТаблицаAsync+" VALUES(?,?,?,?,?,?,?,?,?,? );";
 
@@ -203,15 +200,13 @@ this.context=context;
                 // TODO: 04.07.2023  INSERT  Organization
                 ОперацияInsert=      sqLiteStatementInsert.executeInsert();
                 // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
-            }
-
             // TODO: 27.04.2023  повышаем верисю данных
                     Log.d(this.getClass().getName(), "\n" + " class " +
                             Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                             + имяТаблицаAsync  +
-                            " ОперацияInsert " +ОперацияInsert+ "  ЕслиИлиНЕтUUID " +ЕслиИлиНЕтUUID);
+                            " ОперацияInsert " +ОперацияInsert);
 
         } catch (Exception e) {
             e.printStackTrace();
