@@ -16,7 +16,9 @@ import androidx.annotation.NonNull;
 import com.dsy.dsu.AllDatabases.CREATE_DATABASE;
 import com.dsy.dsu.AllDatabases.Error.CREATE_DATABASE_Error;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Supplier;
 
 public class Class_Sendiing_Errors {
 
@@ -32,7 +34,9 @@ public class Class_Sendiing_Errors {
 
 
     public void МетодПослываемОшибкиАдминистаторуПо(StringBuffer ЗаписьОшибковВстврочку,
-                                                    Activity activity,Integer ПубличноеIDПолученныйИзСервлетаДляUUID) {
+                                                    Activity activity,Integer
+                                                            ПубличноеIDПолученныйИзСервлетаДляUUID ,
+                                                    @NonNull SQLiteDatabase create_database_error) {
         try {
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("message/rfc822");
@@ -43,25 +47,13 @@ public class Class_Sendiing_Errors {
             i.putExtra(Intent.EXTRA_TEXT   , ЗаписьОшибковВстврочку.toString());
                 /////TODO ВТОРОЙ ШАГ СИНХРОНИЗАЦИИ ПОЛУЧАЕМ СПИСОК ТАБЛИЦ КОТОРЫЕ НУЖНО  СИНХРОНИЗИРОВАТЬ 100% процентов , И ПРОВЕРМЯЕМ ЕСЛИ СВЯЗЬ С ИНТЕНТОМ
                     // TODO: 02.06.2022 код удаление ошибков после успешной отпавки ошибок на почту
-                Handler.Callback callback=new Handler.Callback() {
-                    @Override
-                    public boolean handleMessage(@NonNull android.os.Message msg) {
-                        msg.getTarget().postDelayed(()->{
-                            Toast.makeText(activity, "Отправляем...", Toast.LENGTH_LONG).show();
-                        },2000);
-
-                        return true;
-                    }
-                };
-              Handler  handlerОшибки = new Handler(callback);
-
-                Message message = new Message();
-                Bundle bundle=new Bundle();
-                handlerОшибки.sendMessage(message);
                 activity. startActivity(Intent.createChooser(i, "Отправка ошибок..."));
 
+
+            Toast.makeText(activity, "Отправляем...", Toast.LENGTH_LONG).show();
+
             // TODO: 28.06.2023 очищаем таблиц
-            МетодУдаланиеОшибок();
+            МетодУдаланиеОшибок(create_database_error);
                 activity.finish();
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -79,22 +71,34 @@ public class Class_Sendiing_Errors {
 
 
     // TODO: 28.06.2023 Запись Ошибков 
-    private void МетодУдаланиеОшибок() throws ExecutionException, InterruptedException {
+    private void МетодУдаланиеОшибок(   @NonNull SQLiteDatabase create_database_error) throws ExecutionException, InterruptedException {
         try {
-            SQLiteDatabase sqLiteDatabaseError= new CREATE_DATABASE_Error(context).getССылкаНаСозданнуюБазу();
+            CompletableFuture.supplyAsync(new Supplier<Object>() {
+                @Override
+                public Object get() {
+                    SQLiteStatement sqLiteStatementУдаление= create_database_error.compileStatement("delete from   errordsu1");
+                    long РезультатУдаление=  sqLiteStatementУдаление.executeInsert();
+// TODO: 17.04.2023
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +  " РезультатУдаление  " +РезультатУдаление +
+                            " РезультатУдалениеДопол  "+РезультатУдаление);
 
-            sqLiteDatabaseError.beginTransaction();
-        SQLiteStatement sqLiteStatementУдаление= sqLiteDatabaseError.compileStatement("delete from   errordsu1");
-          long РезультатУдаление=  sqLiteStatementУдаление.executeInsert();
-            long РезультатУдалениеДопол=      sqLiteStatementУдаление.simpleQueryForLong();
+                    if (РезультатУдаление>0) {
+                        create_database_error.setTransactionSuccessful();
+                    }
+                    if (create_database_error.inTransaction()) {
+                        create_database_error.endTransaction();
+                    }
+                    if (!create_database_error.inTransaction()) {
+                        create_database_error.beginTransaction();
+                    }
+                    create_database_error.close();
+                    return null;
+                }
+            }).get();
 
-            sqLiteDatabaseError.setTransactionSuccessful();
-            sqLiteDatabaseError.endTransaction();
-            // TODO: 17.04.2023
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +  " РезультатУдаление  " +РезультатУдаление +
-                     " РезультатУдалениеДопол  "+РезультатУдалениеДопол);
+
 
     } catch (Exception e) {
         e.printStackTrace();

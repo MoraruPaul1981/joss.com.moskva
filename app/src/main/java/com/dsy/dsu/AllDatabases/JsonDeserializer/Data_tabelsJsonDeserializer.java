@@ -66,7 +66,6 @@ this.context=context;
                                  + имяТаблицаAsync  + " ОперацияUpdate " +ОперацияUpdate + " ОперацияUpdate " +ОперацияUpdate  );
                      }else{
                          // TODO: 04.07.2023  Вставка  ПОСЛЕ ОБНОВЛЕНИЯ ЕСЛИ ОНО НЕ ПРОШЛО
-                         if (ОперацияUpdate<1) {
                              Long     ОперацияInsert = ВставкаДанных(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite, jsonNode);
                              if (ОперацияInsert>0) {
                                  РезультатОперацииBurkUPDATE.add(ОперацияInsert.intValue());
@@ -76,7 +75,6 @@ this.context=context;
                                      " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                      " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                      + имяТаблицаAsync  + " ОперацияUpdate " +ОперацияUpdate + " ОперацияInsert " +ОперацияInsert  );
-                         }
 
                      }
 
