@@ -12,7 +12,6 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
-import android.database.sqlite.SQLiteStatement;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CancellationSignal;
@@ -57,7 +56,7 @@ public class ContentProviderForAdminissionMaterial extends ContentProvider {
 
         CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда=
                 new SubClassCreatingMainAllTables(getContext()).
-                        МетодТОлькоЗаполенияНазваниямиТаблицДляОмена(getContext());
+                        методCreatingMainTabels(getContext());
         Log.d(this.getClass().getName(), " ИменаТаблицыОтАндройда "+ИменаТаблицыОтАндройда );
      uriMatcherДЛяПровайдераКонтентБазаДанных=new UriMatcher(ИменаТаблицыОтАндройда.size());
             ИменаТаблицыОтАндройда.forEach(new Stream.Builder() {

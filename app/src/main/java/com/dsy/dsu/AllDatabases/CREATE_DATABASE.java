@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =             1053;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+     static final int VERSION =             1055;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
     private      SQLiteDatabase ССылкаНаСозданнуюБазу;
     private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
@@ -66,7 +66,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         try {
             Log.d(this.getClass().getName(), "сработала ... НАЧАЛО  СОЗДАНИЯ ТАЛИЦ ");
             // TODO: 24.10.2022 Генерируем Список Таблиц
-            ИменаТаблицыОтАндройда=    new SubClassCreatingMainAllTables(context).  МетодТОлькоЗаполенияНазваниямиТаблицДляОмена(context);
+            ИменаТаблицыОтАндройда=    new SubClassCreatingMainAllTables(context).методCreatingMainTabels(context);
 
             // TODO: 12.10.2022  СИСТЕМНЫЕ ТАБЛИЦЫ
             МетодТаблицаMODIFITATION_Client(ССылкаНаСозданнуюБазу);
@@ -99,6 +99,8 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
             МетодСозданиеТаблицаДанныеКомпания(ССылкаНаСозданнуюБазу);
             МетодСозданиеТаблицаЗаказТранспорт(ССылкаНаСозданнуюБазу);
             МетодСозданиеТаблицаЗаказы(ССылкаНаСозданнуюБазу);
+            МетодСозданиеМатериалыДатаBinary(ССылкаНаСозданнуюБазу);
+
 
             // TODO: 12.10.2022  создание VIEW
             МетодСозданияВидаЧатаViewChat(ССылкаНаСозданнуюБазу);
@@ -899,33 +901,6 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
     // TODO: 27.09.2022  таблица для Получение Материалов
 
 
-    private void МетодСозданиеТаблицаПолучениеМатериалов(SQLiteDatabase ССылкаНаСозданнуюБазу) {
-        try{
-            ССылкаНаСозданнуюБазу.execSQL("drop table  if exists get_material ");//ТАБЛИЦА ГЕНЕРАЦИИ ОШИБОК
-            ССылкаНаСозданнуюБазу.execSQL("DELETE FROM MODIFITATION_Client   WHERE name =  'get_material'");//ТАБЛИЦА ГЕНЕРАЦИИ ОШИБОК
-         //   ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'get_material'");//test
-         /*   ССылкаНаСозданнуюБазу.execSQL("Create table if not exists get_material (" +
-                    "id INTEGER   ," +
-                    "cfo  INTEGER ," +
-                    "date_update TEXT ," +
-                    "uuid NUMERIC UNIQUE," +
-                    "user_update  INTEGER, " +
-                    " current_table NUMERIC UNIQUE ," +
-                    "status_send TEXT ," +
-                    " FOREIGN KEY(cfo) REFERENCES cfo  (id)  ON UPDATE CASCADE )");*/
-            Log.d(this.getClass().getName(), " сработала ...  создание таблицы get_material ");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
-
-
 
     private void МетодСозданиеТаблицаДанныеПолученныхМатериалов(SQLiteDatabase ССылкаНаСозданнуюБазу) {
         try{
@@ -1067,7 +1042,30 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
+    private void МетодСозданиеМатериалыДатаBinary(SQLiteDatabase ССылкаНаСозданнуюБазу) {
+        try{
+            ССылкаНаСозданнуюБазу.execSQL("drop table  if exists materials_databinary ");//ТАБЛИЦА ГЕНЕРАЦИИ ОШИБОК
+            ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0'" +
+                    ",versionserveraandroid_version='0'  WHERE name =  'vid_tc'");//test
+            ССылкаНаСозданнуюБазу.execSQL("Create table if not exists materials_databinary (" +
+                    "_id INTEGER PRIMARY KEY  ," +
+                    "image  BLOB ," +
+                    "file  BLOB ," +
+                    "date_update TEXT ," +
+                    "uuid NUMERIC UNIQUE," +
+                    "user_update INTEGER," +
+                    " current_table NUMERIC UNIQUE )");
+            Log.d(this.getClass().getName(), " сработала ...  создание таблицы materials_databinary ");
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
 
 
 
@@ -1214,7 +1212,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         try{
             Log.d(this.getClass().getName(), " до СЛУЖБА  содание базы newVersion==  652   (например)  " +
                     " " + new Date()+  " newVersion " +newVersion);
-            ИменаТаблицыОтАндройда=    new SubClassCreatingMainAllTables(context).  МетодТОлькоЗаполенияНазваниямиТаблицДляОмена(context);
+            ИменаТаблицыОтАндройда=    new SubClassCreatingMainAllTables(context).методCreatingMainTabels(context);
             Log.d(this.getClass().getName()," ИменаТаблицыОтАндройда " +ИменаТаблицыОтАндройда); // TODO: 28.09.2022 таблицы
             Log.d(this.getClass().getName(), " после СЛУЖБА  содание базы newVersion==  652   (например)   " + new Date() + " newVersion " + newVersion);
             

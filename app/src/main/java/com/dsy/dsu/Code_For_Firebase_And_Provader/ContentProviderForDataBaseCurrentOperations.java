@@ -46,7 +46,7 @@ public class ContentProviderForDataBaseCurrentOperations extends ContentProvider
         try{
             CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда=
                     new SubClassCreatingMainAllTables(getContext()).
-                            МетодТОлькоЗаполенияНазваниямиТаблицДляОмена(getContext());
+                            методCreatingMainTabels(getContext());
             Log.d(this.getClass().getName(), " ИменаТаблицыОтАндройда "+ИменаТаблицыОтАндройда );
             uriMatcherДЛяПровайдераКонтентБазаДанных=new UriMatcher(ИменаТаблицыОтАндройда.size());
             ИменаТаблицыОтАндройда.forEach(new Consumer<String>() {

@@ -15,7 +15,7 @@ public class SubClassCreatingMainAllTables {
     this.context=context;
     }
 
-    public CopyOnWriteArrayList<String> МетодТОлькоЗаполенияНазваниямиТаблицДляОмена(@NotNull Context context) throws InterruptedException {
+    public CopyOnWriteArrayList<String> методCreatingMainTabels(@NotNull Context context) throws InterruptedException {
         CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда = new CopyOnWriteArrayList();
         try {
             ИменаТаблицыОтАндройда.add("organization");
@@ -35,12 +35,14 @@ public class SubClassCreatingMainAllTables {
             ИменаТаблицыОтАндройда.add("view_onesignal");
             ИменаТаблицыОтАндройда.add("data_notification");
             ИменаТаблицыОтАндройда.add("nomen_vesov");
+            ИменаТаблицыОтАндройда.add("type_materials");
             ИменаТаблицыОтАндройда.add("get_materials_data");
             ИменаТаблицыОтАндройда.add("company");
             ИменаТаблицыОтАндройда.add("track");
             ИменаТаблицыОтАндройда.add("prof");
             ИменаТаблицыОтАндройда.add("order_tc");
             ИменаТаблицыОтАндройда.add("vid_tc");
+            ИменаТаблицыОтАндройда.add("materials_databinary");
             Log.d(this.getClass().getName(), "  ИменаТаблицыОтАндройда" + ИменаТаблицыОтАндройда);
             ///todo публикум название таблицы или цифру его
         } catch (Exception e) {

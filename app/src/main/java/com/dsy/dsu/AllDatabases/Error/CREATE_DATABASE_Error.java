@@ -1180,7 +1180,7 @@ public class CREATE_DATABASE_Error extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         try{
             Log.d(this.getClass().getName(), " до СЛУЖБА  содание базы newVersion==  652   (например)  " +
                     " " + new Date()+  " newVersion " +newVersion);
-            ИменаТаблицыОтАндройда=    new SubClassCreatingMainAllTables(context).  МетодТОлькоЗаполенияНазваниямиТаблицДляОмена(context);
+            ИменаТаблицыОтАндройда=    new SubClassCreatingMainAllTables(context).методCreatingMainTabels(context);
             Log.d(this.getClass().getName()," ИменаТаблицыОтАндройда " +ИменаТаблицыОтАндройда); // TODO: 28.09.2022 таблицы
             Log.d(this.getClass().getName(), " после СЛУЖБА  содание базы newVersion==  652   (например)   " + new Date() + " newVersion " + newVersion);
 

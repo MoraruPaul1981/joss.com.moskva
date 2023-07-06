@@ -57,7 +57,7 @@ public class Class_Clears_Tables {
                                                 Activity activity)
             throws ExecutionException, InterruptedException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
 
-        CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда=    new PUBLIC_CONTENT(context).  МетодТОлькоЗаполенияНазваниямиТаблицДляОмена(context);
+        CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда=    new PUBLIC_CONTENT(context).методCreatingMainTabels(context);
         ИменаТаблицыОтАндройда.add("successlogin");
         ИменаТаблицыОтАндройда.add("settings_tabels");
         ИменаТаблицыОтАндройда.add("errordsu1");
