@@ -1729,7 +1729,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
             private void методЗаписьЯчейкиRxView(@NonNull View v,@NonNull String    ЗначениеДоЗаполениясОшибкой) {
                 try {
                     RxView.focusChanges(v)
-                            .throttleLast(2, TimeUnit.SECONDS)
+                            .throttleLast(1, TimeUnit.SECONDS)
                             .doOnError(new Consumer<Throwable>() {
                                 @Override
                                 public void accept(Throwable throwable) throws Throwable {
@@ -1762,15 +1762,20 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                                 // TODO: 24.04.2023  после обновление ячейки Считаем Часы
                                                 методИзменяемЦветСодержимоваЦифраИлиБуква(((EditText) v), EditTextДАнные);
 
+                                                // TODO: 06.07.2023 Считаем ЧАсы
+
+                                                  Cursor     cursorForЧАсов=    new SubClassGetCursor().МетодSwipesКурсор();
+                                                cursorForЧАсов.moveToPosition(myRecycleViewAdapter.cursor.getPosition());
+                                                методСчитаемЧасы(cursorForЧАсов);
 
                                                 // TODO: 17.06.2023 переполучаем ДАннеы
 
-                                                методAlterSaveCellRecyreView();
+                                               // методAlterSaveCellRecyreView();
 
                                                 // TODO: 16.06.2023  после переполуение данныз перегрузка экрана
                                                 message.getTarget().postDelayed(()->{
                                                     ((EditText) v).startAnimation(animationForTextView);
-                                                },500);
+                                                },100);
                                                 // TODO: 19.06.2023 код когда данные в ячейке не сохранились
                                             } else {
                                                 методКогдаДанныеНеСохранились(v, ЗначениеДоЗаполениясОшибкой);
@@ -1778,7 +1783,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                             }
                                            // методЗакрываемКлавитатуру(v);
                                             // TODO: 16.06.2023  После Операции Теряем Фокус
-                                            МетодПослеСахранениеИлиНетЯчейки(v);
+                                           // МетодПослеСахранениеИлиНетЯчейки(v);
                                             // TODO: 22.06.2023  метод потеря хокуса послу сохранения ячейки
                                             // TODO: 22.06.2023  clear
                                             Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

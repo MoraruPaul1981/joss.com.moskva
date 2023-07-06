@@ -141,6 +141,10 @@ this.context=context;
                              " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
                      new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(throwable.toString(), this.getClass().getName(),
                              Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                     if (Create_Database_СамаБАзаSQLite.inTransaction()) {
+                         Create_Database_СамаБАзаSQLite.endTransaction();
+                     }
+
                      return false;
                  }
              })
@@ -152,6 +156,9 @@ this.context=context;
                              " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
                      new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(throwable.toString(), this.getClass().getName(),
                              Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                     if (Create_Database_СамаБАзаSQLite.inTransaction()) {
+                         Create_Database_СамаБАзаSQLite.endTransaction();
+                     }
                  }
              })
              .blockingSubscribe();
