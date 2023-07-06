@@ -1046,7 +1046,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         try{
             ССылкаНаСозданнуюБазу.execSQL("drop table  if exists materials_databinary ");//ТАБЛИЦА ГЕНЕРАЦИИ ОШИБОК
             ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0'" +
-                    ",versionserveraandroid_version='0'  WHERE name =  'vid_tc'");//test
+                    ",versionserveraandroid_version='0'  WHERE name =  'materials_databinary'");//test
             ССылкаНаСозданнуюБазу.execSQL("Create table if not exists materials_databinary (" +
                     "_id INTEGER PRIMARY KEY  ," +
                     "image  BLOB ," +

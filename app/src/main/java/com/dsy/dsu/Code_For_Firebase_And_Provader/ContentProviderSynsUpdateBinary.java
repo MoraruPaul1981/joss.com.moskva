@@ -32,6 +32,7 @@ import com.dsy.dsu.AllDatabases.JsonDeserializer.DepatmentJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.FioJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.Fio_templateJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.Get_materials_datalJsonDeserializer;
+import com.dsy.dsu.AllDatabases.JsonDeserializer.Materials_databinaryJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.Nomen_vesovlJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.NotificationsJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.Order_tcJsonDeserializer;
@@ -540,11 +541,6 @@ public class ContentProviderSynsUpdateBinary extends ContentProvider {
                                                         Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
                                 bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
                                 break;
-
-
-
-
-
                             case "settings_tabels":
                                 РезультатJsonDeserializer=
                                         new Settings_tabelsJsonDeserializer()
@@ -552,6 +548,20 @@ public class ContentProviderSynsUpdateBinary extends ContentProvider {
                                                         Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
                                 bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
                                 break;
+                            case "materials_databinary":
+                                РезультатJsonDeserializer=
+                                        new Materials_databinaryJsonDeserializer()
+                                                .методOrganizationJsonDeserializer( jsonNodeParentMAP, getContext(),имяТаблицаAsync,
+                                                        Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
+                                bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
+                                break;
+
+
+
+
+
+
+
                             // TODO: 05.07.2023 no empty table
                             default:
                                 break;
