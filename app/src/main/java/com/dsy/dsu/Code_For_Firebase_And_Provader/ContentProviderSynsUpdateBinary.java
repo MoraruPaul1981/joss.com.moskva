@@ -43,6 +43,7 @@ import com.dsy.dsu.AllDatabases.JsonDeserializer.TabelJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.TemplatesJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.TrackJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.Type_materialslJsonDeserializer;
+import com.dsy.dsu.AllDatabases.JsonDeserializer.Vid_tcJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.View_onesignalJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.Сhat_usersJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.СhatsJsonDeserializer;
@@ -528,6 +529,13 @@ public class ContentProviderSynsUpdateBinary extends ContentProvider {
                             case "order_tc":
                                 РезультатJsonDeserializer=
                                         new Order_tcJsonDeserializer()
+                                                .методOrganizationJsonDeserializer( jsonNodeParentMAP, getContext(),имяТаблицаAsync,
+                                                        Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
+                                bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
+                                break;
+                            case "vid_tc":
+                                РезультатJsonDeserializer=
+                                        new Vid_tcJsonDeserializer()
                                                 .методOrganizationJsonDeserializer( jsonNodeParentMAP, getContext(),имяТаблицаAsync,
                                                         Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
                                 bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
