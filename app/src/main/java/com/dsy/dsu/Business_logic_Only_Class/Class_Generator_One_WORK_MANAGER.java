@@ -1,27 +1,21 @@
 package com.dsy.dsu.Business_logic_Only_Class;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.os.Messenger;
 import android.util.Log;
 import androidx.annotation.NonNull;
-import androidx.work.BackoffPolicy;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingWorkPolicy;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
-import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
-import com.dsy.dsu.Code_For_Services.Service_For_Remote_Async;
-import com.dsy.dsu.Code_For_WorkManagers.MyWork_Async_Синхронизация_Одноразовая;
+
+import com.dsy.dsu.Code_For_WorkManagers.MyWork_Async_Синхронизация_Single;
+
 import org.jetbrains.annotations.NotNull;
-import java.util.concurrent.TimeUnit;
 
 
 public class Class_Generator_One_WORK_MANAGER extends  Class_GRUD_SQL_Operations {
@@ -50,7 +44,7 @@ public class Class_Generator_One_WORK_MANAGER extends  Class_GRUD_SQL_Operations
                     .setRequiresStorageNotLow(false)
                     .build();
             OneTimeWorkRequest OneTimeWorkЗапускФОновойСинхрониазциииИзНУтриТабеля =
-                    new OneTimeWorkRequest.Builder(MyWork_Async_Синхронизация_Одноразовая.class)
+                    new OneTimeWorkRequest.Builder(MyWork_Async_Синхронизация_Single.class)
                             .setConstraints(constraintsЗапускСинхОдноразоваяСлужба)
                             .setInputData(myData)
                             .addTag(ИмяСлужбыСинхронизацииОдноразовая)

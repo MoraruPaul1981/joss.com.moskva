@@ -212,7 +212,7 @@ public class Class_Search_Changes_Data {
             new   Class_Generation_Errors(contextДляКлассаИщемБылеИзменениевБазе).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
 
-         //   Log.e(contextДляКлассаИщемБылеИзменениевБазе.getClass().getName(), " Стоп СЛУЖБА MyWork_Async_Синхронизация_Общая из FaceApp в MyWork_Async_Синхронизация_Общая Exception  ошибка в классе MyWork_Async_Синхронизация_Общая" + e.toString());
+         //   Log.e(contextДляКлассаИщемБылеИзменениевБазе.getClass().getName(), " Стоп СЛУЖБА MyWork_Async_Public из FaceApp в MyWork_Async_Public Exception  ошибка в классе MyWork_Async_Public" + e.toString());
 
 
         }

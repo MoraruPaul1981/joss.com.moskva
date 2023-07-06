@@ -27,7 +27,7 @@ public class MyWork_ScannerBluetooth_ДляПосикаДевайсов extends 
     public MyWork_ScannerBluetooth_ДляПосикаДевайсов(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         this.Контекст = context;
-        Log.i(Контекст.getClass().getName(), " public MyWork_Async_Синхронизация_Общая(@NonNull Context context, @NonNull WorkerParameters workerParams) {  Контекст " + "\n" + Контекст);
+        Log.i(Контекст.getClass().getName(), " public MyWork_Async_Public(@NonNull Context context, @NonNull WorkerParameters workerParams) {  Контекст " + "\n" + Контекст);
     }
     @Override
     public void onStopped() {

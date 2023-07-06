@@ -1,31 +1,20 @@
 package com.dsy.dsu.Business_logic_Only_Class;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
-import android.se.omapi.Session;
 import android.util.Log;
 
-import androidx.lifecycle.Observer;
-import androidx.work.BackoffPolicy;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
-import androidx.work.multiprocess.ListenableCallback;
 
-import com.dsy.dsu.Code_For_WorkManagers.MyWork_Async_Синхронизация_Общая;
+import com.dsy.dsu.Code_For_WorkManagers.MyWork_Async_Public;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Date;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import javax.net.ssl.SSLServerSocketFactory;
 
 public class Class_Generation_WORK_MANGER_DIRECT {
     Context contextДляКлассаВремени;
@@ -43,7 +32,7 @@ public class Class_Generation_WORK_MANGER_DIRECT {
                     .setRequiresBatteryNotLow(false)
                     .setRequiresStorageNotLow(false)
                     .build();
-            PeriodicWorkRequest   periodicWorkRequestСинхронизация = new PeriodicWorkRequest.Builder(MyWork_Async_Синхронизация_Общая.class,
+            PeriodicWorkRequest   periodicWorkRequestСинхронизация = new PeriodicWorkRequest.Builder(MyWork_Async_Public.class,
                        20, TimeUnit.MINUTES)//MIN_PERIODIC_FLEX_MILLIS////  PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MILLISECONDS
                         .addTag(ИмяСлужбыСинхронизации)
                         .setInputData(myDataДляОбщейСинхрониазации)
@@ -53,7 +42,7 @@ public class Class_Generation_WORK_MANGER_DIRECT {
 
          Integer callbackRunnable= WorkManager.getInstance(context).getWorkInfosByTag(ИмяСлужбыСинхронизации).get().size();
             if (callbackRunnable==0) {
-                Log.w(context.getClass().getName(), " ПОСЛЕ ОТРАБОТКИ МЕТОДА ....Внутри MyWork_Async_Синхронизация_Общая  callbackRunnable.name() " + callbackRunnable);
+                Log.w(context.getClass().getName(), " ПОСЛЕ ОТРАБОТКИ МЕТОДА ....Внутри MyWork_Async_Public  callbackRunnable.name() " + callbackRunnable);
                 WorkManager.getInstance(context.getApplicationContext()).enqueueUniquePeriodicWork(ИмяСлужбыСинхронизации,
                         ExistingPeriodicWorkPolicy.REPLACE , periodicWorkRequestСинхронизация);
             }

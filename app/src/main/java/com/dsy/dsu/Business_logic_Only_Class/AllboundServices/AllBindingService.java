@@ -1,33 +1,21 @@
 package com.dsy.dsu.Business_logic_Only_Class.AllboundServices;
 
-import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Message;
-import android.os.Messenger;
-import android.os.Parcelable;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
-import com.dsy.dsu.Code_For_Services.ServiceUpdatePoОбновлениеПО;
 import com.dsy.dsu.Code_For_Services.Service_Async_1C;
-import com.dsy.dsu.Code_For_Services.Service_For_Remote_Async;
 import com.dsy.dsu.Code_For_Services.Service_Notificatios_Для_Согласования;
-import com.dsy.dsu.Code_For_Services.Service_for_AdminissionMaterial;
 import com.google.android.datatransport.runtime.dagger.Provides;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.concurrent.Executors;
-
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 public class AllBindingService {

@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.IBinder;
-import android.os.Messenger;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -19,9 +18,8 @@ import androidx.work.impl.utils.taskexecutor.TaskExecutor;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Find_Setting_User_Network;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
-import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Code_For_Firebase_AndOneSignal_Здесь_КодДЛяСлужбыУведомленияFirebase.Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal;
-import com.dsy.dsu.Code_For_Services.Service_For_Remote_Async;
+import com.dsy.dsu.Code_For_Services.Service_For_Remote_Async_Binary;
 
 
 import java.util.HashMap;
@@ -32,22 +30,22 @@ import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 
-public class MyWork_Async_Синхронизация_Одноразовая extends Worker {
+public class MyWork_Async_Синхронизация_Single extends Worker {
     private  Context context;
     private  String ИмяСлужбыСинхронизации="WorkManager Synchronizasiy_Data Disposable";
  @Inject
    private Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal  class_generation_sendBroadcastReceiver_and_firebase_oneSignallass ;
     private  ServiceConnection serviceConnection;
 
-    private Service_For_Remote_Async.LocalBinderAsync localBinderAsync;
+    private Service_For_Remote_Async_Binary.LocalBinderAsync localBinderAsync;
 
     // TODO: 28.09.2022
-    public MyWork_Async_Синхронизация_Одноразовая(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public MyWork_Async_Синхронизация_Single(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         try{
         this.context = context;
         Log.i(this.context.getClass().getName(), " public  " +
-                "MyWork_Async_Синхронизация_Одноразовая(@NonNull Context context, @NonNull WorkerParameters workerParams) " +
+                "MyWork_Async_Синхронизация_Single(@NonNull Context context, @NonNull WorkerParameters workerParams) " +
                 "{  КонтекстОдноразовая "+"\n"+ this.context);
             МетодПодключениекСлубе();
         } catch (Exception e) {
@@ -56,14 +54,14 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
                 " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
         new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                 Thread.currentThread().getStackTrace()[2].getLineNumber());
-        Log.e(context.getClass().getName(), " ОШИБКА В WORK MANAGER  MyWork_Async_Синхронизация_Одноразовая из FaceApp в  MyWork_Async_Синхронизация_Одноразовая Exception  ошибка в классе  MyWork_Async_Синхронизация_Одноразовая" + e.toString());
+        Log.e(context.getClass().getName(), " ОШИБКА В WORK MANAGER  MyWork_Async_Синхронизация_Single из FaceApp в  MyWork_Async_Синхронизация_Single Exception  ошибка в классе  MyWork_Async_Синхронизация_Single" + e.toString());
     }
     }
 
     private void МетодПодключениекСлубе() {
         try{
 
-        Intent intentОбноразоваяСинхронизациия = new Intent(context, Service_For_Remote_Async.class);
+        Intent intentОбноразоваяСинхронизациия = new Intent(context, Service_For_Remote_Async_Binary.class);
             Boolean РешениеЗапускатьWorkManagerИлиНетАктивтиКакое=   МетодОценкаЗапускатьWorkMangerИзАктивтитиИлиНет();
             if (РешениеЗапускатьWorkManagerИлиНетАктивтиКакое==true) {
                 serviceConnection=         new ServiceConnection() {
@@ -71,7 +69,7 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
                    public void onServiceConnected(ComponentName name, IBinder service) {
                        try{
                            if (service.isBinderAlive()) {
-                               localBinderAsync = (Service_For_Remote_Async.LocalBinderAsync) service;
+                               localBinderAsync = (Service_For_Remote_Async_Binary.LocalBinderAsync) service;
                                //TODO СИНХРОНИАЗЦИЯ ГЛАВНАЯ
                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -100,7 +98,7 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
                 " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
         new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                 Thread.currentThread().getStackTrace()[2].getLineNumber());
-        Log.e(context.getClass().getName(), " ОШИБКА В WORK MANAGER  MyWork_Async_Синхронизация_Одноразовая из FaceApp в  MyWork_Async_Синхронизация_Одноразовая Exception  ошибка в классе  MyWork_Async_Синхронизация_Одноразовая" + e.toString());
+        Log.e(context.getClass().getName(), " ОШИБКА В WORK MANAGER  MyWork_Async_Синхронизация_Single из FaceApp в  MyWork_Async_Синхронизация_Single Exception  ошибка в классе  MyWork_Async_Синхронизация_Single" + e.toString());
     }
     }
 
@@ -171,7 +169,7 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
         new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                 Thread.currentThread().getStackTrace()[2].getMethodName(),
                 Thread.currentThread().getStackTrace()[2].getLineNumber());
-        Log.e(context.getClass().getName(), " ОШИБКА В WORK MANAGER  MyWork_Async_Синхронизация_Одноразовая из FaceApp в  MyWork_Async_Синхронизация_Одноразовая Exception  ошибка в классе  MyWork_Async_Синхронизация_Одноразовая" + e.toString());
+        Log.e(context.getClass().getName(), " ОШИБКА В WORK MANAGER  MyWork_Async_Синхронизация_Single из FaceApp в  MyWork_Async_Синхронизация_Single Exception  ошибка в классе  MyWork_Async_Синхронизация_Single" + e.toString());
     }
         if (ФинальныйРезультатAsyncBackgroud > 0) {
             return Result.success(myDataОтветОдноразовойСлужбы);
@@ -249,7 +247,7 @@ public class MyWork_Async_Синхронизация_Одноразовая exte
         new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                 Thread.currentThread().getStackTrace()[2].getMethodName(),
                 Thread.currentThread().getStackTrace()[2].getLineNumber());
-        Log.e(context.getClass().getName(), " ОШИБКА В WORK MANAGER  MyWork_Async_Синхронизация_Одноразовая из FaceApp в  MyWork_Async_Синхронизация_Одноразовая Exception  ошибка в классе  MyWork_Async_Синхронизация_Одноразовая" + e.toString());
+        Log.e(context.getClass().getName(), " ОШИБКА В WORK MANAGER  MyWork_Async_Синхронизация_Single из FaceApp в  MyWork_Async_Синхронизация_Single Exception  ошибка в классе  MyWork_Async_Синхронизация_Single" + e.toString());
     }
         return РешениеЗапускатьWorkManagerИлиНетАктивтиКакое;
     }
