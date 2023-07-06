@@ -264,12 +264,12 @@ this.context=context;
             sqLiteStatementInsert.clearBindings();
             // TODO: 04.07.2023 цикл данных
             sqLiteStatementInsert.bindLong(1, jsonNodeParentMAP.get("id").intValue());//"id""
-            sqLiteStatementInsert.bindString(2, jsonNodeParentMAP.get("name").asText());//"date_update"
-            sqLiteStatementInsert.bindString(3, jsonNodeParentMAP.get("namefull").asText());//"date_update"
-            sqLiteStatementInsert.bindString(4, jsonNodeParentMAP.get("articul").asText());//"date_update"
+            sqLiteStatementInsert.bindString(2, jsonNodeParentMAP.get("name").asText().trim());//"date_update"
+            sqLiteStatementInsert.bindString(3, jsonNodeParentMAP.get("namefull").asText().trim());//"date_update"
+            sqLiteStatementInsert.bindString(4, jsonNodeParentMAP.get("articul").asText().trim());//"date_update"
             sqLiteStatementInsert.bindLong(5, jsonNodeParentMAP.get("koeff").intValue());//"uuid"
             sqLiteStatementInsert.bindLong(6, jsonNodeParentMAP.get("type_material").intValue());//"uuid"
-            sqLiteStatementInsert.bindString(7, jsonNodeParentMAP.get("date_update").asText());//"date_update"
+            sqLiteStatementInsert.bindString(7, jsonNodeParentMAP.get("date_update").asText().trim());//"date_update"
             sqLiteStatementInsert.bindLong(8, jsonNodeParentMAP.get("user_update").intValue());//"uuid"
             sqLiteStatementInsert.bindLong(9, jsonNodeParentMAP.get("edizm").intValue());//"uuid"
             sqLiteStatementInsert.bindLong(10, jsonNodeParentMAP.get("uuid").longValue());//"uuid"
@@ -299,12 +299,12 @@ this.context=context;
             sqLiteStatementInsert.clearBindings();
             // TODO: 04.07.2023 цикл данных
             sqLiteStatementInsert.bindLong(1, jsonNodeParentMAP.get("id").intValue());//"id""
-            sqLiteStatementInsert.bindString(2, jsonNodeParentMAP.get("name").asText());//"date_update"
-            sqLiteStatementInsert.bindString(3, jsonNodeParentMAP.get("namefull").asText());//"date_update"
-            sqLiteStatementInsert.bindString(4, jsonNodeParentMAP.get("articul").asText());//"date_update"
+            sqLiteStatementInsert.bindString(2, jsonNodeParentMAP.get("name").asText().trim());//"date_update"
+            sqLiteStatementInsert.bindString(3, jsonNodeParentMAP.get("namefull").asText().trim());//"date_update"
+            sqLiteStatementInsert.bindString(4, jsonNodeParentMAP.get("articul").asText().trim());//"date_update"
             sqLiteStatementInsert.bindLong(5, jsonNodeParentMAP.get("koeff").intValue());//"uuid"
             sqLiteStatementInsert.bindLong(6, jsonNodeParentMAP.get("type_material").intValue());//"uuid"
-            sqLiteStatementInsert.bindString(7, jsonNodeParentMAP.get("date_update").asText());//"date_update"
+            sqLiteStatementInsert.bindString(7, jsonNodeParentMAP.get("date_update").asText().trim());//"date_update"
             sqLiteStatementInsert.bindLong(8, jsonNodeParentMAP.get("user_update").intValue());//"uuid"
             sqLiteStatementInsert.bindLong(9, jsonNodeParentMAP.get("edizm").intValue());//"uuid"
             sqLiteStatementInsert.bindLong(10, jsonNodeParentMAP.get("uuid").longValue());//"uuid"

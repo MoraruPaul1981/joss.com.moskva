@@ -261,9 +261,9 @@ this.context=context;
         sqLiteStatementInsert.clearBindings();
             // TODO: 04.07.2023 цикл данных
         sqLiteStatementInsert.bindLong(1,jsonNodeParentMAP.get("id").intValue());//"id"
-        sqLiteStatementInsert.bindString(2,jsonNodeParentMAP.get("name").asText());//"name"
+        sqLiteStatementInsert.bindString(2,jsonNodeParentMAP.get("name").asText().trim());//"name"
         sqLiteStatementInsert.bindLong(3,jsonNodeParentMAP.get("organization").intValue());//"fullname"
-        sqLiteStatementInsert.bindString(4,jsonNodeParentMAP.get("date_update").asText());//"date_update"
+        sqLiteStatementInsert.bindString(4,jsonNodeParentMAP.get("date_update").asText().trim());//"date_update"
         sqLiteStatementInsert.bindLong(5,jsonNodeParentMAP.get("user_update").intValue());//"user_update"
         sqLiteStatementInsert.bindLong(6,jsonNodeParentMAP.get("current_table").longValue());//"current_table"
         sqLiteStatementInsert.bindLong(7,jsonNodeParentMAP.get("uuid").longValue());//"uuid"
@@ -291,9 +291,9 @@ this.context=context;
             sqLiteStatementInsert.clearBindings();
             // TODO: 04.07.2023 цикл данных
             sqLiteStatementInsert.bindLong(1,jsonNodeParentMAP.get("id").intValue());//"id"
-            sqLiteStatementInsert.bindString(2,jsonNodeParentMAP.get("name").asText());//"name"
+            sqLiteStatementInsert.bindString(2,jsonNodeParentMAP.get("name").asText().trim());//"name"
             sqLiteStatementInsert.bindLong(3,jsonNodeParentMAP.get("organization").intValue());//"fullname"
-            sqLiteStatementInsert.bindString(4,jsonNodeParentMAP.get("date_update").asText());//"date_update"
+            sqLiteStatementInsert.bindString(4,jsonNodeParentMAP.get("date_update").asText().trim());//"date_update"
             sqLiteStatementInsert.bindLong(5,jsonNodeParentMAP.get("user_update").intValue());//"user_update"
             sqLiteStatementInsert.bindLong(6,jsonNodeParentMAP.get("current_table").longValue());//"current_table"
             sqLiteStatementInsert.bindLong(7,jsonNodeParentMAP.get("uuid").longValue());//"uuid"

@@ -277,7 +277,7 @@ this.context=context;
             for (java.lang.Integer ИндексДляДней = 1; ИндексДляДней < 32; ИндексДляДней++) {
                 sqLiteStatementInsert.bindLong(ИндексДляДней+ИндексДляБиндинг, jsonNodeParentMAP.get("d"+ИндексДляДней.toString()).intValue());//"id""
             }
-            sqLiteStatementInsert.bindString(34, jsonNodeParentMAP.get("date_update").asText());//"date_update"
+            sqLiteStatementInsert.bindString(34, jsonNodeParentMAP.get("date_update").asText().trim());//"date_update"
             sqLiteStatementInsert.bindLong(35, jsonNodeParentMAP.get("uuid_tabel").longValue());//"current_table"
             sqLiteStatementInsert.bindLong(36, jsonNodeParentMAP.get("current_table").longValue());//"current_table"
             sqLiteStatementInsert.bindLong(37, jsonNodeParentMAP.get("uuid").longValue());//"uuid"
@@ -316,7 +316,7 @@ this.context=context;
             for (java.lang.Integer ИндексДляДней = 1; ИндексДляДней < 32; ИндексДляДней++) {
                 sqLiteStatementInsert.bindLong(ИндексДляДней+ИндексДляБиндинг, jsonNodeParentMAP.get("d"+ИндексДляДней.toString()).intValue());//"id""
             }
-            sqLiteStatementInsert.bindString(34, jsonNodeParentMAP.get("date_update").asText());//"date_update"
+            sqLiteStatementInsert.bindString(34, jsonNodeParentMAP.get("date_update").asText().trim());//"date_update"
             sqLiteStatementInsert.bindLong(35, jsonNodeParentMAP.get("uuid_tabel").longValue());//"current_table"
             sqLiteStatementInsert.bindLong(36, jsonNodeParentMAP.get("current_table").longValue());//"current_table"
             sqLiteStatementInsert.bindLong(37, jsonNodeParentMAP.get("uuid").longValue());//"uuid"

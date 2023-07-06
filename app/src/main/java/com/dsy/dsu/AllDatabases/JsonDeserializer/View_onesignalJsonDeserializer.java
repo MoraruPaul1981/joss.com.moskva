@@ -262,10 +262,10 @@ this.context=context;
             // TODO: 04.07.2023 цикл данных
             sqLiteStatementInsert.bindLong(1, jsonNodeParentMAP.get("id").intValue());//"id""
             sqLiteStatementInsert.bindLong(2, jsonNodeParentMAP.get("uuid").longValue());//"uuid"
-            sqLiteStatementInsert.bindString(3, jsonNodeParentMAP.get("onesignal").asText());//"date_update"
+            sqLiteStatementInsert.bindString(3, jsonNodeParentMAP.get("onesignal").asText().trim());//"date_update"
             sqLiteStatementInsert.bindLong(4, jsonNodeParentMAP.get("current_table").longValue());//"current_table"
             sqLiteStatementInsert.bindLong(5, jsonNodeParentMAP.get("user_update").intValue());//"uuid"
-            sqLiteStatementInsert.bindString(6, jsonNodeParentMAP.get("date_update").asText());//"date_update"
+            sqLiteStatementInsert.bindString(6, jsonNodeParentMAP.get("date_update").asText().trim());//"date_update"
 
         Log.d(this.getClass().getName(), "\n" + " class " +
                 Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -292,10 +292,10 @@ this.context=context;
             // TODO: 04.07.2023 цикл данных
             sqLiteStatementInsert.bindLong(1, jsonNodeParentMAP.get("id").intValue());//"id""
             sqLiteStatementInsert.bindLong(2, jsonNodeParentMAP.get("uuid").longValue());//"uuid"
-            sqLiteStatementInsert.bindString(3, jsonNodeParentMAP.get("onesignal").asText());//"date_update"
+            sqLiteStatementInsert.bindString(3, jsonNodeParentMAP.get("onesignal").asText().trim());//"date_update"
             sqLiteStatementInsert.bindLong(4, jsonNodeParentMAP.get("current_table").longValue());//"current_table"
             sqLiteStatementInsert.bindLong(5, jsonNodeParentMAP.get("user_update").intValue());//"uuid"
-            sqLiteStatementInsert.bindString(6, jsonNodeParentMAP.get("date_update").asText());//"date_update"
+            sqLiteStatementInsert.bindString(6, jsonNodeParentMAP.get("date_update").asText().trim());//"date_update"
 
             // TODO: 05.07.2023  Для Состыковки
             sqLiteStatementInsert.bindLong(7,jsonNodeParentMAP.get("uuid").longValue());//"uuid уже для UUID"

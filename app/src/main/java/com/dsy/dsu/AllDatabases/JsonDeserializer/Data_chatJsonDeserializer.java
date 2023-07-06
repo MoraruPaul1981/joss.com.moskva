@@ -262,12 +262,12 @@ this.context=context;
             // TODO: 04.07.2023 цикл данных
             sqLiteStatementInsert.bindLong(1, jsonNodeParentMAP.get("id").intValue());//"id""
             sqLiteStatementInsert.bindLong(2, jsonNodeParentMAP.get("uuid").longValue());//"uuid"
-            sqLiteStatementInsert.bindString(3, jsonNodeParentMAP.get("message").asText());//"date_update"
+            sqLiteStatementInsert.bindString(3, jsonNodeParentMAP.get("message").asText().trim());//"date_update"
             sqLiteStatementInsert.bindBlob(4, jsonNodeParentMAP.get("image_chat").binaryValue());//"uuid"
             sqLiteStatementInsert.bindLong(5, jsonNodeParentMAP.get("status_write").intValue());//"id""
             sqLiteStatementInsert.bindLong(6, jsonNodeParentMAP.get("chat_uuid").longValue());//"current_table"
             sqLiteStatementInsert.bindLong(7, jsonNodeParentMAP.get("user_update").intValue());//"uuid"
-            sqLiteStatementInsert.bindString(8, jsonNodeParentMAP.get("date_update").asText());//"date_update"
+            sqLiteStatementInsert.bindString(8, jsonNodeParentMAP.get("date_update").asText().trim());//"date_update"
             sqLiteStatementInsert.bindLong(9, jsonNodeParentMAP.get("current_table").longValue());//"current_table"
             sqLiteStatementInsert.bindLong(10, jsonNodeParentMAP.get("alreadyshownnotifications").intValue());//"uuid"
 
@@ -296,12 +296,12 @@ this.context=context;
             // TODO: 04.07.2023 цикл данных
             sqLiteStatementInsert.bindLong(1, jsonNodeParentMAP.get("id").intValue());//"id""
             sqLiteStatementInsert.bindLong(2, jsonNodeParentMAP.get("uuid").longValue());//"uuid"
-            sqLiteStatementInsert.bindString(3, jsonNodeParentMAP.get("message").asText());//"date_update"
+            sqLiteStatementInsert.bindString(3, jsonNodeParentMAP.get("message").asText().trim());//"date_update"
             sqLiteStatementInsert.bindBlob(4, jsonNodeParentMAP.get("image_chat").binaryValue());//"uuid"
             sqLiteStatementInsert.bindLong(5, jsonNodeParentMAP.get("status_write").intValue());//"id""
             sqLiteStatementInsert.bindLong(6, jsonNodeParentMAP.get("chat_uuid").longValue());//"current_table"
             sqLiteStatementInsert.bindLong(7, jsonNodeParentMAP.get("user_update").intValue());//"uuid"
-            sqLiteStatementInsert.bindString(8, jsonNodeParentMAP.get("date_update").asText());//"date_update"
+            sqLiteStatementInsert.bindString(8, jsonNodeParentMAP.get("date_update").asText().trim());//"date_update"
             sqLiteStatementInsert.bindLong(9, jsonNodeParentMAP.get("current_table").longValue());//"current_table"
             sqLiteStatementInsert.bindLong(10, jsonNodeParentMAP.get("alreadyshownnotifications").intValue());//"uuid"
 

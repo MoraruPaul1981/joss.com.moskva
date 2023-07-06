@@ -262,10 +262,10 @@ this.context=context;
             // TODO: 04.07.2023 цикл данных
             sqLiteStatementInsert.bindLong(1, jsonNodeParentMAP.get("id").intValue());//"id""
             sqLiteStatementInsert.bindLong(2, jsonNodeParentMAP.get("user_update").intValue());//"uuid"
-            sqLiteStatementInsert.bindString(3, jsonNodeParentMAP.get("date_update").asText());//"date_update"
+            sqLiteStatementInsert.bindString(3, jsonNodeParentMAP.get("date_update").asText().trim());//"date_update"
             sqLiteStatementInsert.bindLong(4, jsonNodeParentMAP.get("uuid").longValue());//"uuid"
             sqLiteStatementInsert.bindLong(5, jsonNodeParentMAP.get("id_user").intValue());//"uuid"
-            sqLiteStatementInsert.bindString(6, jsonNodeParentMAP.get("name").asText());//"date_update"
+            sqLiteStatementInsert.bindString(6, jsonNodeParentMAP.get("name").asText().trim());//"date_update"
             sqLiteStatementInsert.bindLong(7, jsonNodeParentMAP.get("current_table").longValue());//"current_table"
             sqLiteStatementInsert.bindLong(8, jsonNodeParentMAP.get("uuid_parent").longValue());//"current_table"
         Log.d(this.getClass().getName(), "\n" + " class " +

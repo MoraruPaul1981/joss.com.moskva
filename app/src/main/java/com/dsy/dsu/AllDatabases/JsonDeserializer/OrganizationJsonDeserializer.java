@@ -265,11 +265,11 @@ this.context=context;
         sqLiteStatementInsert.clearBindings();
             // TODO: 04.07.2023 цикл данных
         sqLiteStatementInsert.bindLong(1,jsonNodeParentMAP.get("id").intValue());//"id"
-        sqLiteStatementInsert.bindString(2,jsonNodeParentMAP.get("name").asText());//"name"
-        sqLiteStatementInsert.bindString(3,jsonNodeParentMAP.get("fullname").asText());//"fullname"
-        sqLiteStatementInsert.bindString(4,jsonNodeParentMAP.get("inn").asText());//"inn"
-        sqLiteStatementInsert.bindString(5,jsonNodeParentMAP.get("kpp").asText());//"kpp"
-        sqLiteStatementInsert.bindString(6,jsonNodeParentMAP.get("date_update").asText());//"date_update"
+        sqLiteStatementInsert.bindString(2,jsonNodeParentMAP.get("name").asText().trim());//"name"
+        sqLiteStatementInsert.bindString(3,jsonNodeParentMAP.get("fullname").asText().trim());//"fullname"
+        sqLiteStatementInsert.bindString(4,jsonNodeParentMAP.get("inn").asText().trim());//"inn"
+        sqLiteStatementInsert.bindString(5,jsonNodeParentMAP.get("kpp").asText().trim());//"kpp"
+        sqLiteStatementInsert.bindString(6,jsonNodeParentMAP.get("date_update").asText().trim());//"date_update"
         sqLiteStatementInsert.bindLong(7,jsonNodeParentMAP.get("user_update").intValue());//"user_update"
         sqLiteStatementInsert.bindLong(8,jsonNodeParentMAP.get("chosen_organization").intValue());//"chosen_organization"
         sqLiteStatementInsert.bindLong(9,jsonNodeParentMAP.get("current_table").longValue());//"current_table"
@@ -298,11 +298,11 @@ this.context=context;
             sqLiteStatementInsert.clearBindings();
             // TODO: 04.07.2023 цикл данных
             sqLiteStatementInsert.bindLong(1,jsonNodeParentMAP.get("id").intValue());//"id"
-            sqLiteStatementInsert.bindString(2,jsonNodeParentMAP.get("name").asText());//"name"
-            sqLiteStatementInsert.bindString(3,jsonNodeParentMAP.get("fullname").asText());//"fullname"
-            sqLiteStatementInsert.bindString(4,jsonNodeParentMAP.get("inn").asText());//"inn"
-            sqLiteStatementInsert.bindString(5,jsonNodeParentMAP.get("kpp").asText());//"kpp"
-            sqLiteStatementInsert.bindString(6,jsonNodeParentMAP.get("date_update").asText());//"date_update"
+            sqLiteStatementInsert.bindString(2,jsonNodeParentMAP.get("name").asText().trim());//"name"
+            sqLiteStatementInsert.bindString(3,jsonNodeParentMAP.get("fullname").asText().trim());//"fullname"
+            sqLiteStatementInsert.bindString(4,jsonNodeParentMAP.get("inn").asText().trim());//"inn"
+            sqLiteStatementInsert.bindString(5,jsonNodeParentMAP.get("kpp").asText().trim());//"kpp"
+            sqLiteStatementInsert.bindString(6,jsonNodeParentMAP.get("date_update").asText().trim());//"date_update"
             sqLiteStatementInsert.bindLong(7,jsonNodeParentMAP.get("user_update").intValue());//"user_update"
             sqLiteStatementInsert.bindLong(8,jsonNodeParentMAP.get("chosen_organization").intValue());//"chosen_organization"
             sqLiteStatementInsert.bindLong(9,jsonNodeParentMAP.get("current_table").longValue());//"current_table"

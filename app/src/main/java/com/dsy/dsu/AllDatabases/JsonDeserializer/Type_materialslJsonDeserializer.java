@@ -263,8 +263,8 @@ this.context=context;
             sqLiteStatementInsert.clearBindings();
             // TODO: 04.07.2023 цикл данных
             sqLiteStatementInsert.bindLong(1, jsonNodeParentMAP.get("id").intValue());//"id""
-            sqLiteStatementInsert.bindString(2, jsonNodeParentMAP.get("name").asText());//"date_update"
-            sqLiteStatementInsert.bindString(3, jsonNodeParentMAP.get("date_update").asText());//"date_update"
+            sqLiteStatementInsert.bindString(2, jsonNodeParentMAP.get("name").asText().trim());//"date_update"
+            sqLiteStatementInsert.bindString(3, jsonNodeParentMAP.get("date_update").asText().trim());//"date_update"
             sqLiteStatementInsert.bindLong(4, jsonNodeParentMAP.get("user_update").intValue());//"uuid"
             sqLiteStatementInsert.bindLong(5, jsonNodeParentMAP.get("uuid").longValue());//"uuid"
             sqLiteStatementInsert.bindLong(6, jsonNodeParentMAP.get("current_table").longValue());//"current_table"
@@ -293,8 +293,8 @@ this.context=context;
             sqLiteStatementInsert.clearBindings();
             // TODO: 04.07.2023 цикл данных
             sqLiteStatementInsert.bindLong(1, jsonNodeParentMAP.get("id").intValue());//"id""
-            sqLiteStatementInsert.bindString(2, jsonNodeParentMAP.get("name").asText());//"date_update"
-            sqLiteStatementInsert.bindString(3, jsonNodeParentMAP.get("date_update").asText());//"date_update"
+            sqLiteStatementInsert.bindString(2, jsonNodeParentMAP.get("name").asText().trim());//"date_update"
+            sqLiteStatementInsert.bindString(3, jsonNodeParentMAP.get("date_update").asText().trim());//"date_update"
             sqLiteStatementInsert.bindLong(4, jsonNodeParentMAP.get("user_update").intValue());//"uuid"
             sqLiteStatementInsert.bindLong(5, jsonNodeParentMAP.get("uuid").longValue());//"uuid"
             sqLiteStatementInsert.bindLong(6, jsonNodeParentMAP.get("current_table").longValue());//"current_table"
