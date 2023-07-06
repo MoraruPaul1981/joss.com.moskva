@@ -39,6 +39,7 @@ import com.dsy.dsu.AllDatabases.JsonDeserializer.RegionJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.Settings_tabelsJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.TabelJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.TemplatesJsonDeserializer;
+import com.dsy.dsu.AllDatabases.JsonDeserializer.TrackJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.Type_materialslJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.View_onesignalJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.Сhat_usersJsonDeserializer;
@@ -508,7 +509,13 @@ public class ContentProviderSynsUpdateBinary extends ContentProvider {
                                                         Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
                                 bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
                                 break;
-
+                            case "track":
+                                РезультатJsonDeserializer=
+                                        new TrackJsonDeserializer()
+                                                .методOrganizationJsonDeserializer( jsonNodeParentMAP, getContext(),имяТаблицаAsync,
+                                                        Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
+                                bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
+                                break;
 
 
 

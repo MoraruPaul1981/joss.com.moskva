@@ -1,9 +1,10 @@
-
 package com.dsy.dsu.AllDatabases.modelJSON;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 import java.io.Serializable;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -14,31 +15,38 @@ import java.util.Date;
  */
 
 
-public class Track extends   ParentJsonClass implements Serializable {
+public class Track implements Serializable {
     private static final long serialVersionUID = 1L;
 
 
     private Integer id;
 
-
-    @JsonProperty("current_table")
-    private BigDecimal currentTable;
-
-
-    @JsonProperty("date_update")
-    private Date dateUpdate;
-
-    private int dir;
+    private String name;
 
     private String fullname;
 
-    private String name;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern ="yyyy-MM-dd HH:mm:ss.SSS" )
+    private Date dateUpdate;
 
 
-    @JsonProperty("user_update")
-    private int userUpdate;
+    private Integer userUpdate;
+
+
+    private Integer dir;
+
 
     private BigDecimal uuid;
+
+
+    private BigDecimal currentTable;
+
+
+
+
+    private Integer owner;
+
+    private Integer vid_tc;
 
     public Track() {
     }
@@ -71,7 +79,7 @@ public class Track extends   ParentJsonClass implements Serializable {
         return this.dir;
     }
 
-    public void setDir(int dir) {
+    public void setDir(Integer dir) {
         this.dir = dir;
     }
 
@@ -91,11 +99,11 @@ public class Track extends   ParentJsonClass implements Serializable {
         this.name = name;
     }
 
-    public int getUserUpdate() {
+    public Integer getUserUpdate() {
         return this.userUpdate;
     }
 
-    public void setUserUpdate(int userUpdate) {
+    public void setUserUpdate(Integer userUpdate) {
         this.userUpdate = userUpdate;
     }
 
@@ -107,4 +115,18 @@ public class Track extends   ParentJsonClass implements Serializable {
         this.uuid = uuid;
     }
 
+    public void setOwner(Integer owner) {
+        this.owner = owner;
+    }
+
+    public Integer getVid_tc() {
+        return vid_tc;
+    }
+
+    public void setVid_tc(Integer vid_tc) {
+        this.vid_tc = vid_tc;
+    }
+    public Integer getOwner() {
+        return owner;
+    }
 }
