@@ -1763,10 +1763,14 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                                 методИзменяемЦветСодержимоваЦифраИлиБуква(((EditText) v), EditTextДАнные);
 
                                                 // TODO: 06.07.2023 Считаем ЧАсы
+                                            /*    Cursor     cursorForЧАсов=     myRecycleViewAdapter.cursor;
+                                                      cursorForЧАсов=    new SubClassGetCursor().МетодSwipesКурсор();*/
+                                               // cursorForЧАсов.moveToPosition(myRecycleViewAdapter.cursor.getPosition());
+                                                Integer Полощения=  myRecycleViewAdapter.cursor.getPosition();
+                                                myRecycleViewAdapter.cursor.requery();
+                                                myRecycleViewAdapter.cursor.moveToPosition(Полощения);
+                                                методСчитаемЧасы(myRecycleViewAdapter.cursor);
 
-                                                  Cursor     cursorForЧАсов=    new SubClassGetCursor().МетодSwipesКурсор();
-                                                cursorForЧАсов.moveToPosition(myRecycleViewAdapter.cursor.getPosition());
-                                                методСчитаемЧасы(cursorForЧАсов);
 
                                                 // TODO: 17.06.2023 переполучаем ДАннеы
 
