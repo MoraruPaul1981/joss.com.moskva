@@ -556,16 +556,9 @@ public class ContentProviderSynsUpdateBinary extends ContentProvider {
                                 bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
                                 break;
 
-
-
-
-
-
-
                             // TODO: 05.07.2023 no empty table
                             default:
                                 break;
-
                         }
         Log.d(this.getClass().getName(),"\n" + " class " +
                 Thread.currentThread().getStackTrace()[2].getClassName()
