@@ -43,6 +43,7 @@ import com.dsy.dsu.AllDatabases.JsonDeserializer.Type_materialslJsonDeserializer
 import com.dsy.dsu.AllDatabases.JsonDeserializer.View_onesignalJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.Сhat_usersJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.СhatsJsonDeserializer;
+import com.dsy.dsu.AllDatabases.JsonDeserializer.СompanylJsonDeserializer;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassCreatingMainAllTables;
@@ -500,7 +501,13 @@ public class ContentProviderSynsUpdateBinary extends ContentProvider {
                                                         Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
                                 bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
                                 break;
-
+                            case "company":
+                                РезультатJsonDeserializer=
+                                        new СompanylJsonDeserializer()
+                                                .методOrganizationJsonDeserializer( jsonNodeParentMAP, getContext(),имяТаблицаAsync,
+                                                        Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
+                                bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
+                                break;
 
 
 
