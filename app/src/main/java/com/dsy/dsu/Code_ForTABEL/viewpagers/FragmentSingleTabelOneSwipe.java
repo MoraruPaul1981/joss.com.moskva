@@ -1763,12 +1763,9 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                                 методИзменяемЦветСодержимоваЦифраИлиБуква(((EditText) v), EditTextДАнные);
 
                                                 // TODO: 06.07.2023 Считаем ЧАсы
-                                            /*    Cursor     cursorForЧАсов=     myRecycleViewAdapter.cursor;
-                                                      cursorForЧАсов=    new SubClassGetCursor().МетодSwipesКурсор();*/
-                                               // cursorForЧАсов.moveToPosition(myRecycleViewAdapter.cursor.getPosition());
-                                                Integer Полощения=  myRecycleViewAdapter.cursor.getPosition();
-                                                myRecycleViewAdapter.cursor.requery();
-                                                myRecycleViewAdapter.cursor.moveToPosition(Полощения);
+                                                методRefrefyGetDataRecycreView();
+
+
                                                 методСчитаемЧасы(myRecycleViewAdapter.cursor);
 
 
@@ -1831,17 +1828,16 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                 }
             }
 
-
-            // TODO: 28.06.2023 перегрузка курсора refref();
-            private void МетодПослеСахранениеИлиНетЯчейки(@NonNull View v) {
+            private void методRefrefyGetDataRecycreView() {
                 try{
-                recycleView.scrollTo(0, v.getTop());
-                ((EditText) v).clearFocus();
-                recycleView.clearFocus();
-
-                    Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v"+ v);
+                Integer Полощения=  myRecycleViewAdapter.cursor.getPosition();
+                Cursor     cursorForЧАсов=     myRecycleViewAdapter.cursor;
+                cursorForЧАсов=    new SubClassGetCursor().МетодSwipesКурсор();
+                cursorForЧАсов.moveToPosition(Полощения);
+                myRecycleViewAdapter.cursor=cursorForЧАсов;
+                Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -1850,6 +1846,8 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
             }
+
+
 
             private void методКогдаДанныеНеСохранились(@NonNull View v, @NonNull String ЗначениеДоЗаполениясОшибкой) {
                 try{
@@ -2303,9 +2301,6 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                         if (bundleПереходДетализацию != null) {
                             // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
                             try{
-                                message.getTarget().postDelayed(()->{
-                                    TextViewФИОПрофессия.startAnimation(animationForTextView);
-                                },300);
                                 TextView TextViewФИОДляУдаление = (TextView) v;
                                 Log.d(this.getClass().getName(), " v " + v.getTag() + " TextViewФИОДляУдаление.getText() " + TextViewФИОДляУдаление.getText() +
                                         "  TextViewФИОДляУдаление.getTag() " +TextViewФИОДляУдаление.getTag());
@@ -3082,7 +3077,6 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                         Профессия="(Должность)";
                         TextViewФИОПрофессия.setText(ФИО.trim() + "\n"+ Профессия);
                     }
-                    TextViewФИОПрофессия.startAnimation(animationForTextView) ;
                     // TODO: 17.04.2023 Tag
                     bundleTabelViewПосикПрофессия.putString("ФИО",ФИО);
                     bundleTabelViewПосикПрофессия.putString("Профессия",Профессия);
