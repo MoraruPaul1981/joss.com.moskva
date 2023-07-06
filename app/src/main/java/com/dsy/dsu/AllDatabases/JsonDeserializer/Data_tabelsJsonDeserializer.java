@@ -50,34 +50,35 @@ this.context=context;
                                              if (ФлагКакойСинхронизацияПерваяИлиНет.equalsIgnoreCase("ПовторныйЗапускСинхронизации") ||
                                                      имяТаблицаAsync.equalsIgnoreCase("settings_tabels") ||
                                                      имяТаблицаAsync.equalsIgnoreCase("view_onesignal")) {
-                                                 // TODO: 04.07.2023  Обновление
-                                                 ОперацияUpdate = ОбновлениеДанных(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite, jsonNode);
 
-                                                 if (ОперацияUpdate>0) {
-                                                     РезультатОперацииBurkUPDATE.add(ОперацияUpdate);
+                     // TODO: 04.07.2023  Вставка  ПОСЛЕ ОБНОВЛЕНИЯ ЕСЛИ ОНО НЕ ПРОШЛО
+                     long ЕслиИлиНЕтUUID=        new  FindEmptyUUID().методПосикаUUIDDeseializer(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite,jsonNode);
+                     if (ЕслиИлиНЕтUUID>0) {
+                         // TODO: 04.07.2023  Обновление
+                         ОперацияUpdate = ОбновлениеДанных(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite, jsonNode);
+                         if (ОперацияUpdate>0) {
+                             РезультатОперацииBurkUPDATE.add(ОперацияUpdate);
+                         }
+                         Log.d(this.getClass().getName(), "\n" + " class " +
+                                 Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                 + имяТаблицаAsync  + " ОперацияUpdate " +ОперацияUpdate + " ОперацияUpdate " +ОперацияUpdate  );
+                     }else{
+                         // TODO: 04.07.2023  Вставка  ПОСЛЕ ОБНОВЛЕНИЯ ЕСЛИ ОНО НЕ ПРОШЛО
+                         if (ОперацияUpdate<1) {
+                             Long     ОперацияInsert = ВставкаДанных(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite, jsonNode);
+                             if (ОперацияInsert>0) {
+                                 РезультатОперацииBurkUPDATE.add(ОперацияInsert.intValue());
+                             }
+                             Log.d(this.getClass().getName(), "\n" + " class " +
+                                     Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                     + имяТаблицаAsync  + " ОперацияUpdate " +ОперацияUpdate + " ОперацияInsert " +ОперацияInsert  );
+                         }
 
-                                                     Log.d(this.getClass().getName(), "\n" + " class " +
-                                                             Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                             + имяТаблицаAsync  + " ОперацияUpdate " +ОперацияUpdate   );
-                                             }else {
-
-                                                 // TODO: 04.07.2023  Вставка  ПОСЛЕ ОБНОВЛЕНИЯ ЕСЛИ ОНО НЕ ПРОШЛО
-                                                     long ЕслиИлиНЕтUUID=        new  FindEmptyUUID().методПосикаUUIDDeseializer(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite,jsonNode);
-                                                     Long ОперацияInsert = null;
-                                                     if (ОперацияUpdate<1 && ЕслиИлиНЕтUUID==0) {
-                                                         ОперацияInsert = ВставкаДанных(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite, jsonNode);
-                                                         if (ОперацияInsert>0) {
-                                                             РезультатОперацииBurkUPDATE.add(ОперацияInsert.intValue());
-                                                         }
-                                                     }
-                                                     Log.d(this.getClass().getName(), "\n" + " class " +
-                                                         Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                         + имяТаблицаAsync  + " ОперацияUpdate " +ОперацияUpdate + " ОперацияInsert " +ОперацияInsert  );
-                                             }
+                     }
 
 // TODO: 04.07.2023 ТОЛЬКО ВСТАВКА   // TODO: 04.07.2023 ТОЛЬКО ВСТАВКА  // TODO: 04.07.2023 ТОЛЬКО ВСТАВКА  // TODO: 04.07.2023 ТОЛЬКО ВСТАВКА  // TODO: 04.07.2023 ТОЛЬКО ВСТАВКА
                                              }else {
@@ -236,7 +237,7 @@ this.context=context;
             // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
             String  SQlOperUpdate=  " UPDATE "+имяТаблицаAsync+" SET  _id=?, fio=?," +
                     " d1 =?,d2=?, d3=? , d4=? ,d5=? ,d6=? , d7=? , d8=? ,d9=? , d10=? ,  " +
-                    " d11 =?,d11=?, d12=? , d13=? ,d14=? ,d15=? , d16=? , d17=? ,d18=? , d19=? ,  " +
+                    " d11 =?, d12=? , d13=? ,d14=? ,d15=? , d16=? , d17=? ,d18=? , d19=? ,  " +
                     " d20 =?,d21=?, d22=? , d23=? ,d24=? ,d25=? , d26=? , d27=? ,d28=? , d29=? ,  " +
                     " d30 =?, d31 =? ,  " +
                     " date_update=?,  uuid_tabel=?,current_table=?,  uuid=?,  " +
@@ -334,7 +335,7 @@ this.context=context;
             sqLiteStatementInsert.bindLong(41, jsonNodeParentMAP.get("prof").intValue());//"id""
 
             // TODO: 05.07.2023  Для Состыковки
-            sqLiteStatementInsert.bindLong(43,jsonNodeParentMAP.get("uuid").longValue());//"uuid уже для UUID"
+            sqLiteStatementInsert.bindLong(42,jsonNodeParentMAP.get("uuid").longValue());//"uuid уже для UUID"
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
