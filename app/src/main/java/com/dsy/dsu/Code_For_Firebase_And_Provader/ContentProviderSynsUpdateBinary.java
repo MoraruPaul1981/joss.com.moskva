@@ -33,6 +33,7 @@ import com.dsy.dsu.AllDatabases.JsonDeserializer.DepatmentJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.FioJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.Fio_templateJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.JsonMainDeseirialzer;
+import com.dsy.dsu.AllDatabases.JsonDeserializer.Nomen_vesovlJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.NotificationsJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.OrganizationJsonDeserializer;
 import com.dsy.dsu.AllDatabases.JsonDeserializer.RegionJsonDeserializer;
@@ -479,6 +480,13 @@ public class ContentProviderSynsUpdateBinary extends ContentProvider {
                             case "data_notification":
                                 РезультатJsonDeserializer=
                                         new Data_notificationlJsonDeserializer()
+                                                .методOrganizationJsonDeserializer( jsonNodeParentMAP, getContext(),имяТаблицаAsync,
+                                                        Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
+                                bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
+                                break;
+                            case "nomen_vesov":
+                                РезультатJsonDeserializer=
+                                        new Nomen_vesovlJsonDeserializer()
                                                 .методOrganizationJsonDeserializer( jsonNodeParentMAP, getContext(),имяТаблицаAsync,
                                                         Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
                                 bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
