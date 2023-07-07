@@ -226,8 +226,8 @@ this.context=context;
             // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
             String  SQlOperUpdate=  " UPDATE "+имяТаблицаAsync+" SET  id=?, " +
                     " message =?,date_start=?, clock=? , date_update=? , "+
-                    " rights =?,uuid=?, current_table=? , uuid_notifications =?,  "+
-                    " status_write=?,  type_tasks=?, head_message=? , callsback_note_task=? , alreadyshownnotifications=? "+
+                    " rights =?,uuid=?, current_table=? ,status_write=? ,  "+
+                    "  uuid_notifications =? ,  type_tasks=?, head_message=? , callsback_note_task=? , alreadyshownnotifications=? "+
                     "   WHERE  uuid=?  ;";
 
             SQLiteStatement sqLiteStatementInsert = методGetSqliteStatementForUpdate(Create_Database_СамаБАзаSQLite, SQlOperUpdate,jsonNodeParentMAP);
