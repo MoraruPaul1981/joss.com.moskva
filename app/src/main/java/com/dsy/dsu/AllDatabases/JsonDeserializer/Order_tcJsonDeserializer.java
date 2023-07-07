@@ -29,7 +29,7 @@ public class Order_tcJsonDeserializer extends JsonMainDeseirialzer {
                                                   @NonNull SQLiteDatabase Create_Database_СамаБАзаSQLite
                                                   , @NonNull  String ФлагКакойСинхронизацияПерваяИлиНет  ) {
         CopyOnWriteArrayList<Integer> РезультатОперацииBurkUPDATE=new CopyOnWriteArrayList<>();
- try {
+
 this.context=context;
      Flowable.fromIterable(jsonNodeParentMAP)
              .onBackpressureBuffer(jsonNodeParentMAP.size(),true)
@@ -51,33 +51,34 @@ this.context=context;
                                                      имяТаблицаAsync.equalsIgnoreCase("settings_tabels") ||
                                                      имяТаблицаAsync.equalsIgnoreCase("view_onesignal")) {
                                                  // TODO: 04.07.2023  Обновление
-                                                 ОперацияUpdate = ОбновлениеДанных(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite, jsonNode);
 
-                                                 if (ОперацияUpdate>0) {
-                                                     РезультатОперацииBurkUPDATE.add(ОперацияUpdate);
+                                 // TODO: 04.07.2023  Вставка  ПОСЛЕ ОБНОВЛЕНИЯ ЕСЛИ ОНО НЕ ПРОШЛО
+                                 long ЕслиИлиНЕтUUID=        new  FindEmptyUUID().методПосикаUUIDDeseializer(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite,jsonNode);
+                                 if (ЕслиИлиНЕтUUID>0) {
+                                     // TODO: 04.07.2023  Обновление
+                                     ОперацияUpdate = ОбновлениеДанных(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite, jsonNode);
+                                     if (ОперацияUpdate>0) {
+                                         РезультатОперацииBurkUPDATE.add(ОперацияUpdate);
+                                     }
+                                     Log.d(this.getClass().getName(), "\n" + " class " +
+                                             Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                             + имяТаблицаAsync  + " ОперацияUpdate " +ОперацияUpdate + " ОперацияUpdate " +ОперацияUpdate  );
+                                 }else{
+                                     // TODO: 04.07.2023  Вставка  ПОСЛЕ ОБНОВЛЕНИЯ ЕСЛИ ОНО НЕ ПРОШЛО
+                                     Long     ОперацияInsert = ВставкаДанных(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite, jsonNode);
+                                     if (ОперацияInsert>0) {
+                                         РезультатОперацииBurkUPDATE.add(ОперацияInsert.intValue());
+                                     }
+                                     Log.d(this.getClass().getName(), "\n" + " class " +
+                                             Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                             + имяТаблицаAsync  + " ОперацияUpdate " +ОперацияUpdate + " ОперацияInsert " +ОперацияInsert  );
 
-                                                     Log.d(this.getClass().getName(), "\n" + " class " +
-                                                             Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                             + имяТаблицаAsync  + " ОперацияUpdate " +ОперацияUpdate   );
-                                             }else {
+                                 }
 
-                                                 // TODO: 04.07.2023  Вставка  ПОСЛЕ ОБНОВЛЕНИЯ ЕСЛИ ОНО НЕ ПРОШЛО
-                                                     long ЕслиИлиНЕтUUID=        new  FindEmptyUUID().методПосикаUUIDDeseializer(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite,jsonNode);
-                                                     Long ОперацияInsert = null;
-                                                     if (ОперацияUpdate<1 && ЕслиИлиНЕтUUID==0) {
-                                                         ОперацияInsert = ВставкаДанных(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite, jsonNode);
-                                                         if (ОперацияInsert>0) {
-                                                             РезультатОперацииBurkUPDATE.add(ОперацияInsert.intValue());
-                                                         }
-                                                     }
-                                                     Log.d(this.getClass().getName(), "\n" + " class " +
-                                                         Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                                         + имяТаблицаAsync  + " ОперацияUpdate " +ОперацияUpdate + " ОперацияInsert " +ОперацияInsert  );
-                                             }
 
 // TODO: 04.07.2023 ТОЛЬКО ВСТАВКА   // TODO: 04.07.2023 ТОЛЬКО ВСТАВКА  // TODO: 04.07.2023 ТОЛЬКО ВСТАВКА  // TODO: 04.07.2023 ТОЛЬКО ВСТАВКА  // TODO: 04.07.2023 ТОЛЬКО ВСТАВКА
                                              }else {
@@ -166,13 +167,7 @@ this.context=context;
                 Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " jsonNodeParentMAP " +jsonNodeParentMAP);
-} catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
+
  return  РезультатОперацииBurkUPDATE.size();
     }
     
