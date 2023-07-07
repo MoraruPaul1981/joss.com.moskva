@@ -301,7 +301,7 @@ this.context=context;
             sqLiteStatementInsert.bindString(5, jsonNodeParentMAP.get("date_update").asText());//"date_update"
             sqLiteStatementInsert.bindLong(6, jsonNodeParentMAP.get("user_update").intValue());//"user_update"
             sqLiteStatementInsert.bindLong(7, jsonNodeParentMAP.get("current_table").longValue());//"current_table"
-            sqLiteStatementInsert.bindLong(8, jsonNodeParentMAP.get("status_send").intValue());//"user_update"
+            sqLiteStatementInsert.bindString(8, jsonNodeParentMAP.get("status_send").asText().trim());//"user_update"
 
             // TODO: 05.07.2023  Для Состыковки
             sqLiteStatementInsert.bindLong(9,jsonNodeParentMAP.get("uuid").longValue());//"uuid уже для UUID"

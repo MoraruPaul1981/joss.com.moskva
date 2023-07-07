@@ -301,7 +301,7 @@ this.context=context;
             sqLiteStatementInsert.bindLong(4, jsonNodeParentMAP.get("year_tabels").intValue());//"id""
             sqLiteStatementInsert.bindString(5, jsonNodeParentMAP.get("date_update").asText().trim());//"date_update"
             sqLiteStatementInsert.bindLong(6, jsonNodeParentMAP.get("uuid").longValue());//"uuid"
-            sqLiteStatementInsert.bindLong(7, jsonNodeParentMAP.get("status_send").intValue());//"id""
+            sqLiteStatementInsert.bindString(7, jsonNodeParentMAP.get("status_send").asText().trim());//"id""
             sqLiteStatementInsert.bindLong(8, jsonNodeParentMAP.get("user_update").intValue());//"uuid"
             sqLiteStatementInsert.bindLong(9, jsonNodeParentMAP.get("current_table").longValue());//"current_table"
 

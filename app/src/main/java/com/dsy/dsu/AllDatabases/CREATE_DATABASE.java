@@ -193,7 +193,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
                 " name TEXT  ," +
                 " organization INTEGER ," +
                 " date_update NUMERIC," +
-                " user_update TEXT," +
+                " user_update INTEGER," +
                 "  current_table NUMERIC UNIQUE   ," +
                 " uuid NUMERIC UNIQUE  ,"+
                 "FOREIGN KEY(organization) REFERENCES organization  (id)  ON UPDATE CASCADE)");
@@ -639,10 +639,10 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         ССылкаНаСозданнуюБазу.execSQL("drop table  if exists tabel");//test
         ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0',versionserveraandroid_version='0'  WHERE name =  'tabel'");//test
        ССылкаНаСозданнуюБазу.execSQL("Create table if not exists tabel(" +
-                "_id  INTEGER  PRIMARY KEY  AUTOINCREMENT ," +
+                "_id  INTEGER  PRIMARY KEY    ," +
                 "cfo NUMERIC ," +
-                " month_tabels TEXT check(length(month_tabels) <13 ) ," +
-                "year_tabels NUMERIC," +
+                " month_tabels INTEGER check(length(month_tabels) <13 ) ," +
+                "year_tabels INTEGER," +
                 "date_update  NUMERIC   ," +
                 " uuid  NUMERIC UNIQUE ," +
                 " status_send  TEXT  DEFAULT 'Локальные'   ," +
@@ -680,7 +680,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         ССылкаНаСозданнуюБазу.execSQL("drop table  if exists data_tabels");//test
         ССылкаНаСозданнуюБазу.execSQL(" UPDATE MODIFITATION_Client SET  localversionandroid_version='0' ,versionserveraandroid_version='0' WHERE name ='data_tabels'");//test
         ССылкаНаСозданнуюБазу.execSQL("Create table if not exists data_tabels(" +
-                "_id  INTEGER  PRIMARY KEY  AUTOINCREMENT  ," +
+                "_id  INTEGER  PRIMARY KEY    ," +
                 "fio NUMERIC ," +
                 "d1 INTEGER  DEFAULT 0   ," +
                 "d2 INTEGER  DEFAULT 0    ," +

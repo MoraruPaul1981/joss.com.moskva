@@ -353,7 +353,7 @@ this.context=context;
             sqLiteStatementInsert.bindLong(36, jsonNodeParentMAP.get("current_table").longValue());//"current_table"
             sqLiteStatementInsert.bindLong(37, jsonNodeParentMAP.get("uuid").longValue());//"uuid"
             sqLiteStatementInsert.bindLong(38, jsonNodeParentMAP.get("user_update").intValue());//"uuid"
-            sqLiteStatementInsert.bindLong(39, jsonNodeParentMAP.get("status_send").intValue());//"id""
+            sqLiteStatementInsert.bindString(39, jsonNodeParentMAP.get("status_send").asText().trim());//"id""
             sqLiteStatementInsert.bindLong(40, jsonNodeParentMAP.get("status_carried_out").intValue());//"id""
             sqLiteStatementInsert.bindLong(41, jsonNodeParentMAP.get("prof").intValue());//"id""
 
