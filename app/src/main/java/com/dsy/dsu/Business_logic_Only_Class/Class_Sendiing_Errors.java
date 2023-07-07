@@ -53,8 +53,8 @@ public class Class_Sendiing_Errors {
             Toast.makeText(activity, "Отправляем...", Toast.LENGTH_LONG).show();
 
             // TODO: 28.06.2023 очищаем таблиц
-            МетодУдаланиеОшибок(create_database_error);
-                activity.finish();
+            МетодУдаланиеОшибок(create_database_error,activity);
+
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -71,7 +71,7 @@ public class Class_Sendiing_Errors {
 
 
     // TODO: 28.06.2023 Запись Ошибков 
-    private void МетодУдаланиеОшибок(   @NonNull SQLiteDatabase create_database_error) throws ExecutionException, InterruptedException {
+    private void МетодУдаланиеОшибок(   @NonNull SQLiteDatabase create_database_error,@NonNull Activity activity) throws ExecutionException, InterruptedException {
         try {
             CompletableFuture.supplyAsync(new Supplier<Object>() {
                 @Override
@@ -79,17 +79,18 @@ public class Class_Sendiing_Errors {
                     if (!create_database_error.inTransaction()) {
                         create_database_error.beginTransaction();
                     }
-                    SQLiteStatement sqLiteStatementУдаление= create_database_error.compileStatement("delete from   errordsu1");
-                    long РезультатУдаление=  sqLiteStatementУдаление.executeInsert();
+
+
+                    create_database_error.execSQL("DELETE FROM errordsu1 ");
+
 // TODO: 17.04.2023
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +  " РезультатУдаление  " +РезультатУдаление +
-                            " РезультатУдалениеДопол  "+РезультатУдаление);
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
 
-                    if (РезультатУдаление>0) {
+
                         create_database_error.setTransactionSuccessful();
-                    }
+
                     if (create_database_error.inTransaction()) {
                         create_database_error.endTransaction();
                     }
@@ -98,7 +99,7 @@ public class Class_Sendiing_Errors {
                 }
             }).get();
 
-
+            activity.finish();
 
     } catch (Exception e) {
         e.printStackTrace();
