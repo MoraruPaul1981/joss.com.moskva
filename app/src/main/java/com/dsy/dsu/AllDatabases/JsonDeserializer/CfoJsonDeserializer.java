@@ -222,7 +222,7 @@ this.context=context;
         try{
             this.context=context;
             // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
-            String  SQlOperUpdate=  " UPDATE "+имяТаблицаAsync+" SET  id=?,name=?,  " +
+            String  SQlOperUpdate=  " UPDATE "+имяТаблицаAsync+" SET  _id=?,name=?,  " +
                     " region=?,boss=?  , kod=?,date_update=? ,user_update=?,closed=?,current_table=? ,organization=? ,uuid=?  WHERE  uuid=?  ;";
 
             SQLiteStatement sqLiteStatementInsert = методGetSqliteStatementForUpdate(Create_Database_СамаБАзаSQLite, SQlOperUpdate,jsonNodeParentMAP);

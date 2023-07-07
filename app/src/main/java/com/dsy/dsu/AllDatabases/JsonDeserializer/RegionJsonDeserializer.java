@@ -298,9 +298,8 @@ this.context=context;
             sqLiteStatementInsert.bindLong(4, jsonNodeParentMAP.get("user_update").intValue());//"user_update"
             sqLiteStatementInsert.bindLong(5, jsonNodeParentMAP.get("current_table").longValue());//"current_table"
             sqLiteStatementInsert.bindLong(6, jsonNodeParentMAP.get("uuid").longValue());//"uuid"
-            sqLiteStatementInsert.bindLong(7, jsonNodeParentMAP.get("uuid").intValue());//"user_update"
             // TODO: 05.07.2023  Для Состыковки
-            sqLiteStatementInsert.bindLong(8,jsonNodeParentMAP.get("uuid").longValue());//"uuid уже для UUID"
+            sqLiteStatementInsert.bindLong(7,jsonNodeParentMAP.get("uuid").longValue());//"uuid уже для UUID"
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
