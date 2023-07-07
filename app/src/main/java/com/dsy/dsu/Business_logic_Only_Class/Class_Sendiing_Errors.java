@@ -76,6 +76,9 @@ public class Class_Sendiing_Errors {
             CompletableFuture.supplyAsync(new Supplier<Object>() {
                 @Override
                 public Object get() {
+                    if (!create_database_error.inTransaction()) {
+                        create_database_error.beginTransaction();
+                    }
                     SQLiteStatement sqLiteStatementУдаление= create_database_error.compileStatement("delete from   errordsu1");
                     long РезультатУдаление=  sqLiteStatementУдаление.executeInsert();
 // TODO: 17.04.2023
@@ -89,9 +92,6 @@ public class Class_Sendiing_Errors {
                     }
                     if (create_database_error.inTransaction()) {
                         create_database_error.endTransaction();
-                    }
-                    if (!create_database_error.inTransaction()) {
-                        create_database_error.beginTransaction();
                     }
                     create_database_error.close();
                     return null;

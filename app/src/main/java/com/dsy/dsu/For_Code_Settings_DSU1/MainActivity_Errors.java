@@ -100,11 +100,34 @@ public class MainActivity_Errors extends AppCompatActivity  {
                             concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
                     Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,create_database_error.getССылкаНаСозданнуюБазу());
 
+
+
+            StringBuffer БуерДляОшибок =new StringBuffer();
+
+            String ИнфоТелефон = Build.MANUFACTURER
+                    + " " + Build.MODEL + " " + Build.VERSION.RELEASE
+                    + " " + Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
+            
+            
+            if (Курсор_СамиДанные_Error.getCount()>0) {
+                Курсор_СамиДанные_Error.moveToFirst();
+                Log.d(this.getClass().getName(), "GetData "+Курсор_СамиДанные_Error  );
+
+                МетодЗапускаAsynTaskОшибки( Курсор_СамиДанные_Error,БуерДляОшибок,ИнфоТелефон);
+                Log.d(this.getClass().getName(), "GetData "+Курсор_СамиДанные_Error  );
+                
+            }else {
+
+                методКогдаНетОшибок(БуерДляОшибок, ИнфоТелефон);
+
+                Log.d(this.getClass().getName(), "GetData "+Курсор_СамиДанные_Error  );
+            }
+
             Log.d(this.getClass().getName(), "GetData "+Курсор_СамиДанные_Error  );
 
 
-                        МетодЗапускаAsynTaskОшибки(Курсор_СамиДанные_Error.getCount(), Курсор_СамиДанные_Error);
-
+            // TODO: 07.07.2023  сама вставка ошибок
+            КонтейнерКудаЗагружаеютьсяОшибкиПрилоджения.setText(БуерДляОшибок.toString());
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
@@ -116,15 +139,30 @@ public class MainActivity_Errors extends AppCompatActivity  {
         }
     }
 
-    
-    protected void МетодЗапускаAsynTaskОшибки(int естьСтроки, Cursor Курсор_СамиДанные_Error) {
-        try {
-            StringBuffer БуерДляОшибок =new StringBuffer();
-            String ИнфоТелефон = Build.MANUFACTURER
-                    + " " + Build.MODEL + " " + Build.VERSION.RELEASE
-                    + " " + Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
-            if (естьСтроки > 0) {
+    private void методКогдаНетОшибок(StringBuffer БуерДляОшибок, String ИнфоТелефон) {
+        try{
+        БуерДляОшибок.append(    "---------------Ошибок Нет.-----------"+"\n"+"\n"+
+                "   " + ИнфоТелефон + "  : " + "  Инфо. телефона " + "\n" + "\n" +
+                "   " + Build.BRAND.toUpperCase() + "  : " + " Имя " + "\n" + "\n" +
+                Build.VERSION.SDK_INT+ "  : " + " API ("+Build.VERSION.RELEASE+ ")"+ "\n" + "\n" +
+                "- время : " +new Date().toString()+"-" + "\n"+  "\n"+
+                "   " + "-----------------------------------------" + "\n"+  "\n" );
 
+        Log.d(this.getClass().getName(), " Ошибок Нет. время :   " +new Date().toString());
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        // TODO: 01.09.2021 метод вызова
+        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+///////
+    }
+    }
+
+
+    protected void МетодЗапускаAsynTaskОшибки(  Cursor Курсор_СамиДанные_Error,@NonNull  StringBuffer БуерДляОшибок, String ИнфоТелефон) {
+        try {
                 materialButtonОтправкаОшибокНАпочту.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -140,9 +178,6 @@ public class MainActivity_Errors extends AppCompatActivity  {
                         МетодПосылаемОшибкиНапочту(БуерДляОшибок);
                     }
                 });
-
-
-                Курсор_СамиДанные_Error.moveToFirst();
                 int КоличествоСтрочекКурсоре = Курсор_СамиДанные_Error.getCount();
                 Log.d(this.getClass().getName(), "количество записей в курсоре : " + КоличествоСтрочекКурсоре);
                 do {
@@ -171,19 +206,7 @@ public class MainActivity_Errors extends AppCompatActivity  {
                 } while (Курсор_СамиДанные_Error.moveToNext());
                 // TODO: 06.07.2023 exit cursor
                 Курсор_СамиДанные_Error.close();
-            }else {
-                БуерДляОшибок.append(    "---------------Ошибок Нет.-----------"+"\n"+"\n"+
-                        "   " + ИнфоТелефон + "  : " + "  Инфо. телефона " + "\n" + "\n" +
-                        "   " + Build.BRAND.toUpperCase() + "  : " + " Имя " + "\n" + "\n" +
-                        Build.VERSION.SDK_INT+ "  : " + " API ("+Build.VERSION.RELEASE+ ")"+ "\n" + "\n" +
-                        "- время : " +new Date().toString()+"-" + "\n"+  "\n"+
-                        "   " + "-----------------------------------------" + "\n"+  "\n" );
-
-                Log.d(this.getClass().getName(), " Ошибок Нет. время :   " +new Date().toString());
-
-            }
-                //////////////////////
-                КонтейнерКудаЗагружаеютьсяОшибкиПрилоджения.setText(БуерДляОшибок.toString());
+                
             Log.d(this.getClass().getName(), " БуерДляОшибок   " +БуерДляОшибок.toString());
         } catch (Exception e) {
             e.printStackTrace();
