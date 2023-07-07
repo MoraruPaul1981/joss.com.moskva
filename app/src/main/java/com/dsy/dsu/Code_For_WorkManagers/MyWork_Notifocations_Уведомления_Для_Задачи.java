@@ -105,7 +105,7 @@ public class MyWork_Notifocations_Уведомления_Для_Задачи ext
     public Result doWork() {
         Boolean ФинальныйФлагЛюбогоЗапущеногоАктивти = false;
         try {
-            Create_Database_СсылкаНАБазовыйКласс = new CREATE_DATABASE(context);
+            Create_Database_СсылкаНАБазовыйКласс = new CREATE_DATABASE(getApplicationContext());
             ActivityManager ЗапущенныйПроуессыДляУведомленийЧата = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
             if (ЗапущенныйПроуессыДляУведомленийЧата!=null) {
                 List<ActivityManager.AppTask> КоличествоЗапущенныйПроуессыДляЧата = ЗапущенныйПроуессыДляУведомленийЧата.getAppTasks();

@@ -700,7 +700,7 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                 });
 
                 Stream<String> streamУдалениеСтатусаУдаленныйВтрой=Stream.of( "order_tc");
-                streamУдалениеСтатусаУдаленный.forEach(Таблица->{
+                streamУдалениеСтатусаУдаленныйВтрой.forEach(Таблица->{
                     Uri  uri = Uri.parse("content://com.dsy.dsu.providerdatabase/" + Таблица + "");
                     ContentResolver resolver = context.getContentResolver();
                     Integer  УдалениеДанныхСоСтатусомУдаленная=   resolver.delete(uri,"  status=?",new String[]{ "6"});

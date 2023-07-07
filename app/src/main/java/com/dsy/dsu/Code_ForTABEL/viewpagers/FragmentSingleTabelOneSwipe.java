@@ -308,21 +308,29 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
 
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        try{
 
+        if (myRecycleViewAdapter!=null) {
+            myRecycleViewAdapter.cursor.close();
+        }
+        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
+                + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-    // TODO: 21.06.2023 Class Бизнес Код Для Фрагмента Single Tabel
+// TODO: 21.06.2023 Class Бизнес Код Для Фрагмента Single Tabel
 
     // TODO: 21.06.2023 Class Бизнес Код Для Фрагмента Single Tabel
     // TODO: 21.06.2023 Class Бизнес Код Для Фрагмента Single Tabel
@@ -1094,25 +1102,27 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
             public void onBindViewHolder(@NonNull  MyViewHolder holder, @SuppressLint("RecyclerView") int position, @NonNull List<Object> payloads) {
                 try {
                     // TODO: 23.06.2023
-                                // TODO: 22.06.2023 данные
-                                МетодЗаполняемДаннымиRecycreViewSingleTable(holder, cursor);
-                                // TODO: 06.04.2023
+                    if (cursor!=null && cursor.getCount()>0 && !cursor.isClosed()) {
+                        // TODO: 22.06.2023 данные
+                        МетодЗаполняемДаннымиRecycreViewSingleTable(holder, cursor);
+                        // TODO: 06.04.2023
 
 
-                    // TODO: 14.04.2023 ДОПОЛНИТЕЛЬНЫЕ МЕТОДЦ ПОСЛЕ ВСТАВКИ ЛДАННЫХ
-                  //  Cursor     cursorForЧАсов=    new SubClassGetCursor().МетодSwipesКурсор();
-                    методСчитаемЧасы(cursor);
+                        // TODO: 14.04.2023 ДОПОЛНИТЕЛЬНЫЕ МЕТОДЦ ПОСЛЕ ВСТАВКИ ЛДАННЫХ
+                        //  Cursor     cursorForЧАсов=    new SubClassGetCursor().МетодSwipesКурсор();
+                        методСчитаемЧасы(cursor);
 
-                    // TODO: 04.04.2023  ФИО
-                    new  SubClassChanegeSetNameProffesio().    МетодЗаполняемФИОRow( cursor);
-                    // TODO: 16.04.2023 Професии Професии Професии Професии
-                    МетодаКликаTableRowФИО( );
-                    // TODO: 23.06.2023
-                    методВиузуацииПрогрессБара();
-                    // TODO: 26.06.2023  перегрузка
-                    методПерегрузкиRecycreView();
+                        // TODO: 04.04.2023  ФИО
+                        new  SubClassChanegeSetNameProffesio().    МетодЗаполняемФИОRow( cursor);
+                        // TODO: 16.04.2023 Професии Професии Професии Професии
+                        МетодаКликаTableRowФИО( );
+                        // TODO: 23.06.2023
+                        методВиузуацииПрогрессБара();
+                        // TODO: 26.06.2023  перегрузка
+                        методПерегрузкиRecycreView();
+                    }
 
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cursorForViewPager " +cursor +
                                 " myViewHolder.getLayoutPosition() " +myViewHolder.getLayoutPosition());
@@ -1748,11 +1758,20 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                     // TODO: 19.06.2023
                                     message.getTarget().post(()-> {
                                         Bundle bundleДанныеTag = (Bundle) v.getTag();
-                                        String ЗначениеДняTag = bundleДанныеTag.getString("ЗначениеДня").trim();
-                                        String EditTextДАнные = ((EditText) v).getText().toString().trim();
+                                        String ЗначениеДО = bundleДанныеTag.getString("ЗначениеДня").trim();
+                                        String ЗначениеПослеКлика = ((EditText) v).getText().toString().trim();
+
+                                        Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v" + v +
+                                                " bundleДанныеTag " + bundleДанныеTag + " ЗначениеДО " + ЗначениеДО + "ЗначениеПослеКлика " + ЗначениеПослеКлика);
+
+
+
                                         // TODO: 06.04.2023 Принимаем Решение Если ДАные РАзные ЗАпускаем Обновление
-                                        if (!EditTextДАнные.equalsIgnoreCase(ЗначениеДняTag)
-                                                && !EditTextДАнные.equalsIgnoreCase("0")) {
+                                        if (!ЗначениеПослеКлика.equalsIgnoreCase(ЗначениеДО)
+                                                && !ЗначениеПослеКлика.equalsIgnoreCase("0")
+                                                && !ЗначениеПослеКлика.isEmpty()) {
                                             // TODO: 11.04.2023 Оперция Обновлнения ЯЧЕЕК
                                             SubClassUpdatesCELL subClassUpdateSingletabel = new SubClassUpdatesCELL(getContext());
                                             // TODO: 10.05.2023  ЗАВПИСЫАЕМ НОВЫЕ ДАННЫВЕ В БАЗУ
@@ -1760,7 +1779,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                             // TODO: 10.05.2023 После операции Сохранение в Ячкейке
                                             if (РезультатОбновлениеЯчейки > 0) {
                                                 // TODO: 24.04.2023  после обновление ячейки Считаем Часы
-                                                методИзменяемЦветСодержимоваЦифраИлиБуква(((EditText) v), EditTextДАнные);
+                                                методИзменяемЦветСодержимоваЦифраИлиБуква(((EditText) v), ЗначениеПослеКлика);
 
                                                 // TODO: 06.07.2023 Считаем ЧАсы
                                                 методRefrefyGetDataRecycreView();
@@ -1790,7 +1809,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                             Log.d(this.getClass().getName(), "\n" + "Start Update D1 class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " v" + v +
-                                                    " bundleДанныеTag " + bundleДанныеTag + " EditTextДАнные " + EditTextДАнные + "ЗначениеДняTag " + ЗначениеДняTag);
+                                                    " bundleДанныеTag " + bundleДанныеTag + " ЗначениеДО " + ЗначениеДО + "ЗначениеПослеКлика " + ЗначениеПослеКлика);
                                         }
 
                                     });
