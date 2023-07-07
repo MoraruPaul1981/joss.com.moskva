@@ -188,9 +188,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
         PUBLIC_CONTENT public_contentменеджер=new PUBLIC_CONTENT(context);
         try {
             // TODO: 23.12.2021 ЧЕТЫРЕ ПОПЫТКИ ПОДКЛЮЧЕНИЕ В СЕВРЕРУONESIGNAL
-          Observable observableПолученияКлючаОтСервераOneSignal=  Observable.interval(5,TimeUnit.SECONDS)
+          Observable observableПолученияКлючаОтСервераOneSignal=  Observable.interval(20,TimeUnit.SECONDS)
                   .delay(3,TimeUnit.SECONDS)
-                  .take(30,TimeUnit.MINUTES)
+                  .take(10,TimeUnit.MINUTES)
                   .subscribeOn(Schedulers.single())
                   .flatMap((ТекущаяОперацияОбрабооткиКлючаОтСервера)->{
                       Log.w(context.getClass().getName(), "   Iterable<?> apply МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal"  +"\n"+
