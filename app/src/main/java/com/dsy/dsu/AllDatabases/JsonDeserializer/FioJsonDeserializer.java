@@ -299,7 +299,7 @@ this.context=context;
             sqLiteStatementInsert= Create_Database_СамаБАзаSQLite.compileStatement(SQlOperInsert);
             sqLiteStatementInsert.clearBindings();
             // TODO: 04.07.2023 цикл данных
-            sqLiteStatementInsert.bindLong(1, jsonNodeParentMAP.get("_id").intValue());//"id"
+            sqLiteStatementInsert.bindLong(1, jsonNodeParentMAP.get("id").intValue());//"id"
             sqLiteStatementInsert.bindString(2, jsonNodeParentMAP.get("name").asText().trim());//"name"
             sqLiteStatementInsert.bindString(3, jsonNodeParentMAP.get("f").asText().trim());//"name"
             sqLiteStatementInsert.bindString(4, jsonNodeParentMAP.get("n").asText().trim());//"name"
