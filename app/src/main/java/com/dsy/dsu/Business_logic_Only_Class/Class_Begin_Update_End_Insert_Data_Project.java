@@ -151,7 +151,8 @@ public class Class_Begin_Update_End_Insert_Data_Project {
             ///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(contextДляКлассДляВставкиДанныхВПроектеСначалаМыПытаемсяОбновитьАПотомВставить).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+            new Class_Generation_Errors(contextДляКлассДляВставкиДанныхВПроектеСначалаМыПытаемсяОбновитьАПотомВставить).
+                    МетодЗаписиВЖурналНовойОшибки(e.toString(),
                     this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
 

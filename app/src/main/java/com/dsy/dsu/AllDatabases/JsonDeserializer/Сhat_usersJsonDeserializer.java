@@ -296,9 +296,9 @@ this.context=context;
             sqLiteStatementInsert.clearBindings();
             // TODO: 04.07.2023 цикл данных
             sqLiteStatementInsert.bindLong(1, jsonNodeParentMAP.get("id").intValue());//"id""
-            sqLiteStatementInsert.bindString(2, jsonNodeParentMAP.get("name").asText());//"date_update"
+            sqLiteStatementInsert.bindString(2, jsonNodeParentMAP.get("name").asText().trim());//"date_update"
             sqLiteStatementInsert.bindLong(3, jsonNodeParentMAP.get("rights").intValue());//"uuid"
-            sqLiteStatementInsert.bindLong(4, jsonNodeParentMAP.get("telephone").intValue());//"uuid"
+            sqLiteStatementInsert.bindString(4, jsonNodeParentMAP.get("telephone").asText().trim());//"uuid"
             sqLiteStatementInsert.bindString(5, jsonNodeParentMAP.get("date_update").asText());//"date_update"
             sqLiteStatementInsert.bindLong(6, jsonNodeParentMAP.get("current_table").longValue());//"current_table"
             sqLiteStatementInsert.bindLong(7, jsonNodeParentMAP.get("locked").intValue());//"uuid"
