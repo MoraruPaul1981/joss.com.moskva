@@ -340,7 +340,7 @@ Context context;
                             }
                         }
                         Log.w(this.getClass().getName(), "   НазваниеОбрабоатываемойТаблицы   "+НазваниеОбрабоатываемойТаблицы);
-                        SQLBuilder_Для_GRUD_Операций.setTables(НазваниеОбрабоатываемойТаблицы);
+                        SQLBuilder_Для_GRUD_Операций.setTables(НазваниеОбрабоатываемойТаблицы.toLowerCase());
                         /////TODO операция ВСТАВКИ
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                             ////////

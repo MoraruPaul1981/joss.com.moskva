@@ -1,6 +1,7 @@
 package com.dsy.dsu.Business_logic_Only_Class;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Class_Generation_Errors {
 
@@ -38,10 +40,6 @@ public class Class_Generation_Errors {
         try {
 
             if (context != null) {
-                create_database_error = new CREATE_DATABASE_Error(context);
-                Long УвеличинаяВерсияДанных =
-                        new SubClassUpVersionDATA().МетодПовышаемВерсииCurrentTable("errordsu1",context,
-                                new CREATE_DATABASE_Error(context).getССылкаНаСозданнуюБазу());
                 Integer  ПубличныйIDДляАсих=   new Class_Generations_PUBLIC_CURRENT_ID().
                         ПолучениеПубличногоТекущегоПользователяID(context);
                 classGrudSqlOperationsДляЗаписиНовойОшибки = new Class_GRUD_SQL_Operations(context);
@@ -54,7 +52,7 @@ public class Class_Generation_Errors {
                 classGrudSqlOperationsДляЗаписиНовойОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("Metod", МетодаОшибки.toUpperCase());
                 classGrudSqlOperationsДляЗаписиНовойОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("LineError", ЛинияОшибки);
                 classGrudSqlOperationsДляЗаписиНовойОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("IdUser", ПубличныйIDДляАсих);
-                classGrudSqlOperationsДляЗаписиНовойОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("current_table", УвеличинаяВерсияДанных);
+                classGrudSqlOperationsДляЗаписиНовойОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("current_table", new Random().nextInt());
                 final Object ТекущаяВерсияПрограммы = BuildConfig.VERSION_CODE;
                 Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
                 classGrudSqlOperationsДляЗаписиНовойОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("whose_error", ЛокальнаяВерсияПОСравнение);
@@ -81,7 +79,7 @@ public class Class_Generation_Errors {
                             new InsertData(context).insertdata(classGrudSqlOperationsДляЗаписиНовойОшибки.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
                             classGrudSqlOperationsДляЗаписиНовойОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций,
                             new PUBLIC_CONTENT(context).МенеджерПотоков,
-                            create_database_error.getССылкаНаСозданнуюБазу());
+                             new CREATE_DATABASE_Error(context).getССылкаНаСозданнуюБазу());
                 }
                 Log.d(this.getClass().getName(), "PезультатВставкиНовойОшибки " + PезультатВставкиНовойОшибки);
                 if (PезультатВставкиНовойОшибки == null) {
