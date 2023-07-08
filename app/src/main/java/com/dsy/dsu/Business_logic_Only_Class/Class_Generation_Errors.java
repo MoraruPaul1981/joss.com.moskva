@@ -36,9 +36,14 @@ public class Class_Generation_Errors {
 
         Long PезультатВставкиНовойОшибки = 0l;
         try {
+
             if (context != null) {
                 create_database_error = new CREATE_DATABASE_Error(context);
-                Integer  ПубличныйIDДляАсих=   new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(context);
+                Long УвеличинаяВерсияДанных =
+                        new SubClassUpVersionDATA().МетодПовышаемВерсииCurrentTable("errordsu1",context,
+                                new CREATE_DATABASE_Error(context).getССылкаНаСозданнуюБазу());
+                Integer  ПубличныйIDДляАсих=   new Class_Generations_PUBLIC_CURRENT_ID().
+                        ПолучениеПубличногоТекущегоПользователяID(context);
                 classGrudSqlOperationsДляЗаписиНовойОшибки = new Class_GRUD_SQL_Operations(context);
                 classGrudSqlOperationsДляЗаписиНовойОшибки.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.clear();
                 classGrudSqlOperationsДляЗаписиНовойОшибки = new Class_GRUD_SQL_Operations(context);
@@ -49,6 +54,7 @@ public class Class_Generation_Errors {
                 classGrudSqlOperationsДляЗаписиНовойОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("Metod", МетодаОшибки.toUpperCase());
                 classGrudSqlOperationsДляЗаписиНовойОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("LineError", ЛинияОшибки);
                 classGrudSqlOperationsДляЗаписиНовойОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("IdUser", ПубличныйIDДляАсих);
+                classGrudSqlOperationsДляЗаписиНовойОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("current_table", УвеличинаяВерсияДанных);
                 final Object ТекущаяВерсияПрограммы = BuildConfig.VERSION_CODE;
                 Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
                 classGrudSqlOperationsДляЗаписиНовойОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("whose_error", ЛокальнаяВерсияПОСравнение);

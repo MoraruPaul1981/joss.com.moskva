@@ -43,7 +43,7 @@ public class SubClassCreatingMainAllTables {
             ИменаТаблицыОтАндройда.add("order_tc");
             ИменаТаблицыОтАндройда.add("vid_tc");
             ИменаТаблицыОтАндройда.add("materials_databinary");
-            ИменаТаблицыОтАндройда.add("materials_databinary");
+            ИменаТаблицыОтАндройда.add("errordsu1");
             Log.d(this.getClass().getName(), "  ИменаТаблицыОтАндройда" + ИменаТаблицыОтАндройда);
             ///todo публикум название таблицы или цифру его
         } catch (Exception e) {

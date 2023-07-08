@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =             1058;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+     static final int VERSION =             1059;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
     private      SQLiteDatabase ССылкаНаСозданнуюБазу;
     private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
@@ -876,7 +876,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
     private void МетодСозданиеТаблицыОшибок(SQLiteDatabase ССылкаНаСозданнуюБазу) {
         try{
             ССылкаНаСозданнуюБазу.execSQL("drop table  if exists errordsu1 ");//ТАБЛИЦА ГЕНЕРАЦИИ ОШИБОК
-            ССылкаНаСозданнуюБазу.execSQL("Create table if not exists errordsu1 (" +
+           ССылкаНаСозданнуюБазу.execSQL("Create table if not exists errordsu1 (" +
                     "ID_Table_ErrorDSU1 INTEGER PRIMARY KEY AUTOINCREMENT  ," +
                     " Error TEXT    NOT NULL  ," +
                     "Klass TEXT NOT NULL ," +
@@ -884,6 +884,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
                     "LineError INTEGER NOT NULL ," +
                     "Data_Operazii_E NUMERIC NOT NULL ,"+
                     "IdUser   INTEGER ,"+
+                    "current_table   NUMERIC ,"+
                     "whose_error INTEGER NOT NULL )");
             Log.d(this.getClass().getName(), " сработала ...  создание таблицы ErrorDSU1 ");
 
