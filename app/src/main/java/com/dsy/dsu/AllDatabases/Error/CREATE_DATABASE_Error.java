@@ -20,7 +20,7 @@ import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASE_Error extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =             9;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+     static final int VERSION =             11;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
     private      SQLiteDatabase ССылкаНаСозданнуюБазу;
 
@@ -91,7 +91,8 @@ public class CREATE_DATABASE_Error extends SQLiteOpenHelper{ ///SQLiteOpenHelper
                     "date_update NUMERIC NOT NULL ,"+
                     "IdUser   INTEGER ,"+
                     "current_table   NUMERIC ,"+
-                    "whose_error INTEGER NOT NULL )");
+                    "whose_error INTEGER NOT NULL , " +
+                    " UUID NUMERIC     )");
             Log.d(this.getClass().getName(), " сработала ...  создание таблицы ErrorDSU1 ");
 
         } catch (SQLException e) {
