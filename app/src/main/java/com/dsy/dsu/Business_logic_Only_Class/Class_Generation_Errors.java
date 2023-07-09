@@ -61,7 +61,7 @@ public class Class_Generation_Errors {
                 Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
                 classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("whose_error", ЛокальнаяВерсияПОСравнение);
                 String СгенерированованныйДатаДляВставки = new Class_Generation_Data(context).ГлавнаяДатаИВремяОперацийСБазойДанных();
-                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("Data_Operazii_E", СгенерированованныйДатаДляВставки);
+                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("date_update", СгенерированованныйДатаДляВставки);
                 ///TODO РЕЗУЛЬТАТ ВСТАВКИ ДАННЫХ
                 if (!ТекстОшибки.equalsIgnoreCase("java.net.SocketTimeoutException: timeout")
                         && !ТекстОшибки.equalsIgnoreCase("java.lang.NumberFormatException: null")
