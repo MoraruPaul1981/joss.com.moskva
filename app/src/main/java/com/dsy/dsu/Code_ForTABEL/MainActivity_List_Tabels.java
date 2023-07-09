@@ -885,18 +885,18 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                     String ТаблицаНазваниеОбработки="tabel";
                     class_grud_sql_operationsДляАктивтиТабель= new Class_GRUD_SQL_Operations(getApplicationContext());
                     class_grud_sql_operationsДляАктивтиТабель.
-                            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы",ТаблицаНазваниеОбработки);
+                            concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы",ТаблицаНазваниеОбработки);
                     class_grud_sql_operationsДляАктивтиТабель.
-                            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","month_tabels,year_tabels");
+                            concurrentHashMapНабор.put("СтолбцыОбработки","month_tabels,year_tabels");
                     class_grud_sql_operationsДляАктивтиТабель.
-                            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика"," status_send!=?");
-                    class_grud_sql_operationsДляАктивтиТабель. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1","Удаленная");
-                    class_grud_sql_operationsДляАктивтиТабель. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки","current_table ");//DESC
+                            concurrentHashMapНабор.put("ФорматПосика"," status_send!=?");
+                    class_grud_sql_operationsДляАктивтиТабель.concurrentHashMapНабор.put("УсловиеПоиска1","Удаленная");
+                    class_grud_sql_operationsДляАктивтиТабель.concurrentHashMapНабор.put("УсловиеСортировки","current_table ");//DESC
                     ////
                     PUBLIC_CONTENT         Class_Engine_SQLГдеНаходитьсяМенеджерПотоков = new PUBLIC_CONTENT (getApplicationContext());
                     Курсор_КоторыйЗагружаетГотовыеТабеляМаксимальнаяДатаДляСпинера= (SQLiteCursor) class_grud_sql_operationsДляАктивтиТабель.
                             new GetData(getApplicationContext()).getdata(class_grud_sql_operationsДляАктивтиТабель.
-                            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                                    concurrentHashMapНабор,
                             Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
                     Log.d(this.getClass().getName(), "GetData " +Курсор_КоторыйЗагружаетГотовыеТабеляМаксимальнаяДатаДляСпинера );
                 } catch (Exception e) {
@@ -1523,17 +1523,17 @@ try{
             SQLiteCursor Курсор_ИщемПроведенЛиТАбельИлиНЕт = null;
             // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
             class_grud_sql_operationsДляАктивтиТабель= new Class_GRUD_SQL_Operations(getApplicationContext());
-            class_grud_sql_operationsДляАктивтиТабель. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","data_tabels");
-            class_grud_sql_operationsДляАктивтиТабель. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","*");
-            class_grud_sql_operationsДляАктивтиТабель. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика","uuid_tabel=?");
-            class_grud_sql_operationsДляАктивтиТабель. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1",СамUUIDТабеляКакLONG.toString());
-            class_grud_sql_operationsДляАктивтиТабель. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита",1);
-            class_grud_sql_operationsДляАктивтиТабель. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки","date_update DESC");
+            class_grud_sql_operationsДляАктивтиТабель.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","data_tabels");
+            class_grud_sql_operationsДляАктивтиТабель.concurrentHashMapНабор.put("СтолбцыОбработки","*");
+            class_grud_sql_operationsДляАктивтиТабель.concurrentHashMapНабор.put("ФорматПосика","uuid_tabel=?");
+            class_grud_sql_operationsДляАктивтиТабель.concurrentHashMapНабор.put("УсловиеПоиска1",СамUUIDТабеляКакLONG.toString());
+            class_grud_sql_operationsДляАктивтиТабель.concurrentHashMapНабор.put("УсловиеЛимита",1);
+            class_grud_sql_operationsДляАктивтиТабель.concurrentHashMapНабор.put("УсловиеСортировки","date_update DESC");
             // TODO: 12.10.2021  Ссылка Менеджер Потоков
             PUBLIC_CONTENT  Class_Engine_SQLГдеНаходитьсяМенеджерПотоков =new PUBLIC_CONTENT (getApplicationContext());
             // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
             Курсор_ИщемПроведенЛиТАбельИлиНЕт= (SQLiteCursor) class_grud_sql_operationsДляАктивтиТабель.
-                    new GetData(getApplicationContext()).getdata(class_grud_sql_operationsДляАктивтиТабель. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                    new GetData(getApplicationContext()).getdata(class_grud_sql_operationsДляАктивтиТабель.concurrentHashMapНабор,
                     Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
             Log.d(this.getClass().getName(), "GetData " +Курсор_ИщемПроведенЛиТАбельИлиНЕт );
             /////////

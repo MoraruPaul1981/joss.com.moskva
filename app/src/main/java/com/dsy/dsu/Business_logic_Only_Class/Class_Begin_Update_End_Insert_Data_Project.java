@@ -60,21 +60,21 @@ public class Class_Begin_Update_End_Insert_Data_Project {
 
             ///
             concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы",ОбработываемаяТаблица );////"SuccessLogin"
+                    concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы",ОбработываемаяТаблица );////"SuccessLogin"
             ///
             ///
             concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("Флаг_ЧерезКакоеПолеОбновлением", ПолеЧерезКотороеНужноОбновлять);//"id"
+                    concurrentHashMapНабор.put("Флаг_ЧерезКакоеПолеОбновлением", ПолеЧерезКотороеНужноОбновлять);//"id"
             ///
             ///
             concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ЗначениеФлагОбновления", ЗначениеДляОбновления);
+                    concurrentHashMapНабор.put("ЗначениеФлагОбновления", ЗначениеДляОбновления);
             ///
 
             //
 
             concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ЗнакФлагОбновления","="); //или =   или <   >
+                    concurrentHashMapНабор.put("ЗнакФлагОбновления","="); //или =   или <   >
 
 
 
@@ -88,9 +88,9 @@ public class Class_Begin_Update_End_Insert_Data_Project {
 
 
        /*     ///TODO РЕЗУЛЬТАТ ВСТАВКИ ДАННЫХ
-            Результат_АдаптерДляДобавлениеПолученогоУспешноИмяиПарольДляСемидневнойАунтификации = (Integer) concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.
-                    new UpdateData(contextДляКлассДляВставкиДанныхВПроектеСначалаМыПытаемсяОбновитьАПотомВставить).updatedata(concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.contentValuesДляSQLBuilder_Для_GRUD_Операций,
+            Результат_АдаптерДляДобавлениеПолученогоУспешноИмяиПарольДляСемидневнойАунтификации = (Integer) concurrentHashMapНабор.
+                    new UpdateData(contextДляКлассДляВставкиДанныхВПроектеСначалаМыПытаемсяОбновитьАПотомВставить).updatedata(concurrentHashMapНабор.concurrentHashMapНабор,
+                    concurrentHashMapНабор.contentValuesДляSQLBuilder_Для_GRUD_Операций,
                     public_contentcГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,
                     Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазуORM());
 //
@@ -126,7 +126,7 @@ public class Class_Begin_Update_End_Insert_Data_Project {
                 Результат_АдаптерДляДобавлениеПолученогоУспешноИмяиПарольДляСемидневнойАунтификации =
                         (Long) concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.
                         new InsertData(contextДляКлассДляВставкиДанныхВПроектеСначалаМыПытаемсяОбновитьАПотомВставить)
-                        .insertdata(concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                        .insertdata(concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.concurrentHashMapНабор,
                         concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.contentValuesДляSQLBuilder_Для_GRUD_Операций,
                         public_contentcГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
 //

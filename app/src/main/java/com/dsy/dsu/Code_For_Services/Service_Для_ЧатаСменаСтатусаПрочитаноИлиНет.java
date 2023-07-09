@@ -266,7 +266,7 @@ public class Service_Для_ЧатаСменаСтатусаПрочитаноИ
 
             if (ПолученыйУжеСуществующийUUIDИзПерепискиДляЧата > 0) {
                 class_grud_sql_operations.
-                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ПодЗапросНомер1",
+                        concurrentHashMapНабор.put("ПодЗапросНомер1",
 
                                 " SELECT   * FROM data_chat  WHERE  chat_uuid  =" + ПолученыйУжеСуществующийUUIDИзПерепискиДляЧата +
                                         "  AND   message IS NOT NULL    " +
@@ -278,7 +278,7 @@ public class Service_Для_ЧатаСменаСтатусаПрочитаноИ
 
                 КурсорДанныеДлязаписиичтнияЧата = (SQLiteCursor) class_grud_sql_operations.
                         new GetData(context).getdata(class_grud_sql_operations.
-                                concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                                concurrentHashMapНабор,
                         Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков
                         , Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
                 if (КурсорДанныеДлязаписиичтнияЧата != null) {
@@ -478,15 +478,15 @@ private Long МетодЗаписиНовогоСообщенияТольков�
 
 
             // TODO: 15.07.2022
-            class_grud_sql_operations.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы", "fio");
-            class_grud_sql_operations.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки", "name");
-            class_grud_sql_operations.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика", "user_update = ? ");
-            class_grud_sql_operations.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1", ПолученноеФИОКемБылоНаписаноСообщение);
-            class_grud_sql_operations.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита", "1");
+            class_grud_sql_operations.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы", "fio");
+            class_grud_sql_operations.concurrentHashMapНабор.put("СтолбцыОбработки", "name");
+            class_grud_sql_operations.concurrentHashMapНабор.put("ФорматПосика", "user_update = ? ");
+            class_grud_sql_operations.concurrentHashMapНабор.put("УсловиеПоиска1", ПолученноеФИОКемБылоНаписаноСообщение);
+            class_grud_sql_operations.concurrentHashMapНабор.put("УсловиеЛимита", "1");
 
             // TODO: 15.07.2022 ПОЛУЧАЕМ ФИО
             SQLiteCursor   Курсор_соЗначениемФИО = (SQLiteCursor) class_grud_sql_operations.
-                    new GetData(context).getdata(class_grud_sql_operations.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                    new GetData(context).getdata(class_grud_sql_operations.concurrentHashMapНабор,
                     Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков
                     , Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
             if (Курсор_соЗначениемФИО.getCount() > 0) {
@@ -526,25 +526,25 @@ private Long МетодЗаписиНовогоСообщенияТольков�
 
             
             class_grud_sql_operations.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы", "data_chat");
+                    concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы", "data_chat");
             class_grud_sql_operations.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки", "status_write");
+                    concurrentHashMapНабор.put("СтолбцыОбработки", "status_write");
             class_grud_sql_operations.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика", "uuid=?  AND status_write =? AND user_update!=?");
+                    concurrentHashMapНабор.put("ФорматПосика", "uuid=?  AND status_write =? AND user_update!=?");
             class_grud_sql_operations.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1", ТекущийUUDДляАнализаПрочитаноИлиНет);
+                    concurrentHashMapНабор.put("УсловиеПоиска1", ТекущийUUDДляАнализаПрочитаноИлиНет);
             class_grud_sql_operations.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска2", 0);
+                    concurrentHashMapНабор.put("УсловиеПоиска2", 0);
             class_grud_sql_operations.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска3", ПубличныйIDДляФрагмента);
+                    concurrentHashMapНабор.put("УсловиеПоиска3", ПубличныйIDДляФрагмента);
             class_grud_sql_operations.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита", 1);
+                    concurrentHashMapНабор.put("УсловиеЛимита", 1);
 
             // TODO: 15.07.2022  Получаем Сообщения Я Уже Протичал или НЕт
             SQLiteCursor     КурсорПрочиталСообщениеДанноеИлиНет =
                     (SQLiteCursor) class_grud_sql_operations.
                             new GetData(context).getdata(class_grud_sql_operations.
-                                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                                    concurrentHashMapНабор,
                             Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков
                             , Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
 

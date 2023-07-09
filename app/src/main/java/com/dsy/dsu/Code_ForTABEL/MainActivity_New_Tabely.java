@@ -39,9 +39,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.loader.content.AsyncTaskLoader;
-import androidx.loader.content.Loader;
 
-import com.dsy.dsu.Business_logic_Only_Class.AllboundServices.AllBindingService;
 import com.dsy.dsu.AllDatabases.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
@@ -65,7 +63,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Random;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -381,28 +378,28 @@ public class MainActivity_New_Tabely extends AppCompatActivity {
                     + " ГодляАнализаиВставкиЕслиТакогоНет " + ГодляАнализаиВставкиЕслиТакогоНет);
             class_grud_sql_operationsПроверяемЕслиТакойНазваниеТабеляВБазеУжеЕсть=new Class_GRUD_SQL_Operations(getApplicationContext());
             class_grud_sql_operationsПроверяемЕслиТакойНазваниеТабеляВБазеУжеЕсть.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","tabel");
+                    concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","tabel");
             class_grud_sql_operationsПроверяемЕслиТакойНазваниеТабеляВБазеУжеЕсть.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","cfo, month_tabels ,year_tabels");
+                    concurrentHashMapНабор.put("СтолбцыОбработки","cfo, month_tabels ,year_tabels");
             class_grud_sql_operationsПроверяемЕслиТакойНазваниеТабеляВБазеУжеЕсть.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика","cfo= ? AND month_tabels=? " +
+                    concurrentHashMapНабор.put("ФорматПосика","cfo= ? AND month_tabels=? " +
                     "AND year_tabels=? AND status_send!=? ");
             class_grud_sql_operationsПроверяемЕслиТакойНазваниеТабеляВБазеУжеЕсть.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1",ПолученноЦифровоеОбознаяниеЦФО);
+                    concurrentHashMapНабор.put("УсловиеПоиска1",ПолученноЦифровоеОбознаяниеЦФО);
             class_grud_sql_operationsПроверяемЕслиТакойНазваниеТабеляВБазеУжеЕсть.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска2",МесяцДляАнализаиВставкиЕслиТакогоНет);
+                    concurrentHashMapНабор.put("УсловиеПоиска2",МесяцДляАнализаиВставкиЕслиТакогоНет);
             class_grud_sql_operationsПроверяемЕслиТакойНазваниеТабеляВБазеУжеЕсть.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска3",ГодляАнализаиВставкиЕслиТакогоНет);
+                    concurrentHashMapНабор.put("УсловиеПоиска3",ГодляАнализаиВставкиЕслиТакогоНет);
             class_grud_sql_operationsПроверяемЕслиТакойНазваниеТабеляВБазеУжеЕсть.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска4","Удаленная");////УсловиеПоискаv4,........УсловиеПоискаv5 .......
+                    concurrentHashMapНабор.put("УсловиеПоиска4","Удаленная");////УсловиеПоискаv4,........УсловиеПоискаv5 .......
             ////TODO другие поля
             class_grud_sql_operationsПроверяемЕслиТакойНазваниеТабеляВБазеУжеЕсть.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки","date_update DESC" );
+                    concurrentHashMapНабор.put("УсловиеСортировки","date_update DESC" );
             class_grud_sql_operationsПроверяемЕслиТакойНазваниеТабеляВБазеУжеЕсть.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита","1");
+                    concurrentHashMapНабор.put("УсловиеЛимита","1");
             SQLiteCursor    Курсор_ПроверяемЕслиТакоеНазваниеТабеляУжеЕстьИлиНет= (SQLiteCursor)  class_grud_sql_operationsПроверяемЕслиТакойНазваниеТабеляВБазеУжеЕсть.
                     new GetData(getApplicationContext()).getdata(class_grud_sql_operationsПроверяемЕслиТакойНазваниеТабеляВБазеУжеЕсть.
-                            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                            concurrentHashMapНабор,
                     МенеджерПотоковВнутри
                     ,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
             Log.d(this.getClass().getName(), "GetData "  +Курсор_ПроверяемЕслиТакоеНазваниеТабеляУжеЕстьИлиНет);
@@ -896,19 +893,19 @@ while(iterator.hasNext()){
 
                 Class_GRUD_SQL_Operations      class_grud_sql_operationsаполениеБазыДанныхПолученнымиНовымиСведениямиНовогоТабеля=new Class_GRUD_SQL_Operations(getApplicationContext());
             class_grud_sql_operationsаполениеБазыДанныхПолученнымиНовымиСведениямиНовогоТабеля.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","SuccessLogin");
+                    concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","SuccessLogin");
             class_grud_sql_operationsаполениеБазыДанныхПолученнымиНовымиСведениямиНовогоТабеля.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","id");
+                    concurrentHashMapНабор.put("СтолбцыОбработки","id");
             class_grud_sql_operationsаполениеБазыДанныхПолученнымиНовымиСведениямиНовогоТабеля.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика","id IS NOT NULL");
+                    concurrentHashMapНабор.put("ФорматПосика","id IS NOT NULL");
             class_grud_sql_operationsаполениеБазыДанныхПолученнымиНовымиСведениямиНовогоТабеля.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки","date_update");
+                    concurrentHashMapНабор.put("УсловиеСортировки","date_update");
             class_grud_sql_operationsаполениеБазыДанныхПолученнымиНовымиСведениямиНовогоТабеля.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита","1");
+                    concurrentHashMapНабор.put("УсловиеЛимита","1");
             ////
                 SQLiteCursor  Курсор_ИщемПУбличныйIDКогдаегоНетВстатике= (SQLiteCursor)  class_grud_sql_operationsаполениеБазыДанныхПолученнымиНовымиСведениямиНовогоТабеля.
                     new GetData(getApplicationContext()).getdata(class_grud_sql_operationsаполениеБазыДанныхПолученнымиНовымиСведениямиНовогоТабеля.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                                concurrentHashMapНабор,
                     Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
             Log.d(this.getClass().getName(), "GetData "  +Курсор_ИщемПУбличныйIDКогдаегоНетВстатике);
             if(Курсор_ИщемПУбличныйIDКогдаегоНетВстатике.getCount()>0){

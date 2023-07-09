@@ -45,30 +45,30 @@ public class SubClassGET_FIO {
             class_grud_sql_operationsФрагментМСообщения= class_grud_sql_operationsПолучениеФИОНАОснованииIDВыбранногоСотрудникаЧетвертаяЧасть.new GetData(context);
 
             ///
-            class_grud_sql_operationsПолучениеФИОНАОснованииIDВыбранногоСотрудникаЧетвертаяЧасть.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы", "Chat_Users");
+            class_grud_sql_operationsПолучениеФИОНАОснованииIDВыбранногоСотрудникаЧетвертаяЧасть.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы", "Chat_Users");
             ///////
-            class_grud_sql_operationsПолучениеФИОНАОснованииIDВыбранногоСотрудникаЧетвертаяЧасть.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки", "name");
+            class_grud_sql_operationsПолучениеФИОНАОснованииIDВыбранногоСотрудникаЧетвертаяЧасть.concurrentHashMapНабор.put("СтолбцыОбработки", "name");
             //
-            class_grud_sql_operationsПолучениеФИОНАОснованииIDВыбранногоСотрудникаЧетвертаяЧасть.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика", "_id =? ");
+            class_grud_sql_operationsПолучениеФИОНАОснованииIDВыбранногоСотрудникаЧетвертаяЧасть.concurrentHashMapНабор.put("ФорматПосика", "_id =? ");
             ///"_id > ?   AND _id< ?"
             //////
-            class_grud_sql_operationsПолучениеФИОНАОснованииIDВыбранногоСотрудникаЧетвертаяЧасть.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1", ПуличныйIdДляВычисленияКтоНаписал);
+            class_grud_sql_operationsПолучениеФИОНАОснованииIDВыбранногоСотрудникаЧетвертаяЧасть.concurrentHashMapНабор.put("УсловиеПоиска1", ПуличныйIdДляВычисленияКтоНаписал);
             ///
-         /*       class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска2","Удаленная");
+         /*       class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска2","Удаленная");
                 ///
-                class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска3",МЕсяцДляКурсораТабелей);
+                class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска3",МЕсяцДляКурсораТабелей);
                 //
-                class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска4",ГодДляКурсораТабелей);////УсловиеПоискаv4,........УсловиеПоискаv5 .......
+                class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска4",ГодДляКурсораТабелей);////УсловиеПоискаv4,........УсловиеПоискаv5 .......
 
             ////TODO другие поля
 
-            ///classGrudSqlOperations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ПоляГрупировки",null);
+            ///classGrudSqlOperations. concurrentHashMapНабор.put("ПоляГрупировки",null);
             ////
-            //class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеГрупировки",null);
+            //class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеГрупировки",null);
             ////
-            class_grud_sql_operationsПолучениеИмяСистемы. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки","date_update");*/
+            class_grud_sql_operationsПолучениеИмяСистемы. concurrentHashMapНабор.put("УсловиеСортировки","date_update");*/
             ////
-            /// class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита","1");
+            /// class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеЛимита","1");
             ////
 
             // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
@@ -78,7 +78,7 @@ public class SubClassGET_FIO {
             ////////
 
             КурсорДанныеДляКонтактовФИОЧата = (SQLiteCursor)class_grud_sql_operationsФрагментМСообщения
-                    .getdata(class_grud_sql_operationsПолучениеФИОНАОснованииIDВыбранногоСотрудникаЧетвертаяЧасть.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                    .getdata(class_grud_sql_operationsПолучениеФИОНАОснованииIDВыбранногоСотрудникаЧетвертаяЧасть.concurrentHashMapНабор,
                     Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков, sqLiteDatabaseКлонДляПоискаФИО);
 
             Log.d(context.getClass().getName(), "GetData " + КурсорДанныеДляКонтактовФИОЧата);

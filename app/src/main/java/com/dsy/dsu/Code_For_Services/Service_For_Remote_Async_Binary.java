@@ -628,13 +628,13 @@ try{
                 Class_GRUD_SQL_Operations   class_grud_sql_operationsПолучаемПубличныйIDЛокальноИеСЛИЕгоНЕтНАчинаемЕгоИСктьВНИтренете=new Class_GRUD_SQL_Operations(context);
                 PUBLIC_CONTENT public_contentменеджер=new PUBLIC_CONTENT(context);
                 class_grud_sql_operationsПолучаемПубличныйIDЛокальноИеСЛИЕгоНЕтНАчинаемЕгоИСктьВНИтренете.
-                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","SuccessLogin");
-                class_grud_sql_operationsПолучаемПубличныйIDЛокальноИеСЛИЕгоНЕтНАчинаемЕгоИСктьВНИтренете. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","id");
-                class_grud_sql_operationsПолучаемПубличныйIDЛокальноИеСЛИЕгоНЕтНАчинаемЕгоИСктьВНИтренете. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита","1");
+                        concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","SuccessLogin");
+                class_grud_sql_operationsПолучаемПубличныйIDЛокальноИеСЛИЕгоНЕтНАчинаемЕгоИСктьВНИтренете.concurrentHashMapНабор.put("СтолбцыОбработки","id");
+                class_grud_sql_operationsПолучаемПубличныйIDЛокальноИеСЛИЕгоНЕтНАчинаемЕгоИСктьВНИтренете.concurrentHashMapНабор.put("УсловиеЛимита","1");
                 // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИ
                 SQLiteCursor     Курсор_ВычисляемПУбличныйID= (SQLiteCursor)  class_grud_sql_operationsПолучаемПубличныйIDЛокальноИеСЛИЕгоНЕтНАчинаемЕгоИСктьВНИтренете.
                         new GetData(context).getdata(class_grud_sql_operationsПолучаемПубличныйIDЛокальноИеСЛИЕгоНЕтНАчинаемЕгоИСктьВНИтренете.
-                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,public_contentменеджер.МенеджерПотоков, СсылкаНаБазуSqlite);
+                        concurrentHashMapНабор,public_contentменеджер.МенеджерПотоков, СсылкаНаБазуSqlite);
                 Log.d(this.getClass().getName(), "GetData "+Курсор_ВычисляемПУбличныйID  );
                 StringBuffer БуферПолучениеДанных = new StringBuffer();
                 if (Курсор_ВычисляемПУбличныйID.getCount() > 0) {
@@ -932,15 +932,15 @@ try{
             try {
                 class_grud_sql_operationsАнализаВресииДАнныхКлиента=new Class_GRUD_SQL_Operations(context);
                 Class_GRUD_SQL_Operations.GetData class_grud_sql_operationsgetdata=class_grud_sql_operationsАнализаВресииДАнныхКлиента.new GetData(context);
-                class_grud_sql_operationsАнализаВресииДАнныхКлиента. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","MODIFITATION_Client");
-                class_grud_sql_operationsАнализаВресииДАнныхКлиента. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","name,localversionandroid_version, versionserveraandroid_version");
-                class_grud_sql_operationsАнализаВресииДАнныхКлиента. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика","name=? ");
+                class_grud_sql_operationsАнализаВресииДАнныхКлиента.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","MODIFITATION_Client");
+                class_grud_sql_operationsАнализаВресииДАнныхКлиента.concurrentHashMapНабор.put("СтолбцыОбработки","name,localversionandroid_version, versionserveraandroid_version");
+                class_grud_sql_operationsАнализаВресииДАнныхКлиента.concurrentHashMapНабор.put("ФорматПосика","name=? ");
                 ///"_id > ?   AND _id< ?"
                 //////
-                class_grud_sql_operationsАнализаВресииДАнныхКлиента. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1",ИмяТаблицыОтАндройда_Локальноая);
+                class_grud_sql_operationsАнализаВресииДАнныхКлиента.concurrentHashMapНабор.put("УсловиеПоиска1",ИмяТаблицыОтАндройда_Локальноая);
                 // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
                 КурсорДляАнализаВерсииДанныхАндройда= (SQLiteCursor)  class_grud_sql_operationsgetdata
-                        .getdata(class_grud_sql_operationsАнализаВресииДАнныхКлиента. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,МенеджерПотоковВнутрений,
+                        .getdata(class_grud_sql_operationsАнализаВресииДАнныхКлиента.concurrentHashMapНабор,МенеджерПотоковВнутрений,
                                 СсылкаНаБазуSqlite);
                 Log.d(this.getClass().getName(), "GetData "+КурсорДляАнализаВерсииДанныхАндройда  );
                 /////
@@ -1399,7 +1399,7 @@ try{
                 Class_GRUD_SQL_Operations.GetData  getData=sql_operations.new GetData(context);
                 // TODO: 15.02.2022  ПолучаемдАннык На ОТправку На сервер
             Cursor    КурсорДляОтправкиДанныхНаСервер = (SQLiteCursor) getData
-                        .getdata(sql_operations.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                        .getdata(sql_operations.concurrentHashMapНабор,
                                 new PUBLIC_CONTENT(context).МенеджерПотоков, СсылкаНаБазуSqlite);
                 /////TODO результаты   количество отправляемой информации на сервера
                 if (КурсорДляОтправкиДанныхНаСервер.getCount() > 0) {
@@ -1454,20 +1454,20 @@ try{
                         Log.d(this.getClass().getName(), " имяТаблицыОтАндройда_локальноая  Для tabels  chat_users  fio  tabel  data_tabels  " + имяТаблицыОтАндройда_локальноая);
                         class_grud_sql_operationsГенерируемКурсорДляОтправки = new Class_GRUD_SQL_Operations(context);
                         class_grud_sql_operationsГенерируемКурсорДляОтправки.
-                                concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","*");
+                                concurrentHashMapНабор.put("СтолбцыОбработки","*");
                         class_grud_sql_operationsГенерируемКурсорДляОтправки.
-                                concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы", имяТаблицыОтАндройда_локальноая);
+                                concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы", имяТаблицыОтАндройда_локальноая);
 
                         class_grud_sql_operationsГенерируемКурсорДляОтправки.
-                                concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1", ВерсияДанныхДляСравения);
+                                concurrentHashMapНабор.put("УсловиеПоиска1", ВерсияДанныхДляСравения);
                         class_grud_sql_operationsГенерируемКурсорДляОтправки.
-                                concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска2", ПубличныйIDДляФрагмента);
+                                concurrentHashMapНабор.put("УсловиеПоиска2", ПубличныйIDДляФрагмента);
 
                         class_grud_sql_operationsГенерируемКурсорДляОтправки
-                                .concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ПодЗапросНомер1"," SELECT * FROM " + имяТаблицыОтАндройда_локальноая +
+                                .concurrentHashMapНабор.put("ПодЗапросНомер1"," SELECT * FROM " + имяТаблицыОтАндройда_локальноая +
                                         " WHERE current_table > "+ ВерсияДанныхДляСравения );
                         class_grud_sql_operationsГенерируемКурсорДляОтправки
-                                .concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ПодЗапросНомер2","  SELECT * FROM " + имяТаблицыОтАндройда_локальноая +" " +
+                                .concurrentHashMapНабор.put("ПодЗапросНомер2","  SELECT * FROM " + имяТаблицыОтАндройда_локальноая +" " +
                                         "  WHERE user_update=" + ПубличныйIDДляФрагмента  + " AND _id IS NULL " );
                         Log.d(this.getClass().getName(), " имяТаблицыОтАндройда_локальноая Все остальные  _id " + имяТаблицыОтАндройда_локальноая);
                         break;
@@ -1477,20 +1477,20 @@ try{
                         Log.d(this.getClass().getName(), " имяТаблицыОтАндройда_локальноая  Для tabels  chat_users  fio  tabel  data_tabels  " + имяТаблицыОтАндройда_локальноая);
                         class_grud_sql_operationsГенерируемКурсорДляОтправки = new Class_GRUD_SQL_Operations(context);
                         class_grud_sql_operationsГенерируемКурсорДляОтправки.
-                                concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","*");
+                                concurrentHashMapНабор.put("СтолбцыОбработки","*");
                         class_grud_sql_operationsГенерируемКурсорДляОтправки.
-                                concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы", имяТаблицыОтАндройда_локальноая);
+                                concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы", имяТаблицыОтАндройда_локальноая);
 
                         class_grud_sql_operationsГенерируемКурсорДляОтправки.
-                                concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1", ВерсияДанныхДляСравения);
+                                concurrentHashMapНабор.put("УсловиеПоиска1", ВерсияДанныхДляСравения);
                         class_grud_sql_operationsГенерируемКурсорДляОтправки.
-                                concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска2", ПубличныйIDДляФрагмента);
+                                concurrentHashMapНабор.put("УсловиеПоиска2", ПубличныйIDДляФрагмента);
 
                         class_grud_sql_operationsГенерируемКурсорДляОтправки
-                                .concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ПодЗапросНомер1"," SELECT * FROM " + имяТаблицыОтАндройда_локальноая +
+                                .concurrentHashMapНабор.put("ПодЗапросНомер1"," SELECT * FROM " + имяТаблицыОтАндройда_локальноая +
                                         " WHERE current_table > "+ ВерсияДанныхДляСравения );
                         class_grud_sql_operationsГенерируемКурсорДляОтправки
-                                .concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ПодЗапросНомер2","  SELECT * FROM " + имяТаблицыОтАндройда_локальноая +" " +
+                                .concurrentHashMapНабор.put("ПодЗапросНомер2","  SELECT * FROM " + имяТаблицыОтАндройда_локальноая +" " +
                                         "  WHERE user_update=" + ПубличныйIDДляФрагмента  + " AND id IS NULL " );
                         Log.d(this.getClass().getName(), " имяТаблицыОтАндройда_локальноая Все остальные  _id " + имяТаблицыОтАндройда_локальноая);
                         break;
@@ -1513,7 +1513,7 @@ try{
 
 //////TODO dверсия данных для ВСЕХ ТАБЛИЦ КРОМЕ , ТАБЛИЦ ЧАТА
             class_grud_sql_operationsПосылаемДанныеНаСервервФоне.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1", РезультаПолученаяЛокальнаяСервернуюВерсиюДанныхКогдаПоследнийРазПришлиДанныесСерера);
+                    concurrentHashMapНабор.put("УсловиеПоиска1", РезультаПолученаяЛокальнаяСервернуюВерсиюДанныхКогдаПоследнийРазПришлиДанныесСерера);
 
             //////TODO dверсия данных для ВСЕХ ТАБЛИЦ КРОМЕ , ТАБЛИЦ ЧАТА  old version
 
@@ -1523,7 +1523,7 @@ try{
 
             //////TODO dверсия данных для ВСЕХ ТАБЛИЦ КРОМЕ , ТАБЛИЦ ЧАТА
             class_grud_sql_operationsПосылаемДанныеНаСервервФоне.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска2",ПубличныйIDДляФрагмента);
+                    concurrentHashMapНабор.put("УсловиеПоиска2",ПубличныйIDДляФрагмента);
             return ПубличныйIDДляФрагмента;
         }
 
@@ -1761,13 +1761,13 @@ try{
         Integer IDПрофесии=0;
         try{
         Class_GRUD_SQL_Operations         class_grud_sql_operationsПрофесии=new Class_GRUD_SQL_Operations(context);
-        class_grud_sql_operationsПрофесии. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","prof");
-        class_grud_sql_operationsПрофесии. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","_id");
-        class_grud_sql_operationsПрофесии.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика", "   name=? " );
-        class_grud_sql_operationsПрофесии.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1", "Выбрать должность".trim());
+        class_grud_sql_operationsПрофесии.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","prof");
+        class_grud_sql_operationsПрофесии.concurrentHashMapНабор.put("СтолбцыОбработки","_id");
+        class_grud_sql_operationsПрофесии.concurrentHashMapНабор.put("ФорматПосика", "   name=? " );
+        class_grud_sql_operationsПрофесии.concurrentHashMapНабор.put("УсловиеПоиска1", "Выбрать должность".trim());
         // TODO: 12.10.2021  Ссылка Менеджер Потоков
         SQLiteCursor Курсор_Професии= (SQLiteCursor) class_grud_sql_operationsПрофесии.
-                new GetData(context).getdata(class_grud_sql_operationsПрофесии. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                new GetData(context).getdata(class_grud_sql_operationsПрофесии.concurrentHashMapНабор,
                 new PUBLIC_CONTENT(context).МенеджерПотоков,new CREATE_DATABASE(context).getССылкаНаСозданнуюБазу());
         if (Курсор_Професии.getCount()>0){
             Курсор_Професии.moveToFirst();

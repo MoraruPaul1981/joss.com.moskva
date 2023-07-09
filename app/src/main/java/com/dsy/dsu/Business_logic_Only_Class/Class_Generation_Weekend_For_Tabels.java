@@ -33,14 +33,14 @@ public class Class_Generation_Weekend_For_Tabels {
             String  РезультатКакойРежимЗаписанвБазеВЫходныеДни=new String();
             // TODO: 24.05.2021 ТРЕТИЙ КОД ЕСЛИ ПОЛЬЗОВАТЕЛЬ ЗАХОДТЕ АВТОМАТИЧЕСКОЙ УСВТУКУ В ВЫХОДЫНЕ ДНИ
             concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_ОперацийВставкиВыходныхДней=new Class_GRUD_SQL_Operations(contextДляКлассагенерацииВыходныхДней);
-            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_ОперацийВставкиВыходныхДней. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","SuccessLogin");
-            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_ОперацийВставкиВыходныхДней. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","mode_weekend");
+            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_ОперацийВставкиВыходныхДней.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","SuccessLogin");
+            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_ОперацийВставкиВыходныхДней.concurrentHashMapНабор.put("СтолбцыОбработки","mode_weekend");
             // TODO: 12.10.2021  Ссылка Менеджер Потоков
             PUBLIC_CONTENT Class_Engine_SQLГдеНаходитьсяМенеджерПотоков = new PUBLIC_CONTENT(contextДляКлассагенерацииВыходныхДней);
             // TODO: 02.09.2021 exe sql
             SQLiteCursor КурсорУзнаемСохраненыйРежимРаботыССетью= (SQLiteCursor)  concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_ОперацийВставкиВыходныхДней.
                     new GetData(contextДляКлассагенерацииВыходныхДней).getdata(concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_ОперацийВставкиВыходныхДней.
-                            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                            concurrentHashMapНабор,
                     Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
             Log.d(this.getClass().getName(), "GetData " +КурсорУзнаемСохраненыйРежимРаботыССетью );
             //////

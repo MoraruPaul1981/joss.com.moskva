@@ -31,7 +31,7 @@ public class Class_Send_Generation_Errors {
         // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
         Class_GRUD_SQL_Operations class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ= new Class_GRUD_SQL_Operations(contextДляКлассаПосылаемОшибкиНАСервер);
         ///
-        class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СамFreeSQLКОд",
+        class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ.concurrentHashMapНабор.put("СамFreeSQLКОд",
                 " SELECT id  FROM successlogin  ORDER BY date_update DESC ;");
 
         Integer   ПубличноеIDПолученныйИзСервлетаДляUUID=0;
@@ -46,7 +46,7 @@ public class Class_Send_Generation_Errors {
         try {
             Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО = (SQLiteCursor) class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ.
                     new GetаFreeData(contextДляКлассаПосылаемОшибкиНАСервер).getfreedata(class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ.
-                            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                            concurrentHashMapНабор,
                     Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
         } catch (ExecutionException executionException) {
             executionException.printStackTrace();

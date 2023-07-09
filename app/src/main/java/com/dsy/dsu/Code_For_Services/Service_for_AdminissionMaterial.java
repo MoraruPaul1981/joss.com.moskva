@@ -457,18 +457,18 @@ public class Service_for_AdminissionMaterial extends IntentService {
                 //TODO ВЫЧИСЛЯЕМ ДАННЫЕ КОТОРЫЕ НА ВСТАВИТЬ
                 // TODO: 21.09.2022
                 Class_GRUD_SQL_Operations class_grud_sql_operationЗаполнениеИзПрошлогоМесяца = new Class_GRUD_SQL_Operations(getApplicationContext());
-                class_grud_sql_operationЗаполнениеИзПрошлогоМесяца.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы", "viewtabel");
-                class_grud_sql_operationЗаполнениеИзПрошлогоМесяца.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки", "*");//name ,BirthDate ,snils
-                class_grud_sql_operationЗаполнениеИзПрошлогоМесяца.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика", "user_update=? AND month_tabels=? " +
+                class_grud_sql_operationЗаполнениеИзПрошлогоМесяца.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы", "viewtabel");
+                class_grud_sql_operationЗаполнениеИзПрошлогоМесяца.concurrentHashMapНабор.put("СтолбцыОбработки", "*");//name ,BirthDate ,snils
+                class_grud_sql_operationЗаполнениеИзПрошлогоМесяца.concurrentHashMapНабор.put("ФорматПосика", "user_update=? AND month_tabels=? " +
                         " AND year_tabels=? AND status_send!=? AND cfo=?");
-                class_grud_sql_operationЗаполнениеИзПрошлогоМесяца.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1", ПубличныйIDДляЗаполененияИзПрошлогоМесяца);
-                class_grud_sql_operationЗаполнениеИзПрошлогоМесяца.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска2", МесяцИзПрошлогоМесяца);//МесяцИзПрошлогоМесяца
-                class_grud_sql_operationЗаполнениеИзПрошлогоМесяца.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска3", ГодНазадДляЗаполнени);//ГодНазадДляЗаполнени
-                class_grud_sql_operationЗаполнениеИзПрошлогоМесяца.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска4", "Удаленная");//ГодНазадДляЗаполнени
-                class_grud_sql_operationЗаполнениеИзПрошлогоМесяца.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска5", СФОУжеСозданогоТАбеля);//ГодНазадДляЗаполнени
+                class_grud_sql_operationЗаполнениеИзПрошлогоМесяца.concurrentHashMapНабор.put("УсловиеПоиска1", ПубличныйIDДляЗаполененияИзПрошлогоМесяца);
+                class_grud_sql_operationЗаполнениеИзПрошлогоМесяца.concurrentHashMapНабор.put("УсловиеПоиска2", МесяцИзПрошлогоМесяца);//МесяцИзПрошлогоМесяца
+                class_grud_sql_operationЗаполнениеИзПрошлогоМесяца.concurrentHashMapНабор.put("УсловиеПоиска3", ГодНазадДляЗаполнени);//ГодНазадДляЗаполнени
+                class_grud_sql_operationЗаполнениеИзПрошлогоМесяца.concurrentHashMapНабор.put("УсловиеПоиска4", "Удаленная");//ГодНазадДляЗаполнени
+                class_grud_sql_operationЗаполнениеИзПрошлогоМесяца.concurrentHashMapНабор.put("УсловиеПоиска5", СФОУжеСозданогоТАбеля);//ГодНазадДляЗаполнени
                 //todo ДАННЫЕ ЗА ПРОШЛЫЙ МЕСЯЦ ТАБЕЛЬ
                 SQLiteCursor Курсор_ВытаскиваемПоследнийМесяцТабеля = (SQLiteCursor) class_grud_sql_operationЗаполнениеИзПрошлогоМесяца.
-                        new GetData(getApplicationContext()).getdata(class_grud_sql_operationЗаполнениеИзПрошлогоМесяца.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                        new GetData(getApplicationContext()).getdata(class_grud_sql_operationЗаполнениеИзПрошлогоМесяца.concurrentHashMapНабор,
                         new PUBLIC_CONTENT(getApplicationContext()).МенеджерПотоков
                         , sqLiteDatabaseДляЗаполенеяИзПрошлогоМесяца);
                 Log.d(this.getClass().getName(), "Курсор_ВытаскиваемПоследнийМесяцТабеля.getCount() " + Курсор_ВытаскиваемПоследнийМесяцТабеля.getCount());

@@ -16,7 +16,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
@@ -85,19 +84,19 @@ public class MainActivity_Errors extends AppCompatActivity  {
                 Class_GRUD_SQL_Operations class_grud_sql_operationsПросмотраОшибокПриложения
                         =new Class_GRUD_SQL_Operations(getApplicationContext());
             class_grud_sql_operationsПросмотраОшибокПриложения.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","ErrorDSU1");
+                    concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","ErrorDSU1");
             class_grud_sql_operationsПросмотраОшибокПриложения.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","*");
+                    concurrentHashMapНабор.put("СтолбцыОбработки","*");
             class_grud_sql_operationsПросмотраОшибокПриложения.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки","ID_Table_ErrorDSU1 DESC");
+                    concurrentHashMapНабор.put("УсловиеСортировки","ID_Table_ErrorDSU1 DESC");
             class_grud_sql_operationsПросмотраОшибокПриложения.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита","50");
+                    concurrentHashMapНабор.put("УсловиеЛимита","50");
             // TODO: 12.10.2021  Ссылка Менеджер Потоков
             PUBLIC_CONTENT  Class_Engine_SQLГдеНаходитьсяМенеджерПотоков =new PUBLIC_CONTENT(getApplicationContext());
 
             Cursor   Курсор_СамиДанные_Error= (SQLiteCursor)  new Class_GRUD_SQL_Operations(getApplicationContext()).
                     new GetData(getApplicationContext()).getdata(class_grud_sql_operationsПросмотраОшибокПриложения.
-                            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                            concurrentHashMapНабор,
                     Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,create_database_error.getССылкаНаСозданнуюБазу());
 
 

@@ -3,6 +3,7 @@
 package com.dsy.dsu.AllDatabases.Error;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -19,7 +20,7 @@ import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASE_Error extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =             6;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+     static final int VERSION =             7;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
     private      SQLiteDatabase ССылкаНаСозданнуюБазу;
 
@@ -138,7 +139,41 @@ public class CREATE_DATABASE_Error extends SQLiteOpenHelper{ ///SQLiteOpenHelper
     public void onDowngrade(SQLiteDatabase ССылкаНаСозданнуюБазу, int oldVersion, int newVersion) {
         onCreate(ССылкаНаСозданнуюБазу);
     }
+    public Long МетодПовышаемВерсииCurrentTable( @NotNull String Текущаятаблицы,
+                                                 @NotNull Context context,
+                                                 @NotNull SQLiteDatabase getБазаДанныхДЛяОперацийВнутри) {
+        Long  ПовышенняВерсияMAXCurrentTable=0l;
+        try  ( Cursor Курсор_АнализMODIFITATION_Client= ( Cursor) getБазаДанныхДЛяОперацийВнутри.rawQuery(" SELECT *  FROM " +
+                "  MODIFITATION_Client  WHERE  name = '"+Текущаятаблицы+"' ", null);)    {
 
+            if(Курсор_АнализMODIFITATION_Client.getCount()>0 && Курсор_АнализMODIFITATION_Client!=null){
+                Курсор_АнализMODIFITATION_Client.moveToFirst();
+                String  ПовышенняВерсияMAXCurrddentTable=Курсор_АнализMODIFITATION_Client.getString(0);
+                ПовышенняВерсияMAXCurrentTable=(Long) Курсор_АнализMODIFITATION_Client.getLong(3);
+
+                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                        " ПовышенняВерсияMAXCurrddentTable  " + ПовышенняВерсияMAXCurrddentTable);
+
+                // TODO: 22.11.2022
+                ПовышенняВерсияMAXCurrentTable++;
+            }else {
+                ПовышенняВерсияMAXCurrentTable=1l;
+            }
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                    " ПовышенняВерсияMAXCurrentTable  " + ПовышенняВерсияMAXCurrentTable + "  Текущаятаблицы" + Текущаятаблицы);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        return  ПовышенняВерсияMAXCurrentTable;
+    }
 
 
 }// конец public class CREATE_DATABASE extends SQLiteOpenHelper

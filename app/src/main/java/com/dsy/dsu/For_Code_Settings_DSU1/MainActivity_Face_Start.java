@@ -9,7 +9,6 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
 import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.Build;
@@ -306,19 +305,19 @@ try{
             Class_GRUD_SQL_Operations             classGrudSqlOperationsОпределениеКогдаПоследнийРазЗаходилПользователь =new Class_GRUD_SQL_Operations(getApplicationContext());
                         // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
                     classGrudSqlOperationsОпределениеКогдаПоследнийРазЗаходилПользователь.
-                            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","SuccessLogin");
+                            concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","SuccessLogin");
                         ///////
                     classGrudSqlOperationsОпределениеКогдаПоследнийРазЗаходилПользователь
-                            . concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","date_update");
+                            .concurrentHashMapНабор.put("СтолбцыОбработки","date_update");
                         ///////
                     classGrudSqlOperationsОпределениеКогдаПоследнийРазЗаходилПользователь.
-                            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита","1");
+                            concurrentHashMapНабор.put("УсловиеЛимита","1");
                     // TODO: 12.10.2021  Ссылка Менеджер Потоков
                     PUBLIC_CONTENT  Class_Engine_SQLГдеНаходитьсяМенеджерПотоков =new PUBLIC_CONTENT (getApplicationContext());
                     ///////TODO
                         Курсор_ДляОпрелеленияЗаходилЛиПользовательДольшеНедели= (SQLiteCursor)  classGrudSqlOperationsОпределениеКогдаПоследнийРазЗаходилПользователь.
                                 new GetData(getApplicationContext()).getdata(classGrudSqlOperationsОпределениеКогдаПоследнийРазЗаходилПользователь.
-                                concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                                        concurrentHashMapНабор,
                                 Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,sqLiteDatabaseСамаБазы);
                         Log.d(this.getClass().getName(), "GetData "+Курсор_ДляОпрелеленияЗаходилЛиПользовательДольшеНедели  );
 
@@ -444,26 +443,26 @@ try{
      КурсорДаннныеПоСотрудникуБолее7Дней =null;
         try {
           Class_GRUD_SQL_Operations   classGrudSqlOperationsВытаскиемДанныеИзКурсораДляАунтификацииМенне7Дней =new Class_GRUD_SQL_Operations(getApplicationContext());
-            classGrudSqlOperationsВытаскиемДанныеИзКурсораДляАунтификацииМенне7Дней. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","SuccessLogin");
-            classGrudSqlOperationsВытаскиемДанныеИзКурсораДляАунтификацииМенне7Дней. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","id,success_users,success_login,date_update");
-            classGrudSqlOperationsВытаскиемДанныеИзКурсораДляАунтификацииМенне7Дней. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита","1");
+            classGrudSqlOperationsВытаскиемДанныеИзКурсораДляАунтификацииМенне7Дней.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","SuccessLogin");
+            classGrudSqlOperationsВытаскиемДанныеИзКурсораДляАунтификацииМенне7Дней.concurrentHashMapНабор.put("СтолбцыОбработки","id,success_users,success_login,date_update");
+            classGrudSqlOperationsВытаскиемДанныеИзКурсораДляАунтификацииМенне7Дней.concurrentHashMapНабор.put("УсловиеЛимита","1");
             // TODO: 12.10.2021  Ссылка Менеджер Потоков
             PUBLIC_CONTENT  Class_Engine_SQLГдеНаходитьсяМенеджерПотоков =new PUBLIC_CONTENT (getApplicationContext());
             КурсорДаннныеПоСотрудникуБолее7Дней = (SQLiteCursor)  classGrudSqlOperationsВытаскиемДанныеИзКурсораДляАунтификацииМенне7Дней.
-                    new GetData(getApplicationContext()).getdata(classGrudSqlOperationsВытаскиемДанныеИзКурсораДляАунтификацииМенне7Дней. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                    new GetData(getApplicationContext()).getdata(classGrudSqlOperationsВытаскиемДанныеИзКурсораДляАунтификацииМенне7Дней.concurrentHashMapНабор,
                     Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков
                     ,sqLiteDatabaseСамаБазы);
             Log.d(this.getClass().getName(), "GetData " + КурсорДаннныеПоСотрудникуБолее7Дней);
             //TODO  ПУБЛИЧНЫЙ ЛОГИН и ПАРОЛЬ
             // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
             Class_GRUD_SQL_Operations class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ= new Class_GRUD_SQL_Operations(getApplicationContext());
-            class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СамFreeSQLКОд",
+            class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ.concurrentHashMapНабор.put("СамFreeSQLКОд",
                     " SELECT success_users,success_login  FROM successlogin  ORDER BY date_update DESC ;");
 
           Class_Engine_SQLГдеНаходитьсяМенеджерПотоков =new PUBLIC_CONTENT (getApplicationContext());
             ///////
             SQLiteCursor            Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО= (SQLiteCursor) class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ.
-                    new GetаFreeData(getApplicationContext()).getfreedata(class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                    new GetаFreeData(getApplicationContext()).getfreedata(class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ.concurrentHashMapНабор,
                     Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков
                     ,sqLiteDatabaseСамаБазы);
 
@@ -590,11 +589,11 @@ try{
         // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
         try{
             Class_GRUD_SQL_Operations class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ= new Class_GRUD_SQL_Operations(getApplicationContext());
-            class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СамFreeSQLКОд",
+            class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ.concurrentHashMapНабор.put("СамFreeSQLКОд",
                     " SELECT id  FROM successlogin  ORDER BY date_update DESC ;");
             PUBLIC_CONTENT  Class_Engine_SQLГдеНаходитьсяМенеджерПотоков =new PUBLIC_CONTENT(getApplicationContext());
             SQLiteCursor            Курсор_ПолучаемПубличныйID= (SQLiteCursor) class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ.
-                    new GetаFreeData(getApplicationContext()).getfreedata(class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                    new GetаFreeData(getApplicationContext()).getfreedata(class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ.concurrentHashMapНабор,
                     Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков
                     ,sqLiteDatabaseСамаБазы);
             if(Курсор_ПолучаемПубличныйID.getCount()>0){
@@ -606,12 +605,12 @@ try{
             Log.d(this.getClass().getName(), " ID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
             if (ПубличноеIDПолученныйИзСервлетаДляUUID>0) {
                 classGrudSqlOperations =new Class_GRUD_SQL_Operations(getApplicationContext());
-                classGrudSqlOperations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","SuccessLogin");
-                classGrudSqlOperations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","id");
-                classGrudSqlOperations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита","1");
+                classGrudSqlOperations.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","SuccessLogin");
+                classGrudSqlOperations.concurrentHashMapНабор.put("СтолбцыОбработки","id");
+                classGrudSqlOperations.concurrentHashMapНабор.put("УсловиеЛимита","1");
     Class_Engine_SQLГдеНаходитьсяМенеджерПотоков =new PUBLIC_CONTENT (getApplicationContext());
                 Курсор_ВытаскиваемЗначениеПубличногоIDкогдаРабатаемОфлайн= (SQLiteCursor)  new Class_GRUD_SQL_Operations(getApplicationContext()).
-                        new GetData(getApplicationContext()).getdata(classGrudSqlOperations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                        new GetData(getApplicationContext()).getdata(classGrudSqlOperations.concurrentHashMapНабор,
                         Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков
                         ,sqLiteDatabaseСамаБазы);
                 Log.d(this.getClass().getName(), "GetData " +Курсор_ВытаскиваемЗначениеПубличногоIDкогдаРабатаемОфлайн );

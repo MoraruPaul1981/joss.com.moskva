@@ -72,7 +72,7 @@ public class Class_Get_For_Server_All_Rows_Json {
   /*          // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
             Class_GRUD_SQL_Operations class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ= new Class_GRUD_SQL_Operations(contextДляКлассаПолученияВсехСтрочекJSON);
             ///
-            class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СамFreeSQLКОд",
+            class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ. concurrentHashMapНабор.put("СамFreeSQLКОд",
                     " SELECT id  FROM successlogin  ORDER BY date_update DESC ;");
 
 
@@ -83,7 +83,7 @@ public class Class_Get_For_Server_All_Rows_Json {
 
             ///////
             SQLiteCursor Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО= (SQLiteCursor) class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ.
-                    new GetаFreeData(contextДляКлассаПолученияВсехСтрочекJSON).getfreedata(class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                    new GetаFreeData(contextДляКлассаПолученияВсехСтрочекJSON).getfreedata(class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ. concurrentHashMapНабор,
                     Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазуORM());
 
 
@@ -173,7 +173,7 @@ public class Class_Get_For_Server_All_Rows_Json {
             // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
              class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ= new Class_GRUD_SQL_Operations(contextДляКлассаПолученияВсехСтрочекJSON);
             ///
-            class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СамFreeSQLКОд",
+            class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ. concurrentHashMapНабор.put("СамFreeSQLКОд",
                     " SELECT success_users,success_login  FROM successlogin  ORDER BY date_update DESC ;");
 
 
@@ -185,7 +185,7 @@ public class Class_Get_For_Server_All_Rows_Json {
             ///////
             SQLiteCursor            Курсор_ПолучаемИмяСотрудникаИзТаблицыФИОПолучениеПубличногоЛогинаИПароля=
                     (SQLiteCursor) class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ.
-                    new GetаFreeData(contextДляКлассаПолученияВсехСтрочекJSON).getfreedata(class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                    new GetаFreeData(contextДляКлассаПолученияВсехСтрочекJSON).getfreedata(class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ. concurrentHashMapНабор,
                     Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков
                     ,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазуORM());
 

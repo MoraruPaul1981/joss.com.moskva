@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =             1059;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+     static final int VERSION =             1060;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
    private   Context context;
     private      SQLiteDatabase ССылкаНаСозданнуюБазу;
     private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
@@ -845,7 +845,7 @@ public class CREATE_DATABASE extends SQLiteOpenHelper{ ///SQLiteOpenHelper
     private void МетодСозданиеТаблицыЛогинов(SQLiteDatabase ССылкаНаСозданнуюБазу) {
         ССылкаНаСозданнуюБазу.execSQL("drop table  if exists successlogin");//test
         ССылкаНаСозданнуюБазу.execSQL("Create table  if not exists successlogin (" +
-                " id   INTEGER PRIMARY KEY AUTOINCREMENT ," +
+                " id   INTEGER PRIMARY KEY  ," +
                 " success_users  TEXT  ," +
                 " success_login  TEXT ,  " +
                 " date_update  NUMERIC," +

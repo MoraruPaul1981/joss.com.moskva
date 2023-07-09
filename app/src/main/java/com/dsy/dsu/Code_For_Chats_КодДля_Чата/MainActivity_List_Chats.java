@@ -185,7 +185,7 @@ HashMap<String, Object> ХэщЗапусАктивтиИзФрагмента=nul
                         // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
                         Class_GRUD_SQL_Operations class_grud_sql_operationsРабоатемВФрагментечитатьПисатьШестаяЧасть = new Class_GRUD_SQL_Operations(getApplicationContext());
                         ///
-                        class_grud_sql_operationsРабоатемВФрагментечитатьПисатьШестаяЧасть.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СамFreeSQLКОд",
+                        class_grud_sql_operationsРабоатемВФрагментечитатьПисатьШестаяЧасть.concurrentHashMapНабор.put("СамFreeSQLКОд",
                                 " SELECT id FROM SuccessLogin ORDER BY date_update DESC LIMIT 1 ");
 
 
@@ -193,7 +193,7 @@ HashMap<String, Object> ХэщЗапусАктивтиИзФрагмента=nul
                         Курсор_ВычисляемПУбличныйIDПриСозданииНовогоСообщения = null;
                         ///////
                         Курсор_ВычисляемПУбличныйIDПриСозданииНовогоСообщения = (SQLiteCursor) class_grud_sql_operationsРабоатемВФрагментечитатьПисатьШестаяЧасть.
-                                new GetаFreeData(getApplicationContext()).getfreedata(class_grud_sql_operationsРабоатемВФрагментечитатьПисатьШестаяЧасть.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                                new GetаFreeData(getApplicationContext()).getfreedata(class_grud_sql_operationsРабоатемВФрагментечитатьПисатьШестаяЧасть.concurrentHashMapНабор,
                                 new PUBLIC_CONTENT(getApplicationContext()).МенеджерПотоков
                                 , new CREATE_DATABASE(getApplicationContext()).getССылкаНаСозданнуюБазуORM());
 
@@ -220,7 +220,7 @@ HashMap<String, Object> ХэщЗапусАктивтиИзФрагмента=nul
                         ///
 
                         ///
-                        class_grud_sql_operationsРабоатемВФрагментечитатьПисатьШестаяЧасть.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СамFreeSQLКОд",
+                        class_grud_sql_operationsРабоатемВФрагментечитатьПисатьШестаяЧасть.concurrentHashMapНабор.put("СамFreeSQLКОд",
                                 " SELECT uuid_parent FROM chats " +
                                         " WHERE id_user   =  " +ПолученыйIDДляЧата   +" AND uuid_parent  IS NOT NULL ");//ПубличныйIDДляФрагмента
 
@@ -236,7 +236,7 @@ HashMap<String, Object> ХэщЗапусАктивтиИзФрагмента=nul
                         ///////
                         Курсор_ПосикUUIDУжеСозданныйУжеЧатМеждуользователсиИЛНЕТ =
                                 (SQLiteCursor) class_grud_sql_operationsРабоатемВФрагментечитатьПисатьШестаяЧасть.
-                                        new GetаFreeData(getApplicationContext()).getfreedata(class_grud_sql_operationsРабоатемВФрагментечитатьПисатьШестаяЧасть.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                                        new GetаFreeData(getApplicationContext()).getfreedata(class_grud_sql_operationsРабоатемВФрагментечитатьПисатьШестаяЧасть.concurrentHashMapНабор,
                                         new PUBLIC_CONTENT(getApplicationContext()).МенеджерПотоков
                                         , new CREATE_DATABASE(getApplicationContext()).getССылкаНаСозданнуюБазу());
 

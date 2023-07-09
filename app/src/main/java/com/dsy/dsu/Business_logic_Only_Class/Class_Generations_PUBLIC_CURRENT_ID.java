@@ -17,11 +17,11 @@ public class Class_Generations_PUBLIC_CURRENT_ID {
             if (contextДляКлассПУБЛИЧНЫЙID!=null) {
                 SQLiteCursor Курсор_ВычисляемПУбличныйIDПриСозданииНовогоСообщения = null;
                 Class_GRUD_SQL_Operations class_grud_sql_operationsРабоатемВФрагментечитатьПисатьШестаяЧасть = new Class_GRUD_SQL_Operations(contextДляКлассПУБЛИЧНЫЙID);
-                class_grud_sql_operationsРабоатемВФрагментечитатьПисатьШестаяЧасть.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СамFreeSQLКОд",
+                class_grud_sql_operationsРабоатемВФрагментечитатьПисатьШестаяЧасть.concurrentHashMapНабор.put("СамFreeSQLКОд",
                         " SELECT id FROM SuccessLogin ORDER BY date_update DESC LIMIT 1 ");
                 Курсор_ВычисляемПУбличныйIDПриСозданииНовогоСообщения = (SQLiteCursor) class_grud_sql_operationsРабоатемВФрагментечитатьПисатьШестаяЧасть.
                         new GetаFreeData(contextДляКлассПУБЛИЧНЫЙID).getfreedata(class_grud_sql_operationsРабоатемВФрагментечитатьПисатьШестаяЧасть.
-                                concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                                concurrentHashMapНабор,
                         new PUBLIC_CONTENT(contextДляКлассПУБЛИЧНЫЙID).МенеджерПотоков
                         , new CREATE_DATABASE(contextДляКлассПУБЛИЧНЫЙID).getССылкаНаСозданнуюБазу());
                 Log.d(this.getClass().getName(), "GetData " + Курсор_ВычисляемПУбличныйIDПриСозданииНовогоСообщения);

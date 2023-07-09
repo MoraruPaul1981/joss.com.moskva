@@ -642,36 +642,36 @@ public class Fragment_Contacts_КонтактыЧата extends Fragment    {
                 // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
 
                 ///
-                class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыПерваяЧасть. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","SuccessLogin");
+                class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыПерваяЧасть.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","SuccessLogin");
                 ///////
-                class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыПерваяЧасть. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","id");
+                class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыПерваяЧасть.concurrentHashMapНабор.put("СтолбцыОбработки","id");
                 //
-            /*        class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика","uuid=?    AND status_send !=? AND month_tabels=? AND  year_tabels =? AND fio IS NOT NULL ");
+            /*        class_grud_sql_operations. concurrentHashMapНабор.put("ФорматПосика","uuid=?    AND status_send !=? AND month_tabels=? AND  year_tabels =? AND fio IS NOT NULL ");
                     ///"_id > ?   AND _id< ?"
                     //////
-                    class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1",finalПолученныйUUID);
+                    class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска1",finalПолученныйUUID);
                     ///
-                    class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска2","Удаленная");
+                    class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска2","Удаленная");
                     ///
-                    class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска3",МЕсяцДляКурсораТабелей);
+                    class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска3",МЕсяцДляКурсораТабелей);
                     //
-                    class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска4",ГодДляКурсораТабелей);////УсловиеПоискаv4,........УсловиеПоискаv5 .......
+                    class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска4",ГодДляКурсораТабелей);////УсловиеПоискаv4,........УсловиеПоискаv5 .......
 */
                 ////TODO другие поля
 
-                ///classGrudSqlOperations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ПоляГрупировки",null);
+                ///classGrudSqlOperations. concurrentHashMapНабор.put("ПоляГрупировки",null);
                 ////
-                //class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеГрупировки",null);
+                //class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеГрупировки",null);
                 ////
-                //class_grud_sql_operationsПолучениеИмяСистемы. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки","date_update");
+                //class_grud_sql_operationsПолучениеИмяСистемы. concurrentHashMapНабор.put("УсловиеСортировки","date_update");
                 ////
-                class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыПерваяЧасть. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита","1");
+                class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыПерваяЧасть.concurrentHashMapНабор.put("УсловиеЛимита","1");
                 ////
 
                 // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
 
                 Курсор_ВычисляемПУбличныйID= (SQLiteCursor)  class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыПерваяЧасть.
-                        new GetData(getActivity()).getdata(class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыПерваяЧасть. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                        new GetData(getActivity()).getdata(class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыПерваяЧасть.concurrentHashMapНабор,
                         Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков
                         ,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
                 //////
@@ -716,30 +716,30 @@ public class Fragment_Contacts_КонтактыЧата extends Fragment    {
          Class_GRUD_SQL_Operations       class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыВтораяЧасть=new Class_GRUD_SQL_Operations(getActivity());
 
                 ///
-                class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыВтораяЧасть. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","chat_users");
+                class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыВтораяЧасть.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","chat_users");
                 ///////
-                class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыВтораяЧасть. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","*");
+                class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыВтораяЧасть.concurrentHashMapНабор.put("СтолбцыОбработки","*");
                 //
-                class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыВтораяЧасть. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика","_id != ? ");
+                class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыВтораяЧасть.concurrentHashMapНабор.put("ФорматПосика","_id != ? ");
                     ///"_id > ?   AND _id< ?"
                     //////
-                class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыВтораяЧасть. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1",ПубличноеIDПолученныйИзСервлетаДляUUID);
+                class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыВтораяЧасть.concurrentHashMapНабор.put("УсловиеПоиска1",ПубличноеIDПолученныйИзСервлетаДляUUID);
                     ///
-                class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыВтораяЧасть. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФлагНепотораяемостиСтрок",true);
+                class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыВтораяЧасть.concurrentHashMapНабор.put("ФлагНепотораяемостиСтрок",true);
                     ///
-          /*          class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска3",МЕсяцДляКурсораТабелей);
+          /*          class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска3",МЕсяцДляКурсораТабелей);
                     //
-                    class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска4",ГодДляКурсораТабелей);////УсловиеПоискаv4,........УсловиеПоискаv5 .......*/
+                    class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска4",ГодДляКурсораТабелей);////УсловиеПоискаv4,........УсловиеПоискаv5 .......*/
 
                 ////TODO другие поля
 
-                ///classGrudSqlOperations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ПоляГрупировки",null);
+                ///classGrudSqlOperations. concurrentHashMapНабор.put("ПоляГрупировки",null);
                 ////
-                //class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеГрупировки",null);
+                //class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеГрупировки",null);
                 ////
-                class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыВтораяЧасть. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки","name");
+                class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыВтораяЧасть.concurrentHashMapНабор.put("УсловиеСортировки","name");
                 ////
-                /// class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита","1");
+                /// class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеЛимита","1");
                 ////
 
                 // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
@@ -748,7 +748,7 @@ public class Fragment_Contacts_КонтактыЧата extends Fragment    {
                 ///
 
                 КурсорДанныеДляКонтактовЧата= (SQLiteCursor)  class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыВтораяЧасть.
-                        new GetData(getActivity()).getdata(class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыВтораяЧасть. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                        new GetData(getActivity()).getdata(class_grud_sql_operationsЗагрузкиДанныхДляФрагентаКонтактыВтораяЧасть.concurrentHashMapНабор,
                         Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков
                         ,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
                 /////

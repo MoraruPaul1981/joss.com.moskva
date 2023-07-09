@@ -898,23 +898,23 @@ public class MyWork_Notifocations_Уведомления_Для_Задачи ext
 
             contentValuesСменаСтатусаЗадачиЧтоЕЕЕжуПоказывали.put("current_table", РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудникаПервая);
         // TODO: 06.09.2021  ПАРАМЕНТЫ ДЛЯ ОБНОВЛЕНИЯ
-        class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций
+        class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.concurrentHashMapНабор
                 .put("НазваниеОбрабоатываемойТаблицы",ТаблицаОбрабокаиПриСменсатусаУведомленияЧтоЕгоУжекПоказхывали);
         //
-        class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("Флаг_ЧерезКакоеПолеОбновлением","uuid");
+        class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.concurrentHashMapНабор.put("Флаг_ЧерезКакоеПолеОбновлением","uuid");
         ///
-        class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций
+        class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.concurrentHashMapНабор
                 .put("ЗначениеФлагОбновления",UUIDРочитаногоЗаданиеДляКотрогоДалееБудетПроизведенаСменаСтсусаНАОзнакомленный);
         ///
         class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.
-                concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ЗнакФлагОбновления","=");
+                concurrentHashMapНабор.put("ЗнакФлагОбновления","=");
         ////TODO КОНТЕЙНЕР ДЛЯ ОБНОВЛЕНИЯ
         class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.contentValuesДляSQLBuilder_Для_GRUD_Операций.putAll(contentValuesСменаСтатусаЗадачиЧтоЕЕЕжуПоказывали);
 
 
         ///TODO РЕЗУЛЬТАТ ОБНОВЛЕНИЕ ДАННЫх уведомления заадачи
         Integer  ОбновляемСтатусЗадачиУведомленияЧТоЕЕУжеПоказывали= (Integer)  class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.
-                new UpdateData(getApplicationContext()).updatedata(class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                new UpdateData(getApplicationContext()).updatedata(class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.concurrentHashMapНабор,
                 class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.contentValuesДляSQLBuilder_Для_GRUD_Операций,
                 new PUBLIC_CONTENT(getApplicationContext()).МенеджерПотоков,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
 
@@ -969,16 +969,16 @@ public class MyWork_Notifocations_Уведомления_Для_Задачи ext
 
 
             classGrudSqlOperationsДляОперацииСозданеиНовойЗадачи.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы",
+                    concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы",
                             таблицаОбработкиПослеУспешнойВсатвкиНовойЗадачи);
             ///
             classGrudSqlOperationsДляОперацииСозданеиНовойЗадачи.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФлагТипИзменениеВерсииДанныхЛокальнаяСервернаяИлиОба",
+                    concurrentHashMapНабор.put("ФлагТипИзменениеВерсииДанныхЛокальнаяСервернаяИлиОба",
                             "Локальное");///  "ЛокальныйСерверныйОба"    ПОСЛЕ КАК ПРИШЛИ ВНЕШНИЕ ДАННЫЕ
             ///
             ///
             classGrudSqlOperationsДляОперацииСозданеиНовойЗадачи.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put(" " +
+                    concurrentHashMapНабор.put(" " +
                                     "ПередоваемоеЗначенияДляТаблицы_MODIFITATION_Client_КотороеНадоЗаписать",
                             РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудника);///  "ЛокальныйСерверныйОба"    ПОСЛЕ КАК ПРИШЛИ ВНЕШНИЕ ДАННЫЕ
             ///
@@ -989,7 +989,7 @@ public class MyWork_Notifocations_Уведомления_Для_Задачи ext
                     (Integer) classGrudSqlOperationsДляОперацииСозданеиНовойЗадачи.
                             new ChangesVesionData(getApplicationContext()).
                             changesvesiondata(classGrudSqlOperationsДляОперацииСозданеиНовойЗадачи.
-                                            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                                            concurrentHashMapНабор,
                                     new PUBLIC_CONTENT(getApplicationContext()).МенеджерПотоков
                                     , sqLiteDatabaseДляНовгоЗадания);
 //
@@ -1048,15 +1048,15 @@ public class MyWork_Notifocations_Уведомления_Для_Задачи ext
 
             ///
             class_grud_sql_operationsПолучаемПубличныйIDЛокальноИеСЛИЕгоНЕтНАчинаемЕгоИСктьВНИтренете.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","SuccessLogin");
+                    concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","SuccessLogin");
             ///////
             class_grud_sql_operationsПолучаемПубличныйIDЛокальноИеСЛИЕгоНЕтНАчинаемЕгоИСктьВНИтренете.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","id");
+                    concurrentHashMapНабор.put("СтолбцыОбработки","id");
             //
 
             ////
             class_grud_sql_operationsПолучаемПубличныйIDЛокальноИеСЛИЕгоНЕтНАчинаемЕгоИСктьВНИтренете.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита","1");
+                    concurrentHashMapНабор.put("УсловиеЛимита","1");
 
 
 
@@ -1067,7 +1067,7 @@ public class MyWork_Notifocations_Уведомления_Для_Задачи ext
             Курсор_ВычисляемПУбличныйID= (SQLiteCursor)
                     class_grud_sql_operationsПолучаемПубличныйIDЛокальноИеСЛИЕгоНЕтНАчинаемЕгоИСктьВНИтренете.
                     new GetData(getApplicationContext()).getdata(class_grud_sql_operationsПолучаемПубличныйIDЛокальноИеСЛИЕгоНЕтНАчинаемЕгоИСктьВНИтренете.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,public_contentменеджер.МенеджерПотоков,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу() );
+                            concurrentHashMapНабор,public_contentменеджер.МенеджерПотоков,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу() );
 
             Log.d(this.getClass().getName(), "GetData "+Курсор_ВычисляемПУбличныйID  );
 
@@ -1110,38 +1110,38 @@ public class MyWork_Notifocations_Уведомления_Для_Задачи ext
             class_grud_sql_operationsIDпользоввателяДляСлужб=new Class_GRUD_SQL_Operations(getApplicationContext());
 
             ///
-            class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","view_tasks");//old для другой уведомления data_chat
+            class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","view_tasks");//old для другой уведомления data_chat
             ///////
-            class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","*");
+            class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("СтолбцыОбработки","*");
             //
-            class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика","status_write=?  AND id_user=?   AND alreadyshownnotifications<>? " +
+            class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("ФорматПосика","status_write=?  AND id_user=?   AND alreadyshownnotifications<>? " +
                     " AND message IS NOT NULL  ");
             ///"_id > ?   AND _id< ?"
 
 
             //////
-            class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1",0);
+            class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("УсловиеПоиска1",0);
             //
-            class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска2",  ПубличноеIDПолученныйИзСервлетаДляUUID);
+            class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("УсловиеПоиска2",  ПубличноеIDПолученныйИзСервлетаДляUUID);
 
 
             // TODO: 02.03.2022
 
-            class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки","date_update DESC");
+            class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("УсловиеСортировки","date_update DESC");
             ////
-          // class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита","1");
+          // class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНабор.put("УсловиеЛимита","1");
             ////
-            class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита","1");
+            class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("УсловиеЛимита","1");
             // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
 
             //
-            class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска3",  4);
+            class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("УсловиеПоиска3",  4);
             ///
             SQLiteCursor   Курсор_ДляСлужбыУведомлений_ТолькоДляЧата=null;
 
 
             Курсор_ДляСлужбыУведомлений_ТолькоДляЧата= (SQLiteCursor)  class_grud_sql_operationsIDпользоввателяДляСлужб.
-                    new GetData(getApplicationContext()).getdata(class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                    new GetData(getApplicationContext()).getdata(class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор,
                     Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу() );
 
 
@@ -1260,36 +1260,36 @@ public class MyWork_Notifocations_Уведомления_Для_Задачи ext
         class_grud_sql_operationsIDпользоввателяДляСлужб=new Class_GRUD_SQL_Operations(getApplicationContext());
 
         ///
-        class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","view_tasks");//old для другой уведомления data_chat
+        class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","view_tasks");//old для другой уведомления data_chat
         ///////
-        class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","*");
+        class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("СтолбцыОбработки","*");
         //
-        class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика","status_write=?  AND id_user=?   AND alreadyshownnotifications<>? " +
+        class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("ФорматПосика","status_write=?  AND id_user=?   AND alreadyshownnotifications<>? " +
                 " AND message IS NOT NULL  ");
         ///"_id > ?   AND _id< ?"
 
 
         //////
-        class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1",0);
+        class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("УсловиеПоиска1",0);
         //
-        class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска2", ПубличноеIDПолученныйИзСервлетаДляUUID);
+        class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("УсловиеПоиска2", ПубличноеIDПолученныйИзСервлетаДляUUID);
 
          //
-         class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска3",  4);
+         class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("УсловиеПоиска3",  4);
         // TODO: 02.03.2022
 
-        class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки","date_update DESC");
+        class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("УсловиеСортировки","date_update DESC");
         ////
-        // class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита","1");
+        // class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНабор.put("УсловиеЛимита","1");
         ////
-        //class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита","1");
+        //class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНабор.put("УсловиеЛимита","1");
         // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
         ///
 
 
 
         Курсор_ДляСлужбыУведомлений_ТолькоДляЧатаТОлькоКоличествоЗадач= (SQLiteCursor)  class_grud_sql_operationsIDпользоввателяДляСлужб.
-                new GetData(getApplicationContext()).getdata(class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                new GetData(getApplicationContext()).getdata(class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор,
                 Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу() );
 
 
@@ -1365,18 +1365,18 @@ public class MyWork_Notifocations_Уведомления_Для_Задачи ext
                 class_grud_sql_operationsIDпользоввателяДляСлужб=new Class_GRUD_SQL_Operations(getApplicationContext());
 
                 ///
-                class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","chat_users");
+                class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","chat_users");
                 ///////
-                class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","name");
+                class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("СтолбцыОбработки","name");
                 //
-                class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика","_id=?   AND name IS NOT NULL ");
+                class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("ФорматПосика","_id=?   AND name IS NOT NULL ");
                 ///"_id > ?   AND _id< ?"
                 //////
-                class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1",КтоНаписалСообщениеID);
+                class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("УсловиеПоиска1",КтоНаписалСообщениеID);
 
-    /*            class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки","date_update DESC");
+    /*            class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНабор.put("УсловиеСортировки","date_update DESC");
                 ////
-                class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита","5");*/
+                class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНабор.put("УсловиеЛимита","5");*/
 
                 // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
                 ///
@@ -1384,7 +1384,7 @@ public class MyWork_Notifocations_Уведомления_Для_Задачи ext
 
 
                 Курсор_ДляСлужбыУведомлений_ВычисляемНстоящееФИОКтоНаписал= (SQLiteCursor)  class_grud_sql_operationsIDпользоввателяДляСлужб.
-                        new GetData(getApplicationContext()).getdata(class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                        new GetData(getApplicationContext()).getdata(class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор,
                         Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу() );
 
 

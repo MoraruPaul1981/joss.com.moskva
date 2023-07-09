@@ -374,14 +374,14 @@ public class Service_For_Task_Для_Задания_СменаСатуса exten
                 CREATE_DATABASE    Create_Database_СсылкаНАБазовыйКласс = new CREATE_DATABASE(getApplicationContext());
                 Class_Engine_SQLГдеНаходитьсяМенеджерПотоков=new PUBLIC_CONTENT(getApplicationContext());
                  class_grud_sql_operations.
-                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ПодЗапросНомер1",
+                         concurrentHashMapНабор.put("ПодЗапросНомер1",
                                 " SELECT  user_update FROM view_tasks   WHERE uuid  =" + UUIDДляЗапускСогласованияПришедшегоЗАДАНИЕ + " ;" );// current_table    ///   date_update current_table     ASC
                 // TODO: 19.06.2022  ГЛАВНЫЙ КУРСОР ЧАТА
                 SQLiteCursor      КурсорДанныеДлязаписиичтнияЧата=null;
 
                 КурсорДанныеДлязаписиичтнияЧата = (SQLiteCursor) class_grud_sql_operations.
                         new GetData(getApplicationContext()).getdata(class_grud_sql_operations.
-                                concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                                concurrentHashMapНабор,
                         Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков
                         , Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
                 if (КурсорДанныеДлязаписиичтнияЧата != null) {

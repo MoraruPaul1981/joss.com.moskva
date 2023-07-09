@@ -33,43 +33,43 @@ public class SubClass_RetryGEtRowInChatsКлассПроверемЕщеРАзП
             Class_GRUD_SQL_Operations class_grud_sql_operations_ДляПовторногоПоискаПуцбличногоUUIDМеждуУчасникамиперпискиЧатаТекущего = new Class_GRUD_SQL_Operations(context);
             ///
 //                class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть.
-//                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","viewchat");
+//                        concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","viewchat");
 //                ///////
 //                class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть.
-//                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","*");
+//                        concurrentHashMapНабор.put("СтолбцыОбработки","*");
 //                //
-//      /*          class_grud_sql_operations_ДанныеДляСообщенийЧата. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика","uuid=?    " +
+//      /*          class_grud_sql_operations_ДанныеДляСообщенийЧата. concurrentHashMapНабор.put("ФорматПосика","uuid=?    " +
 //                        "AND status_send !=? AND month_tabels=? AND  year_tabels =? AND fio IS NOT NULL ");
 //                    ///"_id > ?   AND _id< ?"*/
 //                    //////
 //
 //                class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть.
-//                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФлагНепотораяемостиСтрок",true);
+//                        concurrentHashMapНабор.put("ФлагНепотораяемостиСтрок",true);
 //                    ///
-//            /*      class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска2","Удаленная");
+//            /*      class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска2","Удаленная");
 //                    ///
-//                    class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска3",МЕсяцДляКурсораТабелей);//ФлагНепотораяемостиСтрок
+//                    class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска3",МЕсяцДляКурсораТабелей);//ФлагНепотораяемостиСтрок
 //                    //
-//                    class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска4",ГодДляКурсораТабелей);////УсловиеПоискаv4,........УсловиеПоискаv5 .......
+//                    class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска4",ГодДляКурсораТабелей);////УсловиеПоискаv4,........УсловиеПоискаv5 .......
 //*/
 //                ////TODO другие поля*/
 //
 //                class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть.
-//                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ПоляГрупировки","id_user");
+//                        concurrentHashMapНабор.put("ПоляГрупировки","id_user");
 //                ////
 //                class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть.
-//                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеГрупировки"," COUNT(*) >= 1");
+//                        concurrentHashMapНабор.put("УсловиеГрупировки"," COUNT(*) >= 1");
 //                ////
 //                class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть.
-//                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки","date_update DESC");
+//                        concurrentHashMapНабор.put("УсловиеСортировки","date_update DESC");
 //                ////
-//               /// class_grud_sql_operationsMODEL. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита","1");
+//               /// class_grud_sql_operationsMODEL. concurrentHashMapНабор.put("УсловиеЛимита","1");
             ////
 
             // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
-            // class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1",111);
+            // class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть. concurrentHashMapНабор.put("УсловиеПоиска1",111);
             ///
-            class_grud_sql_operations_ДляПовторногоПоискаПуцбличногоUUIDМеждуУчасникамиперпискиЧатаТекущего.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СамFreeSQLКОд",///viewchat
+            class_grud_sql_operations_ДляПовторногоПоискаПуцбличногоUUIDМеждуУчасникамиперпискиЧатаТекущего.concurrentHashMapНабор.put("СамFreeSQLКОд",///viewchat
 
          /*               " SELECT  * FROM viewchat  WHERE     id_user   =" + ID +
                                 " ORDER BY  date_update  ASC ;");
@@ -84,7 +84,7 @@ public class SubClass_RetryGEtRowInChatsКлассПроверемЕщеРАзП
             КурсорДанныеИщемНЕПоявильсяЛиПубличныйUUIDМеджуУчасникамиПереписки = (SQLiteCursor) class_grud_sql_operations_ДляПовторногоПоискаПуцбличногоUUIDМеждуУчасникамиперпискиЧатаТекущего.
                     new GetаFreeData(context)
                     .getfreedata(class_grud_sql_operations_ДляПовторногоПоискаПуцбличногоUUIDМеждуУчасникамиперпискиЧатаТекущего
-                                    .concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                                    .concurrentHashMapНабор,
                             completionServiceНОваяЗадача,
                             sqLiteDatabaseНоваяЗадача);
 
@@ -144,43 +144,43 @@ public class SubClass_RetryGEtRowInChatsКлассПроверемЕщеРАзП
             Class_GRUD_SQL_Operations class_grud_sql_operations_ДляПовторногоПоискаПуцбличногоUUIDМеждуУчасникамиперпискиЧатаТекущего = new Class_GRUD_SQL_Operations(context);
             ///
 //                class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть.
-//                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","viewchat");
+//                        concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","viewchat");
 //                ///////
 //                class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть.
-//                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","*");
+//                        concurrentHashMapНабор.put("СтолбцыОбработки","*");
 //                //
-//      /*          class_grud_sql_operations_ДанныеДляСообщенийЧата. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика","uuid=?    " +
+//      /*          class_grud_sql_operations_ДанныеДляСообщенийЧата. concurrentHashMapНабор.put("ФорматПосика","uuid=?    " +
 //                        "AND status_send !=? AND month_tabels=? AND  year_tabels =? AND fio IS NOT NULL ");
 //                    ///"_id > ?   AND _id< ?"*/
 //                    //////
 //
 //                class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть.
-//                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФлагНепотораяемостиСтрок",true);
+//                        concurrentHashMapНабор.put("ФлагНепотораяемостиСтрок",true);
 //                    ///
-//            /*      class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска2","Удаленная");
+//            /*      class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска2","Удаленная");
 //                    ///
-//                    class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска3",МЕсяцДляКурсораТабелей);//ФлагНепотораяемостиСтрок
+//                    class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска3",МЕсяцДляКурсораТабелей);//ФлагНепотораяемостиСтрок
 //                    //
-//                    class_grud_sql_operations. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска4",ГодДляКурсораТабелей);////УсловиеПоискаv4,........УсловиеПоискаv5 .......
+//                    class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска4",ГодДляКурсораТабелей);////УсловиеПоискаv4,........УсловиеПоискаv5 .......
 //*/
 //                ////TODO другие поля*/
 //
 //                class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть.
-//                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ПоляГрупировки","id_user");
+//                        concurrentHashMapНабор.put("ПоляГрупировки","id_user");
 //                ////
 //                class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть.
-//                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеГрупировки"," COUNT(*) >= 1");
+//                        concurrentHashMapНабор.put("УсловиеГрупировки"," COUNT(*) >= 1");
 //                ////
 //                class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть.
-//                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки","date_update DESC");
+//                        concurrentHashMapНабор.put("УсловиеСортировки","date_update DESC");
 //                ////
-//               /// class_grud_sql_operationsMODEL. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита","1");
+//               /// class_grud_sql_operationsMODEL. concurrentHashMapНабор.put("УсловиеЛимита","1");
             ////
 
             // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
-            // class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1",111);
+            // class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть. concurrentHashMapНабор.put("УсловиеПоиска1",111);
             ///
-            class_grud_sql_operations_ДляПовторногоПоискаПуцбличногоUUIDМеждуУчасникамиперпискиЧатаТекущего.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СамFreeSQLКОд",///viewchat
+            class_grud_sql_operations_ДляПовторногоПоискаПуцбличногоUUIDМеждуУчасникамиперпискиЧатаТекущего.concurrentHashMapНабор.put("СамFreeSQLКОд",///viewchat
 
          /*               " SELECT  * FROM viewchat  WHERE     id_user   =" + ID +
                                 " ORDER BY  date_update  ASC ;");
@@ -195,7 +195,7 @@ public class SubClass_RetryGEtRowInChatsКлассПроверемЕщеРАзП
             КурсорДанныеИщемЕслиУжеUUIDМенждуУчастикамиНовойЗАДАЧ_Task = (SQLiteCursor) class_grud_sql_operations_ДляПовторногоПоискаПуцбличногоUUIDМеждуУчасникамиперпискиЧатаТекущего.
                     new GetаFreeData(context)
                     .getfreedata(class_grud_sql_operations_ДляПовторногоПоискаПуцбличногоUUIDМеждуУчасникамиперпискиЧатаТекущего
-                                    .concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                                    .concurrentHashMapНабор,
                             completionServiceНОваяЗадача,
                             sqLiteDatabaseНоваяЗадача);
 

@@ -36,7 +36,7 @@ public class Class_GRUD_SQL_Operations extends CREATE_DATABASE {
     public AsyncTaskLoader asyncTaskLoaderАунтификацияПользователя = null;
     protected Stream Стрим=null;
     public Context context;
-    public    Map<String,Object> concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций =
+    public    Map<String,Object> concurrentHashMapНабор =
             Collections.synchronizedMap(new LinkedHashMap<String,Object>());
     public Callable<Object> ЛистДляGRUDопераций = null;
   public  ContentValues contentValuesДляSQLBuilder_Для_GRUD_Операций  = new ContentValues();

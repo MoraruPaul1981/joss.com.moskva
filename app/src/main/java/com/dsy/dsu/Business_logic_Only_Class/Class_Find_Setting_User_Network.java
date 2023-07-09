@@ -33,15 +33,15 @@ public class Class_Find_Setting_User_Network {
      Log.d(this.getClass().getName(), "   РезутьтатПроверкиТипПодключениякИнтернету " + РежимСетиВыбранныйПользователем);
      Class_GRUD_SQL_Operations class_grud_sql_operationsГлавныйСинхронизацииДанныхКлиентСервер = new Class_GRUD_SQL_Operations(contextДляКлассаПроверкаУстановкиПользователяРежимРаботыСети);
 
-     class_grud_sql_operationsГлавныйСинхронизацииДанныхКлиентСервер.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы", "SuccessLogin");
+     class_grud_sql_operationsГлавныйСинхронизацииДанныхКлиентСервер.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы", "SuccessLogin");
      ///////
-     class_grud_sql_operationsГлавныйСинхронизацииДанныхКлиентСервер.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки", "mode_connection");
+     class_grud_sql_operationsГлавныйСинхронизацииДанныхКлиентСервер.concurrentHashMapНабор.put("СтолбцыОбработки", "mode_connection");
          // TODO: 12.10.2021  Ссылка Менеджер Потоков
             PUBLIC_CONTENT Class_Engine_SQLГдеНаходитьсяМенеджерПотоков = new PUBLIC_CONTENT(contextДляКлассаПроверкаУстановкиПользователяРежимРаботыСети);
      // TODO: 02.09.2021 exe sql
      SQLiteCursor КурсорУзнаемСохраненыйРежимРаботыССетью = (SQLiteCursor) class_grud_sql_operationsГлавныйСинхронизацииДанныхКлиентСервер.
              new GetData(contextДляКлассаПроверкаУстановкиПользователяРежимРаботыСети).getdata(class_grud_sql_operationsГлавныйСинхронизацииДанныхКлиентСервер.
-                     concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                     concurrentHashMapНабор,
              Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
      Log.d(this.getClass().getName(), "GetData " + КурсорУзнаемСохраненыйРежимРаботыССетью);
      // TODO: 29.09.2021

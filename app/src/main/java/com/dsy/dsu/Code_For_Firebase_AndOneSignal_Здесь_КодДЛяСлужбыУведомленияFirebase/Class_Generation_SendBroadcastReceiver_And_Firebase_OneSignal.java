@@ -275,24 +275,24 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                 Log.w("OneSignalExample", "РезультатЗаписиНовогоIDОтСервреаOneSignal "+  "РезультатЗаписиНовогоIDОтСервреаOneSignal   "
                         + НовыйКлючОтOneSingnal);
                 class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","settings_tabels");
+                        concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","settings_tabels");
                 class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","onesignal");
+                        concurrentHashMapНабор.put("СтолбцыОбработки","onesignal");
                 class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика","  onesignal=? ");
+                        concurrentHashMapНабор.put("ФорматПосика","  onesignal=? ");
                 ///"_id > ?   AND _id< ?"
                 //////
                 class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1",
+                        concurrentHashMapНабор.put("УсловиеПоиска1",
                         НовыйКлючОтOneSingnal.trim());
                 class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеСортировки","date_update DESC");
+                        concurrentHashMapНабор.put("УсловиеСортировки","date_update DESC");
                 class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеЛимита","1");
+                        concurrentHashMapНабор.put("УсловиеЛимита","1");
                 SQLiteCursor Курсор_ПолучаемУжеЗагруженныйЕслиНОНЕИзменильсяIDДляONESIGNAL= null;
                 Курсор_ПолучаемУжеЗагруженныйЕслиНОНЕИзменильсяIDДляONESIGNAL = (SQLiteCursor)  class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
                         new GetData(context).getdata(class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                        concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,public_contentменеджер.МенеджерПотоков,new CREATE_DATABASE(context).getССылкаНаСозданнуюБазу());
+                        concurrentHashMapНабор,public_contentменеджер.МенеджерПотоков,new CREATE_DATABASE(context).getССылкаНаСозданнуюБазу());
                 Log.d(this.getClass().getName(), "Курсор_ПолучаемУжеЗагруженныйЕслиНОНЕИзменильсяIDДляONESIGNAL "+Курсор_ПолучаемУжеЗагруженныйЕслиНОНЕИзменильсяIDДляONESIGNAL  );
                 if(Курсор_ПолучаемУжеЗагруженныйЕслиНОНЕИзменильсяIDДляONESIGNAL.getCount()>0){
                     // TODO: 22.12.2021
@@ -326,23 +326,23 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                 // TODO: 10.12.2022 следующие действие после записеи поновго ключа от ONESINGANL
                 if (ОтправкаСообщенияТолькоСтрогоОдномуУказанномуСотрудника>0) {
                     class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","view_onesignal");
+                            concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","view_onesignal");
                     class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","onesignal");
+                            concurrentHashMapНабор.put("СтолбцыОбработки","onesignal");
                     class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика","  user_update=?  AND onesignal IS NOT NULL");
+                            concurrentHashMapНабор.put("ФорматПосика","  user_update=?  AND onesignal IS NOT NULL");
                     class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1",ОтправкаСообщенияТолькоСтрогоОдномуУказанномуСотрудника);
+                            concurrentHashMapНабор.put("УсловиеПоиска1",ОтправкаСообщенияТолькоСтрогоОдномуУказанномуСотрудника);
                     Log.w(this.getClass().getName(), "  СРАБОТАЛО ОТПРАВЛЯЕМ СООБЩЕНИЕ СТРОКО ПОЛЬЗОВАТЕЛЮ ............ SEND MESSAGE DSU1 ОтправкаСообщенияТолькоСтрогоОдномуУказанномуСотрудника "+ОтправкаСообщенияТолькоСтрогоОдномуУказанномуСотрудника  );
                 } else {
                     class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","view_onesignal");
+                            concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","view_onesignal");
                     class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("СтолбцыОбработки","onesignal");
+                            concurrentHashMapНабор.put("СтолбцыОбработки","onesignal");
                     class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ФорматПосика","  onesignal!=?  ");
+                            concurrentHashMapНабор.put("ФорматПосика","  onesignal!=?  ");
                     class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                            concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("УсловиеПоиска1", НовыйКлючОтOneSingnal);
+                            concurrentHashMapНабор.put("УсловиеПоиска1", НовыйКлючОтOneSingnal);
                     Log.d(this.getClass().getName(), " НовыйКлючОтOneSingnal "+ НовыйКлючОтOneSingnal);
                     Log.d(this.getClass().getName(), "  СРАБОТАЛО ОТПРАВЛЯЕМ СООБЩЕНИЕ все мпользоватем кторые есть в базе  ............ SEND MESSAGE DSU1  НовыйКлючОтOneSingnal" +
                             ""+ НовыйКлючОтOneSingnal);
@@ -351,7 +351,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                 SQLiteCursor Курсор_ПолучаемВесьСписокIDДляONESIGNAL= null;
                 Курсор_ПолучаемВесьСписокIDДляONESIGNAL = (SQLiteCursor)  class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
                         new GetData(context).getdata(class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                                concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,public_contentменеджер.МенеджерПотоков,
+                                concurrentHashMapНабор,public_contentменеджер.МенеджерПотоков,
                         new CREATE_DATABASE(context).getССылкаНаСозданнуюБазу());
                 Log.d(this.getClass().getName(), "Курсор_ПолучаемВесьСписокIDДляONESIGNAL "+Курсор_ПолучаемВесьСписокIDДляONESIGNAL  );
                 // TODO: 15.12.2021
@@ -703,27 +703,27 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
            // TODO: 06.09.2021  ПАРАМЕНТЫ ДЛЯ ОБНОВЛЕНИЯ
 
-           class_grud_sql_operationsОбновлениеДляТаблицыOneSignal.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы",ТаблицаОбрработкиВСдлужбеOneSignal);
+           class_grud_sql_operationsОбновлениеДляТаблицыOneSignal.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы",ТаблицаОбрработкиВСдлужбеOneSignal);
            //
 
-           class_grud_sql_operationsОбновлениеДляТаблицыOneSignal.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("Флаг_ЧерезКакоеПолеОбновлением","user_update");
+           class_grud_sql_operationsОбновлениеДляТаблицыOneSignal.concurrentHashMapНабор.put("Флаг_ЧерезКакоеПолеОбновлением","user_update");
 
 
 
 
            ///
-               class_grud_sql_operationsОбновлениеДляТаблицыOneSignal.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ЗнакФлагОбновления","uuid=");
+               class_grud_sql_operationsОбновлениеДляТаблицыOneSignal.concurrentHashMapНабор.put("ЗнакФлагОбновления","uuid=");
 
 
            //
 
-           class_grud_sql_operationsОбновлениеДляТаблицыOneSignal.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ЗначениеФлагОбновления", ПубличныйIDДляФрагмента);
+           class_grud_sql_operationsОбновлениеДляТаблицыOneSignal.concurrentHashMapНабор.put("ЗначениеФлагОбновления", ПубличныйIDДляФрагмента);
            ///
 
            //
 
            class_grud_sql_operationsОбновлениеДляТаблицыOneSignal.
-                   concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ЗнакФлагОбновления","=");
+                   concurrentHashMapНабор.put("ЗнакФлагОбновления","=");
 
            ////TODO КОНТЕЙНЕР ДЛЯ ОБНОВЛЕНИЯ
 
@@ -736,7 +736,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
            РезультатОбновленияКлючаOneSignal = 0;
 
            РезультатОбновленияКлючаOneSignal = (Integer)  class_grud_sql_operationsОбновлениеДляТаблицыOneSignal.
-                   new UpdateData(context).updatedata(class_grud_sql_operationsОбновлениеДляТаблицыOneSignal. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                   new UpdateData(context).updatedata(class_grud_sql_operationsОбновлениеДляТаблицыOneSignal.concurrentHashMapНабор,
                    class_grud_sql_operationsОбновлениеДляТаблицыOneSignal.contentValuesДляSQLBuilder_Для_GRUD_Операций,
                    new PUBLIC_CONTENT(context). МенеджерПотоков, create_databaseДЛяOneSignal.getССылкаНаСозданнуюБазу());
 
@@ -812,17 +812,17 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                // TODO: 06.09.2021  ПАРАМЕНТЫ ДЛЯ удаление данных
 
                class_grud_sql_operationclass_grud_sql_operationsОчисткаsОчистакаталиц.
-                       concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы", ТаблицаКоторуюнадоДляПосикаИУдаленияБудлейКлбчейONESIGNAL);
+                       concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы", ТаблицаКоторуюнадоДляПосикаИУдаленияБудлейКлбчейONESIGNAL);
                //
 
                class_grud_sql_operationclass_grud_sql_operationsОчисткаsОчистакаталиц.
-                       concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("Флаг_ЧерезКакоеПолеУдаление", "onesignal <> ? AND  user_update =?");
+                       concurrentHashMapНабор.put("Флаг_ЧерезКакоеПолеУдаление", "onesignal <> ? AND  user_update =?");
             ///
 
              class_grud_sql_operationclass_grud_sql_operationsОчисткаsОчистакаталиц
-                       .concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ЗначениеФлагУдаление",НовыйIdОТСервтераOneSignal);
+                       .concurrentHashMapНабор.put("ЗначениеФлагУдаление",НовыйIdОТСервтераOneSignal);
                class_grud_sql_operationclass_grud_sql_operationsОчисткаsОчистакаталиц
-                       .concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ЗначениеФлагУдалениеВторой", ПубличныйIDДляФрагмента);
+                       .concurrentHashMapНабор.put("ЗначениеФлагУдалениеВторой", ПубличныйIDДляФрагмента);
 
 
 
@@ -831,7 +831,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
                РЕзультаПосикаИУдаления = (Integer) class_grud_sql_operationclass_grud_sql_operationsОчисткаsОчистакаталиц.
                        new DeleteData(context).deletedata(class_grud_sql_operationclass_grud_sql_operationsОчисткаsОчистакаталиц.
-                               concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                               concurrentHashMapНабор,
                       new PUBLIC_CONTENT(context). МенеджерПотоков,new CREATE_DATABASE(context).getССылкаНаСозданнуюБазу());
 
 

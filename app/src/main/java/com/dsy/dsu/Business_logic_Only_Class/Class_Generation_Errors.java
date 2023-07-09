@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.dsy.dsu.AllDatabases.CREATE_DATABASE;
 import com.dsy.dsu.BuildConfig;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.Class_Generation_Data;
 import com.dsy.dsu.AllDatabases.Error.CREATE_DATABASE_Error;
@@ -14,12 +15,12 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Date;
 
 public class Class_Generation_Errors {
 
     private Context context;
-    private Class_GRUD_SQL_Operations classGrudSqlOperationsДляЗаписиНовойОшибки;
+    private Class_GRUD_SQL_Operations classGrudSqlOperationsОшибки;
     private Integer ПубличноеIDПолученныйИзСервлетаДляUUID = 0;
 
     private CREATE_DATABASE_Error create_database_error;
@@ -38,26 +39,29 @@ public class Class_Generation_Errors {
 
         Long PезультатВставкиНовойОшибки = 0l;
         try {
-
             if (context != null) {
+             SQLiteDatabase create_database_error = new CREATE_DATABASE_Error(context).getССылкаНаСозданнуюБазу();
+             SQLiteDatabase create_database = new CREATE_DATABASE(context).getССылкаНаСозданнуюБазу();
+                Long Версия = new SubClassUpVersionDATA().МетодПовышаемВерсииCurrentTable(    "errordsu1"
+                        ,context,create_database);
                 Integer  ПубличныйIDДляАсих=   new Class_Generations_PUBLIC_CURRENT_ID().
                         ПолучениеПубличногоТекущегоПользователяID(context);
-                classGrudSqlOperationsДляЗаписиНовойОшибки = new Class_GRUD_SQL_Operations(context);
-                classGrudSqlOperationsДляЗаписиНовойОшибки.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.clear();
-                classGrudSqlOperationsДляЗаписиНовойОшибки = new Class_GRUD_SQL_Operations(context);
-                classGrudSqlOperationsДляЗаписиНовойОшибки.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы", "ErrorDSU1");
-                classGrudSqlOperationsДляЗаписиНовойОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("Error", ТекстОшибки.toLowerCase());
+                classGrudSqlOperationsОшибки = new Class_GRUD_SQL_Operations(context);
+                classGrudSqlOperationsОшибки.concurrentHashMapНабор.clear();
+                classGrudSqlOperationsОшибки = new Class_GRUD_SQL_Operations(context);
+                classGrudSqlOperationsОшибки.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы", "ErrorDSU1");
+                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("Error", ТекстОшибки.toLowerCase());
                 Log.d(this.getClass().getName(), " ТекстОшибки.toLowerCase()  " + ТекстОшибки.toLowerCase());
-                classGrudSqlOperationsДляЗаписиНовойОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("Klass", КлассГнерацииОшибки.toUpperCase());
-                classGrudSqlOperationsДляЗаписиНовойОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("Metod", МетодаОшибки.toUpperCase());
-                classGrudSqlOperationsДляЗаписиНовойОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("LineError", ЛинияОшибки);
-                classGrudSqlOperationsДляЗаписиНовойОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("IdUser", ПубличныйIDДляАсих);
-                classGrudSqlOperationsДляЗаписиНовойОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("current_table", new Random().nextInt());
+                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("Klass", КлассГнерацииОшибки.toUpperCase());
+                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("Metod", МетодаОшибки.toUpperCase());
+                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("LineError", ЛинияОшибки);
+                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("IdUser", ПубличныйIDДляАсих);
+                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("current_table", Версия);
                 final Object ТекущаяВерсияПрограммы = BuildConfig.VERSION_CODE;
                 Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                classGrudSqlOperationsДляЗаписиНовойОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("whose_error", ЛокальнаяВерсияПОСравнение);
+                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("whose_error", ЛокальнаяВерсияПОСравнение);
                 String СгенерированованныйДатаДляВставки = new Class_Generation_Data(context).ГлавнаяДатаИВремяОперацийСБазойДанных();
-                classGrudSqlOperationsДляЗаписиНовойОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("Data_Operazii_E", СгенерированованныйДатаДляВставки);
+                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("Data_Operazii_E", СгенерированованныйДатаДляВставки);
                 ///TODO РЕЗУЛЬТАТ ВСТАВКИ ДАННЫХ
                 if (!ТекстОшибки.equalsIgnoreCase("java.net.SocketTimeoutException: timeout")
                         && !ТекстОшибки.equalsIgnoreCase("java.lang.NumberFormatException: null")
@@ -71,28 +75,40 @@ public class Class_Generation_Errors {
                     arrayListОшибкиДляЗаписивФайл.add(КлассГнерацииОшибки);
                     arrayListОшибкиДляЗаписивФайл.add(МетодаОшибки);
                     arrayListОшибкиДляЗаписивФайл.add(String.valueOf(ЛинияОшибки));
+                    // TODO: 09.07.2023 запись ошибки в файл  .txt
                    new SubClassWriteErrorFile(context,arrayListОшибкиДляЗаписивФайл).МетодЗаписьДополенительеноОшибвкивФайл();
 
-
 // TODO: 21.12.2022  главная запись ощибки в табелицу ErrorDSU1
-                    PезультатВставкиНовойОшибки = (Long) classGrudSqlOperationsДляЗаписиНовойОшибки.
-                            new InsertData(context).insertdata(classGrudSqlOperationsДляЗаписиНовойОшибки.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
-                            classGrudSqlOperationsДляЗаписиНовойОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций,
+                    PезультатВставкиНовойОшибки = (Long) classGrudSqlOperationsОшибки.
+                            new InsertData(context).insertdata(classGrudSqlOperationsОшибки.concurrentHashMapНабор,
+                            classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций,
                             new PUBLIC_CONTENT(context).МенеджерПотоков,
-                             new CREATE_DATABASE_Error(context).getССылкаНаСозданнуюБазу());
+                            create_database_error);
+                    Log.d(this.getClass().getName(),  " date " +new Date().toGMTString().toString() + " PезультатВставкиНовойОшибки " +PезультатВставкиНовойОшибки);
+
+                    // TODO: 21.12.2022  главная запись ощибки в табелицу ErrorDSU1
+                    PезультатВставкиНовойОшибки = (Long) classGrudSqlOperationsОшибки.
+                            new InsertData(context).insertdata(classGrudSqlOperationsОшибки.concurrentHashMapНабор,
+                            classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций,
+                            new PUBLIC_CONTENT(context).МенеджерПотоков,
+                            create_database);
+                    Log.d(this.getClass().getName(),  " date " +new Date().toGMTString().toString() + " PезультатВставкиНовойОшибки " +PезультатВставкиНовойОшибки);
                 }
                 Log.d(this.getClass().getName(), "PезультатВставкиНовойОшибки " + PезультатВставкиНовойОшибки);
-                if (PезультатВставкиНовойОшибки == null) {
-                    PезультатВставкиНовойОшибки = 0l;
+
+                // TODO: 09.07.2023 clear
+                classGrudSqlOperationsОшибки.concurrentHashMapНабор.clear();
+                if(create_database.inTransaction()){
+                    create_database.endTransaction();
                 }
-                if (PезультатВставкиНовойОшибки > 0) {
-                    Log.d(this.getClass().getName(), "результатВставки Ошибки ERROR " + PезультатВставкиНовойОшибки);
+                if(create_database_error.inTransaction()){
+                    create_database_error.endTransaction();
                 }
-                classGrudSqlOperationsДляЗаписиНовойОшибки.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.clear();
+
             } else {
                 System.err.println("  Ошибка в самом классе записи ошибок нет КОНТЕКСТА Class_Generation_Errors");
             }
-            
+            Log.d(this.getClass().getName(), "PезультатВставкиНовойОшибки " + PезультатВставкиНовойОшибки);
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("  Ошибка в самом классе записи ошибок нет КОНТЕКСТА Class_Generation_Errors");

@@ -248,16 +248,16 @@ public class Class_Clears_Tables {
             contentValuesОчисткаТаблицДобавлениеДат.put("localversionandroid_version", 0);
             contentValuesОчисткаТаблицДобавлениеДат.put("versionserveraandroid_version", 0);
             Class_GRUD_SQL_Operations  class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии=new Class_GRUD_SQL_Operations(context);
-            class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("НазваниеОбрабоатываемойТаблицы","MODIFITATION_Client");
-            class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("Флаг_ЧерезКакоеПолеОбновлением","name");
-            class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ЗначениеФлагОбновления",ИмяТаблицы);
+            class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","MODIFITATION_Client");
+            class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.concurrentHashMapНабор.put("Флаг_ЧерезКакоеПолеОбновлением","name");
+            class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.concurrentHashMapНабор.put("ЗначениеФлагОбновления",ИмяТаблицы);
             class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.
-                    concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций.put("ЗнакФлагОбновления","=");
+                    concurrentHashMapНабор.put("ЗнакФлагОбновления","=");
             ////TODO КОНТЕЙНЕР ДЛЯ ОБНОВЛЕНИЯ
             class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.contentValuesДляSQLBuilder_Для_GRUD_Операций.putAll(contentValuesОчисткаТаблицДобавлениеДат);
             ///TODO РЕЗУЛЬТАТ ОБНОВЛЕНИЕ ДАННЫХ
             ДобавлениеДатыПослеУдалниеТаблиц= (Integer)  class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.
-                    new UpdateData(context).updatedata(class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии. concurrentHashMapНаборПараментовSQLBuilder_Для_GRUD_Операций,
+                    new UpdateData(context).updatedata(class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.concurrentHashMapНабор,
                     class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.contentValuesДляSQLBuilder_Для_GRUD_Операций,
                     МенеджерПотоковВнутрений,Create_Database_СсылкаНАБазовыйКласс.getССылкаНаСозданнуюБазу());
             Log.d(this.getClass().getName(), " сработала ...  обнуление версии в MODIFITATION_Client для таблицы " + ИмяТаблицы+
