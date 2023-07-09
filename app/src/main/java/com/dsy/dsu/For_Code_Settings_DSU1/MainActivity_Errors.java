@@ -88,7 +88,7 @@ public class MainActivity_Errors extends AppCompatActivity  {
             class_grud_sql_operationsПросмотраОшибокПриложения.
                     concurrentHashMapНабор.put("СтолбцыОбработки","*");
             class_grud_sql_operationsПросмотраОшибокПриложения.
-                    concurrentHashMapНабор.put("УсловиеСортировки","ID_Table_ErrorDSU1 DESC");
+                    concurrentHashMapНабор.put("УсловиеСортировки","id DESC");
             class_grud_sql_operationsПросмотраОшибокПриложения.
                     concurrentHashMapНабор.put("УсловиеЛимита","50");
             // TODO: 12.10.2021  Ссылка Менеджер Потоков
