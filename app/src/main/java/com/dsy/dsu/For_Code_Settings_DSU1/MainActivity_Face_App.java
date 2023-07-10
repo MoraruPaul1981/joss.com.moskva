@@ -450,20 +450,22 @@ public class MainActivity_Face_App extends AppCompatActivity {
                         case R.id.sedmoy:
                             item.setChecked(true);
                             Log.w(getPackageName().getClass().getName(), "item.getItemId() МЕНЮ ОБНОВЛЕНИЕ ПО    " + item.getItemId() + "\n" + item);/////////
-                            try {
-                                localBinderОбновлениеПО.getService().МетодГлавныйОбновленияПО(true, activity);
-                                Log.i(this.getClass().getName(), " Из меню установкаОбновление ПО "
-                                        + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                        + " время " + new Date().toLocaleString());
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
-                                        + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                        this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            }
+                            handlerFaceAPP.post(()->{
+                                try {
+                                    localBinderОбновлениеПО.getService().МетодГлавныйОбновленияПО(true, activity);
+                                    Log.i(this.getClass().getName(), " Из меню установкаОбновление ПО "
+                                            + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                            + " время " + new Date().toLocaleString());
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
+                                            + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                    new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                            this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                }
+                            });
                             break;
 
                         default:

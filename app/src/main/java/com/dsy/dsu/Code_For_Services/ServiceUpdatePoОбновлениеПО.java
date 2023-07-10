@@ -369,7 +369,6 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                             + "\n" + "ООО Союз-Автодор"
                             + "\n"  +"версия. " + СервернаяВерсияПОВнутри)
                     .setPositiveButton("Загрузить", null)
-                    .setNegativeButton("Позже", null)
                     .setIcon(R.drawable.icon_dsu1_update_success)
                     .show();
             // TODO: 06.05.2023 ДВЕ КНОПКИ
@@ -506,7 +505,6 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                             + "\n" + "ООО Союз-Автодор"
                             + "\n"  +"версия. " + СервернаяВерсияПОВнутри)
                     .setPositiveButton("Установить", null)
-                    .setNegativeButton("Позже", null)
                     .setIcon(R.drawable.icon_dsu1_updates_po_success)
                     .show();
 /////////кнопка
