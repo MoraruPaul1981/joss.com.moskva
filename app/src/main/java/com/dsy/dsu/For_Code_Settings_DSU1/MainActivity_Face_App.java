@@ -151,10 +151,6 @@ public class MainActivity_Face_App extends AppCompatActivity {
             // TODO: 06.04.2023  ТЕСТ КОД для 1С
             ///методДляТетсирования1С();
 
-            String а = null;
-            Log.d(this.getClass().getName(),  " date " +new Date().toGMTString().toString() + " а " +а.toString());
-
-
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
