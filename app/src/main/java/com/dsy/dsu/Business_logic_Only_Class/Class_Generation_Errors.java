@@ -108,7 +108,7 @@ public class Class_Generation_Errors {
                 if(create_database_error.inTransaction()){
                     create_database_error.endTransaction();
                 }
-
+                create_database_error.close();
             } else {
                 System.err.println("  Ошибка в самом классе записи ошибок нет КОНТЕКСТА Class_Generation_Errors");
             }
