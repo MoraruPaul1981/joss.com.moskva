@@ -30,7 +30,7 @@ public class GeneratorJSONSerializer extends JsonSerializer<Cursor> {
             jsonGenerator.writeStartObject();
             // TODO: 14.03.2023  генериуем по столбцам
             for (int ИндексСтолбикаJson = 0; ИндексСтолбикаJson < КурсорДляОтправкиДанныхНаСерверОтАндройда.getColumnCount(); ИндексСтолбикаJson++) {
-                String НазваниеСтолбикаJson = КурсорДляОтправкиДанныхНаСерверОтАндройда.getColumnName(ИндексСтолбикаJson);// TODO: 14.03.2023 Название как текст столбика в JSON  NAme
+                String НазваниеСтолбикаJson = КурсорДляОтправкиДанныхНаСерверОтАндройда.getColumnName(ИндексСтолбикаJson).trim();// TODO: 14.03.2023 Название как текст столбика в JSON  NAme
                 switch (НазваниеСтолбикаJson.trim()){
                     case "_id":
                     case "id":
