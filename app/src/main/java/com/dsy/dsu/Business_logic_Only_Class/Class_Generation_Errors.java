@@ -45,6 +45,8 @@ public class Class_Generation_Errors {
              SQLiteDatabase create_database = new CREATE_DATABASE(context).getССылкаНаСозданнуюБазу();
                 Long Версия = new SubClassUpVersionDATA().МетодПовышаемВерсииCurrentTable(    "errordsu1"
                         ,context,create_database);
+                Long   UUID=  (Long)
+                        new Class_Generation_UUID(context).МетодГенерацииUUID(context);
                 Integer  ПубличныйIDДляАсих=   new Class_Generations_PUBLIC_CURRENT_ID().
                         ПолучениеПубличногоТекущегоПользователяID(context);
                 classGrudSqlOperationsОшибки = new Class_GRUD_SQL_Operations(context);
@@ -56,8 +58,8 @@ public class Class_Generation_Errors {
                 classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("Klass", КлассГнерацииОшибки.toUpperCase());
                 classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("Metod", МетодаОшибки.toUpperCase());
                 classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("LineError", ЛинияОшибки);
-                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("IdUser", ПубличныйIDДляАсих);
-                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("UUID", new Random().nextLong());
+                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("user_update", ПубличныйIDДляАсих);
+                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("UUID", UUID);
                 classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("current_table", Версия);
                 final Object ТекущаяВерсияПрограммы = BuildConfig.VERSION_CODE;
                 Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
