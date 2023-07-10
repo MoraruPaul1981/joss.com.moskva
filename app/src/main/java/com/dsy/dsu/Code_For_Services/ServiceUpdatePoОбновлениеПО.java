@@ -153,15 +153,13 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
     }
 
 
-    public void МетодГлавныйОбновленияПО(@NonNull Boolean РежимРаботыСлужбыОбновлениеПО ,
+    public void   МетодГлавныйОбновленияПО(@NonNull Boolean РежимРаботыСлужбыОбновлениеПО ,
                                          @NonNull Activity  activity){
         try {
             this.activity=activity;
             this.РежимРаботыСлужбыОбновлениеПО=РежимРаботыСлужбыОбновлениеПО;
             final Integer[] ВерсияПООтСервере = {0};
-            Completable.fromSupplier(new Supplier<Object>() {
-                        @Override
-                        public Object get() throws Throwable {
+
                             String  РежимРаботыСети = МетодУзнаемРежимСетиWIFiMobile(getApplicationContext());
                             preferences = getApplicationContext().getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
                             if (РежимРаботыСети.equals("WIFI")  || РежимРаботыСети.equals("Mobile")  ) {
@@ -172,6 +170,58 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                                  ВерсияПООтСервере[0] =       МетодАнализаВерсииПОJSON();
                                 Log.i(this.getClass().getName(),  Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
                                         +new Date().toLocaleString() +  "ВерсияПООтСервере " + ВерсияПООтСервере[0]);
+                                // TODO: 18.02.2023 Анализ Версии
+                                МетодАнализВерсийЛокальнаяИСерверная(ВерсияПООтСервере[0],true);
+                                Log.d(getApplicationContext().getClass().getName(), "\n" + "   ФинальныйРезультатAsyncBackgroud ВерсияПООтСервере[0]"+ВерсияПООтСервере[0]);
+                                // TODO: 24.04.2023 останаливаем службу
+
+                                Log.i(this.getClass().getName(),  Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                            }else {
+                                Log.e(this.getClass().getName(), "неТ СВЯЗИ ДЛЯ ЗАГРУЗКИ ПО ТипПодключенияИнтернтаДляСлужбы " + РежимРаботыСети);
+                                activity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (РежимРаботыСлужбыОбновлениеПО == true) {
+                                            Toast toast = Toast.makeText(getApplicationContext(), "Нет связи c Cервер ПО !!!", Toast.LENGTH_LONG);
+                                            toast.setGravity(Gravity.BOTTOM, 0, 40);
+                                            toast.show();
+                                            Log.i(this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
+                                        }
+                                    }
+                                });
+                            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
+
+    public Boolean МетодГлавныйОбновленияПОДоAsync(@NonNull Boolean РежимРаботыСлужбыОбновлениеПО ,
+                                         @NonNull Activity  activity){
+        Boolean ФлагЗАпускатьСинхронизациюПотосучтоВерсияРавна=false;
+        try {
+            this.activity=activity;
+            this.РежимРаботыСлужбыОбновлениеПО=РежимРаботыСлужбыОбновлениеПО;
+            final Integer[] ВерсияПООтСервере = {0};
+                            String  РежимРаботыСети = МетодУзнаемРежимСетиWIFiMobile(getApplicationContext());
+                            preferences = getApplicationContext().getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
+                            if (РежимРаботыСети.equals("WIFI")  || РежимРаботыСети.equals("Mobile")  ) {
+                                Log.i(this.getClass().getName(),  Thread.currentThread().getStackTrace()[2].getMethodName()+ "РежимРаботыСети " + РежимРаботыСети);
+                                // TODO: 18.02.2023 удаление перед анализо файлов json И .apk
+                                МетодДополнительногоУдалениеФайлов();
+                                // TODO: 18.02.2023 удаление перед анализо файлов json И .apk
+                                ВерсияПООтСервере[0] =       МетодАнализаВерсииПОJSON();
+                                Log.i(this.getClass().getName(),  Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
+                                        +new Date().toLocaleString() +  "ВерсияПООтСервере " + ВерсияПООтСервере[0]);
+
+
+                                // TODO: 18.02.2023 Анализ Версии
+                                МетодАнализВерсийЛокальнаяИСерверная(ВерсияПООтСервере[0],false);
+                                Log.d(getApplicationContext().getClass().getName(), "\n" + "   ФинальныйРезультатAsyncBackgroud ВерсияПООтСервере[0]"+ВерсияПООтСервере[0]);
 
                                 Log.i(this.getClass().getName(),  Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
                             }else {
@@ -188,44 +238,8 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                                     }
                                 });
                             }
-                            return РежимРаботыСети;
-                        }
-                    })
-                    .delay(2, TimeUnit.SECONDS)
-                    .subscribeOn(Schedulers.single())
-                    .doOnError(new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Throwable {
-                            throwable.printStackTrace();
-                            Log.e(this.getClass().getName(), "Ошибка " +throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(throwable.toString(), this.getClass().getName(),
-                                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
-                        }
-                    })
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnComplete(new Action() {
-                        @Override
-                        public void run() throws Throwable {
-                            // TODO: 18.02.2023 Анализ Версии
-                            МетодАнализВерсийЛокальнаяИСерверная(ВерсияПООтСервере[0]);
-                            Log.d(getApplicationContext().getClass().getName(), "\n" + "   ФинальныйРезультатAsyncBackgroud ВерсияПООтСервере[0]"+ВерсияПООтСервере[0]);
-                            // TODO: 24.04.2023 останаливаем службу
-                        }
-                    })
-                    .onErrorComplete(new Predicate<Throwable>() {
-                        @Override
-                        public boolean test(Throwable throwable) throws Throwable {
-                            throwable.printStackTrace();
-                            Log.e(this.getClass().getName(), "Ошибка " +throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(throwable.toString(), this.getClass().getName(),
-                                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
-                            return false;
-                        }
-                    }).subscribe();
+            Log.i(this.getClass().getName(),  Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() +
+                     " ФлагЗАпускатьСинхронизациюПотосучтоВерсияРавна " +ФлагЗАпускатьСинхронизациюПотосучтоВерсияРавна);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -234,9 +248,8 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                     Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
+        return  ФлагЗАпускатьСинхронизациюПотосучтоВерсияРавна;
     }
-
-
     private File МетодЗагрузкиAPK()  {
         File  FileAPK = null;
         try {
@@ -609,7 +622,8 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
         return СервернаяВерсияПОВнутри;
     }
 
-    private void МетодАнализВерсийЛокальнаяИСерверная(@NonNull Integer СервернаяВерсияПОВнутри) {
+    private Boolean МетодАнализВерсийЛокальнаяИСерверная(@NonNull Integer СервернаяВерсияПОВнутри,@NonNull Boolean ФлагПоказыватьИлиНЕтСообзение) {
+        Boolean ФлагЗАпускатьСинхронизациюПотосучтоВерсияРавна=false;
   try{
 
       PackageInfo    pInfo = getApplicationContext(). getPackageManager().getPackageInfo(getApplicationContext(). getPackageName(), 0);
@@ -620,21 +634,31 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                " СервернаяВерсияПОВнутри "+СервернаяВерсияПОВнутри);
         if (СервернаяВерсияПОВнутри >ЛокальнаяВерсияПО ) {
             МетодСообщениеЗапускЗагрущикаПо(СервернаяВерсияПОВнутри);
+            // TODO: 10.07.2023
+            ФлагЗАпускатьСинхронизациюПотосучтоВерсияРавна=false;
             Log.w(getApplicationContext().getClass().getName(),    Thread.currentThread().getStackTrace()[2].getMethodName()+
                     " ЛокальнаяВерсияПО "+ЛокальнаяВерсияПО+  " СервернаяВерсияПОВнутри  "+СервернаяВерсияПОВнутри + " POOLS" + Thread.currentThread().getName());
         }else{
             Log.w(getApplicationContext().getClass().getName(),    Thread.currentThread().getStackTrace()[2].getMethodName()+
                     " ЛокальнаяВерсияПО "+ЛокальнаяВерсияПО+  " СервернаяВерсияПОВнутри  "+СервернаяВерсияПОВнутри + " POOLS" + Thread.currentThread().getName());
-            activity.runOnUiThread(()->{
-                if (РежимРаботыСлужбыОбновлениеПО==true) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "У Вас последняя версия ПО !!! ", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.BOTTOM, 0, 40);
-                    toast.show();
-                }
-            });
+            if (ФлагПоказыватьИлиНЕтСообзение==true) {
+                activity.runOnUiThread(()->{
+                    if (РежимРаботыСлужбыОбновлениеПО==true) {
+                        Toast toast = Toast.makeText(getApplicationContext(), "У Вас последняя версия ПО !!! ", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.BOTTOM, 0, 40);
+                        toast.show();
+                    }
+                });
+            }
+            // TODO: 10.07.2023
+            ФлагЗАпускатьСинхронизациюПотосучтоВерсияРавна=true;
+            // TODO: 10.07.2023 запускаем синхрониазцуию
         }
       // TODO: 04.05.2023 выключаем
       ///stopSelf();
+      Log.w(getApplicationContext().getClass().getName(),    Thread.currentThread().getStackTrace()[2].getMethodName()+
+              " ЛокальнаяВерсияПО "+ЛокальнаяВерсияПО+  " СервернаяВерсияПОВнутри  "+СервернаяВерсияПОВнутри + " POOLS" + Thread.currentThread().getName() +
+              " ФлагЗАпускатьСинхронизациюПотосучтоВерсияРавна "+ ФлагЗАпускатьСинхронизациюПотосучтоВерсияРавна);
     } catch (Exception e ) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -643,5 +667,6 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                 Thread.currentThread().getStackTrace()[2].getMethodName(),
                 Thread.currentThread().getStackTrace()[2].getLineNumber());
     }
+  return  ФлагЗАпускатьСинхронизациюПотосучтоВерсияРавна;
     }
 }
