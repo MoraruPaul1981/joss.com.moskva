@@ -176,7 +176,7 @@ public class MainActivity_Face_App extends AppCompatActivity {
                                             localBinderОбновлениеПО = (ServiceUpdatePoОбновлениеПО.localBinderОбновлениеПО) service;
                                     Log.i(context.getClass().getName(), "    onServiceConnected  service)"
                                             + service.isBinderAlive());
-                                    localBinderОбновлениеПО.getService().МетодГлавныйОбновленияПО(false, activity);
+                                    //localBinderОбновлениеПО.getService().МетодГлавныйОбновленияПО(false, activity);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();

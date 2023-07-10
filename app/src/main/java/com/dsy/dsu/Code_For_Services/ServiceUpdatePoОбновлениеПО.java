@@ -153,8 +153,9 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
     }
 
 
-    public void   МетодГлавныйОбновленияПО(@NonNull Boolean РежимРаботыСлужбыОбновлениеПО ,
+    public Boolean   МетодГлавныйОбновленияПО(@NonNull Boolean РежимРаботыСлужбыОбновлениеПО ,
                                          @NonNull Activity  activity){
+        Boolean ФлагЗАпускатьСинхронизациюПотосучтоВерсияРавна=false;
         try {
             this.activity=activity;
             this.РежимРаботыСлужбыОбновлениеПО=РежимРаботыСлужбыОбновлениеПО;
@@ -171,8 +172,9 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                                 Log.i(this.getClass().getName(),  Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
                                         +new Date().toLocaleString() +  "ВерсияПООтСервере " + ВерсияПООтСервере[0]);
                                 // TODO: 18.02.2023 Анализ Версии
-                                МетодАнализВерсийЛокальнаяИСерверная(ВерсияПООтСервере[0],true);
-                                Log.d(getApplicationContext().getClass().getName(), "\n" + "   ФинальныйРезультатAsyncBackgroud ВерсияПООтСервере[0]"+ВерсияПООтСервере[0]);
+                                 ФлагЗАпускатьСинхронизациюПотосучтоВерсияРавна=               МетодАнализВерсийЛокальнаяИСерверная(ВерсияПООтСервере[0],true);
+                                Log.d(getApplicationContext().getClass().getName(), "\n" + "   ФинальныйРезультатAsyncBackgroud ВерсияПООтСервере[0]"+ВерсияПООтСервере[0]+
+                                        " ФлагЗАпускатьСинхронизациюПотосучтоВерсияРавна " +ФлагЗАпускатьСинхронизациюПотосучтоВерсияРавна);
                                 // TODO: 24.04.2023 останаливаем службу
 
                                 Log.i(this.getClass().getName(),  Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
@@ -198,6 +200,7 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                     Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
+        return  ФлагЗАпускатьСинхронизациюПотосучтоВерсияРавна;
     }
 
     public Boolean МетодГлавныйОбновленияПОДоAsync(@NonNull Boolean РежимРаботыСлужбыОбновлениеПО ,
@@ -220,8 +223,9 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
 
 
                                 // TODO: 18.02.2023 Анализ Версии
-                                МетодАнализВерсийЛокальнаяИСерверная(ВерсияПООтСервере[0],false);
-                                Log.d(getApplicationContext().getClass().getName(), "\n" + "   ФинальныйРезультатAsyncBackgroud ВерсияПООтСервере[0]"+ВерсияПООтСервере[0]);
+                                ФлагЗАпускатьСинхронизациюПотосучтоВерсияРавна=         МетодАнализВерсийЛокальнаяИСерверная(ВерсияПООтСервере[0],false);
+                                Log.d(getApplicationContext().getClass().getName(), "\n" + "   ФинальныйРезультатAsyncBackgroud ВерсияПООтСервере[0]"+ВерсияПООтСервере[0]+
+                                         " ФлагЗАпускатьСинхронизациюПотосучтоВерсияРавна " +ФлагЗАпускатьСинхронизациюПотосучтоВерсияРавна);
 
                                 Log.i(this.getClass().getName(),  Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
                             }else {
