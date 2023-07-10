@@ -43,6 +43,12 @@ public class GeneratorJSONSerializer extends JsonSerializer<Cursor> {
                         serializers.defaultSerializeField(НазваниеСтолбикаJson,UUIDandCurrenttableValue.toString(), jsonGenerator);
                         Log.d(this.getClass().getName(), " НазваниеСтолбикаJson ::    " + НазваниеСтолбикаJson +  " UUIDandCurrenttableValue " +UUIDandCurrenttableValue);
                         break;
+                    case "user_update":
+                        Integer Getuser_update= КурсорДляОтправкиДанныхНаСерверОтАндройда.getInt(КурсорДляОтправкиДанныхНаСерверОтАндройда.getColumnIndex(НазваниеСтолбикаJson)) ;
+                        Getuser_update=Optional.ofNullable(Getuser_update).orElse(0);// TODO: 14.03.2023  Само Полученое содеожимое столбика Value
+                        serializers.defaultSerializeField(НазваниеСтолбикаJson,Getuser_update.toString(), jsonGenerator);
+                        Log.d(this.getClass().getName(), " НазваниеСтолбикаJson ::    " + НазваниеСтолбикаJson +  " Getuser_update " +Getuser_update);
+                        break;
                     default:
                         String СодержимоеСтолбикаJson= КурсорДляОтправкиДанныхНаСерверОтАндройда.getString(КурсорДляОтправкиДанныхНаСерверОтАндройда.getColumnIndex(НазваниеСтолбикаJson)) ;// TODO: 14.03.2023  Само Полученое содеожимое столбика Value
                         СодержимоеСтолбикаJson=Optional.ofNullable(СодержимоеСтолбикаJson).orElse("");
