@@ -70,7 +70,10 @@ public class Class_Generation_Errors {
                 if (!ТекстОшибки.equalsIgnoreCase("java.net.SocketTimeoutException: timeout")
                         && !ТекстОшибки.equalsIgnoreCase("java.lang.NumberFormatException: null")
                         && !ТекстОшибки.matches("(.*)java.net.UnknownHostException: Unable to resolve host(.*)")
-                        && !ТекстОшибки.matches("(.*)java.net.SocketTimeoutException: failed to connect to tabel.dsu1.ru/80.66.149.58 (port 8888)(.*)")) {
+                        && !ТекстОшибки.matches("(.*)java.net.SocketTimeoutException: failed to connect(.*)")
+                        && !ТекстОшибки.matches("(.*)java.net.sockettimeoutexception: failed to connect(.*)")) {
+
+
                     // TODO: 20.02.2022
 
                     // TODO: 20.12.2022  дополнительный механизм записи ошибкок
