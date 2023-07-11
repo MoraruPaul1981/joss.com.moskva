@@ -259,7 +259,7 @@
             android:foregroundGravity="center"
             android:gravity="center"
             android:minHeight="35dp"
-            android:text="Закрыть"
+            android:text="Сохранить"
             android:textColor="#0E0E0E"
             android:textSize="9sp"
             android:textStyle="bold"

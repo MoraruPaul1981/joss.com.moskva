@@ -233,7 +233,7 @@ public class FragmentMaretialNew extends Fragment {
             scrollViewНовыйматериал=  (ScrollView) view.findViewById(R.id.scrollview_new_materials);
             progressBarСозданиеМатерила.setVisibility(View.VISIBLE);
             cursorConcurrentSkipListMap.putIfAbsent("Создание Нового Материала",new Object());
-            animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_tabellist);
+            animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_newscanner1);
             animationscroll = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_scrolls);
             // TODO: 19.10.2022 методы для фрагмета создание нового материалоа
             МетодИнициализацииRecycreView();
@@ -1611,6 +1611,7 @@ public class FragmentMaretialNew extends Fragment {
                                                     Log.d(this.getClass().getName()," position");
                                                     if (cursor.getCount()>0) {
                                                         try{
+                                                            MaterialTextView materialTextViewЭлементСписка=(MaterialTextView) view;
                                                             Integer ИндексНазваниеЦФО = cursor.getColumnIndex(КакойСтолбикЗагружатьВSimpleAdapter);///user_update  --old/// uuid
                                                             String  НазваниеЦФО = cursor.getString(ИндексНазваниеЦФО);
                                                             // TODO: 13.12.2022  производим состыковку
@@ -1623,7 +1624,7 @@ public class FragmentMaretialNew extends Fragment {
                                                                 bundle.putInt("ПолучаемIDЦфо",ПолучаемIDЦфо);
                                                                 bundle.putString("НазваниеЦФО",НазваниеЦФО);
                                                                 bundle.putLong("UUIDНазваниеЦФО",UUIDНазваниеЦФО);
-                                                                ((MaterialTextView)view).setTag(bundle);
+                                                                materialTextViewЭлементСписка.setTag(bundle);
                                                             }
                                                             Log.d(this.getClass().getName()," НазваниеЦФО"+ НазваниеЦФО+
                                                                     " ПолучаемIDЦфо "+ПолучаемIDЦфо);
@@ -1637,12 +1638,15 @@ public class FragmentMaretialNew extends Fragment {
                                                                 Log.d(v.getContext().getClass().getName(), " НазваниеЦФО " + "--" + НазваниеЦФО);/////
                                                             }
                                                             ((MaterialTextView)view).setText(НазваниеЦФО);
+
+                                                            materialTextViewЭлементСписка.startAnimation(animation);
                                                             // TODO: 13.12.2022 слушатель
-                                                            ((MaterialTextView)view).setOnClickListener(new View.OnClickListener() {
+                                                            materialTextViewЭлементСписка.setOnClickListener(new View.OnClickListener() {
                                                                 @Override
                                                                 public void onClick(View v) {
                                                                     try{
-                                                                    ((MaterialTextView)view).startAnimation(animation1);
+                                                                        MaterialTextView materialTextViewЭлементСписка=(MaterialTextView) view;
+                                                                        materialTextViewЭлементСписка.startAnimation(animation);
                                                                     Bundle bundle=(Bundle)   ((MaterialTextView)view).getTag();
                                                                     Integer IDЦфоДЛяПередачи=      bundle.getInt("ПолучаемIDЦфо",0);
                                                                     String НазваниеЦФО=   bundle.getString("НазваниеЦФО","");

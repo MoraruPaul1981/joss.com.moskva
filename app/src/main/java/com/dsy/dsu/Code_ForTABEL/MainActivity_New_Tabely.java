@@ -121,7 +121,6 @@ public class MainActivity_New_Tabely extends AppCompatActivity {
             методБиндингСлужбы();
             preferences = getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
             animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_row_newscanner1);
-            animation= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_row_newscanner1);
             МетодПришлиПеременныеИзMainActivityListtabel();
         } catch (Exception e) {
             e.printStackTrace();

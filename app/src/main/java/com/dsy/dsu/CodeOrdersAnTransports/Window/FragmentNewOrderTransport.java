@@ -101,6 +101,7 @@ public class FragmentNewOrderTransport extends Fragment {
     private     View   родительскийCardView;
 
    private SharedPreferences preferencesМатериалы;
+   private Animation animation;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -152,6 +153,7 @@ public class FragmentNewOrderTransport extends Fragment {
             progressBarСканирование.setVisibility(View.VISIBLE);
             TextViewHadler = (TextView) view.findViewById(R.id.TextViewHadler);
             textViewHadler=(MaterialTextView)  view.findViewById(R.id.TextViewHadler);
+            animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_newscanner1);
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -1046,14 +1048,12 @@ public class FragmentNewOrderTransport extends Fragment {
 
     //TODO SubClass SearchView
     class SearchViewForNewOT {
-        private     Animation   animation1;
-        private     MaterialButton materialButtonFilterЗакрытьДиалог;
         private    ListView ListViewForSearchView;
         private  String Столбик;
         private String ТаблицаТекущая;
         private   SearchView searchView;
         private  Cursor cursor;
-        private  String Спровочник;
+        private  MaterialTextView materialTextViewParent;
         void методПоискаНовыйЗаказТранспорта(@NonNull Cursor cursor,
                                              @NonNull String Столбик,
                                              @NonNull String ТаблицаТекущая,
@@ -1063,14 +1063,14 @@ public class FragmentNewOrderTransport extends Fragment {
             this.cursor=cursor;
             this.Столбик=Столбик;
             this.ТаблицаТекущая=ТаблицаТекущая;
-            this.Спровочник=Спровочник;
+            this.materialTextViewParent=materialTextViewParent;
             alertDialogNewOrderTranport = new MaterialAlertDialogBuilder(getContext()){
+                private     MaterialButton ButtonFilterЗакрытьДиалог =null;
                 @NonNull
                 @Override
                 public MaterialAlertDialogBuilder setView(View view) {
                     try{
-                        animation1= AnimationUtils.loadAnimation(getContext(),R.anim.slide_in_row_newscanner1);
-                        materialButtonFilterЗакрытьДиалог =    (MaterialButton) view.findViewById(R.id.bottom_newscanner1);
+                        ButtonFilterЗакрытьДиалог =    (MaterialButton) view.findViewById(R.id.bottom_newscanner1);
                         ListViewForSearchView =    (ListView) view.findViewById(R.id.ListViewForNewOrderTransport);
                         searchView =    (SearchView) view.findViewById(R.id.searchview_newordertransport);
                         searchView.setQueryHint("Поиск "+Спровочник);
@@ -1099,6 +1099,7 @@ public class FragmentNewOrderTransport extends Fragment {
                                         Log.d(this.getClass().getName()," position");
                                         if (cursor.getCount()>0) {
                                             try{
+                                                MaterialTextView materialTextViewЭлементСписка=(MaterialTextView) view;
                                                 // TODO: 13.12.2022  производим состыковку
                                                 Integer   getId = cursor.getInt(cursor.getColumnIndex("_id"));
                                                 if (getId>0) {
@@ -1109,7 +1110,7 @@ public class FragmentNewOrderTransport extends Fragment {
                                                     bundle.putString("getName",getName);
                                                     bundle.putLong("getUUID",UUIDGetFilter);
                                                     // TODO: 16.05.2023 Элемент Заполяем данными  TAG
-                                                    ((MaterialTextView)view).setTag(bundle);
+                                                    materialTextViewЭлементСписка.setTag(bundle);
                                                 // TODO: 20.01.2022
                                                 Log.d(this.getClass().getName()," getName "+getName + " getId " +getId  + " UUIDGetFilter " +UUIDGetFilter+ " bundle "+bundle);
                                                 boolean ДлинаСтрокивСпиноре = getName.length() >40;
@@ -1120,13 +1121,14 @@ public class FragmentNewOrderTransport extends Fragment {
                                                     Log.d(getContext().getClass().getName(), " getName " + "--" + getName);/////
                                                 }
                                                 // TODO: 16.05.2023 Элемент Заполяем данными
-                                                ((MaterialTextView)view).setText(getName);
+                                                    materialTextViewЭлементСписка.setText(getName);
+                                                    materialTextViewЭлементСписка.startAnimation(animation);
                                                 }
                                                 Log.d(getContext().getClass().getName(), "\n"
                                                         + " время: " + new Date() + "\n+" +
                                                         " Класс в процессе... " + this.getClass().getName() + "\n" +
                                                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                                        "  ((MaterialTextView)view) " +  ((MaterialTextView)view));
+                                                        "  ((MaterialTextView)view) " +  materialTextViewЭлементСписка);
                                                 // TODO: 13.12.2022 филь
                                             } catch (Exception e) {
                                                 e.printStackTrace();
@@ -1154,11 +1156,10 @@ public class FragmentNewOrderTransport extends Fragment {
                         МетодПоискаФильтр(  ТаблицаТекущая,             simpleCursorForSearchView );
 
                         // TODO: 15.05.2023 Слушатель Действия Кнопки Сохранить
-
-                        методКликДейсвиеКнопкиСохранить();
-
                         // TODO: 16.05.2023  КЛИК СЛУШАТЕЛЬ ПО ЕЛЕМЕНТУ
-                        методКликПоЗаказуOrder();
+                        методКликПоЗаказуOrder(  );
+
+                        методКликДейсвиеКнопкиСохранить(ButtonFilterЗакрытьДиалог);
 
                         Log.d(this.getContext().getClass().getName(), "\n"
                                 + " время: " + new Date()+"\n+" +
@@ -1181,7 +1182,7 @@ public class FragmentNewOrderTransport extends Fragment {
                     // TODO: 20.12.2022  тут конец выбеленого
                 }
                 // TODO: 16.05.2023  КЛИК ПО ЕЛЕМЕНТУ
-                private void методКликПоЗаказуOrder() {
+                private void методКликПоЗаказуOrder( ) {
                     try{
                     ListViewForSearchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
@@ -1198,38 +1199,21 @@ public class FragmentNewOrderTransport extends Fragment {
                                 materialTextViewParent.setTag(bundlePepoles);
                                 materialTextViewParent.setText(getName);
                                     // TODO: 15.05.2023 ЗАПОЛЕНИЕ ДАННЫМИ КЛИК
-                                message.getTarget().postDelayed(()->{
-                                    if (    materialTextViewParent.getText().toString().length()>0) {
-                                        materialTextViewParent.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-                                        materialTextViewParent.setTextColor(Color.BLACK);
-                                        materialButtonExitParent.setText("Сохранить");
+                                materialTextViewParent.startAnimation(animation);
                                         // TODO: 15.05.2023  ЗАКРЫВАЕТ
-                                        // TODO: 15.05.2023 Закрываем
                                         alertDialogNewOrderTranport.cancel();
                                         alertDialogNewOrderTranport.dismiss();
-                                    } else {
-                                        materialTextViewParent.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-                                        materialTextViewParent.setTextColor(Color.GRAY);
-                                        materialButtonExitParent.setText("Закрыть");
-                                    }
-                                    // TODO: 17.05.2023 Если Заполенеы Все Нужные Элементы
-                                    методПроверкаВсёЗаполено(materialButtonExitParent);
-
-                                    materialTextViewParent.refreshDrawableState();
-                                    materialButtonExitParent.refreshDrawableState();
                                     Log.d(getContext().getClass().getName(), "\n"
                                             + " время: " + new Date() + "\n+" +
                                             " Класс в процессе... " + this.getClass().getName() + "\n" +
                                             " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            "materialTextViewParent " +materialTextViewParent);
-                                },150);
 
-                            }
                             Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date()+"\n+" +
                                     " Класс в процессе... " +
                                    getContext().getClass().getName()+"\n"+
-                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()));
+                                    }
                         } catch (Exception e) {
                             e.printStackTrace();
                             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
@@ -1269,44 +1253,16 @@ public class FragmentNewOrderTransport extends Fragment {
             layoutParams.gravity = Gravity.CENTER;
             alertDialogNewOrderTranport.getWindow().setAttributes(layoutParams);
             // TODO: 13.12.2022 ВТОРОЙ СЛУШАТЕЛЬ НА КНОПКУ
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
         }
 
 
 
 
-        private void методПроверкаВсёЗаполено(@NonNull MaterialButton materialButtonExitParent ) {
-            try{
-                MaterialTextView materialTextcfo
-                        = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuecfo);//ВИД CFO
-                MaterialTextView materialTexttypetc
-                        = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuetypetc);//ВИД type tc
-                MaterialTextView materialTextdate
-                        = (MaterialTextView)   родительскийCardView.findViewById(R.id.valuedate);//ВИД Dates
-                // TODO: 15.05.2023
-                if(materialTextcfo.getText().length()>1
-                        &&  materialTexttypetc.getText().length()>1) {
-                    materialButtonExitParent.setText("Сохранить");
-                }else {
-                    materialButtonExitParent.setText("Закрыть");
-                }
-                materialButtonExitParent.forceLayout();
-                materialButtonExitParent.refreshDrawableState();
-                // TODO: 18.04.2023  Simple Adapter Кдик по Элементы
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "materialTextcfo " +materialTextcfo  + " materialTexttypetc " +materialTexttypetc);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
-                    Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors( getContext())
-                    .МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                            this.getClass().getName(),
-                            Thread.currentThread().getStackTrace()[2].getMethodName(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-        }
+
 
         private void МетодПоискаФильтр(@NonNull String ТаблицаДляФильтра,@NonNull     SimpleCursorAdapter          simpleCursorForSearchView ) {
             try{
@@ -1336,9 +1292,6 @@ public class FragmentNewOrderTransport extends Fragment {
                                 }else {
                                     // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР
                                     методПерезаполенияПоискаИзФилтра(cursor,             simpleCursorForSearchView );
-                                    // TODO: 16.05.2023
-                                    materialButtonFilterЗакрытьДиалог.setText("Закрыть");
-                                    materialButtonFilterЗакрытьДиалог.forceLayout();
                                     Log.d(getContext() .getClass().getName(), "\n"
                                             + " время: " + new Date()+"\n+" +
                                             " Класс в процессе... " +   getContext().getClass().getName()+"\n"+
@@ -1369,10 +1322,6 @@ public class FragmentNewOrderTransport extends Fragment {
                                 // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР   // TODO: 15.05.2023 ПЕРЕПОЛУЧАЕМ НОВЫЕ ДАННЫЕ КУРСОР
                                 методПерезаполенияПоискаИзФилтра(cursorFilter[0],          simpleCursorForSearchView );
                                 // TODO: 16.05.2023
-                                if(cursorFilter[0] !=null && cursorFilter[0].getCount()>0) {
-                                    materialButtonFilterЗакрытьДиалог.setText("Cохранить");
-                                    materialButtonFilterЗакрытьДиалог.forceLayout();
-                                }
                                 Log.d(getContext() .getClass().getName(), "\n"
                                         + " время: " + new Date()+"\n+" +
                                         " Класс в процессе... " +   getContext().getClass().getName()+"\n"+
@@ -1418,7 +1367,6 @@ public class FragmentNewOrderTransport extends Fragment {
                 if(filter!=null){
                     ((MaterialTextView)filter).startAnimation(animationvibr1);
                 }
-                materialButtonFilterЗакрытьДиалог.setText("Закрыть");
             }else{
                 searchView.setBackgroundColor(Color.RED);
                 message.getTarget().postDelayed(() -> {
@@ -1442,7 +1390,7 @@ public class FragmentNewOrderTransport extends Fragment {
         }
         }
 
-        private void методКликДейсвиеКнопкиСохранить( ) {
+        private void методКликДейсвиеКнопкиСохранить( @NonNull MaterialButton materialButtonFilterЗакрытьДиалог) {
             try{
                 materialButtonFilterЗакрытьДиалог.setOnClickListener(new View.OnClickListener() {
                     @Override
