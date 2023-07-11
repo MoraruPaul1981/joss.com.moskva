@@ -106,6 +106,8 @@ public class FragmentMaretialNew extends Fragment {
     private  AsyncTaskLoader asyncTaskLoader;
     // TODO: 15.12.2022 получение материалов
     private  Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binderДляПолучениеМатериалов;
+
+    private     DatePickerDialog ДатаДляКалендаря;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -1984,44 +1986,46 @@ public class FragmentMaretialNew extends Fragment {
                 final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", new Locale("ru"));
                 Calendar newDate = Calendar.getInstance();
                 //TODODATA
-                DatePickerDialog ДатаДляКалендаря =
-                        new DatePickerDialog(getContext(), android.R.style.Theme_Holo_InputMethod , new DatePickerDialog.OnDateSetListener() {////Theme_Holo_Dialog_MinWidth  //Theme_Holo_Panel
-                            public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                newDate.set(year, monthOfYear, dayOfMonth);
-                                try {
-                                    //  String ДатаДляНовогоЗаказаТраспорта= DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(newDate.getTime());
-                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd,MMM yyyy" , new Locale("ru"));
-                                    SimpleDateFormat simpleDateFormatBungle = new SimpleDateFormat("yyyy-MM-dd" , new Locale("ru"));
-                                    Date ДатаВыбранаяПользователь= newDate.getTime();
-                                    // TODO: 09.06.2023
-                                    Calendar myCal = new GregorianCalendar();
-                                    Date ДатаСейчасСитемная= myCal.getTime();
-                                    // TODO: 09.06.2023  проверяем что выбрана дата старше чем сейчас
-                                    if (        ДатаВыбранаяПользователь.after(ДатаСейчасСитемная)) {
-                                        String    ДатаДляНовогоЗаказаТраспорта = simpleDateFormat.format(ДатаВыбранаяПользователь);
-                                        String    ДатаДляНовогоЗаказаТраспортаBungle = simpleDateFormatBungle.format(ДатаВыбранаяПользователь);
-                                        // TODO: 16.05.2023 дата
-                                        методЗаписиНовуюДату(ДатаДляНовогоЗаказаТраспорта, textipputmaretialttdata,ДатаДляНовогоЗаказаТраспортаBungle);
+                if (ДатаДляКалендаря==null) {
+                    ДатаДляКалендаря =
+                            new DatePickerDialog(getContext(), android.R.style.Theme_Holo_InputMethod , new DatePickerDialog.OnDateSetListener() {////Theme_Holo_Dialog_MinWidth  //Theme_Holo_Panel
+                                public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                    newDate.set(year, monthOfYear, dayOfMonth);
+                                    try {
+                                        //  String ДатаДляНовогоЗаказаТраспорта= DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(newDate.getTime());
+                                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd,MMM yyyy" , new Locale("ru"));
+                                        SimpleDateFormat simpleDateFormatBungle = new SimpleDateFormat("yyyy-MM-dd" , new Locale("ru"));
+                                        Date ДатаВыбранаяПользователь= newDate.getTime();
+                                        // TODO: 09.06.2023
+                                        Calendar myCal = new GregorianCalendar();
+                                        Date ДатаСейчасСитемная= myCal.getTime();
+                                        // TODO: 09.06.2023  проверяем что выбрана дата старше чем сейчас
+                                        if (        ДатаВыбранаяПользователь.after(ДатаСейчасСитемная)) {
+                                            String    ДатаДляНовогоЗаказаТраспорта = simpleDateFormat.format(ДатаВыбранаяПользователь);
+                                            String    ДатаДляНовогоЗаказаТраспортаBungle = simpleDateFormatBungle.format(ДатаВыбранаяПользователь);
+                                            // TODO: 16.05.2023 дата
+                                            методЗаписиНовуюДату(ДатаДляНовогоЗаказаТраспорта, textipputmaretialttdata,ДатаДляНовогоЗаказаТраспортаBungle);
+                                            Log.d(getContext() .getClass().getName(), "\n"
+                                                    + " время: " + new Date()+"\n+" +
+                                                    " Класс в процессе... " +   getContext().getClass().getName()+"\n"+
+                                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+" ДатаДляНовогоЗаказаТраспорта " +ДатаДляНовогоЗаказаТраспорта);
+                                        }
+
                                         Log.d(getContext() .getClass().getName(), "\n"
                                                 + " время: " + new Date()+"\n+" +
                                                 " Класс в процессе... " +   getContext().getClass().getName()+"\n"+
-                                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+" ДатаДляНовогоЗаказаТраспорта " +ДатаДляНовогоЗаказаТраспорта);
+                                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                                     }
-
-                                    Log.d(getContext() .getClass().getName(), "\n"
-                                            + " время: " + new Date()+"\n+" +
-                                            " Класс в процессе... " +   getContext().getClass().getName()+"\n"+
-                                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                    new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                                 }
-                            }
 
-                        }, newDate.get(Calendar.YEAR), newDate.get(Calendar.MONTH), newDate.get(Calendar.DAY_OF_MONTH) +1);
+                            }, newDate.get(Calendar.YEAR), newDate.get(Calendar.MONTH), newDate.get(Calendar.DAY_OF_MONTH) +1);
+                }
                 ДатаДляКалендаря.setTitle("Календарь");
                 ДатаДляКалендаря.setButton(DatePickerDialog.BUTTON_POSITIVE, "Создать", ДатаДляКалендаря);
                 ДатаДляКалендаря.setButton(DatePickerDialog.BUTTON_NEGATIVE, "Закрыть", ДатаДляКалендаря);
@@ -2033,6 +2037,10 @@ public class FragmentMaretialNew extends Fragment {
                 ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
                 ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_POSITIVE).setBackgroundColor(Color.WHITE);
                 ////
+
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
