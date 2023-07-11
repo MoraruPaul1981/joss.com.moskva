@@ -1077,6 +1077,7 @@ public class FragmentNewOrderTransport extends Fragment {
                         ListViewForSearchView.setTextFilterEnabled(true);
                         searchView.setDrawingCacheBackgroundColor(Color.GRAY);
                         searchView.setDrawingCacheEnabled(true);
+                        searchView.setSubmitButtonEnabled(true);
                         int id = searchView.getContext()
                                 .getResources()
                                 .getIdentifier("android:id/search_src_text", null, null);
@@ -1150,7 +1151,8 @@ public class FragmentNewOrderTransport extends Fragment {
                         simpleCursorForSearchView.setViewBinder(БиндингДляПоиск);
                         simpleCursorForSearchView.notifyDataSetChanged();
                         ListViewForSearchView.setAdapter(simpleCursorForSearchView);
-                        ListViewForSearchView.startAnimation(animationvibr1);
+                        ListViewForSearchView.refreshDrawableState();
+                        ListViewForSearchView.requestLayout();
 
                         // TODO: 13.12.2022  Поиск и его слушель
                         МетодПоискаФильтр(  ТаблицаТекущая,             simpleCursorForSearchView );

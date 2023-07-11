@@ -508,7 +508,7 @@ public class FragmentMaretialNew extends Fragment {
         private MaterialButton bottomcreateassionmaterial;
         private ArrayAdapter<String> АдапетерЦФО;
         private AlertDialog alertDialog;
-        private  final ListView[] listViewДляЦФО = new ListView[1];
+        private    ListView  listViewДляЦФО =null;
         private  Cursor cursorДляВсехМатериалов;
         private  TextView textipputmaretialttdata;
 
@@ -1008,7 +1008,7 @@ public class FragmentMaretialNew extends Fragment {
                             handler.post(()->{
                                 simpleCursorAdapterЦФО.swapCursor(holder.cursorДляВсехМатериалов);
                                 simpleCursorAdapterЦФО.notifyDataSetChanged();
-                             holder.   listViewДляЦФО[0].setSelection(0);
+                             holder.   listViewДляЦФО.setSelection(0);
                                 if (holder.cursorДляВсехМатериалов.getCount()==0) {
                                     searchViewДляНовогоЦФО.setBackgroundColor(Color.RED);
                                     handler.postDelayed(() -> {
@@ -1564,9 +1564,9 @@ public class FragmentMaretialNew extends Fragment {
                                         МетодКоторыйОперделянтТекуийКурсор(holder, cursor);
 
                                     Log.d(this.getClass().getName(), "   ХэшиАрайЛистДляСпиноровЦФО " + cursor);
-                                    holder.  listViewДляЦФО[0] =    (ListView) view.findViewById(R.id.SearchViewList);
-                                    if (holder.  listViewДляЦФО[0]!=null) {
-                                    holder.   listViewДляЦФО[0].setTextFilterEnabled(true);
+                                    holder.  listViewДляЦФО =    (ListView) view.findViewById(R.id.SearchViewList);
+                                    if (holder.  listViewДляЦФО!=null) {
+                                    holder.   listViewДляЦФО.setTextFilterEnabled(true);
                                     searchViewДляНовогоЦФО = (SearchView) view.findViewById(R.id.searchview_newscanner);
                                     // TODO: 14.12.2022
                                     searchViewДляНовогоЦФО.setDrawingCacheBackgroundColor(Color.GRAY);
@@ -1705,13 +1705,21 @@ public class FragmentMaretialNew extends Fragment {
                                         }
                                     };
                                     simpleCursorAdapterЦФО.setViewBinder(БиндингДляЦФО);
-                                    holder.listViewДляЦФО[0].setAdapter(simpleCursorAdapterЦФО);
-                                    holder.listViewДляЦФО[0].startAnimation(animation);
-                                    holder.listViewДляЦФО[0].setSelection(0);
-                                    holder.listViewДляЦФО[0].forceLayout();
                                     simpleCursorAdapterЦФО.notifyDataSetChanged();
+                                    holder.listViewДляЦФО.setAdapter(simpleCursorAdapterЦФО);
+                                    holder.listViewДляЦФО.startAnimation(animation);
+                                    holder.listViewДляЦФО.setSelection(0);
+                                    holder.listViewДляЦФО.refreshDrawableState();
+                                    holder.listViewДляЦФО.requestLayout();
+
                                     // TODO: 13.12.2022  Поиск и его слушель
                                     МетодПоискаФильтр(searchViewДляНовогоЦФО,simpleCursorAdapterЦФО,holder,v,ТаблицаДляФильтра,materialTextView);
+
+
+                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                            "materialButtonЗакрытьДиалогSearveView"+  materialButtonЗакрытьДиалогSearveView);
                                 }
 
                             } catch (Exception e) {
