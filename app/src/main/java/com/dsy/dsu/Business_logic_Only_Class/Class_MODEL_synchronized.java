@@ -157,8 +157,8 @@ import okio.BufferedSink;
                             Request newRequest = builder.build();
                             return chain.proceed(newRequest);
                         }
-                    }).connectTimeout(2, TimeUnit.SECONDS)
-                    .readTimeout(55, TimeUnit.SECONDS).build();
+                    }).connectTimeout(10, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS).build();
             ///  MediaType JSON = MediaType.parse("application/json; charset=utf-16");
             Request requestGET = new Request.Builder().get().url(Adress).build();
             Log.d(this.getClass().getName(), "  request  " + requestGET);
@@ -279,8 +279,8 @@ import okio.BufferedSink;
                             Request newRequest = builder.build();
                             return chain.proceed(newRequest);
                         }
-                    }).connectTimeout(2, TimeUnit.SECONDS)
-                    .readTimeout(55, TimeUnit.SECONDS).build();
+                    }).connectTimeout(10, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS).build();
             ///  MediaType JSON = MediaType.parse("application/json; charset=utf-16");
             Request requestGET = new Request.Builder().get().url(Adress).build();
             Log.d(this.getClass().getName(), "  request  " + requestGET);
@@ -407,7 +407,7 @@ import okio.BufferedSink;
                             return chain.proceed(newRequest);
                         }
                     }).connectTimeout(10, TimeUnit.SECONDS)
-                    .readTimeout(20, TimeUnit.SECONDS).build();
+                    .readTimeout(60, TimeUnit.SECONDS).build();
             ///  MediaType JSON = MediaType.parse("application/json; charset=utf-16");
             Request requestGET = new Request.Builder().get().url(Adress).build();
             Log.d(this.getClass().getName(), "  request  " + requestGET);
@@ -574,9 +574,9 @@ import okio.BufferedSink;
                                     Request newRequest = builder.build();
                                     return chain.proceed(newRequest);
                                 }
-                            }).connectTimeout(2, TimeUnit.SECONDS)
-                            .writeTimeout(20, TimeUnit.SECONDS)
-                            .readTimeout(20, TimeUnit.SECONDS).build();
+                            }).connectTimeout(10, TimeUnit.SECONDS)
+                            .writeTimeout(60, TimeUnit.SECONDS)
+                            .readTimeout(60, TimeUnit.SECONDS).build();
                     ///  MediaType JSON = MediaType.parse("application/json; charset=utf-16");
 
                     Log.i(context.getClass().getName(), "СгенерированыйФайлJSONДляОтправкиНаСервер.toString()" + СгенерированыйФайлJSONДляОтправкиНаСервер.toString());
@@ -3085,7 +3085,7 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                                     Request newRequest = builder.build();
                                     return chain.proceed(newRequest);
                                 }
-                            }).connectTimeout(2, TimeUnit.SECONDS)
+                            }).connectTimeout(10, TimeUnit.SECONDS)
                             .readTimeout(40, TimeUnit.MINUTES).build();
                     ///  MediaType JSON = MediaType.parse("application/json; charset=utf-16");
                     Request requestGET = new Request.Builder().get().url(Adress).build();
@@ -3525,8 +3525,8 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                                 Request newRequest = builder.build();
                                 return chain.proceed(newRequest);
                             }
-                        }).connectTimeout(2, TimeUnit.SECONDS)
-                        .readTimeout(20, TimeUnit.SECONDS).build();
+                        }).connectTimeout(10, TimeUnit.SECONDS)
+                        .readTimeout(60, TimeUnit.SECONDS).build();
                 ///  MediaType JSON = MediaType.parse("application/json; charset=utf-16");
                 Request requestGET = new Request.Builder().get().url(Adress).build();
                 Log.d(this.getClass().getName(), "  request  " + requestGET);

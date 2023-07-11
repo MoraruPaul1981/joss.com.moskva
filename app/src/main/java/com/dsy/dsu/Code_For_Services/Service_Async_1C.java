@@ -209,8 +209,8 @@ public class Service_Async_1C extends IntentService {
                                     Request newRequest = builder.build();
                                     return chain.proceed(newRequest);
                                 }
-                            }).connectTimeout(2, TimeUnit.SECONDS)
-                            .readTimeout(10, TimeUnit.SECONDS).build();
+                            }).connectTimeout(10, TimeUnit.SECONDS)
+                            .readTimeout(60, TimeUnit.SECONDS).build();
                     //
                     ///  MediaType JSON = MediaType.parse("application/json; charset=utf-16");
                     Request requestGET = new Request.Builder().get().url(АдресСервера1С).build();
