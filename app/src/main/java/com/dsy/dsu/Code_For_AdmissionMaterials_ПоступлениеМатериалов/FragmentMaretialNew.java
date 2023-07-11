@@ -1515,10 +1515,10 @@ public class FragmentMaretialNew extends Fragment {
 
         // TODO: 15.12.2022 класс для всех новый фильр дл я данных
         public class SubClassNewFilterSFOНовыйФильтДанных {
-            MaterialTextView materialTextView;
-            Cursor cursor;
-            MyViewHolder holder;
-            Boolean ФлагКогдаМыВыбралиОдинМатреиалИНАНегоНетГруппаМатериалов=false;
+       private       MaterialTextView materialTextView;
+            private    Cursor cursor;
+            private    MyViewHolder holder;
+            private    Boolean ФлагКогдаМыВыбралиОдинМатреиалИНАНегоНетГруппаМатериалов=false;
             protected SubClassNewFilterSFOНовыйФильтДанных(){
                 Log.d(this.getClass().getName(), "   ХэшиАрайЛистДляСпиноровЦФО ");
             }
@@ -1532,10 +1532,12 @@ public class FragmentMaretialNew extends Fragment {
                 this.holder = holder;
                 // TODO: 16.12.2022
                 materialTextView.setOnClickListener(new View.OnClickListener() {
+                    MaterialButton    materialButtonЗакрытьДиалогSearveView=null;
                     @Override
                     public void onClick(View v) {
+                        try{
+
                         Animation   animation1= AnimationUtils.loadAnimation(v.getContext(),R.anim.slide_in_row_newscanner1);
-                        final MaterialButton[] materialButtonЗакрытьДиалог = new MaterialButton[1];
                         // TODO: 20.12.2022  оперделяем какой вид загружать когда выбран и когда не выбрана гурппа метарилов
                         Integer КакойИмменоВидЗагружатьДляНовогоПосика=R.layout.simple_for_new_spinner_searchview;
                         if(materialTextView.getId()== holder.materialtext_onematerial_ves.getId()){
@@ -1554,7 +1556,7 @@ public class FragmentMaretialNew extends Fragment {
                             public MaterialAlertDialogBuilder setView(View view) {
                                 try{
                                     // TODO: 14.12.2022
-                                    materialButtonЗакрытьДиалог[0] =    (MaterialButton) view.findViewById(R.id.bottom_newscanner1);
+                                   materialButtonЗакрытьДиалогSearveView =    (MaterialButton) view.findViewById(R.id.bottom_newscanner1);
                                 // TODO: 19.12.2022 какой КУРСОР БУДЕТ ВЫПОЛНЯТЬСЯ
                                 if (ФлагКогдаМыВыбралиОдинМатреиалИНАНегоНетГруппаМатериалов==false) {
                                     SearchView searchViewДляНовогоЦФО= null;
@@ -1767,11 +1769,28 @@ public class FragmentMaretialNew extends Fragment {
                         layoutParams.gravity = Gravity.CENTER;
                         holder.alertDialog.getWindow().setAttributes(layoutParams);
                         // TODO: 13.12.2022 ВТОРОЙ СЛУШАТЕЛЬ НА КНОПКУ
-                        МетодЗакрытиеНовогоПосика(materialButtonЗакрытьДиалог);
+
+                        МетодЗакрытиеНовогоПосика(materialButtonЗакрытьДиалогSearveView);
+
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                "materialButtonЗакрытьДиалогSearveView"+  materialButtonЗакрытьДиалогSearveView);
+
+                        Log.d(this.getClass().getName(), " binderДляПолучениеМатериалов "+ binderДляПолучениеМатериалов);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(getContext().getClass().getName(),
+                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
                     }
 
-                    private void МетодЗакрытиеНовогоПосика(MaterialButton[] materialButtonЗакрытьДиалог) {
-                        materialButtonЗакрытьДиалог[0].setOnClickListener(new View.OnClickListener() {
+                    private void МетодЗакрытиеНовогоПосика(@NonNull  MaterialButton materialButtonЗакрытьДиалог) {
+                        materialButtonЗакрытьДиалог.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 try{
