@@ -51,7 +51,6 @@ this.context=context;
                                                      имяТаблицаAsync.equalsIgnoreCase("settings_tabels") ||
                                                      имяТаблицаAsync.equalsIgnoreCase("view_onesignal")) {
                                                  // TODO: 04.07.2023  Обновление
-
                                      // TODO: 04.07.2023  Вставка  ПОСЛЕ ОБНОВЛЕНИЯ ЕСЛИ ОНО НЕ ПРОШЛО
                                      long ЕслиИлиНЕтUUID=        new  FindEmptyUUID().методПосикаUUIDDeseializer(context, имяТаблицаAsync, Create_Database_СамаБАзаSQLite,jsonNode);
                                      if (ЕслиИлиНЕтUUID>0) {
@@ -189,7 +188,10 @@ this.context=context;
         try{
             this.context=context;
                 // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
-                String  SQlOperInsert=  "INSERT INTO "+имяТаблицаAsync+" VALUES(?,?,?,?,?,?,?, ?,?,?,?,?,?);";
+
+                    String  SQlOperInsert=  "INSERT INTO "+имяТаблицаAsync+"  " +
+                            " ( _id, name, f,  n,o,BirthDate,snils,date_update,user_update,uuid,current_organization,current_table,prof) " +
+                            "   VALUES(?,?,?,?,?,?,?, ?,?,?,?,?,?);";
 
             SQLiteStatement sqLiteStatementInsert = методGetSqliteStatementForInsert(Create_Database_СамаБАзаSQLite, SQlOperInsert,jsonNodeParentMAP);
 
