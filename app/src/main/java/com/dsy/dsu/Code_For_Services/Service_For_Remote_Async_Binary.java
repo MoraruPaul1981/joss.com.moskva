@@ -92,6 +92,7 @@ public class Service_For_Remote_Async_Binary extends IntentService {
 
     private Service_For_Public.LocalBinderОбщий localBinderОбщий;
     private      ServiceConnection connectionPUBLIC;
+    private                 Integer ПозицияТекущейТаблицы=1;
 
 private  Message message;
     public Service_For_Remote_Async_Binary() {
@@ -1304,8 +1305,7 @@ try{
 
 
 
-                Integer ПозицияТекущейТаблицы=  ГлавныеТаблицыСинхронизации.indexOf(имяТаблицаAsync);
-                ПозицияТекущейТаблицы=ПозицияТекущейТаблицы+1;
+
                 Проценты = new Class_Visible_Processing_Async(context).ГенерируемПРОЦЕНТЫДляAsync(ПозицияТекущейТаблицы, ГлавныеТаблицыСинхронизации.size());
 
                 методCallBackPrograssBars(7, Проценты,имяТаблицаAsync,ПозицияТекущейТаблицы);
@@ -1657,12 +1657,10 @@ try{
                     Log.d(this.getClass().getName(), " 1ТекущаяТаблицаИзПотока "  + " date " +new Date().toString());
                     Log.d(this.getClass().getName(), " 3ТекущаяТаблицаИзПотока " +" date " +new Date().toString());
                     // TODO: 01.12.2022
-                    public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.spliterator().forEachRemaining(new Consumer<String>() {
+                            public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.spliterator().forEachRemaining(new Consumer<String>() {
                         @Override
                         public void accept(String ТекущаяТаблицаИзПотока) {
                             ИндексТекущейОперацииРеальногРезультатОбработкиАтблицы = 0;
-                            Integer ПозицияТекущейТаблицы=  ГлавныеТаблицыСинхронизации.indexOf(ТекущаяТаблицаИзПотока);
-                            ПозицияТекущейТаблицы=ПозицияТекущейТаблицы+1;
                             Проценты = new Class_Visible_Processing_Async(context).ГенерируемПРОЦЕНТЫДляAsync(ПозицияТекущейТаблицы, ГлавныеТаблицыСинхронизации.size());
                             // TODO: 02.05.2023  Ответ Обратно ПрограссБару
                             методCallBackPrograssBars(2, Проценты,ТекущаяТаблицаИзПотока,ПозицияТекущейТаблицы);
@@ -1678,6 +1676,8 @@ try{
                                             " +ПубличныйРезультатОтветаОтСерврераУспешно" +ПубличныйРезультатОтветаОтСерврераУспешно+ "\n"+
                                             " время" +new Date().toGMTString());
                                     ЛистТаблицыОбмена.add(ПубличныйРезультатОтветаОтСерврераУспешно);
+                            // TODO: 12.07.2023
+                            ПозицияТекущейТаблицы++;
                         }
                     });
 
