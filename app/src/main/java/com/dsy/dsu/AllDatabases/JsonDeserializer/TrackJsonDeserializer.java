@@ -23,7 +23,7 @@ public class TrackJsonDeserializer extends JsonMainDeseirialzer {
     private Context context;
 
     // TODO: 04.07.2023  Главный метод Парсин таблицы ОРганизация
-    public Integer методOrganizationJsonDeserializer(@NonNull  JsonNode jsonNodeParentMAP,
+    public Integer  методOrganizationJsonDeserializer(@NonNull  JsonNode jsonNodeParentMAP,
                                                   @NonNull Context context,
                                                   @NonNull  String  имяТаблицаAsync ,
                                                   @NonNull SQLiteDatabase Create_Database_СамаБАзаSQLite
@@ -189,7 +189,10 @@ this.context=context;
         try{
             this.context=context;
                 // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
-                String  SQlOperInsert=  " INSERT INTO "+имяТаблицаAsync+" VALUES ( ?,?,?,?,?,?,?,?,?,? ) ;";
+                String  SQlOperInsert=  " INSERT INTO "+имяТаблицаAsync+"   " +
+                        " (    _id ,  name  ,fullname ,date_update ," +
+                        " user_update  ,  dir ,uuid,current_table,owner,vid_tc   )  " +
+                        "VALUES ( ?,?,?,?,?,?,?,?,?,? ) ;";
 
             SQLiteStatement sqLiteStatementInsert = методGetSqliteStatementForInsert(Create_Database_СамаБАзаSQLite, SQlOperInsert,jsonNodeParentMAP);
 

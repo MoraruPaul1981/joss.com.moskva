@@ -189,7 +189,10 @@ this.context=context;
         try{
             this.context=context;
                 // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
-                String  SQlOperInsert=  " INSERT INTO "+имяТаблицаAsync+" VALUES ( ?,?,?,?,?,?,?,?,?,?,? ) ;";
+                String  SQlOperInsert=  " INSERT INTO "+имяТаблицаAsync+"  " +
+                        " (     _id,  cfo ,vid_trasport,dateorders, " +
+                        "gos_nomer ,number_order , status,date_update,   uuid ,user_update, current_table  )  " +
+                        "  VALUES ( ?,?,?,?,?,?,?,?,?,?,? ) ;";
 
             SQLiteStatement sqLiteStatementInsert = методGetSqliteStatementForInsert(Create_Database_СамаБАзаSQLite, SQlOperInsert,jsonNodeParentMAP);
 
