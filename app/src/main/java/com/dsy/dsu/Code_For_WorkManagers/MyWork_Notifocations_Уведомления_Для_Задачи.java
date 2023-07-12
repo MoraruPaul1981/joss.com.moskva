@@ -1219,14 +1219,9 @@ public class MyWork_Notifocations_Уведомления_Для_Задачи ext
 
             } else {
                 Log.w(this.getClass().getName(), "  СЛУЖБА...  НЕТ СООБЩЕНИ ДЛЯ ОТОБРАЖЕНИЯ В ЧАТЕ НЕТ ПРОПУСКАЕМ ХОЛОСТОЙ ХОД СЛУЖБЫ УВЕДОМЛЕНИЯ ЧАТ " +ПолучениеПравДляТаблицыПрава);
-
                 // TODO: 15.11.2021
                 РезультатНужноЗапускатьУведомленияИлиНет=false;
-
             }
-
-
-
 
         } catch (Exception e) {
             //  Block of code to handle errors
@@ -1236,15 +1231,7 @@ public class MyWork_Notifocations_Уведомления_Для_Задачи ext
                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
             new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
-            //TODO ПЕРЕД СОЗДАНИЕМ НОВОГО СООБЕЩНИЯ ОБНУЛЯЕМ ПРДЫДУЩЕЕ
-
-         /*   NotificationManager notificationManager = (NotificationManager)
-                    getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
-
-            notificationManager.cancel(Integer.parseInt(PROCESS_ID_УведомленияПлановая))*/;
         }
-
-        // TODO: 20.05.2021  результат
         return РезультатНужноЗапускатьУведомленияИлиНет ;
     }
 

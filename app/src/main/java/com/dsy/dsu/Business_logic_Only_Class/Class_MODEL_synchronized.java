@@ -3036,7 +3036,8 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                                                   @NonNull Integer ИмяПорта,
                                                   @NonNull String ЗаданиеЗагрузки,
                                                   @NonNull String ИмяФайлаЗагрузки ,
-                                                  @NonNull String ВозвращяемыйТип) {
+                                                  @NonNull String ВозвращяемыйТип,
+                                                  @NonNull  Integer ВремяНАReadFile) {
         final File[] СамФайлJsonandApk = {null};
                 try {
                     String СтрокаСвязиСсервером ="http://"+ИмяСервера+":"+ИмяПорта+"/";;
@@ -3086,7 +3087,7 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                                     return chain.proceed(newRequest);
                                 }
                             }).connectTimeout(10, TimeUnit.SECONDS)
-                            .readTimeout(40, TimeUnit.MINUTES).build();
+                            .readTimeout(ВремяНАReadFile, TimeUnit.SECONDS).build();
                     ///  MediaType JSON = MediaType.parse("application/json; charset=utf-16");
                     Request requestGET = new Request.Builder().get().url(Adress).build();
                     Log.d(this.getClass().getName(), "  request  " + requestGET);

@@ -264,7 +264,7 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
             FileAPK = new Class_MODEL_synchronized(getApplicationContext()).
                     МетодЗагрузкиОбновлениеПОсСервера(new PUBLIC_CONTENT(getApplicationContext()).getСсылкаНаРежимСервераОбновлениеПО(),
                             getApplicationContext(), ИмяСерверИзХранилица ,ПортСерверИзХранилица,
-                            "FileAPKUpdatePO","update_dsu1.apk","application/octet-stream");
+                            "FileAPKUpdatePO","update_dsu1.apk","application/octet-stream",500);
 
             Log.w(getApplicationContext().getClass().getName(),    Thread.currentThread().getStackTrace()[2].getMethodName()
                     + Thread.currentThread().getName()+" FileAPK" + FileAPK);
@@ -581,7 +581,7 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
             File ФайлJsonОтСервера = new Class_MODEL_synchronized(getApplicationContext()).
                     МетодЗагрузкиОбновлениеПОсСервера(new PUBLIC_CONTENT(getApplicationContext()).getСсылкаНаРежимСервераОбновлениеПО(),
                                     getApplicationContext(), ИмяСерверИзХранилица ,ПортСерверИзХранилица,"FileJsonUpdatePO",
-                            "update_dsu1.json","application/json");
+                            "update_dsu1.json","application/json",10);
 
             Log.w(getApplicationContext().getClass().getName(),    Thread.currentThread().getStackTrace()[2].getMethodName()
                     + Thread.currentThread().getName()+" ФайлJsonОтСервера" + ФайлJsonОтСервера);
