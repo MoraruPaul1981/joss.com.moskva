@@ -213,7 +213,7 @@ public class FragmentDetailingMaterials extends Fragment {
             bottomNavigationView = view.findViewById(R.id.BottomNavigationView);
             bottomNavigationView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED);
             bottomNavigationItemViewвыход = bottomNavigationView.findViewById(R.id.id_lback);
-            bottomNavigationItemViewвыход.setIconSize(50);
+            bottomNavigationItemViewвыход.setIconSize(60);
             bottomNavigationItemView2создать = bottomNavigationView.findViewById(R.id.id_create);
             bottomNavigationItemView2создать.setIconSize(50);
             bottomNavigationItemView3обновить = bottomNavigationView.findViewById(R.id.id_async);
@@ -222,7 +222,7 @@ public class FragmentDetailingMaterials extends Fragment {
             progressBarСканирование=  view.findViewById(R.id.ProgressBar);
             progressBarСканирование.setVisibility(View.VISIBLE);
             bottomNavigationItemView2создать.setVisibility(View.GONE);
-           // bottomNavigationItemView3обновить.setVisibility(View.GONE);
+            bottomNavigationItemView3обновить.setVisibility(View.GONE);
             //todo запуск методов в фрагменте
             МетодИнициализацииRecycreView();
             Log.d(this.getClass().getName(), "  onViewCreated  FragmentDetailingMaterials  recyclerView  "+recyclerView+
@@ -488,20 +488,14 @@ public class FragmentDetailingMaterials extends Fragment {
     private void МетодКпопкиЗначков(@NonNull Cursor cursor)
             throws ExecutionException, InterruptedException {
         try {
-            if (cursor!=null) {
-                if (cursor.getCount()> 0) {
+            if (cursor!=null && cursor.getCount()> 0) {
                     Log.d(this.getClass().getName(), "  cursor" + cursor.getCount());
-                    bottomNavigationView.getOrCreateBadge(R.id.id_async).setNumber( cursor.getCount());//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
-                    bottomNavigationView.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.parseColor("#15958A"));
+                   bottomNavigationView.getOrCreateBadge(R.id.id_lback).setNumber( cursor.getCount());//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
+                    bottomNavigationView.getOrCreateBadge(R.id.id_lback).setBackgroundColor(Color.parseColor("#15958A"));
                 } else {
-                    bottomNavigationView.getOrCreateBadge(R.id.id_async).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
-                    bottomNavigationView.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.RED);
+                    bottomNavigationView.getOrCreateBadge(R.id.id_lback).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
+                    bottomNavigationView.getOrCreateBadge(R.id.id_lback).setBackgroundColor(Color.RED);
                 }
-            }else
-            {
-                bottomNavigationView.getOrCreateBadge(R.id.id_async).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
-                bottomNavigationView.getOrCreateBadge(R.id.id_async).setBackgroundColor(Color.RED);
-            }
             //TODO
         } catch (Exception e) {
             e.printStackTrace();
