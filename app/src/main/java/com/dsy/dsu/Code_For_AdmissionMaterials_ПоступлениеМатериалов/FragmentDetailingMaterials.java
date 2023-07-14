@@ -225,6 +225,10 @@ public class FragmentDetailingMaterials extends Fragment {
             bottomNavigationItemView3обновить.setVisibility(View.GONE);
             //todo запуск методов в фрагменте
             МетодИнициализацииRecycreView();
+            // TODO: 01.07.2023  ДАннеы
+            методGetCursorForDetalizaa();
+            МетодHandlerCallBack();
+            МетодВыходНаAppBack();
             Log.d(this.getClass().getName(), "  onViewCreated  FragmentDetailingMaterials  recyclerView  "+recyclerView+
                     " linearLayou "+linearLayou+"  fragmentManager "+fragmentManager);
         } catch (Exception e) {
@@ -246,10 +250,6 @@ public class FragmentDetailingMaterials extends Fragment {
             МетодДизайнПрограссБара();
             МетодКпопкиЗначков(cursorДетализацияМатериала);
             МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
-            // TODO: 01.07.2023  ДАннеы
-            методGetCursorForDetalizaa();
-            МетодHandlerCallBack();
-            МетодВыходНаAppBack();
             МетодСоздаенияСлушателяДляПолучениеМатериалаWorkMAnager();
             МетодСлушательКурсора();
             МетодСлушательRecycleView();//todo создаем слушатель для recycreview для получение материалов
@@ -270,8 +270,9 @@ public class FragmentDetailingMaterials extends Fragment {
     public void onStop() {
         super.onStop();
         try{
-            if (cursorДетализацияМатериала !=null) {
-                cursorДетализацияМатериала.close();
+            if (myRecycleViewAdapter.cursorДетализацияМатериала !=null) {
+                myRecycleViewAdapter.cursorДетализацияМатериала.requery();
+                myRecycleViewAdapter.notifyDataSetChanged();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -307,6 +308,9 @@ public class FragmentDetailingMaterials extends Fragment {
     // TODO: 04.03.2022 прозвомжность Заполения RecycleView
     void МетодЗаполенияRecycleViewДляЗадач() {
         try {
+            if(cursorДетализацияМатериала!=null){
+                cursorДетализацияМатериала.moveToFirst();
+            }
             myRecycleViewAdapter = new MyRecycleViewAdapter(cursorДетализацияМатериала);
             myRecycleViewAdapter.notifyDataSetChanged();
             recyclerView.setAdapter(myRecycleViewAdapter);
