@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,7 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -288,11 +291,29 @@ this.context=context;
     private SQLiteStatement методЗаполенияMaterialBinarySQLiteStatement(SQLiteStatement sqLiteStatementInsert,
                                                                         @NonNull JsonNode jsonNodeParentMAP) throws IOException {
         try{
-            Bitmap bitmap = null;
+
       byte[] Bt=      jsonNodeParentMAP.get("image").binaryValue();
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
-            stream.toByteArray();
+     String Bts=      jsonNodeParentMAP.get("image").asText();
+
+
+            Bitmap bitmap1 = BitmapFactory.decodeByteArray(Bt , 0, Bt.length);
+            Bitmap bitmap2 = BitmapFactory.decodeByteArray(Bts.getBytes() , 0, Bts.getBytes().length);
+
+            ByteArrayInputStream imageStream1 = new ByteArrayInputStream(Bt);
+            Bitmap bitmap = BitmapFactory.decodeStream(imageStream1);
+
+
+            ByteArrayInputStream imageStream2 = new ByteArrayInputStream(Bts.getBytes());
+            Bitmap bitmap3 = BitmapFactory.decodeStream(imageStream2);
+
+
+            // bitmap= BitmapFactory.decodeByteArray(Bt, 0, Bt.length);
+
+            Log.d(this.getClass().getName(), "\n" + " class " +
+                    Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"   + " Bt " +Bt);
+
 
         sqLiteStatementInsert.bindLong(1, jsonNodeParentMAP.get("id").intValue());//"id""
         sqLiteStatementInsert.bindBlob(2, jsonNodeParentMAP.get("image").binaryValue());//"date_update"
