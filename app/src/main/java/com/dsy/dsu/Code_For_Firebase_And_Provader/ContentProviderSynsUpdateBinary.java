@@ -548,13 +548,13 @@ public class ContentProviderSynsUpdateBinary extends ContentProvider {
                                                         Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
                                 bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
                                 break;
-                     /*       case "materials_databinary":
+                            case "materials_databinary":
                                 РезультатJsonDeserializer=
                                         new Materials_databinaryJsonDeserializer()
                                                 .методOrganizationJsonDeserializer( jsonNodeParentMAP, getContext(),имяТаблицаAsync,
                                                         Create_Database_СамаБАзаSQLite,ФлагКакойСинхронизацияПерваяИлиНет);
                                 bundleОперацииUpdateOrinsert.putInt("completeasync",РезультатJsonDeserializer);
-                                break;*/
+                                break;
 
                             // TODO: 05.07.2023 no empty table
                             default:

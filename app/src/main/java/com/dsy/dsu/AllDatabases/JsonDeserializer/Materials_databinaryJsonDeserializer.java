@@ -3,6 +3,7 @@ package com.dsy.dsu.AllDatabases.JsonDeserializer;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -286,6 +288,12 @@ this.context=context;
     private SQLiteStatement методЗаполенияMaterialBinarySQLiteStatement(SQLiteStatement sqLiteStatementInsert,
                                                                         @NonNull JsonNode jsonNodeParentMAP) throws IOException {
         try{
+            Bitmap bitmap = null;
+      byte[] Bt=      jsonNodeParentMAP.get("image").binaryValue();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+            stream.toByteArray();
+
         sqLiteStatementInsert.bindLong(1, jsonNodeParentMAP.get("id").intValue());//"id""
         sqLiteStatementInsert.bindBlob(2, jsonNodeParentMAP.get("image").binaryValue());//"date_update"
         sqLiteStatementInsert.bindBlob(3, jsonNodeParentMAP.get("files").binaryValue());//"date_update"
