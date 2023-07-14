@@ -11,6 +11,7 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -230,7 +231,7 @@ this.context=context;
                     " image =?,file=?,date_update=?, uuid=? ,parent_uuid=? ,user_update=? ,current_table=?   "+
                     "   WHERE  uuid=?  ;";
 
-            SQLiteStatement sqLiteStatementInsert = методGetSqliteStatementForUpdate(Create_Database_СамаБАзаSQLite, SQlOperUpdate,jsonNodeParentMAP);
+            SQLiteStatement sqLiteStatementInsert = методGetSqliteStatementForUpdate( SQlOperUpdate,jsonNodeParentMAP);
 
             // TODO: 04.07.2023  UPDARE Organization
             ОперацияUpdate=      sqLiteStatementInsert.executeUpdateDelete();
@@ -265,16 +266,9 @@ this.context=context;
             sqLiteStatementInsert = Create_Database_СамаБАзаSQLite.compileStatement(SQlOperInsert);
             sqLiteStatementInsert.clearBindings();
             // TODO: 04.07.2023 цикл данных
-            sqLiteStatementInsert.bindLong(1, jsonNodeParentMAP.get("id").intValue());//"id""
-            sqLiteStatementInsert.bindBlob(2, jsonNodeParentMAP.get("image").binaryValue());//"date_update"
-            sqLiteStatementInsert.bindBlob(3, jsonNodeParentMAP.get("file").binaryValue());//"date_update"
-            sqLiteStatementInsert.bindString(4, jsonNodeParentMAP.get("date_update").asText().trim());//"date_update"
-            sqLiteStatementInsert.bindLong(5, jsonNodeParentMAP.get("uuid").longValue());//"uuid"
-            sqLiteStatementInsert.bindLong(6, jsonNodeParentMAP.get("parent_uuid").longValue());//"uuid"
-            sqLiteStatementInsert.bindLong(7, jsonNodeParentMAP.get("user_update").intValue());//"uuid"
-            sqLiteStatementInsert.bindLong(8, jsonNodeParentMAP.get("current_table").longValue());//"current_table"
+            sqLiteStatementInsert=    методЗаполенияMaterialBinarySQLiteStatement(sqLiteStatementInsert, jsonNodeParentMAP );
 
-        Log.d(this.getClass().getName(), "\n" + " class " +
+            Log.d(this.getClass().getName(), "\n" + " class " +
                 Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -288,23 +282,40 @@ this.context=context;
         }
         return sqLiteStatementInsert;
     }
+
+    private SQLiteStatement методЗаполенияMaterialBinarySQLiteStatement(SQLiteStatement sqLiteStatementInsert,
+                                                                        @NonNull JsonNode jsonNodeParentMAP) throws IOException {
+        try{
+        sqLiteStatementInsert.bindLong(1, jsonNodeParentMAP.get("id").intValue());//"id""
+        sqLiteStatementInsert.bindBlob(2, jsonNodeParentMAP.get("image").binaryValue());//"date_update"
+        sqLiteStatementInsert.bindBlob(3, jsonNodeParentMAP.get("files").binaryValue());//"date_update"
+        sqLiteStatementInsert.bindString(4, jsonNodeParentMAP.get("date_update").asText().trim());//"date_update"
+        sqLiteStatementInsert.bindLong(5, jsonNodeParentMAP.get("uuid").longValue());//"uuid"
+        sqLiteStatementInsert.bindLong(6, jsonNodeParentMAP.get("parent_uuid").longValue());//"uuid"
+        sqLiteStatementInsert.bindLong(7, jsonNodeParentMAP.get("user_update").intValue());//"uuid"
+        sqLiteStatementInsert.bindLong(8, jsonNodeParentMAP.get("current_table").longValue());//"current_table"
+        // TODO: 27.04.2023  повышаем верисю данных
+        Log.d(this.getClass().getName(), "\n" + " class " +
+                Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+        return  sqLiteStatementInsert;
+    }
+
     @NonNull
-    private SQLiteStatement методGetSqliteStatementForUpdate(@NonNull SQLiteDatabase Create_Database_СамаБАзаSQLite,
-                                                             String SQlOperInsert,
+    private SQLiteStatement методGetSqliteStatementForUpdate(@NonNull String SQlOperInsert,
                                                              @NonNull JsonNode jsonNodeParentMAP) {
         SQLiteStatement sqLiteStatementInsert = null;
         try{
-            sqLiteStatementInsert= Create_Database_СамаБАзаSQLite.compileStatement(SQlOperInsert);
-            sqLiteStatementInsert.clearBindings();
-            // TODO: 04.07.2023 цикл данных
-            sqLiteStatementInsert.bindLong(1, jsonNodeParentMAP.get("id").intValue());//"id""
-            sqLiteStatementInsert.bindBlob(2, jsonNodeParentMAP.get("image").binaryValue());//"date_update"
-            sqLiteStatementInsert.bindBlob(3, jsonNodeParentMAP.get("file").binaryValue());//"date_update"
-            sqLiteStatementInsert.bindString(4, jsonNodeParentMAP.get("date_update").asText().trim());//"date_update"
-            sqLiteStatementInsert.bindLong(5, jsonNodeParentMAP.get("uuid").longValue());//"uuid"
-            sqLiteStatementInsert.bindLong(6, jsonNodeParentMAP.get("parent_uuid").longValue());//"uuid"
-            sqLiteStatementInsert.bindLong(7, jsonNodeParentMAP.get("user_update").intValue());//"uuid"
-            sqLiteStatementInsert.bindLong(8, jsonNodeParentMAP.get("current_table").longValue());//"current_table"
+            sqLiteStatementInsert=    методЗаполенияMaterialBinarySQLiteStatement(sqLiteStatementInsert, jsonNodeParentMAP );
             // TODO: 05.07.2023  Для Состыковки
             sqLiteStatementInsert.bindLong(9,jsonNodeParentMAP.get("uuid").longValue());//"uuid уже для UUID"
             Log.d(this.getClass().getName(), "\n" + " class " +
