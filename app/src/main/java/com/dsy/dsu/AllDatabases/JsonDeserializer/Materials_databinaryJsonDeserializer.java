@@ -14,6 +14,7 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -293,6 +294,7 @@ this.context=context;
         try{
 
       byte[] Bt=      jsonNodeParentMAP.get("image").binaryValue();
+      byte[] Bt2=      jsonNodeParentMAP.get("image").binaryValue();
      String Bts=      jsonNodeParentMAP.get("image").asText();
 
 
@@ -306,6 +308,14 @@ this.context=context;
             ByteArrayInputStream imageStream2 = new ByteArrayInputStream(Bts.getBytes());
             Bitmap bitmap3 = BitmapFactory.decodeStream(imageStream2);
 
+
+
+             ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
+            BufferedOutputStream   out = new BufferedOutputStream(dataStream, 2048);
+            final byte[] data = dataStream.toByteArray();
+            BitmapFactory.Options options = new BitmapFactory.Options();
+
+            bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
 
             // bitmap= BitmapFactory.decodeByteArray(Bt, 0, Bt.length);
 
