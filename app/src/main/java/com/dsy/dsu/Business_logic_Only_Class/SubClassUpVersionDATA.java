@@ -27,15 +27,17 @@ public class SubClassUpVersionDATA {
             String СгенерированованныйДата = new Class_Generation_Data(context).ГлавнаяДатаИВремяОперацийСБазойДанных();
             ContentValues contentValuesДляПоднятияВерсии = new ContentValues();
 
-            contentValuesДляПоднятияВерсии.put("versionserveraandroid", СгенерированованныйДата);
-            contentValuesДляПоднятияВерсии.put("localversionandroid", СгенерированованныйДата);
 
             if (ВерсияДанныхПослеСинхрониазацииДляЗаписи>0) {
-                // TODO: 01.07.2023  после выравниванию повышаем серверную версию
+                // TODO: 01.07.2023  после выравниванию ДЛЯ СЕРВЕРА
+                contentValuesДляПоднятияВерсии.put("versionserveraandroid", СгенерированованныйДата);
                 contentValuesДляПоднятияВерсии.put("versionserveraandroid_version", ВерсияДанныхПослеСинхрониазацииДляЗаписи);
 
-                // TODO: 01.07.2023  после выравниванию повышаем Локальную версию
-                contentValuesДляПоднятияВерсии.put("localversionandroid_version", ВерсияДанныхПослеСинхрониазацииДляЗаписи);
+                  // TODO: 01.07.2023  после выравниванию ДЛЯ ЛОКАЛЬНАЯ
+              //  contentValuesДляПоднятияВерсии.put("localversionandroid_version", ВерсияДанныхПослеСинхрониазацииДляЗаписи);
+
+                //  contentValuesДляПоднятияВерсии.put("localversionandroid", СгенерированованныйДата);
+
             }
 
             SQLBuilderВерсияДанныхСистемнаяТАблицы.setTables(ТаблицаСистемная);
