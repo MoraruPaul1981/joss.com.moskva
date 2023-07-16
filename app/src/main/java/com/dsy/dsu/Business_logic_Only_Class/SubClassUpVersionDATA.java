@@ -38,21 +38,21 @@ public class SubClassUpVersionDATA {
 
                 //  contentValuesДляПоднятияВерсии.put("localversionandroid", СгенерированованныйДата);
 
-            }
+                SQLBuilderВерсияДанныхСистемнаяТАблицы.setTables(ТаблицаСистемная);
 
-            SQLBuilderВерсияДанныхСистемнаяТАблицы.setTables(ТаблицаСистемная);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    Результат_ПовышенаяВерсия = SQLBuilderВерсияДанныхСистемнаяТАблицы.
+                            update(getССылкаНаСозданнуюБазу, contentValuesДляПоднятияВерсии, "name=?", new String[]{Таблица.toLowerCase()});
+                } else {
+                    Результат_ПовышенаяВерсия = getССылкаНаСозданнуюБазу.update(ТаблицаСистемная, contentValuesДляПоднятияВерсии,
+                            "name=?", new String[]{Таблица.toLowerCase()});
+                }
+                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                        "  Результат_ПовышенаяВерсия   " + Результат_ПовышенаяВерсия);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                Результат_ПовышенаяВерсия = SQLBuilderВерсияДанныхСистемнаяТАблицы.
-                        update(getССылкаНаСозданнуюБазу, contentValuesДляПоднятияВерсии, "name=?", new String[]{Таблица.toLowerCase()});
-            } else {
-                Результат_ПовышенаяВерсия = getССылкаНаСозданнуюБазу.update(ТаблицаСистемная, contentValuesДляПоднятияВерсии,
-                        "name=?", new String[]{Таблица.toLowerCase()});
             }
-            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                    "  Результат_ПовышенаяВерсия   " + Результат_ПовышенаяВерсия);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(context.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

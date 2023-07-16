@@ -292,42 +292,24 @@ this.context=context;
     private SQLiteStatement методЗаполенияMaterialBinarySQLiteStatement(SQLiteStatement sqLiteStatementInsert,
                                                                         @NonNull JsonNode jsonNodeParentMAP) throws IOException {
         try{
-
-      byte[] Bt=      jsonNodeParentMAP.get("image").binaryValue();
-      byte[] Bt2=      jsonNodeParentMAP.get("image").binaryValue();
-     String Bts=      jsonNodeParentMAP.get("image").asText();
-
-
-            Bitmap bitmap1 = BitmapFactory.decodeByteArray(Bt , 0, Bt.length);
-            Bitmap bitmap2 = BitmapFactory.decodeByteArray(Bts.getBytes() , 0, Bts.getBytes().length);
-
-            ByteArrayInputStream imageStream1 = new ByteArrayInputStream(Bt);
-            Bitmap bitmap = BitmapFactory.decodeStream(imageStream1);
-
-
-            ByteArrayInputStream imageStream2 = new ByteArrayInputStream(Bts.getBytes());
-            Bitmap bitmap3 = BitmapFactory.decodeStream(imageStream2);
-
-
-
-             ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
-            BufferedOutputStream   out = new BufferedOutputStream(dataStream, 2048);
-            final byte[] data = dataStream.toByteArray();
-            BitmapFactory.Options options = new BitmapFactory.Options();
-
-            bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
-
-            // bitmap= BitmapFactory.decodeByteArray(Bt, 0, Bt.length);
-
-            Log.d(this.getClass().getName(), "\n" + " class " +
-                    Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"   + " Bt " +Bt);
-
-
         sqLiteStatementInsert.bindLong(1, jsonNodeParentMAP.get("id").intValue());//"id""
-        sqLiteStatementInsert.bindBlob(2, jsonNodeParentMAP.get("image").binaryValue());//"date_update"
-        sqLiteStatementInsert.bindBlob(3, jsonNodeParentMAP.get("files").binaryValue());//"date_update"
+            // TODO: 16.07.2023 Binary Image 
+
+                if (!jsonNodeParentMAP.get("image").isNull()) {
+                    sqLiteStatementInsert.bindBlob(2, jsonNodeParentMAP.get("image").binaryValue());//"date_update"
+                }else {
+                    sqLiteStatementInsert.bindBlob(2, new String().getBytes());//"date_update"
+                }
+
+
+                if (!jsonNodeParentMAP.get("files").isNull()) {
+                    sqLiteStatementInsert.bindBlob(3, jsonNodeParentMAP.get("files").binaryValue());//"date_update"
+                }else {
+                    sqLiteStatementInsert.bindBlob(3, new String().getBytes());//"date_update"
+                }
+
+
+
         sqLiteStatementInsert.bindString(4, jsonNodeParentMAP.get("date_update").asText().trim());//"date_update"
         sqLiteStatementInsert.bindLong(5, jsonNodeParentMAP.get("uuid").longValue());//"uuid"
         sqLiteStatementInsert.bindLong(6, jsonNodeParentMAP.get("parent_uuid").longValue());//"uuid"
