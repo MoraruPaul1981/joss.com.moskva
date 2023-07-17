@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -1049,9 +1050,9 @@ public class FragmentDetailingMaterials extends Fragment {
         // TODO: 08.11.2022 метод Удаление материала
         private void МетодаКликаУдаленияМатериалаПоtableRow(TableRow rowПервыеДанные) {
             try{
-                rowПервыеДанные.setOnClickListener(new View.OnClickListener() {
+                rowПервыеДанные.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public boolean onLongClick(View v) {
                         progressBarСканирование.setVisibility(View.VISIBLE);
                         v.animate().rotationX(-60l);
                         handler .postDelayed(()->{
@@ -1105,10 +1106,52 @@ public class FragmentDetailingMaterials extends Fragment {
                                         .setDuration(3000)
                                         .show();
                             }
-
-
                             progressBarСканирование.setVisibility(View.INVISIBLE);
                         },150);
+
+                        return true;
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+
+        private void МетодаКликаGetFotoМатериалаПоtableRow(TableRow rowПервыеДанные) {
+            try{
+                rowПервыеДанные.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        progressBarСканирование.setVisibility(View.VISIBLE);
+                        v.animate().rotationX(-60l);
+                        handler .postDelayed(()->{
+                            v.animate().rotationX(0);
+                            // TODO: 01.07.2023 удаление
+                            Bundle bundleПереходУдалениеМатериала=(Bundle) v.getTag();
+                            Log.d(this.getClass().getName(), "МетодаКликаУдаленияМатериалаПоtableRow v  " + v+ " bundleПереходУдалениеМатериала "
+                                    +bundleПереходУдалениеМатериала);
+                            if (bundleПереходУдалениеМатериала != null) {
+                                Long UUIDДляУдаления= bundleПереходУдалениеМатериала.getLong("UUIDВыбраныйМатериал",0l);
+                                String Материал= bundleПереходУдалениеМатериала.getString("Материал","");
+                                Integer Количество= bundleПереходУдалениеМатериала.getInt("Количество",0);
+                                bundleПереходУдалениеМатериала.putString("selection","uuid=?");
+                                Log.d(this.getClass().getName(), "  v  " + v+ " UUIDДляУдаления " +UUIDДляУдаления);
+                                Intent intentДляУдалениеМатериалов=new Intent("УдалениеВыбранныеМатериалыДетализации");
+                                intentДляУдалениеМатериалов.putExtras(bundleПереходУдалениеМатериала);
+                                Log.d(this.getClass().getName(), "  v  " + v+ " UUIDДляУдаления " +UUIDДляУдаления);
+                           /*     Integer РезультатСменыСтатусаНАУдалнной=
+                                        binderДляПолучениеМатериалов.getService().МетодCлужбыУдалениеМатериалов(getContext(),intentДляУдалениеМатериалов);*/
+
+                                Toast.makeText(getContext(), " Клик Табель выбраного сотрудника проведен !!!!", Toast.LENGTH_LONG).show();
+                            }
+                            progressBarСканирование.setVisibility(View.INVISIBLE);
+                        },250);
 
 
 
@@ -1298,7 +1341,8 @@ public class FragmentDetailingMaterials extends Fragment {
 
                     // TODO: 16.11.2022  слушатель Удаление строк
                     МетодаКликаУдаленияМатериалаПоtableRow(RowData_for_detalisaziy);
-                    // TODO: 19.10.2022 Редактирование Данных
+                    // TODO: 19.10.2022 Клик получение ФОтографии
+                    МетодаКликаGetFotoМатериалаПоtableRow(RowData_for_detalisaziy);
                     // TODO: 18.10.2022 добавляем  Линию
                     МетодДобаленияНовыхСтрокДанных(RowData_for_detalisaziy, tableLayoutРодительская);
 
