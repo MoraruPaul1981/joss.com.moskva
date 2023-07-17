@@ -21,6 +21,7 @@ import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.loader.content.AsyncTaskLoader;
+import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,7 +31,6 @@ import androidx.work.WorkManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,7 +63,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import java.util.concurrent.ExecutionException;
 
 
 // TODO: 29.09.2022 фрагмент для получение материалов
@@ -179,6 +178,8 @@ public class FragmentAdmissionMaterials extends Fragment {
             animation2 = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_scrolls);
             //todo запуск методов в фрагменте
             МетодИнициализацииRecycreView();
+            МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
+            методБиндингСлужбыGetCurcor();
             МетодHandlerCallBack();
             МетодВыходНаAppBack();
             Log.d(this.getClass().getName(), "  onViewCreated  FragmentAdmissionMaterials  recyclerView  "+recyclerView+
@@ -202,14 +203,19 @@ public class FragmentAdmissionMaterials extends Fragment {
     public void onStart() {
         super.onStart();
         try{
-              МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
+            if (cursorНомерЦФО!=null && cursorНомерЦФО.getCount()>0) {
+               МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
                 МетодСлушательRecycleView();//todo создаем слушатель для recycreview для получение материалов
                 МетодСлушательКурсора();
                 МетодКпопкиЗначков();
+                МетодСоздаенияСлушателяДляПолучениеМатериалаWorkMAnager();
+            }else {
+                МетодКпопкиЗначков();
+            }
             // TODO: 17.04.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + " cursorНомерМатериала " +cursorНомерМатериала);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -228,6 +234,7 @@ public class FragmentAdmissionMaterials extends Fragment {
             myRecycleViewAdapter = new MyRecycleViewAdapter(cursorНомерЦФО);
             myRecycleViewAdapter.notifyDataSetChanged();
             recyclerView.setAdapter(myRecycleViewAdapter);
+            recyclerView.getAdapter().notifyDataSetChanged();
             Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
         } catch (Exception e) {
             e.printStackTrace();
@@ -1030,8 +1037,6 @@ public class FragmentAdmissionMaterials extends Fragment {
                         viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov, parent, false);//todo old simple_for_takst_cardview1
                         Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов);
 
-                    методБиндингСлужбы();
-
                 }else {
                     if (cursorНомерЦФО.getCount() > 0) {
                         viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_assionamaterial, parent, false);//todo old  simple_for_assionamaterial
@@ -1433,23 +1438,36 @@ public class FragmentAdmissionMaterials extends Fragment {
             return КоличесвоСтрок;
         }
     }
-    private void методБиндингСлужбы() {
+    private void методБиндингСлужбыGetCurcor() {
         try {
                       serviceConnectionМатериалы = new ServiceConnection() {
                         @Override
                         public void onServiceConnected(ComponentName name, IBinder service) {
                             try {
                                 if (service.isBinderAlive()) {
-                                                // TODO: 30.06.2023
-                                                binderДляПолучениеМатериалов = (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) service;
 
-                                                методGetCFOCursorFirst("ПолучениеЦФО",0);
+                                    AsyncTaskLoader asyncTaskLoader=new AsyncTaskLoader<Object>(getContext()) {
+                                        @Nullable
+                                        @Override
+                                        public Object loadInBackground() {
+                                            // TODO: 30.06.2023
+                                            binderДляПолучениеМатериалов = (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) service;
 
-                                                // TODO: 18.04.2023
-                                         onStart();
+                                            методGetCFOCursorFirst("ПолучениеЦФО",0);
+                                            return binderДляПолучениеМатериалов;
+                                        }
+                                    };
+                                    asyncTaskLoader.startLoading();
+                                    asyncTaskLoader.forceLoad();
+                                    asyncTaskLoader.registerListener(new Random().nextInt(), new Loader.OnLoadCompleteListener() {
+                                        @Override
+                                        public void onLoadComplete(@NonNull Loader loader, @Nullable Object data) {
+                                            // TODO: 18.04.2023
+                                            onStart();
+                                        }
+                                    });
 
 
-                                                    МетодСоздаенияСлушателяДляПолучениеМатериалаWorkMAnager();
 
 
 
