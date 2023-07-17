@@ -357,9 +357,6 @@ public class FragmentDetailingMaterials extends Fragment {
                     try {
                         МетодЗапускаАнимацииКнопок(v);//todo только анимауия
                         Fragment      fragmentПолученыеМатериалов = new FragmentAdmissionMaterials();
-                        Bundle data=new Bundle();
-                        data.putBinder("binder",binderДляПолучениеМатериалов);
-                        fragmentПолученыеМатериалов.setArguments(data);
                         fragmentTransaction = fragmentManager.beginTransaction();
                     //    fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                         fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragmentПолученыеМатериалов).commit();//.layout.activity_for_fragemtb_history_tasks

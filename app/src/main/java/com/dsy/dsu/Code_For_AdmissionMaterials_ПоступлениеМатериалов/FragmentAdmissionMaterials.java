@@ -249,9 +249,9 @@ public class FragmentAdmissionMaterials extends Fragment {
                 myRecycleViewAdapter.notifyDataSetChanged();
                 recyclerView.getAdapter().notifyDataSetChanged();
             }
-            if (binderДляПолучениеМатериалов != null) {
+        /*    if (binderДляПолучениеМатериалов != null) {
                 getActivity().unbindService(serviceConnectionМатериалы);
-            }
+            }*/
 
             WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая).removeObservers(lifecycleOwnerОбщая);
             WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).removeObservers(lifecycleOwner);
