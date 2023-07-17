@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.DataSetObserver;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -57,6 +59,8 @@ import com.google.common.util.concurrent.AtomicDouble;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -782,6 +786,42 @@ public class FragmentDetailingMaterials extends Fragment {
         return  cursorДетализацияМатериала;
     }
 
+    // TODO: 02.08.2022
+    protected   Cursor МетодПолучениеДанныхФотографииImageДляМатериа(@NonNull Long  Paren_Image_UUID){
+        Cursor cursorGetIamges= null;
+        try{
+            Bundle bundleДляПЕредачи=new Bundle();
+            bundleДляПЕредачи.putString("Таблица","materials_databinary");//TODO сами данные
+            bundleДляПЕредачи.putLong("Paren_Image_UUID",Paren_Image_UUID);
+            Intent intentПолучениеМатериалов = new Intent(getContext(), Service_for_AdminissionMaterial.class);
+            intentПолучениеМатериалов.setAction("GetImageFormaterial");
+            intentПолучениеМатериалов.putExtras(bundleДляПЕредачи);
+            Log.d(this.getClass().getName(), "   ПубличныйIDДляФрагмента "+ ПубличныйIDДляФрагмента);
+            intentПолучениеМатериалов.putExtras(bundleДляПЕредачи);
+            //TODO получение данных от Службы ДЛя Получение Материалов
+            cursorGetIamges = (Cursor) binderДляПолучениеМатериалов.getService()
+                    .new SubClassGetDataAdmissionMaterial_Данные_ДляНовогоПоиска().МетодПолучениеДанныхForImage(getContext(), intentПолучениеМатериалов);
+            Log.d(this.getClass().getName(), "   cursorGetIamges " + cursorGetIamges  + " Paren_Image_UUID " +Paren_Image_UUID);
+            if (cursorGetIamges.getCount() > 0) {
+                cursorGetIamges.moveToFirst();
+                Log.d(this.getClass().getName(), "   cursorGetIamges " + cursorGetIamges);
+            }
+            // TODO: 18.04.2023  Simple Adapter Кдик по Элементы
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                    " cursorGetIamges " +cursorGetIamges);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
+                    Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        return  cursorGetIamges;
+    }
     private void МетодДизайнПрограссБара() {
         progressBarСканирование.postDelayed(()->{
             progressBarСканирование.setVisibility(View.INVISIBLE);
@@ -1145,8 +1185,24 @@ public class FragmentDetailingMaterials extends Fragment {
                                 Intent intentДляУдалениеМатериалов=new Intent("УдалениеВыбранныеМатериалыДетализации");
                                 intentДляУдалениеМатериалов.putExtras(bundleПереходУдалениеМатериала);
                                 Log.d(this.getClass().getName(), "  v  " + v+ " UUIDДляУдаления " +UUIDДляУдаления);
-                           /*     Integer РезультатСменыСтатусаНАУдалнной=
-                                        binderДляПолучениеМатериалов.getService().МетодCлужбыУдалениеМатериалов(getContext(),intentДляУдалениеМатериалов);*/
+
+                                // TODO: 17.07.2023  получаем фотораймю для ВЫБРАНОГО МАТЕРИАЛА
+                           Cursor cursorGetIamges=     МетодПолучениеДанныхФотографииImageДляМатериа (UUIDДляУдаления);
+                                // TODO: 17.07.2023
+                                Bitmap bitmap;
+                                        byte[] imgByte = cursorGetIamges.getBlob(cursorGetIamges.getColumnIndex("image"));
+
+                                bitmap= BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
+                                // TODO: 17.07.2023
+                                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                                Bitmap decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
+
+                                // TODO: 18.04.2023  Simple Adapter Кдик по Элементы
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " UUIDДляУдаления " +UUIDДляУдаления +
+                                         " cursorGetIamges " +cursorGetIamges);
 
                                 Toast.makeText(getContext(), " Клик Табель выбраного сотрудника проведен !!!!", Toast.LENGTH_LONG).show();
                             }

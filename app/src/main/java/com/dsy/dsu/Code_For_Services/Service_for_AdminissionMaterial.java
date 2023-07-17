@@ -345,14 +345,11 @@ public class Service_for_AdminissionMaterial extends IntentService {
 
 
 
-
-
-
-
-
                 default:
                     break;
             }
+
+            Log.d(this.getClass().getName(), "   intent.getAction().trim() " + intent.getAction().trim()   );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -920,7 +917,7 @@ private class SubClassGetDataAdmissionMaterial_Автомобили {
 
 
     // TODO: 19.10.2022  ПОЛУЧЕНИЕ ДАННЫХ ДЛЯ НОВОГО МАТЕРИАЛА
-    private class SubClassGetDataAdmissionMaterial_Данные_ДляНовогоПоиска {
+    public class SubClassGetDataAdmissionMaterial_Данные_ДляНовогоПоиска {
         private Cursor курсорДляНовогоПосика;
         private Context context;
         private Intent intent;
@@ -997,6 +994,45 @@ private class SubClassGetDataAdmissionMaterial_Автомобили {
                 Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
             }
             return курсорДляНовогоПосика;
+        }
+        // TODO: 17.07.2023 Image
+
+        @WorkerThread
+       public Cursor МетодПолучениеДанныхForImage( @NonNull Context context,@NonNull Intent intent) {
+            Cursor cursorGetImage = null;
+            try {
+                String Таблица = intent.getStringExtra("Таблица");
+                this.context = context;
+                this.intent = intent;
+                Log.w(this.getClass().getName(), "   Таблица  " + Таблица);
+                Bundle data = intent.getExtras();
+                Long Paren_Image_UUID = data.getLong("Paren_Image_UUID", 0l);
+                Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabase/" + Таблица.trim() + "");
+                ContentResolver resolver = context.getContentResolver();
+                // TODO: 18.04.2023  Simple Adapter Кдик по Элементы
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " Таблица " +Таблица +
+                        " Paren_Image_UUID " +Paren_Image_UUID);
+
+
+                switch (Таблица.trim()) {
+                    case "materials_databinary":
+                            data.putString("selection","  parent_uuid=? ");
+                            data.putStringArray("selectionArgs",new String[]{Paren_Image_UUID.toString()});
+                }
+                // TODO: 16.12.2022 ПОЛУЧАЕМ ДАННЫЕ
+                cursorGetImage = resolver.query(uri, new String[]{"*"}, data, null);// TODO: 13.10.2022 ,"Удаленная"
+                Log.d(this.getClass().getName(), "cursorGetImage   " + cursorGetImage);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
+            }
+            return cursorGetImage;
         }
     }
 
