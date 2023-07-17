@@ -196,6 +196,7 @@ this.context=context;
         Long ОперацияInsert=0l;
         try{
             this.context=context;
+
                 // ОперацияInsert = Create_Database_СамаБАзаSQLite.insert(имяТаблицаAsync, null, ТекущийАдаптерДляВсего);
                 String  SQlOperInsert=  " INSERT INTO "+имяТаблицаAsync+" " +
                         " (    _id, image ,file,date_update, uuid ,parent_uuid ,user_update ,current_table   )  " +
@@ -237,7 +238,7 @@ this.context=context;
                     " image =?,file=?,date_update=?, uuid=? ,parent_uuid=? ,user_update=? ,current_table=?   "+
                     "   WHERE  uuid=?  ;";
 
-            SQLiteStatement sqLiteStatementInsert = методGetSqliteStatementForUpdate( SQlOperUpdate,jsonNodeParentMAP);
+            SQLiteStatement sqLiteStatementInsert = методGetSqliteStatementForUpdate( SQlOperUpdate,jsonNodeParentMAP,Create_Database_СамаБАзаSQLite);
 
             // TODO: 04.07.2023  UPDARE Organization
             ОперацияUpdate=      sqLiteStatementInsert.executeUpdateDelete();
@@ -267,9 +268,9 @@ this.context=context;
     private SQLiteStatement методGetSqliteStatementForInsert(@NonNull SQLiteDatabase Create_Database_СамаБАзаSQLite,
                                                     String SQlOperInsert,
                                                     @NonNull JsonNode jsonNodeParentMAP) {
-        SQLiteStatement sqLiteStatementInsert = null;
+        SQLiteStatement  sqLiteStatementInsert=null;
         try{
-            sqLiteStatementInsert = Create_Database_СамаБАзаSQLite.compileStatement(SQlOperInsert);
+           sqLiteStatementInsert = Create_Database_СамаБАзаSQLite.compileStatement(SQlOperInsert);
             sqLiteStatementInsert.clearBindings();
             // TODO: 04.07.2023 цикл данных
             sqLiteStatementInsert=    методЗаполенияMaterialBinarySQLiteStatement(sqLiteStatementInsert, jsonNodeParentMAP );
@@ -333,9 +334,11 @@ this.context=context;
 
     @NonNull
     private SQLiteStatement методGetSqliteStatementForUpdate(@NonNull String SQlOperInsert,
-                                                             @NonNull JsonNode jsonNodeParentMAP) {
+                                                             @NonNull JsonNode jsonNodeParentMAP,
+                                                             @NonNull SQLiteDatabase Create_Database_СамаБАзаSQLite) {
         SQLiteStatement sqLiteStatementInsert = null;
         try{
+            sqLiteStatementInsert =          Create_Database_СамаБАзаSQLite.compileStatement(SQlOperInsert);
             sqLiteStatementInsert=    методЗаполенияMaterialBinarySQLiteStatement(sqLiteStatementInsert, jsonNodeParentMAP );
             // TODO: 05.07.2023  Для Состыковки
             sqLiteStatementInsert.bindLong(9,jsonNodeParentMAP.get("uuid").longValue());//"uuid уже для UUID"
