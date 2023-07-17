@@ -273,6 +273,7 @@ public class FragmentDetailingMaterials extends Fragment {
             if (myRecycleViewAdapter.cursorДетализацияМатериала !=null) {
                 myRecycleViewAdapter.cursorДетализацияМатериала.requery();
                 myRecycleViewAdapter.notifyDataSetChanged();
+                recyclerView.getAdapter().notifyDataSetChanged();
             }
         } catch (Exception e) {
             e.printStackTrace();

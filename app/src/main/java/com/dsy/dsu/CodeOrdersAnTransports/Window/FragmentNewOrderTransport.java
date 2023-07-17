@@ -266,9 +266,11 @@ public class FragmentNewOrderTransport extends Fragment {
         }
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
 
-
-
+    }
 
     // TODO: 27.04.2023  новый код Заказ Транспорта
     class   SubClassNewOrderTransport{

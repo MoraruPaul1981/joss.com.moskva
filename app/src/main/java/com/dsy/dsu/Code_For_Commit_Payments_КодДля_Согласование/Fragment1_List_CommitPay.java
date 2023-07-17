@@ -217,6 +217,9 @@ public class Fragment1_List_CommitPay extends Fragment {
     public void onStop() {
         super.onStop();
         try{
+                myRecycleViewAdapter.notifyDataSetChanged();
+                recyclerViewСогласование1С.getAdapter().notifyDataSetChanged();
+
             Log.d(this.getClass().getName(), " оonStop");
     } catch (Exception e) {
         e.printStackTrace();

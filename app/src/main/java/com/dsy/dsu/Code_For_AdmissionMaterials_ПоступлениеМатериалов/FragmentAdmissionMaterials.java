@@ -244,14 +244,10 @@ public class FragmentAdmissionMaterials extends Fragment {
     public void onStop() {
         super.onStop();
         try{
-            if (cursorНомерЦФО !=null) {
-                cursorНомерЦФО.close();
-            }
-            if (cursorНомерМатериала !=null) {
-                cursorНомерМатериала.close();
-            }
-            if (cursorСамиДанныеGroupBy !=null) {
-                cursorСамиДанныеGroupBy.close();
+            if (myRecycleViewAdapter.cursorНомерЦФО !=null) {
+                myRecycleViewAdapter.cursorНомерЦФО.requery();
+                myRecycleViewAdapter.notifyDataSetChanged();
+                recyclerView.getAdapter().notifyDataSetChanged();
             }
             if (binderДляПолучениеМатериалов != null) {
                 getActivity().unbindService(serviceConnectionМатериалы);

@@ -400,11 +400,9 @@ public class FragmentMaretialNew extends Fragment {
     public void onStop() {
         super.onStop();
         try{
-      /*      if (serviceConnection!=null) {
-                getContext().unbindService(serviceConnection);
-            }*/
-            if (CursorДляЦФО!=null) {
-                CursorДляЦФО.close();
+            if (myRecycleViewAdapter.cursorConcurrentSkipListMap !=null) {
+                myRecycleViewAdapter.notifyDataSetChanged();
+                recyclerView.getAdapter().notifyDataSetChanged();
             }
         } catch (Exception e) {
             e.printStackTrace();
