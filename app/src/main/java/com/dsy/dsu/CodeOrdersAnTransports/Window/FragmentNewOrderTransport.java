@@ -350,7 +350,6 @@ public class FragmentNewOrderTransport extends Fragment {
                 fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
                 fragmentBackListOrderTransport = new FragmentOrderTransportOneChane();
                 Bundle bundleBackOrdersTransport=new Bundle();
-                bundleBackOrdersTransport.putBinder("binder", (ServiceOrserTransportService.  LocalBinderOrderTransport) localBinderNewOrderTransport);
                 bundleBackOrdersTransport.putInt("isalive",2);
                 fragmentBackListOrderTransport.setArguments(bundleBackOrdersTransport);
                 fragmentTransaction.remove(fragmentManager.getFragments().get(0));

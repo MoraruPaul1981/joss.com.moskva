@@ -43,6 +43,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.loader.content.AsyncTaskLoader;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -115,6 +116,8 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
 
     private ScrollView scrollview_OrderTransport;
     private   LinearLayoutManager linearLayoutManager;
+
+    private    Cursor    cursorHistory;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         try{
@@ -211,6 +214,10 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
             // TODO: 04.05.2023 Анимация
        //todo recyrview
             subClassOrdersTransport.МетодИнициализацииRecycreView();
+            getsubClassAdapterMyRecyclerview.new SubClassAdapterMyRecyclerview(getContext() ).      методЗаполенияRecycleView(cursorHistory);
+
+            subClassOrdersTransport.   МетодБиндингOrderTransport();
+
             subClassOrdersTransport.методАнимацииGridView();
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
@@ -236,10 +243,6 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
             if (myRecycleViewAdapter.cursor !=null) {
                 myRecycleViewAdapter.cursor.requery();
                 myRecycleViewAdapter.notifyDataSetChanged();
-                recyclerView_OrderTransport.getAdapter().notifyDataSetChanged();
-            }
-            if (recyclerView_OrderTransport!=null) {
-                recyclerView_OrderTransport.removeAllViewsInLayout();
             }
            ///WorkManager.getInstance(getContext()).cancelUniqueWork(ИмяСлужбыСинхронизациОдноразовая);
 
@@ -286,15 +289,16 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
     public void onStart() {
         super.onStart();
         try{
-        Cursor    cursorHistory =      subClassOrdersTransport.методGetCursorGROUPBYBoundsStory(); //      методGetCursorBounds();
-
-            getsubClassAdapterMyRecyclerview.new SubClassAdapterMyRecyclerview(getContext() ).      методЗаполенияRecycleView(cursorHistory);
-            subClassOrdersTransport. МетодСлушательRecycleView();
-            subClassOrdersTransport.  МетодСлушательКурсора();
-            subClassOrdersTransport.    МетодКпопкиЗначков();
-            subClassOrdersTransport. МетодПерегрузкаRecyceView();
-            // TODO: 12.05.2023 слушатель
-            subClassOrdersTransport.методСлушателяWorkManagerОбщая(lifecycleOwnerОбщая);
+            if (cursorHistory!=null) {
+                getsubClassAdapterMyRecyclerview.new SubClassAdapterMyRecyclerview(getContext() ).      методЗаполенияRecycleView(cursorHistory);
+                subClassOrdersTransport. МетодСлушательRecycleView();
+                subClassOrdersTransport.  МетодСлушательКурсора();
+                subClassOrdersTransport.    МетодКпопкиЗначков();
+                // TODO: 12.05.2023 слушатель
+                subClassOrdersTransport.методСлушателяWorkManagerОбщая(lifecycleOwnerОбщая);
+            }else {
+                subClassOrdersTransport.    МетодКпопкиЗначков();
+            }
 
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
@@ -764,7 +768,6 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
                 fragmentTransaction.setCustomAnimations(android.R.anim.slide_out_right,android.R.anim.slide_in_left);
                 fragmentNewЗаказТранспорта = new FragmentOrderTransportOneChane();
                 Bundle bundleNewOrderTransport=new Bundle();
-                bundleNewOrderTransport.putBinder("binder", (ServiceOrserTransportService.  LocalBinderOrderTransport) localBinderOrderTransport);
                 bundleNewOrderTransport.putInt("isalive",1);
                 fragmentNewЗаказТранспорта.setArguments(bundleNewOrderTransport);
                 fragmentTransaction.remove(fragmentManager.getFragments().get(0));
@@ -881,25 +884,57 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
         // TODO: 28.04.2023
         public void МетодБиндингOrderTransport() {
             try {
-                Intent intentЗапускOrserTransportService = new Intent(getContext(), ServiceOrserTransportService.class);
-                intentЗапускOrserTransportService.setAction("intentЗапускOrserTransportService");
-                serviceConnection=     new ServiceConnection() {
+                // TODO: 23.05.2023  дан
+                AsyncTaskLoader asyncTaskLoader=new AsyncTaskLoader(getContext()) {
                     @Override
-                    public void onServiceConnected(ComponentName name, IBinder service) {
-                        try {
-                            if (service.isBinderAlive()) {
-                                localBinderOrderTransport = (ServiceOrserTransportService.  LocalBinderOrderTransport) service;
-                                // TODO: 23.05.2023  даннеы
-                                // TODO: 23.05.2023  экран
-                                  onStart();
-                                Log.d(getContext().getClass().getName(), "\n"
-                                        + " время: " + new Date() + "\n+" +
-                                        " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                        + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive()+
-                                        " localBinderOrderTransport " +localBinderOrderTransport
-                                        + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive());
-                            }
+                    protected void onStartLoading() {
+                        super.onStartLoading();
+                        cursorHistory =      subClassOrdersTransport.методGetCursorGROUPBYBoundsStory(); //      методGetCursorBounds();
+
+                        Log.d(getContext().getClass().getName(), "\n"
+                                + " время: " + new Date() + "\n+" +
+                                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive()+
+                                " localBinderOrderTransport " +localBinderOrderTransport
+                                + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive());
+                    }
+
+                    @Override
+                    public void forceLoad() {
+                        super.forceLoad();
+                        Log.d(getContext().getClass().getName(), "\n"
+                                + " время: " + new Date() + "\n+" +
+                                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive()+
+                                " localBinderOrderTransport " +localBinderOrderTransport
+                                + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive());
+                    }
+
+                    @Override
+                    public void commitContentChanged() {
+                        super.commitContentChanged();
+                        // TODO: 17.07.2023
+                        if(cursorHistory!=null){
+                            // TODO: 23.05.2023  экран
+                            onStart();
+                        }
+
+                        Log.d(getContext().getClass().getName(), "\n"
+                                + " время: " + new Date() + "\n+" +
+                                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive()+
+                                " localBinderOrderTransport " +localBinderOrderTransport
+                                + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive());
+                    }
+
+                    @Nullable
+                    @Override
+                    public Object loadInBackground() {
+                        try{
+
                         } catch (Exception e) {
                             e.printStackTrace();
                             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
@@ -909,61 +944,19 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
                                     this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                                     Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
-                    }
-
-                    @Override
-                    public void onServiceDisconnected(ComponentName name) {
-                        try {
-                            localBinderOrderTransport = null;
-                            Log.d(getContext().getClass().getName(), "\n"
-                                    + " время: " + new Date() + "\n+" +
-                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
-                                    Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                    Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            // TODO: 11.05.2021 запись ошибок
-
-                        }
+                        return cursorHistory;
                     }
                 };
-                if (localBinderOrderTransport==null) {
-                    Boolean   isBound =    getContext(). bindService(intentЗапускOrserTransportService, serviceConnection , Context.BIND_AUTO_CREATE);
-                }else {
-// TODO: 24.05.2023 КОГДА УЖЕ БЫЛО ПОДКЛЮЧЕНИЕ
-                    // TODO: 23.05.2023  экран
-                    onStart();
-                    Log.d(getContext().getClass().getName(), "\n"
-                            + " время: " + new Date() + "\n+" +
-                            " Класс в процессе... " + this.getClass().getName() + "\n" +
-                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                            + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive()+
-                            " localBinderOrderTransport " +localBinderOrderTransport
-                            + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive());
-                }
-                getContext().registerComponentCallbacks(new ComponentCallbacks() {
-                    @Override
-                    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-                        Log.d(getContext().getClass().getName(), "\n"
-                                + " время: " + new Date() + "\n+" +
-                                " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()  + "localBinderOrderTransport " +
-                                localBinderOrderTransport);
-                    }
+                asyncTaskLoader.startLoading();
+                asyncTaskLoader.forceLoad();
 
-                    @Override
-                    public void onLowMemory() {
-                        Log.d(getContext().getClass().getName(), "\n"
-                                + " время: " + new Date() + "\n+" +
-                                " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-                    }
-                });
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                        + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive()+
+                        " localBinderOrderTransport " +localBinderOrderTransport
+                        + "   localBinderOrderTransport.isBinderAlive()" + localBinderOrderTransport.isBinderAlive());
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -973,7 +966,7 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
-        private Cursor методGetCursorGROUPBYBoundsStory() throws Exception {
+        private Cursor методGetCursorGROUPBYBoundsStory()   {
             Cursor cursorGroupByParent = null;
             try{
                 LinkedHashMap<String,String> linkedHashMapДеньМесяцГод;
@@ -2239,7 +2232,6 @@ class SubClassGetDateOrderGroupBy {
                             if(     cursor==null){
                                 viewЗаказыТраспорта = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_progressing_ordertransport, parent, false);//todo old simple_for_takst_cardview1
                                 Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewЗаказыТраспорта);
-                                subClassOrdersTransport.   МетодБиндингOrderTransport();
 
                             }else {
                                 if (cursor.getCount() > 0 && cursor.isClosed()==false) {
@@ -2485,6 +2477,7 @@ class SubClassGetDateOrderGroupBy {
                 void методЗаполенияRecycleView(@NonNull Cursor cursor) {
                     try {
                         myRecycleViewAdapter = new MyRecycleViewAdapter(cursor);
+                        myRecycleViewAdapter.notifyDataSetChanged();
                         recyclerView_OrderTransport.setAdapter(myRecycleViewAdapter);
                         Log.d(getContext().getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
@@ -2698,8 +2691,7 @@ class SubClassGetDateOrderGroupBy {
         }
         private void МетодКпопкиЗначков( ) {
             try {
-                if (myRecycleViewAdapter.cursor!=null && myRecycleViewAdapter.cursor.getCount()> 0 && myRecycleViewAdapter.cursor.isClosed()==false) {
-                        Log.d(this.getClass().getName(), "  myRecycleViewAdapter.cursor" + myRecycleViewAdapter.cursor.getCount());
+                if (cursorHistory!=null && cursorHistory.getCount()> 0 ) {
                         BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_lback).setNumber( myRecycleViewAdapter.cursor.getCount());//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
                         BottomNavigationOrderTransport.getOrCreateBadge(R.id.id_lback).setBackgroundColor(Color.parseColor("#15958A"));
                 }else {
@@ -2710,7 +2702,7 @@ class SubClassGetDateOrderGroupBy {
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
-                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+ " myRecycleViewAdapter.cursor " +myRecycleViewAdapter.cursor);
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+ " cursorHistory " +cursorHistory);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
