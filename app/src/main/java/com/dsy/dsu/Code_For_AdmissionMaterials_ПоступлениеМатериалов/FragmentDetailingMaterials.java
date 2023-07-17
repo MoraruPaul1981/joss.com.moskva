@@ -799,8 +799,11 @@ public class FragmentDetailingMaterials extends Fragment {
             Log.d(this.getClass().getName(), "   ПубличныйIDДляФрагмента "+ ПубличныйIDДляФрагмента);
             intentПолучениеМатериалов.putExtras(bundleДляПЕредачи);
             //TODO получение данных от Службы ДЛя Получение Материалов
-            cursorGetIamges = (Cursor) binderДляПолучениеМатериалов.getService()
-                    .new SubClassGetDataAdmissionMaterial_Данные_ДляНовогоПоиска().МетодПолучениеДанныхForImage(getContext(), intentПолучениеМатериалов);
+            if (Paren_Image_UUID!=null) {
+                cursorGetIamges = (Cursor) binderДляПолучениеМатериалов.getService()
+                        .new SubClassGetDataAdmissionMaterial_Данные_ДляНовогоПоиска()
+                        .МетодПолучениеДанныхForImage(getContext(), intentПолучениеМатериалов);
+            }
             Log.d(this.getClass().getName(), "   cursorGetIamges " + cursorGetIamges  + " Paren_Image_UUID " +Paren_Image_UUID);
             if (cursorGetIamges.getCount() > 0) {
                 cursorGetIamges.moveToFirst();
@@ -1187,24 +1190,18 @@ public class FragmentDetailingMaterials extends Fragment {
                                 Log.d(this.getClass().getName(), "  v  " + v+ " UUIDДляУдаления " +UUIDДляУдаления);
 
                                 // TODO: 17.07.2023  получаем фотораймю для ВЫБРАНОГО МАТЕРИАЛА
-                           Cursor cursorGetIamges=     МетодПолучениеДанныхФотографииImageДляМатериа (UUIDДляУдаления);
-                                // TODO: 17.07.2023
-                                Bitmap bitmap;
-                                        byte[] imgByte = cursorGetIamges.getBlob(cursorGetIamges.getColumnIndex("image"));
-
-                                bitmap= BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
-                                // TODO: 17.07.2023
-                                ByteArrayOutputStream out = new ByteArrayOutputStream();
-                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                                Bitmap decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
+                                Bitmap bitmapImage = методGetImageForRow(UUIDДляУдаления);
 
                                 // TODO: 18.04.2023  Simple Adapter Кдик по Элементы
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                Log.d(this.getClass().getName(),"\n" + " class " +
+                                        Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " UUIDДляУдаления " +UUIDДляУдаления +
-                                         " cursorGetIamges " +cursorGetIamges);
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                        + " UUIDДляУдаления " +UUIDДляУдаления +
+                                         " bitmapImage " +bitmapImage);
 
-                                Toast.makeText(getContext(), " Клик Табель выбраного сотрудника проведен !!!!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(), " Клик Табель выбраного сотрудника проведен !!!!",
+                                        Toast.LENGTH_LONG).show();
                             }
                             progressBarСканирование.setVisibility(View.INVISIBLE);
                         },250);
@@ -1222,6 +1219,39 @@ public class FragmentDetailingMaterials extends Fragment {
                         this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
+        }
+
+        @NonNull
+        private Bitmap методGetImageForRow(Long UUIDДляУдаления) {
+            Bitmap bitmapImage = null;
+            try{
+            Cursor cursorGetIamges=     МетодПолучениеДанныхФотографииImageДляМатериа (UUIDДляУдаления);
+            // TODO: 17.07.2023
+                if (cursorGetIamges!=null && cursorGetIamges.getCount()>0) {
+                    Bitmap bitmap;
+                    byte[] imgByte = cursorGetIamges.getBlob(cursorGetIamges.getColumnIndex("image"));
+
+                    bitmap= BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
+                    // TODO: 17.07.2023
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                    bitmapImage = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
+                }
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " UUIDДляУдаления " +UUIDДляУдаления +
+                        " cursorGetIamges " +cursorGetIamges + " bitmapImage  " +bitmapImage);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(getContext().getClass().getName(),
+                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+            return bitmapImage;
         }
 
         private void методПослеУдаленияЗаписиДетализации() {
