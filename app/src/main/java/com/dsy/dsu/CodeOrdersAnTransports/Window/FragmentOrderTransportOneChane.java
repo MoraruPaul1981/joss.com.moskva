@@ -253,11 +253,9 @@ public class FragmentOrderTransportOneChane extends Fragment {
             if (myRecycleViewAdapter.cursor !=null) {
                 myRecycleViewAdapter.cursor.requery();
                 myRecycleViewAdapter.notifyDataSetChanged();
+                recyclerView_OrderTransport.getAdapter().notifyDataSetChanged();
             }
 
-           ///WorkManager.getInstance(getContext()).cancelUniqueWork(ИмяСлужбыСинхронизациОдноразовая);
-            WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая).removeObservers(lifecycleOwnerОбщая);
-            WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).removeObservers(lifecycleOwnerОдноразовая);
 
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
@@ -276,23 +274,27 @@ public class FragmentOrderTransportOneChane extends Fragment {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onDestroyView() {
+        super.onDestroyView();
         try{
-        Log.d(this.getClass().getName(), "\n" + " class " +
-                Thread.currentThread().getStackTrace()[2].getClassName()
-                + "\n" +
-                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(getContext().getClass().getName(),
-                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                Thread.currentThread().getStackTrace()[2].getLineNumber());
-    }
+            recyclerView_OrderTransport.removeAllViewsInLayout();
+            ///WorkManager.getInstance(getContext()).cancelUniqueWork(ИмяСлужбыСинхронизациОдноразовая);
+            WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая).removeObservers(lifecycleOwnerОбщая);
+            WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).removeObservers(lifecycleOwnerОдноразовая);
+            Log.d(this.getClass().getName(), "\n" + " class " +
+                    Thread.currentThread().getStackTrace()[2].getClassName()
+                    + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(getContext().getClass().getName(),
+                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
     }
 
     @Override
@@ -2871,7 +2873,7 @@ private void методИсторияFragment( ) {
                 fragmentManager.clearBackStack(null);
                 fragmentTransaction = fragmentManager.beginTransaction();
                 //  fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+             //   fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 fragmentNewЗаказТранспорта = new FragmentOrderTransportOneChaneStory();
                 Bundle bundleNewOrderTransport=new Bundle();
                 bundleNewOrderTransport.putBinder("binder", (ServiceOrserTransportService.  LocalBinderOrderTransport) localBinderOrderTransport);
