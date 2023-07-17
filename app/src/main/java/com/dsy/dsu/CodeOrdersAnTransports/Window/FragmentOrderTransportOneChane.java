@@ -1132,8 +1132,10 @@ public class FragmentOrderTransportOneChane extends Fragment {
                                             return cursor;
                                         }
                                     };
-                                    asyncTaskLoader.startLoading();
-                                    asyncTaskLoader.forceLoad();
+                                    if (!asyncTaskLoader.isStarted()) {
+                                        asyncTaskLoader.startLoading();
+                                        asyncTaskLoader.forceLoad();
+                                    }
 
                                     Log.d(getContext().getClass().getName(), "\n"
                                             + " время: " + new Date() + "\n+" +
@@ -1188,7 +1190,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
                         @Override
                         public void onLowMemory() {
-                            Log.d(getContext().getClass().getName(), "\n"
+;                            Log.d(getContext().getClass().getName(), "\n"
                                     + " время: " + new Date() + "\n+" +
                                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());

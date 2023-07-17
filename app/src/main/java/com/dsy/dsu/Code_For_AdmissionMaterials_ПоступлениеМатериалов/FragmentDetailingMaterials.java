@@ -162,8 +162,10 @@ public class FragmentDetailingMaterials extends Fragment {
                         return new Object();
                     }
                 };
-                asyncTaskLoader.startLoading();
-                asyncTaskLoader.forceLoad();
+                if (!asyncTaskLoader.isStarted()) {
+                    asyncTaskLoader.startLoading();
+                    asyncTaskLoader.forceLoad();
+                }
                 asyncTaskLoader.registerListener(new Random().nextInt(), new Loader.OnLoadCompleteListener() {
                     @Override
                     public void onLoadComplete(@NonNull Loader loader, @Nullable Object data) {

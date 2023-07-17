@@ -256,12 +256,6 @@ public class FragmentAdmissionMaterials extends Fragment {
                 myRecycleViewAdapter.notifyDataSetChanged();
                 recyclerView.getAdapter().notifyDataSetChanged();
             }
-        /*    if (binderДляПолучениеМатериалов != null) {
-                getActivity().unbindService(serviceConnectionМатериалы);
-            }*/
-
-            WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая).removeObservers(lifecycleOwnerОбщая);
-            WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).removeObservers(lifecycleOwner);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -271,6 +265,38 @@ public class FragmentAdmissionMaterials extends Fragment {
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
+
+    public void onDestroyView() {
+        super.onDestroyView();
+        try{
+            recyclerView.removeAllViewsInLayout();
+            ///WorkManager.getInstance(getContext()).cancelUniqueWork(ИмяСлужбыСинхронизациОдноразовая);
+            WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизацииОбщая).removeObservers(lifecycleOwnerОбщая);
+            WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(ИмяСлужбыСинхронизациОдноразовая).removeObservers(lifecycleOwner);
+            Log.d(this.getClass().getName(), "\n" + " class " +
+                    Thread.currentThread().getStackTrace()[2].getClassName()
+                    + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(getContext().getClass().getName(),
+                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
+
+
+
+
+
+
+
+
+
 
     //TODO метод делает callback с ответом на экран
     private void МетодПерегрузкаRecyceView() {
@@ -1457,8 +1483,10 @@ public class FragmentAdmissionMaterials extends Fragment {
                                             return binderДляПолучениеМатериалов;
                                         }
                                     };
-                                    asyncTaskLoader.startLoading();
-                                    asyncTaskLoader.forceLoad();
+                                    if (!asyncTaskLoader.isStarted()) {
+                                        asyncTaskLoader.startLoading();
+                                        asyncTaskLoader.forceLoad();
+                                    }
                                     asyncTaskLoader.registerListener(new Random().nextInt(), new Loader.OnLoadCompleteListener() {
                                         @Override
                                         public void onLoadComplete(@NonNull Loader loader, @Nullable Object data) {

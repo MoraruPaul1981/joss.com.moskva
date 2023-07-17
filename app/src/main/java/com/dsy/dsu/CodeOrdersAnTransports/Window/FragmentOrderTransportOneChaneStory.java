@@ -118,6 +118,8 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
     private   LinearLayoutManager linearLayoutManager;
 
     private    Cursor    cursorHistory;
+
+    private   AsyncTaskLoader asyncTaskLoader;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         try{
@@ -907,7 +909,7 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
         public void МетодБиндингOrderTransport() {
             try {
                 // TODO: 23.05.2023  дан
-                AsyncTaskLoader asyncTaskLoader=new AsyncTaskLoader(getContext()) {
+               asyncTaskLoader=new AsyncTaskLoader(getContext()) {
                     @Override
                     protected void onStartLoading() {
                         super.onStartLoading();
@@ -969,8 +971,10 @@ public class FragmentOrderTransportOneChaneStory extends Fragment {
                         return cursorHistory;
                     }
                 };
-                asyncTaskLoader.startLoading();
-                asyncTaskLoader.forceLoad();
+                if (!asyncTaskLoader.isStarted()) {
+                    asyncTaskLoader.startLoading();
+                    asyncTaskLoader.forceLoad();
+                }
 
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
