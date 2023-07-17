@@ -69,7 +69,7 @@
                 android:checkMark="?android:attr/textCheckMark"
                 android:foregroundGravity="center"
                 android:gravity="left|center_vertical"
-                android:hint="Загрузка пос.  материалов..."
+                android:hint="Загрузка новые  материал..."
                 android:minHeight="25dp"
                 android:singleLine="false"
                 android:textAlignment="gravity"

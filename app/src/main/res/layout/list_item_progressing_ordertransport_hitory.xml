@@ -19,7 +19,7 @@
                     android:id="@android:id/text2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-
+        
                     android:checkMark="?android:attr/textCheckMark"
                     android:foregroundGravity="center"
                     android:gravity="center"
@@ -30,7 +30,7 @@
                     android:textAppearance="?android:attr/textAppearanceListItemSmall"
                     android:textColor="#000000"
                     android:textSize="16sp"
-                    android:hint="Загрузка заказов..."
+                    android:hint="Загрузка истории..."
                     android:textStyle="bold"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="10dp"

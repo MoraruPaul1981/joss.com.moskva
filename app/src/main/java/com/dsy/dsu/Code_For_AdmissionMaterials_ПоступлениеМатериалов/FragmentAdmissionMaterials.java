@@ -179,7 +179,6 @@ public class FragmentAdmissionMaterials extends Fragment {
             //todo запуск методов в фрагменте
             МетодИнициализацииRecycreView();
             МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
-            методБиндингСлужбыGetCurcor();
             МетодHandlerCallBack();
             МетодВыходНаAppBack();
             Log.d(this.getClass().getName(), "  onViewCreated  FragmentAdmissionMaterials  recyclerView  "+recyclerView+
@@ -1062,6 +1061,7 @@ public class FragmentAdmissionMaterials extends Fragment {
                 if(    cursorНомерЦФО==null){
                         viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov, parent, false);//todo old simple_for_takst_cardview1
                         Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов);
+                    методБиндингСлужбыGetCurcor();
 
                 }else {
                     if (cursorНомерЦФО.getCount() > 0) {
@@ -1314,10 +1314,11 @@ public class FragmentAdmissionMaterials extends Fragment {
                         if (bundleПереходДетализацию != null) {
                             // TODO: 09.11.2022  переходим на детализацию Полученихы Материалов
                             fragmentTransaction = fragmentManager.beginTransaction();
-                           // fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+                            fragmentTransaction.setCustomAnimations( android.R.anim.slide_in_left,android.R.anim.slide_out_right);
                             Fragment              fragmentAdmissionMaterialsDetailing = new FragmentDetailingMaterials();
                             bundleПереходДетализацию.putBinder("binder",binderДляПолучениеМатериалов);
                             fragmentAdmissionMaterialsDetailing.setArguments(bundleПереходДетализацию);
+                            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                             fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragmentAdmissionMaterialsDetailing);//.layout.activity_for_fragemtb_history_tasks
                             fragmentTransaction.commit();
                             fragmentTransaction.show(fragmentAdmissionMaterialsDetailing);
@@ -1471,43 +1472,21 @@ public class FragmentAdmissionMaterials extends Fragment {
                         public void onServiceConnected(ComponentName name, IBinder service) {
                             try {
                                 if (service.isBinderAlive()) {
-
-                                    AsyncTaskLoader asyncTaskLoader=new AsyncTaskLoader<Object>(getContext()) {
-                                        @Nullable
-                                        @Override
-                                        public Object loadInBackground() {
-                                            // TODO: 30.06.2023
-                                            binderДляПолучениеМатериалов = (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) service;
-
-                                            методGetCFOCursorFirst("ПолучениеЦФО",0);
-                                            return binderДляПолучениеМатериалов;
-                                        }
-                                    };
-                                    if (!asyncTaskLoader.isStarted()) {
-                                        asyncTaskLoader.startLoading();
-                                        asyncTaskLoader.forceLoad();
-                                    }
-                                    asyncTaskLoader.registerListener(new Random().nextInt(), new Loader.OnLoadCompleteListener() {
-                                        @Override
-                                        public void onLoadComplete(@NonNull Loader loader, @Nullable Object data) {
-                                            // TODO: 18.04.2023
-                                            onStart();
-                                        }
+                                    handler.post(()->{
+                                        // TODO: 30.06.2023
+                                        binderДляПолучениеМатериалов = (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) service;
+                                        методGetCFOCursorFirst("ПолучениеЦФО",0);
+                                        // TODO: 18.04.2023
+                                        onStart();
                                     });
-
-
-
-
-
-
-                                }
-
                                     Log.d(getContext().getClass().getName(), "\n"
                                             + " время: " + new Date() + "\n+" +
                                             " Класс в процессе... " + this.getClass().getName() + "\n" +
                                             " onServiceConnected  метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
                                             + "    onServiceDisconnected  Service_for_AdminissionMaterial" + " service "
                                             + service.isBinderAlive());
+
+                                }
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
