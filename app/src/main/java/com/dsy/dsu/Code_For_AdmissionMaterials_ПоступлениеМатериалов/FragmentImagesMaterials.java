@@ -342,7 +342,7 @@ public class FragmentImagesMaterials extends Fragment {
                 public void onClick(View v) {
                     try {
                         МетодЗапускаАнимацииКнопок(v);//todo только анимауия
-                        Fragment      fragmentBAcK = new FragmentDetailingMaterials();
+                       Fragment      fragmentBAcK = new FragmentDetailingMaterials();
                         fragmentTransaction = fragmentManager.beginTransaction();
                         bundleForImages.putBinder("binder",binderДляПолучениеМатериалов);
                         fragmentBAcK.setArguments(bundleForImages);
@@ -350,7 +350,8 @@ public class FragmentImagesMaterials extends Fragment {
                         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                         fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragmentBAcK).commit();//.layout.activity_for_fragemtb_history_tasks
                         fragmentTransaction.show(fragmentBAcK);
-                        Log.d(this.getClass().getName(), "  v  " + v);
+                        Log.d(this.getClass().getName(), "  onViewCreated  FragmentDetailingMaterials  binderДляПолучениеМатериалов  "+binderДляПолучениеМатериалов+
+                                " bundleForImages " +bundleForImages);
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(getContext().getClass().getName(),

@@ -80,10 +80,10 @@ public class FragmentDetailingMaterials extends Fragment {
     private MyViewHolder myViewHolder;
     private  Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binderДляПолучениеМатериалов;
     private Integer ТекущаяЦФО=0;
-    private Integer ТекущаяНомерМатериала=0;
+    private Integer НомерВыбраногоМатериала =0;
     private Integer Количество =0;
     private String ВыбранныйМатериал=new String();
-    private String РодительскийМатериал=new String();
+    private String Материал =new String();
     private  ViewGroup container;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
@@ -107,8 +107,8 @@ public class FragmentDetailingMaterials extends Fragment {
             if (data!=null) {
                 binderДляПолучениеМатериалов=  (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) data.getBinder("binder");
                 ТекущаяЦФО= data.getInt("Цфо");
-                ТекущаяНомерМатериала= data.getInt("НомерВыбраногоМатериала");
-                РодительскийМатериал   =data.getString("Материал");
+                НомерВыбраногоМатериала = data.getInt("НомерВыбраногоМатериала");
+                Материал =data.getString("Материал");
                 Количество =data.getInt("Количество");
                 ВыбранныйМатериал =data.getString("ВыбранныйМатериал");
                 // TODO: 10.11.2022
@@ -118,7 +118,7 @@ public class FragmentDetailingMaterials extends Fragment {
             startДляОбноразвовной=     Calendar.getInstance().getTimeInMillis();
 
             Log.d(this.getClass().getName(), "  onViewCreated  FragmentDetailingMaterials  binderДляПолучениеМатериалов  "+binderДляПолучениеМатериалов+
-                    " ТекущаяЦФО " +ТекущаяЦФО+ " ТекущаяНомерМатериала "+ТекущаяНомерМатериала+
+                    " ТекущаяЦФО " +ТекущаяЦФО+ " НомерВыбраногоМатериала "+ НомерВыбраногоМатериала +
                     "ВыбранныйМатериал "+ВыбранныйМатериал+"Количество "+ Количество);
         } catch (Exception e) {
             e.printStackTrace();
@@ -131,15 +131,16 @@ public class FragmentDetailingMaterials extends Fragment {
         }
     }
 
+    // TODO: 18.07.2023  метод получение GET CURSOR
     private void методGetCursorForDetalizaa() {
         try{
             handler.post(()->{
                 cursorДетализацияМатериала=
                         МетодПолучениеДанныхДЛяПолучениеМатериалов(
                                 "ПолучениеНомерМатериалаДетализация"
-                                ,ТекущаяЦФО,ТекущаяНомерМатериала);
+                                ,ТекущаяЦФО, НомерВыбраногоМатериала);
                 Log.d(this.getClass().getName(), "  onViewCreated  FragmentDetailingMaterials  binderДляПолучениеМатериалов  "+binderДляПолучениеМатериалов+
-                        " ТекущаяЦФО " +ТекущаяЦФО+ " ТекущаяНомерМатериала "+ТекущаяНомерМатериала+
+                        " ТекущаяЦФО " +ТекущаяЦФО+ " НомерВыбраногоМатериала "+ НомерВыбраногоМатериала +
                         "ВыбранныйМатериал "+ВыбранныйМатериал+"Количество "+ Количество + " cursorДетализацияМатериала " +cursorДетализацияМатериала);
 
                 if (cursorДетализацияМатериала!=null) {
@@ -225,7 +226,7 @@ public class FragmentDetailingMaterials extends Fragment {
     public void onStart() {
         super.onStart();
         try{// TODO: 03.11.2022  после получение данных перересует Экран
-            if (cursorДетализацияМатериала!=null && cursorДетализацияМатериала.getCount()>0) {
+            if (cursorДетализацияМатериала!=null && cursorДетализацияМатериала.getCount()>=0) {
                 МетодДизайнПрограссБара();
                 МетодКпопкиЗначков(cursorДетализацияМатериала);
                 МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
@@ -752,7 +753,7 @@ public class FragmentDetailingMaterials extends Fragment {
             }
             bundleДляПЕредачи.putInt("ПубличныйIDДляФрагмента",ПубличныйIDДляФрагмента);
             bundleДляПЕредачи.putInt("ТекущаяЦФО",ТекущаяЦФО);
-            bundleДляПЕредачи.putInt("ТекущаяНомерМатериала",ТекущаяНомерМатериала);
+            bundleДляПЕредачи.putInt("НомерВыбраногоМатериала",ТекущаяНомерМатериала);
             bundleДляПЕредачи.putString("ФлагКакиеДанныеНужныПолучениеМатериалов",ФлагКакиеДанныеНужныПолучениеМатериалов);
             Intent intentПолучениеМатериалов = new Intent(getContext(), Service_for_AdminissionMaterial.class);
             intentПолучениеМатериалов.setAction(ФлагКакиеДанныеНужныПолучениеМатериалов);
@@ -1194,22 +1195,23 @@ public class FragmentDetailingMaterials extends Fragment {
         }
 
         // TODO: 18.07.2023  метод  перехода на Image Binary  для материала
-        private void методForfardForImages(@NonNull  View v, @NonNull Bundle bundleПереходУдалениеМатериала) {
+        private void методForfardForImages(@NonNull  View v, @NonNull Bundle bundleПереходGEtImages) {
             try{
-            if (bundleПереходУдалениеМатериала != null) {
-                Long UUIDДляУдаления= bundleПереходУдалениеМатериала.getLong("UUIDВыбраныйМатериал",0l);
+            if (bundleПереходGEtImages != null) {
+                Long UUIDДляУдаления= bundleПереходGEtImages.getLong("UUIDВыбраныйМатериал",0l);
                 Log.d(this.getClass().getName(), "  v  " + v + " UUIDДляУдаления " +UUIDДляУдаления);
                 // TODO: 18.07.2023 пололнительные параменты
-                bundleПереходУдалениеМатериала.putInt("НомерВыбраногоМатериала", ТекущаяНомерМатериала);
-                bundleПереходУдалениеМатериала.putString("Материал", РодительскийМатериал);
-                bundleПереходУдалениеМатериала.putInt("Количество", Количество);
-                bundleПереходУдалениеМатериала.putString("ВыбранныйМатериал",ВыбранныйМатериал);
+                bundleПереходGEtImages.putInt("Цфо",  ТекущаяЦФО);
+                bundleПереходGEtImages.putInt("НомерВыбраногоМатериала", НомерВыбраногоМатериала);
+                bundleПереходGEtImages.putString("Материал", Материал);
+                bundleПереходGEtImages.putInt("Количество", Количество);
+                bundleПереходGEtImages.putString("ВыбранныйМатериал",ВыбранныйМатериал);
+                bundleПереходGEtImages.putBinder("binder",binderДляПолучениеМатериалов);
                 // TODO: 18.07.2023 переходят на Фрагмент Рисунков Binary Image
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations( android.R.anim.slide_in_left,android.R.anim.slide_out_right);
                 Fragment              fragmentImagesMaterials = new FragmentImagesMaterials();
-                bundleПереходУдалениеМатериала.putBinder("binder",binderДляПолучениеМатериалов);
-                fragmentImagesMaterials.setArguments(bundleПереходУдалениеМатериала);
+                fragmentImagesMaterials.setArguments(bundleПереходGEtImages);
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragmentImagesMaterials);//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.commit();
