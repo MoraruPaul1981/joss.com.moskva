@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/simple_task_for_Tasks"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
+    android:background="#FFFFFF"
+    tools:context=".Code_For_AdmissionMaterials_ПоступлениеМатериалов.MainActivity_AdmissionMaterials">
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialcardView_for_detalizaziy"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minHeight="200dp"
+        android:checkable="true"
+        android:clickable="false"
+        android:singleLine="false"
+        android:focusable="true"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="5dp"
+        android:translationZ="10dp"
+        app:cardBackgroundColor="#C51162"
+        app:strokeColor="#DCDADA"
+        android:animateLayoutChanges="true">
+            <TableLayout
+                android:id="@+id/tableLayout_material_detalizaziy"
+                android:stretchColumns="*"
+                android:shrinkColumns="*"
+                android:minHeight="200dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
+                app:cardBackgroundColor= "#FFFFFF"
+                android:backgroundTint= "#FFFFFF"
+                android:layout_margin="1dp">
+            </TableLayout>
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout>

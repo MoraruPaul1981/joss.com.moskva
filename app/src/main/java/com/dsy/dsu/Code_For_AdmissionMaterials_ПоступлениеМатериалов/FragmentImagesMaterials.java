@@ -37,7 +37,6 @@ import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.loader.content.AsyncTaskLoader;
-import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,8 +53,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.common.util.concurrent.AtomicDouble;
-
 
 import org.jetbrains.annotations.NotNull;
 
@@ -67,11 +64,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.LinkedTransferQueue;
 
 
 // TODO: 29.09.2022 фрагмент для получение материалов
-public class FragmentDetailingMaterials extends Fragment {
+public class FragmentImagesMaterials extends Fragment {
     private Integer ПубличныйIDДляФрагмента;
     private RecyclerView recyclerView;
     private LinearLayout linearLayou;
@@ -104,7 +100,7 @@ public class FragmentDetailingMaterials extends Fragment {
     private Cursor  cursorДетализацияМатериала;
 
     // TODO: 27.09.2022 Фрагмент Получение Материалов
-    public FragmentDetailingMaterials() {
+    public FragmentImagesMaterials() {
         // Required empty public constructor
     }
     @Override
@@ -1006,13 +1002,13 @@ public class FragmentDetailingMaterials extends Fragment {
             View viewПолучениеМатериалов = null;
             try {
                 if(cursorДетализацияМатериала==null){
-                    viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialovdetalizasia, parent, false);//todo old simple_for_takst_cardview1
+                    viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretial_image, parent, false);//todo old simple_for_takst_cardview1
                     Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов);
 
                     методGetCursorForDetalizaa();
                 }else {
                     if (cursorДетализацияМатериала.getCount() > 0 ) {
-                        viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_assionamaterial_detalizay, parent, false);//todo old  simple_for_assionamaterial
+                        viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_assionamaterial_for_images, parent, false);//todo old  simple_for_assionamaterial
                         Log.i(this.getClass().getName(), "   viewПолучениеМатериалов" + viewПолучениеМатериалов+ "  cursorДетализацияМатериала.getCount()  " + cursorДетализацияМатериала.getCount());
                     } else  if ( cursorДетализацияМатериала.getCount()==-0 ){
                         viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_isnull_actimavmaretisldetalizasia, parent, false);//todo old simple_for_takst_cardview1
@@ -1177,17 +1173,37 @@ public class FragmentDetailingMaterials extends Fragment {
                             v.animate().rotationX(0);
                             // TODO: 01.07.2023 удаление
                             Bundle bundleПереходУдалениеМатериала=(Bundle) v.getTag();
+                            Log.d(this.getClass().getName(), "МетодаКликаУдаленияМатериалаПоtableRow v  " + v+ " bundleПереходУдалениеМатериала "
+                                    +bundleПереходУдалениеМатериала);
+                            if (bundleПереходУдалениеМатериала != null) {
+                                Long UUIDДляУдаления= bundleПереходУдалениеМатериала.getLong("UUIDВыбраныйМатериал",0l);
+                                String Материал= bundleПереходУдалениеМатериала.getString("Материал","");
+                                Integer Количество= bundleПереходУдалениеМатериала.getInt("Количество",0);
+                                bundleПереходУдалениеМатериала.putString("selection","uuid=?");
+                                Log.d(this.getClass().getName(), "  v  " + v+ " UUIDДляУдаления " +UUIDДляУдаления);
+                                Intent intentДляУдалениеМатериалов=new Intent("УдалениеВыбранныеМатериалыДетализации");
+                                intentДляУдалениеМатериалов.putExtras(bundleПереходУдалениеМатериала);
+                                Log.d(this.getClass().getName(), "  v  " + v+ " UUIDДляУдаления " +UUIDДляУдаления);
 
-                            методForfardForImages(v, bundleПереходУдалениеМатериала);
+                                // TODO: 17.07.2023  получаем фотораймю для ВЫБРАНОГО МАТЕРИАЛА
+                                Bitmap bitmapImage = методGetImageForRow(UUIDДляУдаления);
 
-                            // TODO: 18.04.2023  Simple Adapter Кдик по Элементы
-                            Log.d(this.getClass().getName(),"\n" + " class " +
-                                    Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                                // TODO: 18.04.2023  Simple Adapter Кдик по Элементы
+                                Log.d(this.getClass().getName(),"\n" + " class " +
+                                        Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                        + " UUIDДляУдаления " +UUIDДляУдаления +
+                                         " bitmapImage " +bitmapImage);
+
+                                Toast.makeText(getContext(), " Клик Табель выбраного сотрудника проведен !!!!",
+                                        Toast.LENGTH_LONG).show();
+                            }
                             progressBarСканирование.setVisibility(View.INVISIBLE);
                         },250);
-                        
+
+
+
                     }
                 });
             } catch (Exception e) {
@@ -1201,47 +1217,6 @@ public class FragmentDetailingMaterials extends Fragment {
             }
         }
 
-        // TODO: 18.07.2023  метод  перехода на Image Binary  для материала
-        private void методForfardForImages(@NonNull  View v, @NonNull Bundle bundleПереходУдалениеМатериала) {
-            try{
-            if (bundleПереходУдалениеМатериала != null) {
-                Long UUIDДляУдаления= bundleПереходУдалениеМатериала.getLong("UUIDВыбраныйМатериал",0l);
-                String Материал= bundleПереходУдалениеМатериала.getString("Материал","");
-                Integer Количество= bundleПереходУдалениеМатериала.getInt("Количество",0);
-                bundleПереходУдалениеМатериала.putString("selection","uuid=?");
-                Log.d(this.getClass().getName(), "  v  " + v + " UUIDДляУдаления " +UUIDДляУдаления);
-                Intent intentДляУдалениеМатериалов=new Intent("УдалениеВыбранныеМатериалыДетализации");
-                intentДляУдалениеМатериалов.putExtras(bundleПереходУдалениеМатериала);
-                Log.d(this.getClass().getName(), "  v  " + v + " UUIDДляУдаления " +UUIDДляУдаления);
-                // TODO: 18.07.2023 переходят на Фрагмент Рисунков Binary Image
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.setCustomAnimations( android.R.anim.slide_in_left,android.R.anim.slide_out_right);
-                Fragment              fragmentImagesMaterials = new FragmentImagesMaterials();
-                bundleПереходУдалениеМатериала.putBinder("binder",binderДляПолучениеМатериалов);
-                fragmentImagesMaterials.setArguments(bundleПереходУдалениеМатериала);
-                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragmentImagesMaterials);//.layout.activity_for_fragemtb_history_tasks
-                fragmentTransaction.commit();
-                fragmentTransaction.show(fragmentImagesMaterials);
-                // TODO: 18.07.2023  
-                Log.d(this.getClass().getName(), " fragmentImagesMaterials " + fragmentImagesMaterials);
-                Log.d(this.getClass().getName(),"\n" + " class " +
-                        Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " UUIDДляУдаления " +UUIDДляУдаления);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(getContext().getClass().getName(),
-                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-        }
         @NonNull
         private Bitmap методGetImageForRow(Long UUIDДляУдаления) {
             Bitmap bitmapImage = null;
