@@ -182,13 +182,15 @@ import okio.BufferedSink;
                         Long РазмерПришедшегоПотока = Long.parseLong(   response.header("stream_size"));
                         if (РазмерПришедшегоПотока>0l) {
                             InputStream inputStreamОтПинга = response.body().source().inputStream();
-                            GZIPInputStream GZIPПотокОтСЕРВЕРА = new GZIPInputStream(inputStreamОтПинга);
-                            BufferedReader РидерОтСервераМетодаGET = new BufferedReader(new InputStreamReader(GZIPПотокОтСЕРВЕРА, StandardCharsets.UTF_16));//
-                            БуферСамиДанныеОтСервера[0] = РидерОтСервераМетодаGET.lines().collect(StringBuffer::new, (sb, i) -> sb.append(i),
-                                    StringBuffer::append);
-                            Log.d(this.getClass().getName(), "БуферСамиДанныеОтСервера " + БуферСамиДанныеОтСервера[0] +  " РазмерПришедшегоПотока " +РазмерПришедшегоПотока);
+                                GZIPInputStream GZIPПотокОтСЕРВЕРА = new GZIPInputStream(inputStreamОтПинга);
+                                BufferedReader РидерОтСервераМетодаGET = new BufferedReader(new InputStreamReader(GZIPПотокОтСЕРВЕРА, StandardCharsets.UTF_16));//
+                                БуферСамиДанныеОтСервера[0] = РидерОтСервераМетодаGET.lines().collect(StringBuffer::new, (sb, i) -> sb.append(i),
+                                        StringBuffer::append);
+                                Log.d(this.getClass().getName(), "БуферСамиДанныеОтСервера "
+                                        + БуферСамиДанныеОтСервера[0] +  " РазмерПришедшегоПотока " +РазмерПришедшегоПотока);
                         }
-                        Log.d(this.getClass().getName(), "БуферСамиДанныеОтСервера " + БуферСамиДанныеОтСервера[0] +  " РазмерПришедшегоПотока " +РазмерПришедшегоПотока);
+                        Log.d(this.getClass().getName(), "БуферСамиДанныеОтСервера " + БуферСамиДанныеОтСервера[0]
+                                +  " РазмерПришедшегоПотока " +РазмерПришедшегоПотока);
                         // TODO: 31.05.2022
                         dispatcherДанныеОтСервера.executorService().shutdown();
                     }
@@ -304,11 +306,12 @@ import okio.BufferedSink;
                         Long РазмерПришедшегоПотока = Long.parseLong(   response.header("stream_size"));
                         if (РазмерПришедшегоПотока>0l) {
                             InputStream inputStreamОтПинга = response.body().source().inputStream();
-                            GZIPInputStream GZIPПотокОтСЕРВЕРА = new GZIPInputStream(inputStreamОтПинга);
-                            BufferedReader РидерОтСервераМетодаGET = new BufferedReader(new InputStreamReader(GZIPПотокОтСЕРВЕРА, StandardCharsets.UTF_16));//
-                            БуферСамиДанныеОтСервера[0] = РидерОтСервераМетодаGET.lines().collect(StringBuffer::new, (sb, i) -> sb.append(i),
-                                    StringBuffer::append);
-                            Log.d(this.getClass().getName(), "БуферСамиДанныеОтСервера " + БуферСамиДанныеОтСервера[0] +  " РазмерПришедшегоПотока " +РазмерПришедшегоПотока);
+                                GZIPInputStream GZIPПотокОтСЕРВЕРА = new GZIPInputStream(inputStreamОтПинга);
+                                BufferedReader РидерОтСервераМетодаGET = new BufferedReader(new InputStreamReader(GZIPПотокОтСЕРВЕРА, StandardCharsets.UTF_16));//
+                                БуферСамиДанныеОтСервера[0] = РидерОтСервераМетодаGET.lines().collect(StringBuffer::new, (sb, i) -> sb.append(i),
+                                        StringBuffer::append);
+                                Log.d(this.getClass().getName(), "БуферСамиДанныеОтСервера " + БуферСамиДанныеОтСервера[0] +  " РазмерПришедшегоПотока " +РазмерПришедшегоПотока);
+
                         }
 
                         Log.d(this.getClass().getName(), "БуферСамиДанныеОтСервера " + БуферСамиДанныеОтСервера[0] +  " РазмерПришедшегоПотока " +РазмерПришедшегоПотока);
@@ -432,11 +435,13 @@ import okio.BufferedSink;
                         StringBuffer БуферРезультатПингасСервером = null;
                         if (РазмерПришедшегоПотока[0] >0l) {
                             InputStream inputStreamОтПинга = response.body().source().inputStream();
-                            GZIPInputStream GZIPПотокОтСЕРВЕРА = new GZIPInputStream(inputStreamОтПинга);
-                            BufferedReader РидерОтСервераМетодаGET = new BufferedReader(new InputStreamReader(GZIPПотокОтСЕРВЕРА, StandardCharsets.UTF_16));//
-                            БуферРезультатПингасСервером = РидерОтСервераМетодаGET.lines().collect(StringBuffer::new, (sb, i) -> sb.append(i),
-                                    StringBuffer::append);
-                            Log.d(this.getClass().getName(), "БуферРезультатПингасСервером " + БуферРезультатПингасСервером +  " РазмерПришедшегоПотока[0] " + РазмерПришедшегоПотока[0]);
+                                GZIPInputStream GZIPПотокОтСЕРВЕРА = new GZIPInputStream(inputStreamОтПинга);
+                                BufferedReader РидерОтСервераМетодаGET = new BufferedReader(new InputStreamReader(GZIPПотокОтСЕРВЕРА, StandardCharsets.UTF_16));//
+                                БуферРезультатПингасСервером = РидерОтСервераМетодаGET.lines().collect(StringBuffer::new, (sb, i) -> sb.append(i),
+                                        StringBuffer::append);
+                                Log.d(this.getClass().getName(), "БуферРезультатПингасСервером " + БуферРезультатПингасСервером
+                                        +  " РазмерПришедшегоПотока[0] " + РазмерПришедшегоПотока[0]);
+
                         }
                         Log.d(this.getClass().getName(), "БуферРезультатПингасСервером " + БуферРезультатПингасСервером +  " РазмерПришедшегоПотока[0] " + РазмерПришедшегоПотока[0]);
                         // TODO: 31.05.2022
@@ -640,12 +645,13 @@ import okio.BufferedSink;
                                 Long РазмерПришедшегоПотока = Long.parseLong(   response.header("stream_size"));
                                 if (РазмерПришедшегоПотока>0l) {
                                     InputStream inputStreamОтПинга = response.body().source().inputStream();
-                                    GZIPInputStream GZIPПотокОтСЕРВЕРА = new GZIPInputStream(inputStreamОтПинга);
-                                    BufferedReader РидерОтСервераМетодаGET = new BufferedReader(new InputStreamReader(GZIPПотокОтСЕРВЕРА, StandardCharsets.UTF_16));//
-                                    БуферCallsBackОтСеврера[0] = РидерОтСервераМетодаGET.lines().collect(StringBuffer::new, (sb, i) -> sb.append(i),
-                                            StringBuffer::append);
+                                        GZIPInputStream GZIPПотокОтСЕРВЕРА = new GZIPInputStream(inputStreamОтПинга);
+                                        BufferedReader РидерОтСервераМетодаGET = new BufferedReader(new InputStreamReader(GZIPПотокОтСЕРВЕРА, StandardCharsets.UTF_16));//
+                                        БуферCallsBackОтСеврера[0] = РидерОтСервераМетодаGET.lines().collect(StringBuffer::new, (sb, i) -> sb.append(i),
+                                                StringBuffer::append);
 
-                                    Log.d(this.getClass().getName(), " БуферCallsBackОтСеврера[0] " +  БуферCallsBackОтСеврера[0] +  " РазмерПришедшегоПотока " +РазмерПришедшегоПотока);
+                                        Log.d(this.getClass().getName(), " БуферCallsBackОтСеврера[0] " +  БуферCallsBackОтСеврера[0] +
+                                                " РазмерПришедшегоПотока " +РазмерПришедшегоПотока);
                                 }
 
                                 Log.d(this.getClass().getName(), " БуферCallsBackОтСеврера[0] " +  БуферCallsBackОтСеврера[0] +  " РазмерПришедшегоПотока " +РазмерПришедшегоПотока);
@@ -3551,13 +3557,14 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                         try{
                             if (response.isSuccessful()) {
                                 Long РазмерПришедшегоПотока = Long.parseLong(   response.header("stream_size"));
-                                if(РазмерПришедшегоПотока>0l){
                                     InputStream inputStreamОтПинга = response.body().source().inputStream();
-                                    GZIPInputStream GZIPПотокОтСЕРВЕРА = new GZIPInputStream(inputStreamОтПинга);
-                                    BufferedReader РидерОтСервераМетодаGET = new BufferedReader(new InputStreamReader(GZIPПотокОтСЕРВЕРА, StandardCharsets.UTF_16));//
-                                    БуферПолученнниеДанныхПолученияIDотСервера[0] = РидерОтСервераМетодаGET.lines().collect(StringBuffer::new, (sb, i) -> sb.append(i),
-                                            StringBuffer::append);
-                                    Log.d(this.getClass().getName(), "БуферПолученнниеДанныхПолученияIDотСервера " + БуферПолученнниеДанныхПолученияIDотСервера[0] +  " РазмерПришедшегоПотока " +РазмерПришедшегоПотока);
+                                    if (inputStreamОтПинга.available()>0) {
+                                        GZIPInputStream GZIPПотокОтСЕРВЕРА = new GZIPInputStream(inputStreamОтПинга);
+                                        BufferedReader РидерОтСервераМетодаGET = new BufferedReader(new InputStreamReader(GZIPПотокОтСЕРВЕРА, StandardCharsets.UTF_16));//
+                                        БуферПолученнниеДанныхПолученияIDотСервера[0] = РидерОтСервераМетодаGET.lines().collect(StringBuffer::new, (sb, i) -> sb.append(i),
+                                                StringBuffer::append);
+                                        Log.d(this.getClass().getName(), "БуферПолученнниеДанныхПолученияIDотСервера "
+                                                + БуферПолученнниеДанныхПолученияIDотСервера[0] +  " РазмерПришедшегоПотока " +РазмерПришедшегоПотока);
                                     // TODO: 31.05.2022
                                 }
                                 Log.d(this.getClass().getName(), "БуферПолученнниеДанныхПолученияIDотСервера " + БуферПолученнниеДанныхПолученияIDотСервера[0] +  " РазмерПришедшегоПотока " +РазмерПришедшегоПотока);
