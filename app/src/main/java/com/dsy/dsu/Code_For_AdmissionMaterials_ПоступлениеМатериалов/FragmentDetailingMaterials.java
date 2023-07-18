@@ -1206,12 +1206,6 @@ public class FragmentDetailingMaterials extends Fragment {
             try{
             if (bundleПереходУдалениеМатериала != null) {
                 Long UUIDДляУдаления= bundleПереходУдалениеМатериала.getLong("UUIDВыбраныйМатериал",0l);
-                String Материал= bundleПереходУдалениеМатериала.getString("Материал","");
-                Integer Количество= bundleПереходУдалениеМатериала.getInt("Количество",0);
-                bundleПереходУдалениеМатериала.putString("selection","uuid=?");
-                Log.d(this.getClass().getName(), "  v  " + v + " UUIDДляУдаления " +UUIDДляУдаления);
-                Intent intentДляУдалениеМатериалов=new Intent("УдалениеВыбранныеМатериалыДетализации");
-                intentДляУдалениеМатериалов.putExtras(bundleПереходУдалениеМатериала);
                 Log.d(this.getClass().getName(), "  v  " + v + " UUIDДляУдаления " +UUIDДляУдаления);
                 // TODO: 18.07.2023 переходят на Фрагмент Рисунков Binary Image
                 fragmentTransaction = fragmentManager.beginTransaction();
@@ -1223,15 +1217,13 @@ public class FragmentDetailingMaterials extends Fragment {
                 fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragmentImagesMaterials);//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.commit();
                 fragmentTransaction.show(fragmentImagesMaterials);
-                // TODO: 18.07.2023  
-                Log.d(this.getClass().getName(), " fragmentImagesMaterials " + fragmentImagesMaterials);
+                // TODO: 18.07.2023
                 Log.d(this.getClass().getName(),"\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                         + " UUIDДляУдаления " +UUIDДляУдаления);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -1242,38 +1234,7 @@ public class FragmentDetailingMaterials extends Fragment {
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
         }
-        @NonNull
-        private Bitmap методGetImageForRow(Long UUIDДляУдаления) {
-            Bitmap bitmapImage = null;
-            try{
-            Cursor cursorGetIamges=     МетодПолучениеДанныхФотографииImageДляМатериа (UUIDДляУдаления);
-            // TODO: 17.07.2023
-                if (cursorGetIamges!=null && cursorGetIamges.getCount()>0) {
-                    Bitmap bitmap;
-                    byte[] imgByte = cursorGetIamges.getBlob(cursorGetIamges.getColumnIndex("image"));
 
-                    bitmap= BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
-                    // TODO: 17.07.2023
-                    ByteArrayOutputStream out = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                    bitmapImage = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
-                }
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " UUIDДляУдаления " +UUIDДляУдаления +
-                        " cursorGetIamges " +cursorGetIamges + " bitmapImage  " +bitmapImage);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(getContext().getClass().getName(),
-                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-            return bitmapImage;
-        }
 
         private void методПослеУдаленияЗаписиДетализации() {
             // TODO: 01.07.2023  метод после удаление
