@@ -55,6 +55,7 @@ import com.google.android.material.card.MaterialCardView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -233,9 +234,9 @@ public class FragmentImagesMaterials extends Fragment {
                 cursorImageForSelectMaterail =     МетодПолучениеДанныхФотографииImageДляМатериа (UUIDДляУдаления);
                 // TODO: 17.07.2023
                 if (cursorImageForSelectMaterail !=null && cursorImageForSelectMaterail.getCount()>0) {
-                    message.getTarget().postDelayed(()->{
+                    message.getTarget().post(()->{
                         onStart();
-                    },150);
+                    });
                 }
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1146,6 +1147,7 @@ public class FragmentImagesMaterials extends Fragment {
                 // TODO: 18.07.2023 Заполения сомой Image
                ImageView imageViewImage= методЗаполенияItemImage(RowName_ForImage);
 
+
                 // TODO: 18.07.2023 click Image
                 методClickItemImage(RowName_ForImage);
 
@@ -1182,6 +1184,11 @@ public class FragmentImagesMaterials extends Fragment {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
                 bitmap = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
                 imageViewImage.setImageBitmap(bitmap);*/
+          /*      Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                System.out.println("STARTED IT HERE");
+                startActivityForResult(Intent.createChooser(intent,"Select Picture"), bitmap.getByteCount());*/
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " RowName_ForImage " +RowName_ForImage);
@@ -1201,10 +1208,11 @@ public class FragmentImagesMaterials extends Fragment {
                 RowName_ForImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    v.animate().rotationX(+5l);
+                    v.animate().rotationX(+1l);
                     message.getTarget() .postDelayed(()-> {
                         try{
                                 v.animate().rotationX(0);
+
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");

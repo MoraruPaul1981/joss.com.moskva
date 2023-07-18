@@ -1023,23 +1023,19 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
         void методGetCursorReboot(){
             try{
-                if( myRecycleViewAdapter.cursor!=null  &&  myRecycleViewAdapter.cursor.isClosed()==false){
-                    myRecycleViewAdapter.cursor.close();
+                if (myRecycleViewAdapter.cursor!=null) {
+                    Cursor cursorПереполучаемДанные=      myRecycleViewAdapter.cursor; //      методGetCursorBounds();
+                    cursorПереполучаемДанные=      методGetCursorGROUPBYBounds(); //      методGetCursorBounds();
+                    myRecycleViewAdapter.cursor=cursorПереполучаемДанные;
+                    myRecycleViewAdapter.notifyDataSetChanged();
+                    // TODO: 23.05.2023  даннеы
+                    RecyclerView.Adapter recyclerView=         recyclerView_OrderTransport.getAdapter();
+                    recyclerView_OrderTransport.swapAdapter(recyclerView,true);
+                    recyclerView_OrderTransport.getAdapter().notifyDataSetChanged();
+
+                    // TODO: 10.06.2023
+                    МетодПерегрузкаRecyceView();
                 }
-
-                recyclerView_OrderTransport.removeAllViews();
-                recyclerView_OrderTransport.removeAllViewsInLayout();
-
-                Cursor cursorПереполучаемДанные=      методGetCursorGROUPBYBounds(); //      методGetCursorBounds();
-                myRecycleViewAdapter.cursor=cursorПереполучаемДанные;
-                myRecycleViewAdapter.notifyDataSetChanged();
-                // TODO: 23.05.2023  даннеы
-                RecyclerView.Adapter recyclerView=         recyclerView_OrderTransport.getAdapter();
-                recyclerView_OrderTransport.swapAdapter(recyclerView,true);
-                recyclerView_OrderTransport.getAdapter().notifyDataSetChanged();
-
-                // TODO: 10.06.2023
-                МетодПерегрузкаRecyceView();
                 Log.d(this.getClass().getName(), "\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
@@ -2000,7 +1996,7 @@ class SubClassGetDateOrderGroupBy {
                                  tableRowДочерная.setVisibility(View.GONE);
                                  message.getTarget().postDelayed(()->{
                                      методGetCursorReboot();
-                                 },1000);
+                                 },150);
                              }
                              Log.d(getContext().getClass().getName(), "\n"
                                      + " время: " + new Date() + "\n+" +

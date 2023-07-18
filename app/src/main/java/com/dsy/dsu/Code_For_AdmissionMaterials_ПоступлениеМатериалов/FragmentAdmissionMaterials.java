@@ -716,7 +716,7 @@ public class FragmentAdmissionMaterials extends Fragment {
                                Integer  ReturnWorkManager = СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnSingleAsyncWork", 0);
                                long end = Calendar.getInstance().getTimeInMillis();
                                long РазницаВоврмени=end-startДляОбноразвовной;
-                               if (РазницаВоврмени>10000) {
+                               if (РазницаВоврмени>20000) {
                                    if (ReturnWorkManager>0) {
 
                                        методПослеУспешнойСинхронизацииДАнных();
@@ -751,10 +751,8 @@ public class FragmentAdmissionMaterials extends Fragment {
                                         long end = Calendar.getInstance().getTimeInMillis();
                                         Integer  ReturnWorkManager = СтастусWorkMangerДляФрагментаЧитатьИПисать.getOutputData().getInt("ReturnSingleAsyncWork", 0);
                                         long РазницаВоврмени=end-start;
-                                        if (РазницаВоврмени>10000) {
+                                        if (РазницаВоврмени>20000) {
                                             методПослеУспешнойСинхронизацииДАнных();
-                                            // TODO: 18.04.2023notifyDataSetChanged();
-                                            МетодПерегрузкаRecyceView();
                                         }
                                     }
                                        // WorkManager.getInstance(getContext()).cancelAllWorkByTag(ИмяСлужбыСинхронизациОдноразовая).getResult();
@@ -784,19 +782,18 @@ public class FragmentAdmissionMaterials extends Fragment {
 
     private void методПослеУспешнойСинхронизацииДАнных() {
         try{
-        Cursor cursorПослеОбновления=       myRecycleViewAdapter.cursorНомерЦФО;
-        cursorПослеОбновления=  методGetCFOCursorFirst("ПолучениеЦФО",0);
+            if (myRecycleViewAdapter.cursorНомерЦФО!=null) {
+                Cursor cursorПослеОбновления=       myRecycleViewAdapter.cursorНомерЦФО;
+                cursorПослеОбновления=  методGetCFOCursorFirst("ПолучениеЦФО",0);
 
-        recyclerView.removeAllViews();
-        recyclerView.removeAllViewsInLayout();
-
-        myRecycleViewAdapter.cursorНомерЦФО=cursorПослеОбновления;
-        myRecycleViewAdapter.notifyDataSetChanged();
-        RecyclerView.Adapter recyclerViewОбновление=         recyclerView.getAdapter();
-        recyclerView.swapAdapter(recyclerViewОбновление,true);
-        recyclerView.getAdapter().notifyDataSetChanged();
-        МетодПерегрузкаRecyceView();
-    } catch (Exception e) {
+                myRecycleViewAdapter.cursorНомерЦФО=cursorПослеОбновления;
+                myRecycleViewAdapter.notifyDataSetChanged();
+                RecyclerView.Adapter recyclerViewОбновление=         recyclerView.getAdapter();
+                recyclerView.swapAdapter(recyclerViewОбновление,true);
+                recyclerView.getAdapter().notifyDataSetChanged();
+                МетодПерегрузкаRecyceView();
+            }
+        } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                 " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
