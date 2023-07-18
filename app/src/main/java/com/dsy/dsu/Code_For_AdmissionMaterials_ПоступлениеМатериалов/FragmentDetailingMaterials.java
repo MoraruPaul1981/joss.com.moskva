@@ -739,7 +739,7 @@ public class FragmentDetailingMaterials extends Fragment {
     // TODO: 02.08.2022
     protected   Cursor МетодПолучениеДанныхДЛяПолучениеМатериалов(@NonNull String  ФлагКакиеДанныеНужныПолучениеМатериалов
             ,@NonNull Integer ТекущаяЦФО
-    , @NonNull Integer ТекущаяНомерМатериала ){
+    , @NonNull Integer НомерВыбраногоМатериала ){
         Cursor cursorДетализацияМатериала = null;
         try{
             ПубличныйIDДляФрагмента     = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
@@ -753,7 +753,7 @@ public class FragmentDetailingMaterials extends Fragment {
             }
             bundleДляПЕредачи.putInt("ПубличныйIDДляФрагмента",ПубличныйIDДляФрагмента);
             bundleДляПЕредачи.putInt("ТекущаяЦФО",ТекущаяЦФО);
-            bundleДляПЕредачи.putInt("НомерВыбраногоМатериала",ТекущаяНомерМатериала);
+            bundleДляПЕредачи.putInt("НомерВыбраногоМатериала",НомерВыбраногоМатериала);
             bundleДляПЕредачи.putString("ФлагКакиеДанныеНужныПолучениеМатериалов",ФлагКакиеДанныеНужныПолучениеМатериалов);
             Intent intentПолучениеМатериалов = new Intent(getContext(), Service_for_AdminissionMaterial.class);
             intentПолучениеМатериалов.setAction(ФлагКакиеДанныеНужныПолучениеМатериалов);

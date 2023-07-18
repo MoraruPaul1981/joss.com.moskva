@@ -179,7 +179,7 @@ public class FragmentImagesMaterials extends Fragment {
     public void onStart() {
         super.onStart();
         try{// TODO: 03.11.2022  после получение данных перересует Экран
-            if (cursorGetIamges !=null && cursorGetIamges.getCount()>0) {
+            if (cursorGetIamges !=null && cursorGetIamges.getCount()>=0) {
                 МетодДизайнПрограссБара();
                 МетодКпопкиЗначков(cursorGetIamges);
                 МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview

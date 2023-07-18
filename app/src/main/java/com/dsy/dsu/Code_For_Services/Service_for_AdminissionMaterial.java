@@ -642,12 +642,12 @@ private class SubClassGetDataAdmissionMaterial_Групировка_Детали
         Bundle data=intent.getExtras();
         Integer  ПубличныйIDДляФрагмента=data.getInt("ПубличныйIDДляФрагмента",0);
         Integer  ТекущаяЦФО=data.getInt("ТекущаяЦФО",0);
-        Integer  ТекущаяНомерМатериала=data.getInt("ТекущаяНомерМатериала",0);
+        Integer  НомерВыбраногоМатериала=data.getInt("НомерВыбраногоМатериала",0);
         Log.w(this.getClass().getName(), "   Таблица  " +Таблица);
         Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabase/" + Таблица.trim() + "");
         ContentResolver resolver = context.getContentResolver();
             data.putString("selection"," cfo=? AND nomen_vesov=? AND status_send!=?");
-            data.putStringArray("selectionArgs",new String[]{String.valueOf(ТекущаяЦФО), String.valueOf(ТекущаяНомерМатериала),"Удаленная"});
+            data.putStringArray("selectionArgs",new String[]{String.valueOf(ТекущаяЦФО), String.valueOf(НомерВыбраногоМатериала),"Удаленная"});
 /*        курсор     = resolver.query(uri,new String[]{"*"},"user_update=? AND cfo=? AND nomen_vesov=? AND status_send!=?",
                 new String[]{String.valueOf(ПубличныйIDДляФрагмента), String.valueOf(ТекущаяЦФО), String.valueOf(ТекущаяНомерМатериала),"Удаленная"},"");*/
             курсор = resolver.query(uri,new String[]{"*"},data,null);// TODO: 13.10.2022 ,"Удаленная"
