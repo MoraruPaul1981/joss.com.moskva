@@ -235,7 +235,7 @@ public class FragmentImagesMaterials extends Fragment {
                 if (cursorImageForSelectMaterail !=null && cursorImageForSelectMaterail.getCount()>0) {
                     message.getTarget().postDelayed(()->{
                         onStart();
-                    },250);
+                    },150);
                 }
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -939,10 +939,13 @@ public class FragmentImagesMaterials extends Fragment {
                 Log.i(this.getClass().getName(), "   onBindViewHolder  position" + position +
                         " cursorImageForSelectMaterail "+ cursorImageForSelectMaterail);
                 if(cursorImageForSelectMaterail !=null  && cursorImageForSelectMaterail.getCount()>0 ){
+                    // TODO: 18.07.2023 POSITION
+                    cursorImageForSelectMaterail.moveToPosition(position);
+                    // TODO: 18.07.2023  Данные Заполенияем новые  Image
                     МетодЗаполняемДаннымиПолучениеМАтериалов(holder, cursorImageForSelectMaterail);
                 }
                 Log.i(this.getClass().getName(), "   onBindViewHolder  position" + position +
-                        " cursorImageForSelectMaterail "+ cursorImageForSelectMaterail);
+                        " cursorImageForSelectMaterail "+ cursorImageForSelectMaterail  + "  position " +position);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1138,23 +1141,20 @@ public class FragmentImagesMaterials extends Fragment {
 
 
                 // TODO: 29.06.2023 Заполянем ДАту ФОтографии
-               TextView textViewNameImage=  RowName_ForImage.findViewById(R.id.textview_imagename);
-               String ДатаImage=     cursorImageForSelectMaterail.getString(cursorImageForSelectMaterail.getColumnIndex("date_update"));
-                textViewNameImage.setText(ДатаImage.trim());
+                методЗаполенияДатыImage(RowName_ForImage);
 
-                // TODO: 18.07.2023 Заполения сомой Image 
-               ImageView imageViewImage=  RowName_ForImage.findViewById(R.id.image_binary);
-                byte[] imgByte =     cursorImageForSelectMaterail.getBlob(cursorImageForSelectMaterail.getColumnIndex("image"));
-                Bitmap bitmap= BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
-                imageViewImage.setImageBitmap(bitmap);
-                // TODO: 17.07.2023
-            /*  *//*  ByteArrayOutputStream out = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                bitmapImage = BitmapFactory.decodeStream(new Byte*//*ArrayInputStream(out.toByteArray()));*/
-                
+                // TODO: 18.07.2023 Заполения сомой Image
+               ImageView imageViewImage= методЗаполенияItemImage(RowName_ForImage);
+
+                // TODO: 18.07.2023 click Image
+                методClickItemImage(RowName_ForImage);
 
                 // TODO: 17.04.2023 Заполением Данными
                 МетодДобаленияНовыхСтрокДанных(RowName_ForImage, tableLayoutРодительскаяImage);
+
+
+
+
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1170,6 +1170,95 @@ public class FragmentImagesMaterials extends Fragment {
             }
         }
 
+        private ImageView методЗаполенияItemImage(@NonNull  TableRow RowName_ForImage) {
+            ImageView imageViewImage = null;
+            try{
+                imageViewImage=  RowName_ForImage.findViewById(R.id.image_binary);
+            byte[] imgByte =     cursorImageForSelectMaterail.getBlob(cursorImageForSelectMaterail.getColumnIndex("image"));
+            Bitmap bitmap= BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
+             imageViewImage.setImageBitmap(bitmap);
+            // TODO: 17.07.2023
+             /*   ByteArrayOutputStream out = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                bitmap = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
+                imageViewImage.setImageBitmap(bitmap);*/
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " RowName_ForImage " +RowName_ForImage);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(getContext().getClass().getName(),
+                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+            return  imageViewImage;
+        }
+        private void методClickItemImage(@NonNull       TableRow RowName_ForImage) {
+            try{
+                RowName_ForImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    v.animate().rotationX(+5l);
+                    message.getTarget() .postDelayed(()-> {
+                        try{
+                                v.animate().rotationX(0);
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(getContext().getClass().getName(),
+                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
+                            },250);
+
+                }
+            });
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+
+
+
+
+
+
+
+        private void методЗаполенияДатыImage(@NonNull  TableRow RowName_ForImage) {
+            try{
+            TextView textViewNameImage=  RowName_ForImage.findViewById(R.id.textview_imagename);
+            String ДатаImage=     cursorImageForSelectMaterail.getString(cursorImageForSelectMaterail.getColumnIndex("date_update"));
+            textViewNameImage.setText(ДатаImage.trim());
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " RowName_ForImage " +RowName_ForImage);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(getContext().getClass().getName(),
+                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        }
 
 
         private void МетодДобаленияНовыхСтрокДанных(@NonNull TableRow rowПервыеДанные, @NonNull TableLayout tableLayoutРодительская) {
