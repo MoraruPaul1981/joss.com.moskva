@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.DataSetObserver;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import android.view.WindowInsets;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TableLayout;
@@ -1132,17 +1135,27 @@ public class FragmentImagesMaterials extends Fragment {
         private void методЗаполениеImages(@NonNull TableLayout tableLayoutРодительскаяImage) {
             try {
                 TableRow RowName_ForImage = методGetImageTableRow();
-                // TODO: 29.06.2023 тим Детализации
-               /* TextView textview_dest_nameCFO=  RowName_ForImage.findViewById(R.id.textviewname_detalis_cfo);
-                // TODO: 10.11.2022  данные для название ЦФО
-                String НазваниеЦФОДляДетализации= Optional.ofNullable(cursorImageForSelectMaterail.getString(cursorImageForSelectMaterail.
-                        getColumnIndex("name_cfo"))).orElse("");
-                textview_dest_nameCFO.setText(НазваниеЦФОДляДетализации.replace("\"", "")
-                        .replace("\\n", "").trim());
 
-                // TODO: 18.10.2022 добавляем  Линию
-                МетодДобаленияНовыхСтрокДанных(RowName_ForImage, tableLayoutРодительскаяImage);*/
-                // TODO: 17.04.2023
+
+                // TODO: 29.06.2023 Заполянем ДАту ФОтографии
+               TextView textViewNameImage=  RowName_ForImage.findViewById(R.id.textview_imagename);
+               String ДатаImage=     cursorImageForSelectMaterail.getString(cursorImageForSelectMaterail.getColumnIndex("date_update"));
+                textViewNameImage.setText(ДатаImage.trim());
+
+                // TODO: 18.07.2023 Заполения сомой Image 
+               ImageView imageViewImage=  RowName_ForImage.findViewById(R.id.image_binary);
+                byte[] imgByte =     cursorImageForSelectMaterail.getBlob(cursorImageForSelectMaterail.getColumnIndex("image"));
+                Bitmap bitmap= BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
+                imageViewImage.setImageBitmap(bitmap);
+                // TODO: 17.07.2023
+            /*  *//*  ByteArrayOutputStream out = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                bitmapImage = BitmapFactory.decodeStream(new Byte*//*ArrayInputStream(out.toByteArray()));*/
+                
+
+                // TODO: 17.04.2023 Заполением Данными
+                МетодДобаленияНовыхСтрокДанных(RowName_ForImage, tableLayoutРодительскаяImage);
+
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " RowName_ForImage " +RowName_ForImage);
@@ -1159,7 +1172,7 @@ public class FragmentImagesMaterials extends Fragment {
 
 
 
-        private void МетодДобаленияНовыхСтрокДанных(TableRow rowПервыеДанные, @NonNull TableLayout tableLayoutРодительская) {
+        private void МетодДобаленияНовыхСтрокДанных(@NonNull TableRow rowПервыеДанные, @NonNull TableLayout tableLayoutРодительская) {
             try {
                 if (tableLayoutРодительская!=null) {
                     tableLayoutРодительская.removeView(rowПервыеДанные);
