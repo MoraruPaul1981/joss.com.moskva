@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.DataSetObserver;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -51,12 +49,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -91,7 +86,7 @@ public class FragmentImagesMaterials extends Fragment {
     private    Bundle bundleForImages;
     long start;
     long startДляОбноразвовной;
-    private Cursor  cursorДетализацияМатериала;
+    private Cursor cursorGetIamges;
 
     // TODO: 27.09.2022 Фрагмент Получение Материалов
     public FragmentImagesMaterials() {
@@ -108,6 +103,8 @@ public class FragmentImagesMaterials extends Fragment {
             }
             start=     Calendar.getInstance().getTimeInMillis();
             startДляОбноразвовной=     Calendar.getInstance().getTimeInMillis();
+            // TODO: 01.07.2023  ДАннеы
+            МетодHandlerCallBack();
             Log.d(this.getClass().getName(), "  onViewCreated  FragmentDetailingMaterials  binderДляПолучениеМатериалов  "+binderДляПолучениеМатериалов);
         } catch (Exception e) {
             e.printStackTrace();
@@ -161,10 +158,9 @@ public class FragmentImagesMaterials extends Fragment {
             bottomNavigationItemView3обновить.setVisibility(View.GONE);
             //todo запуск методов в фрагменте
             МетодИнициализацииRecycreView();
-            МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
-            // TODO: 01.07.2023  ДАннеы
-            МетодHandlerCallBack();
             МетодВыходНаAppBack();
+   /*         // TODO: 18.07.2023 получение Image для выбраного Материала
+            методGetImageForRow(bundleForImages.getLong("UUIDВыбраныйМатериал"));*/
             Log.d(this.getClass().getName(), "  onViewCreated  FragmentDetailingMaterials  recyclerView  "+recyclerView+
                     " linearLayou "+linearLayou+"  fragmentManager "+fragmentManager);
         } catch (Exception e) {
@@ -183,15 +179,16 @@ public class FragmentImagesMaterials extends Fragment {
     public void onStart() {
         super.onStart();
         try{// TODO: 03.11.2022  после получение данных перересует Экран
-            if (cursorДетализацияМатериала!=null && cursorДетализацияМатериала.getCount()>0) {
+            if (cursorGetIamges !=null && cursorGetIamges.getCount()>0) {
                 МетодДизайнПрограссБара();
-                МетодКпопкиЗначков(cursorДетализацияМатериала);
+                МетодКпопкиЗначков(cursorGetIamges);
                 МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
                 МетодСоздаенияСлушателяДляПолучениеМатериалаWorkMAnager();
                 МетодСлушательКурсора();
                 МетодСлушательRecycleView();//todo создаем слушатель для recycreview для получение материалов
             } else {
-                МетодКпопкиЗначков(cursorДетализацияМатериала);
+                МетодКпопкиЗначков(cursorGetIamges);
+                МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -227,36 +224,29 @@ public class FragmentImagesMaterials extends Fragment {
 
 
     @NonNull
-    private Bitmap методGetImageForRow(Long UUIDДляУдаления) {
-        Bitmap bitmapImage = null;
-        try{
-            Cursor cursorGetIamges=     МетодПолучениеДанныхФотографииImageДляМатериа (UUIDДляУдаления);
-            // TODO: 17.07.2023
-            if (cursorGetIamges!=null && cursorGetIamges.getCount()>0) {
-                Bitmap bitmap;
-                byte[] imgByte = cursorGetIamges.getBlob(cursorGetIamges.getColumnIndex("image"));
-
-                bitmap= BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
+    private void методGetImageForRow(Long UUIDДляУдаления) {
+        message.getTarget().post(()->{
+            try{
+                cursorGetIamges=     МетодПолучениеДанныхФотографииImageДляМатериа (UUIDДляУдаления);
                 // TODO: 17.07.2023
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                bitmapImage = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
+                if (cursorGetIamges!=null && cursorGetIamges.getCount()>0) {
+                 onStart();
+                }
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " UUIDДляУдаления " +UUIDДляУдаления +
+                        " cursorGetIamges " +cursorGetIamges );
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " UUIDДляУдаления " +UUIDДляУдаления +
-                    " cursorGetIamges " +cursorGetIamges + " bitmapImage  " +bitmapImage);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(getContext().getClass().getName(),
-                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-        return bitmapImage;
+        });
     }
 
 
@@ -305,10 +295,10 @@ public class FragmentImagesMaterials extends Fragment {
     // TODO: 04.03.2022 прозвомжность Заполения RecycleView
     void МетодЗаполенияRecycleViewДляЗадач() {
         try {
-            if(cursorДетализацияМатериала!=null){
-                cursorДетализацияМатериала.moveToFirst();
+            if(cursorGetIamges !=null){
+                cursorGetIamges.moveToFirst();
             }
-            myRecycleViewAdapter = new MyRecycleViewAdapter(cursorДетализацияМатериала);
+            myRecycleViewAdapter = new MyRecycleViewAdapter(cursorGetIamges);
             myRecycleViewAdapter.notifyDataSetChanged();
             recyclerView.setAdapter(myRecycleViewAdapter);
             Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
@@ -352,11 +342,14 @@ public class FragmentImagesMaterials extends Fragment {
                 public void onClick(View v) {
                     try {
                         МетодЗапускаАнимацииКнопок(v);//todo только анимауия
-                        Fragment      fragmentПолученыеМатериалов = new FragmentAdmissionMaterials();
+                        Fragment      fragmentBAcK = new FragmentDetailingMaterials();
                         fragmentTransaction = fragmentManager.beginTransaction();
-                    //    fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                        fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragmentПолученыеМатериалов).commit();//.layout.activity_for_fragemtb_history_tasks
-                        fragmentTransaction.show(fragmentПолученыеМатериалов);
+                        bundleForImages.putBinder("binder",binderДляПолучениеМатериалов);
+                        fragmentBAcK.setArguments(bundleForImages);
+                        fragmentTransaction.setCustomAnimations( android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+                        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                        fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragmentBAcK).commit();//.layout.activity_for_fragemtb_history_tasks
+                        fragmentTransaction.show(fragmentBAcK);
                         Log.d(this.getClass().getName(), "  v  " + v);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -374,7 +367,7 @@ public class FragmentImagesMaterials extends Fragment {
                 public void onClick(View v) {
                     try {
                         МетодЗапускаАнимацииКнопок(v);
-                        handler.postDelayed(()->{ МетодЗапускСозданиНовгоМатериалов();},500);
+                        message.getTarget().postDelayed(()->{ МетодЗапускСозданиНовгоМатериалов();},500);
                         Log.d(this.getClass().getName(), "  v  " + v);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -393,7 +386,7 @@ public class FragmentImagesMaterials extends Fragment {
                     try {
                         progressBarСканирование.setVisibility(View.VISIBLE);
                         МетодЗапускаАнимацииКнопок(v);
-                        handler.postDelayed(()->{
+                        message.getTarget().postDelayed(()->{
                                     Integer ПубличныйIDДляФрагмента =
                                             new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
                                     // TODO: 16.11.2022  запуск синхронизации однорозовая
@@ -479,7 +472,7 @@ public class FragmentImagesMaterials extends Fragment {
 
     private void МетодЗапускаАнимацииКнопок(View v) {
         v.animate().rotationX(-40l);
-        handler .postDelayed(()->{
+        message.getTarget() .postDelayed(()->{
             v.animate().rotationX(0);
         },300);
     }
@@ -837,8 +830,8 @@ public class FragmentImagesMaterials extends Fragment {
     private void МетодСлушательКурсора() {
         // TODO: 15.10.2022  слушатиель для курсора
         try {
-            if (cursorДетализацияМатериала !=null) {
-                cursorДетализацияМатериала.registerDataSetObserver(new DataSetObserver() {
+            if (cursorGetIamges !=null) {
+                cursorGetIamges.registerDataSetObserver(new DataSetObserver() {
                     @Override
                     public void onChanged() {
                         super.onChanged();
@@ -852,7 +845,7 @@ public class FragmentImagesMaterials extends Fragment {
                     }
                 });
                 // TODO: 15.10.2022
-                cursorДетализацияМатериала.registerContentObserver(new ContentObserver(handler) {
+                cursorGetIamges.registerContentObserver(new ContentObserver(message.getTarget()) {
                     @Override
                     public boolean deliverSelfNotifications() {
                         Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
@@ -1012,8 +1005,8 @@ public class FragmentImagesMaterials extends Fragment {
                     Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов);
 
 
-// TODO: 18.07.2023 получение Image для выбраного Материала
-                    методGetImageForRow(bundleForImages.getLong("UUIDВыбраныйМатериал"));
+                    // TODO: 18.07.2023 получение Image для выбраного Материала
+                //    методGetImageForRow(bundleForImages.getLong("UUIDВыбраныйМатериал"));
 
 
                 }else {
@@ -1070,7 +1063,7 @@ public class FragmentImagesMaterials extends Fragment {
         private void МетодДобавленеиЕлементоввRecycreView(@NonNull TableLayout tableLayoutРодительская) {
             try {
                 // TODO: 07.11.2022   ВТОРОЙ ЭТАП ПОЛУЧАЕМ НОМЕР ЦФО
-                Log.i(this.getClass().getName(), "  ТекущаяЦФО " + ТекущаяЦФО + " cursorЦФО " + cursorImageForSelectMaterail + " ТекущаяЦФО " +ТекущаяЦФО);
+                Log.i(this.getClass().getName(),   " cursorЦФО " + cursorImageForSelectMaterail  );
                 // TODO: 18.10.2022 название ЦФО
                 if (tableLayoutРодительская!=null) {
                     // TODO: 18.10.2022 Добавяем Названием ЦФО
@@ -1225,9 +1218,6 @@ public class FragmentImagesMaterials extends Fragment {
 
                     методSetRowBungle(cursorImageForSelectMaterail, RowData_for_detalisaziy, типДеталиазции, nomenvesovДетадизации, КоличествоДетадизации);
 
-
-                    // TODO: 16.11.2022  слушатель Удаление строк
-                    МетодаКликаУдаленияМатериалаПоtableRow(RowData_for_detalisaziy);
                     // TODO: 19.10.2022 Клик получение ФОтографии
                     МетодаКликаGetImageМатериалаПоtableRow(RowData_for_detalisaziy);
                     // TODO: 18.10.2022 добавляем  Линию
@@ -1284,7 +1274,10 @@ public class FragmentImagesMaterials extends Fragment {
         public int getItemCount() {
             Integer getCountRow=1;
             try {
-                Log.d(this.getClass().getName(), "sqLiteCursor.getCount()  ");
+                if (cursorImageForSelectMaterail!=null) {
+                    getCountRow = cursorImageForSelectMaterail.getCount();
+                }
+                Log.d(this.getClass().getName(), "sqLiteCursor.getCount()  getCountRow  "+getCountRow);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),

@@ -1270,7 +1270,7 @@ public class FragmentAdmissionMaterials extends Fragment {
                 String ВыбранныйМатериал=
                         Optional.ofNullable(cursorСамиДанныеGroupBy.getString(cursorСамиДанныеGroupBy.getColumnIndex("nomenvesov"))).orElse("");
                 data.putString("ВыбранныйМатериал",ВыбранныйМатериал);
-                data.putInt("Сумма",Количество);
+                data.putInt("Количество",Количество);
                 rowПервыеДанные.setTag(data);
 
                 // TODO: 06.11.2022 удаление

@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.DataSetObserver;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,7 +23,6 @@ import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,7 +34,6 @@ import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.loader.content.AsyncTaskLoader;
-import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,20 +50,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.common.util.concurrent.AtomicDouble;
 
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.LinkedTransferQueue;
 
 
 // TODO: 29.09.2022 фрагмент для получение материалов
@@ -89,7 +81,7 @@ public class FragmentDetailingMaterials extends Fragment {
     private  Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов binderДляПолучениеМатериалов;
     private Integer ТекущаяЦФО=0;
     private Integer ТекущаяНомерМатериала=0;
-    private Float  СуммаВыбраногоМатериала=0f;
+    private Integer Количество =0;
     private String ВыбранныйМатериал=new String();
     private String РодительскийМатериал=new String();
     private  ViewGroup container;
@@ -117,7 +109,7 @@ public class FragmentDetailingMaterials extends Fragment {
                 ТекущаяЦФО= data.getInt("Цфо");
                 ТекущаяНомерМатериала= data.getInt("НомерВыбраногоМатериала");
                 РодительскийМатериал   =data.getString("Материал");
-                СуммаВыбраногоМатериала=data.getFloat("Сумма");
+                Количество =data.getInt("Количество");
                 ВыбранныйМатериал =data.getString("ВыбранныйМатериал");
                 // TODO: 10.11.2022
 
@@ -127,7 +119,7 @@ public class FragmentDetailingMaterials extends Fragment {
 
             Log.d(this.getClass().getName(), "  onViewCreated  FragmentDetailingMaterials  binderДляПолучениеМатериалов  "+binderДляПолучениеМатериалов+
                     " ТекущаяЦФО " +ТекущаяЦФО+ " ТекущаяНомерМатериала "+ТекущаяНомерМатериала+
-                    "ВыбранныйМатериал "+ВыбранныйМатериал+"СуммаВыбраногоМатериала "+СуммаВыбраногоМатериала);
+                    "ВыбранныйМатериал "+ВыбранныйМатериал+"Количество "+ Количество);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -148,7 +140,7 @@ public class FragmentDetailingMaterials extends Fragment {
                                 ,ТекущаяЦФО,ТекущаяНомерМатериала);
                 Log.d(this.getClass().getName(), "  onViewCreated  FragmentDetailingMaterials  binderДляПолучениеМатериалов  "+binderДляПолучениеМатериалов+
                         " ТекущаяЦФО " +ТекущаяЦФО+ " ТекущаяНомерМатериала "+ТекущаяНомерМатериала+
-                        "ВыбранныйМатериал "+ВыбранныйМатериал+"СуммаВыбраногоМатериала "+СуммаВыбраногоМатериала  + " cursorДетализацияМатериала " +cursorДетализацияМатериала);
+                        "ВыбранныйМатериал "+ВыбранныйМатериал+"Количество "+ Количество + " cursorДетализацияМатериала " +cursorДетализацияМатериала);
 
                 if (cursorДетализацияМатериала!=null) {
                     onStart();
@@ -1207,6 +1199,11 @@ public class FragmentDetailingMaterials extends Fragment {
             if (bundleПереходУдалениеМатериала != null) {
                 Long UUIDДляУдаления= bundleПереходУдалениеМатериала.getLong("UUIDВыбраныйМатериал",0l);
                 Log.d(this.getClass().getName(), "  v  " + v + " UUIDДляУдаления " +UUIDДляУдаления);
+                // TODO: 18.07.2023 пололнительные параменты
+                bundleПереходУдалениеМатериала.putInt("НомерВыбраногоМатериала", ТекущаяНомерМатериала);
+                bundleПереходУдалениеМатериала.putString("Материал", РодительскийМатериал);
+                bundleПереходУдалениеМатериала.putInt("Количество", Количество);
+                bundleПереходУдалениеМатериала.putString("ВыбранныйМатериал",ВыбранныйМатериал);
                 // TODO: 18.07.2023 переходят на Фрагмент Рисунков Binary Image
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations( android.R.anim.slide_in_left,android.R.anim.slide_out_right);
