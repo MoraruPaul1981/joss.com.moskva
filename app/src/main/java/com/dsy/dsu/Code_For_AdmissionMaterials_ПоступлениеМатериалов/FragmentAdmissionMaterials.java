@@ -202,7 +202,7 @@ public class FragmentAdmissionMaterials extends Fragment {
     public void onStart() {
         super.onStart();
         try{
-            if (cursorНомерЦФО!=null && cursorНомерЦФО.getCount()>0) {
+            if (cursorНомерЦФО!=null && cursorНомерЦФО.getCount()>=0) {
                МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
                 МетодСлушательRecycleView();//todo создаем слушатель для recycreview для получение материалов
                 МетодСлушательКурсора();

@@ -1007,7 +1007,7 @@ public class FragmentDetailingMaterials extends Fragment {
                     if (cursorДетализацияМатериала.getCount() > 0 ) {
                         viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_assionamaterial_detalizay, parent, false);//todo old  simple_for_assionamaterial
                         Log.i(this.getClass().getName(), "   viewПолучениеМатериалов" + viewПолучениеМатериалов+ "  cursorДетализацияМатериала.getCount()  " + cursorДетализацияМатериала.getCount());
-                    } else  if ( cursorДетализацияМатериала.getCount()==-0 ){
+                    } else   {
                         viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_isnull_actimavmaretisldetalizasia, parent, false);//todo old simple_for_takst_cardview1
                         Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов+ "  cursorДетализацияМатериала.getCount()  " + cursorДетализацияМатериала.getCount() );
                     }
@@ -1169,9 +1169,9 @@ public class FragmentDetailingMaterials extends Fragment {
                         handler .postDelayed(()->{
                             v.animate().rotationX(0);
                             // TODO: 01.07.2023 удаление
-                            Bundle bundleПереходУдалениеМатериала=(Bundle) v.getTag();
+                            Bundle bundleПереходGetImagesFormaterial=(Bundle) v.getTag();
 
-                            методForfardForImages(v, bundleПереходУдалениеМатериала);
+                            методForfardForImages(v, bundleПереходGetImagesFormaterial);
 
                             // TODO: 18.04.2023  Simple Adapter Кдик по Элементы
                             Log.d(this.getClass().getName(),"\n" + " class " +
