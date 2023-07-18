@@ -3558,7 +3558,6 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                             if (response.isSuccessful()) {
                                 Long РазмерПришедшегоПотока = Long.parseLong(   response.header("stream_size"));
                                     InputStream inputStreamОтПинга = response.body().source().inputStream();
-                                    if (inputStreamОтПинга.available()>0) {
                                         GZIPInputStream GZIPПотокОтСЕРВЕРА = new GZIPInputStream(inputStreamОтПинга);
                                         BufferedReader РидерОтСервераМетодаGET = new BufferedReader(new InputStreamReader(GZIPПотокОтСЕРВЕРА, StandardCharsets.UTF_16));//
                                         БуферПолученнниеДанныхПолученияIDотСервера[0] = РидерОтСервераМетодаGET.lines().collect(StringBuffer::new, (sb, i) -> sb.append(i),
@@ -3566,7 +3565,6 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                                         Log.d(this.getClass().getName(), "БуферПолученнниеДанныхПолученияIDотСервера "
                                                 + БуферПолученнниеДанныхПолученияIDотСервера[0] +  " РазмерПришедшегоПотока " +РазмерПришедшегоПотока);
                                     // TODO: 31.05.2022
-                                }
                                 Log.d(this.getClass().getName(), "БуферПолученнниеДанныхПолученияIDотСервера " + БуферПолученнниеДанныхПолученияIDотСервера[0] +  " РазмерПришедшегоПотока " +РазмерПришедшегоПотока);
                                 // TODO: 31.05.2022
 
