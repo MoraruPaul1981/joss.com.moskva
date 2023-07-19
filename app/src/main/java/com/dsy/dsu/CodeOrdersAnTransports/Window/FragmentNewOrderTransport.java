@@ -1152,6 +1152,8 @@ public class FragmentNewOrderTransport extends Fragment {
                         simpleCursorForSearchView.setViewBinder(БиндингДляПоиск);
                         simpleCursorForSearchView.notifyDataSetChanged();
                         ListViewForSearchView.setAdapter(simpleCursorForSearchView);
+                        ListViewForSearchView.setSelection(0);
+                        ListViewForSearchView.startAnimation(animation);
                         ListViewForSearchView.refreshDrawableState();
                         ListViewForSearchView.requestLayout();
 

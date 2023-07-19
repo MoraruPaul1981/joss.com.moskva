@@ -1705,36 +1705,38 @@ public class FragmentMaretialNew extends Fragment {
                                                 try{
                                                     MaterialTextView materialTextViewЭлементСписка=    (MaterialTextView)       parent.getAdapter().getView(position, view,parent );
 
-                                                    //MaterialTextView materialTextViewЭлементСписка=(MaterialTextView) view;
-                                                    materialTextViewЭлементСписка.startAnimation(animation);
-                                                    Bundle bundle=(Bundle)   ((MaterialTextView)view).getTag();
-                                                    Integer IDЦфоДЛяПередачи=      bundle.getInt("ПолучаемIDЦфо",0);
-                                                    String НазваниеЦФО=   bundle.getString("НазваниеЦФО","");
-                                                    Long UUIDНазваниеЦФО =   bundle.getLong("UUIDНазваниеЦФО",0l);
-                                                    materialTextView.setTag(bundle);
-                                                    materialTextView.setText(НазваниеЦФО);
-                                                    materialTextView.refreshDrawableState();
-                                                    materialTextView.forceLayout();
+                                                    if (materialTextViewЭлементСписка!=null) {
+                                                        //MaterialTextView materialTextViewЭлементСписка=(MaterialTextView) view;
+                                                        materialTextViewЭлементСписка.startAnimation(animation);
+                                                        Bundle bundle=(Bundle)   ((MaterialTextView)view).getTag();
+                                                        Integer IDЦфоДЛяПередачи=      bundle.getInt("ПолучаемIDЦфо",0);
+                                                        String НазваниеЦФО=   bundle.getString("НазваниеЦФО","");
+                                                        Long UUIDНазваниеЦФО =   bundle.getLong("UUIDНазваниеЦФО",0l);
+                                                        materialTextView.setTag(bundle);
+                                                        materialTextView.setText(НазваниеЦФО);
+                                                        materialTextView.refreshDrawableState();
+                                                        materialTextView.forceLayout();
 
-                                                    if (    materialTextView.getText().toString().length()==0) {
-                                                        Snackbar.make(view, " Вы не выбрали цфо !!! "
-                                                                , Snackbar.LENGTH_LONG).show();
-                                                        materialTextView.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-                                                        materialTextView.setTextColor(Color.GRAY);
-                                                        Log.d(this.getClass().getName()," bundle.keySet().size() "+bundle.keySet().size());
-                                                    } else {
-                                                        materialTextView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-                                                        materialTextView.setTextColor(Color.BLACK);
-                                                        holder.alertDialog.dismiss();
-                                                        holder. alertDialog.cancel();
-                                                        Log.d(this.getClass().getName()," bundle.keySet().size() "+bundle.keySet().size());
+                                                        if (    materialTextView.getText().toString().length()==0) {
+                                                            Snackbar.make(view, " Вы не выбрали цфо !!! "
+                                                                    , Snackbar.LENGTH_LONG).show();
+                                                            materialTextView.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                                                            materialTextView.setTextColor(Color.GRAY);
+                                                            Log.d(this.getClass().getName()," bundle.keySet().size() "+bundle.keySet().size());
+                                                        } else {
+                                                            materialTextView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                                                            materialTextView.setTextColor(Color.BLACK);
+                                                            holder.alertDialog.dismiss();
+                                                            holder. alertDialog.cancel();
+                                                            Log.d(this.getClass().getName()," bundle.keySet().size() "+bundle.keySet().size());
 
 
-                                                        // TODO: 16.12.2022  для Второго Компонета ГРУППА МАТЕРИАЛОВ, после ВЫБЫБОРА ГУРППЫ МАТЕРИАЛОВ ДАЛЕЕ ИНИЦИАЛИЗУЕМ ОДИН МАТЕРИАЛОВ
-                                                        МетодДляГруппыМатериаловЗапускатьОдинМатериаловВесовой(bundle,holder);
+                                                            // TODO: 16.12.2022  для Второго Компонета ГРУППА МАТЕРИАЛОВ, после ВЫБЫБОРА ГУРППЫ МАТЕРИАЛОВ ДАЛЕЕ ИНИЦИАЛИЗУЕМ ОДИН МАТЕРИАЛОВ
+                                                            МетодДляГруппыМатериаловЗапускатьОдинМатериаловВесовой(bundle,holder);
 
+                                                        }
+                                                        Log.d(this.getClass().getName()," position");
                                                     }
-                                                    Log.d(this.getClass().getName()," position");
                                                 } catch (Exception e) {
                                                     e.printStackTrace();
                                                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
