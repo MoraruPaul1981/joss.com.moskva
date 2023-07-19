@@ -603,7 +603,12 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                     БуферСамиДанныеОтСервера = bufferedReader.lines().collect(Collectors.toList());
                 }
                 if (БуферСамиДанныеОтСервера!=null) {
-                    СервернаяВерсияПОВнутри= Integer.parseInt(БуферСамиДанныеОтСервера.get(13).replaceAll("([^0-9])", "")) ;
+
+
+                 Integer intversionCode=   БуферСамиДанныеОтСервера.toString().lastIndexOf( "versionCode");
+                 Integer versionName=   БуферСамиДанныеОтСервера.toString().indexOf( "versionName");
+               String БуферВерсияПОСервер=     БуферСамиДанныеОтСервера.toString().substring(intversionCode,versionName).replaceAll("([^0-9])", "");
+                    СервернаяВерсияПОВнутри= Integer.parseInt(БуферВерсияПОСервер) ;
                     // TODO: 13.03.2023
                     Log.d(getApplicationContext().getClass().getName(),"\n"+" Starting.... class "+Thread.currentThread().getStackTrace()[2].getClassName() +"\n"+
                             " metod "+Thread.currentThread().getStackTrace()[2].getMethodName() +"\n"+
