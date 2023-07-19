@@ -93,11 +93,20 @@ public StringBuffer МетодПолучемJSONОт1СДляСогласова�
             }
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                try{
                 if (response.isSuccessful()) {
                     stringBuffer.append(response.body().string());
                     ///TODO оттоепт обрабно о резульатате вставки статуса в 1с согласования
                     Log.d(this.getClass().getName(), "  stringBuffer  " + stringBuffer.toString() + "  responseGet.code()" + response.code());
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
             }
         });
         //TODO
@@ -160,6 +169,7 @@ public StringBuffer МетодПолучемJSONОт1СДляСогласова�
                 }
                 @Override
                 public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                    try{
                     if (response.isSuccessful()) {
                         stringBufferВторайШагПолучаемСамиДанныеНАОснованииЦФО.append(response.body().string());
                         ///TODO оттоепт обрабно о резульатате вставки статуса в 1с согласования
@@ -170,6 +180,14 @@ public StringBuffer МетодПолучемJSONОт1СДляСогласова�
                     }
                     //TODO закрываем п отоки
                     okHttpClientДляЛимитаМатериалов.dispatcher().executorService().shutdown();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
                 }
             });
             //TODO
@@ -236,6 +254,7 @@ public StringBuffer МетодПолучемJSONОт1СДляСогласова�
                 }
                 @Override
                 public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                    try{
                     if (response.isSuccessful()) {
                         stringBufferМатериаловЭтапПервый.append(response.body().string());
                         ///TODO оттоепт обрабно о резульатате вставки статуса в 1с согласования
@@ -246,6 +265,14 @@ public StringBuffer МетодПолучемJSONОт1СДляСогласова�
                     }
                     //TODO закрываем п отоки
                     okHttpClientЛиммитМатериаловЭтаппервый.dispatcher().executorService().shutdown();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
                 }
             });
             //TODO

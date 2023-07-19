@@ -46,6 +46,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+import java.util.zip.ZipException;
 
 import javax.crypto.NoSuchPaddingException;
 
@@ -178,6 +179,7 @@ import okio.BufferedSink;
                 }
                 @Override
                 public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                    try{
                     if (response.isSuccessful()) {
                         Long РазмерПришедшегоПотока = Long.parseLong(   response.header("stream_size"));
                         if (РазмерПришедшегоПотока>0l) {
@@ -194,6 +196,15 @@ import okio.BufferedSink;
                         // TODO: 31.05.2022
                         dispatcherДанныеОтСервера.executorService().shutdown();
                     }
+                    ///todo публикум название таблицы или цифру его
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
                 }
             });
             //TODO
@@ -302,6 +313,7 @@ import okio.BufferedSink;
                 }
                 @Override
                 public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                    try{
                     if (response.isSuccessful()) {
                         Long РазмерПришедшегоПотока = Long.parseLong(   response.header("stream_size"));
                         if (РазмерПришедшегоПотока>0l) {
@@ -318,6 +330,14 @@ import okio.BufferedSink;
                         // TODO: 31.05.2022
                         dispatcherДанныеОтСервера.executorService().shutdown();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
                 }
             });
             //TODO
@@ -430,6 +450,7 @@ import okio.BufferedSink;
                 }
                 @Override
                 public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                    try{
                     if (response.isSuccessful()) {
                         РазмерПришедшегоПотока[0] = Long.parseLong(   response.header("stream_size"));
                         StringBuffer БуферРезультатПингасСервером = null;
@@ -441,12 +462,19 @@ import okio.BufferedSink;
                                         StringBuffer::append);
                                 Log.d(this.getClass().getName(), "БуферРезультатПингасСервером " + БуферРезультатПингасСервером
                                         +  " РазмерПришедшегоПотока[0] " + РазмерПришедшегоПотока[0]);
-
                         }
                         Log.d(this.getClass().getName(), "БуферРезультатПингасСервером " + БуферРезультатПингасСервером +  " РазмерПришедшегоПотока[0] " + РазмерПришедшегоПотока[0]);
                         // TODO: 31.05.2022
                         dispatcherПинг.executorService().shutdown();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
                 }
             });
             dispatcherПинг.executorService().awaitTermination(20,TimeUnit.SECONDS);
@@ -641,6 +669,7 @@ import okio.BufferedSink;
                         }
                         @Override
                         public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                            try{
                             if (response.isSuccessful()) {
                                 Long РазмерПришедшегоПотока = Long.parseLong(   response.header("stream_size"));
                                 if (РазмерПришедшегоПотока>0l) {
@@ -658,6 +687,14 @@ import okio.BufferedSink;
                                 // TODO: 31.05.2022
                                 dispatcherCallsBackСервера.executorService().shutdown();
                             }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
                         }
                     });
                     dispatcherCallsBackСервера.executorService().awaitTermination(1,TimeUnit.MINUTES);
@@ -3121,24 +3158,21 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                         }
                         @Override
                         public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                            try{
                             if (response.isSuccessful()) {
                                 Long РазмерПришедшегоПотока = Long.parseLong(   response.header("stream_size"));
+                                Boolean ФлагgZIPOutputStream =Boolean.parseBoolean (   response.header("GZIPOutputStream"));
                                 // TODO: 06.05.2023  если ПОТОК ЕСТЬ СОДЕРЖИВАЕМ ПАРСИМ
                                 Boolean ФлагGZIPИлиНет=false;
                                                     if(РазмерПришедшегоПотока>0){
-                                                        InputStream inputStreamОтПинга = response.body().source().inputStream();
                                                         GZIPInputStream GZIPПотокОтСЕРВЕРА = null;
-                                                        try {
+                                                        InputStream inputStreamОтПинга = response.body().source().inputStream();
+
+                                                        if (ФлагgZIPOutputStream==true) {
                                                             GZIPПотокОтСЕРВЕРА = new GZIPInputStream(inputStreamОтПинга);
                                                             ФлагGZIPИлиНет=true;
-                                                        } catch (IOException e) {
-                                                            e.printStackTrace();
-                                                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                                            /*new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                                                    Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                                                    Thread.currentThread().getStackTrace()[2].getLineNumber());*/
                                                         }
+
                                                         File ПутькФайлу = null;
                                                         if (Build.VERSION.SDK_INT >= 30) {
                                                             ПутькФайлу = context.getExternalFilesDir( Environment.DIRECTORY_DOWNLOADS);
@@ -3173,6 +3207,14 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                                 // TODO: 06.05.2023 exit
                                 response.close();
                                 dispatcherЗагрузкаПО.executorService().shutdown();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
 
                         }
                     });

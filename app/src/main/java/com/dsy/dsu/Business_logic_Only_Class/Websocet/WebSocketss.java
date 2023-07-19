@@ -118,12 +118,21 @@ public class WebSocketss {
 
                     @Override
                     public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                        try{
                         if (response.isSuccessful()) {
                             stringBuffer.append(response.body().string());
                             Log.d(this.getClass().getName(), "  stringBuffer  " + stringBuffer.toString() + "  responseGet.code()" + response.code());
                         }
                         //TODO закрываем п отоки
                         okHttpClient.dispatcher().executorService().shutdown();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
                     }
                 });
 
