@@ -34,6 +34,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.FilterQueryProvider;
@@ -1641,51 +1642,7 @@ public class FragmentMaretialNew extends Fragment {
 
                                                             materialTextViewЭлементСписка.startAnimation(animation);
                                                             // TODO: 13.12.2022 слушатель
-                                                            materialTextViewЭлементСписка.setOnClickListener(new View.OnClickListener() {
-                                                                @Override
-                                                                public void onClick(View v) {
-                                                                    try{
-                                                                        MaterialTextView materialTextViewЭлементСписка=(MaterialTextView) view;
-                                                                        materialTextViewЭлементСписка.startAnimation(animation);
-                                                                    Bundle bundle=(Bundle)   ((MaterialTextView)view).getTag();
-                                                                    Integer IDЦфоДЛяПередачи=      bundle.getInt("ПолучаемIDЦфо",0);
-                                                                    String НазваниеЦФО=   bundle.getString("НазваниеЦФО","");
-                                                                    Long UUIDНазваниеЦФО =   bundle.getLong("UUIDНазваниеЦФО",0l);
-                                                                    materialTextView.setTag(bundle);
-                                                                    materialTextView.setText(НазваниеЦФО);
-                                                                    materialTextView.refreshDrawableState();
-                                                                    materialTextView.forceLayout();
 
-                                                                    if (    materialTextView.getText().toString().length()==0) {
-                                                                        Snackbar.make(view, " Вы не выбрали цфо !!! "
-                                                                                , Snackbar.LENGTH_LONG).show();
-                                                                        materialTextView.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-                                                                        materialTextView.setTextColor(Color.GRAY);
-                                                                        Log.d(this.getClass().getName()," bundle.keySet().size() "+bundle.keySet().size());
-                                                                    } else {
-                                                                        materialTextView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-                                                                        materialTextView.setTextColor(Color.BLACK);
-                                                                        holder.alertDialog.dismiss();
-                                                                        holder. alertDialog.cancel();
-                                                                        Log.d(this.getClass().getName()," bundle.keySet().size() "+bundle.keySet().size());
-
-
-                                                                        // TODO: 16.12.2022  для Второго Компонета ГРУППА МАТЕРИАЛОВ, после ВЫБЫБОРА ГУРППЫ МАТЕРИАЛОВ ДАЛЕЕ ИНИЦИАЛИЗУЕМ ОДИН МАТЕРИАЛОВ
-                                                                        МетодДляГруппыМатериаловЗапускатьОдинМатериаловВесовой(bundle,holder);
-
-                                                                    }
-                                                                    Log.d(this.getClass().getName()," position");
-                                                                } catch (Exception e) {
-                                                                    e.printStackTrace();
-                                                                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                                                    new   Class_Generation_Errors(v.getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                                                            this.getClass().getName(),
-                                                                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                                                }
-                                                                }
-
-                                                            });
                                                             // TODO: 13.12.2022 филь
                                                         } catch (Exception e) {
                                                             e.printStackTrace();
@@ -1715,6 +1672,11 @@ public class FragmentMaretialNew extends Fragment {
                                     // TODO: 13.12.2022  Поиск и его слушель
                                     МетодПоискаФильтр(searchViewДляНовогоЦФО,simpleCursorAdapterЦФО,holder,v,ТаблицаДляФильтра,materialTextView);
 
+                                    МетодЗакрытиеНовогоПосика(materialButtonЗакрытьДиалогSearveView);
+
+
+                                    методКликПоДанным();
+
 
                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1734,6 +1696,58 @@ public class FragmentMaretialNew extends Fragment {
                                 return super.setView(view);
                                 // TODO: 20.12.2022  тут конец выбеленого
                             }
+
+                            private void методКликПоДанным() {
+                                holder.listViewДляЦФО.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                                                try{
+                                                    MaterialTextView materialTextViewЭлементСписка=    (MaterialTextView)       parent.getAdapter().getView(position, view,parent );
+
+                                                    //MaterialTextView materialTextViewЭлементСписка=(MaterialTextView) view;
+                                                    materialTextViewЭлементСписка.startAnimation(animation);
+                                                    Bundle bundle=(Bundle)   ((MaterialTextView)view).getTag();
+                                                    Integer IDЦфоДЛяПередачи=      bundle.getInt("ПолучаемIDЦфо",0);
+                                                    String НазваниеЦФО=   bundle.getString("НазваниеЦФО","");
+                                                    Long UUIDНазваниеЦФО =   bundle.getLong("UUIDНазваниеЦФО",0l);
+                                                    materialTextView.setTag(bundle);
+                                                    materialTextView.setText(НазваниеЦФО);
+                                                    materialTextView.refreshDrawableState();
+                                                    materialTextView.forceLayout();
+
+                                                    if (    materialTextView.getText().toString().length()==0) {
+                                                        Snackbar.make(view, " Вы не выбрали цфо !!! "
+                                                                , Snackbar.LENGTH_LONG).show();
+                                                        materialTextView.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                                                        materialTextView.setTextColor(Color.GRAY);
+                                                        Log.d(this.getClass().getName()," bundle.keySet().size() "+bundle.keySet().size());
+                                                    } else {
+                                                        materialTextView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                                                        materialTextView.setTextColor(Color.BLACK);
+                                                        holder.alertDialog.dismiss();
+                                                        holder. alertDialog.cancel();
+                                                        Log.d(this.getClass().getName()," bundle.keySet().size() "+bundle.keySet().size());
+
+
+                                                        // TODO: 16.12.2022  для Второго Компонета ГРУППА МАТЕРИАЛОВ, после ВЫБЫБОРА ГУРППЫ МАТЕРИАЛОВ ДАЛЕЕ ИНИЦИАЛИЗУЕМ ОДИН МАТЕРИАЛОВ
+                                                        МетодДляГруппыМатериаловЗапускатьОдинМатериаловВесовой(bundle,holder);
+
+                                                    }
+                                                    Log.d(this.getClass().getName()," position");
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                                    new   Class_Generation_Errors(v.getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                                            this.getClass().getName(),
+                                                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                                }
+                                            }
+
+                                });
+                            }
+
                             void методGetCursorForQuertyFilter(CharSequence constraint) {
                                 try{
                                     if(materialTextView.getId()==holder.materialtext_onematerial_ves.getId()) {
@@ -1781,8 +1795,6 @@ public class FragmentMaretialNew extends Fragment {
                         layoutParams.gravity = Gravity.CENTER;
                         holder.alertDialog.getWindow().setAttributes(layoutParams);
                         // TODO: 13.12.2022 ВТОРОЙ СЛУШАТЕЛЬ НА КНОПКУ
-
-                        МетодЗакрытиеНовогоПосика(materialButtonЗакрытьДиалогSearveView);
 
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
