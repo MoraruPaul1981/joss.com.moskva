@@ -163,8 +163,6 @@ public class FragmentImagesMaterials extends Fragment {
             //todo запуск методов в фрагменте
             МетодИнициализацииRecycreView();
             МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
-            // TODO: 18.07.2023 получение Image для выбраного Материала
-            методGetImageForRow(bundleForImages.getLong("UUIDВыбраныйМатериал"));
             МетодВыходНаAppBack();
             Log.d(this.getClass().getName(), "  onViewCreated  FragmentDetailingMaterials  recyclerView  "+recyclerView+
                     " linearLayou "+linearLayou+"  fragmentManager "+fragmentManager);
@@ -188,28 +186,19 @@ public class FragmentImagesMaterials extends Fragment {
                 МетодДизайнПрограссБара();
                 МетодКпопкиЗначков(cursorImageForSelectMaterail);
 
-                recyclerView.removeAllViewsInLayout();
+                методRebbotRecyreViews();
 
+                МетодПерегрузкаRecyceView();
 
-
-                МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
-
-
-        /*        myRecycleViewAdapter.cursorImageForSelectMaterail=cursorImageForSelectMaterail;
-                myRecycleViewAdapter.cursorImageForSelectMaterail.requery();
-                myRecycleViewAdapter.notifyDataSetChanged();*/
-      /*          RecyclerView.Adapter recyclerViewОбновление=         recyclerView.getAdapter();
-                recyclerViewОбновление.createViewHolder((ViewGroup) recyclerView.getParent(),0);*/
-               // recyclerView.swapAdapter(recyclerViewОбновление,true);
-
-
-               // МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
-          /*      МетодСоздаенияСлушателяДляПолучениеМатериалаWorkMAnager();
+                МетодСоздаенияСлушателяДляПолучениеМатериалаWorkMAnager();
                 МетодСлушательКурсора();
-                МетодСлушательRecycleView();//todo создаем слушатель для recycreview для получение материалов*/
+                МетодСлушательRecycleView();//todo создаем слушатель для recycreview для получение материалов
+
+
             } else {
                 МетодКпопкиЗначков(cursorImageForSelectMaterail);
-
+                // TODO: 18.07.2023 получение Image для выбраного Материала
+                методGetImageForRow(bundleForImages.getLong("UUIDВыбраныйМатериал"));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -222,6 +211,27 @@ public class FragmentImagesMaterials extends Fragment {
         }
     }
 
+    private void методRebbotRecyreViews() {
+        try{
+        recyclerView.removeAllViewsInLayout();
+        myRecycleViewAdapter.cursorImageForSelectMaterail=cursorImageForSelectMaterail;
+        myRecycleViewAdapter.cursorImageForSelectMaterail.requery();
+        myRecycleViewAdapter.notifyDataSetChanged();
+        RecyclerView.Adapter recyclerViewОбновление=         recyclerView.getAdapter();
+        recyclerViewОбновление.notifyDataSetChanged();
+        recyclerView.swapAdapter(recyclerViewОбновление,true);
+            Log.d(this.getClass().getName(), "  onViewCreated  FragmentDetailingMaterials  recyclerView  "+recyclerView+
+                    " linearLayou "+linearLayou+"  fragmentManager "+fragmentManager);
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(getContext().getClass().getName(),
+                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+    }
 
 
     @Override
@@ -246,12 +256,21 @@ public class FragmentImagesMaterials extends Fragment {
 
     @NonNull
     private void методGetImageForRow(Long UUIDДляУдаления) {
+
+        message.getTarget().post(()->{
             try{
                 cursorImageForSelectMaterail =     МетодПолучениеДанныхФотографииImageДляМатериа (UUIDДляУдаления);
                 // TODO: 17.07.2023
-                if (cursorImageForSelectMaterail !=null && cursorImageForSelectMaterail.getCount()>=0) {
-                    onStart();
-                }
+                message.getTarget().postDelayed(()->{
+                    if (cursorImageForSelectMaterail !=null && cursorImageForSelectMaterail.getCount()>=0) {
+                        onStart();
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                + " cursorImageForSelectMaterail " +cursorImageForSelectMaterail);
+                    }
+                },50);
+
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -266,6 +285,7 @@ public class FragmentImagesMaterials extends Fragment {
                         this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
+        });
     }
 
 
