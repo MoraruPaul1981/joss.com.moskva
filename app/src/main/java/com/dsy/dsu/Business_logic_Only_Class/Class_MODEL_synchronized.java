@@ -520,7 +520,7 @@ import okio.BufferedSink;
 
 
     ///////метод ОТПРАВКИ ДАННЫХ НА СЕРВЕР
-    public StringBuffer УниверсальныйБуферОтправкиДанныхНаСервера(@NonNull String СгенерированыйФайлJSONДляОтправкиНаСервер,
+    public StringBuffer УниверсальныйБуферОтпFравкиДанныхНаСервера(@NonNull String СгенерированыйФайлJSONДляОтправкиНаСервер,
                                                                   @NonNull Integer ID,
                                                                   @NonNull String Таблица,
                                                                   @NonNull  String JobForServer,
@@ -3121,12 +3121,24 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                         }
                         @Override
                         public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                            try{
                             if (response.isSuccessful()) {
                                 Long РазмерПришедшегоПотока = Long.parseLong(   response.header("stream_size"));
                                 // TODO: 06.05.2023  если ПОТОК ЕСТЬ СОДЕРЖИВАЕМ ПАРСИМ
+                                Boolean ФлагGZIPИлиНет=false;
                                                     if(РазмерПришедшегоПотока>0){
                                                         InputStream inputStreamОтПинга = response.body().source().inputStream();
+                                                        GZIPInputStream GZIPПотокОтСЕРВЕРА = null;
+                                                        try {
+                                                            GZIPПотокОтСЕРВЕРА = new GZIPInputStream(inputStreamОтПинга);
+                                                            ФлагGZIPИлиНет=true;
+                                                        } catch (IOException e) {
+                                                            e.printStackTrace();
+                                                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                                            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                                                    Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                                        }
                                                         File ПутькФайлу = null;
                                                         if (Build.VERSION.SDK_INT >= 30) {
                                                             ПутькФайлу = context.getExternalFilesDir( Environment.DIRECTORY_DOWNLOADS);
@@ -3141,7 +3153,11 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                                                             // TODO: 20.03.2023 само создание файла
                                                             if (СамФайлJsonandApk[0].createNewFile()) {
                                                                 Log.d(context.getClass().getName(), "Будущий файл успешно создалься , далее запись на диск новго APk файла ");
-                                                                FileUtils.copyInputStreamToFile(inputStreamОтПинга, СамФайлJsonandApk[0]);
+                                                                if (ФлагGZIPИлиНет==false) {
+                                                                     FileUtils.copyInputStreamToFile(inputStreamОтПинга, СамФайлJsonandApk[0]);
+                                                                } else {
+                                                                    FileUtils.copyInputStreamToFile(GZIPПотокОтСЕРВЕРА, СамФайлJsonandApk[0]);
+                                                                }
                                                                 Log.d(context.getClass().getName(), "FileUtils.copyInputStreamToFile СамФайлJsonandApk"+
                                                                         СамФайлJsonandApk[0]);
                                                             } else {
@@ -3157,14 +3173,7 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                                 // TODO: 06.05.2023 exit
                                 response.close();
                                 dispatcherЗагрузкаПО.executorService().shutdown();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                    Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
+
                         }
                     });
                     dispatcherЗагрузкаПО.executorService().awaitTermination(50,TimeUnit.MINUTES);
