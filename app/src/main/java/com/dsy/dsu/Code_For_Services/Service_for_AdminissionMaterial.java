@@ -37,6 +37,7 @@ import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassYearHONLY_Только
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.DATE.SubClassMONTHONLY;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
+import com.google.common.util.concurrent.AtomicDouble;
 
 
 import java.io.FileDescriptor;
@@ -1125,4 +1126,39 @@ private class SubClassGetDataAdmissionMaterial_Автомобили {
             return РезультатУдалениеНовгоМатериала  ;
         }
     }
+
+
+
+
+
+    // TODO: 19.07.2023  Класс  Для Создании и Сохранение новой Image  // TODO: 19.07.2023  Класс  Для Создании и Сохранение новой Image  // TODO: 19.07.2023  Класс  Для Создании и Сохранение новой Image
+   public class SubClassCreateNewImageForMateril{
+        // TODO: 19.07.2023  первый класс создание нового изображения
+        public     class  SubClassImagesNews{
+            // TODO: 19.07.2023 класс  создание нового Image
+            public     void методCreateNewImages(){
+                try{
+
+
+
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    Log.e(getApplicationContext().getClass().getName(), " Ошибка СЛУЖБА Service_ДляЗапускаодноразовойСинхронизации   ");
+                }
+            }
+
+        }//todo END SubClassImagesNews
+
+
+
+
+    }//todo END SubClassCreateNewImage
 }

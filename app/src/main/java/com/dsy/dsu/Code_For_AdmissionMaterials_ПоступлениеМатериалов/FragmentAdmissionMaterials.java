@@ -730,6 +730,9 @@ public class FragmentAdmissionMaterials extends Fragment {
                                     if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.RUNNING) != 0) {
                                         // TODO: 23.05.2023  програсс бар
                                         progressBarСканирование.setVisibility(View.INVISIBLE);
+                                    }else {
+                                        // TODO: 23.05.2023  програсс бар
+                                        progressBarСканирование.setVisibility(View.VISIBLE);
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -759,6 +762,9 @@ public class FragmentAdmissionMaterials extends Fragment {
                                     if(СтастусWorkMangerДляФрагментаЧитатьИПисать.getState().compareTo(WorkInfo.State.RUNNING) != 0) {
                                         // TODO: 23.05.2023  програсс бар
                                         progressBarСканирование.setVisibility(View.INVISIBLE);
+                                    }else{
+                                        // TODO: 23.05.2023  програсс бар
+                                        progressBarСканирование.setVisibility(View.VISIBLE);
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
