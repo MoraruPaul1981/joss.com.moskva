@@ -41,6 +41,7 @@ import android.widget.FilterQueryProvider;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -550,9 +551,9 @@ public class FragmentMaretialNew extends Fragment {
                 textviewmaterialttn  = itemView.findViewById(R.id.textviewmaterialttn);
                 textviewmaterialttndata = itemView.findViewById(R.id.textviewmaterialttndata);
                 Boolean     ФлагДляСкрытыхМатериалов = preferencesМатериалы.getBoolean("ФлагДляСкрытыхМатериалов",false);
-                LinearLayout.LayoutParams params= null;
+                RelativeLayout.LayoutParams params= null;
                 if (textviewnamecfo!=null) {
-                    params = (LinearLayout.LayoutParams)textviewnamecfo.getLayoutParams();
+                    params = (RelativeLayout.LayoutParams)textviewnamecfo.getLayoutParams();
                 }
                 if (ФлагДляСкрытыхМатериалов==true) {
                     if (textipputmaretialttn!=null) {
@@ -562,7 +563,7 @@ public class FragmentMaretialNew extends Fragment {
                         textviewmaterialttn.setVisibility(View.VISIBLE);
                     }
                     if (params!=null) {
-                        params.setMargins(0,50,0,0);
+                        params.setMargins(0,5,0,0);
                     }
                     if (textviewnamecfo!=null) {
                         textviewnamecfo.setLayoutParams(params);
@@ -575,7 +576,7 @@ public class FragmentMaretialNew extends Fragment {
                         textviewmaterialttn.setVisibility(View.GONE);
                     }
                     if (params!=null) {
-                        params.setMargins(0,150,0,0);
+                        params.setMargins(0,50,0,0);
                     }
                     if (textviewnamecfo!=null) {
                         textviewnamecfo.setLayoutParams(params);
