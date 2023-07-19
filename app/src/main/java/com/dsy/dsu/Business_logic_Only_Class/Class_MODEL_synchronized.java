@@ -3135,9 +3135,9 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                                                             e.printStackTrace();
                                                             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                                                                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                                            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                                            /*new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                                                                     Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                                                    Thread.currentThread().getStackTrace()[2].getLineNumber());*/
                                                         }
                                                         File ПутькФайлу = null;
                                                         if (Build.VERSION.SDK_INT >= 30) {
