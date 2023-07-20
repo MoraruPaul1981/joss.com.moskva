@@ -7,8 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Camera;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.hardware.camera2.CameraDevice;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -30,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -72,6 +76,7 @@ import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventList
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -83,6 +88,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class FragmentMaretialNew extends Fragment {
@@ -2355,10 +2361,26 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
         intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags( Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.addFlags( Intent.FLAG_GRANT_WRITE_URI_PERMISSION );
-        Uri url = Uri.parse(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toPath() + "/Camera");
+        Uri url = Uri.parse(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toPath() + File.separator + "Camera");
         intent.setDataAndType(url, "*/*");
         startActivity(Intent.createChooser(intent, "Загруженые фото"));
 
+
+        File dcimPath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toPath() + "/Camera");
+        if (dcimPath.exists()) {
+            Log.i("DCIM PATH", dcimPath.toString());
+
+            Log.i("DCIM PATH", dcimPath.listFiles().toString());
+            File[] files = dcimPath.listFiles();
+
+            for (int i = 0; i < files.length; i++) {
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        +" binderДляПолучениеМатериалов "+ binderДляПолучениеМатериалов);
+            }
+        }
+        // TODO: 20.07.2023
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                   " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                   " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
