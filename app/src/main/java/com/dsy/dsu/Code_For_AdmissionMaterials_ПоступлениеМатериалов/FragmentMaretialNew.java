@@ -2129,6 +2129,18 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
         }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
     // TODO: 20.07.2023 класс создание нового создане нового Image
     public class SubClassCreateNewImageForMateril{
         // TODO: 19.07.2023  первый класс создание нового изображения
@@ -2147,14 +2159,14 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                         // TODO: 14.12.2022
                                         GridView gridViewImage =    (GridView) view.findViewById(R.id.listView_create_image);
                                         MaterialButton  materialButtoтtЗакрываемСозданиеImage =    (MaterialButton) view.findViewById(R.id.bottom_close_create_image);
-                                        ArrayList<HashMap<String, Object>> ЛистНетданных= new ArrayList<HashMap<String, Object>> ();
+                                        ArrayList<HashMap<String, Object>> ЛистДляСозданиеРисунки= new ArrayList<HashMap<String, Object>> ();
                                         HashMap<String, Object> map = new HashMap<>();
                                         map.put("alldonttbels", "Не создано !!!");
                                         map.put("allimage", " dont");
-                                        ЛистНетданных.add(map);
+                                        ЛистДляСозданиеРисунки.add(map);
                                         SimpleAdapter АдаптерКогдаНетданных = new SimpleAdapter(getContext(),
-                                                ЛистНетданных,
-                                                R.layout.list_item_all_customer_tabel4dont,
+                                                ЛистДляСозданиеРисунки,
+                                                R.layout.list_item_all_for_create_image_for_material,
                                                 new String[]{"alldonttbels","allimage"},
                                                 new int[]{android.R.id.text2,android.R.id.text1});
 
@@ -2279,10 +2291,10 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                     .setView(getLayoutInflater().inflate( R.layout.simple_for_new_search_create_image, null )).show();
                             WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
                             layoutParams.copyFrom(   alertDialogCreateImage.getWindow().getAttributes());
-                          /*  layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-                            layoutParams.height =WindowManager.LayoutParams.MATCH_PARENT;*/
-                            layoutParams.width = 600;
-                            layoutParams.height =1000;
+                            layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
+                            layoutParams.height =WindowManager.LayoutParams.WRAP_CONTENT;
+                         /*   layoutParams.width = 600;
+                            layoutParams.height =1000;*/
                             layoutParams.gravity = Gravity.CENTER;
                             alertDialogCreateImage.getWindow().setAttributes(layoutParams);
 
@@ -2326,6 +2338,16 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                     }
 
             }  //todo END SubClassUploadImageAnFragmentImage
+
+
+        // TODO: 20.07.2023 класс ЗагрузкиImage из Хранилишща Телефона
+        class SubClassUploadImageFromSDCars{
+
+
+
+
+
+        }
 
     }//todo END SubClassCreateNewImageForMateril
 }

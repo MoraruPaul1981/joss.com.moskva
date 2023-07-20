@@ -596,6 +596,7 @@
                       android:textSize="34sp"
                       android:visibility="visible"
                       android:scaleType="fitXY"
+                      android:tooltipText="рис.1"
                       android:textStyle="bold" />
 
                   <ImageView
@@ -612,6 +613,7 @@
                       android:textSize="34sp"
                       android:scaleType="fitXY"
                       android:visibility="visible"
+                      android:tooltipText="рис.2"
                       android:textStyle="bold" />
 
                   <ImageView
@@ -628,6 +630,7 @@
                       android:textSize="34sp"
                       android:scaleType="fitXY"
                       android:visibility="visible"
+                      android:tooltipText="рис.3"
                       android:textStyle="bold" />
                   <ImageView
                       android:id="@+id/im4"
@@ -643,7 +646,7 @@
                       android:adjustViewBounds="true"
                       android:textSize="34sp"
                       android:textStyle="bold"
-                      android:tooltipText="4"
+                      android:tooltipText="рис.4"
                       android:visibility="visible" />
          </TableRow>
          <!--//TODO начало    строчки ТС-->
