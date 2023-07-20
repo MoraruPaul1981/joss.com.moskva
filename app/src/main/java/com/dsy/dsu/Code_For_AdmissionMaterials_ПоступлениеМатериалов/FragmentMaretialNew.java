@@ -517,15 +517,13 @@ public class FragmentMaretialNew extends Fragment {
         private MaterialTextView textviewmaterialttn ,textviewmaterialttndata;
         private MaterialButton bottomcreateassionmaterial;
 
-        private AppCompatImageButton bottom_create_image;
-
         private ArrayAdapter<String> АдапетерЦФО;
         private AlertDialog alertDialog;
         private    ListView  listViewДляЦФО =null;
         private  Cursor cursorДляВсехМатериалов;
         private  TextView textipputmaretialttdata;
 
-        private ImageView im1,im2,im3,im4;
+        private ImageView im1,im2,im3,im4,bottom_create_image;
         // TODO: 28.10.2022
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -2250,16 +2248,19 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                 }
 
                             }
-                                    .setTitle("Создание фотографии")
+                                    .setTitle("Новые фотографии")
                                     .setCancelable(false)
                                     .setIcon( R.drawable.icon_for_create_image2)
                                     .setView(getLayoutInflater().inflate( R.layout.simple_for_new_search_create_image, null )).show();
                             WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
                             layoutParams.copyFrom(   holder.alertDialog.getWindow().getAttributes());
+                          /*  layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+                            layoutParams.height =WindowManager.LayoutParams.MATCH_PARENT;*/
                             layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-                            layoutParams.height =WindowManager.LayoutParams.MATCH_PARENT;
+                            layoutParams.height =WindowManager.LayoutParams.WRAP_CONTENT;
                             layoutParams.gravity = Gravity.CENTER;
                             holder.alertDialog.getWindow().setAttributes(layoutParams);
+
                             // TODO: 13.12.2022 ВТОРОЙ СЛУШАТЕЛЬ НА КНОПКУ
 
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
