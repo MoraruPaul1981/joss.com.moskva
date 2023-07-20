@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -30,7 +29,6 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -64,7 +62,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
-import com.google.common.util.concurrent.AtomicDouble;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
@@ -1512,15 +1509,19 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
         holder. bottom_create_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                МетодЗапускаАнимацииКнопок(v);
-                // TODO: 20.07.2023 создане нового рисунка
-                SubClassCreateNewImageForMateril subClassCreateNewImageForMateril=new SubClassCreateNewImageForMateril();
+                v.animate().rotationX(-40l);
+                handler .postDelayed(()->{
+                    v.animate().rotationX(0);
+                    // TODO: 20.07.2023 создане нового рисунка
+                    SubClassCreateNewImageForMateril subClassCreateNewImageForMateril=new SubClassCreateNewImageForMateril();
 
-                subClassCreateNewImageForMateril.new SubClassUploadImageAnFragmentImage().методЗагрузкиИлиСозданиеImage(holder);
+                    subClassCreateNewImageForMateril.new SubClassUploadImageAnFragmentImage().методЗагрузкиИлиСозданиеImage(holder);
 
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                },200);
+
             }
         });
     } catch (Exception e) {
@@ -2132,21 +2133,20 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
     public class SubClassCreateNewImageForMateril{
         // TODO: 19.07.2023  первый класс создание нового изображения
         public class SubClassUploadImageAnFragmentImage {
-
-          private    MaterialButton    materialButtoтtЗакрываемСозданиеImage=null;
+            AlertDialog alertDialogCreateImage;
             protected   void методЗагрузкиИлиСозданиеImage(@NonNull MyViewHolder holder) {
                 // TODO: 16.12.2022
                         try{
                             Animation   animation1= AnimationUtils.loadAnimation(getContext(),R.anim.slide_in_row_newscanner1);
                             // TODO: 20.12.2022  оперделяем какой вид загружать когда выбран и когда не выбрана гурппа метарилов
-                            holder.alertDialog  = new MaterialAlertDialogBuilder(getContext()){
+                             alertDialogCreateImage  = new MaterialAlertDialogBuilder(getContext()){
                                 @NonNull
                                 @Override
                                 public MaterialAlertDialogBuilder setView(View view) {
                                     try{
                                         // TODO: 14.12.2022
                                         GridView gridViewImage =    (GridView) view.findViewById(R.id.listView_create_image);
-                                        materialButtoтtЗакрываемСозданиеImage =    (MaterialButton) view.findViewById(R.id.bottom_close_create_image);
+                                        MaterialButton  materialButtoтtЗакрываемСозданиеImage =    (MaterialButton) view.findViewById(R.id.bottom_close_create_image);
                                         ArrayList<HashMap<String, Object>> ЛистНетданных= new ArrayList<HashMap<String, Object>> ();
                                         HashMap<String, Object> map = new HashMap<>();
                                         map.put("alldonttbels", "Не создано !!!");
@@ -2164,11 +2164,27 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                                 try{
                                                     switch (view.getId()) {
                                                         case android.R.id.text2:
-                                                        case android.R.id.text1:
-                                                            // TODO: 09.04.2023  ВставлЯем Данные
-                                                   /*         ((AppCompatImageButton) view).;
-*/
+                                                            // TODO: 20.07.2023 слушатели  закрытие
+                                                            методЗакрываемСозданиеИлиUpIamge(materialButtoтtЗакрываемСозданиеImage, alertDialogCreateImage);
 
+                                                            AppCompatImageButton appCompatImageButtonUpImage=(AppCompatImageButton) view ;
+
+                                                            методКликПоДаннымUpImage(appCompatImageButtonUpImage );
+
+                                                            // TODO: 20.07.2023 методы после создание выбора
+                                                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n");
+                                                            return  true;
+
+                                                        case android.R.id.text1:
+
+                                                            // TODO: 20.07.2023 слушатели  закрытие
+                                                            методЗакрываемСозданиеИлиUpIamge(materialButtoтtЗакрываемСозданиеImage, alertDialogCreateImage);
+                                                            // TODO: 09.04.2023  ВставлЯем Данные
+                                                            AppCompatImageButton appCompatImageButtonCreateImage=(AppCompatImageButton) view ;
+                                                            методКликПоДаннымCreateImage(appCompatImageButtonCreateImage );
+
+                                                            // TODO: 20.07.2023 методы после создание выбора
                                                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n");
                                                             return  true;
@@ -2191,20 +2207,6 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                         gridViewImage.refreshDrawableState();
                                         gridViewImage.requestLayout();
                                         gridViewImage.refreshDrawableState();
-
-                                        // TODO: 20.07.2023 методы после создание выбора 
-
-                                        методЗакрываемСозданиеИлиUpIamge(materialButtoтtЗакрываемСозданиеImage,holder);
-
-                                            методКликПоДанным(gridViewImage);
-
-
-                                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                                    "materialButtonЗакрытьДиалогSearveView"+  materialButtoтtЗакрываемСозданиеImage);
-
-
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -2218,21 +2220,19 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                     // TODO: 20.12.2022  тут конец выбеленого
                                 }
 
-                                private void методКликПоДанным(@NonNull GridView gridViewImage) {
-                                    gridViewImage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                private void методКликПоДаннымUpImage(@NonNull AppCompatImageButton appCompatImageButton) {
+                                    // TODO: 20.07.2023
+                                    appCompatImageButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
-                                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                                        public void onClick(View v) {
                                             try{
-                                                MaterialTextView materialTextViewЭлементСписка=    (MaterialTextView)       parent.getAdapter().getView(position, view,parent );
-
-                                                if (materialTextViewЭлементСписка!=null) {
+                                                if (v!=null) {
                                                     //MaterialTextView materialTextViewЭлементСписка=(MaterialTextView) view;
 
                                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                                            "materialTextViewЭлементСписка"+  materialTextViewЭлементСписка);
+                                                            "materialTextViewЭлементСписка"+  v);
                                                 }
                                             } catch (Exception e) {
                                                 e.printStackTrace();
@@ -2243,30 +2243,54 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                                             }
                                         }
-
                                     });
-                                }
 
+                                }
+                                 private void методКликПоДаннымCreateImage(@NonNull AppCompatImageButton appCompatImageButton) {
+                                     // TODO: 20.07.2023
+                                     appCompatImageButton.setOnClickListener(new View.OnClickListener() {
+                                         @Override
+                                         public void onClick(View v) {
+                                             try{
+                                                 if (v!=null) {
+                                                     //MaterialTextView materialTextViewЭлементСписка=(MaterialTextView) view;
+
+                                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                                             "materialTextViewЭлементСписка"+  v);
+                                                 }
+                                             } catch (Exception e) {
+                                                 e.printStackTrace();
+                                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                                         " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                                 new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                                         this.getClass().getName(),
+                                                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                             }
+                                         }
+                                     });
+
+                                 }
                             }
                                     .setTitle("Новые фотографии")
                                     .setCancelable(false)
                                     .setIcon( R.drawable.icon_for_create_image2)
                                     .setView(getLayoutInflater().inflate( R.layout.simple_for_new_search_create_image, null )).show();
                             WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-                            layoutParams.copyFrom(   holder.alertDialog.getWindow().getAttributes());
+                            layoutParams.copyFrom(   alertDialogCreateImage.getWindow().getAttributes());
                           /*  layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
                             layoutParams.height =WindowManager.LayoutParams.MATCH_PARENT;*/
-                            layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-                            layoutParams.height =WindowManager.LayoutParams.WRAP_CONTENT;
+                            layoutParams.width = 600;
+                            layoutParams.height =1000;
                             layoutParams.gravity = Gravity.CENTER;
-                            holder.alertDialog.getWindow().setAttributes(layoutParams);
+                            alertDialogCreateImage.getWindow().setAttributes(layoutParams);
 
                             // TODO: 13.12.2022 ВТОРОЙ СЛУШАТЕЛЬ НА КНОПКУ
 
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                    "materialButtoтtЗакрываемСозданиеImage"+  materialButtoтtЗакрываемСозданиеImage
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                     +" binderДляПолучениеМатериалов "+ binderДляПолучениеМатериалов);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -2281,14 +2305,14 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 
 // TODO: 20.07.2023 при созданнии или Upload Image
                     private void методЗакрываемСозданиеИлиUpIamge(@NonNull  MaterialButton materialButtonЗакрытьДиалог,
-                                                                  @NonNull MyViewHolder holder) {
+                                                                   @NonNull AlertDialog alertDialogCreateImage ) {
                         materialButtonЗакрытьДиалог.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 try{
                                     Log.d(this.getClass().getName()," Image Update and Create Image");
-                                    holder.alertDialog.dismiss();
-                                    holder.alertDialog.cancel();
+                                    alertDialogCreateImage.dismiss();
+                                    alertDialogCreateImage.cancel();
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
