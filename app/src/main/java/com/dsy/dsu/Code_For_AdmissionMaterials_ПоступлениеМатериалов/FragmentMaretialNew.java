@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,7 @@ import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -2240,8 +2242,9 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                             try{
                                                 if (v!=null) {
                                                     //MaterialTextView materialTextViewЭлементСписка=(MaterialTextView) view;
-
-                                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                    SubClassUploadImageFromSDCars imageFromSDCars=new SubClassUploadImageFromSDCars();
+                                                    imageFromSDCars.методUploadImetImage();
+                                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
                                                             "materialTextViewЭлементСписка"+  v);
@@ -2343,7 +2346,33 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
         // TODO: 20.07.2023 класс ЗагрузкиImage из Хранилишща Телефона
         class SubClassUploadImageFromSDCars{
 
+      void методUploadImetImage(){
+    try{
 
+          Intent intent = new  Intent(Intent.ACTION_GET_CONTENT);
+        intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK);
+         Uri url = Uri.parse(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toPath() + "/Camera");
+          intent.setDataAndType(url, "*/*");
+          startActivity(Intent.createChooser(intent, "Open folder"));
+
+
+          Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                  " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                  " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                  +" binderДляПолучениеМатериалов "+ binderДляПолучениеМатериалов);
+      } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+
+
+
+            }
 
 
 
