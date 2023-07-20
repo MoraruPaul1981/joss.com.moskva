@@ -557,31 +557,22 @@
 
 
                <TableRow
-                   android:id="@+id/TableData1Row"
+                   android:id="@+id/tablerow_create_image"
                    android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
                    android:gravity="center"
                    android:background="#FFFFFF"
-                   android:layout_margin="2dp"
-                   android:layout_height="wrap_content"
-                   android:minHeight="20dp">
+                   android:layout_margin="2dp">
 
-                  <com.google.android.material.button.MaterialButton
+                  <androidx.appcompat.widget.AppCompatImageButton
                       android:id="@+id/bottom_create_image"
                       style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
                       android:layout_column="0"
                       android:layout_width="60dp"
-                      android:layout_height="80dp"
-                      android:layout_centerInParent="true"
-                      android:clickable="true"
-                      android:enabled="true"
-                      android:focusable="auto"
-                      android:fontFamily="sans-serif-medium"
-                      android:foregroundGravity="center"
+                      android:layout_height="60dp"
                       android:gravity="center"
                       android:textColor="#0E0E0E"
-                      android:textSize="10sp"
-                      android:textStyle="bold"
-                      app:icon="@drawable/icon_material_down_image1"
+                      app:srcCompat="@drawable/icon_material_down_image1"
                       android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
                       android:translationZ="150dp"
                       android:visibility="visible"
@@ -590,62 +581,67 @@
                       tools:visibility="visible" />
 
                   <ImageView
-                      android:id="@+id/im2"
+                      android:id="@+id/im1"
                       android:layout_column="1"
                       android:layout_width="wrap_content"
                       android:minWidth="80dp"
-                      android:layout_height="80dp"
+                      android:layout_height="60dp"
                       android:text="1"
+                      android:background="@drawable/style_for_mateial_new_image1"
                       android:gravity="center"
                       android:layout_margin="2dp"
-                      android:background="#F0FFFF"
                       android:adjustViewBounds="true"
                       android:textSize="34sp"
+                      android:visibility="visible"
+                      android:scaleType="fitXY"
+                      android:textStyle="bold" />
+
+                  <ImageView
+                      android:id="@+id/im2"
+                      android:layout_column="2"
+                      android:layout_width="wrap_content"
+                      android:minWidth="80dp"
+                      android:layout_height="60dp"
+                      android:text="2"
+                      android:gravity="center"
+                      android:layout_margin="2dp"
+                      android:background="@drawable/style_for_mateial_new_image1"
+                      android:adjustViewBounds="true"
+                      android:textSize="34sp"
+                      android:scaleType="fitXY"
                       android:visibility="visible"
                       android:textStyle="bold" />
 
                   <ImageView
                       android:id="@+id/im3"
-                      android:layout_column="2"
-                      android:layout_width="wrap_content"
-                      android:minWidth="80dp"
-                      android:layout_height="80dp"
-                      android:text="2"
-                      android:gravity="center"
-                      android:layout_margin="2dp"
-                      android:background="#F0FFFF"
-                      android:adjustViewBounds="true"
-                      android:textSize="34sp"
-                      android:visibility="visible"
-                      android:textStyle="bold" />
-
-                  <ImageView
-                      android:id="@+id/im4"
                       android:layout_column="3"
                       android:layout_width="wrap_content"
                       android:minWidth="80dp"
-                      android:layout_height="80dp"
+                      android:layout_height="60dp"
                       android:text="3"
                       android:gravity="center"
                       android:layout_margin="2dp"
-                      android:background="#F0FFFF"
+                      android:background="@drawable/style_for_mateial_new_image1"
                       android:adjustViewBounds="true"
                       android:textSize="34sp"
+                      android:scaleType="fitXY"
                       android:visibility="visible"
                       android:textStyle="bold" />
                   <ImageView
-                      android:id="@+id/im5"
+                      android:id="@+id/im4"
                       android:layout_column="4"
                       android:layout_width="wrap_content"
                       android:minWidth="80dp"
-                      android:layout_height="80dp"
+                      android:layout_height="60dp"
                       android:text="4"
+                      android:scaleType="fitXY"
                       android:gravity="center"
                       android:layout_margin="2dp"
-                      android:background="#F0FFFF"
+                      android:background="@drawable/style_for_mateial_new_image1"
                       android:adjustViewBounds="true"
                       android:textSize="34sp"
                       android:textStyle="bold"
+                      android:tooltipText="4"
                       android:visibility="visible" />
          </TableRow>
          <!--//TODO начало    строчки ТС-->
