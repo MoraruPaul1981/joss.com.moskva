@@ -1,6 +1,7 @@
 package com.dsy.dsu.Code_For_AdmissionMaterials_ПоступлениеМатериалов;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.core.app.ShareCompat;
 import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.fragment.app.Fragment;
@@ -2349,14 +2351,15 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
       void методUploadImetImage(){
     try{
 
-          Intent intent = new  Intent(Intent.ACTION_GET_CONTENT);
+        Intent intent = new  Intent(Intent.ACTION_GET_CONTENT);
         intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK);
-         Uri url = Uri.parse(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toPath() + "/Camera");
-          intent.setDataAndType(url, "*/*");
-          startActivity(Intent.createChooser(intent, "Open folder"));
+        intent.addFlags( Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags( Intent.FLAG_GRANT_WRITE_URI_PERMISSION );
+        Uri url = Uri.parse(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toPath() + "/Camera");
+        intent.setDataAndType(url, "*/*");
+        startActivity(Intent.createChooser(intent, "Загруженые фото"));
 
-
-          Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                   " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                   " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                   +" binderДляПолучениеМатериалов "+ binderДляПолучениеМатериалов);
