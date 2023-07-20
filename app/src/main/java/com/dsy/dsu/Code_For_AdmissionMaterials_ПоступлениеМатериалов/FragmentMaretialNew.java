@@ -40,6 +40,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.FilterQueryProvider;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -2146,8 +2147,8 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                 public MaterialAlertDialogBuilder setView(View view) {
                                     try{
                                         // TODO: 14.12.2022
-                                        holder.  listViewДляЦФО =    (ListView) view.findViewById(R.id.SearchViewList);
-                                        materialButtoтtЗакрываемСозданиеImage =    (MaterialButton) view.findViewById(R.id.bottom_newscanner1);
+                                        GridView gridViewImage =    (GridView) view.findViewById(R.id.listView_create_image);
+                                        materialButtoтtЗакрываемСозданиеImage =    (MaterialButton) view.findViewById(R.id.bottom_close_create_image);
                                         ArrayList<HashMap<String, Object>> ЛистНетданных= new ArrayList<HashMap<String, Object>> ();
                                         HashMap<String, Object> map = new HashMap<>();
                                         map.put("alldonttbels", "Не создано !!!");
@@ -2165,25 +2166,14 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                                 try{
                                                     switch (view.getId()) {
                                                         case android.R.id.text2:
+                                                        case android.R.id.text1:
                                                             // TODO: 09.04.2023  ВставлЯем Данные
-                                                            ((MaterialTextView) view).setText(data.toString());
-                                                            ((MaterialTextView) view).setTextColor(Color.GRAY);
-                                                            ((MaterialTextView) view).setTextSize(18l);
-                                                            ((MaterialTextView) view).startAnimation(animation1);
-
+                                                   /*         ((AppCompatImageButton) view).;
+*/
 
                                                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n");
                                                             return  true;
-                                                        case android.R.id.text1:
-                                                            Drawable icon2 = getResources().getDrawable(   R.drawable.icon_alltabels5red);
-                                                            ((ImageView) view).setImageDrawable(icon2);
-                                                            ((ImageView) view).setImageResource(R.drawable.icon_alltabels5red);
-
-                                                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " MainParentUUID " );
-                                                            return true;
                                                     }
                                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" + " MainParentUUID " );
@@ -2199,16 +2189,16 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                         };
                                         АдаптерКогдаНетданных.setViewBinder(БиндингКогдаНетДАнных);
                                         АдаптерКогдаНетданных.notifyDataSetChanged();
-                                        holder.listViewДляЦФО.setAdapter(АдаптерКогдаНетданных);
-                                        holder.listViewДляЦФО.refreshDrawableState();
-                                        holder.listViewДляЦФО.requestLayout();
-                                        holder.listViewДляЦФО.refreshDrawableState();
+                                        gridViewImage.setAdapter(АдаптерКогдаНетданных);
+                                        gridViewImage.refreshDrawableState();
+                                        gridViewImage.requestLayout();
+                                        gridViewImage.refreshDrawableState();
 
+                                        // TODO: 20.07.2023 методы после создание выбора 
 
+                                        методЗакрываемСозданиеИлиUpIamge(materialButtoтtЗакрываемСозданиеImage,holder);
 
-                                            МетодЗакрытиеНовогоПосика(materialButtoтtЗакрываемСозданиеImage,holder);
-
-                                            методКликПоДанным();
+                                            методКликПоДанным(gridViewImage);
 
 
                                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -2230,8 +2220,8 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                     // TODO: 20.12.2022  тут конец выбеленого
                                 }
 
-                                private void методКликПоДанным() {
-                                    holder.listViewДляЦФО.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                private void методКликПоДанным(@NonNull GridView gridViewImage) {
+                                    gridViewImage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                         @Override
                                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -2260,10 +2250,10 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                 }
 
                             }
-                                    .setTitle("Фотографии")
+                                    .setTitle("Создание фотографии")
                                     .setCancelable(false)
-                                    .setIcon( R.drawable.icon_newscannertwo)
-                                    .setView(getLayoutInflater().inflate( R.layout.simple_for_new_spinner_searchview, null )).show();
+                                    .setIcon( R.drawable.icon_for_create_image2)
+                                    .setView(getLayoutInflater().inflate( R.layout.simple_for_new_search_create_image, null )).show();
                             WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
                             layoutParams.copyFrom(   holder.alertDialog.getWindow().getAttributes());
                             layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
@@ -2288,9 +2278,9 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                         }
                     }
 
-
-
-                    private void МетодЗакрытиеНовогоПосика(@NonNull  MaterialButton materialButtonЗакрытьДиалог,@NonNull MyViewHolder holder) {
+// TODO: 20.07.2023 при созданнии или Upload Image
+                    private void методЗакрываемСозданиеИлиUpIamge(@NonNull  MaterialButton materialButtonЗакрытьДиалог,
+                                                                  @NonNull MyViewHolder holder) {
                         materialButtonЗакрытьДиалог.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
