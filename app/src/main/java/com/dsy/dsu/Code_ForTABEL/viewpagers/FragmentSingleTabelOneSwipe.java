@@ -12,8 +12,6 @@ import android.content.res.Configuration;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.DataSetObserver;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -2507,10 +2505,14 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
 
         }
         class SubClassSearchProfessia {
-            Cursor cursorДанные;
-            MaterialButton alertDialogНовыйПосикКнопкаЗакрыть;
+          private   Cursor cursorДанные;
+            private  MaterialButton materialButtonЗакрываемПосик;
 
-            SearchView searchViewДляНовогоПоиска;
+            private   SearchView searchViewДляНовогоПоиска;
+
+            private  AlertDialog      alertDialogНовыйПосик;
+
+            private ListView listViewДляНовыйПосик;
             @UiThread
             private void МетодСообщениеНовыйПоиска(@NonNull Activity activity
                     ,@NonNull Cursor cursorДанные,
@@ -2519,13 +2521,12 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                                    @NonNull Long РодительскийUUDТаблицыТабель) {
                 try{
                     this.cursorДанные=cursorДанные;
-                    final ListView[] listViewДляНовыйПосик = new ListView[1];
-                    AlertDialog      alertDialogНовыйПосик= new MaterialAlertDialogBuilder(activity){
+                        alertDialogНовыйПосик= new MaterialAlertDialogBuilder(activity){
                         @NonNull
                         @Override
                         public MaterialAlertDialogBuilder setView(View view) {
-                            listViewДляНовыйПосик[0] =    (ListView) view.findViewById(R.id.SearchViewList);
-                            listViewДляНовыйПосик[0].setTextFilterEnabled(true);
+                            listViewДляНовыйПосик =    (ListView) view.findViewById(R.id.SearchViewList);
+                            listViewДляНовыйПосик.setTextFilterEnabled(true);
                             searchViewДляНовогоПоиска=    (SearchView) view.findViewById(R.id.searchview_newscanner);
                             searchViewДляНовогоПоиска.setQueryHint("Поиск");
                             // TODO: 14.12.2022
@@ -2538,8 +2539,8 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                             textView.setTextColor(Color.rgb(0,102,102));
                             textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                             // TODO: 14.12.2022
-                            alertDialogНовыйПосикКнопкаЗакрыть =    (MaterialButton) view.findViewById(R.id.bottom_newscanner1);
-                            alertDialogНовыйПосикКнопкаЗакрыть.setText("Закрыть");
+                            materialButtonЗакрываемПосик =    (MaterialButton) view.findViewById(R.id.bottom_newscanner1);
+                            materialButtonЗакрываемПосик.setText("Закрыть");
                             ///TODO ГЛАВНЫЙ АДАПТЕР чата
                             SimpleCursorAdapter simpleCursorAdapterЦФО= new SimpleCursorAdapter(getContext(),
                                     R.layout.simple_newspinner_dwonload_newfiltersearch, cursorДанные,
@@ -2593,6 +2594,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                                     ((MaterialTextView)view).setOnClickListener(new View.OnClickListener() {
                                                         @Override
                                                         public void onClick(View v) {
+                                                            try{
                                                             Bundle bundle=(Bundle)   ((MaterialTextView)view).getTag();
                                                             Integer ПолучаемIDПрофессии=      bundle.getInt("ПолучаемIDПрофессии",0);
                                                             String НазваниеПрофесии=   bundle.getString("НазваниеПрофесии","");
@@ -2606,6 +2608,9 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                                             searchViewДляНовогоПоиска.setTag(bundle);
                                                             searchViewДляНовогоПоиска.setQueryHint("");
                                                             searchViewДляНовогоПоиска.setQuery(НазваниеПрофесии,true);
+                                                            ((MaterialTextView)view).setTag(bundle);
+
+
                                                             if (  searchViewДляНовогоПоиска.getQuery().toString().length()==0) {
                                                                 Snackbar.make(view, " Вы не выбрали  !!! "
                                                                         , Snackbar.LENGTH_LONG).show();
@@ -2616,16 +2621,49 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                                                 ((MaterialTextView)view).setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                                                                 ((MaterialTextView)view).setTextColor(Color.BLACK);
                                                                 Log.d(this.getClass().getName()," bundle.keySet().size() "+bundle.keySet().size());
+
+                                                                if (  searchViewДляНовогоПоиска.getQuery().toString().length()>5 ) {
+                                                                    searchViewДляНовогоПоиска.setQuery("",true);
+                                                                    searchViewДляНовогоПоиска.refreshDrawableState();
+                                                                    // TODO: 21.07.2023  меняем Професию
+                                                                    Integer ПровйдерСменаПрофесии=  
+                                                                            МетодЗаписиСменыПрофесии( (SearchView)  searchViewДляНовогоПоиска,getActivity());
+                                                                    if (ПровйдерСменаПрофесии>0) {
+                                                                        // TODO: 21.07.2023  после смены професии 
+                                                                        методReeoBootCursorRecyreViewAlfterChangeProffesion();
+
+                                                                        МетодПерегрузкаВидаПрофесии(    НазваниеПрофесии );
+
+                                                                        alertDialogНовыйПосик.dismiss();
+                                                                        alertDialogНовыйПосик.cancel();
+
+                                                                    }else {
+                                                                        Toast.makeText(getActivity(), "Профессия не сменилась !!! ", Toast.LENGTH_SHORT).show();
+                                                                    }
+                                                                }
+                                                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                                                        + " listViewДляНовыйПосик "+ listViewДляНовыйПосик+"\n+"+
+                                                                        " cursorДанные " + cursorДанные +"\n"+
+                                                                        " cursorДанные " + cursorДанные +"\n" );
+
                                                             }
-                                                            searchViewДляНовогоПоиска.refreshDrawableState();
-                                                            searchViewДляНовогоПоиска.forceLayout();
-                                                            ((MaterialTextView)view).refreshDrawableState();
-                                                            ((MaterialTextView)view).forceLayout();
+
                                                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                                                     + "  ((MaterialTextView)view) "+ ((MaterialTextView)view).getTag());
+                                                            } catch (Exception e) {
+                                                                e.printStackTrace();
+                                                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                                                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                                                        this.getClass().getName(),
+                                                                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                                            }
                                                         }
+
                                                     });
                                                     // TODO: 13.12.2022 филь
                                                 } catch (Exception e) {
@@ -2646,18 +2684,20 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                 }
                             };
                             simpleCursorAdapterЦФО.setViewBinder(БиндингДляНовогоПоиска);
-                            listViewДляНовыйПосик[0].setAdapter(simpleCursorAdapterЦФО);
                             simpleCursorAdapterЦФО.notifyDataSetChanged();
-                            listViewДляНовыйПосик[0].startAnimation(animationForTextView);
-                            listViewДляНовыйПосик[0].setSelection(0);
-                            listViewДляНовыйПосик[0].forceLayout();
+                            listViewДляНовыйПосик.setAdapter(simpleCursorAdapterЦФО);
+                            listViewДляНовыйПосик.startAnimation(animationForTextView);
+                            listViewДляНовыйПосик.setSelection(0);
+                            listViewДляНовыйПосик.forceLayout();
 
                             // TODO: 13.12.2022  Поиск и его слушель
-                            МетодПоискаФильтрНовыйПосик(searchViewДляНовогоПоиска,simpleCursorAdapterЦФО,message,listViewДляНовыйПосик[0],ТаблицаПосика);
+                            МетодПоискаФильтрНовыйПосик(searchViewДляНовогоПоиска,simpleCursorAdapterЦФО,message,listViewДляНовыйПосик,ТаблицаПосика);
+                            // TODO: 13.12.2022 Закрыаем Посик Профессий
+                            методЗакрываемПосикПровфесиий(materialButtonЗакрываемПосик);
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                    + " listViewДляНовыйПосик[0] "+listViewДляНовыйПосик[0]+"\n+"+
+                                    + " listViewДляНовыйПосик "+listViewДляНовыйПосик+"\n+"+
                                     " cursorДанные " +cursorДанные+"\n"+
                                     " cursorДанные " +cursorДанные+"\n" );
                             return super.setView(view);
@@ -2674,56 +2714,12 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                     layoutParams.height =WindowManager.LayoutParams.MATCH_PARENT;
                     layoutParams.gravity = Gravity.CENTER;
                     alertDialogНовыйПосик.getWindow().setAttributes(layoutParams);
-                    // TODO: 13.12.2022 ВТОРОЙ СЛУШАТЕЛЬ НА КНОПКУ
-                    alertDialogНовыйПосикКнопкаЗакрыть.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            try {
-                                Log.d(this.getClass().getName(), " position");
-                                Log.d(this.getClass().getName(), "МетодСозданиеТабеля  v " + v);
-                                // TODO: 28.03.2023 ЗАПИСЫВАЕМ НОВУЮ ПРОФЕССИЮ В БАЗУ
-                                if (  searchViewДляНовогоПоиска.getQuery().toString().length()>5 ) {
-                                    searchViewДляНовогоПоиска.setQuery("",true);
-                                    searchViewДляНовогоПоиска.refreshDrawableState();
-                                    Integer ПровйдерСменаПрофесии=     МетодЗаписиСменыПрофесии( (SearchView)  searchViewДляНовогоПоиска,getActivity());
-                                    if (ПровйдерСменаПрофесии>0) {
-
-                                        // TODO: 20.04.2023 Данные
-                                        Cursor     cursorПослеСменыПрофесии=myRecycleViewAdapter.cursor;
-                                        cursorПослеСменыПрофесии=    new SubClassGetCursor().МетодSwipesКурсор();
-                                        cursorПослеСменыПрофесии.moveToPosition(myRecycleViewAdapter.cursor.getPosition());
-                                        // TODO: 03.07.2023  возврящем обратно
-                                        myRecycleViewAdapter.cursor=cursorПослеСменыПрофесии;
-                                        myRecycleViewAdapter.notifyItemChanged(0);
-
-                                        // TODO: 04.04.2023  ФИО
-                                        new  SubClassChanegeSetNameProffesio().    МетодЗаполняемФИОRow( cursorПослеСменыПрофесии);
-                                        // TODO: 28.06.2023 clear
-                                        // TODO: 29.03.2023 Методы ПОсле усМешного Смены Професиии
-                                        МетодПерегрузкаВидаПрофесии( );
-                                    }else {
-                                        Toast.makeText(getActivity(), "Профессия не сменилась !!! ", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                        + " listViewДляНовыйПосик[0] "+listViewДляНовыйПосик[0]+"\n+"+
-                                        " cursorДанные " +cursorДанные+"\n"+
-                                        " cursorДанные " +cursorДанные+"\n" );
-                                alertDialogНовыйПосикКнопкаЗакрыть.forceLayout();
-                                alertDialogНовыйПосик.dismiss();
-                                alertDialogНовыйПосик.cancel();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                        this.getClass().getName(),
-                                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            }
-                        }
-                    });
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                            + " listViewДляНовыйПосик "+listViewДляНовыйПосик+"\n+"+
+                            " cursorДанные " +cursorДанные+"\n"+
+                            " cursorДанные " +cursorДанные+"\n" );
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -2732,6 +2728,49 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                             this.getClass().getName(),
                             Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
+            }
+
+            private void методReeoBootCursorRecyreViewAlfterChangeProffesion() {
+                try{
+                Cursor cursorПослеОбновлениеПрофесии=myRecycleViewAdapter.cursor;
+                Integer ПозицияКурсора= myRecycleViewAdapter.cursor.getPosition();
+                cursorПослеОбновлениеПрофесии  =   singleTabelRecycreView.  new SubClassGetCursor().МетодSwipesКурсор();
+                cursorПослеОбновлениеПрофесии.moveToPosition(ПозицияКурсора);
+                myRecycleViewAdapter.cursor=cursorПослеОбновлениеПрофесии;
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+            }
+
+            private void методЗакрываемПосикПровфесиий(@NonNull MaterialButton materialButtonЗакрываемПосик) {
+                // TODO: 21.07.2023
+                materialButtonЗакрываемПосик.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            Log.d(this.getClass().getName(), " position");
+                            Log.d(this.getClass().getName(), "МетодСозданиеТабеля  v " + v);
+                            // TODO: 28.03.2023 ЗАПИСЫВАЕМ НОВУЮ ПРОФЕССИЮ В БАЗУ
+                            alertDialogНовыйПосик.dismiss();
+                            alertDialogНовыйПосик.cancel();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName(),
+                                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
+                    }
+                });
             }
             // TODO: 27.03.2023  ВТОРОЙ МЕТОД ПОИСККА ПО БАЗЕ
 
@@ -2770,11 +2809,8 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                     if (cursorДанные.getCount()>0 && constraint.length()>0) {
                                         simpleCursorAdapterЦФО.swapCursor(cursorДанные);
                                         listViewДляНовыйПосик.setSelection(0);
-                                        alertDialogНовыйПосикКнопкаЗакрыть.setText("Сохранить");
                                     }else {
-
                                         if (cursorДанные.getCount()==0) {
-                                            alertDialogНовыйПосикКнопкаЗакрыть.setText("Закрыть");
                                             searchViewДляНовогоЦФО.setBackgroundColor(Color.RED);
                                             message.getTarget().postDelayed(() -> {
                                                 searchViewДляНовогоЦФО.setBackgroundColor(Color.parseColor("#F2F5F5"));
@@ -2784,9 +2820,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                     if ( constraint.length()==0) {
                                         simpleCursorAdapterЦФО.swapCursor(cursorДанные);
                                         listViewДляНовыйПосик.setSelection(0);
-                                        alertDialogНовыйПосикКнопкаЗакрыть.setText("Закрыть");
                                     }
-
 
 
                                     simpleCursorAdapterЦФО.notifyDataSetChanged();
@@ -2884,9 +2918,10 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
 
 
 
-            private void МетодПерегрузкаВидаПрофесии( ) {
+            private void МетодПерегрузкаВидаПрофесии(@NonNull String Профессия) {
                 try {
-                    TextViewФИОПрофессия.setText(ФИО.trim() + "\n"+ Профессия);
+                    TextViewФИОПрофессия.setText(ФИО.trim() + "\n"+ Профессия.trim());
+                    TextViewФИОПрофессия.startAnimation(animationForTextView);
                     TextViewФИОПрофессия.refreshDrawableState();
                     TextViewФИОПрофессия.requestLayout();
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
