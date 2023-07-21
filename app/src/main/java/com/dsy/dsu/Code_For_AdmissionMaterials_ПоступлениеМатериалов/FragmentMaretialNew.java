@@ -10,7 +10,9 @@ import android.database.Cursor;
 import android.graphics.Camera;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraDevice;
+import android.hardware.camera2.CameraManager;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,6 +35,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
@@ -2250,8 +2253,8 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                             try{
                                                 if (v!=null) {
                                                     //MaterialTextView materialTextViewЭлементСписка=(MaterialTextView) view;
-                                                    SubClassUploadImageFromSDCars imageFromSDCars=new SubClassUploadImageFromSDCars();
-                                                    imageFromSDCars.методUploadImetImage();
+                                                    /*SubClassUploadImageFromSDCars imageFromSDCars=new SubClassUploadImageFromSDCars();
+                                                    imageFromSDCars.методUploadImetImage();*/
                                                  Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
@@ -2357,16 +2360,111 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
       void методUploadImetImage(){
     try{
 
-        Intent intent = new  Intent(Intent.ACTION_GET_CONTENT);
-        intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags( Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.addFlags( Intent.FLAG_GRANT_WRITE_URI_PERMISSION );
-        Uri url = Uri.parse(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toPath() + File.separator + "Camera");
-        intent.setDataAndType(url, "*/*");
-        startActivity(Intent.createChooser(intent, "Загруженые фото"));
+        CameraManager cameraManager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
+        String[] cameraIds = cameraManager.getCameraIdList();
+        if (cameraIds.length == 0) return;
+        String cameraId = cameraIds[0];
+        cameraManager.openCamera(cameraId, new CameraDevice.StateCallback() {
+            @Override
+            public void onOpened(@NonNull CameraDevice camera) {
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        +" binderДляПолучениеМатериалов "+ binderДляПолучениеМатериалов);
+            }
+
+            @Override
+            public void onDisconnected(@NonNull CameraDevice camera) {
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        +" binderДляПолучениеМатериалов "+ binderДляПолучениеМатериалов);
+            }
+
+            @Override
+            public void onError(@NonNull CameraDevice camera, int error) {
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        +" binderДляПолучениеМатериалов "+ binderДляПолучениеМатериалов);
+            }
+        },new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(@NonNull Message msg) {
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        +" binderДляПолучениеМатериалов "+ binderДляПолучениеМатериалов);
+                return false;
+            }
+        }));
+
+        cameraManager.getCameraCharacteristics(cameraId);
+        cameraManager.registerAvailabilityCallback(new CameraManager.AvailabilityCallback() {
+            @Override
+            public void onCameraAvailable(@NonNull String cameraId) {
+                super.onCameraAvailable(cameraId);
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        +" binderДляПолучениеМатериалов "+ binderДляПолучениеМатериалов);
+            }
+
+            @Override
+            public void onCameraUnavailable(@NonNull String cameraId) {
+                super.onCameraUnavailable(cameraId);
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        +" binderДляПолучениеМатериалов "+ binderДляПолучениеМатериалов);
+            }
+
+            @Override
+            public void onCameraAccessPrioritiesChanged() {
+                super.onCameraAccessPrioritiesChanged();
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        +" binderДляПолучениеМатериалов "+ binderДляПолучениеМатериалов);
+            }
+
+            @Override
+            public void onPhysicalCameraAvailable(@NonNull String cameraId, @NonNull String physicalCameraId) {
+                super.onPhysicalCameraAvailable(cameraId, physicalCameraId);
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        +" binderДляПолучениеМатериалов "+ binderДляПолучениеМатериалов);
+            }
+
+            @Override
+            public void onPhysicalCameraUnavailable(@NonNull String cameraId, @NonNull String physicalCameraId) {
+                super.onPhysicalCameraUnavailable(cameraId, physicalCameraId);
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        +" binderДляПолучениеМатериалов "+ binderДляПолучениеМатериалов);
+            }
+        },new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(@NonNull Message msg) {
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        +" binderДляПолучениеМатериалов "+ binderДляПолучениеМатериалов);
+                return false;
+            }
+        }));
+//        Intent intent = new  Intent(Intent.ACTION_GET_CONTENT);
+//        intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.addFlags( Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//        intent.addFlags( Intent.FLAG_GRANT_WRITE_URI_PERMISSION );
+//        Uri url = Uri.parse(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toPath() + File.separator + "Camera");
+//        intent.setDataAndType(url, "*/*");
+//        startActivity(Intent.createChooser(intent, "Загруженые фото"));
 
 
-        File dcimPath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toPath() + "/Camera");
+/*        File dcimPath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toPath() + "/Camera");
         if (dcimPath.exists()) {
             Log.i("DCIM PATH", dcimPath.toString());
 
@@ -2379,7 +2477,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                         +" binderДляПолучениеМатериалов "+ binderДляПолучениеМатериалов);
             }
-        }
+        }*/
         // TODO: 20.07.2023
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                   " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

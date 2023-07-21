@@ -71,6 +71,7 @@ public class GeneratorJSONSerializer extends JsonSerializer<Cursor> {
                                                             " UUIDandCurrenttableValue " +UUIDandCurrenttableValue);
                                                     break;
                                                 case "user_update":
+                                                case "prof":
                                                     Integer Getuser_update= КурсорДляОтправкиДанныхНаСерверОтАндройда
                                                             .getInt(КурсорДляОтправкиДанныхНаСерверОтАндройда.getColumnIndex(НазваниеСтолбикаJson)) ;
                                                     Getuser_update=Optional.ofNullable(Getuser_update).orElse(0);// TODO: 14.03.2023
