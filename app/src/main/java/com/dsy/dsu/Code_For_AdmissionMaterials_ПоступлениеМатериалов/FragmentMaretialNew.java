@@ -67,6 +67,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
@@ -78,6 +79,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -2221,27 +2223,35 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                             @Override
                                             public boolean setViewValue(View view, Object data, String textRepresentation) {
                                                 try{
+
+
                                                     switch (view.getId()) {
-                                                        case android.R.id.text2:
-                                                            // TODO: 20.07.2023 слушатели  закрытие
-                                                            методЗакрываемСозданиеИлиUpIamge(materialButtoтtЗакрываемСозданиеImage, alertDialogCreateImage);
-
-                                                            AppCompatImageButton appCompatImageButtonUpImage=(AppCompatImageButton) view ;
-
-                                                            методКликПоДаннымUpImage(appCompatImageButtonUpImage );
-
-                                                            // TODO: 20.07.2023 методы после создание выбора
-                                                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n");
-                                                            return  true;
-
                                                         case android.R.id.text1:
+                                                            LinearLayout    linearLayoutGroupBYImageТранспорта = (LinearLayout) view.findViewById(android.R.id.text1);
 
+                                                            AppCompatImageButton appCompatImageButtonUpImage=    linearLayoutGroupBYImageТранспорта.findViewById(R.id.appcompatimagebutton_up);
+                                                                    // TODO: 20.07.2023 слушатели  закрытие
+                                                                    методЗакрываемСозданиеИлиUpIamge(materialButtoтtЗакрываемСозданиеImage, alertDialogCreateImage);
+
+                                                                    методКликПоДаннымUpImage(appCompatImageButtonUpImage );
+
+                                                                    // TODO: 20.07.2023 методы после создание выбора
+                                                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n");
+
+
+                                                            AppCompatImageButton appCompatImageButtonCreateImage=    linearLayoutGroupBYImageТранспорта.findViewById( R.id.appcompatimagebutton_create);
                                                             // TODO: 20.07.2023 слушатели  закрытие
                                                             методЗакрываемСозданиеИлиUpIamge(materialButtoтtЗакрываемСозданиеImage, alertDialogCreateImage);
-                                                            // TODO: 09.04.2023  ВставлЯем Данные
-                                                            AppCompatImageButton appCompatImageButtonCreateImage=(AppCompatImageButton) view ;
+
                                                             методКликПоДаннымCreateImage(appCompatImageButtonCreateImage );
+
+
+
+
+
+
+
 
                                                             // TODO: 20.07.2023 методы после создание выбора
                                                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -2316,7 +2326,12 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                              try{
                                                  if (v!=null) {
                                                      //MaterialTextView materialTextViewЭлементСписка=(MaterialTextView) view;
-
+                                                     SubClassUploadImageFromSDCars imageFromSDCars=new SubClassUploadImageFromSDCars();
+                                                     imageFromSDCars.методCreateImetImage();
+                                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                                             "materialTextViewЭлементСписка"+  v);
                                                      Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                              " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                              " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
@@ -2395,25 +2410,8 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
             CameraDevice cameraDevice;
       void методUploadImetImage(){
     try{
-        CameraManager cameraManager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
-        if(bitmap!=null){
-            bitmap=null;
-        }
-
-
-        ContentValues values=new ContentValues();
-        values.put(MediaStore.Images.Media.TITLE,"new photo material"+String.valueOf(new Random().nextInt()));
-        values.put(MediaStore.Images.Media.DESCRIPTION,"photo matetial");
-        Uri uri_image=getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
-
         Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent,100);
-
-
-
-        intent.putExtra(MediaStore.EXTRA_OUTPUT,uri_image);
-        startActivityForResult(intent,200);
-
         // TODO: 20.07.2023
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                   " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2430,7 +2428,35 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
             }
 
             }
+// TODO: 21.07.2023 create
 
+            void методCreateImetImage(){
+                try{
+               String NameNewImage=     "new photo material"+String.valueOf(new Random().nextInt());
+                    ContentValues values=new ContentValues();
+                    values.put(MediaStore.Images.Media.TITLE,NameNewImage);
+                    values.put(MediaStore.Images.Media.DESCRIPTION,"photo matetial");
+                    Uri uri_image=getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
+
+                    Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT,uri_image);
+                    startActivityForResult(intent,200);
+                    // TODO: 20.07.2023
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                            +" bitmap "+ bitmap);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(getContext().getClass().getName(),
+                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
+
+            }
 
         }
 
