@@ -87,6 +87,14 @@
         android:name="android.hardware.camera2"
         android:required="false" />
 
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-feature android:name="android.hardware.camera.any" />
+
+    <uses-feature android:name="android.hardware.CAMERAX" />
+
+
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -121,7 +129,13 @@
     <uses-permission android:name="com.oppo.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="com.oppo.launcher.permission.WRITE_SETTINGS" />
     <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_READ" />
-    <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_WRITE" /> <!-- <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage" /> -->
+    <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_WRITE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.CAMERAX" />
+    <uses-permission android:name="android.permission.CAMERA2" />
+    <uses-permission android:name="android.hardware.camera.any" />
+    <!-- <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage" /> -->
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:node="replace" />

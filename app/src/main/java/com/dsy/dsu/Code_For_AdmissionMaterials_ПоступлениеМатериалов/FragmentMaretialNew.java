@@ -2253,8 +2253,8 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                             try{
                                                 if (v!=null) {
                                                     //MaterialTextView materialTextViewЭлементСписка=(MaterialTextView) view;
-                                                    /*SubClassUploadImageFromSDCars imageFromSDCars=new SubClassUploadImageFromSDCars();
-                                                    imageFromSDCars.методUploadImetImage();*/
+                                                    SubClassUploadImageFromSDCars imageFromSDCars=new SubClassUploadImageFromSDCars();
+                                                    imageFromSDCars.методUploadImetImage();
                                                  Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
