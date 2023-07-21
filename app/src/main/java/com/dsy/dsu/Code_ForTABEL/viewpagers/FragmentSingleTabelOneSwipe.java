@@ -2629,7 +2629,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                                                                     Integer ПровйдерСменаПрофесии=  
                                                                             МетодЗаписиСменыПрофесии( (SearchView)  searchViewДляНовогоПоиска,getActivity());
                                                                     if (ПровйдерСменаПрофесии>0) {
-                                                                        // TODO: 21.07.2023  после смены професии 
+                                                                        // TODO: 21.07.2023  после смены професии
                                                                         методReeoBootCursorRecyreViewAlfterChangeProffesion();
 
                                                                         МетодПерегрузкаВидаПрофесии(    НазваниеПрофесии );
