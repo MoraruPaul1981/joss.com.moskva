@@ -3,6 +3,7 @@ package com.dsy.dsu.Code_For_AdmissionMaterials_ПоступлениеМатер
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,6 +22,7 @@ import android.hardware.camera2.CaptureRequest;
 import android.media.Image;
 import android.media.ImageReader;
 import android.net.Uri;
+import android.net.UrlQuerySanitizer;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -2393,19 +2395,30 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
             CameraDevice cameraDevice;
       void методUploadImetImage(){
     try{
-
         CameraManager cameraManager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
+        if(bitmap!=null){
+            bitmap=null;
+        }
+
+
+        ContentValues values=new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE,"new photo material"+String.valueOf(new Random().nextInt()));
+        values.put(MediaStore.Images.Media.DESCRIPTION,"photo matetial");
+        Uri uri_image=getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
 
         Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent,100);
 
 
 
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,uri_image);
+        startActivityForResult(intent,200);
+
         // TODO: 20.07.2023
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                   " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                   " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                  +" binderДляПолучениеМатериалов "+ binderДляПолучениеМатериалов);
+                  +" bitmap "+ bitmap);
       } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -2415,8 +2428,6 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                         this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
-
-
 
             }
 
