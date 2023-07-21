@@ -1,10 +1,12 @@
 package com.dsy.dsu.Code_For_AdmissionMaterials_ПоступлениеМатериалов;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -56,6 +58,32 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
             params.height= ViewGroup.LayoutParams.WRAP_CONTENT;
             activity_admissionmaterias_face.setLayoutParams(params);
             Log.d(this.getClass().getName(), "  onViewCreated  FragmentAdmissionMaterials");
+
+
+            //////////////////////TODO SERVICE
+            String[] permissions = new String[]{
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.RECORD_AUDIO,
+                    android.Manifest.permission.INTERNET,
+                    android.Manifest.permission.READ_PHONE_STATE,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    android.Manifest.permission.VIBRATE,
+                    android.Manifest.permission.RECORD_AUDIO,
+                    android.Manifest.permission.RECORD_AUDIO,
+                    android.Manifest.permission.REQUEST_INSTALL_PACKAGES,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    android.Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
+                    android.Manifest.permission.MANAGE_EXTERNAL_STORAGE,
+                    android.Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+                    android.Manifest.permission.ACCESS_NETWORK_STATE,
+                    android.Manifest.permission.ACCESS_MEDIA_LOCATION,
+                    android.Manifest.permission.INSTALL_PACKAGES,
+                    android.Manifest.permission.WRITE_SETTINGS,
+                    android. Manifest.permission.WRITE_SECURE_SETTINGS
+            };
+            ActivityCompat.requestPermissions(this, permissions, 1);
+
             // TODO: 04.11.2022 test
             МетодЗапускФрагментаПриемМатериалов();
     } catch (Exception e) {
