@@ -2229,26 +2229,28 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                                         case android.R.id.text1:
                                                             LinearLayout    linearLayoutGroupBYImageТранспорта = (LinearLayout) view.findViewById(android.R.id.text1);
 
-                                                            AppCompatImageButton appCompatImageButtonUpImage=    linearLayoutGroupBYImageТранспорта.findViewById(R.id.appcompatimagebutton_up);
-                                                                    // TODO: 20.07.2023 слушатели  закрытие
-                                                                    методЗакрываемСозданиеИлиUpIamge(materialButtoтtЗакрываемСозданиеImage, alertDialogCreateImage);
-
+                                                            // TODO: 23.07.2023  Создание НОВОЙ ФОТОГРАФИИ 
+                                                            AppCompatImageButton appCompatImageButtonUpImage=  
+                                                                    linearLayoutGroupBYImageТранспорта.findViewById(R.id.appcompatimagebutton_up);
                                                                     методКликПоДаннымUpImage(appCompatImageButtonUpImage );
 
-                                                                    // TODO: 20.07.2023 методы после создание выбора
-                                                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n");
+                                                         // TODO: 23.07.2023  Создание НОВОЙ  SIMPLE ФОТОГРАФИИ 
+
+                                                            AppCompatImageButton appcompatimagebutton_simple_create=
+                                                                    linearLayoutGroupBYImageТранспорта.findViewById(R.id.appcompatimagebutton_simple_create);
+                                                            методКликПоДаннымUpImage(appcompatimagebutton_simple_create );
 
 
-                                                            AppCompatImageButton appCompatImageButtonCreateImage=    linearLayoutGroupBYImageТранспорта.findViewById( R.id.appcompatimagebutton_create);
-                                                            // TODO: 20.07.2023 слушатели  закрытие
-                                                            методЗакрываемСозданиеИлиUpIamge(materialButtoтtЗакрываемСозданиеImage, alertDialogCreateImage);
-
+                                                            // TODO: 23.07.2023  загружаем уже готовую фотографию , созданое зарание 
+                                                            AppCompatImageButton appCompatImageButtonCreateImage=  
+                                                                    linearLayoutGroupBYImageТранспорта.findViewById( R.id.appcompatimagebutton_create);
+                                                            // TODO: 23.07.2023  метод по клику  
                                                             методКликПоДаннымCreateImage(appCompatImageButtonCreateImage );
 
 
 
-
+                                                            // TODO: 20.07.2023 слушатели  закрытие
+                                                            методЗакрываемСозданиеИлиUpIamge(materialButtoтtЗакрываемСозданиеImage, alertDialogCreateImage);
 
 
 
