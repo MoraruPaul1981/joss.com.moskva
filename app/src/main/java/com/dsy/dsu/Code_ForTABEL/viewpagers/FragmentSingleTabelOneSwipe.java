@@ -310,10 +310,16 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
     public void onStop() {
         super.onStop();
         try{
-
-        if (myRecycleViewAdapter!=null) {
-            myRecycleViewAdapter.cursor.close();
+        if (myRecycleViewAdapter.cursor!=null) {
+            singleTabelRecycreView.  методReeoBootCursorRecyreViewAlfterChangeProffesion();
+            // TODO: 15.06.2023 перегрузка данныех
+            myRecycleViewAdapter.notifyDataSetChanged();
+            recycleView.getAdapter().notifyDataSetChanged();
+            // TODO: 26.06.2023  перегрузка
+            singleTabelRecycreView.  методПерегрузкиRecycreView();
+            
         }
+
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -2730,25 +2736,7 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
                 }
             }
 
-            private void методReeoBootCursorRecyreViewAlfterChangeProffesion() {
-                try{
-                Cursor cursorПослеОбновлениеПрофесии=myRecycleViewAdapter.cursor;
-                Integer ПозицияКурсора= myRecycleViewAdapter.cursor.getPosition();
-                cursorПослеОбновлениеПрофесии  =   singleTabelRecycreView.  new SubClassGetCursor().МетодSwipesКурсор();
-                cursorПослеОбновлениеПрофесии.moveToPosition(ПозицияКурсора);
-                myRecycleViewAdapter.cursor=cursorПослеОбновлениеПрофесии;
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                        this.getClass().getName(),
-                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-            }
+
 
             private void методЗакрываемПосикПровфесиий(@NonNull MaterialButton materialButtonЗакрываемПосик) {
                 // TODO: 21.07.2023
@@ -3222,6 +3210,33 @@ public class FragmentSingleTabelOneSwipe extends Fragment {
             }
 
         }
+
+        void методReeoBootCursorRecyreViewAlfterChangeProffesion() {
+            try{
+                if (myRecycleViewAdapter.cursor!=null) {
+                    Cursor cursorПослеОбновлениеПрофесии=myRecycleViewAdapter.cursor;
+                    Integer ПозицияКурсора= myRecycleViewAdapter.cursor.getPosition();
+                    cursorПослеОбновлениеПрофесии  =   singleTabelRecycreView.  new SubClassGetCursor().МетодSwipesКурсор();
+                    cursorПослеОбновлениеПрофесии.moveToPosition(ПозицияКурсора);
+                    myRecycleViewAdapter.cursor=cursorПослеОбновлениеПрофесии;
+                }
+                Log.d(this.getClass().getName(),"\n" + " class " +
+                        Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName(),
+                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+
+
+
+
 
     }//TODO КОНЕЦ КЛАССА визуального оформление Recycreview
 

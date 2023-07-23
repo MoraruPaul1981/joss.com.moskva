@@ -2227,23 +2227,23 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 
                                                     switch (view.getId()) {
                                                         case android.R.id.text1:
-                                                            LinearLayout    linearLayoutGroupBYImageТранспорта = (LinearLayout) view.findViewById(android.R.id.text1);
-
-                                                            // TODO: 23.07.2023  Создание НОВОЙ ФОТОГРАФИИ 
-                                                            AppCompatImageButton appCompatImageButtonUpImage=  
-                                                                    linearLayoutGroupBYImageТранспорта.findViewById(R.id.appcompatimagebutton_up);
+                                                            LinearLayout    linearLayoutCreateNewImageТранспорта = (LinearLayout) view.findViewById(android.R.id.text1);
+                                                            // TODO: 23.07.2023  загружаем уже готовую фотографию , созданое зарание
+                                                            AppCompatImageButton appCompatImageButtonUpImage=
+                                                                    linearLayoutCreateNewImageТранспорта.findViewById(R.id.appcompatimagebutton_up);
                                                                     методКликПоДаннымUpImage(appCompatImageButtonUpImage );
 
-                                                         // TODO: 23.07.2023  Создание НОВОЙ  SIMPLE ФОТОГРАФИИ 
 
+
+                                                         // TODO: 23.07.2023  Создание НОВОЙ  SIMPLE ФОТОГРАФИИ
                                                             AppCompatImageButton appcompatimagebutton_simple_create=
-                                                                    linearLayoutGroupBYImageТранспорта.findViewById(R.id.appcompatimagebutton_simple_create);
-                                                            методКликПоДаннымUpImage(appcompatimagebutton_simple_create );
+                                                                    linearLayoutCreateNewImageТранспорта.findViewById(R.id.appcompatimagebutton_simple_create);
+                                                            методКликПоДаннымCreateSimpleImage(appcompatimagebutton_simple_create );
 
 
-                                                            // TODO: 23.07.2023  загружаем уже готовую фотографию , созданое зарание 
-                                                            AppCompatImageButton appCompatImageButtonCreateImage=  
-                                                                    linearLayoutGroupBYImageТранспорта.findViewById( R.id.appcompatimagebutton_create);
+                                                            // TODO: 23.07.2023  Создание НОВОЙ ФОТОГРАФИИ
+                                                            AppCompatImageButton appCompatImageButtonCreateImage=
+                                                                    linearLayoutCreateNewImageТранспорта.findViewById( R.id.appcompatimagebutton_create);
                                                             // TODO: 23.07.2023  метод по клику  
                                                             методКликПоДаннымCreateImage(appCompatImageButtonCreateImage );
 
@@ -2351,6 +2351,38 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                      });
 
                                  }
+                                 // TODO: 21.07.2023
+                                 private void методКликПоДаннымCreateSimpleImage(@NonNull AppCompatImageButton appCompatImageButton) {
+                                     // TODO: 20.07.2023
+                                     appCompatImageButton.setOnClickListener(new View.OnClickListener() {
+                                         @Override
+                                         public void onClick(View v) {
+                                             try{
+                                                 if (v!=null) {
+                                                     //MaterialTextView materialTextViewЭлементСписка=(MaterialTextView) view;
+                                                     SubClassUploadImageFromSDCars imageFromSDCars=new SubClassUploadImageFromSDCars();
+                                                     imageFromSDCars.методSimpleCreateImage();
+                                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                                             "materialTextViewЭлементСписка"+  v);
+                                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                                             "materialTextViewЭлементСписка"+  v);
+                                                 }
+                                             } catch (Exception e) {
+                                                 e.printStackTrace();
+                                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                                         " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                                 new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                                         this.getClass().getName(),
+                                                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                             }
+                                         }
+                                     });
+
+                                 }
                             }
                                     .setTitle("Новые фотографии")
                                     .setCancelable(false)
@@ -2412,8 +2444,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
             CameraDevice cameraDevice;
       void методUploadImetImage(){
     try{
-        Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent,100);
+
         // TODO: 20.07.2023
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                   " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2459,7 +2490,26 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                 }
 
             }
+            void методSimpleCreateImage(){
+                try{
+                    Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent,100);
+                    // TODO: 20.07.2023
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                            +" bitmap "+ bitmap);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(getContext().getClass().getName(),
+                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
 
+            }
         }
 
     }//todo END SubClassCreateNewImageForMateril
