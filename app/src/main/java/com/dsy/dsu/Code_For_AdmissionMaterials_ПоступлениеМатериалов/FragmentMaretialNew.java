@@ -89,6 +89,7 @@ import com.google.firebase.firestore.util.BackgroundQueue;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
+import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -176,14 +177,16 @@ public class FragmentMaretialNew extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         try{
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==100){
-            bitmap=(Bitmap) data.getExtras().get("data");
-            Log.d(getContext().getClass().getName(), "\n" + " CursorДляЦФО "
-                    + CursorДляЦФО + " CursorДляОдногоМатериалаБышВесов " + CursorДляОдногоМатериалаБышВесов +
-                    " CursorДляАвтомобиля " + CursorДляАвтомобиля + " CursorДляКонтрагента " +CursorДляКонтрагента
-                    + " CursorДляГруппаМатериалов " +CursorДляГруппаМатериалов );
-        }
-        Log.d(this.getClass().getName(), "  onCreate  FragmentCreateAdmissionmaterialbinder    "+binderДляПолучениеМатериалов);
+            // TODO: 24.07.2023 КОд Выполдяем метод после создание или Загрузки Изображения Польщовательм UP и  Create Image 
+            SubClassCreateNewImageForMateril subClassCreateNewImageForMateril=new SubClassCreateNewImageForMateril();
+
+                subClassCreateNewImageForMateril.new  SubClassCompleteNewImageUpAndCreate().методОбраобткиУжеПолученогоИзображения(getActivity(),requestCode,data,resultCode);
+                
+            // TODO: 20.07.2023
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    +" requestCode "+ requestCode);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(getContext().getClass().getName(),
@@ -2511,6 +2514,41 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 
             }
         }
+
+        // TODO: 24.07.2023  Класс Обработываем Полученый Созданный Новый Рисунок или Загружаем Уже Существуеший
+        class SubClassCompleteNewImageUpAndCreate{
+            void методОбраобткиУжеПолученогоИзображения(@NonNull Context context,@NonNull Integer requestCode , @Nullable Intent data,@NonNull int resultCode){
+                try{
+
+                    if(requestCode==100){
+                        bitmap=(Bitmap) data.getExtras().get("data");
+                        Log.d(getContext().getClass().getName(), "\n" + " CursorДляЦФО "
+                                + CursorДляЦФО + " CursorДляОдногоМатериалаБышВесов " + CursorДляОдногоМатериалаБышВесов +
+                                " CursorДляАвтомобиля " + CursorДляАвтомобиля + " CursorДляКонтрагента " +CursorДляКонтрагента
+                                + " CursorДляГруппаМатериалов " +CursorДляГруппаМатериалов );
+                    }
+
+
+
+
+                    // TODO: 20.07.2023
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                            +" requestCode "+ requestCode);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(getContext().getClass().getName(),
+                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
+
+            }
+            
+        } // TODO: 24.07.2023  end SubClassCompleteNewImageUpAndCreate
 
     }//todo END SubClassCreateNewImageForMateril
 }
