@@ -1,7 +1,6 @@
 package com.dsy.dsu.Code_For_AdmissionMaterials_ПоступлениеМатериалов;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,27 +8,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Camera;
 import android.graphics.Color;
-import android.graphics.SurfaceTexture;
 import android.graphics.Typeface;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraDevice;
-import android.hardware.camera2.CameraManager;
-import android.hardware.camera2.CaptureRequest;
-import android.media.Image;
-import android.media.ImageReader;
 import android.net.Uri;
-import android.net.UrlQuerySanitizer;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.core.app.ShareCompat;
 import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.fragment.app.Fragment;
@@ -40,15 +28,12 @@ import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -67,10 +52,10 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
+import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_UUID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generator_One_WORK_MANAGER;
 import com.dsy.dsu.Code_For_Services.Service_for_AdminissionMaterial;
@@ -79,21 +64,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
-import com.google.firebase.firestore.util.BackgroundQueue;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
-import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -105,7 +85,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class FragmentMaretialNew extends Fragment {
@@ -177,7 +156,7 @@ public class FragmentMaretialNew extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         try{
         super.onActivityResult(requestCode, resultCode, data);
-            // TODO: 24.07.2023 КОд Выполдяем метод после создание или Загрузки Изображения Польщовательм UP и  Create Image 
+            // TODO: 24.07.2023 КОд Выполдяем метод после создание или Загрузки Изображения Польщовательм UP и  Create Image
             SubClassCreateNewImageForMateril subClassCreateNewImageForMateril=new SubClassCreateNewImageForMateril();
 
                 subClassCreateNewImageForMateril.new  SubClassCompleteNewImageUpAndCreate().методОбраобткиУжеПолученогоИзображения(getActivity(),requestCode,data,resultCode);
@@ -2332,7 +2311,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                                  if (v!=null) {
                                                      //MaterialTextView materialTextViewЭлементСписка=(MaterialTextView) view;
                                                      SubClassUploadImageFromSDCars imageFromSDCars=new SubClassUploadImageFromSDCars();
-                                                     imageFromSDCars.методCreateImetImage();
+                                                     imageFromSDCars.методCreateNewImage();
                                                      Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                              " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                              " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
@@ -2448,6 +2427,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
       void методUploadImetImage(){
     try{
 
+
         // TODO: 20.07.2023
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                   " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2466,16 +2446,19 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
             }
 // TODO: 21.07.2023 create
 
-            void методCreateImetImage(){
+            void методCreateNewImage(){
                 try{
-               String NameNewImage=     "new photo material"+String.valueOf(new Random().nextInt());
+                    Long  UUIDGeneratorImage = (Long) new Class_Generation_UUID(getActivity()).МетодГенерацииUUID(getActivity());
                     ContentValues values=new ContentValues();
-                    values.put(MediaStore.Images.Media.TITLE,NameNewImage);
+                    values.put(MediaStore.Images.Media.TITLE,UUIDGeneratorImage.toString());
                     values.put(MediaStore.Images.Media.DESCRIPTION,"photo matetial");
                     Uri uri_image=getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
 
                     Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT,uri_image);
+                    Bundle bundleНовоеImage=new Bundle();
+                    intent.putExtras(bundleНовоеImage);
+                    bundleНовоеImage.putLong("UUIDGeneratorImage",UUIDGeneratorImage);
                     startActivityForResult(intent,200);
                     // TODO: 20.07.2023
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -2495,13 +2478,17 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
             }
             void методSimpleCreateImage(){
                 try{
+                    Long  UUIDGeneratorImage = (Long) new Class_Generation_UUID(getActivity()).МетодГенерацииUUID(getActivity());
                     Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(intent,100);
+                    Bundle bundleНоваяImageSimple=new Bundle();
+                    bundleНоваяImageSimple.putLong("UUIDGeneratorImage",UUIDGeneratorImage);
+                    intent.putExtras(bundleНоваяImageSimple);
+                    startActivityForResult(intent,300);
                     // TODO: 20.07.2023
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                            +" bitmap "+ bitmap);
+                            +" UUIDGeneratorImage "+ UUIDGeneratorImage);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getContext().getClass().getName(),
@@ -2519,13 +2506,18 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
         class SubClassCompleteNewImageUpAndCreate{
             void методОбраобткиУжеПолученогоИзображения(@NonNull Context context,@NonNull Integer requestCode , @Nullable Intent data,@NonNull int resultCode){
                 try{
-
-                    if(requestCode==100){
+                    // TODO: 24.07.2023 Создание Нового Image  c сохранение
+                    if(requestCode==300){
                         bitmap=(Bitmap) data.getExtras().get("data");
-                        Log.d(getContext().getClass().getName(), "\n" + " CursorДляЦФО "
-                                + CursorДляЦФО + " CursorДляОдногоМатериалаБышВесов " + CursorДляОдногоМатериалаБышВесов +
-                                " CursorДляАвтомобиля " + CursorДляАвтомобиля + " CursorДляКонтрагента " +CursorДляКонтрагента
-                                + " CursorДляГруппаМатериалов " +CursorДляГруппаМатериалов );
+                        
+                        // TODO: 24.07.2023 Создание Нового Simple  Image  c сохранение
+                    }else   if(requestCode==200){
+                        // TODO: 24.07.2023
+
+                        // TODO: 24.07.2023 Поднимаем UP ранее уже созданное Image
+                    }else{
+
+
                     }
 
 
