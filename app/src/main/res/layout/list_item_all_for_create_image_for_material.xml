@@ -39,28 +39,14 @@ android:orientation="vertical">
             android:gravity="center"
             android:adjustViewBounds="true"
             android:textColor="#0E0E0E"
-            app:srcCompat="@drawable/icon_for_create_new_image_simpel1"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
-            android:translationZ="150dp"
-            android:visibility="visible"
-            app:backgroundTint="#F0FFFF"
-            app:cornerRadius="1dp" />
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/appcompatimagebutton_create"
-            style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
             app:srcCompat="@drawable/icon_maretila_create_image5"
-            android:adjustViewBounds="true"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:gravity="center"
-            android:textColor="#0E0E0E"
-
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
             android:translationZ="150dp"
             android:visibility="visible"
             app:backgroundTint="#F0FFFF"
             app:cornerRadius="1dp" />
+
+
 
 
 

@@ -163,14 +163,13 @@ public class FragmentMaretialNew extends Fragment {
             // TODO: 24.07.2023 КОд Выполдяем метод после создание или Загрузки Изображения Польщовательм UP и  Create Image
             SubClassCreateNewImageForMateril subClassCreateNewImageForMateril=new SubClassCreateNewImageForMateril();
             switch (requestCode){
+                // TODO: 24.07.2023  UP file Image 
                 case 500:
                     subClassCreateNewImageForMateril.new  SubClassCompleteNewImageUpAndCreate().методОбраобткиUPCompleteImages(getActivity(),requestCode,data,resultCode);
                     break;
 
+                // TODO: 24.07.2023  Create File Image
                 case 200:
-                    subClassCreateNewImageForMateril.new  SubClassCompleteNewImageUpAndCreate().методОбраобткиUPCompleteImages(getActivity(),requestCode,data,resultCode);
-                    break;
-                case 300:
                     subClassCreateNewImageForMateril.new  SubClassCompleteNewImageUpAndCreate().методОбраобткиUPCompleteImages(getActivity(),requestCode,data,resultCode);
                     break;
 
@@ -2219,8 +2218,6 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                             @Override
                                             public boolean setViewValue(View view, Object data, String textRepresentation) {
                                                 try{
-
-
                                                     switch (view.getId()) {
                                                         case android.R.id.text1:
                                                             LinearLayout    linearLayoutCreateNewImageТранспорта = (LinearLayout) view.findViewById(android.R.id.text1);
@@ -2237,19 +2234,9 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                                             методКликПоДаннымCreateSimpleImage(appcompatimagebutton_simple_create );
 
 
-                                                            // TODO: 23.07.2023  Создание НОВОЙ ФОТОГРАФИИ
-                                                            AppCompatImageButton appCompatImageButtonCreateImage=
-                                                                    linearLayoutCreateNewImageТранспорта.findViewById( R.id.appcompatimagebutton_create);
-                                                            // TODO: 23.07.2023  метод по клику  
-                                                            методКликПоДаннымCreateImage(appCompatImageButtonCreateImage );
-
-
 
                                                             // TODO: 20.07.2023 слушатели  закрытие
                                                             методЗакрываемСозданиеИлиUpIamge(materialButtoтtЗакрываемСозданиеImage, alertDialogCreateImage);
-
-
-
 
                                                             // TODO: 20.07.2023 методы после создание выбора
                                                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -2315,38 +2302,6 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 
                                 }
 
-                                 // TODO: 21.07.2023
-                                 private void методКликПоДаннымCreateImage(@NonNull AppCompatImageButton appCompatImageButton) {
-                                     // TODO: 20.07.2023
-                                     appCompatImageButton.setOnClickListener(new View.OnClickListener() {
-                                         @Override
-                                         public void onClick(View v) {
-                                             try{
-                                                 if (v!=null) {
-                                                     //MaterialTextView materialTextViewЭлементСписка=(MaterialTextView) view;
-                                                     SubClassUploadImageFromSDCars imageFromSDCars=new SubClassUploadImageFromSDCars();
-                                                     imageFromSDCars.методCreateNewImage();
-                                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                                             "materialTextViewЭлементСписка"+  v);
-                                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                                             "materialTextViewЭлементСписка"+  v);
-                                                 }
-                                             } catch (Exception e) {
-                                                 e.printStackTrace();
-                                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                                         " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                                 new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                                         this.getClass().getName(),
-                                                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                             }
-                                         }
-                                     });
-
-                                 }
                                  // TODO: 21.07.2023
                                  private void методКликПоДаннымCreateSimpleImage(@NonNull AppCompatImageButton appCompatImageButton) {
                                      // TODO: 20.07.2023
@@ -2445,10 +2400,10 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
         intentUpgetImage.setType("image/jpg");
         intentUpgetImage.setAction(Intent.ACTION_GET_CONTENT);
         intentUpgetImage.addCategory(Intent.CATEGORY_OPENABLE);
-        intentUpgetImage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //intentUpgetImage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intentUpgetImage.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intentUpgetImage.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION );
-        startActivityForResult(Intent.createChooser(intentUpgetImage, "Select Ringtone"),500);
+        startActivityForResult(Intent.createChooser(intentUpgetImage, "Фото"),500);
 
      /*   final Uri contentUriFile = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
@@ -2474,36 +2429,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
             }
 // TODO: 21.07.2023 create
 
-            void методCreateNewImage(){
-                try{
-                    Long  UUIDGeneratorImage = (Long) new Class_Generation_UUID(getActivity()).МетодГенерацииUUID(getActivity());
-                    ContentValues values=new ContentValues();
-                    values.put(MediaStore.Images.Media.TITLE,UUIDGeneratorImage.toString());
-                    values.put(MediaStore.Images.Media.DESCRIPTION,"photo matetial");
-                    Uri uri_image=getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
 
-                    Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT,uri_image);
-                    Bundle bundleНовоеImage=new Bundle();
-                    intent.putExtras(bundleНовоеImage);
-                    bundleНовоеImage.putLong("UUIDGeneratorImage",UUIDGeneratorImage);
-                    startActivityForResult(intent,200);
-                    // TODO: 20.07.2023
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                            +" bitmap "+ bitmap);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(getContext().getClass().getName(),
-                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
-
-            }
             void методSimpleCreateImage(){
                 try{
                     Long  UUIDGeneratorImage = (Long) new Class_Generation_UUID(getActivity()).МетодГенерацииUUID(getActivity());
@@ -2534,7 +2460,6 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
         class SubClassCompleteNewImageUpAndCreate{
             void методОбраобткиUPCompleteImages(@NonNull Context context, @NonNull Integer requestCode , @Nullable Intent data, @NonNull int resultCode){
                 try{
-                    if (resultCode== Activity.RESULT_OK) {
                         // TODO: 24.07.2023
                         Uri selectedImage = data.getData();
                         InputStream stream = getActivity().getContentResolver().openInputStream(selectedImage);
@@ -2545,70 +2470,6 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                 + " requestCode " + requestCode  + " bitmap " +bitmap);
-
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(getContext().getClass().getName(),
-                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
-
-            }
-            void методОбработкиCreateImages(@NonNull Context context,@NonNull Integer requestCode , @Nullable Intent data,@NonNull int resultCode){
-                try{
-                    Bundle bundleGetImages=(Bundle)   data.getExtras();
-                    // TODO: 20.07.2023
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                            +" requestCode "+ requestCode  + " bundleGetImages " +bundleGetImages);
-
-
-                    if (resultCode== Activity.RESULT_OK) {
-                        // TODO: 24.07.2023 Создание Нового Image  c сохранение
-                        if(requestCode==300){
-                            bitmap=(Bitmap) bundleGetImages.get("data");
-                            // TODO: 20.07.2023
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                    +" requestCode "+ requestCode);
-
-                            // TODO: 24.07.2023 Создание Нового Simple  Image  c сохранение
-                        }else   if(requestCode==500){
-                            // TODO: 24.07.2023
-                            Uri selectedImage = data.getData();
-                            InputStream stream =getActivity(). getContentResolver().openInputStream(selectedImage);
-
-                            bitmap=(Bitmap) bundleGetImages.get("data");
-                            // TODO: 20.07.2023
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                    +" requestCode "+ requestCode);
-
-
-                            // TODO: 24.07.2023 Поднимаем UP ранее уже созданное Image
-                        }else{
-
-                            // TODO: 20.07.2023
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                    +" requestCode "+ requestCode);
-                        }
-                    }
-
-
-                    // TODO: 20.07.2023
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                            +" requestCode "+ requestCode);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getContext().getClass().getName(),
@@ -2623,14 +2484,6 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
             void методобработкиSimpleCreateImage(@NonNull Context context,@NonNull Integer requestCode , @Nullable Intent data,@NonNull int resultCode){
                 try{
                     Bundle bundleGetImages=(Bundle)   data.getExtras();
-                    // TODO: 20.07.2023
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                            +" requestCode "+ requestCode  + " bundleGetImages " +bundleGetImages);
-
-
-                    if (resultCode== Activity.RESULT_OK) {
                         // TODO: 24.07.2023 Создание Нового Image  c сохранение
                         if(requestCode==300){
                             bitmap=(Bitmap) bundleGetImages.get("data");
@@ -2639,33 +2492,8 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                     +" requestCode "+ requestCode);
-
                             // TODO: 24.07.2023 Создание Нового Simple  Image  c сохранение
-                        }else   if(requestCode==500){
-                            // TODO: 24.07.2023
-                            Uri selectedImage = data.getData();
-                            InputStream stream =getActivity(). getContentResolver().openInputStream(selectedImage);
-
-                            bitmap=(Bitmap) bundleGetImages.get("data");
-                            // TODO: 20.07.2023
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                    +" requestCode "+ requestCode);
-
-
-                            // TODO: 24.07.2023 Поднимаем UP ранее уже созданное Image
-                        }else{
-
-                            // TODO: 20.07.2023
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                    +" requestCode "+ requestCode);
                         }
-                    }
-
-
                     // TODO: 20.07.2023
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
