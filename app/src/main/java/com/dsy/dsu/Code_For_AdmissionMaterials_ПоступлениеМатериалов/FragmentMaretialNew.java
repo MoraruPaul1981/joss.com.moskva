@@ -471,10 +471,10 @@ public class FragmentMaretialNew extends Fragment {
     public void onStop() {
         super.onStop();
         try{
-            if (myRecycleViewAdapter.cursorConcurrentSkipListMap !=null) {
+           /* if (myRecycleViewAdapter.cursorConcurrentSkipListMap !=null) {
                 myRecycleViewAdapter.notifyDataSetChanged();
                 recyclerView.getAdapter().notifyDataSetChanged();
-            }
+            }*/
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
