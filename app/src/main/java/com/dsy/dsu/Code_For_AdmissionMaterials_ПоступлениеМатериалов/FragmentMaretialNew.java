@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.hardware.camera2.CameraDevice;
 import android.net.Uri;
 import android.os.Bundle;
@@ -54,6 +55,8 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -140,10 +143,10 @@ public class FragmentMaretialNew extends Fragment {
 
     private     DatePickerDialog ДатаДляКалендаря;
 
-    private    CopyOnWriteArrayList <ImageView> copyOnWriteArrayListSetNewImage;
-
-    private AlertDialog alertDialog;
+    private  AlertDialog alertDialogCreateImage;
     private   SubClassCreateNewImageForMateril subClassCreateNewImageForMateril;
+
+    private TableLayout TableLayout_create_image;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -576,7 +579,7 @@ public class FragmentMaretialNew extends Fragment {
         private MaterialButton bottomcreateassionmaterial;
 
         private ArrayAdapter<String> АдапетерЦФО;
-
+        private AlertDialog alertDialog;
         private    ListView  listViewДляЦФО =null;
         private  Cursor cursorДляВсехМатериалов;
         private  TextView textipputmaretialttdata;
@@ -622,11 +625,8 @@ public class FragmentMaretialNew extends Fragment {
                 im3 = itemView.findViewById(R.id.im3);
                 im4 = itemView.findViewById(R.id.im4);
                 // TODO: 24.07.2023 заполения Данныз всех вставляемых новых Image
-                 copyOnWriteArrayListSetNewImage=new CopyOnWriteArrayList<>();
-                copyOnWriteArrayListSetNewImage.add(im1);
-                copyOnWriteArrayListSetNewImage.add(im2);
-                copyOnWriteArrayListSetNewImage.add(im3);
-                copyOnWriteArrayListSetNewImage.add(im4);
+                TableLayout_create_image= itemView.findViewById(R.id.TableLayout_create_image);
+
                 // TODO: 07.12.2022 новые
                 textipputmaretialttn = itemView.findViewById(R.id.textipputmaretialttn);
                 textipputmaretialttdata  = itemView.findViewById(R.id.textipputmaretialttdata);
@@ -1666,7 +1666,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                             }
                         }
                         // TODO: 28.12.2022 cursor
-                         alertDialog  = new MaterialAlertDialogBuilder(v.getContext()){
+                         holder.alertDialog  = new MaterialAlertDialogBuilder(v.getContext()){
                             @NonNull
                             @Override
                             public MaterialAlertDialogBuilder setView(View view) {
@@ -1842,7 +1842,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                                             materialTextView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                                                             materialTextView.setTextColor(Color.BLACK);
                                                             // TODO: 24.07.2023  закрытие Новго Создание РИсунков и или Upload Image
-                                                            subClassCreateNewImageForMateril.  методЗакрытиеNewCreateIMAGE();
+                                                            subClassCreateNewImageForMateril.  методЗакрытиеNewCreateIMAGE(holder.alertDialog);
                                                             Log.d(this.getClass().getName()," bundle.keySet().size() "+bundle.keySet().size());
 
 
@@ -1906,11 +1906,11 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                 .setIcon( R.drawable.icon_newscannertwo)
                                 .setView(getLayoutInflater().inflate( КакойИмменоВидЗагружатьДляНовогоПосика, null )).show();
                         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-                        layoutParams.copyFrom(    alertDialog.getWindow().getAttributes());
+                        layoutParams.copyFrom(     holder.alertDialog.getWindow().getAttributes());
                         layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
                         layoutParams.height =WindowManager.LayoutParams.MATCH_PARENT;
                         layoutParams.gravity = Gravity.CENTER;
-                        alertDialog.getWindow().setAttributes(layoutParams);
+                            holder. alertDialog.getWindow().setAttributes(layoutParams);
                         // TODO: 13.12.2022 ВТОРОЙ СЛУШАТЕЛЬ НА КНОПКУ
 
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1937,7 +1937,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                 try{
                                     Log.d(this.getClass().getName()," position");
                                     Log.d(this.getClass().getName(),"МетодСозданиеТабеля  v "+v);
-                                    subClassCreateNewImageForMateril.     методЗакрытиеNewCreateIMAGE();
+                                    subClassCreateNewImageForMateril.     методЗакрытиеNewCreateIMAGE(holder.alertDialog);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -2219,7 +2219,6 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
     public class SubClassCreateNewImageForMateril{
         // TODO: 19.07.2023  первый класс создание нового изображения
         public class SubClassUploadImageAnFragmentImage {
-            AlertDialog alertDialogCreateImage;
             protected   void методЗагрузкиИлиСозданиеImage(@NonNull MyViewHolder holder) {
                 // TODO: 16.12.2022
                         try{
@@ -2403,7 +2402,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                             public void onClick(View v) {
                                 try{
                                     Log.d(this.getClass().getName()," Image Update and Create Image");
-                                    методЗакрытиеNewCreateIMAGE();
+                                    методЗакрытиеNewCreateIMAGE(alertDialogCreateImage);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -2487,7 +2486,32 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                         BufferedInputStream bufferedInputStreamUpLoadImage=new BufferedInputStream(stream);
                      Bitmap   bitmapUpImage = BitmapFactory.decodeStream(bufferedInputStreamUpLoadImage);
                         // TODO: 24.07.2023  
-                        методЗаполянемImageViewNewImage(bitmapUpImage);
+                        //методЗаполянемImageViewNewImage(bitmapUpImage);
+
+
+
+                        TableRow tablerow_create_image=       TableLayout_create_image.findViewById(R.id.tablerow_create_image );
+
+                        ImageView    imageView=  tablerow_create_image.findViewById(R.id.im1);
+
+                        Drawable icon  = getResources().getDrawable(R.mipmap.icon_dsu1_tabel_emloes_error);
+                        imageView.setImageDrawable(icon);
+                        imageView.startAnimation(animationscroll);
+                        imageView.refreshDrawableState();
+                        imageView.requestLayout();
+                       /* tablerow_create_image.refreshDrawableState();
+                        tablerow_create_image.requestLayout();*/
+
+          /*   ImageView imageView=copyOnWriteArrayListSetNewImage.get(0);
+
+                        Drawable icon  = getResources().getDrawable(R.mipmap.icon_dsu1_tabel_emloes_error);
+                        imageView.setImageDrawable(icon);
+                        imageView.startAnimation(animationscroll);
+                        imageView.refreshDrawableState();
+                        imageView.requestLayout();
+                        recyclerView.refreshDrawableState();
+                        recyclerView.requestLayout();*/
+
                         // TODO: 20.07.2023
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2514,6 +2538,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
             // TODO: 24.07.2023  заполяем дааныых
             private void методЗаполянемImageViewNewImage( @NonNull  Bitmap   bitmapUpImage) {
                 try{
+/*
                     final Boolean[] ФлагУжеВставилиImage = {false};
 
                     Flowable.fromIterable(copyOnWriteArrayListSetNewImage)
@@ -2539,6 +2564,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 
                                 }
                             })
+                            .filter( image->image.getDrawingCache()==null)
                             .doOnNext(new Consumer<ImageView>() {
                                 @Override
                                 public void accept(ImageView imageView) throws Throwable {
@@ -2546,6 +2572,14 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                         imageView.setImageBitmap(bitmapUpImage);
                                         // TODO: 24.07.2023
                                         ФлагУжеВставилиImage[0] =true;
+
+
+                                        Drawable icon  = getResources().getDrawable(R.mipmap.icon_dsu1_tabel_faceapp_sam);
+                                        imageView.setImageDrawable(icon);
+                                        imageView.startAnimation(animationscroll);
+                                        imageView.refreshDrawableState();
+                                        imageView.requestLayout();
+
 
                                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2582,7 +2616,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                 @Override
                                 public void run() throws Throwable {
                                     // TODO: 24.07.2023
-                                    методЗакрытиеNewCreateIMAGE();
+                                     методЗакрытиеNewCreateIMAGE(alertDialogCreateImage);
 
                                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2590,6 +2624,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                 }
                             })
                             .subscribe();
+*/
 
                     
                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -2639,12 +2674,12 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
         } // TODO: 24.07.2023  end SubClassCompleteNewImageUpAndCreate
 
 
-        private void методЗакрытиеNewCreateIMAGE() {
+        private void методЗакрытиеNewCreateIMAGE(@NonNull AlertDialog alertDialogCreateImage ) {
             try{
-                alertDialog.dismiss();
-                alertDialog.cancel();
-                Log.d(getContext().getClass().getName(), "\n" + " alertDialog "
-                        + alertDialog );
+                alertDialogCreateImage.dismiss();
+                alertDialogCreateImage.cancel();
+                Log.d(getContext().getClass().getName(), "\n" + " alertDialogCreateImage "
+                        + alertDialogCreateImage );
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
