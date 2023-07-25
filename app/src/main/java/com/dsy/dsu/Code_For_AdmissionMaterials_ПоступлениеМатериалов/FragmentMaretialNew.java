@@ -2882,14 +2882,20 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
             try{
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 // TODO: 25.07.2023  рисунок 1 сохраням
-                Bitmap bmap1 =  copyOnWriteArrayListGetImages.get(0).getDrawingCache();
+                Bitmap bmap1 =
+                        copyOnWriteArrayListCompleteImageWithID.get(0)
+                                .entrySet().stream()
+                                .filter(fil->fil.getKey().equals(im1.getId())).findFirst().get().getValue();
                 if (bmap1!=null) {
                     bmap1.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                     byte[] IMagebyteArray1 = stream.toByteArray();
                     bundleSet.putByteArray("im1",IMagebyteArray1);
                 }
                 // TODO: 25.07.2023  рисунок 2 сохраням
-                Bitmap bmap2 = copyOnWriteArrayListGetImages.get(1).getDrawingCache();
+                Bitmap bmap2 =
+                        copyOnWriteArrayListCompleteImageWithID.get(0)
+                                .entrySet().stream()
+                                .filter(fil->fil.getKey().equals(im1.getId())).findFirst().get().getValue();
                 if (bmap2!=null) {
                     bmap2.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                     byte[] IMagebyteArray2 = stream.toByteArray();
@@ -2897,7 +2903,10 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                 }
 
                 // TODO: 25.07.2023  рисунок 3 сохраням
-                Bitmap bmap3 =copyOnWriteArrayListGetImages.get(2).getDrawingCache();
+                Bitmap bmap3 =
+                        copyOnWriteArrayListCompleteImageWithID.get(0)
+                                .entrySet().stream()
+                                .filter(fil->fil.getKey().equals(im1.getId())).findFirst().get().getValue();
                 if (bmap3!=null) {
                     bmap3.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                     byte[] IMagebyteArray3 = stream.toByteArray();
