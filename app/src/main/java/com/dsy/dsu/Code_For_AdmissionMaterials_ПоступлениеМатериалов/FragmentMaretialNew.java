@@ -195,7 +195,8 @@ public class FragmentMaretialNew extends Fragment {
 
                 // TODO: 24.07.2023  Create File Image
                 case 200:
-                    subClassCreateNewImageForMateril.new  SubClassCompleteNewImageUpAndCreate().методОбраобткиUPCompleteImages(getActivity(),requestCode,data,resultCode);
+                    asyncTaskLoader.startLoading();
+                    subClassCreateNewImageForMateril.new  SubClassCompleteNewImageUpAndCreate().методобработкиSimpleCreateImage(getActivity(),requestCode,data,resultCode);
                     break;
 
             }
@@ -2542,7 +2543,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                     Bundle bundleНоваяImageSimple=new Bundle();
                     bundleНоваяImageSimple.putLong("UUIDGeneratorImage",UUIDGeneratorImage);
                     intent.putExtras(bundleНоваяImageSimple);
-                    startActivityForResult(intent,300);
+                    startActivityForResult(intent,200);
                     // TODO: 20.07.2023
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2603,7 +2604,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                     Flowable.fromIterable(copyOnWriteArrayListGetImages)
                             .onBackpressureBuffer(copyOnWriteArrayListGetImages.size(),
                                     null, BackpressureOverflowStrategy.ERROR)
-                            .repeatWhen(repeat->repeat.delay(500,TimeUnit.MILLISECONDS))
+                            .repeatWhen(repeat->repeat.delay(200,TimeUnit.MILLISECONDS))
                             .takeWhile(new Predicate<ImageView>() {
                                 @Override
                                 public boolean test(ImageView imageView) throws Throwable {
@@ -2684,7 +2685,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                 public void run() throws Throwable {
                                     // TODO: 24.07.2023
                                      методЗакрытиеNewCreateIMAGE(alertDialogCreateImage);
-
+                                    // TODO: 25.07.2023
                                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber());
@@ -2709,17 +2710,27 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 
             void методобработкиSimpleCreateImage(@NonNull Context context,@NonNull Integer requestCode , @Nullable Intent data,@NonNull int resultCode){
                 try{
-                    Bundle bundleGetImages=(Bundle)   data.getExtras();
+                    Bitmap      bitmapCreate_New_CameraImage= null;
+                    Long UUIDGeneratorImage= null;
+                    // TODO: 25.07.2023  Записываем Созданое Новое Image через Камеру
+                    if (data!=null) {
+                        Bundle bundleGetImages=(Bundle)   data.getExtras();
                         // TODO: 24.07.2023 Создание Нового Image  c сохранение
-                        if(requestCode==300){
-                           // bitmap=(Bitmap) bundleGetImages.get("data");
-                            // TODO: 20.07.2023
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+
+                        bitmapCreate_New_CameraImage = (Bitmap) bundleGetImages.get("data");
+                        // TODO: 20.07.2023
+                        UUIDGeneratorImage = bundleGetImages.getLong("UUIDGeneratorImage",0l);
+
+                        методЗаполянемImageViewNewImage(bitmapCreate_New_CameraImage);
+                    }
+
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                    +" requestCode "+ requestCode);
+                                    +" requestCode "+ requestCode  + "  bitmapCreate_New_CameraImage " +bitmapCreate_New_CameraImage +
+                                     " UUIDGeneratorImage " +UUIDGeneratorImage);
                             // TODO: 24.07.2023 Создание Нового Simple  Image  c сохранение
-                        }
+
                     // TODO: 20.07.2023
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
