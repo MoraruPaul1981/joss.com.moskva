@@ -348,7 +348,6 @@ public class FragmentMaretialNew extends Fragment {
             copyOnWriteArrayListCompleteImageWithID=new CopyOnWriteArrayList<>();
             // TODO: 19.10.2022 методы для фрагмета создание нового материалоа
             МетодИнициализацииRecycreView();
-            МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
             методGetDataForNewFragment();
             // TODO: 17.04.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -452,10 +451,15 @@ public class FragmentMaretialNew extends Fragment {
         super.onStart();
         try {
             if (!asyncTaskLoader.isStarted()) {
+              myRecycleViewAdapter.notifyDataSetChanged();
+                recyclerView.getAdapter().notifyDataSetChanged();
+
                 МетодКпопкиЗначков();
                 МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
                 МетоКликаПоКнопкеBack();
                 МетодПерегрузкаRecyceView();
+            }else{
+                МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
             }
             // TODO: 17.04.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -654,6 +658,7 @@ public class FragmentMaretialNew extends Fragment {
     void МетодЗаполенияRecycleViewДляЗадач() {
         try {
             myRecycleViewAdapter = new MyRecycleViewAdapter(cursorConcurrentSkipListMap);
+            myRecycleViewAdapter.notifyDataSetChanged();
             recyclerView.setAdapter(myRecycleViewAdapter);
             Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
         } catch (Exception e) {
