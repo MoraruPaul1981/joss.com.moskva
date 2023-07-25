@@ -92,10 +92,15 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.BackpressureOverflowStrategy;
@@ -103,7 +108,6 @@ import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.functions.Predicate;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -149,7 +153,7 @@ public class FragmentMaretialNew extends Fragment {
 
     private CopyOnWriteArrayList<ImageView> copyOnWriteArrayListGetImages;
 
-    CopyOnWriteArrayList<Integer> copyOnWriteArrayListProssesingImageId;
+    CopyOnWriteArrayList<LinkedHashMap<Integer,ImageView>> copyOnWriteArrayListProssesingImageId;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -2628,24 +2632,22 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                             .doOnNext(new Consumer<ImageView>() {
                                 @Override
                                 public void accept(ImageView imageView) throws Throwable {
-                                    try{
+                                    try {
                                         // TODO: 25.07.2023  добавление новго Image
 
-                                        Boolean  УжеЕслиТАкойIDImage = copyOnWriteArrayListProssesingImageId
-                                                .stream()
-                                                .mapToInt(v -> v)
-                                                .filter(e->e==imageView.getId()).findAny().isPresent();
+
+                                      boolean УжеЕслиТАкойIDImage =   copyOnWriteArrayListProssesingImageId
+                                                .stream().findFirst().get().keySet().contains(imageView.getId());
 
 
                                         if (УжеЕслиТАкойIDImage==false) {
-                                            // TODO: 24.07.2023
-                                            imageView.setImageBitmap(bitmapUpImage);
-                                            imageView.startAnimation(animationscroll);
-                                            imageView.refreshDrawableState();
-                                            imageView.requestLayout();
+                                            // TODO: 24.07.2023  set Image
+                                            методВставкиImageGenerator(imageView, bitmapUpImage);
                                             // TODO: 25.07.2023 ставим флаг что вставка одна успешно стработал
                                             ФлагЧтоУжеОднаВставкаУжеБыла[0] = true;
-                                            copyOnWriteArrayListProssesingImageId.add(imageView.getId());
+
+
+                                            методЗапоелнияУжеДобавленыхImage(imageView);
                                         }
 
                                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -2749,6 +2751,41 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
             }
             
         } // TODO: 24.07.2023  end SubClassCompleteNewImageUpAndCreate
+
+        private void методЗапоелнияУжеДобавленыхImage(ImageView imageView) {
+            try{
+            LinkedHashMap<Integer,ImageView>  linkedHashMapCompeleImage=    new LinkedHashMap<>();
+            linkedHashMapCompeleImage.put(   imageView.getId()     , imageView);
+            copyOnWriteArrayListProssesingImageId.add(linkedHashMapCompeleImage);
+            Log.d(getContext().getClass().getName(), "\n" + " alertDialogCreateImage "
+                    + alertDialogCreateImage );
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getContext() ).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        }
+
+        private void методВставкиImageGenerator(ImageView imageView, @NonNull Bitmap bitmapUpImage) {
+            try{
+            imageView.setImageBitmap(bitmapUpImage);
+            imageView.startAnimation(animationscroll);
+            imageView.refreshDrawableState();
+            imageView.requestLayout();
+            Log.d(getContext().getClass().getName(), "\n" + " alertDialogCreateImage "
+                    + alertDialogCreateImage );
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getContext() ).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        }
 
 
         private void методЗакрытиеNewCreateIMAGE(@NonNull AlertDialog alertDialogCreateImage ) {
