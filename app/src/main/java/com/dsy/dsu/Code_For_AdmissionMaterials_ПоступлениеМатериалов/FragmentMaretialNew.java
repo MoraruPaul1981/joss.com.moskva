@@ -508,17 +508,21 @@ public class FragmentMaretialNew extends Fragment {
     private void методBackToFragmentAdmissionMaterilas(@NonNull View v) {
         try{
             // TODO: 09.11.2022  переходим на детализацию Полученихы Материалов
-            МетодЗапускаАнимацииКнопок(v);//todo только анимауия
-            Fragment      fragmentПолученыеМатериалов = new FragmentAdmissionMaterials();
-            Bundle bundleСозданиеНовогоМатериала=new Bundle();
-            bundleСозданиеНовогоМатериала.putBinder("binder",binderДляПолучениеМатериалов);
-            fragmentПолученыеМатериалов.setArguments(bundleСозданиеНовогоМатериала);
-            fragmentTransaction = fragmentManager.beginTransaction();
-            //    fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragmentПолученыеМатериалов).commit();//.layout.activity_for_fragemtb_history_tasks
-            fragmentTransaction.show(fragmentПолученыеМатериалов);
+            if (!asyncTaskLoader.isStarted()) {
+                МетодЗапускаАнимацииКнопок(v);//todo только анимауия
+                Fragment      fragmentПолученыеМатериалов = new FragmentAdmissionMaterials();
+                Bundle bundleСозданиеНовогоМатериала=new Bundle();
+                bundleСозданиеНовогоМатериала.putBinder("binder",binderДляПолучениеМатериалов);
+                fragmentПолученыеМатериалов.setArguments(bundleСозданиеНовогоМатериала);
+                fragmentTransaction = fragmentManager.beginTransaction();
+                //    fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragmentПолученыеМатериалов).commit();//.layout.activity_for_fragemtb_history_tasks
+                fragmentTransaction.show(fragmentПолученыеМатериалов);
+            }else {
+                Log.d(this.getClass().getName(), "  v  " + v);
+            }
 
-    } catch (Exception e) {
+        } catch (Exception e) {
         e.printStackTrace();
         Log.e(getContext().getClass().getName(),
                 "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -2636,11 +2640,14 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                         // TODO: 25.07.2023  добавление новго Image
 
 
-                                      boolean УжеЕслиТАкойIDImage =   copyOnWriteArrayListProssesingImageId
-                                                .stream().findFirst().get().keySet().contains(imageView.getId());
 
 
-                                        if (УжеЕслиТАкойIDImage==false) {
+                                     Long УжеЕслиТАкойIDImage=
+                                             copyOnWriteArrayListProssesingImageId.stream()
+                                                     .filter(s->s.containsKey(imageView.getId())).collect(Collectors.counting());
+
+
+                                        if (УжеЕслиТАкойIDImage==0) {
                                             // TODO: 24.07.2023  set Image
                                             методВставкиImageGenerator(imageView, bitmapUpImage);
                                             // TODO: 25.07.2023 ставим флаг что вставка одна успешно стработал
