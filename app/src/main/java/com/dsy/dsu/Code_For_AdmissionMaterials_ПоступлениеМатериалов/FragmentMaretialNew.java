@@ -185,6 +185,8 @@ public class FragmentMaretialNew extends Fragment {
             switch (requestCode){
                 // TODO: 24.07.2023  UP file Image 
                 case 500:
+                    asyncTaskLoader.startLoading();
+
                     subClassCreateNewImageForMateril.new  SubClassCompleteNewImageUpAndCreate().методОбраобткиUPCompleteImages(getActivity(),requestCode,data,resultCode);
                     break;
 
@@ -310,6 +312,8 @@ public class FragmentMaretialNew extends Fragment {
             animationscroll = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_scrolls);
             // TODO: 19.10.2022 методы для фрагмета создание нового материалоа
             МетодИнициализацииRecycreView();
+            МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
+            методGetDataForNewFragment();
             // TODO: 17.04.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -326,14 +330,63 @@ public class FragmentMaretialNew extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle state) {
+        super.onSaveInstanceState(state);
+        Log.d(this.getClass().getName(),"\n" + " class " +
+                Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            //Restore the fragment's state here
+        }
+        Log.d(this.getClass().getName(),"\n" + " class " +
+                Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        Log.d(this.getClass().getName(),"\n" + " class " +
+                Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(this.getClass().getName(),"\n" + " class " +
+                Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(this.getClass().getName(),"\n" + " class " +
+                Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         try {
-            МетодКпопкиЗначков();
-            МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
-            методGetDataForNewFragment();
-            МетоКликаПоКнопкеBack();
-            МетодПерегрузкаRecyceView();
+            if (!asyncTaskLoader.isStarted()) {
+                МетодКпопкиЗначков();
+                МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
+                МетоКликаПоКнопкеBack();
+                МетодПерегрузкаRecyceView();
+            }
             // TODO: 17.04.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2237,7 +2290,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                         map.put("alldonttbels", "Не создано !!!");
                                         map.put("allimage", " dont");
                                         ЛистДляСозданиеРисунки.add(map);
-                                        SimpleAdapter АдаптерКогдаНетданных = new SimpleAdapter(getContext(),
+                                        SimpleAdapter simpleAdapterNewImage = new SimpleAdapter(getContext(),
                                                 ЛистДляСозданиеРисунки,
                                                 R.layout.list_item_all_for_create_image_for_material,
                                                 new String[]{"alldonttbels","allimage"},
@@ -2284,12 +2337,11 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                                 return false;
                                             }
                                         };
-                                        АдаптерКогдаНетданных.setViewBinder(БиндингКогдаНетДАнных);
-                                        АдаптерКогдаНетданных.notifyDataSetChanged();
-                                        gridViewImage.setAdapter(АдаптерКогдаНетданных);
+                                        simpleAdapterNewImage.setViewBinder(БиндингКогдаНетДАнных);
+                                        simpleAdapterNewImage.notifyDataSetChanged();
+                                        gridViewImage.setAdapter(simpleAdapterNewImage);
                                         gridViewImage.refreshDrawableState();
                                         gridViewImage.requestLayout();
-                                        gridViewImage.refreshDrawableState();
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
