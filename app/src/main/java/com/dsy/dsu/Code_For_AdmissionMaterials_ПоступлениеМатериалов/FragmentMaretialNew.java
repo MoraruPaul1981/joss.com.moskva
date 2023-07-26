@@ -3,6 +3,7 @@ package com.dsy.dsu.Code_For_AdmissionMaterials_ПоступлениеМатер
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -159,7 +160,7 @@ public class FragmentMaretialNew extends Fragment {
 
     private        ActivityResultLauncher<Intent> someActivityResultLauncherUpImage;
 
-    private        ActivityResultLauncher<Intent> someActivityResultLauncherNewImage;
+    private ActivityResultLauncher<Intent> someActivityResultLauncherNewImage;
 
 
 
@@ -338,24 +339,26 @@ public class FragmentMaretialNew extends Fragment {
     // TODO: 26.07.2023 CallsBAckImageNew
     void методCallsBackNewImageActivityResult(){
         // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
-        someActivityResultLauncherNewImage = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
+
+
+
+        someActivityResultLauncherNewImage  = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult()
+                , new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
                         try{
-                            if (result.getResultCode() == Activity.RESULT_OK) {
+                            if (result!=null) {
                                 // There are no request codes
-                                Intent data = result.getData();
-                                Bundle bundleCompleteNewAndUpImages=(Bundle)  result.getData().getExtras();
-                                Integer   ResyltatImageCallsBack=       bundleCompleteNewAndUpImages.getInt("ResyltatImageCallsBack");
+                                //Intent dataNewCameraImage = result.getData();
                                 // TODO: 24.07.2023  New  file Image
-                                subClassCreateNewImageForMateril.new  SubClassCompleteNewImageUpAndCreate().методобработкиSimpleCreateImage(getActivity(),data);
+                               /* subClassCreateNewImageForMateril.new
+                                        SubClassCompleteNewImageUpAndCreate().методобработкиSimpleCreateImage(getActivity(),dataNewCameraImage);*/
 
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                        + " ResyltatImageCallsBack " +ResyltatImageCallsBack);
+                                        + " result " +result);
                             }
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -373,6 +376,10 @@ public class FragmentMaretialNew extends Fragment {
                         }
                     }
                 });
+
+
+
+
     }
 
 
@@ -2554,14 +2561,22 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 
             void методSimpleCreateImage(){
                 try{
+                    // TODO: 24.07.2023  Поднимаем файл из Image уже созданого
+                    asyncTaskLoaderForNewMaterial.startLoading();
                     Intent intentCreateImageNew=new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //android.provider.MediaStore.ACTION_IMAGE_CAPTURE
+                    ContentValues values = new ContentValues();
+                    values.put(MediaStore.Images.Media.TITLE, "New Picture");
+                    values.put(MediaStore.Images.Media.DESCRIPTION, "From Camera");
+                   Uri cam_uri = requireContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                    String[] mimeTypes = {"image/jpeg", "image/png"};
+                    intentCreateImageNew.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+                    intentCreateImageNew.putExtra(MediaStore.EXTRA_OUTPUT, cam_uri);
 
-
-
+                    someActivityResultLauncherNewImage.launch(intentCreateImageNew);
                     // TODO: 20.07.2023
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +" intentCreateImageNew"  +  intentCreateImageNew );
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getContext().getClass().getName(),
