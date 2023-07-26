@@ -237,6 +237,8 @@ public class FragmentMaretialNew extends Fragment {
             // TODO: Создаем и инициализцурием RecureView
             МетодИнициализацииRecycreView();
             МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
+            МетодКпопкиЗначков();
+            МетоКликаПоКнопкеBack();
             // TODO: 17.04.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -252,7 +254,61 @@ public class FragmentMaretialNew extends Fragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        try{
 
+            SubClassSaveComponentAllInRecycreview subClassSaveComponentAllInRecycreview=new SubClassSaveComponentAllInRecycreview();
+
+            subClassSaveComponentAllInRecycreview.методGetAllComponentAll();
+
+
+            Log.d(this.getClass().getName(),"\n" + " class " +
+                    Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + "  onSaveInstanceState " +onSaveInstanceState);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(getContext().getClass().getName(),
+                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        try {
+            if (  asyncTaskLoaderForNewMaterial.isAbandoned()) {
+                myRecycleViewAdapter.cursorRecyclerView=CursorДляЦФО;
+                myRecycleViewAdapter.notifyDataSetChanged();
+
+                RecyclerView.Adapter recyclerViewОбновление=         recyclerView.getAdapter();
+                recyclerView.swapAdapter(recyclerViewОбновление,true);
+                recyclerView.getAdapter().notifyDataSetChanged();
+
+            }
+            // TODO: 17.04.2023
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+            // TODO: 19.10.2022  слушатель после получение даннных в Курсом
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(getContext().getClass().getName(),
+                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+
+    }
 
 
 
@@ -429,65 +485,7 @@ public class FragmentMaretialNew extends Fragment {
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        try{
 
-        SubClassSaveComponentAllInRecycreview subClassSaveComponentAllInRecycreview=new SubClassSaveComponentAllInRecycreview();
-
-        subClassSaveComponentAllInRecycreview.методGetAllComponentAll();
-
-
-        Log.d(this.getClass().getName(),"\n" + " class " +
-                Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + "  onSaveInstanceState " +onSaveInstanceState);
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(getContext().getClass().getName(),
-                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                Thread.currentThread().getStackTrace()[2].getLineNumber());
-    }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        try {
-            if (  asyncTaskLoaderForNewMaterial.isAbandoned()) {
-                myRecycleViewAdapter.cursorRecyclerView=CursorДляЦФО;
-              myRecycleViewAdapter.notifyDataSetChanged();
-    
-                RecyclerView.Adapter recyclerViewОбновление=         recyclerView.getAdapter();
-                recyclerView.swapAdapter(recyclerViewОбновление,true);
-                recyclerView.getAdapter().notifyDataSetChanged();
-
-                МетодКпопкиЗначков();
-               // МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
-                МетоКликаПоКнопкеBack();
-                МетодПерегрузкаRecyceView();
-            }
-            // TODO: 17.04.2023
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-            // TODO: 19.10.2022  слушатель после получение даннных в Курсом
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(getContext().getClass().getName(),
-                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-
-    }
 
     private Cursor МетодПолучениеДанныхДляЦФО(Intent intentДляПолучениеСправочкинов) {
         Intent intent=new Intent();
@@ -979,13 +977,17 @@ public class FragmentMaretialNew extends Fragment {
                     viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov_new, parent, false);//todo old simple_for_takst_cardview1
                     Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
                 }else {
-                    if( asyncTaskLoaderForNewMaterial.isAbandoned()){
-                    viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_new_assitionmaterial_cardview_new2, parent, false);//todo simple_for_new_assitionmaterial_cardview1_test
-                    Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
-                } else {
-                    viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_isnull_actimavmaretisl_sprachnikov, parent, false);//todo old simple_for_takst_cardview1
-                    Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов+ "  cursorRecyclerView " + cursorRecyclerView);
-                }
+                    if( asyncTaskLoaderForNewMaterial.isAbandoned() ){
+                        if(  cursorRecyclerView!=null && cursorRecyclerView.getCount()>0){
+                            // TODO: 26.07.2023  Data
+                            viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_new_assitionmaterial_cardview_new2, parent, false);//todo simple_for_new_assitionmaterial_cardview1_test
+                            Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
+                        }else{
+                            // TODO: 26.07.2023 is null
+                            viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_isnull_actimavmaretisl_sprachnikov, parent, false);//todo old simple_for_takst_cardview1
+                            Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов+ "  cursorRecyclerView " + cursorRecyclerView);
+                        }}
+                        
                 }
                 // TODO: 13.10.2022  добавляем новый компонент в Нащ RecycreView
                 myViewHolder = new MyViewHolder(viewПолучениеМатериалов);
@@ -1942,6 +1944,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 
                                     МетодЗакрытиеНовогоПосика(materialButtonЗакрытьДиалогSearveView);
 
+                                    методКликПоДанным();
 
                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1974,15 +1977,6 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                         layoutParams.gravity = Gravity.CENTER;
                             holder. alertDialog.getWindow().setAttributes(layoutParams);
                         // TODO: 13.12.2022 ВТОРОЙ СЛУШАТЕЛЬ НА КНОПКУ
-
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                "materialButtonЗакрытьДиалогSearveView"+  materialButtonЗакрытьДиалогSearveView);
-
-                            методКликПоДанным();
-
-
                         Log.d(this.getClass().getName(), " binderДляПолучениеМатериалов "+ binderДляПолучениеМатериалов);
                     } catch (Exception e) {
                         e.printStackTrace();
