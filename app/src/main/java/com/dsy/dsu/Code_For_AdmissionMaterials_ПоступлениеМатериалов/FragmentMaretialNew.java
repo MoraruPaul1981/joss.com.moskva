@@ -76,6 +76,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.common.util.concurrent.AtomicDouble;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
@@ -139,6 +140,7 @@ public class FragmentMaretialNew extends Fragment {
     private Cursor CursorДляКонтрагента;
     private    Cursor CursorДляГруппаМатериалов;
     private   Cursor CursorДляЦФО;
+
     private  Object ВытаскиваемIDМатериаловИзСправочника;
     private  View view=null;
     private SharedPreferences preferencesМатериалы;
@@ -450,12 +452,16 @@ public class FragmentMaretialNew extends Fragment {
     public void onStart() {
         super.onStart();
         try {
-            if (!asyncTaskLoader.isStarted()) {
+            if (CursorДляЦФО!=null) {
+                myRecycleViewAdapter.CursorДляЦФО.requery();
               myRecycleViewAdapter.notifyDataSetChanged();
+                recyclerView.getAdapter().notifyDataSetChanged();
+                RecyclerView.Adapter recyclerViewОбновление=         recyclerView.getAdapter();
+                recyclerView.swapAdapter(recyclerViewОбновление,true);
                 recyclerView.getAdapter().notifyDataSetChanged();
 
                 МетодКпопкиЗначков();
-                МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
+               // МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
                 МетоКликаПоКнопкеBack();
                 МетодПерегрузкаRecyceView();
             }else{
@@ -657,10 +663,10 @@ public class FragmentMaretialNew extends Fragment {
 
     void МетодЗаполенияRecycleViewДляЗадач() {
         try {
-            myRecycleViewAdapter = new MyRecycleViewAdapter(cursorConcurrentSkipListMap);
+            myRecycleViewAdapter = new MyRecycleViewAdapter(CursorДляЦФО);
             myRecycleViewAdapter.notifyDataSetChanged();
             recyclerView.setAdapter(myRecycleViewAdapter);
-            Log.d(this.getClass().getName(), "recyclerView   " + recyclerView);
+            Log.d(this.getClass().getName(), "CursorДляЦФО   " + CursorДляЦФО);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
@@ -876,13 +882,11 @@ public class FragmentMaretialNew extends Fragment {
 
 
     class MyRecycleViewAdapter extends RecyclerView.Adapter<MyViewHolder> {
-        private LinkedHashMap<String, Object> cursorConcurrentSkipListMap;
-        public MyRecycleViewAdapter(@NotNull LinkedHashMap<String, Object> cursorConcurrentSkipListMap) {
-            this.cursorConcurrentSkipListMap = cursorConcurrentSkipListMap;
-            if ( cursorConcurrentSkipListMap!=null) {
-                Log.i(this.getClass().getName(), " cursor  " + cursorConcurrentSkipListMap.size());
+        private  Cursor  CursorДляЦФО ;
+        public MyRecycleViewAdapter(@NotNull  Cursor CursorДляЦФО) {
+            this.CursorДляЦФО = CursorДляЦФО;
+                Log.i(this.getClass().getName(), " CursorДляЦФО  " + CursorДляЦФО);
 
-            }
         }
 
         @Override
@@ -964,7 +968,7 @@ public class FragmentMaretialNew extends Fragment {
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View viewПолучениеМатериалов = null;
             try {
-                if(asyncTaskLoader.isStarted()){
+                if(CursorДляЦФО==null){
                     viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov_new, parent, false);//todo old simple_for_takst_cardview1
                     Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
                 }else {
@@ -978,6 +982,8 @@ public class FragmentMaretialNew extends Fragment {
                 }
                 // TODO: 13.10.2022  добавляем новый компонент в Нащ RecycreView
                 myViewHolder = new MyViewHolder(viewПолучениеМатериалов);
+                // TODO: 26.07.2023  перегрзука  внешнего вида
+                МетодПерегрузкаRecyceView();
                 Log.i(this.getClass().getName(), "   myViewHolder" + myViewHolder + "  binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -2226,14 +2232,9 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
     private void МетодПерегрузкаRecyceView() {
         try {
             bottomNavigationView.requestLayout();
-            bottomNavigationView.forceLayout();
             recyclerView.requestLayout();
-            recyclerView.forceLayout();
             recyclerView.refreshDrawableState();
             bottomNavigationView.refreshDrawableState();
-            linearLayou.refreshDrawableState();
-            linearLayou.requestLayout();
-            linearLayou.forceLayout();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(getContext().getClass().getName(),
