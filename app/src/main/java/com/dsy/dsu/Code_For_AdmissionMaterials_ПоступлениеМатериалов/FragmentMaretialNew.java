@@ -1,10 +1,14 @@
 package com.dsy.dsu.Code_For_AdmissionMaterials_ПоступлениеМатериалов;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.graphics.Bitmap;
@@ -15,6 +19,10 @@ import android.hardware.camera2.CameraDevice;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -31,6 +39,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
@@ -82,6 +91,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -154,6 +164,8 @@ public class FragmentMaretialNew extends Fragment {
     private ImageView im1,im2, im3,im4;
     private  TextView textipputmaretialttdata;
 
+    private        ActivityResultLauncher<Intent> someActivityResultLauncher;
+
 
 
 
@@ -170,6 +182,8 @@ public class FragmentMaretialNew extends Fragment {
             subClassCreateNewImageForMateril=new SubClassCreateNewImageForMateril();
 
             subClassCreateNewImageForMateril.  методGetDataForNewFragment();
+
+
 
             // TODO: 03.11.2022  ПОСЛЕ ПОЛУЧЕННЫХ ДАННЫХ
             Log.d(getContext().getClass().getName(), "\n" + " CursorДляЦФО "
@@ -240,6 +254,7 @@ public class FragmentMaretialNew extends Fragment {
             МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
             МетодКпопкиЗначков();
             МетоКликаПоКнопкеBack();
+            методПолучениеДанных();
             // TODO: 17.04.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -255,7 +270,6 @@ public class FragmentMaretialNew extends Fragment {
         }
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
@@ -265,14 +279,15 @@ public class FragmentMaretialNew extends Fragment {
                 myRecycleViewAdapter.notifyDataSetChanged();
 
                 RecyclerView.Adapter recyclerViewОбновление=         recyclerView.getAdapter();
+                recyclerViewОбновление.notifyDataSetChanged();
                 recyclerView.swapAdapter(recyclerViewОбновление,true);
-                recyclerView.getAdapter().notifyDataSetChanged();
-
+// TODO: 26.07.2023  тест код
             }
             // TODO: 17.04.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " asyncTaskLoaderForNewMaterial.isAbandoned() " +asyncTaskLoaderForNewMaterial.isAbandoned());
             // TODO: 19.10.2022  слушатель после получение даннных в Курсом
         } catch (Exception e) {
             e.printStackTrace();
@@ -288,36 +303,21 @@ public class FragmentMaretialNew extends Fragment {
 
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        try{
-            super.onActivityResult(requestCode, resultCode, data);
-            // TODO: 24.07.2023 КОд Выполдяем метод после создание или Загрузки Изображения Польщовательм UP и  Create Image
-            switch (requestCode){
-                // TODO: 24.07.2023  UP file Image
-                case 500:
-                    subClassCreateNewImageForMateril.new  SubClassCompleteNewImageUpAndCreate().методОбраобткиUPCompleteImages(getActivity(),requestCode,data,resultCode);
-                    break;
-                // TODO: 24.07.2023  Create File Image
-                case 200:
-                    subClassCreateNewImageForMateril.new  SubClassCompleteNewImageUpAndCreate().методобработкиSimpleCreateImage(getActivity(),requestCode,data,resultCode);
-                    break;
 
-            }
-            // TODO: 20.07.2023
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    +" requestCode "+ requestCode);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(getContext().getClass().getName(),
-                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
+    void методПолучениеДанных(){
+        // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
+   someActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            // There are no request codes
+                            Intent data = result.getData();
+                         ;
+                        }
+                    }
+                });
     }
 
 
@@ -325,13 +325,12 @@ public class FragmentMaretialNew extends Fragment {
 
 
 
-
-
     private Cursor МетодПолучениеДанныхДляЦФО(Intent intentДляПолучениеСправочкинов) {
+        Cursor cursorЦФО=null;
         try{
         Intent intent=new Intent();
         intent.putExtras(new Bundle());
-       Cursor CursorДляЦФО=     МетодДляПолучениеДанныхИзСлужбыДляСозданияНовогоМатериала("cfo",intent ,"ПолучениеМатериалоСозданиеНового");
+            cursorЦФО=     МетодДляПолучениеДанныхИзСлужбыДляСозданияНовогоМатериала("cfo",intent ,"ПолучениеМатериалоСозданиеНового");
         Log.d(this.getClass().getName(), " CursorДляЦФО " + CursorДляЦФО);
     } catch (Exception e) {
         e.printStackTrace();
@@ -342,7 +341,7 @@ public class FragmentMaretialNew extends Fragment {
                 this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                 Thread.currentThread().getStackTrace()[2].getLineNumber());
     }
-        return CursorДляЦФО;
+        return cursorЦФО;
     }
 
     private void МетодПолучениеДляГруппыМатериалов(Intent intentДляПолучениеСправочкинов) {
@@ -701,25 +700,7 @@ public class FragmentMaretialNew extends Fragment {
 
 
     // TODO: 28.02.2022 начало  MyViewHolderДляЧата
-    protected class MyViewHolderIsProcessing extends RecyclerView.ViewHolder {
-        // TODO: 28.10.2022
-        public MyViewHolderIsProcessing(@NonNull View itemView) {
-            super(itemView);
-            try {
-                    Log.d(this.getClass().getName(), "   itemView   " + itemView);
-                Log.d(this.getClass().getName(), "   itemView   " + itemView);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(getContext().getClass().getName(),
-                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
 
-    }
 
     void методДатаКликаДляНовогоМатериала(@NonNull  TextView textipputmaretialttdata){
   try{
@@ -884,7 +865,7 @@ public class FragmentMaretialNew extends Fragment {
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             try {
                 Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " binderДляПолучениеМатериалов " + binderДляПолучениеМатериалов);
-                if ( asyncTaskLoaderForNewMaterial.isAbandoned()) {
+                if (  cursorRecyclerView!=null && cursorRecyclerView.getCount()>0) {
                     // TODO: 26.07.2023 Второй Шаг ЗаполняемДЫнними
                     МетодЗаполняемДаннымиПолучениеМАтериалов(holder);
                     МетодАнимации(holder);
@@ -2493,9 +2474,9 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
         intentUpgetImage.setType("image/*");
         intentUpgetImage.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intentUpgetImage.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION );
-        if (intentUpgetImage.resolveActivity(getActivity().getPackageManager()) != null) {
-            getActivity().   startActivityForResult(Intent.createChooser(intentUpgetImage, "Фото"),500);
-        }
+
+        someActivityResultLauncher.launch(intentUpgetImage);
+
         // TODO: 20.07.2023
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                   " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2516,23 +2497,14 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 
             void методSimpleCreateImage(){
                 try{
-                    Long  UUIDGeneratorImage = (Long) new Class_Generation_UUID(getActivity()).МетодГенерацииUUID(getActivity());
                     Intent intentCreateImageNew=new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //android.provider.MediaStore.ACTION_IMAGE_CAPTURE
-                    Bundle bundleНоваяImageSimple=new Bundle();
-                    bundleНоваяImageSimple.putLong("UUIDGeneratorImage",UUIDGeneratorImage);
-                    intentCreateImageNew.putExtras(bundleНоваяImageSimple);
-                    intentCreateImageNew.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    intentCreateImageNew.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION );
-                    if (intentCreateImageNew.resolveActivity(getActivity().getPackageManager()) != null) {
-                        startActivityForResult(intentCreateImageNew, 200);
-                    }
 
-                 //  getActivity(). startActivityForResult(intentCreateImageNew,200);
+
+
                     // TODO: 20.07.2023
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                            +" UUIDGeneratorImage "+ UUIDGeneratorImage);
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getContext().getClass().getName(),
