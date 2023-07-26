@@ -3,12 +3,9 @@ package com.dsy.dsu.Code_For_AdmissionMaterials_ПоступлениеМатер
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.graphics.Bitmap;
@@ -39,7 +36,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
@@ -64,7 +60,6 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
-import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_UUID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generator_One_WORK_MANAGER;
 import com.dsy.dsu.Code_For_Services.Service_for_AdminissionMaterial;
@@ -77,7 +72,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
-import com.google.common.util.concurrent.AtomicDouble;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
@@ -91,7 +85,6 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -254,7 +247,7 @@ public class FragmentMaretialNew extends Fragment {
             МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
             МетодКпопкиЗначков();
             МетоКликаПоКнопкеBack();
-            методПолучениеДанных();
+            методCallsBackImageNewActivityResult();
             // TODO: 17.04.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -302,20 +295,48 @@ public class FragmentMaretialNew extends Fragment {
     }
 
 
-
-
-    void методПолучениеДанных(){
+    // TODO: 26.07.2023 CallsBAckImageNew
+    void методCallsBackImageNewActivityResult(){
         // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
-   someActivityResultLauncher = registerForActivityResult(
+          someActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
+                        try{
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             // There are no request codes
                             Intent data = result.getData();
-                         ;
+                            switch (result.getResultCode() ){
+                                // TODO: 24.07.2023  UP file Image
+                                case 500:
+                                    subClassCreateNewImageForMateril.new  SubClassCompleteNewImageUpAndCreate().методОбраобткиUPCompleteImages(getActivity(),data );
+                                    break;
+                                // TODO: 24.07.2023  Create File Image
+                                case 200:
+                                    subClassCreateNewImageForMateril.new  SubClassCompleteNewImageUpAndCreate().методобработкиSimpleCreateImage(getActivity(),data);
+                                    break;
+
+                            }
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                    + " asyncTaskLoaderForNewMaterial.isAbandoned() " +asyncTaskLoaderForNewMaterial.isAbandoned());
                         }
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                + " asyncTaskLoaderForNewMaterial.isAbandoned() " +asyncTaskLoaderForNewMaterial.isAbandoned());
+                        // TODO: 19.10.2022  слушатель после получение даннных в Курсом
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(getContext().getClass().getName(),
+                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
                     }
                 });
     }
@@ -2520,7 +2541,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 
         // TODO: 24.07.2023  Класс Обработываем Полученый Созданный Новый Рисунок или Загружаем Уже Существуеший
         class SubClassCompleteNewImageUpAndCreate{
-            void методОбраобткиUPCompleteImages(@NonNull Context context, @NonNull Integer requestCode , @Nullable Intent data, @NonNull int resultCode){
+            void методОбраобткиUPCompleteImages(@NonNull Context context,  @Nullable Intent data  ){
                 try{
                         // TODO: 24.07.2023
                     if (data!=null) {
@@ -2533,14 +2554,9 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                         // TODO: 20.07.2023
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                + " requestCode " + requestCode  + "  bitmapUpImage " +bitmapUpImage  );
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
+                                + "\n"+ "  bitmapUpImage " +bitmapUpImage  );
                     }
-                    // TODO: 20.07.2023
-                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                + " requestCode " + requestCode     );
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getContext().getClass().getName(),
@@ -2667,7 +2683,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
             }
             }
 
-            void методобработкиSimpleCreateImage(@NonNull Context context,@NonNull Integer requestCode , @Nullable Intent data,@NonNull int resultCode){
+            void методобработкиSimpleCreateImage(@NonNull Context context, @Nullable Intent data ){
                 try{
                     Bitmap      bitmapCreate_New_CameraImage= null;
                     Long UUIDGeneratorImage= null;
@@ -2678,23 +2694,20 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 
                         bitmapCreate_New_CameraImage = (Bitmap) bundleGetImages.get("data");
                         // TODO: 20.07.2023
-                        UUIDGeneratorImage = bundleGetImages.getLong("UUIDGeneratorImage",0l);
-
                         методЗаполянемImageViewNewImage(bitmapCreate_New_CameraImage);
                     }
 
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                    +" requestCode "+ requestCode  + "  bitmapCreate_New_CameraImage " +bitmapCreate_New_CameraImage +
+                            + "  bitmapCreate_New_CameraImage " +bitmapCreate_New_CameraImage +
                                      " UUIDGeneratorImage " +UUIDGeneratorImage);
                             // TODO: 24.07.2023 Создание Нового Simple  Image  c сохранение
 
                     // TODO: 20.07.2023
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                            +" requestCode "+ requestCode);
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getContext().getClass().getName(),
