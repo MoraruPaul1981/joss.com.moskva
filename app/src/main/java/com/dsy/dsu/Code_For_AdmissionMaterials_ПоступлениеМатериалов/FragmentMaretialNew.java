@@ -157,7 +157,9 @@ public class FragmentMaretialNew extends Fragment {
     private ImageView im1,im2, im3,im4;
     private  TextView textipputmaretialttdata;
 
-    private        ActivityResultLauncher<Intent> someActivityResultLauncher;
+    private        ActivityResultLauncher<Intent> someActivityResultLauncherUpImage;
+
+    private        ActivityResultLauncher<Intent> someActivityResultLauncherNewImage;
 
 
 
@@ -247,7 +249,8 @@ public class FragmentMaretialNew extends Fragment {
             МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
             МетодКпопкиЗначков();
             МетоКликаПоКнопкеBack();
-            методCallsBackImageNewActivityResult();
+            методCallsBackNewImageActivityResult();
+            методCallsBackUpImageActivityResult();
             // TODO: 17.04.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -295,10 +298,10 @@ public class FragmentMaretialNew extends Fragment {
     }
 
 
-    // TODO: 26.07.2023 CallsBAckImageNew
-    void методCallsBackImageNewActivityResult(){
+    // TODO: 26.07.2023 CallsBAckUpImageNew
+    void методCallsBackUpImageActivityResult(){
         // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
-          someActivityResultLauncher = registerForActivityResult(
+          someActivityResultLauncherUpImage = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
@@ -306,22 +309,14 @@ public class FragmentMaretialNew extends Fragment {
                         try{
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             // There are no request codes
-                            Intent data = result.getData();
-                            switch (result.getResultCode() ){
+                            Intent dataUpImage = result.getData();
                                 // TODO: 24.07.2023  UP file Image
-                                case 500:
-                                    subClassCreateNewImageForMateril.new  SubClassCompleteNewImageUpAndCreate().методОбраобткиUPCompleteImages(getActivity(),data );
-                                    break;
-                                // TODO: 24.07.2023  Create File Image
-                                case 200:
-                                    subClassCreateNewImageForMateril.new  SubClassCompleteNewImageUpAndCreate().методобработкиSimpleCreateImage(getActivity(),data);
-                                    break;
+                                    subClassCreateNewImageForMateril.new  SubClassCompleteNewImageUpAndCreate().методОбраобткиUPCompleteImages(getActivity(),dataUpImage );
 
-                            }
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                    + " asyncTaskLoaderForNewMaterial.isAbandoned() " +asyncTaskLoaderForNewMaterial.isAbandoned());
+                                    + " dataUpImage " +dataUpImage);
                         }
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -340,7 +335,45 @@ public class FragmentMaretialNew extends Fragment {
                     }
                 });
     }
+    // TODO: 26.07.2023 CallsBAckImageNew
+    void методCallsBackNewImageActivityResult(){
+        // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
+        someActivityResultLauncherNewImage = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        try{
+                            if (result.getResultCode() == Activity.RESULT_OK) {
+                                // There are no request codes
+                                Intent data = result.getData();
+                                Bundle bundleCompleteNewAndUpImages=(Bundle)  result.getData().getExtras();
+                                Integer   ResyltatImageCallsBack=       bundleCompleteNewAndUpImages.getInt("ResyltatImageCallsBack");
+                                // TODO: 24.07.2023  New  file Image
+                                subClassCreateNewImageForMateril.new  SubClassCompleteNewImageUpAndCreate().методобработкиSimpleCreateImage(getActivity(),data);
 
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                        + " ResyltatImageCallsBack " +ResyltatImageCallsBack);
+                            }
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                    + " asyncTaskLoaderForNewMaterial.isAbandoned() " +asyncTaskLoaderForNewMaterial.isAbandoned());
+                            // TODO: 19.10.2022  слушатель после получение даннных в Курсом
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(getContext().getClass().getName(),
+                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
+                    }
+                });
+    }
 
 
 
@@ -2489,14 +2522,17 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
       void методUploadImetImage(){
     try{
         // TODO: 24.07.2023  Поднимаем файл из Image уже созданого
+        asyncTaskLoaderForNewMaterial.startLoading();
         //Intent intentUpgetImage=new Intent(Intent.ACTION_GET_CONTENT);
         Intent intentUpgetImage = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intentUpgetImage.setType("image/*");
         intentUpgetImage.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intentUpgetImage.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION );
-
-        someActivityResultLauncher.launch(intentUpgetImage);
+        Bundle bundleUpImage=new Bundle();
+        bundleUpImage.putInt("ResyltatImageCallsBack",500);
+        intentUpgetImage.putExtras(bundleUpImage);
+        someActivityResultLauncherUpImage.launch(intentUpgetImage);
 
         // TODO: 20.07.2023
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -2728,8 +2764,8 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
             linkedHashMapCompeleImage.put(   imageView.getId()     , bitmapUpImage);
                 copyOnWriteArrayListCompleteImageWithID.add(linkedHashMapCompeleImage);
 
-            Log.d(getContext().getClass().getName(), "\n" + " alertDialogCreateImage "
-                    + alertDialogCreateImage );
+            Log.d(getContext().getClass().getName(), "\n" + " copyOnWriteArrayListCompleteImageWithID "
+                    + copyOnWriteArrayListCompleteImageWithID );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
