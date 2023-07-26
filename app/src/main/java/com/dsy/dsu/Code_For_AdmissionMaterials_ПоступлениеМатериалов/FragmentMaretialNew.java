@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -67,6 +68,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.common.util.concurrent.AtomicDouble;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
@@ -149,8 +151,7 @@ public class FragmentMaretialNew extends Fragment {
             valueavtomobil,valuekontragent;
     private TextInputEditText textipputcountassinmaterail,textipputmaretialttn;
     private MaterialTextView textviewmaterialttn ,textviewmaterialttndata;
-    private ImageView im1,im2,
-            im3,im4;
+    private ImageView im1,im2, im3,im4;
     private  TextView textipputmaretialttdata;
 
 
@@ -168,7 +169,7 @@ public class FragmentMaretialNew extends Fragment {
             МетодHandlerCallBack();
             subClassCreateNewImageForMateril=new SubClassCreateNewImageForMateril();
 
-            методGetDataForNewFragment();
+            subClassCreateNewImageForMateril.  методGetDataForNewFragment();
 
             // TODO: 03.11.2022  ПОСЛЕ ПОЛУЧЕННЫХ ДАННЫХ
             Log.d(getContext().getClass().getName(), "\n" + " CursorДляЦФО "
@@ -254,31 +255,6 @@ public class FragmentMaretialNew extends Fragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        try{
-
-            SubClassSaveComponentAllInRecycreview subClassSaveComponentAllInRecycreview=new SubClassSaveComponentAllInRecycreview();
-
-            subClassSaveComponentAllInRecycreview.методGetAllComponentAll();
-
-
-            Log.d(this.getClass().getName(),"\n" + " class " +
-                    Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + "  onSaveInstanceState " +onSaveInstanceState);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(getContext().getClass().getName(),
-                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
 
     @Override
     public void onStart() {
@@ -308,15 +284,6 @@ public class FragmentMaretialNew extends Fragment {
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
 
-    }
-
-
-
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        Log.d(this.getClass().getName(), "  onCreate  savedInstanceState    "+savedInstanceState);
     }
 
 
@@ -353,157 +320,51 @@ public class FragmentMaretialNew extends Fragment {
         }
     }
 
-    private void методGetDataForNewFragment() {
+
+
+
+
+
+
+
+    private Cursor МетодПолучениеДанныхДляЦФО(Intent intentДляПолучениеСправочкинов) {
         try{
-            asyncTaskLoaderForNewMaterial =new AsyncTaskLoader(getContext()) {
-                @Nullable
-                @Override
-                public Cursor loadInBackground() {
-                    Cursor       CursorДляЦФО=null;
-                    try{
-                        Intent intentДляПолучениеСправочкинов=new Intent("НовыеМатериалыПолучениеСправочников");
-                        // TODO: 20.10.2022 #1
-                        CursorДляЦФО=   МетодПолучениеДанныхДляЦФО(intentДляПолучениеСправочкинов);
-                        // TODO: 20.10.2022 #3
-                        МетодПолучениеДляГруппыМатериалов(intentДляПолучениеСправочкинов);
-                        // TODO: 20.10.2022 #4
-                        МетоПолучениеДанныхДляОдногоМатериала(intentДляПолучениеСправочкинов, 0);
-                        // TODO: 20.10.2022 #5 автомобили
-                        МетоПолучениеДанныхДляАвтомобилей(intentДляПолучениеСправочкинов, "");
-                        // TODO: 20.10.2022 #6 контргаенты
-                        МетоПолучениеДанныхДляКонтрагент(intentДляПолучениеСправочкинов, "");
-
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                + " CursorДляЦФО " +CursorДляЦФО );
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(getContext().getClass().getName(),
-                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                    return CursorДляЦФО;
-                }
-
-            };
-            asyncTaskLoaderForNewMaterial.deliverResult(CursorДляЦФО);
-            asyncTaskLoaderForNewMaterial.startLoading();
-            asyncTaskLoaderForNewMaterial.forceLoad();
-            asyncTaskLoaderForNewMaterial.registerListener(new Random().nextInt(), new Loader.OnLoadCompleteListener() {
-                @Override
-                public void onLoadComplete(@NonNull Loader loader, @Nullable Object data) {
-                    try{
-                        // TODO: 26.07.2023  после получение данных
-                        asyncTaskLoaderForNewMaterial.abandon();
-                        CursorДляЦФО= (Cursor) data;
-                        onStart();
-                        progressBarСозданиеМатерила.setVisibility(View.GONE);
-                        Log.d(this.getClass().getName(), "  onCreate  CursorДляЦФО    "+CursorДляЦФО);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(getContext().getClass().getName(),
-                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                }
-            });
-            Log.d(this.getClass().getName(), "  onCreate  FragmentCreateAdmissionmaterialbinder    "+binderДляПолучениеМатериалов);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(getContext().getClass().getName(),
-                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
-
-
-
-    @Override
-    public void onSaveInstanceState(Bundle state) {
-        super.onSaveInstanceState(state);
-        try {
-      // TODO: 25.07.2023 SET Compometm
-        onSaveInstanceState=state;
-            SubClassSaveComponentAllInRecycreview subClassSaveComponentAllInRecycreview=new SubClassSaveComponentAllInRecycreview();
-
-            subClassSaveComponentAllInRecycreview.методSetAllComponentAll(onSaveInstanceState);
-
-
-        Log.d(this.getClass().getName(),"\n" + " class " +
-                Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + "  onSaveInstanceState " +onSaveInstanceState);
+        Intent intent=new Intent();
+        intent.putExtras(new Bundle());
+       Cursor CursorДляЦФО=     МетодДляПолучениеДанныхИзСлужбыДляСозданияНовогоМатериала("cfo",intent ,"ПолучениеМатериалоСозданиеНового");
+        Log.d(this.getClass().getName(), " CursorДляЦФО " + CursorДляЦФО);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(getContext().getClass().getName(),
                 "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                         " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+        return CursorДляЦФО;
+    }
+
+    private void МетодПолучениеДляГруппыМатериалов(Intent intentДляПолучениеСправочкинов) {
+        try{
+        Intent intent=new Intent();
+        intent.putExtras(new Bundle());
+        CursorДляГруппаМатериалов=      МетодДляПолучениеДанныхИзСлужбыДляСозданияНовогоМатериала("type_materials",intent, "ПолучениеМатериалоСозданиеНового");
+        Log.d(this.getClass().getName(), " CursorДляГруппаМатериалов " + CursorДляГруппаМатериалов);
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(getContext().getClass().getName(),
+                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                 this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                 Thread.currentThread().getStackTrace()[2].getLineNumber());
     }
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            //Restore the fragment's state here
-        }
-        Log.d(this.getClass().getName(),"\n" + " class " +
-                Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        Log.d(this.getClass().getName(),"\n" + " class " +
-                Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.d(this.getClass().getName(),"\n" + " class " +
-                Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-    }
-
-
-
-    private Cursor МетодПолучениеДанныхДляЦФО(Intent intentДляПолучениеСправочкинов) {
-        Intent intent=new Intent();
-        intent.putExtras(new Bundle());
-       Cursor CursorДляЦФО=     МетодДляПолучениеДанныхИзСлужбыДляСозданияНовогоМатериала("cfo",intent ,"ПолучениеМатериалоСозданиеНового");
-        Log.d(this.getClass().getName(), " CursorДляЦФО " + CursorДляЦФО);
-        return CursorДляЦФО;
-    }
-
-    private void МетодПолучениеДляГруппыМатериалов(Intent intentДляПолучениеСправочкинов) {
-        Intent intent=new Intent();
-        intent.putExtras(new Bundle());
-        CursorДляГруппаМатериалов=      МетодДляПолучениеДанныхИзСлужбыДляСозданияНовогоМатериала("type_materials",intent, "ПолучениеМатериалоСозданиеНового");
-        Log.d(this.getClass().getName(), " CursorДляГруппаМатериалов " + CursorДляГруппаМатериалов);
-    }
-
     private Cursor МетоПолучениеДанныхДляОдногоМатериала(Intent intentДляПолучениеСправочкинов, @NonNull Integer ФильтрВесовых) {
         CursorДляОдногоМатериалаБышВесов=null;
+        try {
         Bundle bundle=new Bundle();
         bundle.putString("ТаблицаОбработкиСпинера","материал");
         bundle.putString("ФильтрКолонок","nomen_vesov");
@@ -512,22 +373,42 @@ public class FragmentMaretialNew extends Fragment {
         CursorДляОдногоМатериалаБышВесов=          МетодДляПолучениеДанныхИзСлужбыДляСозданияНовогоМатериала("nomen_vesov",intentДляПолучениеСправочкинов,
                 "ПолучениеМатериалоСозданиеНового");
         Log.d(this.getClass().getName(), " CursorДляОдногоМатериалаБышВесов " + CursorДляОдногоМатериалаБышВесов);
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(getContext().getClass().getName(),
+                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
         return  CursorДляОдногоМатериалаБышВесов;
     }
 
     // TODO: 26.12.2022  автомобили
     private void МетоПолучениеДанныхДляАвтомобилей(@NonNull Intent intentДляПолучениеСправочкинов,
                                                    @NonNull String ФильтрВесовых) {
+        try{
         Bundle bundle=new Bundle();
         bundle.getString("ФильтрДляПоискаАвтомобили",ФильтрВесовых);
         intentДляПолучениеСправочкинов.putExtras(bundle);
         CursorДляАвтомобиля= МетодДляПолучениеДанныхИзСлужбыДляСозданияНовогоМатериала("track",intentДляПолучениеСправочкинов,
                 "ПолучениеАвтомобильДляСозданиеНовгоМатерила");
         Log.d(this.getClass().getName(), " CursorДляАвтомобиля " + CursorДляАвтомобиля);
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(getContext().getClass().getName(),
+                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
     }
     // TODO: 26.12.2022  Контрагент
     private void МетоПолучениеДанныхДляКонтрагент(Intent intentДляПолучениеСправочкинов,
                                                   @NonNull String ФильтрВесовых) {
+        try{
         Bundle bundle=new Bundle();
         bundle.putString("ТаблицаОбработкиСпинера","контрагенты");
         bundle.putString("ФильтрКолонок","company");
@@ -536,6 +417,15 @@ public class FragmentMaretialNew extends Fragment {
         CursorДляКонтрагента= МетодДляПолучениеДанныхИзСлужбыДляСозданияНовогоМатериала("company",intentДляПолучениеСправочкинов,
                 "ПолучениеКонтрагентовДляСозданиеНовгоМатерила");
         Log.d(this.getClass().getName(), " \n" + "CursorДляКонтрагента " + CursorДляКонтрагента);
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(getContext().getClass().getName(),
+                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
     }
 
 
@@ -606,25 +496,6 @@ public class FragmentMaretialNew extends Fragment {
     }
     }
 
-
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        try{
-           /* if (myRecycleViewAdapter.cursorConcurrentSkipListMap !=null) {
-                myRecycleViewAdapter.notifyDataSetChanged();
-                recyclerView.getAdapter().notifyDataSetChanged();
-            }*/
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
 
     void МетодHandlerCallBack() {
         handler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
@@ -1827,6 +1698,8 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                 try{
                                     // TODO: 14.12.2022
                                    materialButtonЗакрытьДиалогSearveView =    (MaterialButton) view.findViewById(R.id.bottom_newscanner1);
+                                    // TODO: 26.07.2023  клик чтобы закрыть поиск
+                                    МетодЗакрытиеНовогоПосика(materialButtonЗакрытьДиалогSearveView);
                                 // TODO: 19.12.2022 какой КУРСОР БУДЕТ ВЫПОЛНЯТЬСЯ
                                 if (ФлагКогдаМыВыбралиОдинМатреиалИНАНегоНетГруппаМатериалов==false) {
                                     SearchView searchViewДляНовогоЦФО= null;
@@ -1938,12 +1811,10 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                     holder.listViewДляЦФО.refreshDrawableState();
                                     holder.listViewДляЦФО.requestLayout();
 
-                                    // TODO: 13.12.2022  Поиск и его слушель
+                                    // TODO: 13.12.2022  Поиск  
                                     // TODO: 13.12.2022  Поиск и его слушель
                                     МетодПоискаФильтр(searchViewДляНовогоЦФО,simpleCursorAdapterЦФО,holder,v,ТаблицаДляФильтра,materialTextView);
-
-                                    МетодЗакрытиеНовогоПосика(materialButtonЗакрытьДиалогSearveView);
-
+                                    // TODO: 26.07.2023  клик по данным 
                                     методКликПоДанным();
 
                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -2385,6 +2256,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
     public class SubClassCreateNewImageForMateril{
         // TODO: 19.07.2023  первый класс создание нового изображения
         public class SubClassUploadImageAnFragmentImage {
+            MaterialButton  materialButtoтtЗакрываемСозданиеImage;
             protected   void методЗагрузкиИлиСозданиеImage(@NonNull MyViewHolder holder) {
                 // TODO: 16.12.2022
                         try{
@@ -2397,7 +2269,9 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                     try{
                                         // TODO: 14.12.2022
                                         GridView gridViewImage =    (GridView) view.findViewById(R.id.listView_create_image);
-                                        MaterialButton  materialButtoтtЗакрываемСозданиеImage =    (MaterialButton) view.findViewById(R.id.bottom_close_create_image);
+                                        // TODO: 26.07.2023 Клик по закрытие  
+                                         materialButtoтtЗакрываемСозданиеImage =    (MaterialButton) view.findViewById(R.id.bottom_close_create_image);
+                                        // TODO: 26.07.2023
                                         ArrayList<HashMap<String, Object>> ЛистДляСозданиеРисунки= new ArrayList<HashMap<String, Object>> ();
                                         HashMap<String, Object> map = new HashMap<>();
                                         map.put("alldonttbels", "Не создано !!!");
@@ -2419,20 +2293,12 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                                             // TODO: 23.07.2023  загружаем уже готовую фотографию , созданое зарание
                                                             AppCompatImageButton appCompatImageButtonUpImage=
                                                                     linearLayoutCreateNewImageТранспорта.findViewById(R.id.appcompatimagebutton_up);
-                                                                    методКликПоДаннымUpImage(appCompatImageButtonUpImage );
-
-
+                                                            методКликПоДаннымUpImage(appCompatImageButtonUpImage);
 
                                                          // TODO: 23.07.2023  Создание НОВОЙ  SIMPLE ФОТОГРАФИИ
                                                             AppCompatImageButton appcompatimagebutton_simple_create=
                                                                     linearLayoutCreateNewImageТранспорта.findViewById(R.id.appcompatimagebutton_simple_create);
-                                                            методКликПоДаннымCreateSimpleImage(appcompatimagebutton_simple_create );
-
-
-
-                                                            // TODO: 20.07.2023 слушатели  закрытие
-                                                            методЗакрываемСозданиеИлиUpIamge(materialButtoтtЗакрываемСозданиеImage, alertDialogCreateImage);
-
+                                                            методКликПоДаннымCreateSimpleImage(appcompatimagebutton_simple_create);
                                                             // TODO: 20.07.2023 методы после создание выбора
                                                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n");
@@ -2455,6 +2321,23 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                         gridViewImage.setAdapter(simpleAdapterNewImage);
                                         gridViewImage.refreshDrawableState();
                                         gridViewImage.requestLayout();
+                                        simpleAdapterNewImage.registerDataSetObserver(new DataSetObserver() {
+                                            @Override
+                                            public void onChanged() {
+                                                super.onChanged();
+                                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" + " MainParentUUID " );
+                                            }
+
+                                            @Override
+                                            public void onInvalidated() {
+                                                super.onInvalidated();
+                                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" + " MainParentUUID " );
+                                            }
+                                        });
+                                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" + " MainParentUUID " );
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -2468,66 +2351,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                     // TODO: 20.12.2022  тут конец выбеленого
                                 }
 
-                                private void методКликПоДаннымUpImage(@NonNull AppCompatImageButton appCompatImageButton) {
-                                    // TODO: 20.07.2023
-                                    appCompatImageButton.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            try{
-                                                if (v!=null) {
-                                                    //MaterialTextView materialTextViewЭлементСписка=(MaterialTextView) view;
-                                                    SubClassUploadImageFromSDCars imageFromSDCars=new SubClassUploadImageFromSDCars();
-                                                    imageFromSDCars.методUploadImetImage();
-                                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                                            "materialTextViewЭлементСписка"+  v);
-                                                }
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                                        this.getClass().getName(),
-                                                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                            }
-                                        }
-                                    });
 
-                                }
-
-                                 // TODO: 21.07.2023
-                                 private void методКликПоДаннымCreateSimpleImage(@NonNull AppCompatImageButton appCompatImageButton) {
-                                     // TODO: 20.07.2023
-                                     appCompatImageButton.setOnClickListener(new View.OnClickListener() {
-                                         @Override
-                                         public void onClick(View v) {
-                                             try{
-                                                 if (v!=null) {
-                                                     //MaterialTextView materialTextViewЭлементСписка=(MaterialTextView) view;
-                                                     SubClassUploadImageFromSDCars imageFromSDCars=new SubClassUploadImageFromSDCars();
-                                                     imageFromSDCars.методSimpleCreateImage();
-                                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                                             "materialTextViewЭлементСписка"+  v);
-                                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                                             "materialTextViewЭлементСписка"+  v);
-                                                 }
-                                             } catch (Exception e) {
-                                                 e.printStackTrace();
-                                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                                         " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                                 new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                                         this.getClass().getName(),
-                                                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                             }
-                                         }
-                                     });
-
-                                 }
                             }
                                     .setTitle("Новые фотографии")
                                     .setCancelable(false)
@@ -2541,6 +2365,8 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                             layoutParams.height =1000;*/
                             layoutParams.gravity = Gravity.CENTER;
                             alertDialogCreateImage.getWindow().setAttributes(layoutParams);
+                            // TODO: 20.07.2023 слушатели  закрытие
+                            методЗакрываемСозданиеИлиUpIamge(materialButtoтtЗакрываемСозданиеImage, alertDialogCreateImage);
 
                             // TODO: 13.12.2022 ВТОРОЙ СЛУШАТЕЛЬ НА КНОПКУ
 
@@ -2558,6 +2384,67 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                     Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
                     }
+
+            private void методКликПоДаннымUpImage(@NonNull AppCompatImageButton appCompatImageButton) {
+                // TODO: 20.07.2023
+                appCompatImageButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try{
+                            if (v!=null) {
+                                //MaterialTextView materialTextViewЭлементСписка=(MaterialTextView) view;
+                                SubClassUploadImageFromSDCars imageFromSDCars=new SubClassUploadImageFromSDCars();
+                                imageFromSDCars.методUploadImetImage();
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                        "materialTextViewЭлементСписка"+  v);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName(),
+                                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
+                    }
+                });
+
+            }
+
+            // TODO: 21.07.2023
+            private void методКликПоДаннымCreateSimpleImage(@NonNull AppCompatImageButton appCompatImageButton) {
+                // TODO: 20.07.2023
+                appCompatImageButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try{
+                            if (v!=null) {
+                                //MaterialTextView materialTextViewЭлементСписка=(MaterialTextView) view;
+                                SubClassUploadImageFromSDCars imageFromSDCars=new SubClassUploadImageFromSDCars();
+                                imageFromSDCars.методSimpleCreateImage();
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                        "materialTextViewЭлементСписка"+  v);
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                        "materialTextViewЭлементСписка"+  v);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName(),
+                                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
+                    }
+                });
+
+            }
 
 // TODO: 20.07.2023 при созданнии или Upload Image
                     private void методЗакрываемСозданиеИлиUpIamge(@NonNull  MaterialButton materialButtonЗакрытьДиалог,
@@ -2583,6 +2470,17 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
             }  //todo END SubClassUploadImageAnFragmentImage
 
 
+
+
+
+
+
+
+
+
+
+
+
         // TODO: 20.07.2023 класс ЗагрузкиImage из Хранилишща Телефона
         class SubClassUploadImageFromSDCars{
             CameraDevice cameraDevice;
@@ -2595,7 +2493,9 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
         intentUpgetImage.setType("image/*");
         intentUpgetImage.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intentUpgetImage.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION );
-        startActivityForResult(Intent.createChooser(intentUpgetImage, "Фото"),500);
+        if (intentUpgetImage.resolveActivity(getActivity().getPackageManager()) != null) {
+            getActivity().   startActivityForResult(Intent.createChooser(intentUpgetImage, "Фото"),500);
+        }
         // TODO: 20.07.2023
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                   " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2617,11 +2517,17 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
             void методSimpleCreateImage(){
                 try{
                     Long  UUIDGeneratorImage = (Long) new Class_Generation_UUID(getActivity()).МетодГенерацииUUID(getActivity());
-                    Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    Intent intentCreateImageNew=new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //android.provider.MediaStore.ACTION_IMAGE_CAPTURE
                     Bundle bundleНоваяImageSimple=new Bundle();
                     bundleНоваяImageSimple.putLong("UUIDGeneratorImage",UUIDGeneratorImage);
-                    intent.putExtras(bundleНоваяImageSimple);
-                    startActivityForResult(intent,200);
+                    intentCreateImageNew.putExtras(bundleНоваяImageSimple);
+                    intentCreateImageNew.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    intentCreateImageNew.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION );
+                    if (intentCreateImageNew.resolveActivity(getActivity().getPackageManager()) != null) {
+                        startActivityForResult(intentCreateImageNew, 200);
+                    }
+
+                 //  getActivity(). startActivityForResult(intentCreateImageNew,200);
                     // TODO: 20.07.2023
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2884,6 +2790,82 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
             }
         }
 
+
+
+        private void методGetDataForNewFragment() {
+            try{
+                asyncTaskLoaderForNewMaterial =new AsyncTaskLoader(getContext()) {
+                    @Nullable
+                    @Override
+                    public Cursor loadInBackground() {
+                        Cursor       CursorДляЦФО=null;
+                        try{
+                            Intent intentДляПолучениеСправочкинов=new Intent("НовыеМатериалыПолучениеСправочников");
+                            // TODO: 20.10.2022 #1
+                            CursorДляЦФО=   МетодПолучениеДанныхДляЦФО(intentДляПолучениеСправочкинов);
+                            // TODO: 20.10.2022 #3
+                            МетодПолучениеДляГруппыМатериалов(intentДляПолучениеСправочкинов);
+                            // TODO: 20.10.2022 #4
+                            МетоПолучениеДанныхДляОдногоМатериала(intentДляПолучениеСправочкинов, 0);
+                            // TODO: 20.10.2022 #5 автомобили
+                            МетоПолучениеДанныхДляАвтомобилей(intentДляПолучениеСправочкинов, "");
+                            // TODO: 20.10.2022 #6 контргаенты
+                            МетоПолучениеДанныхДляКонтрагент(intentДляПолучениеСправочкинов, "");
+
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                    + " CursorДляЦФО " +CursorДляЦФО );
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(getContext().getClass().getName(),
+                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
+                        return CursorДляЦФО;
+                    }
+
+                };
+                asyncTaskLoaderForNewMaterial.deliverResult(CursorДляЦФО);
+                asyncTaskLoaderForNewMaterial.startLoading();
+                asyncTaskLoaderForNewMaterial.forceLoad();
+                asyncTaskLoaderForNewMaterial.registerListener(new Random().nextInt(), new Loader.OnLoadCompleteListener() {
+                    @Override
+                    public void onLoadComplete(@NonNull Loader loader, @Nullable Object data) {
+                        try{
+                            // TODO: 26.07.2023  после получение данных
+                            asyncTaskLoaderForNewMaterial.abandon();
+                            CursorДляЦФО= (Cursor) data;
+                            onStart();
+                            progressBarСозданиеМатерила.setVisibility(View.GONE);
+                            Log.d(this.getClass().getName(), "  onCreate  CursorДляЦФО    "+CursorДляЦФО);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(getContext().getClass().getName(),
+                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
+                    }
+                });
+                Log.d(this.getClass().getName(), "  onCreate  FragmentCreateAdmissionmaterialbinder    "+binderДляПолучениеМатериалов);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+
     }//todo END SubClassCreateNewImageForMateril
 
     // TODO: 25.07.2023
@@ -2893,40 +2875,47 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
   void методSetAllComponentAll(@NonNull   Bundle bundleSet ) {
             try{
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                // TODO: 25.07.2023  рисунок 1 сохраням
-                Bitmap bmap1 =
-                        copyOnWriteArrayListCompleteImageWithID.get(0)
-                                .entrySet().stream()
-                                .filter(fil->fil.getKey().equals(im1.getId())).findFirst().get().getValue();
-                if (bmap1!=null) {
-                    bmap1.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                    byte[] IMagebyteArray1 = stream.toByteArray();
-                    bundleSet.putByteArray("im1",IMagebyteArray1);
-                }
-                // TODO: 25.07.2023  рисунок 2 сохраням
-                Bitmap bmap2 =
-                        copyOnWriteArrayListCompleteImageWithID.get(0)
-                                .entrySet().stream()
-                                .filter(fil->fil.getKey().equals(im1.getId())).findFirst().get().getValue();
-                if (bmap2!=null) {
-                    bmap2.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                    byte[] IMagebyteArray2 = stream.toByteArray();
-                    bundleSet.putByteArray("im2",IMagebyteArray2);
-                }
+                if (copyOnWriteArrayListCompleteImageWithID.size()>0) {
+                    // TODO: 25.07.2023  рисунок 1 сохраням
+                    Bitmap bmap1 =
+                            copyOnWriteArrayListCompleteImageWithID.get(0)
+                                    .entrySet().stream()
+                                    .filter(fil -> fil.getKey().equals(im1.getId())).findFirst().get().getValue();
+                    if (bmap1 != null) {
+                        bmap1.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                        byte[] IMagebyteArray1 = stream.toByteArray();
+                        bundleSet.putByteArray("im1", IMagebyteArray1);
+                    }
+                    // TODO: 25.07.2023  рисунок 2 сохраням
+                    Bitmap bmap2 =
+                            copyOnWriteArrayListCompleteImageWithID.get(0)
+                                    .entrySet().stream()
+                                    .filter(fil -> fil.getKey().equals(im1.getId())).findFirst().get().getValue();
+                    if (bmap2 != null) {
+                        bmap2.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                        byte[] IMagebyteArray2 = stream.toByteArray();
+                        bundleSet.putByteArray("im2", IMagebyteArray2);
+                    }
 
-                // TODO: 25.07.2023  рисунок 3 сохраням
-                Bitmap bmap3 =
-                        copyOnWriteArrayListCompleteImageWithID.get(0)
-                                .entrySet().stream()
-                                .filter(fil->fil.getKey().equals(im1.getId())).findFirst().get().getValue();
-                if (bmap3!=null) {
-                    bmap3.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                    byte[] IMagebyteArray3 = stream.toByteArray();
-                    bundleSet.putByteArray("im2",IMagebyteArray3);
+                    // TODO: 25.07.2023  рисунок 3 сохраням
+                    Bitmap bmap3 =
+                            null;
+
+                    bmap3 = copyOnWriteArrayListCompleteImageWithID.get(0)
+                            .entrySet().stream()
+                            .filter(fil -> fil.getKey().equals(im1.getId())).findFirst().get().getValue();
+
+                    if (bmap3 != null) {
+                        bmap3.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                        byte[] IMagebyteArray3 = stream.toByteArray();
+                        bundleSet.putByteArray("im2", IMagebyteArray3);
+                    }
+
                 }
-
-
-                Log.d(getContext().getClass().getName(), "\n" + " alertDialogCreateImage ");
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " (copyOnWriteArrayListCompleteImageWithID.size() " +copyOnWriteArrayListCompleteImageWithID.size()) ;
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +

@@ -208,9 +208,11 @@ public class FragmentAdmissionMaterials extends Fragment {
                 МетодСлушательКурсора();
                 МетодКпопкиЗначков();
                 МетодСоздаенияСлушателяДляПолучениеМатериалаWorkMAnager();
+                progressBarСканирование.setVisibility(View.INVISIBLE);
             }else {
                 МетодКпопкиЗначков();
             }
+
             // TODO: 17.04.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
