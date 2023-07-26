@@ -59,6 +59,7 @@ import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
@@ -161,6 +162,8 @@ public class FragmentMaretialNew extends Fragment {
     private        ActivityResultLauncher<Intent> someActivityResultLauncherUpImage;
 
     private ActivityResultLauncher<Intent> someActivityResultLauncherNewImage;
+
+    private ActivityResultLauncher<Bitmap> someActivityResultLauncherNewBitmap;
 
 
 
@@ -354,6 +357,8 @@ public class FragmentMaretialNew extends Fragment {
                                 // TODO: 24.07.2023  New  file Image
                                /* subClassCreateNewImageForMateril.new
                                         SubClassCompleteNewImageUpAndCreate().методобработкиSimpleCreateImage(getActivity(),dataNewCameraImage);*/
+
+                                Toast.makeText(getContext(), "new Image Photo"+new Date().toLocaleString(), Toast.LENGTH_SHORT).show();
 
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2536,6 +2541,8 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
         intentUpgetImage.setType("image/*");
         intentUpgetImage.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intentUpgetImage.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION );
+        String[] mimeTypes = {"image/jpeg", "image/png"};
+        intentUpgetImage.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         Bundle bundleUpImage=new Bundle();
         bundleUpImage.putInt("ResyltatImageCallsBack",500);
         intentUpgetImage.putExtras(bundleUpImage);
@@ -2562,17 +2569,26 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
             void методSimpleCreateImage(){
                 try{
                     // TODO: 24.07.2023  Поднимаем файл из Image уже созданого
-                    asyncTaskLoaderForNewMaterial.startLoading();
+                   // asyncTaskLoaderForNewMaterial.startLoading();
                     Intent intentCreateImageNew=new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //android.provider.MediaStore.ACTION_IMAGE_CAPTURE
                     ContentValues values = new ContentValues();
                     values.put(MediaStore.Images.Media.TITLE, "New Picture");
                     values.put(MediaStore.Images.Media.DESCRIPTION, "From Camera");
+                    intentCreateImageNew.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    intentCreateImageNew.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION );
                    Uri cam_uri = requireContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
                     String[] mimeTypes = {"image/jpeg", "image/png"};
+                    Bundle bundleNewCreateaImage=new Bundle();
+                    bundleNewCreateaImage.putString("cam_uri",cam_uri.toString());
                     intentCreateImageNew.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
                     intentCreateImageNew.putExtra(MediaStore.EXTRA_OUTPUT, cam_uri);
 
-                    someActivityResultLauncherNewImage.launch(intentCreateImageNew);
+
+                     someActivityResultLauncherNewImage.launch(intentCreateImageNew);
+
+
+
+
                     // TODO: 20.07.2023
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
