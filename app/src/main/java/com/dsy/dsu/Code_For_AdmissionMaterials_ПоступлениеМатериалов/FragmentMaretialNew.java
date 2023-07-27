@@ -168,6 +168,8 @@ public class FragmentMaretialNew extends Fragment {
 
     private ActivityResultLauncher<Intent> someActivityResultLauncherNewImageExpanded;
 
+    private ActivityResultLauncher<Uri> someActivityResultLauncherNewImageTest;
+
 
 
        private   Uri cam_uri;
@@ -351,50 +353,7 @@ public class FragmentMaretialNew extends Fragment {
                     }
                 });
     }
-    // TODO: 26.07.2023 CallsBAckImageNew
-    void методCallsBackNewImageActivityResultExpanded(){
-        // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displaye
-// TODO: 27.07.2023 текст код
-        someActivityResultLauncherNewImageExpanded  = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult()
-                , new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        try{
-                            if (result.getResultCode() == Activity.RESULT_OK ||
-                            result.getResultCode() == Activity.RESULT_CANCELED) {
-                                if (   cam_uri!=null) {
-                                    // TODO: 24.07.2023  New  file Image
-                                    subClassCreateNewImageForMateril.new
-                                            SubClassCompleteNewImageUpAndCreate().методОбраобткиUPCompleteImages(getActivity(),cam_uri);
-                                }
 
-                                Toast.makeText(getContext(), " Expanded new Image Photo"+new Date().toLocaleString(), Toast.LENGTH_SHORT).show();
-
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                        + " result " +result  + " cam_uri  " +cam_uri);
-                            }
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                    + " asyncTaskLoaderForNewMaterial.isAbandoned() " +asyncTaskLoaderForNewMaterial.isAbandoned());
-                            // TODO: 19.10.2022  слушатель после получение даннных в Курсом
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(getContext().getClass().getName(),
-                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    }
-                });
-
-
-    }
 
     // TODO: 26.07.2023 CallsBAckImageNew
     void методCallsBackNewImageActivityResult(){
@@ -438,7 +397,75 @@ public class FragmentMaretialNew extends Fragment {
 
 
     }
+    // TODO: 26.07.2023 CallsBAckImageNew    Expanded
+    void методCallsBackNewImageActivityResultExpanded(){
+        // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displaye
+// TODO: 27.07.2023 текст код
+        someActivityResultLauncherNewImageExpanded  = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult()
+                , new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        try{
+                            if (result.getResultCode() == Activity.RESULT_OK ||
+                                    result.getResultCode() == Activity.RESULT_CANCELED) {
+                                if (   cam_uri!=null) {
+                                    // TODO: 24.07.2023  New  file Image
+                                    subClassCreateNewImageForMateril.new
+                                            SubClassCompleteNewImageUpAndCreate().методОбраобткиUPCompleteImages(getActivity(),cam_uri);
+                                }
 
+                                Toast.makeText(getContext(), " Expanded new Image Photo"+new Date().toLocaleString(), Toast.LENGTH_SHORT).show();
+
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                        + " result " +result  + " cam_uri  " +cam_uri);
+                            }
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                    + " asyncTaskLoaderForNewMaterial.isAbandoned() " +asyncTaskLoaderForNewMaterial.isAbandoned());
+                            // TODO: 19.10.2022  слушатель после получение даннных в Курсом
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(getContext().getClass().getName(),
+                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
+                    }
+                });
+
+
+        // TODO: 27.07.2023  test kode
+
+        someActivityResultLauncherNewImageTest=registerForActivityResult(new ActivityResultContracts.TakePicture(), new ActivityResultCallback<Boolean>() {
+            @Override
+            public void onActivityResult(Boolean result) {
+                try{
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " asyncTaskLoaderForNewMaterial.isAbandoned() " +asyncTaskLoaderForNewMaterial.isAbandoned());
+                // TODO: 19.10.2022  слушатель после получение даннных в Курсом
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+            }
+        });
+
+
+
+    }
 
 
     private Cursor МетодПолучениеДанныхДляЦФО(Intent intentДляПолучениеСправочкинов) {
@@ -2694,7 +2721,9 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                     ContentResolver contentResolverNewImage=  getActivity().getContentResolver();
                      cam_uri = contentResolverNewImage.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
                     intentCreateImageNew.putExtra(MediaStore.EXTRA_OUTPUT, cam_uri);
-                    someActivityResultLauncherNewImageExpanded.launch(intentCreateImageNew);
+                   // someActivityResultLauncherNewImageExpanded.launch(intentCreateImageNew);
+                    // TODO: 27.07.2023 test
+                    someActivityResultLauncherNewImageTest.launch(cam_uri);
                     // TODO: 20.07.2023
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
