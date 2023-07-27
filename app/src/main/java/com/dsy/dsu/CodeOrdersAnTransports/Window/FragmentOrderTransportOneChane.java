@@ -1185,24 +1185,6 @@ public class FragmentOrderTransportOneChane extends Fragment {
                         }
                     };
                     Boolean   isBound =    getContext(). bindService(intentЗапускOrserTransportService, serviceConnection , Context.BIND_AUTO_CREATE);
-                    getContext().registerComponentCallbacks(new ComponentCallbacks() {
-                        @Override
-                        public void onConfigurationChanged(@NonNull Configuration newConfig) {
-                            Log.d(getContext().getClass().getName(), "\n"
-                                    + " время: " + new Date() + "\n+" +
-                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()  + "localBinderOrderTransport " +
-                                    localBinderOrderTransport);
-                        }
-
-                        @Override
-                        public void onLowMemory() {
-;                            Log.d(getContext().getClass().getName(), "\n"
-                                    + " время: " + new Date() + "\n+" +
-                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-                        }
-                    });
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
