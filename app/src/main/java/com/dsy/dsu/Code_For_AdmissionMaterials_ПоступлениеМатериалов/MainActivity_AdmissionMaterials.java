@@ -36,7 +36,7 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
     private Fragment fragment_ДляПолучениеМатериалов;
     private LinearLayout activity_admissionmaterias_face ;
 
-
+  private  BusinessLogic businessLogic;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +52,6 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-            fragmentManager = getSupportFragmentManager();
            activity_admissionmaterias_face =  (LinearLayout) findViewById(R.id.activity_admissionmaterias_mainface);
             ViewGroup.LayoutParams params = activity_admissionmaterias_face.getLayoutParams();
             params.height= ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -84,8 +83,16 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
             };
             ActivityCompat.requestPermissions(this, permissions, 1);
 
+
+
+            businessLogic=new BusinessLogic();
             // TODO: 04.11.2022 test
-            МетодЗапускФрагментаПриемМатериалов();
+            businessLogic. МетодЗапускФрагментаПриемМатериалов();
+
+            businessLogic. МетодСлушателяBackStakFragmens();
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
@@ -99,32 +106,74 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
     }
     }
 
-    protected void МетодЗапускФрагментаПриемМатериалов() {
-        try{
-            fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.setCustomAnimations(android.R.anim.slide_out_right, android.R.anim.slide_in_left);
-            fragment_ДляПолучениеМатериалов = new FragmentAdmissionMaterials();
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragment_ДляПолучениеМатериалов);//.layout.activity_for_fragemtb_history_tasks
-            fragmentTransaction.commit();
-            fragmentTransaction.show(fragment_ДляПолучениеМатериалов);
-            Log.d(this.getClass().getName(), " fragment_ДляПолучениеМатериалов " + fragment_ДляПолучениеМатериалов);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
-                    + Thread.currentThread().getStackTrace()[2].getMethodName().toString() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).
-                    МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                            this.getClass().getName().toString(),
-                            Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+
+
+// TODO: 27.07.2023 class business logoc
+
+    class BusinessLogic{
+
+        private void МетодСлушателяBackStakFragmens() {
+                fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+                    @Override
+                    public void onBackStackChanged() {
+                        try{
+                      /*  int backStackEntryCount = fragmentManager.getBackStackEntryCount();
+                        if (backStackEntryCount == 0) {
+                            finish();
+                        }
+                        Fragment fragment = fragmentManager.getFragments()
+                                .get(backStackEntryCount-1);
+                        fragment.onResume();*/
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
+                                + Thread.currentThread().getStackTrace()[2].getMethodName().toString() + " Линия  :"
+                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new Class_Generation_Errors(getApplicationContext()).
+                                МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                        this.getClass().getName().toString(),
+                                        Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
+                    }
+                });
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
+
+
         }
+
+        protected void МетодЗапускФрагментаПриемМатериалов() {
+            try{
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(android.R.anim.slide_out_right, android.R.anim.slide_in_left);
+                fragment_ДляПолучениеМатериалов = new FragmentAdmissionMaterials();
+                fragmentTransaction.setPrimaryNavigationFragment(fragment_ДляПолучениеМатериалов);
+                String FragmentNewImageName=   fragment_ДляПолучениеМатериалов.getClass().getName();
+                fragmentTransaction.addToBackStack(FragmentNewImageName);
+                fragmentTransaction.add(R.id.activity_admissionmaterias_mainface, fragment_ДляПолучениеМатериалов);//.layout.activity_for_fragemtb_history_tasks
+                fragmentTransaction.commit();
+                fragmentTransaction.show(fragment_ДляПолучениеМатериалов);
+                Log.d(this.getClass().getName(), " fragment_ДляПолучениеМатериалов " + fragment_ДляПолучениеМатериалов);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
+                        + Thread.currentThread().getStackTrace()[2].getMethodName().toString() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getApplicationContext()).
+                        МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                this.getClass().getName().toString(),
+                                Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
+
+
+
     }
-
-
-
-
-
-
 }
