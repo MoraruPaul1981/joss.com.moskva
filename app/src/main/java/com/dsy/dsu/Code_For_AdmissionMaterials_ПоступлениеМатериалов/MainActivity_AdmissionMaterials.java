@@ -116,16 +116,18 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
     class BusinessLogic{
         protected void МетодЗапускФрагментаПриемМатериалов() {
             try{
+                fragmentManager.clearBackStack(null);
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.setCustomAnimations(android.R.anim.slide_out_right, android.R.anim.slide_in_left);
+                fragmentTransaction.setCustomAnimations(android.R.anim.slide_out_right,
+                        android.R.anim.slide_in_left);
                 fragment_ДляПолучениеМатериалов = new FragmentAdmissionMaterials();
-                fragmentTransaction.setPrimaryNavigationFragment(fragment_ДляПолучениеМатериалов);
-                String FragmentNewImageName=   fragment_ДляПолучениеМатериалов.getClass().getName();
-                fragmentTransaction.addToBackStack(FragmentNewImageName);
-                fragmentTransaction.add(R.id.activity_admissionmaterias_mainface, fragment_ДляПолучениеМатериалов);//.layout.activity_for_fragemtb_history_tasks
-                fragmentTransaction.commit();
+                fragmentTransaction.add(R.id.activity_admissionmaterias_mainface,
+                                fragment_ДляПолучениеМатериалов)
+                        .setPrimaryNavigationFragment(fragment_ДляПолучениеМатериалов)
+                        .setReorderingAllowed(true).commit();//.layout.activity_for_fragemtb_history_tasks//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.show(fragment_ДляПолучениеМатериалов);
-                Log.d(this.getClass().getName(), " fragment_ДляПолучениеМатериалов " + fragment_ДляПолучениеМатериалов);
+                Log.d(this.getClass().getName(), " fragment_ДляПолучениеМатериалов "
+                        + fragment_ДляПолучениеМатериалов);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"

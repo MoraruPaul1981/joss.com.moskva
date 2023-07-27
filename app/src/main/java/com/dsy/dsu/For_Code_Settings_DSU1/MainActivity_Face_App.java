@@ -237,24 +237,6 @@ public class MainActivity_Face_App extends AppCompatActivity {
     }
 
 
-    private void методUnBindingСлужбыОбновления() {
-        try {
-            if (connectionОбновлениеПО!=null) {
-                unbindService(connectionОбновлениеПО);
-            }
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -511,7 +493,6 @@ public class MainActivity_Face_App extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     try {
-                        методUnBindingСлужбыОбновления();
                         // TODO: 23.03.2022
                         progressBarTabel.setVisibility(View.VISIBLE);
                         // TODO: 23.03.2022
@@ -544,7 +525,6 @@ public class MainActivity_Face_App extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     try {
-                        методUnBindingСлужбыОбновления();
                         progressCommitpay.setVisibility(View.VISIBLE);
                         КнопкаСогласование.setBackgroundColor(Color.parseColor("#F0FFFF"));
                         Log.d(this.getClass().getName(), "Запускает Согласния   ");
@@ -575,7 +555,6 @@ public class MainActivity_Face_App extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             try {
-                                методUnBindingСлужбыОбновления();
                                 prograessbarControlAccess.setVisibility(View.VISIBLE);
                                 КнопкаПоступлениеМатериалов.setBackgroundColor(Color.parseColor("#F0FFFF"));
                                 Log.d(this.getClass().getName(), "Запускает Согласния   ");
@@ -606,7 +585,6 @@ public class MainActivity_Face_App extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     try {
-                        методUnBindingСлужбыОбновления();
                         // TODO: 23.05.2023 тест код
                         prograessbarOrderTransport.setVisibility(View.VISIBLE);
                         КнопкаЗаявкаНаТранспорт.setBackgroundColor(Color.parseColor("#F0FFFF"));
