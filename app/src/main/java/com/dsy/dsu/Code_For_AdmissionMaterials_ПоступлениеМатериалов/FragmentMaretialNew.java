@@ -620,8 +620,8 @@ public class FragmentMaretialNew extends Fragment {
                 Fragment      fragmentПолученыеМатериалов = new FragmentAdmissionMaterials();
                 Bundle bundleСозданиеНовогоМатериала=new Bundle();
                 bundleСозданиеНовогоМатериала.putBinder("binder",binderДляПолучениеМатериалов);
-            String FragmentNewImageName=   fragmentПолученыеМатериалов.getClass().getName();
-            fragmentTransaction.addToBackStack(FragmentNewImageName);
+            String fragmentNewImageNameaddToBackStack=   fragmentПолученыеМатериалов.getClass().getName();
+            fragmentTransaction.addToBackStack(fragmentNewImageNameaddToBackStack);
                 fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragmentПолученыеМатериалов).commit();//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.show(fragmentПолученыеМатериалов);
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -3179,6 +3179,33 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
+
+    }
+
+    // TODO: 27.07.2023  New Class Camera2 Take Photo Test
+    class ClassCAmera2TakePhoto{
+
+       void методCameraTakePhoto(){
+           try{
+
+           Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                   " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                   " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                   + " onSaveInstanceState " +onSaveInstanceState );
+       } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getContext() ).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+       }
+
+
+
+
+
 
     }
 }
