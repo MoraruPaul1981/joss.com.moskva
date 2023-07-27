@@ -54,7 +54,7 @@ import com.dsy.dsu.Business_logic_Only_Class.Websocet.WebSocketss;
 import com.dsy.dsu.CodeOrdersAnTransports.Window.MainActivityOrdersTransports;
 import com.dsy.dsu.Code_ForTABEL.MainActivity_List_Tabels;
 import com.dsy.dsu.Code_ForTABEL.MainActivity_New_Templates;
-import com.dsy.dsu.Code_For_AdmissionMaterials.ActivityFragment.MainActivity_AdmissionMaterials;
+import com.dsy.dsu.Code_For_AdmissionMaterials.Window.*;
 import com.dsy.dsu.Code_For_Commit_Payments_КодДля_Согласование.MainActivity_CommitPay;
 import com.dsy.dsu.Code_For_Firebase_AndOneSignal_Здесь_КодДЛяСлужбыУведомленияFirebase.Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal;
 import com.dsy.dsu.Code_For_Services.ServiceUpdatePoОбновлениеПО;

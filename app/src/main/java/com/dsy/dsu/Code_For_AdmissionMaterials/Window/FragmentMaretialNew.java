@@ -1,4 +1,4 @@
-package com.dsy.dsu.Code_For_AdmissionMaterials.ActivityFragment;
+package com.dsy.dsu.Code_For_AdmissionMaterials.Window;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -154,23 +154,11 @@ public class FragmentMaretialNew extends Fragment {
     private CopyOnWriteArrayList<ImageView> copyOnWriteArrayListGetImages;
 
   private   CopyOnWriteArrayList<LinkedHashMap<Integer,Bitmap>> copyOnWriteArrayListCompleteImageWithID;
-  private  Bundle onSaveInstanceState;
 
-    private MaterialTextView textViewcfo,marerialtextgroupmaterial
-            ,materialtext_onematerial_ves,
-            valueavtomobil,valuekontragent;
-    private TextInputEditText textipputcountassinmaterail,textipputmaretialttn;
-    private MaterialTextView textviewmaterialttn ,textviewmaterialttndata;
-    private ImageView im1,im2, im3,im4;
-    private  TextView textipputmaretialttdata;
 
     private        ActivityResultLauncher<Intent> someActivityResultLauncherUpImage;
 
-    private ActivityResultLauncher<Intent> someActivityResultLauncherNewImage;
 
-    private ActivityResultLauncher<Intent> someActivityResultLauncherNewImageExpanded;
-
-       private   Uri cam_uri;
 
        private CameraManager cameraManager;
        private TextureView  textureView;
@@ -272,9 +260,8 @@ public class FragmentMaretialNew extends Fragment {
             // TODO: 27.07.2023 методы по слушателем Camera Back Image
             методCallsBackUpImageActivityResult();
 
-            методCallsBackNewImageActivityResult();
-            
-            методCallsBackNewImageActivityResultExpanded();
+
+
             // TODO: 17.04.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -361,111 +348,9 @@ public class FragmentMaretialNew extends Fragment {
     }
 
 
-    // TODO: 26.07.2023 CallsBAckImageNew
-    void методCallsBackNewImageActivityResult(){
-        // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displaye
-// TODO: 27.07.2023 текст код
-        someActivityResultLauncherNewImage  = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult()
-                , new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        try{
-                            if (result.getResultCode() == Activity.RESULT_OK && result.getData()!=null) {
-                                Intent dataNewCameraImage = result.getData();
-                                // TODO: 24.07.2023  New  file Image
-                                subClassCreateNewImageForMateril.new
-                                        SubClassCompleteNewImageUpAndCreate().методобработкиSimpleCreateImage(getActivity(),dataNewCameraImage);
-
-                                Toast.makeText(getContext(), "  Simple   new  Image Photo"+new Date().toLocaleString(), Toast.LENGTH_SHORT).show();
-
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                        + " result " +result  + " cam_uri  " +cam_uri);
-                            }
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                    + " asyncTaskLoaderForNewMaterial.isAbandoned() " +asyncTaskLoaderForNewMaterial.isAbandoned());
-                            // TODO: 19.10.2022  слушатель после получение даннных в Курсом
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(getContext().getClass().getName(),
-                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    }
-                });
 
 
-    }
-    // TODO: 26.07.2023 CallsBAckImageNew    Expanded
-    void методCallsBackNewImageActivityResultExpanded(){
-        // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displaye
-// TODO: 27.07.2023 текст код
-        someActivityResultLauncherNewImageExpanded  = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult()
-                , new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        try{
-                            if (result.getResultCode() == Activity.RESULT_OK ||
-                                    result.getResultCode() == Activity.RESULT_CANCELED) {
 
-                                if (   cam_uri!=null) {
-                                    ContentResolver cr =getActivity(). getContentResolver();
-
-                                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                                    // Get the cursorassert selectedImage != null;
-                                    Cursor cursor = cr .query(cam_uri, filePathColumn,
-                                            null, null, null);
-                                    cursor.moveToFirst();
-
-                                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                                    String imgDecodableString = cursor.getString(columnIndex);
-                                    cursor.close();
-                                Bitmap    bitmap = BitmapFactory.decodeFile(imgDecodableString);
-
-
-              /*                      Bitmap  bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, cam_uri);
-                                    int nh = (int) ( bitmap.getHeight() * (512.0 / bitmap.getWidth()) );
-                                    bitmap = Bitmap.createScaledBitmap(bitmap, 512, nh, true);*/
-
-
-                                    // TODO: 24.07.2023  New  file Image
-                                    subClassCreateNewImageForMateril.new
-                                            SubClassCompleteNewImageUpAndCreate().методОбраобткиUPCompleteImages(getActivity(),cam_uri);
-                                }
-
-                                Toast.makeText(getContext(), " Expanded new Image Photo"+new Date().toLocaleString(), Toast.LENGTH_SHORT).show();
-
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                        + " result " +result  + " cam_uri  " +cam_uri);
-                            }
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                    + " asyncTaskLoaderForNewMaterial.isAbandoned() " +asyncTaskLoaderForNewMaterial.isAbandoned());
-                            // TODO: 19.10.2022  слушатель после получение даннных в Курсом
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(getContext().getClass().getName(),
-                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    }
-                });
-
-    }
 
 
     private Cursor МетодПолучениеДанныхДляЦФО(Intent intentДляПолучениеСправочкинов) {
@@ -726,11 +611,13 @@ public class FragmentMaretialNew extends Fragment {
 
     // TODO: 28.02.2022 начало  MyViewHolderДляЧата
     protected class MyViewHolder extends RecyclerView.ViewHolder {
-/*        private MaterialTextView textViewcfo,marerialtextgroupmaterial,materialtext_onematerial_ves,valueavtomobil,valuekontragent;
+        private MaterialTextView textViewcfo,marerialtextgroupmaterial
+                ,materialtext_onematerial_ves,
+                valueavtomobil,valuekontragent;
         private TextInputEditText textipputcountassinmaterail,textipputmaretialttn;
         private MaterialTextView textviewmaterialttn ,textviewmaterialttndata;
-        private ImageView im1,im2,im3,im4;
-        private  TextView textipputmaretialttdata;*/
+        private ImageView im1,im2, im3,im4;
+        private  TextView textipputmaretialttdata;
 
         private MaterialButton bottomcreateassionmaterial;
         private AlertDialog alertDialog;
@@ -1027,9 +914,9 @@ public class FragmentMaretialNew extends Fragment {
             try {
                   holder.bottomcreateassionmaterial.startAnimation(animationscroll);
                   holder.bottom_create_image.startAnimation(animationscroll);
-            textViewcfo.startAnimation(animation);
-                marerialtextgroupmaterial.startAnimation(animation);
-              materialtext_onematerial_ves.startAnimation(animation);
+           holder. textViewcfo.startAnimation(animation);
+                holder.   marerialtextgroupmaterial.startAnimation(animation);
+                holder. materialtext_onematerial_ves.startAnimation(animation);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1080,9 +967,9 @@ public class FragmentMaretialNew extends Fragment {
                     // TODO: 09.12.2022 возвраящяем данные для ЦФО
                     String УжеВыбраннаяТТН = preferencesМатериалы.getString("НазваниеВыбраногоДатаТТН", "");
                     // TODO: 09.12.2022 Востановление ТТН и ДатыТТН
-                              textipputmaretialttdata.setText(УжеВыбраннаяТТН);
-                      textipputmaretialttdata.refreshDrawableState();
-                     textipputmaretialttdata.requestLayout();
+                    holder.      textipputmaretialttdata.setText(УжеВыбраннаяТТН);
+                    holder. textipputmaretialttdata.refreshDrawableState();
+                    holder.  textipputmaretialttdata.requestLayout();
                 }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1103,9 +990,9 @@ public class FragmentMaretialNew extends Fragment {
                     // TODO: 09.12.2022 возвраящяем данные для ЦФО
                     String ВыбранаяДатаТТГУже = preferencesМатериалы.getString("ПозицияВыбраногоТТН", "");
                     // TODO: 09.12.2022 Востановление ТТН и ДатыТТН
-                    textipputmaretialttn.setText(ВыбранаяДатаТТГУже);
-                     textipputmaretialttn.refreshDrawableState();
-                   textipputmaretialttn.requestLayout();
+                    holder.      textipputmaretialttn.setText(ВыбранаяДатаТТГУже);
+                    holder.    textipputmaretialttn.refreshDrawableState();
+                    holder. textipputmaretialttn.requestLayout();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1128,11 +1015,11 @@ public class FragmentMaretialNew extends Fragment {
                     Bundle bundle=new Bundle();
                     bundle.putInt("ПолучаемIDЦфо",ПозицияВыбраногоЦФО);
                     bundle.putString("НазваниеЦФО",НазваниеВыбраногоЦФО);
-                    textViewcfo.setTag(bundle);
-                    textViewcfo.setText(НазваниеВыбраногоЦФО);
+                    holder.    textViewcfo.setTag(bundle);
+                    holder.    textViewcfo.setText(НазваниеВыбраногоЦФО);
 
-                   textViewcfo.refreshDrawableState();
-                   textViewcfo.requestLayout();
+                    holder.  textViewcfo.refreshDrawableState();
+                    holder.   textViewcfo.requestLayout();
                 }
                 // TODO: 15.12.2022 НОВЫЙ ПОСИК ДЛЯ ЦФО
                 class ЦфоНовыйФильтДляЦФО extends SubClassNewFilterSFOНовыйФильтДанных{
@@ -1141,7 +1028,7 @@ public class FragmentMaretialNew extends Fragment {
                         super.МетодКоторыйОперделянтТекуийКурсор(holder, cursorRecyclerView);
                     }
                 }
-                new ЦфоНовыйФильтДляЦФО().МетодЗапускаНовогоФильтра(textViewcfo,holder,
+                new ЦфоНовыйФильтДляЦФО().МетодЗапускаНовогоФильтра( holder.textViewcfo,holder,
                         "ЦФО","cfo","name");
 
             } catch (Exception e) {
@@ -1170,13 +1057,13 @@ public class FragmentMaretialNew extends Fragment {
                         Log.d(this.getClass().getName()," position");
                             if (hasFocus==true) {
                                 // searchViewДляНовогоЦФО.setQueryHint("Поиск цфо");
-                                if(materialTextView.getId()==textViewcfo.getId()) {
+                                if(materialTextView.getId()== holder.textViewcfo.getId()) {
                                     ((SearchView) v).setQueryHint("Поиск цфо");
                                 }
-                                if(materialTextView.getId()==marerialtextgroupmaterial.getId()) {
+                                if(materialTextView.getId()== holder.marerialtextgroupmaterial.getId()) {
                                     ((SearchView) v).setQueryHint("Поиск гр. материалов");
                                 }
-                                if(materialTextView.getId()==materialtext_onematerial_ves.getId()) {
+                                if(materialTextView.getId()== holder.materialtext_onematerial_ves.getId()) {
                                     ((SearchView) v).setQueryHint("Поиск материал");
                                 }
                             }
@@ -1262,17 +1149,17 @@ public class FragmentMaretialNew extends Fragment {
 
                    void методGetCursorForQuertyFilter(CharSequence constraint) {
                         try{
-                        if(materialTextView.getId()==materialtext_onematerial_ves.getId()) {
-                            Bundle bundleДляПосика = (Bundle) marerialtextgroupmaterial.getTag();
+                        if(materialTextView.getId()== holder.materialtext_onematerial_ves.getId()) {
+                            Bundle bundleДляПосика = (Bundle)  holder.marerialtextgroupmaterial.getTag();
                             Integer ВытаскиваемIDГруппыМатериаловДляПоследующегоПоиска = bundleДляПосика.getInt("ПолучаемIDЦфо");
                             holder.cursorДляВсехМатериалов = (Cursor)
                                     МетодДляНовогоТабеляПолучаемДанныеИзПосикаТОлькоДляОдногоМатериалаБывшейВесовой(ТаблицаДляФильтра, constraint.toString(), ВытаскиваемIDГруппыМатериаловДляПоследующегоПоиска);
-                    }else if (materialTextView.getId()== valueavtomobil.getId()){
-                            Log.d(this.getClass().getName(), "   holder. valueavtomobil.getId() " +  valueavtomobil.getId());
+                    }else if (materialTextView.getId()==  holder.valueavtomobil.getId()){
+                            Log.d(this.getClass().getName(), "   holder. valueavtomobil.getId() " +   holder.valueavtomobil.getId());
                             holder.cursorДляВсехМатериалов = (Cursor)
                                     МетодДляНовогоТабеляПолучаемДанныеИзПосикаТОлькоДляОдногоМатериалаБывшейВесовой(ТаблицаДляФильтра, constraint.toString(), 0);
 
-                    }else if (materialTextView.getId()==valuekontragent.getId()){
+                    }else if (materialTextView.getId()== holder.valuekontragent.getId()){
                             holder.cursorДляВсехМатериалов = (Cursor)
                                     МетодДляНовогоТабеляПолучаемДанныеИзПосикаТОлькоДляОдногоМатериалаБывшейВесовой(ТаблицаДляФильтра, constraint.toString(), 0);
                         }else{
@@ -1400,12 +1287,12 @@ public class FragmentMaretialNew extends Fragment {
                     Bundle bundle=new Bundle();
                     bundle.putInt("ПолучаемIDЦфо",ПозицияВыбраногоМатериалов);
                     bundle.putString("НазваниеЦФО",НазваниеВыбраногоМатериалов);
-                   marerialtextgroupmaterial.setTag(bundle);
-                  marerialtextgroupmaterial.setText(НазваниеВыбраногоМатериалов);
+                    holder.marerialtextgroupmaterial.setTag(bundle);
+                    holder. marerialtextgroupmaterial.setText(НазваниеВыбраногоМатериалов);
 
-                    marerialtextgroupmaterial.refreshDrawableState();
+                    holder.  marerialtextgroupmaterial.refreshDrawableState();
 
-                    marerialtextgroupmaterial.requestLayout();
+                    holder. marerialtextgroupmaterial.requestLayout();
                 }
                 // TODO: 15.12.2022 НОВЫЙ ПОСИК ДЛЯ группы МАТЕРИАЛОВ
                 class ДляНовгоФимльтраГруппыМатериалов extends SubClassNewFilterSFOНовыйФильтДанных{
@@ -1414,7 +1301,7 @@ public class FragmentMaretialNew extends Fragment {
                         super.МетодКоторыйОперделянтТекуийКурсор(holder, CursorДляГруппаМатериалов);
                     }
                 }
-                new ДляНовгоФимльтраГруппыМатериалов().МетодЗапускаНовогоФильтра(marerialtextgroupmaterial, holder,"Группа материалов",
+                new ДляНовгоФимльтраГруппыМатериалов().МетодЗапускаНовогоФильтра( holder.marerialtextgroupmaterial, holder,"Группа материалов",
                         "type_materials","name");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1438,12 +1325,12 @@ public class FragmentMaretialNew extends Fragment {
                     Bundle bundle=new Bundle();
                     bundle.putInt("ПолучаемIDЦфо",ПозицияВыбраногоГруппыМатериалов);
                     bundle.putString("НазваниеЦФО",НазваниеВыбраногоГруппыМатериалов);
-                    materialtext_onematerial_ves.setTag(bundle);
-                   materialtext_onematerial_ves.setText(НазваниеВыбраногоГруппыМатериалов);
+                    holder.   materialtext_onematerial_ves.setTag(bundle);
+                    holder.  materialtext_onematerial_ves.setText(НазваниеВыбраногоГруппыМатериалов);
 
-                   materialtext_onematerial_ves.refreshDrawableState();
+                    holder.   materialtext_onematerial_ves.refreshDrawableState();
 
-                  materialtext_onematerial_ves.requestLayout();
+                    holder. materialtext_onematerial_ves.requestLayout();
                 }
                 // TODO: 15.12.2022 НОВЫЙ ПОСИК ДЛЯ ЦФО
                 class ОдинМатериаДляФильтраВышшаяВесовая extends SubClassNewFilterSFOНовыйФильтДанных{
@@ -1452,7 +1339,7 @@ public class FragmentMaretialNew extends Fragment {
                         super.МетодКоторыйОперделянтТекуийКурсор(holder, CursorДляОдногоМатериалаБышВесов);
                     }
                 }
-                new ОдинМатериаДляФильтраВышшаяВесовая().МетодЗапускаНовогоФильтра(materialtext_onematerial_ves,holder,"материал",
+                new ОдинМатериаДляФильтраВышшаяВесовая().МетодЗапускаНовогоФильтра( holder.materialtext_onematerial_ves,holder,"материал",
                         "nomen_vesov","name");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1476,12 +1363,12 @@ public class FragmentMaretialNew extends Fragment {
                     Bundle bundle=new Bundle();
                     bundle.putInt("ПолучаемIDЦфо",ПозицияВыбраногоАвтомобили);
                     bundle.putString("НазваниеЦФО",НазваниеВыбраногоАтомобиля);
-                   valueavtomobil.setTag(bundle);
-                    valueavtomobil.setText(НазваниеВыбраногоАтомобиля);
+                    holder.valueavtomobil.setTag(bundle);
+                    holder.   valueavtomobil.setText(НазваниеВыбраногоАтомобиля);
 
-                    valueavtomobil.refreshDrawableState();
+                    holder.   valueavtomobil.refreshDrawableState();
 
-                    valueavtomobil.requestLayout();
+                    holder.  valueavtomobil.requestLayout();
                 }
                 // TODO: 15.12.2022 НОВЫЙ ПОСИК ДЛЯ Автомомиби
                 class НовыйФильДляАвтомобили extends SubClassNewFilterSFOНовыйФильтДанных{
@@ -1490,7 +1377,7 @@ public class FragmentMaretialNew extends Fragment {
                         super.МетодКоторыйОперделянтТекуийКурсор(holder, CursorДляАвтомобиля);
                     }
                 }
-                new НовыйФильДляАвтомобили().МетодЗапускаНовогоФильтра(valueavtomobil,holder,"автомобиль","track","fullname");
+                new НовыйФильДляАвтомобили().МетодЗапускаНовогоФильтра( holder.valueavtomobil,holder,"автомобиль","track","fullname");
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1513,13 +1400,13 @@ public class FragmentMaretialNew extends Fragment {
                     Bundle bundle=new Bundle();
                     bundle.putInt("ПолучаемIDЦфо",ПозицияВыбраногоКонтрагент);
                     bundle.putString("НазваниеЦФО",НазваниеВыбраногоКонтрагент);
-                   valuekontragent.setTag(bundle);
-                    valuekontragent.setText(НазваниеВыбраногоКонтрагент);
+                    holder. valuekontragent.setTag(bundle);
+                    holder. valuekontragent.setText(НазваниеВыбраногоКонтрагент);
 
 
-                  valuekontragent.refreshDrawableState();
+                    holder. valuekontragent.refreshDrawableState();
 
-                   valuekontragent.requestLayout();
+                    holder. valuekontragent.requestLayout();
 
                 }
                 // TODO: 15.12.2022 НОВЫЙ ПОСИК ДЛЯ Автомомиби
@@ -1529,7 +1416,7 @@ public class FragmentMaretialNew extends Fragment {
                         super.МетодКоторыйОперделянтТекуийКурсор(holder, CursorДляКонтрагента);
                     }
                 }
-                new НовыйФильДляКонтрагенты().МетодЗапускаНовогоФильтра(valuekontragent,holder,
+                new НовыйФильДляКонтрагенты().МетодЗапускаНовогоФильтра( holder.valuekontragent,holder,
                         "контрагент","company","name");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1592,44 +1479,44 @@ public class FragmentMaretialNew extends Fragment {
                             Intent intentСамоПолучениеНовогоМатериала=new Intent("СамоСозданиеНовогоМатериала");
                             // TODO: 21.10.2022  перед созданием нового материала получанеим Данные которые нужно вставить
                             Integer IDДляВставкиЦФО= 0;
-                            if (  textViewcfo.getText().length()>0) {
-                                Bundle bundle=(Bundle)  textViewcfo.getTag();
+                            if (   holder.textViewcfo.getText().length()>0) {
+                                Bundle bundle=(Bundle)   holder.textViewcfo.getTag();
                                 IDДляВставкиЦФО=      bundle.getInt("ПолучаемIDЦфо",0);
                             }
                             Integer IDДляВставкиГруппыматериалов= 0;
-                            if (   marerialtextgroupmaterial.length()>0) {
-                                Bundle bundle=(Bundle)   marerialtextgroupmaterial.getTag();
+                            if (  holder.  marerialtextgroupmaterial.length()>0) {
+                                Bundle bundle=(Bundle)    holder.marerialtextgroupmaterial.getTag();
                                 IDДляВставкиГруппыматериалов=      bundle.getInt("ПолучаемIDЦфо",0);
                             }
                             Integer IDДляВставкиОдногоматериала= 0;
-                            if (   materialtext_onematerial_ves.length()>0) {
-                                Bundle bundle=(Bundle)   materialtext_onematerial_ves.getTag();
+                            if (   holder. materialtext_onematerial_ves.length()>0) {
+                                Bundle bundle=(Bundle)    holder.materialtext_onematerial_ves.getTag();
                                 IDДляВставкиОдногоматериала=      bundle.getInt("ПолучаемIDЦфо",0);
                             }
 
                             Integer ВыбраноеЗначениеКоличествоМатериала= 0;
-                            if (textipputcountassinmaterail.getText().length()>0) {
-                                ВыбраноеЗначениеКоличествоМатериала =Integer.parseInt(textipputcountassinmaterail.getText().toString());
+                            if ( holder.textipputcountassinmaterail.getText().length()>0) {
+                                ВыбраноеЗначениеКоличествоМатериала =Integer.parseInt( holder.textipputcountassinmaterail.getText().toString());
                             }
                             String ВыбраноеТТНМатериала=new String();
-                            if (textipputmaretialttn.getText().length()>0) {
-                                ВыбраноеТТНМатериала =textipputmaretialttn.getText().toString();
+                            if ( holder.textipputmaretialttn.getText().length()>0) {
+                                ВыбраноеТТНМатериала = holder.textipputmaretialttn.getText().toString();
                             }
                             String ВыбраноеТТНДата=new String();
-                            if (textipputmaretialttdata.getText().length()>0) {
-                                ВыбраноеТТНДата = textipputmaretialttdata.getText().toString();
+                            if ( holder.textipputmaretialttdata.getText().length()>0) {
+                                ВыбраноеТТНДата = holder. textipputmaretialttdata.getText().toString();
                             }
                             // TODO: 27.12.2022 ДВА НОВЫХ ПОЛЯ АВТОМОБИЛИ И ИЛИ  КОНТРАГЕНТЫ
                             Integer ВыбраноеАвтомобили=0;
-                            if (valueavtomobil.getText().length()>0) {
-                                Bundle bundleАвтомобили=  (Bundle)valueavtomobil.getTag();
+                            if ( holder.valueavtomobil.getText().length()>0) {
+                                Bundle bundleАвтомобили=  (Bundle)  holder. valueavtomobil.getTag();
                                 ВыбраноеАвтомобили=  bundleАвтомобили.getInt("ПолучаемIDЦфо");
                                 Log.d(this.getClass().getName(), " ВыбраноеАвтомобили " +ВыбраноеАвтомобили);
 
                             }
                             Integer ВыбраноеКонтагенты=0;
-                            if (valuekontragent.getText().length()>0) {
-                                Bundle bundleКонтрагенты=  (Bundle) valuekontragent.getTag();
+                            if (  holder.valuekontragent.getText().length()>0) {
+                                Bundle bundleКонтрагенты=  (Bundle)   holder.valuekontragent.getTag();
                                 ВыбраноеКонтагенты=  bundleКонтрагенты.getInt("ПолучаемIDЦфо");
                                 Log.d(this.getClass().getName(), " ВыбраноеКонтагенты " +ВыбраноеКонтагенты);
                             }
@@ -1666,26 +1553,26 @@ public class FragmentMaretialNew extends Fragment {
                                     editor.putBoolean("ДляСпинераУжеВибиралЦФО",true);
                                     // TODO: 09.12.2022 цфо
                                     editor.putInt("ПозицияВыбраногоЦФО",IDДляВставкиЦФО);
-                                    editor.putString("НазваниеВыбраногоЦФО",textViewcfo.getText().toString());
+                                    editor.putString("НазваниеВыбраногоЦФО", holder.textViewcfo.getText().toString());
                                     // TODO: 09.12.2022 группа материалов
                                     editor.putInt("ПозицияВыбраногоГруппыМатериалов",IDДляВставкиГруппыматериалов);
-                                    editor.putString("НазваниеВыбраногоГруппыМатериалов",marerialtextgroupmaterial.getText().toString());
+                                    editor.putString("НазваниеВыбраногоГруппыМатериалов", holder.marerialtextgroupmaterial.getText().toString());
                                     // TODO: 09.12.2022 сам матералов
                                     editor.putInt("ПозицияВыбраногоМатериала",IDДляВставкиОдногоматериала);
-                                    editor.putString("НазваниеВыбраногоМатериала",materialtext_onematerial_ves.getText().toString());
+                                    editor.putString("НазваниеВыбраногоМатериала", holder.materialtext_onematerial_ves.getText().toString());
                                     // TODO: 09.12.2022 два поля ТТН и ТТН ДАТА
                                     Boolean     ФлагДляСкрытыхМатериалов = preferencesМатериалы.getBoolean("ФлагДляСкрытыхМатериалов",false);
                                     if (ФлагДляСкрытыхМатериалов==true) {
-                                        editor.putString("ПозицияВыбраногоТТН",textipputmaretialttn.getText().toString());
-                                        editor.putString("НазваниеВыбраногоДатаТТН",textipputmaretialttdata.getText().toString());
+                                        editor.putString("ПозицияВыбраногоТТН", holder.textipputmaretialttn.getText().toString());
+                                        editor.putString("НазваниеВыбраногоДатаТТН", holder.textipputmaretialttdata.getText().toString());
                                     }
                                     // TODO: 27.12.2022  ДВА НОВЫХ ПОЛЯ МАТЕРИАЛОВ КОНТРАГЕНТ И АВТОМОБИЛЬ
                                     // TODO: 09.12.2022 Автомобиль запоминаем
                                     editor.putInt("ПозицияВыбраногоАвтомобили",ВыбраноеАвтомобили);
-                                    editor.putString("НазваниеВыбраногоАвтомобили",valueavtomobil.getText().toString());
+                                    editor.putString("НазваниеВыбраногоАвтомобили", holder.valueavtomobil.getText().toString());
                                     // TODO: 09.12.2022 Автомобиль Контрогент
                                     editor.putInt("ПозицияВыбраногоКонтрагент",ВыбраноеКонтагенты);
-                                    editor.putString("НазваниеВыбраногоКонтрагент",valuekontragent .getText().toString());
+                                    editor.putString("НазваниеВыбраногоКонтрагент", holder.valuekontragent .getText().toString());
                                     // TODO: 27.12.2022 запоминаем параметры
                                     editor.commit();
 
@@ -1803,8 +1690,8 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                         Animation   animation1= AnimationUtils.loadAnimation(v.getContext(),R.anim.slide_in_row_newscanner1);
                         // TODO: 20.12.2022  оперделяем какой вид загружать когда выбран и когда не выбрана гурппа метарилов
                         Integer КакойИмменоВидЗагружатьДляНовогоПосика=R.layout.simple_for_new_spinner_searchview;
-                        if(materialTextView.getId()== materialtext_onematerial_ves.getId()){
-                            if ( marerialtextgroupmaterial.getText().length()==0) {
+                        if(materialTextView.getId()==  holder.materialtext_onematerial_ves.getId()){
+                            if ( holder. marerialtextgroupmaterial.getText().length()==0) {
                                 КакойИмменоВидЗагружатьДляНовогоПосика=R.layout.simple_for_new_spinner_searchview_kogda_net_group;
                             //   Snackbar.make(v, "Вы не выбрали группу материалов !!!",Snackbar.LENGTH_LONG).setAction("Action",null).show();
                                 ФлагКогдаМыВыбралиОдинМатреиалИНАНегоНетГруппаМатериалов=true;
@@ -1846,7 +1733,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 
 
 
-                                        if(materialTextView.getId()== materialtext_onematerial_ves.getId()) {
+                                        if(materialTextView.getId()==  holder.materialtext_onematerial_ves.getId()) {
                                             if(      holder.cursorДляВсехМатериалов.getCount()==0) {
                                                 holder.cursorДляВсехМатериалов = методПолучениеДанныхЕслиУжеЗаполеныПоляВсахроненииВНАстройкахтелефона(holder);
                                                 // TODO: 17.04.2023
@@ -2037,18 +1924,18 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 
                     void методGetCursorForQuertyFilter(CharSequence constraint) {
                         try{
-                            if(materialTextView.getId()==materialtext_onematerial_ves.getId()) {
-                                Bundle bundleДляПосика = (Bundle) marerialtextgroupmaterial.getTag();
+                            if(materialTextView.getId()== holder.materialtext_onematerial_ves.getId()) {
+                                Bundle bundleДляПосика = (Bundle)  holder.marerialtextgroupmaterial.getTag();
                                 Integer ВытаскиваемIDГруппыМатериаловДляПоследующегоПоиска = bundleДляПосика.getInt("ПолучаемIDЦфо");
                                 holder.cursorДляВсехМатериалов = (Cursor)
                                         МетодДляНовогоТабеляПолучаемДанныеИзПосикаТОлькоДляОдногоМатериалаБывшейВесовой(ТаблицаДляФильтра, constraint.toString(),
                                                 ВытаскиваемIDГруппыМатериаловДляПоследующегоПоиска);
-                            }else if (materialTextView.getId()==valueavtomobil.getId()){
-                                Log.d(this.getClass().getName(), "   holder. valueavtomobil.getId() " +  valueavtomobil.getId());
+                            }else if (materialTextView.getId()== holder.valueavtomobil.getId()){
+                                Log.d(this.getClass().getName(), "   holder. valueavtomobil.getId() " +  holder. valueavtomobil.getId());
                                 holder.cursorДляВсехМатериалов = (Cursor)
                                         МетодДляНовогоТабеляПолучаемДанныеИзПосикаТОлькоДляОдногоМатериалаБывшейВесовой(ТаблицаДляФильтра, constraint.toString(), 0);
 
-                            }else if (materialTextView.getId()==  valuekontragent.getId()){
+                            }else if (materialTextView.getId()==   holder.valuekontragent.getId()){
                                 holder.cursorДляВсехМатериалов = (Cursor)
                                         МетодДляНовогоТабеляПолучаемДанныеИзПосикаТОлькоДляОдногоМатериалаБывшейВесовой(ТаблицаДляФильтра, constraint.toString(), 0);
                             }else{
@@ -2139,11 +2026,11 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                 Cursor cursor1ОдногоМатериала=null;
                 try{
                     Intent intentДляПолучениеСправочкинов=new Intent("НовыеМатериалыПолучениеСправочников");
-                        Bundle bundle= (Bundle)  marerialtextgroupmaterial.getTag();
+                        Bundle bundle= (Bundle)  holder. marerialtextgroupmaterial.getTag();
                         Integer ПолученеиеID=bundle.getInt("ПолучаемIDЦфо");
                   cursor1ОдногоМатериала=       МетоПолучениеДанныхДляОдногоМатериала(intentДляПолучениеСправочкинов,ПолученеиеID);
                         Log.d(this.getClass().getName(),"    holder.cursorДляВсехМатериалов"+   holder.cursorДляВсехМатериалов
-                                +  "holder.marerialtextgroupmaterial.getTag() "+ marerialtextgroupmaterial.getTag()
+                                +  "holder.marerialtextgroupmaterial.getTag() "+ holder. marerialtextgroupmaterial.getTag()
                                 + "  binderДляПолучениеМатериалов.getService() " +binderДляПолучениеМатериалов.getService() + " cursor1ОдногоМатериала  " +cursor1ОдногоМатериала);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -2160,10 +2047,10 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
             protected void МетодДляГруппыМатериаловЗапускатьОдинМатериаловВесовой(Bundle bundle,@NonNull MyViewHolder holder) {
                 try{
                 Log.d(this.getClass().getName()," materialTextView.getId() "+materialTextView.getId()+
-                        " holder.marerialtextgroupmaterial.getId()   "+  marerialtextgroupmaterial.getId()  );
-                if(materialTextView.getId()==  marerialtextgroupmaterial.getId() ){
+                        " holder.marerialtextgroupmaterial.getId()   "+  holder. marerialtextgroupmaterial.getId()  );
+                if(materialTextView.getId()==  holder. marerialtextgroupmaterial.getId() ){
                     Log.d(this.getClass().getName()," materialTextView.getId() "+materialTextView.getId()+
-                            " holder.marerialtextgroupmaterial.getId()   "+  marerialtextgroupmaterial.getId()+
+                            " holder.marerialtextgroupmaterial.getId()   "+  holder. marerialtextgroupmaterial.getId()+
                             "  bundle.getInt(\"ПолучаемIDЦфо\",0) " + bundle.getInt("ПолучаемIDЦфо",0));
                     // TODO: 24.10.2022 дополнительное получение весовых через фильтр Группы материалов
                     if (bundle.getInt("ПолучаемIDЦфо",0)>0) {
@@ -2185,8 +2072,8 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                     МетоПолучениеДанныхДляОдногоМатериала(intentДляПолучениеСправочкинов,ВытаскиваемЗначениеIDдляФильтра);
                     Log.d(this.getClass().getName(), " cursor  " + cursor);
                     // TODO: 24.10.2022 перезапускаем Метод Спинера
-                     materialtext_onematerial_ves.setText("");
-                     materialtext_onematerial_ves.forceLayout();
+                    holder.  materialtext_onematerial_ves.setText("");
+                    holder.  materialtext_onematerial_ves.forceLayout();
                  ///   МетодДанныеОдинМатериалВесовые(holder);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -2580,7 +2467,6 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                             if (v!=null) {
                                 //MaterialTextView materialTextViewЭлементСписка=(MaterialTextView) view;
                                 SubClassUploadImageFromSDCars imageFromSDCars=new SubClassUploadImageFromSDCars();
-                                imageFromSDCars.методSimpleCreateImageExpanded();
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
@@ -2680,15 +2566,15 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
            void методSimpleCreateImage(){
                 try{
                     // TODO: 24.07.2023  Поднимаем файл из Image уже созданого
-                    asyncTaskLoaderForNewMaterial.startLoading();
+              /*      asyncTaskLoaderForNewMaterial.startLoading();
                     Intent intentCreateImageNew=new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //android.provider.MediaStore.ACTION_IMAGE_CAPTURE
                     String[] mimeTypes = {"image/jpeg", "image/png"};
                     intentCreateImageNew.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-                     someActivityResultLauncherNewImage.launch(intentCreateImageNew);
+                     someActivityResultLauncherNewImage.launch(intentCreateImageNew);*/
                     // TODO: 20.07.2023
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +" intentCreateImageNew"  +  intentCreateImageNew );
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getContext().getClass().getName(),
@@ -2701,39 +2587,6 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 
             }
             // TODO: 26.07.2023
-            void методSimpleCreateImageExpanded(){
-                try{
-                    // TODO: 24.07.2023  Поднимаем файл из Image уже созданого
-                    // asyncTaskLoaderForNewMaterial.startLoading();
-                    Intent intentCreateImageNewExpanded=new Intent( MediaStore.ACTION_IMAGE_CAPTURE ); //android.provider.MediaStore.ACTION_IMAGE_CAPTURE     MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA
-                    intentCreateImageNewExpanded.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                    ContentValues contentValues=new ContentValues();
-                    contentValues.put(MediaStore.Images.Media.TITLE, "ter");
-                    contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, "dis");
-                    contentValues.put(MediaStore.Images.Media.DESCRIPTION, "Image");
-                    contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-                    contentValues.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
-                    contentValues.put(MediaStore.Images.Media.DATE_MODIFIED, System.currentTimeMillis());
-                    ContentResolver contentResolverNewImage=  getActivity().getContentResolver();
-                     cam_uri = contentResolverNewImage.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-                    intentCreateImageNewExpanded.putExtra(MediaStore.EXTRA_OUTPUT, cam_uri);
-                    someActivityResultLauncherNewImageExpanded.launch(intentCreateImageNewExpanded);
-
-                    // TODO: 20.07.2023
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +" intentCreateImageNewExpanded"  +  intentCreateImageNewExpanded );
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(getContext().getClass().getName(),
-                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
-
-            }
         }
 
         // TODO: 24.07.2023  Класс Обработываем Полученый Созданный Новый Рисунок или Загружаем Уже Существуеший
@@ -3077,107 +2930,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
     }//todo END SubClassCreateNewImageForMateril
 
     // TODO: 25.07.2023
-    class SubClassSaveComponentAllInRecycreview{
 
-
-  void методSetAllComponentAll(@NonNull   Bundle bundleSet ) {
-            try{
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                if (copyOnWriteArrayListCompleteImageWithID.size()>0) {
-                    // TODO: 25.07.2023  рисунок 1 сохраням
-                    Bitmap bmap1 =
-                            copyOnWriteArrayListCompleteImageWithID.get(0)
-                                    .entrySet().stream()
-                                    .filter(fil -> fil.getKey().equals(im1.getId())).findFirst().get().getValue();
-                    if (bmap1 != null) {
-                        bmap1.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                        byte[] IMagebyteArray1 = stream.toByteArray();
-                        bundleSet.putByteArray("im1", IMagebyteArray1);
-                    }
-                    // TODO: 25.07.2023  рисунок 2 сохраням
-                    Bitmap bmap2 =
-                            copyOnWriteArrayListCompleteImageWithID.get(0)
-                                    .entrySet().stream()
-                                    .filter(fil -> fil.getKey().equals(im1.getId())).findFirst().get().getValue();
-                    if (bmap2 != null) {
-                        bmap2.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                        byte[] IMagebyteArray2 = stream.toByteArray();
-                        bundleSet.putByteArray("im2", IMagebyteArray2);
-                    }
-
-                    // TODO: 25.07.2023  рисунок 3 сохраням
-                    Bitmap bmap3 =
-                            null;
-
-                    bmap3 = copyOnWriteArrayListCompleteImageWithID.get(0)
-                            .entrySet().stream()
-                            .filter(fil -> fil.getKey().equals(im1.getId())).findFirst().get().getValue();
-
-                    if (bmap3 != null) {
-                        bmap3.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                        byte[] IMagebyteArray3 = stream.toByteArray();
-                        bundleSet.putByteArray("im2", IMagebyteArray3);
-                    }
-
-                }
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " (copyOnWriteArrayListCompleteImageWithID.size() " +copyOnWriteArrayListCompleteImageWithID.size()) ;
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getContext() ).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                        this.getClass().getName(),
-                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
-
-
-        void методGetAllComponentAll( ) {
-            try{
-                if ( onSaveInstanceState!=null) {
-// TODO: 25.07.2023 Востанавливаем первую фотографию
-                    byte[] bitmap1byte=onSaveInstanceState.getByteArray("im1");
-                    if (bitmap1byte!=null) {
-                        InputStream is = new ByteArrayInputStream(bitmap1byte);
-                        Bitmap bitmap1 = BitmapFactory.decodeStream(is);
-                        im1.setImageBitmap(bitmap1);
-                    }
-
-              /*      Bitmap bmap1 = im1.getDrawingCache();
-                    bmap1.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                    byte[] IMagebyteArray1 = stream.toByteArray();
-                    bundleSet.putByteArray("im1",IMagebyteArray1);
-                    // TODO: 25.07.2023  рисунок 2 сохраням
-                    Bitmap bmap2 = im2.getDrawingCache();
-                    bmap2.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                    byte[] IMagebyteArray2 = stream.toByteArray();
-                    bundleSet.putByteArray("im2",IMagebyteArray2);
-
-                    // TODO: 25.07.2023  рисунок 3 сохраням
-                    Bitmap bmap3 = im3.getDrawingCache();
-                    bmap3.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                    byte[] IMagebyteArray3 = stream.toByteArray();
-                    bundleSet.putByteArray("im2",IMagebyteArray3);*/
-
-                }
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " onSaveInstanceState " +onSaveInstanceState );
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getContext() ).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                        this.getClass().getName(),
-                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
-
-    }
 
     // TODO: 27.07.2023  New Class Camera2 Take Photo Test
     class ClassCAmera2TakePhoto{
@@ -3187,8 +2940,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 
            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                   " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                   + " onSaveInstanceState " +onSaveInstanceState );
+                   " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
        } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +

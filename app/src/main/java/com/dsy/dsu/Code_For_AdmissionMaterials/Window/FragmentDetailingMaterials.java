@@ -1,4 +1,4 @@
-package com.dsy.dsu.Code_For_AdmissionMaterials.ActivityFragment;
+package com.dsy.dsu.Code_For_AdmissionMaterials.Window;
 
 import android.content.Intent;
 import android.database.ContentObserver;
