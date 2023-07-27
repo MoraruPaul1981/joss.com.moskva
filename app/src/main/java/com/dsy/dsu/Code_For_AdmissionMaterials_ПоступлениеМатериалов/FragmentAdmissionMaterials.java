@@ -452,6 +452,7 @@ public class FragmentAdmissionMaterials extends Fragment {
             data.putBinder("binder",binderДляПолучениеМатериалов);
           String FragmentNewImageName=   fragment_СозданиеНовогоМатериалов.getClass().getName();
             fragmentTransaction.addToBackStack(FragmentNewImageName);
+            fragmentManager.popBackStackImmediate(FragmentNewImageName,FragmentManager.POP_BACK_STACK_INCLUSIVE);
             fragment_СозданиеНовогоМатериалов.setArguments(data);
             fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragment_СозданиеНовогоМатериалов).commit();//.layout.activity_for_fragemtb_history_task
             fragmentTransaction.show(fragment_СозданиеНовогоМатериалов);

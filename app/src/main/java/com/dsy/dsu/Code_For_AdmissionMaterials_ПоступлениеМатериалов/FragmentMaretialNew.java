@@ -541,6 +541,9 @@ public class FragmentMaretialNew extends Fragment {
                 Bundle bundleСозданиеНовогоМатериала=new Bundle();
                 bundleСозданиеНовогоМатериала.putBinder("binder",binderДляПолучениеМатериалов);
                 fragmentПолученыеМатериалов.setArguments(bundleСозданиеНовогоМатериала);
+                    String FragmentNewImageName=   fragmentПолученыеМатериалов.getClass().getName();
+                    fragmentTransaction.addToBackStack(FragmentNewImageName);
+            fragmentManager.popBackStackImmediate(FragmentNewImageName,FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragmentTransaction = fragmentManager.beginTransaction();
                 //    fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragmentПолученыеМатериалов).commit();//.layout.activity_for_fragemtb_history_tasks
