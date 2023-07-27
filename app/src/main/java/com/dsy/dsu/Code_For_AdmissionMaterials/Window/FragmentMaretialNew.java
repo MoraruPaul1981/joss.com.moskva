@@ -69,6 +69,7 @@ import android.widget.Toast;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generator_One_WORK_MANAGER;
+import com.dsy.dsu.Code_For_AdmissionMaterials.Service.ServiceCamera;
 import com.dsy.dsu.Code_For_Services.Service_for_AdminissionMaterial;
 import com.dsy.dsu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
@@ -155,18 +156,7 @@ public class FragmentMaretialNew extends Fragment {
 
   private   CopyOnWriteArrayList<LinkedHashMap<Integer,Bitmap>> copyOnWriteArrayListCompleteImageWithID;
 
-
     private        ActivityResultLauncher<Intent> someActivityResultLauncherUpImage;
-
-
-
-       private CameraManager cameraManager;
-       private TextureView  textureView;
-       private CameraCaptureSession cameraCaptureSession;
-       private  CameraDevice cameraDevice;
-       private CaptureRequest captureRequest;
-
-
 
 
     @Override
@@ -2565,6 +2555,10 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 
            void методSimpleCreateImage(){
                 try{
+                    // Запускаем свой IntentService
+                    Intent intentServiceCamera = new Intent(getContext(), ServiceCamera.class);
+                    intentServiceCamera.setAction("StartServiceCamera.com");
+                    getContext(). startService(intentServiceCamera);
                     // TODO: 24.07.2023  Поднимаем файл из Image уже созданого
               /*      asyncTaskLoaderForNewMaterial.startLoading();
                     Intent intentCreateImageNew=new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //android.provider.MediaStore.ACTION_IMAGE_CAPTURE

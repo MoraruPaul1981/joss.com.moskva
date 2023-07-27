@@ -89,9 +89,8 @@
     <uses-permission android:name="com.oppo.launcher.permission.WRITE_SETTINGS" />
     <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_READ" />
     <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_WRITE" />
-
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERAX" />
     <uses-permission android:name="android.permission.CAMERA2" />
     <uses-permission android:name="android.permission.CAMERA2" />
@@ -99,8 +98,6 @@
     <uses-permission android:name="com.mycoolcam.USE_COOL_CAMERA" />
     <uses-permission android:name="android.media.action.IMAGE_CAPTURE" />
     <uses-permission android:name="android.intent.action.ACCESS_BACKGROUND_LOCATION " />
-
-
 
     <uses-feature android:name="android.hardware.location.gps" />
     <uses-feature
@@ -130,17 +127,10 @@
     <uses-feature
         android:name="android.hardware.camera2"
         android:required="false" />
-
     <uses-feature android:name="android.hardware.camera.autofocus" />
-
     <uses-feature android:name="android.hardware.camera.any" />
-
     <uses-feature android:name="android.hardware.CAMERAX" />
-
-    <uses-feature android:name="android.hardware.flash" />
-
-
-    <!-- <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage" /> -->
+    <uses-feature android:name="android.hardware.flash" /> <!-- <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage" /> -->
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:node="replace" />
@@ -158,6 +148,63 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar.Bridge"
         android:usesCleartextTraffic="true">
+
+
+        <service
+            android:name=".Code_For_AdmissionMaterials.Service.ServiceCamera"
+            android:directBootAware="true"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:showOnLockScreen="true">
+            <intent-filter>
+                <action android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <action android:name="android.permission.WAKE_LOCK" />
+                <action android:name="android.intent.action.SCREEN_OFF" />
+                <action android:name="android.intent.action.SCREEN_ON" />
+                <action android:name="android.permission.BIND_JOB_SERVICE" />
+                <action android:name="android.intent.action.PACKAGE_INSTALL" />
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.permission.FOREGROUND_SERVICE" />
+                <action android:name="android.permission.INSTANT_APP_FOREGROUND_SERVICE" />
+                <action android:name="com.huawei.permission.SYSTEM_ALERT_WINDOW" />
+                <action android:name="android.permission.WAKE_LOCK" />
+                <action android:name="android.permission.SET_ALARM" />
+                <action android:name="com.android.alarm.permission.SET_ALARM" />
+                <action android:name="android.permission.FOREGROUND_SERVICE" />
+                <action android:name="android.permission.INSTANT_APP_FOREGROUND_SERVICE" />
+                <action android:name="android.permission.FOREGROUND_SERVICE" />
+                <action android:name="android.intent.action.ACTION_EXTERNAL_APPLICATIONS_AVAILABLE" />
+                <action android:name="android.chrome.permission.CHILD_SERVICE" />
+            </intent-filter>
+        </service>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -200,7 +247,6 @@
                 <action android:name="android.intent.action.ACTION_EXTERNAL_APPLICATIONS_AVAILABLE" />
             </intent-filter>
         </service>
-
         <service
             android:name=".CodeOrdersAnTransports.Background.ServiceOrserTransportService"
             android:directBootAware="true"
@@ -240,7 +286,6 @@
                 <action android:name="android.intent.action.ACTION_EXTERNAL_APPLICATIONS_AVAILABLE" />
             </intent-filter>
         </service>
-
 
         <activity
             android:name=".Code_For_AdmissionMaterials.Window.MainActivity_AdmissionMaterials"
@@ -288,19 +333,15 @@
                 <action android:name="android.intent.action.RUN" />
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
                 <action android:name="android.permission.WAKE_LOCK" />
-
                 <action android:name="android.permission.CAMERA" />
-                <action android:name="android.permission.RECORD_AUDIO"/>
+                <action android:name="android.permission.RECORD_AUDIO" />
                 <action android:name="android.permission.CAMERAX" />
                 <action android:name="android.permission.CAMERA2" />
                 <action android:name="android.permission.CAMERA2" />
                 <action android:name="android.hardware.camera.any" />
                 <action android:name="com.mycoolcam.USE_COOL_CAMERA" />
-
-
             </intent-filter>
         </activity>
-
 
         <service
             android:name=".Code_For_Services.Service_For_Remote_Async_Binary"
@@ -308,7 +349,6 @@
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE"
-
             android:showOnLockScreen="true">
             <intent-filter>
                 <action android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -342,7 +382,6 @@
                 <action android:name="android.intent.action.ACTION_EXTERNAL_APPLICATIONS_AVAILABLE" />
             </intent-filter>
         </service>
-
         <service
             android:name=".Code_For_Services.Service_for_AdminissionMaterial"
             android:directBootAware="true"
@@ -1010,8 +1049,6 @@
             android:permission="com.dsy.dsu.providerdatabasemirror.pemission"
             android:readPermission="true"
             android:writePermission="true" />
-
-
         <provider
             android:name=".Code_For_Firebase_And_Provader.ContentProviderSynsUpdateBinary"
             android:authorities="com.dsy.dsu.providerdatabasemirrorbinary"
@@ -1068,10 +1105,6 @@
             android:enabled="true"
             android:exported="false"
             tools:node="merge" />
-
-
-
-
         <!--
     <provider>org.hibernate.jpa.HibernatePersistenceProvider
         </provider>
@@ -1216,13 +1249,12 @@
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Code_ForTABEL.viewpagers.MainActivity_Tabel_Single_PeopleOneSwipe"
             android:exported="true"
             android:label="Табель"
-            android:windowSoftInputMode="stateVisible|adjustPan"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"
+            android:windowSoftInputMode="stateVisible|adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dsy.dsu.Code_ForTABEL.viewpagers.MainActivity_Tabel_Single_PeopleOneSwipe" />
@@ -1240,10 +1272,6 @@
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>
         </activity>
-
-
-
-
         <activity
             android:name=".Code_ForTABEL.MainActivity_List_Peoples"
             android:exported="true"
@@ -1486,7 +1514,9 @@
             android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <action android:name="android.intent.action.PACKAGE_INSTALL" />
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
@@ -1520,13 +1550,10 @@
                 <action android:name="android.permission.WAKE_LOCK" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
-
-
-
     </application>
 
 </manifest>
