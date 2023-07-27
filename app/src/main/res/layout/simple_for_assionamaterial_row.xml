@@ -10,7 +10,7 @@
     android:gravity="center_horizontal|center_vertical"
     android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
     android:background="#FFFFFF"
-    tools:context=".Code_For_AdmissionMaterials_ПоступлениеМатериалов.MainActivity_AdmissionMaterials">
+    tools:context=".Code_For_AdmissionMaterials.q.MainActivity_AdmissionMaterials">
 
 
     <TableRow android:id="@+id/TableRowNameCFO"

@@ -18,7 +18,7 @@
     app:strokeWidth="3dp"
     android:translationZ="150dp"
     android:animateLayoutChanges="true"
-    tools:context=".Code_For_AdmissionMaterials_ПоступлениеМатериалов.MainActivity_AdmissionMaterials">
+    tools:context=".Code_For_AdmissionMaterials.q.MainActivity_AdmissionMaterials">
 
 
    <LinearLayout

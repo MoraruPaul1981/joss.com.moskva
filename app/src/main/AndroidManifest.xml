@@ -243,7 +243,7 @@
 
 
         <activity
-            android:name=".Code_For_AdmissionMaterials_ПоступлениеМатериалов.MainActivity_AdmissionMaterials"
+            android:name=".Code_For_AdmissionMaterials.q.MainActivity_AdmissionMaterials"
             android:exported="true"
             android:grantUriPermissions="true"
             android:label="Поступление материалов"
