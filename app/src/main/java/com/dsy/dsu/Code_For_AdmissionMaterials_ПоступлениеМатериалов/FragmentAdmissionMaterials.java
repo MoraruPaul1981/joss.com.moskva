@@ -91,7 +91,7 @@ public class FragmentAdmissionMaterials extends Fragment {
     private  ViewGroup container;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
-    private Fragment fragment_СозданиеНовогоМатериалов;
+
     private  TextView   textViewНазваниеФрагмента;
     long start;
     long startДляОбноразвовной;
@@ -121,6 +121,8 @@ public class FragmentAdmissionMaterials extends Fragment {
              lifecycleOwner =this ;
             lifecycleOwnerОбщая =this ;
       /*      методБиндингСлужбы();*/
+            fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
 
             class_generator_one_work_manager= new Class_Generator_One_WORK_MANAGER(getActivity());
             Log.d(this.getClass().getName(), "  onViewCreated  FragmentAdmissionMaterials  binderДляПолучениеМатериалов  "+binderДляПолучениеМатериалов);
@@ -160,7 +162,6 @@ public class FragmentAdmissionMaterials extends Fragment {
             recyclerView = view.findViewById(R.id.RecyclerView);
             textViewНазваниеФрагмента = view.findViewById(R.id.TextView);
             textViewНазваниеФрагмента.setText("Поступление материалов".toUpperCase());
-            fragmentManager = getActivity().getSupportFragmentManager();
             linearLayou = view.findViewById(R.id.fragmentadmissionmaterias);
             bottomNavigationView = view.findViewById(R.id.BottomNavigationView);
             bottomNavigationView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED);
@@ -445,14 +446,15 @@ public class FragmentAdmissionMaterials extends Fragment {
     }
     protected void МетодЗапускСозданиНовгоМатериалов() {
         try{
-            fragmentTransaction = fragmentManager.beginTransaction();
             //fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
-            fragment_СозданиеНовогоМатериалов = new FragmentMaretialNew();
+            Fragment  fragment_СозданиеНовогоМатериалов = new FragmentMaretialNew();
             Bundle data=new Bundle();
             data.putBinder("binder",binderДляПолучениеМатериалов);
+
           String FragmentNewImageName=   fragment_СозданиеНовогоМатериалов.getClass().getName();
-            fragmentTransaction.addToBackStack(FragmentNewImageName);
             fragmentManager.popBackStackImmediate(FragmentNewImageName,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            fragmentTransaction.addToBackStack(FragmentNewImageName);
+
             fragment_СозданиеНовогоМатериалов.setArguments(data);
             fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragment_СозданиеНовогоМатериалов).commit();//.layout.activity_for_fragemtb_history_task
             fragmentTransaction.show(fragment_СозданиеНовогоМатериалов);

@@ -63,6 +63,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
+import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_UUID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generator_One_WORK_MANAGER;
 import com.dsy.dsu.Code_For_Services.Service_for_AdminissionMaterial;
@@ -164,9 +165,11 @@ public class FragmentMaretialNew extends Fragment {
 
     private ActivityResultLauncher<Intent> someActivityResultLauncherNewImage;
 
-    private ActivityResultLauncher<Bitmap> someActivityResultLauncherNewBitmap;
+    private ActivityResultLauncher<Intent> someActivityResultLauncherNewImageExpanded;
 
 
+
+       private   Uri cam_uri;
 
 
     @Override
@@ -174,6 +177,7 @@ public class FragmentMaretialNew extends Fragment {
         super.onCreate(savedInstanceState);
         try{
             fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
             preferencesМатериалы = getContext().getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
             Bundle data=         getArguments();
             binderДляПолучениеМатериалов=  (Service_for_AdminissionMaterial.LocalBinderДляПолучениеМатериалов) data.getBinder("binder");
@@ -342,10 +346,8 @@ public class FragmentMaretialNew extends Fragment {
     }
     // TODO: 26.07.2023 CallsBAckImageNew
     void методCallsBackNewImageActivityResult(){
-        // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
-
-
-
+        // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displaye
+// TODO: 27.07.2023 текст код
         someActivityResultLauncherNewImage  = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult()
                 , new ActivityResultCallback<ActivityResult>() {
@@ -363,7 +365,7 @@ public class FragmentMaretialNew extends Fragment {
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                        + " result " +result);
+                                        + " result " +result  + " cam_uri  " +cam_uri);
                             }
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -381,8 +383,6 @@ public class FragmentMaretialNew extends Fragment {
                         }
                     }
                 });
-
-
 
 
     }
@@ -540,11 +540,11 @@ public class FragmentMaretialNew extends Fragment {
                 Fragment      fragmentПолученыеМатериалов = new FragmentAdmissionMaterials();
                 Bundle bundleСозданиеНовогоМатериала=new Bundle();
                 bundleСозданиеНовогоМатериала.putBinder("binder",binderДляПолучениеМатериалов);
-                fragmentПолученыеМатериалов.setArguments(bundleСозданиеНовогоМатериала);
-                    String FragmentNewImageName=   fragmentПолученыеМатериалов.getClass().getName();
-                    fragmentTransaction.addToBackStack(FragmentNewImageName);
+
+            String FragmentNewImageName=   fragmentПолученыеМатериалов.getClass().getName();
             fragmentManager.popBackStackImmediate(FragmentNewImageName,FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.addToBackStack(FragmentNewImageName);
+
                 //    fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragmentПолученыеМатериалов).commit();//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.show(fragmentПолученыеМатериалов);
@@ -2599,14 +2599,19 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                 try{
                     // TODO: 24.07.2023  Поднимаем файл из Image уже созданого
                     // asyncTaskLoaderForNewMaterial.startLoading();
-                    Intent intentCreateImageNew=new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA); //android.provider.MediaStore.ACTION_IMAGE_CAPTURE
-                    ContentValues values = new ContentValues();
-                    values.put(MediaStore.Images.Media.TITLE, "New Picture");
+                    Long  UUIDGeneratorImage = (Long) new Class_Generation_UUID(getActivity()).МетодГенерацииUUID(getActivity());
+                    Intent intentCreateImageNew=new Intent( MediaStore.ACTION_IMAGE_CAPTURE); //android.provider.MediaStore.ACTION_IMAGE_CAPTURE     MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA
+                  /*  ContentValues values = new ContentValues();
+                    values.put(MediaStore.Images.Media.TITLE,  UUIDGeneratorImage.toString());
                     values.put(MediaStore.Images.Media.DESCRIPTION, "From Camera");
                     ContentResolver contentResolverNewImage=  getActivity().getContentResolver();
-                    Uri cam_uri = contentResolverNewImage.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-                    intentCreateImageNew.putExtra(MediaStore.EXTRA_OUTPUT, cam_uri);
+                     cam_uri = contentResolverNewImage.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                    intentCreateImageNew.putExtra(MediaStore.EXTRA_OUTPUT, cam_uri);*/
+
+
                     someActivityResultLauncherNewImage.launch(intentCreateImageNew);
+
+
                     // TODO: 20.07.2023
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

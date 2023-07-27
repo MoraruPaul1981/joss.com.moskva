@@ -117,6 +117,11 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
                 fragmentTransaction.setCustomAnimations(android.R.anim.slide_out_right, android.R.anim.slide_in_left);
                 fragment_ДляПолучениеМатериалов = new FragmentAdmissionMaterials();
                 fragmentTransaction.setPrimaryNavigationFragment(fragment_ДляПолучениеМатериалов);
+
+                String FragmentNewImageName=   fragment_ДляПолучениеМатериалов.getClass().getName();
+                fragmentManager.popBackStackImmediate(FragmentNewImageName,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragmentTransaction.addToBackStack(FragmentNewImageName);
+
                 fragmentTransaction.add(R.id.activity_admissionmaterias_mainface, fragment_ДляПолучениеМатериалов);//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.commit();
                 fragmentTransaction.show(fragment_ДляПолучениеМатериалов);
