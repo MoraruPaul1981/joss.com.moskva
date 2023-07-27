@@ -3,6 +3,7 @@ package com.dsy.dsu.Code_For_AdmissionMaterials_ПоступлениеМатер
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -2565,7 +2566,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 // TODO: 21.07.2023 create
 
 
-            void методSimpleCreateImage(){
+/*            void методSimpleCreateImage(){
                 try{
                     // TODO: 24.07.2023  Поднимаем файл из Image уже созданого
                    // asyncTaskLoaderForNewMaterial.startLoading();
@@ -2589,23 +2590,18 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
 
-            }
+            }*/
             // TODO: 26.07.2023
-/*            void методSimpleCreateImage(){
+            void методSimpleCreateImage(){
                 try{
                     // TODO: 24.07.2023  Поднимаем файл из Image уже созданого
                     // asyncTaskLoaderForNewMaterial.startLoading();
-                    Intent intentCreateImageNew=new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //android.provider.MediaStore.ACTION_IMAGE_CAPTURE
+                    Intent intentCreateImageNew=new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA); //android.provider.MediaStore.ACTION_IMAGE_CAPTURE
                     ContentValues values = new ContentValues();
                     values.put(MediaStore.Images.Media.TITLE, "New Picture");
                     values.put(MediaStore.Images.Media.DESCRIPTION, "From Camera");
-                    intentCreateImageNew.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    intentCreateImageNew.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION );
-                    Uri cam_uri = requireContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-                    String[] mimeTypes = {"image/jpeg", "image/png"};
-                    Bundle bundleNewCreateaImage=new Bundle();
-                    bundleNewCreateaImage.putString("cam_uri",cam_uri.toString());
-                    intentCreateImageNew.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+                    ContentResolver contentResolverNewImage=  getActivity().getContentResolver();
+                    Uri cam_uri = contentResolverNewImage.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
                     intentCreateImageNew.putExtra(MediaStore.EXTRA_OUTPUT, cam_uri);
                     someActivityResultLauncherNewImage.launch(intentCreateImageNew);
                     // TODO: 20.07.2023
@@ -2622,7 +2618,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
 
-            }*/
+            }
         }
 
         // TODO: 24.07.2023  Класс Обработываем Полученый Созданный Новый Рисунок или Загружаем Уже Существуеший
