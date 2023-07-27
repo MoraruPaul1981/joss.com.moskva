@@ -1,4 +1,4 @@
-package com.dsy.dsu.Code_For_AdmissionMaterials.q;
+package com.dsy.dsu.Code_For_AdmissionMaterials.ActivityFragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

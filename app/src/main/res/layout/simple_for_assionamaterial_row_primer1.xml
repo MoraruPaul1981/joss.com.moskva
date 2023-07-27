@@ -10,7 +10,7 @@
     android:gravity="center_horizontal"
     android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
     android:background="#F5FFFA"
-    tools:context=".Code_For_AdmissionMaterials.q.MainActivity_AdmissionMaterials">
+    tools:context=".Code_For_AdmissionMaterials.ActivityFragment.MainActivity_AdmissionMaterials">
 
                    <TableRow android:id="@+id/TableRow01" android:layout_width="match_parent"
                     android:layout_height="40dp" android:layout_margin="10dp">

@@ -1,4 +1,4 @@
-package com.dsy.dsu.Code_For_AdmissionMaterials.q;
+package com.dsy.dsu.Code_For_AdmissionMaterials.ActivityFragment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
