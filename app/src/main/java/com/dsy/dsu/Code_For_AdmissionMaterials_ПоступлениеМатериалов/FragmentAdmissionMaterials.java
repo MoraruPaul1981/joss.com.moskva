@@ -452,7 +452,7 @@ public class FragmentAdmissionMaterials extends Fragment {
             data.putBinder("binder",binderДляПолучениеМатериалов);
 
           String FragmentNewImageName=   fragment_СозданиеНовогоМатериалов.getClass().getName();
-            fragmentManager.popBackStackImmediate(FragmentNewImageName,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
             fragmentTransaction.addToBackStack(FragmentNewImageName);
 
             fragment_СозданиеНовогоМатериалов.setArguments(data);

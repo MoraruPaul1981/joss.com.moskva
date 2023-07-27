@@ -259,7 +259,11 @@ public class FragmentMaretialNew extends Fragment {
             МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
             МетодКпопкиЗначков();
             МетоКликаПоКнопкеBack();
-            // TODO: 27.07.2023 методы по слушателем Camera Bacl Image 
+
+
+            // TODO: 27.07.2023 методы по слушателем Camera Back Image
+            методCallsBackUpImageActivityResult();
+
             методCallsBackNewImageActivityResult();
             
             методCallsBackNewImageActivityResultExpanded();
@@ -357,11 +361,13 @@ public class FragmentMaretialNew extends Fragment {
                     @Override
                     public void onActivityResult(ActivityResult result) {
                         try{
-                            if (result.getResultCode() == Activity.RESULT_OK && result.getData()!=null) {
-                                Intent dataNewCameraImage = result.getData();
-                                // TODO: 24.07.2023  New  file Image
-                                subClassCreateNewImageForMateril.new
-                                        SubClassCompleteNewImageUpAndCreate().методОбраобткиUPCompleteImages(getActivity(),cam_uri);
+                            if (result.getResultCode() == Activity.RESULT_OK ||
+                            result.getResultCode() == Activity.RESULT_CANCELED) {
+                                if (   cam_uri!=null) {
+                                    // TODO: 24.07.2023  New  file Image
+                                    subClassCreateNewImageForMateril.new
+                                            SubClassCompleteNewImageUpAndCreate().методОбраобткиUPCompleteImages(getActivity(),cam_uri);
+                                }
 
                                 Toast.makeText(getContext(), " Expanded new Image Photo"+new Date().toLocaleString(), Toast.LENGTH_SHORT).show();
 
@@ -586,7 +592,7 @@ public class FragmentMaretialNew extends Fragment {
                 bundleСозданиеНовогоМатериала.putBinder("binder",binderДляПолучениеМатериалов);
 
             String FragmentNewImageName=   fragmentПолученыеМатериалов.getClass().getName();
-            fragmentManager.popBackStackImmediate(FragmentNewImageName,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
             fragmentTransaction.addToBackStack(FragmentNewImageName);
 
                 //    fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
@@ -2652,10 +2658,8 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
            void методSimpleCreateImage(){
                 try{
                     // TODO: 24.07.2023  Поднимаем файл из Image уже созданого
-                    asyncTaskLoaderForNewMaterial.startLoading();
+                   // asyncTaskLoaderForNewMaterial.startLoading();
                     Intent intentCreateImageNew=new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //android.provider.MediaStore.ACTION_IMAGE_CAPTURE
-                    intentCreateImageNew.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    intentCreateImageNew.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION );
                     String[] mimeTypes = {"image/jpeg", "image/png"};
                     intentCreateImageNew.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
                      someActivityResultLauncherNewImage.launch(intentCreateImageNew);
@@ -2678,7 +2682,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
             void методSimpleCreateImageExpanded(){
                 try{
                     // TODO: 24.07.2023  Поднимаем файл из Image уже созданого
-                     asyncTaskLoaderForNewMaterial.startLoading();
+                    // asyncTaskLoaderForNewMaterial.startLoading();
                     Long  UUIDGeneratorImage = (Long) new Class_Generation_UUID(getActivity()).МетодГенерацииUUID(getActivity());
                     Intent intentCreateImageNew=new Intent( MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA); //android.provider.MediaStore.ACTION_IMAGE_CAPTURE     MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA
                     ContentValues values = new ContentValues();

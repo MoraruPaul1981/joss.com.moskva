@@ -119,7 +119,7 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
                 fragmentTransaction.setPrimaryNavigationFragment(fragment_ДляПолучениеМатериалов);
 
                 String FragmentNewImageName=   fragment_ДляПолучениеМатериалов.getClass().getName();
-                fragmentManager.popBackStackImmediate(FragmentNewImageName,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
                 fragmentTransaction.addToBackStack(FragmentNewImageName);
 
                 fragmentTransaction.add(R.id.activity_admissionmaterias_mainface, fragment_ДляПолучениеМатериалов);//.layout.activity_for_fragemtb_history_tasks
@@ -139,7 +139,25 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
             }
         }
 
-
+        protected void МетодOnBackStackChangedListenerФрагментаПриемМатериалов() {
+            try{
+                int backStackEntryCount = fragmentManager.getBackStackEntryCount();
+                FragmentManager.BackStackEntry fragment = fragmentManager .getBackStackEntryAt(backStackEntryCount - 1);
+                      Fragment fragmentBaclStack=          fragmentManager.getFragments().get(  fragment.getId());
+                fragmentBaclStack.onResume();
+                Log.d(this.getClass().getName(), " fragment_ДляПолучениеМатериалов " + fragment_ДляПолучениеМатериалов);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
+                        + Thread.currentThread().getStackTrace()[2].getMethodName().toString() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getApplicationContext()).
+                        МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                this.getClass().getName().toString(),
+                                Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
 
     }
 }
