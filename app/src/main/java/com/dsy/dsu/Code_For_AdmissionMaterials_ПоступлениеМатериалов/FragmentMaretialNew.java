@@ -14,13 +14,17 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraDevice;
+import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CaptureRequest;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.IntentSenderRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,6 +46,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -168,11 +173,15 @@ public class FragmentMaretialNew extends Fragment {
 
     private ActivityResultLauncher<Intent> someActivityResultLauncherNewImageExpanded;
 
-    private ActivityResultLauncher<Uri> someActivityResultLauncherNewImageTest;
-
-
-
        private   Uri cam_uri;
+
+       private CameraManager cameraManager;
+       private TextureView  textureView;
+       private CameraCaptureSession cameraCaptureSession;
+       private  CameraDevice cameraDevice;
+       private CaptureRequest captureRequest;
+
+
 
 
     @Override
@@ -409,7 +418,27 @@ public class FragmentMaretialNew extends Fragment {
                         try{
                             if (result.getResultCode() == Activity.RESULT_OK ||
                                     result.getResultCode() == Activity.RESULT_CANCELED) {
+
                                 if (   cam_uri!=null) {
+                                    ContentResolver cr =getActivity(). getContentResolver();
+
+                                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                                    // Get the cursorassert selectedImage != null;
+                                    Cursor cursor = cr .query(cam_uri, filePathColumn,
+                                            null, null, null);
+                                    cursor.moveToFirst();
+
+                                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                                    String imgDecodableString = cursor.getString(columnIndex);
+                                    cursor.close();
+                                Bitmap    bitmap = BitmapFactory.decodeFile(imgDecodableString);
+
+
+              /*                      Bitmap  bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, cam_uri);
+                                    int nh = (int) ( bitmap.getHeight() * (512.0 / bitmap.getWidth()) );
+                                    bitmap = Bitmap.createScaledBitmap(bitmap, 512, nh, true);*/
+
+
                                     // TODO: 24.07.2023  New  file Image
                                     subClassCreateNewImageForMateril.new
                                             SubClassCompleteNewImageUpAndCreate().методОбраобткиUPCompleteImages(getActivity(),cam_uri);
@@ -438,32 +467,6 @@ public class FragmentMaretialNew extends Fragment {
                         }
                     }
                 });
-
-
-        // TODO: 27.07.2023  test kode
-
-        someActivityResultLauncherNewImageTest=registerForActivityResult(new ActivityResultContracts.TakePicture(), new ActivityResultCallback<Boolean>() {
-            @Override
-            public void onActivityResult(Boolean result) {
-                try{
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " asyncTaskLoaderForNewMaterial.isAbandoned() " +asyncTaskLoaderForNewMaterial.isAbandoned());
-                // TODO: 19.10.2022  слушатель после получение даннных в Курсом
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(getContext().getClass().getName(),
-                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-            }
-        });
-
-
 
     }
 
@@ -617,15 +620,10 @@ public class FragmentMaretialNew extends Fragment {
                 Fragment      fragmentПолученыеМатериалов = new FragmentAdmissionMaterials();
                 Bundle bundleСозданиеНовогоМатериала=new Bundle();
                 bundleСозданиеНовогоМатериала.putBinder("binder",binderДляПолучениеМатериалов);
-
             String FragmentNewImageName=   fragmentПолученыеМатериалов.getClass().getName();
-
             fragmentTransaction.addToBackStack(FragmentNewImageName);
-
-                //    fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragmentПолученыеМатериалов).commit();//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.show(fragmentПолученыеМатериалов);
-
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -2685,7 +2683,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
            void методSimpleCreateImage(){
                 try{
                     // TODO: 24.07.2023  Поднимаем файл из Image уже созданого
-                   // asyncTaskLoaderForNewMaterial.startLoading();
+                    asyncTaskLoaderForNewMaterial.startLoading();
                     Intent intentCreateImageNew=new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //android.provider.MediaStore.ACTION_IMAGE_CAPTURE
                     String[] mimeTypes = {"image/jpeg", "image/png"};
                     intentCreateImageNew.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
@@ -2710,24 +2708,24 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                 try{
                     // TODO: 24.07.2023  Поднимаем файл из Image уже созданого
                     // asyncTaskLoaderForNewMaterial.startLoading();
-                    Long  UUIDGeneratorImage = (Long) new Class_Generation_UUID(getActivity()).МетодГенерацииUUID(getActivity());
-                    Intent intentCreateImageNew=new Intent( MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA); //android.provider.MediaStore.ACTION_IMAGE_CAPTURE     MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA
-                    ContentValues values = new ContentValues();
-                    String NamePhotoImage=UUIDGeneratorImage.toString();
-                    intentCreateImageNew.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    intentCreateImageNew.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION );
-                    values.put(MediaStore.Images.Media.TITLE,  NamePhotoImage);
-                    values.put(MediaStore.Images.Media.DESCRIPTION, "From Camera");
+                    Intent intentCreateImageNewExpanded=new Intent( MediaStore.ACTION_IMAGE_CAPTURE ); //android.provider.MediaStore.ACTION_IMAGE_CAPTURE     MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA
+                    intentCreateImageNewExpanded.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    ContentValues contentValues=new ContentValues();
+                    contentValues.put(MediaStore.Images.Media.TITLE, "ter");
+                    contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, "dis");
+                    contentValues.put(MediaStore.Images.Media.DESCRIPTION, "Image");
+                    contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+                    contentValues.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
+                    contentValues.put(MediaStore.Images.Media.DATE_MODIFIED, System.currentTimeMillis());
                     ContentResolver contentResolverNewImage=  getActivity().getContentResolver();
-                     cam_uri = contentResolverNewImage.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-                    intentCreateImageNew.putExtra(MediaStore.EXTRA_OUTPUT, cam_uri);
-                   // someActivityResultLauncherNewImageExpanded.launch(intentCreateImageNew);
-                    // TODO: 27.07.2023 test
-                    someActivityResultLauncherNewImageTest.launch(cam_uri);
+                     cam_uri = contentResolverNewImage.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+                    intentCreateImageNewExpanded.putExtra(MediaStore.EXTRA_OUTPUT, cam_uri);
+                    someActivityResultLauncherNewImageExpanded.launch(intentCreateImageNewExpanded);
+
                     // TODO: 20.07.2023
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +" intentCreateImageNew"  +  intentCreateImageNew );
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +" intentCreateImageNewExpanded"  +  intentCreateImageNewExpanded );
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getContext().getClass().getName(),

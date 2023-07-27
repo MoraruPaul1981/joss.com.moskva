@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -89,6 +90,8 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
             // TODO: 04.11.2022 test
             businessLogic. МетодЗапускФрагментаПриемМатериалов();
 
+          ///  businessLogic.  МетодOnBackStackChangedListenerФрагментаПриемМатериалов();
+
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -117,34 +120,11 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
                 fragmentTransaction.setCustomAnimations(android.R.anim.slide_out_right, android.R.anim.slide_in_left);
                 fragment_ДляПолучениеМатериалов = new FragmentAdmissionMaterials();
                 fragmentTransaction.setPrimaryNavigationFragment(fragment_ДляПолучениеМатериалов);
-
                 String FragmentNewImageName=   fragment_ДляПолучениеМатериалов.getClass().getName();
-
                 fragmentTransaction.addToBackStack(FragmentNewImageName);
-
                 fragmentTransaction.add(R.id.activity_admissionmaterias_mainface, fragment_ДляПолучениеМатериалов);//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.commit();
                 fragmentTransaction.show(fragment_ДляПолучениеМатериалов);
-                Log.d(this.getClass().getName(), " fragment_ДляПолучениеМатериалов " + fragment_ДляПолучениеМатериалов);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
-                        + Thread.currentThread().getStackTrace()[2].getMethodName().toString() + " Линия  :"
-                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new Class_Generation_Errors(getApplicationContext()).
-                        МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName().toString(),
-                                Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-        }
-
-        protected void МетодOnBackStackChangedListenerФрагментаПриемМатериалов() {
-            try{
-                int backStackEntryCount = fragmentManager.getBackStackEntryCount();
-                FragmentManager.BackStackEntry fragment = fragmentManager .getBackStackEntryAt(backStackEntryCount - 1);
-                      Fragment fragmentBaclStack=          fragmentManager.getFragments().get(  fragment.getId());
-                fragmentBaclStack.onResume();
                 Log.d(this.getClass().getName(), " fragment_ДляПолучениеМатериалов " + fragment_ДляПолучениеМатериалов);
             } catch (Exception e) {
                 e.printStackTrace();
