@@ -259,8 +259,10 @@ public class FragmentMaretialNew extends Fragment {
             МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
             МетодКпопкиЗначков();
             МетоКликаПоКнопкеBack();
+            // TODO: 27.07.2023 методы по слушателем Camera Bacl Image 
             методCallsBackNewImageActivityResult();
-            методCallsBackUpImageActivityResult();
+            
+            методCallsBackNewImageActivityResultExpanded();
             // TODO: 17.04.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -346,10 +348,10 @@ public class FragmentMaretialNew extends Fragment {
                 });
     }
     // TODO: 26.07.2023 CallsBAckImageNew
-    void методCallsBackNewImageActivityResult(){
+    void методCallsBackNewImageActivityResultExpanded(){
         // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displaye
 // TODO: 27.07.2023 текст код
-        someActivityResultLauncherNewImage  = registerForActivityResult(
+        someActivityResultLauncherNewImageExpanded  = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult()
                 , new ActivityResultCallback<ActivityResult>() {
                     @Override
@@ -359,9 +361,9 @@ public class FragmentMaretialNew extends Fragment {
                                 Intent dataNewCameraImage = result.getData();
                                 // TODO: 24.07.2023  New  file Image
                                 subClassCreateNewImageForMateril.new
-                                        SubClassCompleteNewImageUpAndCreate().методобработкиSimpleCreateImage(getActivity(),dataNewCameraImage);
+                                        SubClassCompleteNewImageUpAndCreate().методОбраобткиUPCompleteImages(getActivity(),cam_uri);
 
-                                Toast.makeText(getContext(), "new Image Photo"+new Date().toLocaleString(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), " Expanded new Image Photo"+new Date().toLocaleString(), Toast.LENGTH_SHORT).show();
 
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -388,7 +390,48 @@ public class FragmentMaretialNew extends Fragment {
 
     }
 
+    // TODO: 26.07.2023 CallsBAckImageNew
+    void методCallsBackNewImageActivityResult(){
+        // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displaye
+// TODO: 27.07.2023 текст код
+        someActivityResultLauncherNewImage  = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult()
+                , new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        try{
+                            if (result.getResultCode() == Activity.RESULT_OK && result.getData()!=null) {
+                                Intent dataNewCameraImage = result.getData();
+                                // TODO: 24.07.2023  New  file Image
+                                subClassCreateNewImageForMateril.new
+                                        SubClassCompleteNewImageUpAndCreate().методобработкиSimpleCreateImage(getActivity(),dataNewCameraImage);
 
+                                Toast.makeText(getContext(), "  Simple   new  Image Photo"+new Date().toLocaleString(), Toast.LENGTH_SHORT).show();
+
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                        + " result " +result  + " cam_uri  " +cam_uri);
+                            }
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                    + " asyncTaskLoaderForNewMaterial.isAbandoned() " +asyncTaskLoaderForNewMaterial.isAbandoned());
+                            // TODO: 19.10.2022  слушатель после получение даннных в Курсом
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(getContext().getClass().getName(),
+                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
+                    }
+                });
+
+
+    }
 
 
 
@@ -2344,7 +2387,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                                             // TODO: 23.07.2023  загружаем уже готовую фотографию , созданое зарание
                                                             AppCompatImageButton appCompatImageButtonUpImage=
                                                                     linearLayoutCreateNewImageТранспорта.findViewById(R.id.appcompatimagebutton_up);
-                                                            // TODO: 27.07.2023 Клик по данным сделать Up загрузить уже созданую фотографию  
+                                                            // TODO: 27.07.2023 Клик по данным сделать Up загрузить уже созданую фотографию
                                                             методКликПоДаннымUpImage(appCompatImageButtonUpImage);
 
                                                          // TODO: 23.07.2023  Создание НОВОЙ  SIMPLE ФОТОГРАФИИ
@@ -2676,6 +2719,32 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                         BufferedInputStream bufferedInputStreamUpLoadImage=new BufferedInputStream(stream);
                      Bitmap   bitmapUpImage = BitmapFactory.decodeStream(bufferedInputStreamUpLoadImage);
                         // TODO: 24.07.2023  
+                        методЗаполянемImageViewNewImage(bitmapUpImage);
+                        // TODO: 20.07.2023
+                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
+                                + "\n"+ "  bitmapUpImage " +bitmapUpImage  );
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(getContext().getClass().getName(),
+                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
+
+            }
+            void методОбраобткиUPCompleteImages(@NonNull Context context,  @Nullable Uri uriNewImageCamera  ){
+                try{
+                    // TODO: 24.07.2023
+                    if (uriNewImageCamera!=null) {
+                        InputStream stream = getActivity().getContentResolver().openInputStream(uriNewImageCamera);
+                        BufferedInputStream bufferedInputStreamUpLoadImage=new BufferedInputStream(stream);
+                        Bitmap   bitmapUpImage = BitmapFactory.decodeStream(bufferedInputStreamUpLoadImage);
+                        // TODO: 24.07.2023
                         методЗаполянемImageViewNewImage(bitmapUpImage);
                         // TODO: 20.07.2023
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
