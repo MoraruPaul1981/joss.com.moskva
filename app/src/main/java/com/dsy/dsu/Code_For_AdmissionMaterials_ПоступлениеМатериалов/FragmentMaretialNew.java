@@ -76,6 +76,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.common.util.concurrent.AtomicDouble;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
@@ -2343,12 +2344,15 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                                             // TODO: 23.07.2023  загружаем уже готовую фотографию , созданое зарание
                                                             AppCompatImageButton appCompatImageButtonUpImage=
                                                                     linearLayoutCreateNewImageТранспорта.findViewById(R.id.appcompatimagebutton_up);
+                                                            // TODO: 27.07.2023 Клик по данным сделать Up загрузить уже созданую фотографию  
                                                             методКликПоДаннымUpImage(appCompatImageButtonUpImage);
 
                                                          // TODO: 23.07.2023  Создание НОВОЙ  SIMPLE ФОТОГРАФИИ
                                                             AppCompatImageButton appcompatimagebutton_simple_create=
                                                                     linearLayoutCreateNewImageТранспорта.findViewById(R.id.appcompatimagebutton_simple_create);
+                                                            // TODO: 27.07.2023 клик для создание новой фотографии 
                                                             методКликПоДаннымCreateSimpleImage(appcompatimagebutton_simple_create);
+                                                            методLongКликПоДаннымCreateSimpleImage(appcompatimagebutton_simple_create);
                                                             // TODO: 20.07.2023 методы после создание выбора
                                                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n");
@@ -2495,6 +2499,39 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                 });
 
             }
+            // TODO: 27.07.2023 Long Clcikc 
+            private void методLongКликПоДаннымCreateSimpleImage(@NonNull AppCompatImageButton appCompatImageButton) {
+                // TODO: 20.07.2023
+                appCompatImageButton.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        try{
+                            if (v!=null) {
+                                //MaterialTextView materialTextViewЭлементСписка=(MaterialTextView) view;
+                                SubClassUploadImageFromSDCars imageFromSDCars=new SubClassUploadImageFromSDCars();
+                                imageFromSDCars.методSimpleCreateImageExpanded();
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                        "materialTextViewЭлементСписка"+  v);
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                        "materialTextViewЭлементСписка"+  v);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName(),
+                                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
+                        return true;
+                    }
+                });
+
+            }
 
 // TODO: 20.07.2023 при созданнии или Upload Image
                     private void методЗакрываемСозданиеИлиUpIamge(@NonNull  MaterialButton materialButtonЗакрытьДиалог,
@@ -2569,10 +2606,10 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 // TODO: 21.07.2023 create
 
 
-/*            void методSimpleCreateImage(){
+           void методSimpleCreateImage(){
                 try{
                     // TODO: 24.07.2023  Поднимаем файл из Image уже созданого
-                   // asyncTaskLoaderForNewMaterial.startLoading();
+                    asyncTaskLoaderForNewMaterial.startLoading();
                     Intent intentCreateImageNew=new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //android.provider.MediaStore.ACTION_IMAGE_CAPTURE
                     intentCreateImageNew.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     intentCreateImageNew.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION );
@@ -2593,25 +2630,24 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
 
-            }*/
+            }
             // TODO: 26.07.2023
-            void методSimpleCreateImage(){
+            void методSimpleCreateImageExpanded(){
                 try{
                     // TODO: 24.07.2023  Поднимаем файл из Image уже созданого
-                    // asyncTaskLoaderForNewMaterial.startLoading();
+                     asyncTaskLoaderForNewMaterial.startLoading();
                     Long  UUIDGeneratorImage = (Long) new Class_Generation_UUID(getActivity()).МетодГенерацииUUID(getActivity());
-                    Intent intentCreateImageNew=new Intent( MediaStore.ACTION_IMAGE_CAPTURE); //android.provider.MediaStore.ACTION_IMAGE_CAPTURE     MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA
-                  /*  ContentValues values = new ContentValues();
-                    values.put(MediaStore.Images.Media.TITLE,  UUIDGeneratorImage.toString());
+                    Intent intentCreateImageNew=new Intent( MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA); //android.provider.MediaStore.ACTION_IMAGE_CAPTURE     MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA
+                    ContentValues values = new ContentValues();
+                    String NamePhotoImage=UUIDGeneratorImage.toString();
+                    intentCreateImageNew.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    intentCreateImageNew.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION );
+                    values.put(MediaStore.Images.Media.TITLE,  NamePhotoImage);
                     values.put(MediaStore.Images.Media.DESCRIPTION, "From Camera");
                     ContentResolver contentResolverNewImage=  getActivity().getContentResolver();
                      cam_uri = contentResolverNewImage.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-                    intentCreateImageNew.putExtra(MediaStore.EXTRA_OUTPUT, cam_uri);*/
-
-
-                    someActivityResultLauncherNewImage.launch(intentCreateImageNew);
-
-
+                    intentCreateImageNew.putExtra(MediaStore.EXTRA_OUTPUT, cam_uri);
+                    someActivityResultLauncherNewImageExpanded.launch(intentCreateImageNew);
                     // TODO: 20.07.2023
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
