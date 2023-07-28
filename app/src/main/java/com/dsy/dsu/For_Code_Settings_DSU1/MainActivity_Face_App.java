@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.Interpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -137,6 +138,7 @@ public class MainActivity_Face_App extends AppCompatActivity {
             prograessbarControlAccess.setVisibility(View.INVISIBLE);
 
             // TODO: 27.03.2023 inisial message
+            МетодИнициализацияMessager();
             // TODO: 18.02.2023   Инициализация Хандлера
             HadlerИнициализация();
             // TODO: 18.02.2023 установки для Обновленеи ПО
@@ -434,7 +436,7 @@ public class MainActivity_Face_App extends AppCompatActivity {
                             Log.w(getPackageName().getClass().getName(), "item.getItemId() МЕНЮ ОБНОВЛЕНИЕ ПО    " + item.getItemId() + "\n" + item);/////////
                             handlerFaceAPP.post(()->{
                                 try {
-                                    localBinderОбновлениеПО.getService().МетодГлавныйОбновленияПО(true, activity);
+                                    localBinderОбновлениеПО.getService().МетодГлавныйОбновленияПО(true, activity,message);
                                     Log.i(this.getClass().getName(), " Из меню установкаОбновление ПО "
                                             + Thread.currentThread().getStackTrace()[2].getMethodName()
                                             + " время " + new Date().toLocaleString());
@@ -485,6 +487,28 @@ public class MainActivity_Face_App extends AppCompatActivity {
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
+    private void МетодИнициализацияMessager() {
+            message=Message.obtain(new Handler(Looper.myLooper()),()->{
+                try {
+                    Bundle bundleCallsBackAsynsService=message.getData();
+                    Log.d(this.getClass().getName(), "\n" + " class " +
+                            Thread.currentThread().getStackTrace()[2].getClassName()
+                            + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                            + " message.what " +message.what  + "bundleCallsBackAsynsService "+bundleCallsBackAsynsService);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
+
+            });
+    }
+
 
 
     void МетодFaceApp_СлушательПриНажатииНаКнопки() {

@@ -14,6 +14,7 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
@@ -70,6 +71,10 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
     private String ИмяПотока="binderupdatepo";
     private  Activity activity;
     private  Boolean РежимРаботыСлужбыОбновлениеПО=false;
+    private      AlertDialog alertDialogЗагрущик=null;
+    private    File FileAPK = null;
+
+    private Message message;
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
      *
@@ -139,7 +144,7 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         try{
-            МетодГлавныйОбновленияПО(false,activity);
+            МетодГлавныйОбновленияПО(false,activity,message);
             Log.i(getApplicationContext().getClass().getName(), " ServiceUpdatePoОбновлениеПО  МетодГлавныйЗапускаОбновлениеПО  " + " время запуска  " + new Date());
         } catch (Exception e) {
             e.printStackTrace();
@@ -154,12 +159,14 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
 
 
     public Boolean   МетодГлавныйОбновленияПО(@NonNull Boolean РежимРаботыСлужбыОбновлениеПО ,
-                                              @NonNull Activity  activity){
+                                              @NonNull Activity  activity,
+                                              @NonNull Message message){
         Boolean ФлагЗАпускатьСинхронизациюПотосучтоВерсияРавна=false;
         try {
             this.activity=activity;
             this.РежимРаботыСлужбыОбновлениеПО=РежимРаботыСлужбыОбновлениеПО;
             final Integer[] ВерсияПООтСервере = {0};
+            this.message=message;
 
             String  РежимРаботыСети = МетодУзнаемРежимСетиWIFiMobile(getApplicationContext());
             preferences = getApplicationContext().getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
@@ -204,11 +211,13 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
     }
 
     public Boolean МетодГлавныйОбновленияПОДоAsync(@NonNull Boolean РежимРаботыСлужбыОбновлениеПО ,
-                                                   @NonNull Activity  activity){
+                                                   @NonNull Activity  activity,
+                                                   @NonNull Message message){
         Boolean ФлагЗАпускатьСинхронизациюПотосучтоВерсияРавна=false;
         try {
             this.activity=activity;
             this.РежимРаботыСлужбыОбновлениеПО=РежимРаботыСлужбыОбновлениеПО;
+            this.message=message;
             final Integer[] ВерсияПООтСервере = {0};
             String  РежимРаботыСети = МетодУзнаемРежимСетиWIFiMobile(getApplicationContext());
             preferences = getApplicationContext().getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
@@ -255,7 +264,6 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
         return  ФлагЗАпускатьСинхронизациюПотосучтоВерсияРавна;
     }
     private File МетодЗагрузкиAPK()  {
-        File  FileAPK = null;
         try {
             Log.d(this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName()+"Загружаем Файл APK."+new Date());
             String   ИмяСерверИзХранилица = preferences.getString("ИмяСервера","");
@@ -354,7 +362,6 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
     @UiThread
     void МетодСообщениеЗапускЗагрущикаПо(@NonNull Integer СервернаяВерсияПОВнутри) {
         try {
-            final File[] FileAPK = new File[1];
             LayoutInflater li = LayoutInflater.from(getApplicationContext());
             View promptsView = li.inflate(R.layout.activity_insertdata, null);
             ProgressBar progressBar=promptsView.findViewById(R.id.prograssbarupdatepo);
@@ -362,120 +369,97 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
             progressBar.setVisibility(View.GONE);
             promptsView.forceLayout();
             promptsView.refreshDrawableState();
-            AlertDialog alertDialogЗагрущик = new MaterialAlertDialogBuilder(activity)///       final AlertDialog alertDialog =new AlertDialog.Builder( MainActivity_Face_App.КонтекстFaceApp)
-                    .setTitle("Загрущик")
-                    .setView(promptsView)
-                    .setMessage("Обновление ПО"
-                            + "\n" + "ООО Союз-Автодор"
-                            + "\n"  +"версия. " + СервернаяВерсияПОВнутри)
-                    .setPositiveButton("Загрузить", null)
-                    .setIcon(R.drawable.icon_dsu1_update_success)
-                    .show();
-            // TODO: 06.05.2023 ДВЕ КНОПКИ
-            final Button MessageBoxUpdateНеуСтанавливатьПО = alertDialogЗагрущик.getButton(AlertDialog.BUTTON_NEGATIVE);
-            MessageBoxUpdateНеуСтанавливатьПО.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    alertDialogЗагрущик.dismiss();
-                    alertDialogЗагрущик.cancel();
-                    Log.i(this.getClass().getName(),  "Установщик ПО..." + Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-                }
-            });
+            if (alertDialogЗагрущик==null) {
+                // TODO: 28.07.2023
+                alertDialogЗагрущик = new MaterialAlertDialogBuilder(activity)///       final AlertDialog alertDialog =new AlertDialog.Builder( MainActivity_Face_App.КонтекстFaceApp)
+                       .setTitle("Загрущик")
+                       .setView(promptsView)
+                       .setMessage("Обновление ПО"
+                               + "\n" + "ООО Союз-Автодор"
+                               + "\n"  +"версия. " + СервернаяВерсияПОВнутри)
+                       .setPositiveButton("Загрузить", null)
+                       .setIcon(R.drawable.icon_dsu1_update_success)
+                       .show();
+                // TODO: 06.05.2023 ДВЕ КНОПКИ
+                final Button MessageBoxUpdateНеуСтанавливатьПО = alertDialogЗагрущик.getButton(AlertDialog.BUTTON_NEGATIVE);
+                MessageBoxUpdateНеуСтанавливатьПО.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialogЗагрущик.dismiss();
+                        alertDialogЗагрущик.cancel();
+                        Log.i(this.getClass().getName(),  "Установщик ПО..." + Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                    }
+                });
 
 
 /////////кнопка
-            final Button MessageBoxЗагрущикПО = alertDialogЗагрущик.getButton(AlertDialog.BUTTON_POSITIVE);
-            Integer finalСервернаяВерсияПОВнутри = СервернаяВерсияПОВнутри;
-            MessageBoxЗагрущикПО.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-// TODO: 18.02.2023 Загрузка Нового файла APK
-                        activity.runOnUiThread(()->{
-                            progressBar.setVisibility(View.VISIBLE);
-                            progressBar.setIndeterminate(true);
-                            promptsView.forceLayout();
-                            promptsView.refreshDrawableState();
-                            // TODO: 06.05.2023 делаем кнопки не активныйе
-                            MessageBoxЗагрущикПО.setEnabled(false);
-                            MessageBoxUpdateНеуСтанавливатьПО.setEnabled(false);
-                            Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                            v2.vibrate(VibrationEffect.createOneShot(300, VibrationEffect.DEFAULT_AMPLITUDE));
-                        });
-                        Log.i(this.getClass().getName(),  "Установщик ПО..." + Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-                        Flowable.fromCallable(new Callable<File>() {
-                                    @Override
-                                    public File call() throws Exception {
-                                        FileAPK[0] =  МетодЗагрузкиAPK();
-                                        Log.w(getApplicationContext().getClass().getName(),    Thread.currentThread().getStackTrace()[2].getMethodName()+
-                                                " ЛокальнаяВерсияПО "+ЛокальнаяВерсияПО+  " СервернаяВерсияПОВнутри  "+СервернаяВерсияПОВнутри + " POOLS" +
-                                                Thread.currentThread().getName());
-                                        return FileAPK[0];
-                                    }
-                                })
-                                .subscribeOn(Schedulers.single())
-                                .doOnError(new Consumer<Throwable>() {
-                                    @Override
-                                    public void accept(Throwable throwable) throws Throwable {
-                                        Log.e(this.getClass().getName(), "Ошибка " + throwable+ " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(throwable.toString(), this.getClass().getName(),
-                                                Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                    }
-                                })
-                                .onErrorComplete(new Predicate<Throwable>() {
-                                    @Override
-                                    public boolean test(Throwable throwable) throws Throwable {
-                                        Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(throwable.toString(), this.getClass().getName(),
-                                                Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                        return false;
-                                    }
-                                })
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .doOnComplete(new Action() {
-                                    @Override
-                                    public void run() throws Throwable {
-                                        activity.runOnUiThread(()->{
-                                            progressBar.setIndeterminate(false);
-                                            alertDialogЗагрущик.dismiss();
-                                            alertDialogЗагрущик.cancel();
-                                            if (FileAPK[0] !=null && FileAPK[0].length()>0) {
-                                                МетодУстановкиНовойВерсииПО(СервернаяВерсияПОВнутри,FileAPK[0] ,alertDialogЗагрущик );
-                                            }else{
+                final Button MessageBoxЗагрущикПО = alertDialogЗагрущик.getButton(AlertDialog.BUTTON_POSITIVE);
+                Integer finalСервернаяВерсияПОВнутри = СервернаяВерсияПОВнутри;
+                MessageBoxЗагрущикПО.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+    // TODO: 18.02.2023 Загрузка Нового файла APK
+                                progressBar.setVisibility(View.VISIBLE);
+                                progressBar.setIndeterminate(true);
+                                promptsView.forceLayout();
+                                promptsView.refreshDrawableState();
+                                // TODO: 06.05.2023 делаем кнопки не активныйе
+                                MessageBoxЗагрущикПО.setEnabled(false);
+                                MessageBoxUpdateНеуСтанавливатьПО.setEnabled(false);
+                                Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+                                v2.vibrate(VibrationEffect.createOneShot(300, VibrationEffect.DEFAULT_AMPLITUDE));
 
-                                                Log.w(getApplicationContext().getClass().getName(),
-                                                        Thread.currentThread().getStackTrace()[2].getMethodName()+
-                                                                " ЛокальнаяВерсияПО "+ЛокальнаяВерсияПО+
-                                                                " СервернаяВерсияПОВнутри  "+СервернаяВерсияПОВнутри +
-                                                                " POOLS" + " FileAPK[0] " +FileAPK[0] );
-                                            }
-                                            Log.w(getApplicationContext().getClass().getName(),
-                                                    Thread.currentThread().getStackTrace()[2].getMethodName()+
-                                                            " ЛокальнаяВерсияПО "+ЛокальнаяВерсияПО+
-                                                            " СервернаяВерсияПОВнутри  "+СервернаяВерсияПОВнутри +
-                                                            " POOLS" + " FileAPK[0] " +FileAPK[0] );
+                            Log.i(this.getClass().getName(),  "Установщик ПО..." + Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
 
-                                        });
+                            message.getTarget().post(()-> {
+                                try{
+                                FileAPK = МетодЗагрузкиAPK();
+                                Log.w(getApplicationContext().getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " ЛокальнаяВерсияПО " + ЛокальнаяВерсияПО + " СервернаяВерсияПОВнутри  " + СервернаяВерсияПОВнутри + " POOLS" +
+                                        Thread.currentThread().getName() + " FileAPK " + FileAPK);
 
-                                    }
-                                })
-                                .subscribe();
-                        Log.w(getApplicationContext().getClass().getName(),    Thread.currentThread().getStackTrace()[2].getMethodName()+
-                                " ЛокальнаяВерсияПО "+ЛокальнаяВерсияПО+  " СервернаяВерсияПОВнутри  "+СервернаяВерсияПОВнутри + " POOLS" );
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                progressBar.setIndeterminate(false);
+                                alertDialogЗагрущик.dismiss();
+                                alertDialogЗагрущик.cancel();
+                                if (FileAPK != null && FileAPK.length() > 0) {
+                                    МетодУстановкиНовойВерсииПО(СервернаяВерсияПОВнутри, FileAPK, alertDialogЗагрущик);
+                                } else {
+
+                                    Log.w(getApplicationContext().getClass().getName(),
+                                            Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                                    " ЛокальнаяВерсияПО " + ЛокальнаяВерсияПО +
+                                                    " СервернаяВерсияПОВнутри  " + СервернаяВерсияПОВнутри +
+                                                    " POOLS" + " FileAPK " + FileAPK);
+                                }
+                                Log.w(getApplicationContext().getClass().getName(),
+                                        Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                                " ЛокальнаяВерсияПО " + ЛокальнаяВерсияПО +
+                                                " СервернаяВерсияПОВнутри  " + СервернаяВерсияПОВнутри +
+                                                " POOLS" + " FileAPK " + FileAPK);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                        this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            }
+
+                            });
+                            Log.w(getApplicationContext().getClass().getName(),    Thread.currentThread().getStackTrace()[2].getMethodName()+
+                                    " ЛокальнаяВерсияПО "+ЛокальнаяВерсияПО+  " СервернаяВерсияПОВнутри  "+СервернаяВерсияПОВнутри + " POOLS" );
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
                     }
-                }
-            });
+                });
+            }
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
