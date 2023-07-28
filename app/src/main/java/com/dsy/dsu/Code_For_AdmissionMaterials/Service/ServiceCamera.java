@@ -58,6 +58,8 @@ public class ServiceCamera extends IntentService {
         try{
         // TODO: 28.07.2023
         cameraManager= (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+            // TODO: 28.07.2023
+            методHandlerCamera();
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cameraManager " +cameraManager  );
@@ -89,7 +91,7 @@ public class ServiceCamera extends IntentService {
         getApplicationContext().getMainExecutor().execute(()->{
             try{
             // TODO: 28.07.2023 вариан первый #1
-            методЗапускаServiceCamera(        new ClassTakeCamera());
+            методЗапускаServiceCamera(        new ClassTakeCameraBusiness());
 
             Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
@@ -135,11 +137,56 @@ public class ServiceCamera extends IntentService {
         return binder;
     }*/
 
+    public  void методHandlerCamera(){
+        try{
+            handlerbackgroupCamera=    new Handler(new Handler.Callback() {
+                @Override
+                public boolean handleMessage(@NonNull Message msg) {
+                    Log.d(getApplicationContext().getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    return true;
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // TODO: 28.07.2023 Class Take Phopo // TODO: 28.07.2023 Class Take Phopo// TODO: 28.07.2023 Class Take Phopo// TODO: 28.07.2023 Class Take Phopo
     
 
     
-    class ClassTakeCamera {
+    class ClassTakeCameraBusiness {
     public  void методOpenCamera(){
         try{
             cameraManager.openCamera(cameraId, new CameraDevice.StateCallback() {
@@ -200,15 +247,7 @@ public class ServiceCamera extends IntentService {
 
                 for ( String cameraIdBnytri : cameraManager.getCameraIdList()) {
                      characteristics = cameraManager.getCameraCharacteristics(cameraIdBnytri);
-                 /*   if (characteristics.get(CameraCharacteristics.LENS_FACING) != CameraCharacteristics.LENS_FACING_FRONT) {
-                        continue;
-                    }*/
-                    if (cameraIdBnytri.equalsIgnoreCase("61")) {
                         cameraId=cameraIdBnytri;
-
-
-
-
                         imageReader = ImageReader.newInstance(800, 900, ImageFormat.JPEG, 2);
                         imageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
                             @Override
@@ -234,17 +273,10 @@ public class ServiceCamera extends IntentService {
                             }
                         },handlerbackgroupCamera);
 
-
                         Log.d(getApplicationContext().getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
                                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-                        break;
-
-                    }
-
-
-
                 }
                 Log.d(getApplicationContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
@@ -260,27 +292,6 @@ public class ServiceCamera extends IntentService {
             }
         }
 
-    public  void методHandlerCamera(){
-        try{
-        handlerbackgroupCamera=    new Handler(new Handler.Callback() {
-                @Override
-                public boolean handleMessage(@NonNull Message msg) {
-                    Log.d(getApplicationContext().getClass().getName(), "\n"
-                            + " время: " + new Date() + "\n+" +
-                            " Класс в процессе... " + this.getClass().getName() + "\n" +
-                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-                    return true;
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
 
     void createCaptureSession() {
         List<Surface> outputSurfaces = new LinkedList<>();
@@ -422,11 +433,10 @@ public class ServiceCamera extends IntentService {
     }
 
     // TODO: 28.07.2023  запувск класса по созданию ФОТО #1
-    void  методЗапускаServiceCamera(@NonNull   ClassTakeCamera classTakeCamera){
+    void  методЗапускаServiceCamera(@NonNull ClassTakeCameraBusiness classTakeCameraBusiness){
         try{
-            classTakeCamera.   методHandlerCamera();
-            classTakeCamera.методSetupCamera();
-            classTakeCamera.    методOpenCamera();
+            classTakeCameraBusiness.методSetupCamera();
+            classTakeCameraBusiness.    методOpenCamera();
 
             Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +

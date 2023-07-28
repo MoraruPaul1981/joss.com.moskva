@@ -389,13 +389,14 @@ public class FragmentAdmissionMaterials extends Fragment {
             bottomNavigationItemView2создать.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    try {
-                        МетодЗапускаАнимацииКнопок(v);
-                        handler.postDelayed(()->{
-                            МетодЗапускСозданиНовгоМатериалов()
-                            ;},150);
-                        Log.d(this.getClass().getName(), "  v  " + v);
-                    } catch (Exception e) {
+                        v.animate().rotationX(-40l);
+                        handler .postDelayed(()->{
+                            try{
+                            v.animate().rotationX(0);
+                            // TODO: 28.07.2023
+                            МетодЗапускСозданиНовгоМатериалов();
+                            Log.d(this.getClass().getName(), "  v  " + v);
+                        } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(getContext().getClass().getName(),
                                 "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -404,6 +405,9 @@ public class FragmentAdmissionMaterials extends Fragment {
                                 this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                                 Thread.currentThread().getStackTrace()[2].getLineNumber());
                     }
+                        },150);
+
+
                 }
             });
             bottomNavigationItemView3обновить.setOnClickListener(new View.OnClickListener() {
