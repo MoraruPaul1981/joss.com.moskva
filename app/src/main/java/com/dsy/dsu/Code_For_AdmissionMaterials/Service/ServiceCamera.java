@@ -4,7 +4,6 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.ImageFormat;
-import android.graphics.drawable.GradientDrawable;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
@@ -44,7 +43,7 @@ public class ServiceCamera extends IntentService {
     private Handler handlerbackgroupCamera;
     private  String cameraId;
     private  CameraCharacteristics characteristics ;
-    private ClassTakePhotos classTakePhotos;
+ 
 
     public ServiceCamera() {
         super("ServiceCamera");
@@ -59,9 +58,6 @@ public class ServiceCamera extends IntentService {
         try{
         // TODO: 28.07.2023
         cameraManager= (CameraManager) getSystemService(Context.CAMERA_SERVICE);
-       classTakePhotos=    new ClassTakePhotos();
-            classTakePhotos.   методHandlerCamera();
-
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cameraManager " +cameraManager  );
@@ -88,31 +84,33 @@ public class ServiceCamera extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-try{
 // TODO: 28.07.2023  task Take Photos
     if(intent.getAction().equalsIgnoreCase("StartServiceCamera.takephoto")){
+        getApplicationContext().getMainExecutor().execute(()->{
+            try{
+            // TODO: 28.07.2023 вариан первый #1
+            методЗапускаServiceCamera(        new ClassTakeCamera());
 
-
-        // TODO: 28.07.2023  Сделать Фото
-        classTakePhotos.методSetupCamera();
-
-        classTakePhotos.    методOpenCamera();
-
-
+            Log.d(getApplicationContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        });
 
     }
         Log.d(getApplicationContext().getClass().getName(), "\n"
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                this.getClass().getName(),
-                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-    }
+
     }
 
 
@@ -138,17 +136,30 @@ try{
     }*/
 
 // TODO: 28.07.2023 Class Take Phopo // TODO: 28.07.2023 Class Take Phopo// TODO: 28.07.2023 Class Take Phopo// TODO: 28.07.2023 Class Take Phopo
-    class ClassTakePhotos{
+    
+
+    
+    class ClassTakeCamera {
     public  void методOpenCamera(){
         try{
             cameraManager.openCamera(cameraId, new CameraDevice.StateCallback() {
                 @Override
                 public void onOpened(@NonNull CameraDevice camera) {
+                    try{
                     cameraDevice = camera;
+                    createCaptureSession();
                     Log.d(getApplicationContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
                             " Класс в процессе... " + this.getClass().getName() + "\n" +
                             " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName(),
+                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
                 }
 
                 @Override
@@ -189,48 +200,51 @@ try{
 
                 for ( String cameraIdBnytri : cameraManager.getCameraIdList()) {
                      characteristics = cameraManager.getCameraCharacteristics(cameraIdBnytri);
-                    if (characteristics.get(CameraCharacteristics.LENS_FACING) != CameraCharacteristics.LENS_FACING_FRONT) {
+                 /*   if (characteristics.get(CameraCharacteristics.LENS_FACING) != CameraCharacteristics.LENS_FACING_FRONT) {
                         continue;
+                    }*/
+                    if (cameraIdBnytri.equalsIgnoreCase("61")) {
+                        cameraId=cameraIdBnytri;
+
+
+
+
+                        imageReader = ImageReader.newInstance(800, 900, ImageFormat.JPEG, 2);
+                        imageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
+                            @Override
+                            public void onImageAvailable(ImageReader reader) {
+                                try{
+                                    Image image = reader.acquireLatestImage();
+                                    ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+                                    byte[] bytes = new byte[buffer.remaining()];
+                                    buffer.get(bytes);
+                                    image.close();
+                                    Log.d(getApplicationContext().getClass().getName(), "\n"
+                                            + " время: " + new Date() + "\n+" +
+                                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                    new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                            this.getClass().getName(),
+                                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                }
+                            }
+                        },handlerbackgroupCamera);
+
+
+                        Log.d(getApplicationContext().getClass().getName(), "\n"
+                                + " время: " + new Date() + "\n+" +
+                                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                        break;
+
                     }
 
-                     cameraId=cameraIdBnytri;
-                    Log.d(getApplicationContext().getClass().getName(), "\n"
-                            + " время: " + new Date() + "\n+" +
-                            " Класс в процессе... " + this.getClass().getName() + "\n" +
-                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-                    imageReader = ImageReader.newInstance(800, 900, ImageFormat.JPEG, 2);
-                    imageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
-                        @Override
-                        public void onImageAvailable(ImageReader reader) {
-                            try{
-                            Image image = reader.acquireLatestImage();
-                            ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-                            byte[] bytes = new byte[buffer.remaining()];
-                            buffer.get(bytes);
-                            image.close();
-                            Log.d(getApplicationContext().getClass().getName(), "\n"
-                                    + " время: " + new Date() + "\n+" +
-                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                    this.getClass().getName(),
-                                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                        }
-                    },new Handler(new Handler.Callback() {
-                        @Override
-                        public boolean handleMessage(@NonNull Message msg) {
-                            Log.d(getApplicationContext().getClass().getName(), "\n"
-                                    + " время: " + new Date() + "\n+" +
-                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-                            return false;
-                        }
-                    }));
+
+
                 }
                 Log.d(getApplicationContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
@@ -268,7 +282,7 @@ try{
         }
     }
 
-    private void createCaptureSession() {
+    void createCaptureSession() {
         List<Surface> outputSurfaces = new LinkedList<>();
         outputSurfaces.add(imageReader.getSurface());
         try {
@@ -276,6 +290,8 @@ try{
                 @Override
                 public void onConfigured(CameraCaptureSession session) {
                     cameraCaptureSession = session;
+
+                    imageReader.setOnImageAvailableListener(onImageAvailableListener, handlerbackgroupCamera);
                     Log.d(getApplicationContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
                             " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -303,6 +319,39 @@ try{
     private final ImageReader.OnImageAvailableListener onImageAvailableListener = new ImageReader.OnImageAvailableListener() {
         @Override
         public void onImageAvailable(ImageReader reader) {
+
+
+
+
+            imageReader = ImageReader.newInstance(800, 900, ImageFormat.JPEG, 2);
+            imageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
+                @Override
+                public void onImageAvailable(ImageReader reader) {
+                    try{
+                        Image image = reader.acquireLatestImage();
+                        ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+                        byte[] bytes = new byte[buffer.remaining()];
+                        buffer.get(bytes);
+                        image.close();
+                        Log.d(getApplicationContext().getClass().getName(), "\n"
+                                + " время: " + new Date() + "\n+" +
+                                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                this.getClass().getName(),
+                                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
+                }
+            },handlerbackgroupCamera);
+
+
+
+
+
             createCaptureRequest();
             Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
@@ -359,7 +408,7 @@ try{
                 public void onCaptureBufferLost(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull Surface target, long frameNumber) {
                     super.onCaptureBufferLost(session, request, target, frameNumber);
                 }
-            }, null);
+            }, handlerbackgroupCamera);
 
         } catch (CameraAccessException e) {
             e.printStackTrace();
@@ -372,6 +421,26 @@ try{
         }
     }
 
+    // TODO: 28.07.2023  запувск класса по созданию ФОТО #1
+    void  методЗапускаServiceCamera(@NonNull   ClassTakeCamera classTakeCamera){
+        try{
+            classTakeCamera.   методHandlerCamera();
+            classTakeCamera.методSetupCamera();
+            classTakeCamera.    методOpenCamera();
+
+            Log.d(getApplicationContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+    } catch ( Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+    }
 
     }//TODO END CLASS
 

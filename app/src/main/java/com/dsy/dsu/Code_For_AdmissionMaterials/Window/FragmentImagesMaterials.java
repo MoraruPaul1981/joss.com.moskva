@@ -404,19 +404,27 @@ public class FragmentImagesMaterials extends Fragment {
             bottomNavigationItemView2создать.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    try {
-                        МетодЗапускаАнимацииКнопок(v);
-                        message.getTarget().postDelayed(()->{ МетодЗапускСозданиНовгоМатериалов();},500);
-                        Log.d(this.getClass().getName(), "  v  " + v);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(getContext().getClass().getName(),
-                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
+                        v.animate().rotationX(-40l);
+                        message.getTarget() .postDelayed(()->{
+                            try {
+                            v.animate().rotationX(0);
+                                // TODO: 28.07.2023  Запускаем Новый Материал
+                            МетодЗапускСозданиНовгоМатериалов();
+                                Log.d(getContext().getClass().getName(), "\n"
+                                        + " время: " + new Date() + "\n+" +
+                                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(getContext().getClass().getName(),
+                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
+                        },300);
+                 
                 }
             });
             bottomNavigationItemView3обновить.setOnClickListener(new View.OnClickListener() {
