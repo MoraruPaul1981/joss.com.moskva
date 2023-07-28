@@ -250,70 +250,25 @@ try{
                 this.message=messageback;
             }
             // TODO: 25.03.2023 ДОПОЛНИТЕОТНЕ УДЛАНИЕ СТАТУСА УДАЛЕНИЕ ПОСЛЕ СИНХРОНИАЗЦИИ
-            Integer       ФинальныйРезультатAsyncBackgroud=0;
-            // TODO: 16.11.2022
-            Flowable
-                    .fromSupplier(new io.reactivex.rxjava3.functions.Supplier<Object>() {
-                        @Override
-                        public Object get() throws Throwable {
-                            Integer       ФинальныйРезультатAsyncBackgroud  = new Class_Engine_SQL(context).МетодЗАпускаФоновойСинхронизации(context);
+            Integer       ФинальныйРезультатAsyncBackgroud  = new Class_Engine_SQL(context).МетодЗАпускаФоновойСинхронизации(context);
 
-                            Log.d(context.getClass().getName(), "\n"
-                                    + " время: " + new Date() + "\n+" +
-                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                    + "    ФинальныйРезультатAsyncBackgroud "+ФинальныйРезультатAsyncBackgroud);
-                            return ФинальныйРезультатAsyncBackgroud;
-                        }
-                    })
-                    .subscribeOn(Schedulers.single())
-                    .onBackpressureBuffer(1)
-                    .doOnComplete(new Action() {
-                        @Override
-                        public void run() throws Throwable {
-                            МетодПослеAsyncTaskЗавершающий( context,ФинальныйРезультатAsyncBackgroud);
-                            Log.d(context.getClass().getName(), "\n"
-                                    + " время: " + new Date() + "\n+" +
-                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                    + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
-                        }
-                    }).doOnTerminate(new Action() {
-                        @Override
-                        public void run() throws Throwable {
-                            // TODO: 26.03.2023 дополнительное удаление после Удаление статсу удалнеенон
-                            if (ФинальныйРезультатAsyncBackgroud>0  && ФинальныйРезультатAsyncBackgroud!=null) {
-                                МетодПослеСинхрониазцииУдалениеСтатусаУдаленный(context);
-                            }
-                            Log.d(context.getClass().getName(), "\n"
-                                    + " время: " + new Date() + "\n+" +
-                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                    + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
-                        }
-                    })
-                    .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Throwable {
-                            throwable.printStackTrace();
-                            Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(throwable.toString(), this.getClass().getName(),
-                                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    })
-                    .onErrorComplete(new Predicate<Throwable>() {
-                        @Override
-                        public boolean test(Throwable throwable) throws Throwable {
-                            throwable.printStackTrace();
-                            Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(throwable.toString(), this.getClass().getName(),
-                                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            return false;
-                        }
-                    })
-                    .subscribe();
+            МетодПослеAsyncTaskЗавершающий( context,ФинальныйРезультатAsyncBackgroud);
+
+            Log.d(context.getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                    + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
+
+            // TODO: 26.03.2023 дополнительное удаление после Удаление статсу удалнеенон
+            if (ФинальныйРезультатAsyncBackgroud>0  && ФинальныйРезультатAsyncBackgroud!=null) {
+                МетодПослеСинхрониазцииУдалениеСтатусаУдаленный(context);
+            }
+            Log.d(context.getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                    + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
