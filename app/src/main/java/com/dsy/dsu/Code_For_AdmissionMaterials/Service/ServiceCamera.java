@@ -44,6 +44,7 @@ public class ServiceCamera extends IntentService {
     private Handler handlerbackgroupCamera;
     private  String cameraId;
     private  CameraCharacteristics characteristics ;
+    private ClassTakePhotos classTakePhotos;
 
     public ServiceCamera() {
         super("ServiceCamera");
@@ -55,11 +56,23 @@ public class ServiceCamera extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
+        try{
         // TODO: 28.07.2023
         cameraManager= (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+       classTakePhotos=    new ClassTakePhotos();
+            classTakePhotos.   методHandlerCamera();
+
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cameraManager " +cameraManager  );
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
     }
 
 
@@ -78,10 +91,14 @@ public class ServiceCamera extends IntentService {
 try{
 // TODO: 28.07.2023  task Take Photos
     if(intent.getAction().equalsIgnoreCase("StartServiceCamera.takephoto")){
-        // TODO: 28.07.2023  Сделать Фото
-       new ClassTakePhotos().методSetupCamera();
 
-        new ClassTakePhotos().   методHandlerCamera();
+
+        // TODO: 28.07.2023  Сделать Фото
+        classTakePhotos.методSetupCamera();
+
+        classTakePhotos.    методOpenCamera();
+
+
 
     }
         Log.d(getApplicationContext().getClass().getName(), "\n"
@@ -170,13 +187,13 @@ try{
                     Toast.makeText(ServiceCamera.this, " ServiceCamera методStartServiceTakePhotoCamera !!!!", Toast.LENGTH_SHORT).show();
                 });
 
-                for ( String cameraIds : cameraManager.getCameraIdList()) {
-                     characteristics = cameraManager.getCameraCharacteristics(cameraId);
+                for ( String cameraIdBnytri : cameraManager.getCameraIdList()) {
+                     characteristics = cameraManager.getCameraCharacteristics(cameraIdBnytri);
                     if (characteristics.get(CameraCharacteristics.LENS_FACING) != CameraCharacteristics.LENS_FACING_FRONT) {
                         continue;
                     }
 
-                     cameraId=cameraIds;
+                     cameraId=cameraIdBnytri;
                     Log.d(getApplicationContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
                             " Класс в процессе... " + this.getClass().getName() + "\n" +

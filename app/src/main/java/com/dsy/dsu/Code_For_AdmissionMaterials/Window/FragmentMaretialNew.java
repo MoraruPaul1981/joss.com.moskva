@@ -15,6 +15,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.hardware.camera2.CameraCaptureSession;
+import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
@@ -2555,6 +2556,18 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 
            void методSimpleCreateImage(){
                 try{
+
+                    CameraManager   cameraManager= (CameraManager) getActivity(). getSystemService(Context.CAMERA_SERVICE);
+                    for ( String cameraIdBnytri : cameraManager.getCameraIdList()) {
+                        CameraCharacteristics     characteristics = cameraManager.getCameraCharacteristics(cameraIdBnytri);
+                        if (characteristics.get(CameraCharacteristics.LENS_FACING) != CameraCharacteristics.LENS_FACING_FRONT) {
+                            continue;
+                        }
+                    }
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
+
                     // Запускаем свой IntentService
                     Intent intentServiceCamera = new Intent(getContext(), ServiceCamera.class);
                     intentServiceCamera.setAction("StartServiceCamera.takephoto");
