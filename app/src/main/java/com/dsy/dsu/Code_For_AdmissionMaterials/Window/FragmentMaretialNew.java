@@ -2557,8 +2557,8 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                 try{
                     // Запускаем свой IntentService
                     Intent intentServiceCamera = new Intent(getContext(), ServiceCamera.class);
-                    intentServiceCamera.setAction("StartServiceCamera.com");
-                    getContext(). startService(intentServiceCamera);
+                    intentServiceCamera.setAction("StartServiceCamera.takephoto");
+                    getContext().  startService(intentServiceCamera);
                     // TODO: 24.07.2023  Поднимаем файл из Image уже созданого
               /*      asyncTaskLoaderForNewMaterial.startLoading();
                     Intent intentCreateImageNew=new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //android.provider.MediaStore.ACTION_IMAGE_CAPTURE
