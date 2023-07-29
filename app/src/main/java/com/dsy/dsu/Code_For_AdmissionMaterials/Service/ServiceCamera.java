@@ -1,6 +1,7 @@
 package com.dsy.dsu.Code_For_AdmissionMaterials.Service;
 
 import android.app.IntentService;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.ImageFormat;
@@ -16,6 +17,7 @@ import android.hardware.camera2.TotalCaptureResult;
 import android.media.Image;
 import android.media.ImageReader;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
 import android.view.Surface;
@@ -32,7 +34,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ServiceCamera extends IntentService {
+public class ServiceCamera extends Service {
     //public LocalBinderCamera binder = new LocalBinderCamera();
     private CameraManager cameraManager;
     private TextureView textureView;
@@ -45,12 +47,6 @@ public class ServiceCamera extends IntentService {
     private  CameraCharacteristics characteristics ;
  
 
-    public ServiceCamera() {
-        super("ServiceCamera");
-        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
-    }
 
     @Override
     public void onCreate() {
@@ -73,6 +69,29 @@ public class ServiceCamera extends IntentService {
     }
     }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        // TODO: 28.07.2023  task Take Photos
+        if(intent.getAction().equalsIgnoreCase("StartServiceCamera.takephoto")){
+                try{
+                    // TODO: 28.07.2023 вариан первый #1
+                    методЗапускаServiceCamera(        new ClassTakeCameraBusiness());
+
+                    Log.d(getApplicationContext().getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName(),
+                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
+        }
+        return super.onStartCommand(intent, flags, startId);
+    }
 
 
     @Override
@@ -83,37 +102,12 @@ public class ServiceCamera extends IntentService {
         super.onDestroy();
     }
 
-
+    @Nullable
     @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
-// TODO: 28.07.2023  task Take Photos
-    if(intent.getAction().equalsIgnoreCase("StartServiceCamera.takephoto")){
-        getApplicationContext().getMainExecutor().execute(()->{
-            try{
-            // TODO: 28.07.2023 вариан первый #1
-            методЗапускаServiceCamera(        new ClassTakeCameraBusiness());
-
-            Log.d(getApplicationContext().getClass().getName(), "\n"
-                    + " время: " + new Date() + "\n+" +
-                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-        });
-
+    public IBinder onBind(Intent intent) {
+        return null;
     }
-        Log.d(getApplicationContext().getClass().getName(), "\n"
-                + " время: " + new Date() + "\n+" +
-                " Класс в процессе... " + this.getClass().getName() + "\n" +
-                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
 
-    }
 
 
 /*    public class LocalBinderCamera extends Binder {
@@ -125,17 +119,7 @@ public class ServiceCamera extends IntentService {
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
         }
     }
-
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        Log.d(getApplicationContext().getClass().getName(), "\n"
-                + " время: " + new Date() + "\n+" +
-                " Класс в процессе... " + this.getClass().getName() + "\n" +
-                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-        return binder;
-    }*/
+*/
 
     public  void методHandlerCamera(){
         try{
