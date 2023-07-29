@@ -400,7 +400,7 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
 
                 // TODO: 28.07.2023
             MaterialAlertDialogBuilder materialAlertDialogBuilderАнализПО = (MaterialAlertDialogBuilder) new MaterialAlertDialogBuilder(activity)///       final AlertDialog alertDialog =new AlertDialog.Builder( MainActivity_Face_App.КонтекстFaceApp)
-                       .setTitle("Информация")
+                       .setTitle("Обновление")
                     .setCancelable(false)
                        .setView(promptsViewАнализПО)
                        .setMessage("Обновление ПО"
@@ -416,7 +416,7 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                 }
             }
             // TODO: 29.07.2023  переопределем расмер диалога
-           // методДизайнРазмераAliarDialog(alertDialogАнализВерсииПО);
+            методДизайнРазмераAliarDialog(alertDialogАнализВерсииПО);
                 // TODO: 29.07.2023 запускам анализ версии ПО Диалог
         } catch (Exception e) {
             e.printStackTrace();
@@ -492,7 +492,7 @@ try{
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         layoutParams.copyFrom(   alertDialog.getWindow().getAttributes());
         layoutParams.width =WindowManager.LayoutParams.MATCH_PARENT;
-        layoutParams.height =1000;// WindowManager.LayoutParams.WRAP_CONTENT;
+        layoutParams.height =  WindowManager.LayoutParams.WRAP_CONTENT;
         layoutParams.gravity = Gravity.CENTER;
     alertDialog.getWindow().setAttributes(layoutParams);
     } catch (Exception e) {
@@ -593,7 +593,7 @@ try{
                 }
             }
             // TODO: 29.07.2023  переопределем расмер диалога
-          //  методДизайнРазмераAliarDialog(alertDialogУстановкаПО);
+            методДизайнРазмераAliarDialog(alertDialogУстановкаПО);
 
         } catch (Exception e) {
             e.printStackTrace();
