@@ -3,6 +3,7 @@ package com.dsy.dsu.Code_For_Services;
 import android.app.Activity;
 import android.app.IntentService;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -36,6 +37,7 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_MODEL_synchronized;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.common.util.concurrent.AtomicDouble;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -43,22 +45,9 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.functions.Action;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.functions.Predicate;
-import io.reactivex.rxjava3.functions.Supplier;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 public class ServiceUpdatePoОбновлениеПО extends IntentService {////Service
@@ -71,7 +60,9 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
     private String ИмяПотока="binderupdatepo";
     private  Activity activity;
     private  Boolean РежимРаботыСлужбыОбновлениеПО=false;
-    private      AlertDialog alertDialogЗагрущик=null;
+    private      AlertDialog alertDialogАнализВерсииПО =null;
+
+    private   AlertDialog alertDialogУстановкаПО=null;
     private    File FileAPK = null;
 
     private Message message;
@@ -369,86 +360,84 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
             progressBar.setVisibility(View.GONE);
             promptsView.forceLayout();
             promptsView.refreshDrawableState();
-            if (alertDialogЗагрущик==null) {
                 // TODO: 28.07.2023
-                alertDialogЗагрущик = new MaterialAlertDialogBuilder(activity)///       final AlertDialog alertDialog =new AlertDialog.Builder( MainActivity_Face_App.КонтекстFaceApp)
+            MaterialAlertDialogBuilder materialAlertDialogBuilderАнализПО = new MaterialAlertDialogBuilder(activity)///       final AlertDialog alertDialog =new AlertDialog.Builder( MainActivity_Face_App.КонтекстFaceApp)
                        .setTitle("Загрущик")
+                    .setCancelable(false)
                        .setView(promptsView)
                        .setMessage("Обновление ПО"
                                + "\n" + "ООО Союз-Автодор"
                                + "\n"  +"версия. " + СервернаяВерсияПОВнутри)
                        .setPositiveButton("Загрузить", null)
-                       .setIcon(R.drawable.icon_dsu1_update_success)
-                       .show();
-                // TODO: 06.05.2023 ДВЕ КНОПКИ
-                final Button MessageBoxUpdateНеуСтанавливатьПО = alertDialogЗагрущик.getButton(AlertDialog.BUTTON_NEGATIVE);
-                MessageBoxUpdateНеуСтанавливатьПО.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alertDialogЗагрущик.dismiss();
-                        alertDialogЗагрущик.cancel();
+                       .setIcon(R.drawable.icon_dsu1_update_success);
+            // TODO: 29.07.2023 Запускем Анали ПО ДИалог
+            if (alertDialogАнализВерсииПО==null) {
+                alertDialogАнализВерсииПО = materialAlertDialogBuilderАнализПО.show();
+            }else {
+                if (!alertDialogАнализВерсииПО.isShowing()) {
+                    alertDialogАнализВерсииПО = materialAlertDialogBuilderАнализПО.show();
+                }
+            }
+            final Button MessageBoxАнализВерсииОбновлениеПО = alertDialogАнализВерсииПО.getButton(AlertDialog.BUTTON_POSITIVE);
+            MessageBoxАнализВерсииОбновлениеПО.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        // TODO: 18.02.2023 Загрузка Нового файла APK
+                            progressBar.setVisibility(View.VISIBLE);
+                            progressBar.setIndeterminate(true);
+                            promptsView.forceLayout();
+                            promptsView.refreshDrawableState();
+                            alertDialogАнализВерсииПО.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                            // TODO: 06.05.2023 делаем кнопки не активныйе
+                            Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+                            v2.vibrate(VibrationEffect.createOneShot(300, VibrationEffect.DEFAULT_AMPLITUDE));
+
                         Log.i(this.getClass().getName(),  "Установщик ПО..." + Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+
+
+                        методАнализJSONВерсииПО();
+                        Log.w(getApplicationContext().getClass().getName(),    Thread.currentThread().getStackTrace()[2].getMethodName()+
+                                " ЛокальнаяВерсияПО "+ЛокальнаяВерсияПО+  " СервернаяВерсияПОВнутри  "+СервернаяВерсияПОВнутри + " POOLS" );
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
                     }
-                });
+                }
+
+                private void методАнализJSONВерсииПО() {
+                    message.getTarget().post(()-> {
+                        try{
+                            FileAPK = МетодЗагрузкиAPK();
+                            Log.w(getApplicationContext().getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " ЛокальнаяВерсияПО " + ЛокальнаяВерсияПО + " СервернаяВерсияПОВнутри  " + СервернаяВерсияПОВнутри + " POOLS" +
+                                    Thread.currentThread().getName() + " FileAPK " + FileAPK);
+
+                            progressBar.setIndeterminate(false);
+                            alertDialogАнализВерсииПО.dismiss();
+                            alertDialogАнализВерсииПО.cancel();
+                            if (FileAPK != null && FileAPK.length() > 0) {
+                                // TODO: 29.07.2023 ЗапускаемАнализ ВЕРСИИ ПО
+                                    МетодУстановкиНовойВерсииПО(СервернаяВерсияПОВнутри, FileAPK, alertDialogАнализВерсииПО);
 
 
-/////////кнопка
-                final Button MessageBoxЗагрущикПО = alertDialogЗагрущик.getButton(AlertDialog.BUTTON_POSITIVE);
-                Integer finalСервернаяВерсияПОВнутри = СервернаяВерсияПОВнутри;
-                MessageBoxЗагрущикПО.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        try {
-    // TODO: 18.02.2023 Загрузка Нового файла APK
-                                progressBar.setVisibility(View.VISIBLE);
-                                progressBar.setIndeterminate(true);
-                                promptsView.forceLayout();
-                                promptsView.refreshDrawableState();
-                                // TODO: 06.05.2023 делаем кнопки не активныйе
-                                MessageBoxЗагрущикПО.setEnabled(false);
-                                MessageBoxUpdateНеуСтанавливатьПО.setEnabled(false);
-                                Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                                v2.vibrate(VibrationEffect.createOneShot(300, VibrationEffect.DEFAULT_AMPLITUDE));
+                            } else {
 
-                            Log.i(this.getClass().getName(),  "Установщик ПО..." + Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-
-                            message.getTarget().post(()-> {
-                                try{
-                                FileAPK = МетодЗагрузкиAPK();
-                                Log.w(getApplicationContext().getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " ЛокальнаяВерсияПО " + ЛокальнаяВерсияПО + " СервернаяВерсияПОВнутри  " + СервернаяВерсияПОВнутри + " POOLS" +
-                                        Thread.currentThread().getName() + " FileAPK " + FileAPK);
-
-                                progressBar.setIndeterminate(false);
-                                alertDialogЗагрущик.dismiss();
-                                alertDialogЗагрущик.cancel();
-                                if (FileAPK != null && FileAPK.length() > 0) {
-                                    МетодУстановкиНовойВерсииПО(СервернаяВерсияПОВнутри, FileAPK, alertDialogЗагрущик);
-                                } else {
-
-                                    Log.w(getApplicationContext().getClass().getName(),
-                                            Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                                    " ЛокальнаяВерсияПО " + ЛокальнаяВерсияПО +
-                                                    " СервернаяВерсияПОВнутри  " + СервернаяВерсияПОВнутри +
-                                                    " POOLS" + " FileAPK " + FileAPK);
-                                }
                                 Log.w(getApplicationContext().getClass().getName(),
                                         Thread.currentThread().getStackTrace()[2].getMethodName() +
                                                 " ЛокальнаяВерсияПО " + ЛокальнаяВерсияПО +
                                                 " СервернаяВерсияПОВнутри  " + СервернаяВерсияПОВнутри +
                                                 " POOLS" + " FileAPK " + FileAPK);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                        this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                        Thread.currentThread().getStackTrace()[2].getLineNumber());
                             }
-
-                            });
-                            Log.w(getApplicationContext().getClass().getName(),    Thread.currentThread().getStackTrace()[2].getMethodName()+
-                                    " ЛокальнаяВерсияПО "+ЛокальнаяВерсияПО+  " СервернаяВерсияПОВнутри  "+СервернаяВерсияПОВнутри + " POOLS" );
+                            Log.w(getApplicationContext().getClass().getName(),
+                                    Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " ЛокальнаяВерсияПО " + ЛокальнаяВерсияПО +
+                                            " СервернаяВерсияПОВнутри  " + СервернаяВерсияПОВнутри +
+                                            " POOLS" + " FileAPK " + FileAPK);
                         } catch (Exception e) {
                             e.printStackTrace();
                             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -457,9 +446,11 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                                     this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                                     Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
-                    }
-                });
-            }
+
+                    });
+                }
+            });
+                // TODO: 29.07.2023 запускам анализ версии ПО Диалог
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -486,66 +477,75 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                 fullPath = Environment.getExternalStorageDirectory() + "/" + apkName;
             }
             fullPath = Environment.DIRECTORY_DOWNLOADS + "/" + apkName;
-            AlertDialog alertDialogУстановка = new MaterialAlertDialogBuilder(activity)///       final AlertDialog alertDialog =new AlertDialog.Builder( MainActivity_Face_App.КонтекстFaceApp)
+
+            // TODO: 29.07.2023 Установка ПО  ДИАЛОГ  
+            MaterialAlertDialogBuilder materialAlertDialogBuilderУстановкаПО     = new MaterialAlertDialogBuilder(activity)///       final AlertDialog alertDialog =new AlertDialog.Builder( MainActivity_Face_App.КонтекстFaceApp)
                     .setTitle("Установщик")
+                    .setCancelable(false)
                     .setMessage("Обновление ПО"
                             + "\n" + "ООО Союз-Автодор"
                             + "\n"  +"версия. " + СервернаяВерсияПОВнутри)
                     .setPositiveButton("Установить", null)
-                    .setIcon(R.drawable.icon_dsu1_updates_po_success)
-                    .show();
-/////////кнопка
-            final Button MessageBoxУстановкаНовогоПО = alertDialogУстановка.getButton(AlertDialog.BUTTON_POSITIVE);
-            MessageBoxУстановкаНовогоПО.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((Button)v).setEnabled(false);
-                    Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                    v2.vibrate(VibrationEffect.createOneShot(150, VibrationEffect.DEFAULT_AMPLITUDE));
-                    Log.i(this.getClass().getName(),  "Установка Обновления .APK СЛУЖБА "
-                            + Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-                    String ФинальныйПутьДляЗагрузкиФайлаОбновения = null;
-                    if (Build.VERSION.SDK_INT >= 30) {
-                        ФинальныйПутьДляЗагрузкиФайлаОбновения = activity.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/";  //null
-                    } else {
-                        ФинальныйПутьДляЗагрузкиФайлаОбновения = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/";
-                    }
-                    Log.d(this.getClass().getName(), "Установка Обновления .APK СЛУЖБА  ФинальныйПутьДляЗагрузкиФайлаОбновения " + ФинальныйПутьДляЗагрузкиФайлаОбновения);
-                    String НазваниеФайлаОбновления = "update_dsu1.apk";
-                    ФинальныйПутьДляЗагрузкиФайлаОбновения += НазваниеФайлаОбновления;
-                    Uri URIПутиДляЗагрузкиФайловЧерезПровайдер = FileProvider.getUriForFile(getApplicationContext(),
-                            activity.getPackageName() + ".provider",
-                            ЗагрузкиФайлаОбновенияПОДополнительный);
-                    Log.d(this.getClass().getName(), "Установка ЗагрузкиФайлаОбновенияПОДополнительный  "
-                            + ЗагрузкиФайлаОбновенияПОДополнительный);
-                    Intent intentОбновлениеПО = new Intent(Intent.ACTION_INSTALL_PACKAGE);
-                    intentОбновлениеПО.setDataAndType(URIПутиДляЗагрузкиФайловЧерезПровайдер,
-                            "application/vnd.android.package-archive");
-                    intentОбновлениеПО.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
-                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
-                            Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
-                            | Intent.FLAG_GRANT_PREFIX_URI_PERMISSION
-                            | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intentОбновлениеПО.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
-                    intentОбновлениеПО.putExtra(Intent.EXTRA_STREAM, URIПутиДляЗагрузкиФайловЧерезПровайдер);
-                    PackageManager МеханизмПроверкиЗапуститьсяНашИнтентИлиНЕт = activity.getPackageManager();
-                    if (intentОбновлениеПО.resolveActivity(МеханизмПроверкиЗапуститьсяНашИнтентИлиНЕт) != null) {
-                        activity.startActivity(intentОбновлениеПО);
-                        activity.finishAndRemoveTask();
+                    .setIcon(R.drawable.icon_dsu1_updates_po_success);
 
-                    } else {
-
-                        Log.i(this.getClass().getName(),  " "+ Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-                    }
+            // TODO: 29.07.2023 Запускем Анали ПО ДИалог
+            if (alertDialogУстановкаПО==null) {
+                alertDialogУстановкаПО = materialAlertDialogBuilderУстановкаПО.show();
+            }else {
+                if (!alertDialogУстановкаПО.isShowing()) {
+                    alertDialogУстановкаПО = materialAlertDialogBuilderУстановкаПО.show();
                 }
-            });
-            final Button MessageBoxUpdateНеуСтанавливатьПО = alertDialogУстановка.getButton(AlertDialog.BUTTON_NEGATIVE);
-            MessageBoxUpdateНеуСтанавливатьПО.setOnClickListener(new View.OnClickListener() {
+            }
+            final Button MessageBoxУстановкаПО = alertDialogУстановкаПО.getButton(AlertDialog.BUTTON_POSITIVE);
+            MessageBoxУстановкаПО.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    alertDialogУстановка.dismiss();
-                    Log.d(this.getClass().getName(), "MessageBoxUpdateНеуСтанавливатьПО  ОТМЕНА УСТАНВОКИ НОВГО ПО   dismiss ");
-                    alertDialogУстановка.cancel();
+                    try{
+                        alertDialogУстановкаПО.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                        Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+                        v2.vibrate(VibrationEffect.createOneShot(150, VibrationEffect.DEFAULT_AMPLITUDE));
+                        Log.i(this.getClass().getName(),  "Установка Обновления .APK СЛУЖБА "
+                                + Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                        String ФинальныйПутьДляЗагрузкиФайлаОбновения = null;
+                        if (Build.VERSION.SDK_INT >= 30) {
+                            ФинальныйПутьДляЗагрузкиФайлаОбновения = activity.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/";  //null
+                        } else {
+                            ФинальныйПутьДляЗагрузкиФайлаОбновения = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/";
+                        }
+                        Log.d(this.getClass().getName(), "Установка Обновления .APK СЛУЖБА  ФинальныйПутьДляЗагрузкиФайлаОбновения " + ФинальныйПутьДляЗагрузкиФайлаОбновения);
+                        String НазваниеФайлаОбновления = "update_dsu1.apk";
+                        ФинальныйПутьДляЗагрузкиФайлаОбновения += НазваниеФайлаОбновления;
+                        Uri URIПутиДляЗагрузкиФайловЧерезПровайдер = FileProvider.getUriForFile(getApplicationContext(),
+                                activity.getPackageName() + ".provider",
+                                ЗагрузкиФайлаОбновенияПОДополнительный);
+                        Log.d(this.getClass().getName(), "Установка ЗагрузкиФайлаОбновенияПОДополнительный  "
+                                + ЗагрузкиФайлаОбновенияПОДополнительный);
+                        Intent intentОбновлениеПО = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+                        intentОбновлениеПО.setDataAndType(URIПутиДляЗагрузкиФайловЧерезПровайдер,
+                                "application/vnd.android.package-archive");
+                        intentОбновлениеПО.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
+                                Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
+                                | Intent.FLAG_GRANT_PREFIX_URI_PERMISSION
+                                | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intentОбновлениеПО.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
+                        intentОбновлениеПО.putExtra(Intent.EXTRA_STREAM, URIПутиДляЗагрузкиФайловЧерезПровайдер);
+                        PackageManager МеханизмПроверкиЗапуститьсяНашИнтентИлиНЕт = activity.getPackageManager();
+                        if (intentОбновлениеПО.resolveActivity(МеханизмПроверкиЗапуститьсяНашИнтентИлиНЕт) != null) {
+                            activity.startActivity(intentОбновлениеПО);
+                            activity.finishAndRemoveTask();
+
+                        } else {
+
+                            Log.i(this.getClass().getName(),  " "+ Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
                 }
             });
         } catch (Exception e) {
@@ -627,7 +627,9 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                     + Thread.currentThread().getStackTrace()[2].getLineNumber() + " ЛокальнаяВерсияПО "+ЛокальнаяВерсияПО+
                     " СервернаяВерсияПОВнутри "+СервернаяВерсияПОВнутри);
             if (СервернаяВерсияПОВнутри >ЛокальнаяВерсияПО ) {
+                // TODO: 29.07.2023 Запускаем Метод Анализа ПО  
                 МетодСообщениеЗапускЗагрущикаПо(СервернаяВерсияПОВнутри);
+                
                 // TODO: 10.07.2023
                 ФлагЗАпускатьСинхронизациюПотосучтоВерсияРавна=false;
                 Log.w(getApplicationContext().getClass().getName(),    Thread.currentThread().getStackTrace()[2].getMethodName()+
