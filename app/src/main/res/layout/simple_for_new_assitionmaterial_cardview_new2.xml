@@ -505,6 +505,16 @@
       <RelativeLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content">
+
+
+
+
+
+
+
+
+
+
          <!-- todo нижнии поля вввода КОЛИЧЕСТВО  -->
          <com.google.android.material.textview.MaterialTextView
              android:id="@+id/textviewimage"
@@ -529,7 +539,6 @@
 
 
 
-
       <!--  НАЧАЛО  блок Image -->
       <TableLayout
           android:id="@+id/TableLayout_create_image"
@@ -537,18 +546,32 @@
           android:shrinkColumns="*"
           android:stretchColumns="*"
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"
+          android:layout_height="90dp"
           android:background="#F0FFFF"
           android:gravity="center"
+          android:fadeScrollbars="false"
+          android:scrollbarStyle="insideInset"
+         android:scrollbarTrackVertical="@drawable/stylesingletablerowiine"
+         android:scrollbarSize="20dp"
           android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
           tools:context=".CodeOrdersAnTransports.Window.MainActivityOrdersTransports">
 
-
+         <HorizontalScrollView
+             android:id="@+id/ГоризонтльнаяПрокруткаВнутриСамТабель_mm"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_gravity="center|center_horizontal"
+             android:fadingEdge="horizontal|vertical"
+             android:visibility="visible"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toTopOf="@+id/КонтейнерКудаЗагружаетьсяФИО">
          <!--//TODO начало  стрчока Image-->
                <TableRow
                    android:id="@+id/tablerow_create_image"
                    android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
+                   android:layout_height="match_parent"
                    android:gravity="center"
                    android:background="#FFFFFF"
                    android:layout_margin="2dp">
@@ -558,7 +581,7 @@
                       android:id="@+id/bottom_create_image"
                       android:layout_column="0"
                       android:layout_width="65dp"
-                      android:layout_height="60dp"
+                      android:layout_height="match_parent"
                       android:text="1"
                       android:background="@drawable/style_for_mateial_new_image1"
                       android:gravity="center"
@@ -577,7 +600,7 @@
                       android:layout_column="1"
                       android:layout_width="80dp"
                       android:minWidth="80dp"
-                      android:layout_height="60dp"
+                      android:layout_height="match_parent"
                       android:scaleType="centerCrop"
                       android:text="1"
                       android:background="@drawable/style_for_mateial_new_image1"
@@ -594,7 +617,7 @@
                       android:layout_column="2"
                       android:layout_width="80dp"
                       android:minWidth="80dp"
-                      android:layout_height="60dp"
+                      android:layout_height="match_parent"
                       android:scaleType="centerCrop"
                       android:text="2"
                       android:gravity="center"
@@ -611,7 +634,7 @@
                       android:layout_column="3"
                       android:layout_width="80dp"
                       android:minWidth="80dp"
-                      android:layout_height="60dp"
+                      android:layout_height="match_parent"
                       android:scaleType="centerCrop"
                       android:text="3"
                       android:gravity="center"
@@ -628,7 +651,7 @@
                       android:layout_width="80dp"
                       android:scaleType="centerCrop"
                       android:minWidth="80dp"
-                      android:layout_height="60dp"
+                      android:layout_height="match_parent"
                       android:text="4"
                       android:gravity="center"
                       android:layout_margin="2dp"
@@ -639,8 +662,106 @@
                       android:tooltipText="рис.4"
                       android:visibility="visible" />
 
+                  <ImageView
+                      android:id="@+id/im5"
+                      android:layout_column="5"
+                      android:layout_width="80dp"
+                      android:scaleType="centerCrop"
+                      android:minWidth="80dp"
+                      android:layout_height="match_parent"
+                      android:text="4"
+                      android:gravity="center"
+                      android:layout_margin="2dp"
+                      android:background="@drawable/style_for_mateial_new_image1"
+                      android:adjustViewBounds="true"
+                      android:textSize="34sp"
+                      android:textStyle="bold"
+                      android:tooltipText="рис.5"
+                      android:visibility="visible" />
+                  <ImageView
+                      android:id="@+id/im6"
+                      android:layout_column="5"
+                      android:layout_width="80dp"
+                      android:scaleType="centerCrop"
+                      android:minWidth="80dp"
+                      android:layout_height="match_parent"
+                      android:text="4"
+                      android:gravity="center"
+                      android:layout_margin="2dp"
+                      android:background="@drawable/style_for_mateial_new_image1"
+                      android:adjustViewBounds="true"
+                      android:textSize="34sp"
+                      android:textStyle="bold"
+                      android:tooltipText="рис.6"
+                      android:visibility="visible" />
+                  <ImageView
+                      android:id="@+id/im7"
+                      android:layout_column="5"
+                      android:layout_width="80dp"
+                      android:scaleType="centerCrop"
+                      android:minWidth="80dp"
+                      android:layout_height="match_parent"
+                      android:text="4"
+                      android:gravity="center"
+                      android:layout_margin="2dp"
+                      android:background="@drawable/style_for_mateial_new_image1"
+                      android:adjustViewBounds="true"
+                      android:textSize="34sp"
+                      android:textStyle="bold"
+                      android:tooltipText="рис.7"
+                      android:visibility="visible" />
+                  <ImageView
+                      android:id="@+id/im8"
+                      android:layout_column="5"
+                      android:layout_width="80dp"
+                      android:scaleType="centerCrop"
+                      android:minWidth="80dp"
+                      android:layout_height="match_parent"
+                      android:text="4"
+                      android:gravity="center"
+                      android:layout_margin="2dp"
+                      android:background="@drawable/style_for_mateial_new_image1"
+                      android:adjustViewBounds="true"
+                      android:textSize="34sp"
+                      android:textStyle="bold"
+                      android:tooltipText="рис.8"
+                      android:visibility="visible" />
+                  <ImageView
+                      android:id="@+id/im9"
+                      android:layout_column="5"
+                      android:layout_width="80dp"
+                      android:scaleType="centerCrop"
+                      android:minWidth="80dp"
+                      android:layout_height="match_parent"
+                      android:text="4"
+                      android:gravity="center"
+                      android:layout_margin="2dp"
+                      android:background="@drawable/style_for_mateial_new_image1"
+                      android:adjustViewBounds="true"
+                      android:textSize="34sp"
+                      android:textStyle="bold"
+                      android:tooltipText="рис.9"
+                      android:visibility="visible" />
+                  <ImageView
+                      android:id="@+id/im10"
+                      android:layout_column="5"
+                      android:layout_width="80dp"
+                      android:scaleType="centerCrop"
+                      android:minWidth="80dp"
+                      android:layout_height="match_parent"
+                      android:text="4"
+                      android:gravity="center"
+                      android:layout_margin="2dp"
+                      android:background="@drawable/style_for_mateial_new_image1"
+                      android:adjustViewBounds="true"
+                      android:textSize="34sp"
+                      android:textStyle="bold"
+                      android:tooltipText="рис.10"
+                      android:visibility="visible" />
+
          </TableRow>
          <!--//TODO начало    строчки ТС-->
+         </HorizontalScrollView>
 
       </TableLayout>
 

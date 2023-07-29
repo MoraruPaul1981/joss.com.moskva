@@ -596,7 +596,7 @@ public class FragmentMaretialNew extends Fragment {
                 valueavtomobil,valuekontragent;
         private TextInputEditText textipputcountassinmaterail,textipputmaretialttn;
         private MaterialTextView textviewmaterialttn ,textviewmaterialttndata;
-        private ImageView im1,im2, im3,im4;
+        private ImageView im1,im2, im3,im4 , im5,im6, im7,im8 ,im9,im10;
         private  TextView textipputmaretialttdata;
 
         private MaterialButton bottomcreateassionmaterial;
@@ -645,11 +645,31 @@ public class FragmentMaretialNew extends Fragment {
                 im2 = itemView.findViewById(R.id.im2);
                 im3 = itemView.findViewById(R.id.im3);
                 im4 = itemView.findViewById(R.id.im4);
+
+                im5 = itemView.findViewById(R.id.im1);
+                im6 = itemView.findViewById(R.id.im2);
+                im7 = itemView.findViewById(R.id.im3);
+                im8 = itemView.findViewById(R.id.im4);
+
+                im9 = itemView.findViewById(R.id.im1);
+                im10 = itemView.findViewById(R.id.im2);
+
                 // TODO: 24.07.2023 заполения Данныз всех вставляемых новых Image
                 copyOnWriteArrayListGetImages.add(im1);
                 copyOnWriteArrayListGetImages.add(im2);
                 copyOnWriteArrayListGetImages.add(im3);
                 copyOnWriteArrayListGetImages.add(im4);
+
+                copyOnWriteArrayListGetImages.add(im5);
+                copyOnWriteArrayListGetImages.add(im6);
+                copyOnWriteArrayListGetImages.add(im7);
+                copyOnWriteArrayListGetImages.add(im8);
+
+                copyOnWriteArrayListGetImages.add(im9);
+                copyOnWriteArrayListGetImages.add(im10);
+
+
+
                 // TODO: 07.12.2022 новые
                 textipputmaretialttn = itemView.findViewById(R.id.textipputmaretialttn);
                 textipputmaretialttdata  = itemView.findViewById(R.id.textipputmaretialttdata);
