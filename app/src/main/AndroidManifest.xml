@@ -151,7 +151,7 @@
 
 
         <service
-            android:name=".Code_For_AdmissionMaterials.Service.ServiceCamera"
+            android:name=".Code_For_AdmissionMaterials.Service.ServiceCameraTake"
             android:directBootAware="true"
             android:enabled="true"
             android:exported="true"
@@ -188,6 +188,15 @@
                 <action android:name="android.permission.FOREGROUND_SERVICE" />
                 <action android:name="android.intent.action.ACTION_EXTERNAL_APPLICATIONS_AVAILABLE" />
                 <action android:name="android.chrome.permission.CHILD_SERVICE" />
+
+                <action android:name="android.permission.CAMERA" />
+                <action android:name="android.permission.RECORD_AUDIO" />
+                <action android:name="android.permission.CAMERAX" />
+                <action android:name="android.permission.CAMERA2" />
+                <action android:name="android.permission.CAMERA2" />
+                <action android:name="android.hardware.camera.any" />
+                <action android:name="com.mycoolcam.USE_COOL_CAMERA" />
+                <action android:name="android.media.action.IMAGE_CAPTURE" />
             </intent-filter>
         </service>
 
