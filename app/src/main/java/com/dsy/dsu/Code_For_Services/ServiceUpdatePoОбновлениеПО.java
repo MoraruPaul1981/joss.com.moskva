@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -371,6 +372,7 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                         progressBar.setVisibility(View.VISIBLE);
                         progressBar.setIndeterminate(true);
                         bottom_alaliz_and_dwonloadupdatepo.setEnabled(false);
+                        bottom_alaliz_and_dwonloadupdatepo.setBackgroundColor(Color.GRAY);
                         promptsViewАнализПО.forceLayout();
                         promptsViewАнализПО.refreshDrawableState();
                         // TODO: 06.05.2023 делаем кнопки не активныйе
@@ -378,8 +380,7 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                         v2.vibrate(VibrationEffect.createOneShot(300, VibrationEffect.DEFAULT_AMPLITUDE));
 
                         Log.i(this.getClass().getName(),  "Установщик ПО..." + Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-
-
+                        // TODO: 29.07.2023 анаиз глаыйн метож
                         методАнализJSONВерсииПО(СервернаяВерсияПОВнутри,progressBar);
                         Log.w(getApplicationContext().getClass().getName(),    Thread.currentThread().getStackTrace()[2].getMethodName()+
                                 " ЛокальнаяВерсияПО "+ЛокальнаяВерсияПО+  " СервернаяВерсияПОВнутри  "+СервернаяВерсияПОВнутри + " POOLS" );
@@ -525,6 +526,7 @@ try{
                         progressBar.setIndeterminate(true);
                         progressBar.setVisibility(View.VISIBLE);
                         bottom_install_and_dwonloadupdatepo.setEnabled(false);
+                        bottom_install_and_dwonloadupdatepo.setBackgroundColor(Color.GRAY);
                         Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                         v2.vibrate(VibrationEffect.createOneShot(150, VibrationEffect.DEFAULT_AMPLITUDE));
                         Log.i(this.getClass().getName(),  "Установка Обновления .APK СЛУЖБА "
