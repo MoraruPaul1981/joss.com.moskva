@@ -40,7 +40,7 @@
 
         <!--  todo кнопка для сохранения-->
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bottom_alaliz_and_dwonloadupdatepo"
+        android:id="@+id/bottom_install_and_dwonloadupdatepo"
         style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
         android:layout_width="120dp"
         android:layout_height="40dp"
@@ -49,7 +49,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:text="Загрузить"
+        android:text="Установить"
         android:textColor="#0E0E0E"
         android:textSize="10sp"
         android:textStyle="bold"

@@ -3,7 +3,6 @@ package com.dsy.dsu.Code_For_Services;
 import android.app.Activity;
 import android.app.IntentService;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -39,7 +38,6 @@ import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.common.util.concurrent.AtomicDouble;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -353,16 +351,15 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
     }
 
     @UiThread
-    void МетодСообщениеЗапускЗагрущикаПо(@NonNull Integer СервернаяВерсияПОВнутри) {
+    void МетодСообщениеЗапускАнализВерсииДанныхПО(@NonNull Integer СервернаяВерсияПОВнутри) {
         try {
-            LayoutInflater li = LayoutInflater.from(getApplicationContext());
-            View promptsView = li.inflate(R.layout.activity_insertdata, null);
-            ProgressBar progressBar=promptsView.findViewById(R.id.prograssbarupdatepo);
-            MaterialButton bottom_alaliz_and_dwonloadupdatepo=promptsView.findViewById(R.id.bottom_alaliz_and_dwonloadupdatepo);
+        View  promptsViewАнализПО=   методЗагрузкиСвоегоВидаДлAliadDialod(R.layout.activity_insertdata);
+            ProgressBar progressBar=promptsViewАнализПО.findViewById(R.id.prograssbarupdatepo);
+            MaterialButton bottom_alaliz_and_dwonloadupdatepo=promptsViewАнализПО.findViewById(R.id.bottom_alaliz_and_dwonloadupdatepo);
             progressBar.setIndeterminate(false);
             progressBar.setVisibility(View.GONE);
-            promptsView.forceLayout();
-            promptsView.refreshDrawableState();
+            promptsViewАнализПО.forceLayout();
+            promptsViewАнализПО.refreshDrawableState();
 
 
             bottom_alaliz_and_dwonloadupdatepo.setOnClickListener(new View.OnClickListener() {
@@ -374,8 +371,8 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                         progressBar.setVisibility(View.VISIBLE);
                         progressBar.setIndeterminate(true);
                         bottom_alaliz_and_dwonloadupdatepo.setEnabled(false);
-                        promptsView.forceLayout();
-                        promptsView.refreshDrawableState();
+                        promptsViewАнализПО.forceLayout();
+                        promptsViewАнализПО.refreshDrawableState();
                         // TODO: 06.05.2023 делаем кнопки не активныйе
                         Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                         v2.vibrate(VibrationEffect.createOneShot(300, VibrationEffect.DEFAULT_AMPLITUDE));
@@ -402,9 +399,9 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
 
                 // TODO: 28.07.2023
             MaterialAlertDialogBuilder materialAlertDialogBuilderАнализПО = (MaterialAlertDialogBuilder) new MaterialAlertDialogBuilder(activity)///       final AlertDialog alertDialog =new AlertDialog.Builder( MainActivity_Face_App.КонтекстFaceApp)
-                       .setTitle("Загрущик")
+                       .setTitle("Информация")
                     .setCancelable(false)
-                       .setView(promptsView)
+                       .setView(promptsViewАнализПО)
                        .setMessage("Обновление ПО"
                                + "\n" + "ООО Союз-Автодор"
                                + "\n"  +"версия. " + СервернаяВерсияПОВнутри)
@@ -429,6 +426,23 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
+
+    View методЗагрузкиСвоегоВидаДлAliadDialod(@NonNull Integer Вид)  {
+        View promptsView=null;
+   try{
+        LayoutInflater li = LayoutInflater.from(getApplicationContext());
+        promptsView = li.inflate(Вид, null);
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+        return  promptsView;
+    }
+
 
     private void методАнализJSONВерсииПО(@NonNull Integer СервернаяВерсияПОВнутри,@NonNull ProgressBar progressBar) {
         message.getTarget().post(()-> {
@@ -497,46 +511,20 @@ try{
                                              @NonNull File ЗагрузкиФайлаОбновенияПОДополнительный,
                                              @NonNull AlertDialog alertDialogЗагрущик){
         try {
-            Log.w(getApplicationContext().getClass().getName(),    Thread.currentThread().getStackTrace()[2].getMethodName()+
-                    " ЛокальнаяВерсияПО "+ЛокальнаяВерсияПО+  " СервернаяВерсияПОВнутри  "+СервернаяВерсияПОВнутри + " POOLS"
-                    + "ФайлыДляОбновлениеВычисляемНомерВерсииПО " +ЗагрузкиФайлаОбновенияПОДополнительный.length() );
-            PackageManager pm = getApplicationContext().getPackageManager();
-            String apkName = "update_dsu1.apk";
-            String fullPath = Environment.getExternalStorageDirectory() + "/" + apkName;
-            if (Build.VERSION.SDK_INT >= 30) {
-                fullPath = Environment.getExternalStorageState() + "/" + apkName;
-            } else {
-                fullPath = Environment.getExternalStorageDirectory() + "/" + apkName;
-            }
-            fullPath = Environment.DIRECTORY_DOWNLOADS + "/" + apkName;
-
-            // TODO: 29.07.2023 Установка ПО  ДИАЛОГ  
-            MaterialAlertDialogBuilder materialAlertDialogBuilderУстановкаПО     = new MaterialAlertDialogBuilder(activity)///       final AlertDialog alertDialog =new AlertDialog.Builder( MainActivity_Face_App.КонтекстFaceApp)
-                    .setTitle("Установщик")
-                    .setCancelable(false)
-                    .setMessage("Обновление ПО"
-                            + "\n" + "ООО Союз-Автодор"
-                            + "\n"  +"версия. " + СервернаяВерсияПОВнутри)
-                    .setPositiveButton("Установить", null)
-                    .setIcon(R.drawable.icon_dsu1_updates_po_success);
-
-            // TODO: 29.07.2023 Запускем Анали ПО ДИалог
-            if (alertDialogУстановкаПО==null) {
-                alertDialogУстановкаПО = materialAlertDialogBuilderУстановкаПО.show();
-            }else {
-                if (!alertDialogУстановкаПО.isShowing()) {
-                    alertDialogУстановкаПО = materialAlertDialogBuilderУстановкаПО.show();
-                }
-            }
-            // TODO: 29.07.2023  переопределем расмер диалога
-            методДизайнРазмераAliarDialog(alertDialogУстановкаПО);
-
-            final Button MessageBoxУстановкаПО = alertDialogУстановкаПО.getButton(AlertDialog.BUTTON_POSITIVE);
-            MessageBoxУстановкаПО.setOnClickListener(new View.OnClickListener() {
+            View  promptsViewУстановкаПО=   методЗагрузкиСвоегоВидаДлAliadDialod(R.layout.simple_download_newversii_po);
+            ProgressBar progressBar=promptsViewУстановкаПО.findViewById(R.id.prograssbarupdatepo);
+            MaterialButton bottom_install_and_dwonloadupdatepo=promptsViewУстановкаПО.findViewById(R.id.bottom_install_and_dwonloadupdatepo);
+            progressBar.setIndeterminate(false);
+            progressBar.setVisibility(View.GONE);
+            promptsViewУстановкаПО.forceLayout();
+            promptsViewУстановкаПО.refreshDrawableState();
+            bottom_install_and_dwonloadupdatepo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     try{
-                        alertDialogУстановкаПО.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                        progressBar.setIndeterminate(true);
+                        progressBar.setVisibility(View.VISIBLE);
+                        bottom_install_and_dwonloadupdatepo.setEnabled(false);
                         Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                         v2.vibrate(VibrationEffect.createOneShot(150, VibrationEffect.DEFAULT_AMPLITUDE));
                         Log.i(this.getClass().getName(),  "Установка Обновления .APK СЛУЖБА "
@@ -583,6 +571,28 @@ try{
                     }
                 }
             });
+
+            // TODO: 29.07.2023 Установка ПО  ДИАЛОГ  
+            MaterialAlertDialogBuilder materialAlertDialogBuilderУстановкаПО     = new MaterialAlertDialogBuilder(activity)///       final AlertDialog alertDialog =new AlertDialog.Builder( MainActivity_Face_App.КонтекстFaceApp)
+                    .setTitle("Установщик")
+                    .setCancelable(false)
+                    .setView(promptsViewУстановкаПО)
+                    .setMessage("Обновление ПО"
+                            + "\n" + "ООО Союз-Автодор"
+                            + "\n"  +"версия. " + СервернаяВерсияПОВнутри)
+                    .setIcon(R.drawable.icon_dowload_new_packagepo);
+
+            // TODO: 29.07.2023 Запускем Анали ПО ДИалог
+            if (alertDialogУстановкаПО==null) {
+                alertDialogУстановкаПО = materialAlertDialogBuilderУстановкаПО.show();
+            }else {
+                if (!alertDialogУстановкаПО.isShowing()) {
+                    alertDialogУстановкаПО = materialAlertDialogBuilderУстановкаПО.show();
+                }
+            }
+            // TODO: 29.07.2023  переопределем расмер диалога
+          //  методДизайнРазмераAliarDialog(alertDialogУстановкаПО);
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -663,7 +673,7 @@ try{
                     " СервернаяВерсияПОВнутри "+СервернаяВерсияПОВнутри);
             if (СервернаяВерсияПОВнутри >ЛокальнаяВерсияПО ) {
                 // TODO: 29.07.2023 Запускаем Метод Анализа ПО  
-                МетодСообщениеЗапускЗагрущикаПо(СервернаяВерсияПОВнутри);
+                МетодСообщениеЗапускАнализВерсииДанныхПО(СервернаяВерсияПОВнутри);
                 
                 // TODO: 10.07.2023
                 ФлагЗАпускатьСинхронизациюПотосучтоВерсияРавна=false;
