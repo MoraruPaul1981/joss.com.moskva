@@ -304,6 +304,10 @@ public class FragmentMaretialNew extends Fragment {
                                 // TODO: 24.07.2023  UP file Image
                          Boolean       РезультатUpCAmeraPhoto=      localBinderCamera.getService().метоСлужбыTakePhotos(dataUpImage,copyOnWriteArrayListGetImages);
 
+                         if(РезультатUpCAmeraPhoto){
+                                subClassCreateNewImageForMateril.    методЗакрытиеNewCreateIMAGE(alertDialogCreateImage);
+                         }
+
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"

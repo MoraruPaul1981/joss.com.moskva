@@ -124,7 +124,7 @@ public class ServiceCameraTake extends Service {
            // TODO: 29.07.2023 Up Photos
             if(intent.getAction().equalsIgnoreCase("ServiceCameraTake.UpImage")){
                     // TODO: 28.07.2023 вариан первый #1 UP Photo
-                    new SubClassCompleteNewImageUpAndCreate().методОбраобткиUPCompleteImages(intent);
+                РезультатUpCAmeraPhoto=      new SubClassCompleteNewImageUpAndCreate().методОбраобткиUPCompleteImages(intent);
 
                     Log.d(getApplicationContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
@@ -465,7 +465,7 @@ public class ServiceCameraTake extends Service {
 
 
     class SubClassCompleteNewImageUpAndCreate{
-        void методОбраобткиUPCompleteImages(  @Nullable Intent intentUpPhotos  ){
+        Boolean методОбраобткиUPCompleteImages(  @Nullable Intent intentUpPhotos  ){
             try{
                 // TODO: 24.07.2023
                 if (intentUpPhotos!=null) {
@@ -479,7 +479,7 @@ public class ServiceCameraTake extends Service {
                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
-                            + "\n"+ "  bitmapUpImage " +bitmapUpImage  );
+                            + "\n"+ "  bitmapUpImage " +bitmapUpImage  + " copyOnWriteArrayListCompleteImageWithID.size() " +copyOnWriteArrayListCompleteImageWithID.size() );
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -490,6 +490,10 @@ public class ServiceCameraTake extends Service {
                         this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
+            if(copyOnWriteArrayListCompleteImageWithID.size()>0){
+                return  true;
+            }
+            return false;
 
         }
         void методОбраобткиUPCompleteImages(@NonNull Context context,  @Nullable Uri uriNewImageCamera  ){
