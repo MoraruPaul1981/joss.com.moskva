@@ -32,6 +32,8 @@ import com.dsy.dsu.CodeOrdersAnTransports.Background.ServiceOrserTransportServic
 import com.dsy.dsu.Code_For_Services.Service_Notificatios_Для_Согласования;
 import com.dsy.dsu.R;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.Date;
@@ -58,7 +60,8 @@ public class ServiceCameraTake extends Service {
     private  String cameraId;
     private  CameraCharacteristics characteristics ;
     private Animation animationscroll;
-    private  CopyOnWriteArrayList<LinkedHashMap<Integer,Bitmap>> copyOnWriteArrayListCompleteImageWithID;
+    private  CopyOnWriteArrayList<LinkedHashMap<Integer,Bitmap>> copyOnWriteArrayListCompleteImageWithID=new CopyOnWriteArrayList<>();
+    private  CopyOnWriteArrayList <ImageView>copyOnWriteArrayListGetImages=new CopyOnWriteArrayList<>();
  
 
 
@@ -114,16 +117,21 @@ public class ServiceCameraTake extends Service {
 
     // TODO: 29.07.2023  main bound metod
 
-   public void методБиндингаСлужбыКамера(@NonNull Intent intent){
-            if(intent.getAction().equalsIgnoreCase("StartServiceCamera.takephoto")){
-                try{
-                    // TODO: 28.07.2023 вариан первый #1
-                    методЗапускаServiceCamera(        new ClassTakeCameraBusinessTwo());
+   public Boolean метоСлужбыTakePhotos(@NonNull Intent intent, @NonNull CopyOnWriteArrayList <ImageView>copyOnWriteArrayListGetImages ){
+        Boolean РезультатUpCAmeraPhoto=false;
+       try{
+           this.copyOnWriteArrayListGetImages=copyOnWriteArrayListGetImages;
+           // TODO: 29.07.2023 Up Photos
+            if(intent.getAction().equalsIgnoreCase("ServiceCameraTake.UpImage")){
+                    // TODO: 28.07.2023 вариан первый #1 UP Photo
+                    new SubClassCompleteNewImageUpAndCreate().методОбраобткиUPCompleteImages(intent);
 
                     Log.d(getApplicationContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
                             " Класс в процессе... " + this.getClass().getName() + "\n" +
-                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()  + " РезультатUpCAmeraPhoto " +РезультатUpCAmeraPhoto+
+                            "  copyOnWriteArrayListGetImages " +copyOnWriteArrayListGetImages);
+            }
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -132,7 +140,7 @@ public class ServiceCameraTake extends Service {
                             this.getClass().getName(),
                             Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
-            }
+            return РезультатUpCAmeraPhoto;
     }
 
 
@@ -457,16 +465,16 @@ public class ServiceCameraTake extends Service {
 
 
     class SubClassCompleteNewImageUpAndCreate{
-        void методОбраобткиUPCompleteImages(@NonNull Context context,  @Nullable Intent data  ){
+        void методОбраобткиUPCompleteImages(  @Nullable Intent intentUpPhotos  ){
             try{
                 // TODO: 24.07.2023
-                if (data!=null) {
-                    Uri selectedImage = data.getData();
+                if (intentUpPhotos!=null) {
+                    Uri selectedImage = intentUpPhotos.getData();
                     InputStream stream = getApplicationContext().getContentResolver().openInputStream(selectedImage);
                     BufferedInputStream bufferedInputStreamUpLoadImage=new BufferedInputStream(stream);
                     Bitmap bitmapUpImage = BitmapFactory.decodeStream(bufferedInputStreamUpLoadImage);
                     // TODO: 24.07.2023
-                    //методЗаполянемImageViewNewImage(bitmapUpImage);
+                    методЗаполянемImageViewNewImage(bitmapUpImage);
                     // TODO: 20.07.2023
                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -512,9 +520,7 @@ public class ServiceCameraTake extends Service {
         }
 
         // TODO: 24.07.2023  заполяем дааныых
-        private void методЗаполянемImageViewNewImage(@NonNull  Bitmap   bitmapUpImage
-                , @NonNull CopyOnWriteArrayList<ImageView> copyOnWriteArrayListGetImages,
-                                                     @NonNull CopyOnWriteArrayList<LinkedHashMap<Integer,Bitmap>> copyOnWriteArrayListCompleteImageWithID) {
+        private void методЗаполянемImageViewNewImage(@NonNull  Bitmap   bitmapUpImage ) {
             try{
                 final boolean[] ФлагЧтоУжеОднаВставкаУжеБыла = {false};
                 Flowable.fromIterable(copyOnWriteArrayListGetImages)
@@ -546,14 +552,9 @@ public class ServiceCameraTake extends Service {
                             public void accept(ImageView imageView) throws Throwable {
                                 try {
                                     // TODO: 25.07.2023  добавление новго Image
-
-
-
-
                                     Long УжеЕслиТАкойIDImage=
                                             copyOnWriteArrayListCompleteImageWithID.stream()
                                                     .filter(s->s.containsKey(imageView.getId())).collect(Collectors.counting());
-
 
                                     if (УжеЕслиТАкойIDImage==0) {
                                         // TODO: 24.07.2023  set Image

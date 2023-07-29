@@ -107,7 +107,6 @@ import io.reactivex.rxjava3.functions.Predicate;
 
 public class FragmentMaretialNew extends Fragment {
     private RecyclerView recyclerView;
-    private LinearLayout linearLayou;
     private BottomNavigationView bottomNavigationView;
     private BottomNavigationItemView bottomNavigationItemViewвыход;
     private BottomNavigationItemView bottomNavigationItemView2создать;
@@ -146,8 +145,6 @@ public class FragmentMaretialNew extends Fragment {
     private   SubClassCreateNewImageForMateril subClassCreateNewImageForMateril;
 
     private CopyOnWriteArrayList<ImageView> copyOnWriteArrayListGetImages;
-
-  private   CopyOnWriteArrayList<LinkedHashMap<Integer,Bitmap>> copyOnWriteArrayListCompleteImageWithID;
 
     private        ActivityResultLauncher<Intent> someActivityResultLauncherUpImage;
 
@@ -214,7 +211,6 @@ public class FragmentMaretialNew extends Fragment {
         try{
             recyclerView = view.findViewById(R.id.RecyclerView);
             recyclerView.setVisibility(View.VISIBLE);
-            linearLayou = view.findViewById(R.id.fragmentadmissionmaterias);
             bottomNavigationView = view.findViewById(R.id.BottomNavigationView);
             bottomNavigationView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED);
             bottomNavigationItemViewвыход = bottomNavigationView.findViewById(R.id.id_lback);
@@ -233,8 +229,6 @@ public class FragmentMaretialNew extends Fragment {
             animationscroll = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_scrolls);
             // TODO: 25.07.2023
             copyOnWriteArrayListGetImages=new CopyOnWriteArrayList<>();
-            copyOnWriteArrayListCompleteImageWithID=new CopyOnWriteArrayList<>();
-
             // TODO: Создаем и инициализцурием RecureView
             МетодИнициализацииRecycreView();
             МетодЗаполенияRecycleViewДляЗадач();//todo заполения recycreview
@@ -306,18 +300,15 @@ public class FragmentMaretialNew extends Fragment {
                             if (result.getResultCode() == Activity.RESULT_OK && result.getData()!=null) {
                             // There are no request codes
                             Intent dataUpImage = result.getData();
+                                dataUpImage.setAction(       "ServiceCameraTake.UpImage");
                                 // TODO: 24.07.2023  UP file Image
-                                  //// SERVICE  subClassCreateNewImageForMateril.new  SubClassCompleteNewImageUpAndCreate().методОбраобткиUPCompleteImages(getActivity(),dataUpImage );
+                         Boolean       РезультатUpCAmeraPhoto=      localBinderCamera.getService().метоСлужбыTakePhotos(dataUpImage,copyOnWriteArrayListGetImages);
 
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                    + " dataUpImage " +dataUpImage);
+                                    + " dataUpImage " +dataUpImage      + "  " +РезультатUpCAmeraPhoto);
                         }
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                + " asyncTaskLoaderForNewMaterial.isAbandoned() " +asyncTaskLoaderForNewMaterial.isAbandoned());
                         // TODO: 19.10.2022  слушатель после получение даннных в Курсом
                     } catch (Exception e) {
                         e.printStackTrace();
