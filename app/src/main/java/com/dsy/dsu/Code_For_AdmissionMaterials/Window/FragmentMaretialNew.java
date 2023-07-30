@@ -2566,16 +2566,16 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 
            void методSimpleCreateImage(){
                 try{
-                    // Запускаем свой IntentService
-                    Intent intentServiceCamera = new Intent(getContext(), ServiceCameraTake.class);
-                    intentServiceCamera.setAction("StartServiceCamera.takephoto");
-                    getContext().  startService(intentServiceCamera);
-                    // TODO: 24.07.2023  Поднимаем файл из Image уже созданого
-              /*      asyncTaskLoaderForNewMaterial.startLoading();
-                    Intent intentCreateImageNew=new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //android.provider.MediaStore.ACTION_IMAGE_CAPTURE
-                    String[] mimeTypes = {"image/jpeg", "image/png"};
-                    intentCreateImageNew.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-                     someActivityResultLauncherNewImage.launch(intentCreateImageNew);*/
+                    // TODO Создание НОвой ФОтографии Image
+                    asyncTaskLoaderForNewMaterial.startLoading();
+                    Intent dataCreateNewImageFromCamera = new Intent();
+                    dataCreateNewImageFromCamera.setAction(   "ServiceCameraTake.NewFromCameraImage");
+                    // TODO: 24.07.2023  UP file Image
+                    copyOnWriteArrayListSuccessAddImages=      localBinderCamera.getService().метоСлужбыTakePhotos(dataCreateNewImageFromCamera,copyOnWriteArrayListGetImages);
+
+                    if(copyOnWriteArrayListSuccessAddImages.size()>0){
+                        subClassCreateNewImageForMateril.    методЗакрытиеNewCreateIMAGE(alertDialogCreateImage);
+                    }
                     // TODO: 20.07.2023
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

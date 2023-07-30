@@ -123,8 +123,28 @@ public class ServiceCameraTake extends Service {
                             + " время: " + new Date() + "\n+" +
                             " Класс в процессе... " + this.getClass().getName() + "\n" +
                             " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            "  copyOnWriteArrayListSuccessAddImages " + copyOnWriteArrayListSuccessAddImages);
+                            "  copyOnWriteArrayListSuccessAddImages " + copyOnWriteArrayListSuccessAddImages + " intent.getAction() " +intent.getAction());
+            }else {
+                if(intent.getAction().equalsIgnoreCase("ServiceCameraTake.NewFromCameraImage")){
+                    // TODO: 28.07.2023 вариан первый #1 UP Photo
+                    copyOnWriteArrayListSuccessAddImages =      new SubClassCreateNewImageFromCamera().методСозданиеNewImageForCamera(intent);
+
+                    Log.d(getApplicationContext().getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            "  copyOnWriteArrayListSuccessAddImages " + copyOnWriteArrayListSuccessAddImages+ " intent.getAction() " +intent.getAction());
+                }
+
+
+
             }
+
+
+
+
+
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -383,16 +403,30 @@ public class ServiceCameraTake extends Service {
     
     
 // TODO: 30.07.2023 ВТорой КЛАСС Уже ДЛЯ СОЗДАНИЕ НОВОЙ ФОТОГРАФИИ ЧЕРЕЗ КАМЕРУ
-
     class  SubClassCreateNewImageFromCamera{
+        // TODO: 30.07.2023  New Create From Camera Image
+        CopyOnWriteArrayList<LinkedHashMap<Integer,Bitmap>>  методСозданиеNewImageForCamera(@NonNull Intent intentCreateNewCamera){
+ try{
 
-        Boolean методСозданиеNewImageForCamera(){
- Boolean РезудьтатNewCreateImage=false;
- 
- 
- 
+            // TODO: 20.07.2023
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
+                    + "\n"
+                    + " copyOnWriteArrayListSuccessAddImages.size() "
+                    + copyOnWriteArrayListSuccessAddImages.size()
+                    + " intentCreateNewCamera " +intentCreateNewCamera );
 
- return  РезудьтатNewCreateImage;           
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(getApplicationContext().getClass().getName(),
+                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+ return  copyOnWriteArrayListSuccessAddImages;
         }
 
 
