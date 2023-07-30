@@ -146,6 +146,7 @@ public class FragmentMaretialNew extends Fragment {
 
     private CopyOnWriteArrayList<ImageView> copyOnWriteArrayListGetImages;
 
+    CopyOnWriteArrayList<LinkedHashMap<Integer,Bitmap>> copyOnWriteArrayListSuccessAddImages;
     private        ActivityResultLauncher<Intent> someActivityResultLauncherUpImage;
 
     private  ServiceCameraTake.LocalBinderCamera localBinderCamera;
@@ -302,16 +303,16 @@ public class FragmentMaretialNew extends Fragment {
                             Intent dataUpImage = result.getData();
                                 dataUpImage.setAction(       "ServiceCameraTake.UpImage");
                                 // TODO: 24.07.2023  UP file Image
-                         Boolean       РезультатUpCAmeraPhoto=      localBinderCamera.getService().метоСлужбыTakePhotos(dataUpImage,copyOnWriteArrayListGetImages);
+                                copyOnWriteArrayListSuccessAddImages=      localBinderCamera.getService().метоСлужбыTakePhotos(dataUpImage,copyOnWriteArrayListGetImages);
 
-                         if(РезультатUpCAmeraPhoto){
+                         if(copyOnWriteArrayListSuccessAddImages.size()>0){
                                 subClassCreateNewImageForMateril.    методЗакрытиеNewCreateIMAGE(alertDialogCreateImage);
                          }
 
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                    + " dataUpImage " +dataUpImage      + "  " +РезультатUpCAmeraPhoto);
+                                    + " dataUpImage " +dataUpImage      + " copyOnWriteArrayListSuccessAddImages " +copyOnWriteArrayListSuccessAddImages);
                         }
                         // TODO: 19.10.2022  слушатель после получение даннных в Курсом
                     } catch (Exception e) {
