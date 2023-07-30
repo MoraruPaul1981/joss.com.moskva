@@ -68,166 +68,110 @@ public class ServiceCameraTake extends Service {
 
     private Handler handlerbackgroupCamera;
     private Animation animationscroll;
-    private  CopyOnWriteArrayList<LinkedHashMap<Integer,Bitmap>> copyOnWriteArrayListSuccessAddImages =new CopyOnWriteArrayList<>();
-    private  CopyOnWriteArrayList <ImageView>copyOnWriteArrayListGetImages=new CopyOnWriteArrayList<>();
-
-    private  Activity activityNewImage;
+    private CopyOnWriteArrayList<LinkedHashMap<Integer, Bitmap>> copyOnWriteArrayListSuccessAddImages = new CopyOnWriteArrayList<>();
+    private CopyOnWriteArrayList<ImageView> copyOnWriteArrayListGetImages = new CopyOnWriteArrayList<>();
 
     // TODO: 30.07.2023 new varivable
-    protected  final int CAMERA_CALIBRATION_DELAY = 5000;
-    protected final String TAG = "myLog";
-    protected  final int CAMERACHOICE = CameraCharacteristics.LENS_FACING_BACK;
-    protected long cameraCaptureStartTime;
-    protected CameraCaptureSession session;
-    private CameraManager cameraManager;
-    private CameraDevice cameraDevice;
-    private ImageReader imageReader;
 
-    private ActivityResultLauncher<Intent> someActivityResultLauncherUpImage;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        try{
-
-        // TODO: 28.07.2023
-        cameraManager= (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+        try {
+            // TODO: 28.07.2023
             animationscroll = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_scrolls);
-
             // TODO: 28.07.2023
             методHandlerCamera();
-        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cameraManager " +cameraManager  );
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                this.getClass().getName(),
-                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
     }
-    }
-
 
 
     @Override
     public void onDestroy() {
-        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
         super.onDestroy();
     }
 
     public class LocalBinderCamera extends Binder {
         public ServiceCameraTake getService() {
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cameraManager " +cameraManager  );
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
             return ServiceCameraTake.this;
         }
     }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cameraManager " +cameraManager  );
-        return  binder ;
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+        return binder;
     }
 
 
     // TODO: 29.07.2023  main bound metod
 
-   public CopyOnWriteArrayList<LinkedHashMap<Integer,Bitmap>> метоСлужбыTakePhotos(@NonNull Intent intent,
-                                                                                   @NonNull CopyOnWriteArrayList <ImageView>copyOnWriteArrayListGetImages,
-                                                                                   @NonNull Activity activityNewImage,
-                                                                                   @NonNull  ActivityResultLauncher<Intent> someActivityResultLauncherUpImage){
-       try{
-           this.copyOnWriteArrayListGetImages=copyOnWriteArrayListGetImages;
-           this.activityNewImage=activityNewImage;
+    public CopyOnWriteArrayList<LinkedHashMap<Integer, Bitmap>> метоСлужбыTakePhotos(@NonNull Intent intent,
+                                                                                     @NonNull CopyOnWriteArrayList<ImageView> copyOnWriteArrayListGetImages,
+                                                                                     @NonNull Activity activityNewImage) {
+        try {
+            this.copyOnWriteArrayListGetImages = copyOnWriteArrayListGetImages;
+            //////////////////////TODO SERVICE
+            // TODO: 29.07.2023 Up Photos
+            if (intent.getAction().equalsIgnoreCase("ServiceCameraTake.UpImage")) {
+                // TODO: 28.07.2023 вариан первый #1 UP Photo
+                copyOnWriteArrayListSuccessAddImages = new SubClassCompleteNewImageUpAndCreate().методОбраобткиUPCompleteImages(intent);
 
-           //////////////////////TODO SERVICE
-           String[] permissions = new String[]{
-                   Manifest.permission.CAMERA,
-                   Manifest.permission.RECORD_AUDIO,
-                   android.Manifest.permission.INTERNET,
-                   android.Manifest.permission.READ_PHONE_STATE,
-                   android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                   android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                   android.Manifest.permission.VIBRATE,
-                   android.Manifest.permission.RECORD_AUDIO,
-                   android.Manifest.permission.RECORD_AUDIO,
-                   android.Manifest.permission.REQUEST_INSTALL_PACKAGES,
-                   android.Manifest.permission.ACCESS_FINE_LOCATION,
-                   android.Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
-                   android.Manifest.permission.MANAGE_EXTERNAL_STORAGE,
-                   android.Manifest.permission.ACCESS_BACKGROUND_LOCATION,
-                   android.Manifest.permission.ACCESS_NETWORK_STATE,
-                   android.Manifest.permission.ACCESS_MEDIA_LOCATION,
-                   android.Manifest.permission.INSTALL_PACKAGES,
-                   android.Manifest.permission.WRITE_SETTINGS,
-                   android. Manifest.permission.WRITE_SECURE_SETTINGS
-           };
-           ActivityCompat.requestPermissions(activityNewImage, permissions, 1);
-
-
-
-           // TODO: 29.07.2023 Up Photos
-            if(intent.getAction().equalsIgnoreCase("ServiceCameraTake.UpImage")){
-                    // TODO: 28.07.2023 вариан первый #1 UP Photo
-                copyOnWriteArrayListSuccessAddImages =      new SubClassCompleteNewImageUpAndCreate().методОбраобткиUPCompleteImages(intent);
+                Log.d(getApplicationContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        "  copyOnWriteArrayListSuccessAddImages " + copyOnWriteArrayListSuccessAddImages + " intent.getAction() " + intent.getAction());
+            } else {
+                if (intent.getAction().equalsIgnoreCase("ServiceCameraTake.NewFromCameraImage")) {
+                    // TODO: 28.07.2023 вариан первый #1 NEw Image Photo
+                    copyOnWriteArrayListSuccessAddImages = new SubClassCompleteNewImageUpAndCreate().методОбраобткиNewImageCompleteImages(intent);
 
                     Log.d(getApplicationContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
                             " Класс в процессе... " + this.getClass().getName() + "\n" +
                             " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            "  copyOnWriteArrayListSuccessAddImages " + copyOnWriteArrayListSuccessAddImages + " intent.getAction() " +intent.getAction());
-            }else {
-                if(intent.getAction().equalsIgnoreCase("ServiceCameraTake.NewFromCameraImage")){
-                    // TODO: 28.07.2023 вариан первый #1 UP Photo
-                  // new SubClassCreateNewImageFromCameraТретийВариантТест(intent);
-
-                    Intent intentNewImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    someActivityResultLauncherUpImage.launch(intentNewImage);
-
-                    Log.d(getApplicationContext().getClass().getName(), "\n"
-                            + " время: " + new Date() + "\n+" +
-                            " Класс в процессе... " + this.getClass().getName() + "\n" +
-                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            "  copyOnWriteArrayListSuccessAddImages " + copyOnWriteArrayListSuccessAddImages+ " intent.getAction() " +intent.getAction());
+                            "  copyOnWriteArrayListSuccessAddImages " + copyOnWriteArrayListSuccessAddImages + " intent.getAction() " + intent.getAction());
                 }
-
 
 
             }
 
 
-
-
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                            this.getClass().getName(),
-                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
-            return copyOnWriteArrayListSuccessAddImages;
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        return copyOnWriteArrayListSuccessAddImages;
     }
 
 
-
-
-
-
-
-
-    public  void методHandlerCamera(){
-        try{
-            handlerbackgroupCamera=    new Handler(new Handler.Callback() {
+    public void методHandlerCamera() {
+        try {
+            handlerbackgroupCamera = new Handler(new Handler.Callback() {
                 @Override
                 public boolean handleMessage(@NonNull Message msg) {
                     Log.d(getApplicationContext().getClass().getName(), "\n"
@@ -248,61 +192,84 @@ public class ServiceCameraTake extends Service {
     }
 
 
-
-
-
-
-
-// TODO: 28.07.2023 КЛАССЫ С БИЗЕНС ЛОГИКОЙ  КАМЕРА  // TODO: 28.07.2023 КЛАССЫ С БИЗЕНС ЛОГИКОЙ  КАМЕРА  // TODO: 28.07.2023 КЛАССЫ С БИЗЕНС ЛОГИКОЙ  КАМЕРА  // TODO: 28.07.2023 КЛАССЫ С БИЗЕНС ЛОГИКОЙ  КАМЕРА
-    class SubClassCompleteNewImageUpAndCreate{
-    CopyOnWriteArrayList<LinkedHashMap<Integer,Bitmap>> методОбраобткиUPCompleteImages(  @Nullable Intent intentUpPhotos  ){
-            try{
+    // TODO: 28.07.2023 КЛАССЫ С БИЗЕНС ЛОГИКОЙ  КАМЕРА  // TODO: 28.07.2023 КЛАССЫ С БИЗЕНС ЛОГИКОЙ  КАМЕРА  // TODO: 28.07.2023 КЛАССЫ С БИЗЕНС ЛОГИКОЙ  КАМЕРА  // TODO: 28.07.2023 КЛАССЫ С БИЗЕНС ЛОГИКОЙ  КАМЕРА
+    class SubClassCompleteNewImageUpAndCreate {
+        CopyOnWriteArrayList<LinkedHashMap<Integer, Bitmap>> методОбраобткиUPCompleteImages(@Nullable Intent intentUpPhotos) {
+            try {
                 // TODO: 24.07.2023
-                if (intentUpPhotos!=null) {
+                if (intentUpPhotos != null) {
                     Uri selectedImage = intentUpPhotos.getData();
                     InputStream stream = getApplicationContext().getContentResolver().openInputStream(selectedImage);
-                    BufferedInputStream bufferedInputStreamUpLoadImage=new BufferedInputStream(stream);
+                    BufferedInputStream bufferedInputStreamUpLoadImage = new BufferedInputStream(stream);
                     Bitmap bitmapUpImage = BitmapFactory.decodeStream(bufferedInputStreamUpLoadImage);
                     // TODO: 24.07.2023
-                    copyOnWriteArrayListSuccessAddImages =            методЗаполянемImageViewNewImage(bitmapUpImage);
+                    copyOnWriteArrayListSuccessAddImages = методЗаполянемImageViewNewImage(bitmapUpImage);
                     // TODO: 20.07.2023
                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
-                            + "\n"+ "  bitmapUpImage " +bitmapUpImage  + " copyOnWriteArrayListSuccessAddImages.size() " + copyOnWriteArrayListSuccessAddImages.size() );
+                            + "\n" + "  bitmapUpImage " + bitmapUpImage + " copyOnWriteArrayListSuccessAddImages.size() " + copyOnWriteArrayListSuccessAddImages.size());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getApplicationContext().getClass().getName(),
                         "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                 " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                         this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
-        return copyOnWriteArrayListSuccessAddImages;
+            return copyOnWriteArrayListSuccessAddImages;
         }
-        void методОбраобткиUPCompleteImages(@NonNull Context context,  @Nullable Uri uriNewImageCamera  ){
-            try{
+
+        // TODO: 30.07.2023 NEW IMAGE FROM PHOTO
+
+        CopyOnWriteArrayList<LinkedHashMap<Integer, Bitmap>> методОбраобткиNewImageCompleteImages(@Nullable Intent intentNewImage) {
+            try {
                 // TODO: 24.07.2023
-                if (uriNewImageCamera!=null) {
-                    InputStream stream = getApplicationContext().getContentResolver().openInputStream(uriNewImageCamera);
-                    BufferedInputStream bufferedInputStreamUpLoadImage=new BufferedInputStream(stream);
-                    Bitmap   bitmapUpImage = BitmapFactory.decodeStream(bufferedInputStreamUpLoadImage);
+                if (intentNewImage != null) {
+                    Bitmap bitmapNewImage = (Bitmap) intentNewImage.getExtras().get("data");
                     // TODO: 24.07.2023
-                   // методЗаполянемImageViewNewImage(bitmapUpImage);
+                    copyOnWriteArrayListSuccessAddImages = методЗаполянемImageViewNewImage(bitmapNewImage);
                     // TODO: 20.07.2023
                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
-                            + "\n"+ "  bitmapUpImage " +bitmapUpImage  );
+                            + "\n" + "  bitmapNewImage " + bitmapNewImage + " copyOnWriteArrayListSuccessAddImages.size() " + copyOnWriteArrayListSuccessAddImages.size());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getApplicationContext().getClass().getName(),
                         "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                 " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+            return copyOnWriteArrayListSuccessAddImages;
+        }
+
+        void методОбраобткиUPCompleteImages(@NonNull Context context, @Nullable Uri uriNewImageCamera) {
+            try {
+                // TODO: 24.07.2023
+                if (uriNewImageCamera != null) {
+                    InputStream stream = getApplicationContext().getContentResolver().openInputStream(uriNewImageCamera);
+                    BufferedInputStream bufferedInputStreamUpLoadImage = new BufferedInputStream(stream);
+                    Bitmap bitmapUpImage = BitmapFactory.decodeStream(bufferedInputStreamUpLoadImage);
+                    // TODO: 24.07.2023
+                    // методЗаполянемImageViewNewImage(bitmapUpImage);
+                    // TODO: 20.07.2023
+                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
+                            + "\n" + "  bitmapUpImage " + bitmapUpImage);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getApplicationContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                         this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
@@ -310,50 +277,50 @@ public class ServiceCameraTake extends Service {
         }
 
         // TODO: 24.07.2023  заполяем дааныых
-        private CopyOnWriteArrayList<LinkedHashMap<Integer,Bitmap>> методЗаполянемImageViewNewImage(@NonNull  Bitmap   bitmapUpImage ) {
-            try{
+        private CopyOnWriteArrayList<LinkedHashMap<Integer, Bitmap>> методЗаполянемImageViewNewImage(@NonNull Bitmap bitmapUpImage) {
+            try {
                 final boolean[] ФлагЧтоУжеОднаВставкаУжеБыла = {false};
                 Flowable.fromIterable(copyOnWriteArrayListGetImages)
                         .onBackpressureBuffer(copyOnWriteArrayListGetImages.size(),
                                 null, BackpressureOverflowStrategy.ERROR)
-                        .repeatWhen(repeat->repeat.delay(200, TimeUnit.MILLISECONDS))
+                        .repeatWhen(repeat -> repeat.delay(200, TimeUnit.MILLISECONDS))
                         .takeWhile(new Predicate<ImageView>() {
                             @Override
                             public boolean test(ImageView imageView) throws Throwable {
-                                if (ФлагЧтоУжеОднаВставкаУжеБыла[0]==false ) {
+                                if (ФлагЧтоУжеОднаВставкаУжеБыла[0] == false) {
                                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                            "ФлагЧтоУжеОднаВставкаУжеБыла[0] " + ФлагЧтоУжеОднаВставкаУжеБыла[0]  );
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                                            "ФлагЧтоУжеОднаВставкаУжеБыла[0] " + ФлагЧтоУжеОднаВставкаУжеБыла[0]);
                                     return true;
                                 } else {
                                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
                                             "ФлагЧтоУжеОднаВставкаУжеБыла[0] " + ФлагЧтоУжеОднаВставкаУжеБыла[0]);
                                     return false;
                                 }
 
                             }
                         })
-                        .filter( image->image.getDrawingCache()==null)
+                        .filter(image -> image.getDrawingCache() == null)
                         .doOnNext(new Consumer<ImageView>() {
                             @Override
                             public void accept(ImageView imageView) throws Throwable {
                                 try {
                                     // TODO: 25.07.2023  добавление новго Image
-                                    Long УжеЕслиТАкойIDImage=
+                                    Long УжеЕслиТАкойIDImage =
                                             copyOnWriteArrayListSuccessAddImages.stream()
-                                                    .filter(s->s.containsKey(imageView.getId())).collect(Collectors.counting());
+                                                    .filter(s -> s.containsKey(imageView.getId())).collect(Collectors.counting());
 
-                                    if (УжеЕслиТАкойIDImage==0) {
+                                    if (УжеЕслиТАкойIDImage == 0) {
                                         // TODO: 24.07.2023  set Image
                                         методВставкиImageGenerator(imageView, bitmapUpImage);
                                         // TODO: 25.07.2023 ставим флаг что вставка одна успешно стработал
                                         ФлагЧтоУжеОднаВставкаУжеБыла[0] = true;
 
 
-                                        методЗапоелнияУжеДобавленыхImage(imageView,bitmapUpImage);
+                                        методЗапоелнияУжеДобавленыхImage(imageView, bitmapUpImage);
 
 
                                     }
@@ -361,7 +328,7 @@ public class ServiceCameraTake extends Service {
                                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                            + " bitmapUpImage " +bitmapUpImage + " imageView.getId() " +imageView.getId() + " УжеЕслиТАкойIDImage " +УжеЕслиТАкойIDImage);
+                                            + " bitmapUpImage " + bitmapUpImage + " imageView.getId() " + imageView.getId() + " УжеЕслиТАкойIDImage " + УжеЕслиТАкойIDImage);
 
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -378,7 +345,7 @@ public class ServiceCameraTake extends Service {
                             public void accept(Throwable throwable) throws Throwable {
                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() );
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber());
                             }
                         })
                         .onErrorComplete(new Predicate<Throwable>() {
@@ -386,7 +353,7 @@ public class ServiceCameraTake extends Service {
                             public boolean test(Throwable throwable) throws Throwable {
                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() );
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber());
                                 return false;
                             }
                         })
@@ -410,7 +377,7 @@ public class ServiceCameraTake extends Service {
                 Log.e(getApplicationContext().getClass().getName(),
                         "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                 " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                         this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
@@ -418,8 +385,8 @@ public class ServiceCameraTake extends Service {
         }
 
 
-        private void методВставкиImageGenerator(@NonNull  ImageView imageView, @NonNull Bitmap bitmapUpImage) {
-            try{
+        private void методВставкиImageGenerator(@NonNull ImageView imageView, @NonNull Bitmap bitmapUpImage) {
+            try {
                 imageView.setImageBitmap(bitmapUpImage);
                 imageView.startAnimation(animationscroll);
                 imageView.refreshDrawableState();
@@ -429,17 +396,17 @@ public class ServiceCameraTake extends Service {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                         " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                         this.getClass().getName(),
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
 
 
-        private void методЗапоелнияУжеДобавленыхImage( @NonNull ImageView imageView , @NonNull Bitmap bitmapUpImage) {
-            try{
-                LinkedHashMap<Integer,Bitmap>  linkedHashMapCompeleImage=    new LinkedHashMap<>();
-                linkedHashMapCompeleImage.put(   imageView.getId()     , bitmapUpImage);
+        private void методЗапоелнияУжеДобавленыхImage(@NonNull ImageView imageView, @NonNull Bitmap bitmapUpImage) {
+            try {
+                LinkedHashMap<Integer, Bitmap> linkedHashMapCompeleImage = new LinkedHashMap<>();
+                linkedHashMapCompeleImage.put(imageView.getId(), bitmapUpImage);
                 copyOnWriteArrayListSuccessAddImages.add(linkedHashMapCompeleImage);
 
                 Log.d(getApplicationContext().getClass().getName(), "\n" + " copyOnWriteArrayListSuccessAddImages "
@@ -448,338 +415,16 @@ public class ServiceCameraTake extends Service {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                         " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getApplicationContext() ).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                         this.getClass().getName(),
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
 
     } // TODO: 24.07.2023  end SubClassCompleteNewImageUpAndCreate
-
+}
 
     
     
     
     
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// TODO: 30.07.2023 ВТорой КЛАСС Уже ДЛЯ СОЗДАНИЕ НОВОЙ ФОТОГРАФИИ ЧЕРЕЗ КАМЕРУ
-
-
-
-
-    class SubClassCreateNewImageFromCameraТретийВариантТест  {
-
-        public SubClassCreateNewImageFromCameraТретийВариантТест(@NonNull Intent intentCreateNewCamera) {
-            методСозданиеNewImageForCamera(intentCreateNewCamera);
-        }
-
-        // TODO: 30.07.2023  New Create From Camera Image
-        CopyOnWriteArrayList<LinkedHashMap<Integer, Bitmap>> методСозданиеNewImageForCamera(@NonNull Intent intentCreateNewCamera) {
-            try {
-                // TODO: 20.07.2023
-                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
-                        + "\n"
-                        + " copyOnWriteArrayListSuccessAddImages.size() "
-                        + copyOnWriteArrayListSuccessAddImages.size()
-                        + " intentCreateNewCamera " + intentCreateNewCamera);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(getApplicationContext().getClass().getName(),
-                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
-            return copyOnWriteArrayListSuccessAddImages;
-        }
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        class SubClassCreateNewImageFromCameraНЕработает {
-
-        // TODO: 30.07.2023  New Create From Camera Image
-        CopyOnWriteArrayList<LinkedHashMap<Integer,Bitmap>>  методСозданиеNewImageForCamera(@NonNull Intent intentCreateNewCamera){
- try{
-     readyCamera();
-            // TODO: 20.07.2023
-            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
-                    + "\n"
-                    + " copyOnWriteArrayListSuccessAddImages.size() "
-                    + copyOnWriteArrayListSuccessAddImages.size()
-                    + " intentCreateNewCamera " +intentCreateNewCamera );
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(getApplicationContext().getClass().getName(),
-                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                Thread.currentThread().getStackTrace()[2].getLineNumber());
-    }
- return  copyOnWriteArrayListSuccessAddImages;
-        }
-
-
-
-
-
-
-    // TODO: 30.07.2023  STARTing class two create image photos  code
-
-        protected CameraDevice.StateCallback cameraStateCallback = new CameraDevice.StateCallback() {
-            @Override
-            public void onOpened(@NonNull CameraDevice camera) {
-                Log.d(TAG, "CameraDevice.StateCallback onOpened");
-                cameraDevice = camera;
-                actOnReadyCameraDevice();
-            }
-
-            @Override
-            public void onDisconnected(@NonNull CameraDevice camera) {
-                Log.w(TAG, "CameraDevice.StateCallback onDisconnected");
-            }
-
-            @Override
-            public void onError(@NonNull CameraDevice camera, int error) {
-                Log.e(TAG, "CameraDevice.StateCallback onError " + error);
-            }
-        };
-
-        protected CameraCaptureSession.StateCallback sessionStateCallback = new CameraCaptureSession.StateCallback() {
-
-            @Override
-            public void onReady(CameraCaptureSession session) {
-                session = session;
-                try {
-                    session.setRepeatingRequest(createCaptureRequest(), new CameraCaptureSession.CaptureCallback() {
-                        @Override
-                        public void onCaptureStarted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, long timestamp, long frameNumber) {
-                            super.onCaptureStarted(session, request, timestamp, frameNumber);
-                        }
-
-                        @Override
-                        public void onCaptureProgressed(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull CaptureResult partialResult) {
-                            super.onCaptureProgressed(session, request, partialResult);
-                        }
-
-                        @Override
-                        public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull TotalCaptureResult result) {
-                            super.onCaptureCompleted(session, request, result);
-                        }
-
-                        @Override
-                        public void onCaptureFailed(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull CaptureFailure failure) {
-                            super.onCaptureFailed(session, request, failure);
-                        }
-
-                        @Override
-                        public void onCaptureSequenceCompleted(@NonNull CameraCaptureSession session, int sequenceId, long frameNumber) {
-                            super.onCaptureSequenceCompleted(session, sequenceId, frameNumber);
-                        }
-
-                        @Override
-                        public void onCaptureSequenceAborted(@NonNull CameraCaptureSession session, int sequenceId) {
-                            super.onCaptureSequenceAborted(session, sequenceId);
-                        }
-
-                        @Override
-                        public void onCaptureBufferLost(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull Surface target, long frameNumber) {
-                            super.onCaptureBufferLost(session, request, target, frameNumber);
-                        }
-                    }, handlerbackgroupCamera);
-                    cameraCaptureStartTime = System.currentTimeMillis ();
-
-
-                } catch (CameraAccessException e) {
-                    Log.e(TAG, e.getMessage());
-                }
-            }
-
-
-            @Override
-            public void onConfigured(CameraCaptureSession session) {
-
-            }
-
-            @Override
-            public void onConfigureFailed(@NonNull CameraCaptureSession session) {
-            }
-        };
-
-        protected ImageReader.OnImageAvailableListener onImageAvailableListener = new ImageReader.OnImageAvailableListener() {
-            @Override
-            public void onImageAvailable(ImageReader reader) {
-                Log.d(TAG, "onImageAvailable");
-                Image img = reader.acquireLatestImage();
-                if (img != null) {
-                    if (System.currentTimeMillis () > cameraCaptureStartTime + CAMERA_CALIBRATION_DELAY) {
-                        processImage(img);
-                    }
-                    img.close();
-                    reader.close();
-                }
-            }
-        };
-
-        public void readyCamera() {
-
-            try {
-                String pickedCamera = getCamera(cameraManager);
-                cameraManager.openCamera(pickedCamera, cameraStateCallback, handlerbackgroupCamera);
-                imageReader = ImageReader.newInstance(1920, 1088, ImageFormat.JPEG, 2 /* images buffered */);
-                imageReader.setOnImageAvailableListener(onImageAvailableListener, handlerbackgroupCamera);
-                Log.d(TAG, "imageReader created");
-            } catch (CameraAccessException e){
-                Log.e(TAG, e.getMessage());
-            }
-        }
-
-        public String getCamera(CameraManager manager){
-            try {
-                for (String cameraId : manager.getCameraIdList()) {
-                    CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
-                    int cOrientation = characteristics.get(CameraCharacteristics.LENS_FACING);
-                    if (cOrientation == CAMERACHOICE) {
-                        return cameraId;
-                    }
-                }
-            } catch (CameraAccessException e){
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-
-
-
-        public void actOnReadyCameraDevice()
-        {
-            try {
-                cameraDevice.createCaptureSession(Arrays.asList(imageReader.getSurface()), sessionStateCallback, handlerbackgroupCamera);
-            } catch (CameraAccessException e){
-                Log.e(TAG, e.getMessage());
-            }
-        }
-
-
-
-
-        private void processImage(Image image){
-            //Process image data
-            ByteBuffer buffer;
-            byte[] bytes;
-            boolean success = false;
-            File file = new File(Environment.getExternalStorageDirectory() + "/Pictures/image.jpg");
-            FileOutputStream output = null;
-
-            if(image.getFormat() == ImageFormat.JPEG) {
-                buffer = image.getPlanes()[0].getBuffer();
-                bytes = new byte[buffer.remaining()]; // makes byte array large enough to hold image
-                buffer.get(bytes); // copies image from buffer to byte array
-                try {
-                    output = new FileOutputStream(file);
-                    output.write(bytes);    // write the byte array to file
-                    success = true;
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    image.close(); // close this to free up buffer for other images
-                    if (null != output) {
-                        try {
-                            output.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-
-            }
-
-
-        }
-
-        protected CaptureRequest createCaptureRequest() {
-            try {
-                CaptureRequest.Builder builder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
-                builder.addTarget(imageReader.getSurface());
-                return builder.build();
-            } catch (CameraAccessException e) {
-                Log.e(TAG, e.getMessage());
-                return null;
-            }
-        }
-
-    // TODO: 30.07.2023  AND class two create image photos  code
-
-    } // TODO: 30.07.2023  //END CLASS SubClassCreateNewImageFromCameraНЕработает
-
-
-
-
-
-
-
-
-
-
-
-
-
-    }//TODO END ServiceCameraTake
-
-
-
-
-

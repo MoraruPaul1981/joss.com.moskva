@@ -97,7 +97,8 @@
     <uses-permission android:name="android.permission.CAMERA2" />
     <uses-permission android:name="android.hardware.camera.any" />
     <uses-permission android:name="com.mycoolcam.USE_COOL_CAMERA" />
-    <uses-permission android:name="android.media.action.IMAGE_CAPTURE" />
+    <uses-permission android:name="android.media.action.IMAGE_CAPTURE " android:required="true"
+        android:requiredFeature="true" />
     <uses-permission android:name="android.intent.action.ACCESS_BACKGROUND_LOCATION " />
 
     <uses-feature android:name="android.hardware.location.gps" />

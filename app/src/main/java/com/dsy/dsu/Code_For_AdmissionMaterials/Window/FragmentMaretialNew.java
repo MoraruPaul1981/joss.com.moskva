@@ -142,6 +142,7 @@ public class FragmentMaretialNew extends Fragment {
 
     CopyOnWriteArrayList<LinkedHashMap<Integer,Bitmap>> copyOnWriteArrayListSuccessAddImages;
     private        ActivityResultLauncher<Intent> someActivityResultLauncherUpImage;
+    private        ActivityResultLauncher<Intent> getSomeActivityResultLauncherCreateNewImage;
 
     private  ServiceCameraTake.LocalBinderCamera localBinderCamera;
 
@@ -231,9 +232,10 @@ public class FragmentMaretialNew extends Fragment {
             МетоКликаПоКнопкеBack();
 
 
-            // TODO: 27.07.2023 методы по слушателем Camera Back Image
+            // TODO: 27.07.2023 методы по слушателем UP Back Image
             методCallsBackUpImageActivityResult();
-
+            // TODO: 27.07.2023 методы по слушателем New Camera Back Image
+            методCallsBackNewImageFromCameraActivityResult();
 
 
             // TODO: 17.04.2023
@@ -295,11 +297,12 @@ public class FragmentMaretialNew extends Fragment {
                             if (result.getResultCode() == Activity.RESULT_OK && result.getData()!=null) {
                             // There are no request codes
                             Intent dataUpImage = result.getData();
+
                                 dataUpImage.setAction(       "ServiceCameraTake.UpImage");
                                 // TODO: 24.07.2023  UP file Image
                                 copyOnWriteArrayListSuccessAddImages=
                                         localBinderCamera.getService()
-                                                .метоСлужбыTakePhotos(dataUpImage,copyOnWriteArrayListGetImages,getActivity(),someActivityResultLauncherUpImage);
+                                                .метоСлужбыTakePhotos(dataUpImage,copyOnWriteArrayListGetImages,getActivity() );
 
                          if(copyOnWriteArrayListSuccessAddImages.size()>0){
                                 subClassCreateNewImageForMateril.    методЗакрытиеNewCreateIMAGE(alertDialogCreateImage);
@@ -324,7 +327,46 @@ public class FragmentMaretialNew extends Fragment {
                 });
     }
 
+// TODO: 30.07.2023  CREATE NEW IMAGE
+void методCallsBackNewImageFromCameraActivityResult(){
+    // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
+    getSomeActivityResultLauncherCreateNewImage = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    try{
+                        if (result.getResultCode() == Activity.RESULT_OK && result.getData()!=null) {
+                            // There are no request codes
+                            Intent dataUpImage = result.getData();
+                            dataUpImage.setAction(      "ServiceCameraTake.NewFromCameraImage");
+                            // TODO: 24.07.2023  UP file Image
+                            copyOnWriteArrayListSuccessAddImages=
+                                    localBinderCamera.getService()
+                                            .метоСлужбыTakePhotos(dataUpImage,copyOnWriteArrayListGetImages,getActivity());
 
+                            if(copyOnWriteArrayListSuccessAddImages.size()>0){
+                                subClassCreateNewImageForMateril.    методЗакрытиеNewCreateIMAGE(alertDialogCreateImage);
+                            }
+
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                    + " dataUpImage " +dataUpImage      + " copyOnWriteArrayListSuccessAddImages " +copyOnWriteArrayListSuccessAddImages);
+                        }
+                        // TODO: 19.10.2022  слушатель после получение даннных в Курсом
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(getContext().getClass().getName(),
+                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
+                }
+            });
+}
 
 
 
@@ -2567,7 +2609,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 
 
                     Intent dataCreateNewImageFromCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                     someActivityResultLauncherUpImage.launch(dataCreateNewImageFromCamera);
+                    getSomeActivityResultLauncherCreateNewImage.launch(dataCreateNewImageFromCamera);
 
 
                     // TODO: 24.07.2023  UP file Image
