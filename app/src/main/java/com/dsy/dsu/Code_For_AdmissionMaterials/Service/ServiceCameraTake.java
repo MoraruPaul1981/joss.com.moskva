@@ -1,11 +1,14 @@
 package com.dsy.dsu.Code_For_AdmissionMaterials.Service;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
+import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
@@ -23,13 +26,18 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.util.Size;
 import android.view.Surface;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.R;
@@ -44,6 +52,7 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -62,7 +71,7 @@ public class ServiceCameraTake extends Service {
     private  CopyOnWriteArrayList<LinkedHashMap<Integer,Bitmap>> copyOnWriteArrayListSuccessAddImages =new CopyOnWriteArrayList<>();
     private  CopyOnWriteArrayList <ImageView>copyOnWriteArrayListGetImages=new CopyOnWriteArrayList<>();
 
-
+    private  Activity activityNewImage;
 
     // TODO: 30.07.2023 new varivable
     protected  final int CAMERA_CALIBRATION_DELAY = 5000;
@@ -74,13 +83,17 @@ public class ServiceCameraTake extends Service {
     private CameraDevice cameraDevice;
     private ImageReader imageReader;
 
+    private ActivityResultLauncher<Intent> someActivityResultLauncherUpImage;
+
     @Override
     public void onCreate() {
         super.onCreate();
         try{
+
         // TODO: 28.07.2023
         cameraManager= (CameraManager) getSystemService(Context.CAMERA_SERVICE);
             animationscroll = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_scrolls);
+
             // TODO: 28.07.2023
             методHandlerCamera();
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -126,9 +139,40 @@ public class ServiceCameraTake extends Service {
 
     // TODO: 29.07.2023  main bound metod
 
-   public CopyOnWriteArrayList<LinkedHashMap<Integer,Bitmap>> метоСлужбыTakePhotos(@NonNull Intent intent, @NonNull CopyOnWriteArrayList <ImageView>copyOnWriteArrayListGetImages ){
+   public CopyOnWriteArrayList<LinkedHashMap<Integer,Bitmap>> метоСлужбыTakePhotos(@NonNull Intent intent,
+                                                                                   @NonNull CopyOnWriteArrayList <ImageView>copyOnWriteArrayListGetImages,
+                                                                                   @NonNull Activity activityNewImage,
+                                                                                   @NonNull  ActivityResultLauncher<Intent> someActivityResultLauncherUpImage){
        try{
            this.copyOnWriteArrayListGetImages=copyOnWriteArrayListGetImages;
+           this.activityNewImage=activityNewImage;
+
+           //////////////////////TODO SERVICE
+           String[] permissions = new String[]{
+                   Manifest.permission.CAMERA,
+                   Manifest.permission.RECORD_AUDIO,
+                   android.Manifest.permission.INTERNET,
+                   android.Manifest.permission.READ_PHONE_STATE,
+                   android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                   android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                   android.Manifest.permission.VIBRATE,
+                   android.Manifest.permission.RECORD_AUDIO,
+                   android.Manifest.permission.RECORD_AUDIO,
+                   android.Manifest.permission.REQUEST_INSTALL_PACKAGES,
+                   android.Manifest.permission.ACCESS_FINE_LOCATION,
+                   android.Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
+                   android.Manifest.permission.MANAGE_EXTERNAL_STORAGE,
+                   android.Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+                   android.Manifest.permission.ACCESS_NETWORK_STATE,
+                   android.Manifest.permission.ACCESS_MEDIA_LOCATION,
+                   android.Manifest.permission.INSTALL_PACKAGES,
+                   android.Manifest.permission.WRITE_SETTINGS,
+                   android. Manifest.permission.WRITE_SECURE_SETTINGS
+           };
+           ActivityCompat.requestPermissions(activityNewImage, permissions, 1);
+
+
+
            // TODO: 29.07.2023 Up Photos
             if(intent.getAction().equalsIgnoreCase("ServiceCameraTake.UpImage")){
                     // TODO: 28.07.2023 вариан первый #1 UP Photo
@@ -142,7 +186,10 @@ public class ServiceCameraTake extends Service {
             }else {
                 if(intent.getAction().equalsIgnoreCase("ServiceCameraTake.NewFromCameraImage")){
                     // TODO: 28.07.2023 вариан первый #1 UP Photo
-                    copyOnWriteArrayListSuccessAddImages =      new SubClassCreateNewImageFromCameraТретийВариантТест().методСозданиеNewImageForCamera(intent);
+                  // new SubClassCreateNewImageFromCameraТретийВариантТест(intent);
+
+                    Intent intentNewImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    someActivityResultLauncherUpImage.launch(intentNewImage);
 
                     Log.d(getApplicationContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
@@ -438,6 +485,10 @@ public class ServiceCameraTake extends Service {
 
 
     class SubClassCreateNewImageFromCameraТретийВариантТест  {
+
+        public SubClassCreateNewImageFromCameraТретийВариантТест(@NonNull Intent intentCreateNewCamera) {
+            методСозданиеNewImageForCamera(intentCreateNewCamera);
+        }
 
         // TODO: 30.07.2023  New Create From Camera Image
         CopyOnWriteArrayList<LinkedHashMap<Integer, Bitmap>> методСозданиеNewImageForCamera(@NonNull Intent intentCreateNewCamera) {

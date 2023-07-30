@@ -39,6 +39,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -296,7 +297,9 @@ public class FragmentMaretialNew extends Fragment {
                             Intent dataUpImage = result.getData();
                                 dataUpImage.setAction(       "ServiceCameraTake.UpImage");
                                 // TODO: 24.07.2023  UP file Image
-                                copyOnWriteArrayListSuccessAddImages=      localBinderCamera.getService().метоСлужбыTakePhotos(dataUpImage,copyOnWriteArrayListGetImages);
+                                copyOnWriteArrayListSuccessAddImages=
+                                        localBinderCamera.getService()
+                                                .метоСлужбыTakePhotos(dataUpImage,copyOnWriteArrayListGetImages,getActivity(),someActivityResultLauncherUpImage);
 
                          if(copyOnWriteArrayListSuccessAddImages.size()>0){
                                 subClassCreateNewImageForMateril.    методЗакрытиеNewCreateIMAGE(alertDialogCreateImage);
@@ -2561,14 +2564,20 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                 try{
                     // TODO Создание НОвой ФОтографии Image
                     asyncTaskLoaderForNewMaterial.startLoading();
-                    Intent dataCreateNewImageFromCamera = new Intent();
-                    dataCreateNewImageFromCamera.setAction(   "ServiceCameraTake.NewFromCameraImage");
+
+
+                    Intent dataCreateNewImageFromCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                     someActivityResultLauncherUpImage.launch(dataCreateNewImageFromCamera);
+
+
                     // TODO: 24.07.2023  UP file Image
-                    copyOnWriteArrayListSuccessAddImages=      localBinderCamera.getService().метоСлужбыTakePhotos(dataCreateNewImageFromCamera,copyOnWriteArrayListGetImages);
+                  /*  copyOnWriteArrayListSuccessAddImages=
+                            localBinderCamera.getService()
+                                    .метоСлужбыTakePhotos(dataCreateNewImageFromCamera,copyOnWriteArrayListGetImages,getActivity(),someActivityResultLauncherUpImage);
 
                     if(copyOnWriteArrayListSuccessAddImages.size()>0){
                         subClassCreateNewImageForMateril.    методЗакрытиеNewCreateIMAGE(alertDialogCreateImage);
-                    }
+                    }*/
                     // TODO: 20.07.2023
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
