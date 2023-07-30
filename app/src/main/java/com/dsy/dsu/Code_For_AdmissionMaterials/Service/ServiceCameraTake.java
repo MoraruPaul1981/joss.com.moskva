@@ -67,17 +67,15 @@ public class ServiceCameraTake extends Service {
 
 
     // TODO: 30.07.2023 new varivable
-    protected  final int CAMERA_CALIBRATION_DELAY = 500;
+    protected  final int CAMERA_CALIBRATION_DELAY = 5000;
     protected final String TAG = "myLog";
     protected  final int CAMERACHOICE = CameraCharacteristics.LENS_FACING_BACK;
     protected long cameraCaptureStartTime;
     protected CameraCaptureSession session;
     private CameraManager cameraManager;
     private CameraDevice cameraDevice;
-    private CaptureRequest captureRequest;
     private ImageReader imageReader;
-    private  String cameraId;
-    private  CameraCharacteristics characteristics ;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -87,6 +85,8 @@ public class ServiceCameraTake extends Service {
             animationscroll = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_scrolls);
             // TODO: 28.07.2023
             методHandlerCamera();
+
+            new SubClassCreateNewImageFromCamera().    readyCamera();
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cameraManager " +cameraManager  );
@@ -433,7 +433,7 @@ public class ServiceCameraTake extends Service {
         // TODO: 30.07.2023  New Create From Camera Image
         CopyOnWriteArrayList<LinkedHashMap<Integer,Bitmap>>  методСозданиеNewImageForCamera(@NonNull Intent intentCreateNewCamera){
  try{
-     readyCamera();
+    /* readyCamera();*/
             // TODO: 20.07.2023
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -506,6 +506,7 @@ public class ServiceCameraTake extends Service {
                         @Override
                         public void onCaptureFailed(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull CaptureFailure failure) {
                             super.onCaptureFailed(session, request, failure);
+                            session.close();
                         }
 
                         @Override
@@ -552,16 +553,16 @@ public class ServiceCameraTake extends Service {
                         processImage(img);
                     }
                     img.close();
-                    stopSelf();
+                    reader.close();
                 }
             }
         };
 
         public void readyCamera() {
-            CameraManager manager = (CameraManager) getSystemService(CAMERA_SERVICE);
+
             try {
-                String pickedCamera = getCamera(manager);
-                manager.openCamera(pickedCamera, cameraStateCallback, handlerbackgroupCamera);
+                String pickedCamera = getCamera(cameraManager);
+                cameraManager.openCamera(pickedCamera, cameraStateCallback, handlerbackgroupCamera);
                 imageReader = ImageReader.newInstance(1920, 1088, ImageFormat.JPEG, 2 /* images buffered */);
                 imageReader.setOnImageAvailableListener(onImageAvailableListener, handlerbackgroupCamera);
                 Log.d(TAG, "imageReader created");
