@@ -3,7 +3,6 @@ package com.dsy.dsu.Code_For_AdmissionMaterials.Service;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
@@ -26,13 +25,12 @@ import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
 import android.view.Surface;
-import android.view.TextureView;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
+
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.R;
 
@@ -85,8 +83,6 @@ public class ServiceCameraTake extends Service {
             animationscroll = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_scrolls);
             // TODO: 28.07.2023
             методHandlerCamera();
-
-            new SubClassCreateNewImageFromCamera().    readyCamera();
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cameraManager " +cameraManager  );
@@ -146,7 +142,7 @@ public class ServiceCameraTake extends Service {
             }else {
                 if(intent.getAction().equalsIgnoreCase("ServiceCameraTake.NewFromCameraImage")){
                     // TODO: 28.07.2023 вариан первый #1 UP Photo
-                    copyOnWriteArrayListSuccessAddImages =      new SubClassCreateNewImageFromCamera().методСозданиеNewImageForCamera(intent);
+                    copyOnWriteArrayListSuccessAddImages =      new SubClassCreateNewImageFromCameraТретийВариантТест().методСозданиеNewImageForCamera(intent);
 
                     Log.d(getApplicationContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
@@ -420,20 +416,87 @@ public class ServiceCameraTake extends Service {
     
     
     
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // TODO: 30.07.2023 ВТорой КЛАСС Уже ДЛЯ СОЗДАНИЕ НОВОЙ ФОТОГРАФИИ ЧЕРЕЗ КАМЕРУ
-    class  SubClassCreateNewImageFromCamera{
+
+
+
+
+    class SubClassCreateNewImageFromCameraТретийВариантТест  {
+
+        // TODO: 30.07.2023  New Create From Camera Image
+        CopyOnWriteArrayList<LinkedHashMap<Integer, Bitmap>> методСозданиеNewImageForCamera(@NonNull Intent intentCreateNewCamera) {
+            try {
+                // TODO: 20.07.2023
+                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
+                        + "\n"
+                        + " copyOnWriteArrayListSuccessAddImages.size() "
+                        + copyOnWriteArrayListSuccessAddImages.size()
+                        + " intentCreateNewCamera " + intentCreateNewCamera);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getApplicationContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+            return copyOnWriteArrayListSuccessAddImages;
+        }
+
+    }
 
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        class SubClassCreateNewImageFromCameraНЕработает {
 
         // TODO: 30.07.2023  New Create From Camera Image
         CopyOnWriteArrayList<LinkedHashMap<Integer,Bitmap>>  методСозданиеNewImageForCamera(@NonNull Intent intentCreateNewCamera){
  try{
-    /* readyCamera();*/
+     readyCamera();
             // TODO: 20.07.2023
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -506,7 +569,6 @@ public class ServiceCameraTake extends Service {
                         @Override
                         public void onCaptureFailed(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull CaptureFailure failure) {
                             super.onCaptureFailed(session, request, failure);
-                            session.close();
                         }
 
                         @Override
@@ -650,7 +712,7 @@ public class ServiceCameraTake extends Service {
 
     // TODO: 30.07.2023  AND class two create image photos  code
 
-    } // TODO: 30.07.2023  //END CLASS SubClassCreateNewImageFromCamera
+    } // TODO: 30.07.2023  //END CLASS SubClassCreateNewImageFromCameraНЕработает
 
 
 
