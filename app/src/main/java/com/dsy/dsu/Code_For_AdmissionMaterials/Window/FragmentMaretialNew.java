@@ -142,7 +142,7 @@ public class FragmentMaretialNew extends Fragment {
 
     private CopyOnWriteArrayList<ImageView> copyOnWriteArrayListGetImages;
 
-    CopyOnWriteArrayList<LinkedHashMap<Integer,Bitmap>> copyOnWriteArrayListSuccessAddImages;
+    private   CopyOnWriteArrayList<LinkedHashMap<Integer,Bitmap>> copyOnWriteArrayListSuccessAddImages;
     private        ActivityResultLauncher<Intent> someActivityResultLauncherUpImage;
     private ActivityResultLauncher<Uri> getSomeActivityResultLauncherCreateNewImage;
 
@@ -1603,20 +1603,64 @@ void методCallsBackNewImageFromCameraActivityResult(){
                                         " ХэшРезультататСозданияСозданиеНовогоМатериала " +ХэшРезультататСозданияСозданиеНовогоМатериала);
 
 
+
+
+
+
+
                                  // TODO: 31.07.2023  Реакция На Результат Вставки НовыхДанных
                                 if (ХэшРезультататСозданияСозданиеНовогоМатериала>0) {
-                                    Integer ХэшРезультататСозданияНовыхИлиВыбранныхФотографий =       методВставкиNewAndUpImages();
+
+                                    Long ХэшРезультататСозданияНовыхИлиВыбранныхФотографий =  binderДляПолучениеМатериалов.getService().
+                                            МетодВставкаНовойИлиВыбранойФотографииImageUpAndCreate(copyOnWriteArrayListSuccessAddImages,ХэшРезультататСозданияСозданиеНовогоМатериала);
+
+                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                            + " copyOnWriteArrayListSuccessAddImages " +copyOnWriteArrayListSuccessAddImages +
+                                            " ХэшРезультататСозданияНовыхИлиВыбранныхФотографий " +ХэшРезультататСозданияНовыхИлиВыбранныхФотографий);
+
                                     // TODO: 21.10.2022  результат  вставка новых или выбранойй фотографии
                                     Log.d(this.getClass().getName(), " ХэшРезультататСозданияНовыхИлиВыбранныхФотографий  "
                                             +ХэшРезультататСозданияНовыхИлиВыбранныхФотографий);
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    // TODO: 31.07.2023 после вставки новгой материалов и новой ФОТО
+
                                     // TODO: 31.07.2023 метод После Успешной Вставки ЗапускаемСинхронизацию и Запись ДАнных в
                                     if (ХэшРезультататСозданияНовыхИлиВыбранныхФотографий>0) {
+
+
                                         методЗаполениеПослеУспешнойВставкиНовгоМатерилаSharedPreferences(v,
                                                 IDДляВставкиЦФО, IDДляВставкиГруппыматериалов,
                                                 IDДляВставкиОдногоматериала, ВыбраноеАвтомобили,
-                                                ВыбраноеКонтагенты, ХэшРезультататСозданияСозданиеНовогоМатериала, holder);
+                                                ВыбраноеКонтагенты, holder);
+
+
+                                        // TODO: 30.06.2023  Запуск Синхрониазции
+                                        методЗарускОдноразовойСнхрониазцииПослеСозданиеНовгоЗаказа();
+
+                                        методBackToFragmentAdmissionMaterilas(v);
 
                                         Log.d(this.getClass().getName(), " IDДляВставкиГруппыматериалов " +IDДляВставкиГруппыматериалов +
                                                 " IDДляВставкиОдногоматериала "+IDДляВставкиОдногоматериала+"IDДляВставкиЦФО " +IDДляВставкиЦФО);
@@ -1654,26 +1698,6 @@ void методCallsBackNewImageFromCameraActivityResult(){
         }
 
 
-        // TODO: 31.07.2023 метод вставки Новых Или Выбраных Фотошрафий
-        Integer методВставкиNewAndUpImages(){
-          try{
-
-
-              Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                      " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                      " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                      + " asyncTaskLoaderForNewMaterial.isAbandoned() " +asyncTaskLoaderForNewMaterial.isAbandoned());
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(getContext().getClass().getName(),
-                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-
-        }
 
 
 
@@ -1686,11 +1710,9 @@ void методCallsBackNewImageFromCameraActivityResult(){
                 (View v, Integer IDДляВставкиЦФО, Integer IDДляВставкиГруппыматериалов,
                  Integer IDДляВставкиОдногоматериала, Integer ВыбраноеАвтомобили,
                  Integer ВыбраноеКонтагенты,
-                 Integer ХэшРезультататСозданияСозданиеНовогоМатериала,
                  @NonNull MyViewHolder holder) {
             try {
-            if (ХэшРезультататСозданияСозданиеНовогоМатериала >0) {
-                методBackToFragmentAdmissionMaterilas(v);
+
                 // TODO: 17.11.2022 запоманаем выбраное цфо
                 SharedPreferences.Editor editor = preferencesМатериалы.edit();
                 editor.putBoolean("ДляСпинераУжеВибиралЦФО",true);
@@ -1719,11 +1741,6 @@ void методCallsBackNewImageFromCameraActivityResult(){
                 // TODO: 27.12.2022 запоминаем параметры
                 editor.commit();
 
-
-                // TODO: 30.06.2023  Запуск Синхрониазции
-                методЗарускОдноразовойСнхрониазцииПослеСозданиеНовгоЗаказа();
-
-            }
                 Log.d(this.getClass().getName(), " IDДляВставкиГруппыматериалов " +IDДляВставкиГруппыматериалов +
                         " IDДляВставкиОдногоматериала "+IDДляВставкиОдногоматериала+"IDДляВставкиЦФО " +IDДляВставкиЦФО);
         } catch (Exception e) {

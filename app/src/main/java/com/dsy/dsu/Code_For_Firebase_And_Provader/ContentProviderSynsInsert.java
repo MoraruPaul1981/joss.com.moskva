@@ -224,7 +224,7 @@ public class ContentProviderSynsInsert extends ContentProvider {
             String table = МетодОпределяемТаблицу(uri);
 
 
-            Long   РезультатВставкиДанных  = Create_Database_СамаБАзаSQLite.insertOrThrow(table, null, values);
+            Long   РезультатВставкиДанных  = Create_Database_СамаБАзаSQLite.insert(table, null, values);
             // TODO: 30.10.2021
             Log.w(getContext().getClass().getName(), " РезультатВставкиДанных  " + РезультатВставкиДанных);/////
 
