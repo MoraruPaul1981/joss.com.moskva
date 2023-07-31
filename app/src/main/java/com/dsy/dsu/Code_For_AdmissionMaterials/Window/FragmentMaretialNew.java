@@ -354,42 +354,48 @@ public class FragmentMaretialNew extends Fragment {
 
 // TODO: 30.07.2023  CREATE NEW IMAGE
 void методCallsBackNewImageFromCameraActivityResult(){
-    // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
     getSomeActivityResultLauncherCreateNewImage = registerForActivityResult(
             new ActivityResultContracts.TakePicture(),
             new ActivityResultCallback<Boolean>() {
                 @Override
                 public void onActivityResult(Boolean result) {
+                    try{
                     if(result){
-                        Toast.makeText(getActivity(), " Успешное Take Photos !!! "    , Toast.LENGTH_SHORT).show();
-
                         if (cam_uri != null){
-
-                            try {
                                 ContentResolver cr =getActivity(). getContentResolver();
                                 InputStream inputStream = cr.openInputStream(cam_uri);
-                                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +copyOnWriteArrayListSuccessAddImages+ " cam_uri  " + cam_uri+
-                                         " bitmap " +bitmap);
-                            } catch (FileNotFoundException e) {
-                                throw new RuntimeException(e);
+                                Bitmap bitmapNewCompleteImage = BitmapFactory.decodeStream(inputStream);
+                            // TODO: 31.07.2023  Создание Новой Фотографии
+                            Intent dataCreateNewImage = new Intent();
+                            dataCreateNewImage.putExtra("bitmapNewCompleteImage",bitmapNewCompleteImage);
+                            dataCreateNewImage.setAction(       "ServiceCameraTake.NewFromCameraImage");
+                            // TODO: 24.07.2023  UP file Image
+                            copyOnWriteArrayListSuccessAddImages=
+                                    localBinderCamera.getService()
+                                            .метоСлужбыTakePhotos(dataCreateNewImage,copyOnWriteArrayListGetImages,getActivity() );
+
+                            if(copyOnWriteArrayListSuccessAddImages.size()>0){
+                                subClassCreateNewImageForMateril.    методЗакрытиеNewCreateIMAGE(alertDialogCreateImage);
                             }
 
-
-                        }else {
-                            Toast.makeText(getActivity(), " НЕТ НЕТ НЕТ  Take Photos !!! "    , Toast.LENGTH_SHORT).show();
-                        }
-
-
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +copyOnWriteArrayListSuccessAddImages+ " cam_uri  " + cam_uri+
+                                    " bitmapNewCompleteImage " +bitmapNewCompleteImage);
                     }else {
-
-                        Toast.makeText(getActivity(), " НЕТ НЕТ НЕТ  Take Photos !!! "    , Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), " Фото не создано !!! "    , Toast.LENGTH_SHORT).show();
+                        }
                     }
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +copyOnWriteArrayListSuccessAddImages+ " cam_uri  " + cam_uri);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(getContext().getClass().getName(),
+                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
                 }
             });
 }

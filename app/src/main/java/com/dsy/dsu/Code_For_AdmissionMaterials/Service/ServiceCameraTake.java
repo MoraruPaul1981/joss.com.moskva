@@ -22,6 +22,7 @@ import android.media.Image;
 import android.media.ImageReader;
 import android.net.Uri;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
@@ -144,7 +145,7 @@ public class ServiceCameraTake extends Service {
             } else {
                 if (intent.getAction().equalsIgnoreCase("ServiceCameraTake.NewFromCameraImage")) {
                     // TODO: 28.07.2023 вариан первый #1 NEw Image Photo
-                    copyOnWriteArrayListSuccessAddImages = new SubClassCompleteNewImageUpAndCreate().методОбраобткиNewImageCompleteImages(intent);
+                    copyOnWriteArrayListSuccessAddImages = new SubClassCompleteNewImageUpAndCreate().методОбрабокаNewCreateImageComplete(intent);
 
                     Log.d(getApplicationContext().getClass().getName(), "\n"
                             + " время: " + new Date() + "\n+" +
@@ -224,18 +225,19 @@ public class ServiceCameraTake extends Service {
 
         // TODO: 30.07.2023 NEW IMAGE FROM PHOTO
 
-        CopyOnWriteArrayList<LinkedHashMap<Integer, Bitmap>> методОбраобткиNewImageCompleteImages(@Nullable Intent intentNewImage) {
+        CopyOnWriteArrayList<LinkedHashMap<Integer, Bitmap>> методОбрабокаNewCreateImageComplete(@Nullable Intent intentNewImage) {
             try {
                 // TODO: 24.07.2023
                 if (intentNewImage != null) {
-                    Bitmap bitmapNewImage = (Bitmap) intentNewImage.getExtras().get("data");
+                    Bundle bundleNewCompleetImages = intentNewImage.getExtras();
+                    Bitmap bitmapNewCompleteImage  = bundleNewCompleetImages.getParcelable("bitmapNewCompleteImage") ;
                     // TODO: 24.07.2023
-                    copyOnWriteArrayListSuccessAddImages = методЗаполянемImageViewNewImage(bitmapNewImage);
+                    copyOnWriteArrayListSuccessAddImages = методЗаполянемImageViewNewImage(bitmapNewCompleteImage);
                     // TODO: 20.07.2023
                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
-                            + "\n" + "  bitmapNewImage " + bitmapNewImage + " copyOnWriteArrayListSuccessAddImages.size() " + copyOnWriteArrayListSuccessAddImages.size());
+                            + "\n" + "  bitmapNewCompleteImage " + bitmapNewCompleteImage + " copyOnWriteArrayListSuccessAddImages.size() " + copyOnWriteArrayListSuccessAddImages.size());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
