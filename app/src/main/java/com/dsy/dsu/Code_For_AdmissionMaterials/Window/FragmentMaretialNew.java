@@ -36,6 +36,7 @@ import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -685,13 +686,13 @@ void методCallsBackNewImageFromCameraActivityResult(){
                 im3 = itemView.findViewById(R.id.im3);
                 im4 = itemView.findViewById(R.id.im4);
 
-                im5 = itemView.findViewById(R.id.im1);
-                im6 = itemView.findViewById(R.id.im2);
-                im7 = itemView.findViewById(R.id.im3);
-                im8 = itemView.findViewById(R.id.im4);
+                im5 = itemView.findViewById(R.id.im5);
+                im6 = itemView.findViewById(R.id.im6);
+                im7 = itemView.findViewById(R.id.im7);
+                im8 = itemView.findViewById(R.id.im8);
 
-                im9 = itemView.findViewById(R.id.im1);
-                im10 = itemView.findViewById(R.id.im2);
+                im9 = itemView.findViewById(R.id.im9);
+                im10 = itemView.findViewById(R.id.im10);
 
                 // TODO: 24.07.2023 заполения Данныз всех вставляемых новых Image
                 copyOnWriteArrayListGetImages.add(im1);
@@ -892,21 +893,25 @@ void методCallsBackNewImageFromCameraActivityResult(){
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View viewПолучениеМатериалов = null;
             try {
-                if( !asyncTaskLoaderForNewMaterial.isAbandoned()  ){
+                if (asyncTaskLoaderForNewMaterial!=null) {
                     viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov_new, parent, false);//todo old simple_for_takst_cardview1
                     Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
-                }else {
-                    if( asyncTaskLoaderForNewMaterial.isAbandoned() ){
-                        if(  cursorRecyclerView!=null && cursorRecyclerView.getCount()>0){
-                            // TODO: 26.07.2023  Data
-                            viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_new_assitionmaterial_cardview_new2, parent, false);//todo simple_for_new_assitionmaterial_cardview1_test
-                            Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
-                        }else{
-                            // TODO: 26.07.2023 is null
-                            viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_isnull_actimavmaretisl_sprachnikov, parent, false);//todo old simple_for_takst_cardview1
-                            Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов+ "  cursorRecyclerView " + cursorRecyclerView);
-                        }}
-                        
+                    if( !asyncTaskLoaderForNewMaterial.isAbandoned()  ){
+                        viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov_new, parent, false);//todo old simple_for_takst_cardview1
+                        Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
+                    }else {
+                        if( asyncTaskLoaderForNewMaterial.isAbandoned() ){
+                            if(  cursorRecyclerView!=null && cursorRecyclerView.getCount()>0){
+                                // TODO: 26.07.2023  Data
+                                viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_new_assitionmaterial_cardview_new2, parent, false);//todo simple_for_new_assitionmaterial_cardview1_test
+                                Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
+                            }else{
+                                // TODO: 26.07.2023 is null
+                                viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_isnull_actimavmaretisl_sprachnikov, parent, false);//todo old simple_for_takst_cardview1
+                                Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов+ "  cursorRecyclerView " + cursorRecyclerView);
+                            }}
+
+                    }
                 }
                 // TODO: 13.10.2022  добавляем новый компонент в Нащ RecycreView
                 myViewHolder = new MyViewHolder(viewПолучениеМатериалов);
@@ -2310,7 +2315,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                         try{
                             Animation   animation1= AnimationUtils.loadAnimation(getContext(),R.anim.slide_in_row_newscanner1);
                             // TODO: 20.12.2022  оперделяем какой вид загружать когда выбран и когда не выбрана гурппа метарилов
-                             alertDialogCreateImage  = new MaterialAlertDialogBuilder(getContext()){
+                            MaterialAlertDialogBuilder materialAlertDialogBuilderКамера  = new MaterialAlertDialogBuilder(getContext()){
                                 @NonNull
                                 @Override
                                 public MaterialAlertDialogBuilder setView(View view) {
@@ -2407,7 +2412,17 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                     .setTitle("Новые фотографии")
                                     .setCancelable(false)
                                     .setIcon( R.drawable.icon_for_create_image2)
-                                    .setView(getLayoutInflater().inflate( R.layout.simple_for_new_search_create_image, null )).show();
+                                    .setView(getLayoutInflater().inflate( R.layout.simple_for_new_search_create_image, null ));
+
+                            // TODO: 31.07.2023  запускаем
+                            if(alertDialogCreateImage==null){
+                                alertDialogCreateImage=    materialAlertDialogBuilderКамера.show();
+                            }else{
+                                if(!alertDialogCreateImage.isShowing()){
+                                    alertDialogCreateImage=    materialAlertDialogBuilderКамера.show();
+                                }
+                            }
+
                             WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
                             layoutParams.copyFrom(   alertDialogCreateImage.getWindow().getAttributes());
                             layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
@@ -2416,6 +2431,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                             layoutParams.height =1000;*/
                             layoutParams.gravity = Gravity.CENTER;
                             alertDialogCreateImage.getWindow().setAttributes(layoutParams);
+
                             // TODO: 20.07.2023 слушатели  закрытие
                             методЗакрываемСозданиеИлиUpIamge(materialButtoтtЗакрываемСозданиеImage, alertDialogCreateImage);
 
@@ -2606,7 +2622,6 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                 try{
                     // TODO Создание НОвой ФОтографии Image
                     asyncTaskLoaderForNewMaterial.startLoading();
-
 
                     Intent dataCreateNewImageFromCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     getSomeActivityResultLauncherCreateNewImage.launch(dataCreateNewImageFromCamera);

@@ -283,7 +283,6 @@ public class ServiceCameraTake extends Service {
                 Flowable.fromIterable(copyOnWriteArrayListGetImages)
                         .onBackpressureBuffer(copyOnWriteArrayListGetImages.size(),
                                 null, BackpressureOverflowStrategy.ERROR)
-                        .repeatWhen(repeat -> repeat.delay(200, TimeUnit.MILLISECONDS))
                         .takeWhile(new Predicate<ImageView>() {
                             @Override
                             public boolean test(ImageView imageView) throws Throwable {
@@ -366,7 +365,7 @@ public class ServiceCameraTake extends Service {
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber());
                             }
                         })
-                        .subscribe();
+                        .blockingSubscribe();
 
 
                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
