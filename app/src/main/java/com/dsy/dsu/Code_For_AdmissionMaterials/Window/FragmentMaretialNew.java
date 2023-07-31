@@ -79,6 +79,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.common.util.concurrent.AtomicDouble;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
@@ -98,7 +99,7 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
-
+import java.util.function.ToDoubleBiFunction;
 
 
 public class FragmentMaretialNew extends Fragment {
@@ -1611,44 +1612,25 @@ void методCallsBackNewImageFromCameraActivityResult(){
                                  // TODO: 31.07.2023  Реакция На Результат Вставки НовыхДанных
                                 if (ХэшРезультататСозданияСозданиеНовогоМатериала>0) {
 
-                                    Long ХэшРезультататСозданияНовыхИлиВыбранныхФотографий =  binderДляПолучениеМатериалов.getService().
-                                            МетодВставкаНовойИлиВыбранойФотографииImageUpAndCreate(copyOnWriteArrayListSuccessAddImages,ХэшРезультататСозданияСозданиеНовогоМатериала);
+                                    // TODO: 31.07.2023  Записываем Новые ФОтографии
 
-                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                            + " copyOnWriteArrayListSuccessAddImages " +copyOnWriteArrayListSuccessAddImages +
-                                            " ХэшРезультататСозданияНовыхИлиВыбранныхФотографий " +ХэшРезультататСозданияНовыхИлиВыбранныхФотографий);
+                                    if (copyOnWriteArrayListSuccessAddImages.size()>0) {
+                                        Long ХэшРезультататСозданияНовыхИлиВыбранныхФотографий =  binderДляПолучениеМатериалов.getService().
+                                                МетодВставкаНовойИлиВыбранойФотографииImageUpAndCreate(copyOnWriteArrayListSuccessAddImages,ХэшРезультататСозданияСозданиеНовогоМатериала);
 
-                                    // TODO: 21.10.2022  результат  вставка новых или выбранойй фотографии
-                                    Log.d(this.getClass().getName(), " ХэшРезультататСозданияНовыхИлиВыбранныхФотографий  "
-                                            +ХэшРезультататСозданияНовыхИлиВыбранныхФотографий);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                                + " copyOnWriteArrayListSuccessAddImages " +copyOnWriteArrayListSuccessAddImages +
+                                                " ХэшРезультататСозданияНовыхИлиВыбранныхФотографий " +ХэшРезультататСозданияНовыхИлиВыбранныхФотографий +
+                                                 " copyOnWriteArrayListSuccessAddImages.size() "+ copyOnWriteArrayListSuccessAddImages.size());
+                                    }
 
 
                                     // TODO: 31.07.2023 после вставки новгой материалов и новой ФОТО
 
                                     // TODO: 31.07.2023 метод После Успешной Вставки ЗапускаемСинхронизацию и Запись ДАнных в
-                                    if (ХэшРезультататСозданияНовыхИлиВыбранныхФотографий>0) {
+
 
 
                                         методЗаполениеПослеУспешнойВставкиНовгоМатерилаSharedPreferences(v,
@@ -1664,7 +1646,7 @@ void методCallsBackNewImageFromCameraActivityResult(){
 
                                         Log.d(this.getClass().getName(), " IDДляВставкиГруппыматериалов " +IDДляВставкиГруппыматериалов +
                                                 " IDДляВставкиОдногоматериала "+IDДляВставкиОдногоматериала+"IDДляВставкиЦФО " +IDДляВставкиЦФО);
-                                    }
+
 
                                 }else {
 
