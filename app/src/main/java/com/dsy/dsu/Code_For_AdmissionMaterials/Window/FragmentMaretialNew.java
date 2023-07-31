@@ -1,7 +1,5 @@
 package com.dsy.dsu.Code_For_AdmissionMaterials.Window;
 
-import static androidx.core.content.ContextCompat.checkSelfPermission;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -12,24 +10,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.ImageFormat;
 import android.graphics.Typeface;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCaptureSession;
-import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
-import android.hardware.camera2.CameraManager;
-import android.hardware.camera2.CaptureRequest;
-import android.media.Image;
-import android.media.ImageReader;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -40,8 +28,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.fragment.app.Fragment;
@@ -52,17 +38,13 @@ import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Environment;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
-import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -103,10 +85,7 @@ import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventList
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -1615,52 +1594,44 @@ void методCallsBackNewImageFromCameraActivityResult(){
                                 bundleДляСоздании.putInt("tracks",ВыбраноеАвтомобили);
                                 bundleДляСоздании.putInt("companys",ВыбраноеКонтагенты);
                                 intentСамоПолучениеНовогоМатериала.putExtras(bundleДляСоздании);
-                                Integer ХэшРезультататСозданияСозданиеНовогоМатериала =
+
+                                // TODO: 31.07.2023 САМА ВСТАВКА НОВГО МАТЕРИЛА 
+                                Long ХэшРезультататСозданияСозданиеНовогоМатериала =
                                         binderДляПолучениеМатериалов.getService().МетодCлужбыСозданиеНовогоМатериала(getContext(),intentСамоПолучениеНовогоМатериала);
                                 // TODO: 21.10.2022  результат  создание нового материала
                                 Log.d(this.getClass().getName(), " ХэшРезультататСозданияСозданиеНовогоМатериала  "+ХэшРезультататСозданияСозданиеНовогоМатериала+
                                         " ХэшРезультататСозданияСозданиеНовогоМатериала " +ХэшРезультататСозданияСозданиеНовогоМатериала);
 
 
+                                 // TODO: 31.07.2023  Реакция На Результат Вставки НовыхДанных
                                 if (ХэшРезультататСозданияСозданиеНовогоМатериала>0) {
-                                    методBackToFragmentAdmissionMaterilas(v);
-                                    // TODO: 17.11.2022 запоманаем выбраное цфо
-                                    SharedPreferences.Editor editor = preferencesМатериалы.edit();
-                                    editor.putBoolean("ДляСпинераУжеВибиралЦФО",true);
-                                    // TODO: 09.12.2022 цфо
-                                    editor.putInt("ПозицияВыбраногоЦФО",IDДляВставкиЦФО);
-                                    editor.putString("НазваниеВыбраногоЦФО", holder.textViewcfo.getText().toString());
-                                    // TODO: 09.12.2022 группа материалов
-                                    editor.putInt("ПозицияВыбраногоГруппыМатериалов",IDДляВставкиГруппыматериалов);
-                                    editor.putString("НазваниеВыбраногоГруппыМатериалов", holder.marerialtextgroupmaterial.getText().toString());
-                                    // TODO: 09.12.2022 сам матералов
-                                    editor.putInt("ПозицияВыбраногоМатериала",IDДляВставкиОдногоматериала);
-                                    editor.putString("НазваниеВыбраногоМатериала", holder.materialtext_onematerial_ves.getText().toString());
-                                    // TODO: 09.12.2022 два поля ТТН и ТТН ДАТА
-                                    Boolean     ФлагДляСкрытыхМатериалов = preferencesМатериалы.getBoolean("ФлагДляСкрытыхМатериалов",false);
-                                    if (ФлагДляСкрытыхМатериалов==true) {
-                                        editor.putString("ПозицияВыбраногоТТН", holder.textipputmaretialttn.getText().toString());
-                                        editor.putString("НазваниеВыбраногоДатаТТН", holder.textipputmaretialttdata.getText().toString());
+                                    Integer ХэшРезультататСозданияНовыхИлиВыбранныхФотографий =       методВставкиNewAndUpImages();
+                                    // TODO: 21.10.2022  результат  вставка новых или выбранойй фотографии
+                                    Log.d(this.getClass().getName(), " ХэшРезультататСозданияНовыхИлиВыбранныхФотографий  "
+                                            +ХэшРезультататСозданияНовыхИлиВыбранныхФотографий);
+
+
+                                    // TODO: 31.07.2023 метод После Успешной Вставки ЗапускаемСинхронизацию и Запись ДАнных в
+                                    if (ХэшРезультататСозданияНовыхИлиВыбранныхФотографий>0) {
+                                        методЗаполениеПослеУспешнойВставкиНовгоМатерилаSharedPreferences(v,
+                                                IDДляВставкиЦФО, IDДляВставкиГруппыматериалов,
+                                                IDДляВставкиОдногоматериала, ВыбраноеАвтомобили,
+                                                ВыбраноеКонтагенты, ХэшРезультататСозданияСозданиеНовогоМатериала, holder);
+
+                                        Log.d(this.getClass().getName(), " IDДляВставкиГруппыматериалов " +IDДляВставкиГруппыматериалов +
+                                                " IDДляВставкиОдногоматериала "+IDДляВставкиОдногоматериала+"IDДляВставкиЦФО " +IDДляВставкиЦФО);
                                     }
-                                    // TODO: 27.12.2022  ДВА НОВЫХ ПОЛЯ МАТЕРИАЛОВ КОНТРАГЕНТ И АВТОМОБИЛЬ
-                                    // TODO: 09.12.2022 Автомобиль запоминаем
-                                    editor.putInt("ПозицияВыбраногоАвтомобили",ВыбраноеАвтомобили);
-                                    editor.putString("НазваниеВыбраногоАвтомобили", holder.valueavtomobil.getText().toString());
-                                    // TODO: 09.12.2022 Автомобиль Контрогент
-                                    editor.putInt("ПозицияВыбраногоКонтрагент",ВыбраноеКонтагенты);
-                                    editor.putString("НазваниеВыбраногоКонтрагент", holder.valuekontragent .getText().toString());
-                                    // TODO: 27.12.2022 запоминаем параметры
-                                    editor.commit();
 
-
-                                    // TODO: 30.06.2023  Запуск Синхрониазции
-                                    методЗарускОдноразовойСнхрониазцииПослеСозданиеНовгоЗаказа();
-                                    
-                                    
                                 }else {
+
                                     Snackbar.make(v, "Материалал не добавился !!!" +
                                             " !!!",Snackbar.LENGTH_LONG).setAction("Action",null).show();
+
                                 }
+
+
+
+
                             }else {
                                 Log.d(this.getClass().getName(), " IDДляВставкиГруппыматериалов " +IDДляВставкиГруппыматериалов +
                                         " IDДляВставкиОдногоматериала "+IDДляВставкиОдногоматериала+"IDДляВставкиЦФО " +IDДляВставкиЦФО);
@@ -1681,7 +1652,92 @@ void методCallsBackNewImageFromCameraActivityResult(){
                         Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         }
-// TODO: 20.07.2023 КНОПКА добавления нового Image
+
+
+        // TODO: 31.07.2023 метод вставки Новых Или Выбраных Фотошрафий
+        Integer методВставкиNewAndUpImages(){
+          try{
+
+
+              Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                      " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                      " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                      + " asyncTaskLoaderForNewMaterial.isAbandoned() " +asyncTaskLoaderForNewMaterial.isAbandoned());
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(getContext().getClass().getName(),
+                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+
+        }
+
+
+
+
+
+
+
+
+        private void методЗаполениеПослеУспешнойВставкиНовгоМатерилаSharedPreferences
+                (View v, Integer IDДляВставкиЦФО, Integer IDДляВставкиГруппыматериалов,
+                 Integer IDДляВставкиОдногоматериала, Integer ВыбраноеАвтомобили,
+                 Integer ВыбраноеКонтагенты,
+                 Integer ХэшРезультататСозданияСозданиеНовогоМатериала,
+                 @NonNull MyViewHolder holder) {
+            try {
+            if (ХэшРезультататСозданияСозданиеНовогоМатериала >0) {
+                методBackToFragmentAdmissionMaterilas(v);
+                // TODO: 17.11.2022 запоманаем выбраное цфо
+                SharedPreferences.Editor editor = preferencesМатериалы.edit();
+                editor.putBoolean("ДляСпинераУжеВибиралЦФО",true);
+                // TODO: 09.12.2022 цфо
+                editor.putInt("ПозицияВыбраногоЦФО", IDДляВставкиЦФО);
+                editor.putString("НазваниеВыбраногоЦФО", holder.textViewcfo.getText().toString());
+                // TODO: 09.12.2022 группа материалов
+                editor.putInt("ПозицияВыбраногоГруппыМатериалов", IDДляВставкиГруппыматериалов);
+                editor.putString("НазваниеВыбраногоГруппыМатериалов", holder.marerialtextgroupmaterial.getText().toString());
+                // TODO: 09.12.2022 сам матералов
+                editor.putInt("ПозицияВыбраногоМатериала", IDДляВставкиОдногоматериала);
+                editor.putString("НазваниеВыбраногоМатериала", holder.materialtext_onematerial_ves.getText().toString());
+                // TODO: 09.12.2022 два поля ТТН и ТТН ДАТА
+                Boolean     ФлагДляСкрытыхМатериалов = preferencesМатериалы.getBoolean("ФлагДляСкрытыхМатериалов",false);
+                if (ФлагДляСкрытыхМатериалов==true) {
+                    editor.putString("ПозицияВыбраногоТТН", holder.textipputmaretialttn.getText().toString());
+                    editor.putString("НазваниеВыбраногоДатаТТН", holder.textipputmaretialttdata.getText().toString());
+                }
+                // TODO: 27.12.2022  ДВА НОВЫХ ПОЛЯ МАТЕРИАЛОВ КОНТРАГЕНТ И АВТОМОБИЛЬ
+                // TODO: 09.12.2022 Автомобиль запоминаем
+                editor.putInt("ПозицияВыбраногоАвтомобили", ВыбраноеАвтомобили);
+                editor.putString("НазваниеВыбраногоАвтомобили", holder.valueavtomobil.getText().toString());
+                // TODO: 09.12.2022 Автомобиль Контрогент
+                editor.putInt("ПозицияВыбраногоКонтрагент", ВыбраноеКонтагенты);
+                editor.putString("НазваниеВыбраногоКонтрагент", holder.valuekontragent .getText().toString());
+                // TODO: 27.12.2022 запоминаем параметры
+                editor.commit();
+
+
+                // TODO: 30.06.2023  Запуск Синхрониазции
+                методЗарускОдноразовойСнхрониазцииПослеСозданиеНовгоЗаказа();
+
+            }
+                Log.d(this.getClass().getName(), " IDДляВставкиГруппыматериалов " +IDДляВставкиГруппыматериалов +
+                        " IDДляВставкиОдногоматериала "+IDДляВставкиОдногоматериала+"IDДляВставкиЦФО " +IDДляВставкиЦФО);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(getContext().getClass().getName(),
+                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        }
+
+        // TODO: 20.07.2023 КНОПКА добавления нового Image
 private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
     try{
         holder. bottom_create_image.setOnClickListener(new View.OnClickListener() {

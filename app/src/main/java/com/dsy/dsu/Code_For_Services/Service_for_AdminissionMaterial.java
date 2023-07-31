@@ -386,9 +386,9 @@ public class Service_for_AdminissionMaterial extends IntentService {
     }
 
     // TODO: 20.10.2022  метод получение СПРАВОЧНИКОВ ДЛЯ СОЗДАНИЯ НОВОГО МАТЕРИАЛА
-    public Integer МетодCлужбыСозданиеНовогоМатериала(
+    public Long МетодCлужбыСозданиеНовогоМатериала(
             @NonNull Context context, @NonNull Intent intent) {
-       Integer ХэшиАрайЛистДляСпиноровФинал =0;
+       Long ХэшиАрайЛистДляСпиноровФинал =0l;
         try {
             switch (intent.getAction()) {
                 case "СамоСозданиеНовогоМатериала":
@@ -823,9 +823,10 @@ private class SubClassGetDataAdmissionMaterial_Автомобили {
 
 
         // TODO: 21.10.2022 Само Создание Нового Материала
-            public  Integer МетодСозданиеНовогоМатериалов(@NonNull Context context,@NonNull Intent intent){
+            public  Long МетодСозданиеНовогоМатериалов(@NonNull Context context,@NonNull Intent intent){
                 AsyncTaskLoader<Integer> asyncTaskLoader=null;
                 Integer РезультатСозданиеНовгоМатериала=0;
+                final Long[] ГенерироватьUUIDДляНовойЗадачи = {0l};
             try{
                 asyncTaskLoader=new AsyncTaskLoader<Integer>(context) {
                  @Nullable
@@ -858,8 +859,8 @@ private class SubClassGetDataAdmissionMaterial_Автомобили {
 
                      contentValuesСозданиеНовогоМатериала.put("current_table", РезультатУвеличиваемВерсияПолучениеНовогоМатериала);
                      // TODO: 22.09.2022
-                     Long ГенерироватьUUIDДляНовойЗадачи = (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID(getApplicationContext());
-                     contentValuesСозданиеНовогоМатериала.put("uuid", ГенерироватьUUIDДляНовойЗадачи);
+                       ГенерироватьUUIDДляНовойЗадачи[0] = (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID(getApplicationContext());
+                     contentValuesСозданиеНовогоМатериала.put("uuid", ГенерироватьUUIDДляНовойЗадачи[0]);
                      // TODO: 27.12.2022  для новых двух полей Автомобили и Котрагенеты
                      contentValuesСозданиеНовогоМатериала.put("tracks", data.getInt("tracks"));
                      contentValuesСозданиеНовогоМатериала.put("companys", data.getInt("companys"));
@@ -884,7 +885,13 @@ private class SubClassGetDataAdmissionMaterial_Автомобили {
                     }
                 };
                 asyncTaskLoader.startLoading();
-                        Log.d(this.getClass().getName(), " intent " + intent);
+                РезультатСозданиеНовгоМатериала=     asyncTaskLoader.loadInBackground().intValue();
+                // TODO: 31.07.2023
+                if(РезультатСозданиеНовгоМатериала<1){
+                    ГенерироватьUUIDДляНовойЗадачи[0]=0l;
+                }
+
+                Log.d(this.getClass().getName(), " РезультатСозданиеНовгоМатериала " + РезультатСозданиеНовгоМатериала   +"   ГенерироватьUUIDДляНовойЗадачи[0] " + ГенерироватьUUIDДляНовойЗадачи[0]);
             } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -892,29 +899,119 @@ private class SubClassGetDataAdmissionMaterial_Автомобили {
             new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                     this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }finally {
-         РезультатСозданиеНовгоМатериала=     asyncTaskLoader.loadInBackground().intValue();
-                asyncTaskLoader.commitContentChanged();
-                if (РезультатСозданиеНовгоМатериала>0) {
-                    Integer  ПубличныйIDДляФрагмента = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(context);
-                    Bundle bundleДляПЕредачи=new Bundle();
-                    bundleДляПЕредачи.putInt("IDПубличныйНеМойАСкемБылаПереписака", ПубличныйIDДляФрагмента);
-                    bundleДляПЕредачи.putBoolean("StatusOneWokManagers", true);
-                    Intent  intentЗапускОднорworkanager=new Intent();
-                    intentЗапускОднорworkanager.putExtras(bundleДляПЕредачи);
-                    // TODO: 02.08.2022
-                    new Class_Generator_One_WORK_MANAGER(getApplicationContext()).МетодОдноразовыйЗапускВоерМенеджера(getApplicationContext(),intentЗапускОднорworkanager);
-                    // TODO: 26.06.2022
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                            + " ПубличныйIDДляФрагмента "+ПубличныйIDДляФрагмента );
-                }
-            }
-            return РезультатСозданиеНовгоМатериала  ;
+        }
+            return ГенерироватьUUIDДляНовойЗадачи[0]  ;
             }
 
     }
+
+
+    public  Long МетодВставкаНовойИлиВыбранойФотографииImageUpAndCreate(@NonNull Context context,@NonNull Intent intent){
+        AsyncTaskLoader<Integer> asyncTaskLoader=null;
+        Integer РезультатСозданиеНовгоМатериала=0;
+        final Long[] ГенерироватьUUIDДляНовойЗадачи = {0l};
+        try{
+            asyncTaskLoader=new AsyncTaskLoader<Integer>(context) {
+                @Nullable
+                @Override
+                public Integer loadInBackground() {
+                    Integer ХэшРезультатСозданиеНовогоМатериала=0;
+                    Bundle data=intent.getExtras();
+                    Log.d(context.getClass().getName(), " НазваниеЦФО "+data);
+                    String ответОперцииВставки = null;
+                    String НазваниеОбрабоатываемойТаблицы = "get_materials_data";
+                    // TODO: 21.10.2022 заполняем ДАННЫМИ ДЛЯ ТАБЛИЦЫ НОВОГО МАТЕРИАЛА
+                    ContentValues contentValuesСозданиеНовогоМатериала = new ContentValues();
+                    contentValuesСозданиеНовогоМатериала.put("cfo", data.getInt("cfo"));
+                    contentValuesСозданиеНовогоМатериала.put("type_material", data.getInt("type_material"));
+                    contentValuesСозданиеНовогоМатериала.put("nomen_vesov", data.getInt("nomen_vesov"));
+                    contentValuesСозданиеНовогоМатериала.put("count", data.getInt("count"));
+                    contentValuesСозданиеНовогоМатериала.put("ttn", data.getString("ttn"));
+                    contentValuesСозданиеНовогоМатериала.put("datattn", data.getString("datattn"));
+                    Integer  ПубличныйIDДляФрагмента = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(context);
+                    contentValuesСозданиеНовогоМатериала.put("user_update", ПубличныйIDДляФрагмента);
+                    String СгенерированованныйДатаДляДаннойОперации = new Class_Generation_Data(getApplicationContext()).ГлавнаяДатаИВремяОперацийСБазойДанных();
+                    contentValuesСозданиеНовогоМатериала.put("date_update", СгенерированованныйДатаДляДаннойОперации);
+                    //    contentValuesСозданиеНовогоМатериала.putNull("id");
+                    contentValuesСозданиеНовогоМатериала.put("status_send"," ");
+
+                    // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ
+                    Long РезультатУвеличиваемВерсияПолучениеНовогоМатериала =
+                            new SubClassUpVersionDATA().МетодПовышаемВерсииCurrentTable(НазваниеОбрабоатываемойТаблицы,getApplicationContext(),new CREATE_DATABASE(context).getССылкаНаСозданнуюБазу());
+                    Log.d(this.getClass().getName(), " РезультатУвеличиваемВерсияПолучениеНовогоМатериала  " + РезультатУвеличиваемВерсияПолучениеНовогоМатериала);
+
+                    contentValuesСозданиеНовогоМатериала.put("current_table", РезультатУвеличиваемВерсияПолучениеНовогоМатериала);
+                    // TODO: 22.09.2022
+                    ГенерироватьUUIDДляНовойЗадачи[0] = (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID(getApplicationContext());
+                    contentValuesСозданиеНовогоМатериала.put("uuid", ГенерироватьUUIDДляНовойЗадачи[0]);
+                    // TODO: 27.12.2022  для новых двух полей Автомобили и Котрагенеты
+                    contentValuesСозданиеНовогоМатериала.put("tracks", data.getInt("tracks"));
+                    contentValuesСозданиеНовогоМатериала.put("companys", data.getInt("companys"));
+
+                    // TODO: 21.10.2022 САМА ВСТАВКА
+                    Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabase/" + НазваниеОбрабоатываемойТаблицы + "");
+                    //  Uri uri = Uri.parse("content://MyContentProviderDatabase/" +НазваниеОбрабоатываемойТаблицы + "");
+                    ContentResolver resolver = context.getContentResolver();
+                    // TODO: 22.09.2022 Само выполенение
+                    Uri insertData = resolver.insert(uri, contentValuesСозданиеНовогоМатериала);
+                    ответОперцииВставки = Optional.ofNullable(insertData).map(Emmeter -> Emmeter.toString().replace("content://", "")).get();
+                    Log.d(this.getClass().getName(), "insertData   " + insertData + "  ответОперцииВставки " + ответОперцииВставки);
+                    ХэшРезультатСозданиеНовогоМатериала=Integer.parseInt(ответОперцииВставки);
+                    Log.d(this.getClass().getName(), " ХэшРезультатСозданиеНовогоМатериала " +ХэшРезультатСозданиеНовогоМатериала);
+
+                    return    ХэшРезультатСозданиеНовогоМатериала;
+                }
+                @Override
+                public void commitContentChanged() {
+                    super.commitContentChanged();
+                    Log.d(this.getClass().getName(), " РезультатСозданиеНовгоМатериала " );
+                }
+            };
+            asyncTaskLoader.startLoading();
+            РезультатСозданиеНовгоМатериала=     asyncTaskLoader.loadInBackground().intValue();
+            // TODO: 31.07.2023
+            if(РезультатСозданиеНовгоМатериала<1){
+                ГенерироватьUUIDДляНовойЗадачи[0]=0l;
+            }
+
+            Log.d(this.getClass().getName(), " РезультатСозданиеНовгоМатериала " + РезультатСозданиеНовгоМатериала   +"   ГенерироватьUUIDДляНовойЗадачи[0] " + ГенерироватьUUIDДляНовойЗадачи[0]);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        return ГенерироватьUUIDДляНовойЗадачи[0]  ;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     // TODO: 19.10.2022  ПОЛУЧЕНИЕ ДАННЫХ ДЛЯ НОВОГО МАТЕРИАЛА
