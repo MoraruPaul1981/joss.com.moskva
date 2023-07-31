@@ -456,8 +456,12 @@ public class FragmentAdmissionMaterials extends Fragment {
             String FragmentNewImageName=   fragment_СозданиеНовогоМатериалов.getClass().getName();
             fragmentTransaction.addToBackStack(FragmentNewImageName);
             fragment_СозданиеНовогоМатериалов.setArguments(data);
-            fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragment_СозданиеНовогоМатериалов).commit();//.layout.activity_for_fragemtb_history_task
-            fragmentTransaction.show(fragment_СозданиеНовогоМатериалов);
+
+   Fragment    FragmentУжеЕСтьИлиНЕт=     fragmentManager.findFragmentByTag(FragmentNewImageName);
+            if (FragmentУжеЕСтьИлиНЕт==null) {
+                fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragment_СозданиеНовогоМатериалов).commit();//.layout.activity_for_fragemtb_history_task
+                fragmentTransaction.show(fragment_СозданиеНовогоМатериалов);
+            }
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

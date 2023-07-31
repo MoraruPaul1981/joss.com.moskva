@@ -108,11 +108,16 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
                 fragmentTransaction.setCustomAnimations(android.R.anim.slide_out_right,
                         android.R.anim.slide_in_left);
                 fragment_ДляПолучениеМатериалов = new FragmentAdmissionMaterials();
+                String FragmentMainМатериалы=   fragment_ДляПолучениеМатериалов.getClass().getName();
+
+                Fragment    FragmentУжеЕСтьИлиНЕт=     fragmentManager.findFragmentByTag(FragmentMainМатериалы);
+                if (FragmentУжеЕСтьИлиНЕт==null) {
                 fragmentTransaction.add(R.id.activity_admissionmaterias_mainface,
                                 fragment_ДляПолучениеМатериалов)
                         .setPrimaryNavigationFragment(fragment_ДляПолучениеМатериалов)
                         .setReorderingAllowed(true).commit();//.layout.activity_for_fragemtb_history_tasks//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.show(fragment_ДляПолучениеМатериалов);
+                }
                 Log.d(this.getClass().getName(), " fragment_ДляПолучениеМатериалов "
                         + fragment_ДляПолучениеМатериалов);
             } catch (Exception e) {
