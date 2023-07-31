@@ -119,6 +119,7 @@ dependencies {
     implementation 'androidx.work:work-runtime:2.7.1'
     implementation 'androidx.work:work-runtime-ktx:2.7.1'
     implementation 'com.google.firebase:firebase-firestore:24.4.5'
+    implementation 'androidx.camera:camera-view:1.1.0-beta02'
     testImplementation 'androidx.work:work-testing:2.7.1'
     implementation "androidx.work:work-multiprocess:2.7.1"
     // Java language implementation
@@ -198,7 +199,13 @@ dependencies {
 
 
 
-
+    implementation "androidx.camera:camera-core:1.2.3"
+    implementation "androidx.camera:camera-camera2:1.2.3"
+    implementation "androidx.camera:camera-lifecycle:1.2.3"
+    implementation "androidx.camera:camera-video:1.2.3"
+    implementation "androidx.camera:camera-view:1.2.3"
+    implementation "androidx.camera:camera-mlkit-vision:1.2.3"
+    implementation "androidx.camera:camera-extensions:1.2.3"
 
 
 }

@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
     android:background="#F5FFFA"
-    tools:context=".Code_For_AdmissionMaterials.ActivityFragment.MainActivity_AdmissionMaterials">
+    tools:context=".Code_For_AdmissionMaterials.Window.MainActivity_AdmissionMaterials">
 
     <ScrollView
         android:id="@+id/scrollviewmaterial"
@@ -48,7 +48,8 @@
         app:cardMaxElevation="100dp"
         app:strokeWidth="0dp"
         android:translationZ="150dp"
-        android:animateLayoutChanges="true">
+        android:animateLayoutChanges="true"
+        tools:ignore="MissingClass">
 
         <RelativeLayout
             android:id="@+id/relativelayoutcardviewmatirealtask"
@@ -83,6 +84,7 @@
 
 
         </RelativeLayout>
+
 
 
     </com.google.android.material.card.MaterialCardView>
