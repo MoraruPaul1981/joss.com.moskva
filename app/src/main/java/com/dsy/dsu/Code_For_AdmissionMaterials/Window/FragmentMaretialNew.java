@@ -650,12 +650,12 @@ void методCallsBackNewImageFromCameraActivityResult(){
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             try {
-                if( asyncTaskLoaderForNewMaterial.isAbandoned()){
+                if( asyncTaskLoaderForNewMaterial.isAbandoned()  && CursorДляЦФО!=null && CursorДляЦФО.getCount()>0  ) {
                     // TODO: 26.07.2023  заполяем ИНициализируем Данными 
                     МетодИнициализацииНовогоМатериалаCardView(itemView);
                     Log.d(this.getClass().getName(), "   itemView   " + itemView);
                 }
-                Log.d(this.getClass().getName(), "   itemView   " + itemView);
+                Log.d(this.getClass().getName(), "   itemView   " + itemView  + " CursorДляЦФО " +CursorДляЦФО);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -893,10 +893,11 @@ void методCallsBackNewImageFromCameraActivityResult(){
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View viewПолучениеМатериалов = null;
             try {
-                if (asyncTaskLoaderForNewMaterial!=null) {
+                if (asyncTaskLoaderForNewMaterial==null) {
                     viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov_new, parent, false);//todo old simple_for_takst_cardview1
                     Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
-                    if( !asyncTaskLoaderForNewMaterial.isAbandoned()  ){
+                }else {
+                    if(   !asyncTaskLoaderForNewMaterial.isAbandoned()  ){
                         viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_load_actimavmaretialov_new, parent, false);//todo old simple_for_takst_cardview1
                         Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
                     }else {
@@ -909,8 +910,8 @@ void методCallsBackNewImageFromCameraActivityResult(){
                                 // TODO: 26.07.2023 is null
                                 viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_isnull_actimavmaretisl_sprachnikov, parent, false);//todo old simple_for_takst_cardview1
                                 Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов+ "  cursorRecyclerView " + cursorRecyclerView);
-                            }}
-
+                            }
+                        }
                     }
                 }
                 // TODO: 13.10.2022  добавляем новый компонент в Нащ RecycreView
@@ -937,7 +938,7 @@ void методCallsBackNewImageFromCameraActivityResult(){
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             try {
                 Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " binderДляПолучениеМатериалов " + binderДляПолучениеМатериалов);
-                if (  cursorRecyclerView!=null && cursorRecyclerView.getCount()>0) {
+                if (  asyncTaskLoaderForNewMaterial.isAbandoned() && cursorRecyclerView!=null && cursorRecyclerView.getCount()>0 ) {
                     // TODO: 26.07.2023 Второй Шаг ЗаполняемДЫнними
                     МетодЗаполняемДаннымиПолучениеМАтериалов(holder);
                     МетодАнимации(holder);
