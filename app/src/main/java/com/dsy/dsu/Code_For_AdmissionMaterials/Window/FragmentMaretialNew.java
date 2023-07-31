@@ -263,7 +263,7 @@ public class FragmentMaretialNew extends Fragment {
         super.onStart();
         try {
             if (  asyncTaskLoaderForNewMaterial.isAbandoned()) {
-                myRecycleViewAdapter.cursorRecyclerView=CursorДляЦФО;
+                myRecycleViewAdapter.cursorДляЦФО=CursorДляЦФО;
                 myRecycleViewAdapter.notifyDataSetChanged();
 
                 RecyclerView.Adapter recyclerViewОбновление=         recyclerView.getAdapter();
@@ -818,10 +818,10 @@ void методCallsBackNewImageFromCameraActivityResult(){
 
 
     class MyRecycleViewAdapter extends RecyclerView.Adapter<MyViewHolder> {
-        private  Cursor  cursorRecyclerView ;
+        private  Cursor  cursorДляЦФО ;
         public MyRecycleViewAdapter(@NotNull  Cursor cursorRecyclerView) {
-            this.cursorRecyclerView = cursorRecyclerView;
-                Log.i(this.getClass().getName(), " cursorRecyclerView  " + cursorRecyclerView);
+            this.cursorДляЦФО = cursorRecyclerView;
+                Log.i(this.getClass().getName(), " cursorДляЦФО  " + cursorRecyclerView);
 
         }
 
@@ -913,14 +913,14 @@ void методCallsBackNewImageFromCameraActivityResult(){
                         Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
                     }else {
                         if( asyncTaskLoaderForNewMaterial.isAbandoned() ){
-                            if(  cursorRecyclerView!=null && cursorRecyclerView.getCount()>0){
+                            if(  cursorДляЦФО!=null && cursorДляЦФО.getCount()>0){
                                 // TODO: 26.07.2023  Data
                                 viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_for_new_assitionmaterial_cardview_new2, parent, false);//todo simple_for_new_assitionmaterial_cardview1_test
                                 Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов);
                             }else{
                                 // TODO: 26.07.2023 is null
                                 viewПолучениеМатериалов = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_isnull_actimavmaretisl_sprachnikov, parent, false);//todo old simple_for_takst_cardview1
-                                Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов+ "  cursorRecyclerView " + cursorRecyclerView);
+                                Log.i(this.getClass().getName(), "   viewГлавныйВидДляRecyclleViewДляСогласования" + viewПолучениеМатериалов+ "  cursorДляЦФО " + cursorДляЦФО);
                             }
                         }
                     }
@@ -949,7 +949,7 @@ void методCallsBackNewImageFromCameraActivityResult(){
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             try {
                 Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder + " binderДляПолучениеМатериалов " + binderДляПолучениеМатериалов);
-                if (  asyncTaskLoaderForNewMaterial.isAbandoned() && cursorRecyclerView!=null && cursorRecyclerView.getCount()>0 ) {
+                if (  asyncTaskLoaderForNewMaterial.isAbandoned() && cursorДляЦФО!=null && cursorДляЦФО.getCount()>0 ) {
                     // TODO: 26.07.2023 Второй Шаг ЗаполняемДЫнними
                     МетодЗаполняемДаннымиПолучениеМАтериалов(holder);
                     МетодАнимации(holder);
@@ -1078,15 +1078,13 @@ void методCallsBackNewImageFromCameraActivityResult(){
                     holder.   textViewcfo.requestLayout();
                 }
                 // TODO: 15.12.2022 НОВЫЙ ПОСИК ДЛЯ ЦФО
-                class ЦфоНовыйФильтДляЦФО extends SubClassNewFilterSFOНовыйФильтДанных{
-                    @Override
-                    protected void МетодКоторыйОперделянтТекуийКурсор(@NonNull MyViewHolder holder, @NonNull Cursor cursor) {
-                        super.МетодКоторыйОперделянтТекуийКурсор(holder, cursorRecyclerView);
-                    }
-                }
-                new ЦфоНовыйФильтДляЦФО().МетодЗапускаНовогоФильтра( holder.textViewcfo,holder,
-                        "ЦФО","cfo","name");
+                new SubClassNewFilterSFOНовыйФильтДанных().МетодЗапускаНовогоФильтра( holder.textViewcfo,holder,
+                        "ЦФО","cfo","name",cursorДляЦФО);
 
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + "cursorДляЦФО " +cursorДляЦФО);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1351,14 +1349,15 @@ void методCallsBackNewImageFromCameraActivityResult(){
                     holder. marerialtextgroupmaterial.requestLayout();
                 }
                 // TODO: 15.12.2022 НОВЫЙ ПОСИК ДЛЯ группы МАТЕРИАЛОВ
-                class ДляНовгоФимльтраГруппыМатериалов extends SubClassNewFilterSFOНовыйФильтДанных{
-                    @Override
-                    protected void МетодКоторыйОперделянтТекуийКурсор(@NonNull MyViewHolder holder, @NonNull Cursor cursor) {
-                        super.МетодКоторыйОперделянтТекуийКурсор(holder, CursorДляГруппаМатериалов);
-                    }
-                }
-                new ДляНовгоФимльтраГруппыМатериалов().МетодЗапускаНовогоФильтра( holder.marerialtextgroupmaterial, holder,"Группа материалов",
-                        "type_materials","name");
+                new SubClassNewFilterSFOНовыйФильтДанных().МетодЗапускаНовогоФильтра( holder.marerialtextgroupmaterial, holder,"Группа материалов",
+                        "type_materials","name",CursorДляГруппаМатериалов);
+
+
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " CursorДляГруппаМатериалов " +CursorДляГруппаМатериалов);
+
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1389,14 +1388,14 @@ void методCallsBackNewImageFromCameraActivityResult(){
                     holder. materialtext_onematerial_ves.requestLayout();
                 }
                 // TODO: 15.12.2022 НОВЫЙ ПОСИК ДЛЯ ЦФО
-                class ОдинМатериаДляФильтраВышшаяВесовая extends SubClassNewFilterSFOНовыйФильтДанных{
-                    @Override
-                    protected void МетодКоторыйОперделянтТекуийКурсор(@NonNull MyViewHolder holder, @NonNull Cursor cursor) {
-                        super.МетодКоторыйОперделянтТекуийКурсор(holder, CursorДляОдногоМатериалаБышВесов);
-                    }
-                }
-                new ОдинМатериаДляФильтраВышшаяВесовая().МетодЗапускаНовогоФильтра( holder.materialtext_onematerial_ves,holder,"материал",
-                        "nomen_vesov","name");
+                new SubClassNewFilterSFOНовыйФильтДанных().МетодЗапускаНовогоФильтра( holder.materialtext_onematerial_ves,holder,"материал",
+                        "nomen_vesov","name",CursorДляОдногоМатериалаБышВесов);
+
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " CursorДляОдногоМатериалаБышВесов " +CursorДляОдногоМатериалаБышВесов);
+
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1427,13 +1426,13 @@ void методCallsBackNewImageFromCameraActivityResult(){
                     holder.  valueavtomobil.requestLayout();
                 }
                 // TODO: 15.12.2022 НОВЫЙ ПОСИК ДЛЯ Автомомиби
-                class НовыйФильДляАвтомобили extends SubClassNewFilterSFOНовыйФильтДанных{
-                    @Override
-                    protected void МетодКоторыйОперделянтТекуийКурсор(@NonNull MyViewHolder holder, @NonNull Cursor cursor) {
-                        super.МетодКоторыйОперделянтТекуийКурсор(holder, CursorДляАвтомобиля);
-                    }
-                }
-                new НовыйФильДляАвтомобили().МетодЗапускаНовогоФильтра( holder.valueavtomobil,holder,"автомобиль","track","fullname");
+                new SubClassNewFilterSFOНовыйФильтДанных()
+                        .МетодЗапускаНовогоФильтра( holder.valueavtomobil,holder,
+                                "автомобиль","track","fullname",CursorДляАвтомобиля);
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " holder.valueavtomobil "+ holder.valueavtomobil  + " CursorДляАвтомобиля " +CursorДляАвтомобиля);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1466,14 +1465,14 @@ void методCallsBackNewImageFromCameraActivityResult(){
 
                 }
                 // TODO: 15.12.2022 НОВЫЙ ПОСИК ДЛЯ Автомомиби
-                class НовыйФильДляКонтрагенты extends SubClassNewFilterSFOНовыйФильтДанных{
-                    @Override
-                    protected void МетодКоторыйОперделянтТекуийКурсор(@NonNull MyViewHolder holder, @NonNull Cursor cursor) {
-                        super.МетодКоторыйОперделянтТекуийКурсор(holder, CursorДляКонтрагента);
-                    }
-                }
-                new НовыйФильДляКонтрагенты().МетодЗапускаНовогоФильтра( holder.valuekontragent,holder,
-                        "контрагент","company","name");
+                new SubClassNewFilterSFOНовыйФильтДанных().МетодЗапускаНовогоФильтра( holder.valuekontragent,holder,
+                        "контрагент","company","name",CursorДляКонтрагента);
+
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " CursorДляКонтрагента " +CursorДляКонтрагента);
+
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(getContext().getClass().getName(),
@@ -1807,7 +1806,8 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                                          @NonNull MyViewHolder holder,
                                                          @NonNull String ФлагРежимНовогоФильтра,
                                                          @NonNull String ТаблицаДляФильтра,
-                                                        @NonNull String КакойСтолбикЗагружатьВSimpleAdapter) {
+                                                        @NonNull String КакойСтолбикЗагружатьВSimpleAdapter
+            ,@NonNull Cursor cursor) {
                 this.materialTextView = materialTextView;
                 this.cursor = cursor;
                 this.holder = holder;
@@ -1844,7 +1844,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                 if (ФлагКогдаМыВыбралиОдинМатреиалИНАНегоНетГруппаМатериалов==false) {
                                     SearchView searchViewДляНовогоЦФО= null;
 
-                                        МетодКоторыйОперделянтТекуийКурсор(holder, cursor);
+                                      //  МетодКоторыйОперделянтТекуийКурсор(holder, cursor);
 
                                     Log.d(this.getClass().getName(), "   ХэшиАрайЛистДляСпиноровЦФО " + cursor);
                                     holder.  listViewДляЦФО =    (ListView) view.findViewById(R.id.SearchViewList);
@@ -2132,24 +2132,6 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                         });
                     }
                 });
-            }
-
-
-
-
-
-            // TODO: 19.12.2022  курсор текущий операйции  какой Спинер
-            protected void МетодКоторыйОперделянтТекуийКурсор(@NonNull MyViewHolder holder, @NonNull Cursor cursor) {
-                try{
-                holder.cursorДляВсехМатериалов = (Cursor)  cursor;
-                    Log.d(this.getClass().getName(),"    holder.cursorДляВсехМатериалов"+   holder.cursorДляВсехМатериалов);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-            }
             }
 
             // TODO: 19.12.2022  курсор текущий операйции  какой Спинер
