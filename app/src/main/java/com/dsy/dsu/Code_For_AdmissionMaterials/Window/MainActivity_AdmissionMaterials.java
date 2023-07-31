@@ -49,6 +49,8 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
     private Fragment fragment_ДляПолучениеМатериалов;
     private LinearLayout activity_admissionmaterias_face ;
 
+    public static final int CAMERA_PERSSION_CODE=1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,7 +106,6 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
                     android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     android.Manifest.permission.VIBRATE,
                     android.Manifest.permission.RECORD_AUDIO,
-                    android.Manifest.permission.RECORD_AUDIO,
                     android.Manifest.permission.REQUEST_INSTALL_PACKAGES,
                     android.Manifest.permission.ACCESS_FINE_LOCATION,
                     android.Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
@@ -116,7 +117,7 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
                     android.Manifest.permission.WRITE_SETTINGS,
                     android. Manifest.permission.WRITE_SECURE_SETTINGS
             };
-            ActivityCompat.requestPermissions(activity, permissions, 1);
+            ActivityCompat.requestPermissions(MainActivity_AdmissionMaterials.this, permissions, CAMERA_PERSSION_CODE);
 
 
         }else{

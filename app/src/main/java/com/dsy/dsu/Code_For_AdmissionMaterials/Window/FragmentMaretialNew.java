@@ -161,7 +161,7 @@ public class FragmentMaretialNew extends Fragment {
 
     CopyOnWriteArrayList<LinkedHashMap<Integer,Bitmap>> copyOnWriteArrayListSuccessAddImages;
     private        ActivityResultLauncher<Intent> someActivityResultLauncherUpImage;
-    private        ActivityResultLauncher<Intent> getSomeActivityResultLauncherCreateNewImage;
+    private ActivityResultLauncher<Uri> getSomeActivityResultLauncherCreateNewImage;
 
     private  ServiceCameraTake.LocalBinderCamera localBinderCamera;
 
@@ -350,39 +350,20 @@ public class FragmentMaretialNew extends Fragment {
 void методCallsBackNewImageFromCameraActivityResult(){
     // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
     getSomeActivityResultLauncherCreateNewImage = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
+            new ActivityResultContracts.TakePicture(),
+            new ActivityResultCallback<Boolean>() {
                 @Override
-                public void onActivityResult(ActivityResult result) {
-                    try{
-                        if (result.getResultCode() == Activity.RESULT_OK && result.getData()!=null) {
-                            // There are no request codes
-                            Intent dataUpImage = result.getData();
-                            dataUpImage.setAction(      "ServiceCameraTake.NewFromCameraImage");
-                            // TODO: 24.07.2023  UP file Image
-                            copyOnWriteArrayListSuccessAddImages=
-                                    localBinderCamera.getService()
-                                            .метоСлужбыTakePhotos(dataUpImage,copyOnWriteArrayListGetImages,getActivity());
+                public void onActivityResult(Boolean result) {
+                    if(result){
 
-                            if(copyOnWriteArrayListSuccessAddImages.size()>0){
-                                subClassCreateNewImageForMateril.    методЗакрытиеNewCreateIMAGE(alertDialogCreateImage);
-                            }
 
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                    + " dataUpImage " +dataUpImage      + " copyOnWriteArrayListSuccessAddImages " +copyOnWriteArrayListSuccessAddImages);
-                        }
-                        // TODO: 19.10.2022  слушатель после получение даннных в Курсом
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(getContext().getClass().getName(),
-                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }else {
+
+
                     }
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +copyOnWriteArrayListSuccessAddImages);
                 }
             });
 }
@@ -2645,6 +2626,10 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                     getSomeActivityResultLauncherCreateNewImage.launch(dataCreateNewImageFromCamera);*/
 
 
+
+                //    getSomeActivityResultLauncherCreateNewImage.launch();
+
+
                     // TODO: 24.07.2023  UP file Image
                   /*  copyOnWriteArrayListSuccessAddImages=
                             localBinderCamera.getService()
@@ -2672,6 +2657,8 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
         }
 
         // TODO: 24.07.2023  Класс Обработываем Полученый Созданный Новый Рисунок или Загружаем Уже Существуеший
+
+
 
 
 

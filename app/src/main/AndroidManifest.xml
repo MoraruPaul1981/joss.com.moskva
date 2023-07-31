@@ -339,13 +339,11 @@
                 <action android:name="android.intent.action.RUN" />
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
                 <action android:name="android.permission.WAKE_LOCK" />
-                <action android:name="android.permission.CAMERA" />
-                <action android:name="android.permission.RECORD_AUDIO" />
-                <action android:name="android.permission.CAMERAX" />
+
+                <!-- //todo camera last change-->
+                <action android:name="android.permission.CAMERA" />>
                 <action android:name="android.permission.CAMERA2" />
-                <action android:name="android.permission.CAMERA2" />
-                <action android:name="android.hardware.camera.any" />
-                <action android:name="com.mycoolcam.USE_COOL_CAMERA" />
+
             </intent-filter>
         </activity>
 
@@ -1329,14 +1327,10 @@
             android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
-
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <action android:name="android.intent.action.PACKAGE_INSTALL" />
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
@@ -1346,9 +1340,7 @@
                 <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
                 <action android:name="android.intent.action.USER_PRESENT" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <action android:name="android.intent.action.PACKAGE_INSTALL" />
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
@@ -1371,6 +1363,11 @@
                 <action android:name="android.intent.action.RUN" />
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
                 <action android:name="android.permission.WAKE_LOCK" />
+                <!-- //todo camera last change-->
+                <action android:name="android.permission.CAMERA" />>
+                <action android:name="android.permission.CAMERA2" />
+
+
             </intent-filter>
         </activity>
         <activity

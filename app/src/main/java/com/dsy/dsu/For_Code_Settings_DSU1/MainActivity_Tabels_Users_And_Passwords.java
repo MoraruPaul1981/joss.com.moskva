@@ -67,6 +67,7 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
     private   String ОшибкиПришлиПослеПингаОтСервера = null;
     private  View vКнопки;
     private  Message message;
+    public static final int CAMERA_PERSSION_CODE=1;
     ////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -474,7 +475,7 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
                     android.Manifest.permission.WRITE_SETTINGS,
                     android. Manifest.permission.WRITE_SECURE_SETTINGS
             };
-            ActivityCompat.requestPermissions(activity, permissions, 1);
+            ActivityCompat.requestPermissions(activity, permissions,CAMERA_PERSSION_CODE );
 
 
         }else{
