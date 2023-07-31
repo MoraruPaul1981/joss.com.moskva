@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -79,6 +80,7 @@ import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generations_PUBLIC_CURRENT_ID;
@@ -164,6 +166,8 @@ public class FragmentMaretialNew extends Fragment {
     private ActivityResultLauncher<Uri> getSomeActivityResultLauncherCreateNewImage;
 
     private  ServiceCameraTake.LocalBinderCamera localBinderCamera;
+
+    private  Uri cam_uri;
 
 
     @Override
@@ -355,11 +359,11 @@ void методCallsBackNewImageFromCameraActivityResult(){
                 @Override
                 public void onActivityResult(Boolean result) {
                     if(result){
-
+                        Toast.makeText(getActivity(), " Успешное Take Photos !!! "    , Toast.LENGTH_SHORT).show();
 
                     }else {
 
-
+                        Toast.makeText(getActivity(), " НЕТ НЕТ НЕТ  Take Photos !!! "    , Toast.LENGTH_SHORT).show();
                     }
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2623,7 +2627,17 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                     // TODO Создание НОвой ФОтографии Image
                     asyncTaskLoaderForNewMaterial.startLoading();
                    Intent dataCreateNewImageFromCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                   // getSomeActivityResultLauncherCreateNewImage.launch(dataCreateNewImageFromCamera);
+
+
+                    dataCreateNewImageFromCamera.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    dataCreateNewImageFromCamera.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION );
+                    ContentValues values = new ContentValues();
+                    values.put(MediaStore.Images.Media.TITLE, "New Picture");
+                    values.put(MediaStore.Images.Media.DESCRIPTION, "From Camera");
+                    cam_uri = requireContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                    dataCreateNewImageFromCamera.putExtra(MediaStore.EXTRA_OUTPUT, cam_uri);
+
+                    getSomeActivityResultLauncherCreateNewImage.launch(cam_uri);
 
                     // TODO: 20.07.2023
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
