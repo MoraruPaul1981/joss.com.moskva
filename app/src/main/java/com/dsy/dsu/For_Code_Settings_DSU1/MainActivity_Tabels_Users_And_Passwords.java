@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteCursor;
 import android.graphics.Color;
@@ -26,6 +27,7 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.dsy.dsu.AllDatabases.CREATE_DATABASE;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Connections_Server;
@@ -96,28 +98,10 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
             ПрогрессБарДляВходаСистему.setVisibility(View.INVISIBLE);// по умолчанию прогресс бар делаем не видеым
             ИмяДляВходаСистему = (TextInputEditText) findViewById(R.id.ИмяДляВходавПрограмму); ////програссбар при аунтификации при входе в системму
             ПарольДляВходаСистему = (TextInputEditText) findViewById(R.id.ПарольДляВходавПрограмму); ////програссбар при аунтификации при входе в системму
-            String[] permissions = new String[]{
-                    Manifest.permission.CAMERA,
-                    Manifest.permission.RECORD_AUDIO,
-                    Manifest.permission.INTERNET,
-                    Manifest.permission.READ_PHONE_STATE,
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.VIBRATE,
-                    Manifest.permission.RECORD_AUDIO,
-                    Manifest.permission.RECORD_AUDIO,
-                    Manifest.permission.REQUEST_INSTALL_PACKAGES,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
-                    Manifest.permission.MANAGE_EXTERNAL_STORAGE,
-                    Manifest.permission.ACCESS_BACKGROUND_LOCATION,
-                    Manifest.permission.ACCESS_NETWORK_STATE,
-                    Manifest.permission.ACCESS_MEDIA_LOCATION,
-                    Manifest.permission.INSTALL_PACKAGES,
-                    Manifest.permission.WRITE_SETTINGS,
-                    Manifest.permission.WRITE_SECURE_SETTINGS
-            };
-            ActivityCompat.requestPermissions(this, permissions, 1);
+
+
+
+            методДаемПраваНаCameraPermissions(this);
            // preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             preferences = getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
             // TODO: 12.04.2023  messageGet
@@ -460,6 +444,43 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
         }
         //TODO ВОЗВРАЩЯЕМ НУЖНО ПОДКЛЮЧАТЬ АУНТИВИКАУИЮ ИЛИ НЕТ
         return РезультатПРоверкиПодключениеWIFI;
+    }
+
+
+    public  void методДаемПраваНаCameraPermissions(Activity activity){
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            Log.d("checkCameraPermissions", "No Camera Permissions");
+            //////////////////////TODO SERVICE
+            String[] permissions = new String[]{
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.RECORD_AUDIO,
+                    android.Manifest.permission.INTERNET,
+                    android.Manifest.permission.READ_PHONE_STATE,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    android.Manifest.permission.VIBRATE,
+                    android.Manifest.permission.RECORD_AUDIO,
+                    android.Manifest.permission.RECORD_AUDIO,
+                    android.Manifest.permission.REQUEST_INSTALL_PACKAGES,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    android.Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
+                    android.Manifest.permission.MANAGE_EXTERNAL_STORAGE,
+                    android.Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+                    android.Manifest.permission.ACCESS_NETWORK_STATE,
+                    android.Manifest.permission.ACCESS_MEDIA_LOCATION,
+                    android.Manifest.permission.INSTALL_PACKAGES,
+                    android.Manifest.permission.WRITE_SETTINGS,
+                    android. Manifest.permission.WRITE_SECURE_SETTINGS
+            };
+            ActivityCompat.requestPermissions(activity, permissions, 1);
+
+
+        }else{
+            // Permission is not granted
+            Log.d("checkCameraPermissions", "Success YRA  Camera Permissions  !!!!");
+        }
     }
 
 }
