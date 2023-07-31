@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -103,6 +104,7 @@ import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventList
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
@@ -361,13 +363,33 @@ void методCallsBackNewImageFromCameraActivityResult(){
                     if(result){
                         Toast.makeText(getActivity(), " Успешное Take Photos !!! "    , Toast.LENGTH_SHORT).show();
 
+                        if (cam_uri != null){
+
+                            try {
+                                ContentResolver cr =getActivity(). getContentResolver();
+                                InputStream inputStream = cr.openInputStream(cam_uri);
+                                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +copyOnWriteArrayListSuccessAddImages+ " cam_uri  " + cam_uri+
+                                         " bitmap " +bitmap);
+                            } catch (FileNotFoundException e) {
+                                throw new RuntimeException(e);
+                            }
+
+
+                        }else {
+                            Toast.makeText(getActivity(), " НЕТ НЕТ НЕТ  Take Photos !!! "    , Toast.LENGTH_SHORT).show();
+                        }
+
+
                     }else {
 
                         Toast.makeText(getActivity(), " НЕТ НЕТ НЕТ  Take Photos !!! "    , Toast.LENGTH_SHORT).show();
                     }
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +copyOnWriteArrayListSuccessAddImages);
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +copyOnWriteArrayListSuccessAddImages+ " cam_uri  " + cam_uri);
                 }
             });
 }
