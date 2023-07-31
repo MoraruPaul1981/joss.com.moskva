@@ -2622,22 +2622,9 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                 try{
                     // TODO Создание НОвой ФОтографии Image
                     asyncTaskLoaderForNewMaterial.startLoading();
-                 /*   Intent dataCreateNewImageFromCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    getSomeActivityResultLauncherCreateNewImage.launch(dataCreateNewImageFromCamera);*/
+                   Intent dataCreateNewImageFromCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                   // getSomeActivityResultLauncherCreateNewImage.launch(dataCreateNewImageFromCamera);
 
-
-
-                //    getSomeActivityResultLauncherCreateNewImage.launch();
-
-
-                    // TODO: 24.07.2023  UP file Image
-                  /*  copyOnWriteArrayListSuccessAddImages=
-                            localBinderCamera.getService()
-                                    .метоСлужбыTakePhotos(dataCreateNewImageFromCamera,copyOnWriteArrayListGetImages,getActivity(),someActivityResultLauncherUpImage);
-
-                    if(copyOnWriteArrayListSuccessAddImages.size()>0){
-                        subClassCreateNewImageForMateril.    методЗакрытиеNewCreateIMAGE(alertDialogCreateImage);
-                    }*/
                     // TODO: 20.07.2023
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

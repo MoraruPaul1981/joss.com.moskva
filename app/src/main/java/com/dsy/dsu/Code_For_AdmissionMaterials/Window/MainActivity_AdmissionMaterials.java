@@ -126,8 +126,16 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode==CAMERA_PERSSION_CODE){
+            Log.d("checkCameraPermissions", "requestCode "+requestCode +  " permissions "+  permissions  +" grantResults " +grantResults);
+        }
+    }
 
-// TODO: 27.07.2023 class business logoc
+
+    // TODO: 27.07.2023 class business logoc
 
     class BusinessLogic{
         protected void МетодЗапускФрагментаПриемМатериалов() {
