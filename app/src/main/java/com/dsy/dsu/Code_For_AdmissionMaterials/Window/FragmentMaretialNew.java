@@ -31,6 +31,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -2810,22 +2811,20 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 
                     getSomeActivityResultLauncherCreateNewImage.launch(cam_uri);*/
 
-                    Fragment      fragmentCamera = new FragmentCamera();
+
                     Bundle bundleСозданиеНовогоМатериала=new Bundle();
                     bundleСозданиеНовогоМатериала.putBinder("binder",binderДляПолучениеМатериалов);
-                    String fragmentNameCamera=   fragmentCamera.getClass().getName();
-                    fragmentTransaction.addToBackStack(fragmentNameCamera);
 
-                    Fragment    FragmentУжеЕСтьИлиНЕт=     fragmentManager.findFragmentByTag(fragmentNameCamera);
-                    if (FragmentУжеЕСтьИлиНЕт==null) {
-                       1 fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragmentCamera).commit();//.layout.activity_for_fragemtb_history_task
-                        fragmentTransaction.show(fragmentCamera);
+                DialogFragment fragmentCamera=FragmentCamera.newInstance();
+                    fragmentCamera.show(getActivity().getSupportFragmentManager(), "FragmentCamera");
+
+
                         // TODO: 01.08.2023
                         if (   alertDialogCreateImage.isShowing()) {
                             alertDialogCreateImage.dismiss();
                             alertDialogCreateImage.cancel();
                         }
-                    }
+
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"

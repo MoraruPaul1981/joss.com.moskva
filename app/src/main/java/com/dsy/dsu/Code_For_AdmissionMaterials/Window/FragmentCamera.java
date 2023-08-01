@@ -7,16 +7,26 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.R;
 
+import javax.annotation.Nullable;
 
 
 public class FragmentCamera extends DialogFragment {
     public FragmentCamera() {
         // Required empty public constructor
     }
+
+    public static FragmentCamera newInstance() {
+        Bundle args = new Bundle();
+        FragmentCamera fragment = new FragmentCamera();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,12 +47,16 @@ public class FragmentCamera extends DialogFragment {
     }
     }
 
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View viewRoot=null;
         try{
             viewRoot= inflater.inflate(R.layout.fragment_camera, container, false);
+
+            // Remove TITLE
+        /*    getDialog().getWindow().requestFeature(Window.FEATURE_ACTION_BAR);*/
             viewRoot.findViewById(R.id.button_create_new_image).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
