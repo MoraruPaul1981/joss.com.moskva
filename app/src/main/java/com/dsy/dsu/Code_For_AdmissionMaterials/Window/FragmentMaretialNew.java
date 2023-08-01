@@ -1850,24 +1850,9 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                 }
 
 
-                                    if (materialTextТекущийВыбранныйСправочник.getId()==  holder.materialtext_onematerial_ves.getId()) {
-                                        if (holder. marerialtextgroupmaterial.getText().length()>0) {
-                                            // TODO: 01.08.2023 Когда есть данных и СТраший Компонет ВЫбрал Группу Материалов
-                                            cursor = методПолучениеДанныхЕслиУжеЗаполеныПоляВсахроненииВНАстройкахтелефона(holder);
-                                            КакойИмменоВидЗагружатьДляНовогоПосика =R.layout.simple_for_new_spinner_searchview;
-                                            // TODO: 01.08.2023 метод с Полынми Данными
-                                            методКогдаДАнныеВыбраныСправочникиSimpleCursor(searchViewДляНовогоЦФО);
-                                        } else {
-                                            // TODO: 01.08.2023 Загрузка НЕ подынми Данными
-                                            методDontCursorSimplrCursor( v);
-                                        }
-                                    }else{
-                                        // TODO: 01.08.2023 метод с Полынми Данными
-                                        методКогдаДАнныеВыбраныСправочникиSimpleCursor(searchViewДляНовогоЦФО);
-                                    }
+                                    // TODO: 01.08.2023  Метод Выбираем  Какие ДАные БУдут ЗАгруженны и В зависимости выбран был или нет Старшый Материал
 
-
-
+                                    методВЫбираемКакиеДанныеНужноЗагрузить(searchViewДляНовогоЦФО);
 
 
                                     // TODO: 17.04.2023
@@ -1896,6 +1881,40 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                 return super.setView(view);
                                 // TODO: 20.12.2022  тут конец выбеленого
                             }
+
+                             // TODO: 01.08.2023 выбирает какие данные надо загружать 
+                             private void методВЫбираемКакиеДанныеНужноЗагрузить(SearchView searchViewДляНовогоЦФО) {
+                                try{
+                                 if (materialTextТекущийВыбранныйСправочник.getId()==  holder.materialtext_onematerial_ves.getId()) {
+                                     if (holder. marerialtextgroupmaterial.getText().length()>0) {
+                                         // TODO: 01.08.2023 Когда есть данных и СТраший Компонет ВЫбрал Группу Материалов
+                                         cursor = методПолучениеДанныхЕслиУжеЗаполеныПоляВсахроненииВНАстройкахтелефона(holder);
+                                         КакойИмменоВидЗагружатьДляНовогоПосика =R.layout.simple_for_new_spinner_searchview;
+                                         // TODO: 01.08.2023 метод с Полынми Данными
+                                         методКогдаДАнныеВыбраныСправочникиSimpleCursor(searchViewДляНовогоЦФО);
+                                     } else {
+                                         // TODO: 01.08.2023 Загрузка НЕ подынми Данными
+                                         методDontCursorSimplrCursor( v);
+                                     }
+                                 }else{
+                                     // TODO: 01.08.2023 метод с Полынми Данными
+                                     методКогдаДАнныеВыбраныСправочникиSimpleCursor(searchViewДляНовогоЦФО);
+                                 }
+                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                         "materialButtonЗакрытьДиалогSearveView"+  materialButtonЗакрытьДиалогSearveView);
+
+
+                             } catch (Exception e) {
+                                 e.printStackTrace();
+                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                         " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                 new   Class_Generation_Errors(v.getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                         this.getClass().getName(),
+                                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                             }
+                             }
 
                              private void методКогдаДАнныеВыбраныСправочникиSimpleCursor(SearchView searchViewДляНовогоЦФО) {
                                 try{
