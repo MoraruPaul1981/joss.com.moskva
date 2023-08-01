@@ -109,11 +109,17 @@ public class FragmentCamera extends DialogFragment {
 
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
+        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
 
     }
 
     public void onCancel(DialogInterface dialog) {
         super.onCancel(dialog);
+        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
 
     }
 
@@ -157,6 +163,7 @@ public class FragmentCamera extends DialogFragment {
                 //layoutParams.height =1350;
                 layoutParams.gravity = Gravity.CENTER;
                 getDialog().getWindow().setAttributes(layoutParams);
+                getDialog().setCancelable(false);
                 // TODO: 20.07.2023
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

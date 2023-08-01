@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:backgroundTint="#00BCD4"
+                android:backgroundTint="#00574B"
                 android:textColor="#131313"
                 app:cornerRadius="50dp"
                 app:icon="@drawable/icon_create_image13"

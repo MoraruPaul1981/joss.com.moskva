@@ -536,8 +536,14 @@ void методCallsBackNewImageFromCameraActivityResult(){
                 bundleСозданиеНовогоМатериала.putBinder("binder",binderДляПолучениеМатериалов);
             String fragmentNewImageNameaddToBackStack=   fragmentПолученыеМатериалов.getClass().getName();
             fragmentTransaction.addToBackStack(fragmentNewImageNameaddToBackStack);
+
+
+            Fragment    FragmentУжеЕСтьИлиНЕт=     fragmentManager.findFragmentByTag(fragmentNewImageNameaddToBackStack);
+            if (FragmentУжеЕСтьИлиНЕт==null) {
                 fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragmentПолученыеМатериалов).commit();//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransaction.show(fragmentПолученыеМатериалов);
+            }
+
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -2815,8 +2821,16 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                     Bundle bundleСозданиеНовогоМатериала=new Bundle();
                     bundleСозданиеНовогоМатериала.putBinder("binder",binderДляПолучениеМатериалов);
 
-                DialogFragment fragmentCamera=FragmentCamera.newInstance();
-                    fragmentCamera.show(getActivity().getSupportFragmentManager(), "FragmentCamera");
+
+
+                    DialogFragment fragmentCamera=FragmentCamera.newInstance();
+                    String fragmentNewImageNameaddToBackStack=   fragmentCamera.getClass().getName();
+
+                    Fragment    FragmentУжеЕСтьИлиНЕт=     fragmentManager.findFragmentByTag(fragmentNewImageNameaddToBackStack);
+                    if (FragmentУжеЕСтьИлиНЕт==null) {
+                        fragmentTransaction.addToBackStack(fragmentNewImageNameaddToBackStack);
+
+                        fragmentCamera.show(getActivity().getSupportFragmentManager(), "FragmentCamera");
 
 
                         // TODO: 01.08.2023
@@ -2824,6 +2838,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                             alertDialogCreateImage.dismiss();
                             alertDialogCreateImage.cancel();
                         }
+                    }
 
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
