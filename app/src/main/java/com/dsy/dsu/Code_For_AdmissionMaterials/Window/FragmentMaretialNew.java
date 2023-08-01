@@ -1075,7 +1075,8 @@ void методCallsBackNewImageFromCameraActivityResult(){
                     holder.   textViewcfo.requestLayout();
                 }
                 // TODO: 15.12.2022 НОВЫЙ ПОСИК ДЛЯ ЦФО
-                new SubClassNewFilterSFOНовыйФильтДанных(cursorДляЦФО).МетодЗапускаНовогоФильтра( holder.textViewcfo,holder,
+                SubClassNewFilterSFOНовыйФильтДанных sfoНовыйФильтДанныхЦФО=     new SubClassNewFilterSFOНовыйФильтДанных(cursorДляЦФО);
+                sfoНовыйФильтДанныхЦФО.МетодЗапускаНовогоФильтра( holder.textViewcfo,holder,
                         "ЦФО","cfo","name" );
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1346,7 +1347,9 @@ void методCallsBackNewImageFromCameraActivityResult(){
                     holder. marerialtextgroupmaterial.requestLayout();
                 }
                 // TODO: 15.12.2022 НОВЫЙ ПОСИК ДЛЯ группы МАТЕРИАЛОВ
-                new SubClassNewFilterSFOНовыйФильтДанных(CursorДляГруппаМатериалов).МетодЗапускаНовогоФильтра( holder.marerialtextgroupmaterial, holder,"Группа материалов",
+
+                SubClassNewFilterSFOНовыйФильтДанных sfoНовыйФильтДанныхГруппаМатериалов=       new SubClassNewFilterSFOНовыйФильтДанных(CursorДляГруппаМатериалов);
+                sfoНовыйФильтДанныхГруппаМатериалов   .МетодЗапускаНовогоФильтра( holder.marerialtextgroupmaterial, holder,"Группа материалов",
                         "type_materials","name" );
 
 
@@ -1384,8 +1387,10 @@ void методCallsBackNewImageFromCameraActivityResult(){
 
                     holder. materialtext_onematerial_ves.requestLayout();
                 }
-                // TODO: 15.12.2022 НОВЫЙ ПОСИК ДЛЯ ЦФО
-                new SubClassNewFilterSFOНовыйФильтДанных(CursorДляОдногоМатериалаБышВесов).МетодЗапускаНовогоФильтра( holder.materialtext_onematerial_ves,holder,"материал",
+                // TODO: 15.12.2022 НОВЫЙ ПОСИК ДЛЯ Весовая
+
+                SubClassNewFilterSFOНовыйФильтДанных sfoНовыйФильтДанныхВесовая=       new SubClassNewFilterSFOНовыйФильтДанных(CursorДляОдногоМатериалаБышВесов);
+                sfoНовыйФильтДанныхВесовая.МетодЗапускаНовогоФильтра( holder.materialtext_onematerial_ves,holder,"материал",
                         "nomen_vesov","name" );
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1423,9 +1428,10 @@ void методCallsBackNewImageFromCameraActivityResult(){
                     holder.  valueavtomobil.requestLayout();
                 }
                 // TODO: 15.12.2022 НОВЫЙ ПОСИК ДЛЯ Автомомиби
-                new SubClassNewFilterSFOНовыйФильтДанных(CursorДляАвтомобиля)
-                        .МетодЗапускаНовогоФильтра( holder.valueavtomobil,holder,
-                                "автомобиль","track","fullname" );
+
+                SubClassNewFilterSFOНовыйФильтДанных sfoНовыйФильтДанныхАвтомобили=      new SubClassNewFilterSFOНовыйФильтДанных(CursorДляАвтомобиля);
+                sfoНовыйФильтДанныхАвтомобили.МетодЗапускаНовогоФильтра( holder.valueavtomobil,holder, "автомобиль","track","fullname" );
+
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -1465,8 +1471,7 @@ void методCallsBackNewImageFromCameraActivityResult(){
 
                 SubClassNewFilterSFOНовыйФильтДанных sfoНовыйФильтДанныхКонтрагенты=            new SubClassNewFilterSFOНовыйФильтДанных(CursorДляКонтрагента);
                 // TODO: 01.08.2023 Контрагенты
-                sfoНовыйФильтДанныхКонтрагенты.МетодЗапускаНовогоФильтра( holder.valuekontragent,holder,
-                        "контрагент","company","name"  );
+                sfoНовыйФильтДанныхКонтрагенты.МетодЗапускаНовогоФильтра( holder.valuekontragent,holder, "контрагент","company","name"  );
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1882,7 +1887,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                 // TODO: 20.12.2022  тут конец выбеленого
                             }
 
-                             // TODO: 01.08.2023 выбирает какие данные надо загружать 
+                             // TODO: 01.08.2023 выбирает какие данные надо загружать
                              private void методВЫбираемКакиеДанныеНужноЗагрузить(SearchView searchViewДляНовогоЦФО) {
                                 try{
                                  if (materialTextТекущийВыбранныйСправочник.getId()==  holder.materialtext_onematerial_ves.getId()) {
