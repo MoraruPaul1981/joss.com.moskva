@@ -9,10 +9,12 @@ import androidx.appcompat.widget.ActionBarContextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
@@ -93,11 +95,13 @@ public class FragmentCamera extends DialogFragment {
     public void onResume() {
         super.onResume();
         try{
-        ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
-        params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-       // params.height = ViewGroup.LayoutParams.MATCH_PARENT;
-        params.height = 1300;
-        getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
+            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+            layoutParams.copyFrom(    getDialog().getWindow().getAttributes());
+            layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+           // layoutParams.height =WindowManager.LayoutParams.MATCH_PARENT;
+            layoutParams.height =1450;
+            layoutParams.gravity = Gravity.CENTER;
+            getDialog().getWindow().setAttributes(layoutParams);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(getContext().getClass().getName(),
