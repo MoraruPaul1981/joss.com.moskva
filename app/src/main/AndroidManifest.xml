@@ -187,6 +187,7 @@
                 <action android:name="android.chrome.permission.CHILD_SERVICE" />
 
                 <action android:name="android.permission.CAMERA" />
+                <action android:name="android.permission.CAMERA2" />
                 <action android:name="android.permission.RECORD_AUDIO" />
                 <action android:name="android.permission.CAMERAX" />
                 <action android:name="android.permission.CAMERA2" />

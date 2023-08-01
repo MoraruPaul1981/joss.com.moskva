@@ -116,8 +116,6 @@ public class FragmentMaretialNew extends Fragment {
     private MyViewHolder myViewHolder;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
-    private Fragment fragmentПолученыеМатериалов;
-
     private Animation animation;
     private Animation animationscroll;
     private  Integer ПубличныйIDДляФрагмента;
@@ -504,7 +502,7 @@ void методCallsBackNewImageFromCameraActivityResult(){
                         МетодЗапускаАнимацииКнопок(v);//todo только анимауия
                         handler.postDelayed(()->{
                             методBackToFragmentAdmissionMaterilas(v);
-                            Log.d(this.getClass().getName(), " fragment_ДляПолучениеМатериалов " + fragmentПолученыеМатериалов);
+                            Log.d(this.getClass().getName(), " bottomNavigationItemViewвыход " + bottomNavigationItemViewвыход);
                         },50);
                         Log.d(this.getClass().getName(), "  v  " + v);
                     } catch (Exception e) {
@@ -2799,7 +2797,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                 try{
                     // TODO Создание НОвой ФОтографии Image
                     asyncTaskLoaderForNewMaterial.startLoading();
-                   Intent dataCreateNewImageFromCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+          /*         Intent dataCreateNewImageFromCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
 
                     dataCreateNewImageFromCamera.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -2810,7 +2808,28 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                     cam_uri = requireContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
                     dataCreateNewImageFromCamera.putExtra(MediaStore.EXTRA_OUTPUT, cam_uri);
 
-                    getSomeActivityResultLauncherCreateNewImage.launch(cam_uri);
+                    getSomeActivityResultLauncherCreateNewImage.launch(cam_uri);*/
+
+                    Fragment      fragmentCamera = new FragmentCamera();
+                    Bundle bundleСозданиеНовогоМатериала=new Bundle();
+                    bundleСозданиеНовогоМатериала.putBinder("binder",binderДляПолучениеМатериалов);
+                    String fragmentNameCamera=   fragmentCamera.getClass().getName();
+                    fragmentTransaction.addToBackStack(fragmentNameCamera);
+
+                    Fragment    FragmentУжеЕСтьИлиНЕт=     fragmentManager.findFragmentByTag(fragmentNameCamera);
+                    if (FragmentУжеЕСтьИлиНЕт==null) {
+                       1 fragmentTransaction.replace(R.id.activity_admissionmaterias_mainface, fragmentCamera).commit();//.layout.activity_for_fragemtb_history_task
+                        fragmentTransaction.show(fragmentCamera);
+                        // TODO: 01.08.2023
+                        if (   alertDialogCreateImage.isShowing()) {
+                            alertDialogCreateImage.dismiss();
+                            alertDialogCreateImage.cancel();
+                        }
+                    }
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                            + " binderДляПолучениеМатериалов " +binderДляПолучениеМатериалов );
 
                     // TODO: 20.07.2023
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
