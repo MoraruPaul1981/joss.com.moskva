@@ -3,20 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout_camera"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="1dp"
+    android:padding="1dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#FFFFFF"
+    android:background="#F0F1FF"
     tools:context=".Code_For_AdmissionMaterials.Window.MainActivity_AdmissionMaterials">
 
 
 
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView_camera"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="550dp"
         android:animateLayoutChanges="true"
-        android:checkable="true"
-        android:clickable="true"
+        android:checkable="false"
+        android:clickable="false"
         android:focusable="true"
         android:gravity="center"
         android:padding="1dp"
@@ -25,9 +28,9 @@
         android:textSize="10sp"
         android:translationZ="15dp"
         app:cardBackgroundColor="#F0F1FF"
-        app:cardCornerRadius="30dp"
+        app:cardCornerRadius="5dp"
         app:cardElevation="2dp"
-        app:cardMaxElevation="100dp"
+        app:cardMaxElevation="10dp"
         app:strokeColor="#F0F1FF"
         app:strokeWidth="2dp">
 
@@ -44,7 +47,7 @@
 
 
             <ImageButton
-                android:id="@+id/imageButtonCamera"
+                android:id="@+id/imageButtonCameraback"
                 android:layout_width="48dp"
                 android:layout_height="40dp"
                 android:layout_alignParentLeft="true"
@@ -78,19 +81,22 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_create_new_image"
                 style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="150dp"
-                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
                 android:backgroundTint="#00BCD4"
-                android:gravity="center"
                 android:textColor="#131313"
-                app:cornerRadius="100dp"
-                app:icon="@drawable/icon_new_camera_marial1"
-                app:iconGravity="textStart"
+                app:cornerRadius="50dp"
+                app:icon="@drawable/icon_create_image13"
                 app:iconTint="#F0FFFF"
                 app:strokeColor="#120B0B"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                android:insetLeft="10dp"
                 tools:ignore="SpeakableTextPresentCheck" />
 
         </RelativeLayout>
