@@ -1073,8 +1073,8 @@ void методCallsBackNewImageFromCameraActivityResult(){
                     holder.   textViewcfo.requestLayout();
                 }
                 // TODO: 15.12.2022 НОВЫЙ ПОСИК ДЛЯ ЦФО
-                new SubClassNewFilterSFOНовыйФильтДанных().МетодЗапускаНовогоФильтра( holder.textViewcfo,holder,
-                        "ЦФО","cfo","name",cursorДляЦФО);
+                new SubClassNewFilterSFOНовыйФильтДанных(cursorДляЦФО).МетодЗапускаНовогоФильтра( holder.textViewcfo,holder,
+                        "ЦФО","cfo","name" );
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1344,8 +1344,8 @@ void методCallsBackNewImageFromCameraActivityResult(){
                     holder. marerialtextgroupmaterial.requestLayout();
                 }
                 // TODO: 15.12.2022 НОВЫЙ ПОСИК ДЛЯ группы МАТЕРИАЛОВ
-                new SubClassNewFilterSFOНовыйФильтДанных().МетодЗапускаНовогоФильтра( holder.marerialtextgroupmaterial, holder,"Группа материалов",
-                        "type_materials","name",CursorДляГруппаМатериалов);
+                new SubClassNewFilterSFOНовыйФильтДанных(CursorДляГруппаМатериалов).МетодЗапускаНовогоФильтра( holder.marerialtextgroupmaterial, holder,"Группа материалов",
+                        "type_materials","name" );
 
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1383,8 +1383,8 @@ void методCallsBackNewImageFromCameraActivityResult(){
                     holder. materialtext_onematerial_ves.requestLayout();
                 }
                 // TODO: 15.12.2022 НОВЫЙ ПОСИК ДЛЯ ЦФО
-                new SubClassNewFilterSFOНовыйФильтДанных().МетодЗапускаНовогоФильтра( holder.materialtext_onematerial_ves,holder,"материал",
-                        "nomen_vesov","name",CursorДляОдногоМатериалаБышВесов);
+                new SubClassNewFilterSFOНовыйФильтДанных(CursorДляОдногоМатериалаБышВесов).МетодЗапускаНовогоФильтра( holder.materialtext_onematerial_ves,holder,"материал",
+                        "nomen_vesov","name" );
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1421,9 +1421,9 @@ void методCallsBackNewImageFromCameraActivityResult(){
                     holder.  valueavtomobil.requestLayout();
                 }
                 // TODO: 15.12.2022 НОВЫЙ ПОСИК ДЛЯ Автомомиби
-                new SubClassNewFilterSFOНовыйФильтДанных()
+                new SubClassNewFilterSFOНовыйФильтДанных(CursorДляАвтомобиля)
                         .МетодЗапускаНовогоФильтра( holder.valueavtomobil,holder,
-                                "автомобиль","track","fullname",CursorДляАвтомобиля);
+                                "автомобиль","track","fullname" );
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -1459,9 +1459,12 @@ void методCallsBackNewImageFromCameraActivityResult(){
                     holder. valuekontragent.requestLayout();
 
                 }
-                // TODO: 15.12.2022 НОВЫЙ ПОСИК ДЛЯ Автомомиби
-                new SubClassNewFilterSFOНовыйФильтДанных().МетодЗапускаНовогоФильтра( holder.valuekontragent,holder,
-                        "контрагент","company","name",CursorДляКонтрагента);
+                // TODO: 15.12.2022 НОВЫЙ ПОСИК ДЛЯ Контрагент
+
+                SubClassNewFilterSFOНовыйФильтДанных sfoНовыйФильтДанныхКонтрагенты=            new SubClassNewFilterSFOНовыйФильтДанных(CursorДляКонтрагента);
+                // TODO: 01.08.2023 Контрагенты
+                sfoНовыйФильтДанныхКонтрагенты.МетодЗапускаНовогоФильтра( holder.valuekontragent,holder,
+                        "контрагент","company","name"  );
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1793,50 +1796,48 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
        private       MaterialTextView materialTextView;
             private    Cursor cursor;
             private    MyViewHolder holder;
-            private    Boolean ФлагКогдаМыВыбралиОдинМатреиалИНАНегоНетГруппаМатериалов=false;
-            protected SubClassNewFilterSFOНовыйФильтДанных(){
-                Log.d(this.getClass().getName(), "   ХэшиАрайЛистДляСпиноровЦФО ");
+            private    int    КакойИмменоВидЗагружатьДляНовогоПосика=R.layout.simple_for_new_spinner_searchview;
+            protected SubClassNewFilterSFOНовыйФильтДанных(@NonNull Cursor cursor){
+                this.cursor = cursor;
+                Log.d(this.getClass().getName(), "   cursor " +cursor);
             }
-            protected   void МетодЗапускаНовогоФильтра( @NonNull MaterialTextView materialTextView,
+            protected   void МетодЗапускаНовогоФильтра( @NonNull MaterialTextView materialTextТекущийВыбранныйСправочник,
                                                          @NonNull MyViewHolder holder,
                                                          @NonNull String ФлагРежимНовогоФильтра,
                                                          @NonNull String ТаблицаДляФильтра,
-                                                        @NonNull String КакойСтолбикЗагружатьВSimpleAdapter
-            ,@NonNull Cursor cursor) {
-                this.materialTextView = materialTextView;
-                this.cursor = cursor;
+                                                        @NonNull String КакойСтолбикЗагружатьВSimpleAdapter) {
+                this.materialTextView = materialTextТекущийВыбранныйСправочник;
                 this.holder = holder;
                 // TODO: 16.12.2022
-                materialTextView.setOnClickListener(new View.OnClickListener() {
-                    MaterialButton    materialButtonЗакрытьДиалогSearveView=null;
+                materialTextТекущийВыбранныйСправочник.setOnClickListener(new View.OnClickListener() {
+                    private  MaterialButton    materialButtonЗакрытьДиалогSearveView=null;
+
                     @Override
                     public void onClick(View v) {
                         try{
-
-                        Animation   animation1= AnimationUtils.loadAnimation(v.getContext(),R.anim.slide_in_row_newscanner1);
                         // TODO: 20.12.2022  оперделяем какой вид загружать когда выбран и когда не выбрана гурппа метарилов
-                        Integer КакойИмменоВидЗагружатьДляНовогоПосика=R.layout.simple_for_new_spinner_searchview;
-                        if(materialTextView.getId()==  holder.materialtext_onematerial_ves.getId()){
-                            if ( holder. marerialtextgroupmaterial.getText().length()==0) {
-                                КакойИмменоВидЗагружатьДляНовогоПосика=R.layout.simple_for_new_spinner_searchview_kogda_net_group;
-                            //   Snackbar.make(v, "Вы не выбрали группу материалов !!!",Snackbar.LENGTH_LONG).setAction("Action",null).show();
-                                ФлагКогдаМыВыбралиОдинМатреиалИНАНегоНетГруппаМатериалов=true;
-                            }else{
-                                ФлагКогдаМыВыбралиОдинМатреиалИНАНегоНетГруппаМатериалов=false;
-                            }
-                        }
-                        // TODO: 28.12.2022 cursor
                          holder.alertDialog  = new MaterialAlertDialogBuilder(v.getContext()){
                             @NonNull
                             @Override
                             public MaterialAlertDialogBuilder setView(View view) {
                                 try{
+                                    if (materialTextТекущийВыбранныйСправочник.getId()==  holder.materialtext_onematerial_ves.getId()) {
+                                        if (holder. marerialtextgroupmaterial.getText().length()>0) {
+                                            // TODO: 01.08.2023 Когда есть данных и СТраший Компонет ВЫбрал Группу Материалов
+                                            cursor = методПолучениеДанныхЕслиУжеЗаполеныПоляВсахроненииВНАстройкахтелефона(holder);
+
+                                            КакойИмменоВидЗагружатьДляНовогоПосика =R.layout.simple_for_new_spinner_searchview;
+                                        } else {
+                                            КакойИмменоВидЗагружатьДляНовогоПосика=R.layout.simple_for_new_spinner_searchview_kogda_net_group;
+                                        }
+                                    }
+
+
                                     // TODO: 14.12.2022
                                    materialButtonЗакрытьДиалогSearveView =    (MaterialButton) view.findViewById(R.id.bottom_newscanner1);
                                     // TODO: 26.07.2023  клик чтобы закрыть поиск
                                     МетодЗакрытиеНовогоПосика(materialButtonЗакрытьДиалогSearveView);
                                 // TODO: 19.12.2022 какой КУРСОР БУДЕТ ВЫПОЛНЯТЬСЯ
-                                if (ФлагКогдаМыВыбралиОдинМатреиалИНАНегоНетГруппаМатериалов==false) {
                                     SearchView searchViewДляНовогоЦФО= null;
 
                                       //  МетодКоторыйОперделянтТекуийКурсор(holder, cursor);
@@ -1858,16 +1859,16 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                 }
 
 
-
-                                        if(materialTextView.getId()==  holder.materialtext_onematerial_ves.getId()) {
-                                            if(      holder.cursorДляВсехМатериалов.getCount()==0) {
+/*
+                                        if(materialTextТекущийВыбранныйСправочник.getId()==  holder.materialtext_onematerial_ves.getId()) {
+                                            if(      cursor.getCount()==0) {
                                                 holder.cursorДляВсехМатериалов = методПолучениеДанныхЕслиУжеЗаполеныПоляВсахроненииВНАстройкахтелефона(holder);
                                                 // TODO: 17.04.2023
                                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " holder.cursorДляВсехМатериалов " + holder.cursorДляВсехМатериалов);
                                             }
-                                        }
+                                        }*/
 
                                     // TODO: 17.04.2023
                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1876,8 +1877,9 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 
 
                                     ///TODO ГЛАВНЫЙ АДАПТЕР чата
-                                    SimpleCursorAdapter    simpleCursorAdapterЦФО= new SimpleCursorAdapter(v.getContext(),  R.layout.simple_newspinner_dwonload_newfiltersearch,// R.layout.simple_newspinner_dwonload_cfo2,
-                                            holder.cursorДляВсехМатериалов,
+                                    SimpleCursorAdapter    simpleCursorAdapterДляНовыхСтпавочниках= new SimpleCursorAdapter(v.getContext(),
+                                            R.layout.simple_newspinner_dwonload_newfiltersearch,// R.layout.simple_newspinner_dwonload_cfo2,
+                                            cursor,
                                             new String[]{ КакойСтолбикЗагружатьВSimpleAdapter,"_id"},
                                             new int[]{android.R.id.text1,android.R.id.text1}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
                                     SimpleCursorAdapter.ViewBinder БиндингДляЦФО = new SimpleCursorAdapter.ViewBinder(){
@@ -1938,9 +1940,9 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                             return false;
                                         }
                                     };
-                                    simpleCursorAdapterЦФО.setViewBinder(БиндингДляЦФО);
-                                    simpleCursorAdapterЦФО.notifyDataSetChanged();
-                                    holder.listViewДляЦФО.setAdapter(simpleCursorAdapterЦФО);
+                                    simpleCursorAdapterДляНовыхСтпавочниках.setViewBinder(БиндингДляЦФО);
+                                    simpleCursorAdapterДляНовыхСтпавочниках.notifyDataSetChanged();
+                                    holder.listViewДляЦФО.setAdapter(simpleCursorAdapterДляНовыхСтпавочниках);
                                     holder.listViewДляЦФО.startAnimation(animation);
                                     holder.listViewДляЦФО.setSelection(0);
                                     holder.listViewДляЦФО.refreshDrawableState();
@@ -1948,7 +1950,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 
                                     // TODO: 13.12.2022  Поиск  
                                     // TODO: 13.12.2022  Поиск и его слушель
-                                    МетодПоискаФильтр(searchViewДляНовогоЦФО,simpleCursorAdapterЦФО,holder,v,ТаблицаДляФильтра,materialTextView);
+                                    МетодПоискаФильтр(searchViewДляНовогоЦФО,simpleCursorAdapterДляНовыхСтпавочниках,holder,v,ТаблицаДляФильтра,materialTextТекущийВыбранныйСправочник);
                                     // TODO: 26.07.2023  клик по данным 
                                     методКликПоДанным();
 
@@ -1956,7 +1958,7 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
                                             "materialButtonЗакрытьДиалогSearveView"+  materialButtonЗакрытьДиалогSearveView);
-                                }
+
 
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -2010,20 +2012,20 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                                         Integer IDЦфоДЛяПередачи=      bundle.getInt("ПолучаемIDЦфо",0);
                                         String НазваниеЦФО=   bundle.getString("НазваниеЦФО","");
                                         Long UUIDНазваниеЦФО =   bundle.getLong("UUIDНазваниеЦФО",0l);
-                                        materialTextView.setTag(bundle);
-                                        materialTextView.setText(НазваниеЦФО);
-                                        materialTextView.refreshDrawableState();
-                                        materialTextView.forceLayout();
+                                        materialTextТекущийВыбранныйСправочник.setTag(bundle);
+                                        materialTextТекущийВыбранныйСправочник.setText(НазваниеЦФО);
+                                        materialTextТекущийВыбранныйСправочник.refreshDrawableState();
+                                        materialTextТекущийВыбранныйСправочник.forceLayout();
 
-                                        if (    materialTextView.getText().toString().length()==0) {
+                                        if (    materialTextТекущийВыбранныйСправочник.getText().toString().length()==0) {
                                             Snackbar.make(view, " Вы не выбрали цфо !!! "
                                                     , Snackbar.LENGTH_LONG).show();
-                                            materialTextView.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-                                            materialTextView.setTextColor(Color.GRAY);
+                                            materialTextТекущийВыбранныйСправочник.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                                            materialTextТекущийВыбранныйСправочник.setTextColor(Color.GRAY);
                                             Log.d(this.getClass().getName()," bundle.keySet().size() "+bundle.keySet().size());
                                         } else {
-                                            materialTextView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-                                            materialTextView.setTextColor(Color.BLACK);
+                                            materialTextТекущийВыбранныйСправочник.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                                            materialTextТекущийВыбранныйСправочник.setTextColor(Color.BLACK);
                                             // TODO: 24.07.2023  закрытие Новго Создание РИсунков и или Upload Image
                                             subClassCreateNewImageForMateril.  методЗакрытиеNewCreateIMAGE(holder.alertDialog);
                                             Log.d(this.getClass().getName()," bundle.keySet().size() "+bundle.keySet().size());
@@ -2050,18 +2052,18 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
 
                     void методGetCursorForQuertyFilter(CharSequence constraint) {
                         try{
-                            if(materialTextView.getId()== holder.materialtext_onematerial_ves.getId()) {
+                            if(materialTextТекущийВыбранныйСправочник.getId()== holder.materialtext_onematerial_ves.getId()) {
                                 Bundle bundleДляПосика = (Bundle)  holder.marerialtextgroupmaterial.getTag();
                                 Integer ВытаскиваемIDГруппыМатериаловДляПоследующегоПоиска = bundleДляПосика.getInt("ПолучаемIDЦфо");
                                 holder.cursorДляВсехМатериалов = (Cursor)
                                         МетодДляНовогоТабеляПолучаемДанныеИзПосикаТОлькоДляОдногоМатериалаБывшейВесовой(ТаблицаДляФильтра, constraint.toString(),
                                                 ВытаскиваемIDГруппыМатериаловДляПоследующегоПоиска);
-                            }else if (materialTextView.getId()== holder.valueavtomobil.getId()){
+                            }else if (materialTextТекущийВыбранныйСправочник.getId()== holder.valueavtomobil.getId()){
                                 Log.d(this.getClass().getName(), "   holder. valueavtomobil.getId() " +  holder. valueavtomobil.getId());
                                 holder.cursorДляВсехМатериалов = (Cursor)
                                         МетодДляНовогоТабеляПолучаемДанныеИзПосикаТОлькоДляОдногоМатериалаБывшейВесовой(ТаблицаДляФильтра, constraint.toString(), 0);
 
-                            }else if (materialTextView.getId()==   holder.valuekontragent.getId()){
+                            }else if (materialTextТекущийВыбранныйСправочник.getId()==   holder.valuekontragent.getId()){
                                 holder.cursorДляВсехМатериалов = (Cursor)
                                         МетодДляНовогоТабеляПолучаемДанныеИзПосикаТОлькоДляОдногоМатериалаБывшейВесовой(ТаблицаДляФильтра, constraint.toString(), 0);
                             }else{
