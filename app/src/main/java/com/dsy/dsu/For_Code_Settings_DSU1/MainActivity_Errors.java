@@ -89,74 +89,46 @@ public class MainActivity_Errors extends AppCompatActivity  {
 
     protected void МетодПросмотраОшибокПриложения() {
         try {
-                ArrayList<EditText> editTextArrayList = new ArrayList<>();
-                StringBuffer stringBuffer = new StringBuffer();
-                Class_GRUD_SQL_Operations class_grud_sql_operationsПросмотраОшибокПриложения
-                        =new Class_GRUD_SQL_Operations(getApplicationContext());
-            class_grud_sql_operationsПросмотраОшибокПриложения.
-                    concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","ErrorDSU1");
-            class_grud_sql_operationsПросмотраОшибокПриложения.
-                    concurrentHashMapНабор.put("СтолбцыОбработки","*");
-            class_grud_sql_operationsПросмотраОшибокПриложения.
-                    concurrentHashMapНабор.put("УсловиеСортировки","id DESC");
-            class_grud_sql_operationsПросмотраОшибокПриложения.
-                    concurrentHashMapНабор.put("УсловиеЛимита","50");
-            // TODO: 12.10.2021  Ссылка Менеджер Потоков
-            PUBLIC_CONTENT  Class_Engine_SQLГдеНаходитьсяМенеджерПотоков =new PUBLIC_CONTENT(getApplicationContext());
-
-            Cursor   Курсор_СамиДанные_Error= (SQLiteCursor)  new Class_GRUD_SQL_Operations(getApplicationContext()).
-                    new GetData(getApplicationContext()).getdata(class_grud_sql_operationsПросмотраОшибокПриложения.
-                            concurrentHashMapНабор,
-                    Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,create_database_error.getССылкаНаСозданнуюБазу());
-
-
-
-
-
 
             StringBuffer БуерДляОшибок =new StringBuffer();
-
             String ИнфоТелефон = Build.MANUFACTURER
                     + " " + Build.MODEL + " " + Build.VERSION.RELEASE
                     + " " + Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
-
-
-
             File pachs =  Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-
             //Get the text file
             File file = new File(pachs,"Sous-Avtodor-ERRORS.txt");
 
                 BufferedReader newBufferedReader =  Files.newBufferedReader(Paths.get(file.getPath()), StandardCharsets.UTF_16);
 
-
+            String line;
+            while ((line = newBufferedReader.readLine()) != null) {
+                БуерДляОшибок.append(line);
+                БуерДляОшибок.append('\n');
+                Log.d(this.getClass().getName(), "line " +line  );
+            }
+            БуерДляОшибок.append( "\n"+"\n"+
+                    "   " + ИнфоТелефон + "  : " + "  Инфо. телефона " + "\n" + "\n" +
+                    "   " + Build.BRAND.toUpperCase() + "  : " + " Имя " + "\n" + "\n" +
+                    Build.VERSION.SDK_INT+ "  : " + " API ("+Build.VERSION.RELEASE+ ")"+ "\n" + "\n" +
+                    "- время : " +new Date().toString()+"-" + "\n"+  "\n"+
+                    "   " + "-----------------------------------------" + "\n"+  "\n");
+/*
             StringBuffer     БуферОшибок = newBufferedReader.lines().collect(StringBuffer::new, (sb, i) -> sb.append(i),
-                    StringBuffer::append);
-            Log.d(this.getClass().getName(), "БуферОшибок " +БуферОшибок +  " newBufferedReader " +newBufferedReader);
+                    StringBuffer::append);*/
+         //   Log.d(this.getClass().getName(), "БуферОшибок " +БуферОшибок +  " newBufferedReader " +newBufferedReader);
 
-                Log.d(this.getClass().getName(), "newBufferedReader "+newBufferedReader  );
+                Log.d(this.getClass().getName(), "БуерДляОшибок "+БуерДляОшибок  );
             // TODO: 02.08.2023  clear
 
             newBufferedReader.close();
 
 
-
-            
-            if (Курсор_СамиДанные_Error.getCount()>0) {
-                Курсор_СамиДанные_Error.moveToFirst();
-                Log.d(this.getClass().getName(), "GetData "+Курсор_СамиДанные_Error  );
-
-                МетодЗапускаAsynTaskОшибки( Курсор_СамиДанные_Error,БуерДляОшибок,ИнфоТелефон);
-                Log.d(this.getClass().getName(), "GetData "+Курсор_СамиДанные_Error  );
-                
+            if (БуерДляОшибок.toString().length()>0) {
+                МетодЗапускаAsynTaskОшибки(  БуерДляОшибок,ИнфоТелефон);
             }else {
-
                 методКогдаНетОшибок(БуерДляОшибок, ИнфоТелефон);
-
-                Log.d(this.getClass().getName(), "GetData "+Курсор_СамиДанные_Error  );
             }
-
-            Log.d(this.getClass().getName(), "GetData "+Курсор_СамиДанные_Error  );
+            Log.d(this.getClass().getName(), "БуерДляОшибок "+БуерДляОшибок  );
 
 
             // TODO: 07.07.2023  сама вставка ошибок
@@ -196,7 +168,7 @@ public class MainActivity_Errors extends AppCompatActivity  {
     }
 
 
-    protected void МетодЗапускаAsynTaskОшибки(  Cursor Курсор_СамиДанные_Error,@NonNull  StringBuffer БуерДляОшибок, String ИнфоТелефон) {
+    protected void МетодЗапускаAsynTaskОшибки( @NonNull  StringBuffer БуерДляОшибок, String ИнфоТелефон) {
         try {
                 materialButtonОтправкаОшибокНАпочту.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -213,40 +185,12 @@ public class MainActivity_Errors extends AppCompatActivity  {
                         МетодПосылаемОшибкиНапочту(БуерДляОшибок);
                     }
                 });
-                int КоличествоСтрочекКурсоре = Курсор_СамиДанные_Error.getCount();
-                Log.d(this.getClass().getName(), "количество записей в курсоре : " + КоличествоСтрочекКурсоре);
-                do {
-                    Integer Столбик_ID_Table_ErrorDSU1 = Курсор_СамиДанные_Error.getInt(0);
-                    String Столбик_Error = Курсор_СамиДанные_Error.getString(1);
-                    String Столбик_Klass = Курсор_СамиДанные_Error.getString(2);
-                    String Столбик_Metod = Курсор_СамиДанные_Error.getString(3);
-                    Integer LineError_LineError = Курсор_СамиДанные_Error.getInt(4);
-                    String LineError_Data_Operazii_E = Курсор_СамиДанные_Error.getString(5);
-                    int СтолбикКтоСделалОшибку = Курсор_СамиДанные_Error.getInt(6);
-                    //конец  получение полей из таблицы соотвертвующего типа данных
-                    //вставляем в билде
-                    БуерДляОшибок.append(" #---------Ошибки ПО Союз-Автодор--------------#" + "\n" + "\n" +
-                            "   " + Курсор_СамиДанные_Error.getColumnName(0).toUpperCase()+ "\n" + "\n" + "  : " + Столбик_ID_Table_ErrorDSU1 + "\n" + "\n" +
-                            "   " + Курсор_СамиДанные_Error.getColumnName(1).toLowerCase()+ "\n" + "\n" + "  : " + Столбик_Error.toLowerCase() + "\n" + "\n" +
-                            "   " + Курсор_СамиДанные_Error.getColumnName(2).toLowerCase() + "\n" + "\n"+ "  : " + Столбик_Klass.toLowerCase() + "\n" + "\n" +
-                            "   " + Курсор_СамиДанные_Error.getColumnName(3).toLowerCase() + "\n" + "\n"+ "  : " + Столбик_Metod.toLowerCase() + "\n" + "\n" +
-                            "   " + Курсор_СамиДанные_Error.getColumnName(4).toLowerCase()+ "\n" + "\n" + "  : " + LineError_LineError + "\n" + "\n" +
-                            "   " + Курсор_СамиДанные_Error.getColumnName(5).toLowerCase() + "\n" + "\n"+ "  : " + LineError_Data_Operazii_E + "\n" + "\n" +
-                            "   " + Курсор_СамиДанные_Error.getColumnName(6).toLowerCase()+ "\n" + "\n" + "  : " + СтолбикКтоСделалОшибку + "\n" + "\n" +
-                            "   " + ИнфоТелефон + "  : " + "  Инфо. телефона " + "\n" + "\n" +
-                            "   " + Build.BRAND.toUpperCase() + "  : " + " Имя " + "\n" + "\n" +
-                            Build.VERSION.SDK_INT+ "  : " + " API ("+Build.VERSION.RELEASE+ ")"+ "\n" + "\n" +
-                                    "- время : " +new Date().toString()+"-" + "\n"+  "\n"+
-                            "   " + "-----------------------------------------" + "\n"+  "\n" );
-                } while (Курсор_СамиДанные_Error.moveToNext());
-                // TODO: 06.07.2023 exit cursor
-                Курсор_СамиДанные_Error.close();
-                
+
             Log.d(this.getClass().getName(), " БуерДляОшибок   " +БуерДляОшибок.toString());
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-             // TODO: 01.09.2021 метод вызова
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
+                    Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
             new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), 
           this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
