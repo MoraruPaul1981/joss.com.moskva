@@ -848,7 +848,7 @@ public class FragmentNewOrderTransport extends Fragment {
                                         valuesNewOrderTransport.put("current_table", ВерсияДанныхUp);
                                         String ДатаОбновления = new Class_Generation_Data(getContext()).ГлавнаяДатаИВремяОперацийСБазойДанных();
                                         valuesNewOrderTransport.put("date_update", ДатаОбновления);
-                                      Long   UUIDGenetetorNewCustoner= (Long) new Class_Generation_UUID(getContext()).МетодГенерацииUUID(getContext());
+                                      Long   UUIDGenetetorNewCustoner= (Long) new Class_Generation_UUID(getContext()).МетодГенерацииUUID();
                                       valuesNewOrderTransport.put("uuid", UUIDGenetetorNewCustoner);
                                          Bundle bundlegetCfo=(Bundle)       materialTextcfo.getTag();
                                 valuesNewOrderTransport.put("cfo", bundlegetCfo.getInt("getId"));

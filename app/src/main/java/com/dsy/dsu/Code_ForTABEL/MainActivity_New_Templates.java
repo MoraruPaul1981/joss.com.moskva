@@ -2248,7 +2248,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                                 @Override
                                 public void accept(Integer integer) throws Throwable {
                                     АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель[0] = new ContentValues();
-                                    UUIDgeneratorOpertion[0] = (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID(getApplicationContext());
+                                    UUIDgeneratorOpertion[0] = (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID();
                                     ///todo из заполянем адапрет из курсора
                                     АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель[0] =
                                             МетодЗаполенияДаннымиДляЗаполенияТабеляИзГотовогоШаблона(UUIDgeneratorOpertion[0],Курсор_СамиДАнные);

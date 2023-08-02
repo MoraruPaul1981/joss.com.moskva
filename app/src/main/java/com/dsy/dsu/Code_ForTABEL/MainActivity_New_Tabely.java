@@ -933,7 +933,7 @@ while(iterator.hasNext()){
             }else {
                 // TODO: 14.12.2022 СОЗДАЕМ НОВЫЙ ТАБЕЛЕ ПОСЛЕ ПОЛУЧЕНИЕ ДАННЫХ ДЛЯ СОЗДАЕНИЯ
                 ContentValues АдаптерВставкиНовгоТабеля = new ContentValues();
-         Long   СгенерированныйUUIDДляНовогоТабеля=  (Long)   new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID(getApplicationContext());
+         Long   СгенерированныйUUIDДляНовогоТабеля=  (Long)   new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID();
             Log.d(this.getClass().getName(), " СгенерированныйUUIDДляНовогоТабеля " + СгенерированныйUUIDДляНовогоТабеля);
             АдаптерВставкиНовгоТабеля.put("uuid", СгенерированныйUUIDДляНовогоТабеля);
                 // TODO: 15.12.2022 добадяем в передачу дальше

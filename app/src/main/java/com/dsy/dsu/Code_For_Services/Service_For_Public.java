@@ -486,7 +486,7 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                 Курсор_ВытаскиваемПоследнийМесяцТабеля.moveToLast();
                 progressDialog.setMax(Курсор_ВытаскиваемПоследнийМесяцТабеля.getCount());
                 reentrantLock.lock();
-                Long ParentUUID = (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID(getApplicationContext());
+                Long ParentUUID = (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID();
                 // TODO: 23.09.2022 ВСТАВЛЯЕМ ДАННЫЕ ВО ВТОРУЮ ТАБЛИЦЫ ДАТА_ТАБЕЛЬ
                 Integer РезультатВставкиВверхнеюТаблицы = МетодВставкивТаблицуTaбель(context,
                         Курсор_ВытаскиваемПоследнийМесяцТабеля,
@@ -583,7 +583,7 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                 String СгенерированованныйДатаДляДаннойОперации = new Class_Generation_Data(getApplicationContext()).ГлавнаяДатаИВремяОперацийСБазойДанных();
                 contentValuesДляДатаТабель.put("date_update", СгенерированованныйДатаДляДаннойОперации);
                 // TODO: 23.09.2022 сама вставка в таблиц ТАБЕЛЬ  #1
-                Long ДляНовойЗаписиUUID = (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID(getApplicationContext());
+                Long ДляНовойЗаписиUUID = (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID();
                 contentValuesДляДатаТабель.put("uuid", ДляНовойЗаписиUUID);;
                 contentValuesДляДатаТабель.put("uuid_tabel", ParentUUID);
                 contentValuesДляДатаТабель.put("status_send", " ");

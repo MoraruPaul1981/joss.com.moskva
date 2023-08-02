@@ -554,7 +554,7 @@ public class Service_for_AdminissionMaterial extends IntentService {
                 // TODO: 18.11.2022
                 contentValuesДляДатаТабель.put("current_table", РезультатУвеличиваемВерсияДатаТАбель);
                 // TODO: 22.09.2022
-                Long ГенерироватьUUIDДляТаблицыДАТАТАБЕЛЬ = (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID(getApplicationContext());
+                Long ГенерироватьUUIDДляТаблицыДАТАТАБЕЛЬ = (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID();
                 contentValuesДляДатаТабель.put("uuid", ГенерироватьUUIDДляТаблицыДАТАТАБЕЛЬ);
                 // TODO: 30.08.2021  ОРМИРУЕМ КОРКАТ БУДЩЕЙ ВСТАВКИ ДАННЫХ
                 Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabase/" + НазваниеОбрабоатываемойТаблицы + "");
@@ -866,7 +866,7 @@ private class SubClassGetDataAdmissionMaterial_Автомобили {
 
                      contentValuesСозданиеНовогоМатериала.put("current_table", РезультатУвеличиваемВерсияПолучениеНовогоМатериала);
                      // TODO: 22.09.2022
-                       ГенерироватьUUIDДляНовойЗадачи[0] = (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID(getApplicationContext());
+                       ГенерироватьUUIDДляНовойЗадачи[0] = (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID();
                      contentValuesСозданиеНовогоМатериала.put("uuid", ГенерироватьUUIDДляНовойЗадачи[0]);
                      // TODO: 27.12.2022  для новых двух полей Автомобили и Котрагенеты
                      contentValuesСозданиеНовогоМатериала.put("tracks", data.getInt("tracks"));
@@ -953,7 +953,7 @@ private class SubClassGetDataAdmissionMaterial_Автомобили {
 
                                         contentValuesСозданиеНовогоМатериала.put("current_table", РезультатУвеличиваемВерсияПолучениеНовогоМатериала);
                                         // TODO: 22.09.2022
-                                        Long  UUIDNewImage = (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID(getApplicationContext());
+                                        Long  UUIDNewImage = (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID();
                                         contentValuesСозданиеНовогоМатериала.put("uuid", UUIDNewImage);
                                         // TODO: 27.12.2022  для новых двух полей Автомобили и Котрагенеты
                                         contentValuesСозданиеНовогоМатериала.put("parent_uuid", Parent_Uuid);

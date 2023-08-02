@@ -46,7 +46,7 @@ public class Class_Generation_Errors {
                 Long Версия = new SubClassUpVersionDATA().МетодПовышаемВерсииCurrentTable(    "errordsu1"
                         ,context,create_database);
                 Long   UUID=  (Long)
-                        new Class_Generation_UUID(context).МетодГенерацииUUID(context);
+                        new Class_Generation_UUID(context).МетодГенерацииUUID();
                 Integer  ПубличныйIDДляАсих=   new Class_Generations_PUBLIC_CURRENT_ID().
                         ПолучениеПубличногоТекущегоПользователяID(context);
                 classGrudSqlOperationsОшибки = new Class_GRUD_SQL_Operations(context);

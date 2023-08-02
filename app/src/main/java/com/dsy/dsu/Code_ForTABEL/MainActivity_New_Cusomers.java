@@ -602,7 +602,7 @@ private void МетодВозврещениеНаПредыдущуюАктив�
                                         });
 
                                         reentrantLock.lock();
-                                        Long   UUIDGenetetorNewCustoner= (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID(getApplicationContext());
+                                        Long   UUIDGenetetorNewCustoner= (Long) new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID();
                                         // TODO: 23.09.2021  получение из даты месяц и год
                                         Log.d(this.getClass().getName(), " ИмесяцвИГодСразу  " + ИмесяцвИГодСразу);
                                         // TODO: 22.09.2021 обработка ТАБЛИЦА ФИО
@@ -1242,7 +1242,7 @@ private void МетодВозврещениеНаПредыдущуюАктив�
             // TODO: 23.09.2021
             Log.d(this.getClass().getName(), " ДатаПРиСозданииНовогоСотрудника" + ДатаПРиСозданииНовогоСотрудника);
 
-          Long UUidGeneratorDataTabels =  (Long)  new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID(getApplicationContext());
+          Long UUidGeneratorDataTabels =  (Long)  new Class_Generation_UUID(getApplicationContext()).МетодГенерацииUUID();
             АдаптерДляСозданиеНовогоСотрудаТАблицаТабель.put("uuid",UUidGeneratorDataTabels);
                 // TODO: 24.03.2021 ЕслиВубличногоНЕтТоНАходим ЕГо
 

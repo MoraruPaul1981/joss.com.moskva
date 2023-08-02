@@ -2081,7 +2081,7 @@ public class Fragment3_Now_Create_Tasks extends Fragment {
 
                     // TODO: 22.12.2021 НовыйUUIDДляТаблицыДатаЧат  для таблицы дата_чат
                     ////
-                    Long ЛокальныйUUIDДляОбоихТаблиц = (Long) new Class_Generation_UUID(getContext()).МетодГенерацииUUID(getContext());
+                    Long ЛокальныйUUIDДляОбоихТаблиц = (Long) new Class_Generation_UUID(getContext()).МетодГенерацииUUID();
                     // TODO: 21.03.2022  если UUID есть значит НОВОЕ СООБЩЕНИЕ ПЕРВОЕ
 
                     Log.d(this.getClass().getName(), " повторно ПолученыйUUIDУУжеЕслиСуществуетЗаданияТекущегоПользователясКомуПишем " );
@@ -2170,7 +2170,7 @@ public class Fragment3_Now_Create_Tasks extends Fragment {
 
                                     // TODO: 22.03.2022
                                     ////
-                                    Long ЛокальныйUUIDДляТолькоДляВторойТаблицы = (Long) new Class_Generation_UUID(getContext()).МетодГенерацииUUID(getContext()) + 1;
+                                    Long ЛокальныйUUIDДляТолькоДляВторойТаблицы = (Long) new Class_Generation_UUID(getContext()).МетодГенерацииUUID() + 1;
                                     ////todo # 2 первой таблицы
                                     contentValuesДляСозданияНовойЗадачиДляДвухТаблиц.put("uuid", ЛокальныйUUIDДляТолькоДляВторойТаблицы);
 
