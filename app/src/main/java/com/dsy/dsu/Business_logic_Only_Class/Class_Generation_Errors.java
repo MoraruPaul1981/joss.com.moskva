@@ -243,9 +243,6 @@ public class Class_Generation_Errors {
         try {
             File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "/" + fileName);
             if (file.isFile()) {
-                FileWriter fileWriter = new FileWriter(file.getAbsoluteFile(),true);
-              //  BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-             //   BufferedWriter bufferedWriter =  Files.newBufferedWriter(Paths.get(fileName), StandardCharsets.UTF_8);
                 BufferedWriter bufferedWriter =  Files.newBufferedWriter(Paths.get(file.getPath()), StandardCharsets.UTF_16,
                         StandardOpenOption.CREATE, StandardOpenOption.APPEND);
 
