@@ -1325,6 +1325,7 @@ try{
             Integer РезультатОтправкиДанныхНасервер=0;
             try {
                 Class_GRUD_SQL_Operations  sql_operations = new Class_GRUD_SQL_Operations(context);
+                // TODO: 02.08.2023  условия для создание курсора на отправку
                 sql_operations = МетодДанныеДляОтправкиCursor(имяТаблицыОтАндройда_локальноая, ВерсияДанныхОсноваСозданиеДанныхОтправки, ПубличныйIDДляФрагмента);
                 Class_GRUD_SQL_Operations.GetData  getData=sql_operations.new GetData(context);
                 // TODO: 15.02.2022  ПолучаемдАннык На ОТправку На сервер
@@ -1365,22 +1366,12 @@ try{
                                                                        Long ВерсияДанныхДляСравения,
                                                                        Integer ПубличныйIDДляФрагмента) {
             Class_GRUD_SQL_Operations class_grud_sql_operationsГенерируемКурсорДляОтправки = null;
-
             try{
                 ПубличныйIDДляФрагмента = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(context);
                 Log.w(this.getClass().getName(), "имяТаблицыОтАндройда_локальноая " + имяТаблицыОтАндройда_локальноая);
                 switch (имяТаблицыОтАндройда_локальноая.trim()) {
                     // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ____ID    // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ____ID    // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ____ID
-                    // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ____ID    // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ____ID    // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ____ID
-                    case "tabels":
-                    case "fio":
-                    case "tabel":
-                    case "data_tabels":
-                    case "prof":
-                    case "chats":
-                    case "data_chat":
-                    case "order_tc":
-                    case "vid_tc":
+                    case "settings_tabels":
                         Log.d(this.getClass().getName(), " имяТаблицыОтАндройда_локальноая  Для tabels  chat_users  fio  tabel  data_tabels  " + имяТаблицыОтАндройда_локальноая);
                         class_grud_sql_operationsГенерируемКурсорДляОтправки = new Class_GRUD_SQL_Operations(context);
                         class_grud_sql_operationsГенерируемКурсорДляОтправки.
@@ -1395,12 +1386,15 @@ try{
 
                         class_grud_sql_operationsГенерируемКурсорДляОтправки
                                 .concurrentHashMapНабор.put("ПодЗапросНомер1"," SELECT * FROM " + имяТаблицыОтАндройда_локальноая +
-                                        " WHERE current_table > "+ ВерсияДанныхДляСравения );
+                                        " WHERE current_table > "+ ВерсияДанныхДляСравения +" AND onesignal IS NOT NULL  AND  LENGTH(onesignal) >3  " +" " );
                         class_grud_sql_operationsГенерируемКурсорДляОтправки
                                 .concurrentHashMapНабор.put("ПодЗапросНомер2","  SELECT * FROM " + имяТаблицыОтАндройда_локальноая +" " +
-                                        "  WHERE user_update=" + ПубличныйIDДляФрагмента  + " AND _id IS NULL " );
+                                        "  WHERE user_update=" + ПубличныйIDДляФрагмента  + " AND onesignal IS NOT NULL  AND  LENGTH(onesignal) >3 " );
                         Log.d(this.getClass().getName(), " имяТаблицыОтАндройда_локальноая Все остальные  _id " + имяТаблицыОтАндройда_локальноая);
                         break;
+
+
+
                     // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID   // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID
                     // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID
                     default:
@@ -1418,10 +1412,10 @@ try{
 
                         class_grud_sql_operationsГенерируемКурсорДляОтправки
                                 .concurrentHashMapНабор.put("ПодЗапросНомер1"," SELECT * FROM " + имяТаблицыОтАндройда_локальноая +
-                                        " WHERE current_table > "+ ВерсияДанныхДляСравения );
+                                        " WHERE current_table > "+ ВерсияДанныхДляСравения +" ");
                         class_grud_sql_operationsГенерируемКурсорДляОтправки
                                 .concurrentHashMapНабор.put("ПодЗапросНомер2","  SELECT * FROM " + имяТаблицыОтАндройда_локальноая +" " +
-                                        "  WHERE user_update=" + ПубличныйIDДляФрагмента  + " AND id IS NULL " );
+                                        "  WHERE user_update=" + ПубличныйIDДляФрагмента  + " " );
                         Log.d(this.getClass().getName(), " имяТаблицыОтАндройда_локальноая Все остальные  _id " + имяТаблицыОтАндройда_локальноая);
                         break;
                 }

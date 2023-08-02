@@ -43,6 +43,8 @@ import javax.crypto.NoSuchPaddingException;
 
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.BackpressureStrategy;
+import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
@@ -188,20 +190,21 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
         PUBLIC_CONTENT public_contentменеджер=new PUBLIC_CONTENT(context);
         try {
             // TODO: 23.12.2021 ЧЕТЫРЕ ПОПЫТКИ ПОДКЛЮЧЕНИЕ В СЕВРЕРУONESIGNAL
-          Observable observableПолученияКлючаОтСервераOneSignal=  Observable.interval(20,TimeUnit.SECONDS)
+            Observable.interval(20,TimeUnit.SECONDS)
                   .delay(3,TimeUnit.SECONDS)
                   .take(10,TimeUnit.MINUTES)
                   .subscribeOn(Schedulers.single())
-                  .flatMap((ТекущаяОперацияОбрабооткиКлючаОтСервера)->{
-                      Log.w(context.getClass().getName(), "   Iterable<?> apply МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal"  +"\n"+
-                              " Thread.currentThread().getName() " +Thread.currentThread().getName());
-                      // TODO: 05.01.2022
-                      МетодПолучениеКлючаОтСервераONESIGNALЕслиОЕстьКОнечноВНЕСКОЛЬКОПОпыток(КлючДляFirebaseNotification);
-                      // TODO: 06.01.2022
-                      Log.w(context.getClass().getName(), "  onNext МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal"  +"\n"+
-                              " Thread.currentThread().getName() " +Thread.currentThread().getName()+"\n"+
-                               "  ТекущаяОперацияОбрабооткиКлючаОтСервера    "+ТекущаяОперацияОбрабооткиКлючаОтСервера );
-                      return  Observable.just(ТекущаяОперацияОбрабооткиКлючаОтСервера);
+                  .doOnNext(new Consumer<Long>() {
+                      @Override
+                      public void accept(Long aLong) throws Throwable {
+                          Log.w(context.getClass().getName(), "   Iterable<?> apply МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal"  +"\n"+
+                                  " Thread.currentThread().getName() " +Thread.currentThread().getName());
+                          // TODO: 05.01.2022
+                          МетодПолучениеКлючаОтСервераONESIGNALЕслиОЕстьКОнечноВНЕСКОЛЬКОПОпыток(КлючДляFirebaseNotification);
+                          // TODO: 06.01.2022
+                          Log.w(context.getClass().getName(), "  onNext МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal"  +"\n"+
+                                  " Thread.currentThread().getName() " +Thread.currentThread().getName()+"\n");
+                      }
                   })
                   .doOnError(new Consumer<Throwable>() {
                       @Override
@@ -249,9 +252,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                                   " Thread.currentThread().getName() " +Thread.currentThread().getName()); 
                       }
                   })
-                  .observeOn(AndroidSchedulers.mainThread());
-// TODO: 07.01.2022 GREAT OPERATIONS подпииска на данные  
-            observableПолученияКлючаОтСервераOneSignal.subscribe(System.out::println);
+                  .observeOn(AndroidSchedulers.mainThread())
+                    .toFlowable(BackpressureStrategy.BUFFER).subscribe();
+// TODO: 07.01.2022 GREAT OPERATIONS подпииска на данные
             // TODO: 05.01.2022  ДЕЛАЕМ ПОДПИСКУ НА ОСУЩЕСТВЛЛЕНУЮ ДАННЫХ
         } catch (Exception e ) {
             e.printStackTrace();
