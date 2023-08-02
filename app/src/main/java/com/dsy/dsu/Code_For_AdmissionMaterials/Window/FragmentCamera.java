@@ -3,23 +3,23 @@ package com.dsy.dsu.Code_For_AdmissionMaterials.Window;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.graphics.Camera;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
-import androidx.camera.core.CameraControl;
+import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageCapture;
+import androidx.camera.core.ImageCaptureException;
 import androidx.camera.core.Preview;
-import androidx.camera.core.UseCaseGroup;
-import androidx.camera.core.VideoCapture;
-import androidx.camera.core.ViewPort;
-import androidx.camera.core.impl.VideoCaptureConfig;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleRegistry;
 
 import android.os.Environment;
 import android.util.Log;
@@ -110,7 +110,37 @@ public class FragmentCamera extends DialogFragment {
             Preview preview = new Preview.Builder().build();
             PreviewView preview_view =viewRoot. findViewById(R.id.preview_view);
 
-            bisinessLogica.    setCameraProviderListener();
+// The use case is bound to an Android Lifecycle with the following code
+
+
+                    imageCapture = new ImageCapture.Builder()
+                            .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+                            .build();
+
+            imageCapture.takePicture(outputFileOptions, ContextCompat.getMainExecutor(getActivity()),
+                    new ImageCapture.OnImageSavedCallback(){
+
+
+                        @Override
+                        public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
+
+                            // TODO: 20.07.2023
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"   + " preview_view " +preview_view );
+                        }
+
+                        @Override
+                        public void onError(@NonNull ImageCaptureException exception) {
+
+                            // TODO: 20.07.2023
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"   + " preview_view " +preview_view );
+                        }
+                    }
+            );
+
 
 
             // TODO: 20.07.2023
@@ -168,7 +198,21 @@ public class FragmentCamera extends DialogFragment {
         return viewRoot;
     }
 
+    public class CustomLifecycle implements LifecycleOwner {
+        private LifecycleRegistry lifecycleRegistry;
+        public CustomLifecycle() {
+            lifecycleRegistry = new LifecycleRegistry(this);
+            lifecycleRegistry.markState(Lifecycle.State.CREATED);
+        }
 
+        public void doOnResume() {
+            lifecycleRegistry.markState(Lifecycle.State.RESUMED);
+        }
+
+        public Lifecycle getLifecycle() {
+            return lifecycleRegistry;
+        }
+    }
 
     @Override
     public void onResume() {
@@ -294,39 +338,6 @@ public class FragmentCamera extends DialogFragment {
                 Log.d("checkCameraPermissions", "Success YRA  Camera Permissions  !!!!");
             }
         }
-
-        private void setCameraProviderListener() {
-            ListenableFuture<ProcessCameraProvider> cameraProviderFuture =
-                    ProcessCameraProvider.getInstance(requireContext());
-            cameraProviderFuture.addListener(() -> {
-
-                try {
-                    ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-                    bindPreview(cameraProvider);
-                } catch (ExecutionException | InterruptedException e) {
-                    // No errors need to be handled for this Future
-                    // This should never be reached
-                    e.printStackTrace();
-                }
-            }, ContextCompat.getMainExecutor(requireContext()));
-        }
-
-        private void bindPreview(ProcessCameraProvider cameraProvider) {
-
-            CameraSelector cameraSelector =
-                    new CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build();
-
-            Preview preview = new Preview.Builder().build();
-
-            preview.setSurfaceProvider(preview_view.getSurfaceProvider());
-
-            ViewPort viewPort = preview_view.getViewPort();
-
-
-        }
-
-
-
 
     }//TODO END BisinessLogica //TODO END BisinessLogica //TODO END BisinessLogica //TODO END BisinessLogica //TODO END BisinessLogica
 
