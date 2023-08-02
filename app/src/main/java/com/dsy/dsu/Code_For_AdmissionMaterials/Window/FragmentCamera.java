@@ -4,7 +4,11 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.camera.core.ImageCapture;
+import androidx.camera.core.impl.VideoCaptureConfig;
 import androidx.fragment.app.DialogFragment;
+
+import android.os.Environment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,6 +21,8 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.R;
 import com.google.android.material.button.MaterialButton;
 
+import java.io.File;
+
 import javax.annotation.Nullable;
 
 
@@ -24,8 +30,8 @@ public class FragmentCamera extends DialogFragment {
     private   Toolbar toolbarCamera;
     private ImageButton imageButtonCameraback;
     private MaterialButton button_create_new_image;
-
     private  BisinessLogica bisinessLogica;
+
     public FragmentCamera() {
         // Required empty public constructor
     }
@@ -43,6 +49,17 @@ public class FragmentCamera extends DialogFragment {
         super.onCreate(savedInstanceState);
         try{
             bisinessLogica=new BisinessLogica();
+
+            // TODO: 02.08.2023  TEST CODE
+
+            File file = new File(Environment.getExternalStorageDirectory()+"/HeyThisISJayuir.jpg");
+
+            ImageCapture.OutputFileOptions outputFileOptions=new ImageCapture.OutputFileOptions.Builder(file).build();
+
+
+
+
+
             // TODO: 20.07.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

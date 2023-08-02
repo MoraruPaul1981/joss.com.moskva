@@ -76,13 +76,26 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
+
+
+
+            <androidx.camera.view.PreviewView
+                android:id="@+id/preview_view"
+                android:layout_above="@+id/button_create_new_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10px"/>
+
+
+
+
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_create_new_image"
                 style="@style/Widget.MaterialComponents.Button"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="1dp"
                 android:gravity="center"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
