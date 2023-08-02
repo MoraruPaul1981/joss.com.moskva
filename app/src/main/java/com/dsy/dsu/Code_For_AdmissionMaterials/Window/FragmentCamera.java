@@ -106,9 +106,6 @@ public class FragmentCamera extends DialogFragment {
                              Bundle savedInstanceState) {
         View viewRoot=null;
         try{
-            String s = null;
-            
-            s.toString();
             viewRoot= inflater.inflate(R.layout.fragment_camera, container, false);
             imageButtonCameraback=(ImageButton) viewRoot.findViewById(R.id.imageButtonCameraback);
             button_create_new_image=(MaterialButton) viewRoot.findViewById(R.id.button_create_new_image);
@@ -116,13 +113,7 @@ public class FragmentCamera extends DialogFragment {
              preview_view =viewRoot. findViewById(R.id.preview_view);
             // TODO: 02.08.2023  TEST CODE
 
-
-
-
-
-
             ListenableFuture<ProcessCameraProvider> providerListenableFuture = ProcessCameraProvider.getInstance(getContext());
-
 
             providerListenableFuture.addListener(()->{
                 try {

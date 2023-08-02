@@ -195,6 +195,38 @@ public class Class_Clears_Tables {
     }
 
 
+    // TODO: 09.09.2021 delete ТАБЛИЦЫ successlogin
+    public Integer методОчисткаТаблицыSuccesslogin(String ИмяТаблицы, Context context) throws ExecutionException, InterruptedException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+//
+        Integer СменаДанных = 0;
+        try {
+            Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/"+ИмяТаблицы+"");
+            Log.d(this.getClass().getName(), "  ИмяТаблицы "+ИмяТаблицы+"" );
+
+            ContentResolver contentResolver=context.getContentResolver();
+            СменаДанных=  contentResolver.delete(uri,null,null);
+
+            if (СменаДанных>0) {
+                context.getContentResolver().notifyChange(uri, null);
+            }
+
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " СменаДанных " +СменаДанных );
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            // TODO: 01.09.2021 метод вызова
+            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        return СменаДанных;
+    }
 
     // TODO: 09.09.2021 delete data for tabels
     protected Integer методСменыДанныхMODIFITATION_Client(String ИмяТаблицы, Context context) throws ExecutionException, InterruptedException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {

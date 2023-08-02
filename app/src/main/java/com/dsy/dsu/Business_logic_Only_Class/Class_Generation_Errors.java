@@ -35,7 +35,7 @@ public class Class_Generation_Errors {
     private Integer ПубличноеIDПолученныйИзСервлетаДляUUID = 0;
 
     private CREATE_DATABASE_Error create_database_error;
-    String fileName = "dsuerrors-1234567.txt";
+    String fileName = "Sous-Avtodor-ERRORS.txt";
 
     public Class_Generation_Errors(@NonNull Context context) {
         this.context = context;
@@ -151,63 +151,11 @@ public class Class_Generation_Errors {
         void МетодЗаписьДополенительеноОшибвкивФайл() {
             try {
 
-
-               // методСозданиеИЗАписиОшибки();
-
                 методСозданиеИЗАписиОшибки(linkedBlockingQueueВскеОшибкиДляЗаписи);
 
-         /*       File file=null;
-                if (Build.VERSION.SDK_INT >= 30) {
-                 file = new File( context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/"+fileName);  //null
-                } else {
-                    file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/"+fileName);
-                }*/
-
-        /*        ContextWrapper contextWrapper = new ContextWrapper(context);
-                File directory = contextWrapper.getDir(Environment.DIRECTORY_DOWNLOADS, Context.MODE_PRIVATE);
-                File file =  new File(directory,"dsu2.errors.txt");
-                file.createNewFile();
-                if (file.isFile()) {
-                    String data = "dddd";
-                    FileOutputStream fos = new FileOutputStream("dsu2.errors.txt", true); // save
-                    fos.write(data.getBytes());
-                    fos.close();
-                }
-*/
-
-/*                OutputStreamWriter outputStreamWriter=null;
-
-                if (!file.exists()) {
-                    file.getParentFile().createNewFile();
-                }
-               *//* if (!file.isFile()) {
-                    file.getParentFile().createNewFile();
-                }*//*
-
-                FileOutputStream outputStream = new FileOutputStream(file,true);
-                outputStream.close();*/
-                //   FileOutputStream outputStream=context. openFileOutput(file , Context.MODE_APPEND);
-       /*        outputStreamWriter=new OutputStreamWriter(outputStream, StandardCharsets.UTF_16);
-
-                outputStreamWriter.write("\n");
-                String СгенерированованныйДатаВремениСейчаcДляУдаления=     new Class_Generation_Data(context).ГлавнаяДатаИВремяОперацийСБазойДанных();
-                outputStreamWriter.write(СгенерированованныйДатаВремениСейчаcДляУдаления);
-            outputStreamWriter.write("\n");
-            outputStreamWriter.write(linkedBlockingQueueВскеОшибкиДляЗаписи.get(0).toString());
-            outputStreamWriter.write("\n");
-                outputStreamWriter.write("\n");
-                outputStreamWriter.write(linkedBlockingQueueВскеОшибкиДляЗаписи.get(1).toString());
-                outputStreamWriter.write("\n");
-                outputStreamWriter.write("\n");
-                outputStreamWriter.write(linkedBlockingQueueВскеОшибкиДляЗаписи.get(2).toString());
-                outputStreamWriter.write("\n");
-                outputStreamWriter.write("\n");
-                String СтрокаОшибки= linkedBlockingQueueВскеОшибкиДляЗаписи.get(3);
-                Integer СтрокаОшибкиФинал=Integer.parseInt(СтрокаОшибки);
-                outputStreamWriter.write(СтрокаОшибкиФинал);
-                outputStreamWriter.write("\n");
-
-            outputStreamWriter.flush();*/
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
             } catch (Exception e) {
                 e.printStackTrace();
                 System.err.println("  Ошибка в    дополнительном модуле записи ошиьки в файл SubClassWriteErrorFile ");
@@ -220,7 +168,7 @@ public class Class_Generation_Errors {
 
  public void методСозданиеФайлаДляОшибки() {
         try {
-            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "/" + fileName);
+            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), File.separator + fileName);
             if (!file.exists()) {
                 file.createNewFile();
                 file.setReadable(true);
@@ -234,35 +182,79 @@ public class Class_Generation_Errors {
             Log.e(context.getClass().getName(),
                     "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                             " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
     public void методСозданиеИЗАписиОшибки(@NonNull  ArrayList<String> linkedBlockingQueueВскеОшибкиДляЗаписи) {
         try {
-            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "/" + fileName);
+            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), File.separator + fileName);
             if (file.isFile()) {
                 BufferedWriter bufferedWriter =  Files.newBufferedWriter(Paths.get(file.getPath()), StandardCharsets.UTF_16,
                         StandardOpenOption.CREATE, StandardOpenOption.APPEND);
 
 
+
+                String    СамаОшибка=null;
+                boolean ДлинаСтрокивСпиноре = linkedBlockingQueueВскеОшибкиДляЗаписи.get(0).toString().length() > 40;
+                if (ДлинаСтрокивСпиноре) {
+                    StringBuffer sb = new StringBuffer(linkedBlockingQueueВскеОшибкиДляЗаписи.get(0).toString());
+                    sb.insert(40, System.lineSeparator());
+                 СамаОшибка = sb.toString();
+                }else {
+                    СамаОшибка =linkedBlockingQueueВскеОшибкиДляЗаписи.get(0).toString();
+                }
+
+
+
+
+
+
+                bufferedWriter.write("\n");
+                bufferedWriter.write("##### ERROR #####");
+                bufferedWriter.write("\n");
+                bufferedWriter.write("\n");
+                bufferedWriter.write("\n");
                 bufferedWriter.write("\n");
                 String СгенерированованныйДатаВремениСейчаcДляУдаления=     new Class_Generation_Data(context).ГлавнаяДатаИВремяОперацийСБазойДанных();
                 bufferedWriter.write(СгенерированованныйДатаВремениСейчаcДляУдаления);
                 bufferedWriter.write("\n");
-                bufferedWriter.write(linkedBlockingQueueВскеОшибкиДляЗаписи.get(0).toString());
+                bufferedWriter.write("\n");
+                bufferedWriter.write("\n");
+                bufferedWriter.write("\n");
+                bufferedWriter.write("error");
+                bufferedWriter.write("\n");
+                bufferedWriter.write("\n");
+                bufferedWriter.write("\n");
+                bufferedWriter.write("\n");
+                bufferedWriter.write("\n");
+                bufferedWriter.write(СамаОшибка);
+                bufferedWriter.write("\n");
+                bufferedWriter.write("\n");
+                bufferedWriter.write("\n");
+                bufferedWriter.write("\n");
+                bufferedWriter.write("Class");
+                bufferedWriter.write("\n");
                 bufferedWriter.write("\n");
                 bufferedWriter.write("\n");
                 bufferedWriter.write(linkedBlockingQueueВскеОшибкиДляЗаписи.get(1).toString());
                 bufferedWriter.write("\n");
                 bufferedWriter.write("\n");
+                bufferedWriter.write("\n");
+                bufferedWriter.write("\n");
+                bufferedWriter.write("Metod");
+                bufferedWriter.write("\n");
+                bufferedWriter.write("\n");
+                bufferedWriter.write("\n");
                 bufferedWriter.write(linkedBlockingQueueВскеОшибкиДляЗаписи.get(2).toString());
                 bufferedWriter.write("\n");
                 bufferedWriter.write("\n");
-                String СтрокаОшибки= linkedBlockingQueueВскеОшибкиДляЗаписи.get(3);
-                Integer СтрокаОшибкиФинал=Integer.parseInt(СтрокаОшибки);
-                bufferedWriter.write(СтрокаОшибкиФинал);
+                bufferedWriter.write("\n");
+                bufferedWriter.write("\n");
+                bufferedWriter.write("Line");
+                bufferedWriter.write("\n");
+                bufferedWriter.write("\n");
+                bufferedWriter.write("\n");
+                bufferedWriter.write(linkedBlockingQueueВскеОшибкиДляЗаписи.get(3).toString());
+                bufferedWriter.write("\n");
                 bufferedWriter.write("\n");
 
 
@@ -277,9 +269,6 @@ public class Class_Generation_Errors {
             Log.e(context.getClass().getName(),
                     "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                             " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
 }

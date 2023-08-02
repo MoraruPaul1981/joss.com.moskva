@@ -30,6 +30,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.dsy.dsu.AllDatabases.CREATE_DATABASE;
+import com.dsy.dsu.Business_logic_Only_Class.Class_Clears_Tables;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Connections_Server;
 import com.dsy.dsu.Business_logic_Only_Class.Class_Find_Setting_User_Network;
 import com.dsy.dsu.Business_logic_Only_Class.Class_GRUD_SQL_Operations;
@@ -101,12 +102,22 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
             ПарольДляВходаСистему = (TextInputEditText) findViewById(R.id.ПарольДляВходавПрограмму); ////програссбар при аунтификации при входе в системму
 
 
+            // TODO: 02.08.2023 БИЗНЕС КОД
+
+            new Class_Generation_Errors(getApplicationContext()).методСозданиеФайлаДляОшибки();
+
+        new  Class_Clears_Tables(getApplicationContext(),null, null). методОчисткаТаблицыSuccesslogin("successlogin",getApplicationContext());
+
 
             методДаемПраваНаCameraPermissions(this);
            // preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             preferences = getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
             // TODO: 12.04.2023  messageGet
             messageGet();
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
         } catch (Exception e) {
             ПрогрессБарДляВходаСистему.setVisibility(View.INVISIBLE);// при нажатии делаем видимый програсссбар
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
