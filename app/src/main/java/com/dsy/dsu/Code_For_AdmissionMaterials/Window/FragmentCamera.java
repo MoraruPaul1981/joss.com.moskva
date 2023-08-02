@@ -3,12 +3,12 @@ package com.dsy.dsu.Code_For_AdmissionMaterials.Window;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.graphics.Camera;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.camera.camera2.Camera2Config;
+import androidx.camera.core.Camera;
 import androidx.camera.core.CameraInfo;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.CameraX;
@@ -55,7 +55,11 @@ public class FragmentCamera extends DialogFragment {
     private MaterialButton button_create_new_image;
     private  BisinessLogica bisinessLogica;
     public static final int CAMERA_PERSSION_CODE=1;
-
+    private     ProcessCameraProvider processCameraProvider;
+    private ImageCapture imageCapture;
+    private     PreviewView preview_view;
+    private  ExecutorService mExecutorService;
+    private Camera camera;
     public FragmentCamera() {
         // Required empty public constructor
     }
@@ -103,7 +107,7 @@ public class FragmentCamera extends DialogFragment {
 
 
             Preview preview = new Preview.Builder().build();
-            PreviewView preview_view =viewRoot. findViewById(R.id.preview_view);
+        preview_view =viewRoot. findViewById(R.id.preview_view);
 
             // TODO: 02.08.2023  TEST CODE
 
@@ -115,7 +119,7 @@ public class FragmentCamera extends DialogFragment {
 
             // The use case is bound to an Android Lifecycle with the following code
 
-            ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
+            mExecutorService = Executors.newSingleThreadExecutor();
             ImageCapture    imageCapture = new ImageCapture.Builder()
                     .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
                     .setCameraSelector(CameraSelector.DEFAULT_BACK_CAMERA)
@@ -141,51 +145,26 @@ public class FragmentCamera extends DialogFragment {
 
 
             ListenableFuture<ProcessCameraProvider> providerListenableFuture = ProcessCameraProvider.getInstance(getActivity());
-            ProcessCameraProvider processCameraProvider = providerListenableFuture.get();
-            processCameraProvider.bindToLifecycle(new LifecycleOwner() {
-                @NonNull
-                @Override
-                public Lifecycle getLifecycle() {
 
 
-                    // TODO: 20.07.2023
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"   + " preview_view " +preview_view );
-                    return null;
+            providerListenableFuture.addListener(()->{
+                try {
+                    processCameraProvider = providerListenableFuture.get();
+                    // TODO: 02.08.2023
+                    bindPreview();
+                } catch (ExecutionException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
-            }, CameraSelector.DEFAULT_BACK_CAMERA, imageCapture);
 
-
-            // TODO: 02.08.2023  TEst Code Video
-
+            }, ContextCompat.getMainExecutor(getActivity()));
 
 
 
 
-            imageCapture.takePicture(outputFileOptions, ContextCompat.getMainExecutor(getActivity()),
-                    new ImageCapture.OnImageSavedCallback(){
 
 
-                        @Override
-                        public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
-
-                            // TODO: 20.07.2023
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"   + " preview_view " +preview_view );
-                        }
-
-                        @Override
-                        public void onError(@NonNull ImageCaptureException exception) {
-
-                            // TODO: 20.07.2023
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"   + " preview_view " +preview_view );
-                        }
-                    }
-            );
 
             // TODO: 20.07.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -203,7 +182,21 @@ public class FragmentCamera extends DialogFragment {
         return viewRoot;
     }
 
+    private void bindPreview() {
+        imageCapture =
+                new ImageCapture.Builder()
+                        .setCameraSelector(CameraSelector.DEFAULT_BACK_CAMERA)
+                        .setIoExecutor(mExecutorService)
+                        .setTargetRotation(preview_view.getDisplay().getRotation())
 
+                        .build();
+        Preview preview = new Preview.Builder().build();
+        preview.setSurfaceProvider(preview_view.getSurfaceProvider());
+        //
+        CameraSelector cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA;
+        // bind
+        camera = processCameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture);
+    }
 
     @Override
     public void onResume() {
