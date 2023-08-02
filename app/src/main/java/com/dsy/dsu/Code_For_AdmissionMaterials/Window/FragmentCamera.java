@@ -1,6 +1,9 @@
 package com.dsy.dsu.Code_For_AdmissionMaterials.Window;
 
+
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -35,6 +38,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.R;
@@ -43,6 +47,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 import java.io.File;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -113,7 +118,7 @@ public class FragmentCamera extends DialogFragment {
 
 
 
-            ListenableFuture<ProcessCameraProvider> providerListenableFuture = ProcessCameraProvider.getInstance(getActivity());
+            ListenableFuture<ProcessCameraProvider> providerListenableFuture = ProcessCameraProvider.getInstance(getContext());
 
 
             providerListenableFuture.addListener(()->{
@@ -127,13 +132,7 @@ public class FragmentCamera extends DialogFragment {
                     throw new RuntimeException(e);
                 }
 
-            }, ContextCompat.getMainExecutor(getActivity()));
-
-
-
-
-
-
+            }, ContextCompat.getMainExecutor(getContext()));
 
             // TODO: 20.07.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -180,6 +179,41 @@ public class FragmentCamera extends DialogFragment {
         // bind
         camera = processCameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture);
     }
+
+
+
+
+    private void takePicture() {
+        File file = new File(Environment.getExternalStorageDirectory()+"/NewCAmera.jpg");
+        Executor cameraExecutor = ContextCompat.getMainExecutor(getActivity());
+        ImageCapture.OutputFileOptions outputFileOptions =
+                new ImageCapture.OutputFileOptions.Builder(file).build();
+        imageCapture.takePicture(outputFileOptions, cameraExecutor,
+                new ImageCapture.OnImageSavedCallback() {
+                    @Override
+                    public void onImageSaved(ImageCapture.OutputFileResults outputFileResults) {
+                        System.out.println("SAVED");
+                        Toast.makeText(getActivity(), "Photo saved", Toast.LENGTH_SHORT).show();
+                    }
+                    @Override
+                    public void onError(ImageCaptureException error) {
+                        System.out.println("not saved");
+                        Toast.makeText(getActivity(), "Error saving photo", Toast.LENGTH_SHORT).show();
+                        System.out.println(error);
+                    }
+                }
+        );
+
+    }
+
+
+
+
+
+
+
+
+
 
     @Override
     public void onResume() {
@@ -241,6 +275,7 @@ public class FragmentCamera extends DialogFragment {
                 @Override
                 public void onClick(View v) {
                     // TODO: 20.07.2023
+                    takePicture();
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
