@@ -3,15 +3,21 @@ package com.dsy.dsu.Code_For_AdmissionMaterials.Window;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Camera;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
-import androidx.camera.core.Camera;
+import androidx.camera.camera2.Camera2Config;
+import androidx.camera.core.CameraInfo;
 import androidx.camera.core.CameraSelector;
+import androidx.camera.core.CameraX;
+import androidx.camera.core.CameraXConfig;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
 import androidx.camera.core.Preview;
+import androidx.camera.core.UseCase;
+import androidx.camera.core.impl.CameraConfig;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
@@ -37,6 +43,8 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 import java.io.File;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.annotation.Nullable;
 
@@ -105,6 +113,19 @@ public class FragmentCamera extends DialogFragment {
             ImageCapture.OutputFileOptions outputFileOptions=new ImageCapture.OutputFileOptions.Builder(file).build();
 
 
+
+
+            ListenableFuture<ProcessCameraProvider> providerListenableFuture = ProcessCameraProvider.getInstance(getActivity());
+            ProcessCameraProvider processCameraProvider = providerListenableFuture.get();
+            processCameraProvider.bindToLifecycle(new LifecycleOwner() {
+                @NonNull
+                @Override
+                public Lifecycle getLifecycle() {
+                    return null;
+                }
+            }, CameraSelector.DEFAULT_BACK_CAMERA, imageCapture);
+
+
             // TODO: 02.08.2023  TEst Code Video
 
             Preview preview = new Preview.Builder().build();
@@ -112,9 +133,26 @@ public class FragmentCamera extends DialogFragment {
 
 // The use case is bound to an Android Lifecycle with the following code
 
-
+        ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
                     imageCapture = new ImageCapture.Builder()
                             .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+                            .setCameraSelector(CameraSelector.DEFAULT_BACK_CAMERA)
+                            .setIoExecutor(mExecutorService)
+                            .setUseCaseEventCallback(new UseCase.EventCallback() {
+                                @Override
+                                public void onAttach(@NonNull CameraInfo cameraInfo) {
+                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"   + " preview_view " +preview_view );
+                                }
+
+                                @Override
+                                public void onDetach() {
+                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"   + " preview_view " +preview_view );
+                                }
+                            })
                             .build();
 
             imageCapture.takePicture(outputFileOptions, ContextCompat.getMainExecutor(getActivity()),
@@ -331,7 +369,8 @@ public class FragmentCamera extends DialogFragment {
                         android. Manifest.permission.WRITE_SECURE_SETTINGS
                 };
                 ActivityCompat.requestPermissions(getActivity(), permissions, CAMERA_PERSSION_CODE);
-
+                // Permission is not granted
+                Log.d("checkCameraPermissions", "NO NO   Camera Permissions  !!!!");
 
             }else{
                 // Permission is not granted
