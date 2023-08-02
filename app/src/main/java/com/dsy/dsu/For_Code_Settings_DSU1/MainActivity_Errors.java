@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteCursor;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
@@ -31,6 +32,15 @@ import com.dsy.dsu.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -101,12 +111,36 @@ public class MainActivity_Errors extends AppCompatActivity  {
 
 
 
+
+
+
             StringBuffer БуерДляОшибок =new StringBuffer();
 
             String ИнфоТелефон = Build.MANUFACTURER
                     + " " + Build.MODEL + " " + Build.VERSION.RELEASE
                     + " " + Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
-            
+
+
+
+            File pachs =  Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+
+            //Get the text file
+            File file = new File(pachs,"Sous-Avtodor-ERRORS.txt");
+
+                BufferedReader newBufferedReader =  Files.newBufferedReader(Paths.get(file.getPath()), StandardCharsets.UTF_16);
+
+
+            StringBuffer     БуферОшибок = newBufferedReader.lines().collect(StringBuffer::new, (sb, i) -> sb.append(i),
+                    StringBuffer::append);
+            Log.d(this.getClass().getName(), "БуферОшибок " +БуферОшибок +  " newBufferedReader " +newBufferedReader);
+
+                Log.d(this.getClass().getName(), "newBufferedReader "+newBufferedReader  );
+            // TODO: 02.08.2023  clear
+
+            newBufferedReader.close();
+
+
+
             
             if (Курсор_СамиДанные_Error.getCount()>0) {
                 Курсор_СамиДанные_Error.moveToFirst();
