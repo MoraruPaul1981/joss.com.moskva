@@ -27,6 +27,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
 public class Class_Generation_Errors {
 
@@ -35,7 +36,7 @@ public class Class_Generation_Errors {
     private Integer ПубличноеIDПолученныйИзСервлетаДляUUID = 0;
 
     private CREATE_DATABASE_Error create_database_error;
-    String fileName = "Sous-Avtodor-ERRORS.txt";
+    private String fileName = "Sous-Avtodor-ERRORS.txt";
 
     public Class_Generation_Errors(@NonNull Context context) {
         this.context = context;
@@ -84,49 +85,26 @@ public class Class_Generation_Errors {
                         && !ТекстОшибки.matches("(.*)java.net.SocketTimeoutException: failed to connect(.*)")
                         && !ТекстОшибки.matches("(.*)java.net.sockettimeoutexception: failed to connect(.*)")) {
 
+                    // TODO: 21.12.2022  главная  файл ErrorDSU1
+                   метометодЗаписьОшибкиОбынуюТаблицуErrorDSU1Дубль(PезультатВставкиНовойОшибки, create_database);
 
-                    // TODO: 20.02.2022
+
+                    // TODO: 20.02.2022 запись ошибки в дополнительную таблицу ОШИБКИ
+                    методЗаписьОшибкиОбынуюТаблицуErrorDSU1(PезультатВставкиНовойОшибки, create_database_error);
 
                     // TODO: 20.12.2022  дополнительный механизм записи ошибкок
-                    ArrayList<String> arrayListОшибкиДляЗаписивФайл = new ArrayList();
-                    arrayListОшибкиДляЗаписивФайл.add(ТекстОшибки);
-                    arrayListОшибкиДляЗаписивФайл.add(КлассГнерацииОшибки);
-                    arrayListОшибкиДляЗаписивФайл.add(МетодаОшибки);
-                    arrayListОшибкиДляЗаписивФайл.add(String.valueOf(ЛинияОшибки));
-                    // TODO: 09.07.2023 запись ошибки в файл  .txt
-                    new SubClassWriteErrorFile(context, arrayListОшибкиДляЗаписивФайл).МетодЗаписьДополенительеноОшибвкивФайл();
+                    методЗаписиОшибкиВФайлErrorDSU1txt(ТекстОшибки, КлассГнерацииОшибки, МетодаОшибки, ЛинияОшибки);
 
-// TODO: 21.12.2022  главная запись ощибки в табелицу ErrorDSU1
-                    PезультатВставкиНовойОшибки = (Long) classGrudSqlOperationsОшибки.
-                            new InsertData(context).insertdata(classGrudSqlOperationsОшибки.concurrentHashMapНабор,
-                            classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций,
-                            new PUBLIC_CONTENT(context).МенеджерПотоков,
-                            create_database_error);
-                    Log.d(this.getClass().getName(), " date " + new Date().toGMTString().toString() + " PезультатВставкиНовойОшибки " + PезультатВставкиНовойОшибки);
 
-                    // TODO: 21.12.2022  главная запись ощибки в табелицу ErrorDSU1
-                    PезультатВставкиНовойОшибки = (Long) classGrudSqlOperationsОшибки.
-                            new InsertData(context).insertdata(classGrudSqlOperationsОшибки.concurrentHashMapНабор,
-                            classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций,
-                            new PUBLIC_CONTENT(context).МенеджерПотоков,
-                            create_database);
-                    Log.d(this.getClass().getName(), " date " + new Date().toGMTString().toString() + " PезультатВставкиНовойОшибки " + PезультатВставкиНовойОшибки);
                 }
                 Log.d(this.getClass().getName(), "PезультатВставкиНовойОшибки " + PезультатВставкиНовойОшибки);
 
-                // TODO: 09.07.2023 clear
-                classGrudSqlOperationsОшибки.concurrentHashMapНабор.clear();
-                if (create_database.inTransaction()) {
-                    create_database.endTransaction();
-                }
-                if (create_database_error.inTransaction()) {
-                    create_database_error.endTransaction();
-                }
-                create_database_error.close();
             } else {
                 System.err.println("  Ошибка в самом классе записи ошибок нет КОНТЕКСТА Class_Generation_Errors");
             }
             Log.d(this.getClass().getName(), "PезультатВставкиНовойОшибки " + PезультатВставкиНовойОшибки);
+            // TODO: 09.07.2023 clear
+            classGrudSqlOperationsОшибки.concurrentHashMapНабор.clear();
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("  Ошибка в самом классе записи ошибок нет КОНТЕКСТА Class_Generation_Errors");
@@ -135,6 +113,69 @@ public class Class_Generation_Errors {
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
 
+    }
+
+    private void методЗаписиОшибкиВФайлErrorDSU1txt(@NonNull String ТекстОшибки, @NonNull String КлассГнерацииОшибки, @NonNull String МетодаОшибки, @NonNull Integer ЛинияОшибки) {
+        try{
+        ArrayList<String> arrayListОшибкиДляЗаписивФайл = new ArrayList();
+        arrayListОшибкиДляЗаписивФайл.add(ТекстОшибки);
+        arrayListОшибкиДляЗаписивФайл.add(КлассГнерацииОшибки);
+        arrayListОшибкиДляЗаписивФайл.add(МетодаОшибки);
+        arrayListОшибкиДляЗаписивФайл.add(String.valueOf(ЛинияОшибки));
+        // TODO: 09.07.2023 запись ошибки в файл  .txt
+        new SubClassWriteErrorFile(context, arrayListОшибкиДляЗаписивФайл).МетодЗаписьДополенительеноОшибвкивФайл();
+    } catch (Exception e) {
+        e.printStackTrace();
+        System.err.println("  Ошибка в самом классе записи ошибок нет КОНТЕКСТА Class_Generation_Errors");
+        Log.e(context.getClass().getName(), "Ошибка в самом классе создание ОШИБКИ (записи новой ошибки) ERROR  inse ERROR" + e
+                + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+    }
+
+    private void метометодЗаписьОшибкиОбынуюТаблицуErrorDSU1Дубль(Long pезультатВставкиНовойОшибки,
+                                                                  SQLiteDatabase create_database)
+            throws ExecutionException, InterruptedException {
+        Long PезультатВставкиНовойОшибки=0l;
+        try{
+        pезультатВставкиНовойОшибки = (Long) classGrudSqlOperationsОшибки.
+                new InsertData(context).insertdata(classGrudSqlOperationsОшибки.concurrentHashMapНабор,
+                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций,
+                new PUBLIC_CONTENT(context).МенеджерПотоков,
+                create_database);
+        Log.d(this.getClass().getName(), " date " + new Date().toGMTString().toString() + " PезультатВставкиНовойОшибки " + pезультатВставкиНовойОшибки);
+        if (create_database.inTransaction()) {
+            create_database.endTransaction();
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        System.err.println("  Ошибка в самом классе записи ошибок нет КОНТЕКСТА Class_Generation_Errors");
+        Log.e(context.getClass().getName(), "Ошибка в самом классе создание ОШИБКИ (записи новой ошибки) ERROR  inse ERROR" + e
+                + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+    }
+
+    private void методЗаписьОшибкиОбынуюТаблицуErrorDSU1(Long pезультатВставкиНовойОшибки, SQLiteDatabase create_database_error) throws ExecutionException, InterruptedException {
+        try{
+        Long PезультатВставкиНовойОшибки=0l;
+        // TODO: 21.12.2022  главная запись ощибки в табелицу ErrorDSU1
+        pезультатВставкиНовойОшибки = (Long) classGrudSqlOperationsОшибки.
+                new InsertData(context).insertdata(classGrudSqlOperationsОшибки.concurrentHashMapНабор,
+                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций,
+                new PUBLIC_CONTENT(context).МенеджерПотоков,
+                create_database_error);
+        Log.d(this.getClass().getName(), " date " + new Date().toGMTString().toString() + " PезультатВставкиНовойОшибки " + pезультатВставкиНовойОшибки);
+            if (create_database_error.inTransaction()) {
+                create_database_error.endTransaction();
+            }
+    } catch (Exception e) {
+        e.printStackTrace();
+        System.err.println("  Ошибка в самом классе записи ошибок нет КОНТЕКСТА Class_Generation_Errors");
+        Log.e(context.getClass().getName(), "Ошибка в самом классе создание ОШИБКИ (записи новой ошибки) ERROR  inse ERROR" + e
+                + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
     }
 
     // TODO: 20.12.2022  дополнительный клас Заппси ОШИБКИВ ФАЙЛ

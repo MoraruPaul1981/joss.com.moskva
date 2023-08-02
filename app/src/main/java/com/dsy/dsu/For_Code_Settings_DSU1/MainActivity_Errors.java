@@ -191,14 +191,14 @@ public class MainActivity_Errors extends AppCompatActivity  {
                     int СтолбикКтоСделалОшибку = Курсор_СамиДанные_Error.getInt(6);
                     //конец  получение полей из таблицы соотвертвующего типа данных
                     //вставляем в билде
-                    БуерДляОшибок.append(" #---------Ошибки ПО Табельный Учёт--------------#" + "\n" + "\n" +
-                            "   " + Курсор_СамиДанные_Error.getColumnName(0).toUpperCase() + "  : " + Столбик_ID_Table_ErrorDSU1 + "\n" + "\n" +
-                            "   " + Курсор_СамиДанные_Error.getColumnName(1).toLowerCase() + "  : " + Столбик_Error.toLowerCase() + "\n" + "\n" +
-                            "   " + Курсор_СамиДанные_Error.getColumnName(2).toLowerCase() + "  : " + Столбик_Klass.toLowerCase() + "\n" + "\n" +
-                            "   " + Курсор_СамиДанные_Error.getColumnName(3).toLowerCase() + "  : " + Столбик_Metod.toLowerCase() + "\n" + "\n" +
-                            "   " + Курсор_СамиДанные_Error.getColumnName(4).toLowerCase() + "  : " + LineError_LineError + "\n" + "\n" +
-                            "   " + Курсор_СамиДанные_Error.getColumnName(5).toLowerCase() + "  : " + LineError_Data_Operazii_E + "\n" + "\n" +
-                            "   " + Курсор_СамиДанные_Error.getColumnName(6).toLowerCase() + "  : " + СтолбикКтоСделалОшибку + "\n" + "\n" +
+                    БуерДляОшибок.append(" #---------Ошибки ПО Союз-Автодор--------------#" + "\n" + "\n" +
+                            "   " + Курсор_СамиДанные_Error.getColumnName(0).toUpperCase()+ "\n" + "\n" + "  : " + Столбик_ID_Table_ErrorDSU1 + "\n" + "\n" +
+                            "   " + Курсор_СамиДанные_Error.getColumnName(1).toLowerCase()+ "\n" + "\n" + "  : " + Столбик_Error.toLowerCase() + "\n" + "\n" +
+                            "   " + Курсор_СамиДанные_Error.getColumnName(2).toLowerCase() + "\n" + "\n"+ "  : " + Столбик_Klass.toLowerCase() + "\n" + "\n" +
+                            "   " + Курсор_СамиДанные_Error.getColumnName(3).toLowerCase() + "\n" + "\n"+ "  : " + Столбик_Metod.toLowerCase() + "\n" + "\n" +
+                            "   " + Курсор_СамиДанные_Error.getColumnName(4).toLowerCase()+ "\n" + "\n" + "  : " + LineError_LineError + "\n" + "\n" +
+                            "   " + Курсор_СамиДанные_Error.getColumnName(5).toLowerCase() + "\n" + "\n"+ "  : " + LineError_Data_Operazii_E + "\n" + "\n" +
+                            "   " + Курсор_СамиДанные_Error.getColumnName(6).toLowerCase()+ "\n" + "\n" + "  : " + СтолбикКтоСделалОшибку + "\n" + "\n" +
                             "   " + ИнфоТелефон + "  : " + "  Инфо. телефона " + "\n" + "\n" +
                             "   " + Build.BRAND.toUpperCase() + "  : " + " Имя " + "\n" + "\n" +
                             Build.VERSION.SDK_INT+ "  : " + " API ("+Build.VERSION.RELEASE+ ")"+ "\n" + "\n" +
