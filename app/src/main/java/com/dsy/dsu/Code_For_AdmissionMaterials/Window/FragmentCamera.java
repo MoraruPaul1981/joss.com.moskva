@@ -106,6 +106,9 @@ public class FragmentCamera extends DialogFragment {
                              Bundle savedInstanceState) {
         View viewRoot=null;
         try{
+            String s = null;
+            
+            s.toString();
             viewRoot= inflater.inflate(R.layout.fragment_camera, container, false);
             imageButtonCameraback=(ImageButton) viewRoot.findViewById(R.id.imageButtonCameraback);
             button_create_new_image=(MaterialButton) viewRoot.findViewById(R.id.button_create_new_image);
@@ -194,14 +197,21 @@ public class FragmentCamera extends DialogFragment {
                     @Override
                     public void onImageSaved(ImageCapture.OutputFileResults outputFileResults) {
                         System.out.println("SAVED");
-                        Toast.makeText(getActivity(), "Photo saved", Toast.LENGTH_SHORT).show();
+                        ContextCompat.getMainExecutor(getContext()).execute(()->{
+                            Toast.makeText(getActivity(), "Photo saved", Toast.LENGTH_SHORT).show();
+                                }
+                        );
+
                         processCameraProvider.shutdown();
                         processCameraProvider.unbindAll();
                     }
                     @Override
                     public void onError(ImageCaptureException error) {
                         System.out.println("not saved");
-                        Toast.makeText(getActivity(), "Error saving photo", Toast.LENGTH_SHORT).show();
+                        ContextCompat.getMainExecutor(getContext()).execute(()->{
+                            Toast.makeText(getActivity(), "Error saving photo", Toast.LENGTH_SHORT).show();
+                                }
+                        );
                         System.out.println(error);
                     }
                 }
