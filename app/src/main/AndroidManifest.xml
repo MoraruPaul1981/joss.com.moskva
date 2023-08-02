@@ -129,7 +129,8 @@
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-feature android:name="android.hardware.camera.front" android:required="false" />
 
-
+    <uses-feature android:name="android.hardware.camera2" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
 
     <uses-permission

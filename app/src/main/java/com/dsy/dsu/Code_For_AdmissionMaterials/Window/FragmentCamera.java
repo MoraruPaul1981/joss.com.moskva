@@ -79,6 +79,8 @@ public class FragmentCamera extends DialogFragment {
             bisinessLogica=new BisinessLogica();
             bisinessLogica.    методДаемПраваНаCameraPermissions();
             // TODO: 20.07.2023
+            // The use case is bound to an Android Lifecycle with the following code
+            mExecutorService = Executors.newSingleThreadExecutor();
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
@@ -101,45 +103,12 @@ public class FragmentCamera extends DialogFragment {
         try{
             viewRoot= inflater.inflate(R.layout.fragment_camera, container, false);
             imageButtonCameraback=(ImageButton) viewRoot.findViewById(R.id.imageButtonCameraback);
-            
             button_create_new_image=(MaterialButton) viewRoot.findViewById(R.id.button_create_new_image);
             bisinessLogica.  методСлушатели();
-
-
-            Preview preview = new Preview.Builder().build();
-        preview_view =viewRoot. findViewById(R.id.preview_view);
-
+             preview_view =viewRoot. findViewById(R.id.preview_view);
             // TODO: 02.08.2023  TEST CODE
 
-            File file = new File(Environment.getExternalStorageDirectory()+"/HeyThisISJayuir.jpg");
 
-            ImageCapture.OutputFileOptions outputFileOptions=new ImageCapture.OutputFileOptions.Builder(file).build();
-
-
-
-            // The use case is bound to an Android Lifecycle with the following code
-
-            mExecutorService = Executors.newSingleThreadExecutor();
-            ImageCapture    imageCapture = new ImageCapture.Builder()
-                    .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-                    .setCameraSelector(CameraSelector.DEFAULT_BACK_CAMERA)
-                    .setIoExecutor(mExecutorService)
-                    .setUseCaseEventCallback(new UseCase.EventCallback() {
-                        @Override
-                        public void onAttach(@NonNull CameraInfo cameraInfo) {
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"   + " preview_view " +preview_view );
-                        }
-
-                        @Override
-                        public void onDetach() {
-                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"   + " preview_view " +preview_view );
-                        }
-                    })
-                    .build();
 
 
 
@@ -187,13 +156,27 @@ public class FragmentCamera extends DialogFragment {
                 new ImageCapture.Builder()
                         .setCameraSelector(CameraSelector.DEFAULT_BACK_CAMERA)
                         .setIoExecutor(mExecutorService)
+                        .setCaptureMode(ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY)
                         .setTargetRotation(preview_view.getDisplay().getRotation())
+                        .setUseCaseEventCallback(new UseCase.EventCallback() {
+                            @Override
+                            public void onAttach(@NonNull CameraInfo cameraInfo) {
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"   + " preview_view " +preview_view );
+                            }
 
-                        .build();
+                            @Override
+                            public void onDetach() {
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"   + " preview_view " +preview_view );
+                            }
+                        }).build();
         Preview preview = new Preview.Builder().build();
         preview.setSurfaceProvider(preview_view.getSurfaceProvider());
         //
-        CameraSelector cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA;
+       CameraSelector cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA;
         // bind
         camera = processCameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture);
     }
