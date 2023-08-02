@@ -92,8 +92,13 @@
     <uses-permission android:name="android.intent.action.ACCESS_BACKGROUND_LOCATION " />
 
     <!-- //todo camera last change-->
-    <uses-permission android:name="android.permission.CAMERA" />>
-    <uses-permission android:name="android.permission.CAMERA2" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERAX" />
+    <uses-permission android:name="com.mycoolcam.USE_COOL_CAMERA" />
+    <uses-permission android:name="android.media.action.IMAGE_CAPTURE" />
+
+
 
 
     <uses-feature android:name="android.hardware.location.gps" />
@@ -124,8 +129,7 @@
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-feature android:name="android.hardware.camera.front" android:required="false" />
 
-    <uses-feature android:name="android.hardware.camera2" android:required="false" />
-    <uses-feature android:name="android.hardware.camera2.front" android:required="false" />
+
 
 
     <uses-permission
@@ -186,13 +190,11 @@
                 <action android:name="android.intent.action.ACTION_EXTERNAL_APPLICATIONS_AVAILABLE" />
                 <action android:name="android.chrome.permission.CHILD_SERVICE" />
 
+
+                <!-- //todo camera last change-->
                 <action android:name="android.permission.CAMERA" />
-                <action android:name="android.permission.CAMERA2" />
                 <action android:name="android.permission.RECORD_AUDIO" />
                 <action android:name="android.permission.CAMERAX" />
-                <action android:name="android.permission.CAMERA2" />
-                <action android:name="android.permission.CAMERA2" />
-                <action android:name="android.hardware.camera.any" />
                 <action android:name="com.mycoolcam.USE_COOL_CAMERA" />
                 <action android:name="android.media.action.IMAGE_CAPTURE" />
             </intent-filter>
@@ -342,8 +344,14 @@
                 <action android:name="android.permission.WAKE_LOCK" />
 
                 <!-- //todo camera last change-->
-                <action android:name="android.permission.CAMERA" />>
-                <action android:name="android.permission.CAMERA2" />
+
+                <!-- //todo camera last change-->
+                <action android:name="android.permission.CAMERA" />
+                <action android:name="android.permission.RECORD_AUDIO" />
+                <action android:name="android.permission.CAMERAX" />
+                <action android:name="com.mycoolcam.USE_COOL_CAMERA" />
+                <action android:name="android.media.action.IMAGE_CAPTURE" />
+
 
             </intent-filter>
         </activity>
@@ -1365,8 +1373,14 @@
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
                 <action android:name="android.permission.WAKE_LOCK" />
                 <!-- //todo camera last change-->
-                <action android:name="android.permission.CAMERA" />>
-                <action android:name="android.permission.CAMERA2" />
+
+                <!-- //todo camera last change-->
+                <action android:name="android.permission.CAMERA" />
+                <action android:name="android.permission.RECORD_AUDIO" />
+                <action android:name="android.permission.CAMERAX" />
+                <action android:name="com.mycoolcam.USE_COOL_CAMERA" />
+                <action android:name="android.media.action.IMAGE_CAPTURE" />
+
 
 
             </intent-filter>
