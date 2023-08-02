@@ -3,9 +3,13 @@ package com.dsy.dsu.Code_For_AdmissionMaterials.Window;
 
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -46,6 +50,8 @@ import com.google.android.material.button.MaterialButton;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.io.File;
+import java.io.InputStream;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -65,6 +71,10 @@ public class FragmentCamera extends DialogFragment {
     private     PreviewView preview_view;
     private  ExecutorService mExecutorService;
     private Camera camera;
+    private   File fileNewPhotoFromCameraX;
+    private  Bitmap bitmapNewPhotoFromCameraX;
+
+   private CameraXInterface cameraXInterface;
 
     public FragmentCamera() {
         // Required empty public constructor
@@ -136,7 +146,11 @@ public class FragmentCamera extends DialogFragment {
     public void onResume() {
         super.onResume();
         try{
+            // TODO: 02.08.2023  
            bisinessLogica. методНастройкиФИнаногоВидаКамеры();
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + " bitmapNewPhotoFromCameraX " +bitmapNewPhotoFromCameraX );
         } catch (Exception e) {
         e.printStackTrace();
         Log.e(getContext().getClass().getName(),
@@ -154,9 +168,21 @@ public class FragmentCamera extends DialogFragment {
 
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
+        try{
+        cameraXInterface.onFinishEditDialogNewPhotos(bitmapNewPhotoFromCameraX);
+
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + " bitmapNewPhotoFromCameraX " +bitmapNewPhotoFromCameraX );
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(getContext().getClass().getName(),
+                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
 
     }
 
@@ -338,18 +364,29 @@ public class FragmentCamera extends DialogFragment {
 
             private void takePicture() {
                 try{
-                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator+"NewCAmera.jpg");
+                    String NameNewPhotosCamerax="SousAvtoDorPhoto"+new Date().toLocaleString()+".jpg";
+                 fileNewPhotoFromCameraX = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator+NameNewPhotosCamerax);
                 ImageCapture.OutputFileOptions outputFileOptions =
-                        new ImageCapture.OutputFileOptions.Builder(file).build();
+                        new ImageCapture.OutputFileOptions.Builder(fileNewPhotoFromCameraX).build();
                 imageCapture.takePicture(outputFileOptions, mExecutorService,
                         new ImageCapture.OnImageSavedCallback() {
                             @Override
                             public void onImageSaved(ImageCapture.OutputFileResults outputFileResults) {
                                 System.out.println("SAVED");
-                                ContextCompat.getMainExecutor(getContext()).execute(()->{
-                                    try{
-                                            Toast.makeText(getActivity(), "Photo saved"+outputFileResults.getSavedUri().toString().length(), Toast.LENGTH_SHORT).show();
+                                try{
+                                    Uri uri = outputFileResults.getSavedUri();
+                                    if(uri != null) {
+                                        ContentResolver cr =getActivity(). getContentResolver();
+                                        InputStream inputStream = cr.openInputStream(uri);
+                                         bitmapNewPhotoFromCameraX = BitmapFactory.decodeStream(inputStream);
+                                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " uri " +uri + " bitmapNewPhotoFromCameraX " +bitmapNewPhotoFromCameraX );
+                                    }
 
+                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " uri " +uri );
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     Log.e(getContext().getClass().getName(),
@@ -359,20 +396,29 @@ public class FragmentCamera extends DialogFragment {
                                             this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                                 }
-                                        }
-                                );
+
 
                             }
                             @Override
                             public void onError(ImageCaptureException error) {
-                                System.out.println("not saved");
-                                processCameraProvider.shutdown();
-                                processCameraProvider.unbindAll();
-                                ContextCompat.getMainExecutor(getContext()).execute(()->{
-                                            Toast.makeText(getActivity(), "Error saving photo", Toast.LENGTH_SHORT).show();
-                                        }
-                                );
-                                System.out.println(error);
+                                // TODO: 02.08.2023
+                                    ContextCompat.getMainExecutor(getActivity()).execute(()->{
+                                        try{
+                                        processCameraProvider.shutdown();
+                                        processCameraProvider.unbindAll();
+                                            Log.d(this.getClass().getName(),"\n" + " error " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " error " +error );
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        Log.e(getContext().getClass().getName(),
+                                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                        new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                    }
+                                    });
                             }
                         }
                 );
