@@ -167,6 +167,8 @@ public class FragmentCamera extends DialogFragment {
 
                             @Override
                             public void onDetach() {
+                                processCameraProvider.shutdown();
+                                processCameraProvider.unbindAll();
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"   + " preview_view " +preview_view );
@@ -184,16 +186,17 @@ public class FragmentCamera extends DialogFragment {
 
 
     private void takePicture() {
-        File file = new File(Environment.getExternalStorageDirectory()+"/NewCAmera.jpg");
-        Executor cameraExecutor = ContextCompat.getMainExecutor(getActivity());
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator+"NewCAmera.jpg");
         ImageCapture.OutputFileOptions outputFileOptions =
                 new ImageCapture.OutputFileOptions.Builder(file).build();
-        imageCapture.takePicture(outputFileOptions, cameraExecutor,
+        imageCapture.takePicture(outputFileOptions, mExecutorService,
                 new ImageCapture.OnImageSavedCallback() {
                     @Override
                     public void onImageSaved(ImageCapture.OutputFileResults outputFileResults) {
                         System.out.println("SAVED");
                         Toast.makeText(getActivity(), "Photo saved", Toast.LENGTH_SHORT).show();
+                        processCameraProvider.shutdown();
+                        processCameraProvider.unbindAll();
                     }
                     @Override
                     public void onError(ImageCaptureException error) {
