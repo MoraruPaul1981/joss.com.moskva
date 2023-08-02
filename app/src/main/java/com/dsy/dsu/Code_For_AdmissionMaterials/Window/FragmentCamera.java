@@ -65,6 +65,7 @@ public class FragmentCamera extends DialogFragment {
     private     PreviewView preview_view;
     private  ExecutorService mExecutorService;
     private Camera camera;
+
     public FragmentCamera() {
         // Required empty public constructor
     }
@@ -83,8 +84,7 @@ public class FragmentCamera extends DialogFragment {
         try{
             bisinessLogica=new BisinessLogica();
             bisinessLogica.    методДаемПраваНаCameraPermissions();
-            // TODO: 20.07.2023
-            // The use case is bound to an Android Lifecycle with the following code
+            // TODO: 02.08.2023
             mExecutorService = Executors.newSingleThreadExecutor();
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -113,29 +113,7 @@ public class FragmentCamera extends DialogFragment {
              preview_view =viewRoot. findViewById(R.id.preview_view);
             // TODO: 02.08.2023  TEST CODE
 
-            ListenableFuture<ProcessCameraProvider> providerListenableFuture = ProcessCameraProvider.getInstance(getContext());
-
-            providerListenableFuture.addListener(()->{
-                try {
-                    while (!providerListenableFuture.isDone());
-                    processCameraProvider = providerListenableFuture.get();
-                    // TODO: 02.08.2023
-                    bindPreview();
-                    // TODO: 20.07.2023
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(getContext().getClass().getName(),
-                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
-
-            }, ContextCompat.getMainExecutor(getContext()));
+            bisinessLogica.new ClassCameraX().    методЗапускаКамерыX();
 
             // TODO: 20.07.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -152,80 +130,6 @@ public class FragmentCamera extends DialogFragment {
     }
         return viewRoot;
     }
-
-    private void bindPreview() {
-        imageCapture =
-                new ImageCapture.Builder()
-                        .setCameraSelector(CameraSelector.DEFAULT_BACK_CAMERA)
-                        .setIoExecutor(mExecutorService)
-                        .setCaptureMode(ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY)
-                        .setTargetRotation(preview_view.getDisplay().getRotation())
-                        .setUseCaseEventCallback(new UseCase.EventCallback() {
-                            @Override
-                            public void onAttach(@NonNull CameraInfo cameraInfo) {
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"   + " preview_view " +preview_view );
-                            }
-
-                            @Override
-                            public void onDetach() {
-                                processCameraProvider.shutdown();
-                                processCameraProvider.unbindAll();
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"   + " preview_view " +preview_view );
-                            }
-                        }).build();
-        Preview preview = new Preview.Builder().build();
-        preview.setSurfaceProvider(preview_view.getSurfaceProvider());
-        //
-       CameraSelector cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA;
-        // bind
-        camera = processCameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture);
-    }
-
-
-
-
-    private void takePicture() {
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator+"NewCAmera.jpg");
-        ImageCapture.OutputFileOptions outputFileOptions =
-                new ImageCapture.OutputFileOptions.Builder(file).build();
-        imageCapture.takePicture(outputFileOptions, mExecutorService,
-                new ImageCapture.OnImageSavedCallback() {
-                    @Override
-                    public void onImageSaved(ImageCapture.OutputFileResults outputFileResults) {
-                        System.out.println("SAVED");
-                        ContextCompat.getMainExecutor(getContext()).execute(()->{
-                            Toast.makeText(getActivity(), "Photo saved", Toast.LENGTH_SHORT).show();
-                                }
-                        );
-
-                        processCameraProvider.shutdown();
-                        processCameraProvider.unbindAll();
-                    }
-                    @Override
-                    public void onError(ImageCaptureException error) {
-                        System.out.println("not saved");
-                        ContextCompat.getMainExecutor(getContext()).execute(()->{
-                            Toast.makeText(getActivity(), "Error saving photo", Toast.LENGTH_SHORT).show();
-                                }
-                        );
-                        System.out.println(error);
-                    }
-                }
-        );
-
-    }
-
-
-
-
-
-
-
-
 
 
     @Override
@@ -288,7 +192,7 @@ public class FragmentCamera extends DialogFragment {
                 @Override
                 public void onClick(View v) {
                     // TODO: 20.07.2023
-                    takePicture();
+                    bisinessLogica.new ClassCameraX().  takePicture();
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
@@ -354,6 +258,139 @@ public class FragmentCamera extends DialogFragment {
                 Log.d("checkCameraPermissions", "Success YRA  Camera Permissions  !!!!");
             }
         }
+
+
+        // TODO: 02.08.2023  class start CAMERAX
+        class ClassCameraX {
+            private void методЗапускаКамерыX() {
+                ListenableFuture<ProcessCameraProvider> providerListenableFuture = ProcessCameraProvider.getInstance(getContext());
+
+                providerListenableFuture.addListener(()->{
+                    try {
+                        while (!providerListenableFuture.isDone());
+                        processCameraProvider = providerListenableFuture.get();
+                        // TODO: 02.08.2023
+                        bindPreview();
+                        // TODO: 20.07.2023
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(getContext().getClass().getName(),
+                                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
+
+                }, ContextCompat.getMainExecutor(getContext()));
+            }
+
+            private void bindPreview() {
+                try{
+                imageCapture =
+                        new ImageCapture.Builder()
+                                .setCameraSelector(CameraSelector.DEFAULT_BACK_CAMERA)
+                                .setIoExecutor(mExecutorService)
+                                .setCaptureMode(ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY)
+                                .setTargetRotation(getActivity().getWindowManager().getDefaultDisplay().getRotation())
+                                .setUseCaseEventCallback(new UseCase.EventCallback() {
+                                    @Override
+                                    public void onAttach(@NonNull CameraInfo cameraInfo) {
+                                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"   + " preview_view " +preview_view );
+                                    }
+
+                                    @Override
+                                    public void onDetach() {
+                                        processCameraProvider.shutdown();
+                                        processCameraProvider.unbindAll();
+                                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"   + " preview_view " +preview_view );
+                                    }
+                                }).build();
+                Preview preview = new Preview.Builder().build();
+                preview.setSurfaceProvider(preview_view.getSurfaceProvider());
+                //
+                CameraSelector cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA;
+                // bind
+                camera = processCameraProvider.bindToLifecycle(getActivity(), cameraSelector, preview, imageCapture);
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+            }
+
+
+
+
+            private void takePicture() {
+                try{
+                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator+"NewCAmera.jpg");
+                ImageCapture.OutputFileOptions outputFileOptions =
+                        new ImageCapture.OutputFileOptions.Builder(file).build();
+                imageCapture.takePicture(outputFileOptions, mExecutorService,
+                        new ImageCapture.OnImageSavedCallback() {
+                            @Override
+                            public void onImageSaved(ImageCapture.OutputFileResults outputFileResults) {
+                                System.out.println("SAVED");
+                                ContextCompat.getMainExecutor(getContext()).execute(()->{
+                                    try{
+                                            Toast.makeText(getActivity(), "Photo saved"+outputFileResults.getSavedUri().toString().length(), Toast.LENGTH_SHORT).show();
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Log.e(getContext().getClass().getName(),
+                                            "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                    new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                            this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                }
+                                        }
+                                );
+
+                            }
+                            @Override
+                            public void onError(ImageCaptureException error) {
+                                System.out.println("not saved");
+                                processCameraProvider.shutdown();
+                                processCameraProvider.unbindAll();
+                                ContextCompat.getMainExecutor(getContext()).execute(()->{
+                                            Toast.makeText(getActivity(), "Error saving photo", Toast.LENGTH_SHORT).show();
+                                        }
+                                );
+                                System.out.println(error);
+                            }
+                        }
+                );
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+            }
+        }//todo END CLASS ClassCameraX
+
 
     }//TODO END BisinessLogica //TODO END BisinessLogica //TODO END BisinessLogica //TODO END BisinessLogica //TODO END BisinessLogica
 
