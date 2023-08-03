@@ -145,16 +145,23 @@ public class MainActivity_Face_App extends AppCompatActivity {
             МЕтодУстанавливаемРазрешенияДляОновлениеПО();
             // TODO: 06.04.2022
             МетодДляСлушательБоковойПанелиFaceApp();
-            // TODO: 16.11.2022  ПОСЛЕ УСТАНОВКИ РАБОТАЕТ ОДИН РАЗ ПРИ СТАРТЕ ЗАРУСК ОБЩЕГО WORK MANAGER
-            new Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal(getApplicationContext()).МетодЗапускаетОБЩУЮСинхронизацию();
+
             // TODO: 03.08.2023 слушатели
             МетодFaceApp_СлушательПриНажатииНаКнопки();
+
             // TODO: 27.03.2023 Бинлинг Обновление ПО
             МетодБиндингаОбновлениеПО();
-            // TODO: 03.08.2023 Регистарица Устройства на FireBase 
+            // TODO: 16.11.2022  ПОСЛЕ УСТАНОВКИ РАБОТАЕТ ОДИН РАЗ ПРИ СТАРТЕ ЗАРУСК ОБЩЕГО WORK MANAGER
+            new Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal(getApplicationContext()).МетодЗапускаетОБЩУЮСинхронизацию();
+            // TODO: 03.08.2023 Регистарица Устройства на FireBase
             МетодРегистрацииУстройсвоНАFirebaseAndOneSignal();
             // TODO: 06.04.2023  ТЕСТ КОД для 1С
             ///методДляТетсирования1С();
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

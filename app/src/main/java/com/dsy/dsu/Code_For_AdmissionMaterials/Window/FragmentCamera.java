@@ -22,6 +22,7 @@ import androidx.camera.core.CameraX;
 import androidx.camera.core.CameraXConfig;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
+import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
 import androidx.camera.core.UseCase;
 import androidx.camera.core.impl.CameraConfig;
@@ -430,11 +431,44 @@ try{
 
             private void takePicture() {
                 try{
-                    String NameNewPhotosCamerax="SousAvtoDorPhoto112.jpg";
-            File     fileNewPhotoFromCameraX = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator+NameNewPhotosCamerax);
+          /*          String NameNewPhotosCamerax="SousAvtoDorPhoto112.jpg";
+          *//*  File     fileNewPhotoFromCameraX = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator+NameNewPhotosCamerax);
                 ImageCapture.OutputFileOptions outputFileOptions =
-                        new ImageCapture.OutputFileOptions.Builder(fileNewPhotoFromCameraX).build();
-                imageCapture.takePicture(outputFileOptions, mExecutorService,
+                        new ImageCapture.OutputFileOptions.Builder(fileNewPhotoFromCameraX).build();*/
+                    imageCapture.takePicture(mExecutorService, new ImageCapture.OnImageCapturedCallback() {
+                        @Override
+                        public void onCaptureSuccess(@NonNull ImageProxy image) {
+                            super.onCaptureSuccess(image);
+                            try {
+                                Toast toast=       Toast.makeText(getContext(),
+                                        " Успешно Создание  Фото  !!!", Toast.LENGTH_LONG);
+                                toast.show();
+
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"   );
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(getContext().getClass().getName(),
+                                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
+
+                    }
+
+                        @Override
+                        public void onError(@NonNull ImageCaptureException exception) {
+                            super.onError(exception);
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
+                        }
+                    });
+
+     /*           imageCapture.takePicture(outputFileOptions, mExecutorService,
                         new ImageCapture.OnImageSavedCallback() {
                             @Override
                             public void onImageSaved(ImageCapture.OutputFileResults outputFileResults) {
@@ -507,7 +541,7 @@ try{
                                     });
                             }
                         }
-                );
+                );*/
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );

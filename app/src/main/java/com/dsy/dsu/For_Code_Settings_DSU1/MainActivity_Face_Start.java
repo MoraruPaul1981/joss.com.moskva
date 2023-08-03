@@ -116,8 +116,6 @@ try{
     методДаемПраваНаCameraPermissions(this);
 
     // TODO: 24.02.2022
-/*String s=null;
-s.toString();*/
     new Class_Generation_Errors(getApplicationContext()).методСозданиеФайлаДляОшибки();
 
     Log.d(this.getClass().getName(),  " date " +new Date().toGMTString().toString() + " preferences " +preferences.getAll());

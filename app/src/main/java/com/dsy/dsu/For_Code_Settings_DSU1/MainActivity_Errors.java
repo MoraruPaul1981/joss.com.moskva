@@ -99,7 +99,7 @@ public class MainActivity_Errors extends AppCompatActivity  {
                     + " " + Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
             File pachs =  Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             //Get the text file
-           file = new File(pachs,"Sous-Avtodor-ERRORS.txt");
+           file = new File(pachs,"SousAvtoFile"+File.separator+"Sous-Avtodor-ERRORS.txt");
 
                 BufferedReader newBufferedReader =  Files.newBufferedReader(Paths.get(file.getPath()), StandardCharsets.UTF_16);
 
