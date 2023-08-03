@@ -9,6 +9,8 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.hardware.HardwareBuffer;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -51,9 +53,13 @@ import com.dsy.dsu.Business_logic_Only_Class.Class_Generation_Errors;
 import com.dsy.dsu.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.google.mlkit.common.MlKitException;
+import com.google.mlkit.vision.common.InputImage;
+import com.google.mlkit.vision.common.internal.ImageConvertUtils;
 
 import java.io.File;
 import java.io.InputStream;
+import java.nio.Buffer;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
@@ -447,12 +453,21 @@ try{
                      getActivity().runOnUiThread(new Runnable() {
                          @Override
                          public void run() {
-                             getDialog().dismiss();
-                             getDialog().cancel();
+                             if (image!=null) {
+                                 getDialog().dismiss();
+                                 getDialog().cancel();
 
-                             Toast toast=       Toast.makeText(getContext(),
-                                     " Успешно Создание  Фото  !!!", Toast.LENGTH_LONG);
-                             toast.show();
+                                 Image  image1 =    image.getImage() ;
+
+
+
+                                 Toast toast=       Toast.makeText(getContext(),
+                                         " ОЧЕНЬ Успешно Создание  Фото  !!!", Toast.LENGTH_LONG);
+                                 toast.show();
+                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"   );
+                             }
                          }
                      });
 

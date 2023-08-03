@@ -38,6 +38,7 @@ import com.dsy.dsu.Business_logic_Only_Class.Jakson.GeneratorJSONSerializer;
 import com.dsy.dsu.Business_logic_Only_Class.PUBLIC_CONTENT;
 import com.dsy.dsu.Business_logic_Only_Class.SubClassUpVersionDATA;
 import com.dsy.dsu.Business_logic_Only_Class.SubClass_Connection_BroadcastReceiver_Sous_Asyns_Glassfish;
+import com.dsy.dsu.Code_For_Firebase_AndOneSignal_Здесь_КодДЛяСлужбыУведомленияFirebase.Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -95,6 +96,7 @@ public class Service_For_Remote_Async_Binary extends IntentService {
     private                 Integer ПозицияТекущейТаблицы=1;
 
 private  Message message;
+    private  String КлючДляFirebaseNotification = "2a1819db-60c8-4ca3-a752-1b6cd9cadfa1";
     public Service_For_Remote_Async_Binary() {
         super("Service_For_Remote_Async");
     }
@@ -317,7 +319,25 @@ try{
     }
 
 
-
+    // TODO: 26.12.2021  метод регистации на СЕРВЕРА ONESIGNAL
+    @BinderThread
+    public void МетодРегистрацииУстройсвоНАFirebaseAndOneSignal() {
+        try{
+            Integer  ПубличныйIDДляФрагмента=   new Class_Generations_PUBLIC_CURRENT_ID()
+                    .ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
+            new Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal(getApplicationContext()).
+                    МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal(КлючДляFirebaseNotification,ПубличныйIDДляФрагмента);
+            //TODO ФУТУРЕ ЗАВЕРШАЕМ
+            Log.d(this.getClass().getName(), "  МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal(КлючДляFirebaseNotification,0); " +
+                    " РезультатЗаписиНовогоIDОтСервреаOneSignal  " );
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
 
 
 

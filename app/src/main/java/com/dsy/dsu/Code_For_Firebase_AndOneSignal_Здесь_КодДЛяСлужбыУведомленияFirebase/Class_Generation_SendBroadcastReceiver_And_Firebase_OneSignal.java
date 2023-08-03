@@ -190,9 +190,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
         PUBLIC_CONTENT public_contentменеджер=new PUBLIC_CONTENT(context);
         try {
             // TODO: 23.12.2021 ЧЕТЫРЕ ПОПЫТКИ ПОДКЛЮЧЕНИЕ В СЕВРЕРУONESIGNAL
-            Observable.interval(20,TimeUnit.SECONDS)
-                  .delay(3,TimeUnit.SECONDS)
-                  .take(10,TimeUnit.MINUTES)
+            Observable.interval(5,TimeUnit.SECONDS)
+                  .take(2,TimeUnit.MINUTES)
                   .subscribeOn(Schedulers.single())
                   .doOnNext(new Consumer<Long>() {
                       @Override
