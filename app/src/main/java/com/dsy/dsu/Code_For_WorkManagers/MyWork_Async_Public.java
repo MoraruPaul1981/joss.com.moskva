@@ -30,10 +30,9 @@ import javax.inject.Inject;
 
 public class MyWork_Async_Public extends Worker {
     private String ИмяСлужбыСинхронизации="WorkManager Synchronizasiy_Data";
-    @Inject
-    private Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal class_generation_sendBroadcastReceiver_and_firebase_oneSignal;
+
     private      ServiceConnection serviceConnection;
-    private  String КлючДляFirebaseNotification = "2a1819db-60c8-4ca3-a752-1b6cd9cadfa1";
+
 
     private Service_For_Remote_Async_Binary.LocalBinderAsync localBinderAsync;
     // TODO: 28.09.2022
@@ -109,24 +108,7 @@ public class MyWork_Async_Public extends Worker {
     }
     }
 
-    // TODO: 26.12.2021  метод регистации на СЕРВЕРА ONESIGNAL
-    private void МетодРегистрацииУстройсвоНАFirebaseAndOneSignal() {
-        try{
-            Integer  ПубличныйIDДляФрагмента=   new Class_Generations_PUBLIC_CURRENT_ID()
-                    .ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
-            new Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal(getApplicationContext()).
-                    МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal(КлючДляFirebaseNotification,ПубличныйIDДляФрагмента);
-            //TODO ФУТУРЕ ЗАВЕРШАЕМ
-            Log.d(this.getClass().getName(), "  МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal(КлючДляFirebaseNotification,0); " +
-                    " РезультатЗаписиНовогоIDОтСервреаOneSignal  " );
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
+
 
 
 
@@ -142,14 +124,12 @@ public class MyWork_Async_Public extends Worker {
     public Result doWork() {
         Integer     ФинальныйРезультатAsyncBackgroud = 0;
         Data   myDataОтветОбщейСлужбы=null;
+        // TODO: 25.03.2023  ждем биндинга с службой синхронизации
+        Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal     class_generation_sendBroadcastReceiver_and_firebase_oneSignal =null;
         try {
-            //while (  serviceConnection!=null);
             // TODO: 25.03.2023  ждем биндинга с службой синхронизации
-            class_generation_sendBroadcastReceiver_and_firebase_oneSignal =
+               class_generation_sendBroadcastReceiver_and_firebase_oneSignal =
                     new Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal(getApplicationContext());
-// TODO: 10.12.2022  РЕГЕСТИРУЕМСЯ НА ONESIGNAL FIREBASE
-            МетодРегистрацииУстройсвоНАFirebaseAndOneSignal();
-
             // TODO: 11.01.2022  СВОЕЙ ТЕКУЩИЙ ID ПОЛЬЗОВАТЕЛЯ
             Integer ПубличныйIDДляОбщейСинхрониазции =
                     new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
@@ -180,6 +160,11 @@ public class MyWork_Async_Public extends Worker {
                 serviceConnection=null;
             }
 
+
+            if (ФинальныйРезультатAsyncBackgroud>0 ) {
+                МетодЗапускаПослеУспешнойСтинхронизацииOneSignalИУведомления(class_generation_sendBroadcastReceiver_and_firebase_oneSignal);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -190,8 +175,6 @@ public class MyWork_Async_Public extends Worker {
                     + e.toString());
         }
         if (ФинальныйРезультатAsyncBackgroud>0 ) {
-
-            МетодЗапускаПослеУспешнойСтинхронизацииOneSignalИУведомления();
 
             return Result.success(myDataОтветОбщейСлужбы);
        /*    if (WorkManagerОБЩИЙ.getRunAttemptCount()<2) {
@@ -317,7 +300,8 @@ public class MyWork_Async_Public extends Worker {
     }
 
 
-    private void МетодЗапускаПослеУспешнойСтинхронизацииOneSignalИУведомления() {
+    private void МетодЗапускаПослеУспешнойСтинхронизацииOneSignalИУведомления(@NonNull Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal
+                                                                                      class_generation_sendBroadcastReceiver_and_firebase_oneSignal ) {
         try{
          Integer   ПубличныйIDДляФрагмента = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
             Log.i(getApplicationContext().getClass().getName(), "ЗАПУСК   зПубличныйIDДляФрагмента "+"\n"

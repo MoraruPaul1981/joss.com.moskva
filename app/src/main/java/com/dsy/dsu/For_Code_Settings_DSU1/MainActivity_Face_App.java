@@ -89,7 +89,7 @@ public class MainActivity_Face_App extends AppCompatActivity {
     private ServiceUpdatePoОбновлениеПО.localBinderОбновлениеПО localBinderОбновлениеПО;//TODO новаЯ
 
     private    ServiceConnection connectionОбновлениеПО;
-
+    private  String КлючДляFirebaseNotification = "2a1819db-60c8-4ca3-a752-1b6cd9cadfa1";
     // TODO: 03.11.2022 FaceApp
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,11 +146,13 @@ public class MainActivity_Face_App extends AppCompatActivity {
             // TODO: 06.04.2022
             МетодДляСлушательБоковойПанелиFaceApp();
             // TODO: 16.11.2022  ПОСЛЕ УСТАНОВКИ РАБОТАЕТ ОДИН РАЗ ПРИ СТАРТЕ ЗАРУСК ОБЩЕГО WORK MANAGER
-          //  new Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal(getApplicationContext()).МетодЗапускаетОБЩУЮСинхронизацию();
+            new Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal(getApplicationContext()).МетодЗапускаетОБЩУЮСинхронизацию();
             // TODO: 03.08.2023 слушатели
             МетодFaceApp_СлушательПриНажатииНаКнопки();
             // TODO: 27.03.2023 Бинлинг Обновление ПО
             МетодБиндингаОбновлениеПО();
+            // TODO: 03.08.2023 Регистарица Устройства на FireBase 
+            МетодРегистрацииУстройсвоНАFirebaseAndOneSignal();
             // TODO: 06.04.2023  ТЕСТ КОД для 1С
             ///методДляТетсирования1С();
         } catch (Exception e) {
@@ -971,6 +973,25 @@ public class MainActivity_Face_App extends AppCompatActivity {
 
     }
     }
+    // TODO: 26.12.2021  метод регистации на СЕРВЕРА ONESIGNAL
+    private void МетодРегистрацииУстройсвоНАFirebaseAndOneSignal() {
+        try{
+            Integer  ПубличныйIDДляФрагмента=   new Class_Generations_PUBLIC_CURRENT_ID()
+                    .ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
+            new Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal(getApplicationContext()).
+                    МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal(КлючДляFirebaseNotification,ПубличныйIDДляФрагмента);
+            //TODO ФУТУРЕ ЗАВЕРШАЕМ
+            Log.d(this.getClass().getName(), "  МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal(КлючДляFirebaseNotification,0); " +
+                    " РезультатЗаписиНовогоIDОтСервреаOneSignal  " );
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
+
 }
 
 

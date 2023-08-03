@@ -200,10 +200,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                           Log.w(context.getClass().getName(), "   Iterable<?> apply МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal"  +"\n"+
                                   " Thread.currentThread().getName() " +Thread.currentThread().getName());
                           // TODO: 05.01.2022
-                          МетодПолучениеКлючаОтСервераONESIGNALЕслиОЕстьКОнечноВНЕСКОЛЬКОПОпыток(КлючДляFirebaseNotification);
+                          НовыйКлючОтOneSingnal=     МетодПолучениеКлючаОтСервераONESIGNALЕслиОЕстьКОнечноВНЕСКОЛЬКОПОпыток(КлючДляFirebaseNotification);
                           // TODO: 06.01.2022
                           Log.w(context.getClass().getName(), "  onNext МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal"  +"\n"+
-                                  " Thread.currentThread().getName() " +Thread.currentThread().getName()+"\n");
+                                  " Thread.currentThread().getName() " +Thread.currentThread().getName()+"\n"  + " FIREBASE  НовыйКлючОтOneSingnal " +НовыйКлючОтOneSingnal );
                       }
                   })
                   .doOnError(new Consumer<Throwable>() {
@@ -439,7 +439,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
     // TODO: 24.12.2021  МетодПолучение Статуса Ключа От Сервера OneSignal
 
-    private void МетодПолучениеКлючаОтСервераONESIGNALЕслиОЕстьКОнечноВНЕСКОЛЬКОПОпыток(@NonNull String КлючДляFirebaseNotification) {
+    private String МетодПолучениеКлючаОтСервераONESIGNALЕслиОЕстьКОнечноВНЕСКОЛЬКОПОпыток(@NonNull String КлючДляFirebaseNotification) {
         try{
             //TODO srating......  oneSignal
             Log.d(this.getClass().getName(), "  КЛЮЧ ДЛЯ  OneSignal........  2a1819db-60c8-4ca3-a752-1b6cd9cadfa1 "+ КлючДляFirebaseNotification +"\n");
@@ -483,6 +483,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
         // TODO: 11.05.2021 запись ошибок
 
     }
+        return НовыйКлючОтOneSingnal;
     }
 
 

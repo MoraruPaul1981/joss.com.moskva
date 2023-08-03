@@ -153,7 +153,7 @@ public class FragmentMaretialNew extends Fragment implements CameraXInterface{
 
     private CameraXInterface cameraXInterface;
 
-    private  Bitmap bitmapNewPhotoFromCameraX;
+    public   Bitmap bitmapNewPhotoFromCameraX;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -72,12 +72,10 @@ public class FragmentCamera extends DialogFragment  implements CameraXInterface 
     private ImageCapture imageCapture;
     private     PreviewView preview_view;
     private  ExecutorService mExecutorService;
-    private Camera camera;
-    private   File fileNewPhotoFromCameraX;
-    private  Bitmap bitmapNewPhotoFromCameraX;
 
    private CameraXInterface cameraXInterface;
-
+   private       Camera camera;
+    public   Bitmap bitmapNewPhotoFromCameraX;
     public FragmentCamera() {
         // Required empty public constructor
     }
@@ -193,9 +191,6 @@ public class FragmentCamera extends DialogFragment  implements CameraXInterface 
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
         try{
-            bitmapNewPhotoFromCameraX= (Bitmap) new Object();
-        cameraXInterface.onSEtFinishEditDialogNewPhotos(bitmapNewPhotoFromCameraX);
-
             if(processCameraProvider!=null){
                 processCameraProvider.shutdown();
                 processCameraProvider.unbindAll();
@@ -280,8 +275,6 @@ try{
                 public void onClick(View v) {
                     // TODO: 20.07.2023
                     try {
-                    Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
-                    v2.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
                     bisinessLogica.new ClassCameraX().  takePicture();
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -417,7 +410,7 @@ try{
                 //
                 CameraSelector cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA;
                 // bind
-                camera = processCameraProvider.bindToLifecycle(getActivity(), cameraSelector, preview, imageCapture);
+              camera = processCameraProvider.bindToLifecycle(getActivity(), cameraSelector, preview, imageCapture);
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
@@ -437,8 +430,8 @@ try{
 
             private void takePicture() {
                 try{
-                    String NameNewPhotosCamerax="SousAvtoDorPhoto"+new Date().toLocaleString()+".jpg";
-                 fileNewPhotoFromCameraX = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator+NameNewPhotosCamerax);
+                    String NameNewPhotosCamerax="SousAvtoDorPhoto.jpg";
+            File     fileNewPhotoFromCameraX = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator+NameNewPhotosCamerax);
                 ImageCapture.OutputFileOptions outputFileOptions =
                         new ImageCapture.OutputFileOptions.Builder(fileNewPhotoFromCameraX).build();
                 imageCapture.takePicture(outputFileOptions, mExecutorService,
@@ -449,9 +442,23 @@ try{
                                 try{
                                     Uri uri = outputFileResults.getSavedUri();
                                     if(uri != null) {
+                                        Toast toast=       Toast.makeText(getContext(),
+                                                " Успешно Создание  Фото  !!!", Toast.LENGTH_LONG);
+                                        toast.show();
+
+                                        Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                                        v2.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+
+
                                         ContentResolver cr =getActivity(). getContentResolver();
                                         InputStream inputStream = cr.openInputStream(uri);
                                          bitmapNewPhotoFromCameraX = BitmapFactory.decodeStream(inputStream);
+                                  // TODO: 03.08.2023 Получену Фотографию отправляем а Activirty Куда Нужгно
+                                        if (bitmapNewPhotoFromCameraX!=null) {
+                                            cameraXInterface.onSEtFinishEditDialogNewPhotos(bitmapNewPhotoFromCameraX);
+                                        }
+
+
                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " uri " +uri + " bitmapNewPhotoFromCameraX " +bitmapNewPhotoFromCameraX );
@@ -477,8 +484,14 @@ try{
                                 // TODO: 02.08.2023
                                     ContextCompat.getMainExecutor(getActivity()).execute(()->{
                                         try{
-                                        processCameraProvider.shutdown();
+                                            Toast toast=       Toast.makeText(getContext(),
+                                                    "Фото не создано !!!", Toast.LENGTH_LONG);
+                                            toast.show();
+                                                    processCameraProvider.shutdown();
                                         processCameraProvider.unbindAll();
+                                            // TODO: 03.08.2023
+                                        getDialog().dismiss();
+                                        getDialog().cancel();
                                             Log.d(this.getClass().getName(),"\n" + " error " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " error " +error );
