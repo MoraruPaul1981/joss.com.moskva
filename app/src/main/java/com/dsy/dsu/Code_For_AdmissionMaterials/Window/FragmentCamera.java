@@ -276,6 +276,10 @@ try{
                 public void onClick(View v) {
                     // TODO: 20.07.2023
                     try {
+
+                        Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                        v2.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
+
                     bisinessLogica.new ClassCameraX().  takePicture();
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -440,9 +444,18 @@ try{
                         public void onCaptureSuccess(@NonNull ImageProxy image) {
                             super.onCaptureSuccess(image);
                             try {
-                                Toast toast=       Toast.makeText(getContext(),
-                                        " Успешно Создание  Фото  !!!", Toast.LENGTH_LONG);
-                                toast.show();
+                     getActivity().runOnUiThread(new Runnable() {
+                         @Override
+                         public void run() {
+                             getDialog().dismiss();
+                             getDialog().cancel();
+
+                             Toast toast=       Toast.makeText(getContext(),
+                                     " Успешно Создание  Фото  !!!", Toast.LENGTH_LONG);
+                             toast.show();
+                         }
+                     });
+
 
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
