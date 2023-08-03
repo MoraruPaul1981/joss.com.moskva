@@ -42,13 +42,14 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity_AdmissionMaterials extends AppCompatActivity {
+public class MainActivity_AdmissionMaterials extends AppCompatActivity implements CameraXInterface {
     private Activity activity;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private Fragment fragment_ДляПолучениеМатериалов;
     private LinearLayout activity_admissionmaterias_face ;
 
+    public   Bitmap bitmapNewPhotoFromCameraX;
     public static final int CAMERA_PERSSION_CODE=1;
 
     @Override
@@ -130,6 +131,37 @@ public class MainActivity_AdmissionMaterials extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode==CAMERA_PERSSION_CODE){
             Log.d("checkCameraPermissions", "requestCode "+requestCode +  " permissions "+  permissions  +" grantResults " +grantResults);
+        }
+    }
+
+    @Override
+    public Bitmap onGetFinishEditDialogNewPhotos(@NonNull Bitmap bitmap) {
+        try{
+
+            Log.d(this.getClass().getName(), "   bitmapNewPhotoFromCameraX " + bitmapNewPhotoFromCameraX);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        return  bitmap;
+    }
+
+    @Override
+    public void onSEtFinishEditDialogNewPhotos(@NonNull Bitmap bitmap) {
+        try{
+        bitmapNewPhotoFromCameraX=bitmap;
+            Log.d(this.getClass().getName(), "   bitmapNewPhotoFromCameraX " + bitmapNewPhotoFromCameraX);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
 

@@ -146,7 +146,8 @@ public class MainActivity_Face_App extends AppCompatActivity {
             // TODO: 06.04.2022
             МетодДляСлушательБоковойПанелиFaceApp();
             // TODO: 16.11.2022  ПОСЛЕ УСТАНОВКИ РАБОТАЕТ ОДИН РАЗ ПРИ СТАРТЕ ЗАРУСК ОБЩЕГО WORK MANAGER
-            new Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal(getApplicationContext()).МетодЗапускаетОБЩУЮСинхронизацию();
+          //  new Class_Generation_SendBroadcastReceiver_And_Firebase_OneSignal(getApplicationContext()).МетодЗапускаетОБЩУЮСинхронизацию();
+            // TODO: 03.08.2023 слушатели
             МетодFaceApp_СлушательПриНажатииНаКнопки();
             // TODO: 27.03.2023 Бинлинг Обновление ПО
             МетодБиндингаОбновлениеПО();

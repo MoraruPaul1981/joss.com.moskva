@@ -35,6 +35,8 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 
 import android.os.Environment;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -60,7 +62,7 @@ import java.util.concurrent.Executors;
 import javax.annotation.Nullable;
 
 
-public class FragmentCamera extends DialogFragment {
+public class FragmentCamera extends DialogFragment  implements CameraXInterface {
 
     private ImageButton imageButtonCameraback;
     private MaterialButton button_create_new_image;
@@ -165,10 +167,34 @@ public class FragmentCamera extends DialogFragment {
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            if (context instanceof CameraXInterface) {
+                cameraXInterface = (CameraXInterface) context;
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " cameraXInterface " +cameraXInterface);
+            }
+            // TODO: 19.10.2022  слушатель после получение даннных в Курсом
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(getContext().getClass().getName(),
+                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
+
+
+    @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
         try{
-        cameraXInterface.onFinishEditDialogNewPhotos(bitmapNewPhotoFromCameraX);
+            bitmapNewPhotoFromCameraX= (Bitmap) new Object();
+        cameraXInterface.onSEtFinishEditDialogNewPhotos(bitmapNewPhotoFromCameraX);
 
             if(processCameraProvider!=null){
                 processCameraProvider.shutdown();
@@ -197,6 +223,31 @@ public class FragmentCamera extends DialogFragment {
 
     }
 
+    @Override
+    public Bitmap onGetFinishEditDialogNewPhotos(@NonNull Bitmap bitmap) {
+        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
+        return bitmap;
+    }
+
+    @Override
+    public void onSEtFinishEditDialogNewPhotos(@NonNull Bitmap bitmap) {
+        try{
+            bitmap=  bitmapNewPhotoFromCameraX;
+        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + " bitmapNewPhotoFromCameraX " +bitmapNewPhotoFromCameraX );
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(getContext().getClass().getName(),
+                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+    }
 
 
     // TODO: 01.08.2023 Бизнес Логика Камера BisinessLogica           // TODO: 01.08.2023 Бизнес Логика Камера BisinessLogica           // TODO: 01.08.2023 Бизнес Логика Камера BisinessLogica
@@ -208,23 +259,42 @@ public class FragmentCamera extends DialogFragment {
                 @Override
                 public void onClick(View v) {
                     // TODO: 20.07.2023
-
+try{
                     getDialog().dismiss();
                     getDialog().cancel();
 
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
                 }
             });
             button_create_new_image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // TODO: 20.07.2023
+                    try {
+                    Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                    v2.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
                     bisinessLogica.new ClassCameraX().  takePicture();
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
+
+                      //  getActivity().b
+                    } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                            Thread.currentThread().getStackTrace()[2].getLineNumber());
+                }
                 }
             });
         }

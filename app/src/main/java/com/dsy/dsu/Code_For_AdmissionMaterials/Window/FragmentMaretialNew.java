@@ -153,6 +153,8 @@ public class FragmentMaretialNew extends Fragment implements CameraXInterface{
 
     private CameraXInterface cameraXInterface;
 
+    private  Bitmap bitmapNewPhotoFromCameraX;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -290,6 +292,28 @@ public class FragmentMaretialNew extends Fragment implements CameraXInterface{
 
     }
 
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            if (context instanceof CameraXInterface) {
+                cameraXInterface = (CameraXInterface) context;
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " cameraXInterface " +cameraXInterface);
+            }
+            // TODO: 19.10.2022  слушатель после получение даннных в Курсом
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(getContext().getClass().getName(),
+                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
 
 
 
@@ -649,8 +673,24 @@ void методCallsBackNewImageFromCameraActivityResult(){
     }
 
     @Override
-    public void onFinishEditDialogNewPhotos(@NonNull Bitmap bitmap) {
-        Log.d(this.getClass().getName(), "   bitmap " + bitmap);
+    public Bitmap onGetFinishEditDialogNewPhotos(@NonNull Bitmap bitmap) {
+        try{
+        Log.d(this.getClass().getName(), "   bitmapNewPhotoFromCameraX   " + bitmapNewPhotoFromCameraX  + " CursorДляЦФО " +CursorДляЦФО);
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(getContext().getClass().getName(),
+                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+        return bitmap;
+    }
+
+    @Override
+    public void onSEtFinishEditDialogNewPhotos(@NonNull Bitmap bitmap) {
+
     }
 
 
@@ -2678,8 +2718,8 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                         try{
                             if (v!=null) {
                                 //MaterialTextView materialTextViewЭлементСписка=(MaterialTextView) view;
-                            /*    SubClassUploadImageFromSDCars imageFromSDCars=new SubClassUploadImageFromSDCars();
-                                imageFromSDCars.методSimpleCreateImage();*/
+                                SubClassUploadImageFromSDCars imageFromSDCars=new SubClassUploadImageFromSDCars();
+                                imageFromSDCars.методSimpleCreateImage();
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+

@@ -5,5 +5,7 @@ import android.graphics.Bitmap;
 import org.jetbrains.annotations.NotNull;
 
 public interface CameraXInterface {
-    void onFinishEditDialogNewPhotos(@NotNull Bitmap bitmap) ;
+    Bitmap onGetFinishEditDialogNewPhotos(@NotNull Bitmap bitmap) ;
+
+    void onSEtFinishEditDialogNewPhotos(@NotNull Bitmap bitmap) ;
 }
