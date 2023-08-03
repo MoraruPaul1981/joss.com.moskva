@@ -146,7 +146,8 @@ public class FragmentCamera extends DialogFragment {
     public void onResume() {
         super.onResume();
         try{
-            // TODO: 02.08.2023  
+            // TODO: 02.08.2023
+          //  getTargetFragment().onAttach(getContext());
            bisinessLogica. методНастройкиФИнаногоВидаКамеры();
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -163,14 +164,16 @@ public class FragmentCamera extends DialogFragment {
 
     }
 
-
-
-
+    @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
         try{
         cameraXInterface.onFinishEditDialogNewPhotos(bitmapNewPhotoFromCameraX);
 
+            if(processCameraProvider!=null){
+                processCameraProvider.shutdown();
+                processCameraProvider.unbindAll();
+            }
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  + " bitmapNewPhotoFromCameraX " +bitmapNewPhotoFromCameraX );

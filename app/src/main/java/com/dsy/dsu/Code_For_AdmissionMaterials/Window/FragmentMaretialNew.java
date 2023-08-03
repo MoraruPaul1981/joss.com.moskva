@@ -105,7 +105,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.ToDoubleBiFunction;
 
 
-public class FragmentMaretialNew extends Fragment {
+public class FragmentMaretialNew extends Fragment implements CameraXInterface{
     private RecyclerView recyclerView;
     private BottomNavigationView bottomNavigationView;
     private BottomNavigationItemView bottomNavigationItemViewвыход;
@@ -149,9 +149,9 @@ public class FragmentMaretialNew extends Fragment {
     private ActivityResultLauncher<Uri> getSomeActivityResultLauncherCreateNewImage;
 
     private  ServiceCameraTake.LocalBinderCamera localBinderCamera;
-
     private  Uri cam_uri;
 
+    private CameraXInterface cameraXInterface;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -289,6 +289,8 @@ public class FragmentMaretialNew extends Fragment {
         }
 
     }
+
+
 
 
     // TODO: 26.07.2023 CallsBAckUpImageNew
@@ -644,6 +646,11 @@ void методCallsBackNewImageFromCameraActivityResult(){
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
         return  cursor;
+    }
+
+    @Override
+    public void onFinishEditDialogNewPhotos(@NonNull Bitmap bitmap) {
+        Log.d(this.getClass().getName(), "   bitmap " + bitmap);
     }
 
 
@@ -2671,8 +2678,8 @@ private  void методСозданиеNewImage(@NonNull MyViewHolder holder){
                         try{
                             if (v!=null) {
                                 //MaterialTextView materialTextViewЭлементСписка=(MaterialTextView) view;
-                                SubClassUploadImageFromSDCars imageFromSDCars=new SubClassUploadImageFromSDCars();
-                                imageFromSDCars.методSimpleCreateImage();
+                            /*    SubClassUploadImageFromSDCars imageFromSDCars=new SubClassUploadImageFromSDCars();
+                                imageFromSDCars.методSimpleCreateImage();*/
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
