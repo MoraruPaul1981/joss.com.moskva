@@ -104,7 +104,7 @@ public class MainActivity_Tabels_Users_And_Passwords extends AppCompatActivity {
 
             // TODO: 02.08.2023 БИЗНЕС КОД
 
-            new Class_Generation_Errors(getApplicationContext()).методСозданиеФайлаДляОшибки();
+
 
         new  Class_Clears_Tables(getApplicationContext(),null, null). методОчисткаТаблицыSuccesslogin("successlogin",getApplicationContext());
 

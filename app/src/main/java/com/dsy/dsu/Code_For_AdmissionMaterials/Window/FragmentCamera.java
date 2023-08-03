@@ -430,7 +430,7 @@ try{
 
             private void takePicture() {
                 try{
-                    String NameNewPhotosCamerax="SousAvtoDorPhoto.jpg";
+                    String NameNewPhotosCamerax="SousAvtoDorPhoto112.jpg";
             File     fileNewPhotoFromCameraX = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator+NameNewPhotosCamerax);
                 ImageCapture.OutputFileOptions outputFileOptions =
                         new ImageCapture.OutputFileOptions.Builder(fileNewPhotoFromCameraX).build();

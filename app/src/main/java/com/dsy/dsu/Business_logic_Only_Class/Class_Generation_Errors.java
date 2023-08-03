@@ -36,7 +36,9 @@ public class Class_Generation_Errors {
     private Integer ПубличноеIDПолученныйИзСервлетаДляUUID = 0;
 
     private CREATE_DATABASE_Error create_database_error;
-    private String fileName = "Sous-Avtodor-ERRORS.txt";
+    private String fileName = "Sous-Avtodor-ERROR.txt";
+
+    private   String patchFileName="SousAvtoFile";
 
     public Class_Generation_Errors(@NonNull Context context) {
         this.context = context;
@@ -209,8 +211,17 @@ public class Class_Generation_Errors {
 
  public void методСозданиеФайлаДляОшибки() {
         try {
-            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), File.separator + fileName);
-            if (!file.exists()) {
+
+            File  patchFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), File.separator + patchFileName);
+
+            if (!patchFile.exists()) {
+                patchFile.mkdirs();
+                patchFile.setReadable(true);
+                patchFile.setWritable(true);
+            }
+
+            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), File.separator+patchFileName +File.separator+ fileName);
+            if (!file.isFile()) {
                 file.createNewFile();
                 file.setReadable(true);
                 file.setWritable(true);
@@ -227,7 +238,8 @@ public class Class_Generation_Errors {
     }
     public void методСозданиеИЗАписиОшибки(@NonNull  ArrayList<String> linkedBlockingQueueВскеОшибкиДляЗаписи) {
         try {
-            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), File.separator + fileName);
+            //File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), File.separator + fileName);
+            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), File.separator+patchFileName +File.separator+ fileName);
             if (file.isFile()) {
                 BufferedWriter bufferedWriter =  Files.newBufferedWriter(Paths.get(file.getPath()), StandardCharsets.UTF_16,
                         StandardOpenOption.CREATE, StandardOpenOption.APPEND);

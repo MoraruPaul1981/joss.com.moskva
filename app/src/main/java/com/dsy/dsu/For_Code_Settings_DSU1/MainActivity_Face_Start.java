@@ -1,5 +1,6 @@
 package com.dsy.dsu.For_Code_Settings_DSU1;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -20,6 +21,8 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.dsy.dsu.AllDatabases.CREATE_DATABASE;
 import com.dsy.dsu.AllDatabases.Error.CREATE_DATABASE_Error;
@@ -76,7 +79,7 @@ public class MainActivity_Face_Start extends AppCompatActivity {
     private  Boolean СтатусРаботыСервера =false;
     private SharedPreferences preferences;
     Integer ФиналПолучаемРазницуМеждуДатами =0;
-
+    public static final int CAMERA_PERSSION_CODE=1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,7 +112,14 @@ try{
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         ((Activity) КонтекстДляFAceapp) .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
     preferences = getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
+
+    методДаемПраваНаCameraPermissions(this);
+
     // TODO: 24.02.2022
+/*String s=null;
+s.toString();*/
+    new Class_Generation_Errors(getApplicationContext()).методСозданиеФайлаДляОшибки();
+
     Log.d(this.getClass().getName(),  " date " +new Date().toGMTString().toString() + " preferences " +preferences.getAll());
     // TODO: 07.12.2022  test code
 } catch (Exception e) {
@@ -121,9 +131,6 @@ try{
             this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
             Thread.currentThread().getStackTrace()[2].getLineNumber());
 
-    // TODO: 11.05.2021 запись ошибок
-    new Class_Send_Generation_Errors(getApplicationContext(), e.toString(), activity);
-    Log.d(this.getClass().getName(), "  Полусаем Ошибку e.toString() " + e.toString());
     }
 
     }
@@ -166,6 +173,8 @@ try{
     }
     }
 
+
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -187,6 +196,41 @@ try{
 
 
 
+    public  void методДаемПраваНаCameraPermissions(Activity activity){
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            Log.d("checkCameraPermissions", "No Camera Permissions");
+            //////////////////////TODO SERVICE
+            String[] permissions = new String[]{
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.RECORD_AUDIO,
+                    android.Manifest.permission.INTERNET,
+                    android.Manifest.permission.READ_PHONE_STATE,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    android.Manifest.permission.VIBRATE,
+                    android.Manifest.permission.RECORD_AUDIO,
+                    android.Manifest.permission.RECORD_AUDIO,
+                    android.Manifest.permission.REQUEST_INSTALL_PACKAGES,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    android.Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
+                    android.Manifest.permission.MANAGE_EXTERNAL_STORAGE,
+                    android.Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+                    android.Manifest.permission.ACCESS_NETWORK_STATE,
+                    android.Manifest.permission.ACCESS_MEDIA_LOCATION,
+                    android.Manifest.permission.INSTALL_PACKAGES,
+                    android.Manifest.permission.WRITE_SETTINGS,
+                    android. Manifest.permission.WRITE_SECURE_SETTINGS
+            };
+            ActivityCompat.requestPermissions(activity, permissions,CAMERA_PERSSION_CODE );
+
+
+        }else{
+            // Permission is not granted
+            Log.d("checkCameraPermissions", "Success YRA  Camera Permissions  !!!!");
+        }
+    }
 
 
 
