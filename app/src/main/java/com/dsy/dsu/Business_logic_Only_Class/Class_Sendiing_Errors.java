@@ -56,6 +56,8 @@ public class Class_Sendiing_Errors {
             МетодУдаланиеОшибок(create_database_error,activity);
 
 
+
+
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");

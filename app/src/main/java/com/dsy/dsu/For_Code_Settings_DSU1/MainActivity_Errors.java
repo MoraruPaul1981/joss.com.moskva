@@ -33,6 +33,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -41,6 +42,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -52,6 +54,7 @@ public class MainActivity_Errors extends AppCompatActivity  {
 
     private  MaterialButton materialButtonОтправкаОшибокНАпочту;
     private SharedPreferences preferences;
+    private        File file;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -96,7 +99,7 @@ public class MainActivity_Errors extends AppCompatActivity  {
                     + " " + Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
             File pachs =  Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             //Get the text file
-            File file = new File(pachs,"Sous-Avtodor-ERRORS.txt");
+           file = new File(pachs,"Sous-Avtodor-ERRORS.txt");
 
                 BufferedReader newBufferedReader =  Files.newBufferedReader(Paths.get(file.getPath()), StandardCharsets.UTF_16);
 
@@ -123,7 +126,7 @@ public class MainActivity_Errors extends AppCompatActivity  {
             newBufferedReader.close();
 
 
-            if (БуерДляОшибок.toString().length()>0) {
+            if (БуерДляОшибок.toString().length()>5) {
                 МетодЗапускаAsynTaskОшибки(  БуерДляОшибок,ИнфоТелефон);
             }else {
                 методКогдаНетОшибок(БуерДляОшибок, ИнфоТелефон);
@@ -183,6 +186,7 @@ public class MainActivity_Errors extends AppCompatActivity  {
                         }
                         // TODO: 06.07.2023  оправлем ощибку на почту 
                         МетодПосылаемОшибкиНапочту(БуерДляОшибок);
+                        Log.d(this.getClass().getName(), " Ошибок Нет. время :   " +new Date().toString());
                     }
                 });
 
@@ -277,6 +281,12 @@ public class MainActivity_Errors extends AppCompatActivity  {
             // TODO: 06.07.2023  оправлем ощибки на ПРЧТУ
                 new Class_Sendiing_Errors(this)
                         .МетодПослываемОшибкиАдминистаторуПо(БуерДляОшибок,this,ПубличноеID,create_database_error.getССылкаНаСозданнуюБазу() );
+
+
+            методЧистимФайлсОшибкамиErrors();
+
+            Log.d(this.getClass().getName(), " Ошибок Нет. время :   " +new Date().toString());
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
@@ -286,5 +296,13 @@ public class MainActivity_Errors extends AppCompatActivity  {
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
 
+    }
+
+    private void методЧистимФайлсОшибкамиErrors() {
+        try (BufferedWriter bf = Files.newBufferedWriter(Paths.get(file.getPath()),
+                StandardOpenOption.TRUNCATE_EXISTING)) {
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }//конец public class MainActivity_Recyclerview extends AppCompatActivity {
