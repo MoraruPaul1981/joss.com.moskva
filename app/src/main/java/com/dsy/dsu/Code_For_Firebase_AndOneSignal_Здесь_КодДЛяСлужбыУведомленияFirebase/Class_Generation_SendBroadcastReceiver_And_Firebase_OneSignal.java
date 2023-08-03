@@ -192,7 +192,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
             // TODO: 23.12.2021 ЧЕТЫРЕ ПОПЫТКИ ПОДКЛЮЧЕНИЕ В СЕВРЕРУONESIGNAL
             Observable.interval(5,TimeUnit.SECONDS)
                   .take(2,TimeUnit.MINUTES)
-                  .subscribeOn(Schedulers.single())
+                  .subscribeOn(Schedulers.newThread())
                   .doOnNext(new Consumer<Long>() {
                       @Override
                       public void accept(Long aLong) throws Throwable {
@@ -291,8 +291,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                         concurrentHashMapНабор.put("УсловиеСортировки","date_update DESC");
                 class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
                         concurrentHashMapНабор.put("УсловиеЛимита","1");
-                SQLiteCursor Курсор_ПолучаемУжеЗагруженныйЕслиНОНЕИзменильсяIDДляONESIGNAL= null;
-                Курсор_ПолучаемУжеЗагруженныйЕслиНОНЕИзменильсяIDДляONESIGNAL = (SQLiteCursor)  class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
+                // TODO: 03.08.2023  вытаскиваем Данные
+                SQLiteCursor     Курсор_ПолучаемУжеЗагруженныйЕслиНОНЕИзменильсяIDДляONESIGNAL = (SQLiteCursor)  class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
                         new GetData(context).getdata(class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
                         concurrentHashMapНабор,public_contentменеджер.МенеджерПотоков,new CREATE_DATABASE(context).getССылкаНаСозданнуюБазу());
                 Log.d(this.getClass().getName(), "Курсор_ПолучаемУжеЗагруженныйЕслиНОНЕИзменильсяIDДляONESIGNAL "+Курсор_ПолучаемУжеЗагруженныйЕслиНОНЕИзменильсяIDДляONESIGNAL  );
@@ -301,6 +301,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                     Курсор_ПолучаемУжеЗагруженныйЕслиНОНЕИзменильсяIDДляONESIGNAL.moveToFirst();
                     СтарыйКлючОтOneSignal=Курсор_ПолучаемУжеЗагруженныйЕслиНОНЕИзменильсяIDДляONESIGNAL.getString(0);
                 }
+
+                Курсор_ПолучаемУжеЗагруженныйЕслиНОНЕИзменильсяIDДляONESIGNAL.close();
+                
                 Log.d(this.getClass().getName(), "СтарыйКлючОтOneSignal "+
                         СтарыйКлючОтOneSignal +"\n"+
                         " НовыйКлючОтOneSingnal " + НовыйКлючОтOneSingnal);
@@ -350,8 +353,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                             ""+ НовыйКлючОтOneSingnal);
                 }
                 // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
-                SQLiteCursor Курсор_ПолучаемВесьСписокIDДляONESIGNAL= null;
-                Курсор_ПолучаемВесьСписокIDДляONESIGNAL = (SQLiteCursor)  class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
+                SQLiteCursor     Курсор_ПолучаемВесьСписокIDДляONESIGNAL = (SQLiteCursor)  class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
                         new GetData(context).getdata(class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
                                 concurrentHashMapНабор,public_contentменеджер.МенеджерПотоков,
                         new CREATE_DATABASE(context).getССылкаНаСозданнуюБазу());
@@ -415,6 +417,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                                     Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
                     }while (Курсор_ПолучаемВесьСписокIDДляONESIGNAL.moveToNext());
+                    // TODO: 03.08.2023  clear
+                    Курсор_ПолучаемВесьСписокIDДляONESIGNAL.close();
                 }
             }else{
                 Log.e(this.getClass().getName(), " НЕТ ПОКА КЛЮЧА  ДЛЯ , СКОРЕЙ ВСЕГО ПЕРВЫЫЙ ЩЗАПУСК ПОСЛЕ КЛЮЧ ДЛЯ  OneSignal..."+"\n"+
@@ -470,7 +474,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
                     "   OneSignal.getTriggerValueForKey(\"GT_PLAYER_ID\"); " + OneSignal.getTriggerValueForKey("GT_PLAYER_ID")+
                     "     OneSignal.getTriggers() " +   OneSignal.getTriggers()+"\n"+
-                    "    НовыйКлючОтOneSingnal ОТ СЕРВЕРА ::: " + НовыйКлючОтOneSingnal + "\n"+ПушТОкен);
+                    "    НовыйКлючОтOneSingnal ОТ СЕРВЕРА ::: " + НовыйКлючОтOneSingnal + "\n"+ПушТОкен+" BREMY  " +new Date().toLocaleString());
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -584,7 +588,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                        .onErrorComplete(new Predicate<Throwable>() {
                            @Override
                            public boolean test(Throwable throwable) throws Throwable {
-                               Log.e(this.getClass().getName(), " onErrorComplete РезультатПосикаИУдалениявТаблицах_settings_tabels  throwable "+ throwable.getMessage().toString());
+                               Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                       + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                               new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(throwable.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                       Thread.currentThread().getStackTrace()[2].getLineNumber());
                                return false;
                            }
                        })
@@ -594,26 +601,12 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                                Log.w(this.getClass().getName(), " doOnComplete РезультатПосикаИУдалениявТаблицах_settings_tabels  throwable ");
                            }
                        });
-               observableСменыКлючаИЗАписьНовогоOneSinglal.subscribe(System.out::println);
+               observableСменыКлючаИЗАписьНовогоOneSinglal.blockingSubscribe(System.out::println);
                Object ФиналРЕзультатКЛЮЧНОВЫЙ  =observableСменыКлючаИЗАписьНовогоOneSinglal.blockingStream().findAny().get();
-                   // TODO: 04.11.2021   ЗАПУСКАЕМ СИНХРОНИАХЦИИЮ  через ONESIGNAL
-                       Log.d(this.getClass().getName(), "РезультатCallsBackСинхрониазцииЧата РезультатРаботы  РезультатРаботыПереписываютНовгоКлюча "
-                               +ФиналРЕзультатКЛЮЧНОВЫЙ.toString()+ " ФиналРЕзультатКЛЮЧНОВЫЙ " +ФиналРЕзультатКЛЮЧНОВЫЙ);
-               if (ФиналРЕзультатКЛЮЧНОВЫЙ!=null) {
-                   Bundle bundleДляПЕредачи=new Bundle();
-                   bundleДляПЕредачи.putInt("IDПубличныйНеМойАСкемБылаПереписака", ПубличныйIDДляОдноразовойСинхрониазции);
-                   bundleДляПЕредачи.putBoolean("StatusOneWokManagers", true);
-                   Intent  intentЗапускОднорworkanager=new Intent();
-                   intentЗапускОднорworkanager.putExtras(bundleДляПЕредачи);
-                   // TODO: 02.08.2022
-                   new Class_Generator_One_WORK_MANAGER(context).МетодОдноразовыйЗапускВоерМенеджера(context,intentЗапускОднорworkanager);
-                   // TODO: 26.06.2022
-                   Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                           " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                           " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                           + " ФиналРЕзультатКЛЮЧНОВЫЙ "+ФиналРЕзультатКЛЮЧНОВЫЙ);
-               }
-                   Log.d(this.getClass().getName(), " ONESIGNAL  КЛЮЧНОВЫЙ  ФиналРЕзультатКЛЮЧНОВЫЙ !!!   "   +  ФиналРЕзультатКЛЮЧНОВЫЙ+"\n"+
+
+
+                   Log.d(this.getClass().getName(), " ONESIGNAL  КЛЮЧНОВЫЙ  ФиналРЕзультатКЛЮЧНОВЫЙ !!!   "
+                           +  ФиналРЕзультатКЛЮЧНОВЫЙ+"\n"+
                            " ONESIGNAL  КЛЮЧНОВЫЙ  ФиналРЕзультатКЛЮЧНОВЫЙ !!!   "   +  ФиналРЕзультатКЛЮЧНОВЫЙ+"\n"+
                            " ONESIGNAL  КЛЮЧНОВЫЙ  ФиналРЕзультатКЛЮЧНОВЫЙ !!!   "   +  ФиналРЕзультатКЛЮЧНОВЫЙ+"\n");
            } catch (Exception e ) {
