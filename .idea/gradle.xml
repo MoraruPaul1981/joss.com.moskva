@@ -10,11 +10,9 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/appdocuments_data" />
-            <option value="$PROJECT_DIR$/appdocuments_data_domain" />
-            <option value="$PROJECT_DIR$/appdocuments_data_domains" />
-            <option value="$PROJECT_DIR$/mylibrary" />
-            <option value="$PROJECT_DIR$/mylibrary2" />
+            <option value="$PROJECT_DIR$/appdocuments_Model" />
+            <option value="$PROJECT_DIR$/appdocuments_ModelEntry" />
+            <option value="$PROJECT_DIR$/appdocuments_Presenter" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

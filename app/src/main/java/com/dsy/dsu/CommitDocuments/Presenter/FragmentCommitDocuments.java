@@ -1,4 +1,4 @@
-package com.dsy.dsu.CommitDocuments.View.ui.fragmentcommitdocuments;
+package com.dsy.dsu.CommitDocuments.Presenter;
 
 import androidx.lifecycle.ViewModelProvider;
 
