@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/appdocuments_data" />
             <option value="$PROJECT_DIR$/appdocuments_data_domain" />
+            <option value="$PROJECT_DIR$/appdocuments_data_domains" />
             <option value="$PROJECT_DIR$/mylibrary" />
             <option value="$PROJECT_DIR$/mylibrary2" />
           </set>

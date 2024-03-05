@@ -7,3 +7,14 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 }
 
+
+
+dependencies {
+
+    //TOD TEST https://mvnrepository.com/artifact/junit/junit
+//testImplementation 'junit:junit:4.13.2'
+
+//TOD TEST https://mvnrepository.com/artifact/junit/junit
+    testImplementation 'junit:junit:4.13.2'
+
+}
