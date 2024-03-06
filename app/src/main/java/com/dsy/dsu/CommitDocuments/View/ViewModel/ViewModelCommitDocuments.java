@@ -30,10 +30,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class ViewModelCommitDocuments  extends ViewModel {
 
     // TODO: 25.12.2023
-    MutableLiveData<Bundle> mutableLiveСommitDocuments = null;
-    MutableLiveData<Bundle> mutableLiveСommitDocumentsEventBus = new MutableLiveData<>();
-    Context context;
-    Long PublicId;
+ private    MutableLiveData<Bundle> mutableLiveСommitDocumentsEventBus;
+    private Context context;
+    private  Long PublicId;
 
 
     public
@@ -77,24 +76,7 @@ public class ViewModelCommitDocuments  extends ViewModel {
     }
 
 
-    public LiveData<Bundle> livedatastartGetJsonByte() {
-        try{
-            mutableLiveСommitDocuments = new MutableLiveData<>();
-            Log.d(context.getClass().getName(),"\n"
-                    + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-        return mutableLiveСommitDocuments;
-    }
-
-    public LiveData<Bundle> livedatastartGetJsonByteEventBus() {
+    public LiveData<Bundle> getMutableLiveСommitDocumentsEventBus() {
         try{
             mutableLiveСommitDocumentsEventBus = new MutableLiveData<>();
             Log.d(context.getClass().getName(),"\n"
@@ -113,13 +95,10 @@ public class ViewModelCommitDocuments  extends ViewModel {
 
 
     // TODO: 25.12.2023  полочения данных от 1с в виде Byte
-    public  void livedatastartSetJsonByte(@NotNull String adress,
-                                          @NotNull ObjectMapper getHiltJaksonObjectMapper,
-                                          @NotNull ProgressBar prograessbar_commintingprices){
+    public  void livedataMutableLiveСommitDocuments(@NotNull String adress,
+                                          @NotNull ObjectMapper getHiltJaksonObjectMapper){
         // TODO: 25.12.2023 set
         try{
-            prograessbar_commintingprices.setVisibility(View.VISIBLE);
-
             Bundle bundleByte = new Bundle();
             Completable.fromSupplier(new Supplier<Bundle>() {
                         @Override
@@ -166,7 +145,7 @@ public class ViewModelCommitDocuments  extends ViewModel {
                     .doOnComplete(()->{
 
                         // TODO: 25.12.2023  полученый результат обнолвяем экран
-                        mutableLiveСommitDocuments.postValue(bundleByte);
+                        mutableLiveСommitDocumentsEventBus.postValue(bundleByte);
                         // TODO: 30.12.2023
                         Log.d(this.getClass().getName(),"\n"
                                 + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
