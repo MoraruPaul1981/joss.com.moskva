@@ -5,7 +5,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import com.dsy.dsu.CommitDocuments.View.ViewModel.FragmentCommitDocuments;
+
 
 /**
  * Компоненты Фрагмента Согласование Документов КЛИК

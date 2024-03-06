@@ -5,8 +5,8 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import com.dsy.dsu.CommitDocuments.View.ViewModel.ActivityCommitDocuments;
-import com.dsy.dsu.CommitDocuments.View.ViewModel.FragmentCommitDocuments;
+import com.dsy.dsu.CommitDocuments.View.Window.FragmentCommitDocuments;
+
 
 /**
  * Компоненты Фрагмента Согласование Документов
