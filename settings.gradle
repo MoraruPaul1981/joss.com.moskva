@@ -1,0 +1,5 @@
+include ':app'
+rootProject.name='DSU'
+include ':appdocuments_Model'
+include ':appdocuments_ModelEntry'
+include ':appdocuments_Presenter'
