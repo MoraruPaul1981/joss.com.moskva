@@ -85,7 +85,7 @@ public class ActivityCommitDocuments extends AppCompatActivity {
            fragmentCommitDocuments = new FragmentCommitDocuments();
            Bundle data=new Bundle();
            fragmentCommitDocuments.setArguments(data);
-           fragmentTransaction.replace(R.id.activity_commit_documents, fragmentCommitDocuments);
+           fragmentTransaction.replace(R.id.layout_commit_documents, fragmentCommitDocuments);
            fragmentTransaction.show(fragmentCommitDocuments).commitNow();
 
            Log.d(this.getClass().getName(),"\n"

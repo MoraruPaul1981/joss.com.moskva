@@ -20,7 +20,9 @@ import com.dsy.dsu.CommitingPrices.View.Window.MainActivityCommitingPrices;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.R;
 
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class FragmentCommitDocuments extends Fragment {
 
     ViewModelCommitDocuments viewModelCommitDocuments;
@@ -78,7 +80,9 @@ try{
         super.onViewCreated(view, savedInstanceState);
         try{
 
-        GetComponentsUI getComponentsUI=new GetComponentsUI(view,getActivity(),getContext(),viewModelCommitDocuments);
+
+            // TODO: 06.03.2024 запускаем класс с компонентами Activity  
+        new GetComponentsUI(view,getActivity(),getContext(),viewModelCommitDocuments);
 
 
         Log.d(this.getClass().getName(),"\n"
