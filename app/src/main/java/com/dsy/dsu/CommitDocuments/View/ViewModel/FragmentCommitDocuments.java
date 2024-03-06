@@ -21,6 +21,7 @@ public class FragmentCommitDocuments extends Fragment {
     private ViewModelCommitDocuments mViewModel;
 
     public static FragmentCommitDocuments newInstance() {
+
         return new FragmentCommitDocuments();
     }
 
@@ -36,6 +37,33 @@ public class FragmentCommitDocuments extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_fragment_commit_documents, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        GetComponentsUI getComponentsUI=new GetComponentsUI(view,getActivity());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
 }

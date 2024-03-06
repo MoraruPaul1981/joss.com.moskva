@@ -1,5 +1,11 @@
 package com.dsy.dsu.CommitDocuments.View.ComponentsUI;
 
+import android.app.Activity;
+import android.view.View;
+
+import androidx.annotation.NonNull;
+
+import com.dsy.dsu.CommitDocuments.View.ViewModel.ActivityCommitDocuments;
 import com.dsy.dsu.CommitDocuments.View.ViewModel.FragmentCommitDocuments;
 
 /**
@@ -8,6 +14,7 @@ import com.dsy.dsu.CommitDocuments.View.ViewModel.FragmentCommitDocuments;
 public class  GetComponentsUI extends FragmentCommitDocuments {
 
 
-
-
+  public GetComponentsUI(@NonNull View view, @NonNull Activity activity) {
+    System.out.printf("ffff");
+  }
 }
