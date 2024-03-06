@@ -13,11 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+import com.dsy.dsu.CommitDocuments.View.ComponentsUI.GetComponentsUI;
 import com.dsy.dsu.R;
 
 
 public class FragmentCommitDocuments extends Fragment {
-
     private ViewModelCommitDocuments mViewModel;
 
     public static FragmentCommitDocuments newInstance() {
