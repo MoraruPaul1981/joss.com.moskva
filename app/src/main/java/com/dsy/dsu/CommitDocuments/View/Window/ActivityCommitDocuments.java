@@ -31,12 +31,11 @@ public class ActivityCommitDocuments extends AppCompatActivity {
         setContentView(R.layout.activity_commit_documents);
         if (savedInstanceState == null) {
 
+// TODO: 06.03.2024 инициализция
+            viewModelCommitDocuments = new ViewModelProvider(this,
+                    new ModelFactoryCommitDocuments(getHiltPublicId,this)).get(ViewModelCommitDocuments.class );
 
-            viewModelCommitDocuments = new ViewModelProvider(this,  new ModelFactoryCommitDocuments(getHiltPublicId,this)).get(ViewModelCommitDocuments.class );
-
-
-
-
+            
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, FragmentCommitDocuments.newInstance())
                     .commitNow();

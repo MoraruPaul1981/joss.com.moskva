@@ -15,12 +15,13 @@ import android.view.ViewGroup;
 
 import com.dsy.dsu.CommitDocuments.View.ComponentsUI.GetComponentsUI;
 import com.dsy.dsu.CommitDocuments.View.ViewModel.ViewModelCommitDocuments;
+import com.dsy.dsu.CommitingPrices.View.Window.MainActivityCommitingPrices;
 import com.dsy.dsu.R;
 
 
 public class FragmentCommitDocuments extends Fragment {
-    private ViewModelCommitDocuments mViewModel;
 
+    ViewModelCommitDocuments viewModelCommitDocuments;
     public static FragmentCommitDocuments newInstance() {
 
         return new FragmentCommitDocuments();
@@ -29,8 +30,8 @@ public class FragmentCommitDocuments extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(ViewModelCommitDocuments.class);
         // TODO: Use the ViewModel
+        viewModelCommitDocuments =((ActivityCommitDocuments)getActivity()).viewModelCommitDocuments;
     }
 
     @Nullable
@@ -44,7 +45,7 @@ public class FragmentCommitDocuments extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        GetComponentsUI getComponentsUI=new GetComponentsUI(view,getActivity());
+        GetComponentsUI getComponentsUI=new GetComponentsUI(view,getActivity(),getContext(),viewModelCommitDocuments);
     }
 
     @Override

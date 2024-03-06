@@ -1,10 +1,12 @@
 package com.dsy.dsu.CommitDocuments.View.ComponentsUI;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.dsy.dsu.CommitDocuments.View.ViewModel.ViewModelCommitDocuments;
 
 
 /**
@@ -13,7 +15,10 @@ import androidx.annotation.NonNull;
 public class GetComponentsClicks extends GetComponentsUI {
 
 
-  public GetComponentsClicks(@NonNull View view, @NonNull Activity activity) {
-    super(view, activity);
+  public GetComponentsClicks(@NonNull View view,
+                             @NonNull Activity activity,
+                             @NonNull Context context,
+                             @NonNull ViewModelCommitDocuments viewModelCommitDocuments) {
+    super(view, activity, context, viewModelCommitDocuments);
   }
 }
