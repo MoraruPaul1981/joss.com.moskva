@@ -81,7 +81,7 @@ try{
         try{
 
 
-            // TODO: 06.03.2024 запускаем класс с компонентами Activity  
+            // TODO: 06.03.2024 запускаем класс с компонентами Activity
         new GetComponentsUI(view,getActivity(),getContext(),viewModelCommitDocuments);
 
 

@@ -16,7 +16,8 @@ import com.dsy.dsu.CommitDocuments.View.Window.FragmentCommitDocuments;
 public class  GetComponentsUI extends FragmentCommitDocuments {
 
 
-  public GetComponentsUI(@NonNull View view, @NonNull Activity activity,
+  public GetComponentsUI(@NonNull View view,
+                         @NonNull Activity activity,
                          @NonNull Context context,
                          @NonNull ViewModelCommitDocuments viewModelCommitDocuments) {
     System.out.printf("ffff");
