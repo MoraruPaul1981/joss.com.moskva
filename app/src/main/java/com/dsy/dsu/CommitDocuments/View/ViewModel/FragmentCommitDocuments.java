@@ -1,4 +1,4 @@
-package com.dsy.dsu.CommitDocuments.Presenter.ViewModel;
+package com.dsy.dsu.CommitDocuments.View.ViewModel;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.dsy.dsu.CommitDocuments.Presenter.ViewModel.ViewModelCommitDocuments;
+
 import com.dsy.dsu.R;
 
 

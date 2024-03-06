@@ -1,10 +1,10 @@
-package com.dsy.dsu.CommitDocuments.Presenter.ViewModel;
+package com.dsy.dsu.CommitDocuments.View.ViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.dsy.dsu.CommitDocuments.Presenter.ViewModel.FragmentCommitDocuments;
+
 import com.dsy.dsu.R;
 
 public class ActivityCommitDocuments extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package com.dsy.dsu.CommitDocuments.Presenter.ViewModel;
+package com.dsy.dsu.CommitDocuments.View.ViewModel;
 
 import androidx.lifecycle.ViewModel;
 

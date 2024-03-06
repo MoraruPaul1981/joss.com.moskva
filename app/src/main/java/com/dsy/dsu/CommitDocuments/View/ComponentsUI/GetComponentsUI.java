@@ -1,4 +1,4 @@
-package com.dsy.dsu.CommitDocuments.Presenter.ComponentsUI;
+package com.dsy.dsu.CommitDocuments.View.ComponentsUI;
 
-public class GetComponentsUI {
+  class GetComponentsUI {
 }
