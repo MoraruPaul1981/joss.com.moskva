@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
-
     android:id="@+id/layout_commit_documents"
-
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:background="#FFFFFFF"
     app:layout_gravity="center"
     app:cardCornerRadius="0dp"
     app:cardElevation="2dp"
-    app:cardMaxElevation="1dp"
-    app:strokeWidth="1dp"
+    app:cardMaxElevation="10dp"
     android:translationZ="10dp"
     android:animateLayoutChanges="true"
-    app:cardBackgroundColor="#FFFFFF"
-    app:strokeColor="#C9D3D3"
-    android:checkable="true"
-    android:clickable="true"
-    android:focusable="true"
-
+    app:strokeColor="#9E312A"
+    app:strokeWidth="20dp"
     tools:context=".CommitDocuments.View.Window.ActivityCommitDocuments">
 </com.google.android.material.card.MaterialCardView>
