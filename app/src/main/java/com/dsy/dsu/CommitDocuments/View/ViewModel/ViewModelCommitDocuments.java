@@ -3,8 +3,6 @@ package com.dsy.dsu.CommitDocuments.View.ViewModel;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -30,7 +28,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class ViewModelCommitDocuments  extends ViewModel {
 
     // TODO: 25.12.2023
- private    MutableLiveData<Bundle> mutableLiveСommitDocumentsEventBus;
+ private    MutableLiveData<Bundle> mutableLiveСommitDocuments;
     private Context context;
     private  Long PublicId;
 
@@ -76,9 +74,9 @@ public class ViewModelCommitDocuments  extends ViewModel {
     }
 
 
-    public LiveData<Bundle> getMutableLiveСommitDocumentsEventBus() {
+    public LiveData<Bundle> getMutableLiveСommitDocuments() {
         try{
-            mutableLiveСommitDocumentsEventBus = new MutableLiveData<>();
+            mutableLiveСommitDocuments = new MutableLiveData<>();
             Log.d(context.getClass().getName(),"\n"
                     + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -90,7 +88,7 @@ public class ViewModelCommitDocuments  extends ViewModel {
             new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-        return mutableLiveСommitDocumentsEventBus;
+        return mutableLiveСommitDocuments;
     }
 
 
@@ -145,7 +143,7 @@ public class ViewModelCommitDocuments  extends ViewModel {
                     .doOnComplete(()->{
 
                         // TODO: 25.12.2023  полученый результат обнолвяем экран
-                        mutableLiveСommitDocumentsEventBus.postValue(bundleByte);
+                        mutableLiveСommitDocuments.postValue(bundleByte);
                         // TODO: 30.12.2023
                         Log.d(this.getClass().getName(),"\n"
                                 + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
