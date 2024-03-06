@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
+import com.google.android.material.navigation.NavigationBarView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -164,7 +165,7 @@ public class FragmentCommingPrices extends Fragment {
 
 
             bottomnavigationw_commintingprices = view.findViewById(R.id.bottomnavigationw_commintingprices);
-            bottomnavigationw_commintingprices.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED);
+            bottomnavigationw_commintingprices.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_UNLABELED);
             bottomNavigationBack = bottomnavigationw_commintingprices.findViewById(R.id.bottomNavigationBack);
             bottomNavigationBack.setTitle("Выйти");
             bottomNavigationAsync = bottomnavigationw_commintingprices.findViewById(R.id.bottomNavigationAsync);
