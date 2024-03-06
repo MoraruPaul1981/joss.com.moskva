@@ -30,8 +30,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class ViewModelCommitDocuments  extends ViewModel {
 
     // TODO: 25.12.2023
-    MutableLiveData<Bundle> mutableLiveData= null;
-    MutableLiveData<Bundle> mutableLiveDataEventBus= new MutableLiveData<>();
+    MutableLiveData<Bundle> mutableLiveСommitDocuments = null;
+    MutableLiveData<Bundle> mutableLiveСommitDocumentsEventBus = new MutableLiveData<>();
     Context context;
     Long PublicId;
 
@@ -79,7 +79,7 @@ public class ViewModelCommitDocuments  extends ViewModel {
 
     public LiveData<Bundle> livedatastartGetJsonByte() {
         try{
-            mutableLiveData= new MutableLiveData<>();
+            mutableLiveСommitDocuments = new MutableLiveData<>();
             Log.d(context.getClass().getName(),"\n"
                     + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -91,12 +91,12 @@ public class ViewModelCommitDocuments  extends ViewModel {
             new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-        return mutableLiveData;
+        return mutableLiveСommitDocuments;
     }
 
     public LiveData<Bundle> livedatastartGetJsonByteEventBus() {
         try{
-            mutableLiveDataEventBus= new MutableLiveData<>();
+            mutableLiveСommitDocumentsEventBus = new MutableLiveData<>();
             Log.d(context.getClass().getName(),"\n"
                     + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -108,7 +108,7 @@ public class ViewModelCommitDocuments  extends ViewModel {
             new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-        return mutableLiveDataEventBus;
+        return mutableLiveСommitDocumentsEventBus;
     }
 
 
@@ -166,7 +166,7 @@ public class ViewModelCommitDocuments  extends ViewModel {
                     .doOnComplete(()->{
 
                         // TODO: 25.12.2023  полученый результат обнолвяем экран
-                        mutableLiveData.postValue(bundleByte);
+                        mutableLiveСommitDocuments.postValue(bundleByte);
                         // TODO: 30.12.2023
                         Log.d(this.getClass().getName(),"\n"
                                 + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
