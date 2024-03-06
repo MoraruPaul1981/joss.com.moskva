@@ -63,7 +63,7 @@
                 android:gravity="center"
                 android:minHeight="25dp"
                 android:padding="2dp"
-                android:text="Согласования документов"
+                android:text="Согласование документов"
                 android:textColor="#0E0E0E"
                 android:textSize="13sp"
                 android:textStyle="bold"
@@ -111,19 +111,12 @@
                 android:textStyle="bold"
                 android:visibility="gone" />
 
-
-
         </TableRow>
 
 
 
 
-
-
-
      <!--   //TODO TABlayout-->
-
-
         <!--//TODO   НАЧАЛО ПЕРВАЯ СТРОЧКА ROW #1-->
         <TableRow
             android:id="@+id/tableRow_commitdocumenttablayout"
@@ -142,28 +135,34 @@
                android:translationZ="1dp"
                app:tabMode="fixed"
                app:tabTextColor="#686464"
+               app:tabSelectedTextColor="#000000"
                app:tabIndicatorColor="#CFCCCC">
 
 
+
                <com.google.android.material.tabs.TabItem
+                   android:id="@+id/commitdocumenttabitem1"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:text="приказы">
                </com.google.android.material.tabs.TabItem>
 
 
+
                <com.google.android.material.tabs.TabItem
+                   android:id="@+id/commitdocumenttabitem2"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:text="служебные записки">
-
                </com.google.android.material.tabs.TabItem>
+
+
                <com.google.android.material.tabs.TabItem
+                   android:id="@+id/commitdocumenttabitem3"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:text="разое">
                </com.google.android.material.tabs.TabItem>
-
 
 
            </com.google.android.material.tabs.TabLayout>
