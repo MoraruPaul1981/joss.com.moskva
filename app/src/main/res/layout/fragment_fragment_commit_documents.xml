@@ -39,8 +39,10 @@
         <TableRow
             android:id="@+id/tableRow_commintprices1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:gravity="center"
+            android:layout_margin="2dp"
+            android:padding="2dp"
             android:layout_gravity="center_horizontal">
 
 
@@ -58,6 +60,7 @@
                 android:layout_marginStart="70dp"
                 android:layout_marginEnd="70dp"
                 android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
                 app:tabSelectedTextColor="#000000"
                 app:tabIndicatorHeight="0dp"
                 android:animateLayoutChanges="true"
@@ -84,7 +87,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="3dp"
+            android:layout_margin="2dp"
             android:padding="2dp"
             android:background="@drawable/disayn_line_tablerow6">
 
