@@ -3,26 +3,21 @@ package com.dsy.dsu.CommitingPrices.View.MyRecycleViewIsNull;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TableLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dsy.dsu.Errors.Class_Generation_Errors;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.card.MaterialCardView;
 
 import org.jetbrains.annotations.NotNull;
 
 // TODO: 28.02.2022 начало  MyViewHolderДляЧата
-public class MyViewHoldersIsNull extends RecyclerView.ViewHolder {// TODO: 28.02.2022 начало  MyViewHolderДляЧата
+public class MyViewHoldersCommitDocumentsIsNull extends RecyclerView.ViewHolder {// TODO: 28.02.2022 начало  MyViewHolderДляЧата
     // TODO: 28.02.2022
     Context context;
 
     // TODO: 02.03.2022
-    public MyViewHoldersIsNull(@NonNull View itemView, @NotNull Context context) {
+    public MyViewHoldersCommitDocumentsIsNull(@NonNull View itemView, @NotNull Context context) {
         super(itemView);
         try{
             this.context=context;

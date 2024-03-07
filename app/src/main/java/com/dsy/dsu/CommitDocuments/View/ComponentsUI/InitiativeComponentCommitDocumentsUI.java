@@ -9,11 +9,16 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.dsy.dsu.CommitDocuments.View.MyRecycleViews.MyRecycleViewIsNull.MyRecycleViewCommitDocumentsIsNullAdapters;
+import com.dsy.dsu.CommitDocuments.View.MyRecycleViews.MyRecycleViewIsNull.MyViewHoldersCommitDocumentsIsNull;
 import com.dsy.dsu.CommitDocuments.View.Window.FragmentCommitDocuments;
 import com.dsy.dsu.CommitDocuments.ViewModel.ViewModelCommitDocuments;
+import com.dsy.dsu.CommitingPrices.Model.BiccessLogicas.DizaynRecyreView.LeftDividerItemDecorator;
+import com.dsy.dsu.CommitingPrices.View.MyRecycleViewIsNull.MyRecycleViewIsNullAdapters;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.R;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,6 +26,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.navigation.NavigationBarView;
+
+import java.util.ArrayList;
 
 
 /**
@@ -44,9 +51,9 @@ public class InitiativeComponentCommitDocumentsUI extends FragmentCommitDocument
   protected BottomNavigationItemView bottomNavigationSearch;
   protected MaterialCardView fragment_materialmardview_commit_documents;
 
+  protected MyRecycleViewCommitDocumentsIsNullAdapters myViewHoldersCommitDocumentsIsNull;
 
-
-  public InitiativeComponentCommitDocumentsUI(View view,
+  public InitiativeComponentCommitDocumentsUI(@NonNull View view,
                                               @NonNull Activity activity,
                                               @NonNull Context context,
                                               @NonNull ViewModelCommitDocuments viewModelCommitDocuments,
@@ -84,6 +91,16 @@ try{
   bottomNavigationSearch.setClickable(false);
 
 
+
+
+  // TODO: 07.03.2024   init Recyreviews
+  new InizializayRecyreViews().startInitRecyreview();
+
+  // TODO: 07.03.2024  запускаем NULL RecyreView первым
+  new  StartIsNullRecyreView().startIsNullRecyreView();
+
+
+
     Log.d(this.getClass().getName(),"\n"
             + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -96,4 +113,79 @@ try{
             Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
   }
   }
+
+
+  class   InizializayRecyreViews {
+    public void startInitRecyreview() {
+      try {
+        recycleview_commitdocument.setHasFixedSize(true);
+        recycleview_commitdocument.addItemDecoration(new LeftDividerItemDecorator(context));
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(context);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recycleview_commitdocument.setLayoutManager(linearLayoutManager);
+        recycleview_commitdocument.requestLayout();
+        recycleview_commitdocument.refreshDrawableState();
+        // TODO: 28.02.2022
+        Log.d(this.getClass().getName(), "\n" + " class "
+                + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
+      } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
+                + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+      }
+
+    }
+  }
+
+
+
+  class StartIsNullRecyreView{
+      public void startIsNullRecyreView( ) {
+        try {
+            ArrayList<Boolean> arrayListIsNull1cData = new ArrayList<>();
+            arrayListIsNull1cData.add(true);
+             myViewHoldersCommitDocumentsIsNull = new MyRecycleViewCommitDocumentsIsNullAdapters(arrayListIsNull1cData, context  );
+            myViewHoldersCommitDocumentsIsNull.notifyDataSetChanged();
+             recycleview_commitdocument.setAdapter(myViewHoldersCommitDocumentsIsNull);
+             recycleview_commitdocument.getAdapter().notifyDataSetChanged();
+
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "MyRecycleViewCommitDocumentsIsNullAdapters  "
+                    + myViewHoldersCommitDocumentsIsNull );
+
+          Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                  " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                  " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +"recycleview_comminingpprices  ");
+        } catch (Exception e) {
+          e.printStackTrace();
+          Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                  " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+          new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                  Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+      }
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 }

@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 // TODO: 09.11.2023 ВТОРОЯ Rereview
-public  class MyRecycleViewIsNullAdapters extends RecyclerView.Adapter<MyViewHoldersIsNull> {
+public  class MyRecycleViewIsNullAdapters extends RecyclerView.Adapter<MyViewHoldersCommitDocumentsIsNull> {
     public ArrayList<Boolean> arrayListIsNull1cData=new ArrayList<>();
   private   Context context;
-  private   MyViewHoldersIsNull viewHoldersIsNull;
+  private MyViewHoldersCommitDocumentsIsNull viewHoldersIsNull;
 
     @SuppressLint("SuspiciousIndentation")
     public MyRecycleViewIsNullAdapters(@NotNull ArrayList<Boolean>arrayListIsNull1cData,
@@ -50,7 +50,7 @@ public  class MyRecycleViewIsNullAdapters extends RecyclerView.Adapter<MyViewHol
 
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHoldersIsNull holder, @NonNull int position, @NonNull List<Object> payloads) {
+    public void onBindViewHolder(@NonNull MyViewHoldersCommitDocumentsIsNull holder, @NonNull int position, @NonNull List<Object> payloads) {
         try {
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -79,25 +79,25 @@ public  class MyRecycleViewIsNullAdapters extends RecyclerView.Adapter<MyViewHol
     }
 
     @Override
-    public void onViewRecycled(@NonNull MyViewHoldersIsNull holder) {
+    public void onViewRecycled(@NonNull MyViewHoldersCommitDocumentsIsNull holder) {
         super.onViewRecycled(holder);
     }
 
     @Override
-    public boolean onFailedToRecycleView(@NonNull MyViewHoldersIsNull holder) {
+    public boolean onFailedToRecycleView(@NonNull MyViewHoldersCommitDocumentsIsNull holder) {
         // TODO: 03.11.2023 Parent
         return super.onFailedToRecycleView(holder);
 
     }
 
     @Override
-    public void onViewAttachedToWindow(@NonNull MyViewHoldersIsNull holder) {
+    public void onViewAttachedToWindow(@NonNull MyViewHoldersCommitDocumentsIsNull holder) {
         super.onViewAttachedToWindow(holder);
 
     }
 
     @Override
-    public void onViewDetachedFromWindow(@NonNull MyViewHoldersIsNull holder) {
+    public void onViewDetachedFromWindow(@NonNull MyViewHoldersCommitDocumentsIsNull holder) {
         super.onViewDetachedFromWindow(holder);
     }
 
@@ -138,7 +138,7 @@ public  class MyRecycleViewIsNullAdapters extends RecyclerView.Adapter<MyViewHol
     @SuppressLint("SuspiciousIndentation")
     @NonNull
     @Override
-    public MyViewHoldersIsNull onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyViewHoldersCommitDocumentsIsNull onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View viewГлавныйВидДляRecyclleViewДляСогласованияISNull = null;
         try {
 // TODO: 27.12.2023 загрузка когда нет данных
@@ -163,7 +163,7 @@ public  class MyRecycleViewIsNullAdapters extends RecyclerView.Adapter<MyViewHol
                       + "   viewГлавныйВидДляRecyclleViewДляСогласованияISNull" + viewГлавныйВидДляRecyclleViewДляСогласованияISNull);
             }
             // TODO: 22.03.2022
-            viewHoldersIsNull = new MyViewHoldersIsNull(viewГлавныйВидДляRecyclleViewДляСогласованияISNull,context);
+            viewHoldersIsNull = new MyViewHoldersCommitDocumentsIsNull(viewГлавныйВидДляRecyclleViewДляСогласованияISNull,context);
 
 
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -186,7 +186,7 @@ public  class MyRecycleViewIsNullAdapters extends RecyclerView.Adapter<MyViewHol
     @RequiresApi(api = Build.VERSION_CODES.P)
     @SuppressLint("RecyclerView")
     @Override
-    public void onBindViewHolder(@NonNull MyViewHoldersIsNull holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHoldersCommitDocumentsIsNull holder, int position) {
         try {
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
