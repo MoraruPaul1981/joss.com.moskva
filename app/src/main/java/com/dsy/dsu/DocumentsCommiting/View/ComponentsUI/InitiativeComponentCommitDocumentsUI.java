@@ -28,7 +28,7 @@ import java.util.ArrayList;
 /**
  * Компоненты Фрагмента Согласование Документов
  */
-public class InitiativeComponentCommitDocumentsUI extends FragmentCommitDocuments {
+public class InitiativeComponentCommitDocumentsUI extends FragmentCommitDocuments implements  InterfaceComponentDocumentsUI {
   protected View view;
   protected  Activity activity;
   protected Context context;
@@ -79,14 +79,11 @@ try{
 
 
   // TODO: 07.03.2024  запускаем NULL RecyreView первым
-  StartIsNullRecyreView startIsNullRecyreView=  new  StartIsNullRecyreView();
-
-  // TODO: 07.03.2024 первый раз Заполяем isnull recyreview
   if (myViewHoldersCommitDocumentsIsNull==null) {
-    startIsNullRecyreView.startIsNullRecyreViewOne();
+   startIsNullRecyreViewOne(myViewHoldersCommitDocumentsIsNull);
   } else {
     // TODO: 07.03.2024 второй  раз Обновляем isnull recyreview
-    startIsNullRecyreView.startIsNullRecyreViewTwo();
+   startIsNullRecyreViewTwo(myViewHoldersCommitDocumentsIsNull);
   }
 
 
@@ -102,6 +99,9 @@ try{
             Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
   }
   }
+
+
+
 
 
   class   InizializayRecyreViews {
@@ -134,55 +134,7 @@ try{
 
 
 
-  class StartIsNullRecyreView{
-      public void startIsNullRecyreViewOne( ) {
-        try {
-          ArrayList<Boolean> arrayListIsNull1cData = new ArrayList<>();
-            arrayListIsNull1cData.add(true);
-            myViewHoldersCommitDocumentsIsNull = new MyRecycleViewCommitDocumentsIsNullAdapters(arrayListIsNull1cData,
-                    context ,initiativeComponentCommitDocumentsUI,  liveDataCommitDoc );
-            myViewHoldersCommitDocumentsIsNull.notifyDataSetChanged();
-            recycleview_commitdocument.setAdapter(myViewHoldersCommitDocumentsIsNull);
-            recycleview_commitdocument.getAdapter().notifyDataSetChanged();
 
-          Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "MyRecycleViewCommitDocumentsIsNullAdapters  "
-                    + myViewHoldersCommitDocumentsIsNull );
-        } catch (Exception e) {
-          e.printStackTrace();
-          Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                  " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-          new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                  Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-      }
-
-    // TODO: 07.03.2024
-    public void startIsNullRecyreViewTwo( ) {
-      try {
-        ArrayList<Boolean> arrayListIsNull1cData = new ArrayList<>();
-          arrayListIsNull1cData.add(false);
-          myViewHoldersCommitDocumentsIsNull.arrayListIsNull1cData=arrayListIsNull1cData;
-          myViewHoldersCommitDocumentsIsNull.notifyDataSetChanged();
-          RecyclerView.Adapter recyclerViewОбновление=         recycleview_commitdocument.getAdapter();
-          recycleview_commitdocument.swapAdapter(recyclerViewОбновление,true);
-          recycleview_commitdocument.getAdapter().notifyDataSetChanged();
-
-        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "MyRecycleViewCommitDocumentsIsNullAdapters  "
-                + myViewHoldersCommitDocumentsIsNull );
-      } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-      }
-    }
-
-  }
 
   class SetliveDataCommitDoc{
     public void startliveDataCommitDoc( ) {
@@ -205,6 +157,57 @@ try{
   }
 
 
+// TODO: 07.03.2024
+
+  @NonNull
+  @Override
+  public void startIsNullRecyreViewOne(@NonNull MyRecycleViewCommitDocumentsIsNullAdapters myViewHoldersCommitDocumentsIsNull) {
+    try {
+      ArrayList<Boolean> arrayListIsNull1cData = new ArrayList<>();
+      arrayListIsNull1cData.add(true);
+      myViewHoldersCommitDocumentsIsNull = new MyRecycleViewCommitDocumentsIsNullAdapters(arrayListIsNull1cData,
+              context ,initiativeComponentCommitDocumentsUI,  liveDataCommitDoc );
+      myViewHoldersCommitDocumentsIsNull.notifyDataSetChanged();
+      recycleview_commitdocument.setAdapter(myViewHoldersCommitDocumentsIsNull);
+      recycleview_commitdocument.getAdapter().notifyDataSetChanged();
+
+      Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+              " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+              " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "MyRecycleViewCommitDocumentsIsNullAdapters  "
+              + myViewHoldersCommitDocumentsIsNull );
+    } catch (Exception e) {
+      e.printStackTrace();
+      Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+              " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+      new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+              Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+  }
+
+  @NonNull
+  @Override
+  public void startIsNullRecyreViewTwo(@NonNull MyRecycleViewCommitDocumentsIsNullAdapters myViewHoldersCommitDocumentsIsNull) {
+    try {
+      ArrayList<Boolean> arrayListIsNull1cData = new ArrayList<>();
+      arrayListIsNull1cData.add(false);
+      myViewHoldersCommitDocumentsIsNull.arrayListIsNull1cData=arrayListIsNull1cData;
+      myViewHoldersCommitDocumentsIsNull.notifyDataSetChanged();
+      RecyclerView.Adapter recyclerViewОбновление=         recycleview_commitdocument.getAdapter();
+      recycleview_commitdocument.swapAdapter(recyclerViewОбновление,true);
+      recycleview_commitdocument.getAdapter().notifyDataSetChanged();
+
+      Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+              " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+              " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "MyRecycleViewCommitDocumentsIsNullAdapters  "
+              + myViewHoldersCommitDocumentsIsNull );
+    } catch (Exception e) {
+      e.printStackTrace();
+      Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+              " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+      new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+              Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+  }
 
 
 
