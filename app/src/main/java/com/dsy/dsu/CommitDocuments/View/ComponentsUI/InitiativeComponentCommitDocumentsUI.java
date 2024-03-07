@@ -42,7 +42,6 @@ public class InitiativeComponentCommitDocumentsUI extends FragmentCommitDocument
   protected ViewModelCommitDocuments viewModelCommitDocuments;
   protected ObjectMapper getHiltJaksonObjectMapper;
   protected LifecycleOwner lifecycleOwner;
-
   // TODO: 07.03.2024 компонеты согсалованеи документов
   protected RecyclerView recycleview_commitdocument;
   protected ProgressBar prograessbar_commitdocument;
@@ -52,7 +51,6 @@ public class InitiativeComponentCommitDocumentsUI extends FragmentCommitDocument
   protected BottomNavigationItemView bottomNavigationAsync;
   protected BottomNavigationItemView bottomNavigationSearch;
   protected MaterialCardView fragment_materialmardview_commit_documents;
-
   protected MyRecycleViewCommitDocumentsIsNullAdapters myViewHoldersCommitDocumentsIsNull;
   protected  InitiativeComponentCommitDocumentsUI initiativeComponentCommitDocumentsUI;
   protected LiveData<Bundle> liveDataCommitDoc;
@@ -105,6 +103,8 @@ try{
 
   // TODO: 07.03.2024   init Recyreviews
   new InizializayRecyreViews().startInitRecyreview();
+
+
 
 
 

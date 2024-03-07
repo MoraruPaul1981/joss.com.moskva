@@ -60,7 +60,8 @@ public  class MyRecycleViewCommitDocumentsIsNullAdapters extends RecyclerView.Ad
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +"arrayListIsNull1cData "
-                    + arrayListIsNull1cData + " position " +position);
+                    + arrayListIsNull1cData + " position " +position
+                    + " initiativeComponentCommitDocumentsUI "+ initiativeComponentCommitDocumentsUI);
             // TODO: 30.03.2022
         } catch (Exception e) {
             e.printStackTrace();
