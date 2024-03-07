@@ -27,12 +27,12 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.dsy.dsu.AdmissionMaterials.Window.MainActivity_AdmissionMaterials;
-import com.dsy.dsu.CommitDocuments.View.Window.ActivityCommitDocuments;
-import com.dsy.dsu.CommitingPrices.View.Window.MainActivityCommitingPrices;
+import com.dsy.dsu.DocumentsCommiting.View.Window.ActivityCommitDocuments;
+import com.dsy.dsu.CommitPrices.View.Window.MainActivityCommitingPrices;
 import com.dsy.dsu.Dashboard.Model.BLFragmentDashbord.DashboardGRANTorREVOKE;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.OrdersTransports.Window.MainActivityOrdersTransports;
-import com.dsy.dsu.PaysCommings.View.Window.MainActivity_CommitPay;
+import com.dsy.dsu.PaysCommit.View.Window.MainActivity_CommitPay;
 import com.dsy.dsu.R;
 import com.dsy.dsu.Services.ServiceUpdatePoОбновлениеПО;
 import com.dsy.dsu.Tabels.MainActivity_List_Tabels;

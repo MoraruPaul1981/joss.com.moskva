@@ -13,7 +13,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.dsy.dsu.PaysCommings.Model.BLCommitPay.BinessLogicGetSearchs;
+import com.dsy.dsu.PaysCommit.Model.BLCommitPay.BinessLogicGetSearchs;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 
 import java.util.Date;

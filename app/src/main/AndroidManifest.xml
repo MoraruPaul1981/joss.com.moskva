@@ -176,7 +176,7 @@
             android:resource="@xml/automotive_app_desc" />
 
         <activity
-            android:name=".CommitingPrices.View.Window.MainActivityCommitingPrices"
+            android:name=".CommitPrices.View.Window.MainActivityCommitingPrices"
             android:exported="true"
             android:grantUriPermissions="true"
             android:label="Согласование цены"
@@ -756,7 +756,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PaysCommings.View.Window.MainActivity_CommitPay"
+            android:name=".PaysCommit.View.Window.MainActivity_CommitPay"
             android:exported="true"
             android:grantUriPermissions="true"
             android:label="Задания"
@@ -1698,7 +1698,7 @@
 
 
         <activity
-            android:name=".CommitDocuments.View.Window.ActivityCommitDocuments"
+            android:name=".DocumentsCommiting.View.Window.ActivityCommitDocuments"
             android:exported="true"
             android:label="Союз-Автодор"
             android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
