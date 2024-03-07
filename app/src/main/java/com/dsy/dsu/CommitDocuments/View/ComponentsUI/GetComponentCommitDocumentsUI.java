@@ -15,13 +15,13 @@ import com.dsy.dsu.Errors.Class_Generation_Errors;
 /**
  * Компоненты Фрагмента Согласование Документов
  */
-public class GetComponentsCommitDocumentsUI extends FragmentCommitDocuments {
+public class GetComponentCommitDocumentsUI extends FragmentCommitDocuments {
 
 
-  public GetComponentsCommitDocumentsUI(@NonNull View view,
-                                        @NonNull Activity activity,
-                                        @NonNull Context context,
-                                        @NonNull ViewModelCommitDocuments viewModelCommitDocuments) {
+  public GetComponentCommitDocumentsUI(@NonNull View view,
+                                       @NonNull Activity activity,
+                                       @NonNull Context context,
+                                       @NonNull ViewModelCommitDocuments viewModelCommitDocuments) {
 
 
 

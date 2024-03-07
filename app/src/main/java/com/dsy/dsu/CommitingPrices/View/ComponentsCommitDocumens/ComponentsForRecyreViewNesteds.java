@@ -1,4 +1,4 @@
-package com.dsy.dsu.CommitingPrices.View.Window;
+package com.dsy.dsu.CommitingPrices.View.ComponentsCommitDocumens;
 
 import android.content.Context;
 import android.content.Intent;

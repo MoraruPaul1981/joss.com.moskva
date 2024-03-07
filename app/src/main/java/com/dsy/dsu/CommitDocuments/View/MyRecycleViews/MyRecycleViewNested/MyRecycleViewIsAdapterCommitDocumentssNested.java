@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dsy.dsu.CommitingPrices.Model.LiveDataPrices.GetLiveDataForrecyreViewPrices;
 import com.dsy.dsu.CommitingPrices.View.MyRecycleViewNested.MyViewHoldersNested;
-import com.dsy.dsu.CommitingPrices.View.Window.ComponentsForRecyreViewNesteds;
+import com.dsy.dsu.CommitingPrices.View.ComponentsCommitDocumens.ComponentsForRecyreViewNesteds;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.R;
 import com.fasterxml.jackson.databind.JsonNode;

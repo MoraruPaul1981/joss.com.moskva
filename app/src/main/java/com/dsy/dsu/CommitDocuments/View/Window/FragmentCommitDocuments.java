@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-import com.dsy.dsu.CommitDocuments.View.ComponentsUI.GetComponentsCommitDocumentsUI;
+import com.dsy.dsu.CommitDocuments.View.ComponentsUI.GetComponentCommitDocumentsUI;
 import com.dsy.dsu.CommitDocuments.View.ViewModel.ViewModelCommitDocuments;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.R;
@@ -74,7 +74,7 @@ try{
         super.onViewCreated(view, savedInstanceState);
         try{
             // TODO: 06.03.2024 запускаем класс с компонентами Activity
-        new GetComponentsCommitDocumentsUI(view,getActivity(),getContext(),viewModelCommitDocuments);
+        new GetComponentCommitDocumentsUI(view,getActivity(),getContext(),viewModelCommitDocuments);
 
 
         Log.d(this.getClass().getName(),"\n"

@@ -14,13 +14,13 @@ import com.dsy.dsu.Errors.Class_Generation_Errors;
 /**
  * Компоненты Фрагмента Согласование Документов КЛИК
  */
-public class GetComponentsCommitDocumentsCommitDocumentsClicks extends GetComponentsCommitDocumentsUI {
+public class GetComponentCommitDocumentsClicks extends GetComponentCommitDocumentsUI {
 
 
-  public GetComponentsCommitDocumentsCommitDocumentsClicks(@NonNull View view,
-                                                           @NonNull Activity activity,
-                                                           @NonNull Context context,
-                                                           @NonNull ViewModelCommitDocuments viewModelCommitDocuments) {
+  public GetComponentCommitDocumentsClicks(@NonNull View view,
+                                           @NonNull Activity activity,
+                                           @NonNull Context context,
+                                           @NonNull ViewModelCommitDocuments viewModelCommitDocuments) {
     super(view, activity, context, viewModelCommitDocuments);
   }
 
