@@ -82,7 +82,7 @@
 
         <!--//TODO   НАЧАЛО ПЕРВАЯ СТРОЧКА ROW #1-->
         <TableRow
-            android:id="@+id/tableRow_commintpricessearch"
+            android:id="@+id/tableRow_commitdocumentsearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -92,7 +92,7 @@
             android:background="@drawable/disayn_line_tablerow6">
 
             <androidx.appcompat.widget.SearchView
-                android:id="@+id/searchview_commintingprices"
+                android:id="@+id/searchview_commitdocument"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_alignParentLeft="true"
@@ -122,7 +122,7 @@
 
         <!--//TODO   НАЧАЛО ПЕРВАЯ СТРОЧКА ROW #2-->
         <TableRow
-            android:id="@+id/tableRow_commintprices2"
+            android:id="@+id/tableRow_commitdocumentrecyreview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -155,13 +155,11 @@
 
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycleview_comminingpprices"
+                    android:id="@+id/recycleview_commitdocument"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_above="@+id/prograessbar_commintingprices"
-
+                    android:layout_above="@+id/prograessbar_commitdocument"
                     android:layout_alignParentTop="true"
-
                     android:layout_centerInParent="true"
                     android:layout_marginStart="1dp"
                     android:layout_marginTop="1dp"
@@ -176,11 +174,11 @@
 
 
                 <ProgressBar
-                    android:id="@+id/prograessbar_commintingprices"
+                    android:id="@+id/prograessbar_commitdocument"
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="5dp"
-                    android:layout_above="@+id/bottomnavigationw_commintingprices"
+                    android:layout_above="@+id/bottomnavigationw_commitdocument"
                     android:layout_centerHorizontal="true"
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="2dp"
@@ -195,7 +193,7 @@
 
 
                 <com.google.android.material.bottomnavigation.BottomNavigationView
-                    android:id="@+id/bottomnavigationw_commintingprices"
+                    android:id="@+id/bottomnavigationw_commitdocument"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:layout_alignParentBottom="true"
