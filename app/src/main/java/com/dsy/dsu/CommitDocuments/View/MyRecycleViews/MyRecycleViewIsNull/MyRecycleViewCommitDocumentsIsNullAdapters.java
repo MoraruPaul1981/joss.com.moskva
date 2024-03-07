@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.dsy.dsu.CommitDocuments.View.ComponentsUI.InitiativeComponentCommitDocumentsUI;
 import com.dsy.dsu.CommitingPrices.View.MyRecycleViewIsNull.MyViewHoldersCommitDocumentsIsNull;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.R;
@@ -26,14 +27,17 @@ public  class MyRecycleViewCommitDocumentsIsNullAdapters extends RecyclerView.Ad
     public ArrayList<Boolean> arrayListIsNull1cData=new ArrayList<>();
   private   Context context;
   private MyViewHoldersCommitDocumentsIsNull viewHoldersCommitDocumentsIsNull;
+  private  InitiativeComponentCommitDocumentsUI initiativeComponentCommitDocumentsUI;
 
     @SuppressLint("SuspiciousIndentation")
     public MyRecycleViewCommitDocumentsIsNullAdapters(@NotNull ArrayList<Boolean>arrayListIsNull1cData,
-                                                      @NotNull Context context) {
+                                                      @NotNull Context context,
+                                                      @NonNull InitiativeComponentCommitDocumentsUI  initiativeComponentCommitDocumentsUI) {
         // super();
         try{
         this.arrayListIsNull1cData = arrayListIsNull1cData;
         this.context = context;
+        this.initiativeComponentCommitDocumentsUI = initiativeComponentCommitDocumentsUI;
             Log.d(this.getClass().getName(),"\n"
                     + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -140,37 +144,38 @@ public  class MyRecycleViewCommitDocumentsIsNullAdapters extends RecyclerView.Ad
     @NonNull
     @Override
     public MyViewHoldersCommitDocumentsIsNull onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View viewГлавныйВидДляRecyclleViewДляСогласованияISNull = null;
+        View viewRecyreViewCommitDocumentsISNull = null;
         try {
 // TODO: 27.12.2023 загрузка когда нет данных
-        Boolean СтатусЗагрузки=    arrayListIsNull1cData.stream().findFirst().get();
+        Boolean СтатусЗагрузкиCommitDocuments=    arrayListIsNull1cData.stream().findFirst().get();
 
-          if (СтатусЗагрузки ) {
-            viewГлавныйВидДляRecyclleViewДляСогласованияISNull = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.simple_for_commitpay_cardview1empty_in_prossering, parent, false);
+          if (СтатусЗагрузкиCommitDocuments ) {
+            viewRecyreViewCommitDocumentsISNull = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.simple_for_commitdocuments_cardview1empty_in_prossering, parent, false);
 
               Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                       " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                       " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                      + "   viewГлавныйВидДляRecyclleViewДляСогласованияISNull" + viewГлавныйВидДляRecyclleViewДляСогласованияISNull);
+                      + "   viewRecyreViewCommitDocumentsISNull" + viewRecyreViewCommitDocumentsISNull);
         }else {
 
-            viewГлавныйВидДляRecyclleViewДляСогласованияISNull = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.simple_for_commitpay_dont_jsonot1c, parent, false);
+            viewRecyreViewCommitDocumentsISNull = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.simple_for_commitdocument_dont_jsonot1c, parent, false);
 
               Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                       " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                       " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                      + "   viewГлавныйВидДляRecyclleViewДляСогласованияISNull" + viewГлавныйВидДляRecyclleViewДляСогласованияISNull);
+                      + "   viewRecyreViewCommitDocumentsISNull" + viewRecyreViewCommitDocumentsISNull +
+                       " СтатусЗагрузкиCommitDocuments " +СтатусЗагрузкиCommitDocuments);
             }
             // TODO: 22.03.2022
-            viewHoldersCommitDocumentsIsNull = new MyViewHoldersCommitDocumentsIsNull(viewГлавныйВидДляRecyclleViewДляСогласованияISNull,context);
+            viewHoldersCommitDocumentsIsNull = new MyViewHoldersCommitDocumentsIsNull(viewRecyreViewCommitDocumentsISNull,context);
 
 
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + "   viewГлавныйВидДляRecyclleViewДляСогласованияISNull" + viewГлавныйВидДляRecyclleViewДляСогласованияISNull);
+                    + "   viewRecyreViewCommitDocumentsISNull" + viewRecyreViewCommitDocumentsISNull);
 
         } catch (Exception e) {
             e.printStackTrace();

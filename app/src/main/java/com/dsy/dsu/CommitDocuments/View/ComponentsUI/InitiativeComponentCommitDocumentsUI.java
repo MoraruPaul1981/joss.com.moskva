@@ -3,12 +3,14 @@ package com.dsy.dsu.CommitDocuments.View.ComponentsUI;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,6 +54,9 @@ public class InitiativeComponentCommitDocumentsUI extends FragmentCommitDocument
   protected MaterialCardView fragment_materialmardview_commit_documents;
 
   protected MyRecycleViewCommitDocumentsIsNullAdapters myViewHoldersCommitDocumentsIsNull;
+  protected  InitiativeComponentCommitDocumentsUI initiativeComponentCommitDocumentsUI;
+  protected LiveData<Bundle> liveDataCommitDoc;
+
 
   public InitiativeComponentCommitDocumentsUI(@NonNull View view,
                                               @NonNull Activity activity,
@@ -65,13 +70,17 @@ public class InitiativeComponentCommitDocumentsUI extends FragmentCommitDocument
     this.viewModelCommitDocuments = viewModelCommitDocuments;
     this.getHiltJaksonObjectMapper = getHiltJaksonObjectMapper;
     this.lifecycleOwner = lifecycleOwner;
+    initiativeComponentCommitDocumentsUI=this;
+    Log.d(this.getClass().getName(),"\n"
+            + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber());
   }
 
 
   @SuppressLint("RestrictedApi")
   public void inizualyzarWorkerUI(){
 try{
-
   fragment_materialmardview_commit_documents = view.findViewById(R.id.fragment_materialmardview_commit_documents);
   recycleview_commitdocument = view.findViewById(R.id.recycleview_commitdocument);
   prograessbar_commitdocument = view.findViewById(R.id.prograessbar_commitdocument);
@@ -91,7 +100,8 @@ try{
   bottomNavigationSearch.setClickable(false);
 
 
-
+  // TODO: 07.03.2024 set LiveData
+  new SetliveDataCommitDoc().startliveDataCommitDoc();
 
   // TODO: 07.03.2024   init Recyreviews
   new InizializayRecyreViews().startInitRecyreview();
@@ -148,21 +158,20 @@ try{
   class StartIsNullRecyreView{
       public void startIsNullRecyreView( ) {
         try {
+          if (myViewHoldersCommitDocumentsIsNull==null) {
             ArrayList<Boolean> arrayListIsNull1cData = new ArrayList<>();
             arrayListIsNull1cData.add(true);
-             myViewHoldersCommitDocumentsIsNull = new MyRecycleViewCommitDocumentsIsNullAdapters(arrayListIsNull1cData, context  );
+            myViewHoldersCommitDocumentsIsNull = new MyRecycleViewCommitDocumentsIsNullAdapters(arrayListIsNull1cData,
+                    context ,initiativeComponentCommitDocumentsUI );
             myViewHoldersCommitDocumentsIsNull.notifyDataSetChanged();
-             recycleview_commitdocument.setAdapter(myViewHoldersCommitDocumentsIsNull);
-             recycleview_commitdocument.getAdapter().notifyDataSetChanged();
+            recycleview_commitdocument.setAdapter(myViewHoldersCommitDocumentsIsNull);
+            recycleview_commitdocument.getAdapter().notifyDataSetChanged();
+          }
 
-            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+          Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "MyRecycleViewCommitDocumentsIsNullAdapters  "
                     + myViewHoldersCommitDocumentsIsNull );
-
-          Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                  " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                  " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +"recycleview_comminingpprices  ");
         } catch (Exception e) {
           e.printStackTrace();
           Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -172,12 +181,27 @@ try{
         }
       }
 
-
-
-
   }
 
+  class SetliveDataCommitDoc{
+    public void startliveDataCommitDoc( ) {
+      try {
+        liveDataCommitDoc = viewModelCommitDocuments.getMutableLiveСommitDocuments();
 
+        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "MyRecycleViewCommitDocumentsIsNullAdapters  "
+                + myViewHoldersCommitDocumentsIsNull );
+      } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+      }
+    }
+
+  }
 
 
 
