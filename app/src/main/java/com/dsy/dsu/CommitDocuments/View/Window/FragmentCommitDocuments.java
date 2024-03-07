@@ -87,7 +87,7 @@ try{
         try{
             // TODO: 06.03.2024 запускаем класс с компонентами Activity
         new GetComponentCommitDocumentsUI(view,getActivity(),getContext(),viewModelCommitDocuments,
-                getHiltJaksonObjectMapper,lifecycleOwner).workerUI();
+                getHiltJaksonObjectMapper,lifecycleOwner).inizualyzarWorkerUI();
 
 
         Log.d(this.getClass().getName(),"\n"

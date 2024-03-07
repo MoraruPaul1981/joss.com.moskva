@@ -60,7 +60,7 @@ public class GetComponentCommitDocumentsUI extends FragmentCommitDocuments {
 
 
   @SuppressLint("RestrictedApi")
-  public void workerUI(){
+  public void inizualyzarWorkerUI(){
 try{
 
   recycleview_commitdocument = view.findViewById(R.id.recycleview_commitdocument);
