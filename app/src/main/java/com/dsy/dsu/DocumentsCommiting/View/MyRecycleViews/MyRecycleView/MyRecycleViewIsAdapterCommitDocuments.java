@@ -225,17 +225,7 @@ public  class MyRecycleViewIsAdapterCommitDocuments extends RecyclerView.Adapter
         try{
         // TODO: 27.12.2023
 
-            // TODO: 02.03.2022 Запускаем Обработку Parent Конмоненты
-            ComponentsForRecyreView componentsForRecyreView=
-                    new ComponentsForRecyreView(holder,context,position,objectMapper,
-                            getHiltPublicId,getHiltCommintgPrices,getLiveDataForrecyreViewPrices,
-                            getHiltMutableLiveDataPay,lifecycleOwner);
 
-            // TODO: 29.12.2023 Кнопка Стрелочка которая показывает и скрывает Дочериний recyreview
-            componentsForRecyreView.getArrow_nested_receriview();
-
-            // TODO: 29.12.2023 название ЦФО
-            componentsForRecyreView.getmTV_commitingprices_value();
 
 
             holder.setIsRecyclable(false);
