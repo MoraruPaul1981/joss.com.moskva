@@ -26,7 +26,7 @@ import com.google.android.material.navigation.NavigationBarView;
 /**
  * Компоненты Фрагмента Согласование Документов
  */
-public class GetComponentCommitDocumentsUI extends FragmentCommitDocuments {
+public class InitiativeComponentCommitDocumentsUI extends FragmentCommitDocuments {
   protected View view;
   protected  Activity activity;
   protected Context context;
@@ -46,12 +46,12 @@ public class GetComponentCommitDocumentsUI extends FragmentCommitDocuments {
 
 
 
-  public GetComponentCommitDocumentsUI(View view,
-                                       @NonNull Activity activity,
-                                       @NonNull Context context,
-                                       @NonNull ViewModelCommitDocuments viewModelCommitDocuments,
-                                       @NonNull ObjectMapper getHiltJaksonObjectMapper,
-                                       @NonNull LifecycleOwner lifecycleOwner) {
+  public InitiativeComponentCommitDocumentsUI(View view,
+                                              @NonNull Activity activity,
+                                              @NonNull Context context,
+                                              @NonNull ViewModelCommitDocuments viewModelCommitDocuments,
+                                              @NonNull ObjectMapper getHiltJaksonObjectMapper,
+                                              @NonNull LifecycleOwner lifecycleOwner) {
     this.view = view;
     this.activity = activity;
     this.context = context;

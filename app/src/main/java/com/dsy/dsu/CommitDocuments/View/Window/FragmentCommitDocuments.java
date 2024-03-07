@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-import com.dsy.dsu.CommitDocuments.View.ComponentsUI.GetComponentCommitDocumentsUI;
+import com.dsy.dsu.CommitDocuments.View.ComponentsUI.InitiativeComponentCommitDocumentsUI;
 
 import com.dsy.dsu.CommitDocuments.ViewModel.ViewModelCommitDocuments;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
@@ -87,7 +87,7 @@ try{
         super.onViewCreated(view, savedInstanceState);
         try{
             // TODO: 06.03.2024 запускаем класс с компонентами Activity
-        new GetComponentCommitDocumentsUI(view,getActivity(),getContext(),viewModelCommitDocuments,
+        new InitiativeComponentCommitDocumentsUI(view,getActivity(),getContext(),viewModelCommitDocuments,
                 getHiltJaksonObjectMapper,lifecycleOwner).inizualyzarWorkerUI();
 
 

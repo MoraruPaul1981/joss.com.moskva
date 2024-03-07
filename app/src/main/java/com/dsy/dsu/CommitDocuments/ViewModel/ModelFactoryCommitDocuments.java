@@ -23,8 +23,8 @@ public class ModelFactoryCommitDocuments implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
 
-        if (modelClass == com.dsy.dsu.CommitDocuments.View.ViewModel.ViewModelCommitDocuments.class) {
-            return (T) new com.dsy.dsu.CommitDocuments.View.ViewModel.ViewModelCommitDocuments(id,context);
+        if (modelClass == ViewModelCommitDocuments.class) {
+            return (T) new ViewModelCommitDocuments(id,context);
         }else {
             return ViewModelProvider.Factory.super.create(modelClass);
         }
