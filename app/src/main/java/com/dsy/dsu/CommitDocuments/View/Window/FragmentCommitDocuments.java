@@ -1,7 +1,5 @@
 package com.dsy.dsu.CommitDocuments.View.Window;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,9 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-import com.dsy.dsu.CommitDocuments.View.ComponentsUI.GetComponentsUI;
+import com.dsy.dsu.CommitDocuments.View.ComponentsUI.GetComponentsCommitDocumentsUI;
 import com.dsy.dsu.CommitDocuments.View.ViewModel.ViewModelCommitDocuments;
-import com.dsy.dsu.CommitingPrices.View.Window.MainActivityCommitingPrices;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.R;
 
@@ -24,20 +21,17 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class FragmentCommitDocuments extends Fragment {
-
     ViewModelCommitDocuments viewModelCommitDocuments;
     public static FragmentCommitDocuments newInstance() {
 
         return new FragmentCommitDocuments();
     }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: Use the ViewModel
         try{
         viewModelCommitDocuments =((ActivityCommitDocuments)getActivity()).viewModelCommitDocuments;
-
 
         Log.d(this.getClass().getName(),"\n"
                 + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -79,10 +73,8 @@ try{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         try{
-
-
             // TODO: 06.03.2024 запускаем класс с компонентами Activity
-        new GetComponentsUI(view,getActivity(),getContext(),viewModelCommitDocuments);
+        new GetComponentsCommitDocumentsUI(view,getActivity(),getContext(),viewModelCommitDocuments);
 
 
         Log.d(this.getClass().getName(),"\n"

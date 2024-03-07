@@ -13,13 +13,13 @@ import com.dsy.dsu.CommitDocuments.View.Window.FragmentCommitDocuments;
 /**
  * Компоненты Фрагмента Согласование Документов
  */
-public class  GetComponentsUI extends FragmentCommitDocuments {
+public class GetComponentsCommitDocumentsUI extends FragmentCommitDocuments {
 
 
-  public GetComponentsUI(@NonNull View view,
-                         @NonNull Activity activity,
-                         @NonNull Context context,
-                         @NonNull ViewModelCommitDocuments viewModelCommitDocuments) {
+  public GetComponentsCommitDocumentsUI(@NonNull View view,
+                                        @NonNull Activity activity,
+                                        @NonNull Context context,
+                                        @NonNull ViewModelCommitDocuments viewModelCommitDocuments) {
     System.out.printf("ffff");
 
 
