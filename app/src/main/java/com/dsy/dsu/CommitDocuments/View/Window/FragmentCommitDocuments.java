@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,12 +17,21 @@ import com.dsy.dsu.CommitDocuments.View.ComponentsUI.GetComponentCommitDocuments
 import com.dsy.dsu.CommitDocuments.View.ViewModel.ViewModelCommitDocuments;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.R;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class FragmentCommitDocuments extends Fragment {
     ViewModelCommitDocuments viewModelCommitDocuments;
+
+    @Inject
+    ObjectMapper getHiltJaksonObjectMapper;
+
+    LifecycleOwner lifecycleOwner;
+
     public static FragmentCommitDocuments newInstance() {
 
         return new FragmentCommitDocuments();
@@ -32,6 +42,8 @@ public class FragmentCommitDocuments extends Fragment {
         // TODO: Use the ViewModel
         try{
         viewModelCommitDocuments =((ActivityCommitDocuments)getActivity()).viewModelCommitDocuments;
+
+            lifecycleOwner=this;
 
         Log.d(this.getClass().getName(),"\n"
                 + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -74,7 +86,7 @@ try{
         super.onViewCreated(view, savedInstanceState);
         try{
             // TODO: 06.03.2024 запускаем класс с компонентами Activity
-        new GetComponentCommitDocumentsUI(view,getActivity(),getContext(),viewModelCommitDocuments).workerUI();
+        new GetComponentCommitDocumentsUI(view,getActivity(),getContext(),viewModelCommitDocuments,  getHiltJaksonObjectMapper,lifecycleOwner).workerUI();
 
 
         Log.d(this.getClass().getName(),"\n"
