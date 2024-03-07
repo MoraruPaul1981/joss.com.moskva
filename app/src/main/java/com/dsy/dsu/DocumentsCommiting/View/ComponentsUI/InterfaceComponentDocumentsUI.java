@@ -12,9 +12,7 @@ import java.util.ArrayList;
 public interface InterfaceComponentDocumentsUI {
 
     @NonNull
-      void startIsNullRecyreViewOne(@NonNull MyRecycleViewCommitDocumentsIsNullAdapters myViewHoldersCommitDocumentsIsNull);
+      void startIsNullRecyreView(@NonNull MyRecycleViewCommitDocumentsIsNullAdapters myViewHoldersCommitDocumentsIsNull);
 
-    @NonNull
-      void startIsNullRecyreViewTwo(@NonNull MyRecycleViewCommitDocumentsIsNullAdapters myViewHoldersCommitDocumentsIsNull );
 
 }
