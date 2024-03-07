@@ -62,6 +62,10 @@ public  class MyRecycleViewCommitDocumentsIsNullAdapters extends RecyclerView.Ad
     public void onBindViewHolder(@NonNull MyViewHoldersCommitDocumentsIsNull holder, @NonNull int position, @NonNull List<Object> payloads) {
         try {
 
+            // TODO: 07.03.2024  запускаем получение настоящего запуск получение данных и RecyreView заполенный
+
+
+
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +"arrayListIsNull1cData "
