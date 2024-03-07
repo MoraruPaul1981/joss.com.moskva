@@ -46,19 +46,21 @@
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/commitdocumenttablayout"
+                android:theme="@style/AppTheme.AppBarOverlay"
                 android:layout_width="wrap_content"
                 android:layout_column="0"
                 android:layout_height="35dp"
-                android:background="@drawable/style_for_newstypespinners_ietm11"
+                android:background="@drawable/style_for_newstypespinners_ietm21"
                 app:tabMode="fixed"
                 app:tabMaxWidth="250dp"
                 app:tabGravity="fill"
                 app:tabTextColor="#FBFBFB"
                 android:layout_marginStart="70dp"
                 android:layout_marginEnd="70dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="1dp"
+                android:layout_marginTop="2dp"
                 app:tabSelectedTextColor="#000000"
+                app:tabIndicatorHeight="0dp"
+                android:animateLayoutChanges="true"
                 app:tabIndicatorColor="#FBFBFB">
 
 
@@ -82,7 +84,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="2dp"
+            android:layout_margin="3dp"
             android:padding="2dp"
             android:background="@drawable/disayn_line_tablerow6">
 
