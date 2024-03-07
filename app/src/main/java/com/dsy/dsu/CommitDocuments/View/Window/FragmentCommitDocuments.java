@@ -74,7 +74,7 @@ try{
         super.onViewCreated(view, savedInstanceState);
         try{
             // TODO: 06.03.2024 запускаем класс с компонентами Activity
-        new GetComponentCommitDocumentsUI(view,getActivity(),getContext(),viewModelCommitDocuments);
+        new GetComponentCommitDocumentsUI(view,getActivity(),getContext(),viewModelCommitDocuments).workerUI();
 
 
         Log.d(this.getClass().getName(),"\n"

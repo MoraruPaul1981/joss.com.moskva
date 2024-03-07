@@ -28,7 +28,7 @@ public class GetComponentCommitDocumentsUI extends FragmentCommitDocuments {
   }
 
 
-  void workerUI(){
+  public void workerUI(){
 try{
 
     Log.d(this.getClass().getName(),"\n"
