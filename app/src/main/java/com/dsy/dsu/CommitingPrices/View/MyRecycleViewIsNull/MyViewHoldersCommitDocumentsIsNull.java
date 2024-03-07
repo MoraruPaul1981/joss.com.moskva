@@ -21,7 +21,7 @@ public class MyViewHoldersCommitDocumentsIsNull extends RecyclerView.ViewHolder 
         super(itemView);
         try{
             this.context=context;
-            // TODO: 02.03.2022
+            // TODO: 02.03.2022//
 
 
             Log.d(this.getClass().getName(),"\n"
