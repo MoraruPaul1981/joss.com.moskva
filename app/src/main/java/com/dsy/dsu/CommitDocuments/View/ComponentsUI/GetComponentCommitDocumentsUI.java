@@ -11,13 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.dsy.dsu.CommitDocuments.View.ViewModel.ViewModelCommitDocuments;
+
 import com.dsy.dsu.CommitDocuments.View.Window.FragmentCommitDocuments;
+import com.dsy.dsu.CommitDocuments.ViewModel.ViewModelCommitDocuments;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.R;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.navigation.NavigationBarView;
 
 
@@ -40,7 +42,7 @@ public class GetComponentCommitDocumentsUI extends FragmentCommitDocuments {
   protected BottomNavigationItemView bottomNavigationBack;
   protected BottomNavigationItemView bottomNavigationAsync;
   protected BottomNavigationItemView bottomNavigationSearch;
-
+  protected MaterialCardView fragment_materialmardview_commit_documents;
 
 
 
@@ -63,6 +65,7 @@ public class GetComponentCommitDocumentsUI extends FragmentCommitDocuments {
   public void inizualyzarWorkerUI(){
 try{
 
+  fragment_materialmardview_commit_documents = view.findViewById(R.id.fragment_materialmardview_commit_documents);
   recycleview_commitdocument = view.findViewById(R.id.recycleview_commitdocument);
   prograessbar_commitdocument = view.findViewById(R.id.prograessbar_commitdocument);
   searchview_commitdocument =   view.findViewById(R.id.searchview_commitdocument);

@@ -11,8 +11,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.dsy.dsu.CommitDocuments.View.ViewModel.ViewModelCommitDocuments;
+
 import com.dsy.dsu.CommitDocuments.ViewModel.ModelFactoryCommitDocuments;
+import com.dsy.dsu.CommitDocuments.ViewModel.ViewModelCommitDocuments;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.R;
 
@@ -27,7 +28,7 @@ public class ActivityCommitDocuments extends AppCompatActivity {
     Integer getHiltPublicId;
 
 
-   ViewModelCommitDocuments viewModelCommitDocuments;
+    ViewModelCommitDocuments viewModelCommitDocuments;
 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;

@@ -1,4 +1,4 @@
-package com.dsy.dsu.CommitDocuments.View.ViewModel;
+package com.dsy.dsu.CommitDocuments.ViewModel;
 
 import android.content.Context;
 import android.os.Bundle;

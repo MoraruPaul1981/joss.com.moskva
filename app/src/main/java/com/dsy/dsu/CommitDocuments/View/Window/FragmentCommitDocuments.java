@@ -14,7 +14,8 @@ import android.view.ViewGroup;
 
 
 import com.dsy.dsu.CommitDocuments.View.ComponentsUI.GetComponentCommitDocumentsUI;
-import com.dsy.dsu.CommitDocuments.View.ViewModel.ViewModelCommitDocuments;
+
+import com.dsy.dsu.CommitDocuments.ViewModel.ViewModelCommitDocuments;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.R;
 import com.fasterxml.jackson.databind.ObjectMapper;
