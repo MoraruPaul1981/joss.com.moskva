@@ -13,8 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dsy.dsu.CommitDocuments.View.ViewModel.ViewModelCommitDocuments;
 import com.dsy.dsu.CommitDocuments.View.Window.FragmentCommitDocuments;
-import com.dsy.dsu.CommitingPrices.ViewModel.ModelComminingPrisesByte;
-import com.dsy.dsu.CommitingPrices.ViewModel.ModelComminingPrisesString;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.R;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,11 +32,11 @@ public class GetComponentCommitDocumentsUI extends FragmentCommitDocuments {
   protected ObjectMapper getHiltJaksonObjectMapper;
   protected LifecycleOwner lifecycleOwner;
 
-  // TODO: 07.03.2024 компонеты согсалованеи документов 
-  protected RecyclerView recycleview_comminingpprices;
-  protected ProgressBar prograessbar_commintingprices ;
-  protected androidx.appcompat.widget.SearchView searchview_commintingprices;
-  protected BottomNavigationView bottomnavigationw_commintingprices;
+  // TODO: 07.03.2024 компонеты согсалованеи документов
+  protected RecyclerView recycleview_commitdocument;
+  protected ProgressBar prograessbar_commitdocument;
+  protected androidx.appcompat.widget.SearchView searchview_commitdocument;
+  protected BottomNavigationView bottomnavigationw_commitdocument;
   protected BottomNavigationItemView bottomNavigationBack;
   protected BottomNavigationItemView bottomNavigationAsync;
   protected BottomNavigationItemView bottomNavigationSearch;
@@ -65,18 +63,18 @@ public class GetComponentCommitDocumentsUI extends FragmentCommitDocuments {
   public void workerUI(){
 try{
 
-  recycleview_comminingpprices = view.findViewById(R.id.recycleview_comminingpprices);
-  prograessbar_commintingprices= view.findViewById(R.id.prograessbar_commintingprices);
-  searchview_commintingprices=   view.findViewById(R.id.searchview_commintingprices);
+  recycleview_commitdocument = view.findViewById(R.id.recycleview_commitdocument);
+  prograessbar_commitdocument = view.findViewById(R.id.prograessbar_commitdocument);
+  searchview_commitdocument =   view.findViewById(R.id.searchview_commitdocument);
 
 
-  bottomnavigationw_commintingprices = view.findViewById(R.id.bottomnavigationw_commintingprices);
-  bottomnavigationw_commintingprices.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_UNLABELED);
-  bottomNavigationBack = bottomnavigationw_commintingprices.findViewById(R.id.bottomNavigationBack);
+  bottomnavigationw_commitdocument = view.findViewById(R.id.bottomnavigationw_commitdocument);
+  bottomnavigationw_commitdocument.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_UNLABELED);
+  bottomNavigationBack = bottomnavigationw_commitdocument.findViewById(R.id.bottomNavigationBack);
   bottomNavigationBack.setTitle("Выйти");
-  bottomNavigationAsync = bottomnavigationw_commintingprices.findViewById(R.id.bottomNavigationAsync);
+  bottomNavigationAsync = bottomnavigationw_commitdocument.findViewById(R.id.bottomNavigationAsync);
   bottomNavigationAsync.setTitle("Обновить");
-  bottomNavigationSearch = bottomnavigationw_commintingprices.findViewById(R.id.bottomNavigationSearch);
+  bottomNavigationSearch = bottomnavigationw_commitdocument.findViewById(R.id.bottomNavigationSearch);
   bottomNavigationSearch.setTitle("Поиск");
 
   bottomNavigationSearch.setEnabled(false);
