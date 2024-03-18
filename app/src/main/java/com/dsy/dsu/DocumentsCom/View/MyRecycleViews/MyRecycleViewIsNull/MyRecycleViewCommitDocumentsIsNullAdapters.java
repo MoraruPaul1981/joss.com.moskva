@@ -1,4 +1,4 @@
-package com.dsy.dsu.DocumentsCommiting.View.MyRecycleViews.MyRecycleViewIsNull;// TODO: 27.12.2023 Recyreview is null
+package com.dsy.dsu.DocumentsCom.View.MyRecycleViews.MyRecycleViewIsNull;// TODO: 27.12.2023 Recyreview is null
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -14,7 +14,7 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.dsy.dsu.DocumentsCommiting.View.ComponentsUI.InitiativeComponentCommitDocumentsUI;
+import com.dsy.dsu.DocumentsCom.View.ComponentsUI.InitiativeComponentCommitDocumentsUI;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.R;
 

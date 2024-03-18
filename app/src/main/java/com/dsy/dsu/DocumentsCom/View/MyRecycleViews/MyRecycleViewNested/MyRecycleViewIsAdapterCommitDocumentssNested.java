@@ -1,4 +1,4 @@
-package com.dsy.dsu.DocumentsCommiting.View.MyRecycleViews.MyRecycleViewNested;// TODO: 27.12.2023 Recyreview is null
+package com.dsy.dsu.DocumentsCom.View.MyRecycleViews.MyRecycleViewNested;// TODO: 27.12.2023 Recyreview is null
 
 import android.content.Context;
 import android.content.Intent;

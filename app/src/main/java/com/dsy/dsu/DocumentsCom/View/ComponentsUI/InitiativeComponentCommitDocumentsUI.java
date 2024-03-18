@@ -1,4 +1,4 @@
-package com.dsy.dsu.DocumentsCommiting.View.ComponentsUI;
+package com.dsy.dsu.DocumentsCom.View.ComponentsUI;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -14,9 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.dsy.dsu.DocumentsCommiting.View.MyRecycleViews.MyRecycleViewIsNull.MyRecycleViewCommitDocumentsIsNullAdapters;
-import com.dsy.dsu.DocumentsCommiting.View.Window.FragmentCommitDocuments;
-import com.dsy.dsu.DocumentsCommiting.ViewModel.ViewModelCommitDocuments;
+import com.dsy.dsu.DocumentsCom.View.MyRecycleViews.MyRecycleViewIsNull.MyRecycleViewCommitDocumentsIsNullAdapters;
+import com.dsy.dsu.DocumentsCom.View.Window.FragmentCommitDocuments;
 import com.dsy.dsu.CommitPrices.Model.BiccessLogicas.DizaynRecyreView.LeftDividerItemDecorator;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.R;
@@ -32,7 +31,7 @@ public class InitiativeComponentCommitDocumentsUI extends FragmentCommitDocument
   protected View view;
   protected  Activity activity;
   protected Context context;
-  protected ViewModelCommitDocuments viewModelCommitDocuments;
+
 
   protected ObjectMapper getHiltJaksonObjectMapper;
 
@@ -47,16 +46,16 @@ public class InitiativeComponentCommitDocumentsUI extends FragmentCommitDocument
   public InitiativeComponentCommitDocumentsUI(@NonNull View view,
                                               @NonNull Activity activity,
                                               @NonNull Context context,
-                                              @NonNull ViewModelCommitDocuments viewModelCommitDocuments,
                                               @NonNull ObjectMapper getHiltJaksonObjectMapper,
-                                              @NonNull LifecycleOwner lifecycleOwner) {
+                                              @NonNull LifecycleOwner lifecycleOwner,
+                                              @NonNull LiveData<Bundle> liveDataCommitDoc) {
     this.view = view;
     this.activity = activity;
     this.context = context;
-    this.viewModelCommitDocuments = viewModelCommitDocuments;
     this.getHiltJaksonObjectMapper = getHiltJaksonObjectMapper;
     this.lifecycleOwner = lifecycleOwner;
     this. initiativeComponentCommitDocumentsUI=this;
+    this. liveDataCommitDoc=liveDataCommitDoc;
     Log.d(this.getClass().getName(),"\n"
             + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -68,8 +67,6 @@ public class InitiativeComponentCommitDocumentsUI extends FragmentCommitDocument
   public void inizualyzarWorkerUI(){
 try{
   recycleview_commitdocument = view.findViewById(R.id.recycleview_commitdocument);
-  // TODO: 07.03.2024 set LiveData
-  new SetliveDataCommitDoc().startliveDataCommitDoc();
 
   // TODO: 07.03.2024   init Recyreviews
   new InizializayRecyreViews().startInitRecyreview();
@@ -79,7 +76,7 @@ try{
 
 
   // TODO: 07.03.2024  запускаем NULL RecyreView первым
-  InterfaceComponentDocumentsUI interfaceComponentDocumentsUI=new StartingIsNullRecyreViewDocumentsCommingOne();
+  InterfaceComponentDocumentsUI interfaceComponentDocumentsUI;
   if (myViewHoldersCommitDocumentsIsNull==null) {
     interfaceComponentDocumentsUI=new StartingIsNullRecyreViewDocumentsCommingOne();
 
@@ -139,25 +136,7 @@ try{
 
 
 
-  class SetliveDataCommitDoc{
-    public void startliveDataCommitDoc( ) {
-      try {
-        liveDataCommitDoc = viewModelCommitDocuments.getMutableLiveСommitDocuments();
 
-        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "MyRecycleViewCommitDocumentsIsNullAdapters  "
-                + myViewHoldersCommitDocumentsIsNull );
-      } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-      }
-    }
-
-  }
 
 
 // TODO: 07.03.2024

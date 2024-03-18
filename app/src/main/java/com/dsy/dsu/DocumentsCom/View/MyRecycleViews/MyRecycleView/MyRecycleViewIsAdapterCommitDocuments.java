@@ -1,4 +1,4 @@
-package com.dsy.dsu.DocumentsCommiting.View.MyRecycleViews.MyRecycleView;// TODO: 27.12.2023 Recyreview is null
+package com.dsy.dsu.DocumentsCom.View.MyRecycleViews.MyRecycleView;// TODO: 27.12.2023 Recyreview is null
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dsy.dsu.CommitPrices.Model.LiveDataPrices.GetLiveDataForrecyreViewPrices;
 import com.dsy.dsu.CommitPrices.View.MyRecycleView.MyViewHoldersCommintPrices;
-import com.dsy.dsu.CommitPrices.View.ComponentsPayPrices.ComponentsForRecyreView;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.R;
 import com.fasterxml.jackson.databind.JsonNode;

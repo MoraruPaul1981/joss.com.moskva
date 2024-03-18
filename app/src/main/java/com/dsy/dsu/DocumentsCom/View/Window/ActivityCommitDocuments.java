@@ -1,4 +1,4 @@
-package com.dsy.dsu.DocumentsCommiting.View.Window;
+package com.dsy.dsu.DocumentsCom.View.Window;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -9,11 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 
-
-import com.dsy.dsu.DocumentsCommiting.ViewModel.ModelFactoryCommitDocuments;
-import com.dsy.dsu.DocumentsCommiting.ViewModel.ViewModelCommitDocuments;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.R;
 
@@ -26,9 +22,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class ActivityCommitDocuments extends AppCompatActivity {
     @Inject
     Integer getHiltPublicId;
-
-
-    ViewModelCommitDocuments viewModelCommitDocuments;
 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
@@ -51,8 +44,6 @@ public class ActivityCommitDocuments extends AppCompatActivity {
             // TODO: 06.03.2024 инициализция
             fragmentManager =  getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
-            viewModelCommitDocuments = new ViewModelProvider(this,
-                    new ModelFactoryCommitDocuments(getHiltPublicId,this)).get(ViewModelCommitDocuments.class );
             // TODO: 06.03.2024  starting
         if (savedInstanceState == null) {
             // TODO: 06.03.2024 запускаем бизнес локигнку нового активити согласования документов

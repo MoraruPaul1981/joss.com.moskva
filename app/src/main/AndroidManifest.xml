@@ -1698,7 +1698,7 @@
 
 
         <activity
-            android:name=".DocumentsCommiting.View.Window.ActivityCommitDocuments"
+            android:name=".DocumentsCom.View.Window.ActivityCommitDocuments"
             android:exported="true"
             android:label="Союз-Автодор"
             android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">

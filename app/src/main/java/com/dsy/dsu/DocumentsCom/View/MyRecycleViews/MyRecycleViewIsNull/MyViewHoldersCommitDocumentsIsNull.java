@@ -1,21 +1,15 @@
-package com.dsy.dsu.DocumentsCommiting.View.MyRecycleViews.MyRecycleViewIsNull;
+package com.dsy.dsu.DocumentsCom.View.MyRecycleViews.MyRecycleViewIsNull;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.dsy.dsu.DocumentsCommiting.View.ComponentsUI.InitiativeComponentCommitDocumentsUI;
+import com.dsy.dsu.DocumentsCom.View.ComponentsUI.InitiativeComponentCommitDocumentsUI;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
-import com.dsy.dsu.R;
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.navigation.NavigationBarView;
 
 import org.jetbrains.annotations.NotNull;
 

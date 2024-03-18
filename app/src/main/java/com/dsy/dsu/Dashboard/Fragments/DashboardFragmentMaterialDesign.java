@@ -27,7 +27,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.dsy.dsu.AdmissionMaterials.Window.MainActivity_AdmissionMaterials;
-import com.dsy.dsu.DocumentsCommiting.View.Window.ActivityCommitDocuments;
 import com.dsy.dsu.CommitPrices.View.Window.MainActivityCommitingPrices;
 import com.dsy.dsu.Dashboard.Model.BLFragmentDashbord.DashboardGRANTorREVOKE;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
@@ -59,7 +58,7 @@ public class DashboardFragmentMaterialDesign extends  DialogFragment  {
 
     private MaterialButton КнопкаТабель, КнопкаСогласование ,
             КнопкаПоступлениеМатериалов,КнопкаЗаявкаНаТранспорт,
-            КнопкаСогласЦен,КнопкаДокументыСоглас;
+            КнопкаСогласЦен;
 
     private  TextView TextViewLogo;
     private LifecycleOwner lifecycleOwner;
@@ -256,7 +255,7 @@ public class DashboardFragmentMaterialDesign extends  DialogFragment  {
             КнопкаСогласЦен         = (MaterialButton) view.findViewById(R.id.КнопкаСогласЦен); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
             КнопкаПоступлениеМатериалов         = (MaterialButton) view.findViewById(R.id.КнопкаПоступлениеМатериалов); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
             КнопкаТабель          = (MaterialButton) view.findViewById(R.id.КнопкаТабель); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
-            КнопкаДокументыСоглас          = (MaterialButton) view.findViewById(R.id.КнопкаДокументыСоглас); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
+
 
 
             TextViewLogo      = (TextView) view.findViewById(R.id.TextViewLogo); /////КНОПКА ТАБЕЛЬНОГО УЧЕТА
@@ -281,7 +280,7 @@ public class DashboardFragmentMaterialDesign extends  DialogFragment  {
                     КнопкаЗаявкаНаТранспорт,
                     КнопкаСогласование,КнопкаСогласЦен
                     ,КнопкаПоступлениеМатериалов,
-                    КнопкаТабель,КнопкаДокументыСоглас,getGrantRemote);
+                    КнопкаТабель,getGrantRemote);
 
 
 
@@ -592,35 +591,6 @@ public class DashboardFragmentMaterialDesign extends  DialogFragment  {
 
 
                 });
-                // TODO: 20.12.2023  новая кнопка документов согласование
-                КнопкаДокументыСоглас.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        try {
-                            Intent intentЗапускДокументыСогласования = new Intent();
-                            Bundle data = new Bundle();
-                            data.putBinder("callbackbinderdashbord", localBinderОбновлениеПО);
-                            intentЗапускДокументыСогласования.putExtras(data);
-                           intentЗапускДокументыСогласования.setClass(getContext(), ActivityCommitDocuments.class);//рабочий
-                            intentЗапускДокументыСогласования.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intentЗапускДокументыСогласования);
-                            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                    Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    }
-
-
-                });
-
 
                 // TODO: 21.08.2023  teo button
 

@@ -19,7 +19,6 @@ public interface InGRANTs {
                         @NonNull  MaterialButton КнопкаСогласЦен ,
                         @NonNull   MaterialButton КнопкаПоступлениеМатериалов,
                         @NonNull   MaterialButton КнопкаТабель,
-                        MaterialButton КнопкаДокументыСоглас,
                         @NonNull Integer getGrantRemote);
 
 

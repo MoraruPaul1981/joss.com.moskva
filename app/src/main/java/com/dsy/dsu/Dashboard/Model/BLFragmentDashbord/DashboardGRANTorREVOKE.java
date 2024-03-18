@@ -101,7 +101,6 @@ public class DashboardGRANTorREVOKE implements InGRANTs {
                                   MaterialButton КнопкаСогласЦен,
                                   MaterialButton КнопкаПоступлениеМатериалов,
                                MaterialButton КнопкаТабель,
-                               MaterialButton КнопкаДокументыСоглас,
                                Integer getGrantRemote) {
         // TODO: 11.01.2024
         try{
@@ -158,19 +157,6 @@ public class DashboardGRANTorREVOKE implements InGRANTs {
                             КнопкаСогласЦен.refreshDrawableState();
                         }
                     });
-
-                    КнопкаДокументыСоглас.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                        @Override
-                        public void onGlobalLayout() {
-                            КнопкаСогласЦен.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-
-                            КнопкаСогласЦен.setHeight( 300);
-                            КнопкаСогласЦен.requestLayout();
-                            КнопкаСогласЦен.forceLayout();
-                            КнопкаСогласЦен.refreshDrawableState();
-                        }
-                    });
-
 
                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

@@ -1,37 +1,33 @@
-package com.dsy.dsu.DocumentsCommiting.View.Window;
+package com.dsy.dsu.DocumentsCom.View.Window;
 
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
-import com.dsy.dsu.DocumentsCommiting.View.ComponentsUI.InitiativeComponentCommitDocumentsUI;
-
-import com.dsy.dsu.DocumentsCommiting.ViewModel.ViewModelCommitDocuments;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.R;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import javax.inject.Inject;
-
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class FragmentCommitDocuments extends Fragment {
-    ViewModelCommitDocuments viewModelCommitDocuments;
+
 
     @Inject
     ObjectMapper getHiltJaksonObjectMapper;
 
     LifecycleOwner lifecycleOwner;
+
+      LiveData<Bundle> liveDataCommitDoc;
 
     public static FragmentCommitDocuments newInstance() {
 
@@ -42,9 +38,12 @@ public class FragmentCommitDocuments extends Fragment {
         super.onCreate(savedInstanceState);
         // TODO: Use the ViewModel
         try{
-        viewModelCommitDocuments =((ActivityCommitDocuments)getActivity()).viewModelCommitDocuments;
+
 
             lifecycleOwner=this;
+
+            // TODO: 07.03.2024 set LiveData
+
 
         Log.d(this.getClass().getName(),"\n"
                 + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -86,10 +85,9 @@ try{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         try{
-            // TODO: 06.03.2024 запускаем класс с компонентами Activity
+    /*        // TODO: 06.03.2024 запускаем класс с компонентами Activity
         new InitiativeComponentCommitDocumentsUI(view,getActivity(),getContext(),viewModelCommitDocuments,
-                getHiltJaksonObjectMapper,lifecycleOwner).inizualyzarWorkerUI();
-
+                getHiltJaksonObjectMapper,lifecycleOwner,liveDataCommitDoc).inizualyzarWorkerUI();*/
 
         Log.d(this.getClass().getName(),"\n"
                 + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
