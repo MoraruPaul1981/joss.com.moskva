@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -25,7 +24,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -33,7 +31,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
@@ -1084,7 +1081,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             ДатаДляКалендаря=new getDatePicker(this, android.R.style.Widget_Material_DatePicker);
             ДатаДляКалендаря.setTitle("Календарь");
             ДатаДляКалендаря.setCancelable(false);
-
+            ДатаДляКалендаря.setCanceledOnTouchOutside(false);
 
 
             WindowManager.LayoutParams params = ДатаДляКалендаря.getWindow().getAttributes();
@@ -1163,12 +1160,21 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                         int Month=  ДатаДляКалендаря.getDatePicker().getMonth()+1;
                         int Year=     ДатаДляКалендаря.getDatePicker().getYear();
 
+
+
+
+
                         // TODO: 18.03.2024  создание новой даты
                         setDateTimeForNeTabel( DayOfMonth,Month,Year);
 
-                        getsetfinalDateNewtabel();
+                            Boolean ЕслиТакойМЕСЯЦуЖЕвСпинера=     validationDateNewtabel();
 
-                        ДатаДляКалендаря.dismiss();
+                      // TODO: 26.10.2021 метод создания новго табеля
+                            if (ЕслиТакойМЕСЯЦуЖЕвСпинера) {
+                                setNewNameMotchCurretntabel();
+                            }
+
+                            ДатаДляКалендаря.dismiss();
                         ДатаДляКалендаря.cancel();
                         // TODO: 17.04.2023
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1214,32 +1220,32 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
     }
 
-    private void getsetfinalDateNewtabel() throws ParseException {
+    private Boolean validationDateNewtabel() throws ParseException {
+        Boolean ЕслиТакойМЕСЯЦуЖЕвСпинера=false;
       try {
-        StringBuffer ИщемУжеСозданныйМЕсяц = new StringBuffer();
         if (СпинерВыборДату != null) {
-            for (int ИндексСуществуюЩимМесяц = 1; ИндексСуществуюЩимМесяц < СпинерВыборДату.getCount(); ИндексСуществуюЩимМесяц++) {
+            for (int ИндексСуществуюЩимМесяц = 0; ИндексСуществуюЩимМесяц < СпинерВыборДату.getCount(); ИндексСуществуюЩимМесяц++) {
                 ////todo ДА ПРОСТО ЗАПОЛЯНЕМ БУФЕР УЖЕ СОЗДАННЫМИ МЕСЯЦАМИ В СПИНЕРЕ
-                ИщемУжеСозданныйМЕсяц.append(СпинерВыборДату.getItemAtPosition(ИндексСуществуюЩимМесяц).toString()).append("\n");
-                Log.d(this.getClass().getName(), " ИщемУжеСозданныйМЕсяц " + ИщемУжеСозданныйМЕсяц.toString() + "\n");
+           String НазваниеМесяцаИзСпинера=     СпинерВыборДату.getItemAtPosition(ИндексСуществуюЩимМесяц).toString();
+
+              if(  ИмесяцвИГодСразу.trim().equalsIgnoreCase(НазваниеМесяцаИзСпинера.trim()) ){
+                  // TODO: 18.03.2024
+                  ЕслиТакойМЕСЯЦуЖЕвСпинера=true;
+                }
+                Log.d(this.getClass().getName(), " ИмесяцвИГодСразу " + ИмесяцвИГодСразу.toString() + "\n");
             }
         } else {
             if (ИмесяцвИГодСразу != null) {
-                ИщемУжеСозданныйМЕсяц.append(ИмесяцвИГодСразу);
+
             } else {
                 Toast.makeText(getApplicationContext(), " Нет месяца для создание Табеля !!! ", Toast.LENGTH_LONG).show();
             }
         }
-        ///// todo ТУТ ВСТАВЛЯЕМ ММЕСЯЦА УКТОРГНО НЕТ ЕШЕ
-        Log.d(this.getClass().getName(), " ИщемУжеСозданныйМЕсяц " + ИщемУжеСозданныйМЕсяц.toString() + "\n" + " ИмесяцвИГодСразу " + ИмесяцвИГодСразу);
-
-
-        // TODO: 26.10.2021 метод создания новго табеля
-        МетодВставкиНовогоМесяцавТабельКоторогоНет();
         ////
         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                " ЕслиТакойМЕСЯЦуЖЕвСпинера " +ЕслиТакойМЕСЯЦуЖЕвСпинера);
 
     } catch (Exception e) {
         e.printStackTrace();
@@ -1248,12 +1254,13 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
         new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                 Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
     }
+      return ЕслиТакойМЕСЯЦуЖЕвСпинера;
     }
 
 
 
     ////TODO СОЗДАНИЯ КАЛЕНДАРЯ С ПОЛУЧЕННЫМИ УЖЕ ДАННЫМИ
-    private void МетодВставкиНовогоМесяцавТабельКоторогоНет() throws ParseException {
+    private void setNewNameMotchCurretntabel() throws ParseException {
         try{
         Log.d(this.getClass().getName()," ИмесяцвИГодСразу " +ИмесяцвИГодСразу);
         StringBuffer МЕсяцСЗакглавнойБуквы =new StringBuffer(ИмесяцвИГодСразу.toLowerCase());
