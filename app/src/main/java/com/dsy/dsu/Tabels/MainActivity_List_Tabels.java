@@ -1091,7 +1091,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             ДатаДляКалендаря.getWindow().setAttributes(params);
 
 
-            Drawable drawabledown=context.getDrawable(R.drawable.style_for_chat_for_fragmaent_contact);
+            Drawable drawabledown=context.getDrawable(R.drawable.style_for_calendar1);
             ДатаДляКалендаря.getWindow().setBackgroundDrawable(drawabledown);
 
 
@@ -1120,7 +1120,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
     private void getBUTTON_NEGATIVE() {
         ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_NEGATIVE).setVisibility(View.VISIBLE);
-        ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#03DAC6"));
+        ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);//Color.parseColor("#03DAC6")
         ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_NEGATIVE).setText("Закрыть");
 
         ДатаДляКалендаря.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(
@@ -1149,7 +1149,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
     private void getBUTTON_POSITIVE() {
         ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_POSITIVE).setVisibility(View.VISIBLE);
-        ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#03DAC6"));
+        ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);//Color.parseColor("#03DAC6")
         ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_POSITIVE).setText("Ok");
 
         ДатаДляКалендаря.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(
