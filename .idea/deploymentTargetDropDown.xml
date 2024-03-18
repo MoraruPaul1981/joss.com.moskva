@@ -8,7 +8,10 @@
       <entry key="ActivityCommitDocuments (1)">
         <State />
       </entry>
-      <entry key="MainActivity_Dashboard">
+      <entry key="MainActivityCommitingPrices">
+        <State />
+      </entry>
+      <entry key="MainActivity_CommitPay">
         <State />
       </entry>
       <entry key="MainActivity_List_Tabels">
@@ -28,6 +31,22 @@
         </State>
       </entry>
       <entry key="app">
+        <State>
+          <runningDeviceTargetSelectedWithDropDown>
+            <Target>
+              <type value="RUNNING_DEVICE_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="C:\Users\moraru_pi\.android\avd\Pixel_5_API_30.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-03-18T10:09:11.253690200Z" />
+        </State>
+      </entry>
+      <entry key="appdocuments_Model.mdeol">
         <State />
       </entry>
     </value>

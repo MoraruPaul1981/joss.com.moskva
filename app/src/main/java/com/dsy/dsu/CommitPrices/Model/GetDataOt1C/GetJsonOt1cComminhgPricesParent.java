@@ -11,8 +11,5 @@ public abstract  class GetJsonOt1cComminhgPricesParent {
   public abstract byte[] getByteComminhgPrices(@NotNull Context context, @NotNull String adress, @NotNull Integer PublicId,
                                                            @NotNull ObjectMapper objectMapper);
 
-  public abstract String getStringComminhgPrices(@NotNull Context context, @NotNull String adress, @NotNull Integer PublicId,
-                                                 @NotNull ObjectMapper objectMapper);
-
 
 }

@@ -1,4 +1,4 @@
-package com.dsy.dsu.CommitPrices.Model.startingViewModels.GeneratorJsonFor1C;
+package com.dsy.dsu.CommitPrices.Model.GeneratorJsons;
 
 import android.content.Context;
 import android.util.Log;
