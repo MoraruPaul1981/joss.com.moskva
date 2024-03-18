@@ -1175,15 +1175,17 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                       // TODO: 26.10.2021 метод создания новго табеля
                             if (ЕслиТакойМЕСЯЦуЖЕвСпинера==false) {
                                 setNewNameMotchCurretntabel();
+                            }else {
+                                ДатаДляКалендаря.dismiss();
+                                ДатаДляКалендаря.cancel();
                             }
 
-                            ДатаДляКалендаря.dismiss();
-                        ДатаДляКалендаря.cancel();
+
                         // TODO: 17.04.2023
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                " DayOfMonth " +ДатаДляКалендаря.getDatePicker().getYear() );
+                                " DayOfMonth " +ДатаДляКалендаря.getDatePicker().getYear() + " ЕслиТакойМЕСЯЦуЖЕвСпинера " +ЕслиТакойМЕСЯЦуЖЕвСпинера );
 
 
                     } catch (Exception e) {
