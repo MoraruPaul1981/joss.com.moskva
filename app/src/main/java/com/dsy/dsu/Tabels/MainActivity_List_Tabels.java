@@ -1170,7 +1170,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                             Boolean ЕслиТакойМЕСЯЦуЖЕвСпинера=     validationDateNewtabel();
 
                       // TODO: 26.10.2021 метод создания новго табеля
-                            if (ЕслиТакойМЕСЯЦуЖЕвСпинера) {
+                            if (ЕслиТакойМЕСЯЦуЖЕвСпинера==false) {
                                 setNewNameMotchCurretntabel();
                             }
 
