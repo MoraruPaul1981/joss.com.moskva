@@ -120,9 +120,10 @@ public class ComponentsForRecyreView {
             mTV_NumberDOc_value=    holder.itemView.findViewById(R.id.mTV_NumberDOc_value) ;
             JsonNode jsonNode=    holder.jsonNode.deepCopy();
                 TextNode textNodeNDoc=( TextNode)   jsonNode.findValue("NDoc").deepCopy();
-                // TODO: 30.12.2023
+                // TODO: 30.12.2023 номер документа
                 if (! textNodeNDoc.asText().isEmpty()) {
-                    mTV_NumberDOc_value.setText(textNodeNDoc.asText().trim());
+                    Integer integerНомерДокумента=Integer.parseInt(textNodeNDoc.asText().trim());
+                    mTV_NumberDOc_value.setText(integerНомерДокумента.toString());
                 }
 
             mTV_NumberDOc_value.requestLayout();

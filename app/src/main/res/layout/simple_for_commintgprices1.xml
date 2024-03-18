@@ -36,6 +36,7 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/disayn_line_tablerow10"
             android:gravity="center_vertical|center_horizontal">
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -53,13 +54,13 @@
 
                     android:layout_centerInParent="true"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/style_forpolymaterialb_cycle_createspinner2"
 
+                    android:background="@drawable/style_forpolymaterialb_cycle_createspinner2"
                     android:gravity="center"
+
                     android:minHeight="25dp"
 
                     android:text="  Номер документа"
-
                     android:textAlignment="gravity"
                     android:textColor="#000000"
                     android:textColorHint="#80807C"
