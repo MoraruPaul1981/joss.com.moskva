@@ -12,6 +12,8 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/appdocuments_Model" />
             <option value="$PROJECT_DIR$/appdocuments_Model/mdeol" />
+            <option value="$PROJECT_DIR$/appdocuments_Model/myVieMOdels" />
+            <option value="$PROJECT_DIR$/appdocuments_Model/views" />
             <option value="$PROJECT_DIR$/appdocuments_ModelEntry" />
             <option value="$PROJECT_DIR$/appdocuments_Presenter" />
           </set>
