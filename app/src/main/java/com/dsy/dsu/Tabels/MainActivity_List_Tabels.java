@@ -1091,6 +1091,8 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             ДатаДляКалендаря.getWindow().setAttributes(params);
 
 
+            Drawable drawabledown=context.getDrawable(R.drawable.style_for_chat_for_fragmaent_contact);
+            ДатаДляКалендаря.getWindow().setBackgroundDrawable(drawabledown);
 
 
             if (!ДатаДляКалендаря.isShowing()) {
