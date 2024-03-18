@@ -64,6 +64,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.common.util.concurrent.AtomicDouble;
 
 
 import org.jetbrains.annotations.NotNull;
@@ -1225,6 +1226,8 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
     private Boolean validationDateNewtabel() throws ParseException {
         Boolean ЕслиТакойМЕСЯЦуЖЕвСпинера=false;
       try {
+
+          if (ИмесяцвИГодСразу != null) {
         if (СпинерВыборДату != null) {
             for (int ИндексСуществуюЩимМесяц = 0; ИндексСуществуюЩимМесяц < СпинерВыборДату.getCount(); ИндексСуществуюЩимМесяц++) {
                 ////todo ДА ПРОСТО ЗАПОЛЯНЕМ БУФЕР УЖЕ СОЗДАННЫМИ МЕСЯЦАМИ В СПИНЕРЕ
@@ -1233,16 +1236,20 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
               if(  ИмесяцвИГодСразу.trim().equalsIgnoreCase(НазваниеМесяцаИзСпинера.trim()) ){
                   // TODO: 18.03.2024
                   ЕслиТакойМЕСЯЦуЖЕвСпинера=true;
+                  Toast.makeText(getApplicationContext(), "Этот месяц уже есть!!! ", Toast.LENGTH_LONG).show();
+                  // TODO: 18.03.2024 exit
+                  break;
                 }
                 Log.d(this.getClass().getName(), " ИмесяцвИГодСразу " + ИмесяцвИГодСразу.toString() + "\n");
-            }
-        } else {
-            if (ИмесяцвИГодСразу != null) {
 
-            } else {
-                Toast.makeText(getApplicationContext(), " Нет месяца для создание Табеля !!! ", Toast.LENGTH_LONG).show();
             }
         }
+
+          } else {
+              Toast.makeText(getApplicationContext(), " Нет месяца для создание Табеля !!! ", Toast.LENGTH_LONG).show();
+              // TODO: 18.03.2024
+              ЕслиТакойМЕСЯЦуЖЕвСпинера=true;
+          }
         ////
         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
