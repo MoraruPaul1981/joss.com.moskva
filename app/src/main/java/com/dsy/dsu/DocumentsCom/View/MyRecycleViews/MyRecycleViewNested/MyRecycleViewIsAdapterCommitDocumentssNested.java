@@ -293,11 +293,8 @@ public  class MyRecycleViewIsAdapterCommitDocumentssNested extends RecyclerView.
                 // TODO: 30.12.2023 кнопка ЦФО Расчет
                 componentsForRecyreViewNesteds.getmTV_CFORaskhoda_value(jsonNodeNestedRow);
 
-
                 // TODO: 31.01.2024 3 New Poly
                 componentsForRecyreViewNesteds. getmTV_Kontragent_value(jsonNodeNestedRow);
-
-                componentsForRecyreViewNesteds. getmTV_NumberDOc_value(jsonNodeNestedRow);
 
                 componentsForRecyreViewNesteds.  getmTV_NumberRow_value(jsonNodeNestedRow);
 

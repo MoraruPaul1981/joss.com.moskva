@@ -296,8 +296,6 @@ public  class MyRecycleViewIsAdaptersNested extends RecyclerView.Adapter<MyViewH
                 // TODO: 31.01.2024 3 New Poly
                 componentsForRecyreViewNesteds. getmTV_Kontragent_value(jsonNodeNestedRow);
 
-                componentsForRecyreViewNesteds. getmTV_NumberDOc_value(jsonNodeNestedRow);
-
                 componentsForRecyreViewNesteds.  getmTV_NumberRow_value(jsonNodeNestedRow);
 
 

@@ -354,59 +354,7 @@
         </TableRow>
         <!-- todo END  ДАННЫЕ первые строчки  #1 Контрагента-->
 
-        <!-- todo ДАННЫЕ первые строчки  #2 Номер документа-->
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical|center_horizontal">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/mTV_NumberDOc_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerInParent="true"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginEnd="2dp"
-                    android:background="@drawable/style_forpolymaterialb_cycle_createspinner15"
-                    android:gravity="center"
-                    android:hint="Номер документа"
-                    android:minWidth="120dp"
-                    android:minHeight="20dp"
-                    android:textAlignment="gravity"
-                    android:textColor="#000000"
-                    android:textColorHint="#454542"
-                    android:textSize="11sp"
-                    android:textStyle="normal"
-                    android:visibility="visible"
-                    app:fontFamily="@font/average_sans" />
-
-                <!--TODO второая страка -->
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_column="0"
-                    android:id="@+id/mTV_NumberDOc_value"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/mTV_NumberDOc_name"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/style_forpolymaterialb_cycle_createspinner2"
-                    android:gravity="center"
-                    android:minHeight="25dp"
-                    android:textAlignment="gravity"
-                    android:textColor="#000000"
-                    android:textColorHint="#80807C"
-                    android:textSize="15sp"
-                    android:textStyle="normal"
-                    android:visibility="visible"
-                    app:fontFamily="@font/average_sans" />
-            </RelativeLayout>
-        </TableRow>
         <!-- todo КОНЕЦ первые строчки  #2 Номер документа->
 
 

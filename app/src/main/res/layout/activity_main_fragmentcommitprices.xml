@@ -181,7 +181,7 @@
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                     android:layout_above="@+id/bottomnavigationw_commintingprices"
                     android:layout_width="match_parent"
-                    android:indeterminateTint="#1E9191"
+                    android:indeterminateTint="#CDD3D3"
                     android:layout_height="5dp"
                     android:scaleY="3"
                     android:scaleX="1"

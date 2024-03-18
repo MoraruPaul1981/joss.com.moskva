@@ -37,11 +37,12 @@ public  class MyRecycleViewIsAdaptersCommintPrices extends RecyclerView.Adapter<
 
     private Integer getHiltPublicId;
     private  String getHiltCommintgPrices;
-    private Animation animationДляСогласованияЦены;
+
 
     GetLiveDataForrecyreViewPrices getLiveDataForrecyreViewPrices;
     MutableLiveData<Intent> getHiltMutableLiveDataPay;
     LifecycleOwner lifecycleOwner;
+    @SuppressLint("SuspiciousIndentation")
     public MyRecycleViewIsAdaptersCommintPrices(@NotNull JsonNode jsonNodeParent,
                                                 @NotNull Context context, @NotNull ObjectMapper objectMapper,
                                                 @NotNull Integer getHiltPublicId,
@@ -61,7 +62,7 @@ public  class MyRecycleViewIsAdaptersCommintPrices extends RecyclerView.Adapter<
         this.lifecycleOwner = lifecycleOwner;
 
             // TODO: 30.01.2024
-            animationДляСогласованияЦены = AnimationUtils.loadAnimation(context,  R.anim.slide_in_scrolls);//R.anim.layout_animal_commit
+           // animationДляСогласованияЦены = AnimationUtils.loadAnimation(context,  R.anim.slide_in_scrolls);//R.anim.layout_animal_commit
            // animationДляСогласованияЦены = AnimationUtils.loadAnimation(context, R.anim.slide_in_row);//R.anim.layout_animal_commit
             Log.d(this.getClass().getName(),"\n"
                     + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -235,6 +236,8 @@ public  class MyRecycleViewIsAdaptersCommintPrices extends RecyclerView.Adapter<
 
             // TODO: 29.12.2023 название ЦФО
             componentsForRecyreView.getmTV_commitingprices_value();
+            // TODO: 18.03.2024 номер документа перенес 
+            componentsForRecyreView.getmTV_NumberDOc_value();
 
 
             holder.setIsRecyclable(false);
@@ -335,19 +338,6 @@ public  class MyRecycleViewIsAdaptersCommintPrices extends RecyclerView.Adapter<
     }
 
 
-    private void moveAnitationRecyrevirew( @NonNull MyViewHoldersCommintPrices holder) {
-        try{
-            holder.itemView.startAnimation(animationДляСогласованияЦены);
-            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
+
 
 }//TODO  конец два22
