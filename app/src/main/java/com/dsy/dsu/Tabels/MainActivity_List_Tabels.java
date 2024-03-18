@@ -25,6 +25,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -1068,109 +1069,43 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
     private void МетодСозданиеДиалогаКалендаряДаты() {///////метод создание календяря даты
 /////TODO тут визуализикуеться КАЛЕНДАРЬ
         try {
-            final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", new Locale("ru"));
             Calendar newDate = Calendar.getInstance();
-            //TODODATA
-            if (ДатаДляКалендаря == null) {
-                /*                               new DatePickerDialog(this, android.R.style.Theme_Material_Light_Dialog_MinWidth, new DatePickerDialog.OnDateSetListener() {////Theme_Holo_Dialog_MinWidth  //Theme_Holo_Panel
-                                new DatePickerDialog(this, android.R.style.Theme_Material_Light_Dialog_Alert, new DatePickerDialog.OnDateSetListener() {////Theme_Holo_Dialog_MinWidth  //Theme_Holo_Panel
-     new DatePickerDialog(this, android.R.style.Theme_Material_Dialog_MinWidth, new DatePickerDialog.OnDateSetListener() {////Theme_Holo_Dialog_MinWidth  //Theme_Holo_Panel*/
-            /*    ДатаДляКалендаря =
-                        new DatePickerDialog(this, android.R.style.Theme_Material_Light_Dialog_MinWidth,///Theme_Material_Light_Dialog_NoActionBar_MinWidth
-                                new DatePickerDialog.OnDateSetListener() {
-                                    @Override
-                                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
-                                    }////Theme_Holo_Dialog_MinWidth  //Theme_Holo_Panel
-
-
-
-                        }, newDate.get(Calendar.YEAR), newDate.get(Calendar.MONTH), newDate.get(Calendar.DAY_OF_MONTH));*/
-            }
-
             class  getDatePicker extends DatePickerDialog{
-
-
                 public getDatePicker(@NonNull Context context, int themeResId) {
                     super(context, themeResId);
                     setButton(BUTTON_POSITIVE, ("Ok"), this);
-                    setButton(BUTTON_NEUTRAL, ("Something"), this); // ADD THIS
-                    setButton(BUTTON_NEGATIVE, ("Cancel"), this);
+                    setButton(BUTTON_NEGATIVE, ("Закрыть"), this);
                 }
-
                 public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                     newDate.set(year, monthOfYear, dayOfMonth);
-
                 }
 
             }
-
-            ДатаДляКалендаря=new getDatePicker(this, android.R.style.Theme_Material_Light_Dialog_MinWidth);
-
-            ДатаДляКалендаря.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    newDate.set(year, month, dayOfMonth);
-                }
-            });
-
-
-//        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            ДатаДляКалендаря=new getDatePicker(this, android.R.style.Widget_Material_DatePicker);
             ДатаДляКалендаря.setTitle("Календарь");
-/*            ДатаДляКалендаря.setButton(DialogInterface.BUTTON_POSITIVE, "Pos", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //Your code
-
-                int DayOfMonth=    ДатаДляКалендаря.getDatePicker().getDayOfMonth();
-                  int Month=  ДатаДляКалендаря.getDatePicker().getMonth()+1;
-                   int Year=     ДатаДляКалендаря.getDatePicker().getYear();
-
-                    // TODO: 18.03.2024  создание новой даты  
-                     setDateTimeForNeTabel( DayOfMonth,Month,Year);
-
-
-
-           *//*         dialog.dismiss();
-                    dialog.cancel();*//*
-                    // TODO: 17.04.2023
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                            " DayOfMonth " +DayOfMonth+"Month "+Month+" Year " +Year);
-                }
-            });*/
-
-      /*      ДатаДляКалендаря.setButton(DialogInterface.BUTTON_NEGATIVE, "Neg", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //Your code
-                    dialog.dismiss();
-                    dialog.cancel();
-                    // TODO: 17.04.2023
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                }
-            });*/
-
-
-
-
             ДатаДляКалендаря.setCancelable(false);
+
+
+
+            WindowManager.LayoutParams params = ДатаДляКалендаря.getWindow().getAttributes();
+            ДатаДляКалендаря.getWindow().setLayout(WindowManager.LayoutParams.WRAP_CONTENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT);
+            ДатаДляКалендаря.getWindow().setGravity(Gravity.CENTER);
+            ДатаДляКалендаря.getWindow().setAttributes(params);
+
+
+
+
             if (!ДатаДляКалендаря.isShowing()) {
                 ДатаДляКалендаря.show();
             }
 
- /*           ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_NEGATIVE).setVisibility(View.VISIBLE);
-          ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#008080"));
-           ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_NEGATIVE).setBackgroundColor(Color.WHITE);
-//
-            ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#008080"));
-            ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_POSITIVE).setBackgroundColor(Color.WHITE);
-*/
 
-        //////////////////////
+            // TODO: 18.03.2024  создаем кнопки ок и cancel
+            getBUTTON_POSITIVE();
+            getBUTTON_NEGATIVE();
+
+
             Log.d(this.getClass().getName(), " ИмесяцвИГодСразу " + ИмесяцвИГодСразу);
         ////
     } catch (Exception e) {
@@ -1182,78 +1117,150 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
     }
     }
 
-    private void setDateTimeForNeTabel(@NonNull int DayOfMonth,@NonNull int  Month,@NonNull  int Year) {
 
-      /*  try {
-            String ФинальныйПолученаяДата = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(newDate.getTime());
-            Log.d(this.getClass().getName(), " year " + year + " month " + monthOfYear + " dayOfMonth "
-                    + dayOfMonth + "  ФинальныйПолученаяДата " + ФинальныйПолученаяДата);
-            // TODO: 22.09.2021 после того как мы получил даты запускаме сомо приложения
-            String МесяцИзКолендаря = String.valueOf(monthOfYear + 1);////ТЕКУЩИЙ МЕСЯЦ ИЗ КАЛЕНДАРЯ
-            if (МесяцИзКолендаря.length() == 2) {
 
-                FullNameCFO = dayOfMonth + "-" + МесяцИзКолендаря + "-" + year;////ДАННОЕ ЗНАЧЕНИЕ ПЕРЕДАЕМ НА ВСЕ ПРОГРАММУ В ДАЛЬНЕЙШЕМ
-                Log.d(this.getClass().getName(), "  FullNameCFO" + FullNameCFO);
-            } else {
-                FullNameCFO = dayOfMonth + "-" + "0" + МесяцИзКолендаря + "-" + year;////ДАННОЕ ЗНАЧЕНИЕ ПЕРЕДАЕМ НА ВСЕ ПРОГРАММУ В ДАЛЬНЕЙШЕМ
-                Log.d(this.getClass().getName(), "  FullNameCFO" + FullNameCFO);
-            }
+    private void getBUTTON_NEGATIVE() {
+        ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_NEGATIVE).setVisibility(View.VISIBLE);
+        ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#03DAC6"));
+        ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_NEGATIVE).setText("Закрыть");
+
+        ДатаДляКалендаря.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                        ДатаДляКалендаря.dismiss();
+                        ДатаДляКалендаря.cancel();
+                        // TODO: 17.04.2023
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                " DayOfMonth " +ДатаДляКалендаря.getDatePicker().getYear() );
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
+                }
+                });
+    }
+
+    private void getBUTTON_POSITIVE() {
+        ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_POSITIVE).setVisibility(View.VISIBLE);
+        ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#03DAC6"));
+        ДатаДляКалендаря.getButton(DatePickerDialog.BUTTON_POSITIVE).setText("Ok");
+
+        ДатаДляКалендаря.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try{
+
+                        int DayOfMonth=    ДатаДляКалендаря.getDatePicker().getDayOfMonth();
+                        int Month=  ДатаДляКалендаря.getDatePicker().getMonth()+1;
+                        int Year=     ДатаДляКалендаря.getDatePicker().getYear();
+
+                        // TODO: 18.03.2024  создание новой даты
+                        setDateTimeForNeTabel( DayOfMonth,Month,Year);
+
+                        getsetfinalDateNewtabel();
+
+                        ДатаДляКалендаря.dismiss();
+                        ДатаДляКалендаря.cancel();
+                        // TODO: 17.04.2023
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                " DayOfMonth " +ДатаДляКалендаря.getDatePicker().getYear() );
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
+                }
+                });
+    }
+
+    private void setDateTimeForNeTabel(@NonNull int DayOfMonth,@NonNull int  МесяцИзКолендаря,@NonNull  int Year) {
+        try {
             Date ПрасингДаты = new Date();
             if (FullNameCFO != null) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    ПрасингДаты = new android.icu.text.SimpleDateFormat("dd-MM-yyyy", new Locale("ru")).parse(FullNameCFO);
+                    ПрасингДаты = new android.icu.text.SimpleDateFormat("dd-MM-yyyy", new Locale("ru")).parse(DayOfMonth+"-"+МесяцИзКолендаря+"-"+Year);
                 } else {
-                    ПрасингДаты = new SimpleDateFormat("dd-MM-yyyy", new Locale("ru")).parse(FullNameCFO);
+                    ПрасингДаты = new SimpleDateFormat("dd-MM-yyyy", new Locale("ru")).parse(DayOfMonth+"-"+МесяцИзКолендаря+"-"+Year);
                 }
-                Log.d(this.getClass().getName(), " ПрасингДаты " + ПрасингДаты.toString());
-                ///////получаем значение месца на руском через метод дата
+
                 ИмесяцвИГодСразу = МетодПереводаНазваниеМесяцаСАнглискогоНаРУсский(ПрасингДаты);
+
                 Log.d(this.getClass().getName(), " ИмесяцвИГодСразу " + ИмесяцвИГодСразу);
-                /////вАЖНО ЗАПИСЫВАЕМ ОБРАТНО В СПИНЕР НА РАБОЧИЙ СТОЛ АКТИВТИ НАПРИМЕР НОВЫЙ МЕСЯЦ  ОКТЯБРЬ 2020 ГОДА НАПРИМЕР
-                Log.d(this.getClass().getName(), "   FullNameCFO" + FullNameCFO);
+
             }
-            /////////////ТУТ КРУТИМ ВЕСЬ КУРСОР  И ПЫТАЕМСЯ НАЙТИ ЗНАЧЕНИЕ ВНЕМ  И ПО РЕЗУЛЬТАТ ЗАПОЛЯЕМ ЕГО В STRINGBUGGER
-            ////TODO ТУТ МЫ КРУТИМ ВЕСЬ СПИНЕР В КОТРЫЙ ИЗ БАЗЫ ЗАГРУЗИЛОСЬ ВСЕ СОЗДАННЫЕ МЕСЯЦА ИМЫ ПРОВЕРЕМ ЕЛСИ ТАКОМ МЕСЯЦ ЕЩН ИЛИ НЕТ
-            StringBuffer ИщемУжеСозданныйМЕсяц = new StringBuffer();
-            if (СпинерВыборДату != null) {
-                for (int ИндексСуществуюЩимМесяц = 1; ИндексСуществуюЩимМесяц < СпинерВыборДату.getCount(); ИндексСуществуюЩимМесяц++) {
-                    ////todo ДА ПРОСТО ЗАПОЛЯНЕМ БУФЕР УЖЕ СОЗДАННЫМИ МЕСЯЦАМИ В СПИНЕРЕ
-                    ИщемУжеСозданныйМЕсяц.append(СпинерВыборДату.getItemAtPosition(ИндексСуществуюЩимМесяц).toString()).append("\n");
-                    Log.d(this.getClass().getName(), " ИщемУжеСозданныйМЕсяц " + ИщемУжеСозданныйМЕсяц.toString() + "\n");
-                }
-            } else {
-                if (ИмесяцвИГодСразу != null) {
-                    ИщемУжеСозданныйМЕсяц.append(ИмесяцвИГодСразу);
-                } else {
-                    Toast.makeText(getApplicationContext(), " Нет месяца для создание Табеля !!! ", Toast.LENGTH_LONG).show();
-                }
-            }
-            ///// todo ТУТ ВСТАВЛЯЕМ ММЕСЯЦА УКТОРГНО НЕТ ЕШЕ
-            Log.d(this.getClass().getName(), " ИщемУжеСозданныйМЕсяц " + ИщемУжеСозданныйМЕсяц.toString() + "\n" + " ИмесяцвИГодСразу " + ИмесяцвИГодСразу);
-            // TODO: 26.10.2021 метод создания новго табеля
-            МетодВставкиНовогоМесяцавТабельКоторогоНет(ИщемУжеСозданныйМЕсяц);
-            ////
-            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
             new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }*/
+        }
 
     }
 
+    private void getsetfinalDateNewtabel() throws ParseException {
+      try {
+        StringBuffer ИщемУжеСозданныйМЕсяц = new StringBuffer();
+        if (СпинерВыборДату != null) {
+            for (int ИндексСуществуюЩимМесяц = 1; ИндексСуществуюЩимМесяц < СпинерВыборДату.getCount(); ИндексСуществуюЩимМесяц++) {
+                ////todo ДА ПРОСТО ЗАПОЛЯНЕМ БУФЕР УЖЕ СОЗДАННЫМИ МЕСЯЦАМИ В СПИНЕРЕ
+                ИщемУжеСозданныйМЕсяц.append(СпинерВыборДату.getItemAtPosition(ИндексСуществуюЩимМесяц).toString()).append("\n");
+                Log.d(this.getClass().getName(), " ИщемУжеСозданныйМЕсяц " + ИщемУжеСозданныйМЕсяц.toString() + "\n");
+            }
+        } else {
+            if (ИмесяцвИГодСразу != null) {
+                ИщемУжеСозданныйМЕсяц.append(ИмесяцвИГодСразу);
+            } else {
+                Toast.makeText(getApplicationContext(), " Нет месяца для создание Табеля !!! ", Toast.LENGTH_LONG).show();
+            }
+        }
+        ///// todo ТУТ ВСТАВЛЯЕМ ММЕСЯЦА УКТОРГНО НЕТ ЕШЕ
+        Log.d(this.getClass().getName(), " ИщемУжеСозданныйМЕсяц " + ИщемУжеСозданныйМЕсяц.toString() + "\n" + " ИмесяцвИГодСразу " + ИмесяцвИГодСразу);
+
+
+        // TODO: 26.10.2021 метод создания новго табеля
+        МетодВставкиНовогоМесяцавТабельКоторогоНет();
+        ////
+        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+    }
+
+
 
     ////TODO СОЗДАНИЯ КАЛЕНДАРЯ С ПОЛУЧЕННЫМИ УЖЕ ДАННЫМИ
-    private void МетодВставкиНовогоМесяцавТабельКоторогоНет(StringBuffer ищемУжеСозданныйМЕсяц) throws ParseException {
+    private void МетодВставкиНовогоМесяцавТабельКоторогоНет() throws ParseException {
         try{
         Log.d(this.getClass().getName()," ИмесяцвИГодСразу " +ИмесяцвИГодСразу);
         StringBuffer МЕсяцСЗакглавнойБуквы =new StringBuffer(ИмесяцвИГодСразу.toLowerCase());
+
         ИмесяцвИГодСразу= МЕсяцСЗакглавнойБуквы.substring(0, 1).toUpperCase() + МЕсяцСЗакглавнойБуквы .substring(1).toLowerCase().trim();
         Log.d(this.getClass().getName()," МЕсяцСЗакглавнойБуквы " +ИмесяцвИГодСразу);
+
             int НовыйМесяц = МетодПолучениниеНовогоМесяцДляЗАписивОднуКолонку(ФинальнаяМЕсяцДляНовогоТабеля);
             int НовыйГод = МетодПолучениниеНовыйГодДляЗАписивОднуКолонку(ПолученныйГодДляНовогоТабеля);
             ///TODO  ПОСЛЕ ВСТАКИ ПЕРЕХОДИМ НА АКТИВТИ С ВЫБОРО И СОЗДАНИЕМ САМОГО ТАБЕЛЯ НОВОГО
@@ -1279,9 +1286,6 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                 " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
         new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                 Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        ///
-
-
     }
 
         }
