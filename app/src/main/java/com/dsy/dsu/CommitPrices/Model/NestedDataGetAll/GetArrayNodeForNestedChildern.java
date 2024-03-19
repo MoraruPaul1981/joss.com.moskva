@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.util.Iterator;
 import java.util.function.Consumer;
@@ -29,31 +30,27 @@ public class GetArrayNodeForNestedChildern implements  InForChilderArrayJSon  {
     public JsonNode remoteRowJsonPrices( ) {
         try {
 
+            Iterator<JsonNode> elementsForDelete =    jsonNodeNested.iterator();
+            Integer sum = 0;
+            while (elementsForDelete.hasNext()) {
+              ArrayNode arrayNodeRemote= (ArrayNode) elementsForDelete.next();
+                // TODO: 19.03.2024 remote
+                arrayNodeRemote.remove(position);
 
-            jsonNodeNested.elements().forEachRemaining(new Consumer<JsonNode>() {
-                @Override
-                public void accept(JsonNode jsonNodeForDelete) {
-                    // TODO: 19.03.2024
-                    Iterator<JsonNode> elementsForDelete = jsonNodeForDelete.iterator();
-                            Integer sum = 0;
-                            while (elementsForDelete.hasNext()) {
-                                elementsForDelete.next();
-                                if (sum == position) {
-                                    elementsForDelete.remove();
-                                    break;
-                                }
-                                sum++;
+                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " jsonNode1сСогласования.size() " + jsonNodeNested.size());
 
-                            }
-                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                            + " jsonNodeForDelete.size() " + jsonNodeForDelete.size());
 
+
+                if (sum == position) {
+                    elementsForDelete.remove();
+                    break;
                 }
-            });
+                sum++;
 
-
+            }
 
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
