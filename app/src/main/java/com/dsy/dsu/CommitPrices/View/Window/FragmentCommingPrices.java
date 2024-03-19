@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
@@ -28,6 +30,7 @@ import com.dsy.dsu.CommitPrices.ViewModel.ModelComminingPrisesByte;
 import com.dsy.dsu.CommitPrices.ViewModel.ModelComminingPrisesString;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.R;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -325,10 +328,14 @@ try{
     public void EventMessageAfterDeleteRowNestedRecyreView(MessageEvensPriceAfterDeleteRow messageEvensPriceAfterDeleteRow){
         try{
             // TODO: 26.12.2023  реакция на событие Удаления
-      Intent mess=      messageEvensPriceAfterDeleteRow.mess;
-        Bundle bundle=    mess.getExtras();
-// TODO: 30.12.2023 запускаем первоночальную оценку количество записей
-            eventsBackAndAsyncAndSearchCommintPrices.new EventsAsync().eventsSearchsetNumber(null);
+                Intent mess=      messageEvensPriceAfterDeleteRow.mess;
+            if (mess.getAction().equalsIgnoreCase("AfterDleteArrayNodeNested.size()")) {
+                Bundle bundle=    mess.getExtras();
+                JsonNode jsonNodeNestedAfterDelete= (JsonNode) bundle.getSerializable("size()");
+               // TODO: 30.12.2023 запускаем первоночальную оценку количество записей
+               Animation animationДляСогласованияЦены= AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_scrolls);//R.anim.layout_animal_commit
+            bottomnavigationw_commintingprices.startAnimation(animationДляСогласованияЦены);
+            }
             Log.d(this.getClass().getName(),"\n"
                     + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

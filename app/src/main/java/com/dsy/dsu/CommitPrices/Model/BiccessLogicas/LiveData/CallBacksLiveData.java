@@ -110,7 +110,7 @@ public class CallBacksLiveData {
 
 
 // TODO: 30.12.2023 запускаем первоночальную оценку количество записей
-                        eventsBackAndAsyncAndSearchCommintPrices.new EventsAsync().eventsSearchsetNumber(jsonNode1сСогласованиеЦен);
+                        eventsBackAndAsyncAndSearchCommintPrices.new EventsAsync().eventsSearchsetNumber(jsonNode1сСогласованиеЦен.size());
 
                       // TODO: 31.01.2024 делаем SearchView активиным
                          changeVisibleEnableSeachView();

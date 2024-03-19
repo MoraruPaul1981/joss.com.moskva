@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dsy.dsu.CommitPrices.Model.BiccessLogicas.RebootRecyreViewNested;
 import com.dsy.dsu.CommitPrices.Model.EvenBusPrices.MessageEvensBusPrices;
+import com.dsy.dsu.CommitPrices.Model.EvenBusPrices.MessageEvensPriceAfterDeleteRow;
 import com.dsy.dsu.CommitPrices.Model.NestedDataGetAll.GetArrayNodeForNestedChildern;
 import com.dsy.dsu.CommitPrices.View.MyRecycleViewNested.MyRecycleViewIsAdaptersNestedCommintPrices;
 import com.dsy.dsu.CommitPrices.View.MyRecycleViewNested.MyViewHoldersNestedCommintPrices;
@@ -21,9 +22,12 @@ import com.dsy.dsu.R;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.common.util.concurrent.AtomicDouble;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.Serializable;
 
 
 // TODO: 11.01.2024  класс финально после получение ответ  переропределяем внезний вид  recyreview удаля теьбкущю плитку
@@ -74,8 +78,14 @@ Context context;
                 // TODO: 23.01.2024 анимация
                 setAnimationAfterDeleteRow( recycleview_comminingppricesNesteds);
 
-// TODO: 24.01.2024 собыьтие Отправляем что данные меньще 1  и родительсное ЦФО надо закрыть
+
+
+// TODO: 24.01.2024 После Успешного удаление строки   , при Zero 0 строчкек презапускам весь RecyreView
                 eventBusReactionForSizeZero(jsonNodeNested);
+
+
+                // TODO: 19.03.2024 После Успешного удаление строки
+                eventBusAfterDeleteRow(jsonNodeNested);
 
                 Log.d(this.getClass().getName(), "\n"
                         + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -160,6 +170,30 @@ Context context;
 
 
     }
+// TODO: 19.03.2024
+private   void eventBusAfterDeleteRow(@NonNull JsonNode jsonNodeNested) {
+    try{
+                Intent intentPriceEventBudAfrerDeleteRow=new Intent();
+                Bundle Event=new Bundle();
+              intentPriceEventBudAfrerDeleteRow.setAction("AfterDleteArrayNodeNested.size()");
+                Event.putSerializable("size()" ,(Serializable) jsonNodeNested );
+               intentPriceEventBudAfrerDeleteRow.putExtras(Event);
 
+                EventBus.getDefault().post(new MessageEvensPriceAfterDeleteRow(intentPriceEventBudAfrerDeleteRow));
+
+        Log.d(this.getClass().getName(), "\n"
+                + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()+" jsonNodeNested.size() " +jsonNodeNested.size());
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+
+
+}
 
 }

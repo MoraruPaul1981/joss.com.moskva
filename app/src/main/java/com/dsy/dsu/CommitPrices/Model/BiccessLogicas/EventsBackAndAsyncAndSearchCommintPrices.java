@@ -211,13 +211,13 @@ public class EventsBackAndAsyncAndSearchCommintPrices {
             }
         }
 
-        public    void eventsSearchsetNumber(@NonNull JsonNode jsonNode ) {
+        public    void eventsSearchsetNumber(@NonNull Integer jsonNodeSize ) {
             try {
                 // TODO: 09.03.2022
-                if (jsonNode!=null) {
-                    if (  jsonNode.size()>0) {
+                if (jsonNodeSize!=null) {
+                    if (  jsonNodeSize>0) {
                         bottomnavigationw_commintingprices.getOrCreateBadge(R.id.bottomNavigationAsync).setBackgroundColor(Color.parseColor("#008080"));
-                        bottomnavigationw_commintingprices.getOrCreateBadge(R.id.bottomNavigationAsync).setNumber(jsonNode.size());//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
+                        bottomnavigationw_commintingprices.getOrCreateBadge(R.id.bottomNavigationAsync).setNumber(jsonNodeSize);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
                     } else {
                         bottomnavigationw_commintingprices.getOrCreateBadge(R.id.bottomNavigationAsync).setBackgroundColor(Color.RED)        ;
                         bottomnavigationw_commintingprices.getOrCreateBadge(R.id.bottomNavigationAsync).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
