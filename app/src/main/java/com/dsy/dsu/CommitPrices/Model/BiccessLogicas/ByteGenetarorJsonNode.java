@@ -5,10 +5,14 @@ import android.util.Log;
 
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Iterator;
 
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.functions.Consumer;
@@ -21,19 +25,18 @@ public class ByteGenetarorJsonNode {
    public JsonNode genetarorJsonnode(@NotNull Context context,
                                      @NotNull ObjectMapper objectMapper,
                                      @NotNull  byte[] getbyteComminhgPrices){
-       final JsonNode[] jsonNode1сСогласованиеЦен = {null};
+       JsonNode jsonNode1сСогласованиеЦен = null;
        try{
-
         Single<JsonNode> jsonNodeSingle=  Single.fromCallable(()->{
             // TODO: 28.12.2023
                     final JsonParser jsonParser= objectMapper.createParser(getbyteComminhgPrices);
-                    jsonNode1сСогласованиеЦен[0] = jsonParser.readValueAsTree();
+                    JsonNode jsonNode1с   = jsonParser.readValueAsTree();
 
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +"getbyteComminhgPrices  "
-                    + getbyteComminhgPrices+ " jsonNode "+ jsonNode1сСогласованиеЦен[0]);
-               return jsonNode1сСогласованиеЦен[0];
+                    + getbyteComminhgPrices+ " jsonNode1с "+ jsonNode1с);
+               return jsonNode1с;
            }).subscribeOn(Schedulers.single())
                 .doOnError(new Consumer<Throwable>() {
             @Override
@@ -45,12 +48,13 @@ public class ByteGenetarorJsonNode {
                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
             }
         });
-           jsonNode1сСогласованиеЦен[0] = jsonNodeSingle.blockingGet();
+           // TODO: 19.03.2024
+           jsonNode1сСогласованиеЦен = jsonNodeSingle.blockingGet();
 
        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +"getbyteComminhgPrices  "
-               + getbyteComminhgPrices+ " jsonNode1сСогласованиеЦен "+ jsonNode1сСогласованиеЦен[0]);
+               + getbyteComminhgPrices+ " jsonNode1сСогласованиеЦен "+ jsonNode1сСогласованиеЦен);
    } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -58,6 +62,6 @@ public class ByteGenetarorJsonNode {
         new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                 Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
     }
-    return jsonNode1сСогласованиеЦен[0];
+    return jsonNode1сСогласованиеЦен;
     }
 }

@@ -60,8 +60,6 @@ public class ComponentsForRecyreViewNesteds {
             mTV_Kolichestvo_value,mTV_CFORaskhoda_value,mTV_Kontragent_value,mTV_NumberDOc_value,mTV_NumberRow_value;
 
 
-    private Animation animation;
-
     private ObjectMapper objectMapper;
 
     private Integer getHiltPublicId;
@@ -82,7 +80,6 @@ public class ComponentsForRecyreViewNesteds {
                                           @NotNull  Context context,
                                           @NotNull int getAbsoluteAdapterPosition,
                                           @NotNull MaterialCardView cardview_commingprices_neasted,
-                                          @NotNull Animation animation,
                                           @NotNull ObjectMapper objectMapper,
                                           @NotNull Integer getHiltPublicId,
                                           @NotNull MyRecycleViewIsAdaptersNested myRecycleViewIsAdaptersNested,
@@ -96,7 +93,6 @@ public class ComponentsForRecyreViewNesteds {
         this.context = context;
         this.getAbsoluteAdapterPosition = getAbsoluteAdapterPosition;
         this.cardview_commingprices_neasted = cardview_commingprices_neasted;
-        this.animation = animation;
         this.objectMapper = objectMapper;
         this.getHiltPublicId = getHiltPublicId;
         this.myRecycleViewIsAdaptersNested = myRecycleViewIsAdaptersNested;
@@ -119,7 +115,6 @@ public class ComponentsForRecyreViewNesteds {
       String cena=  textNodeCena.asText().trim();
       if (! cena.isEmpty()) {
           mTV_commitingprices_count.setText(cena+" (руб)");
-          mTV_commitingprices_count.startAnimation(animation);
       }
       mTV_commitingprices_count.requestLayout();
 

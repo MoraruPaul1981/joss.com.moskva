@@ -38,7 +38,7 @@ public  class MyRecycleViewIsAdaptersNested extends RecyclerView.Adapter<MyViewH
     public  int getAbsoluteAdapterPosition;
     private MyViewHoldersNested viewHoldersNested;
 
-    private Animation animation;
+
 
     private ObjectMapper objectMapper;
 
@@ -78,7 +78,7 @@ public  class MyRecycleViewIsAdaptersNested extends RecyclerView.Adapter<MyViewH
             this.recycleview_comminingppricesNesteds = recycleview_comminingppricesNesteds;
             this.jsonNodeNested = jsonNodeNested;
 
-            animation = AnimationUtils.loadAnimation(context,R.anim.slide_in_row8);
+
 
 
         Log.d(this.getClass().getName(),"\n"
@@ -262,7 +262,7 @@ public  class MyRecycleViewIsAdaptersNested extends RecyclerView.Adapter<MyViewH
 
             ComponentsForRecyreViewNesteds componentsForRecyreViewNesteds=
                     new ComponentsForRecyreViewNesteds(holder,context,
-                            position,cardview_commingprices_neasted,animation,objectMapper,getHiltPublicId,
+                            position,cardview_commingprices_neasted,objectMapper,getHiltPublicId,
                             this,jsonNodeNested,getHiltCommintgPrices,
                             getLiveDataForrecyreViewPrices,
                             getHiltMutableLiveDataPrices,lifecycleOwner,recycleview_comminingppricesNesteds);
