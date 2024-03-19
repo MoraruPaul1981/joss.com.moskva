@@ -123,7 +123,8 @@ public class ComponentsForRecyreView {
                 // TODO: 30.12.2023 номер документа
                 if (! textNodeNDoc.asText().isEmpty()) {
                     Integer integerНомерДокумента=Integer.parseInt(textNodeNDoc.asText().trim());
-                    mTV_NumberDOc_value.setText(integerНомерДокумента.toString());
+                    mTV_NumberDOc_value.setText(textNodeNDoc.asText().trim());
+                   // mTV_NumberDOc_value.setText(integerНомерДокумента.toString());
                 }
 
             mTV_NumberDOc_value.requestLayout();
