@@ -189,6 +189,7 @@ public class ComponentsForRecyreViewNesteds {
                         ///todo revboot нажимаем для подтвердить
                        eventButtonArrow(MaterialButtonNested,position);
 
+                        cardmaretialrotadefult();
 
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -254,7 +255,7 @@ public class ComponentsForRecyreViewNesteds {
                 }
 
 
-                cardmaretialrotadefult();
+
 
                 Log.d(this.getClass().getName(),"\n"
                         + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
