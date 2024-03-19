@@ -7,6 +7,7 @@ import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.Iterator;
+import java.util.function.Consumer;
 
 
 // TODO: 09.01.2024  данные класс оплучаеем все дочерниуе едементы для ArrayNode от Согласование Цены
@@ -22,9 +23,29 @@ public class GetArrayNodeForNestedChildern implements  InForChilderArrayJSon  {
     }
 
 
+
+
+
     public JsonNode remoteRowJsonPrices( ) {
         try {
-            Iterator<JsonNode> elements = jsonNodeNested.iterator();
+
+
+            jsonNodeNested.elements().forEachRemaining(new Consumer<JsonNode>() {
+                @Override
+                public void accept(JsonNode jsonNode) {
+                    // TODO: 19.03.2024
+                    Iterator<JsonNode> elements = jsonNode.iterator();
+
+                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                            + " jsonNode1сСогласования.size() " + jsonNodeNested.size());
+
+                }
+            });
+
+
+         /*   Iterator<JsonNode> elements = jsonNodeNested.iterator();
             Integer sum = 0;
             while (elements.hasNext()) {
                 elements.next();
@@ -34,7 +55,7 @@ public class GetArrayNodeForNestedChildern implements  InForChilderArrayJSon  {
                 }
                 sum++;
 
-            }
+            }*/
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"

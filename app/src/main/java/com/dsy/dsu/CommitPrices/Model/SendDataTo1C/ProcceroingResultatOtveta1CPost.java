@@ -69,7 +69,7 @@ Context context;
                 jsonNodeNested=    getArrayNodeForNestedChildern.remoteRowJsonPrices( );
 
 
-                // TODO: 26.12.2023 нет  байты
+                // TODO: 26.12.2023 посде удаления строки переопределяем внешний вид
                 RebootRecyreViewNested rebootRecyreViewNested=new RebootRecyreViewNested(context);
 
                 rebootRecyreViewNested.методRebootRecyreViewComminPrices(jsonNodeNested,myRecycleViewIsAdaptersNested,recycleview_comminingppricesNesteds);
@@ -82,7 +82,7 @@ Context context;
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber());
 
 // TODO: 24.01.2024 собыьтие Отправляем что данные меньще 1  и родительсное ЦФО надо закрыть
-                eventBusReactionSize(jsonNodeNested);
+                eventBusReactionForSizeZero(jsonNodeNested);
 
 
                 Log.d(this.getClass().getName(), "\n"
@@ -128,7 +128,7 @@ Context context;
     }
 
 
-    private   void eventBusReactionSize(@NonNull JsonNode jsonNodeNested) {
+    private   void eventBusReactionForSizeZero(@NonNull JsonNode jsonNodeNested) {
         try{
             switch (jsonNodeNested.size()){
                 case 0:
