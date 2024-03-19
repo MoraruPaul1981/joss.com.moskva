@@ -10,6 +10,17 @@
       </entry>
       <entry key="MainActivityCommitingPrices">
         <State>
+          <runningDeviceTargetSelectedWithDropDown>
+            <Target>
+              <type value="RUNNING_DEVICE_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="C:\Users\moraru_pi\.android\avd\Pixel_5_API_30.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </runningDeviceTargetSelectedWithDropDown>
           <targetSelectedWithDropDown>
             <Target>
               <type value="QUICK_BOOT_TARGET" />
@@ -21,7 +32,7 @@
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-03-19T08:02:08.141465400Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-03-19T08:37:17.071483300Z" />
         </State>
       </entry>
       <entry key="MainActivity_CommitPay">

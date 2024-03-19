@@ -32,30 +32,29 @@ public class GetArrayNodeForNestedChildern implements  InForChilderArrayJSon  {
 
             jsonNodeNested.elements().forEachRemaining(new Consumer<JsonNode>() {
                 @Override
-                public void accept(JsonNode jsonNode) {
+                public void accept(JsonNode jsonNodeForDelete) {
                     // TODO: 19.03.2024
-                    Iterator<JsonNode> elements = jsonNode.iterator();
+                    Iterator<JsonNode> elementsForDelete = jsonNodeForDelete.iterator();
+                            Integer sum = 0;
+                            while (elementsForDelete.hasNext()) {
+                                elementsForDelete.next();
+                                if (sum == position) {
+                                    elementsForDelete.remove();
+                                    break;
+                                }
+                                sum++;
 
+                            }
                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                            + " jsonNode1сСогласования.size() " + jsonNodeNested.size());
+                            + " jsonNodeForDelete.size() " + jsonNodeForDelete.size());
 
                 }
             });
 
 
-         /*   Iterator<JsonNode> elements = jsonNodeNested.iterator();
-            Integer sum = 0;
-            while (elements.hasNext()) {
-                elements.next();
-                if (sum == position) {
-                    elements.remove();
-                    break;
-                }
-                sum++;
 
-            }*/
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"

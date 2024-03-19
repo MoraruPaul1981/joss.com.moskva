@@ -53,11 +53,6 @@ Context context;
             if ( ОтветОтСервера1сCommitnPricesPost.length()>0 &&
                     ОтветОтСервера1сCommitnPricesPost.trim().equalsIgnoreCase("Согласование внесено в базу!")) {
 
-                // TODO: 23.01.2024 анимация
-                Animation  animationvibr1 = AnimationUtils.loadAnimation(context, R.anim.slide_in_row9);
-                holder.itemView.startAnimation(animationvibr1);
-                holder.itemView.refreshDrawableState();
-
                 // TODO: 11.01.2024 перегрузка данных
                 myRecycleViewIsAdaptersNested.notifyItemRemoved(position );
 
@@ -74,17 +69,12 @@ Context context;
 
                 rebootRecyreViewNested.методRebootRecyreViewComminPrices(jsonNodeNested,myRecycleViewIsAdaptersNested,recycleview_comminingppricesNesteds);
 
-
-
-                    Log.d(this.getClass().getName(), "\n"
-                            + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                // TODO: 23.01.2024 анимация
+                setAnimationAfterDeleteRow(holder);
 
 // TODO: 24.01.2024 собыьтие Отправляем что данные меньще 1  и родительсное ЦФО надо закрыть
                 eventBusReactionForSizeZero(jsonNodeNested);
 
-
                 Log.d(this.getClass().getName(), "\n"
                         + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -92,11 +82,6 @@ Context context;
 
 
 
-
-                Log.d(this.getClass().getName(), "\n"
-                        + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber());
 
             } else {
                 Toast.makeText(context, "Не прошла операция !!!"
@@ -121,6 +106,12 @@ Context context;
             new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
+    }
+
+    private void setAnimationAfterDeleteRow(@NonNull MyViewHoldersNested holder) {
+        Animation  animationvibr1 = AnimationUtils.loadAnimation(context, R.anim.slide_in_row9);
+        holder.itemView.startAnimation(animationvibr1);
+        holder.itemView.refreshDrawableState();
     }
 
     private   void cardmatrialrotacidefault(@NonNull MaterialCardView cardview_commingprices_neasted) {
