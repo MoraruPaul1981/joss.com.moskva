@@ -25,7 +25,7 @@ public class InizializayRecyreViewsNested {
 
     public void startInitRecyreview() {
         try {
-            animationДляСогласования= AnimationUtils.loadAnimation(context, R.anim.slide_in_row);//R.anim.layout_animal_commit
+         //   animationДляСогласования= AnimationUtils.loadAnimation(context, R.anim.slide_in_row);//R.anim.layout_animal_commit
         /*    DividerItemDecoration itemDecoration =
                     new DividerItemDecoration(recycleview_comminingppricesNesteds.getContext(), DividerItemDecoration.HORIZONTAL);
             GradientDrawable drawable = new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, new int[]{0xfff7f7f7, 0xfff7f7f7});
@@ -42,7 +42,6 @@ public class InizializayRecyreViewsNested {
             layoutManager.setItemPrefetchEnabled(true);
             layoutManager.setSmoothScrollbarEnabled(true);
             recycleview_comminingppricesNesteds.setLayoutManager( layoutManager);
-            recycleview_comminingppricesNesteds.startAnimation(animationДляСогласования);
             recycleview_comminingppricesNesteds.requestLayout();
             recycleview_comminingppricesNesteds.refreshDrawableState();
             // TODO: 28.02.2022

@@ -2,12 +2,6 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="ActivityCommitDocuments">
-        <State />
-      </entry>
-      <entry key="ActivityCommitDocuments (1)">
-        <State />
-      </entry>
       <entry key="MainActivityCommitingPrices">
         <State>
           <runningDeviceTargetSelectedWithDropDown>
@@ -32,17 +26,14 @@
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-03-19T10:02:05.764603600Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-03-19T12:52:23.769105100Z" />
         </State>
       </entry>
-      <entry key="MainActivity_CommitPay">
-        <State />
-      </entry>
-      <entry key="MainActivity_List_Tabels">
+      <entry key="app">
         <State>
-          <runningDeviceTargetSelectedWithDropDown>
+          <targetSelectedWithDropDown>
             <Target>
-              <type value="RUNNING_DEVICE_TARGET" />
+              <type value="QUICK_BOOT_TARGET" />
               <deviceKey>
                 <Key>
                   <type value="VIRTUAL_DEVICE_PATH" />
@@ -50,18 +41,9 @@
                 </Key>
               </deviceKey>
             </Target>
-          </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-03-18T09:37:18.327423200Z" />
+          </targetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-03-19T10:44:45.517210800Z" />
         </State>
-      </entry>
-      <entry key="app">
-        <State />
-      </entry>
-      <entry key="appdocuments_Model.mdeol">
-        <State />
-      </entry>
-      <entry key="appdocuments_Model.views">
-        <State />
       </entry>
     </value>
   </component>

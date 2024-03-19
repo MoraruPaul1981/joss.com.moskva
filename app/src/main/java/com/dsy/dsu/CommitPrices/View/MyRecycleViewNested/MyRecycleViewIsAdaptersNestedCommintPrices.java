@@ -6,8 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
@@ -29,14 +27,14 @@ import java.util.List;
 
 // TODO: 09.11.2023 ВТОРОЯ Rereview
 
-public  class MyRecycleViewIsAdaptersNested extends RecyclerView.Adapter<MyViewHoldersNested> {
+public  class MyRecycleViewIsAdaptersNestedCommintPrices extends RecyclerView.Adapter<MyViewHoldersNestedCommintPrices> {
 
     public Context context;
-    public View itemView;
+    public View itemViewholderPrices;
      public  JsonNode jsonNodeNested;
      public  JsonNode jsonNodeNestedRow;
     public  int getAbsoluteAdapterPosition;
-    private MyViewHoldersNested viewHoldersNested;
+    private MyViewHoldersNestedCommintPrices viewHoldersNested;
 
 
 
@@ -53,20 +51,20 @@ public  class MyRecycleViewIsAdaptersNested extends RecyclerView.Adapter<MyViewH
 
     private RecyclerView recycleview_comminingppricesNesteds;
 
-    public MyRecycleViewIsAdaptersNested(@NonNull View itemView,
-                                         @NotNull Context context,
-                                         @NotNull JsonNode jsonNodeNested,
-                                         @NotNull int getAbsoluteAdapterPosition,
-                                         @NotNull ObjectMapper objectMapper,
-                                         @NotNull Integer getHiltPublicId,
-                                         @NotNull String getHiltCommintgPrices,
-                                         @NonNull GetLiveDataForrecyreViewPrices getLiveDataForrecyreViewPrices,
-                                         @NotNull MutableLiveData<Intent> getHiltMutableLiveDataPrices,
-                                         @NonNull LifecycleOwner lifecycleOwner,
-                                         @NonNull RecyclerView recycleview_comminingppricesNesteds) {
+    public MyRecycleViewIsAdaptersNestedCommintPrices(@NonNull View itemViewholderPrices,
+                                                      @NotNull Context context,
+                                                      @NotNull JsonNode jsonNodeNested,
+                                                      @NotNull int getAbsoluteAdapterPosition,
+                                                      @NotNull ObjectMapper objectMapper,
+                                                      @NotNull Integer getHiltPublicId,
+                                                      @NotNull String getHiltCommintgPrices,
+                                                      @NonNull GetLiveDataForrecyreViewPrices getLiveDataForrecyreViewPrices,
+                                                      @NotNull MutableLiveData<Intent> getHiltMutableLiveDataPrices,
+                                                      @NonNull LifecycleOwner lifecycleOwner,
+                                                      @NonNull RecyclerView recycleview_comminingppricesNesteds) {
         // super();
         try{
-            this.itemView=itemView;
+            this.itemViewholderPrices=itemViewholderPrices;
             this.context=context;
             this.getAbsoluteAdapterPosition=getAbsoluteAdapterPosition;
             this.objectMapper=objectMapper;
@@ -99,7 +97,7 @@ public  class MyRecycleViewIsAdaptersNested extends RecyclerView.Adapter<MyViewH
 
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHoldersNested holder, @NonNull int position, @NonNull List<Object> payloads) {
+    public void onBindViewHolder(@NonNull MyViewHoldersNestedCommintPrices holder, @NonNull int position, @NonNull List<Object> payloads) {
         try {
             // TODO: 28.12.2023 получаем позицию в recyreview
 
@@ -137,25 +135,25 @@ public  class MyRecycleViewIsAdaptersNested extends RecyclerView.Adapter<MyViewH
     }
 
     @Override
-    public void onViewRecycled(@NonNull MyViewHoldersNested holder) {
+    public void onViewRecycled(@NonNull MyViewHoldersNestedCommintPrices holder) {
         super.onViewRecycled(holder);
     }
 
     @Override
-    public boolean onFailedToRecycleView(@NonNull MyViewHoldersNested holder) {
+    public boolean onFailedToRecycleView(@NonNull MyViewHoldersNestedCommintPrices holder) {
         // TODO: 03.11.2023 Parent
         return super.onFailedToRecycleView(holder);
 
     }
 
     @Override
-    public void onViewAttachedToWindow(@NonNull MyViewHoldersNested holder) {
+    public void onViewAttachedToWindow(@NonNull MyViewHoldersNestedCommintPrices holder) {
         super.onViewAttachedToWindow(holder);
 
     }
 
     @Override
-    public void onViewDetachedFromWindow(@NonNull MyViewHoldersNested holder) {
+    public void onViewDetachedFromWindow(@NonNull MyViewHoldersNestedCommintPrices holder) {
         super.onViewDetachedFromWindow(holder);
     }
 
@@ -195,7 +193,7 @@ public  class MyRecycleViewIsAdaptersNested extends RecyclerView.Adapter<MyViewH
 
     @NonNull
     @Override
-    public MyViewHoldersNested onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyViewHoldersNestedCommintPrices onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View viewComminigPrices = null;
         try {
 
@@ -215,7 +213,7 @@ public  class MyRecycleViewIsAdaptersNested extends RecyclerView.Adapter<MyViewH
             // TODO: 28.12.2023 получаем позицию в recyreview
             int  getPostionViewHolder=  getPostions();
             // TODO: 22.03.2022
-            viewHoldersNested = new MyViewHoldersNested(viewComminigPrices,context,getPostionViewHolder,jsonNodeNested);
+            viewHoldersNested = new MyViewHoldersNestedCommintPrices(viewComminigPrices,context,getPostionViewHolder,jsonNodeNested);
             // TODO: 27.12.2023
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -256,12 +254,12 @@ public  class MyRecycleViewIsAdaptersNested extends RecyclerView.Adapter<MyViewH
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHoldersNested holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHoldersNestedCommintPrices holderNested, int position) {
         try {
-            MaterialCardView cardview_commingprices_neasted=holder.itemView.findViewById(R.id.cardview_commingprices_neasted);
+            MaterialCardView cardview_commingprices_neasted=holderNested.itemView.findViewById(R.id.cardview_commingprices_neasted);
 
             ComponentsForRecyreViewNesteds componentsForRecyreViewNesteds=
-                    new ComponentsForRecyreViewNesteds(holder,context,
+                    new ComponentsForRecyreViewNesteds(holderNested,context,
                             position,cardview_commingprices_neasted,objectMapper,getHiltPublicId,
                             this,jsonNodeNested,getHiltCommintgPrices,
                             getLiveDataForrecyreViewPrices,
@@ -299,24 +297,6 @@ public  class MyRecycleViewIsAdaptersNested extends RecyclerView.Adapter<MyViewH
                 componentsForRecyreViewNesteds.  getmTV_NumberRow_value(jsonNodeNestedRow);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 // TODO: 31.01.2024 Last Metod  !!!!!
                 // TODO: 30.12.2023  rebbot Sxreen Recyreview
                 componentsForRecyreViewNesteds.setagMaterialCardViewNestad(jsonNodeNestedRow);
@@ -325,7 +305,7 @@ public  class MyRecycleViewIsAdaptersNested extends RecyclerView.Adapter<MyViewH
                 // TODO: 29.01.2024 мсобытие вент басс
                 // TODO: 26.01.2024 end
 
-                holder.setIsRecyclable(false);
+                holderNested.setIsRecyclable(false);
             }
 
             Log.d(this.getClass().getName(), "\n"

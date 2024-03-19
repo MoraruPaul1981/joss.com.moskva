@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dsy.dsu.CommitPrices.Model.BiccessLogicas.LiveData.CallBacksLiveData;
 import com.dsy.dsu.CommitPrices.Model.LiveDataPrices.GetLiveDataForrecyreViewPrices;
-import com.dsy.dsu.CommitPrices.View.MyRecycleViewIsNull.MyRecycleViewIsNullAdapters;
+import com.dsy.dsu.CommitPrices.View.MyRecycleViewIsNull.MyRecycleViewIsNullAdaptersCommintPrices;
 import com.dsy.dsu.CommitPrices.ViewModel.ModelComminingPrisesByte;
 import com.dsy.dsu.CommitPrices.ViewModel.ModelComminingPrisesString;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
@@ -39,7 +39,7 @@ public class BLFragmentCommintingPrices {
     private ModelComminingPrisesString modelComminingPrisesString;
     private ModelComminingPrisesByte modelComminingPrisesByte;
 
-    private  MyRecycleViewIsNullAdapters myRecycleViewIsNullAdapters;
+    private MyRecycleViewIsNullAdaptersCommintPrices myRecycleViewIsNullAdaptersCommintPrices;
 
 
     private RecyclerView recycleview_comminingpprices;
@@ -146,7 +146,7 @@ public class BLFragmentCommintingPrices {
                         try{
 
                             new CallBacksLiveData(context,prograessbar_commintingprices,
-                                    recycleview_comminingpprices,myRecycleViewIsNullAdapters,
+                                    recycleview_comminingpprices, myRecycleViewIsNullAdaptersCommintPrices,
                                     objectMapper,   eventsBackAndAsyncAndSearchCommintPrices,
                                     getHiltPublicId,getHiltCommintgPrices,getLiveDataForrecyreViewPrices
                                     ,getHiltMutableLiveDataPay,lifecycleOwner,bottomNavigationSearch).callbackLiveData(bundle);
@@ -213,7 +213,7 @@ public class BLFragmentCommintingPrices {
 // TODO: 24.01.2024 Update Screeen
 
                             new CallBacksLiveData(context,prograessbar_commintingprices,
-                                    recycleview_comminingpprices,myRecycleViewIsNullAdapters,
+                                    recycleview_comminingpprices, myRecycleViewIsNullAdaptersCommintPrices,
                                     objectMapper,   eventsBackAndAsyncAndSearchCommintPrices,getHiltPublicId,
                                     getHiltCommintgPrices,getLiveDataForrecyreViewPrices,getHiltMutableLiveDataPay
                                     ,lifecycleOwner,bottomNavigationSearch)
@@ -258,17 +258,17 @@ public class BLFragmentCommintingPrices {
  
     public void startIsNullRecyreView( ) {
         try {
-            if (myRecycleViewIsNullAdapters==null) {
+            if (myRecycleViewIsNullAdaptersCommintPrices ==null) {
                 ArrayList<Boolean> arrayListIsNull1cData = new ArrayList<>();
                 arrayListIsNull1cData.add(true);
-                myRecycleViewIsNullAdapters = new MyRecycleViewIsNullAdapters(arrayListIsNull1cData, context  );
-                myRecycleViewIsNullAdapters.notifyDataSetChanged();
-                recycleview_comminingpprices.setAdapter(myRecycleViewIsNullAdapters);
+                myRecycleViewIsNullAdaptersCommintPrices = new MyRecycleViewIsNullAdaptersCommintPrices(arrayListIsNull1cData, context  );
+                myRecycleViewIsNullAdaptersCommintPrices.notifyDataSetChanged();
+                recycleview_comminingpprices.setAdapter(myRecycleViewIsNullAdaptersCommintPrices);
                 recycleview_comminingpprices.getAdapter().notifyDataSetChanged();
                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "myRecycleViewIsNullAdapters  "
-                        + myRecycleViewIsNullAdapters );
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "myRecycleViewIsNullAdaptersCommintPrices  "
+                        + myRecycleViewIsNullAdaptersCommintPrices);
             }
 
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -291,8 +291,8 @@ public class BLFragmentCommintingPrices {
 
                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "myRecycleViewIsNullAdapters  "
-                        + myRecycleViewIsNullAdapters);
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "myRecycleViewIsNullAdaptersCommintPrices  "
+                        + myRecycleViewIsNullAdaptersCommintPrices);
 
 
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

@@ -38,10 +38,11 @@ public  class MyRecycleViewIsAdaptersCommintPrices extends RecyclerView.Adapter<
     private Integer getHiltPublicId;
     private  String getHiltCommintgPrices;
 
+    private  GetLiveDataForrecyreViewPrices getLiveDataForrecyreViewPrices;
+    private  MutableLiveData<Intent> getHiltMutableLiveDataPay;
+    private  LifecycleOwner lifecycleOwner;
 
-    GetLiveDataForrecyreViewPrices getLiveDataForrecyreViewPrices;
-    MutableLiveData<Intent> getHiltMutableLiveDataPay;
-    LifecycleOwner lifecycleOwner;
+    private  MyRecycleViewIsAdaptersCommintPrices myRecycleViewIsAdaptersCommintPrices;
     @SuppressLint("SuspiciousIndentation")
     public MyRecycleViewIsAdaptersCommintPrices(@NotNull JsonNode jsonNodeParent,
                                                 @NotNull Context context, @NotNull ObjectMapper objectMapper,
@@ -60,7 +61,7 @@ public  class MyRecycleViewIsAdaptersCommintPrices extends RecyclerView.Adapter<
         this.getLiveDataForrecyreViewPrices = getLiveDataForrecyreViewPrices;
         this.getHiltMutableLiveDataPay = getHiltMutableLiveDataPay;
         this.lifecycleOwner = lifecycleOwner;
-
+        myRecycleViewIsAdaptersCommintPrices=this;
             // TODO: 30.01.2024
            // animationДляСогласованияЦены = AnimationUtils.loadAnimation(context,  R.anim.slide_in_scrolls);//R.anim.layout_animal_commit
            // animationДляСогласованияЦены = AnimationUtils.loadAnimation(context, R.anim.slide_in_row);//R.anim.layout_animal_commit
@@ -221,15 +222,16 @@ public  class MyRecycleViewIsAdaptersCommintPrices extends RecyclerView.Adapter<
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHoldersCommintPrices holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHoldersCommintPrices holderPrices, int position) {
         try{
-        // TODO: 27.12.2023
+        // TODO: 27.12.2023 Root RecyreView
 
             // TODO: 02.03.2022 Запускаем Обработку Parent Конмоненты
             ComponentsForRecyreView componentsForRecyreView=
-                    new ComponentsForRecyreView(holder,context,position,objectMapper,
+                    new ComponentsForRecyreView(holderPrices,
+                            context,position,objectMapper,
                             getHiltPublicId,getHiltCommintgPrices,getLiveDataForrecyreViewPrices,
-                            getHiltMutableLiveDataPay,lifecycleOwner);
+                            getHiltMutableLiveDataPay,lifecycleOwner,myRecycleViewIsAdaptersCommintPrices);
 
             // TODO: 29.12.2023 Кнопка Стрелочка которая показывает и скрывает Дочериний recyreview
             componentsForRecyreView.getArrow_nested_receriview();
@@ -240,10 +242,12 @@ public  class MyRecycleViewIsAdaptersCommintPrices extends RecyclerView.Adapter<
             componentsForRecyreView.getmTV_NumberDOc_value();
 
 
-            holder.setIsRecyclable(false);
+            holderPrices.setIsRecyclable(false);
+
         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +"  jsonNodeParent.size() " +jsonNodeParent.size() );
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +"  jsonNodeParent.size() " +jsonNodeParent.size()+
+                " holderPrices " +holderPrices);
 
             // TODO: 09.01.2024 Созданные данные
         } catch (Exception e) {

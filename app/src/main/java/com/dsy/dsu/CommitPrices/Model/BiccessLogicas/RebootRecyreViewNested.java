@@ -6,7 +6,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.dsy.dsu.CommitPrices.View.MyRecycleViewNested.MyRecycleViewIsAdaptersNested;
+import com.dsy.dsu.CommitPrices.View.MyRecycleViewNested.MyRecycleViewIsAdaptersNestedCommintPrices;
+import com.dsy.dsu.CommitPrices.View.MyRecycleViewNested.MyViewHoldersNestedCommintPrices;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -33,12 +34,12 @@ Context context;
     }
 
     public void методRebootRecyreViewComminPrices(@NonNull JsonNode jsonNode1сСогласованияЦен
-            ,@NonNull MyRecycleViewIsAdaptersNested myRecycleViewIsAdaptersNested,
+            ,@NonNull MyRecycleViewIsAdaptersNestedCommintPrices myRecycleViewIsAdaptersNestedCommintPrices,
                                                   @NotNull RecyclerView recycleview_comminingppricesNesteds) {
 
         try{
-            myRecycleViewIsAdaptersNested.jsonNodeNested=jsonNode1сСогласованияЦен;
-            myRecycleViewIsAdaptersNested.notifyDataSetChanged();
+            myRecycleViewIsAdaptersNestedCommintPrices.jsonNodeNested=jsonNode1сСогласованияЦен;
+            myRecycleViewIsAdaptersNestedCommintPrices.notifyDataSetChanged();
             RecyclerView.Adapter recyclerViewОбновление=         recycleview_comminingppricesNesteds.getAdapter();
             recycleview_comminingppricesNesteds.swapAdapter(recyclerViewОбновление,true);
             recycleview_comminingppricesNesteds.getAdapter().notifyDataSetChanged();

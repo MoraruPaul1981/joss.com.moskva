@@ -12,7 +12,8 @@ import com.dsy.dsu.CommitPrices.Model.BiccessLogicas.InitRecyreviews.Inizializay
 import com.dsy.dsu.CommitPrices.Model.BiccessLogicas.RebootRecyreViewNested;
 import com.dsy.dsu.CommitPrices.Model.LiveDataPrices.GetLiveDataForrecyreViewPrices;
 import com.dsy.dsu.CommitPrices.View.MyRecycleView.MyViewHoldersCommintPrices;
-import com.dsy.dsu.CommitPrices.View.MyRecycleViewNested.MyRecycleViewIsAdaptersNested;
+import com.dsy.dsu.CommitPrices.View.MyRecycleViewNested.MyRecycleViewIsAdaptersNestedCommintPrices;
+import com.dsy.dsu.CommitPrices.View.MyRecycleViewNested.MyViewHoldersNestedCommintPrices;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,24 +30,32 @@ public class CallBacksLiveDataNested {
  private Context context;
 
 
-    private RecyclerView recycleview_comminingppricesNesteds;
+
+
+
     private  JsonNode  jsonNodeNested;
-    private MyViewHoldersCommintPrices holder;
-    private  MyRecycleViewIsAdaptersNested myRecycleViewIsAdaptersNested;
+
+    private MyRecycleViewIsAdaptersNestedCommintPrices myRecycleViewIsAdaptersNestedCommintPrices;
+    private RecyclerView recycleview_nesters_comminingpprices;
+    private  MyViewHoldersCommintPrices holderPrices;
+
+
+
+
     private  int postion;
     private ObjectMapper objectMapper;
 
     private Integer getHiltPublicId;
     private    String getHiltCommintgPrices;
 
-    GetLiveDataForrecyreViewPrices getLiveDataForrecyreViewPrices;
+    private GetLiveDataForrecyreViewPrices getLiveDataForrecyreViewPrices;
 
-    MutableLiveData<Intent> getHiltMutableLiveDataPay;
+    private MutableLiveData<Intent> getHiltMutableLiveDataPay;
 
     private LifecycleOwner lifecycleOwner;
-    public CallBacksLiveDataNested(@NotNull MyViewHoldersCommintPrices holder,
+    public CallBacksLiveDataNested(@NotNull  MyViewHoldersCommintPrices holderPrices,
                                    @NotNull  Context context,
-                                   @NotNull   RecyclerView  recycleview_comminingpricesNested,
+                                   @NotNull   RecyclerView  recycleview_nesters_comminingpprices,
                                    @NotNull JsonNode  jsonNodeNested,
                                    @NotNull int postion,
                                    @NotNull ObjectMapper objectMapper,
@@ -56,9 +65,9 @@ public class CallBacksLiveDataNested {
                                    @NotNull MutableLiveData<Intent> getHiltMutableLiveDataPay,
                                    @NotNull LifecycleOwner lifecycleOwner) {
         this.context = context;
-        this.recycleview_comminingppricesNesteds = recycleview_comminingpricesNested;
+        this.recycleview_nesters_comminingpprices = recycleview_nesters_comminingpprices;
         this.jsonNodeNested = jsonNodeNested;
-        this.holder = holder;
+        this.holderPrices = holderPrices;
         this.postion = postion;
         this.objectMapper = objectMapper;
         this.getHiltPublicId = getHiltPublicId;
@@ -74,7 +83,7 @@ public class CallBacksLiveDataNested {
 
     }
 
-    public  void callbackLiveData( ) {
+    public  void callbackLiveDataNested( ) {
         Completable.complete().subscribe(new CompletableObserver() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
@@ -83,19 +92,21 @@ public class CallBacksLiveDataNested {
 
                 if (jsonNodeNested!=null && jsonNodeNested.size()>0){
 
-                    // TODO: 28.12.2023 инизилащитция recyreview
-                    new InizializayRecyreViewsNested(recycleview_comminingppricesNesteds,context).startInitRecyreview();
+                    // TODO: 28.12.2023 инизилащитция recyreview nesters
+                    new InizializayRecyreViewsNested(recycleview_nesters_comminingpprices,context).startInitRecyreview();
 
-                    // TODO: 28.12.2023 Запускам настрощий recyreview при получение ииз байт обьект JsonNode
-                    if (myRecycleViewIsAdaptersNested==null) {
+                    // TODO: 28.12.2023 TODO: 28.12.2023 инизилащитция AdaptersNested
+                    if (myRecycleViewIsAdaptersNestedCommintPrices ==null) {
 
-                        startGetRecyreViewNested(   );
+                        setRecycleViewIsAdaptersNested(   );
 
                     }else{
                         // TODO: 26.12.2023 нет  байты
                         RebootRecyreViewNested rebootRecyreViewNested=new RebootRecyreViewNested(context);
 
-                        rebootRecyreViewNested.методRebootRecyreViewComminPrices(jsonNodeNested,myRecycleViewIsAdaptersNested,recycleview_comminingppricesNesteds);
+                        rebootRecyreViewNested.методRebootRecyreViewComminPrices(jsonNodeNested,
+                                myRecycleViewIsAdaptersNestedCommintPrices,
+                                recycleview_nesters_comminingpprices);
                     }
 
 
@@ -131,17 +142,17 @@ public class CallBacksLiveDataNested {
 
     // TODO: 28.12.2023 метод запуска уже настоящегно rcyreview когда первый is null прошел ага
 
-    public void startGetRecyreViewNested(  ) {
+    public void setRecycleViewIsAdaptersNested(  ) {
         try {
 
 
-                myRecycleViewIsAdaptersNested = new MyRecycleViewIsAdaptersNested(holder.itemView, context
+                myRecycleViewIsAdaptersNestedCommintPrices = new MyRecycleViewIsAdaptersNestedCommintPrices(holderPrices.itemView, context
                         ,jsonNodeNested, postion,objectMapper,getHiltPublicId,getHiltCommintgPrices
-                        ,getLiveDataForrecyreViewPrices,  getHiltMutableLiveDataPay,lifecycleOwner,recycleview_comminingppricesNesteds);
+                        ,getLiveDataForrecyreViewPrices,  getHiltMutableLiveDataPay,lifecycleOwner,recycleview_nesters_comminingpprices);
             // TODO: 30.01.2024
-                myRecycleViewIsAdaptersNested.notifyDataSetChanged();
-                recycleview_comminingppricesNesteds.setAdapter(myRecycleViewIsAdaptersNested);
-                recycleview_comminingppricesNesteds.getAdapter().notifyDataSetChanged();
+                myRecycleViewIsAdaptersNestedCommintPrices.notifyDataSetChanged();
+                recycleview_nesters_comminingpprices.setAdapter(myRecycleViewIsAdaptersNestedCommintPrices);
+            recycleview_nesters_comminingpprices.getAdapter().notifyDataSetChanged();
                 
 
             // TODO: 10.01.2024  reebott dizayn recyreview nested
@@ -150,8 +161,8 @@ public class CallBacksLiveDataNested {
 
                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "myRecycleViewIsAdaptersNested  "
-                        + myRecycleViewIsAdaptersNested  + " jsonNodeNested " +jsonNodeNested);
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "myRecycleViewIsAdaptersNestedCommintPrices  "
+                        + myRecycleViewIsAdaptersNestedCommintPrices + " jsonNodeNested " +jsonNodeNested);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -171,8 +182,8 @@ public class CallBacksLiveDataNested {
 
 
     private void rebbotdizaynRecyreViewNested() {
-        recycleview_comminingppricesNesteds.requestLayout();
-        recycleview_comminingppricesNesteds.refreshDrawableState();
+        recycleview_nesters_comminingpprices.requestLayout();
+        recycleview_nesters_comminingpprices.refreshDrawableState();
     }
 
 

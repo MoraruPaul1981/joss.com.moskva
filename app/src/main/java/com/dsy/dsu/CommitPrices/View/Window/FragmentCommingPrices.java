@@ -22,6 +22,7 @@ import com.dsy.dsu.CommitPrices.Model.BiccessLogicas.BLFragmentCommintingPrices;
 import com.dsy.dsu.CommitPrices.Model.BiccessLogicas.EventsBackAndAsyncAndSearchCommintPrices;
 import com.dsy.dsu.CommitPrices.Model.BiccessLogicas.InitRecyreviews.InizializayRecyreViews;
 import com.dsy.dsu.CommitPrices.Model.EvenBusPrices.MessageEvensBusPrices;
+import com.dsy.dsu.CommitPrices.Model.EvenBusPrices.MessageEvensPriceAfterDeleteRow;
 import com.dsy.dsu.CommitPrices.Model.LiveDataPrices.GetLiveDataForrecyreViewPrices;
 import com.dsy.dsu.CommitPrices.ViewModel.ModelComminingPrisesByte;
 import com.dsy.dsu.CommitPrices.ViewModel.ModelComminingPrisesString;
@@ -109,6 +110,8 @@ public class FragmentCommingPrices extends Fragment {
             fragmentManager = getActivity(). getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
             lifecycleOwner=this;
+
+
             Log.d(this.getClass().getName(),"\n"
                 + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -314,6 +317,32 @@ try{
     }
 
 
+
+
+
+    // TODO: 23.01.2024 EventBus после Успешного Удалени Строки
+    @Subscribe(threadMode = ThreadMode.MAIN_ORDERED)
+    public void EventMessageAfterDeleteRowNestedRecyreView(MessageEvensPriceAfterDeleteRow messageEvensPriceAfterDeleteRow){
+        try{
+            // TODO: 26.12.2023  реакция на событие Удаления
+      Intent mess=      messageEvensPriceAfterDeleteRow.mess;
+        Bundle bundle=    mess.getExtras();
+// TODO: 30.12.2023 запускаем первоночальную оценку количество записей
+            eventsBackAndAsyncAndSearchCommintPrices.new EventsAsync().eventsSearchsetNumber(null);
+            Log.d(this.getClass().getName(),"\n"
+                    + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()+
+                    " messageEvensPriceAfterDeleteRow " +messageEvensPriceAfterDeleteRow.mess);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+
+    }
 
 
 

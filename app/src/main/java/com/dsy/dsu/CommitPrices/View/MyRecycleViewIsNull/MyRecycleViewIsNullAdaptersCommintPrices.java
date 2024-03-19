@@ -21,14 +21,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 // TODO: 09.11.2023 ВТОРОЯ Rereview
-public  class MyRecycleViewIsNullAdapters extends RecyclerView.Adapter<MyViewHoldersPricesIsNull> {
+public  class MyRecycleViewIsNullAdaptersCommintPrices extends RecyclerView.Adapter<MyViewHoldersPricesIsNullCommintPrices> {
     public ArrayList<Boolean> arrayListIsNull1cData=new ArrayList<>();
   private   Context context;
-  private MyViewHoldersPricesIsNull viewHoldersIsNull;
+  private MyViewHoldersPricesIsNullCommintPrices viewHoldersIsNull;
 
     @SuppressLint("SuspiciousIndentation")
-    public MyRecycleViewIsNullAdapters(@NotNull ArrayList<Boolean>arrayListIsNull1cData,
-                                       @NotNull Context context) {
+    public MyRecycleViewIsNullAdaptersCommintPrices(@NotNull ArrayList<Boolean>arrayListIsNull1cData,
+                                                    @NotNull Context context) {
         // super();
         try{
         this.arrayListIsNull1cData = arrayListIsNull1cData;
@@ -50,7 +50,7 @@ public  class MyRecycleViewIsNullAdapters extends RecyclerView.Adapter<MyViewHol
 
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHoldersPricesIsNull holder, @NonNull int position, @NonNull List<Object> payloads) {
+    public void onBindViewHolder(@NonNull MyViewHoldersPricesIsNullCommintPrices holder, @NonNull int position, @NonNull List<Object> payloads) {
         try {
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -79,25 +79,25 @@ public  class MyRecycleViewIsNullAdapters extends RecyclerView.Adapter<MyViewHol
     }
 
     @Override
-    public void onViewRecycled(@NonNull MyViewHoldersPricesIsNull holder) {
+    public void onViewRecycled(@NonNull MyViewHoldersPricesIsNullCommintPrices holder) {
         super.onViewRecycled(holder);
     }
 
     @Override
-    public boolean onFailedToRecycleView(@NonNull MyViewHoldersPricesIsNull holder) {
+    public boolean onFailedToRecycleView(@NonNull MyViewHoldersPricesIsNullCommintPrices holder) {
         // TODO: 03.11.2023 Parent
         return super.onFailedToRecycleView(holder);
 
     }
 
     @Override
-    public void onViewAttachedToWindow(@NonNull MyViewHoldersPricesIsNull holder) {
+    public void onViewAttachedToWindow(@NonNull MyViewHoldersPricesIsNullCommintPrices holder) {
         super.onViewAttachedToWindow(holder);
 
     }
 
     @Override
-    public void onViewDetachedFromWindow(@NonNull MyViewHoldersPricesIsNull holder) {
+    public void onViewDetachedFromWindow(@NonNull MyViewHoldersPricesIsNullCommintPrices holder) {
         super.onViewDetachedFromWindow(holder);
     }
 
@@ -138,7 +138,7 @@ public  class MyRecycleViewIsNullAdapters extends RecyclerView.Adapter<MyViewHol
     @SuppressLint("SuspiciousIndentation")
     @NonNull
     @Override
-    public MyViewHoldersPricesIsNull onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyViewHoldersPricesIsNullCommintPrices onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View viewRecyreViewPriceISNull = null;
         try {
 // TODO: 27.12.2023 загрузка когда нет данных
@@ -163,7 +163,7 @@ public  class MyRecycleViewIsNullAdapters extends RecyclerView.Adapter<MyViewHol
                       + "   viewRecyreViewPriceISNull" + viewRecyreViewPriceISNull);
             }
             // TODO: 22.03.2022
-            viewHoldersIsNull = new MyViewHoldersPricesIsNull(viewRecyreViewPriceISNull,context);
+            viewHoldersIsNull = new MyViewHoldersPricesIsNullCommintPrices(viewRecyreViewPriceISNull,context);
 
 
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -186,7 +186,7 @@ public  class MyRecycleViewIsNullAdapters extends RecyclerView.Adapter<MyViewHol
     @RequiresApi(api = Build.VERSION_CODES.P)
     @SuppressLint("RecyclerView")
     @Override
-    public void onBindViewHolder(@NonNull MyViewHoldersPricesIsNull holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHoldersPricesIsNullCommintPrices holder, int position) {
         try {
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

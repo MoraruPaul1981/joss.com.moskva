@@ -43,12 +43,17 @@ public class GetArrayNodeForNestedChildern implements  InForChilderArrayJSon  {
                         + " jsonNode1сСогласования.size() " + jsonNodeNested.size());
 
 
+                // TODO: 19.03.2024 exit
+                break;
 
+
+
+/*
                 if (sum == position) {
                     elementsForDelete.remove();
                     break;
                 }
-                sum++;
+                sum++;*/
 
             }
 

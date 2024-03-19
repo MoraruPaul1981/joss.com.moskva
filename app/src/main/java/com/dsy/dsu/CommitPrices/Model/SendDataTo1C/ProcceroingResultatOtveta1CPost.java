@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dsy.dsu.CommitPrices.Model.BiccessLogicas.RebootRecyreViewNested;
 import com.dsy.dsu.CommitPrices.Model.EvenBusPrices.MessageEvensBusPrices;
 import com.dsy.dsu.CommitPrices.Model.NestedDataGetAll.GetArrayNodeForNestedChildern;
-import com.dsy.dsu.CommitPrices.View.MyRecycleViewNested.MyRecycleViewIsAdaptersNested;
-import com.dsy.dsu.CommitPrices.View.MyRecycleViewNested.MyViewHoldersNested;
+import com.dsy.dsu.CommitPrices.View.MyRecycleViewNested.MyRecycleViewIsAdaptersNestedCommintPrices;
+import com.dsy.dsu.CommitPrices.View.MyRecycleViewNested.MyViewHoldersNestedCommintPrices;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.R;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -37,11 +37,11 @@ Context context;
 
    public void startingResultatOtveta1CPost(@NotNull StringBuffer  BufferOt1cCommintPricePost,
                                             @NotNull MaterialTextView mTV_commitingprices_count,
-                                            @NotNull MyRecycleViewIsAdaptersNested myRecycleViewIsAdaptersNested,
+                                            @NotNull MyRecycleViewIsAdaptersNestedCommintPrices myRecycleViewIsAdaptersNestedCommintPrices,
                                             @NotNull int position,
                                             @NotNull MaterialCardView cardview_commingprices_neasted,
                                             @NotNull JsonNode jsonNodeNested,
-                                            @NotNull MyViewHoldersNested holder,
+                                            @NotNull MyViewHoldersNestedCommintPrices holderNested,
                                             @NotNull RecyclerView recycleview_comminingppricesNesteds){
         try{
 // TODO: 11.01.2024
@@ -54,9 +54,9 @@ Context context;
                     ОтветОтСервера1сCommitnPricesPost.trim().equalsIgnoreCase("Согласование внесено в базу!")) {
 
                 // TODO: 11.01.2024 перегрузка данных
-                myRecycleViewIsAdaptersNested.notifyItemRemoved(position );
+                myRecycleViewIsAdaptersNestedCommintPrices.notifyItemRemoved(position );
 
-                myRecycleViewIsAdaptersNested.notifyItemChanged(position );
+                myRecycleViewIsAdaptersNestedCommintPrices.notifyItemChanged(position );
 
 // TODO: 09.01.2024  класс получаем все дочерние элементы ArrayNoide
                 GetArrayNodeForNestedChildern getArrayNodeForNestedChildern=new GetArrayNodeForNestedChildern(context,  jsonNodeNested,position );
@@ -67,10 +67,12 @@ Context context;
                 // TODO: 26.12.2023 посде удаления строки переопределяем внешний вид
                 RebootRecyreViewNested rebootRecyreViewNested=new RebootRecyreViewNested(context);
 
-                rebootRecyreViewNested.методRebootRecyreViewComminPrices(jsonNodeNested,myRecycleViewIsAdaptersNested,recycleview_comminingppricesNesteds);
+                rebootRecyreViewNested.методRebootRecyreViewComminPrices(jsonNodeNested,
+                        myRecycleViewIsAdaptersNestedCommintPrices,
+                        recycleview_comminingppricesNesteds);
 
                 // TODO: 23.01.2024 анимация
-                setAnimationAfterDeleteRow(holder);
+                setAnimationAfterDeleteRow( recycleview_comminingppricesNesteds);
 
 // TODO: 24.01.2024 собыьтие Отправляем что данные меньще 1  и родительсное ЦФО надо закрыть
                 eventBusReactionForSizeZero(jsonNodeNested);
@@ -108,10 +110,19 @@ Context context;
         }
     }
 
-    private void setAnimationAfterDeleteRow(@NonNull MyViewHoldersNested holder) {
+    private void setAnimationAfterDeleteRow(@NotNull RecyclerView recycleview_comminingppricesNesteds) {
+        try{
         Animation  animationvibr1 = AnimationUtils.loadAnimation(context, R.anim.slide_in_row9);
-        holder.itemView.startAnimation(animationvibr1);
-        holder.itemView.refreshDrawableState();
+        recycleview_comminingppricesNesteds.startAnimation(animationvibr1);
+            recycleview_comminingppricesNesteds.requestLayout();
+            recycleview_comminingppricesNesteds.refreshDrawableState();
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
     }
 
     private   void cardmatrialrotacidefault(@NonNull MaterialCardView cardview_commingprices_neasted) {

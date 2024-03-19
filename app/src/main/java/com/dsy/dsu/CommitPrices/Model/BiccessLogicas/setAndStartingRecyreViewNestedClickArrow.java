@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dsy.dsu.CommitPrices.Model.BiccessLogicas.LiveData.CallBacksLiveDataNested;
 import com.dsy.dsu.CommitPrices.Model.LiveDataPrices.GetLiveDataForrecyreViewPrices;
+import com.dsy.dsu.CommitPrices.View.MyRecycleView.MyRecycleViewIsAdaptersCommintPrices;
 import com.dsy.dsu.CommitPrices.View.MyRecycleView.MyViewHoldersCommintPrices;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.R;
@@ -30,45 +31,45 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Supplier;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public  class ProcceerClickArrow {
+public  class setAndStartingRecyreViewNestedClickArrow {
 
     private   RecyclerView recycleview_nesters_comminingpprices;
     private    MaterialButton materialButton;
     private   ProgressBar  progressbar_comminingprices;
-    private MyViewHoldersCommintPrices holder;
+    private MyViewHoldersCommintPrices holderPrices;
     private  Context context;
 
     private  Integer position;
-    Handler handlerProgbar;
-    Handler handlerBut;
-      ObjectMapper objectMapper;
+    private  Handler handlerProgbar;
+    private   Handler handlerBut;
+    private   ObjectMapper objectMapper;
 
-     Integer getHiltPublicId;
+    private  Integer getHiltPublicId;
      private  String getHiltCommintgPrices;
 
-    GetLiveDataForrecyreViewPrices getLiveDataForrecyreViewPrices;
+    private GetLiveDataForrecyreViewPrices getLiveDataForrecyreViewPrices;
 
-    MutableLiveData<Intent> getHiltMutableLiveDataPay;
+    private  MutableLiveData<Intent> getHiltMutableLiveDataPay;
     private LifecycleOwner lifecycleOwner;
 
-    public ProcceerClickArrow( @NonNull  RecyclerView recycleview_nesters_comminingpprices,
-                               @NonNull MaterialButton materialButton,
-                               @NonNull  ProgressBar progressbar_comminingprices,
-                               @NonNull MyViewHoldersCommintPrices holder,
-                               @NonNull  Context context,
-                               @NonNull Integer position,
-                               @NotNull ObjectMapper objectMapper,
-                               @NotNull Integer getHiltPublicId,
-                               @NotNull String getHiltCommintgPrices,
-                               @NonNull GetLiveDataForrecyreViewPrices getLiveDataForrecyreViewPrices,
-                               @NotNull MutableLiveData<Intent> getHiltMutableLiveDataPay,
-                               @NonNull    LifecycleOwner lifecycleOwner) {
+    private  MyRecycleViewIsAdaptersCommintPrices myRecycleViewIsAdaptersCommintPrices;
 
 
-        this.recycleview_nesters_comminingpprices = recycleview_nesters_comminingpprices;
+    public setAndStartingRecyreViewNestedClickArrow(@NonNull MaterialButton materialButton,
+                                                    @NonNull MyViewHoldersCommintPrices holderPrices,
+                                                    @NonNull  Context context,
+                                                    @NonNull Integer position,
+                                                    @NotNull ObjectMapper objectMapper,
+                                                    @NotNull Integer getHiltPublicId,
+                                                    @NotNull String getHiltCommintgPrices,
+                                                    @NonNull GetLiveDataForrecyreViewPrices getLiveDataForrecyreViewPrices,
+                                                    @NotNull MutableLiveData<Intent> getHiltMutableLiveDataPay,
+                                                    @NonNull    LifecycleOwner lifecycleOwner,
+                                                    @NotNull MyRecycleViewIsAdaptersCommintPrices myRecycleViewIsAdaptersCommintPrices)
+    {
+        try{
         this.materialButton = materialButton;
-        this.progressbar_comminingprices = progressbar_comminingprices;
-        this.holder = holder;
+        this.holderPrices = holderPrices;
         this.context = context;
         this.position = position;
         this.objectMapper = objectMapper;
@@ -78,17 +79,28 @@ public  class ProcceerClickArrow {
         this.getHiltMutableLiveDataPay = getHiltMutableLiveDataPay;
         this.lifecycleOwner = lifecycleOwner;
 
+            // TODO: 19.03.2024 init
+         recycleview_nesters_comminingpprices=
+                    holderPrices.itemView.findViewById(R.id.recycleview_nesters_comminingpprices) ;
+          progressbar_comminingprices= holderPrices.itemView.findViewById(R.id.progressbar_comminingprices) ;
 
+            // TODO: 10.01.2024
+            handlerBut=  materialButton.getHandler();
+            handlerProgbar=  progressbar_comminingprices.getHandler();
 
-        // TODO: 10.01.2024
-        handlerBut=  materialButton.getHandler();
-        handlerProgbar=  progressbar_comminingprices.getHandler();
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+
     }
 
 
-   public Integer startProccerotNested(){
+   public void startProccerotNested(){
         try{
-
             Completable.fromSupplier(new Supplier<Object>() {
                 @Override
                 public Object get() throws Throwable {
@@ -97,7 +109,6 @@ public  class ProcceerClickArrow {
                         @Override
                         public void run() {
                             try{
-
                             // TODO: 29.12.2023  включаем вложеный RecyreView
                                 initNedsterRecyreView();
                                 // TODO: 30.12.2023 запус каем ккод заполнения  NESTED
@@ -180,7 +191,6 @@ public  class ProcceerClickArrow {
             new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-        return 0;
     }
 
 
@@ -190,15 +200,15 @@ public  class ProcceerClickArrow {
     private void initNedsterRecyreView() {
         try{
             CallBacksLiveDataNested callBacksLiveDataNested =
-                    new CallBacksLiveDataNested(holder, context, recycleview_nesters_comminingpprices,
-                            holder.jsonNode, position,objectMapper,
+                    new CallBacksLiveDataNested(holderPrices, context, recycleview_nesters_comminingpprices,
+                            holderPrices.jsonNode, position,objectMapper,
                             getHiltPublicId,getHiltCommintgPrices,
                             getLiveDataForrecyreViewPrices,
                             getHiltMutableLiveDataPay,
                             lifecycleOwner);
 
             // TODO: 30.12.2023 запукскаем
-            callBacksLiveDataNested.callbackLiveData();
+            callBacksLiveDataNested.callbackLiveDataNested();
 
             Log.d(this.getClass().getName(), "\n"
                     + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

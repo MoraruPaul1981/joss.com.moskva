@@ -15,7 +15,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dsy.dsu.CommitPrices.Model.LiveDataPrices.GetLiveDataForrecyreViewPrices;
-import com.dsy.dsu.CommitPrices.View.MyRecycleViewNested.MyViewHoldersNested;
+import com.dsy.dsu.CommitPrices.View.MyRecycleViewNested.MyViewHoldersNestedCommintPrices;
 import com.dsy.dsu.CommitPrices.View.ComponentsPayPrices.ComponentsForRecyreViewNesteds;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.R;
@@ -30,14 +30,14 @@ import java.util.List;
 
 // TODO: 09.11.2023 ВТОРОЯ Rereview
 
-public  class MyRecycleViewIsAdapterCommitDocumentssNested extends RecyclerView.Adapter<MyViewHoldersNested> {
+public  class MyRecycleViewIsAdapterCommitDocumentssNested extends RecyclerView.Adapter<MyViewHoldersNestedCommintPrices> {
 
     public Context context;
     public View itemView;
      public  JsonNode jsonNodeNested;
      public  JsonNode jsonNodeNestedRow;
     public  int getAbsoluteAdapterPosition;
-    private MyViewHoldersNested viewHoldersNested;
+    private MyViewHoldersNestedCommintPrices viewHoldersNested;
 
     private Animation animation;
 
@@ -100,7 +100,7 @@ public  class MyRecycleViewIsAdapterCommitDocumentssNested extends RecyclerView.
 
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHoldersNested holder, @NonNull int position, @NonNull List<Object> payloads) {
+    public void onBindViewHolder(@NonNull MyViewHoldersNestedCommintPrices holder, @NonNull int position, @NonNull List<Object> payloads) {
         try {
             // TODO: 28.12.2023 получаем позицию в recyreview
 
@@ -138,25 +138,25 @@ public  class MyRecycleViewIsAdapterCommitDocumentssNested extends RecyclerView.
     }
 
     @Override
-    public void onViewRecycled(@NonNull MyViewHoldersNested holder) {
+    public void onViewRecycled(@NonNull MyViewHoldersNestedCommintPrices holder) {
         super.onViewRecycled(holder);
     }
 
     @Override
-    public boolean onFailedToRecycleView(@NonNull MyViewHoldersNested holder) {
+    public boolean onFailedToRecycleView(@NonNull MyViewHoldersNestedCommintPrices holder) {
         // TODO: 03.11.2023 Parent
         return super.onFailedToRecycleView(holder);
 
     }
 
     @Override
-    public void onViewAttachedToWindow(@NonNull MyViewHoldersNested holder) {
+    public void onViewAttachedToWindow(@NonNull MyViewHoldersNestedCommintPrices holder) {
         super.onViewAttachedToWindow(holder);
 
     }
 
     @Override
-    public void onViewDetachedFromWindow(@NonNull MyViewHoldersNested holder) {
+    public void onViewDetachedFromWindow(@NonNull MyViewHoldersNestedCommintPrices holder) {
         super.onViewDetachedFromWindow(holder);
     }
 
@@ -196,7 +196,7 @@ public  class MyRecycleViewIsAdapterCommitDocumentssNested extends RecyclerView.
 
     @NonNull
     @Override
-    public MyViewHoldersNested onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyViewHoldersNestedCommintPrices onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View viewComminigPrices = null;
         try {
 
@@ -216,7 +216,7 @@ public  class MyRecycleViewIsAdapterCommitDocumentssNested extends RecyclerView.
             // TODO: 28.12.2023 получаем позицию в recyreview
             int  getPostionViewHolder=  getPostions();
             // TODO: 22.03.2022
-            viewHoldersNested = new MyViewHoldersNested(viewComminigPrices,context,getPostionViewHolder,jsonNodeNested);
+            viewHoldersNested = new MyViewHoldersNestedCommintPrices(viewComminigPrices,context,getPostionViewHolder,jsonNodeNested);
             // TODO: 27.12.2023
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -257,7 +257,7 @@ public  class MyRecycleViewIsAdapterCommitDocumentssNested extends RecyclerView.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHoldersNested holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHoldersNestedCommintPrices holder, int position) {
         try {
             MaterialCardView cardview_commingprices_neasted=holder.itemView.findViewById(R.id.cardview_commingprices_neasted);
             ComponentsForRecyreViewNesteds componentsForRecyreViewNesteds=null;

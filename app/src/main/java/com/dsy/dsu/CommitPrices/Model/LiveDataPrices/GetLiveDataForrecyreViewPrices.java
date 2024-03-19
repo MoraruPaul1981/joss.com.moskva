@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dsy.dsu.CommitPrices.Model.SendDataTo1C.CommintPricesSendJsonTo1C;
 import com.dsy.dsu.CommitPrices.Model.SendDataTo1C.ProcceroingResultatOtveta1CPost;
-import com.dsy.dsu.CommitPrices.View.MyRecycleViewNested.MyRecycleViewIsAdaptersNested;
-import com.dsy.dsu.CommitPrices.View.MyRecycleViewNested.MyViewHoldersNested;
+import com.dsy.dsu.CommitPrices.View.MyRecycleViewNested.MyRecycleViewIsAdaptersNestedCommintPrices;
+import com.dsy.dsu.CommitPrices.View.MyRecycleViewNested.MyViewHoldersNestedCommintPrices;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.android.material.card.MaterialCardView;
@@ -43,11 +43,11 @@ public class GetLiveDataForrecyreViewPrices {
                                                             @NonNull String getHiltCommintgPrices,
                                                             @NonNull    String UUID,
                                                             @NonNull MaterialTextView mTV_commitingprices_count,
-                                                            @NonNull MyRecycleViewIsAdaptersNested myRecycleViewIsAdaptersNested,
+                                                            @NonNull MyRecycleViewIsAdaptersNestedCommintPrices myRecycleViewIsAdaptersNestedCommintPrices,
                                                             @NonNull  int position,
                                                             @NonNull MaterialCardView cardview_commingprices_neasted,
                                                             @NonNull JsonNode jsonNodeNested,
-                                                            @NonNull MyViewHoldersNested holder,
+                                                            @NonNull MyViewHoldersNestedCommintPrices holderNested,
                                                             @NonNull RecyclerView   recycleview_comminingppricesNesteds) {
         try{
             if (!getHilLiveDataRecyreVirewCommitPrices.hasObservers()) {
@@ -76,9 +76,10 @@ public class GetLiveDataForrecyreViewPrices {
                                     ProcceroingResultatOtveta1CPost procceroingResultatOtveta1CPost=new ProcceroingResultatOtveta1CPost(context);
                                     procceroingResultatOtveta1CPost.startingResultatOtveta1CPost(  BufferOt1cCommintPricePost,
                                             mTV_commitingprices_count,
-                                            myRecycleViewIsAdaptersNested,
+                                            myRecycleViewIsAdaptersNestedCommintPrices,
                                             position
-                                            ,cardview_commingprices_neasted,jsonNodeNested,holder,recycleview_comminingppricesNesteds);
+                                            ,cardview_commingprices_neasted,jsonNodeNested,holderNested,
+                                            recycleview_comminingppricesNesteds);
 
 
                                     // TODO: 07.02.2024 выключаем обзервер

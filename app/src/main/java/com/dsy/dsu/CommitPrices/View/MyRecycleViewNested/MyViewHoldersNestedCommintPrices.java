@@ -1,40 +1,44 @@
-package com.dsy.dsu.CommitPrices.View.MyRecycleViewIsNull;
+package com.dsy.dsu.CommitPrices.View.MyRecycleViewNested;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dsy.dsu.Errors.Class_Generation_Errors;
-import com.dsy.dsu.R;
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.navigation.NavigationBarView;
 
 import org.jetbrains.annotations.NotNull;
 
 // TODO: 28.02.2022 начало  MyViewHolderДляЧата
-public class MyViewHoldersPricesIsNull extends RecyclerView.ViewHolder {// TODO: 28.02.2022 начало  MyViewHolderДляЧата
+public class MyViewHoldersNestedCommintPrices extends RecyclerView.ViewHolder {// TODO: 28.02.2022 начало  MyViewHolderДляЧата
     // TODO: 28.02.2022
-    protected Context context;
-
+    public Context context;
+    public View itemView;
+    public JsonNode jsonNodeNestedRow;
+    public  int getAbsoluteAdapterPosition;
+    public  MaterialCardView  cardview_commingprices_neasted;
 
     // TODO: 02.03.2022
-    @SuppressLint("RestrictedApi")
-    public MyViewHoldersPricesIsNull(@NonNull View itemView, @NotNull Context context) {
+    public MyViewHoldersNestedCommintPrices(@NonNull View itemView,
+                                            @NotNull Context context,
+                                            @NotNull int getAbsoluteAdapterPosition,
+                                            @NotNull JsonNode jsonNodeNestedRow) {
         super(itemView);
         try{
+            this.itemView=itemView;
             this.context=context;
-            // TODO: 02.03.2022//
+            this.getAbsoluteAdapterPosition=getAbsoluteAdapterPosition;
+            this.jsonNodeNestedRow = jsonNodeNestedRow;
+
+            // TODO: 02.03.2022
             Log.d(this.getClass().getName(),"\n"
                     + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()+ " ArrayNode " + jsonNodeNestedRow);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

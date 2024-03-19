@@ -17,7 +17,7 @@ import com.dsy.dsu.CommitPrices.Model.BiccessLogicas.GeneratorBundleForJsonNode;
 import com.dsy.dsu.CommitPrices.Model.BiccessLogicas.InitRecyreviews.InizializayRecyreViews;
 import com.dsy.dsu.CommitPrices.Model.LiveDataPrices.GetLiveDataForrecyreViewPrices;
 import com.dsy.dsu.CommitPrices.View.MyRecycleView.MyRecycleViewIsAdaptersCommintPrices;
-import com.dsy.dsu.CommitPrices.View.MyRecycleViewIsNull.MyRecycleViewIsNullAdapters;
+import com.dsy.dsu.CommitPrices.View.MyRecycleViewIsNull.MyRecycleViewIsNullAdaptersCommintPrices;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,7 +39,7 @@ public class CallBacksLiveData {
     private ProgressBar prograessbar_commintingprices ;
     private RecyclerView recycleview_comminingpprices;
 
-    private  MyRecycleViewIsNullAdapters myRecycleViewIsNullAdapters;
+    private MyRecycleViewIsNullAdaptersCommintPrices myRecycleViewIsNullAdaptersCommintPrices;
     private MyRecycleViewIsAdaptersCommintPrices myRecycleViewIsAdaptersCommintPrices;
     private  ObjectMapper objectMapper;
     private EventsBackAndAsyncAndSearchCommintPrices eventsBackAndAsyncAndSearchCommintPrices;
@@ -53,7 +53,7 @@ public class CallBacksLiveData {
     public CallBacksLiveData( @NotNull  Context context,
                               @NotNull   ProgressBar prograessbar_commintingprices,
                               @NotNull   RecyclerView  recycleview_comminingpprices,
-                              @NotNull MyRecycleViewIsNullAdapters myRecycleViewIsNullAdapters,
+                              @NotNull MyRecycleViewIsNullAdaptersCommintPrices myRecycleViewIsNullAdaptersCommintPrices,
                               @NotNull ObjectMapper objectMapper,
                               @NotNull      EventsBackAndAsyncAndSearchCommintPrices eventsBackAndAsyncAndSearchCommintPrices,
                               @NotNull Integer getHiltPublicId,
@@ -66,7 +66,7 @@ public class CallBacksLiveData {
         this.context = context;
         this.prograessbar_commintingprices = prograessbar_commintingprices;
         this.recycleview_comminingpprices = recycleview_comminingpprices;
-        this.myRecycleViewIsNullAdapters = myRecycleViewIsNullAdapters;
+        this.myRecycleViewIsNullAdaptersCommintPrices = myRecycleViewIsNullAdaptersCommintPrices;
         this.objectMapper = objectMapper;
         this.eventsBackAndAsyncAndSearchCommintPrices = eventsBackAndAsyncAndSearchCommintPrices;
         this.getHiltPublicId = getHiltPublicId;
@@ -190,11 +190,11 @@ public class CallBacksLiveData {
 
     public void completeIsNullRecyreView() {
         try{
-            if (myRecycleViewIsNullAdapters!=null) {
+            if (myRecycleViewIsNullAdaptersCommintPrices !=null) {
                 ArrayList<Boolean> arrayListIsNull1cData=new ArrayList<>();
                 arrayListIsNull1cData.add(false);
-                myRecycleViewIsNullAdapters.arrayListIsNull1cData=arrayListIsNull1cData;
-                myRecycleViewIsNullAdapters.notifyDataSetChanged();
+                myRecycleViewIsNullAdaptersCommintPrices.arrayListIsNull1cData=arrayListIsNull1cData;
+                myRecycleViewIsNullAdaptersCommintPrices.notifyDataSetChanged();
                 RecyclerView.Adapter recyclerViewAdapter=         recycleview_comminingpprices.getAdapter();
                 recycleview_comminingpprices.swapAdapter(recyclerViewAdapter,true);
                 recycleview_comminingpprices.getAdapter().notifyDataSetChanged();
@@ -208,7 +208,7 @@ public class CallBacksLiveData {
                     + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " myRecycleViewIsNullAdapters " +myRecycleViewIsNullAdapters);
+                    + " myRecycleViewIsNullAdaptersCommintPrices " + myRecycleViewIsNullAdaptersCommintPrices);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(context.getClass().getName(),
@@ -232,7 +232,7 @@ public class CallBacksLiveData {
                     + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " myRecycleViewIsNullAdapters " +myRecycleViewIsNullAdapters);
+                    + " myRecycleViewIsNullAdaptersCommintPrices " + myRecycleViewIsNullAdaptersCommintPrices);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(context.getClass().getName(),
