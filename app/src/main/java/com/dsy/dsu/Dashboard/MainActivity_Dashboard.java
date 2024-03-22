@@ -30,6 +30,7 @@ import androidx.lifecycle.LifecycleOwner;
 import com.dsy.dsu.BootAndAsync.Componets.BL_innerMainActivityBootAndAsync;
 import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusAyns;
 import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusUpdatePO;
+import com.dsy.dsu.BroadcastRecievers.RegisterBroadcastForWorkManager;
 import com.dsy.dsu.BusinessLogicAll.Permissions.ClassPermissions;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.EventBus.EventBuss;
@@ -56,6 +57,9 @@ public class MainActivity_Dashboard extends AppCompatActivity {
 
     @Inject
     SQLiteDatabase sqlite;
+
+    @Inject
+    RegisterBroadcastForWorkManager registerBroadcastForWorkManager;
 
 
 
@@ -132,6 +136,46 @@ public class MainActivity_Dashboard extends AppCompatActivity {
             Log.d(this.getClass().getName(), "  Полусаем Ошибку e.toString() " + e.toString());
         }
     }
+
+
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        try {
+            EventBus.getDefault().register(this);
+
+            buniccessLogicaActivityDashboard.     МетодИнициализацияHandler();
+            buniccessLogicaActivityDashboard.     МетодБиндингаОбновлениеПО();
+
+            buniccessLogicaActivityDashboard.     методStartingDashboardFragment();
+            buniccessLogicaActivityDashboard.    методСлушательФрагментов(  );
+
+            buniccessLogicaActivityDashboard.  strartigWorkManger();
+
+
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
+
+
+
+
+
 
     @Override
     protected void onDestroy() {
@@ -288,52 +332,8 @@ public class MainActivity_Dashboard extends AppCompatActivity {
 
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        try {
-            EventBus.getDefault().register(this);
-
-            buniccessLogicaActivityDashboard.     МетодИнициализацияHandler();
-            buniccessLogicaActivityDashboard.     МетодБиндингаОбновлениеПО();
-
-            buniccessLogicaActivityDashboard.     методStartingDashboardFragment();
-            buniccessLogicaActivityDashboard.    методСлушательФрагментов(  );
 
 
-
-
-
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
-
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        try {
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
 
 
 
@@ -581,7 +581,23 @@ try{
         }
 
 
+        private void strartigWorkManger() {
+            try{
 
+                registerBroadcastForWorkManager.staringregistraziyreciver(getApplicationContext());
+
+                // TODO: 25.03.2023
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
+        }
 
 
         private void МетодСитемныйНастройкиЭкран() {

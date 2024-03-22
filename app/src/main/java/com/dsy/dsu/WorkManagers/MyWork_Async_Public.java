@@ -35,7 +35,7 @@ public class MyWork_Async_Public extends Worker {
 
     private Service_For_Remote_Async_Binary.LocalBinderAsync localBinderAsyncWorkmanager;
 
-        @Inject
+
         RegisstraFireBaseService regisstraFireBaseService;
 
     // TODO: 28.09.2022
@@ -46,6 +46,9 @@ public class MyWork_Async_Public extends Worker {
 
             // TODO: 22.12.2022
             МетодБиндингаОбщая();
+
+            regisstraFireBaseService=new RegisstraFireBaseService(getApplicationContext());
+
             // TODO: 13.02.2024  резистация в WorkManager   FireBse
         regisstraFireBaseService.МетодРегистрацииУстройсвоНАFirebaseAndOneSignal();
 

@@ -27,7 +27,7 @@ public class RegisstraFireBaseService {
 
 Context context;
     private  String КлючДляFirebaseNotification = "2a1819db-60c8-4ca3-a752-1b6cd9cadfa1";
-    public @Inject RegisstraFireBaseService(@ApplicationContext Context context) {
+    public @Inject RegisstraFireBaseService(@NotNull Context context) {
         this.context = context;
     }
 

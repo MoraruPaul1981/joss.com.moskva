@@ -44,14 +44,13 @@ try{
                 Thread.currentThread().getStackTrace()[2].getLineNumber());
     }
 }
-    public void metodSendBroadCastFroAsyns(@NonNull Context context,@NonNull String setAction){
+    public void metodSendBroadCastFroAsyns( @NonNull Context context ){
         try{
             // TODO: 08.10.2023
 
 
             Intent intentBroadCastForAsyncWorkMangerMyReceiver = new Intent(context,BroadCastForAsyncWorkMangerMyReceiver.class);
             intentBroadCastForAsyncWorkMangerMyReceiver.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intentBroadCastForAsyncWorkMangerMyReceiver.setAction(setAction);
             Bundle extras = new Bundle();
             extras.putString("send_data", "test");
             intentBroadCastForAsyncWorkMangerMyReceiver.putExtras(extras);
