@@ -100,6 +100,8 @@
     <uses-permission android:name="android.permission.CAMERAX" />
     <uses-permission android:name="com.mycoolcam.USE_COOL_CAMERA" />
     <uses-permission android:name="android.media.action.IMAGE_CAPTURE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
     <uses-permission
         android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
         tools:ignore="ProtectedPermissions" />
@@ -272,6 +274,7 @@
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:requestLegacyExternalStorage="true"
+            android:foregroundServiceType="dataSync"
             android:showOnLockScreen="true">
             <intent-filter>
                 <action android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
