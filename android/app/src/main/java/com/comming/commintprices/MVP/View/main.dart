@@ -1,7 +1,21 @@
 import 'package:flutter/material.dart';
 
+import '../Model/Errors/ErrorsPrint.dart';
+
 void main() {
-  runApp(const MyApp());
+  try {
+    runApp(const MyApp());
+
+  } catch (e) {
+    PrintingErrors printingErrors=PrintingErrors();
+    printingErrors.printingError(e,'mainTextButton46.dart','main()');
+  }
+
+
+
+
+
+
 }
 
 class MyApp extends StatelessWidget {
@@ -34,6 +48,7 @@ class MyApp extends StatelessWidget {
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
+
 }
 
 class MyHomePage extends StatefulWidget {
