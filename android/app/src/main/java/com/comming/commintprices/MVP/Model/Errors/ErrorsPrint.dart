@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
       FlutterErrorDetails(
         exception: texterr+' :: bremy ::'+nowDateTime.toString(),
         library: claserr,
-        context: ErrorSummary(metoderr),
+        context: ErrorSummary(metoderr),//
       ),
     );
   }
