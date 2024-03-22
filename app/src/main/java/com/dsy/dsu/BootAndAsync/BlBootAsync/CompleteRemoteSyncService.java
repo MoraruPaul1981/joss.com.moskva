@@ -202,8 +202,6 @@ public class CompleteRemoteSyncService {
                 public void onComplete() {
                     try {
                         // TODO: 23.01.2024
-                   boundserviceexit();
-
                     // TODO: 26.12.2022  конец основгого кода
                     Log.d(context.getClass().getName(), "\n" + " class "
                             + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1198,26 +1196,7 @@ public class CompleteRemoteSyncService {
 
 
 
-    public void boundserviceexit() {
-        try {
-            if (connectionОбновлениеПО!=null) {
-              context.  unbindService(connectionОбновлениеПО);
-            }
 
-            if (connectionAsync!=null) {
-                context.   unbindService(connectionAsync);
-            }
-
-            Log.d(this.getClass().getName(),  " date_update " + date_update + " СтатусРаботыСервера " + СтатусРаботыСервера);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
     // TODO: 29.09.2023  метод зарцска синхронизации ВИЗУАЛЬНОЙ
 
 
