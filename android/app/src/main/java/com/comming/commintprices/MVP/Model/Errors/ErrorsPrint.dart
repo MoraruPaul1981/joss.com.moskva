@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
-//TODO errors all modules
-  class PrintingErrors  {
+import 'GetError.dart';
 
-  void printingError(Object error,String metoderr,String claserr){
+//TODO errors all modules
+  class PrintingErrors implements GetError {
+  @override
+  void printingError(Object error,String metoderr,String claserr ){
     String texterr = error as String;
     final nowDateTime = DateTime.now();
     FlutterError.reportError(

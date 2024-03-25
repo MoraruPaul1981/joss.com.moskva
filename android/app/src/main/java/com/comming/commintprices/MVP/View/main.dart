@@ -4,7 +4,11 @@ import '../Model/Errors/ErrorsPrint.dart';
 
 void main() {
   try {
-    runApp(const MyApp());
+
+
+    throw ('This is an error !!!');
+
+   // runApp(const MyApp());
 
   } catch (e) {
     PrintingErrors printingErrors=PrintingErrors();
