@@ -4,6 +4,8 @@ import 'GetError.dart';
 
 //TODO errors all modules
   class PrintingErrors implements GetError {
+    @override
+    late String abstracNameError;
   @override
   void printingError(Object error,String metoderr,String claserr ){
     String texterr = error as String;
@@ -16,4 +18,8 @@ import 'GetError.dart';
       ),
     );
   }
+
+
+
+
 }
