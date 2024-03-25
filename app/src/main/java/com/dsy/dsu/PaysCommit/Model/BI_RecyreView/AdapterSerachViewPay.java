@@ -187,7 +187,7 @@ class AdapterSerachViewPay{
 
         bl_commintigPay.  методЗакрываемКлавитатуру(  activity);
         // TODO: 06.02.2024
-        bl_commintigPay.navigatorbuttonIconRow(jsonNode1сСогласованияAllRows );
+        bl_commintigPay.successNavigatorButtonIconRow(jsonNode1сСогласованияAllRows );
 
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

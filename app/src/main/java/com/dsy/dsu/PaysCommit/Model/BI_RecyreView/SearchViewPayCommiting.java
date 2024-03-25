@@ -117,7 +117,7 @@ public class SearchViewPayCommiting {
                      /*       // TODO: 24.11.2023
                             bl_commintigPay.   методЗакрываемКлавитатуру( );*/
                         // TODO: 06.02.2024
-                        bl_commintigPay.navigatorbuttonIconRow(jsonNode1сСогласованияCallBackService );
+                        bl_commintigPay.successNavigatorButtonIconRow(jsonNode1сСогласованияCallBackService );
 
                         Log.d(this.getClass().getName(), "\n" + " class " +
                                 Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

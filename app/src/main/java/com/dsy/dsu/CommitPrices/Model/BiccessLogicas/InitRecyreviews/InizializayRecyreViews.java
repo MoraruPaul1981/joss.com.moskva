@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dsy.dsu.CommitPrices.Model.BiccessLogicas.DizaynRecyreView.LeftDividerItemDecorator;
+import com.dsy.dsu.CommitPrices.View.ComponentsPayPrices.CommintPriseItemDecorator;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.R;
 
@@ -33,10 +34,8 @@ public class InizializayRecyreViews {
     public void startInitRecyreview() {
         try {
             recycleview_comminingpprices.setHasFixedSize(true);
-            LeftDividerItemDecorator leftDividerItemDecorator=       new LeftDividerItemDecorator(context);
-            recycleview_comminingpprices.addItemDecoration(leftDividerItemDecorator);
-/*            LinearLayoutManager linearLayoutManager=new LinearLayoutManager(context);
-            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);*/
+            CommintPriseItemDecorator commintPriseItemDecorator=       new CommintPriseItemDecorator(context);
+            recycleview_comminingpprices.addItemDecoration(commintPriseItemDecorator);
             GridLayoutManager layoutManager = new GridLayoutManager(context, 1,
                     GridLayoutManager.VERTICAL,false);
             layoutManager.setSpanSizeLookup(new GridLayoutManager.DefaultSpanSizeLookup());

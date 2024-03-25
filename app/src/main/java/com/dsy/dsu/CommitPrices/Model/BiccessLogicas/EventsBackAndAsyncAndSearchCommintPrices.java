@@ -216,7 +216,7 @@ public class EventsBackAndAsyncAndSearchCommintPrices {
                 // TODO: 09.03.2022
                 if (jsonNodeSize!=null) {
                     if (  jsonNodeSize>0) {
-                        bottomnavigationw_commintingprices.getOrCreateBadge(R.id.bottomNavigationAsync).setBackgroundColor(Color.parseColor("#008080"));
+                        bottomnavigationw_commintingprices.getOrCreateBadge(R.id.bottomNavigationAsync).setBackgroundColor(Color.parseColor("#B8D8EE"));
                         bottomnavigationw_commintingprices.getOrCreateBadge(R.id.bottomNavigationAsync).setNumber(jsonNodeSize);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
                     } else {
                         bottomnavigationw_commintingprices.getOrCreateBadge(R.id.bottomNavigationAsync).setBackgroundColor(Color.RED)        ;

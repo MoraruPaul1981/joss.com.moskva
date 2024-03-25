@@ -627,10 +627,10 @@ public class Bl_CommintigPay {
 
 
 
-    public   void InitMyAdapterRecyreViewIsNull( ) {
+    public   void InitMyAdapterRecyreViewIsNull( @NonNull Boolean РЕжимЗагрузки) {
         try {// TODO: 06.02.2024 TRUE это показыаем кран что идт зашгрузка данных
                 ArrayList<Boolean> arrayListIsNull1cData=new ArrayList<>();
-                arrayListIsNull1cData.add(true);
+                arrayListIsNull1cData.add(РЕжимЗагрузки);
                 myRecycleViewIsNullAdapter = new MyRecycleViewIsNullAdapterPay(arrayListIsNull1cData,activity  );
                 myRecycleViewIsNullAdapter.notifyDataSetChanged();
                 recycleviewcommitpays.setAdapter(myRecycleViewIsNullAdapter);
@@ -699,14 +699,18 @@ public class Bl_CommintigPay {
 
     // TODO: 14.03.2022
 
-    public void navigatorbuttonIconRow(@NonNull JsonNode jsonNode1сСогласованияRow )
-    {
+    public void successNavigatorButtonIconRow(@NonNull JsonNode jsonNode1сСогласованияRow ) {
         try {
             // TODO: 09.03.2022
             if (jsonNode1сСогласованияRow!=null) {
                 if (  jsonNode1сСогласованияRow.size()>0) {
                     bottomNavigationViewParentCommitingPay.getOrCreateBadge(R.id.bottomNavigationAsync).setBackgroundColor(Color.parseColor("#008080"));
-                    bottomNavigationViewParentCommitingPay.getOrCreateBadge(R.id.bottomNavigationAsync).setNumber(jsonNode1сСогласованияRow.size());//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
+                    bottomNavigationViewParentCommitingPay.getOrCreateBadge(R.id.bottomNavigationAsync).setNumber(jsonNode1сСогласованияRow.size());
+                    // TODO: 25.03.2024 after commint
+                    Animation animationДляСогласованияОплаты= AnimationUtils.loadAnimation(context, R.anim.slide_in_scrolls);//R.anim.layout_animal_commit
+                    bottomNavigationViewParentCommitingPay.startAnimation(animationДляСогласованияОплаты);
+
+                    //.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
                 } else {
                     bottomNavigationViewParentCommitingPay.getOrCreateBadge(R.id.bottomNavigationAsync).setBackgroundColor(Color.RED)        ;
                     bottomNavigationViewParentCommitingPay.getOrCreateBadge(R.id.bottomNavigationAsync).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
@@ -731,6 +735,73 @@ public class Bl_CommintigPay {
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
+
+
+    public void navigatorDontbuttonIconRow(@NonNull JsonNode jsonNode1сСогласованияRow ) {
+        try {
+            // TODO: 09.03.2022
+            if (jsonNode1сСогласованияRow!=null) {
+                if (  jsonNode1сСогласованияRow.size()>0) {
+                    bottomNavigationViewParentCommitingPay.getOrCreateBadge(R.id.bottomNavigationAsync).setBackgroundColor(Color.parseColor("#008080"));
+                    bottomNavigationViewParentCommitingPay.getOrCreateBadge(R.id.bottomNavigationAsync).setNumber(jsonNode1сСогласованияRow.size());
+                } else {
+                    bottomNavigationViewParentCommitingPay.getOrCreateBadge(R.id.bottomNavigationAsync).setBackgroundColor(Color.RED)        ;
+                    bottomNavigationViewParentCommitingPay.getOrCreateBadge(R.id.bottomNavigationAsync).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
+                }
+            }else {
+                bottomNavigationViewParentCommitingPay.getOrCreateBadge(R.id.bottomNavigationAsync).setBackgroundColor(Color.RED)        ;
+                bottomNavigationViewParentCommitingPay.getOrCreateBadge(R.id.bottomNavigationAsync).setNumber(0);//.getOrCreateBadge(R.id.id_taskHome).setVisible(true);
+            }
+            bottomNavigationViewParentCommitingPay.requestLayout();
+            bottomNavigationViewParentCommitingPay.refreshDrawableState();
+
+            // TODO: 15.01.2024
+            Log.d(context.getClass().getName(), "\n"
+                    + " время: " + new Date()+"\n+" +
+                    " Класс в процессе... " +  this.getClass().getName()+"\n"+
+                    " метод в процессе... " + Thread.currentThread().getStackTrace());
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
+
+    public void rebootDizaynRecyreView() {
+        try{
+            progressBarCommitPay.requestLayout();
+            progressBarCommitPay.refreshDrawableState();
+
+            recycleviewcommitpays.requestLayout();
+            recycleviewcommitpays.refreshDrawableState();
+
+            bottomNavigationViewParentCommitingPay.requestLayout();
+            bottomNavigationViewParentCommitingPay.refreshDrawableState();
+
+
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(context.getClass().getName(),
+                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
+
+
+
+
+
+
+
     @SuppressLint("RestrictedApi")
     public void setEnableSearchMechi(@NonNull JsonNode jsonNode1сСогласованияRow,@NonNull BottomNavigationView bottomNavigationViewParent )
     {
@@ -1019,7 +1090,7 @@ public class Bl_CommintigPay {
                             resultatSecondPrinyditelnayПолучениеДанных((Serializable) jsonNode1сСогласования);
                         }
 
-                       navigatorbuttonIconRow(jsonNode1сСогласования );
+                        successNavigatorButtonIconRow(jsonNode1сСогласования );
 
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1123,7 +1194,6 @@ public class Bl_CommintigPay {
 
     public void myRecycleViewAdapterReebotgetAdapter(@NonNull JsonNode jsonNode1сСогласованияAllRows) {
         try{
-            if (jsonNode1сСогласованияAllRows!=null) {
                 if (myRecycleViewAdapter!=null) {
                     myRecycleViewAdapter.jsonNode1сСогласованияAfterSearchView=jsonNode1сСогласованияAllRows;
                     myRecycleViewAdapter.notifyDataSetChanged();
@@ -1135,8 +1205,8 @@ public class Bl_CommintigPay {
                     // TODO: 24.01.2024
                     recycleviewcommitpays.requestLayout();
                     recycleviewcommitpays .refreshDrawableState();
+
                 }
-            }
             Log.d(this.getClass().getName(), "\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +

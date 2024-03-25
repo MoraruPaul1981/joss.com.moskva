@@ -38,6 +38,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.textview.MaterialTextView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -165,7 +166,7 @@ public class Fragment1_List_CommitPay extends Fragment   {
                 searchview_commitpay.setIconifiedByDefault(true); //iconify the widget
                 searchview_commitpay.setSubmitButtonEnabled(true);
             bottomNavigationViewParent = view.findViewById(R.id.bottomnavigationActivicommit_search);
-            bottomNavigationViewParent.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED);
+            bottomNavigationViewParent.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_UNLABELED);
             bottomNavigationBack = bottomNavigationViewParent.findViewById(R.id.bottomNavigationBack);
             bottomNavigationBack.setTitle("Выйти");
             bottomNavigationAsync = bottomNavigationViewParent.findViewById(R.id.bottomNavigationAsync);
@@ -255,11 +256,11 @@ public class Fragment1_List_CommitPay extends Fragment   {
             bl_commintigPay.InitRecyreReview( );
 
             // TODO: 16.01.2024   RecyreView Is Null
-            bl_commintigPay.InitMyAdapterRecyreViewIsNull(  );
+            bl_commintigPay.InitMyAdapterRecyreViewIsNull( true );
 
 
             bl_commintigPay.   metodSetNameCommitHeaders(  );
-            bl_commintigPay.navigatorbuttonIconRow( jsonNode1сСогласованияAllRows);
+            bl_commintigPay.successNavigatorButtonIconRow( jsonNode1сСогласованияAllRows);
 
 
             // TODO: 17.01.2024 init butttons
@@ -270,6 +271,17 @@ public class Fragment1_List_CommitPay extends Fragment   {
 // TODO: 15.01.2024  Запуск Получение Данных
 
             bl_commintigPay.metodGetDataOt1cCommitPay( );
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -287,45 +299,7 @@ public class Fragment1_List_CommitPay extends Fragment   {
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
-    // TODO: 12.03.2022  метод с бизнес логикой
-    @Override
-    public void onResume() {
-        super.onResume();
-        try {
-            if (jsonNode1сСогласованияAllRows!=null && binderСогласования1C!=null) {
-                // TODO: 16.01.2024   RecyreView Is Worker
-                bl_commintigPay.InitMyAdapterRecyreViewWorker(jsonNode1сСогласованияAllRows,binderСогласования1C,getHiltCommintgPays,lifecycleOwner);
 
-                bl_commintigPay.navigatorbuttonIconRow(jsonNode1сСогласованияAllRows );
-
-                bl_commintigPay. setEnableSearchMechi(jsonNode1сСогласованияAllRows,bottomNavigationViewParent);
-
-
-                bl_commintigPay.  eVentsAsycBottunCommintgPay();
-
-                bl_commintigPay.  eVentSearchViewCommingPay(jsonNode1сСогласованияAllRows);
-
-
-
-
-                // TODO: 16.01.2024 перегрузка дизайна
-                rebootDizaynRecyreView();
-
-
-            }
-
-            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + "getHiltPublicId " + getHiltPublicId + "jsonNode1сСогласованияAllRows " + jsonNode1сСогласованияAllRows);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
 
 
     @Override
@@ -499,7 +473,7 @@ public class Fragment1_List_CommitPay extends Fragment   {
                                  }
 
                                  // TODO: 16.01.2024 перегрузка дизайна
-                                 rebootDizaynRecyreView();
+                                 bl_commintigPay.   rebootDizaynRecyreView();
 
 
 
@@ -523,9 +497,13 @@ public class Fragment1_List_CommitPay extends Fragment   {
                                  // TODO: 16.01.2024  когда данных нет
                                  if (jsonNode1сСогласованияAllRows!=null   ) {
                                      if ( jsonNode1сСогласованияAllRows.size()>0) {
+
                                          bl_commintigPay.myRecycleViewAdapterReebotgetAdapter(jsonNode1сСогласованияAllRows );
+
                                          // TODO: 16.01.2024 перегрузка дизайна
-                                         rebootDizaynRecyreView();
+
+                                         // TODO: 16.01.2024 перегрузка дизайна
+                                         bl_commintigPay.   rebootDizaynRecyreView();
                                      }
                                  }
 
@@ -550,9 +528,12 @@ public class Fragment1_List_CommitPay extends Fragment   {
                                  // TODO: 16.01.2024  когда данных нет
                                  if (jsonNode1сСогласованияAllRows!=null    ) {
                                      if (jsonNode1сСогласованияAllRows.size()>0) {
-                                         onResume();
+                                         // TODO: 25.03.2024  метод перезаполяем данные которые пришли
+
+                                         getDataSucceessOt1cCallBack();
                                          // TODO: 16.01.2024 перегрузка дизайна
-                                         rebootDizaynRecyreView();
+                                         // TODO: 16.01.2024 перегрузка дизайна
+                                         bl_commintigPay.   rebootDizaynRecyreView();
                                      }
                                  }
 
@@ -609,13 +590,38 @@ public class Fragment1_List_CommitPay extends Fragment   {
 
     }
 
+
+
+    // TODO: 25.03.2024  метод перезаполяем данные которые пришли
     private void getDataSucceessOt1cCallBack() {
         
         try{
 
-            onResume();
+            if (jsonNode1сСогласованияAllRows!=null && binderСогласования1C!=null) {
+                // TODO: 16.01.2024   RecyreView Is Worker
+                bl_commintigPay.InitMyAdapterRecyreViewWorker(jsonNode1сСогласованияAllRows,binderСогласования1C,getHiltCommintgPays,lifecycleOwner);
 
-        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                bl_commintigPay.successNavigatorButtonIconRow(jsonNode1сСогласованияAllRows );
+
+                bl_commintigPay. setEnableSearchMechi(jsonNode1сСогласованияAllRows,bottomNavigationViewParent);
+
+
+                bl_commintigPay.  eVentsAsycBottunCommintgPay();
+
+                bl_commintigPay.  eVentSearchViewCommingPay(jsonNode1сСогласованияAllRows);
+
+
+
+
+                // TODO: 16.01.2024 перегрузка дизайна
+                // TODO: 16.01.2024 перегрузка дизайна
+                bl_commintigPay.   rebootDizaynRecyreView();
+
+
+            }
+
+
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
 
@@ -650,36 +656,7 @@ public class Fragment1_List_CommitPay extends Fragment   {
     }
     }
 
-    private void rebootDizaynRecyreView() {
-        try{
 
-
-
-
-            progressBarCommitPay.requestLayout();
-            progressBarCommitPay.refreshDrawableState();
-
-            recycleviewcommitpays.requestLayout();
-            recycleviewcommitpays.refreshDrawableState();
-
-            bottomNavigationViewParent.requestLayout();
-            bottomNavigationViewParent.refreshDrawableState();
-
-
-            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(getContext().getClass().getName(),
-                    "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
 
 
     private void getDataISAdapterIsNullDontCallBack() {

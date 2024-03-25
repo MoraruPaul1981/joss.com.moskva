@@ -287,134 +287,7 @@ public class MyRecycleViewAdapterCommingPay extends RecyclerView.Adapter<MyViewH
     }
 
     }
-    private void procceseringHideorVisibleFisrt(@NonNull MyViewHolderPayCommingPay holder) {
 
-        try{
-            if (holder.tableRowFisrt.getVisibility()==View.GONE) {
-                holder.tableRowFisrt.setVisibility(View.VISIBLE);
-                Drawable drawableup=context.getDrawable(R.drawable.icon_for_commingpricesup);
-                holder. arrowpay_nested_receriview_commitingpay.setIcon(drawableup);
-                ViewGroup.LayoutParams params = holder.tableRowFisrt.getLayoutParams();
-                params.height = 400;
-                holder.tableRowFisrt.setLayoutParams(params);
-            }else {
-                //Drawable drawabledown=context.getDrawable(R.drawable.icon_for_commingpricesdown2);
-                Drawable drawabledown=context.getDrawable(R.drawable.icon_commotpay_seconthide);
-                holder. arrowpay_nested_receriview_commitingpay.setIcon(drawabledown);
-                holder.tableRowFisrt.setVisibility(View.GONE);
-                ViewGroup.LayoutParams params = holder.tableRowFisrt.getLayoutParams();
-                params.height = 0;
-                holder.tableRowFisrt.setLayoutParams(params);
-
-
-            }
-
-            holder.tableRowFisrt.requestLayout();
-            holder.tableRowFisrt.refreshDrawableState();
-            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
-
-
-
-    private  void procceseringButtonVisibleSecornd(@NonNull MyViewHolderPayCommingPay holder) {
-
-        try{
-            if (holder.tableRowpayButtons.getVisibility()==View.GONE) {
-                holder.tableRowpayButtons.setVisibility(View.VISIBLE);
-                Drawable drawableup=context.getDrawable(R.drawable.icon_for_commingpricesup);
-                holder. arrowpay_nested_receriview_commitingpay.setIcon(drawableup);
-                ViewGroup.LayoutParams params = holder.tableRowpayButtons.getLayoutParams();
-                params.height = 400;
-                holder.tableRowpayButtons.setLayoutParams(params);
-            }else {
-                Drawable drawabledown=context.getDrawable(R.drawable.icon_for_commingpricesdown2);
-                holder. arrowpay_nested_receriview_commitingpay.setIcon(drawabledown);
-                holder.tableRowpayButtons.setVisibility(View.GONE);
-                ViewGroup.LayoutParams params = holder.tableRowpayButtons.getLayoutParams();
-                params.height = 0;
-                holder.tableRowpayButtons.setLayoutParams(params);
-
-
-            }
-
-            holder.tableRowpayButtons.requestLayout();
-            holder.tableRowpayButtons.refreshDrawableState();
-            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-
-    }
-
-
-
-    private void defalultsetVisibleSecontTableRow(@NonNull MyViewHolderPayCommingPay holder ) {
-        try{
-            // TODO: 26.01.2024 данные для послддующего скрытия
-         TableRow   tableRowFisrt=  holder.tableRowFisrt;
-            tableRowFisrt.setVisibility(View.GONE);
-            tableRowFisrt.setEnabled(false);
-            ViewGroup.LayoutParams params = tableRowFisrt.getLayoutParams();
-            params.height = 0;
-            tableRowFisrt.setLayoutParams(params);
-            tableRowFisrt.requestLayout();
-            tableRowFisrt.refreshDrawableState();
-            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-    }
-    }
-
-
-
-    private   void defalultsetVisibleFirstTableRow(@NonNull MyViewHolderPayCommingPay holder  ) {
-        try {
-        // TODO: 26.01.2024 данные для послддующего скрытия
-            // TODO: 26.01.2024 данные для послддующего скрытия
-            TableRow      tableRowFisrt=  holder.   tableRowFisrt;
-            tableRowFisrt.setVisibility(View.GONE);
-            tableRowFisrt.setEnabled(false);
-        ViewGroup.LayoutParams params =   tableRowFisrt.getLayoutParams();
-        params.height = 0;
-            tableRowFisrt.setLayoutParams(params);
-            tableRowFisrt.requestLayout();
-            tableRowFisrt.refreshDrawableState();
-        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-    }
-    }
 
     private   void defalultsetVisibleSecondTableRow(@NonNull MyViewHolderPayCommingPay holder  ) {
         try {
@@ -441,30 +314,7 @@ public class MyRecycleViewAdapterCommingPay extends RecyclerView.Adapter<MyViewH
         }
     }
 
-    private   void defalultsetVisiblebuttonsTableRow(@NonNull MyViewHolderPayCommingPay holder  ) {
-        try {
-            // TODO: 26.01.2024 данные для послддующего скрытия
-            // TODO: 26.01.2024 данные для послддующего скрытия
-            TableRow       tableRowpayButtons=  holder.    tableRowpayButtons;
-            tableRowpayButtons.setVisibility(View.GONE);
-            tableRowpayButtons.setEnabled(false);
-            ViewGroup.LayoutParams params =    tableRowpayButtons.getLayoutParams();
-            params.height = 0;
-            tableRowpayButtons.setLayoutParams(params);
-            tableRowpayButtons.requestLayout();
-            tableRowpayButtons.refreshDrawableState();
-            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
 
 
     @Override
@@ -1069,7 +919,9 @@ public class MyRecycleViewAdapterCommingPay extends RecyclerView.Adapter<MyViewH
                         getLiveDataForrecyreViewPay.setObservableLiveDataRecyreViewPays(lifecycleOwner,
                                 context,
                                 getHiltMutableLiveDataPayForRecyreView,
-                                myRecycleViewAdapterCommingPay,bl_commintigPay,jsonNode1сСогласованияAfterSearchView
+                                myRecycleViewAdapterCommingPay,
+                                bl_commintigPay,
+                                jsonNode1сСогласованияAfterSearchView
                                 ,holder,cardview_commingpay,position,recycleviewcommitpays,
                                 intentзаданиеНаВыполениеSuccess,
                                 getHiltCommintgPays,

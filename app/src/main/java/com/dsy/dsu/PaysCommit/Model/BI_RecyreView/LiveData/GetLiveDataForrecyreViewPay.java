@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -77,7 +78,7 @@ public class GetLiveDataForrecyreViewPay {
 
 
 // TODO: 30.01.2024  метод ответа от 1с pay согласовано или нет
-                                    procesingCallBackOt1cPays( ОТветОт1СОперациисДаннымиSuccees,
+                                    callBackOt1cPays( ОТветОт1СОперациисДаннымиSuccees,
                                             myRecycleViewAdapterCommingPay,
                                             holder,
                                             position,
@@ -136,18 +137,20 @@ public class GetLiveDataForrecyreViewPay {
     }
 
     @SuppressLint("SuspiciousIndentation")
-    void procesingCallBackOt1cPays(@NonNull StringBuffer ОТветОт1СОперациисДанными,
-                                   @NonNull MyRecycleViewAdapterCommingPay myRecycleViewAdapterCommingPay,
-                                   @NonNull MyViewHolderPayCommingPay holder,
-                                   @NonNull int position,
-                                   @NonNull Context context,
-                                   @NonNull Bl_CommintigPay bl_commintigPay,
-                                   @NonNull    androidx.appcompat.widget.SearchView searchview_commitpay,
-                                   @NonNull Activity activity,
-                                   @NonNull Integer positionDeleteJsonNodeAll,
-                                   @NonNull Integer positionDeleteJsonNodeSeachView) {
+    void callBackOt1cPays(@NonNull StringBuffer ОТветОт1СОперациисДанными,
+                          @NonNull MyRecycleViewAdapterCommingPay myRecycleViewAdapterCommingPay,
+                          @NonNull MyViewHolderPayCommingPay holder,
+                          @NonNull int position,
+                          @NonNull Context context,
+                          @NonNull Bl_CommintigPay bl_commintigPay,
+                          @NonNull    androidx.appcompat.widget.SearchView searchview_commitpay,
+                          @NonNull Activity activity,
+                          @NonNull Integer positionDeleteJsonNodeAll,
+                          @NonNull Integer positionDeleteJsonNodeSeachView) {
 
         try {
+
+
         if (ОТветОт1СОперациисДанными.toString().trim().matches("(.*)Операция успешна(.*)")) {
             // TODO: 23.01.2024  удаление строчки
 
@@ -179,17 +182,11 @@ public class GetLiveDataForrecyreViewPay {
 
 
             // TODO: 24.01.2024  tod УДАЛЕНИЕ Переопределяем RecyreView
-            if (jsonNode1сСогласованияПослеУдалениеиПосика.size()>0) {
-                bl_commintigPay.myRecycleViewAdapterReebotgetAdapter(jsonNode1сСогласованияПослеУдалениеиПосика);
-                // TODO: 07.02.2024  закрываем клавиатуру
-                bl_commintigPay.методЗакрываемКлавитатуру(activity);
-                // TODO: 24.01.2024 переодредляем количество строчек внизу в идиаторе
-                bl_commintigPay.navigatorbuttonIconRow(jsonNode1сСогласованияПослеУдалениеиПосика);
-            }else {
-                bl_commintigPay. методЗакрываемSearchView(searchview_commitpay);
-                //bl_commintigPay.startingAsyncAdvansed( );
-            }
+            chengeDatasInertRecyreVieAfterCommitng(bl_commintigPay, searchview_commitpay, activity, jsonNode1сСогласованияПослеУдалениеиПосика,context);
 
+
+            // TODO: 16.01.2024 перегрузка дизайна
+            bl_commintigPay.   rebootDizaynRecyreView();
 
 
 
@@ -219,6 +216,48 @@ public class GetLiveDataForrecyreViewPay {
                 this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
                 Thread.currentThread().getStackTrace()[2].getLineNumber());
     }
+    }
+
+    private   void chengeDatasInertRecyreVieAfterCommitng(@NonNull Bl_CommintigPay bl_commintigPay,
+                                                          @NonNull SearchView searchview_commitpay,
+                                                          @NonNull Activity activity,
+                                                          @NonNull JsonNode jsonNode1сСогласованияПослеУдалениеиПосика,
+                                                          @NonNull Context context) {
+        try{
+        if (jsonNode1сСогласованияПослеУдалениеиПосика.size()>0) {
+            // TODO: 07.02.2024  закрываем клавиатуру
+            bl_commintigPay.методЗакрываемКлавитатуру(activity);
+
+            // TODO: 24.01.2024 переодредляем количество строчек внизу
+            bl_commintigPay.successNavigatorButtonIconRow(jsonNode1сСогласованияПослеУдалениеиПосика);
+            // TODO: 25.03.2024 переропределяем recyreView
+            bl_commintigPay.myRecycleViewAdapterReebotgetAdapter(jsonNode1сСогласованияПослеУдалениеиПосика);
+
+        }else {
+            bl_commintigPay. методЗакрываемSearchView(searchview_commitpay);
+
+            // TODO: 24.01.2024 переодредляем количество строчек внизу
+            bl_commintigPay.navigatorDontbuttonIconRow(jsonNode1сСогласованияПослеУдалениеиПосика);
+
+            bl_commintigPay.InitMyAdapterRecyreViewIsNull(false);
+           // bl_commintigPay.методRebootRecyreviewDontJsonNULL();
+
+        }
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    +" jsonNode1сСогласованияПослеУдалениеиПосика.size() " +jsonNode1сСогласованияПослеУдалениеиПосика.size());
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(context.getClass().getName(),
+                "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+
     }
 
 

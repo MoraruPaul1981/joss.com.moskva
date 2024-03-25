@@ -8,11 +8,11 @@
     android:layout_height="wrap_content"
     android:layout_margin="2dp"
     app:cardCornerRadius="15dp"
-    app:cardElevation="10dp"
-    app:strokeColor="#F2F6F6"
+    app:cardElevation="2dp"
+    app:strokeColor="#EDEBEB"
     app:cardMaxElevation="20dp"
     app:strokeWidth="1dp"
-    android:translationZ="100dp"
+    android:translationZ="10dp"
     android:animateLayoutChanges="true"
     android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
     tools:context=".CommitPrices.View.Window.MainActivityCommitingPrices">
@@ -99,45 +99,41 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_column="0"
-
-
                     android:layout_below="@+id/mTV_NumberDOc_value"
-
-
                     android:layout_alignParentLeft="true"
-
-
                     android:layout_centerInParent="true"
-
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="5dp"
                     android:layout_toLeftOf="@+id/arrow_nested_receriview"
+                    android:animateLayoutChanges="true"
+
                     android:background="@drawable/style_forpolymaterialb_cycle_createspinner30"
                     android:gravity="center"
                     android:minHeight="30dp"
                     android:padding="3dp"
                     android:text="Value ЦФО"
                     android:textAlignment="gravity"
-
                     android:textColor="#000000"
                     android:textColorHint="#80807C"
                     android:textSize="12sp"
                     android:textStyle="normal"
+
+
                     android:tooltipText="название Цфо"
-                    android:translationZ="3dp"
+                    android:translationZ="2dp"
                     android:visibility="visible"
-                    app:cardMaxElevation="10dp"
-                    app:fontFamily="sans-serif"
-                    app:strokeColor="#F2F6F6"
-                    app:strokeWidth="10dp" />
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="10dp"
+                    app:cardMaxElevation="20dp"
+                    app:fontFamily="sans-serif" />
 
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/arrow_nested_receriview"
 
-                    android:layout_width="30dp"
-                    android:layout_height="40dp"
+                    android:layout_width="35dp"
+                    android:layout_height="45dp"
                     android:layout_column="1"
 
                     android:layout_below="@+id/mTV_NumberDOc_value"
@@ -145,8 +141,8 @@
                     android:layout_alignParentRight="true"
 
                     android:layout_centerInParent="true"
-                    android:layout_marginStart="1dp"
 
+                    android:layout_marginStart="1dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="10dp"
                     android:backgroundTint="#FFFFFF"
@@ -160,7 +156,7 @@
                     app:icon="@drawable/icon_for_commingpricesdown2"
                     app:iconGravity="textEnd"
                     app:iconPadding="1dp"
-                    app:iconSize="15dp"
+                    app:iconSize="20dp"
                     app:iconTint="#686565"
                     app:rippleColor="#C3BEBE"
                     app:strokeColor="#F2F6F6"
