@@ -6,11 +6,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.R;
 
 public class CommintPriseItemDecorator extends RecyclerView.ItemDecoration {
@@ -26,12 +28,13 @@ public class CommintPriseItemDecorator extends RecyclerView.ItemDecoration {
     public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         if (parent.getLayoutManager() != null && mDivider != null) {
             // TODO: 25.03.2024
-            drawLeftDivider(c, parent);
+            drawDivider(c, parent);
 
         }
     }
 
-    private void drawLeftDivider(Canvas canvas, RecyclerView parent) {
+    private void drawDivider(Canvas canvas, RecyclerView parent) {
+        try{
         canvas.save();
 
         int childCount = parent.getChildCount();
@@ -42,41 +45,44 @@ public class CommintPriseItemDecorator extends RecyclerView.ItemDecoration {
 
             int childAdapterPosition = parent.getChildAdapterPosition(child);
 
-            int left = parent.getPaddingLeft();
 
-            // Solid size according to divider.xml width
-            //int right = left + (mDivider.getIntrinsicWidth());
+            if (mDivider == null) {
+                // Draw left vertical divider
+                mDivider.setBounds(
+                        0,
+                        0,
+                        0,
+                        0);
+                canvas.drawColor(Color.WHITE);
+            } else {
+                // Draw left vertical divider
+                mDivider.setBounds(
+                        0,
+                        5,
+                        0,
+                        15);
+                canvas.drawColor(Color.parseColor("#B8D8EE"));
+            }
 
-            // Dynamic size according to divider.xml width multiplied by child number
-            int right = left + (mDivider.getIntrinsicWidth() * (childAdapterPosition + 1));
-
-            int top = child.getTop();
-            int bottom = child.getBottom();
-
-            // Draw left vertical divider
-            mDivider.setBounds(
-                    left,
-                    top,
-                    right,
-                    bottom
-            );
-            canvas.drawColor(Color.WHITE);
+          //  canvas.drawColor(Color.WHITE);
             mDivider.draw(canvas);
         }
 
         canvas.restore();
+
+
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(parent.getContext().getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(parent.getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
     }
 
-    // Handles dividers width - move current views to right
-    public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-        if (mDivider == null) {
-            outRect.set(0, 0, 0, 0);
-        } else {
-            int childAdapterPosition = parent.getChildAdapterPosition(view);
-            outRect.set(  0, 5, 0, 15);
-        }
-
 
     }
+
+
 
 }

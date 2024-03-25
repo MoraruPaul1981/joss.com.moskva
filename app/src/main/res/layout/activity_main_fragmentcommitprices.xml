@@ -127,8 +127,6 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="1dp"
-            android:padding="1dp"
             android:minHeight="35dp">
 
 
@@ -159,16 +157,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_above="@+id/prograessbar_commintingprices"
-
                     android:layout_alignParentTop="true"
-
                     android:layout_centerInParent="true"
-                    android:layout_marginStart="1dp"
-                    android:layout_marginTop="1dp"
-                    android:layout_marginEnd="1dp"
-                    android:layout_marginBottom="1dp"
                     android:background="#FFFFFF"
-                    android:padding="1dp"
                     android:visibility="visible"
                     tools:ignore="MissingConstraints" />
 
@@ -181,11 +172,11 @@
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                     android:layout_above="@+id/bottomnavigationw_commintingprices"
                     android:layout_width="match_parent"
-                    android:indeterminateTint="#CDD3D3"
+                    android:indeterminateTint="#B8D8EE"
                     android:layout_height="5dp"
                     android:scaleY="3"
                     android:scaleX="1"
-                    android:layout_margin="2dp"
+                    android:layout_margin="3dp"
                     android:padding="1dp"
                     android:layout_centerHorizontal="true"
                     android:indeterminate="true"
@@ -200,9 +191,9 @@
                     android:layout_centerHorizontal="true"
 
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="1dp"
+                    android:layout_marginTop="2dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="5dp"
                     android:padding="2dp"
 
                     android:background="@drawable/style_for_newstypespinners_ietm8"
