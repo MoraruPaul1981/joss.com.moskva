@@ -11,9 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dsy.dsu.Errors.Class_Generation_Errors;
+import com.dsy.dsu.R;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.textview.MaterialTextView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -31,6 +33,8 @@ public class MyViewHoldersCommintPrices extends RecyclerView.ViewHolder {// TODO
     public View itemView;
     public   JsonNode jsonNode;
     public   int getAbsoluteAdapterPosition;
+    public  MaterialButton   arrow_nested_receriview;
+    public MaterialTextView mTV_commitingprices_value;
 
     // TODO: 02.03.2022
     public MyViewHoldersCommintPrices(@NonNull View itemView,
@@ -41,6 +45,11 @@ public class MyViewHoldersCommintPrices extends RecyclerView.ViewHolder {// TODO
             this.itemView=itemView;
             this.context=context;
             this.getAbsoluteAdapterPosition=getAbsoluteAdapterPosition;
+
+            getarrow_nested_receriview();
+
+            getmTV_commitingprices_value();
+
             Log.d(this.getClass().getName(),"\n"
                     + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -55,5 +64,52 @@ public class MyViewHoldersCommintPrices extends RecyclerView.ViewHolder {// TODO
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
+
+    private void getarrow_nested_receriview() {
+        try{
+
+        arrow_nested_receriview=     itemView.findViewById(R.id.arrow_nested_receriview) ;
+
+
+        Log.d(this.getClass().getName(),"\n"
+                + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()+ " jsonNode " +jsonNode);
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        // TODO: 01.09.2021 метод вызова
+        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+
+
+    }
+
+    private void getmTV_commitingprices_value() {
+        try{
+
+            mTV_commitingprices_value=     itemView.findViewById(R.id.mTV_commitingprices_value) ;
+
+
+            Log.d(this.getClass().getName(),"\n"
+                    + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()+ " jsonNode " +jsonNode);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            // TODO: 01.09.2021 метод вызова
+            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+
+
+    }
+
 
 } // TODO: 28.02.2022 конец  MyViewHolderДляЧата

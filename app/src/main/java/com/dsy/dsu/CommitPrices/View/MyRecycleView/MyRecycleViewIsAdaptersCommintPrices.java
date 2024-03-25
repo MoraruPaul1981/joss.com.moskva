@@ -230,11 +230,19 @@ public  class MyRecycleViewIsAdaptersCommintPrices extends RecyclerView.Adapter<
             ComponentsForRecyreView componentsForRecyreView=
                     new ComponentsForRecyreView(holderPrices,
                             context,position,objectMapper,
-                            getHiltPublicId,getHiltCommintgPrices,getLiveDataForrecyreViewPrices,
-                            getHiltMutableLiveDataPay,lifecycleOwner,myRecycleViewIsAdaptersCommintPrices);
+                            getHiltPublicId,getHiltCommintgPrices,
+                            getLiveDataForrecyreViewPrices,
+                            getHiltMutableLiveDataPay,
+                            lifecycleOwner,
+                            myRecycleViewIsAdaptersCommintPrices);
 
             // TODO: 29.12.2023 Кнопка Стрелочка которая показывает и скрывает Дочериний recyreview
-            componentsForRecyreView.getArrow_nested_receriview();
+            componentsForRecyreView.getproccesingNestedRcyreViewClickMaterialButton(holderPrices.arrow_nested_receriview);
+
+
+            // TODO: 29.12.2023 Кнопка Стрелочка которая показывает и скрывает Дочериний recyreview
+            componentsForRecyreView.getproccesingNestedRcyreViewClickMaterialTextView(holderPrices.arrow_nested_receriview,
+                    holderPrices.mTV_commitingprices_value);
 
             // TODO: 29.12.2023 название ЦФО
             componentsForRecyreView.getmTV_commitingprices_value();

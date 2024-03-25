@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
@@ -143,21 +144,99 @@ public class ComponentsForRecyreView {
 
 
 
-    public MaterialButton getArrow_nested_receriview() {
+
+
+
+
+
+    public void getproccesingNestedRcyreViewClickMaterialButton(@NonNull MaterialButton materialButtonStartingNestedRecyreView) {
         try{
-            arrow_nested_receriview=    holderPrices.itemView.findViewById(R.id.arrow_nested_receriview) ;
+        // TODO: 25.03.2024 Кнопка запуска внутргего recyreview
+        RxView.clicks(materialButtonStartingNestedRecyreView)
+                .throttleFirst(250, TimeUnit.MILLISECONDS)
+                .filter(s -> !s.toString().isEmpty())
+                .map(new Function<Unit, MaterialButton>() {
+                    @Override
+                    public MaterialButton apply(Unit unit) throws Throwable {
+                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                        return materialButtonStartingNestedRecyreView;
+                    }
+                })
+                .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Throwable {
+                        throwable.printStackTrace();
+                        Log.e(context.getClass().getName(),
+                                "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(throwable.toString(),
+                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    }
+                })
+                .onErrorComplete(new Predicate<Throwable>() {
+                    @Override
+                    public boolean test(Throwable throwable) throws Throwable {
+                        throwable.printStackTrace();
+                        Log.e(context.getClass().getName(),
+                                "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(throwable.toString(),
+                                this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        return false;
+                    }
+                })
+                .subscribe( Getarrow_nested_receriview-> {
+
+                    ///todo отрыкавем или скрываем дополнительнае данные в Соглосование Цен
+                    clikningArrowSettingNestedRecyreView(  Getarrow_nested_receriview);
 
 
-            RxView.clicks(  arrow_nested_receriview)
+
+                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                            +" Getarrow_nested_receriview " +Getarrow_nested_receriview  );
+
+                });
+
+            Log.d(this.getClass().getName(),"\n"
+                    + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
+                    + " arrow_nested_receriview " +arrow_nested_receriview);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+
+}
+
+// TODO: 25.03.2024
+
+
+
+    public void getproccesingNestedRcyreViewClickMaterialTextView(@NonNull MaterialButton arrow_nested_receriview,
+            @NonNull MaterialTextView mTV_commitingprices_value) {
+        try{
+            // TODO: 25.03.2024 Кнопка запуска внутргего recyreview
+            RxView.clicks(mTV_commitingprices_value)
                     .throttleFirst(250, TimeUnit.MILLISECONDS)
                     .filter(s -> !s.toString().isEmpty())
-                    .map(new Function<Unit, MaterialButton>() {
+                    .map(new Function<Unit, MaterialTextView>() {
                         @Override
-                        public MaterialButton apply(Unit unit) throws Throwable {
+                        public MaterialTextView apply(Unit unit) throws Throwable {
                             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-                            return    arrow_nested_receriview;
+                            return mTV_commitingprices_value;
                         }
                     })
                     .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
@@ -187,14 +266,17 @@ public class ComponentsForRecyreView {
                     })
                     .subscribe( Getarrow_nested_receriview-> {
 
+
+                        arrow_nested_receriview.callOnClick();
                         ///todo отрыкавем или скрываем дополнительнае данные в Соглосование Цен
-                        clikningArrowSettingNestedRecyreView(  Getarrow_nested_receriview);
+                       /// clikningArrowSettingNestedRecyreView(  arrow_nested_receriview);
 
 
 
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" Getarrow_nested_receriview " +Getarrow_nested_receriview  );
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                +" Getarrow_nested_receriview " +Getarrow_nested_receriview  );
 
                     });
 
@@ -211,8 +293,9 @@ public class ComponentsForRecyreView {
             new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-        return arrow_nested_receriview;
+
     }
+
 
 
 

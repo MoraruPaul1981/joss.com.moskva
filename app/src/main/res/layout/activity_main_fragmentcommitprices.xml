@@ -176,7 +176,7 @@
                     android:layout_height="5dp"
                     android:scaleY="3"
                     android:scaleX="1"
-                    android:layout_margin="3dp"
+                    android:layout_margin="2dp"
                     android:padding="1dp"
                     android:layout_centerHorizontal="true"
                     android:indeterminate="true"

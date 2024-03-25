@@ -101,14 +101,15 @@
                     android:layout_column="0"
                     android:layout_below="@+id/mTV_NumberDOc_value"
                     android:layout_alignParentLeft="true"
+
                     android:layout_centerInParent="true"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="5dp"
-
                     android:layout_toLeftOf="@+id/arrow_nested_receriview"
                     android:animateLayoutChanges="true"
-                    android:background="@drawable/style_forpolymaterialb_cycle_createspinner2"
+
+
                     android:gravity="center"
                     android:minHeight="30dp"
                     android:padding="3dp"
@@ -116,8 +117,6 @@
                     android:textAlignment="gravity"
                     android:textColor="#000000"
                     android:textColorHint="#80807C"
-
-
                     android:textSize="12sp"
                     android:textStyle="normal"
                     android:tooltipText="название Цфо"
@@ -141,7 +140,6 @@
                     android:layout_alignParentRight="true"
 
                     android:layout_centerInParent="true"
-
                     android:layout_marginStart="1dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="10dp"
@@ -159,7 +157,7 @@
                     app:iconSize="20dp"
                     app:iconTint="#686565"
                     app:rippleColor="#C3BEBE"
-                    app:strokeColor="#F2F6F6"
+                    app:strokeColor="#B8D8EE"
                     app:strokeWidth="1dp"
                     tools:ignore="SpeakableTextPresentCheck" />
             </RelativeLayout>
