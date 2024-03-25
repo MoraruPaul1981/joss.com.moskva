@@ -99,7 +99,6 @@ public InputStream   МетодПолучемJSONОт1СДляСогласова
                         Request.Builder builder = originalRequest.newBuilder()
                                 .header("dsu1table", ТаблицыДляОбработки1С)
                                 .header("dsu1user", String.valueOf(ПубличныйIDДляФрагмента))//TODO old ПубличныйIDДляФрагмента   или 8
-                                //.header("dsu1user", String.valueOf(96))//TODO old ПубличныйIDДляФрагмента   или 8
                                 .header("Authorization",
                                         Credentials.basic("dsu1Admin", "dsu1Admin"));
                         Request newRequest = builder.build();

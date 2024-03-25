@@ -467,7 +467,7 @@ public class Fragment1_List_CommitPay extends Fragment   {
 
                          switch (intent.getAction())  {
 
-                             case           "CallBackAflerGetData1c":
+                             case          "CallBackAflerGetData1cCommitPay":
                                  // TODO: 16.01.2024  пришли данные
                                  Bundle bundleFirst =      intent.getExtras();
                                   jsonNode1сСогласованияAllRows=     (JsonNode)      bundleFirst.getSerializable("jsonNode1сСогласования");

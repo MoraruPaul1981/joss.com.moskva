@@ -10,6 +10,8 @@ import android.os.IBinder;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.work.Data;
+import androidx.work.ForegroundInfo;
+import androidx.work.ListenableWorker;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 import com.dsy.dsu.BusinessLogicAll.Class_Find_Setting_User_Network;
@@ -19,6 +21,7 @@ import com.dsy.dsu.OneSignals.ClassOneSingnalGenerator;
 import com.dsy.dsu.Services.Service_For_Remote_Async_Binary;
 import com.dsy.dsu.WorkManagers.BL_WorkMangers.ClassAnalyasStartingForWorkManager;
 import com.dsy.dsu.WorkManagers.BL_WorkMangers.RegisstraFireBaseService;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,23 +39,22 @@ public class MyWork_Async_Public extends Worker {
     private Service_For_Remote_Async_Binary.LocalBinderAsync localBinderAsyncWorkmanager;
 
 
-        RegisstraFireBaseService regisstraFireBaseService;
+
 
     // TODO: 28.09.2022
+    @SuppressLint("RestrictedApi")
     public MyWork_Async_Public(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         try{
 
-
             // TODO: 22.12.2022
             МетодБиндингаОбщая();
 
-            regisstraFireBaseService=new RegisstraFireBaseService(getApplicationContext());
+            registraziaOneSignalInWorkers();
 
-            // TODO: 13.02.2024  резистация в WorkManager   FireBse
-        regisstraFireBaseService.МетодРегистрацииУстройсвоНАFirebaseAndOneSignal();
-
-        Log.i(getApplicationContext().getClass().getName(), " public MyWork_Async_Public(@NonNull Context context, @NonNull WorkerParameters workerParams) {  Контекст "+"\n"+ this.getApplicationContext());
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
 
         } catch (Exception e) {
         e.printStackTrace();
@@ -64,6 +66,34 @@ public class MyWork_Async_Public extends Worker {
     }
     }
 
+    @SuppressLint("RestrictedApi")
+    private void registraziaOneSignalInWorkers() {
+        try{
+        getTaskExecutor().getMainThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                RegisstraFireBaseService   regisstraFireBaseService=new RegisstraFireBaseService(getApplicationContext());
+
+                // TODO: 13.02.2024  резистация в WorkManager   FireBse
+                regisstraFireBaseService.МетодРегистрацииУстройсвоНАFirebaseAndOneSignal();
+            }
+        });
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+        Log.e(getApplicationContext().getClass().getName(), " ОШИБКА В WORK MANAGER  MyWork_Async_Синхронизация_Single из FaceApp в  MyWork_Async_Синхронизация_Single Exception  ошибка в классе  MyWork_Async_Синхронизация_Single" + e.toString());
+    }
+    }
+
+
+    @NonNull
+    @Override
+    public ListenableFuture<ForegroundInfo> getForegroundInfoAsync() {
+        return super.getForegroundInfoAsync();
+    }
 
     @NonNull
     @Override

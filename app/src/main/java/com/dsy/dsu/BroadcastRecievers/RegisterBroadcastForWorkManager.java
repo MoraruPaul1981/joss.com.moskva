@@ -36,7 +36,9 @@ Context context;
 
             ClassRegistraAsyncBroadcast classRegistraAsyncBroadcast=new ClassRegistraAsyncBroadcast();
 
+            // TODO: 22.03.2024  регистрация work manager 
             classRegistraAsyncBroadcast.metodRegistraBroadCastFroAsyns(context);
+            // TODO: 22.03.2024  посылаем данные work
 
             classRegistraAsyncBroadcast.metodSendBroadCastFroAsyns(context);
 

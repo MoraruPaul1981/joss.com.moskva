@@ -1,14 +1,23 @@
 package com.dsy.dsu.CommitPrices.Model.BiccessLogicas.InitRecyreviews;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dsy.dsu.CommitPrices.Model.BiccessLogicas.DizaynRecyreView.LeftDividerItemDecorator;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
+import com.dsy.dsu.R;
 
 public class InizializayRecyreViews {
 
@@ -23,29 +32,15 @@ public class InizializayRecyreViews {
 
     public void startInitRecyreview() {
         try {
-
-
-
-
-
-
-
-
-
-
-/*
-            DividerItemDecoration itemDecoration =
-                    new DividerItemDecoration(recycleview_comminingpprices.getContext(), DividerItemDecoration.HORIZONTAL);*/
-
-
-
-
-
             recycleview_comminingpprices.setHasFixedSize(true);
-            recycleview_comminingpprices.addItemDecoration(new LeftDividerItemDecorator(context));
-            LinearLayoutManager linearLayoutManager=new LinearLayoutManager(context);
-            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-            recycleview_comminingpprices.setLayoutManager(linearLayoutManager);
+            LeftDividerItemDecorator leftDividerItemDecorator=       new LeftDividerItemDecorator(context);
+            recycleview_comminingpprices.addItemDecoration(leftDividerItemDecorator);
+/*            LinearLayoutManager linearLayoutManager=new LinearLayoutManager(context);
+            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);*/
+            GridLayoutManager layoutManager = new GridLayoutManager(context, 1,
+                    GridLayoutManager.VERTICAL,false);
+            layoutManager.setSpanSizeLookup(new GridLayoutManager.DefaultSpanSizeLookup());
+            recycleview_comminingpprices.setLayoutManager(layoutManager);
             recycleview_comminingpprices.requestLayout();
             recycleview_comminingpprices.refreshDrawableState();
             // TODO: 28.02.2022
@@ -64,5 +59,11 @@ public class InizializayRecyreViews {
         }
 
     }
+
+
+
+
+
+
 
 }

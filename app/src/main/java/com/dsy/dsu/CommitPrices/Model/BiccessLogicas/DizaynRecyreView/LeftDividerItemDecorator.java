@@ -2,6 +2,7 @@ package com.dsy.dsu.CommitPrices.Model.BiccessLogicas.DizaynRecyreView;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.view.View;
@@ -23,7 +24,9 @@ public class LeftDividerItemDecorator extends RecyclerView.ItemDecoration {
 
     public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         if (parent.getLayoutManager() != null && mDivider != null) {
+            // TODO: 25.03.2024
             drawLeftDivider(c, parent);
+            
         }
     }
 
@@ -56,7 +59,7 @@ public class LeftDividerItemDecorator extends RecyclerView.ItemDecoration {
                     right,
                     bottom
             );
-
+            canvas.drawColor(Color.WHITE);
             mDivider.draw(canvas);
         }
 

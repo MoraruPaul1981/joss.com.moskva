@@ -874,7 +874,7 @@ public class Bl_CommintigPay {
     private void resultatFisrtПолучениеДанных(Serializable jsonNode1сСогласования) {
 
         try{
-        Intent intentCallBackAfter1cData=new Intent("CallBackAflerGetData1c");
+        Intent intentCallBackAfter1cData=new Intent("CallBackAflerGetData1cCommitPay");
         Bundle bundle=new Bundle();
         bundle.putSerializable("jsonNode1сСогласования", jsonNode1сСогласования);
         intentCallBackAfter1cData.putExtras(bundle);

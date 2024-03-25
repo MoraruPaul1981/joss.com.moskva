@@ -953,7 +953,8 @@ public class MyRecycleViewAdapterCommingPay extends RecyclerView.Adapter<MyViewH
 
                             handler[0] = holder.butt_successcommit.getHandler();
 
-                            holder.cardview_commingpay.animate().rotationXBy(5);
+                            // TODO: 25.03.2024
+                            cardViewRotacfions(holder,5);
 
                             return holder.butt_successcommit;
                         }
@@ -988,6 +989,9 @@ public class MyRecycleViewAdapterCommingPay extends RecyclerView.Adapter<MyViewH
                         // TODO: 18.01.2024  метод успешного соглавования
                                     proccerClickSucceesPay(holder, handler, holder.cardview_commingpay,
                                             ПубличныйidPay,getHiltCommintgPays,   myRecycleViewAdapterCommingPay);
+
+                        // TODO: 25.03.2024
+                        cardViewRotacfions(holder,-5);
 
                                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1082,7 +1086,7 @@ public class MyRecycleViewAdapterCommingPay extends RecyclerView.Adapter<MyViewH
                         sendLiveDataRecyreViewEventCallBacl1c( );
 
 
-                        cardmaterialrotafedefualt(holder);
+
 
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1109,8 +1113,8 @@ public class MyRecycleViewAdapterCommingPay extends RecyclerView.Adapter<MyViewH
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
-    private void cardmaterialrotafedefualt(@NonNull MyViewHolderPayCommingPay holder) {
-        holder.cardview_commingpay.animate().rotationXBy(-5);
+    private void cardViewRotacfions(@NonNull MyViewHolderPayCommingPay holder,@NonNull int rot) {
+        holder.cardview_commingpay.animate().rotationXBy(rot);
     }
 
 
@@ -1271,7 +1275,8 @@ public class MyRecycleViewAdapterCommingPay extends RecyclerView.Adapter<MyViewH
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                             handler[0] = holder.butt_cancel.getHandler();
-                            holder.cardview_commingpay.animate().rotationXBy(5);
+                            // TODO: 25.03.2024 rota
+                            cardViewRotacfions(holder,5);
                             return holder.butt_cancel;
                         }
                     })
@@ -1307,6 +1312,9 @@ public class MyRecycleViewAdapterCommingPay extends RecyclerView.Adapter<MyViewH
 
 
                         procceringCancelButtonClick(holder, handler[0], holder.cardview_commingpay,  myRecycleViewAdapterCommingPay);
+
+                      // TODO: 25.03.2024 rotafions defalurtl
+                        cardViewRotacfions(holder,-5);
 
 
                         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
