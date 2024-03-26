@@ -30,7 +30,7 @@ import androidx.lifecycle.LifecycleOwner;
 import com.dsy.dsu.BootAndAsync.Componets.BL_innerMainActivityBootAndAsync;
 import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusAyns;
 import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusUpdatePO;
-import com.dsy.dsu.BroadcastRecievers.RegisterBroadcastForWorkManager;
+import com.dsy.dsu.BroadcastRecievers.Bl.RegisterBroadcastForWorkManager;
 import com.dsy.dsu.BusinessLogicAll.Permissions.ClassPermissions;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.EventBus.EventBuss;
@@ -584,7 +584,7 @@ try{
         private void strartigWorkManger() {
             try{
 
-                registerBroadcastForWorkManager.staringregistraziyreciver(getApplicationContext());
+                registerBroadcastForWorkManager.statingInsidAcrtivityWorkMAnager(getApplicationContext());
 
                 // TODO: 25.03.2023
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

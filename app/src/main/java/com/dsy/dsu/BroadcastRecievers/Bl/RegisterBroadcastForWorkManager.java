@@ -1,20 +1,18 @@
-package com.dsy.dsu.BroadcastRecievers;
+package com.dsy.dsu.BroadcastRecievers.Bl;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+
+import androidx.work.WorkManager;
 
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 
 import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import dagger.Module;
-import dagger.Provides;
 import dagger.hilt.InstallIn;
-import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
 
 @QualifierInRegisterBoradcastWork
@@ -31,18 +29,15 @@ Context context;
     // TODO: 22.03.2024 запускам work manager 
 
 
- public void staringregistraziyreciver(@NotNull Context context ) {
+ public void statingInsidAcrtivityWorkMAnager(@NotNull Context context ) {
         try{
+            String ИмяСлужбыСинхронизации="WorkManager Synchronizasiy_Data";
+            Integer callbackRunnable= WorkManager.getInstance(context).getWorkInfosByTag(ИмяСлужбыСинхронизации).get().size();
+            if (callbackRunnable==0) {
 
-            ClassRegistraAsyncBroadcast classRegistraAsyncBroadcast=new ClassRegistraAsyncBroadcast();
-
-            // TODO: 22.03.2024  регистрация work manager 
-            classRegistraAsyncBroadcast.metodRegistraBroadCastFroAsyns(context);
-            // TODO: 22.03.2024  посылаем данные work
-
-            classRegistraAsyncBroadcast.metodSendBroadCastFroAsyns(context);
-
-
+                // TODO: 22.03.2024  регистрация work manager
+                new getStartingWorkmanagerPublic().metodRegistraBroadCastFroAsyns(context);
+            }
             Log.d(this.getClass().getName(),"\n" + " class "
                     + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

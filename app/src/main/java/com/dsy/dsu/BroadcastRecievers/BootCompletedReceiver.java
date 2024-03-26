@@ -12,23 +12,23 @@ import com.dsy.dsu.Errors.Class_Generation_Errors;
 
 import java.util.Date;
 
-public class BroadCastForAsyncWorkMangerMyReceiver extends BroadcastReceiver {
+public class BootCompletedReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
         try{
         // TODO: This method is called when the BroadcastReceiver is receiving
-            Integer ПубличныйIDДляФрагмента = new SubClass_Connection_BroadcastReceiver_Sous_Asyns_Glassfish()
-                    .МетодПолучениеяПубличногоID(context);
-
-           // Toast.makeText(context, "ООО Союз-Автодор work Background !!! "+"\n"+new Date().toLocaleString().toString(), Toast.LENGTH_LONG).show();
-
-             // TODO: 14.12.2023 REPLACE
-             new ClassCreatePublicWorkManager(context).paspisaniyWorkMangerREPLACE(context,ПубличныйIDДляФрагмента );
-
 
             Log.d(context.getClass().getName(), "\n"
                     + " Starting.... время: " + new Date()+"\n+" +
+                    " Класс в процессе... " +  this.getClass().getName()+"\n"+
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                    " intent.getAction() " +intent.getAction());
+
+            Toast.makeText(context, context.getClass().getName(), Toast.LENGTH_LONG).show();
+
+            Log.d(context.getClass().getName(), "\n"
+                    + " Ending.... время: " + new Date()+"\n+" +
                     " Класс в процессе... " +  this.getClass().getName()+"\n"+
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
                     " intent.getAction() " +intent.getAction());

@@ -1,4 +1,4 @@
-package com.dsy.dsu.BroadcastRecievers;
+package com.dsy.dsu.BroadcastRecievers.Bl;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

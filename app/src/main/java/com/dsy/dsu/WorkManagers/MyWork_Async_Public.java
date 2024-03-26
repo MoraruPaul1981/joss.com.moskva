@@ -23,6 +23,7 @@ import com.dsy.dsu.WorkManagers.BL_WorkMangers.ClassAnalyasStartingForWorkManage
 import com.dsy.dsu.WorkManagers.BL_WorkMangers.RegisstraFireBaseService;
 import com.google.common.util.concurrent.ListenableFuture;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
@@ -52,7 +53,9 @@ public class MyWork_Async_Public extends Worker {
 
             registraziaOneSignalInWorkers();
 
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+            Log.d(this.getClass().getName(),"\n"
+                    + " bremy: " + new Date()+"\n+"
+                    + "  class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
 
@@ -78,6 +81,10 @@ public class MyWork_Async_Public extends Worker {
                 regisstraFireBaseService.МетодРегистрацииУстройсвоНАFirebaseAndOneSignal();
             }
         });
+            Log.d(this.getClass().getName(),"\n" + "   class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -144,9 +151,8 @@ public class MyWork_Async_Public extends Worker {
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
             new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
-            Log.e(getApplicationContext().getClass().getName(), " ОШИБКА В WORK MANAGER MyWork_Async_Public из FaceApp в MyWork_Async_Public Exception  ошибка в классе MyWork_Async_Public"
-                    + e.toString());
         }
+
         if (ФинальныйРезультатAsyncBackgroud>0 ) {
 
             return Result.success(myDataОтветОбщейСлужбы);
@@ -211,8 +217,7 @@ public class MyWork_Async_Public extends Worker {
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
             new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
-            Log.e(getApplicationContext().getClass().getName(), " ОШИБКА В WORK MANAGER MyWork_Async_Public из FaceApp в MyWork_Async_Public Exception  ошибка в классе MyWork_Async_Public"
-                    + e.toString());
+
         }
     }
 

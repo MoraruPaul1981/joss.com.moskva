@@ -47,10 +47,11 @@ public class ClassCreatePublicWorkManager {
                     .build();
 
 
-            Log.w(context.getClass().getName(), " ПОСЛЕ ОТРАБОТКИ МЕТОДА ....Внутри MyWork_Async_Public  callbackRunnable.name() ");
-
-            Integer callbackRunnable= WorkManager.getInstance(context).getWorkInfosByTag(ИмяСлужбыСинхронизации).get().size();
-            if (callbackRunnable==0) {
+            Log.d(this.getClass().getName(),"\n"
+                    + " bremy: " + new Date()+"\n+"
+                    + "  class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
 
                 WorkManager.getInstance(context.getApplicationContext()).enqueueUniquePeriodicWork(ИмяСлужбыСинхронизации,
                         ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequestСинхронизация);
@@ -59,15 +60,9 @@ public class ClassCreatePublicWorkManager {
                         + " время: " + new Date()+"\n+" +
                         " Класс в процессе... " +  this.getClass().getName()+"\n"+
                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                        " PublicId " +PublicId);
+                        " PublicId " +PublicId+ " callbackRunnable ");
 
-            }
 
-            Log.d(context.getClass().getName(), "\n"
-                    + " время: " + new Date()+"\n+" +
-                    " Класс в процессе... " +  this.getClass().getName()+"\n"+
-                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                    " PublicId " +PublicId);
 
         } catch (Exception e) {
             e.printStackTrace();

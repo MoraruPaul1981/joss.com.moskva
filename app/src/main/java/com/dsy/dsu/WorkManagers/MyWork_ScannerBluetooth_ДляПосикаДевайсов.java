@@ -1,5 +1,6 @@
 package com.dsy.dsu.WorkManagers;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
@@ -14,6 +15,7 @@ import androidx.work.WorkerParameters;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -27,13 +29,18 @@ public class MyWork_ScannerBluetooth_ДляПосикаДевайсов extends 
     public MyWork_ScannerBluetooth_ДляПосикаДевайсов(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         this.Контекст = context;
-        Log.i(Контекст.getClass().getName(), " public MyWork_Async_Public(@NonNull Context context, @NonNull WorkerParameters workerParams) {  Контекст " + "\n" + Контекст);
+        Log.d(this.getClass().getName(),"\n"
+                + " bremy: " + new Date()+"\n+"
+                + "  class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
     }
     @Override
     public void onStopped() {
         super.onStopped();
     }
 
+    @SuppressLint("RestrictedApi")
     @NonNull
     @Override
     public Executor getBackgroundExecutor() {
