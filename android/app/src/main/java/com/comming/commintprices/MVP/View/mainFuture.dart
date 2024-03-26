@@ -44,76 +44,105 @@ class MyHomePage extends StatefulWidget {
 
 //TODO класс dart future проекта Два #1
 class _MyHomePageState2 extends State<MyHomePage>  {
-  //TODO пользовательские метод Future
-  Future<String> getDataFuture() async{
-    try{
-      await Future.delayed(
-        const Duration(
-            seconds: 5
-        ),
-      );
-    } catch (e) {
-      PrintingErrors printingErrors= new PrintingErrors();
-      printingErrors.printingError(e,'mainTextButton46.dart','main()');
-    }
-  return 'Super!!';
-  //  throw 'Erross!!';
-  }
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-   return Center(
-     child: FutureBuilder<String>(
-       future: getDataFuture(),
-       builder: (context, AsyncSnapshot snapshot) {
-         if(snapshot.connectionState==ConnectionState.waiting){
+   return
+     Scaffold(
+       backgroundColor: Colors.white,
+       body:Container(
+         alignment: Alignment.center,
+           child:_futureBuilder()
+       ),
+       );
 
-           return     Center(
-             child: Container(
-               height: 50,
-               width: 50,
-               margin: EdgeInsets.all(5),
-               child: CircularProgressIndicator(
-                 strokeWidth: 5.0,
-                 valueColor : AlwaysStoppedAnimation(Colors.red),
-                 backgroundColor: Colors.grey,
-                 value: 0.6,
-               ),
-             ),
-           );
 
-         }else{
-
-         }
-         if(snapshot.hasError){
-           return ErrorWidget(
-             snapshot.error.toString(),
-           );
-         }else{
-           return Column(
-             mainAxisSize: MainAxisSize.min,
-             children: [
-               Text(
-                 snapshot.data.toString(),
-               ),
-               ElevatedButton(
-                   onPressed: (){
-                     setState(() {
-             print("ffff");
-                     });
-                   },
-                   child: const Text(
-                     'Refrech'
-                   ))
-             ],
-           );
-         }
-       },
-     ),
-   );
   }
 }
+
+
+Widget _futureBuilder() {
+  return new FutureBuilder<String>(
+    future: getDataFuture(),
+    builder: (context, AsyncSnapshot snapshot) {
+      if(snapshot.connectionState==ConnectionState.waiting){
+
+        return     Padding(
+          padding: const EdgeInsets.only(top: 200,bottom: 0,left: 0,right: 0),
+          child: SizedBox(
+            height: 20.0,
+            width: 20.0,
+            child: Transform.scale(
+              scale: 2,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                valueColor: AlwaysStoppedAnimation(
+                    Colors.red),
+
+              ),
+            ),
+          ),
+        );
+
+      }else{
+
+      }
+      if(snapshot.hasError){
+        return ErrorWidget(
+          snapshot.error.toString(),
+        );
+      }else{
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              snapshot.data.toString(),
+            ),
+            ElevatedButton(
+                onPressed: (){
+                  setState(() {
+                    _futureBuilder();
+                    print("ffff");
+                  });
+                },
+                child: const Text(
+                    'Refrech'
+                ))
+          ],
+        );
+      }
+    },
+  );
+
+
+}
+
+void setState(Null Function() param0) {
+  print("gggg");
+}
+
+
+//TODO пользовательские метод Future
+Future<String> getDataFuture() async{
+  try{
+    await Future.delayed(
+      const Duration(
+          seconds: 5
+      ),
+    );
+  } catch (e) {
+    PrintingErrors printingErrors= new PrintingErrors();
+    printingErrors.printingError(e,'mainTextButton46.dart','main()');
+  }
+  return 'Super!!';
+  //throw 'Erross!!';
+}
+
+
+
+
+
+
 
 
 
