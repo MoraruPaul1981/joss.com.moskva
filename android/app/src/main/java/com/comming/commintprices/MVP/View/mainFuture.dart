@@ -77,6 +77,8 @@ class _MyHomePageState2 extends State<MyHomePage>  {
                child: CircularProgressIndicator(
                  strokeWidth: 5.0,
                  valueColor : AlwaysStoppedAnimation(Colors.red),
+                 backgroundColor: Colors.grey,
+                 value: 0.6,
                ),
              ),
            );
