@@ -45,7 +45,6 @@ class MyHomePage extends StatefulWidget {
 //TODO класс dart future проекта Два #1
 class _MyHomePageState2 extends State<MyHomePage>  {
   //TODO пользовательские метод Future
-  //TODO пользовательские метод Future
   Future<String> getDataFuture() async{
     try{
       await Future.delayed(
@@ -69,7 +68,19 @@ class _MyHomePageState2 extends State<MyHomePage>  {
        future: getDataFuture(),
        builder: (context, AsyncSnapshot snapshot) {
          if(snapshot.connectionState==ConnectionState.waiting){
-           return const CircularProgressIndicator();
+
+           return     Center(
+             child: Container(
+               height: 50,
+               width: 50,
+               margin: EdgeInsets.all(5),
+               child: CircularProgressIndicator(
+                 strokeWidth: 5.0,
+                 valueColor : AlwaysStoppedAnimation(Colors.red),
+               ),
+             ),
+           );
+
          }else{
 
          }
@@ -96,9 +107,6 @@ class _MyHomePageState2 extends State<MyHomePage>  {
              ],
            );
          }
-
-
-         return const CircularProgressIndicator();
        },
      ),
    );
