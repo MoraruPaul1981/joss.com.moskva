@@ -13,8 +13,8 @@ void main() {
   PrintingErrors? printingErrors;
   try {
 
-   throw ('This is an error !!!');
-  // runApp(const CommingPrices());
+  // throw ('This is an error !!!');
+   runApp(const CommingPrices());
    //TODO error  genetator -26.03.2024--9.17
   } catch (e) {
     printingErrors?.printingError(e,'mainTextButton46.dart','main()');
@@ -43,8 +43,82 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.blue,
+        body: SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children:<Widget> [
+                CircleAvatar(
+                  radius:50,
+                ),
+                Text(
+                  'Priyanshu',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 40.0,
+                    fontFamily: 'Pacifico',
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  'Flutter Developer',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontFamily: 'Source Sans Pro',
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Card(
 
+                  margin: EdgeInsets.all(20.0),
+                  color: Colors.white,
+                  child: ListTile(
+                      leading:
+                      Icon(
+                        Icons.phone,
+                        color: Colors.black,
+                        size: 20.0,
+                      ),
+                      title:
+                      Text(
+                        '+91 7355689902',
+                        style: TextStyle(
+                          fontFamily: 'Pacifico',
+                          fontSize: 20.0,
+                          color: Colors.black54,
+                        ),
+                      )
 
-    );
+                  ),
+                ),
+                Card(
+
+                  margin: EdgeInsets.all(20.0),
+                  color: Colors.white,
+                  child: ListTile(
+                      leading:
+                      Icon(
+                        Icons.email,
+                        color: Colors.black,
+                        size: 20.0,
+                      ),
+                      title:
+                      Text(
+                        'priyanshutaru@gmial.com',
+                        style: TextStyle(
+                          fontFamily: 'Pacifico',
+                          fontSize: 20.0,
+                          color: Colors.black54,
+                        ),
+                      )
+
+                  ),
+                )
+              ],
+            )
+        ),
+      );
+
   }
 }
