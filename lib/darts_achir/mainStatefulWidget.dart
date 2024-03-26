@@ -37,8 +37,7 @@ Widget build(BuildContext context) {
       child: TextButton(
         child: Text('Woolha.com'),
         style: TextButton.styleFrom(
-          primary: Colors.teal,
-          textStyle: TextStyle(
+          foregroundColor: Colors.teal, textStyle: TextStyle(
               color: Colors.black,
               fontSize: 40,
               fontStyle: FontStyle.italic

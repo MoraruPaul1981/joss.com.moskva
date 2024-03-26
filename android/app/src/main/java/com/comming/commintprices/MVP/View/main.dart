@@ -1,18 +1,43 @@
 import 'package:flutter/material.dart';
-
 import '../Model/Errors/ErrorsPrint.dart';
 
-void main() {
+import 'dart:async';
+import 'dart:convert';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+
+
+Future<void> main() async {
+  var client;
   try {
 
+     client = HttpClient();
 
-    throw ('This is an error !!!');
+
+
+      HttpClientRequest request = await client.get('80.70.108.165', 8888, '/file.txt');
+      // Optionally set up headers...
+      // Optionally write to the request object...
+      HttpClientResponse response = await request.close();
+      // Process the response
+      final stringData = await response.transform(utf8.decoder).join();
+      print(stringData);
+
+
+
+
+
+   /// throw ('This is an error !!!');
 
    // runApp(const MyApp());
 
   } catch (e) {
     PrintingErrors printingErrors=PrintingErrors();
     printingErrors.printingError(e,'mainTextButton46.dart','main()');
+  } finally {
+    client.close();
   }
 
 
