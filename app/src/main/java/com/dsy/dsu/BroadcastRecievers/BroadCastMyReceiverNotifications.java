@@ -25,7 +25,7 @@ public class BroadCastMyReceiverNotifications extends BroadcastReceiver {
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
                     " intent.getAction() " +intent.getAction());
 
-            Toast.makeText(context, context.getClass().getName(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "BroadCastMyReceiverNotifications", Toast.LENGTH_LONG).show();
 
 
 

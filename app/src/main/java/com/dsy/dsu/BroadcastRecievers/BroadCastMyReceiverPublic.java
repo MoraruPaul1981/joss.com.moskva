@@ -25,7 +25,7 @@ public class BroadCastMyReceiverPublic extends BroadcastReceiver {
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
                     " intent.getAction() " +intent.getAction());
 
-            Toast.makeText(context, context.getClass().getName(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "BroadCastMyReceiverPublic", Toast.LENGTH_LONG).show();
 
 
             Integer ПубличныйIDДляФрагмента = new SubClass_Connection_BroadcastReceiver_Sous_Asyns_Glassfish()

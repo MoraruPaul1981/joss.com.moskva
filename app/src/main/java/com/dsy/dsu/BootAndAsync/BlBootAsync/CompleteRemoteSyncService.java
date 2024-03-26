@@ -17,6 +17,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusAyns;
+import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusEndAync;
 import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusPrograssBar;
 import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusUpdatePO;
 import com.dsy.dsu.BusinessLogicAll.Class_Connections_Server;
@@ -885,15 +886,15 @@ public class CompleteRemoteSyncService {
 
     void metoEndingAsynsDashboard() {
         try {
-            Intent Интент_ЗапускаетBootAndAsync = new Intent();
-            Интент_ЗапускаетBootAndAsync.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            Интент_ЗапускаетBootAndAsync.setAction("MainActivity_Dashboard.class");
-            Интент_ЗапускаетBootAndAsync.setClass(context, MainActivity_Dashboard.class);
 
-            Bundle bundleBinderUpdate=new Bundle();
-            bundleBinderUpdate.putBinder("callbackbinderdashbord", localBinderОбновлениеПО);
-            Интент_ЗапускаетBootAndAsync.putExtras(bundleBinderUpdate);
-           context. startActivity(Интент_ЗапускаетBootAndAsync);//tso
+            Intent intentAnsycEnding=new Intent("AnsycEnding");
+            intentAnsycEnding.setAction("Broad_messageAsyncOrUpdatePO");
+            Bundle bundle=new Bundle();
+            bundle.putString("Статус",   "AnsycEnding");///"В процесс"
+            bundle.putBinder("callbackbinderdashbord",   localBinderОбновлениеПО);///"В процесс"
+            intentAnsycEnding.putExtras(bundle);
+
+            EventBus.getDefault().post(new MessageEvensBusEndAync  (intentAnsycEnding));
 
             Log.d(this.getClass().getName(), " date_update " + date_update + " СтатусРаботыСервера " + СтатусРаботыСервера);
 

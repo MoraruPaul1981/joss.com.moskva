@@ -25,15 +25,18 @@ import androidx.lifecycle.LifecycleOwner;
 import com.dsy.dsu.BootAndAsync.BlBootAsync.Hilts.StartingEventAsyncOrUpdatePOUsers;
 import com.dsy.dsu.BootAndAsync.DowloadUpdatePO.DownLoadPO;
 import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusAyns;
+import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusEndAync;
 import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusPrograssBar;
 import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusUpdatePO;
 import com.dsy.dsu.BootAndAsync.Service.IntentServiceBoot;
 import com.dsy.dsu.BootAndAsync.Window.MainActivityBootAndAsync;
 import com.dsy.dsu.BusinessLogicAll.Permissions.ClassPermissions;
+import com.dsy.dsu.Dashboard.MainActivity_Dashboard;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.Errors.MainActivity_Errors;
 import com.dsy.dsu.Passwords.MainActivityPasswords;
 import com.dsy.dsu.R;
+import com.dsy.dsu.Services.ServiceUpdatePoОбновлениеПО;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Date;
@@ -272,6 +275,53 @@ public class BL_innerMainActivityBootAndAsync extends MainActivityBootAndAsync {
     }
 
 
+
+    public void getEventBusEndingAsync(MessageEvensBusEndAync messageEvensBusEndAync){
+
+        try{
+            Bundle bundleGetOtServicePrograssBar =(Bundle)         messageEvensBusEndAync.mess.getExtras();
+            String Статус=   bundleGetOtServicePrograssBar.getString("Статус");
+            
+            if (Статус.contains("AnsycEnding")) {
+                // TODO: 26.03.2024
+                ServiceUpdatePoОбновлениеПО.localBinderОбновлениеПО localBinderОбновлениеПО =
+                        (ServiceUpdatePoОбновлениеПО.localBinderОбновлениеПО) bundleGetOtServicePrograssBar.getBinder("callbackbinderdashbord");
+
+            Intent Интент_ЗапускаетDashboard = new Intent();
+                Интент_ЗапускаетDashboard.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                Интент_ЗапускаетDashboard.setAction("MainActivity_Dashboard.class");
+                Интент_ЗапускаетDashboard.setClass(context, MainActivity_Dashboard.class);
+
+            Bundle bundleBinderUpdate=new Bundle();
+            bundleBinderUpdate.putBinder("callbackbinderdashbord", localBinderОбновлениеПО);
+                Интент_ЗапускаетDashboard.putExtras(bundleBinderUpdate);
+                activity.  startActivity(Интент_ЗапускаетDashboard);//tso*/
+                activity.finish();
+
+                // TODO: 26.12.2022  конец основгого кода
+                Log.d(context.getClass().getName(), "\n" + " class "
+                        + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
+            }
+
+
+
+
+
+            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
 
 
 

@@ -20,12 +20,12 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         // TODO: This method is called when the BroadcastReceiver is receiving
 
             Log.d(context.getClass().getName(), "\n"
-                    + " Starting.... время: " + new Date()+"\n+" +
+                    + " BootCompletedReceiver sous .... bremy: " + new Date()+"\n+" +
                     " Класс в процессе... " +  this.getClass().getName()+"\n"+
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
                     " intent.getAction() " +intent.getAction());
 
-            Toast.makeText(context, context.getClass().getName(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "BootCompletedReceiver", Toast.LENGTH_LONG).show();
 
             Log.d(context.getClass().getName(), "\n"
                     + " Ending.... время: " + new Date()+"\n+" +

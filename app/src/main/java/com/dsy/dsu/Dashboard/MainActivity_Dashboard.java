@@ -173,13 +173,9 @@ public class MainActivity_Dashboard extends AppCompatActivity {
     }
 
 
-
-
-
-
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
         try{
             exitandclearCodeDascjBord();
 
@@ -196,6 +192,8 @@ public class MainActivity_Dashboard extends AppCompatActivity {
             Log.d(this.getClass().getName(), "  Полусаем Ошибку e.toString() " + e.toString());
         }
     }
+
+
 
     private void exitandclearCodeDascjBord() {
         try{
