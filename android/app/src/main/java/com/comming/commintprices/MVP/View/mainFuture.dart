@@ -80,23 +80,45 @@ class _MyHomePageState2 extends State<MyHomePage>  {
 
   @override
   Widget build(BuildContext context) {
-
-
-
     // TODO: implement build
-   return  Scaffold(
-         backgroundColor: Colors.grey,
-         body:Container(
-           color: Colors.amber[600],
-           alignment: Alignment.center,
-             margin: const EdgeInsets.all(0.0),
-             padding: const EdgeInsets.all(0.0),
-             child:_futureBuilder()
-         ),
-         );
+    return Scaffold(
+      backgroundColor: Colors.grey,
+      body: Row(
+        //ROW 1
+        children: [
+          Container(
+            color: Colors.orange,
+            margin: EdgeInsets.all(25.0),
+            child: FlutterLogo(
+              size: 60.0,
+            ),
+          ),
+          Container(
+            color: Colors.blue,
+            margin: EdgeInsets.all(25.0),
+            child: FlutterLogo(
+              size: 60.0,
+            ),
+          ),
+          Container(
+            color: Colors.purple,
+            margin: EdgeInsets.all(25.0),
+            child: FlutterLogo(
+              size: 60.0,
+            ),
+          ),
+        ],
+      ),
 
+
+
+
+
+
+    );
   }
-}
+  }
+
 
 
 Widget _futureBuilder() {
@@ -137,7 +159,7 @@ Widget _futureBuilder() {
                mainAxisSize: MainAxisSize.min,
                children: [
                  Text(
-                   snapshot.data.toString(),
+                   snapshot.data.toString(),textAlign: TextAlign.center,
                  ),
                  ElevatedButton(
                      onPressed: () {},
@@ -155,7 +177,7 @@ Widget _futureBuilder() {
                mainAxisSize: MainAxisSize.min,
                children: [
                  Text(
-                   snapshot.data.toString(),
+                   snapshot.data.toString(),textAlign: TextAlign.center,
                  ),
                  ElevatedButton(
                      onPressed: () {},
@@ -182,7 +204,7 @@ Widget _futureBuilder() {
                       child: Transform.scale(
                         scale: 2,
                         child: CircularProgressIndicator(
-                          strokeWidth: 2,
+                          strokeWidth: 3,
                           valueColor: AlwaysStoppedAnimation(
                               Colors.red),
 
