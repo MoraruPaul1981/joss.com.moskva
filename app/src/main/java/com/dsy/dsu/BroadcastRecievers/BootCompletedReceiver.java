@@ -19,6 +19,8 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         try{
         // TODO: This method is called when the BroadcastReceiver is receiving
 
+            PendingResult pendingResult = goAsync();
+
             Log.d(context.getClass().getName(), "\n"
                     + " BootCompletedReceiver sous .... bremy: " + new Date()+"\n+" +
                     " Класс в процессе... " +  this.getClass().getName()+"\n"+
@@ -33,7 +35,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
                     " intent.getAction() " +intent.getAction());
             // TODO: 07.10.2023
-
+            pendingResult.finish();
 
             Log.d(context.getClass().getName(), "\n"
                     + " END ...время: " + new Date()+"\n+" +

@@ -25,6 +25,8 @@ public class BroadCastMyReceiverNotifications extends BroadcastReceiver {
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
                     " intent.getAction() " +intent.getAction());
 
+            PendingResult pendingResult = goAsync();
+
           //  Toast.makeText(context, "BroadCastMyReceiverNotifications", Toast.LENGTH_LONG).show();
 
 
@@ -36,7 +38,7 @@ public class BroadCastMyReceiverNotifications extends BroadcastReceiver {
                     " intent.getAction() " +intent.getAction());
             // TODO: 07.10.2023
 
-
+            pendingResult.finish();
             Log.d(context.getClass().getName(), "\n"
                     + " END ...время: " + new Date()+"\n+" +
                     " Класс в процессе... " +  this.getClass().getName()+"\n"+
