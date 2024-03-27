@@ -85,33 +85,15 @@ Widget _futureBuilder() {
     future: getDataFuture(),
     builder: (context, AsyncSnapshot snapshot) {
 
-
-      if (snapshot.hasError) {
-        getFutureBuilderError(snapshot);
-      }
-
-
-      if (snapshot.hasData) {
-        return ErrorWidget(
-          snapshot.error.toString(),
-        );
-      }
-
-
       if (snapshot.connectionState == ConnectionState.waiting) {
-
         return getWaitingFutureBuilder(snapshot);
-
-      } else {
-
-     return    getAfterFutureBuilderColumn(snapshot);
+      } else   {
+          return getAfterFutureBuilderColumn(snapshot);
       }
+
     }
-
-      );
-
-
-      }
+    );
+}
 
 
 
@@ -130,20 +112,45 @@ Widget _futureBuilder() {
 
         //TODO метод возвраяет виджет после Операции
          Widget getAfterFutureBuilderColumn(AsyncSnapshot snapshot) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                snapshot.data.toString(),
-              ),
-              ElevatedButton(
-                  onPressed: () {},
-                  child: const Text(
-                      'Refrech'
-                  ))
-            ],
-          );
+
+           if (snapshot.hasData && snapshot.data.toString().isNotEmpty ) {
+             return Column(
+               mainAxisSize: MainAxisSize.min,
+               children: [
+                 Text(
+                   snapshot.data.toString(),
+                 ),
+                 ElevatedButton(
+                     onPressed: () {},
+                     child: const Text(
+                         'Refrech'
+                     ))
+               ],
+             );
+           }else if(snapshot.hasError){
+
+             return getFutureBuilderError(snapshot);
+
+           } else{
+             return Column(
+               mainAxisSize: MainAxisSize.min,
+               children: [
+                 Text(
+                   snapshot.data.toString(),
+                 ),
+                 ElevatedButton(
+                     onPressed: () {},
+                     child: const Text(
+                         'Refrech NULLL'
+                     ))
+               ],
+             );
+           }
         }
+
+
+
+
 
                 //TODO метод   Операции в ПРОЦЕССЕ......
                 Widget getWaitingFutureBuilder(AsyncSnapshot snapshot) {
@@ -181,7 +188,8 @@ Widget _futureBuilder() {
         PrintingErrors printingErrors= new PrintingErrors();
         printingErrors.printingError(e,'mainTextButton46.dart','main()');
       }
-      return 'Super!!';
+     return 'Super!!';
+    //  return '';
       //throw 'Erross!!';
     }
 
