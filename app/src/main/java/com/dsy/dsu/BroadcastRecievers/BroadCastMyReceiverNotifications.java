@@ -20,12 +20,12 @@ public class BroadCastMyReceiverNotifications extends BroadcastReceiver {
         // TODO: This method is called when the BroadcastReceiver is receiving
 
             Log.d(context.getClass().getName(), "\n"
-                    + " Starting.... время: " + new Date()+"\n+" +
+                    + " BroadCastMyReceiverNotifications Starting.... sous .... bremy: " + new Date()+"\n+" +
                     " Класс в процессе... " +  this.getClass().getName()+"\n"+
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
                     " intent.getAction() " +intent.getAction());
 
-            Toast.makeText(context, "BroadCastMyReceiverNotifications", Toast.LENGTH_LONG).show();
+          //  Toast.makeText(context, "BroadCastMyReceiverNotifications", Toast.LENGTH_LONG).show();
 
 
 

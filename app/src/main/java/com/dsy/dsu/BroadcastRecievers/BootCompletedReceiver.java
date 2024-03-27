@@ -25,7 +25,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
                     " intent.getAction() " +intent.getAction());
 
-            Toast.makeText(context, "BootCompletedReceiver", Toast.LENGTH_LONG).show();
+          //  Toast.makeText(context, "BootCompletedReceiver", Toast.LENGTH_LONG).show();
 
             Log.d(context.getClass().getName(), "\n"
                     + " Ending.... время: " + new Date()+"\n+" +

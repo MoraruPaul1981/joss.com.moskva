@@ -217,19 +217,18 @@
         android:id="@+id/Кнопкаобновление"
         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
 
-        android:layout_above="@+id/КнопкаОшибки"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:layout_above="@+id/КнопкаОшибки"
 
 
         android:layout_centerInParent="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:backgroundTint="#FFFFFF"
+
+
         android:drawableLeft="@drawable/icon_newsettings_updatepo"
-
-
         android:fontFamily="@font/alfa_slab_one"
         android:gravity="center"
         android:minHeight="70dp"

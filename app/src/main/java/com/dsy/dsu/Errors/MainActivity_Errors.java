@@ -36,7 +36,9 @@ import com.dsy.dsu.BootAndAsync.Window.MainActivityBootAndAsync;
 import com.dsy.dsu.BusinessLogicAll.Class_Sendiing_Errors;
 import com.dsy.dsu.BusinessLogicAll.Permissions.ClassPermissions;
 import com.dsy.dsu.Dashboard.Fragments.DashboardFragmentSettings;
+import com.dsy.dsu.Dashboard.MainActivity_Dashboard;
 import com.dsy.dsu.R;
+import com.dsy.dsu.Services.ServiceUpdatePoОбновлениеПО;
 import com.google.android.material.button.MaterialButton;
 
 import org.jetbrains.annotations.NotNull;
@@ -83,6 +85,7 @@ public class MainActivity_Errors extends AppCompatActivity  {
   private Activity activity;
 
   private  String СтатусЗадачи;
+    private  ServiceUpdatePoОбновлениеПО.localBinderОбновлениеПО localBinderОбновлениеПО;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +133,7 @@ public class MainActivity_Errors extends AppCompatActivity  {
         // TODO: 04.10.2023 разрешения для всего
         new ClassPermissions(this,ALL_PERSSION_CODE,CAMERA_PERSSION_CODE);
 
-            СтатусЗадачи=getIntent().getAction();
+            getDataForMainErrors();
 
             // TODO: 12.12.2023  staring biscce logic
             biccessLogicActivityError=new BiccessLogicActivityError();
@@ -158,9 +161,12 @@ public class MainActivity_Errors extends AppCompatActivity  {
 
     }
 
+    private void getDataForMainErrors() {
+        СтатусЗадачи=getIntent().getAction();
 
-
-
+        localBinderОбновлениеПО =
+                (ServiceUpdatePoОбновлениеПО.localBinderОбновлениеПО) getIntent().getExtras().getBinder("callbackbinderdashbord");
+    }
 
 
     @Override
@@ -393,26 +399,44 @@ public class MainActivity_Errors extends AppCompatActivity  {
         private void metodCallBackkFragemtSettings() {
             try{
                 // TODO Запусукаем Фргамент НАстройки  dashbord
-              /*  // TODO Запусукаем Фргамент НАстройки  dashbord
-                Intent IntentStartFaceApp = new Intent();
-                IntentStartFaceApp.setClass(getApplication(), MainActivity_Dashboard.class);
-                IntentStartFaceApp.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);/// FLAG_ACTIVITY_SINGLE_TOP
-                startActivity(IntentStartFaceApp);*/
 
 
-                // TODO Запусукаем Фргамент НАстройки  dashbord
+                Intent Интент_ЗапускаетDashboard = new Intent();
+                Интент_ЗапускаетDashboard.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                Интент_ЗапускаетDashboard.setAction("MainActivity_Dashboard.class");
+                Интент_ЗапускаетDashboard.setClass(getApplicationContext(), MainActivity_Dashboard.class);
+
+                Bundle bundleBinderUpdate=new Bundle();
+                bundleBinderUpdate.putBoolean("CallBackFromMainActivity_Errors", true);
+                bundleBinderUpdate.putBinder("callbackbinderdashbord", localBinderОбновлениеПО);
+                Интент_ЗапускаетDashboard.putExtras(bundleBinderUpdate);
+
+                Интент_ЗапускаетDashboard.putExtras(bundleBinderUpdate);
+                activity.  startActivity(Интент_ЗапускаетDashboard);//tso*/
+
+         /*       // TODO Запусукаем Фргамент НАстройки  dashbord
                 // TODO Запусукаем Фргамент НАстройки  dashbord
                 DashboardFragmentSettings dashboardFragmentSettings = DashboardFragmentSettings.newInstance();
                 Bundle data=new Bundle();
                 dashboardFragmentSettings.setArguments(data);
                 fragmentTransaction.remove(dashboardFragmentSettings);
                 String fragmentNewImageNameaddToBackStack=   dashboardFragmentSettings.getClass().getName();
-                fragmentTransaction.addToBackStack(fragmentNewImageNameaddToBackStack);
                 Fragment FragmentУжеЕСтьИлиНЕт=     fragmentManager.findFragmentByTag(fragmentNewImageNameaddToBackStack);
+                fragmentTransaction.addToBackStack(null);
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragmentTransaction.commit();
                 if (FragmentУжеЕСтьИлиНЕт==null) {
                     dashboardFragmentSettings.show(fragmentManager, "DashboardFragmentSettings");
                     // TODO: 01.08.2023
-                }
+                }*/
+               // TODO: 27.03.2024
+
+
+
+
+
+
+
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");

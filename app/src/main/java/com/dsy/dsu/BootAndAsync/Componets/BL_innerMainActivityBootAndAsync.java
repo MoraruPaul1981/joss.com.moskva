@@ -294,6 +294,7 @@ public class BL_innerMainActivityBootAndAsync extends MainActivityBootAndAsync {
 
             Bundle bundleBinderUpdate=new Bundle();
             bundleBinderUpdate.putBinder("callbackbinderdashbord", localBinderОбновлениеПО);
+                bundleBinderUpdate.putBoolean("CallBackMainActivityBootAndAsync", true);
                 Интент_ЗапускаетDashboard.putExtras(bundleBinderUpdate);
                 activity.  startActivity(Интент_ЗапускаетDashboard);//tso*/
                 activity.finish();

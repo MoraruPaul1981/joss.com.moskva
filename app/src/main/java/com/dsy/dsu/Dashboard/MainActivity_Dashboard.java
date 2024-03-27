@@ -32,6 +32,7 @@ import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusAyns;
 import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusUpdatePO;
 import com.dsy.dsu.BroadcastRecievers.Bl.RegisterBroadcastForWorkManager;
 import com.dsy.dsu.BusinessLogicAll.Permissions.ClassPermissions;
+import com.dsy.dsu.Dashboard.Fragments.DashboardFragmentSettings;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.EventBus.EventBuss;
 import com.dsy.dsu.Services.ServiceUpdatePoОбновлениеПО;
@@ -149,7 +150,22 @@ public class MainActivity_Dashboard extends AppCompatActivity {
             buniccessLogicaActivityDashboard.     МетодИнициализацияHandler();
             buniccessLogicaActivityDashboard.     МетодБиндингаОбновлениеПО();
 
-            buniccessLogicaActivityDashboard.     методStartingDashboardFragment();
+
+
+
+            // TODO: 27.03.2024 в зависомсти кто вызвает
+       Bundle bundleMainActivityDashcBoard=    getIntent().getExtras();
+            if (bundleMainActivityDashcBoard.getBoolean("CallBackMainActivityBootAndAsync")) {
+                buniccessLogicaActivityDashboard.     методStartingDashboardFragment();
+            }
+            if (bundleMainActivityDashcBoard.getBoolean("CallBackFromMainActivity_Errors")) {
+                buniccessLogicaActivityDashboard.     методStartingDashboardFragmentSettings();
+            }
+
+
+
+
+
             buniccessLogicaActivityDashboard.    методСлушательФрагментов(  );
 
             buniccessLogicaActivityDashboard.  strartigWorkManger();
@@ -436,7 +452,38 @@ public class MainActivity_Dashboard extends AppCompatActivity {
             }
 
         }
+        void методStartingDashboardFragmentSettings() {
+            try {
+                // TODO Запусукаем Фргамент DdshBoard
+                DashboardFragmentSettings dashboardFragmentSettings = DashboardFragmentSettings.newInstance();
+                Bundle data = new Bundle();
+                data.putBinder("callbackbinderdashbord", localBinderОбновлениеПО);
+                dashboardFragmentSettings.setArguments(data);
+                fragmentTransaction.remove(dashboardFragmentSettings);
+                String fragmentNewImageNameaddToBackStack = dashboardFragmentSettings.getClass().getName();
+                fragmentTransaction.addToBackStack(fragmentNewImageNameaddToBackStack)
+                        .setPrimaryNavigationFragment(dashboardFragmentSettings)
+                        .setReorderingAllowed(true);
+                Fragment FragmentУжеЕСтьИлиНЕт = fragmentManager.findFragmentByTag(fragmentNewImageNameaddToBackStack);
+                if (FragmentУжеЕСтьИлиНЕт == null) {
+                    dashboardFragmentSettings.show(fragmentManager, "dashboardFragmentHarmonyOS");
+                    // TODO: 01.08.2023
+                }
+                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " FragmentУжеЕСтьИлиНЕт " + FragmentУжеЕСтьИлиНЕт);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(getApplicationContext().getClass().getName(),
+                        "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                        this.getClass().getName().toString(), Thread.currentThread().getStackTrace()[2].getMethodName().toString(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+            }
 
+        }
 
         private void методСлушательФрагментов() {
             try {
