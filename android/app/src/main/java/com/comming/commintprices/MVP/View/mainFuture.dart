@@ -99,37 +99,12 @@ Widget _futureBuilder() {
 
 
       if (snapshot.connectionState == ConnectionState.waiting) {
-        return Padding(
-          padding: const EdgeInsets.only(
-              top: 200, bottom: 0, left: 0, right: 0),
-          child: SizedBox(
-            height: 20.0,
-            width: 20.0,
-            child: Transform.scale(
-              scale: 2,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation(
-                    Colors.red),
 
-              ),
-            ),
-          ),
-        );
+        return getWaitingFutureBuilder(snapshot);
+
       } else {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              snapshot.data.toString(),
-            ),
-            ElevatedButton(
-                onPressed: () {},
-                child: const Text(
-                    'Refrech'
-                ))
-          ],
-        );
+
+     return    getAfterFutureBuilderColumn(snapshot);
       }
     }
 
@@ -140,35 +115,75 @@ Widget _futureBuilder() {
 
 
 
-//TODO метод возвраяет ыиджет ошибочный
-ErrorWidget getFutureBuilderError(AsyncSnapshot snapshot) {
-  late ErrorWidget errwid;
-  try {
-    errwid=ErrorWidget(snapshot.error.toString());
-  } catch (e) {
-    PrintingErrors printingErrors= new PrintingErrors();
-    printingErrors.printingError(e,'mainTextButton46.dart','main()');
-  }
-  return errwid;
-}
+    //TODO метод возвраяет ыиджет ошибочный
+    ErrorWidget getFutureBuilderError(AsyncSnapshot snapshot) {
+      late ErrorWidget errwid;
+      try {
+        errwid=ErrorWidget(snapshot.error.toString());
+      } catch (e) {
+        PrintingErrors printingErrors= new PrintingErrors();
+        printingErrors.printingError(e,'mainTextButton46.dart','main()');
+      }
+      return errwid;
+    }
+
+
+        //TODO метод возвраяет виджет после Операции
+         Widget getAfterFutureBuilderColumn(AsyncSnapshot snapshot) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                snapshot.data.toString(),
+              ),
+              ElevatedButton(
+                  onPressed: () {},
+                  child: const Text(
+                      'Refrech'
+                  ))
+            ],
+          );
+        }
+
+                //TODO метод   Операции в ПРОЦЕССЕ......
+                Widget getWaitingFutureBuilder(AsyncSnapshot snapshot) {
+                  return Padding(
+                    padding: const EdgeInsets.only(
+                        top: 200, bottom: 0, left: 0, right: 0),
+                    child: SizedBox(
+                      height: 20.0,
+                      width: 20.0,
+                      child: Transform.scale(
+                        scale: 2,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation(
+                              Colors.red),
+
+                        ),
+                      ),
+                    ),
+                  );
+                }
 
 
 
-//TODO пользовательские метод Future
-Future<String> getDataFuture() async{
-  try{
-    await Future.delayed(
-      const Duration(
-          seconds: 5
-      ),
-    );
-  } catch (e) {
-    PrintingErrors printingErrors= new PrintingErrors();
-    printingErrors.printingError(e,'mainTextButton46.dart','main()');
-  }
-  return 'Super!!';
-  //throw 'Erross!!';
-}
+
+    //TODO пользовательские метод Future
+    Future<String> getDataFuture() async{
+      try{
+        await Future.delayed(
+          const Duration(
+              seconds: 5
+          ),
+        );
+      } catch (e) {
+        PrintingErrors printingErrors= new PrintingErrors();
+        printingErrors.printingError(e,'mainTextButton46.dart','main()');
+      }
+      return 'Super!!';
+      //throw 'Erross!!';
+    }
 
 
 
