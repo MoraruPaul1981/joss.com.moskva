@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import '../Model/Errors/ErrorsPrint.dart';
@@ -7,7 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-
+import 'dart:isolate';
 
 
 void main() {
@@ -15,12 +17,40 @@ void main() {
 
   // throw ('This is an error !!!');
    runApp(const CommingPrices());
+
+   //proccedtvoid(nik: 121);
+
    //TODO error  genetator -26.03.2024--9.17
   } catch (e) {
     PrintingErrors printingErrors= new PrintingErrors();
     printingErrors.printingError(e,'mainTextButton46.dart','main()');
   }
 }
+
+//TODO  просто метод  void
+void proccedtvoid({String? firstName, String lastName = 'Todo',required int nik}) async{
+  try {
+    print('firstName $firstName');
+    print('lastName $lastName');
+
+    final String ss=await Isolate.run<String>(() {
+      return 'Isolate';
+    });
+
+    print('ss $ss');
+    print('nik $nik');
+  } catch (e) {
+    print(e);
+    PrintingErrors printingErrors= new PrintingErrors();
+    printingErrors.printingError(e,'mainTextButton46.dart','main()');
+  }
+}
+
+
+
+
+
+
 
 
 class CommingPrices extends StatelessWidget {
@@ -40,41 +70,30 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState2();
 }
 
- @Named('consumer')
- @injectable
- class  Consumer {
-   Consumer(){
-
-   }
-  void getTra(){
-    print('ff');
-  }
-}
 
 
 //TODO класс dart future проекта Два #1
 class _MyHomePageState2 extends State<MyHomePage>  {
 
-  @injectable
-  late Consumer consumer=new Consumer() ;
 
 
 
   @override
   Widget build(BuildContext context) {
 
-    consumer.getTra();
+
 
     // TODO: implement build
-   return Scaffold(
-       backgroundColor: Colors.white,
-       body:Container(
-         alignment: Alignment.center,
-
-           child:_futureBuilder()
-       ),
-       );
-
+   return  Scaffold(
+         backgroundColor: Colors.grey,
+         body:Container(
+           color: Colors.amber[600],
+           alignment: Alignment.center,
+             margin: const EdgeInsets.all(0.0),
+             padding: const EdgeInsets.all(0.0),
+             child:_futureBuilder()
+         ),
+         );
 
   }
 }
@@ -188,7 +207,7 @@ Widget _futureBuilder() {
         PrintingErrors printingErrors= new PrintingErrors();
         printingErrors.printingError(e,'mainTextButton46.dart','main()');
       }
-     return 'Super!!';
+     return 'FutureBuilder success    '+new DateTime.now().toString();
     //  return '';
       //throw 'Erross!!';
     }
