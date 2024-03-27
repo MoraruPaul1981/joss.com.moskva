@@ -16,9 +16,9 @@ void main() {
   try {
 
   // throw ('This is an error !!!');
-   runApp(const CommingPrices());
+  // runApp(const CommingPrices());
 
-   //proccedtvoid(nik: 121);
+  proccedtvoid(nik: 121);
 
    //TODO error  genetator -26.03.2024--9.17
   } catch (e) {
@@ -33,12 +33,17 @@ void proccedtvoid({String? firstName, String lastName = 'Todo',required int nik}
     print('firstName $firstName');
     print('lastName $lastName');
 
-    final String ss=await Isolate.run<String>(() {
-      return 'Isolate';
-    });
+    final Future <String> futureString= Isolate.run(() => getDataFuture());
 
-    print('ss $ss');
-    print('nik $nik');
+         futureString
+        .then((value) =>  print(value))
+        .catchError((e) {throw Exception('Some arbitrary error');})
+        .whenComplete(() =>  print('nik $nik'));
+
+   // String ss= await futureString as String;
+
+    //print('ss $ss');
+   // print('nik $nik');
   } catch (e) {
     print(e);
     PrintingErrors printingErrors= new PrintingErrors();
@@ -83,40 +88,52 @@ class _MyHomePageState2 extends State<MyHomePage>  {
     // TODO: implement build
     return Scaffold(
       backgroundColor: Colors.grey,
-      body: Row(
-        //ROW 1
-        children: [
-          Container(
-            color: Colors.orange,
-            margin: EdgeInsets.all(25.0),
-            child: FlutterLogo(
-              size: 60.0,
-            ),
+        body: Column(children: <Widget>[
+
+
+
+          Row(
+            //ROW 1
+            children: [
+              Container(
+                color: Colors.orange,
+                margin: EdgeInsets.all(25.0),
+                child: FlutterLogo(
+                  size: 60.0,
+                ),
+              ),
+            ],
           ),
-          Container(
-            color: Colors.blue,
-            margin: EdgeInsets.all(25.0),
-            child: FlutterLogo(
-              size: 60.0,
-            ),
-          ),
-          Container(
-            color: Colors.purple,
-            margin: EdgeInsets.all(25.0),
-            child: FlutterLogo(
-              size: 60.0,
-            ),
-          ),
-        ],
-      ),
 
 
 
+          Row(//ROW 2
+              children: [
+
+                Container(
+                  color: Colors.blue,
+                  margin: EdgeInsets.all(25.0),
+                  child: FlutterLogo(
+                    size: 60.0,
+                  ),
+                ),
+
+              ]),
 
 
-
-    );
+          Row(// ROW 3
+              children: [
+                Container(
+                  color: Colors.purple,
+                  margin: EdgeInsets.all(25.0),
+                  child: FlutterLogo(
+                    size: 60.0,
+                  ),
+                ),
+              ]),
+        ]));
   }
+
   }
 
 
