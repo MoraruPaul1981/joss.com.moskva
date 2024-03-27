@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 import '../Model/Errors/ErrorsPrint.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -39,19 +40,37 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState2();
 }
 
+ @Named('consumer')
+ @injectable
+ class  Consumer {
+   Consumer(){
 
+   }
+  void getTra(){
+    print('ff');
+  }
+}
 
 
 //TODO класс dart future проекта Два #1
 class _MyHomePageState2 extends State<MyHomePage>  {
+
+  @injectable
+  late Consumer consumer=new Consumer() ;
+
+
+
   @override
   Widget build(BuildContext context) {
+
+    consumer.getTra();
+
     // TODO: implement build
-   return
-     Scaffold(
+   return Scaffold(
        backgroundColor: Colors.white,
        body:Container(
          alignment: Alignment.center,
+
            child:_futureBuilder()
        ),
        );
@@ -62,13 +81,27 @@ class _MyHomePageState2 extends State<MyHomePage>  {
 
 
 Widget _futureBuilder() {
-  return new FutureBuilder<String>(
+  return FutureBuilder<String>(
     future: getDataFuture(),
     builder: (context, AsyncSnapshot snapshot) {
-      if(snapshot.connectionState==ConnectionState.waiting){
 
-        return     Padding(
-          padding: const EdgeInsets.only(top: 200,bottom: 0,left: 0,right: 0),
+
+      if (snapshot.hasError) {
+        getFutureBuilderError(snapshot);
+      }
+
+
+      if (snapshot.hasData) {
+        return ErrorWidget(
+          snapshot.error.toString(),
+        );
+      }
+
+
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return Padding(
+          padding: const EdgeInsets.only(
+              top: 200, bottom: 0, left: 0, right: 0),
           child: SizedBox(
             height: 20.0,
             width: 20.0,
@@ -83,15 +116,7 @@ Widget _futureBuilder() {
             ),
           ),
         );
-
-      }else{
-
-      }
-      if(snapshot.hasError){
-        return ErrorWidget(
-          snapshot.error.toString(),
-        );
-      }else{
+      } else {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -99,27 +124,34 @@ Widget _futureBuilder() {
               snapshot.data.toString(),
             ),
             ElevatedButton(
-                onPressed: (){
-                  setState(() {
-                    _futureBuilder();
-                    print("ffff");
-                  });
-                },
+                onPressed: () {},
                 child: const Text(
                     'Refrech'
                 ))
           ],
         );
       }
-    },
-  );
+    }
+
+      );
 
 
+      }
+
+
+
+//TODO метод возвраяет ыиджет ошибочный
+ErrorWidget getFutureBuilderError(AsyncSnapshot snapshot) {
+  late ErrorWidget errwid;
+  try {
+    errwid=ErrorWidget(snapshot.error.toString());
+  } catch (e) {
+    PrintingErrors printingErrors= new PrintingErrors();
+    printingErrors.printingError(e,'mainTextButton46.dart','main()');
+  }
+  return errwid;
 }
 
-void setState(Null Function() param0) {
-  print("gggg");
-}
 
 
 //TODO пользовательские метод Future
@@ -253,3 +285,4 @@ class _MyHomePageState extends State<MyHomePage> {
       );
   }
 }
+
