@@ -36,20 +36,27 @@ void proccedtvoid({String? firstName, String lastName = 'Todo',required int nik}
     final Future <String> futureString= Isolate.run(() => getDataFuture());
 
          futureString
-        .then((value) =>  print(value))
+        .then((value) => gettt(  ss: value) )
         .catchError((e) {throw Exception('Some arbitrary error');})
         .whenComplete(() =>  print('nik $nik'));
-
-   // String ss= await futureString as String;
-
-    //print('ss $ss');
-   // print('nik $nik');
   } catch (e) {
     print(e);
     PrintingErrors printingErrors= new PrintingErrors();
     printingErrors.printingError(e,'mainTextButton46.dart','main()');
   }
 }
+
+
+void  gettt( { required String ss })  {
+    try{
+    print('ss $ss');
+  } catch (e) {
+  print(e);
+  PrintingErrors printingErrors= new PrintingErrors();
+  printingErrors.printingError(e,'mainTextButton46.dart','main()');
+  }
+}
+
 
 
 
