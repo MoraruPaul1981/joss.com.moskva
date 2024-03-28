@@ -30,6 +30,39 @@ void main() {
 //TODO  просто метод  void
 void proccedtvoid({String? firstName, String lastName = 'Todo',required int nik}) async{
   try {
+
+    Completer _completer = new Completer();
+
+    _completer.complete();
+
+
+/*    final stream = Stream.fromIterable([1, 2, 3, 4, 5]);
+    stream.listen((number) {
+      print('listener 1: $number');
+    });
+    stream.listen((number) {
+      print('listener 2: $number');
+    });
+    print('Simple stream example finished');*/
+
+    final streamController = StreamController.broadcast();
+    streamController.stream.listen((number) {
+      print('Listener 1: $number');
+    });
+    streamController.stream.listen((number) {
+      print('Listener 2: $number');
+    });
+    streamController.sink.add(1);
+    streamController.sink.add(2);
+    streamController.sink.add(3);
+    streamController.sink.add(4);
+    streamController.sink.add(5);
+    streamController.close();
+    print('Broadcast stream example finished');
+
+
+
+/*
     print('firstName $firstName');
     print('lastName $lastName');
 
@@ -38,7 +71,7 @@ void proccedtvoid({String? firstName, String lastName = 'Todo',required int nik}
          futureString
         .then((value) => gettt(  ss: value) )
         .catchError((e) {throw Exception('Some arbitrary error');})
-        .whenComplete(() =>  print('nik $nik'));
+        .whenComplete(() =>  print('nik $nik'));*/
   } catch (e) {
     print(e);
     PrintingErrors printingErrors= new PrintingErrors();
