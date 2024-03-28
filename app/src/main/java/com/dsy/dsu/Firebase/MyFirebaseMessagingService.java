@@ -132,9 +132,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
     } catch (Exception e) {
-        //  Block of code to handle errors
         e.printStackTrace();
-        ///метод запись ошибок в таблицу
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                 + Thread.currentThread().getStackTrace()[2].getLineNumber());
         new Class_Generation_Errors(getApplication()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),

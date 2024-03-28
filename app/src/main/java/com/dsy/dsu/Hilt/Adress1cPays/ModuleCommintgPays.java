@@ -7,7 +7,13 @@ import android.content.Context;
 import android.util.Log;
 
 import com.dsy.dsu.Errors.Class_Generation_Errors;
+import com.dsy.dsu.Hilt.OneSignal.QualifierOneSignal;
 
+import java.lang.annotation.Annotation;
+import java.lang.annotation.Retention;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -15,16 +21,20 @@ import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
+import kotlin.annotation.AnnotationRetention;
 
 
-
-@QualifierCommintgPays
 @Module
 @InstallIn(SingletonComponent.class)
+@QualifierCommintgPays
 public class ModuleCommintgPays {
-    @SuppressLint("SuspiciousIndentation")
+
+
+
+
     @Provides
-    public String getHiltCommintgPays(@ApplicationContext Context context) {
+    @Singleton
+    public StringBuilder  getHiltCommintgPays(@ApplicationContext Context context ) {
         String АдресСеврера1сДляgetFile=new String();
         try {
 
@@ -47,7 +57,7 @@ public class ModuleCommintgPays {
             new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-        return АдресСеврера1сДляgetFile;
+        return  new StringBuilder(АдресСеврера1сДляgetFile) ;
 
 
     }
@@ -55,5 +65,25 @@ public class ModuleCommintgPays {
 
 
 
+    @Provides
+    @Singleton
+    @QualifierCommintgPays2
+    public StringBuilder  getHiltCommintgPays3(@ApplicationContext Context context ) {
+        String АдресСеврера1сДляgetFile=new String();
+        return  new StringBuilder(АдресСеврера1сДляgetFile) ;
+
+
+    }
+
+
+    @Provides
+    @Singleton
+    @QualifierCommintgPays4
+    public StringBuilder  getHiltCommintgPays4(@ApplicationContext Context context ) {
+        String АдресСеврера1сДляgetFile=new String();
+        return  new StringBuilder(АдресСеврера1сДляgetFile) ;
+
+
+    }
 
 }

@@ -29,6 +29,8 @@ import com.dsy.dsu.CommitPrices.Model.LiveDataPrices.GetLiveDataForrecyreViewPri
 import com.dsy.dsu.CommitPrices.ViewModel.ModelComminingPrisesByte;
 import com.dsy.dsu.CommitPrices.ViewModel.ModelComminingPrisesString;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
+import com.dsy.dsu.Hilt.Adress1cPrices.QualifierCommintgPrices;
+import com.dsy.dsu.Hilt.PublicId.QualifierPublicId;
 import com.dsy.dsu.R;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -53,8 +55,10 @@ public class FragmentCommingPrices extends Fragment {
     @Inject
     Integer getHiltPublicId;
 
+
+
     @Inject
-    StringBuffer getHiltCommintgPrices;
+    String  getHiltCommintgPrices;
 
 
     private FragmentManager fragmentManager;

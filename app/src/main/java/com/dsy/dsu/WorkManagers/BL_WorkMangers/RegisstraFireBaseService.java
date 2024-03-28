@@ -26,25 +26,17 @@ import dagger.hilt.components.SingletonComponent;
 public class RegisstraFireBaseService {
 
 Context context;
-    private  String КлючДляFirebaseNotification = "2a1819db-60c8-4ca3-a752-1b6cd9cadfa1";
+
     public @Inject RegisstraFireBaseService(@NotNull Context context) {
         this.context = context;
     }
 
     public void МетодРегистрацииУстройсвоНАFirebaseAndOneSignal( ) {
         try{
-            Integer  ПубличныйIDДляФрагмента=   new Class_Generations_PUBLIC_CURRENT_ID()
-                    .ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
-            Bundle bundleregsit=new Bundle();
-            bundleregsit.putInt("ПубличныйIDДляФрагмента",ПубличныйIDДляФрагмента);
-            bundleregsit.putString("КлючДляFirebaseNotification",КлючДляFirebaseNotification);
-            ///
             Intent intentstartServiceOneSignal=new Intent(context, ServiceOneSignalForFirebase.class);
-            intentstartServiceOneSignal.putExtras(bundleregsit);
             intentstartServiceOneSignal.setAction("com.registariionesignal.net");
             // TODO: 28.03.2024  
           context.  startService(intentstartServiceOneSignal);
-
 
             //TODO ФУТУРЕ ЗАВЕРШАЕМ
             Log.d(this.getClass().getName(), "  МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal(КлючДляFirebaseNotification,0); " +

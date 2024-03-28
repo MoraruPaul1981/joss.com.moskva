@@ -2,6 +2,7 @@
 package com.dsy.dsu.Hilt.Adress1cPrices;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
@@ -17,16 +18,21 @@ import dagger.hilt.components.SingletonComponent;
 
 
 
-@QualifierCommintgPrices
+
 @Module
 @InstallIn(SingletonComponent.class)
+@QualifierCommintgPrices
 public class ModuleCommintgPrices {
+
+
+
     @Provides
-    public StringBuffer getHiltCommintgPrices(@ApplicationContext Context context) {
-        StringBuffer АдресСеврера1сДляgetFilePrices=new StringBuffer();
+    @Singleton
+    public String  getHiltCommintgPrices(@ApplicationContext Context context) {
+        String  АдресСеврера1сДляgetFilePrices=new String() ;
         try {
             // TODO: 18.03.2024  релиз   Prices
-        АдресСеврера1сДляgetFilePrices.append("http://uat.dsu1.ru:55080/dds/hs/jsonto1ccena/listofdocuments".trim());// TODO: 18.01.2024  RELEZ
+        АдресСеврера1сДляgetFilePrices="http://uat.dsu1.ru:55080/dds/hs/jsonto1ccena/listofdocuments".trim();// TODO: 18.01.2024  RELEZ
 
      // TODO: 18.03.2024  дебаг  Prices
    // АдресСеврера1сДляgetFilePrices.append("http://192.168.3.10/dds_copy/hs/jsonto1ccena/listofdocuments".trim());// TODO: 18.01.2024  DEBUG

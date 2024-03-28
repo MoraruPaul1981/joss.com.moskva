@@ -18,9 +18,12 @@ import com.dsy.dsu.BusinessLogicAll.Class_Generator_One_WORK_MANAGER;
 import com.dsy.dsu.Firebase.MyFirebaseMessagingService;
 import com.dsy.dsu.CnangeServers.PUBLIC_CONTENT;
 import com.dsy.dsu.OneSignal.registOnesignal.WriterNewKeyOneSignal;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.onesignal.OneSignal;
 
+import java.io.FileInputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,9 +73,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
             PUBLIC_CONTENT public_contentменеджер=new PUBLIC_CONTENT(context);
 
             // TODO: 23.12.2021 ЧЕТЫРЕ ПОПЫТКИ ПОДКЛЮЧЕНИЕ В СЕВРЕРУONESIGNAL
-            Observable.interval(2,TimeUnit.SECONDS)
+            Observable.interval(10,TimeUnit.SECONDS)
                     .delaySubscription(3,TimeUnit.SECONDS)
-                  .take(10,TimeUnit.MINUTES)
+                  .take(5,TimeUnit.MINUTES)
                   .subscribeOn(Schedulers.io())
                   .doOnNext(new Consumer<Long>() {
 
@@ -285,14 +288,15 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                     "   OneSignal.getTriggerValueForKey(\"GT_PLAYER_ID\"); " + OneSignal.getTriggerValueForKey("GT_PLAYER_ID")+
                     "  КЛЮЧ ДЛЯ  OneSignal........ КлючДляFirebaseNotification "+ КлючДляFirebaseNotification +"\n");
 
+
             OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
             // todo OneSignal Initialization
             OneSignal.initWithContext(context);
             OneSignal.setAppId(КлючДляFirebaseNotification);
             OneSignal.disablePush(false);
+            // TODO: 28.03.2024 создаени сообщения
             FirebaseMessagingService firebaseMessagingService =new MyFirebaseMessagingService();
             firebaseMessagingService.onNewToken("Сообщения от Firebase Cloud Google ");
-
             // TODO: 28.03.2024 полылаем ключ ОБЩИЙ
             Map<String, String> params = new HashMap<String, String>();
             OneSignal.sendTag("Authorization", "Basic "+  КлючДляFirebaseNotification.trim()  );

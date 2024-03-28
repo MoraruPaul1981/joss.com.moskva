@@ -25,6 +25,7 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dsy.dsu.Errors.Class_Generation_Errors;
+import com.dsy.dsu.Hilt.Adress1cPays.QualifierCommintgPays;
 import com.dsy.dsu.PaysCommit.Model.BI_RecyreView.Bl_CommintigPay;
 import com.dsy.dsu.PaysCommit.Model.BI_RecyreView.LiveData.GetLiveDataForrecyreViewPay;
 import com.dsy.dsu.PaysCommit.Model.BinderService1cCommitPay;
@@ -86,7 +87,14 @@ public class Fragment1_List_CommitPay extends Fragment   {
      private        Intent intentsendJsonNodeToService= null;
 
      @Inject
-    String getHiltCommintgPays;
+     StringBuilder getHiltCommintgPays;
+
+    @Inject
+    StringBuilder getHiltCommintgPays3;
+    @Inject
+    StringBuilder getHiltCommintgPays4;
+
+
 
 
 
@@ -244,7 +252,7 @@ public class Fragment1_List_CommitPay extends Fragment   {
                     bottomNavigationSearch,
                     getHiltMutableLiveDataPay,
                     searchview_commitpay,
-                    getHiltCommintgPays,
+                    getHiltCommintgPays.toString(),
                     getLiveDataForrecyreViewPay,
                     getHiltMutableLiveDataPayForRecyreView );
 
@@ -599,7 +607,8 @@ public class Fragment1_List_CommitPay extends Fragment   {
 
             if (jsonNode1сСогласованияAllRows!=null && binderСогласования1C!=null) {
                 // TODO: 16.01.2024   RecyreView Is Worker
-                bl_commintigPay.InitMyAdapterRecyreViewWorker(jsonNode1сСогласованияAllRows,binderСогласования1C,getHiltCommintgPays,lifecycleOwner);
+                bl_commintigPay.InitMyAdapterRecyreViewWorker(jsonNode1сСогласованияAllRows,
+                        binderСогласования1C,getHiltCommintgPays.toString(),lifecycleOwner);
 
                 bl_commintigPay.successNavigatorButtonIconRow(jsonNode1сСогласованияAllRows );
 

@@ -28,11 +28,12 @@ import dagger.hilt.components.SingletonComponent;
 
 
 
-@QualifierPublicId
+
 @Module
 @InstallIn(SingletonComponent.class)
+@QualifierPublicId
 public class ModulePublicId {
-    @SuppressLint("SuspiciousIndentation")
+
     @Provides
     @Singleton
     public Integer getHiltPublicId(@ApplicationContext Context context) {

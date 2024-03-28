@@ -9,6 +9,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.dsy.dsu.Errors.Class_Generation_Errors;
+import com.dsy.dsu.Hilt.OneSignal.QualifierOneSignal;
+import com.dsy.dsu.Hilt.PublicId.QualifierPublicId;
 import com.dsy.dsu.OneSignal.registOnesignal.ClassOneSingnalGenerator;
 
 import java.util.Date;
@@ -32,7 +34,14 @@ public class ServiceOneSignalForFirebase extends IntentService {
 
 
     @Inject
-    String metodKeyHiltOneSignal ;
+    String  metodKeyHiltOneSignal ;
+
+
+
+
+
+    @Inject
+    Integer getHiltPublicId;
 
     public ServiceOneSignalForFirebase() {
         super("ServiceOneSignalForFirebase");
