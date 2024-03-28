@@ -83,7 +83,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                           Log.d(this.getClass().getName(), "\n"
                                   + " время: " + new Date()+"\n+" +
                                   " Класс в процессе... " +  this.getClass().getName()+"\n"+
-                                  " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+"     НовыйКлючОтOneSingnal[0] " +    НовыйКлючОтOneSingnal[0]);
+                                  " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+"  " +
+                                  "   НовыйКлючОтOneSingnal[0] " +    НовыйКлючОтOneSingnal[0]);
 
 
                       }
@@ -275,31 +276,35 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
     private String МетодПолучениеКлючаОтСервераONESIGNALЕслиОЕстьКОнечноВНЕСКОЛЬКОПОпыток(@NonNull String КлючДляFirebaseNotification) {
         String  НовыйКлючОтOneSingnal = null;
         try{
-            //TODO srating......  oneSignal
-            Log.d(this.getClass().getName(), "  КЛЮЧ ДЛЯ  OneSignal........  2a1819db-60c8-4ca3-a752-1b6cd9cadfa1 "+ КлючДляFirebaseNotification +"\n");
+            Log.d(this.getClass().getName(),"\n"
+                    + " bremy: " + new Date()+"\n+"
+                    + "  class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " НовыйКлючОтOneSingnal "
+                    + НовыйКлючОтOneSingnal +" BREMY  " +new Date().toLocaleString()+
+                    "   OneSignal.getTriggerValueForKey(\"GT_PLAYER_ID\"); " + OneSignal.getTriggerValueForKey("GT_PLAYER_ID")+
+                    "  КЛЮЧ ДЛЯ  OneSignal........ КлючДляFirebaseNotification "+ КлючДляFirebaseNotification +"\n");
+
             OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
-            //String КлючДляFirebaseNotification="2a1819db-60c8-4ca3-a752-1b6cd9cadfa1";
             // todo OneSignal Initialization
             OneSignal.initWithContext(context);
-            ///////todo srating Google Notifications wits PUblic Key
             OneSignal.setAppId(КлючДляFirebaseNotification);
             OneSignal.disablePush(false);
-            //TODO srating.......... firebase cloud --ПРИШЛО СООБЩЕНИЕ
             FirebaseMessagingService firebaseMessagingService =new MyFirebaseMessagingService();
-            //TODO srating......  oneSignal
-            Log.d(this.getClass().getName(), "  FirebaseMessagingService"  );
-            // TODO: 07.12.2021
             firebaseMessagingService.onNewToken("Сообщения от Firebase Cloud Google ");
-            Log.d(this.getClass().getName(), "  КЛЮЧ ДЛЯ  КОНЕЦ  OneSignal........  2a1819db-60c8-4ca3-a752-1b6cd9cadfa1 " );
+
+            // TODO: 28.03.2024 полылаем ключ ОБЩИЙ
             Map<String, String> params = new HashMap<String, String>();
-            OneSignal.sendTag("Authorization", "Basic 2a1819db-60c8-4ca3-a752-1b6cd9cadfa1");
+            OneSignal.sendTag("Authorization", "Basic "+  КлючДляFirebaseNotification.trim()  );
             OneSignal.sendTag("Content-type", "application/json");
             OneSignal.sendTag("grp_msg", "android");
             OneSignal.sendTag("android_background_data", "true");
             OneSignal.sendTag("content_available", "true");
+
             //TODO srating......  oneSignal
         String ПушТОкен=    OneSignal.getDeviceState().getPushToken();
             НовыйКлючОтOneSingnal = OneSignal.getDeviceState().getUserId();
+
             // TODO: 15.12.2021
             Log.d(this.getClass().getName(),"\n"
                     + " bremy: " + new Date()+"\n+"

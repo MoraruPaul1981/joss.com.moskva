@@ -72,10 +72,19 @@ public class MyWork_Async_Public extends Worker {
         getTaskExecutor().getMainThreadExecutor().execute(new Runnable() {
             @Override
             public void run() {
+                try{
                 RegisstraFireBaseService   regisstraFireBaseService=new RegisstraFireBaseService(getApplicationContext());
 
                 // TODO: 13.02.2024  резистация в WorkManager   FireBse
                 regisstraFireBaseService.МетодРегистрацииУстройсвоНАFirebaseAndOneSignal();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        Thread.currentThread().getStackTrace()[2].getLineNumber());
+                Log.e(getApplicationContext().getClass().getName(), " ОШИБКА В WORK MANAGER  MyWork_Async_Синхронизация_Single из FaceApp в  MyWork_Async_Синхронизация_Single Exception  ошибка в классе  MyWork_Async_Синхронизация_Single" + e.toString());
+            }
             }
         });
             Log.d(this.getClass().getName(),"\n" + "   class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
