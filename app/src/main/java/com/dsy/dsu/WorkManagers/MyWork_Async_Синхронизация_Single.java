@@ -185,9 +185,16 @@ public class MyWork_Async_Синхронизация_Single extends Worker {
         if (ФинальныйРезультатAsyncBackgroud > 0) {
             return Result.success(myDataОтветОдноразовойСлужбы);
         }else {
-               return Result.failure(myDataОтветОдноразовойСлужбы);
+            if ( getRunAttemptCount()<2) {
+                return Result.retry();
+            }else {
+                return Result.failure(myDataОтветОдноразовойСлужбы);
+            }
         }
-    }
+
+
+        }
+
 
 
     @SuppressLint("SuspiciousIndentation")

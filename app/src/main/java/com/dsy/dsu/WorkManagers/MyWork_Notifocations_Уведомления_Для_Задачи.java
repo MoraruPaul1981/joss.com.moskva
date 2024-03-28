@@ -3,6 +3,7 @@ package com.dsy.dsu.WorkManagers;
 import static android.content.Context.ACTIVITY_SERVICE;
 import static android.content.Context.NOTIFICATION_SERVICE;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -88,6 +89,7 @@ public class MyWork_Notifocations_Уведомления_Для_Задачи ext
         subClassStartingTasksЗапускДЛяЗадач = new SubClass_Starting_Tasks_ЗапускДЛяЗадач(getApplicationContext());
     }
 
+    @SuppressLint("RestrictedApi")
     @NonNull
     @Override
     public Executor getBackgroundExecutor() {

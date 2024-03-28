@@ -156,11 +156,13 @@ public class MyWork_Async_Public extends Worker {
         if (ФинальныйРезультатAsyncBackgroud>0 ) {
 
             return Result.success(myDataОтветОбщейСлужбы);
-       /*    if (WorkManagerОБЩИЙ.getRunAttemptCount()<2) {
-                return Result.retry();
-            }else {*/
+
         }else{
-               return Result.failure(myDataОтветОбщейСлужбы);
+             if ( getRunAttemptCount()<2) {
+                return Result.retry();
+            }else {
+                 return Result.failure(myDataОтветОбщейСлужбы);
+             }
            }
 
 
