@@ -34,6 +34,7 @@ public class ServiceOneSignalForFirebase extends IntentService {
 
 
     @Inject
+    @QualifierOneSignal
     String  metodKeyHiltOneSignal ;
 
 
@@ -59,10 +60,6 @@ public class ServiceOneSignalForFirebase extends IntentService {
 
                 biceesLogocal.МетодРегистрацииУстройсвоНАFirebaseAndOneSignal(intent,metodKeyHiltOneSignal);
             }
-            // TODO: 28.03.2024 Выключем службу
-            stopSelf();
-
-
             Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date()+"\n+" +
                     " Класс в процессе... " +  this.getClass().getName()+"\n"+

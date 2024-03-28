@@ -23,7 +23,10 @@ import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.onesignal.OneSignal;
 
+import org.reactivestreams.Publisher;
+
 import java.io.FileInputStream;
+import java.sql.Time;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,15 +35,17 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.BackpressureStrategy;
+import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.functions.Predicate;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import io.reactivex.rxjava3.schedulers.Timed;
 
 
-
- public class ClassOneSingnalGenerator {
+public class ClassOneSingnalGenerator {
      private Context context;
      private  Class_Generator_One_WORK_MANAGER class_generator_one_work_manager;
 
@@ -67,62 +72,53 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
     @SuppressLint("SuspiciousIndentation")
     public void getGetRegistaziyNewKeyForOnoSignal(@NonNull String КлючДляFirebaseNotification) {
 
-        final String[] НовыйКлючОтOneSingnal = new String[1];
         try {
             Class_GRUD_SQL_Operations listIDДляOneSignal=new Class_GRUD_SQL_Operations(context);
             PUBLIC_CONTENT public_contentменеджер=new PUBLIC_CONTENT(context);
 
             // TODO: 23.12.2021 ЧЕТЫРЕ ПОПЫТКИ ПОДКЛЮЧЕНИЕ В СЕВРЕРУONESIGNAL
-            Observable.interval(10,TimeUnit.SECONDS)
-                    .delaySubscription(3,TimeUnit.SECONDS)
-                  .take(5,TimeUnit.MINUTES)
-                  .subscribeOn(Schedulers.io())
-                  .doOnNext(new Consumer<Long>() {
-
-                      @Override
-                      public void accept(Long aLong) throws Throwable {
-                          // TODO: 05.01.2022
-                       НовыйКлючОтOneSingnal[0] =     МетодПолучениеКлючаОтСервераONESIGNALЕслиОЕстьКОнечноВНЕСКОЛЬКОПОпыток(КлючДляFirebaseNotification);
-                          Log.d(this.getClass().getName(), "\n"
-                                  + " время: " + new Date()+"\n+" +
-                                  " Класс в процессе... " +  this.getClass().getName()+"\n"+
-                                  " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+"  " +
-                                  "   НовыйКлючОтOneSingnal[0] " +    НовыйКлючОтOneSingnal[0]);
-
-
-                      }
-                  })
+            Observable.interval(0, 10, TimeUnit.SECONDS, Schedulers.single())
+                    .timeInterval()
+                    .take(5,TimeUnit.MINUTES)
                   .doOnError(new Consumer<Throwable>() {
                       @Override
                       public void accept(Throwable throwable) throws Throwable {
                           // TODO: 06.01.2022
-                          Log.e(context.getClass().getName(), "  doOnError МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal"  +"\n"+
-                                  " Thread.currentThread().getName() " +Thread.currentThread().getName());
+                          throwable.printStackTrace();
+                          Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                  + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                          new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(throwable.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                  Thread.currentThread().getStackTrace()[2].getLineNumber());
                       }
                   })
                   .takeWhile(new Predicate<Object>() {
                       @Override
                       public boolean test(Object o) throws Throwable {
+                          // TODO: 28.03.2024
+                     String     НовыйКлючОтOneSingnal =   getNewKeyTokernFronOneSignal(КлючДляFirebaseNotification );
+
                           // TODO: 26.12.2021
-                          if (   НовыйКлючОтOneSingnal[0] !=null) {
+                          if (   НовыйКлючОтOneSingnal !=null) {
 
                               // TODO: 06.01.2022
-                              методЗаписиNewKeyOneSignal(listIDДляOneSignal, public_contentменеджер,НовыйКлючОтOneSingnal[0]);
+                              методЗаписиNewKeyOneSignal(listIDДляOneSignal, public_contentменеджер,НовыйКлючОтOneSingnal );
 
 
                               Log.d(this.getClass().getName(),"\n"
                                       + " bremy: " + new Date()+"\n+"
                                       + "  class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                       " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                      " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " НовыйКлючОтOneSingnal[0] " +НовыйКлючОтOneSingnal[0]);
+                                      " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                                      " УРА УРА !!!! НовыйКлючОтOneSingnal " +НовыйКлючОтOneSingnal);
                               // TODO: 04.01.2022
                               return false;
                           }else {
-                              Log.w(context.getClass().getName(), "  ДЛЯ ТЕКУЩЕГО ПОЛЬЗОВАТЕЛЯ (телефона)Ключ ПришелОтСЕРВЕРА SUCEESSSSSS !!!@!  " +
-                                      " takeWhile МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal САМ КЛЮЧ ::::" +
-                                      "  "+"\n"
-                                      + НовыйКлючОтOneSingnal[0] +"\n"+
-                                      " Thread.currentThread().getName() " +Thread.currentThread().getName());
+                              Log.d(this.getClass().getName(),"\n"
+                                      + " bremy: " + new Date()+"\n+"
+                                      + "  class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                      " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                      " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                                      " НЕТ ПОКА НовыйКлючОтOneSingnal  " +НовыйКлючОтOneSingnal);
                               return true;
                           }
                       }
@@ -136,7 +132,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                       }
                   })
                   .observeOn(AndroidSchedulers.mainThread())
-                    .toFlowable(BackpressureStrategy.BUFFER).blockingSubscribe();
+                    .toFlowable(BackpressureStrategy.BUFFER).subscribe();
 
         } catch (Exception e ) {
             e.printStackTrace();
@@ -146,6 +142,30 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
 
         }
+    }
+
+
+
+    private String getNewKeyTokernFronOneSignal(@NonNull String КлючДляFirebaseNotification) {
+        String НовыйКлючОтOneSingnal = null;
+        try{
+        // TODO: 05.01.2022
+         НовыйКлючОтOneSingnal =     МетодПолучениеКлючаОтСервераONESIGNALЕслиОЕстьКОнечноВНЕСКОЛЬКОПОпыток(КлючДляFirebaseNotification);
+        Log.d(this.getClass().getName(), "\n"
+                + " время: " + new Date()+"\n+" +
+                " Класс в процессе... " +  this.getClass().getName()+"\n"+
+                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+"  " +
+                "   НовыйКлючОтOneSingnal[0] " +    НовыйКлючОтOneSingnal);
+
+    } catch (Exception e ) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+
+    }
+        return НовыйКлючОтOneSingnal;
     }
 
 
