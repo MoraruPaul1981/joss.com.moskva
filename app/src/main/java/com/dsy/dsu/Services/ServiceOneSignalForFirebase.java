@@ -6,10 +6,16 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.OneSignal.registOnesignal.ClassOneSingnalGenerator;
 
 import java.util.Date;
+
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -19,11 +25,20 @@ import java.util.Date;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
+
+@AndroidEntryPoint
 public class ServiceOneSignalForFirebase extends IntentService {
-    private  String КлючДляFirebaseNotification = "2a1819db-60c8-4ca3-a752-1b6cd9cadfa1";
+
+
+
+    @Inject
+    String metodKeyHiltOneSignal ;
+
     public ServiceOneSignalForFirebase() {
         super("ServiceOneSignalForFirebase");
     }
+
+
 
 
 
@@ -33,7 +48,7 @@ public class ServiceOneSignalForFirebase extends IntentService {
             if (intent.getAction().equalsIgnoreCase("com.registariionesignal.net")) {
                 BiceesLogocal biceesLogocal=new BiceesLogocal(getApplicationContext());
 
-                biceesLogocal.МетодРегистрацииУстройсвоНАFirebaseAndOneSignal(intent);
+                biceesLogocal.МетодРегистрацииУстройсвоНАFirebaseAndOneSignal(intent,metodKeyHiltOneSignal);
             }
             // TODO: 28.03.2024 Выключем службу
             stopSelf();
@@ -84,17 +99,15 @@ class  BiceesLogocal{
         this.context = context;
     }
 
-   void МетодРегистрацииУстройсвоНАFirebaseAndOneSignal(Intent intent) {
+   void МетодРегистрацииУстройсвоНАFirebaseAndOneSignal( @NonNull  Intent intent, @NonNull  String metodKeyHiltOneSignal) {
 
         try{
-            Bundle bundleregsit=intent.getExtras();
-         String КлючДляFirebaseNotification=   bundleregsit.getString("КлючДляFirebaseNotification").trim();
-            new ClassOneSingnalGenerator(context).
-                    getGetRegistaziyNewKeyForOnoSignal(КлючДляFirebaseNotification);
+            new ClassOneSingnalGenerator(context).getGetRegistaziyNewKeyForOnoSignal(metodKeyHiltOneSignal);
             Log.d(context.getClass().getName(), "\n"
                     + " время: " + new Date()+"\n+" +
                     " Класс в процессе... " +  this.getClass().getName()+"\n"+
-                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                    " metodKeyHiltOneSignal " +metodKeyHiltOneSignal);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
