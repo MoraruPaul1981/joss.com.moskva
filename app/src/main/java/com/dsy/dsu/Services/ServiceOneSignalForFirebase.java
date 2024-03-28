@@ -34,12 +34,10 @@ public class ServiceOneSignalForFirebase extends IntentService {
                 BiceesLogocal biceesLogocal=new BiceesLogocal(getApplicationContext());
 
                 biceesLogocal.МетодРегистрацииУстройсвоНАFirebaseAndOneSignal(intent);
-
-
-                // TODO: 28.03.2024 Выключем службу
-                stopSelf();
-
             }
+            // TODO: 28.03.2024 Выключем службу
+            stopSelf();
+
 
             Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date()+"\n+" +
@@ -90,7 +88,7 @@ class  BiceesLogocal{
 
         try{
             Bundle bundleregsit=intent.getExtras();
-         String КлючДляFirebaseNotification=   bundleregsit.getString("КлючДляFirebaseNotification");
+         String КлючДляFirebaseNotification=   bundleregsit.getString("КлючДляFirebaseNotification").trim();
             new ClassOneSingnalGenerator(context).
                     getGetRegistaziyNewKeyForOnoSignal(КлючДляFirebaseNotification);
             Log.d(context.getClass().getName(), "\n"

@@ -1,5 +1,6 @@
 package com.dsy.dsu.OneSignal.registOnesignal;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -60,6 +61,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
     // TODO: 14.11.2021  ПОВТОРЫЙ ЗАПУСК ВОРК МЕНЕДЖЕР
+    @SuppressLint("SuspiciousIndentation")
     public void getGetRegistaziyNewKeyForOnoSignal(@NonNull String КлючДляFirebaseNotification) {
 
         final String[] НовыйКлючОтOneSingnal = new String[1];
@@ -68,19 +70,22 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
             PUBLIC_CONTENT public_contentменеджер=new PUBLIC_CONTENT(context);
 
             // TODO: 23.12.2021 ЧЕТЫРЕ ПОПЫТКИ ПОДКЛЮЧЕНИЕ В СЕВРЕРУONESIGNAL
-            Observable.interval(10,TimeUnit.SECONDS)
+            Observable.interval(2,TimeUnit.SECONDS)
+                    .delaySubscription(3,TimeUnit.SECONDS)
                   .take(10,TimeUnit.MINUTES)
                   .subscribeOn(Schedulers.io())
                   .doOnNext(new Consumer<Long>() {
+
                       @Override
                       public void accept(Long aLong) throws Throwable {
-                          Log.w(context.getClass().getName(), "   Iterable<?> apply МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal"  +"\n"+
-                                  " Thread.currentThread().getName() " +Thread.currentThread().getName());
                           // TODO: 05.01.2022
                        НовыйКлючОтOneSingnal[0] =     МетодПолучениеКлючаОтСервераONESIGNALЕслиОЕстьКОнечноВНЕСКОЛЬКОПОпыток(КлючДляFirebaseNotification);
-                          // TODO: 06.01.2022
-                          Log.w(context.getClass().getName(), "  onNext МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal"  +"\n"+
-                                  " Thread.currentThread().getName() " +Thread.currentThread().getName()+"\n"  + " FIREBASE  НовыйКлючОтOneSingnal " + НовыйКлючОтOneSingnal[0]);
+                          Log.d(this.getClass().getName(), "\n"
+                                  + " время: " + new Date()+"\n+" +
+                                  " Класс в процессе... " +  this.getClass().getName()+"\n"+
+                                  " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+"     НовыйКлючОтOneSingnal[0] " +    НовыйКлючОтOneSingnal[0]);
+
+
                       }
                   })
                   .doOnError(new Consumer<Throwable>() {
@@ -127,9 +132,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
                       }
                   })
                   .observeOn(AndroidSchedulers.mainThread())
-                    .toFlowable(BackpressureStrategy.BUFFER).subscribe();
-// TODO: 07.01.2022 GREAT OPERATIONS подпииска на данные
-            // TODO: 05.01.2022  ДЕЛАЕМ ПОДПИСКУ НА ОСУЩЕСТВЛЛЕНУЮ ДАННЫХ
+                    .toFlowable(BackpressureStrategy.BUFFER).blockingSubscribe();
+
         } catch (Exception e ) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
