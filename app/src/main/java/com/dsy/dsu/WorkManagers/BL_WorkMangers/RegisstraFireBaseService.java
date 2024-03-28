@@ -42,7 +42,7 @@ Context context;
             Intent intentstartServiceOneSignal=new Intent(context, ServiceOneSignalForFirebase.class);
             intentstartServiceOneSignal.putExtras(bundleregsit);
             intentstartServiceOneSignal.setAction("com.registariionesignal.net");
-
+            // TODO: 28.03.2024  
           context.  startService(intentstartServiceOneSignal);
 
 

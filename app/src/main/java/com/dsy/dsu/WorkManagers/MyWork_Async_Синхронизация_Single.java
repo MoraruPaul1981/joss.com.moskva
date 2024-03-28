@@ -16,7 +16,7 @@ import androidx.work.impl.utils.taskexecutor.TaskExecutor;
 
 import com.dsy.dsu.BusinessLogicAll.Class_Find_Setting_User_Network;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
-import com.dsy.dsu.OneSignals.ClassOneSingnalGenerator;
+import com.dsy.dsu.OneSignal.registOnesignal.ClassOneSingnalGenerator;
 import com.dsy.dsu.Services.Service_For_Remote_Async_Binary;
 import com.dsy.dsu.WorkManagers.BL_WorkMangers.ClassAnalyasStartingForWorkManager;
 

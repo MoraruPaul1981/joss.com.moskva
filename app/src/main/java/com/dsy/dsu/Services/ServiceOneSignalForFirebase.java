@@ -6,9 +6,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.dsy.dsu.BusinessLogicAll.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
-import com.dsy.dsu.OneSignals.ClassOneSingnalGenerator;
+import com.dsy.dsu.OneSignal.registOnesignal.ClassOneSingnalGenerator;
 
 import java.util.Date;
 
@@ -35,6 +34,10 @@ public class ServiceOneSignalForFirebase extends IntentService {
                 BiceesLogocal biceesLogocal=new BiceesLogocal(getApplicationContext());
 
                 biceesLogocal.МетодРегистрацииУстройсвоНАFirebaseAndOneSignal(intent);
+
+
+                // TODO: 28.03.2024 Выключем службу
+                stopSelf();
 
             }
 
@@ -87,12 +90,9 @@ class  BiceesLogocal{
 
         try{
             Bundle bundleregsit=intent.getExtras();
-         int ПубличныйIDДляФрагмента=   bundleregsit.getInt("ПубличныйIDДляФрагмента");
          String КлючДляFirebaseNotification=   bundleregsit.getString("КлючДляFirebaseNotification");
-
             new ClassOneSingnalGenerator(context).
-                    МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal(КлючДляFirebaseNotification,ПубличныйIDДляФрагмента);
-
+                    getGetRegistaziyNewKeyForOnoSignal(КлючДляFirebaseNotification);
             Log.d(context.getClass().getName(), "\n"
                     + " время: " + new Date()+"\n+" +
                     " Класс в процессе... " +  this.getClass().getName()+"\n"+

@@ -11,13 +11,12 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.work.Data;
 import androidx.work.ForegroundInfo;
-import androidx.work.ListenableWorker;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 import com.dsy.dsu.BusinessLogicAll.Class_Find_Setting_User_Network;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.BusinessLogicAll.Class_Generations_PUBLIC_CURRENT_ID;
-import com.dsy.dsu.OneSignals.ClassOneSingnalGenerator;
+import com.dsy.dsu.OneSignal.registOnesignal.ClassOneSingnalGenerator;
 import com.dsy.dsu.Services.Service_For_Remote_Async_Binary;
 import com.dsy.dsu.WorkManagers.BL_WorkMangers.ClassAnalyasStartingForWorkManager;
 import com.dsy.dsu.WorkManagers.BL_WorkMangers.RegisstraFireBaseService;
@@ -28,8 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-
-import javax.inject.Inject;
 
 public class MyWork_Async_Public extends Worker {
     private String ИмяСлужбыСинхронизации="WorkManager Synchronizasiy_Data";
@@ -141,9 +138,6 @@ public class MyWork_Async_Public extends Worker {
                     .build();
 
 
-            if (ФинальныйРезультатAsyncBackgroud>0 ) {
-                МетодЗапускаПослеУспешнойСтинхронизацииOneSignalИУведомления(class__oneSingnalGenerator);
-            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -154,9 +148,7 @@ public class MyWork_Async_Public extends Worker {
         }
 
         if (ФинальныйРезультатAsyncBackgroud>0 ) {
-
             return Result.success(myDataОтветОбщейСлужбы);
-
         }else{
              if ( getRunAttemptCount()<2) {
                 return Result.retry();
@@ -267,28 +259,6 @@ public class MyWork_Async_Public extends Worker {
                    Thread.currentThread().getStackTrace()[2].getLineNumber());
        }
         return ФинальныйРезультатAsyncBackgroud;
-    }
-
-
-    private void МетодЗапускаПослеУспешнойСтинхронизацииOneSignalИУведомления(@NonNull ClassOneSingnalGenerator
-                                                                                      class__oneSingnalGenerator) {
-        try{
-         Integer   ПубличныйIDДляФрагмента = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
-            Log.i(getApplicationContext().getClass().getName(), "ЗАПУСК   зПубличныйIDДляФрагмента "+"\n"
-                    + ПубличныйIDДляФрагмента);
-            // TODO: 14.11.2021  ПОВТОРНО ЗАПУСКАЕМ УВЕДОМЛЕНИЯ ТОЛЬКО ДЛЯ ОДНОРАЗОВАЯ СЛУЖБА
-            class__oneSingnalGenerator.МетодЗапускаУведомленияДляЗАДАЧТолькоПриСменеСтатусаОтказВыполнил();
-                Log.d(this.getClass().getName(), "РезультатCallsBackСинхрониазцииЧата " + "\n" + " МОДЕЛЬ ТЕЛЕФОНА  Build.DEVICE   " + Build.DEVICE +
-                        "  ПубличныйIDДляФрагмента " + ПубличныйIDДляФрагмента);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    getApplicationContext().getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-
     }
 
 }

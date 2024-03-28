@@ -46,7 +46,7 @@ import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.BusinessLogicAll.Class_Generations_PUBLIC_CURRENT_ID;
 
 import com.dsy.dsu.BusinessLogicAll.Class_Generator_One_WORK_MANAGER;
-import com.dsy.dsu.OneSignals.ClassOneSingnalGenerator;
+import com.dsy.dsu.OneSignal.registOnesignal.ClassOneSingnalGenerator;
 import com.dsy.dsu.CnangeServers.PUBLIC_CONTENT;
 import com.dsy.dsu.Services.Service_For_Task_Для_Задания_СменаСатуса;
 import com.dsy.dsu.R;
