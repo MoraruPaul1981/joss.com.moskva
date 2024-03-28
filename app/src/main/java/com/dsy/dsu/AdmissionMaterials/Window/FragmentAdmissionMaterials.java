@@ -551,8 +551,8 @@ public class FragmentAdmissionMaterials extends Fragment {
                         gameData.putString("ФлагСтатусИзФрагментаСканирования", "ЗакрываетИзСканирования");
                         gameData.putBinder("binder", binderДляПолучениеМатериалов);
                         gameData.putBinder("callbackbinderdashbord", localBinderОбновлениеПО);
+                        gameData.putBoolean("CallBackMainActivityBootAndAsync", true);
                         Интент_BackВозвращаемАктивти.putExtras(gameData);
-                        Log.d(this.getClass().getName(), "  выходим из задания МетодКпопкаВозвращениеНазадИзСогласованиии");
                         message.getTarget().postDelayed(()->{ startActivity(Интент_BackВозвращаемАктивти); },500);
 
               /*          // TODO Запусукаем Фргамент НАстройки  dashbord

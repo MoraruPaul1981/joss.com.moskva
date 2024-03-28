@@ -617,13 +617,19 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
         private void методBackActivityOrderTranport( ) {
            try{
-            Intent Интент_BackВозвращаемАктивти = getActivity().getIntent();
-               Bundle data = new Bundle();
-               data.putBinder("callbackbinderdashbord", localBinderОбновлениеПО);
-               Интент_BackВозвращаемАктивти.putExtras(data);
-          Интент_BackВозвращаемАктивти.setClass(getContext(), MainActivity_Dashboard.class); // Т
-            Интент_BackВозвращаемАктивти.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(Интент_BackВозвращаемАктивти);
+               ///todo код которыц возврящет предыдущий актвитики кнопка back
+               Intent Интент_ЗапускаетDashboard = new Intent();
+               Интент_ЗапускаетDashboard.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+               Интент_ЗапускаетDashboard.setAction("MainActivity_Dashboard.class");
+               Интент_ЗапускаетDashboard.setClass(getActivity(), MainActivity_Dashboard.class);
+
+               Bundle bundleBinderUpdate=new Bundle();
+               bundleBinderUpdate.putBinder("callbackbinderdashbord", localBinderОбновлениеПО);
+               bundleBinderUpdate.putBoolean("CallBackMainActivityBootAndAsync", true);
+               Интент_ЗапускаетDashboard.putExtras(bundleBinderUpdate);
+               activity.  startActivity(Интент_ЗапускаетDashboard);//tso*/
+               activity.finish();
+
 
 
    /*            // TODO Запусукаем Фргамент НАстройки  dashbord

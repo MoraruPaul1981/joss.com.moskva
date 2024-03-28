@@ -379,13 +379,15 @@ public class Bl_CommintigPay {
     private void subcriBackFromCommitPay() {
         try{
         Intent Интент_BackВозвращаемАктивти = new Intent();
-        Bundle data1C = new Bundle();
-        Интент_BackВозвращаемАктивти.putExtras(data1C);
         Интент_BackВозвращаемАктивти.setClass(context, MainActivity_Dashboard.class); // Т
-        Интент_BackВозвращаемАктивти.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Log.d(this.getClass().getName(), "  выходим из задания МетодКпопкаВозвращениеНазадИзСогласованиии" );
+            Интент_BackВозвращаемАктивти.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            Интент_BackВозвращаемАктивти.setAction("MainActivity_Dashboard.class");
+            Интент_BackВозвращаемАктивти.setClass(context, MainActivity_Dashboard.class);
+            Bundle bundleBinderUpdate=new Bundle();
+            bundleBinderUpdate.putBoolean("CallBackMainActivityBootAndAsync", true);
+            Интент_BackВозвращаемАктивти.putExtras(bundleBinderUpdate);
         context.  startActivity( Интент_BackВозвращаемАктивти);
-
+            activity.finish();
 
         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

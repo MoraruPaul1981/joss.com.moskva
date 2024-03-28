@@ -34,6 +34,7 @@ import dagger.hilt.components.SingletonComponent;
 public class ModulePublicId {
     @SuppressLint("SuspiciousIndentation")
     @Provides
+    @Singleton
     public Integer getHiltPublicId(@ApplicationContext Context context) {
         Integer ПубличныйID = 0;
         try {
@@ -42,6 +43,7 @@ public class ModulePublicId {
             // TODO: 29.01.2024
    ///// ПубличныйID=96;
          ////  ПубличныйID=8;
+          /// ПубличныйID=96;
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"

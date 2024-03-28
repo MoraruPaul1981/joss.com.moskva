@@ -102,9 +102,16 @@ public class EventsBackAndAsyncAndSearchCommintPrices {
                             Bundle data1C = new Bundle();
                             Интент_BackВозвращаемАктивти.putExtras(data1C);
                             Интент_BackВозвращаемАктивти.setClass(context, MainActivity_Dashboard.class); // Т
-                            Интент_BackВозвращаемАктивти.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                Интент_BackВозвращаемАктивти.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                Интент_BackВозвращаемАктивти.setAction("MainActivity_Dashboard.class");
+                                Интент_BackВозвращаемАктивти.setClass(context, MainActivity_Dashboard.class);
+
+                                Bundle bundleBinderUpdate=new Bundle();
+                                bundleBinderUpdate.putBoolean("CallBackMainActivityBootAndAsync", true);
+                                Интент_BackВозвращаемАктивти.putExtras(bundleBinderUpdate);
                             Log.d(this.getClass().getName(), "  выходим из задания МетодКпопкаВозвращениеНазадИзСогласованиии");
                             context. startActivity(Интент_BackВозвращаемАктивти);
+
 
                             // TODO: 17.04.2023 LOG
                             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

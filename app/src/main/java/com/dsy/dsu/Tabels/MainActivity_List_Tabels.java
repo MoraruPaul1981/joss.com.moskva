@@ -64,7 +64,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
-import com.google.common.util.concurrent.AtomicDouble;
 
 
 import org.jetbrains.annotations.NotNull;
@@ -105,7 +104,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
     private   Context context;
 
-    private   Button    КнопкаНазадВсеТабеля;
+    private   Button КонопкаНазадСтрелкаВсеТабеля;
     private SQLiteDatabase sqLiteDatabase ;
 
     private  TextView textViewКоличествоТабелей;
@@ -164,7 +163,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             fragmentTransaction = fragmentManager.beginTransaction();
 
         //todo кнопка назад
-        КнопкаНазадВсеТабеля= findViewById(R.id.КонопкаНазадСтрелкаВсеТабеля);
+        КонопкаНазадСтрелкаВсеТабеля = findViewById(R.id.КонопкаНазадСтрелкаВсеТабеля);
         textViewКоличествоТабелей= findViewById(R.id.textViewКоличествоТабелей);
         СпинерВыборДату=(Spinner) findViewById(R.id.СпинерТабельМесяцИсториииТабелей);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
@@ -292,20 +291,23 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
     }
 
     private void МетодНазадBACKНААктивти() {
-        КнопкаНазадВсеТабеля.setOnClickListener(new View.OnClickListener() {
+        КонопкаНазадСтрелкаВсеТабеля.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try{
                     Log.d(this.getClass().getName(), " кликнем для созданни новго сотрдника при нажатии  ");
                     ///todo код которыц возврящет предыдущий актвитики кнопка back
-                    Intent Интент_BackВозвращаемАктивти = new Intent();
-                    Bundle data = new Bundle();
-                    data.putBinder("callbackbinderdashbord", localBinderОбновлениеПО);
-                    Интент_BackВозвращаемАктивти.putExtras(data);
-                    Интент_BackВозвращаемАктивти.setClass(getApplication(), MainActivity_Dashboard.class); // Т
-                    Интент_BackВозвращаемАктивти.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity( Интент_BackВозвращаемАктивти);
+                    Intent Интент_ЗапускаетDashboard = new Intent();
+                    Интент_ЗапускаетDashboard.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    Интент_ЗапускаетDashboard.setAction("MainActivity_Dashboard.class");
+                    Интент_ЗапускаетDashboard.setClass(context, MainActivity_Dashboard.class);
 
+                    Bundle bundleBinderUpdate=new Bundle();
+                    bundleBinderUpdate.putBinder("callbackbinderdashbord", localBinderОбновлениеПО);
+                    bundleBinderUpdate.putBoolean("CallBackMainActivityBootAndAsync", true);
+                    Интент_ЗапускаетDashboard.putExtras(bundleBinderUpdate);
+                    activity.  startActivity(Интент_ЗапускаетDashboard);//tso*/
+                    activity.finish();
 
 
         /*            // TODO Запусукаем Фргамент НАстройки  dashbord
