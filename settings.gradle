@@ -1,0 +1,8 @@
+include ':app'
+rootProject.name='DSU'
+include ':appdocuments_Model'
+include ':appdocuments_ModelEntry'
+include ':appdocuments_Presenter'
+include ':appdocuments_Model:mdeol'
+include ':appdocuments_Model:views'
+include ':appdocuments_Model:myVieMOdels'
