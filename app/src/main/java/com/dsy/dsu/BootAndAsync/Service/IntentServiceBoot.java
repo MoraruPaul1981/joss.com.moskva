@@ -13,6 +13,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.dsy.dsu.BootAndAsync.BlBootAsync.CompleteRemoteSyncService;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
+import com.dsy.dsu.Firebase.RegistraziyOneSignal.ServiceRegistraziyOneSIgnalAndFireBase;
 import com.dsy.dsu.Hilt.PublicId.QualifierPublicId;
 
 import java.util.Date;
@@ -49,6 +50,10 @@ public class IntentServiceBoot extends IntentService {
 
     @Inject
     Integer getHiltPublicId;
+
+
+    @Inject
+    ServiceRegistraziyOneSIgnalAndFireBase sIgnalAndFireBase;
 
     public IntentServiceBoot() {
         super("IntentServiceBoot");
@@ -103,21 +108,28 @@ public class IntentServiceBoot extends IntentService {
             // TODO: 24.01.2024 Синхрониазция и Обновление ПО  
             if (intent.getAction().contains("IntentServiceBootAsync.com")) {
                 // TODO: 19.01.2024  запуск класса бизнес логики службы Синхроиазции и Обновление ПО
-                completeRemoteSyncService.startServiceAsybc(getApplicationContext(),getsslSocketFactory2,  getHiltPublicId,"IntentServiceBootAsync.com");
+                completeRemoteSyncService.startServiceAsybc(getApplicationContext(),getsslSocketFactory2,
+                        getHiltPublicId,"IntentServiceBootAsync.com");
 
-                
-                
-                
-                
             }else {
                 // TODO: 24.01.2024 ТОлькоОбновления ПО
                 
                 if (intent.getAction().contains("IntentServiceBootUpdatePo.com")) {
                     // TODO: 19.01.2024  запуск класса бизнес логики службы Синхроиазции и Обновление ПО
-                    completeRemoteSyncService.startServiceUpdatePO(getApplicationContext(),getsslSocketFactory2,   getHiltPublicId,"IntentServiceBootUpdatePo.com");
+                    completeRemoteSyncService.startServiceUpdatePO(getApplicationContext(),getsslSocketFactory2,
+                            getHiltPublicId,"IntentServiceBootUpdatePo.com");
                 }
 
             }
+
+            // TODO: 29.03.2024 запуск службы РЕгистарции OneSignal
+
+            sIgnalAndFireBase.getStartingRegistraziyOneSignalFirebase();
+
+
+
+
+
             Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +

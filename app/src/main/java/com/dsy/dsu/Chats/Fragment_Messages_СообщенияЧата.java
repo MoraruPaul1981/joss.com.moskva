@@ -154,7 +154,7 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
 
 
 
-            new CONTROLLER(getActivity()).  МетодРегистрацииУстройсвоНАFirebaseAndOneSignal();
+
 
             Log.d(this.getClass().getName(), "  ID   " +ПубличноеIDПолученныйИзСервлетаДляUUID);
 
@@ -1518,36 +1518,7 @@ try {
 
         // TODO: 26.12.2021  метод регистации на СЕРВЕРА ONESIGNAL
 
-        private void МетодРегистрацииУстройсвоНАFirebaseAndOneSignal() {
 
-            try{
-                ///
-                Integer  ПубличныйIDДляФрагмента=   new Class_Generations_PUBLIC_CURRENT_ID()
-                        .ПолучениеПубличногоТекущегоПользователяID(getActivity());
-                Bundle bundleregsit=new Bundle();
-                bundleregsit.putInt("ПубличныйIDДляФрагмента",ПубличныйIDДляФрагмента);
-                bundleregsit.putString("КлючДляFirebaseNotification",КлючДляFirebaseNotification);
-                ///
-                Intent intentstartServiceOneSignal=new Intent(getActivity(),
-                        ServiceOneSignalForFirebase.class);
-                intentstartServiceOneSignal.putExtras(bundleregsit);
-                intentstartServiceOneSignal.setAction("com.registariionesignal.net");
-
-                Log.d(this.getClass().getName(), "\n"
-                        + " время: " + new Date()+"\n+" +
-                        " Класс в процессе... " +  this.getClass().getName()+"\n"+
-                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                ////// начало запись в файл
-
-            }
-        }
 
 
 

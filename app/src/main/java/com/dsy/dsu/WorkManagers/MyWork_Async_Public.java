@@ -19,7 +19,7 @@ import com.dsy.dsu.BusinessLogicAll.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.OneSignal.registOnesignal.ClassOneSingnalGenerator;
 import com.dsy.dsu.Services.Service_For_Remote_Async_Binary;
 import com.dsy.dsu.WorkManagers.BL_WorkMangers.ClassAnalyasStartingForWorkManager;
-import com.dsy.dsu.WorkManagers.BL_WorkMangers.RegisstraFireBaseService;
+
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.Date;
@@ -44,12 +44,8 @@ public class MyWork_Async_Public extends Worker {
     public MyWork_Async_Public(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         try{
-
             // TODO: 22.12.2022
             МетодБиндингаОбщая();
-
-            registraziaOneSignalInWorkers();
-
             Log.d(this.getClass().getName(),"\n"
                     + " bremy: " + new Date()+"\n+"
                     + "  class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -66,40 +62,7 @@ public class MyWork_Async_Public extends Worker {
     }
     }
 
-    @SuppressLint("RestrictedApi")
-    private void registraziaOneSignalInWorkers() {
-        try{
-        getTaskExecutor().getMainThreadExecutor().execute(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                RegisstraFireBaseService   regisstraFireBaseService=new RegisstraFireBaseService(getApplicationContext());
 
-                // TODO: 13.02.2024  резистация в WorkManager   FireBse
-                regisstraFireBaseService.МетодРегистрацииУстройсвоНАFirebaseAndOneSignal();
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                        Thread.currentThread().getStackTrace()[2].getLineNumber());
-                Log.e(getApplicationContext().getClass().getName(), " ОШИБКА В WORK MANAGER  MyWork_Async_Синхронизация_Single из FaceApp в  MyWork_Async_Синхронизация_Single Exception  ошибка в классе  MyWork_Async_Синхронизация_Single" + e.toString());
-            }
-            }
-        });
-            Log.d(this.getClass().getName(),"\n" + "   class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                Thread.currentThread().getStackTrace()[2].getLineNumber());
-        Log.e(getApplicationContext().getClass().getName(), " ОШИБКА В WORK MANAGER  MyWork_Async_Синхронизация_Single из FaceApp в  MyWork_Async_Синхронизация_Single Exception  ошибка в классе  MyWork_Async_Синхронизация_Single" + e.toString());
-    }
-    }
 
 
     @NonNull
@@ -113,12 +76,7 @@ public class MyWork_Async_Public extends Worker {
     public Result doWork() {
         Long     ФинальныйРезультатAsyncBackgroud = 0l;
         Data   myDataОтветОбщейСлужбы=null;
-        // TODO: 25.03.2023  ждем биндинга с службой синхронизации
-        ClassOneSingnalGenerator class__oneSingnalGenerator =null;
         try {
-            // TODO: 25.03.2023  ждем биндинга с службой синхронизации
-               class__oneSingnalGenerator =
-                    new ClassOneSingnalGenerator(getApplicationContext());
             // TODO: 11.01.2022  СВОЕЙ ТЕКУЩИЙ ID ПОЛЬЗОВАТЕЛЯ
             Integer ПубличныйIDДляОбщейСинхрониазции =
                     new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
@@ -152,7 +110,8 @@ public class MyWork_Async_Public extends Worker {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
 

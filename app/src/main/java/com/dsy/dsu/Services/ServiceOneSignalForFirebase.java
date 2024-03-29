@@ -56,9 +56,9 @@ public class ServiceOneSignalForFirebase extends IntentService {
     protected void onHandleIntent(Intent intent) {
         try{
             if (intent.getAction().equalsIgnoreCase("com.registariionesignal.net")) {
-                BiceesLogocal biceesLogocal=new BiceesLogocal(getApplicationContext());
 
-                biceesLogocal.МетодРегистрацииУстройсвоНАFirebaseAndOneSignal(intent,metodKeyHiltOneSignal);
+                new ClassOneSingnalGenerator(getApplicationContext()).getGetRegistaziyNewKeyForOnoSignal(metodKeyHiltOneSignal);
+
             }
             Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date()+"\n+" +
@@ -96,36 +96,7 @@ public class ServiceOneSignalForFirebase extends IntentService {
 }
 
 
-// TODO: 18.12.2023 class BL
 
-class  BiceesLogocal{
-    Context context;
-
-    public BiceesLogocal(Context context) {
-        this.context = context;
-    }
-
-   void МетодРегистрацииУстройсвоНАFirebaseAndOneSignal( @NonNull  Intent intent, @NonNull  String metodKeyHiltOneSignal) {
-
-        try{
-            new ClassOneSingnalGenerator(context).getGetRegistaziyNewKeyForOnoSignal(metodKeyHiltOneSignal);
-            Log.d(context.getClass().getName(), "\n"
-                    + " время: " + new Date()+"\n+" +
-                    " Класс в процессе... " +  this.getClass().getName()+"\n"+
-                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                    " metodKeyHiltOneSignal " +metodKeyHiltOneSignal);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-
-        }
-    }
-
-
-}
 
 
 
