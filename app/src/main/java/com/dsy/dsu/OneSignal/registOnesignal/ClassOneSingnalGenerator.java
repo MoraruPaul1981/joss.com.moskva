@@ -79,7 +79,7 @@ public class ClassOneSingnalGenerator {
             // TODO: 23.12.2021 ЧЕТЫРЕ ПОПЫТКИ ПОДКЛЮЧЕНИЕ В СЕВРЕРУONESIGNAL
             Observable.interval(0, 10, TimeUnit.SECONDS, Schedulers.single())
                     .timeInterval()
-                    .take(5,TimeUnit.MINUTES)
+                    .take(2,TimeUnit.MINUTES)
                   .doOnError(new Consumer<Throwable>() {
                       @Override
                       public void accept(Throwable throwable) throws Throwable {
@@ -131,7 +131,6 @@ public class ClassOneSingnalGenerator {
                                   " Thread.currentThread().getName() " +Thread.currentThread().getName()); 
                       }
                   })
-                  .observeOn(AndroidSchedulers.mainThread())
                     .toFlowable(BackpressureStrategy.BUFFER).subscribe();
 
         } catch (Exception e ) {
