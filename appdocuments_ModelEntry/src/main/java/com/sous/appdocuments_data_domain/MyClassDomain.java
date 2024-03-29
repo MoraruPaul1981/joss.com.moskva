@@ -1,8 +1,9 @@
 package com.sous.appdocuments_data_domain;
 
+import android.content.Context;
+
 import java.util.Date;
 
-import javax.naming.Context;
 
 public class MyClassDomain {
 
