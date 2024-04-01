@@ -33,15 +33,14 @@ Context context;
         try{
             String ИмяСлужбыСинхронизации="WorkManager Synchronizasiy_Data";
             Integer callbackRunnable= WorkManager.getInstance(context).getWorkInfosByTag(ИмяСлужбыСинхронизации).get().size();
-            if (callbackRunnable==0) {
 
                 // TODO: 22.03.2024  регистрация work manager
                 new getStartingWorkmanagerPublic().metodRegistraBroadCastFroAsyns(context);
-            }
             Log.d(this.getClass().getName(),"\n" + " class "
                     + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " callbackRunnable " +
+                    callbackRunnable);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(context.getClass().getName(),

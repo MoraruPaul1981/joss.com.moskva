@@ -20,6 +20,7 @@ import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusAyns;
 import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusEndAync;
 import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusPrograssBar;
 import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusUpdatePO;
+import com.dsy.dsu.BroadcastRecievers.Bl.RegisterBroadcastForWorkManager;
 import com.dsy.dsu.BusinessLogicAll.Class_Connections_Server;
 import com.dsy.dsu.BusinessLogicAll.CreateFolderBinatySave.ClassCreateFolderBinatyMatrilal;
 import com.dsy.dsu.BusinessLogicAll.CreateFolderBinatySave.ClassCreateFolderCommitPays1C;
@@ -86,6 +87,10 @@ public class CompleteRemoteSyncService {
 
     private ExecutorService executorService  = Executors.newSingleThreadExecutor();
     String Режим;
+
+    @Inject
+    RegisterBroadcastForWorkManager registerBroadcastForWorkManager;
+
     public  @Inject CompleteRemoteSyncService(@ApplicationContext Context context) {
         //TODO сомо имя json
         this.context=context;
@@ -552,8 +557,14 @@ public class CompleteRemoteSyncService {
             try{
 
 
+                registerBroadcastForWorkManager.statingInsidAcrtivityWorkMAnager(context);
+
+
+
                 // TODO: 03.10.2023 Запуск Синхронизации
-                ФинальныйРезультатAsyncBackgroud[0] = localBinderAsync.getService().metodStartingSync(   context);
+             ///   ФинальныйРезультатAsyncBackgroud[0] = localBinderAsync.getService().metodStartingSync(   context);
+
+
                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
@@ -562,66 +573,6 @@ public class CompleteRemoteSyncService {
 
 
 
-      /*          Completable.complete().subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-
-                        // TODO: 03.10.2023 Запуск Синхронизации
-                        ФинальныйРезультатAsyncBackgroud[0] = localBinderAsync.getService().metodStartingSync(   context);
-                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                                " localBinderAsync "+" ФинальныйРезультатAsyncBackgroud[0] "+ФинальныйРезультатAsyncBackgroud[0]);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Boolean СтатусБлокировкиПользотеляТекущего=    getBlockCurrentUser();
-
-                        // TODO: 22.01.2024
-                        if(СтатусБлокировкиПользотеляТекущего==false){
-
-                            // TODO: 03.10.2023 КОНЕЦ
-                            metoEndingAsynsSharedPreferences();
-                            metoEndingAsynsRetryBroadCastResiver();
-
-                            // TODO: 24.01.2024    Выход из Синхронизации на Активити DachBord
-                            metoEndingAsynsDashboard();
-
-                        }else {
-                            metodПользовательЗаблокирован();
-
-                        }
-                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                                " localBinderAsync "+ " СтатусБлокировкиПользотеляТекущего " +СтатусБлокировкиПользотеляТекущего);
-                    }
-
-                    @Override
-                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                          e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
-                                + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                                this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                                Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                });*/
-
-
-
-
-
-
-
-
-
-            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                    " localBinderAsync ");
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
