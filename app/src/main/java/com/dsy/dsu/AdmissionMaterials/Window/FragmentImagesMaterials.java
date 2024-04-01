@@ -1,5 +1,6 @@
 package com.dsy.dsu.AdmissionMaterials.Window;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
@@ -49,9 +50,10 @@ import androidx.work.WorkManager;
 
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.BusinessLogicAll.Class_Generations_PUBLIC_CURRENT_ID;
-import com.dsy.dsu.BusinessLogicAll.Class_Generator_One_WORK_MANAGER;
+
 import com.dsy.dsu.Services.Service_for_AdminissionMaterial;
 import com.dsy.dsu.R;
+import com.dsy.dsu.WorkManagers.BL_WorkMangers.CreateSingleWorkManager;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
@@ -151,6 +153,7 @@ public class FragmentImagesMaterials extends Fragment {
         }
         return view;
     }
+    @SuppressLint({"WrongConstant", "RestrictedApi"})
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         try{
@@ -523,13 +526,8 @@ public class FragmentImagesMaterials extends Fragment {
             // TODO: 01.02.2022 заПУСКАЕМ сИНХРОНИАЗАЦИЮ С ВСЕХ ЛИСТ ТАБЕЛЕЙ
             Integer  ПубличныйIDДляАсих=   new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
 
-            Data myDataSingleWorker = new Data.Builder()
-                    .putInt("ПубличныйID", ПубличныйIDДляАсих)
-                    .putBoolean("StartSingleWorker", true)
-                    .build();
-            // TODO: 02.08.2022
-            new Class_Generator_One_WORK_MANAGER(getContext()).
-                    МетодОдноразовыйЗапускВоерМенеджера(getContext(),myDataSingleWorker);
+            // TODO: 14.12.2023 REPLACE
+            new CreateSingleWorkManager(getContext()).getcreateSingleWorkManager(getContext(),ПубличныйIDДляАсих );
             // TODO: 26.06.2022
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1391,12 +1389,12 @@ public class FragmentImagesMaterials extends Fragment {
 
 
 
-
+        @SuppressLint("Range")
         private void методЗаполенияДатыImage(@NonNull  TableRow RowName_ForImage) {
             try{
             TextView textViewNameImage=  RowName_ForImage.findViewById(R.id.textview_imagename);
           //  String ДатаImage=     cursorImageForSelectMaterail.getString(cursorImageForSelectMaterail.getColumnIndex("date_update"));
-            String ДатаImage=     cursorImageForSelectMaterail.getString(cursorImageForSelectMaterail.getColumnIndex("date_update"));
+         String ДатаImage=     cursorImageForSelectMaterail.getString(cursorImageForSelectMaterail.getColumnIndex("date_update"));
             textViewNameImage.setText(ДатаImage.trim());
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

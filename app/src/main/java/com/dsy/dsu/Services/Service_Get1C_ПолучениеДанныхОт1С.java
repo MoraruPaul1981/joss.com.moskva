@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.dsy.dsu.Errors.Class_Generation_Errors;
-import com.dsy.dsu.BusinessLogicAll.Class_Generator_One_WORK_MANAGER;
+
 import com.dsy.dsu.BusinessLogicAll.Class_Get_Json_1C;
 
 import java.io.FileDescriptor;
@@ -32,7 +32,7 @@ public class Service_Get1C_ПолучениеДанныхОт1С extends IntentS
 
     // TODO: Rename actions, choose action names that describe tasks that this
 
-    private Class_Generator_One_WORK_MANAGER class_generator_one_work_manager;
+
     // Binder given to clients
     private LocalBinderДляПолучениеДанных1С binder = new LocalBinderДляПолучениеДанных1С();
 

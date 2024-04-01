@@ -49,7 +49,7 @@ public class getStartingWorkmanagerPublic {
                     .МетодПолучениеяПубличногоID(context);
 
             // TODO: 14.12.2023 REPLACE
-       1     new CreateSingleWorkManager(context).getcreateSingleWorkManager(context,ПубличныйIDДляФрагмента );
+         new CreateSingleWorkManager(context).getcreateSingleWorkManager(context,ПубличныйIDДляФрагмента );
 
             Log.d(context.getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +

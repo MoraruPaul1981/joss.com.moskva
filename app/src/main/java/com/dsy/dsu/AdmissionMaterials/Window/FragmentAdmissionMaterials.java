@@ -45,11 +45,11 @@ import android.widget.TextView;
 
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.BusinessLogicAll.Class_Generations_PUBLIC_CURRENT_ID;
-import com.dsy.dsu.BusinessLogicAll.Class_Generator_One_WORK_MANAGER;
 import com.dsy.dsu.Services.ServiceUpdatePoОбновлениеПО;
 import com.dsy.dsu.Services.Service_for_AdminissionMaterial;
 import com.dsy.dsu.Dashboard.MainActivity_Dashboard;
 import com.dsy.dsu.R;
+import com.dsy.dsu.WorkManagers.BL_WorkMangers.CreateSingleWorkManager;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
@@ -101,7 +101,6 @@ public class FragmentAdmissionMaterials extends Fragment {
     private  LifecycleOwner lifecycleOwner =this ;
     private LifecycleOwner lifecycleOwnerОбщая =this ;
     private  Cursor cursorНомерЦФО;
-    private  Class_Generator_One_WORK_MANAGER class_generator_one_work_manager;
 
     private  AsyncTaskLoader<Cursor> asyncTaskLoader;
     private ServiceUpdatePoОбновлениеПО.localBinderОбновлениеПО localBinderОбновлениеПО;//TODO новаЯ
@@ -127,7 +126,6 @@ public class FragmentAdmissionMaterials extends Fragment {
             lifecycleOwnerОбщая =this ;
             fragmentManager = getActivity().getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
-            class_generator_one_work_manager= new Class_Generator_One_WORK_MANAGER(getActivity());
             // TODO: 07.08.2023  методы
             ClassBizneLogica classBizneLogica=new ClassBizneLogica();
             classBizneLogica.методСлушательФрагментовBinder();;
@@ -174,6 +172,7 @@ public class FragmentAdmissionMaterials extends Fragment {
         return view;
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         try{
@@ -685,13 +684,10 @@ public class FragmentAdmissionMaterials extends Fragment {
             // TODO: 01.02.2022 заПУСКАЕМ сИНХРОНИАЗАЦИЮ С ВСЕХ ЛИСТ ТАБЕЛЕЙ
             Integer  ПубличныйIDДляАсих=   new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
 
-            Data myDataSingleWorker = new Data.Builder()
-                    .putInt("ПубличныйID", ПубличныйIDДляАсих)
-                    .putBoolean("StartSingleWorker", true)
-                    .build();
 
-            // TODO: 02.08.2022
-            class_generator_one_work_manager.МетодОдноразовыйЗапускВоерМенеджера(getContext(),myDataSingleWorker);
+
+            // TODO: 14.12.2023 REPLACE
+            new CreateSingleWorkManager(getContext()).getcreateSingleWorkManager(getContext(),ПубличныйIDДляАсих );
             // TODO: 26.06.2022
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

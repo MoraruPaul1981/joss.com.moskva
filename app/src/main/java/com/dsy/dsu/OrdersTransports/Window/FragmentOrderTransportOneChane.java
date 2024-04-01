@@ -55,11 +55,11 @@ import android.widget.TextView;
 
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.BusinessLogicAll.Class_Generations_PUBLIC_CURRENT_ID;
-import com.dsy.dsu.BusinessLogicAll.Class_Generator_One_WORK_MANAGER;
 import com.dsy.dsu.OrdersTransports.Background.ServiceOrserTransportService;
 import com.dsy.dsu.Dashboard.MainActivity_Dashboard;
 import com.dsy.dsu.R;
 import com.dsy.dsu.Services.ServiceUpdatePoОбновлениеПО;
+import com.dsy.dsu.WorkManagers.BL_WorkMangers.CreateSingleWorkManager;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
@@ -124,7 +124,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
     private ScrollView scrollview_OrderTransport;
     private   LinearLayoutManager linearLayoutManager;
-    private  Class_Generator_One_WORK_MANAGER class_generator_one_work_manager;
+
     private              Cursor        cursor ;
     private AsyncTaskLoader asyncTaskLoader;
     private ServiceUpdatePoОбновлениеПО.localBinderОбновлениеПО localBinderОбновлениеПО;//TODO новаЯ
@@ -160,7 +160,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
 
             subClassOrdersTransport.   МетодHandlerCallBack();
 
-            class_generator_one_work_manager = new Class_Generator_One_WORK_MANAGER(getActivity());
+
 
             // TODO: 03.10.2023
             SubClassOrdersTransport.ClassBinderUpdatePO classBinderUpdatePO=subClassOrdersTransport.new ClassBinderUpdatePO() ;
@@ -181,6 +181,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
+    @SuppressLint({"WrongConstant", "RestrictedApi", "WrongViewCast"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View    view=null;
@@ -928,16 +929,12 @@ public class FragmentOrderTransportOneChane extends Fragment {
             try{
                 Log.d(getContext().getClass().getName(), "\n"
                         + " ПубличныйID: " + ПубличныйIDДляФрагмента);
-                // TODO: 01.02.2022 заПУСКАЕМ сИНХРОНИАЗАЦИЮ С ВСЕХ ЛИСТ ТАБЕЛЕЙ
+
                 // TODO: 01.02.2022 заПУСКАЕМ сИНХРОНИАЗАЦИЮ С ВСЕХ ЛИСТ ТАБЕЛЕЙ
                 Integer  ПубличныйIDДляАсих=   new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
 
-                Data myDataSingleWorker = new Data.Builder()
-                        .putInt("ПубличныйID", ПубличныйIDДляАсих)
-                        .putBoolean("StartSingleWorker", true)
-                        .build();
-                // TODO: 02.08.2022
-                class_generator_one_work_manager .МетодОдноразовыйЗапускВоерМенеджера(getContext(),myDataSingleWorker);
+                // TODO: 14.12.2023 REPLACE
+                new CreateSingleWorkManager(getContext()).getcreateSingleWorkManager(getContext(),ПубличныйIDДляАсих );
                 // TODO: 26.06.2022
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -2871,7 +2868,7 @@ class SubClassGetDateOrderGroupBy {
             try {
                 Integer   Year= Optional.ofNullable(cursor.getInt(cursor.getColumnIndex("Year"))).orElse(0) ;
                 Integer      Month= Optional.ofNullable(cursor.getInt(cursor.getColumnIndex("Month"))).orElse(0);
-                Integer Day= Optional.ofNullable(cursor.getInt(cursor.getColumnIndex("Day"))).orElse(0);
+                @SuppressLint("Range") Integer Day= Optional.ofNullable(cursor.getInt(cursor.getColumnIndex("Day"))).orElse(0);
                 Integer getcounts=Optional.ofNullable( cursor.getInt(cursor.getColumnIndex("getcounts"))).orElse(0);
                 String dateorders=Optional.ofNullable( cursor.getString(cursor.getColumnIndex("dateorders"))).orElse("");
               // TODO: 25.05.2023 Дата

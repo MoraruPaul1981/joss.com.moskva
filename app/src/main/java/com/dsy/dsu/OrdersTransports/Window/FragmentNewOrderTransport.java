@@ -48,12 +48,13 @@ import androidx.work.Data;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.BusinessLogicAll.Class_Generation_UUID;
 import com.dsy.dsu.BusinessLogicAll.Class_Generations_PUBLIC_CURRENT_ID;
-import com.dsy.dsu.BusinessLogicAll.Class_Generator_One_WORK_MANAGER;
+
 import com.dsy.dsu.BusinessLogicAll.DATE.Class_Generation_Data;
 import com.dsy.dsu.BusinessLogicAll.DATE.SubClassCursorLoader;
 import com.dsy.dsu.BusinessLogicAll.SubClassUpVersionDATA;
 import com.dsy.dsu.OrdersTransports.Background.ServiceOrserTransportService;
 import com.dsy.dsu.R;
+import com.dsy.dsu.WorkManagers.BL_WorkMangers.CreateSingleWorkManager;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
@@ -132,7 +133,7 @@ public class FragmentNewOrderTransport extends Fragment {
         }
     }
 
-    @SuppressLint("RestrictedApi")
+    @SuppressLint({"RestrictedApi", "WrongConstant"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View    view=null;
@@ -956,13 +957,8 @@ public class FragmentNewOrderTransport extends Fragment {
                 // TODO: 01.02.2022 заПУСКАЕМ сИНХРОНИАЗАЦИЮ С ВСЕХ ЛИСТ ТАБЕЛЕЙ
                 Integer  ПубличныйIDДляАсих=   new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
 
-                Data myDataSingleWorker = new Data.Builder()
-                        .putInt("ПубличныйID", ПубличныйIDДляАсих)
-                        .putBoolean("StartSingleWorker", true)
-                        .build();
-                // TODO: 02.08.2022
-                new Class_Generator_One_WORK_MANAGER(getActivity()).
-                        МетодОдноразовыйЗапускВоерМенеджера(getContext(),myDataSingleWorker);
+                // TODO: 14.12.2023 REPLACE
+                new CreateSingleWorkManager(getContext()).getcreateSingleWorkManager(getContext(),ПубличныйIDДляАсих );
                 // TODO: 26.06.2022
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

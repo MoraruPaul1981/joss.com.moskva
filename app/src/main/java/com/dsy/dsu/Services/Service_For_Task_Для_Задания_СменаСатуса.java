@@ -26,10 +26,11 @@ import com.dsy.dsu.AllDatabases.SQLTE.GetSQLiteDatabase;
 import com.dsy.dsu.BusinessLogicAll.Class_GRUD_SQL_Operations;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.BusinessLogicAll.Class_Generations_PUBLIC_CURRENT_ID;
-import com.dsy.dsu.BusinessLogicAll.Class_Generator_One_WORK_MANAGER;
+
 import com.dsy.dsu.CnangeServers.PUBLIC_CONTENT;
 import com.dsy.dsu.BusinessLogicAll.SubClass_ДляСменыСтатусаНаЗадачиВыполненыйОтказОтмененный;
 import com.dsy.dsu.Tasks.MainActivity_Tasks;
+import com.dsy.dsu.WorkManagers.BL_WorkMangers.CreateSingleWorkManager;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -400,16 +401,12 @@ public class Service_For_Task_Для_Задания_СменаСатуса exten
                             if (WorkInfoИнформацияОЗапущенойСлужбеОдноразовая.getState().compareTo(WorkInfo.State.RUNNING) != 0) {
 
 // TODO: 26.03.2023 start sync
+
                                 // TODO: 01.02.2022 заПУСКАЕМ сИНХРОНИАЗАЦИЮ С ВСЕХ ЛИСТ ТАБЕЛЕЙ
                                 Integer  ПубличныйIDДляАсих=   new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
 
-                                Data myDataSingleWorker = new Data.Builder()
-                                        .putInt("ПубличныйID", ПубличныйIDДляАсих)
-                                        .putBoolean("StartSingleWorker", true)
-                                        .build();
-                                // TODO: 02.08.2022
-                                // TODO: 02.08.2022
-                                new Class_Generator_One_WORK_MANAGER(getApplicationContext()).МетодОдноразовыйЗапускВоерМенеджера(getApplicationContext(),myDataSingleWorker);
+                                // TODO: 14.12.2023 REPLACE
+                                new CreateSingleWorkManager(getApplicationContext()).getcreateSingleWorkManager(getApplicationContext(),ПубличныйIDДляАсих );
                                 // TODO: 26.06.2022
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

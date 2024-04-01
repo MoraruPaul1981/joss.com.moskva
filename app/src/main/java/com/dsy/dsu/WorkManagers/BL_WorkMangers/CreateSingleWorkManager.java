@@ -6,11 +6,14 @@ import android.util.Log;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.ExistingWorkPolicy;
 import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import com.dsy.dsu.Errors.Class_Generation_Errors;
+import com.dsy.dsu.WorkManagers.MyWork_AsyncSingle;
 import com.dsy.dsu.WorkManagers.MyWork_Async_Public;
 
 import org.jetbrains.annotations.NotNull;
@@ -29,21 +32,25 @@ public class CreateSingleWorkManager {
                                            @NotNull Integer PublicId) {
 
         try{
-            Data myDataДляОбщейСинхрониазации = new Data.Builder()
-                    .putInt("КтоЗапустилWorkManagerДляСинхронизации", PublicId)
+            Data myDataSingleWorker = new Data.Builder()
+                    .putInt("ПубличныйID", PublicId)
+                    .putBoolean("StartSingleWorker", true)
                     .build();
-            Constraints constraintsСинхронизация= new Constraints.Builder()
+
+            Constraints constraintsЗапускСинхОдноразоваяСлужба = new Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)
                     .setRequiresBatteryNotLow(false)
                     .setRequiresStorageNotLow(false)
                     .build();
-            PeriodicWorkRequest   periodicWorkRequestСинхронизация = new PeriodicWorkRequest.Builder(MyWork_Async_Public.class,
-                    20, TimeUnit.MINUTES)//MIN_PERIODIC_FLEX_MILLIS////  PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MILLISECONDS
-                    .addTag(ИмяСлужбыSingleWorkManger)
-                    .setInputData(myDataДляОбщейСинхрониазации)
-                    .setConstraints(constraintsСинхронизация)
-                    //    .setInputData(new Data.Builder().putString("КтоЗапустилWorkmanager","BroadCastRecieve").build())
-                    .build();
+            OneTimeWorkRequest oneTimeWorkRequest =
+                    new OneTimeWorkRequest.Builder(MyWork_AsyncSingle.class)
+                            .setConstraints(constraintsЗапускСинхОдноразоваяСлужба)
+                            .setInputData(myDataSingleWorker)
+                            .addTag(ИмяСлужбыSingleWorkManger)
+                            .build();//      .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+
+            WorkManager.getInstance(context).enqueueUniqueWork(ИмяСлужбыSingleWorkManger,
+                    ExistingWorkPolicy.KEEP, oneTimeWorkRequest);
 
 
             Log.d(this.getClass().getName(),"\n"
@@ -51,17 +58,6 @@ public class CreateSingleWorkManager {
                     + "  class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-                WorkManager.getInstance(context.getApplicationContext()).enqueueUniquePeriodicWork(ИмяСлужбыSingleWorkManger,
-                        ExistingPeriodicWorkPolicy.UPDATE, periodicWorkRequestСинхронизация);
-
-                Log.d(context.getClass().getName(), "\n"
-                        + " время: " + new Date()+"\n+" +
-                        " Класс в процессе... " +  this.getClass().getName()+"\n"+
-                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                        " PublicId " +PublicId+ " callbackRunnable ");
-
-
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,4 +1,5 @@
 package com.dsy.dsu.Services;
+import android.annotation.SuppressLint;
 import android.app.IntentService;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -128,6 +129,7 @@ public class Service_For_Public extends IntentService {
         super.attachBaseContext(newBase);
     }
 
+    @SuppressLint("WrongThread")
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.d(getApplicationContext().getClass().getName(), "\n"
