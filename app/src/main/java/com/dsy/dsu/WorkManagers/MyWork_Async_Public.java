@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.work.Data;
 import androidx.work.ForegroundInfo;
 import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -148,8 +149,15 @@ public class MyWork_Async_Public extends Worker {
                                 + "onServiceConnected  ОБЩАЯ messengerActivity  ");
                     }
                 };
+            // TODO: 01.04.2024
+            WorkManager.getInstance().cancelAllWorkByTag(ИмяСлужбыWorkManger);
+
                 getApplicationContext().bindService(intentГлавнаяСинхрониазция, serviceConnectionWorkManager, Context.BIND_AUTO_CREATE);
 
+
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +

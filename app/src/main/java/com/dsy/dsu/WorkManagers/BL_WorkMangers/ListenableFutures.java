@@ -1,5 +1,6 @@
 package com.dsy.dsu.WorkManagers.BL_WorkMangers;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
@@ -20,6 +21,7 @@ public class ListenableFutures {
         this.context = context;
     }
 
+    @SuppressLint("SuspiciousIndentation")
     public     WorkInfo.State listenableFutureWorkManager(@NonNull String NameWorkManger) {
         try {
             if (!WorkManager.getInstance(context).getWorkInfosByTag(NameWorkManger).get().isEmpty()) {
