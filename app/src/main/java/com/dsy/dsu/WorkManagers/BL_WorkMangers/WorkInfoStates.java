@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Observer;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
@@ -22,21 +23,35 @@ public class WorkInfoStates {
         this.context = context;
     }
 
-    public void startingForAnalizWorkManager(@NonNull String NameWorkManger) {
+    public  void startingForAnalizWorkManager(@NonNull String NameWorkManger) {
         try {
+            WorkManager.getInstance(context).getWorkInfosByTagLiveData(NameWorkManger).observeForever(new Observer<List<WorkInfo>>() {
+                @Override
+                public void onChanged(List<WorkInfo> workInfos) {
+                    for (WorkInfo workInfo : workInfos) {
+                        WorkInfo.State     state = workInfo.getState();
+                        Log.d(this.getClass().getName(),"\n" + " class " +
+                                Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ "" +
+                                "state " + state);
 
-            if (!WorkManager.getInstance(context).getWorkInfosByTag(NameWorkManger).get().isEmpty()) {
+                    }
+                }
+            });
+
+          if (!WorkManager.getInstance(context).getWorkInfosByTag(NameWorkManger).get().isEmpty()) {
                 ListenableFuture<List<WorkInfo>> listListenableFuture =
                         WorkManager.getInstance(context).getWorkInfosByTag(NameWorkManger);
 
                 List<WorkInfo> workInfoList = listListenableFuture.get();
                 for (WorkInfo workInfo : workInfoList) {
-                    WorkInfo.State state = workInfo.getState();
+                    WorkInfo.State state2 = workInfo.getState();
                         Log.d(this.getClass().getName(),"\n" + " class " +
                                 Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ "" +
-                                "state " +state);
+                                "state2 " +state2);
 
                 }
 
@@ -54,6 +69,7 @@ public class WorkInfoStates {
                     Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
+
     }
 
     // TODO: 07.10.2023 single

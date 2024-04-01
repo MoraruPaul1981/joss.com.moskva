@@ -54,7 +54,7 @@ public class ClassCreatePublicWorkManager {
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
 
                 WorkManager.getInstance(context.getApplicationContext()).enqueueUniquePeriodicWork(ИмяСлужбыСинхронизации,
-                        ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequestСинхронизация);
+                        ExistingPeriodicWorkPolicy.UPDATE, periodicWorkRequestСинхронизация);
 
                 Log.d(context.getClass().getName(), "\n"
                         + " время: " + new Date()+"\n+" +

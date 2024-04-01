@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.work.WorkInfo;
+
 import com.dsy.dsu.BootAndAsync.Service.IntentServiceBoot;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.Hilt.PublicId.QualifierPublicId;
@@ -51,16 +54,16 @@ public class StartingEventAsyncOrUpdatePOUsers {
         }
     }
     public void startServiceBootAndAsync(){
-
         try{
-            Intent intentstartServiceOneSignal=new Intent(context, IntentServiceBoot.class);
-            intentstartServiceOneSignal.setAction("IntentServiceBootAsync.com");
-            context.startService(intentstartServiceOneSignal);
 
+                // TODO: 01.04.2024
+                Intent intentstartServiceOneSignal=new Intent(context, IntentServiceBoot.class);
+                intentstartServiceOneSignal.setAction("IntentServiceBootAsync.com");
+                context.startService(intentstartServiceOneSignal);
 
             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
