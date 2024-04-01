@@ -4,15 +4,16 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import com.dsy.dsu.Errors.Class_Generation_Errors;
-import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.List;
-import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 public class WorkInfoStates {
 
@@ -22,43 +23,18 @@ public class WorkInfoStates {
     public WorkInfoStates(@NonNull Context context) {
         this.context = context;
     }
-
-    public  void startingForAnalizWorkManager(@NonNull String NameWorkManger) {
+    WorkInfo.State state;
+    public  void workInfoStatesWorkManager(@NonNull String NameWorkManger, @NonNull LifecycleOwner lifecycle) {
         try {
-            WorkManager.getInstance(context).getWorkInfosByTagLiveData(NameWorkManger).observeForever(new Observer<List<WorkInfo>>() {
-                @Override
-                public void onChanged(List<WorkInfo> workInfos) {
-                    for (WorkInfo workInfo : workInfos) {
-                        WorkInfo.State     state = workInfo.getState();
-                        Log.d(this.getClass().getName(),"\n" + " class " +
-                                Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ "" +
-                                "state " + state);
+            WorkManager.getInstance(context).getWorkInfosByTagLiveData(NameWorkManger)
+                    .observe( lifecycle, workStatus -> {
+                        if (workStatus != null && workStatus.get(0).getState().isFinished()) {
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                        }
 
-                    }
-                }
-            });
-
-          if (!WorkManager.getInstance(context).getWorkInfosByTag(NameWorkManger).get().isEmpty()) {
-                ListenableFuture<List<WorkInfo>> listListenableFuture =
-                        WorkManager.getInstance(context).getWorkInfosByTag(NameWorkManger);
-
-                List<WorkInfo> workInfoList = listListenableFuture.get();
-                for (WorkInfo workInfo : workInfoList) {
-                    WorkInfo.State state2 = workInfo.getState();
-                        Log.d(this.getClass().getName(),"\n" + " class " +
-                                Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ "" +
-                                "state2 " +state2);
-
-                }
-
-            }
-            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    });
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,6 +47,9 @@ public class WorkInfoStates {
         }
 
     }
+
+
+
 
     // TODO: 07.10.2023 single
 

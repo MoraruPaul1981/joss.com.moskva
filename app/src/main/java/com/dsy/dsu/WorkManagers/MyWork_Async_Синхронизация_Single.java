@@ -10,6 +10,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.work.Data;
+import androidx.work.WorkInfo;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 import androidx.work.impl.utils.taskexecutor.TaskExecutor;
@@ -17,6 +18,7 @@ import androidx.work.impl.utils.taskexecutor.TaskExecutor;
 import com.dsy.dsu.BusinessLogicAll.Class_Find_Setting_User_Network;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.Services.Service_For_Remote_Async_Binary;
+import com.dsy.dsu.WorkManagers.BL_WorkMangers.ListenableFutures;
 import com.dsy.dsu.WorkManagers.BL_WorkMangers.WorkInfoStates;
 
 
@@ -26,7 +28,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 @SuppressLint("RestrictedApi")
 public class MyWork_Async_Синхронизация_Single extends Worker {
-    private  String ИмяСлужбыSingleСинхронизации ="WorkManager Synchronizasiy_Data Disposable";
+    private String ИмяСлужбыWorkManger ="WorkManager Synchronizasiy_Data";
+    private  String ИмяСлужбыSingleWorkManger ="WorkManager Synchronizasiy_Data Disposable";
 
     private  ServiceConnection serviceConnectionAsyns;
 
@@ -99,9 +102,7 @@ public class MyWork_Async_Синхронизация_Single extends Worker {
         try{
             Log.d(getApplicationContext().getClass().getName().toString(), "\n"
                     + "onStopped  onStopped");
-            if (serviceConnectionAsyns !=null) {
-                getApplicationContext().unbindService(serviceConnectionAsyns);
-            }
+            getunbindService(serviceConnectionAsyns != null);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -129,66 +130,64 @@ public class MyWork_Async_Синхронизация_Single extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        Long     ФинальныйРезультатAsyncBackgroud = 0l;
-        Data   myDataОтветОдноразовойСлужбы=null;
-        try{
-      Integer ПубличныйID = getInputData().getInt("ПубличныйID",0);
-      Boolean StartSingleWorker = getInputData().getBoolean("StartSingleWorker",false);
+        Long ФинальныйРезультатAsyncBackgroud = 0l;
+        Data Data = null;
+        try {
+
+            // TODO: 01.04.2024  запускаем Listertable
+            WorkInfo.State statePublic = new ListenableFutures(getApplicationContext()).listenableFutureWorkManager(ИмяСлужбыWorkManger);
+            if (statePublic != WorkInfo.State.RUNNING) {
+                // TODO: 01.04.2024  запускаем сихпонизацию общую  
+                ФинальныйРезультатAsyncBackgroud = МетодЗапускаОднаразовая();
+            }
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " ФинальныйРезультатAsyncBackgroud " + ФинальныйРезультатAsyncBackgroud
+                    + " statePublic  " + statePublic + " ФинальныйРезультатAsyncBackgroud" + ФинальныйРезультатAsyncBackgroud);
 
 
-              // TODO: 07.10.2023 анализ нужно ли запускаать сихрониазцию
-                 new WorkInfoStates(getApplicationContext()).startingForAnalizWorkManager(ИмяСлужбыSingleСинхронизации);
+            Map<String, Object> objectMap = new HashMap<>();
+            objectMap.putIfAbsent("dataSingleWork", ФинальныйРезультатAsyncBackgroud);
 
-               ФинальныйРезультатAsyncBackgroud = МетодЗапускаОднаразовая();
-
-
-
-         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                 + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud  + " StartSingleWorker  " +StartSingleWorker);
-
-
-            Map<String,Object> objectMap=new HashMap<>();
-            objectMap.putIfAbsent("dataSingleWork",ФинальныйРезультатAsyncBackgroud);
-
-       myDataОтветОдноразовойСлужбы = new Data.Builder()
-               .putLong("ReturnSingleAsyncWork", ФинальныйРезультатAsyncBackgroud)
-               .putAll(objectMap)
-               .build();
+            Data = new Data.Builder()
+                    .putLong("ReturnSingleAsyncWork", ФинальныйРезультатAsyncBackgroud)
+                    .putAll(objectMap)
+                    .build();
 
             // TODO: 07.10.2023  clear
-            if (localBinderAsyncSingleWorkManager !=null) {
-                getApplicationContext().unbindService(serviceConnectionAsyns);
-            }
+            getunbindService(localBinderAsyncSingleWorkManager != null);
 // TODO: 26.03.2023
-     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-             + " ФинальныйРезультатAsyncBackgroud "+ФинальныйРезультатAsyncBackgroud );
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " ФинальныйРезультатAsyncBackgroud " + ФинальныйРезультатAsyncBackgroud);
 
- } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                Thread.currentThread().getStackTrace()[2].getMethodName(),
-                Thread.currentThread().getStackTrace()[2].getLineNumber());
-        Log.e(getApplicationContext().getClass().getName(), " ОШИБКА В WORK MANAGER  MyWork_Async_Синхронизация_Single из FaceApp в  MyWork_Async_Синхронизация_Single Exception  ошибка в классе  MyWork_Async_Синхронизация_Single" + e.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+            // TODO: 01.04.2024  
+            Result.failure(Data);
+        }
+
+        return Result.success(Data);
+        
     }
-        if (ФинальныйРезультатAsyncBackgroud > 0) {
-            return Result.success(myDataОтветОдноразовойСлужбы);
-        }else {
-            if ( getRunAttemptCount()<2) {
-                return Result.retry();
-            }else {
-                return Result.failure(myDataОтветОдноразовойСлужбы);
-            }
+
+    
+    
+    
+    
+    
+    private void getunbindService(boolean localBinderAsyncSingleWorkManager) {
+        if (localBinderAsyncSingleWorkManager) {
+            getApplicationContext().unbindService(serviceConnectionAsyns);
         }
-
-
-        }
-
+    }
 
 
     @SuppressLint("SuspiciousIndentation")
