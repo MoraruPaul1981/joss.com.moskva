@@ -840,29 +840,7 @@ public class CompleteRemoteSyncService {
 
 
 
-    void metoEndingAsynsDashboard() {
-        try {
 
-            Intent intentAnsycEnding=new Intent("AnsycEnding");
-            intentAnsycEnding.setAction("Broad_messageAsyncOrUpdatePO");
-            Bundle bundle=new Bundle();
-            bundle.putString("Статус",   "AnsycEnding");///"В процесс"
-            bundle.putBinder("callbackbinderdashbord",   localBinderОбновлениеПО);///"В процесс"
-            intentAnsycEnding.putExtras(bundle);
-
-            EventBus.getDefault().post(new MessageEvensBusEndAync  (intentAnsycEnding));
-
-            Log.d(this.getClass().getName(), " date_update " + date_update + " СтатусРаботыСервера " + СтатусРаботыСервера);
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
 
 
 

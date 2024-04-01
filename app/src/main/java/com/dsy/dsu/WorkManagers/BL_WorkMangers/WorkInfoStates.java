@@ -1,6 +1,8 @@
 package com.dsy.dsu.WorkManagers.BL_WorkMangers;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -11,8 +13,13 @@ import androidx.work.Data;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
+import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusEndAync;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
+import com.google.common.util.concurrent.AtomicDouble;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -29,10 +36,18 @@ public class WorkInfoStates {
         try {
             WorkManager.getInstance(context).getWorkInfosByTagLiveData(NameWorkManger)
                     .observe( lifecycle, workStatus -> {
-                        if (workStatus != null) {
+                        if (workStatus.get(0).getState()== WorkInfo.State.SUCCEEDED) {
                             // TODO: 01.04.2024  пришли данные от single
                       Data dataCalBackSingle=      workStatus.get(0).getOutputData();
+                        String uri=    dataCalBackSingle.getString("uri");
+                                // TODO: 01.04.2024
+                            if (uri.equalsIgnoreCase("MainActivityBootAndAsync")) {
+                                // TODO: 01.04.2024  закрываем work manager single
+                                WorkManager.getInstance().cancelAllWorkByTag(NameWorkManger);
+                                // TODO: 01.04.2024  запускаем  приложение DashBoard
 
+
+                            }
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+

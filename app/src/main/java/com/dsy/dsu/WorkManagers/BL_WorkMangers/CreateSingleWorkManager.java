@@ -53,7 +53,7 @@ public class CreateSingleWorkManager {
                             .build();//      .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
 
             WorkManager.getInstance(context).enqueueUniqueWork(ИмяСлужбыSingleWorkManger,
-                    ExistingWorkPolicy.KEEP, oneTimeWorkRequest);
+                    ExistingWorkPolicy.REPLACE , oneTimeWorkRequest);
 
 
             Log.d(this.getClass().getName(),"\n"

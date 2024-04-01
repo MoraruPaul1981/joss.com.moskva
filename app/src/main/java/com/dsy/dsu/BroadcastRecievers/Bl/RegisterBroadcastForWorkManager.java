@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import androidx.work.WorkManager;
+
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 
 import org.jetbrains.annotations.NotNull;
@@ -30,8 +32,13 @@ Context context;
 
  public void statingPublicWorkMAnager(@NotNull Context context ) {
         try{
+            String ИмяСлужбыСинхронизации="WorkManager Synchronizasiy_Data";
+            Integer callbackRunnable= WorkManager.getInstance(context).getWorkInfosByTag(ИмяСлужбыСинхронизации).get().size();
+
+            if (callbackRunnable==0) {
                 // TODO: 22.03.2024  регистрация work manager
                 new getStartingWorkmanagerPublic().metodRegistraBroadCastFroPublicAsyns(context);
+            }
 
             Log.d(this.getClass().getName(),"\n" + " class "
                     + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
