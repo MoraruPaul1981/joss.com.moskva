@@ -1,6 +1,7 @@
 package com.dsy.dsu.BroadcastRecievers.Bl;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import com.dsy.dsu.Errors.Class_Generation_Errors;
@@ -47,10 +48,10 @@ Context context;
         }
     }
 
-    public void statingSingleWorkMAnager(@NotNull Context context ) {
+    public void statingSingleWorkMAnager(@NotNull Context context ,@NotNull Uri uri) {
         try{
             // TODO: 22.03.2024  регистрация work manager
-            new getStartingWorkmanagerPublic().metodRegistraBroadCastFroSingleAsyns(context);
+            new getStartingWorkmanagerPublic().metodRegistraBroadCastFroSingleAsyns(context,  uri);
 
             Log.d(this.getClass().getName(),"\n" + " class "
                     + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

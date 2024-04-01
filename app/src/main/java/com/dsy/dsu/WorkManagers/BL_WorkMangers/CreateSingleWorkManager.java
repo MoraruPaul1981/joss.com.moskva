@@ -1,6 +1,7 @@
 package com.dsy.dsu.WorkManagers.BL_WorkMangers;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.work.Constraints;
@@ -29,12 +30,14 @@ public class CreateSingleWorkManager {
     }
     
     public void getcreateSingleWorkManager(@NotNull Context context,
-                                           @NotNull Integer PublicId) {
+                                           @NotNull Integer PublicId,
+                                           @NotNull Uri uri) {
 
         try{
             Data myDataSingleWorker = new Data.Builder()
                     .putInt("ПубличныйID", PublicId)
                     .putBoolean("StartSingleWorker", true)
+                    .putString("uri",   uri.toString())
                     .build();
 
             Constraints constraintsЗапускСинхОдноразоваяСлужба = new Constraints.Builder()

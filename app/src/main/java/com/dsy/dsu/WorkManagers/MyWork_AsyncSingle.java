@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.net.Uri;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -34,6 +35,8 @@ public class MyWork_AsyncSingle extends Worker {
     private  ServiceConnection serviceConnectionAsyns;
 
     private Service_For_Remote_Async_Binary.LocalBinderAsync localBinderAsyncSingleWorkManager;
+
+    private String  uri;
 
     // TODO: 28.09.2022
     public MyWork_AsyncSingle(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -86,8 +89,7 @@ public class MyWork_AsyncSingle extends Worker {
                    }
                };
             // TODO: 01.04.2024
-            // TODO: 01.04.2024
-            WorkManager.getInstance().cancelAllWorkByTag(ИмяСлужбыWorkManger);
+
 
              getApplicationContext().  bindService(intentОбноразоваяСинхронизациия, serviceConnectionAsyns,Context.BIND_AUTO_CREATE);
 
@@ -144,6 +146,8 @@ public class MyWork_AsyncSingle extends Worker {
         Data Data = null;
         try {
 
+        uri =     getInputData().getString("uri");
+
             // TODO: 01.04.2024  запускаем Listertable
             WorkInfo.State statePublic = new ListenableFutures(getApplicationContext()).listenableFutureWorkManager(ИмяСлужбыWorkManger);
             if (statePublic != WorkInfo.State.RUNNING) {
@@ -154,7 +158,8 @@ public class MyWork_AsyncSingle extends Worker {
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                     + " ФинальныйРезультатAsyncBackgroud " + ФинальныйРезультатAsyncBackgroud
-                    + " statePublic  " + statePublic + " ФинальныйРезультатAsyncBackgroud" + ФинальныйРезультатAsyncBackgroud);
+                    + " statePublic  " + statePublic + " ФинальныйРезультатAsyncBackgroud" + ФинальныйРезультатAsyncBackgroud+
+                    " uri " +uri);
 
 
             Map<String, Object> objectMap = new HashMap<>();
@@ -162,6 +167,7 @@ public class MyWork_AsyncSingle extends Worker {
 
             Data = new Data.Builder()
                     .putLong("ReturnSingleAsyncWork", ФинальныйРезультатAsyncBackgroud)
+                    .putString("uri", uri)
                     .putAll(objectMap)
                     .build();
 

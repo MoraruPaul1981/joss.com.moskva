@@ -17,6 +17,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -2091,7 +2092,7 @@ try{
             Integer  ПубличныйIDДляАсих=   new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
 
             // TODO: 14.12.2023 REPLACE
-            new CreateSingleWorkManager(getApplicationContext()).getcreateSingleWorkManager(getApplicationContext(),ПубличныйIDДляАсих );
+            new CreateSingleWorkManager(getApplicationContext()).getcreateSingleWorkManager(getApplicationContext(),ПубличныйIDДляАсих , Uri.EMPTY);
             // TODO: 26.06.2022
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

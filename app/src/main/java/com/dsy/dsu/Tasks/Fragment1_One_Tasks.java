@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -2229,7 +2230,7 @@ public class Fragment1_One_Tasks extends Fragment {
                 Integer  ПубличныйIDДляАсих=   new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
 
                 // TODO: 14.12.2023 REPLACE
-                new CreateSingleWorkManager(getContext()).getcreateSingleWorkManager(getContext(),ПубличныйIDДляАсих );
+                new CreateSingleWorkManager(getContext()).getcreateSingleWorkManager(getContext(),ПубличныйIDДляАсих, Uri.EMPTY );
                 // TODO: 26.06.2022
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

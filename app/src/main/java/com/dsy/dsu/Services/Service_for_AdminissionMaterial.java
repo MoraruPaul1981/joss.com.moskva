@@ -1309,7 +1309,7 @@ public class Service_for_AdminissionMaterial extends IntentService {
                     Integer  ПубличныйIDДляАсих=   new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
 
                     // TODO: 14.12.2023 REPLACE
-                    new CreateSingleWorkManager(context).getcreateSingleWorkManager(context,ПубличныйIDДляАсих );
+                    new CreateSingleWorkManager(context).getcreateSingleWorkManager(context,ПубличныйIDДляАсих,Uri.EMPTY );
                     // TODO: 26.06.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

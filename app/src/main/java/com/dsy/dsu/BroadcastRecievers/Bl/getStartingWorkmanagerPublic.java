@@ -1,6 +1,7 @@
 package com.dsy.dsu.BroadcastRecievers.Bl;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -42,14 +43,14 @@ public class getStartingWorkmanagerPublic {
     }
 
 
-    public void metodRegistraBroadCastFroSingleAsyns(@NonNull Context context) {
+    public void metodRegistraBroadCastFroSingleAsyns(@NonNull Context context,@NonNull Uri uri) {
         try {
             // TODO: 08.10.2023
             Integer ПубличныйIDДляФрагмента = new SubClass_Connection_BroadcastReceiver_Sous_Asyns_Glassfish()
                     .МетодПолучениеяПубличногоID(context);
 
             // TODO: 14.12.2023 REPLACE
-         new CreateSingleWorkManager(context).getcreateSingleWorkManager(context,ПубличныйIDДляФрагмента );
+         new CreateSingleWorkManager(context).getcreateSingleWorkManager(context,ПубличныйIDДляФрагмента, uri );
 
             Log.d(context.getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +

@@ -100,7 +100,7 @@ public class IntentServiceBoot extends IntentService {
             if (intent.getAction().contains("IntentServiceBootAsync.com")) {
                 // TODO: 19.01.2024  запуск класса бизнес логики службы Синхроиазции и Обновление ПО
                 completeRemoteSyncService.startServiceAsybc(getApplicationContext(),getsslSocketFactory2,
-                        getHiltPublicId,"IntentServiceBootAsync.com");
+                        getHiltPublicId,"IntentServiceBootAsync.com",intent.getData());
 
             }else {
                 // TODO: 24.01.2024 ТОлькоОбновления ПО

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
@@ -406,7 +407,7 @@ public class Service_For_Task_Для_Задания_СменаСатуса exten
                                 Integer  ПубличныйIDДляАсих=   new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
 
                                 // TODO: 14.12.2023 REPLACE
-                                new CreateSingleWorkManager(getApplicationContext()).getcreateSingleWorkManager(getApplicationContext(),ПубличныйIDДляАсих );
+                                new CreateSingleWorkManager(getApplicationContext()).getcreateSingleWorkManager(getApplicationContext(),ПубличныйIDДляАсих , Uri.EMPTY);
                                 // TODO: 26.06.2022
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

@@ -98,7 +98,8 @@ public class CompleteRemoteSyncService {
     }
 
     public void startServiceAsybc(@NonNull Context context, @NonNull SSLSocketFactory getsslSocketFactory2,
-                                 @NonNull Integer getHiltPublicId,@NonNull String Режим ) {
+                                 @NonNull Integer getHiltPublicId,@NonNull String Режим ,
+                                  @NonNull Uri uri) {
         try {
             this.Режим=Режим;
             // TODO: 14.08.2023 вызов кода ПОльзовательский
@@ -112,7 +113,7 @@ public class CompleteRemoteSyncService {
 
 
             // TODO: 14.08.2023 методЗапукска Синхрониазйиии
-          МетодБиндингаRemoteAsync();
+          МетодБиндингаRemoteAsync(uri);
 
 
             Log.d(context.getClass().getName(), "\n"
@@ -143,7 +144,7 @@ public class CompleteRemoteSyncService {
 
 
             // TODO: 14.08.2023 методЗапукска Синхрониазйиии
-            МетодБиндингаОбновлениеПО();
+            МетодБиндингаОбновлениеПО(Uri.EMPTY);
 
 
             Log.d(context.getClass().getName(), "\n"
@@ -160,7 +161,7 @@ public class CompleteRemoteSyncService {
     }
 
 
-    private void WorkerUpdatePOAndAsync() {
+    private void WorkerUpdatePOAndAsync(@NonNull Uri uri) {
 
         try{
             Completable.complete().subscribe(new CompletableObserver() {
@@ -192,7 +193,7 @@ public class CompleteRemoteSyncService {
 
                     if (СтатусРаботыСервера) {
                         // TODO: 01.04.2024  запускаем саму синхрониазцию через запуск Work Manamger
-                        metodВыполняетсяГлавнаяWork(ФиналПолучаемРазницуМеждуДатами);//todo Main Code Sercice
+                        metodВыполняетсяГлавнаяWork(ФиналПолучаемРазницуМеждуДатами,  uri);//todo Main Code Sercice
                     }
 
 
@@ -305,13 +306,14 @@ public class CompleteRemoteSyncService {
     }
 
 
-    private void metodВыполняетсяГлавнаяWork(@NonNull Integer ФиналПолучаемРазницуМеждуДатами) {
+    private void metodВыполняетсяГлавнаяWork(@NonNull Integer ФиналПолучаемРазницуМеждуДатами,
+                                             @NonNull Uri uri) {
         try{
         if (      date_update != null && success_users != null && success_login != null
                 && ФиналПолучаемРазницуМеждуДатами < 40 ) {
 
             // TODO: 22.01.2024  запускаеми службу обновление ПО
-            new SuccessAsynsStartingUpdatrPO().startingAsyncForUpSoft();
+            new SuccessAsynsStartingUpdatrPO().startingAsyncForUpSoft( uri);
 
 
             Log.d(this.getClass().getName(), "\n"
@@ -465,7 +467,7 @@ public class CompleteRemoteSyncService {
 
     //TODO succeess
     class SuccessAsynsStartingUpdatrPO{
-        void startingAsyncForUpSoft(){
+        void startingAsyncForUpSoft(@NonNull Uri uri){
             try{
 
                 // TODO: 22.01.2024 true запускаем Анализ По
@@ -486,7 +488,7 @@ public class CompleteRemoteSyncService {
                     if (СервернаяВерсия==0) {
                         if (Режим.contains("IntentServiceBootAsync.com")) {
 
-                            startingAsyncElseWithParamets();
+                            startingAsyncElseWithParamets(  uri);
 
 
                             
@@ -551,18 +553,23 @@ public class CompleteRemoteSyncService {
 
 
 
-        Long startingAsyncElseWithParamets(){
+        Long startingAsyncElseWithParamets(@NonNull Uri uri){
             final Long[] ФинальныйРезультатAsyncBackgroud = {0l};
             try{
 
-/*                // TODO: 01.04.2024 Public WWorkMAnager
-                    registerBroadcastForWorkManager.statingPublicWorkMAnager(context);*/
-
 
                 // TODO: 01.04.2024  Single WOrkManager
-                    registerBroadcastForWorkManager.statingSingleWorkMAnager(context);
+                    registerBroadcastForWorkManager.statingSingleWorkMAnager(context,  uri);
 
-                    // TODO: 03.10.2023 Запуск Синхронизации
+
+                    /*
+
+                // TODO: 01.04.2024 Public WWorkMAnager
+                    registerBroadcastForWorkManager.statingPublicWorkMAnager(context);
+*/
+
+
+                // TODO: 03.10.2023 Запуск Синхронизации
                     ///   ФинальныйРезультатAsyncBackgroud[0] = localBinderAsync.getService().metodStartingSync(   context);
 
                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -964,7 +971,7 @@ public class CompleteRemoteSyncService {
 
 
     @SuppressLint("NewApi")
-    public void МетодБиндингаRemoteAsync() {
+    public void МетодБиндингаRemoteAsync(@NonNull Uri uri) {
         try {
             // TODO: 28.04.2023  запускаем Гланвную Синхрониазцию
 
@@ -979,7 +986,7 @@ public class CompleteRemoteSyncService {
                                 // TODO: 29.09.2023
                                 localBinderAsync = (Service_For_Remote_Async_Binary.LocalBinderAsync) service;
 
-                                МетодБиндингаОбновлениеПО();
+                                МетодБиндингаОбновлениеПО( uri);
 
 
                                 // TODO: 25.03.2023
@@ -1046,7 +1053,7 @@ public class CompleteRemoteSyncService {
 
 
     @SuppressLint("NewApi")
-    public void МетодБиндингаОбновлениеПО() {
+    public void МетодБиндингаОбновлениеПО(@NonNull Uri uri) {
         try {
             connectionОбновлениеПО = new ServiceConnection() {
                 @Override
@@ -1057,7 +1064,7 @@ public class CompleteRemoteSyncService {
                             localBinderОбновлениеПО = (ServiceUpdatePoОбновлениеПО.localBinderОбновлениеПО) service;
 
                             // TODO: 23.01.2024 stating .... Main Code
-                                WorkerUpdatePOAndAsync();
+                                WorkerUpdatePOAndAsync(  uri);
 
                             // TODO: 25.03.2023
                             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

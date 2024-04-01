@@ -687,7 +687,7 @@ public class FragmentAdmissionMaterials extends Fragment {
 
 
             // TODO: 14.12.2023 REPLACE
-            new CreateSingleWorkManager(getContext()).getcreateSingleWorkManager(getContext(),ПубличныйIDДляАсих );
+            new CreateSingleWorkManager(getContext()).getcreateSingleWorkManager(getContext(),ПубличныйIDДляАсих ,Uri.EMPTY);
             // TODO: 26.06.2022
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

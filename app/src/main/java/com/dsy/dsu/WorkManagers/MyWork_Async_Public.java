@@ -150,7 +150,6 @@ public class MyWork_Async_Public extends Worker {
                     }
                 };
             // TODO: 01.04.2024
-            WorkManager.getInstance().cancelAllWorkByTag(ИмяСлужбыWorkManger);
 
                 getApplicationContext().bindService(intentГлавнаяСинхрониазция, serviceConnectionWorkManager, Context.BIND_AUTO_CREATE);
 

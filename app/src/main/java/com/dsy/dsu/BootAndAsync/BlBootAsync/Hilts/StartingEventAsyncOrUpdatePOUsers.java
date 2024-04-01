@@ -3,6 +3,7 @@ package com.dsy.dsu.BootAndAsync.BlBootAsync.Hilts;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -53,12 +54,13 @@ public class StartingEventAsyncOrUpdatePOUsers {
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
-    public void startServiceBootAndAsync(){
+    public void startServiceBootAndAsync(@NonNull String uri){
         try{
 
                 // TODO: 01.04.2024
                 Intent intentstartServiceOneSignal=new Intent(context, IntentServiceBoot.class);
                 intentstartServiceOneSignal.setAction("IntentServiceBootAsync.com");
+                intentstartServiceOneSignal.setData( Uri.parse(uri));
                 context.startService(intentstartServiceOneSignal);
 
             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
