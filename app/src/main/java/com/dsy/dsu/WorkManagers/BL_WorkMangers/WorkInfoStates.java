@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.work.Data;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
@@ -28,10 +29,14 @@ public class WorkInfoStates {
         try {
             WorkManager.getInstance(context).getWorkInfosByTagLiveData(NameWorkManger)
                     .observe( lifecycle, workStatus -> {
-                        if (workStatus != null && workStatus.get(0).getState().isFinished()) {
+                        if (workStatus != null) {
+                            // TODO: 01.04.2024  пришли данные от single
+                      Data dataCalBackSingle=      workStatus.get(0).getOutputData();
+
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                    " dataCalBackSingle " +dataCalBackSingle);
                         }
 
                     });
