@@ -31,16 +31,13 @@ Context context;
 
  public void statingInsidAcrtivityWorkMAnager(@NotNull Context context ) {
         try{
-            String ИмяСлужбыСинхронизации="WorkManager Synchronizasiy_Data";
-            Integer callbackRunnable= WorkManager.getInstance(context).getWorkInfosByTag(ИмяСлужбыСинхронизации).get().size();
-
                 // TODO: 22.03.2024  регистрация work manager
                 new getStartingWorkmanagerPublic().metodRegistraBroadCastFroAsyns(context);
+
             Log.d(this.getClass().getName(),"\n" + " class "
                     + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " callbackRunnable " +
-                    callbackRunnable);
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(context.getClass().getName(),

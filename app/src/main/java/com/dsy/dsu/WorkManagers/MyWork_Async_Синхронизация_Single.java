@@ -17,7 +17,7 @@ import androidx.work.impl.utils.taskexecutor.TaskExecutor;
 import com.dsy.dsu.BusinessLogicAll.Class_Find_Setting_User_Network;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.Services.Service_For_Remote_Async_Binary;
-import com.dsy.dsu.WorkManagers.BL_WorkMangers.ClassAnalyasStartingForWorkManager;
+import com.dsy.dsu.WorkManagers.BL_WorkMangers.WorkInfoStates;
 
 
 import java.util.HashMap;
@@ -26,7 +26,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 @SuppressLint("RestrictedApi")
 public class MyWork_Async_Синхронизация_Single extends Worker {
-    private  String ИмяСлужбыСинхронизации="WorkManager Synchronizasiy_Data Disposable";
+    private  String ИмяСлужбыSingleСинхронизации ="WorkManager Synchronizasiy_Data Disposable";
 
     private  ServiceConnection serviceConnectionAsyns;
 
@@ -134,23 +134,20 @@ public class MyWork_Async_Синхронизация_Single extends Worker {
         try{
       Integer ПубличныйID = getInputData().getInt("ПубличныйID",0);
       Boolean StartSingleWorker = getInputData().getBoolean("StartSingleWorker",false);
-     if (ПубличныйID>0 ) {
-
-         // TODO: 07.10.2023 анализ нужно ли запускаать сихрониазцию
-         ClassAnalyasStartingForWorkManager classAnalyasStartingForWorkManager=new ClassAnalyasStartingForWorkManager(getApplicationContext());
-         Boolean РешениеЗапускатьWorkManagerИлиНетАктивтиКакое= classAnalyasStartingForWorkManager.metodAnalyzaStaringSinleWorkManger();
-
-         if(РешениеЗапускатьWorkManagerИлиНетАктивтиКакое==true  && StartSingleWorker==true) {
 
 
-             ФинальныйРезультатAsyncBackgroud = МетодЗапускаОднаразовая();
+              // TODO: 07.10.2023 анализ нужно ли запускаать сихрониазцию
+                 new WorkInfoStates(getApplicationContext()).startingForAnalizWorkManager(ИмяСлужбыSingleСинхронизации);
 
-         }
+               ФинальныйРезультатAsyncBackgroud = МетодЗапускаОднаразовая();
+
+
+
          Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                  " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                  " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                  + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud  + " StartSingleWorker  " +StartSingleWorker);
-     }
+
 
             Map<String,Object> objectMap=new HashMap<>();
             objectMap.putIfAbsent("dataSingleWork",ФинальныйРезультатAsyncBackgroud);

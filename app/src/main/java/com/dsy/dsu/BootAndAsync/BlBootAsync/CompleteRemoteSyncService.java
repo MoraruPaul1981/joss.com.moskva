@@ -25,10 +25,10 @@ import com.dsy.dsu.BusinessLogicAll.Class_Connections_Server;
 import com.dsy.dsu.BusinessLogicAll.CreateFolderBinatySave.ClassCreateFolderBinatyMatrilal;
 import com.dsy.dsu.BusinessLogicAll.CreateFolderBinatySave.ClassCreateFolderCommitPays1C;
 import com.dsy.dsu.BusinessLogicAll.Errors.ClassCreateFileForError;
-import com.dsy.dsu.Dashboard.MainActivity_Dashboard;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.Services.ServiceUpdatePoОбновлениеПО;
 import com.dsy.dsu.Services.Service_For_Remote_Async_Binary;
+import com.dsy.dsu.WorkManagers.BL_WorkMangers.WorkInfoStates;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -90,6 +90,8 @@ public class CompleteRemoteSyncService {
 
     @Inject
     RegisterBroadcastForWorkManager registerBroadcastForWorkManager;
+
+    private String ИмяСлужбыСинхронизацииОбщая="WorkManager Synchronizasiy_Data";
 
     public  @Inject CompleteRemoteSyncService(@ApplicationContext Context context) {
         //TODO сомо имя json
@@ -189,10 +191,10 @@ public class CompleteRemoteSyncService {
                     metodSucceessNetwork();
 
 
-
+                    if (СтатусРаботыСервера) {
+                        // TODO: 01.04.2024  запускаем саму синхрониазцию через запуск Work Manamger
                         metodВыполняетсяГлавнаяWork(ФиналПолучаемРазницуМеждуДатами);//todo Main Code Sercice
-
-
+                    }
 
 
                     // TODO: 26.12.2022  конец основгого кода
@@ -487,9 +489,7 @@ public class CompleteRemoteSyncService {
 
                             startingAsyncElseWithParamets();
 
-                            // TODO: 25.01.2024  после упешного получение данных синхрониазции идем на экран DashBoard
 
-                            metoEndingAsynsDashboard();
                             
                             // TODO: 03.10.2023
                             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -556,21 +556,15 @@ public class CompleteRemoteSyncService {
             final Long[] ФинальныйРезультатAsyncBackgroud = {0l};
             try{
 
+                    registerBroadcastForWorkManager.statingInsidAcrtivityWorkMAnager(context);
 
-                registerBroadcastForWorkManager.statingInsidAcrtivityWorkMAnager(context);
-
-
-
-                // TODO: 03.10.2023 Запуск Синхронизации
-             ///   ФинальныйРезультатAsyncBackgroud[0] = localBinderAsync.getService().metodStartingSync(   context);
-
+                    // TODO: 03.10.2023 Запуск Синхронизации
+                    ///   ФинальныйРезультатAsyncBackgroud[0] = localBinderAsync.getService().metodStartingSync(   context);
 
                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
                         " localBinderAsync "+" ФинальныйРезультатAsyncBackgroud[0] "+ФинальныйРезультатAsyncBackgroud[0]);
-
-
 
 
         } catch (Exception e) {

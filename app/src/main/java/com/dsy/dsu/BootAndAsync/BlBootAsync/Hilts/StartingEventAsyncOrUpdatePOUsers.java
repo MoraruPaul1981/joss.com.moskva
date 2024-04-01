@@ -8,6 +8,7 @@ import android.util.Log;
 import com.dsy.dsu.BootAndAsync.Service.IntentServiceBoot;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.Hilt.PublicId.QualifierPublicId;
+import com.dsy.dsu.WorkManagers.BL_WorkMangers.WorkInfoStates;
 
 import javax.inject.Inject;
 
@@ -22,7 +23,7 @@ import dagger.hilt.components.SingletonComponent;
 @InstallIn(SingletonComponent.class)
 public class StartingEventAsyncOrUpdatePOUsers {
 
-Context context;
+    private Context context;
 
     public  @Inject StartingEventAsyncOrUpdatePOUsers(@ApplicationContext Context context) {
         this.context = context;
@@ -52,7 +53,6 @@ Context context;
     public void startServiceBootAndAsync(){
 
         try{
-
             Intent intentstartServiceOneSignal=new Intent(context, IntentServiceBoot.class);
             intentstartServiceOneSignal.setAction("IntentServiceBootAsync.com");
             context.startService(intentstartServiceOneSignal);

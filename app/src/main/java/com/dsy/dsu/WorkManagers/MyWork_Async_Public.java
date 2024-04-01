@@ -15,10 +15,10 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.dsy.dsu.BusinessLogicAll.Class_Find_Setting_User_Network;
-import com.dsy.dsu.BusinessLogicAll.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.Services.Service_For_Remote_Async_Binary;
-import com.dsy.dsu.WorkManagers.BL_WorkMangers.ClassAnalyasStartingForWorkManager;
+
+import com.dsy.dsu.WorkManagers.BL_WorkMangers.WorkInfoStates;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.Date;
@@ -76,25 +76,15 @@ public class MyWork_Async_Public extends Worker {
         Long     ФинальныйРезультатAsyncBackgroud = 0l;
         Data   myDataОтветОбщейСлужбы=null;
         try {
-            // TODO: 11.01.2022  СВОЕЙ ТЕКУЩИЙ ID ПОЛЬЗОВАТЕЛЯ
-            Integer ПубличныйIDДляОбщейСинхрониазции =
-                    new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
-            if (ПубличныйIDДляОбщейСинхрониазции>0  ) {
+            // TODO: 01.04.2024
+            ФинальныйРезультатAsyncBackgroud= МетодЗапускаОбщей();
 
-
-                // TODO: 07.10.2023 анализ нужно ли запускаать сихрониазцию
-                ClassAnalyasStartingForWorkManager classAnalyasStartingForWorkManager=new ClassAnalyasStartingForWorkManager(getApplicationContext());
-                Boolean РешениеЗапускатьWorkManagerИлиНетАктивтиКакое= classAnalyasStartingForWorkManager.metodAnalyzaStaringPublicWorkManger();
-
-                if(РешениеЗапускатьWorkManagerИлиНетАктивтиКакое==true) {
-
-                    ФинальныйРезультатAsyncBackgroud= МетодЗапускаОбщей();
-                }
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName()
+                        + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " РешениеЗапускатьWorkManagerИлиНетАктивтиКакое "+РешениеЗапускатьWorkManagerИлиНетАктивтиКакое  + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
-            }
+                        + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
+
 
 
             Map<String,Object> objectMap=new HashMap<>();
@@ -119,11 +109,11 @@ public class MyWork_Async_Public extends Worker {
         if (ФинальныйРезультатAsyncBackgroud>0 ) {
             return Result.success(myDataОтветОбщейСлужбы);
         }else{
-             if ( getRunAttemptCount()<2) {
+             /*if ( getRunAttemptCount()<2) {
                 return Result.retry();
-            }else {
+            }else {*/
                  return Result.failure(myDataОтветОбщейСлужбы);
-             }
+            // }
            }
 
 
