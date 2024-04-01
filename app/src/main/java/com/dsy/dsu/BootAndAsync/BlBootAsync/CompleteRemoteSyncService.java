@@ -10,14 +10,12 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusAyns;
-import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusEndAync;
 import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusPrograssBar;
 import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusUpdatePO;
 import com.dsy.dsu.BroadcastRecievers.Bl.RegisterBroadcastForWorkManager;
@@ -25,6 +23,7 @@ import com.dsy.dsu.BusinessLogicAll.Class_Connections_Server;
 import com.dsy.dsu.BusinessLogicAll.CreateFolderBinatySave.ClassCreateFolderBinatyMatrilal;
 import com.dsy.dsu.BusinessLogicAll.CreateFolderBinatySave.ClassCreateFolderCommitPays1C;
 import com.dsy.dsu.BusinessLogicAll.Errors.ClassCreateFileForError;
+import com.dsy.dsu.Dashboard.Model.BLFragmentDashbord.BL.GetEndingAsynsDashboard;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.Services.ServiceUpdatePoОбновлениеПО;
 import com.dsy.dsu.Services.Service_For_Remote_Async_Binary;
@@ -194,7 +193,16 @@ public class CompleteRemoteSyncService {
                     if (СтатусРаботыСервера) {
                         // TODO: 01.04.2024  запускаем саму синхрониазцию через запуск Work Manamger
                         metodВыполняетсяГлавнаяWork(ФиналПолучаемРазницуМеждуДатами,  uri);//todo Main Code Sercice
+                    }else {
+
+                        getSendDOntWorkDashBornElseSucceessAyntifica(ФиналПолучаемРазницуМеждуДатами);
+
+
                     }
+
+
+
+
 
 
                     // TODO: 26.12.2022  конец основгого кода
@@ -203,6 +211,43 @@ public class CompleteRemoteSyncService {
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " РежимЗапускаСинхронизации " +РежимЗапускаСинхронизации+
                             "  ФиналПолучаемРазницуМеждуДатами " +ФиналПолучаемРазницуМеждуДатами);
+                }
+
+                private void getSendDOntWorkDashBornElseSucceessAyntifica(@NonNull   Integer     ФиналПолучаемРазницуМеждуДатами) {
+                    try {
+                        // TODO: 23.01.2024
+                        if (      date_update != null && success_users != null && success_login != null
+                                && ФиналПолучаемРазницуМеждуДатами < 40 ) {
+
+                            // TODO: 01.04.2024
+                            new GetEndingAsynsDashboard().  metoEndingAsynsDashboard(context,localBinderОбновлениеПО);
+                        }else {
+
+                            // TODO: 28.04.2023 НЕт Анутифтикации Пароль
+                            // TODO: 28.04.2023 НЕт Анутифтикации Пароль
+                            startFirstApp();
+
+                            Log.d(this.getClass().getName(), "  ФиналПолучаемРазницуМеждуДатами  " + ФиналПолучаемРазницуМеждуДатами
+                                    + " date_update " + date_update + " СтатусРаботыСервера " + СтатусРаботыСервера);
+
+                        }
+
+                        // TODO: 26.12.2022  конец основгого кода
+                        Log.d(context.getClass().getName(), "\n" + " class "
+                                + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                                Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                Thread.currentThread().getStackTrace()[2].getLineNumber());
+
+                    }
+
+
                 }
 
                 @Override

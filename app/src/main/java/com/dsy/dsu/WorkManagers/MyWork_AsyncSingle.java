@@ -20,6 +20,7 @@ import androidx.work.impl.utils.taskexecutor.TaskExecutor;
 
 import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusEndAync;
 import com.dsy.dsu.BusinessLogicAll.Class_Find_Setting_User_Network;
+import com.dsy.dsu.Dashboard.Model.BLFragmentDashbord.BL.GetEndingAsynsDashboard;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.Services.ServiceUpdatePoОбновлениеПО;
 import com.dsy.dsu.Services.Service_For_Remote_Async_Binary;
@@ -220,7 +221,7 @@ public class MyWork_AsyncSingle extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        Long ФинальныйРезультатAsyncBackgroud = 0l;
+        Long ФинальныйРезультатAsyncBackgroudSingle = 0l;
         Data Data = null;
         try {
 
@@ -230,21 +231,21 @@ public class MyWork_AsyncSingle extends Worker {
             WorkInfo.State statePublic = new ListenableFutures(getApplicationContext()).listenableFutureWorkManager(ИмяСлужбыWorkManger);
             if (statePublic != WorkInfo.State.RUNNING) {
                 // TODO: 01.04.2024  запускаем сихпонизацию общую  
-                ФинальныйРезультатAsyncBackgroud = МетодЗапускаОднаразовая();
+                ФинальныйРезультатAsyncBackgroudSingle = МетодЗапускаОднаразовая();
             }
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " ФинальныйРезультатAsyncBackgroud " + ФинальныйРезультатAsyncBackgroud
-                    + " statePublic  " + statePublic + " ФинальныйРезультатAsyncBackgroud" + ФинальныйРезультатAsyncBackgroud+
+                    + " ФинальныйРезультатAsyncBackgroudSingle " + ФинальныйРезультатAsyncBackgroudSingle
+                    + " statePublic  " + statePublic + " ФинальныйРезультатAsyncBackgroudSingle" + ФинальныйРезультатAsyncBackgroudSingle+
                     " uri " +uri);
 
 
             Map<String, Object> objectMap = new HashMap<>();
-            objectMap.putIfAbsent("dataSingleWork", ФинальныйРезультатAsyncBackgroud);
+            objectMap.putIfAbsent("dataSingleWork", ФинальныйРезультатAsyncBackgroudSingle);
 
             Data = new Data.Builder()
-                    .putLong("ReturnSingleAsyncWork", ФинальныйРезультатAsyncBackgroud)
+                    .putLong("ReturnSingleAsyncWork", ФинальныйРезультатAsyncBackgroudSingle)
                     .putString("uri", uri)
                     .putAll(objectMap)
                     .build();
@@ -255,7 +256,7 @@ public class MyWork_AsyncSingle extends Worker {
             // TODO: 01.04.2024  выходим
             if (uri.equalsIgnoreCase("MainActivityBootAndAsync")) {
                 // TODO: 01.04.2024  
-                metoEndingAsynsDashboard();
+              new GetEndingAsynsDashboard().  metoEndingAsynsDashboard(getApplicationContext(),localBinderОбновлениеПО);
             }
 
 
@@ -263,7 +264,7 @@ public class MyWork_AsyncSingle extends Worker {
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " ФинальныйРезультатAsyncBackgroud " + ФинальныйРезультатAsyncBackgroud+ " uri " +uri);
+                    + " ФинальныйРезультатAsyncBackgroudSingle " + ФинальныйРезультатAsyncBackgroudSingle+ " uri " +uri);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -336,34 +337,7 @@ public class MyWork_AsyncSingle extends Worker {
 
     }
 
-    void metoEndingAsynsDashboard() {
-        try {
 
-            Intent intentAnsycEnding=new Intent("AnsycEnding");
-            intentAnsycEnding.setAction("Broad_messageAsyncOrUpdatePO");
-            Bundle bundle=new Bundle();
-
-            bundle.putBinder("callbackbinderdashbord",localBinderОбновлениеПО);
-            bundle.putString("Статус",   "AnsycEnding");///"В процесс"
-            intentAnsycEnding.putExtras(bundle);
-
-            EventBus.getDefault().post(new MessageEvensBusEndAync(intentAnsycEnding));
-
-            Log.d(this.getClass().getName(),"\n"
-                    + " bremy: " + new Date()+"\n+"
-                    + "  class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
 
 
 }

@@ -85,25 +85,25 @@ public class MyWork_Async_Public extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        Long     ФинальныйРезультатAsyncBackgroud = 0l;
+        Long     ФинальныйРезультатAsyncBackgroudPublic = 0l;
         Data data = null;
         try {
             // TODO: 01.04.2024  запускаем Listertable
             WorkInfo.State stateSingle = new ListenableFutures(getApplicationContext()).listenableFutureWorkManager(ИмяСлужбыSingleWorkManger);
             if (stateSingle != WorkInfo.State.RUNNING) {
                 // TODO: 01.04.2024
-                ФинальныйРезультатAsyncBackgroud= МетодЗапускаОбщей();
+                ФинальныйРезультатAsyncBackgroudPublic= МетодЗапускаОбщей();
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud+
+                    + " ФинальныйРезультатAsyncBackgroudPublic " +ФинальныйРезультатAsyncBackgroudPublic+
                      " stateSingle " +stateSingle);
 
             Data.Builder      myDataОтветОбщейСлужбы = new Data.Builder()
-                    .putLong("ReturnWorklong", ФинальныйРезультатAsyncBackgroud)
-                  .putInt("ReturnWorkint", ФинальныйРезультатAsyncBackgroud.intValue());
+                    .putLong("ReturnWorklong", ФинальныйРезультатAsyncBackgroudPublic)
+                  .putInt("ReturnWorkint", ФинальныйРезультатAsyncBackgroudPublic.intValue());
 
              data=   myDataОтветОбщейСлужбы.build();
 
@@ -111,7 +111,7 @@ public class MyWork_Async_Public extends Worker {
                     + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
+                    + " ФинальныйРезультатAsyncBackgroudPublic " +ФинальныйРезультатAsyncBackgroudPublic);
 
         } catch (Exception e) {
             e.printStackTrace();
