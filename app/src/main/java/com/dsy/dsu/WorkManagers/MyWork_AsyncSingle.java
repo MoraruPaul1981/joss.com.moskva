@@ -19,7 +19,6 @@ import com.dsy.dsu.BusinessLogicAll.Class_Find_Setting_User_Network;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.Services.Service_For_Remote_Async_Binary;
 import com.dsy.dsu.WorkManagers.BL_WorkMangers.ListenableFutures;
-import com.dsy.dsu.WorkManagers.BL_WorkMangers.WorkInfoStates;
 
 
 import java.util.HashMap;
@@ -27,7 +26,7 @@ import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 @SuppressLint("RestrictedApi")
-public class MyWork_Async_Синхронизация_Single extends Worker {
+public class MyWork_AsyncSingle extends Worker {
     private String ИмяСлужбыWorkManger ="WorkManager Synchronizasiy_Data";
     private  String ИмяСлужбыSingleWorkManger ="WorkManager Synchronizasiy_Data Disposable";
 
@@ -36,11 +35,11 @@ public class MyWork_Async_Синхронизация_Single extends Worker {
     private Service_For_Remote_Async_Binary.LocalBinderAsync localBinderAsyncSingleWorkManager;
 
     // TODO: 28.09.2022
-    public MyWork_Async_Синхронизация_Single(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public MyWork_AsyncSingle(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         try{
         Log.i(getApplicationContext().getClass().getName(), " public  " +
-                "MyWork_Async_Синхронизация_Single(@NonNull Context context, @NonNull WorkerParameters workerParams) " +
+                "MyWork_AsyncSingle(@NonNull Context context, @NonNull WorkerParameters workerParams) " +
                 "{  КонтекстОдноразовая "+"\n");
             МетодПодключениекСлубе();
         } catch (Exception e) {
@@ -50,7 +49,7 @@ public class MyWork_Async_Синхронизация_Single extends Worker {
         new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                 Thread.currentThread().getStackTrace()[2].getMethodName(),
                 Thread.currentThread().getStackTrace()[2].getLineNumber());
-        Log.e(context.getClass().getName(), " ОШИБКА В WORK MANAGER  MyWork_Async_Синхронизация_Single из FaceApp в  MyWork_Async_Синхронизация_Single Exception  ошибка в классе  MyWork_Async_Синхронизация_Single" + e.toString());
+        Log.e(context.getClass().getName(), " ОШИБКА В WORK MANAGER  MyWork_AsyncSingle из FaceApp в  MyWork_AsyncSingle Exception  ошибка в классе  MyWork_AsyncSingle" + e.toString());
     }
     }
 
@@ -91,7 +90,7 @@ public class MyWork_Async_Синхронизация_Single extends Worker {
                 " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
         new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                 Thread.currentThread().getStackTrace()[2].getLineNumber());
-        Log.e(getApplicationContext().getClass().getName(), " ОШИБКА В WORK MANAGER  MyWork_Async_Синхронизация_Single из FaceApp в  MyWork_Async_Синхронизация_Single Exception  ошибка в классе  MyWork_Async_Синхронизация_Single" + e.toString());
+        Log.e(getApplicationContext().getClass().getName(), " ОШИБКА В WORK MANAGER  MyWork_AsyncSingle из FaceApp в  MyWork_AsyncSingle Exception  ошибка в классе  MyWork_AsyncSingle" + e.toString());
     }
     }
 

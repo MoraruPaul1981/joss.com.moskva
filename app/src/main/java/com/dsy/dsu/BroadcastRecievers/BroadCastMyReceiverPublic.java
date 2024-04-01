@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.dsy.dsu.BusinessLogicAll.ClassCreatePublicWorkManager;
+import com.dsy.dsu.WorkManagers.BL_WorkMangers.CreatePublicWorkManager;
 import com.dsy.dsu.BusinessLogicAll.SubClass_Connection_BroadcastReceiver_Sous_Asyns_Glassfish;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 
@@ -35,7 +35,7 @@ public class BroadCastMyReceiverPublic extends BroadcastReceiver {
            // Toast.makeText(context, "ООО Союз-Автодор work Background !!! "+"\n"+new Date().toLocaleString().toString(), Toast.LENGTH_LONG).show();
 
              // TODO: 14.12.2023 REPLACE
-             new ClassCreatePublicWorkManager(context).paspisaniyWorkMangerREPLACE(context,ПубличныйIDДляФрагмента );
+             new CreatePublicWorkManager(context).getcreatePublicWorkManager(context,ПубличныйIDДляФрагмента );
 
 
             Log.d(context.getClass().getName(), "\n"

@@ -72,6 +72,8 @@ public class BroadcastReceiverWorkManagerScannersServer extends BroadcastReceive
                 .setConstraints(constraintsСинхронизация)
                 .build();
 
+
+
         Integer callbackRunnable = WorkManager.getInstance(context).getWorkInfosByTag(ИмяСлужбыСинхронизации).get().size();
         if (callbackRunnable == 0) {
             Log.w(context.getClass().getName(), " ПОСЛЕ ОТРАБОТКИ МЕТОДА ....Внутри BroadcastReceiverWorkManagerScannersServer  callbackRunnable.name() "

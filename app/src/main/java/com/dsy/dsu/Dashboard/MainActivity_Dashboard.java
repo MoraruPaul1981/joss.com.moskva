@@ -36,7 +36,6 @@ import com.dsy.dsu.Dashboard.Fragments.DashboardFragmentSettings;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.EventBus.EventBuss;
 import com.dsy.dsu.FirebaseAndOneSignal.OneSignal.StartigOneSignal.ServiceRegistraziyOneSIgnalAndFireBase;
-import com.dsy.dsu.Services.ServiceOneSignalForFirebase;
 import com.dsy.dsu.Services.ServiceUpdatePoОбновлениеПО;
 import com.dsy.dsu.Dashboard.Fragments.DashboardFragmentMaterialDesign;
 import com.dsy.dsu.R;
@@ -634,7 +633,7 @@ try{
         private void strartigWorkManger() {
             try{
 
-                registerBroadcastForWorkManager.statingInsidAcrtivityWorkMAnager(getApplicationContext());
+                registerBroadcastForWorkManager.statingPublicWorkMAnager(getApplicationContext());
 
                 // TODO: 25.03.2023
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

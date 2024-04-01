@@ -1,4 +1,4 @@
-package com.dsy.dsu.BusinessLogicAll;
+package com.dsy.dsu.WorkManagers.BL_WorkMangers;
 
 import android.content.Context;
 import android.util.Log;
@@ -18,17 +18,18 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-public class ClassCreatePublicWorkManager {
+public class CreatePublicWorkManager {
     Context context;
-    public ClassCreatePublicWorkManager(Context context) {
+    private    String ИмяСлужбыСинхронизации="WorkManager Synchronizasiy_Data";
+    public CreatePublicWorkManager(Context context) {
         this.context =context;
     }
     // TODO: 08.10.2023 вызов из БроадКста для Синхрониазции ТОлько
 
 
-    public void paspisaniyWorkMangerREPLACE(@NotNull Context context,
-                                         @NotNull Integer PublicId) {
-        String ИмяСлужбыСинхронизации="WorkManager Synchronizasiy_Data";
+    public void getcreatePublicWorkManager(@NotNull Context context,
+                                           @NotNull Integer PublicId) {
+
         try{
             Data myDataДляОбщейСинхрониазации = new Data.Builder()
                     .putInt("КтоЗапустилWorkManagerДляСинхронизации", PublicId)
@@ -47,11 +48,7 @@ public class ClassCreatePublicWorkManager {
                     .build();
 
 
-            Log.d(this.getClass().getName(),"\n"
-                    + " bremy: " + new Date()+"\n+"
-                    + "  class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
 
                 WorkManager.getInstance(context.getApplicationContext()).enqueueUniquePeriodicWork(ИмяСлужбыСинхронизации,
                         ExistingPeriodicWorkPolicy.UPDATE, periodicWorkRequestСинхронизация);
@@ -62,8 +59,6 @@ public class ClassCreatePublicWorkManager {
                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
                         " PublicId " +PublicId+ " callbackRunnable ");
 
-
-
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -73,5 +68,4 @@ public class ClassCreatePublicWorkManager {
         }
     }
 
-    // TODO: 08.10.2023
 }
