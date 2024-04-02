@@ -29,6 +29,7 @@ import com.dsy.dsu.BusinessLogicAll.Jakson.GeneratorJSONSerializer;
 import com.dsy.dsu.BusinessLogicAll.SubClassUpVersionDATA;
 import com.dsy.dsu.CnangeServers.PUBLIC_CONTENT;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
+import com.dsy.dsu.Hilt.JbossAdrress.QualifierJbossServer3;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -59,6 +60,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import javax.crypto.NoSuchPaddingException;
+import javax.inject.Inject;
 import javax.net.ssl.SSLSocketFactory;
 
 import io.reactivex.rxjava3.core.Completable;
@@ -110,14 +112,23 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
     private SSLSocketFactory getsslSocketFactory2;
 
+    private StringBuilder getHiltJbossDebug;
+    private  StringBuilder getHiltJbossReliz;
+
+
+
     // TODO: 28.07.2022
-    public AsynsProccessor(@NotNull Context context,@NonNull  ObjectMapper jsonGenerator,@NotNull  SSLSocketFactory getsslSocketFactory2) {
+    public AsynsProccessor(@NotNull Context context,@NonNull  ObjectMapper jsonGenerator,
+                           @NotNull  SSLSocketFactory getsslSocketFactory2,
+                           @NonNull StringBuilder getHiltJbossDebug,@NonNull  StringBuilder getHiltJbossReliz) {
         super(context);
         this.context=context;
         this.   public_contentДатыДляГлавныхТаблицСинхронизации=new PUBLIC_CONTENT(context);
         this.   sqLiteDatabase=    GetSQLiteDatabase.SqliteDatabase();
         this.jsonGenerator=    jsonGenerator;
         this.getsslSocketFactory2=    getsslSocketFactory2;
+        this.getHiltJbossDebug=    getHiltJbossDebug;
+        this.getHiltJbossReliz=    getHiltJbossReliz;
         Log.w(context.getClass().getName(), "sqLiteDatabase" + sqLiteDatabase);
     }
 
@@ -385,6 +396,9 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
             StringBuffer BufferGetVersionData = new StringBuffer();
 
             preferences=  context .getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
+
+
+            //Log.d(this.getClass().getName(), " getHiltJbossDebug " + getHiltJbossDebug);
 
             String   ИмяСерверИзХранилица = preferences.getString("ИмяСервера","");
             Integer    ПортСерверИзХранилица = preferences.getInt("ИмяПорта",0);

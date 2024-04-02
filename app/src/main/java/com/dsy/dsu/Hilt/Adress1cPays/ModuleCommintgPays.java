@@ -2,6 +2,7 @@
 package com.dsy.dsu.Hilt.Adress1cPays;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
@@ -19,9 +20,8 @@ import dagger.hilt.components.SingletonComponent;
 @Module
 @InstallIn(SingletonComponent.class)
 @QualifierCommintgPays
+@SuppressLint("SuspiciousIndentation")
 public class ModuleCommintgPays {
-
-
 
 
     @Provides

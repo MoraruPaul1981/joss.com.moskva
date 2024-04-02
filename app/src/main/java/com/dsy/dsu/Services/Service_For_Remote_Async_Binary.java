@@ -19,6 +19,8 @@ import androidx.annotation.Nullable;
 
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.BusinessLogicAll.SubClass_Connection_BroadcastReceiver_Sous_Asyns_Glassfish;
+import com.dsy.dsu.Hilt.JbossAdrress.QualifierJbossServer3;
+import com.dsy.dsu.Hilt.JbossAdrress.QualifierJbossServer4;
 import com.dsy.dsu.SynsProccessor.AsynsProccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.annotations.concurrent.Background;
@@ -51,6 +53,16 @@ public class Service_For_Remote_Async_Binary extends IntentService {
     @Inject
     SSLSocketFactory getsslSocketFactory2;
     String КлючДляFirebaseNotification = "2a1819db-60c8-4ca3-a752-1b6cd9cadfa1";
+
+
+    @Inject
+    @QualifierJbossServer3
+    public StringBuilder getHiltJbossDebug;
+
+
+    @Inject
+    @QualifierJbossServer4
+    public StringBuilder getHiltJbossReliz;
 
     public Service_For_Remote_Async_Binary() {
         super("Service_For_Remote_Async");
@@ -214,7 +226,7 @@ try{
         Long       ФинальныйРезультатAsyncBackgroud=0l;
         try{
             // TODO: 25.03.2023 ДОПОЛНИТЕОТНЕ УДЛАНИЕ СТАТУСА УДАЛЕНИЕ ПОСЛЕ СИНХРОНИАЗЦИИ
-            ФинальныйРезультатAsyncBackgroud  = new AsynsProccessor(context,getHiltJaksonObjectMapper,getsslSocketFactory2)
+            ФинальныйРезультатAsyncBackgroud  = new AsynsProccessor(context,getHiltJaksonObjectMapper,getsslSocketFactory2,getHiltJbossDebug, getHiltJbossReliz)
                     .МетодЗАпускаФоновойСинхронизации(context  );
 
 
