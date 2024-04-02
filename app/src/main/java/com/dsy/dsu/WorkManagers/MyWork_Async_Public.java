@@ -35,11 +35,7 @@ public class MyWork_Async_Public extends Worker {
     private String ИмяСлужбыWorkManger ="WorkManager Synchronizasiy_Data";
     private  String ИмяСлужбыSingleWorkManger ="WorkManager Synchronizasiy_Data Disposable";
     private ServiceConnection serviceConnectionWorkManager;
-
-
-
     private Service_For_Remote_Async_Binary.LocalBinderAsync localBinderAsyncWorkmanager;
-
 
     // TODO: 28.09.2022
     @SuppressLint("RestrictedApi")
@@ -58,9 +54,9 @@ public class MyWork_Async_Public extends Worker {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                 " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+        new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[2].getMethodName(),
                 Thread.currentThread().getStackTrace()[2].getLineNumber());
-        Log.e(context.getClass().getName(), " ОШИБКА В WORK MANAGER  MyWork_AsyncSingle из FaceApp в  MyWork_AsyncSingle Exception  ошибка в классе  MyWork_AsyncSingle" + e.toString());
     }
     }
 
