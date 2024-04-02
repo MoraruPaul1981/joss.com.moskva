@@ -51,7 +51,7 @@ public class CreatePublicWorkManager {
 
 
                 WorkManager.getInstance(context.getApplicationContext()).enqueueUniquePeriodicWork(ИмяСлужбыСинхронизации,
-                        ExistingPeriodicWorkPolicy.UPDATE, periodicWorkRequestСинхронизация);
+                        ExistingPeriodicWorkPolicy.KEEP, periodicWorkRequestСинхронизация);
 
                 Log.d(context.getClass().getName(), "\n"
                         + " время: " + new Date()+"\n+" +
