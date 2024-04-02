@@ -112,15 +112,15 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
     private SSLSocketFactory getsslSocketFactory2;
 
-    private StringBuilder getHiltJbossDebug;
-    private  StringBuilder getHiltJbossReliz;
+    private LinkedHashMap<Integer,String> getHiltJbossDebug;
+    private  LinkedHashMap<Integer,String> getHiltJbossReliz;
 
 
 
     // TODO: 28.07.2022
     public AsynsProccessor(@NotNull Context context,@NonNull  ObjectMapper jsonGenerator,
                            @NotNull  SSLSocketFactory getsslSocketFactory2,
-                           @NonNull StringBuilder getHiltJbossDebug,@NonNull  StringBuilder getHiltJbossReliz) {
+                           @NonNull LinkedHashMap<Integer,String> getHiltJbossDebug,@NonNull  LinkedHashMap<Integer,String> getHiltJbossReliz) {
         super(context);
         this.context=context;
         this.   public_contentДатыДляГлавныхТаблицСинхронизации=new PUBLIC_CONTENT(context);
@@ -398,10 +398,18 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
             preferences=  context .getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
 
 
-            //Log.d(this.getClass().getName(), " getHiltJbossDebug " + getHiltJbossDebug);
+// TODO: 02.04.2024  Адресс и Порт Сервера Jboss 
+            String   ИмяСерверИзХранилица = getHiltJbossDebug.values().stream().map(m->String.valueOf(m)).findFirst().get();
+            Integer    ПортСерверИзХранилица = getHiltJbossDebug.keySet().stream().mapToInt(m->m).findFirst().getAsInt();
 
-            String   ИмяСерверИзХранилица = preferences.getString("ИмяСервера","");
-            Integer    ПортСерверИзХранилица = preferences.getInt("ИмяПорта",0);
+
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " ИмяСерверИзХранилица " + ИмяСерверИзХранилица+
+                    " ПортСерверИзХранилица " +ПортСерверИзХранилица );
+
+
             // TODO: 10.11.2022 Получение Список Таблиц
             BufferGetVersionData = МетодУниверсальныйСервернаяВерсияДанныхДанныесСервера(
                     "view_data_modification",
@@ -1009,10 +1017,17 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
         Long РезультатФоновнойСинхронизации=0l;
         try {
-            Log.d(this.getClass().getName(), "  МетодПолучаемДаннныесСервера" + "  имяТаблицыОтАндройда_локальноая" + ИмяТаблицы);
-            // TODO: 02.05.2023  Ответ Обратно ПрограссБару
-            String   ИмяСерверИзХранилица = preferences.getString("ИмяСервера","");
-            Integer    ПортСерверИзХранилица = preferences.getInt("ИмяПорта",0);
+            // TODO: 02.04.2024  Адресс и Порт Сервера Jboss
+            // TODO: 02.04.2024  Адресс и Порт Сервера Jboss
+            String   ИмяСерверИзХранилица = getHiltJbossDebug.values().stream().map(m->String.valueOf(m)).findFirst().get();
+            Integer    ПортСерверИзХранилица = getHiltJbossDebug.keySet().stream().mapToInt(m->m).findFirst().getAsInt();
+
+
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " ИмяСерверИзХранилица " + ИмяСерверИзХранилица+
+                    " ПортСерверИзХранилица " +ПортСерверИзХранилица );
             // TODO: 10.11.2022  Получение JSON-потока
             InputStream BufferGetData = методGetByteFromServerAsync(
                     ИмяТаблицы,
@@ -1730,8 +1745,17 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                         " ГенерацияJSONОтAndroida.toString().toCharArray().length  "
                         + ГенерацияJSONОтAndroid.toString().toCharArray().length +
                         " Таблицы " + Таблицы);
-                String   ИмяСерверИзХранилица = preferences.getString("ИмяСервера","");
-                Integer    ПортСерверИзХранилица = preferences.getInt("ИмяПорта",0);
+                // TODO: 02.04.2024  Адресс и Порт Сервера Jboss
+                // TODO: 02.04.2024  Адресс и Порт Сервера Jboss
+                String   ИмяСерверИзХранилица = getHiltJbossDebug.values().stream().map(m->String.valueOf(m)).findFirst().get();
+                Integer    ПортСерверИзХранилица = getHiltJbossDebug.keySet().stream().mapToInt(m->m).findFirst().getAsInt();
+
+
+                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " ИмяСерверИзХранилица " + ИмяСерверИзХранилица+
+                        " ПортСерверИзХранилица " +ПортСерверИзХранилица );
                 // TODO: 21.09.2022 ОТПРАВЯЛЕТ ДАННЫЕ НА СЕРВЕР
                 StringBuffer    BufferSendDataServer = методSendByteToAsync(
                         ГенерацияJSONОтAndroid,

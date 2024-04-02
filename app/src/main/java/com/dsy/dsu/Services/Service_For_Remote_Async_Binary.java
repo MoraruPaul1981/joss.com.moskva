@@ -28,6 +28,7 @@ import com.google.firebase.annotations.concurrent.Background;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 
 import javax.inject.Inject;
 import javax.net.ssl.SSLSocketFactory;
@@ -57,12 +58,12 @@ public class Service_For_Remote_Async_Binary extends IntentService {
 
     @Inject
     @QualifierJbossServer3
-    public StringBuilder getHiltJbossDebug;
+    public LinkedHashMap<Integer,String> getHiltJbossDebug;
 
 
     @Inject
     @QualifierJbossServer4
-    public StringBuilder getHiltJbossReliz;
+    public LinkedHashMap<Integer,String> getHiltJbossReliz;
 
     public Service_For_Remote_Async_Binary() {
         super("Service_For_Remote_Async");

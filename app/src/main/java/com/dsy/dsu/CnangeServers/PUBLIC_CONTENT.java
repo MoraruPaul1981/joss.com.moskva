@@ -127,9 +127,9 @@ public  class PUBLIC_CONTENT extends SubClassCreatingMainAllTables {
 
 
 
-
+/*
         // TODO: 18.03.2023 ДЕБАГ  сервер
-        МассивПортовСервера.putIfAbsent(8080,"192.168.3.4");// TODO: 10.11.2022 Debug
+        МассивПортовСервера.putIfAbsent(8080,"192.168.3.4");// TODO: 10.11.2022 Debug*/
 
 
 
