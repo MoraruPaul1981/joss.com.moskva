@@ -429,16 +429,16 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                                     stringStringMap.forEach(new BiConsumer<String, String>() {
                                         @Override
                                         public void accept(String НазваниеТаблицыСервера, String ВерсияДанныхСервернойТаблицы) {
-                                            if (НазваниеТаблицыСервера.equalsIgnoreCase("name")) {
+                                            if (НазваниеТаблицыСервера.trim().equalsIgnoreCase("name")) {
                                                 public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.add(ВерсияДанныхСервернойТаблицы.trim());
                                                 НазваниеСервернойТаблицы =ВерсияДанныхСервернойТаблицы.trim();
                                             }
-                                            if (НазваниеТаблицыСервера.equalsIgnoreCase("versionserverversion")) {
+                                            if (НазваниеТаблицыСервера.trim().equalsIgnoreCase("versionserverversion")) {
                                                 public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.put(НазваниеСервернойТаблицы.trim(),
                                                         Long.valueOf(ВерсияДанныхСервернойТаблицы));
 
                                             }
-                                            if (НазваниеТаблицыСервера.equalsIgnoreCase("versionserver")) {
+                                            if (НазваниеТаблицыСервера.trim().equalsIgnoreCase("versionserver")) {
                                                 // TODO: 09.08.2023  даты заполяем таблиц с серверар
                                                 public_contentДатыДляГлавныхТаблицСинхронизации.  ВерсииДатыСерверныхТаблиц.put(НазваниеСервернойТаблицы.trim(), ВерсияДанныхСервернойТаблицы);
 
@@ -560,10 +560,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                     +"   Полученная_ВерсияДанныхсSqlServer " +Полученная_ВерсияДанныхсSqlServer);
             // TODO: 05.10.2021 ПРИ НАЛИЧИИ ВСЕХ ТРЕХ ПОЗИЦИЙ ЛОКАЛЬНАЯ ВЕРСИЯ С АНДРОЙДА   И СЕРВРНАЯ ВЕРСИЯ С АНДРОЙДА И  ПРИШЕДШЕЯ ВЕРСИЯ С СЕРВЕРА
             ///
-            ЛистУспешнойОбработкиСинх=   ObservableRetryGet(ИмяТаблицыОтАндройда_Локальноая,
-                    Полученная_ВерсияДанныхсSqlServer, ID,
-                    ВерсииДанныхНаАндройдеЛокальнаяЛокальная,
-                    ВерсииДанныхНаАндройдеСерверная);
+            ЛистУспешнойОбработкиСинх=   ObservableRetryGet(ИмяТаблицыОтАндройда_Локальноая, Полученная_ВерсияДанныхсSqlServer, ID);
 
             // TODO: 05.10.2021  КОГДА ВСЕ ДАННЫЕ ЕСТЬ ТРИ ПЕРЕМЕННЫЕ ПОЛУЧЕНИЕ ПЕРЕХОИМ ДАЛЬШЕ ПОЛЯ ЛОКАЛЬНАЯ ВЕРСИЯ ДАННЫХ, СЕРВЕНАЯ ВЕРСИЯ ДАННЫХ, И ТЕРТЬЯ ВЕРИСЯ С СЕРВЕРА ПО ДАННОЙ ТАБЕЛИЦВ
             Log.d(this.getClass().getName(), "   ВерсииДанныхНаАндройдеСерверная " +ВерсииДанныхНаАндройдеСерверная+
@@ -667,7 +664,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
     // TODO: 31.10.2023 после анализва запускаемт синхрониазциию по таблице
     private  ArrayList<Long>   ObservableRetryGet(@NonNull String ИмяТаблицыОтАндройда_Локальноая,
                                                                        @NonNull Long Полученная_ВерсияДанныхсSqlServer,
-                                                                       @NonNull Integer ID, Long ВерсииДанныхНаАндройдеЛокальнаяЛокальная, Long ВерсииДанныхНаАндройдеСерверная) {
+                                                                       @NonNull Integer ID) {
         ArrayList<Long> ЛистУспешнойОбработкиСинх=new ArrayList<>();
         try{
 
@@ -787,7 +784,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
         return ЛистУспешнойОбработкиСинх;
     }
 
-    //TODO СЛЕДУЮЩИЙ ЭТАМ РАБОТЫ ОПРЕДЕЛЯЕМ ЧТО МЫ ДЕЛАЕМ ПОЛУЧАЕМ ДАННЫЕ С СЕВРЕРА ИЛИ НА ОБОРОТ  ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР
+    //TODO СЛЕДУЮЩИЙ ЭТАМ РАБОТЫ ОПРЕДЕЛЯЕМ ЧТО МЫ ДЕЛАЕМ ПОЛУЧАЕМ ДАННЫЕ С СЕВРЕРА
     Long AccessGetDataFromServer(Long ВерсияДанныхсСамогоSqlServer,
                                  String ИмяТаблицыОтАндройда_Локальноая,
                                  Integer ID) {
@@ -820,11 +817,10 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                                 МетодОбменаЗаданиеСервера_сервераПолучаем_Сервер(ВерсияДанныхЛокальнаяСерверная,
                                         ИмяТаблицыОтАндройда_Локальноая, ID);
 
-                        if (ДанныесСервера>0) {
-                            copyOnWriteArrayListРезультатСинх.add(ДанныесСервера);
-                            // TODO: 01.07.2023 После Успешно Посылании Данных На Сервер Повышаем Верисю Данных
-                            методПослеУспешногоПолученияПовышаемВерсию(ИмяТаблицыОтАндройда_Локальноая );
-                        }
+                    if (ДанныесСервера>0) {
+                        copyOnWriteArrayListРезультатСинх.add(ДанныесСервера);
+                    }
+
 
                     // TODO: 28.10.2021 ПЕРЕРДАЕМ ВОЗМОЖНЫЙ ОТВЕТ
                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -852,6 +848,19 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
         }
         return  copyOnWriteArrayListРезультатСинх.stream().mapToLong(m->m).findFirst().orElse(0l);
     }
+
+
+
+
+
+
+
+
+
+
+    //TODO СЛЕДУЮЩИЙ ЭТАМ РАБОТЫ ОПРЕДЕЛЯЕМ   ОБОРОТ  ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР
+
+
 
 
     Long AccessPostDataFromClient(String ИмяТаблицыОтАндройда_Локальноая,
@@ -902,11 +911,11 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                         "  ДанныеПосылаемНаСервер " +ДанныеПосылаемНаСервер);
 
 
+
                 if (ДанныеПосылаемНаСервер>0) {
-                    // TODO: 13.12.2023 ген
                     copyOnWriteArrayListРезультатСинх.add(ДанныеПосылаемНаСервер);
                     // TODO: 01.07.2023 После Успешно Посылании Данных На Сервер Повышаем Верисю Данных
-                    методПослеУспешногоОтправкиПовышаемВерсию(ИмяТаблицыОтАндройда_Локальноая ,ДанныеПосылаемНаСервер);
+                    методПослеУспешногоПолученияПовышаемВерсию(ИмяТаблицыОтАндройда_Локальноая );
                 }
 
                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1652,6 +1661,8 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
         try{
             // TODO: 21.08.2023 Запуск Синхронизации после получение Версии
             Long     ВерсияДанныхОтSqlServer = public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.get(ИмяТаблицыоТВерсияДанныхОтSqlServer);
+            // TODO: 02.04.2024 верям данных
+            String     ВремяДанныхОтSqlServer =     public_contentДатыДляГлавныхТаблицСинхронизации.  ВерсииДатыСерверныхТаблиц.get(ИмяТаблицыоТВерсияДанныхОтSqlServer);
 
             /////////////TODO ИДЕМ ПО ШАГАМ К ЗАПУСКИ СИНХРОГНИАЗЦИИ
             РезультатТаблицыОбмена=

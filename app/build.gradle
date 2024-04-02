@@ -332,9 +332,7 @@ dependencies {
 
 //TOD TEST https://mvnrepository.com/artifact/junit/junit
     testImplementation 'junit:junit:4.13.2'
-    implementation project(':appdocuments_ModelEntry')
-    implementation project(':appdocuments_Presenter')
-    implementation project(':appdocuments_Model')
+
 
 
 //TODO подключаемые модули добавляет сама android studio
@@ -342,6 +340,10 @@ dependencies {
     //TODO как вариант
 
     //TODO подключаемые модули сам  пользователь добавляет
+
+    implementation project(':appdocuments_ModelEntry')
+    implementation project(':appdocuments_Presenter')
+    implementation project(':appdocuments_Model')
 
     implementation files(':appdocuments_data_domain')
     implementation files(':appdocuments_data_domains')
