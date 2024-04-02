@@ -48,6 +48,8 @@ import com.dsy.dsu.BusinessLogicAll.Permissions.ClassPermissions;
 import com.dsy.dsu.CnangeServers.PUBLIC_CONTENT;
 import com.dsy.dsu.BusinessLogicAll.SubClassWriterPUBLICIDtoDatabase;
 import com.dsy.dsu.EventBus.EventBuss;
+import com.dsy.dsu.Hilt.JbossAdrress.QualifierJbossServer3;
+import com.dsy.dsu.Hilt.JbossAdrress.QualifierJbossServer4;
 import com.dsy.dsu.R;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -58,6 +60,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -98,6 +101,15 @@ public class MainActivityPasswords extends AppCompatActivity {
     @Inject
     SSLSocketFactory getsslSocketFactory2;
     EventBuss eventBuss;
+
+    @Inject
+    @QualifierJbossServer3
+    public LinkedHashMap<Integer,String> getHiltJbossDebug;
+
+
+    @Inject
+    @QualifierJbossServer4
+    public LinkedHashMap<Integer,String> getHiltJbossReliz;
 
     ////
     @Override
@@ -659,7 +671,7 @@ public class MainActivityPasswords extends AppCompatActivity {
                         new Class_Find_Setting_User_Network(getApplicationContext()).МетодПроветяетКакуюУстановкуВыбралПользовательСети();
                 if (ПроверкаНАстройкиСети == true) {
                     Boolean РеальныйПингСервера =
-                            new Class_Connections_Server(getApplicationContext()).МетодПингаСервераРаботаетИлиНет(getApplicationContext(),getsslSocketFactory2);
+                            new Class_Connections_Server(getApplicationContext()).МетодПингаСервераРаботаетИлиНет(getApplicationContext(),getsslSocketFactory2,getHiltJbossDebug,getHiltJbossReliz);
                     // TODO: 07.10.2023 пинг сервера
                     if (РеальныйПингСервера == true) {
                         // TODO: 07.10.2023 проверка разрешений на КАМЕРУ

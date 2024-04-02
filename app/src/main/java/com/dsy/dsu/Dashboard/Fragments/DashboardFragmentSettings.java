@@ -47,6 +47,8 @@ import com.dsy.dsu.BusinessLogicAll.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.BusinessLogicAll.Class_MODEL_synchronized;
 import com.dsy.dsu.CnangeServers.PUBLIC_CONTENT;
 
+import com.dsy.dsu.Hilt.JbossAdrress.QualifierJbossServer3;
+import com.dsy.dsu.Hilt.JbossAdrress.QualifierJbossServer4;
 import com.dsy.dsu.Tabels.MainActivity_New_Templates;
 import com.dsy.dsu.Services.ServiceUpdatePoОбновлениеПО;
 import com.dsy.dsu.Errors.MainActivity_Errors;
@@ -59,6 +61,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.jakewharton.rxbinding4.view.RxView;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -112,6 +115,14 @@ public class DashboardFragmentSettings extends  DialogFragment {
     StartingEventAsyncOrUpdatePOUsers startingEventAsyncOrUpdatePOUsers;
     @Inject
     SSLSocketFactory getsslSocketFactory2;
+    @Inject
+    @QualifierJbossServer3
+    public LinkedHashMap<Integer,String> getHiltJbossDebug;
+
+
+    @Inject
+    @QualifierJbossServer4
+    public LinkedHashMap<Integer,String> getHiltJbossReliz;
 
     public DashboardFragmentSettings() {
         // Required empty public constructor
@@ -706,7 +717,7 @@ try{
 
                             if (СтатусСетиВыбранныйПользователем == true) {
                                 Boolean СтатусСервераСоюзаВключенИлиНЕт =
-                                        class_connections_serverПингаСерераИзАктивтиМеню.МетодПингаСервераРаботаетИлиНет(getContext(),getsslSocketFactory2);
+                                        class_connections_serverПингаСерераИзАктивтиМеню.МетодПингаСервераРаботаетИлиНет(getContext(),getsslSocketFactory2,getHiltJbossDebug,getHiltJbossReliz);
                                 if (СтатусСервераСоюзаВключенИлиНЕт == true) {
                                     // TODO: 23.08.2023
                                     // TODO: 01.02.2022 заПУСКАЕМ сИНХРОНИАЗАЦИЮ С ВСЕХ ЛИСТ ТАБЕЛЕЙ
@@ -775,7 +786,7 @@ try{
                         public void onClick(View v) {
                             try {
                                 Boolean ЕслиСвязьсСервером =
-                                        new Class_Connections_Server(getContext()).МетодПингаСервераРаботаетИлиНет(getContext(),getsslSocketFactory2);
+                                        new Class_Connections_Server(getContext()).МетодПингаСервераРаботаетИлиНет(getContext(),getsslSocketFactory2,getHiltJbossDebug,getHiltJbossReliz);
 
                                 if (ЕслиСвязьсСервером == true) {
                                     String ПолученыйТекущееИмяПользователя = new Class_MODEL_synchronized(getContext())

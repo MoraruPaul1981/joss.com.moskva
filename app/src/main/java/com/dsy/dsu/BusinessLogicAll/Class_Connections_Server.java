@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.loader.content.AsyncTaskLoader;
 
 import com.dsy.dsu.CnangeServers.PUBLIC_CONTENT;
@@ -14,6 +15,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -23,7 +26,6 @@ import java.util.stream.Collectors;
 import javax.crypto.NoSuchPaddingException;
 import javax.net.ssl.SSLSocketFactory;
 
-import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Action;
@@ -46,14 +48,21 @@ public class Class_Connections_Server  extends  Class_GRUD_SQL_Operations {
         preferences =context.getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
     }
     ///////// TODO ПРОВЕРЯЕТ ЕСЛИ ПОДКЛЧБЕНИ В ИНТРЕНТУ
-    public Boolean МетодПингаСервераРаботаетИлиНет(Context КонтекстКоторыйДляСинхронизации,@NotNull SSLSocketFactory getsslSocketFactory2) {
+    public Boolean МетодПингаСервераРаботаетИлиНет(         @NotNull Context КонтекстКоторыйДляСинхронизации,
+                                                   @NotNull SSLSocketFactory getsslSocketFactory2,
+                                                            @androidx.annotation.NonNull LinkedHashMap<Integer,String> getHiltJbossDebug,
+                                                            @NonNull LinkedHashMap<Integer,String> getHiltJbossReliz ) {
         Boolean РезультатПингакСервераРаботаетЛиОНРеально=false;
                             try{
                                 РезультатПингакСервераРаботаетЛиОНРеально=
-                                        МетодПингаСервераРаботаетИлиНетВнутри(КонтекстКоторыйДляСинхронизации,getsslSocketFactory2);
+                                        МетодПингаСервераРаботаетИлиНетВнутри(КонтекстКоторыйДляСинхронизации,getsslSocketFactory2,
+                                                getHiltJbossDebug,getHiltJbossReliz);
 
-                            Log.w(КонтекстКоторыйДляСинхронизации.getClass().getName(), " РезультатПингакСервераРаботаетЛиОНРеально "
-                                    +РезультатПингакСервераРаботаетЛиОНРеально);
+                                Log.d(this.getClass().getName(), "\n"
+                                        + " время: " + new Date() + "\n+" +
+                                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                                        "  РезультатПингакСервераРаботаетЛиОНРеально " +РезультатПингакСервераРаботаетЛиОНРеально);
                         } catch (Exception e) {
                             e.printStackTrace();
                             if (! e.toString().equalsIgnoreCase("java.util.concurrent.TimeoutException: The source did not signal an event for 5 seconds and has been terminated.")) {
@@ -77,20 +86,15 @@ public class Class_Connections_Server  extends  Class_GRUD_SQL_Operations {
 
     ///////// TODO ПРОВЕРЯЕТ ЕСЛИ ПОДКЛЧБЕНИ В ИНТРЕНТУ
     private Boolean МетодПингаСервераРаботаетИлиНетВнутри(@NotNull Context КонтекстКоторыйДляСинхронизации,
-                                                          @NotNull SSLSocketFactory getsslSocketFactory2)
+                                                          @NotNull SSLSocketFactory getsslSocketFactory2,
+                                                          @NonNull LinkedHashMap<Integer,String> getHiltJbossDebug,
+                                                          @NonNull LinkedHashMap<Integer,String> getHiltJbossReliz )
             throws ExecutionException, InterruptedException,
             TimeoutException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
          Boolean результатПрозвонаСокетом = false;
         try {
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("ИмяСервера", null);
-            editor.putInt("ИмяПорта",0);
-
-            // TODO: 12.01.2024 сиписок адресов сервер куда нужно пигануться
-            Map<Integer,String> concurrentHashMapАдресаПодключенияКСерверу   =
-                    new PUBLIC_CONTENT(КонтекстКоторыйДляСинхронизации).getМассивПортовСервера();
-
-            for (Map.Entry<Integer,String> entry : concurrentHashMapАдресаПодключенияКСерверу.entrySet()) {
+            // TODO: 02.04.2024  цикл пинг  
+            for (Map.Entry<Integer,String> entry : getHiltJbossDebug.entrySet()) {
                 Integer   ИмяПорта =    entry.getKey();
                 String     ИмяСервера=     entry.getValue();
                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -116,11 +120,15 @@ public class Class_Connections_Server  extends  Class_GRUD_SQL_Operations {
                 if ( БуферПолучениеДанныхРЕальныйСтатусРАботыSQLServer>0) {
                     результатПрозвонаСокетом = true;
 
-                    editor.putString("ИмяСервера",  ИмяСервера);
-                    editor.putInt("ИмяПорта",ИмяПорта);
-                    editor.apply();
 
-                    Log.e(Class_MODEL_synchronized.class.getName(), " ИмяСервера" + ИмяСервера+ "ИмяПорта " +ИмяПорта+editor);
+
+                    Log.d(this.getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                            " ИмяСервера" + ИмяСервера+ "ИмяПорта " +ИмяПорта);
+
+
 
 
                     // TODO: 15.12.2023 ВЫХОД ИЗ ЦИКЛА ВЫХОД ИЗ ЦИКЛА

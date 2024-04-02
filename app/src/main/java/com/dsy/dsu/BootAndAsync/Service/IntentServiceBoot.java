@@ -7,8 +7,11 @@ import android.util.Log;
 import com.dsy.dsu.BootAndAsync.BlBootAsync.CompleteRemoteSyncService;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.FirebaseAndOneSignal.OneSignal.StartigOneSignal.ServiceRegistraziyOneSIgnalAndFireBase;
+import com.dsy.dsu.Hilt.JbossAdrress.QualifierJbossServer3;
+import com.dsy.dsu.Hilt.JbossAdrress.QualifierJbossServer4;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 
 import javax.inject.Inject;
 import javax.net.ssl.SSLSocketFactory;
@@ -45,6 +48,14 @@ public class IntentServiceBoot extends IntentService {
 
 
 
+    @Inject
+    @QualifierJbossServer3
+    public LinkedHashMap<Integer,String> getHiltJbossDebug;
+
+
+    @Inject
+    @QualifierJbossServer4
+    public LinkedHashMap<Integer,String> getHiltJbossReliz;
 
     public IntentServiceBoot() {
         super("IntentServiceBoot");
@@ -99,8 +110,8 @@ public class IntentServiceBoot extends IntentService {
             // TODO: 24.01.2024 Синхрониазция и Обновление ПО  
             if (intent.getAction().contains("IntentServiceBootAsync.com")) {
                 // TODO: 19.01.2024  запуск класса бизнес логики службы Синхроиазции и Обновление ПО
-                completeRemoteSyncService.startServiceAsybc(getApplicationContext(),getsslSocketFactory2,
-                        getHiltPublicId,"IntentServiceBootAsync.com",intent.getData());
+                  completeRemoteSyncService.startServiceAsybc(getApplicationContext(),getsslSocketFactory2,
+                        getHiltPublicId,"IntentServiceBootAsync.com",intent.getData(), getHiltJbossDebug, getHiltJbossReliz);
 
             }else {
                 // TODO: 24.01.2024 ТОлькоОбновления ПО
@@ -108,14 +119,10 @@ public class IntentServiceBoot extends IntentService {
                 if (intent.getAction().contains("IntentServiceBootUpdatePo.com")) {
                     // TODO: 19.01.2024  запуск класса бизнес логики службы Синхроиазции и Обновление ПО
                     completeRemoteSyncService.startServiceUpdatePO(getApplicationContext(),getsslSocketFactory2,
-                            getHiltPublicId,"IntentServiceBootUpdatePo.com");
+                            getHiltPublicId,"IntentServiceBootUpdatePo.com", getHiltJbossDebug, getHiltJbossReliz);
                 }
 
             }
-
-
-
-
 
 
             Log.d(getApplicationContext().getClass().getName(), "\n"

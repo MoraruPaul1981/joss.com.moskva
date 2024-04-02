@@ -25,6 +25,8 @@ import com.dsy.dsu.BusinessLogicAll.CreateFolderBinatySave.ClassCreateFolderComm
 import com.dsy.dsu.BusinessLogicAll.Errors.ClassCreateFileForError;
 import com.dsy.dsu.Dashboard.Model.BLFragmentDashbord.BL.GetEndingAsynsDashboard;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
+import com.dsy.dsu.Hilt.JbossAdrress.QualifierJbossServer3;
+import com.dsy.dsu.Hilt.JbossAdrress.QualifierJbossServer4;
 import com.dsy.dsu.Services.ServiceUpdatePoОбновлениеПО;
 import com.dsy.dsu.Services.Service_For_Remote_Async_Binary;
 
@@ -33,6 +35,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -89,6 +92,15 @@ public class CompleteRemoteSyncService {
     @Inject
     RegisterBroadcastForWorkManager registerBroadcastForWorkManager;
 
+    @Inject
+    @QualifierJbossServer3
+    public LinkedHashMap<Integer,String> getHiltJbossDebug;
+
+
+    @Inject
+    @QualifierJbossServer4
+    public LinkedHashMap<Integer,String> getHiltJbossReliz;
+
     private String ИмяСлужбыСинхронизацииОбщая="WorkManager Synchronizasiy_Data";
 
     public  @Inject CompleteRemoteSyncService(@ApplicationContext Context context) {
@@ -98,7 +110,9 @@ public class CompleteRemoteSyncService {
 
     public void startServiceAsybc(@NonNull Context context, @NonNull SSLSocketFactory getsslSocketFactory2,
                                  @NonNull Integer getHiltPublicId,@NonNull String Режим ,
-                                  @NonNull Uri uri) {
+                                  @NonNull Uri uri,
+                                  @NonNull LinkedHashMap<Integer,String> getHiltJbossDebug,
+                                  @NonNull LinkedHashMap<Integer,String> getHiltJbossReliz) {
         try {
             this.Режим=Режим;
             // TODO: 14.08.2023 вызов кода ПОльзовательский
@@ -128,8 +142,12 @@ public class CompleteRemoteSyncService {
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
-    public void startServiceUpdatePO(@NonNull Context context, @NonNull SSLSocketFactory getsslSocketFactory2,
-                                  @NonNull Integer getHiltPublicId,@NonNull String Режим ) {
+    public void startServiceUpdatePO(@NonNull Context context,
+                                     @NonNull SSLSocketFactory getsslSocketFactory2,
+                                  @NonNull Integer getHiltPublicId,
+                                     @NonNull String Режим ,
+                                  @NonNull LinkedHashMap<Integer,String> getHiltJbossDebug,
+                                     @NonNull LinkedHashMap<Integer,String> getHiltJbossReliz) {
         try {
             this.Режим=Режим;
             // TODO: 14.08.2023 вызов кода ПОльзовательский
@@ -180,7 +198,7 @@ public class CompleteRemoteSyncService {
                     // TODO: 14.08.2023  Запускаем Код До Сиинхрониазщции
                     Integer     ФиналПолучаемРазницуМеждуДатами=   МетодОпределениеКогдаПоследнийРазЗаходилПользователь();
 
-                    СтатусРаботыСервера=  МетодПингаКСереруЗапущенЛиСерерИлиНет();
+                    СтатусРаботыСервера=  МетодПингаКСереруЗапущенЛиСерерИлиНет(getHiltJbossDebug,getHiltJbossReliz);
 
                     // TODO: 22.01.2024  если false значит сервер выключен
 
@@ -855,13 +873,17 @@ public class CompleteRemoteSyncService {
 
 
     @SuppressLint("SuspiciousIndentation")
-    public Boolean МетодПингаКСереруЗапущенЛиСерерИлиНет() {
+    public Boolean МетодПингаКСереруЗапущенЛиСерерИлиНет(   @NonNull LinkedHashMap<Integer,String> getHiltJbossDebug,
+                                                            @NonNull LinkedHashMap<Integer,String> getHiltJbossReliz  ) {
         try {
             // TODO: 16.12.2021 НЕПОСРЕДСТВЕННЫЙ ПИНГ СИСТЕНМ ИНТРЕНАТ НА НАЛИЧЕНИ СВАЗИ С БАЗОЙ SQL SERVER
             СтатусРаботыСервера =
-                    new Class_Connections_Server(context).
-                            МетодПингаСервераРаботаетИлиНет(context,getsslSocketFactory2);
-            Log.d(this.getClass().getName(), "  СтатусРаботыСервера " + СтатусРаботыСервера);
+                    new Class_Connections_Server(context). МетодПингаСервераРаботаетИлиНет(context,getsslSocketFactory2,getHiltJbossDebug,getHiltJbossReliz);
+
+   Log.d(this.getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +  "  СтатусРаботыСервера " +СтатусРаботыСервера);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
