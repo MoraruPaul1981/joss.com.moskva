@@ -376,7 +376,8 @@ public class CompleteRemoteSyncService {
                 && ФиналПолучаемРазницуМеждуДатами < 40 ) {
 
             // TODO: 22.01.2024  запускаеми службу обновление ПО
-            new SuccessAsynsStartingUpdatrPO().startingAsyncForUpSoft( uri);
+            new SuccessAsynsStartingUpdatrPO().startingAsyncForUpSoft( uri,
+                    getHiltJbossDebug,getHiltJbossReliz);
 
 
             Log.d(this.getClass().getName(), "\n"
@@ -530,11 +531,12 @@ public class CompleteRemoteSyncService {
 
     //TODO succeess
     class SuccessAsynsStartingUpdatrPO{
-        void startingAsyncForUpSoft(@NonNull Uri uri){
+        void startingAsyncForUpSoft(@NonNull Uri uri,  @NonNull LinkedHashMap<Integer,String> getHiltJbossDebug,
+                                    @NonNull LinkedHashMap<Integer,String> getHiltJbossReliz ){
             try{
 
                 // TODO: 22.01.2024 true запускаем Анализ По
-                    Integer    СервернаяВерсия=        metodAsyncUpdatePO();
+                    Integer    СервернаяВерсия=        metodAsyncUpdatePO(getHiltJbossDebug,getHiltJbossReliz);
 
                 // TODO: 03.10.2023
                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -847,10 +849,13 @@ public class CompleteRemoteSyncService {
     }
 
     ///////todo ФИНАЛЬНЫЙ МЕТОД КТО ВХОДИЛ ДО 7 ДНЕЙ ИЛИ ПОСЫЛАЕМ НА АУНТИФИКАЦИЮ
-    Integer metodAsyncUpdatePO() {
+    Integer metodAsyncUpdatePO(
+            @NonNull LinkedHashMap<Integer,String> getHiltJbossDebug,
+            @NonNull LinkedHashMap<Integer,String> getHiltJbossReliz
+    ) {
         Integer СервернаяВерсия=0;
         try {
-            СервернаяВерсия = localBinderОбновлениеПО.getService().МетодГлавныйОбновленияПОДоAsync(true, context  );
+            СервернаяВерсия = localBinderОбновлениеПО.getService().МетодГлавныйОбновленияПОДоAsync(true, context,getHiltJbossDebug,getHiltJbossReliz  );
 
             Log.i(this.getClass().getName(), " Атоманически установкаОбновление ПО " +
                     Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());

@@ -15,7 +15,11 @@ import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusPrograssBar;
 import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusUpdatePO;
 import com.dsy.dsu.BootAndAsync.Window.MainActivityBootAndAsync;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
+import com.dsy.dsu.Hilt.JbossAdrress.QualifierJbossServer3;
+import com.dsy.dsu.Hilt.JbossAdrress.QualifierJbossServer4;
 import com.dsy.dsu.Passwords.MainActivityPasswords;
+
+import java.util.LinkedHashMap;
 
 import javax.inject.Inject;
 import javax.net.ssl.SSLSocketFactory;
@@ -31,6 +35,16 @@ Activity  activity;
 
     @Inject
     SSLSocketFactory getsslSocketFactory2;
+
+
+    @Inject
+    @QualifierJbossServer3
+    public LinkedHashMap<Integer,String> getHiltJbossDebug;
+
+
+    @Inject
+    @QualifierJbossServer4
+    public LinkedHashMap<Integer,String> getHiltJbossReliz;
 
     public   EventBuss(@NonNull Activity activity, @NonNull Context context) {
         this.activity = activity;
@@ -62,7 +76,8 @@ Activity  activity;
             }else {
                 if(Статус.contains( "Запускаем Обновление ПО !!!!")) {
                     // TODO: 22.01.2024
-                    DownLoadPO downLoadPO=new DownLoadPO(activity,context,СервернаяВерсия,getsslSocketFactory2);
+                    DownLoadPO downLoadPO=new DownLoadPO(activity,context,СервернаяВерсия,getsslSocketFactory2,
+                            getHiltJbossDebug,getHiltJbossReliz);
 
                     downLoadPO.МетодСообщениеАнализПО( );
                     // TODO: 26.12.2022  конец основгого кода

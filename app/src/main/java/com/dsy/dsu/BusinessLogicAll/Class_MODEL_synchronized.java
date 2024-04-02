@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.CompletionService;
@@ -3632,15 +3633,20 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                                                      @NonNull SharedPreferences preferences,
                                                      @NonNull String ПубличноеЛогин,
                                                      @NonNull String ПубличноеПароль,
-                                                @NotNull SSLSocketFactory getsslSocketFactory2) {
+                                                @NotNull SSLSocketFactory getsslSocketFactory2,
+                                                @NotNull LinkedHashMap<Integer,String> getHiltJbossDebug,
+                                                @NotNull LinkedHashMap<Integer,String> getHiltJbossReliz) {
 
 
         final Integer[] БуферПубличныйIDОтСервера = {0};
         try {
-            Class_GRUD_SQL_Operations class_grud_sql_operationsАунтификация=new Class_GRUD_SQL_Operations(context);
-            PUBLIC_CONTENT public_content=   new PUBLIC_CONTENT(context);
-            String   ИмяСерверИзХранилица = preferences.getString("ИмяСервера","");
-            Integer    ПортСерверИзХранилица = preferences.getInt("ИмяПорта",0);
+
+            // TODO: 02.04.2024  Адресс и Порт Сервера Jboss
+            String   ИмяСерверИзХранилица = getHiltJbossDebug.values().stream().map(m->String.valueOf(m)).findFirst().get();
+            Integer    ПортСерверИзХранилица = getHiltJbossDebug.keySet().stream().mapToInt(m->m).findFirst().getAsInt();
+
+
+
             String ИмменоКакойСерверПодкючения ="http://"+ИмяСерверИзХранилица+":"+ПортСерверИзХранилица+"/";
           String  СтрокаСвязиСсервером = ИмменоКакойСерверПодкючения +new PUBLIC_CONTENT(context).getСсылкаНаРежимСервераТабель()+ "?"
                      + "JobForServer=" + "Хотим Получить ID для Генерации  UUID" + ""+

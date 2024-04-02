@@ -33,6 +33,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 import java.util.Date;
+import java.util.LinkedHashMap;
 
 import javax.net.ssl.SSLSocketFactory;
 
@@ -52,12 +53,21 @@ private  Activity activity;
 
    private SSLSocketFactory getsslSocketFactory2;
     private SharedPreferences preferences;
-    public DownLoadPO(@NonNull Activity activity,@NonNull  Context context,@NonNull Integer СервернаяВерсияПОВнутри,
-                      @NonNull SSLSocketFactory getsslSocketFactory2) {
+
+    LinkedHashMap<Integer,String> getHiltJbossDebug;
+      LinkedHashMap<Integer,String> getHiltJbossReliz;
+
+    public DownLoadPO(@NonNull Activity activity,@NonNull  Context context,
+                      @NonNull Integer СервернаяВерсияПОВнутри,
+                      @NonNull SSLSocketFactory getsslSocketFactory2,
+                      @NonNull LinkedHashMap<Integer,String> getHiltJbossDebug,
+                      @NonNull LinkedHashMap<Integer,String> getHiltJbossReliz ) {
         this.activity = activity;
         this.context = context;
         this.СервернаяВерсияПОВнутри = СервернаяВерсияПОВнутри;
         this.getsslSocketFactory2 = getsslSocketFactory2;
+        this.getHiltJbossDebug = getHiltJbossDebug;
+        this.getHiltJbossReliz = getHiltJbossReliz;
 
     }
 
@@ -85,7 +95,7 @@ public     void МетодСообщениеАнализПО( ) {
                             @Override
                             public void run() throws Throwable {
                                 // TODO: 29.07.2023 АНАЛИЗ ПО
-                               FileAPK =    МетодЗагрузкиAPK() ;
+                               FileAPK =    МетодЗагрузкиAPK(getHiltJbossDebug,getHiltJbossReliz) ;
 
                                 Log.w(context.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName() + " СервернаяВерсияПОВнутри  "
                                         + СервернаяВерсияПОВнутри + " POOLS"+ " FileAPK "+ FileAPK);
@@ -325,13 +335,16 @@ public     void МетодСообщениеАнализПО( ) {
 
 
 
-    private File МетодЗагрузкиAPK()  {
+    private File МетодЗагрузкиAPK(  @NonNull LinkedHashMap<Integer,String> getHiltJbossDebug,
+                                    @NonNull LinkedHashMap<Integer,String> getHiltJbossReliz )  {
         try {
             Log.d(this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName()+"Загружаем Файл APK."+new Date());
 
-            String   ИмяСерверИзХранилица = preferences.getString("ИмяСервера","");
 
-            Integer    ПортСерверИзХранилица = preferences.getInt("ИмяПорта",0);
+            // TODO: 02.04.2024  Адресс и Порт Сервера Jboss
+            String   ИмяСерверИзХранилица = getHiltJbossDebug.values().stream().map(m->String.valueOf(m)).findFirst().get();
+            Integer    ПортСерверИзХранилица = getHiltJbossDebug.keySet().stream().mapToInt(m->m).findFirst().getAsInt();
+
 
             // TODO: 08.01.2022 Полученм JSON File  для анализа
 

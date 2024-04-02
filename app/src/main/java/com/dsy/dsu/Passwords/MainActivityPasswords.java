@@ -295,7 +295,9 @@ public class MainActivityPasswords extends AppCompatActivity {
         Integer БуферПубличныйIDОтСервера;
         //TODO запукаем метод Афторизаиция по ЛОГИНУ И ПАРОЛЮ
         БуферПубличныйIDОтСервера = new Class_MODEL_synchronized(getApplicationContext()).
-                методАвторизацииЛогинИПаполь(getApplicationContext(), preferences, ПубличноеЛогин, ПубличноеПароль,getsslSocketFactory2);
+                методАвторизацииЛогинИПаполь(getApplicationContext(), preferences, ПубличноеЛогин, ПубличноеПароль,getsslSocketFactory2,
+
+                        getHiltJbossDebug,getHiltJbossReliz);
         Log.d(this.getClass().getName(), " БуферПубличныйIDОтСервера " + БуферПубличныйIDОтСервера);
 
         // TODO: 24.08.2023 УСПЕШНЫЙ КОД ЛОГИРОВАНИЕ И ПАРОЛЬ

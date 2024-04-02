@@ -40,6 +40,7 @@ import com.dsy.dsu.Services.ServiceUpdatePoОбновлениеПО;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 
 import javax.inject.Inject;
 import javax.net.ssl.SSLSocketFactory;
@@ -58,6 +59,8 @@ public class BL_innerMainActivityBootAndAsync extends MainActivityBootAndAsync {
 
     
     StartingEventAsyncOrUpdatePOUsers startingEventAsyncOrUpdatePOUsers;
+   LinkedHashMap<Integer,String> getHiltJbossDebug;
+      LinkedHashMap<Integer,String> getHiltJbossReliz;
 
     public BL_innerMainActivityBootAndAsync(@NonNull SSLSocketFactory getsslSocketFactory2,
                                             @NonNull  ProgressBar progressbarbootandasync,
@@ -65,7 +68,9 @@ public class BL_innerMainActivityBootAndAsync extends MainActivityBootAndAsync {
                                             @NonNull DrawerLayout drawerLayoutAsync,
                                             @NonNull  NavigationView navigationViewAsyncApp,
                                             @NonNull Context context,
-                                            @NonNull LifecycleOwner lifecycleOwner) {
+                                            @NonNull LifecycleOwner lifecycleOwner,
+                                            @NonNull LinkedHashMap<Integer,String> getHiltJbossDebug,
+                                            @NonNull LinkedHashMap<Integer,String> getHiltJbossReliz ) {
 
         this.lifecycleOwner = lifecycleOwner;
         this.getsslSocketFactory2 = getsslSocketFactory2;
@@ -75,7 +80,9 @@ public class BL_innerMainActivityBootAndAsync extends MainActivityBootAndAsync {
         this.navigationViewAsyncApp = navigationViewAsyncApp;
         this.context = context;
         this.lifecycleOwner = lifecycleOwner;
-        // TODO: 24.01.2024  
+        this.getHiltJbossDebug = getHiltJbossDebug;
+        this.getHiltJbossReliz = getHiltJbossReliz;
+        // TODO: 24.01.2024
         startingEventAsyncOrUpdatePOUsers=new StartingEventAsyncOrUpdatePOUsers(context);
     }
 
@@ -104,7 +111,7 @@ public class BL_innerMainActivityBootAndAsync extends MainActivityBootAndAsync {
                     }else {
                         if(Статус.contains( "Запускаем Обновление ПО !!!!")) {
                             // TODO: 22.01.2024
-                            DownLoadPO downLoadPO=new DownLoadPO(activity,context,СервернаяВерсия,getsslSocketFactory2);
+                            DownLoadPO downLoadPO=new DownLoadPO(activity,context,СервернаяВерсия,getsslSocketFactory2,getHiltJbossDebug,getHiltJbossReliz);
 
                             downLoadPO.МетодСообщениеАнализПО( );
                             // TODO: 26.12.2022  конец основгого кода

@@ -34,6 +34,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -192,7 +193,9 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
 
     @SuppressLint("NewApi")
     public Integer МетодГлавныйОбновленияПОДоAsync(@NonNull Boolean РежимРаботыСлужбыОбновлениеПО ,
-                                                   @NonNull Context  context){
+                                                   @NonNull Context  context,
+                                                   @NonNull LinkedHashMap<Integer,String> getHiltJbossDebug,
+                                                   @NonNull LinkedHashMap<Integer,String> getHiltJbossReliz ){
 
         try {
             this.context=context;
@@ -209,7 +212,7 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
 
                 // TODO: 18.02.2023 удаление перед анализо файлов json И .apk
 
-                ВерсияПООтСервере  =       МетодАнализаВерсииПОJSON();
+                ВерсияПООтСервере  =       МетодАнализаВерсииПОJSON(getHiltJbossDebug,getHiltJbossReliz);
 
                 PackageInfo    pInfo = getApplicationContext(). getPackageManager().getPackageInfo(getApplicationContext(). getPackageName(), 0);
                 String version = pInfo.versionName;//Version Name
@@ -369,11 +372,13 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
 
 
     // TODO: 13.03.2023  Метод Анализа JSON файла
-    Integer МетодАнализаВерсииПОJSON() {
+    Integer МетодАнализаВерсииПОJSON(  @NonNull LinkedHashMap<Integer,String> getHiltJbossDebug,
+                                       @NonNull LinkedHashMap<Integer,String> getHiltJbossReliz ) {
         Integer СервернаяВерсияПОВнутри = 0;
         try {
-            String   ИмяСерверИзХранилица = preferences.getString("ИмяСервера","");
-            Integer    ПортСерверИзХранилица = preferences.getInt("ИмяПорта",0);
+            // TODO: 02.04.2024  Адресс и Порт Сервера Jboss
+            String   ИмяСерверИзХранилица = getHiltJbossDebug.values().stream().map(m->String.valueOf(m)).findFirst().get();
+            Integer    ПортСерверИзХранилица = getHiltJbossDebug.keySet().stream().mapToInt(m->m).findFirst().getAsInt();
             // TODO: 08.01.2022 Полученм JSON File  для анализа
             File ФайлJsonОтСервера = new Class_MODEL_synchronized(getApplicationContext()).
                     МетодЗагрузкиОбновлениеПОсСервера(new PUBLIC_CONTENT(getApplicationContext()).getСсылкаНаРежимСервераОбновлениеПО(),
