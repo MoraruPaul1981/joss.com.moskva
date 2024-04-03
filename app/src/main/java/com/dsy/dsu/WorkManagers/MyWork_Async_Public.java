@@ -88,7 +88,7 @@ public class MyWork_Async_Public extends Worker {
             WorkInfo.State stateSingle = new ListenableFutures(getApplicationContext()).listenableFutureWorkManager(ИмяСлужбыSingleWorkManger);
             if (stateSingle != WorkInfo.State.RUNNING) {
                 // TODO: 01.04.2024
-               /// ФинальныйРезультатAsyncBackgroudPublic= МетодЗапускаОбщей();
+               ФинальныйРезультатAsyncBackgroudPublic= МетодЗапускаОбщей();
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
