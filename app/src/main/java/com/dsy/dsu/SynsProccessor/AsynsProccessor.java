@@ -32,7 +32,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.google.common.util.concurrent.AtomicDouble;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
@@ -48,7 +47,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -64,6 +62,7 @@ import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Function;
@@ -1434,11 +1433,12 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                 @Override
                 public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
 
-                    // TODO: 14.12.2023  топль POSt
-                    metofstartingPostSingle("sequential");
+                    // TODO: 14.12.2023  топль POSt SINGLE
+                    metofstartingGetPostSingleAndParallel( "sequential",Schedulers.from(Executors.newFixedThreadPool(1)) );
 
-                    Log.w(this.getClass().getName(), " doOnTerminate ОБРАБОТКА ВСЕХ ТАБЛИЦ ЛистТаблицыОбмена.stream().reduce(0, (a, b) -> a + b).intValue()"
-                            + ЛистТаблицыОбмена.stream().reduce(0l, (a, b) -> a + b).longValue()+ " sqLiteDatabase.isOpen() " +sqLiteDatabase.isOpen());
+                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " sequential  ");
 
 
 
@@ -1446,11 +1446,12 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
                 @Override
                 public void onComplete() {
-                    // TODO: 21.08.2023  только GET
-                    metofstartingGetParallel( "parallel" );
+                    // TODO: 21.08.2023  только GET Parelleing
+                    metofstartingGetPostSingleAndParallel( "parallel",Schedulers.from(Executors.newFixedThreadPool(1)) );
 
-                    Log.w(this.getClass().getName(), " doOnTerminate ОБРАБОТКА ВСЕХ ТАБЛИЦ ЛистТаблицыОбмена.stream().reduce(0, (a, b) -> a + b).intValue()"
-                            + ЛистТаблицыОбмена.stream().reduce(0l, (a, b) -> a + b).longValue()+ " sqLiteDatabase.isOpen() " +sqLiteDatabase.isOpen());
+                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "parallel"   );
                 }
 
                 @Override
@@ -1478,42 +1479,11 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
         return ЛистТаблицыОбмена.stream().reduce(0l, (a, b) -> a + b).longValue();
     }
 
-    private void metofstartingPostSingle(@NonNull String sequential) {
-        try{
-        Flowable.fromIterable( public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.keySet())
-                .onBackpressureBuffer()
-                .subscribeOn(Schedulers.trampoline())
-                .blockingIterable().forEach(new Consumer<String>() {
-                    @Override
-                    public void accept(String ТаблицаОбработываемаяSequential) {
-                        // TODO: 06.12.2023  запуск синхризуции по таблице конктерной
-                        Long   РезультатТаблицыОбмена   =        getLooTablesPOSTANDGET(ТаблицаОбработываемаяSequential,sequential);
-
-                        // TODO: 15.09.2023
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                " ТаблицаОбработываемаяSequential"
-                                +ТаблицаОбработываемаяSequential + " РезультатТаблицыОбмена " +РезультатТаблицыОбмена );
-                    }
-                });
-            // TODO: 15.09.2023
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                Thread.currentThread().getStackTrace()[2].getLineNumber()  );
-    }
-    }
 
 
 
-    private void metofstartingGetParallel (@NonNull String parallel) {
+
+    private void metofstartingGetPostSingleAndParallel(@NonNull String parallel, @NonNull Scheduler schedulers) {
         try{
         ParallelFlowable parallelFlowableAsync
                 = Flowable.fromIterable( public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.keySet())
@@ -1529,7 +1499,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                         return new String();
                     }
                 }).filter(fil->!fil.toString().isEmpty())
-                .parallel(   ).runOn(Schedulers.from(Executors.newFixedThreadPool(3)));
+                .parallel(   ).runOn(schedulers);
         parallelFlowableAsync.doOnNext(new io.reactivex.rxjava3.functions.Consumer<String>() {
                                 @Override
                                 public void accept(String ТаблицаОбработываемаяParallel) throws Throwable {
