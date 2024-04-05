@@ -2210,7 +2210,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                 PUBLIC_CONTENT public_content=   new PUBLIC_CONTENT(context);
                 ////////////////
                 БуферПолучениеДанных = УниверсальныйБуферПолучениеДанныхсСервера(имяТаблицыОтАндройда_локальноая, "",
-                        "", "application/gzip", "Хотим Получить  JSON"
+                        "", "application/gzip", "WewanttoreceiveJSON"
                         ,ВерсииДанныхНаАндройдеСерверная,//    ВерсииДанныхНаАндройдеСерверная,//37262l
                         ДанныеПришёлЛиIDДЛяГенерацииUUID,120000,null,
                         РезультаПолученаяЛокальнаяВерсияДанныхДляОтправкиНаСервер,

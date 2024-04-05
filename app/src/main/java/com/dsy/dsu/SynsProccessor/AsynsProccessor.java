@@ -412,9 +412,9 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
             // TODO: 10.11.2022 Получение Список Таблиц
             BufferGetVersionData = МетодУниверсальныйСервернаяВерсияДанныхДанныесСервера(
-                    "view_data_modification",
+                    "modification_server",
                     "application/gzip",
-                    "Хотим Получить Версию Данных Сервера",
+                    "Хотим Получить Версию Данных Сервера",///"Хотим Получить Версию Данных Сервера" б //TODO "Хотим Получить Статус Блокировки Пользователя по ID"
                     0l,
                     ID,
                     ИмяСерверИзХранилица ,

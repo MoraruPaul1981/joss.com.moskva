@@ -20,6 +20,7 @@ import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusPrograssBar;
 import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusUpdatePO;
 import com.dsy.dsu.BroadcastRecievers.Bl.RegisterBroadcastForWorkManager;
 import com.dsy.dsu.BusinessLogicAll.Class_Connections_Server;
+import com.dsy.dsu.BusinessLogicAll.Class_Find_Setting_User_Network;
 import com.dsy.dsu.BusinessLogicAll.CreateFolderBinatySave.ClassCreateFolderBinatyMatrilal;
 import com.dsy.dsu.BusinessLogicAll.CreateFolderBinatySave.ClassCreateFolderCommitPays1C;
 import com.dsy.dsu.BusinessLogicAll.Errors.ClassCreateFileForError;
@@ -29,6 +30,7 @@ import com.dsy.dsu.Hilt.JbossAdrress.QualifierJbossServer3;
 import com.dsy.dsu.Hilt.JbossAdrress.QualifierJbossServer4;
 import com.dsy.dsu.Services.ServiceUpdatePoОбновлениеПО;
 import com.dsy.dsu.Services.Service_For_Remote_Async_Binary;
+import com.dsy.dsu.WorkManagers.BL_WorkMangers.CreateSingleWorkManager;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -531,7 +533,7 @@ public class CompleteRemoteSyncService {
 
     //TODO succeess
     class SuccessAsynsStartingUpdatrPO{
-        void startingAsyncForUpSoft(@NonNull Uri uri,  @NonNull LinkedHashMap<Integer,String> getHiltJbossDebug,
+        void  startingAsyncForUpSoft(@NonNull Uri uri,  @NonNull LinkedHashMap<Integer,String> getHiltJbossDebug,
                                     @NonNull LinkedHashMap<Integer,String> getHiltJbossReliz ){
             try{
 
@@ -619,28 +621,26 @@ public class CompleteRemoteSyncService {
 
 
         Long startingAsyncElseWithParamets(@NonNull Uri uri){
-            final Long[] ФинальныйРезультатAsyncBackgroud = {0l};
+         Long ФинальныйРезультатAsyncBackgroud = 0l;
             try{
-
-
-                // TODO: 01.04.2024  Single WOrkManager
-                    registerBroadcastForWorkManager.statingSingleWorkMAnager(context,  uri);
-
-
-                    /*
-
-                // TODO: 01.04.2024 Public WWorkMAnager
-                    registerBroadcastForWorkManager.statingPublicWorkMAnager(context);
-*/
-
-
                 // TODO: 03.10.2023 Запуск Синхронизации
-                    ///   ФинальныйРезультатAsyncBackgroud[0] = localBinderAsync.getService().metodStartingSync(   context);
+
+
+
+                // TODO: 14.12.2023 REPLACE
+                new CreateSingleWorkManager(context)
+                        .getcreateSingleWorkManager(context, uri);
+
+
+
+
+
+                /// ФинальныйРезультатAsyncBackgroud = localBinderAsync.getService().metodStartingSync(   context);
 
                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                        " localBinderAsync "+" ФинальныйРезультатAsyncBackgroud[0] "+ФинальныйРезультатAsyncBackgroud[0]);
+                        " localBinderAsync "+" ФинальныйРезультатAsyncBackgroud[0] "+ФинальныйРезультатAsyncBackgroud);
 
 
         } catch (Exception e) {
@@ -652,7 +652,7 @@ public class CompleteRemoteSyncService {
                     this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-            return ФинальныйРезультатAsyncBackgroud[0];
+            return ФинальныйРезультатAsyncBackgroud;
 
         }
 

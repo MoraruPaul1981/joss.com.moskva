@@ -2225,12 +2225,8 @@ public class Fragment1_One_Tasks extends Fragment {
             try{
                 Log.d(getContext().getClass().getName(), "\n"
                         + " ПубличныйIDДляФрагмента: " + ПубличныйIDДляФрагмента);
-                // TODO: 01.02.2022 заПУСКАЕМ сИНХРОНИАЗАЦИЮ С ВСЕХ ЛИСТ ТАБЕЛЕЙ
-                // TODO: 01.02.2022 заПУСКАЕМ сИНХРОНИАЗАЦИЮ С ВСЕХ ЛИСТ ТАБЕЛЕЙ
-                Integer  ПубличныйIDДляАсих=   new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getContext());
-
                 // TODO: 14.12.2023 REPLACE
-                new CreateSingleWorkManager(getContext()).getcreateSingleWorkManager(getContext(),ПубличныйIDДляАсих, Uri.EMPTY );
+                new CreateSingleWorkManager(getContext()).getcreateSingleWorkManager(getContext(), Uri.EMPTY );
                 // TODO: 26.06.2022
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

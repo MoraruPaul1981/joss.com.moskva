@@ -119,19 +119,8 @@ public class MyWork_AsyncSingle extends Worker {
         final Data[] Data = {null};
         try {
         uri =     getInputData().getString("uri");
-
-
             // TODO: 02.04.2024  запуск и анализ вор манежера если не запущен другой work manager publuc  
-            blForWorkManagerSingle.  staringAndAlalyzWorkMangerSingleObserver(ФинальныйРезультатAsyncBackgroudSingle, Data);
-
-
-            // TODO: 07.10.2023  Claer Bound Service
-            blForWorkManagerSingle.   getunbindService( );
-
-
-            // TODO: 01.04.2024  выходим
-            blForWorkManagerSingle.   exitingFromSingleWorlManager();
-
+       blForWorkManagerSingle.  staringAndAlalyzWorkMangerSingleObserver(ФинальныйРезультатAsyncBackgroudSingle, Data);
 
 // TODO: 26.03.2023
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -308,9 +297,10 @@ public class MyWork_AsyncSingle extends Worker {
                                 // TODO: 01.04.2024  запускаем Listertable
                                 WorkInfo.State statePublic = new ListenableFutures(getApplicationContext()).listenableFutureWorkManager(ИмяСлужбыWorkManger);
                                 // TODO: 26.12.2021
-                                if (statePublic != WorkInfo.State.RUNNING) {
+                                if (statePublic != WorkInfo.State.RUNNING ) {
                                     // TODO: 01.04.2024  запускаем сихпонизацию общую
                                     ФинальныйРезультатAsyncBackgroudSingle[0] = МетодЗапускаОднаразовая();
+
                                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -346,6 +336,15 @@ public class MyWork_AsyncSingle extends Worker {
                                         .putAll(objectMap)
                                         .build();
 
+                                // TODO: 07.10.2023  Claer Bound Service
+                                blForWorkManagerSingle.   getunbindService( );
+
+
+                                // TODO: 01.04.2024  выходим
+                                blForWorkManagerSingle.   exitingFromSingleWorlManager();
+
+
+                                // TODO: 03.04.2024
                                 Log.d(this.getClass().getName(),"\n"
                                         + " bremy: " + new Date()+"\n+"
                                         + "  class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

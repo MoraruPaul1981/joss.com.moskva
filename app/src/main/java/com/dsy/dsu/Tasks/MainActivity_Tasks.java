@@ -136,17 +136,11 @@ public class MainActivity_Tasks extends FragmentActivity {
         void МетодНепосредственногоЗапускаБиндингаОдноразовойСдлужбы(@NonNull  Integer ПубличныйIDДляФрагмента ){
            try{
                // TODO: 01.02.2022 заПУСКАЕМ сИНХРОНИАЗАЦИЮ С ВСЕХ ЛИСТ ТАБЕЛЕЙ
-
-               // TODO: 01.02.2022 заПУСКАЕМ сИНХРОНИАЗАЦИЮ С ВСЕХ ЛИСТ ТАБЕЛЕЙ
-               Integer  ПубличныйIDДляАсих=   new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
-
-               // TODO: 14.12.2023 REPLACE
-               new CreateSingleWorkManager(getApplicationContext()).getcreateSingleWorkManager(getApplicationContext(),ПубличныйIDДляАсих , Uri.EMPTY);
+               new CreateSingleWorkManager(getApplicationContext()).getcreateSingleWorkManager(getApplicationContext() , Uri.EMPTY);
                // TODO: 26.06.2022
                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                       " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                       + " ПубличныйIDДляАсих "+ПубличныйIDДляАсих );
+                       " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

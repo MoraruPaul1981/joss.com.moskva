@@ -13,6 +13,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
+import com.dsy.dsu.BusinessLogicAll.SubClass_Connection_BroadcastReceiver_Sous_Asyns_Glassfish;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.WorkManagers.MyWork_AsyncSingle;
 import com.dsy.dsu.WorkManagers.MyWork_Async_Public;
@@ -30,10 +31,13 @@ public class CreateSingleWorkManager {
     }
     
     public void getcreateSingleWorkManager(@NotNull Context context,
-                                           @NotNull Integer PublicId,
                                            @NotNull Uri uri) {
 
         try{
+            // TODO: 08.10.2023
+            Integer PublicId = new SubClass_Connection_BroadcastReceiver_Sous_Asyns_Glassfish()
+                    .МетодПолучениеяПубличногоID(context);
+
             Data myDataSingleWorker = new Data.Builder()
                     .putInt("ПубличныйID", PublicId)
                     .putBoolean("StartSingleWorker", true)

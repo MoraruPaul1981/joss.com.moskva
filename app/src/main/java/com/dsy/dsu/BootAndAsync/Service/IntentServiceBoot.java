@@ -58,6 +58,7 @@ public class IntentServiceBoot extends IntentService {
     public LinkedHashMap<Integer,String> getHiltJbossReliz;
 
     public IntentServiceBoot() {
+
         super("IntentServiceBoot");
     }
 

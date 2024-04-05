@@ -1306,15 +1306,11 @@ public class Service_for_AdminissionMaterial extends IntentService {
                 asyncTaskLoader.commitContentChanged();
                 if (РезультатУдалениеНовгоМатериала>0) {
                     // TODO: 01.02.2022 заПУСКАЕМ сИНХРОНИАЗАЦИЮ С ВСЕХ ЛИСТ ТАБЕЛЕЙ
-                    Integer  ПубличныйIDДляАсих=   new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(getApplicationContext());
-
-                    // TODO: 14.12.2023 REPLACE
-                    new CreateSingleWorkManager(context).getcreateSingleWorkManager(context,ПубличныйIDДляАсих,Uri.EMPTY );
+                    new CreateSingleWorkManager(context).getcreateSingleWorkManager(context,Uri.EMPTY );
                     // TODO: 26.06.2022
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                            + " ПубличныйIDДляАсих "+ПубличныйIDДляАсих );
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                 }
             }
             return РезультатУдалениеНовгоМатериала  ;
