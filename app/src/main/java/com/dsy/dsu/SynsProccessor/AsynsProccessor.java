@@ -550,7 +550,8 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
     Long analysVersionServerWithAnroidPOST(@NonNull String ИмяТаблицы,
                                           @NonNull  Long ВерсияДанныхсSqlServer,
                                           @NonNull  Integer PublicID,
-                                           @NonNull Date     ВремяОтSqlServer) {
+                                           @NonNull Date     ВремяОтSqlServer,
+                                           @NonNull String sequential) {
         ArrayList<Long> ЛистУспешнойОбработкиСинх=new ArrayList<>();
 
         try  (     Cursor КурсорДляАнализаВерсииДанныхАндройда = getCurcorForAllVersionDataAndroid(ИмяТаблицы);){
@@ -595,7 +596,8 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                     ВерсииНаАндройдеЛокальная,
                     ВерсииНаАндройдеСерверная,
                     ВремяДанныхНаАндройде,
-                    ВремяОтSqlServer);
+                    ВремяОтSqlServer,
+                   sequential);
 
             }
 
@@ -648,12 +650,14 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                                                        @NonNull Long ВерсииНаАндройдеЛокальная,
                                                        @NonNull Long  ВерсииНаАндройдеСерверная,
                                                        @NonNull Date  ВремяДанныхНаАндройде,
-                                                       @NonNull Date   ВремяОтSqlServer) {
+                                                       @NonNull Date   ВремяОтSqlServer,
+                                                       @NonNull String sequentialANDparallel) {
         ArrayList<Long> ЛистУспешнойОбработкиСинх=new ArrayList<>();
         try{
 
 
                 // TODO: 02.11.2023  ПРИНИМАЕМ ДАННЫЕ ОТ СЕРВЕРА ПО ЧАСТЯМ
+            if (sequentialANDparallel.equalsIgnoreCase("parallel")) {
                 Observable.range(1,Integer.MAX_VALUE)
                         .take(1, TimeUnit.HOURS)
                         .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
@@ -679,7 +683,8 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                                         ВерсииНаАндройдеЛокальная,
                                         ВерсииНаАндройдеСерверная,
                                         ВремяДанныхНаАндройде,
-                                        ВремяОтSqlServer);
+                                        ВремяОтSqlServer,
+                                        sequentialANDparallel);
                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
@@ -702,8 +707,26 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                                 }
                             }
                         });
+            } else if (sequentialANDparallel.equalsIgnoreCase("sequential"))  {
+                //TODO СЛЕДУЮЩИЙ ЭТАМ РАБОТЫ ОПРЕДЕЛЯЕМ ЧТО МЫ ДЕЛАЕМ ПОЛУЧАЕМ ДАННЫЕ С СЕВРЕРА ИЛИ НА ОБОРОТ  ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР
+                Long РезультатУспешнойВсатвкиИлиОбвовлениясСервера=       AceccssAndCoohceGetDatatingAndPostDating(
+                        ИмяТаблицы,
+                        ВерсияДанныхсSqlServer,
+                        PublicID,
+                        ВерсииНаАндройдеЛокальная,
+                        ВерсииНаАндройдеСерверная,
+                        ВремяДанныхНаАндройде,
+                        ВремяОтSqlServer,
+                        sequentialANDparallel);
+                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                        "РезультатУспешнойВсатвкиИлиОбвовлениясСервера " + РезультатУспешнойВсатвкиИлиОбвовлениясСервера);
 
-                Log.e(this.getClass().getName(), "   ИмяТаблицы "
+
+            }
+
+            Log.e(this.getClass().getName(), "   ИмяТаблицы "
                         + ИмяТаблицы + " ЛистУспешнойОбработкиСинх " + ЛистУспешнойОбработкиСинх.size());
 
         } catch (Exception e) {
@@ -778,7 +801,8 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                                                   @NonNull Long ВерсииНаАндройдеЛокальная,
                                                   @NonNull Long  ВерсииНаАндройдеСерверная,
                                                   @NonNull Date  ВремяДанныхНаАндройде,
-                                                  @NonNull Date   ВремяОтSqlServer) {
+                                                  @NonNull Date   ВремяОтSqlServer,
+                                                  @NonNull String sequentialAndparallel) {
         CopyOnWriteArrayList<Long> copyOnWriteArrayListРезультатСинхPostAndGet=new CopyOnWriteArrayList<>();
         try {
 
@@ -803,7 +827,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
             // TODO: 05.04.2024 post() sending
             // TODO: 05.10.2021  POST()-->
-            if (ВерсииНаАндройдеЛокальная > ВерсииНаАндройдеСерверная ) {
+            if (ВерсииНаАндройдеЛокальная > ВерсииНаАндройдеСерверная &&  sequentialAndparallel.equalsIgnoreCase("sequential")) {
                 // TODO: 05.04.2024  отправлем только определенные таблицы
                 if (! ИмяТаблицы.equalsIgnoreCase("view_onesignal") &&
                         ! ИмяТаблицы.equalsIgnoreCase("chat_users") &&
@@ -861,7 +885,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
 
                 // TODO: 19.10.2021   GET()->
-                if (ВерсияДанныхсSqlServer > ВерсииНаАндройдеСерверная ) {
+                if (ВерсияДанныхсSqlServer > ВерсииНаАндройдеСерверная &&  sequentialAndparallel.equalsIgnoreCase("parallel") ) {
                     // TODO: 05.04.2024
                     if ( !ВремяДанныхНаАндройде.equals(ВремяДанныхНаАндройде)) {
                         // TODO: 05.04.2024
@@ -1411,7 +1435,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                 public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
 
                     // TODO: 14.12.2023  топль POSt
-                    metofstartingPostSingle();
+                    metofstartingPostSingle("sequential");
 
                     Log.w(this.getClass().getName(), " doOnTerminate ОБРАБОТКА ВСЕХ ТАБЛИЦ ЛистТаблицыОбмена.stream().reduce(0, (a, b) -> a + b).intValue()"
                             + ЛистТаблицыОбмена.stream().reduce(0l, (a, b) -> a + b).longValue()+ " sqLiteDatabase.isOpen() " +sqLiteDatabase.isOpen());
@@ -1423,7 +1447,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                 @Override
                 public void onComplete() {
                     // TODO: 21.08.2023  только GET
-                    metofstartingGetParallel(  );
+                    metofstartingGetParallel( "parallel" );
 
                     Log.w(this.getClass().getName(), " doOnTerminate ОБРАБОТКА ВСЕХ ТАБЛИЦ ЛистТаблицыОбмена.stream().reduce(0, (a, b) -> a + b).intValue()"
                             + ЛистТаблицыОбмена.stream().reduce(0l, (a, b) -> a + b).longValue()+ " sqLiteDatabase.isOpen() " +sqLiteDatabase.isOpen());
@@ -1454,7 +1478,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
         return ЛистТаблицыОбмена.stream().reduce(0l, (a, b) -> a + b).longValue();
     }
 
-    private void metofstartingPostSingle() {
+    private void metofstartingPostSingle(@NonNull String sequential) {
         try{
         Flowable.fromIterable( public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.keySet())
                 .onBackpressureBuffer()
@@ -1463,7 +1487,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                     @Override
                     public void accept(String ИмяТаблицыоТВерсияДанныхОтSqlServer) {
                         // TODO: 06.12.2023  запуск синхризуции по таблице конктерной
-                        Long   РезультатТаблицыОбмена   =        getLooTablesPOSTANDGET(ИмяТаблицыоТВерсияДанныхОтSqlServer);
+                        Long   РезультатТаблицыОбмена   =        getLooTablesPOSTANDGET(ИмяТаблицыоТВерсияДанныхОтSqlServer,sequential);
 
                         // TODO: 15.09.2023
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1489,7 +1513,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
 
 
-    private void metofstartingGetParallel () {
+    private void metofstartingGetParallel (@NonNull String parallel) {
         try{
         ParallelFlowable parallelFlowableAsync
                 = Flowable.fromIterable( public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.keySet())
@@ -1506,20 +1530,19 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                     }
                 }).filter(fil->!fil.toString().isEmpty())
                 .parallel(   ).runOn(Schedulers.from(Executors.newFixedThreadPool(3)));
-
         parallelFlowableAsync.doOnNext(new io.reactivex.rxjava3.functions.Consumer<String>() {
                                 @Override
                                 public void accept(String ИмяТаблицыоТВерсияДанныхОтSqlServer) throws Throwable {
 
                                     // TODO: 06.12.2023  запуск синхризуции по таблице конктерной
-                                    Long   РезультатТаблицыОбмена   =        getLooTablesPOSTANDGET(ИмяТаблицыоТВерсияДанныхОтSqlServer);
+                                    Long   РезультатТаблицыОбмена   =        getLooTablesPOSTANDGET(ИмяТаблицыоТВерсияДанныхОтSqlServer,  parallel);
 
                                     // TODO: 15.09.2023
                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
                                             " ИмяТаблицыоТВерсияДанныхОтSqlServer"
-                                            +ИмяТаблицыоТВерсияДанныхОтSqlServer + " РезультатТаблицыОбмена " +РезультатТаблицыОбмена );
+                                            +ИмяТаблицыоТВерсияДанныхОтSqlServer + " РезультатТаблицыОбмена " +РезультатТаблицыОбмена+" parallel " +parallel );
                                 }
                             })
                             .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
@@ -1568,7 +1591,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
 
 
-    private Long getLooTablesPOSTANDGET(String ИмяТаблицыоТВерсияДанныхОтSqlServer) {
+    private Long getLooTablesPOSTANDGET(@NonNull String ИмяТаблицыоТВерсияДанныхОтSqlServer, @NonNull String sequential) {
         Long   РезультатТаблицыОбмена=0l;
         try{
             // TODO: 21.08.2023 Запуск Синхронизации после получение Версии
@@ -1590,7 +1613,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
             /////////////TODO ИДЕМ ПО ШАГАМ К ЗАПУСКИ СИНХРОГНИАЗЦИИ
             РезультатТаблицыОбмена=
                     analysVersionServerWithAnroidPOST(ИмяТаблицыоТВерсияДанныхОтSqlServer,
-                            ВерсияДанныхОтSqlServer, ID,ВремяВерсияОтSqlServer);
+                            ВерсияДанныхОтSqlServer, ID,ВремяВерсияОтSqlServer,sequential);
 
 
             ЛистТаблицыОбмена.add(РезультатТаблицыОбмена);
