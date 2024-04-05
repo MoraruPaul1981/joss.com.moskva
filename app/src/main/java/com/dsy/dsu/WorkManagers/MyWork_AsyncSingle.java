@@ -297,7 +297,7 @@ public class MyWork_AsyncSingle extends Worker {
                                 // TODO: 01.04.2024  запускаем Listertable
                                 WorkInfo.State statePublic = new ListenableFutures(getApplicationContext()).listenableFutureWorkManager(ИмяСлужбыWorkManger);
                                 // TODO: 26.12.2021
-                                if (statePublic != WorkInfo.State.RUNNING ) {
+                                if (statePublic != WorkInfo.State.RUNNING) {
                                     // TODO: 01.04.2024  запускаем сихпонизацию общую
                                     ФинальныйРезультатAsyncBackgroudSingle[0] = МетодЗапускаОднаразовая();
 

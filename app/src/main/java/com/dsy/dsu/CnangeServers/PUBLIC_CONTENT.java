@@ -18,6 +18,7 @@ import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -43,7 +44,7 @@ public  class PUBLIC_CONTENT extends SubClassCreatingMainAllTables {
     ////ГЛАВНЫЙ СПИСОК ТАБЛИЦ ДЛЯ  ОБМЕНАМИ ДАННЫМИ ИЗ НЕГО БУДЕТ БРАТЬСЯ СПИСКО ТАБЛИЦ
     public LinkedHashMap<String, Long> ВерсииВсехСерверныхТаблиц =  new LinkedHashMap<String, Long>();
 
-    public LinkedHashMap<String, String> ВерсииДатыСерверныхТаблиц =  new LinkedHashMap<>();
+    public LinkedHashMap<String, Date> ВерсииДатыСерверныхТаблиц =  new LinkedHashMap<>();
            public    CompletionService МенеджерПотоков;
            public    CompletionService МенеджерМногоПотоков;
            public ExecutorService МенеджерПотоковСервис;
