@@ -12,10 +12,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.dsy.dsu.AllDatabases.SQLTE.GetSQLiteDatabase;
 import com.dsy.dsu.BootAndAsync.BlBootAsync.SendMainActivity;
@@ -29,13 +27,12 @@ import com.dsy.dsu.BusinessLogicAll.Jakson.GeneratorJSONSerializer;
 import com.dsy.dsu.BusinessLogicAll.SubClassUpVersionDATA;
 import com.dsy.dsu.CnangeServers.PUBLIC_CONTENT;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
-import com.dsy.dsu.Hilt.JbossAdrress.QualifierJbossServer3;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.util.TokenBuffer;
+import com.google.common.util.concurrent.AtomicDouble;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +43,6 @@ import java.io.Serializable;
 import java.io.StringWriter;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,17 +56,14 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.logging.SimpleFormatter;
 
 import javax.crypto.NoSuchPaddingException;
-import javax.inject.Inject;
 import javax.net.ssl.SSLSocketFactory;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Function;
@@ -551,79 +544,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
 
 
-
-
-
-
-
-
-
-
-    ////////////////////////////ДАННЫЙ МЕТОД ПОСЛЕ ВЫШЕ СТОЯШЕГО ВЫРАВНИЯНИЯ НАЗВАНИЙ ТАБЛИЦ ПРИСТУПАЕТ К САМОМУ АНАЛИЗУ ДАННЫХ ВЕРСИИ ДАННЫХ НАХОДЯЩИХСЯ НА АНДРОЙДЕ
-    Long analysVersionServerWithAnroidGET(@NonNull String ИмяТаблицыОтАндройда_Локальноая,
-                                          @NonNull  Long Полученная_ВерсияДанныхсSqlServer,
-                                          @NonNull  Integer ID) {
-        ArrayList<Long> ЛистУспешнойОбработкиСинх=new ArrayList<>();
-        try {
-            Class_GRUD_SQL_Operations class_grud_sql_operationsАнализаВресииДАнныхКлиента;
-            Log.d(this.getClass().getName(), " Полученная_ВерсияДанныхсSqlServer " +Полученная_ВерсияДанныхсSqlServer);
-            SQLiteCursor КурсорДляАнализаВерсииДанныхАндройда = null;
-            Long ВерсииДанныхНаАндройдеЛокальнаяЛокальная = 0l;
-            Long ВерсииДанныхНаАндройдеСерверная = 0l;
-
-            class_grud_sql_operationsАнализаВресииДАнныхКлиента=new Class_GRUD_SQL_Operations(context);
-            Class_GRUD_SQL_Operations.GetData class_grud_sql_operationsgetdata=class_grud_sql_operationsАнализаВресииДАнныхКлиента.new GetData(context);
-            class_grud_sql_operationsАнализаВресииДАнныхКлиента.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","MODIFITATION_Client");
-            class_grud_sql_operationsАнализаВресииДАнныхКлиента.concurrentHashMapНабор.put("СтолбцыОбработки","name,localversionandroid_version, versionserveraandroid_version");
-            class_grud_sql_operationsАнализаВресииДАнныхКлиента.concurrentHashMapНабор.put("ФорматПосика","name=? ");
-            ///"_id > ?   AND _id< ?"
-            //////
-            class_grud_sql_operationsАнализаВресииДАнныхКлиента.concurrentHashMapНабор.put("УсловиеПоиска1",ИмяТаблицыОтАндройда_Локальноая);
-            // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
-            КурсорДляАнализаВерсииДанныхАндройда= (SQLiteCursor)  class_grud_sql_operationsgetdata
-                    .getdata(class_grud_sql_operationsАнализаВресииДАнныхКлиента.concurrentHashMapНабор,new PUBLIC_CONTENT(context).МенеджерПотоков,
-                            sqLiteDatabase);
-            Log.d(this.getClass().getName(), "GetData "+КурсорДляАнализаВерсииДанныхАндройда  );
-            /////
-            if (КурсорДляАнализаВерсииДанныхАндройда.getCount() > 0) {////ВЫЖНОЕ УСЛОВИЕ ЕСЛИ КУРСОР ВЕРНУЛ БОЛЬШЕ НУЛЯ  ДАННАЕ ТОЛЬКО ТОГДА НАЧИНАЕМ АНАЛИЗ ВЕРСИИ ДАННЫХ НА АНДРОЙДЕ
-                КурсорДляАнализаВерсииДанныхАндройда.moveToFirst();
-                Log.d(this.getClass().getName(), "  Курсор_УзнаемВерсиюБазыНаАдройде.getCount() " + КурсорДляАнализаВерсииДанныхАндройда.getCount());
-                // TODO: 05.10.2021  получаем верию данных лолькано    --- локльную
-                ВерсииДанныхНаАндройдеЛокальнаяЛокальная = КурсорДляАнализаВерсииДанныхАндройда.getLong(КурсорДляАнализаВерсииДанныхАндройда.getColumnIndex("localversionandroid_version"));
-                Log.d(this.getClass().getName(), "   ВерсииДанныхНаАндройдеЛокальнаяЛокальная " + ВерсииДанныхНаАндройдеЛокальнаяЛокальная+" ИмяТаблицыОтАндройда_Локальноая " +ИмяТаблицыОтАндройда_Локальноая);
-                // TODO: 05.10.2021  получаем верию данных лолькано  - ерверную
-                ВерсииДанныхНаАндройдеСерверная = КурсорДляАнализаВерсииДанныхАндройда.getLong(КурсорДляАнализаВерсииДанныхАндройда.getColumnIndex("versionserveraandroid_version"));
-                Log.d(this.getClass().getName(), "   ВерсииДанныхНаАндройдеСерверная " +ВерсииДанныхНаАндройдеСерверная+"  ИмяТаблицыОтАндройда_Локальноая  "+ИмяТаблицыОтАндройда_Локальноая);
-                ///////////ОПРЕДЕЛЯЕМ ДАТУ АНДРОЙДА ДЛЯ СОСТЫКОВКИ С ДАТОЙ SQ; SERVER//// ПОЛУЧАЕМ ДАТУ НА АНДРОЙДЕ ПОЛСЕДНЕЕ ИЗМЕНЕНИЯ ПРИШЕДЩИЕ ДАННЫЕ С СЕРВЕРА
-            } else {
-                Log.d(this.getClass().getName(), "  НЕт такой таблицы и нет Данных КурсорДляАнализаВерсииДанныхАндройда.getCount()" + КурсорДляАнализаВерсииДанныхАндройда.getCount());
-            }
-            // TODO: 06.07.2023 clear
-            if(КурсорДляАнализаВерсииДанныхАндройда!=null){
-                // TODO: 06.07.2023 clear
-                КурсорДляАнализаВерсииДанныхАндройда.close();
-            }
-            // TODO: 05.10.2021  КОГДА ВСЕ ДАННЫЕ ЕСТЬ ТРИ ПЕРЕМЕННЫЕ ПОЛУЧЕНИЕ ПЕРЕХОИМ ДАЛЬШЕ ПОЛЯ ЛОКАЛЬНАЯ ВЕРСИЯ ДАННЫХ, СЕРВЕНАЯ ВЕРСИЯ ДАННЫХ, И ТЕРТЬЯ ВЕРИСЯ С СЕРВЕРА ПО ДАННОЙ ТАБЕЛИЦВ
-            Log.d(this.getClass().getName(), "   ВерсииДанныхНаАндройдеСерверная " +ВерсииДанныхНаАндройдеСерверная+
-                    "   ВерсииДанныхНаАндройдеЛокальнаяЛокальная " + ВерсииДанныхНаАндройдеЛокальнаяЛокальная
-                    +"   Полученная_ВерсияДанныхсSqlServer " +Полученная_ВерсияДанныхсSqlServer);
-            // TODO: 05.10.2021 ПРИ НАЛИЧИИ ВСЕХ ТРЕХ ПОЗИЦИЙ ЛОКАЛЬНАЯ ВЕРСИЯ С АНДРОЙДА   И СЕРВРНАЯ ВЕРСИЯ С АНДРОЙДА И  ПРИШЕДШЕЯ ВЕРСИЯ С СЕРВЕРА
-            ///
-            ЛистУспешнойОбработкиСинх=   ObservableRetryGet(ИмяТаблицыОтАндройда_Локальноая, Полученная_ВерсияДанныхсSqlServer, ID);
-
-            // TODO: 05.10.2021  КОГДА ВСЕ ДАННЫЕ ЕСТЬ ТРИ ПЕРЕМЕННЫЕ ПОЛУЧЕНИЕ ПЕРЕХОИМ ДАЛЬШЕ ПОЛЯ ЛОКАЛЬНАЯ ВЕРСИЯ ДАННЫХ, СЕРВЕНАЯ ВЕРСИЯ ДАННЫХ, И ТЕРТЬЯ ВЕРИСЯ С СЕРВЕРА ПО ДАННОЙ ТАБЕЛИЦВ
-            Log.d(this.getClass().getName(), "   ВерсииДанныхНаАндройдеСерверная " +ВерсииДанныхНаАндройдеСерверная+
-                    "   ВерсииДанныхНаАндройдеЛокальнаяЛокальная " + ВерсииДанныхНаАндройдеЛокальнаяЛокальная
-                    +"   ЛистУспешнойОбработкиСинх " +ЛистУспешнойОбработкиСинх);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-        return ЛистУспешнойОбработкиСинх.stream().reduce(0l, (a, b) -> a + b).longValue();
-    }
+ 
 
     ////////////////////////////ДАННЫЙ МЕТОД ПОСЛЕ ВЫШЕ СТОЯШЕГО ВЫРАВНИЯНИЯ НАЗВАНИЙ ТАБЛИЦ ПРИСТУПАЕТ К САМОМУ АНАЛИЗУ ДАННЫХ ВЕРСИИ ДАННЫХ НАХОДЯЩИХСЯ НА АНДРОЙДЕ
     Long analysVersionServerWithAnroidPOST(@NonNull String ИмяТаблицы,
@@ -668,7 +589,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
 
 
-            ЛистУспешнойОбработкиСинх=   ObservableRetryPost(ИмяТаблицы,
+            ЛистУспешнойОбработкиСинх=   ObservableRetryPostAndGet(ИмяТаблицы,
                     ВерсияДанныхсSqlServer,
                     PublicID,
                     ВерсииНаАндройдеЛокальная,
@@ -725,10 +646,13 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
     }
 
 
-    // TODO: 31.10.2023 после анализва запускаемт синхрониазциию по таблице
-    private  ArrayList<Long>   ObservableRetryGet(@NonNull String ИмяТаблицыОтАндройда_Локальноая,
-                                                                       @NonNull Long Полученная_ВерсияДанныхсSqlServer,
-                                                                       @NonNull Integer ID) {
+    private  ArrayList<Long> ObservableRetryPostAndGet(@NonNull String ИмяТаблицы,
+                                                       @NonNull Long ВерсияДанныхсSqlServer,
+                                                       @NonNull  Integer  PublicID,
+                                                       @NonNull Long ВерсииНаАндройдеЛокальная,
+                                                       @NonNull Long  ВерсииНаАндройдеСерверная,
+                                                       @NonNull Date  ВремяДанныхНаАндройде,
+                                                       @NonNull Date   ВремяОтSqlServer) {
         ArrayList<Long> ЛистУспешнойОбработкиСинх=new ArrayList<>();
         try{
 
@@ -749,12 +673,21 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                         .forEachWhile(new Predicate<Integer>() {
                             @Override
                             public boolean test(Integer integer) throws Throwable {
+
+
                                 //TODO СЛЕДУЮЩИЙ ЭТАМ РАБОТЫ ОПРЕДЕЛЯЕМ ЧТО МЫ ДЕЛАЕМ ПОЛУЧАЕМ ДАННЫЕ С СЕВРЕРА ИЛИ НА ОБОРОТ  ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР
-                                Long РезультатУспешнойВсатвкиИлиОбвовлениясСервера=       AccessGetDataFromServer(
-                                        Полученная_ВерсияДанныхсSqlServer,
-                                        ИмяТаблицыОтАндройда_Локальноая,
-                                        ID);///СЛЕДУЮЩИЙ ЭТАМ РАБОТЫ ОПРЕДЕЛЯЕМ ЧТО МЫ ДЕЛАЕМ ПОЛУЧАЕМ ДАННЫЕ С СЕВРЕРА ИЛИ НА ОБОРОТ  ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР
-                                Log.d(this.getClass().getName(), "   РезультатУспешнойВсатвкиИлиОбвовлениясСервера " + РезультатУспешнойВсатвкиИлиОбвовлениясСервера);
+                                Long РезультатУспешнойВсатвкиИлиОбвовлениясСервера=       AceccssAndCoohceGetDatatingAndPostDating(
+                                        ИмяТаблицы,
+                                        ВерсияДанныхсSqlServer,
+                                        PublicID,
+                                        ВерсииНаАндройдеЛокальная,
+                                        ВерсииНаАндройдеСерверная,
+                                        ВремяДанныхНаАндройде,
+                                        ВремяОтSqlServer);
+                                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                        "РезультатУспешнойВсатвкиИлиОбвовлениясСервера " + РезультатУспешнойВсатвкиИлиОбвовлениясСервера);
                                 // TODO: 30.10.2023  записываем результат
                                 ЛистУспешнойОбработкиСинх.add(РезультатУспешнойВсатвкиИлиОбвовлениясСервера);
 
@@ -774,71 +707,8 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                             }
                         });
 
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-
-
-        return ЛистУспешнойОбработкиСинх;
-    }
-    private  ArrayList<Long>   ObservableRetryPost(@NonNull String ИмяТаблицы,
-                                                   @NonNull Long ВерсияДанныхсSqlServer,
-                                                   @NonNull  Integer  PublicID,
-                                                   @NonNull Long ВерсииНаАндройдеЛокальная,
-                                                   @NonNull Long  ВерсииНаАндройдеСерверная,
-                                                   @NonNull Date  ВремяДанныхНаАндройде,
-                                                   @NonNull Date   ВремяОтSqlServer) {
-        ArrayList<Long> ЛистУспешнойОбработкиСинх=new ArrayList<>();
-        try{
-
-
-                // TODO: 02.11.2023  ПРИНИМАЕМ ДАННЫЕ ОТ СЕРВЕРА ПО ЧАСТЯМ
-                Observable.range(1,Integer.MAX_VALUE)
-                        .take(1, TimeUnit.HOURS)
-                        .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Throwable {
-                                Exception e=new Exception(throwable);
-                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            }
-                        })//.concatMap(i -> Observable.just(i).delay(300, TimeUnit.MILLISECONDS))
-                        .forEachWhile(new Predicate<Integer>() {
-                            @Override
-                            public boolean test(Integer integer) throws Throwable {
-                                //TODO СЛЕДУЮЩИЙ ЭТАМ РАБОТЫ ОПРЕДЕЛЯЕМ ЧТО МЫ ДЕЛАЕМ ПОЛУЧАЕМ ДАННЫЕ С СЕВРЕРА ИЛИ НА ОБОРОТ  ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР
-                                Long РезультатУспешнойВсатвкиИлиОбвовлениясСервера=       AccessPostDataFromClient(ИмяТаблицыОтАндройда_Локальноая,
-                                        ID);///СЛЕДУЮЩИЙ ЭТАМ РАБОТЫ ОПРЕДЕЛЯЕМ ЧТО МЫ ДЕЛАЕМ ПОЛУЧАЕМ ДАННЫЕ С СЕВРЕРА ИЛИ НА ОБОРОТ  ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР
-                                Log.d(this.getClass().getName(), "   РезультатУспешнойВсатвкиИлиОбвовлениясСервера " + РезультатУспешнойВсатвкиИлиОбвовлениясСервера);
-                                // TODO: 30.10.2023  записываем результат
-                                ЛистУспешнойОбработкиСинх.add(РезультатУспешнойВсатвкиИлиОбвовлениясСервера);
-
-                                if (РезультатУспешнойВсатвкиИлиОбвовлениясСервера >0 ) {
-                                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                            "РезультатУспешнойВсатвкиИлиОбвовлениясСервера  " + РезультатУспешнойВсатвкиИлиОбвовлениясСервера);
-                                    return true;
-                                } else {
-                                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                            "РезультатУспешнойВсатвкиИлиОбвовлениясСервера " + РезультатУспешнойВсатвкиИлиОбвовлениясСервера);
-                                    return false;
-                                }
-                            }
-                        });
-
-                Log.e(this.getClass().getName(), "   Нет данных для обмена текущие таблицы "
-                        + ИмяТаблицыОтАндройда_Локальноая + " ЛистУспешнойОбработкиСинх " + ЛистУспешнойОбработкиСинх.size());
+                Log.e(this.getClass().getName(), "   ИмяТаблицы "
+                        + ИмяТаблицы + " ЛистУспешнойОбработкиСинх " + ЛистУспешнойОбработкиСинх.size());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -853,60 +723,43 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
     }
 
     //TODO СЛЕДУЮЩИЙ ЭТАМ РАБОТЫ ОПРЕДЕЛЯЕМ ЧТО МЫ ДЕЛАЕМ ПОЛУЧАЕМ ДАННЫЕ С СЕВРЕРА
-    Long AccessGetDataFromServer(Long ВерсияДанныхсСамогоSqlServer,
-                                 String ИмяТаблицыОтАндройда_Локальноая,
-                                 Integer ID) {
+    Long МетодДанныеПолучаемНаСервервФоне(@NonNull String ИмяТаблицы,
+                                          @NonNull Long  ВерсииНаАндройдеСерверная,
+                                          @NonNull Integer PublicID,
+                                          @NonNull Long ВерсияДанныхсSqlServer) {
+        // TODO: 05.04.2024 get ()  
         CopyOnWriteArrayList<Long> copyOnWriteArrayListРезультатСинх=new CopyOnWriteArrayList<>();
         try {
-            Log.d(this.getClass().getName(), " ФлагУказываетЧтоТОлькоОбработкаТаблицДляЧАТА"
-                    + ФлагУказываетЧтоТОлькоОбработкаТаблицДляЧАТА
-                    + " ИмяТаблицыОтАндройда_Локальноая " + ИмяТаблицыОтАндройда_Локальноая);
-            // TODO: 12.08.2021 СЕРВЕРАНАЯ ДАТА ЛОКАЛЬНАЯ
-            Long    ВерсияДанныхЛокальнаяСерверная =
-                    МетодПолученияЛокальнойВерсииДаныхЧатаДляОтправкиЕгоНАСервер("MODIFITATION_Client", "versionserveraandroid_version",
-                            context, ИмяТаблицыОтАндройда_Локальноая);
-            ВерсияДанныхЛокальнаяСерверная=      Optional.ofNullable(ВерсияДанныхЛокальнаяСерверная).map(Long::new).orElse(0l);
-            Log.d(this.getClass().getName(),
-                    " ВерсияДанныхЛокальнаяСерверная" + ВерсияДанныхЛокальнаяСерверная);
-            // TODO: 12.08.2021 ЛОКАЛЬНАЯ ДАТА ЛОКАЛЬНАЯ
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" ИмяТаблицы  "+ИмяТаблицы
+                    + "\n"+" ВерсииНаАндройдеСерверная  "+ВерсииНаАндройдеСерверная
+                    + "\n"+" PublicID  "+PublicID+"\n"
+                    + " ФлагКакуюЧастьСинхронизацииЗапускаем " + ФлагКакуюЧастьСинхронизацииЗапускаем);
+     
 
-
-            // TODO: 17.03.2023 Вресия Данных с Самого Сервера
-            ВерсияДанныхсСамогоSqlServer =      Optional.ofNullable(ВерсияДанныхсСамогоSqlServer).map(Long::new).orElse(0l);
-            Log.d(this.getClass().getName(), " ВерсияДанныхсСамогоSqlServer" + ВерсияДанныхсСамогоSqlServer);
-            // TODO: 05.10.2021  POST()-->
 
                 // TODO: 19.10.2021   GET()->
-                if (Math.abs(ВерсияДанныхсСамогоSqlServer-ВерсияДанныхЛокальнаяСерверная)>=1  &&
-                        ! ИмяТаблицыОтАндройда_Локальноая.equalsIgnoreCase("errordsu1") ) {
-                    // TODO: 05.10.2021  ДЕЙСТИВЕ ВТОРОЕ ПОЛУЧАЕМ ДАННЫЕ ОТ СЕРВЕРА ДЛЯ ТЕКЦЩЕЙ ТАБЛИЦЫ
+            if (ВерсияДанныхсSqlServer>ВерсииНаАндройдеСерверная) {
+                // TODO: 05.04.2024  
+                if ( ! ИмяТаблицы.equalsIgnoreCase("errordsu1") ) {
 
-                        Long         ДанныесСервера =
-                                МетодОбменаЗаданиеСервера_сервераПолучаем_Сервер(ВерсияДанныхЛокальнаяСерверная,
-                                        ИмяТаблицыОтАндройда_Локальноая, ID);
+                    // TODO: 05.04.2024   GET()-> получаем данные с сервера  
+                        Long         ДанныесСервера = МетодОбменаЗаданиеСервера_сервераПолучаем_Сервер(ВерсииНаАндройдеСерверная, ИмяТаблицы, PublicID);
 
-                    if (ДанныесСервера>0) {
-                        copyOnWriteArrayListРезультатСинх.add(ДанныесСервера);
-                    }
-
-
-                    // TODO: 28.10.2021 ПЕРЕРДАЕМ ВОЗМОЖНЫЙ ОТВЕТ
-                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                            " ВерсияДанныхсСамогоSqlServer  " + ВерсияДанныхсСамогоSqlServer +
-                            "  ВерсияДанныхЛокальнаяСерверная "
-                            + ВерсияДанныхЛокальнаяСерверная
-                            + " ФлагКакуюЧастьСинхронизацииЗапускаем " + ФлагКакуюЧастьСинхронизацииЗапускаем+
-                            "  ДанныесСервера " +ДанныесСервера);
-
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" ДанныесСервера  "+ДанныесСервера+ "\n"+" ИмяТаблицы  "+ИмяТаблицы
+                                    +"\n"+" ВерсииНаАндройдеСерверная " +ВерсииНаАндройдеСерверная);
+                 
+                        copyOnWriteArrayListРезультатСинх.add(ДанныесСервера);
+                        
                 }
-
-            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+            }
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                    " ВерсияДанныхсСамогоSqlServer  " + ВерсияДанныхсСамогоSqlServer
-                    + " ФлагКакуюЧастьСинхронизацииЗапускаем " + ФлагКакуюЧастьСинхронизацииЗапускаем);
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" ИмяТаблицы  "+ИмяТаблицы);
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -931,70 +784,103 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
 
 
-    Long AccessPostDataFromClient(String ИмяТаблицыОтАндройда_Локальноая,
-                                 Integer ID) {
-        CopyOnWriteArrayList<Long> copyOnWriteArrayListРезультатСинх=new CopyOnWriteArrayList<>();
+    Long AceccssAndCoohceGetDatatingAndPostDating(@NonNull String ИмяТаблицы,
+                                                  @NonNull Long ВерсияДанныхсSqlServer,
+                                                  @NonNull  Integer  PublicID,
+                                                  @NonNull Long ВерсииНаАндройдеЛокальная,
+                                                  @NonNull Long  ВерсииНаАндройдеСерверная,
+                                                  @NonNull Date  ВремяДанныхНаАндройде,
+                                                  @NonNull Date   ВремяОтSqlServer) {
+        CopyOnWriteArrayList<Long> copyOnWriteArrayListРезультатСинхPostAndGet=new CopyOnWriteArrayList<>();
         try {
-            Log.d(this.getClass().getName(), " ФлагУказываетЧтоТОлькоОбработкаТаблицДляЧАТА"
-                    + ФлагУказываетЧтоТОлькоОбработкаТаблицДляЧАТА
-                    + " ИмяТаблицыОтАндройда_Локальноая " + ИмяТаблицыОтАндройда_Локальноая);
-            // TODO: 12.08.2021 СЕРВЕРАНАЯ ДАТА ЛОКАЛЬНАЯ
-            Long    ВерсияДанныхЛокальнаяСерверная =
-                    МетодПолученияЛокальнойВерсииДаныхЧатаДляОтправкиЕгоНАСервер("MODIFITATION_Client", "versionserveraandroid_version",
-                            context, ИмяТаблицыОтАндройда_Локальноая);
-            ВерсияДанныхЛокальнаяСерверная=      Optional.ofNullable(ВерсияДанныхЛокальнаяСерверная).map(Long::new).orElse(0l);
-            Log.d(this.getClass().getName(),
-                    " ВерсияДанныхЛокальнаяСерверная" + ВерсияДанныхЛокальнаяСерверная);
-            // TODO: 12.08.2021 ЛОКАЛЬНАЯ ДАТА ЛОКАЛЬНАЯ
-            Long          ВерсияДанныхЛокальноЛокальная =
-                    МетодПолученияЛокальнойВерсииДаныхЧатаДляОтправкиЕгоНАСервер("MODIFITATION_Client", "localversionandroid_version",
-                            context, ИмяТаблицыОтАндройда_Локальноая);
-            ВерсияДанныхЛокальноЛокальная=      Optional.ofNullable(ВерсияДанныхЛокальноЛокальная).map(Long::new).orElse(0l);
-            Log.d(this.getClass().getName(), " РезультаПолученаяЛокальнаяВерсияДанныхКогдаПользовательСоздалНовыеДаннее"
-                    + ВерсияДанныхЛокальноЛокальная+ " ИмяТаблицыОтАндройда_Локальноая " +ИмяТаблицыОтАндройда_Локальноая);
 
+            Log.d(this.getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n"
+                    +" ИмяТаблицы " +ИмяТаблицы
+                    + "\n"
+                    +" ВерсияДанныхсSqlServer " +ВерсияДанныхсSqlServer
+                    + "\n"
+                    +" PublicID " +PublicID
+                    + "\n"
+                    +" ВерсииНаАндройдеЛокальная " +ВерсииНаАндройдеЛокальная+ "\n"
+                    +" ВерсииНаАндройдеСерверная " +ВерсииНаАндройдеСерверная
+                    + "\n"
+                    +" ВремяДанныхНаАндройде " +ВремяДанныхНаАндройде
+                    + "\n"
+                    +" ВремяОтSqlServer " +ВремяОтSqlServer+"\n"
+                    + " ФлагКакуюЧастьСинхронизацииЗапускаем " + ФлагКакуюЧастьСинхронизацииЗапускаем);
+
+
+            // TODO: 05.04.2024 post() sending
             // TODO: 05.10.2021  POST()-->
-            if (ВерсияДанныхЛокальноЛокальная > ВерсияДанныхЛокальнаяСерверная &&
-                    ! ИмяТаблицыОтАндройда_Локальноая.equalsIgnoreCase("view_onesignal") &&
-                    ! ИмяТаблицыОтАндройда_Локальноая.equalsIgnoreCase("chat_users") &&
-                    ! ИмяТаблицыОтАндройда_Локальноая.equalsIgnoreCase("view_onesignal") &&
-                    ! ИмяТаблицыОтАндройда_Локальноая.equalsIgnoreCase("prof") ) {
+            if (ВерсииНаАндройдеЛокальная > ВерсииНаАндройдеСерверная ) {
+                // TODO: 05.04.2024  отправлем только определенные таблицы
+                if (! ИмяТаблицы.equalsIgnoreCase("view_onesignal") &&
+                        ! ИмяТаблицы.equalsIgnoreCase("chat_users") &&
+                        ! ИмяТаблицы.equalsIgnoreCase("view_onesignal") &&
+                        ! ИмяТаблицы.equalsIgnoreCase("prof") ) {
+    
+                    Log.d(this.getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n"
+                            +" ИмяТаблицы " +ИмяТаблицы
+                            + "\n"
+                            +" ВерсияДанныхсSqlServer " +ВерсияДанныхсSqlServer
+                            + "\n"
+                            +" PublicID " +PublicID
+                            + "\n"
+                            +" ВерсииНаАндройдеЛокальная " +ВерсииНаАндройдеЛокальная+ "\n"
+                            +" ВерсииНаАндройдеСерверная " +ВерсииНаАндройдеСерверная
+                            + "\n"
+                            +" ВремяДанныхНаАндройде " +ВремяДанныхНаАндройде
+                            + "\n"
+                            +" ВремяОтSqlServer " +ВремяОтSqlServer+"\n"
+                            + " ФлагКакуюЧастьСинхронизацииЗапускаем " + ФлагКакуюЧастьСинхронизацииЗапускаем);
+    
+                    ////// todo МЕТОД POST() в фоне    ////// todo МЕТОД POST
+                    Long    ДанныеПосылаемНаСервер =     МетодПосылаемДанныеНаСервервФоне(ИмяТаблицы, ВерсииНаАндройдеСерверная);
 
-                Log.d(this.getClass().getName(),
-                        " ВерсияДанныхЛокальноЛокальная  " + ВерсияДанныхЛокальноЛокальная +
-                                "  ВерсияДанныхЛокальнаяСерверная " + ВерсияДанныхЛокальнаяСерверная
-                                + " ФлагКакуюЧастьСинхронизацииЗапускаем " + ФлагКакуюЧастьСинхронизацииЗапускаем+ " ИмяТаблицыОтАндройда_Локальноая "
-                                +ИмяТаблицыОтАндройда_Локальноая);
-                // TODO: 30.06.2022  конец встаялеммого кода с задержкой
-                Long    ДанныеПосылаемНаСервер = МетодОбменаЗаданиеДляСервера_ПосылаемНа_Сервер(ИмяТаблицыОтАндройда_Локальноая,
-                        ВерсияДанныхЛокальнаяСерверная);
+                    copyOnWriteArrayListРезультатСинхPostAndGet.add(ДанныеПосылаемНаСервер);
 
-                // TODO: 28.10.2021 ПЕРЕРДАЕМ ВОЗМОЖНЫЙ ОТВЕТ
-                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                        "  ВерсияДанныхЛокальнаяСерверная "
-                        + ВерсияДанныхЛокальнаяСерверная
-                        + " ФлагКакуюЧастьСинхронизацииЗапускаем " + ФлагКакуюЧастьСинхронизацииЗапускаем+
-                        "  ДанныеПосылаемНаСервер " +ДанныеПосылаемНаСервер);
+                    if (ДанныеПосылаемНаСервер>0) {
+                        // TODO: 01.07.2023 После Успешно Посылании Данных На Сервер Повышаем Верисю Данных
+                        методПослеУспешногоПолученияПовышаемВерсию(ИмяТаблицы );
+                    }
 
 
-
-                if (ДанныеПосылаемНаСервер>0) {
-                    copyOnWriteArrayListРезультатСинх.add(ДанныеПосылаемНаСервер);
-                    // TODO: 01.07.2023 После Успешно Посылании Данных На Сервер Повышаем Верисю Данных
-                    методПослеУспешногоПолученияПовышаемВерсию(ИмяТаблицыОтАндройда_Локальноая );
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" ДанныеПосылаемНаСервер  "+ДанныеПосылаемНаСервер);
                 }
 
-                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                        "  ВерсияДанныхЛокальнаяСерверная "
-                        + ВерсияДанныхЛокальнаяСерверная+
-                        "  ДанныеПосылаемНаСервер " +ДанныеПосылаемНаСервер);
 
-                // TODO: 28.10.2021 ПЕРЕРДАЕМ ВОЗМОЖНЫЙ ОТВЕТ
+
+
+
+
+
+                // TODO: 05.04.2024  метод GET()   ПОЛУЧАЕМ ДАННЫЕ !!!!!   
+                // TODO: 05.04.2024  метод GET()   ПОЛУЧАЕМ ДАННЫЕ !!!!!   
+            }else {
+                // TODO: 05.04.2024  метод GET()   ПОЛУЧАЕМ ДАННЫЕ !!!!!   
+                // TODO: 05.04.2024  метод GET()   ПОЛУЧАЕМ ДАННЫЕ !!!!!
+
+
+                ////// todo МЕТОД GET() в фоне    ////// todo МЕТОД GET
+                Long    ДанныеПОлучаемССервер =     МетодДанныеПолучаемНаСервервФоне(ИмяТаблицы, ВерсииНаАндройдеСерверная,PublicID,ВерсияДанныхсSqlServer);
+
+                copyOnWriteArrayListРезультатСинхPostAndGet.add(ДанныеПОлучаемССервер);
+
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" ДанныеПОлучаемССервер  "+ДанныеПОлучаемССервер);
             }
+
+
+            // TODO: 05.04.2024  после обработки обоих методов post and get
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -1006,27 +892,18 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
             new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-        return  copyOnWriteArrayListРезультатСинх.stream().mapToLong(m->m).findFirst().orElse(0l);
+        return  copyOnWriteArrayListРезультатСинхPostAndGet.stream().mapToLong(m->m).findFirst().orElse(0l);
     }
 
-    private Long МетодОбменаЗаданиеДляСервера_ПосылаемНа_Сервер(String ИмяТаблицыОтАндройда_Локальноая, Long ВерсияДанныхПришлаПослеУспешнойСинхронизации) {
-        Long РезультатСинхронизации=0l;
-        try{
-            ////// todo МЕТОД POST() в фоне    ////// todo МЕТОД POST
-            РезультатСинхронизации =
-                    МетодПосылаемДанныеНаСервервФоне(ИмяТаблицыОтАндройда_Локальноая, ВерсияДанныхПришлаПослеУспешнойСинхронизации);
+    
+    
+    
+    
+    
+    
+    
+    
 
-            Log.i(this.getClass().getName(), "   РезультатСинхронизации" + РезультатСинхронизации+
-                    " ВерсияДанныхПришлаПослеУспешнойСинхронизации "+ВерсияДанныхПришлаПослеУспешнойСинхронизации);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-        return РезультатСинхронизации;
-    }
 
     @NonNull
     private Long МетодОбменаЗаданиеСервера_сервераПолучаем_Сервер(@NonNull  Long ВерсияДанных,
@@ -1580,7 +1457,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                     @Override
                     public void accept(String ИмяТаблицыоТВерсияДанныхОтSqlServer) {
                         // TODO: 06.12.2023  запуск синхризуции по таблице конктерной
-                        Long   РезультатТаблицыОбмена   =        getLooTablesPOST(ИмяТаблицыоТВерсияДанныхОтSqlServer);
+                        Long   РезультатТаблицыОбмена   =        getLooTablesPOSTANDGET(ИмяТаблицыоТВерсияДанныхОтSqlServer);
 
                         // TODO: 15.09.2023
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1608,15 +1485,6 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
     private void metofstartingGetParallel () {
         try{
-            String      РежимПерваяЗапускПослеPasswordИлиПовторная = preferences.getString("РежимЗапускаСинхронизации","");
-            ///   if(РежимПерваяЗапускПослеPasswordИлиПовторная.equalsIgnoreCase( "ПовторныйЗапускСинхронизации")){
-           /*   if(РежимПерваяЗапускПослеPasswordИлиПовторная.equalsIgnoreCase( "ПовторныйЗапускСинхронизации")){
-                  // TODO: 07.12.2023
-                  КоличествоПотоков=1;
-              }*/
-
-
-
         ParallelFlowable parallelFlowableAsync
                 = Flowable.fromIterable( public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.keySet())
                 .map(new Function<String, Object>() {
@@ -1638,8 +1506,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                                 public void accept(String ИмяТаблицыоТВерсияДанныхОтSqlServer) throws Throwable {
 
                                     // TODO: 06.12.2023  запуск синхризуции по таблице конктерной
-                               final      Long   РезультатТаблицыОбмена   =        getLooTablesGET(ИмяТаблицыоТВерсияДанныхОтSqlServer);
-                            // //  final      Long   РезультатТаблицыОбмена   =        getLooTablesGET("materials_databinary" );
+                                    Long   РезультатТаблицыОбмена   =        getLooTablesPOSTANDGET(ИмяТаблицыоТВерсияДанныхОтSqlServer);
 
                                     // TODO: 15.09.2023
                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1693,45 +1560,9 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
 
 
-    private Long getLooTablesGET(String ИмяТаблицыоТВерсияДанныхОтSqlServer) {
-        Long   РезультатТаблицыОбмена=0l;
-        try{
-            // TODO: 21.08.2023 Запуск Синхронизации после получение Версии
-            Long     ВерсияДанныхОтSqlServer = public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.get(ИмяТаблицыоТВерсияДанныхОтSqlServer);
-
-            /////////////TODO ИДЕМ ПО ШАГАМ К ЗАПУСКИ СИНХРОГНИАЗЦИИ
-             РезультатТаблицыОбмена=
-                    analysVersionServerWithAnroidGET(ИмяТаблицыоТВерсияДанныхОтSqlServer,
-                            ВерсияДанныхОтSqlServer, ID);
 
 
-
-            Проценты = new Class_Visible_Processing_Async(context).ГенерируемПРОЦЕНТЫДляAsync(ПозицияТекущейТаблицы, ГлавныеТаблицыСинхронизации.size());
-            // TODO: 02.05.2023  Ответ Обратно ПрограссБару
-            методCallBackPrograssBars(   Проценты, ИмяТаблицыоТВерсияДанныхОтSqlServer,ПозицияТекущейТаблицы);
-
-            ЛистТаблицыОбмена.add(РезультатТаблицыОбмена);
-            // TODO: 12.07.2023
-            ПозицияТекущейТаблицы++;
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                    " ВерсияДанныхОтSqlServer " +ВерсияДанныхОтSqlServer+ " ИмяТаблицыоТВерсияДанныхОтSqlServer "
-                    + ИмяТаблицыоТВерсияДанныхОтSqlServer +
-                    "   РезультатТаблицыОбмена " + РезультатТаблицыОбмена);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            // TODO: 01.09.2021 метод вызова
-            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-        return  РезультатТаблицыОбмена;
-    }
-
-    private Long getLooTablesPOST(String ИмяТаблицыоТВерсияДанныхОтSqlServer) {
+    private Long getLooTablesPOSTANDGET(String ИмяТаблицыоТВерсияДанныхОтSqlServer) {
         Long   РезультатТаблицыОбмена=0l;
         try{
             // TODO: 21.08.2023 Запуск Синхронизации после получение Версии
