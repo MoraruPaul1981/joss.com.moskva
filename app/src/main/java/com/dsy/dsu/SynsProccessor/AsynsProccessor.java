@@ -886,7 +886,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                 // TODO: 19.10.2021   GET()->
                 if (ВерсияДанныхсSqlServer > ВерсииНаАндройдеСерверная &&  sequentialAndparallel.equalsIgnoreCase("parallel") ) {
                     // TODO: 05.04.2024
-                    if ( !ВремяДанныхНаАндройде.equals(ВремяДанныхНаАндройде)) {
+                    if ( !ВремяОтSqlServer.equals(ВремяДанныхНаАндройде)) {
                         // TODO: 05.04.2024
                         if (!ИмяТаблицы.equalsIgnoreCase("errordsu1")) {
 
@@ -1434,7 +1434,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                 public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
 
                     // TODO: 14.12.2023  топль POSt SINGLE
-                    metofstartingGetPostSingleAndParallel( "sequential",Schedulers.from(Executors.newFixedThreadPool(1)) );
+                    getDataJsonSequential( "sequential"  );
 
                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1447,7 +1447,8 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                 @Override
                 public void onComplete() {
                     // TODO: 21.08.2023  только GET Parelleing
-                    metofstartingGetPostSingleAndParallel( "parallel",Schedulers.from(Executors.newFixedThreadPool(1)) );
+              getDataJsonParallels( "parallel",Schedulers.trampoline() );
+                  //  metofstartingGetPostSingleAndParallel( "parallel",Schedulers.from(Executors.newFixedThreadPool(1)) );
 
                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1483,13 +1484,13 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
 
 
-    private void metofstartingGetPostSingleAndParallel(@NonNull String parallel, @NonNull Scheduler schedulers) {
+    private void getDataJsonParallels(@NonNull String parallel, @NonNull Scheduler schedulers) {
         try{
-        ParallelFlowable parallelFlowableAsync
-                = Flowable.fromIterable( public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.keySet())
-                .map(new Function<String, Object>() {
+
+             Flowable.fromIterable( public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.keySet())
+                .map(new Function<String, String>() {
                     @Override
-                    public Object apply(String ТаблицаОбработываемаяParallel) throws Throwable {
+                    public String apply(String ТаблицаОбработываемаяParallel) throws Throwable {
                         if(!ТаблицаОбработываемаяParallel.equalsIgnoreCase("errordsu1")){
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1499,8 +1500,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                         return new String();
                     }
                 }).filter(fil->!fil.toString().isEmpty())
-                .parallel(   ).runOn(schedulers);
-        parallelFlowableAsync.doOnNext(new io.reactivex.rxjava3.functions.Consumer<String>() {
+                     .doOnNext(new io.reactivex.rxjava3.functions.Consumer<String>() {
                                 @Override
                                 public void accept(String ТаблицаОбработываемаяParallel) throws Throwable {
 
@@ -1535,12 +1535,11 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                                 }
-                            }).sequential().blockingSubscribe();
+                            }).blockingSubscribe();
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1552,7 +1551,59 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
     }
     // TODO: 22.03.2022  ДЛЯ ОТПРАВКИ ДАННЫХ НА СЕРВЕР
 
+    private void getDataJsonSequential(@NonNull String parallel ) {
+        try{
+              Flowable.fromIterable( public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.keySet())
+                      .filter(fil->!fil.toString()
+                              .isEmpty())
+                      .doOnNext(new io.reactivex.rxjava3.functions.Consumer<String>() {
+                          @Override
+                          public void accept(String ТаблицаОбработываемаяSequential) throws Throwable {
+                              // TODO: 06.12.2023  запуск синхризуции по таблице конктерной
+                              Long   РезультатТаблицыОбмена   =        getLooTablesPOSTANDGET(ТаблицаОбработываемаяSequential,  parallel);
 
+                              // TODO: 15.09.2023
+                              Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                      " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                      " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                      " ТаблицаОбработываемаяSequential"
+                                      +ТаблицаОбработываемаяSequential
+                                      + " РезультатТаблицыОбмена " +РезультатТаблицыОбмена+" parallel " +parallel );
+                          }
+                      })
+                    .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) throws Throwable {
+                            throwable.printStackTrace();
+                            Log.e(this.getClass().getName(), "Ошибка " +throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(throwable.toString(),
+                                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
+                    })
+                    .doOnComplete(new Action() {
+                        @Override
+                        public void run() throws Throwable {
+
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                        }
+                    }).subscribeOn(Schedulers.trampoline()).blockingSubscribe();
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber()  );
+        }
+    }
 
 
 
