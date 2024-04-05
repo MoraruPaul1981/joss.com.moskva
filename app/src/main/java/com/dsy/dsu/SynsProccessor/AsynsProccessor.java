@@ -1485,16 +1485,16 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                 .subscribeOn(Schedulers.trampoline())
                 .blockingIterable().forEach(new Consumer<String>() {
                     @Override
-                    public void accept(String ИмяТаблицыоТВерсияДанныхОтSqlServer) {
+                    public void accept(String ТаблицаОбработываемаяSequential) {
                         // TODO: 06.12.2023  запуск синхризуции по таблице конктерной
-                        Long   РезультатТаблицыОбмена   =        getLooTablesPOSTANDGET(ИмяТаблицыоТВерсияДанныхОтSqlServer,sequential);
+                        Long   РезультатТаблицыОбмена   =        getLooTablesPOSTANDGET(ТаблицаОбработываемаяSequential,sequential);
 
                         // TODO: 15.09.2023
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                " ИмяТаблицыоТВерсияДанныхОтSqlServer"
-                                +ИмяТаблицыоТВерсияДанныхОтSqlServer + " РезультатТаблицыОбмена " +РезультатТаблицыОбмена );
+                                " ТаблицаОбработываемаяSequential"
+                                +ТаблицаОбработываемаяSequential + " РезультатТаблицыОбмена " +РезультатТаблицыОбмена );
                     }
                 });
             // TODO: 15.09.2023
@@ -1519,12 +1519,12 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                 = Flowable.fromIterable( public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.keySet())
                 .map(new Function<String, Object>() {
                     @Override
-                    public Object apply(String s) throws Throwable {
-                        if(!s.equalsIgnoreCase("errordsu1")){
+                    public Object apply(String ТаблицаОбработываемаяParallel) throws Throwable {
+                        if(!ТаблицаОбработываемаяParallel.equalsIgnoreCase("errordsu1")){
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            return s;
+                            return ТаблицаОбработываемаяParallel;
                         }
                         return new String();
                     }
@@ -1532,17 +1532,18 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                 .parallel(   ).runOn(Schedulers.from(Executors.newFixedThreadPool(3)));
         parallelFlowableAsync.doOnNext(new io.reactivex.rxjava3.functions.Consumer<String>() {
                                 @Override
-                                public void accept(String ИмяТаблицыоТВерсияДанныхОтSqlServer) throws Throwable {
+                                public void accept(String ТаблицаОбработываемаяParallel) throws Throwable {
 
                                     // TODO: 06.12.2023  запуск синхризуции по таблице конктерной
-                                    Long   РезультатТаблицыОбмена   =        getLooTablesPOSTANDGET(ИмяТаблицыоТВерсияДанныхОтSqlServer,  parallel);
+                                    Long   РезультатТаблицыОбмена   =        getLooTablesPOSTANDGET(ТаблицаОбработываемаяParallel,  parallel);
 
                                     // TODO: 15.09.2023
                                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                            " ИмяТаблицыоТВерсияДанныхОтSqlServer"
-                                            +ИмяТаблицыоТВерсияДанныхОтSqlServer + " РезультатТаблицыОбмена " +РезультатТаблицыОбмена+" parallel " +parallel );
+                                            " ТаблицаОбработываемаяParallel"
+                                            +ТаблицаОбработываемаяParallel
+                                            + " РезультатТаблицыОбмена " +РезультатТаблицыОбмена+" parallel " +parallel );
                                 }
                             })
                             .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
