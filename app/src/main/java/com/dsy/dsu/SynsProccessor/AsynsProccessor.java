@@ -624,8 +624,8 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
             ContentResolver contentResolver=context. getContentResolver();
             // TODO: 05.04.2024 get Curcour all  version local Android Sqlite
              AllVersionAndroidLocalSQlite =      contentResolver.query(uri,new String[]{},
-                    new String(" SELECT *  FROM    MODIFITATION_Client       "),
-                    new String[]{},null);///   "  //// SELECT * FROM  viewtabel WHERE year_tabels=?  AND month_tabels=?  AND cfo=?  AND status_send!=?
+                    new String(" SELECT *  FROM    MODIFITATION_Client   where name = ?    "),
+                    new String[]{String.valueOf(ИмяТаблицыОтАндройда_Локальноая)},null);///   "  //// SELECT * FROM  viewtabel WHERE year_tabels=?  AND month_tabels=?  AND cfo=?  AND status_send!=?
         Log.d(this.getClass().getName(), "\n"
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -871,6 +871,12 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                             Long ДанныеПОлучаемССервер = МетодДанныеПолучаемНаСервервФоне(ИмяТаблицы, ВерсииНаАндройдеСерверная, PublicID);
 
                             copyOnWriteArrayListРезультатСинхPostAndGet.add(ДанныеПОлучаемССервер);
+
+                            if (ДанныеПОлучаемССервер>0) {
+                                // TODO: 01.07.2023 После Успешно Посылании Данных На Сервер Повышаем Верисю Данных
+                                методПослеУспешногоПолученияПовышаемВерсию(ИмяТаблицы );
+                            }
+
 
                             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1192,13 +1198,13 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
 
     /////todo POST МЕТОД КОГДА НА АНДРОЙДЕ ВЕРСИЯ ДАННЫХ ВЫШЕ ЧЕМ НА СЕРВРЕР И МЫ  JSON ФАЙЛ ТУДА МЕТОД POST
-    Long МетодПосылаемДанныеНаСервервФоне(String имяТаблицыОтАндройда_локальноая,
-                                          Long ВерсияДанныхОсноваСозданиеДанныхОтправки) {
+    Long МетодПосылаемДанныеНаСервервФоне(@NonNull String ИмяТаблицы,
+                                          @NonNull Long ВерсииНаАндройдеСерверная) {
 
         Long РезультатСинхронизации=0l;
         try {
             // TODO: 15.02.2022  ДАННЫЕ ДЛЯ ОТПРАВКИ НА СЕРВЕР
-            Cursor cursorForSendServer= методГлавныйGetDataForAsync(имяТаблицыОтАндройда_локальноая ,ВерсияДанныхОсноваСозданиеДанныхОтправки );
+            Cursor cursorForSendServer= методГлавныйGetDataForAsync(ИмяТаблицы ,ВерсииНаАндройдеСерверная );
             /////TODO результаты   количество отправляемой информации на сервера
             if (cursorForSendServer!=null && cursorForSendServer.getCount() > 0) {
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1207,7 +1213,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                         + " cursorForSendServer "+cursorForSendServer.getCount() );
 
                 //////// todo упаковываем в  json ПЕРЕХОДИМ НА СЛЕДУЩИМ МЕТОД для отрправки на сервер метод POST() POST() POST() POST() POST() POST()POST()
-                РезультатСинхронизации = МетодГенерацииJSON(cursorForSendServer, имяТаблицыОтАндройда_локальноая );
+                РезультатСинхронизации = МетодГенерацииJSON(cursorForSendServer, ИмяТаблицы );
                 // TODO: 04.08.2023
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
