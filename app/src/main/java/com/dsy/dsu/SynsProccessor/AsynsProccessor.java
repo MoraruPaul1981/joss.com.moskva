@@ -507,6 +507,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
     private Date  formattingDateOnVersionSqlServer(String ВерсияДанныхСервернойТаблицы) {
         Date ДатаВерсииДанныхSQLServer = null;
         try {
+           // SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS" );
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS" );
               ДатаВерсииДанныхSQLServer = formatter.parse(ВерсияДанныхСервернойТаблицы);
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -745,7 +746,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                                           @NonNull Long  ВерсииНаАндройдеСерверная,
                                           @NonNull Integer PublicID) {
         // TODO: 05.04.2024 get ()  
-        CopyOnWriteArrayList<Long> copyOnWriteArrayListРезультатСинх=new CopyOnWriteArrayList<>();
+        Long         ДанныесСервера = 0l;
         try {
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -756,7 +757,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
      
 
                     // TODO: 05.04.2024   GET()-> получаем данные с сервера  
-                        Long         ДанныесСервера = МетодОбменаЗаданиеСервера_сервераПолучаем_Сервер(ВерсииНаАндройдеСерверная, ИмяТаблицы, PublicID);
+                                  ДанныесСервера = МетодОбменаЗаданиеСервера_сервераПолучаем_Сервер(ВерсииНаАндройдеСерверная, ИмяТаблицы, PublicID);
 
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -777,7 +778,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
             new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-        return  copyOnWriteArrayListРезультатСинх.stream().mapToLong(m->m).findFirst().orElse(0l);
+        return  ДанныесСервера;
     }
 
 

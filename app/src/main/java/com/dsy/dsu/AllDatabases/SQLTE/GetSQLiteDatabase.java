@@ -421,9 +421,9 @@ public class GetSQLiteDatabase extends SQLiteOpenHelper{ ///SQLiteOpenHelper
         try {
         ССылкаНаСозданнуюБазу.execSQL("drop table  if exists MODIFITATION_Client");//test
         ССылкаНаСозданнуюБазу.execSQL("Create table  if not exists MODIFITATION_Client (" +
-                "name  TEXT  NOT NULL UNIQUE DEFAULT '1901-01-10 00:00:00' " +
-                ",  localversionandroid NUMERIC NOT NULL  DEFAULT '1901-01-10 00:00:00' , " +
-                "versionserveraandroid NUMERIC NOT NULL  DEFAULT '1901-01-10 00:00:00' ," +
+                "name  TEXT  NOT NULL UNIQUE DEFAULT '2000-01-10 00:00:00.000' " +
+                ",  localversionandroid NUMERIC NOT NULL  DEFAULT '2000-01-10 00:00:00.000' , " +
+                "versionserveraandroid NUMERIC NOT NULL  DEFAULT '2000-01-10 00:00:00.000' ," +
                 " localversionandroid_version    NUMERIC  NOT NULL DEFAULT '0' , " +
                 "versionserveraandroid_version   NUMERIC NOT NULL  DEFAULT '0'  )");
         //////////
