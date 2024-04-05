@@ -653,20 +653,25 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n"
-                        +" ВерсииНаАндройдеЛокальная " +ВерсииНаАндройдеЛокальная
+                        +" ИмяТаблицы " +ИмяТаблицы
                         + "\n"
+                        +" ВерсияДанныхсSqlServer " +ВерсияДанныхсSqlServer
+                        + "\n"
+                        +" PublicID " +PublicID
+                        + "\n"
+                        +" ВерсииНаАндройдеЛокальная " +ВерсииНаАндройдеЛокальная+ "\n"
                         +" ВерсииНаАндройдеСерверная " +ВерсииНаАндройдеСерверная
                         + "\n"
                         +" ВремяДанныхНаАндройде " +ВремяДанныхНаАндройде
                         + "\n"
-                        +" ВремяДанныхНаАндройде " +ВерсияДанныхсSqlServer+ "\n"
-                        +" ИмяТаблицы " +ИмяТаблицы);
+                        +" ВремяОтSqlServer " +ВремяОтSqlServer);
 
 
 
             ЛистУспешнойОбработкиСинх=   ObservableRetryPost(ИмяТаблицы,
-                    ВерсияДанныхсSqlServer, ID,
-                    ВерсииНаАндройдеСерверная,
+                    ВерсияДанныхсSqlServer,
+                    PublicID,
+                    ВерсииНаАндройдеЛокальная,
                     ВерсииНаАндройдеСерверная,
                     ВремяДанныхНаАндройде,
                     ВремяОтSqlServer);
@@ -782,11 +787,13 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
         return ЛистУспешнойОбработкиСинх;
     }
-    private  ArrayList<Long>   ObservableRetryPost(@NonNull String ИмяТаблицыОтАндройда_Локальноая,
-                                                  @NonNull Long Полученная_ВерсияДанныхсSqlServer,
-                                                  @NonNull Integer ID, Long ВерсииДанныхНаАндройдеЛокальнаяЛокальная,
-                                                   @NonNull Long ВерсииДанныхНаАндройдеСерверная,
-                                                   @NonNull Date ВремяДанныхНаАндройде) {
+    private  ArrayList<Long>   ObservableRetryPost(@NonNull String ИмяТаблицы,
+                                                   @NonNull Long ВерсияДанныхсSqlServer,
+                                                   @NonNull  Integer  PublicID,
+                                                   @NonNull Long ВерсииНаАндройдеЛокальная,
+                                                   @NonNull Long  ВерсииНаАндройдеСерверная,
+                                                   @NonNull Date  ВремяДанныхНаАндройде,
+                                                   @NonNull Date   ВремяОтSqlServer) {
         ArrayList<Long> ЛистУспешнойОбработкиСинх=new ArrayList<>();
         try{
 
