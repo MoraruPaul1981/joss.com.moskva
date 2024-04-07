@@ -44,6 +44,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.functions.Predicate;
+import io.reactivex.rxjava3.parallel.ParallelFlowable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class ProccesorparallelSynch   {
@@ -97,9 +98,10 @@ public class ProccesorparallelSynch   {
             SuccessInsertOrUpdates=new ArrayList<>();
 
             // TODO: 07.04.2024  
-            Flowable.fromIterable( ВерсииВсехСерверныхТаблиц.keySet())
+            ParallelFlowable     flowable= (ParallelFlowable)    Flowable.fromIterable( ВерсииВсехСерверныхТаблиц.keySet())
                   .filter(fil->!fil.toString().isEmpty())
-                    .doOnNext(new io.reactivex.rxjava3.functions.Consumer<String>() {
+                .parallel(3).runOn(Schedulers.computation());
+            flowable.doOnNext(new io.reactivex.rxjava3.functions.Consumer<String>() {
                         @Override
                         public void accept(String ТаблицаОбработываемаяParallel) throws Throwable {
 
@@ -135,7 +137,7 @@ public class ProccesorparallelSynch   {
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                         }
-                    }).blockingSubscribe();
+                    }).sequential().blockingSubscribe();
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
