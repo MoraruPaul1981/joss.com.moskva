@@ -20,33 +20,37 @@ public class SubClassCreatingMainAllTables {
     public CopyOnWriteArrayList<String> методCreatingMainTabels(@NotNull Context context) throws InterruptedException {
         CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда = new CopyOnWriteArrayList();
         try {
-            ИменаТаблицыОтАндройда.add("errordsu1");
-            ИменаТаблицыОтАндройда.add("depatment");
-            ИменаТаблицыОтАндройда.add("fio");
-            ИменаТаблицыОтАндройда.add("region");
-            ИменаТаблицыОтАндройда.add("cfo");
-            ИменаТаблицыОтАндройда.add("settings_tabels");
-            ИменаТаблицыОтАндройда.add("notifications");
-            ИменаТаблицыОтАндройда.add("templates");
-            ИменаТаблицыОтАндройда.add("fio_template");
-            ИменаТаблицыОтАндройда.add("chat_users");
-            ИменаТаблицыОтАндройда.add("chats");
-            ИменаТаблицыОтАндройда.add("data_chat");
-            ИменаТаблицыОтАндройда.add("tabel");
-            ИменаТаблицыОтАндройда.add("data_tabels");
-            ИменаТаблицыОтАндройда.add("view_onesignal");
-            ИменаТаблицыОтАндройда.add("data_notification");
-            ИменаТаблицыОтАндройда.add("nomen_vesov");
-            ИменаТаблицыОтАндройда.add("type_materials");
-            ИменаТаблицыОтАндройда.add("get_materials_data");
-            ИменаТаблицыОтАндройда.add("company");
-            ИменаТаблицыОтАндройда.add("track");
-            ИменаТаблицыОтАндройда.add("prof");
-            ИменаТаблицыОтАндройда.add("order_tc");
-            ИменаТаблицыОтАндройда.add("vid_tc");
-            ИменаТаблицыОтАндройда.add("materials_databinary");
-            ИменаТаблицыОтАндройда.add("organization");
-            Log.d(this.getClass().getName(), "  ИменаТаблицыОтАндройда" + ИменаТаблицыОтАндройда);
+            ИменаТаблицыОтАндройда.addIfAbsent("errordsu1");
+            ИменаТаблицыОтАндройда.addIfAbsent("depatment");
+            ИменаТаблицыОтАндройда.addIfAbsent("fio");
+            ИменаТаблицыОтАндройда.addIfAbsent("region");
+            ИменаТаблицыОтАндройда.addIfAbsent("cfo");
+            ИменаТаблицыОтАндройда.addIfAbsent("settings_tabels");
+            ИменаТаблицыОтАндройда.addIfAbsent("notifications");
+            ИменаТаблицыОтАндройда.addIfAbsent("templates");
+            ИменаТаблицыОтАндройда.addIfAbsent("fio_template");
+            ИменаТаблицыОтАндройда.addIfAbsent("chat_users");
+            ИменаТаблицыОтАндройда.addIfAbsent("chats");
+            ИменаТаблицыОтАндройда.addIfAbsent("data_chat");
+            ИменаТаблицыОтАндройда.addIfAbsent("tabel");
+            ИменаТаблицыОтАндройда.addIfAbsent("data_tabels");
+            ИменаТаблицыОтАндройда.addIfAbsent("view_onesignal");
+            ИменаТаблицыОтАндройда.addIfAbsent("data_notification");
+            ИменаТаблицыОтАндройда.addIfAbsent("nomen_vesov");
+            ИменаТаблицыОтАндройда.addIfAbsent("type_materials");
+            ИменаТаблицыОтАндройда.addIfAbsent("get_materials_data");
+            ИменаТаблицыОтАндройда.addIfAbsent("company");
+            ИменаТаблицыОтАндройда.addIfAbsent("track");
+            ИменаТаблицыОтАндройда.addIfAbsent("prof");
+            ИменаТаблицыОтАндройда.addIfAbsent("order_tc");
+            ИменаТаблицыОтАндройда.addIfAbsent("vid_tc");
+            ИменаТаблицыОтАндройда.addIfAbsent("materials_databinary");
+            ИменаТаблицыОтАндройда.addIfAbsent("organization");
+
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +"  ИменаТаблицыОтАндройда" + ИменаТаблицыОтАндройда);
+
             ///todo публикум название таблицы или цифру его
         } catch (Exception e) {
             e.printStackTrace();

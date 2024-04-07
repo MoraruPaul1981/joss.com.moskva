@@ -449,7 +449,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                                                         + " ВерсияДанныхСервернойТаблицы " + ВерсияДанныхСервернойТаблицы );
                                             }
                                             if (НазваниеТаблицыСервера.trim().equalsIgnoreCase("versionserverversion")) {
-                                              ВерсииВсехСерверныхТаблиц.put(НазваниеСервернойТаблицы.trim(),
+                                              ВерсииВсехСерверныхТаблиц.putIfAbsent(НазваниеСервернойТаблицы.trim(),
                                                         Long.valueOf(ВерсияДанныхСервернойТаблицы));
 
                                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -462,7 +462,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
                                                 // TODO: 09.08.2023  даты заполяем таблиц с серверар
                                                 Date ДатаВерсииДанныхSQLServer=    new FormattingVersionDastaSqlserver(context).formattingDateOnVersionSqlServer(ВерсияДанныхСервернойТаблицы);
-                                                ВерсииДатыСерверныхТаблиц.put(НазваниеСервернойТаблицы.trim(), ДатаВерсииДанныхSQLServer );
+                                                ВерсииДатыСерверныхТаблиц.putIfAbsent(НазваниеСервернойТаблицы.trim(), ДатаВерсииДанныхSQLServer );
 
 
                                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
