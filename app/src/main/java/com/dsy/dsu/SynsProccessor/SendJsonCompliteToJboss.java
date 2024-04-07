@@ -14,18 +14,16 @@ import java.util.LinkedHashMap;
 
 import javax.net.ssl.SSLSocketFactory;
 
-public class SubClass_SendToServer {
+public class SendJsonCompliteToJboss {
 
     //////todo МЕТОД НЕПОСТРЕДСТВЕННО ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР МЕТОД POST
-    Long МетодПосылаетНаСерверСозданныйJSONФайлвФоне(@NonNull Context context,
-                                                     @NonNull byte[] ГенерацияJSONОтAndroid,
-                                                     @NonNull String Таблицы,
-                                                     @NonNull    LinkedHashMap<Integer,String> getHiltJbossDebug,
-                                                     @NonNull Integer PublicID,
-                                                     @NotNull SSLSocketFactory getsslSocketFactory2) {
-        /////
+    Long sendingJsonCompliteToJboss(@NonNull Context context,
+                                    @NonNull byte[] ГенерацияJSONОтAndroid,
+                                    @NonNull String Таблицы,
+                                    @NonNull    LinkedHashMap<Integer,String> getHiltJbossDebug,
+                                    @NonNull Integer PublicID,
+                                    @NotNull SSLSocketFactory getsslSocketFactory2) {
         Long РезультатCallBacksОтСервера = 0l;
-
         try {
             Log.d(this.getClass().getName(), "  МЕТОД НЕПОСТРЕДСТВЕННО ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР МЕТОД POST ");
             // TODO: 15.06.2021 проверяем если таблица табель то еси в нутри потока отпралеемого хоть один день d1,d2,d3 защита от пустого траыфика\
@@ -45,6 +43,7 @@ public class SubClass_SendToServer {
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                     + " ИмяСерверИзХранилица " + ИмяСерверИзХранилица+
                     " ПортСерверИзХранилица " +ПортСерверИзХранилица );
+
             // TODO: 21.09.2022 ОТПРАВЯЛЕТ ДАННЫЕ НА СЕРВЕР
             StringBuffer    BufferSendDataServer =new Class_MODEL_synchronized(context). методSendByteToAsync(
                     ГенерацияJSONОтAndroid,

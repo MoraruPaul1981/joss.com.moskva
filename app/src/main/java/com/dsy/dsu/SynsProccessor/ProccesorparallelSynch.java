@@ -819,7 +819,7 @@ public class ProccesorparallelSynch   {
     ////////TODO     МЕТОД ГЕНЕРИРОУЕМ JSON ПОЛЯ НА ОСНОВАНИЕ НАШИХ ДАННЫХ ДЛЯ ПОСЛЕДЖУЮЩЕ ОТПРАВКИ  POST()->
 
     Long МетодГенерацииJSON(@NonNull  Cursor КурсорДляОтправкиДанныхНаСерверОтАндройда,
-                            @NonNull String имяТаблицыОтАндройда_локальноая) {
+                            @NonNull String Таблицы) {
         Long РезультатСинхронизации = 0l;
         try {
             if (КурсорДляОтправкиДанныхНаСерверОтАндройда!=null) {
@@ -833,8 +833,8 @@ public class ProccesorparallelSynch   {
                     //   ObjectMapper jsonGenerator = new PUBLIC_CONTENT(context).getGeneratorJackson();
                     SimpleModule module = new SimpleModule();
                     // TODO: 11.09.2023  какая текущапя таблица
-                    if (имяТаблицыОтАндройда_локальноая.equalsIgnoreCase("materials_databinary")
-                            || имяТаблицыОтАндройда_локальноая.equalsIgnoreCase("data_chat") ) {
+                    if (Таблицы.equalsIgnoreCase("materials_databinary")
+                            || Таблицы.equalsIgnoreCase("data_chat") ) {
                         module.addSerializer(Cursor.class, new GeneratorBinarySONSerializer(context));
                     } else {
                         module.addSerializer(Cursor.class, new GeneratorJSONSerializer(context));
@@ -849,9 +849,11 @@ public class ProccesorparallelSynch   {
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                             + " BufferJsonForSendServer"+BufferJsonForSendServer );
 
+
+
                     // TODO: 14.03.2023 ПОСЫЛАЕМ ДАННЫЕ СГЕНЕРИРОНГО JSON НА СЕРВЕР ---->SERVER
-                    РезультатСинхронизации = new AsynsProccessor.SubClass_SendToServer(context)
-                            .МетодПосылаетНаСерверСозданныйJSONФайлвФоне(BufferJsonForSendServer, имяТаблицыОтАндройда_локальноая ); ////СГЕНЕРИРОВАНЫЙ JSON ФАЙЛ ЕСЛИ БОЛЬШЕ 2 ССИМВОЛОМ В НЕМ ТО ОТПРАВЛЯЕМ
+                    РезультатСинхронизации = new SendJsonCompliteToJboss().sendingJsonCompliteToJboss(context,BufferJsonForSendServer,Таблицы,getHiltJbossDebug,PublicID,getsslSocketFactory2 );
+
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
