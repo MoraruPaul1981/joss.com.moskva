@@ -649,12 +649,13 @@ public class ProccesorparallelSynch   {
             // TODO: 19.11.2022 ПОДНИМАЕМ ВЕРИСЮ ДАННЫХ
             Integer РезультатПовышенииВерсииДанных =
                     new SubClassUpVersionDATA().МетодVesrionUPMODIFITATION_Client(ИмяТаблицыОтАндройда_Локальноая,context);
-            Log.d(this.getClass().getName(), " РезультатПовышенииВерсииДанных  " + РезультатПовышенииВерсииДанных);
+
 
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                    " ВерсияДанныхсСамогоSqlServer  ");
+                    " ВерсияДанныхсСамогоSqlServer  "+
+                    " РезультатПовышенииВерсииДанных  " + РезультатПовышенииВерсииДанных);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -938,18 +939,16 @@ public class ProccesorparallelSynch   {
                 case "settings_tabels":
                     data=new Bundle();
                     data.putString("query","" +
-                            "  SELECT DISTINCT  * FROM " +Таблица+"   as gett " +
-                            "  WHERE   gett.current_table > "+ВерсияДанныхДляСравения+" AND gett. onesignal IS NOT NULL " +
-                            " AND gett.user_update IN ( SELECT DISTINCT getin.user_update " +
-                            "  FROM " +Таблица+" as getin " +
-                            " WHERE   getin.user_update="+PublicId+" ) "+"" );
+                            "  SELECT DISTINCT  * FROM settings_tabels   as gett  " +
+                            " WHERE   gett.current_table >   "+ВерсияДанныхДляСравения+" " +
+                            " AND gett.user_update = "+PublicId+" "+";" );
 
                     Log.d(this.getClass().getName(), " Таблица Все остальные  _id " + Таблица);
                     break;
                 case "data_notification":
                     data=new Bundle();
                     data.putString("query"," SELECT DISTINCT  * FROM " +Таблица+" as gett" +
-                            " WHERE   gett.current_table >  "+ВерсияДанныхДляСравения+"" );
+                            " WHERE   gett.current_table >  "+ВерсияДанныхДляСравения+""+";"  );
                     Log.d(this.getClass().getName(), " Таблица Все остальные  _id " + Таблица);
                     break;
                 // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID   // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID
@@ -958,9 +957,7 @@ public class ProccesorparallelSynch   {
                     data=new Bundle();
                     data.putString("query"," SELECT DISTINCT  * FROM " +Таблица+" as gett" +
                             " WHERE   gett.current_table >  "+ВерсияДанныхДляСравения+
-                            " AND gett.user_update IN ( SELECT DISTINCT getin.user_update " +
-                            " FROM " +Таблица+"  as getin " +
-                            "WHERE   getin.user_update="+PublicId+" ) "+"" );
+                            " AND gett.user_update = "+PublicId+" ) "+";" );
                     break;
             }
             // TODO: 08.08.2023 ГЛАВНОЕ ПОЛУЧЕНИЕ ДАННЫХ  ДЛя ОТПРАВКИ НА СЕРВЕР
