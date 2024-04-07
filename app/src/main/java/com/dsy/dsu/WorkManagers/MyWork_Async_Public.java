@@ -74,7 +74,7 @@ public class MyWork_Async_Public extends Worker {
             // TODO: 01.04.2024  запускаем Listertable
             WorkInfo.State stateSingle = new ListenableFutures(getApplicationContext()).listenableFutureWorkManager(ИмяСлужбыSingleWorkManger);
             // TODO: 26.12.2021
-            if ( stateSingle!= WorkInfo.State.RUNNING  ) {
+            if ( stateSingle!= WorkInfo.State.RUNNING   ) {
                 // TODO: 01.04.2024
            ФинальныйРезультатAsyncBackgroudPublic= МетодЗапускаОбщей();
             }

@@ -806,7 +806,7 @@ public class ProccesorparallelSynch   {
                          @NonNull CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда){
         Long РезультСинхрониазции=0l;
         try{
-            Integer ПозицияТекущейТаблицы=      ИменаТаблицыОтАндройда.indexOf(имяТаблицаAsync)+1;
+            Integer ПозицияТекущейТаблицы=      ИменаТаблицыОтАндройда.indexOf(имяТаблицаAsync);
             int Проценты = 0;
             if (jsonNodeParentMAP.size()>0) {
                 // TODO: 11.10.2022 callback

@@ -273,7 +273,7 @@ public class MyWork_AsyncSingle extends Worker {
             try{
                 Observable.interval(0, 5, TimeUnit.SECONDS, Schedulers.trampoline())
                         .timeInterval()
-                        .take(5,TimeUnit.MINUTES)
+                        .take(10,TimeUnit.MINUTES)
                         .doOnError(new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) throws Throwable {
