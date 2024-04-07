@@ -60,8 +60,10 @@ public class ProccesorparallelSynch   {
        LinkedHashMap<String, Date> ВерсииДатыСерверныхТаблиц;
     Integer PublicID;
 
-    public   int Проценты;
-    public Integer ИндексВизуальнойДляPrograssBar=0;
+    ArrayList<Long> SuccessInsertOrUpdates ;
+
+
+
     public ProccesorparallelSynch(@NonNull Context context,
                                   @NonNull ObjectMapper jsonGenerator,
                                   @NonNull SSLSocketFactory getsslSocketFactory2,
@@ -92,6 +94,8 @@ public class ProccesorparallelSynch   {
     public Long startingAsyncParallels() {
         CopyOnWriteArrayList<Long> coutSucceessItemAsycnTables=new CopyOnWriteArrayList();
         try{
+            SuccessInsertOrUpdates=new ArrayList<>();
+
             // TODO: 07.04.2024  
             Flowable.fromIterable( ВерсииВсехСерверныхТаблиц.keySet())
                     .map(new Function<String, String>() {
@@ -266,10 +270,8 @@ public class ProccesorparallelSynch   {
                                                        @NonNull Long ВерсияДанныхсSqlServer,
                                                        @NonNull  Integer  PublicID,
                                                        @NonNull Date   ВремяОтSqlServer) {
-      ArrayList<Long> SuccessInsertOrUpdates=new ArrayList<>();
+
         try{
-
-
             // TODO: 02.11.2023  ПРИНИМАЕМ ДАННЫЕ ОТ СЕРВЕРА ПО ЧАСТЯМ
             Observable.range(1,Integer.MAX_VALUE)
                     .take(1, TimeUnit.HOURS)
