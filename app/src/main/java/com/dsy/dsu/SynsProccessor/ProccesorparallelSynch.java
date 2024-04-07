@@ -5,13 +5,27 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.dsy.dsu.BusinessLogicAll.Class_MODEL_synchronized;
+import com.dsy.dsu.BusinessLogicAll.Class_Visible_Processing_Async;
+import com.dsy.dsu.BusinessLogicAll.Jakson.GeneratorBinarySONSerializer;
+import com.dsy.dsu.BusinessLogicAll.Jakson.GeneratorJSONSerializer;
+import com.dsy.dsu.BusinessLogicAll.SubClassUpVersionDATA;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
+import org.json.JSONException;
+
+import java.io.InputStream;
+import java.io.Serializable;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -27,22 +41,43 @@ import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.functions.Predicate;
 
-public class ProccesorparallelSynch  extends  AsynsProccessor{
+public class ProccesorparallelSynch   {
 
+
+
+  Context context;
+  ObjectMapper jsonGenerator;
+     SSLSocketFactory getsslSocketFactory2;
+     LinkedHashMap<Integer, String> getHiltJbossDebug;
+    LinkedHashMap<Integer, String> getHiltJbossReliz;
     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
      LinkedHashMap<String, Long> ВерсииВсехСерверныхТаблиц ;
        LinkedHashMap<String, Date> ВерсииДатыСерверныхТаблиц;
-    public ProccesorparallelSynch(@NonNull Context context, @NonNull ObjectMapper jsonGenerator,
-                                  @NonNull SSLSocketFactory getsslSocketFactory2, @NonNull LinkedHashMap<Integer,
-            String> getHiltJbossDebug, @NonNull LinkedHashMap<Integer
-            , String> getHiltJbossReliz, @NonNull  CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда,
+    Integer PublicID;
+    public ProccesorparallelSynch(@NonNull Context context,
+                                  @NonNull ObjectMapper jsonGenerator,
+                                  @NonNull SSLSocketFactory getsslSocketFactory2,
+                                  @NonNull LinkedHashMap<Integer, String> getHiltJbossDebug,
+                                  @NonNull LinkedHashMap<Integer, String> getHiltJbossReliz,
+
+                                  @NonNull  CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда,
                                   @NonNull LinkedHashMap<String, Long> ВерсииВсехСерверныхТаблиц ,
-                                  @NonNull  LinkedHashMap<String, Date> ВерсииДатыСерверныхТаблиц) {
-        super(context, jsonGenerator, getsslSocketFactory2, getHiltJbossDebug, getHiltJbossReliz);
+                                  @NonNull  LinkedHashMap<String, Date> ВерсииДатыСерверныхТаблиц,
+                                  @NonNull Integer PublicID) {
+
+
+
+        this. context=context;
+        this.   jsonGenerator=jsonGenerator;
+        this.   getsslSocketFactory2=getsslSocketFactory2;
+        this.    getHiltJbossDebug=getHiltJbossDebug;
+        this.  getHiltJbossReliz=getHiltJbossReliz;
 
         this.ИменаТаблицыОтАндройда=ИменаТаблицыОтАндройда;
         this.ВерсииВсехСерверныхТаблиц=ВерсииВсехСерверныхТаблиц;
         this.ВерсииДатыСерверныхТаблиц=ВерсииДатыСерверныхТаблиц;
+
+        this.  PublicID=PublicID;
 
     }
 
@@ -138,7 +173,7 @@ public class ProccesorparallelSynch  extends  AsynsProccessor{
             /////////////TODO ИДЕМ ПО ШАГАМ К ЗАПУСКИ СИНХРОГНИАЗЦИИ
             РезультатТаблицыОбмена=
                     analysVersionServerWithAnroidPOST(ИмяТаблицыоТВерсияДанныхОтSqlServer,
-                            ВерсияДанныхОтSqlServer, ID,ВремяВерсияОтSqlServer);
+                            ВерсияДанныхОтSqlServer, PublicID,ВремяВерсияОтSqlServer);
             // TODO: 12.07.2023
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -355,6 +390,489 @@ public class ProccesorparallelSynch  extends  AsynsProccessor{
         return AllVersionAndroidLocalSQlite;
     }
 // TODO: 07.04.2024
+
+
+
+    //TODO СЛЕДУЮЩИЙ ЭТАМ РАБОТЫ ОПРЕДЕЛЯЕМ   ОБОРОТ  ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР
+
+
+
+
+    Long AceccssAndCoohceGetDatatingAndPostDating(@NonNull String ИмяТаблицы,
+                                                  @NonNull Long ВерсияДанныхсSqlServer,
+                                                  @NonNull  Integer  PublicID,
+                                                  @NonNull Long ВерсииНаАндройдеЛокальная,
+                                                  @NonNull Long  ВерсииНаАндройдеСерверная,
+                                                  @NonNull Date  ВремяДанныхНаАндройде,
+                                                  @NonNull Date   ВремяОтSqlServer) {
+       Long  ДанныеПосылаемИлиПринимаемНаСервер=0l;
+        try {
+
+            Log.d(this.getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n"
+                    +" ИмяТаблицы " +ИмяТаблицы
+                    + "\n"
+                    +" ВерсияДанныхсSqlServer " +ВерсияДанныхсSqlServer
+                    + "\n"
+                    +" PublicID " +PublicID
+                    + "\n"
+                    +" ВерсииНаАндройдеЛокальная " +ВерсииНаАндройдеЛокальная+ "\n"
+                    +" ВерсииНаАндройдеСерверная " +ВерсииНаАндройдеСерверная
+                    + "\n"
+                    +" ВремяДанныхНаАндройде " +ВремяДанныхНаАндройде
+                    + "\n"
+                    +" ВремяОтSqlServer " +ВремяОтSqlServer+"\n");
+
+
+            // TODO: 05.04.2024 post() sending
+            // TODO: 05.10.2021  POST()-->
+            if (ВерсииНаАндройдеЛокальная > ВерсииНаАндройдеСерверная) {
+                // TODO: 05.04.2024  отправлем только определенные таблицы
+                if (! ИмяТаблицы.equalsIgnoreCase("view_onesignal") &&
+                        ! ИмяТаблицы.equalsIgnoreCase("chat_users") &&
+                        ! ИмяТаблицы.equalsIgnoreCase("view_onesignal") &&
+                        ! ИмяТаблицы.equalsIgnoreCase("prof") ) {
+
+                    Log.d(this.getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n"
+                            +" ИмяТаблицы " +ИмяТаблицы
+                            + "\n"
+                            +" ВерсияДанныхсSqlServer " +ВерсияДанныхсSqlServer
+                            + "\n"
+                            +" PublicID " +PublicID
+                            + "\n"
+                            +" ВерсииНаАндройдеЛокальная " +ВерсииНаАндройдеЛокальная+ "\n"
+                            +" ВерсииНаАндройдеСерверная " +ВерсииНаАндройдеСерверная
+                            + "\n"
+                            +" ВремяДанныхНаАндройде " +ВремяДанныхНаАндройде
+                            + "\n"
+                            +" ВремяОтSqlServer " +ВремяОтSqlServer+"\n");
+
+                    ////// todo МЕТОД POST() в фоне    ////// todo МЕТОД POST
+                    ДанныеПосылаемИлиПринимаемНаСервер =     МетодПосылаемДанныеНаСервервФоне(ИмяТаблицы, ВерсииНаАндройдеСерверная);
+
+
+
+                    if (ДанныеПосылаемИлиПринимаемНаСервер>0) {
+                        // TODO: 01.07.2023 После Успешно Посылании Данных На Сервер Повышаем Верисю Данных
+                        методПослеУспешногоПолученияПовышаемВерсию(ИмяТаблицы );
+                    }
+
+
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" ДанныеПосылаемИлиПринимаемНаСервер  "+ДанныеПосылаемИлиПринимаемНаСервер);
+                }
+
+
+
+
+
+
+
+                // TODO: 05.04.2024  метод GET()   ПОЛУЧАЕМ ДАННЫЕ !!!!!
+                // TODO: 05.04.2024  метод GET()   ПОЛУЧАЕМ ДАННЫЕ !!!!!
+            }else {
+                // TODO: 05.04.2024  метод GET()   ПОЛУЧАЕМ ДАННЫЕ !!!!!
+                // TODO: 05.04.2024  метод GET()   ПОЛУЧАЕМ ДАННЫЕ !!!!!
+
+
+
+
+
+                // TODO: 19.10.2021   GET()->
+                if (ВерсияДанныхсSqlServer > ВерсииНаАндройдеСерверная ) {
+                    // TODO: 05.04.2024
+                    if ( !ВремяОтSqlServer.equals(ВремяДанныхНаАндройде)) {
+                        // TODO: 05.04.2024
+                        if (!ИмяТаблицы.equalsIgnoreCase("errordsu1")) {
+
+                            ////// todo МЕТОД GET() в фоне    ////// todo МЕТОД GET
+                            ДанныеПосылаемИлиПринимаемНаСервер = МетодДанныеПолучаемНаСервервФоне(ИмяТаблицы, ВерсииНаАндройдеСерверная, PublicID);
+
+                            if (ДанныеПосылаемИлиПринимаемНаСервер>0) {
+                                // TODO: 01.07.2023 После Успешно Посылании Данных На Сервер Повышаем Верисю Данных
+                                методПослеУспешногоПолученияПовышаемВерсию(ИмяТаблицы );
+                            }
+
+
+                            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " ДанныеПосылаемИлиПринимаемНаСервер  " + ДанныеПосылаемИлиПринимаемНаСервер+
+                                    "\n"+ " ВремяДанныхНаАндройде " +ВремяДанныхНаАндройде+" ВремяДанныхНаАндройде " +ВремяДанныхНаАндройде);
+                        }
+                    }
+                }
+            }
+            // TODO: 05.04.2024  после обработки обоих методов post and get
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        return  ДанныеПосылаемИлиПринимаемНаСервер;
+    }
+
+// TODO: 07.04.2024
+
+    ///----------- ТУТ КОД УЖЕ ПОСЫЛАНИЕ ДАННЫХ НА СЕРВЕР МЕТОДУ POST (данные андройда посылаються на сервер)
+
+
+    /////todo POST МЕТОД КОГДА НА АНДРОЙДЕ ВЕРСИЯ ДАННЫХ ВЫШЕ ЧЕМ НА СЕРВРЕР И МЫ  JSON ФАЙЛ ТУДА МЕТОД POST
+    Long МетодПосылаемДанныеНаСервервФоне(@NonNull String ИмяТаблицы,
+                                          @NonNull Long ВерсииНаАндройдеСерверная) {
+
+        Long РезультатСинхронизации=0l;
+        try {
+            // TODO: 15.02.2022  ДАННЫЕ ДЛЯ ОТПРАВКИ НА СЕРВЕР
+            Cursor cursorForSendServer= методГлавныйGetDataForAsync(ИмяТаблицы ,ВерсииНаАндройдеСерверная );
+            /////TODO результаты   количество отправляемой информации на сервера
+            if (cursorForSendServer!=null && cursorForSendServer.getCount() > 0) {
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " cursorForSendServer "+cursorForSendServer.getCount() );
+
+                //////// todo упаковываем в  json ПЕРЕХОДИМ НА СЛЕДУЩИМ МЕТОД для отрправки на сервер метод POST() POST() POST() POST() POST() POST()POST()
+                РезультатСинхронизации = МетодГенерацииJSON(cursorForSendServer, ИмяТаблицы );
+                // TODO: 04.08.2023
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                        + " РезультатСинхронизации "+РезультатСинхронизации );
+
+            }
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " РезультатСинхронизации "+РезультатСинхронизации );
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        return  РезультатСинхронизации;
+    }
+
+
+// TODO: 07.04.2024
+
+    //TODO СЛЕДУЮЩИЙ ЭТАМ РАБОТЫ ОПРЕДЕЛЯЕМ ЧТО МЫ ДЕЛАЕМ ПОЛУЧАЕМ ДАННЫЕ С СЕВРЕРА
+    Long МетодДанныеПолучаемНаСервервФоне(@NonNull String ИмяТаблицы,
+                                          @NonNull Long  ВерсииНаАндройдеСерверная,
+                                          @NonNull Integer PublicID) {
+        // TODO: 05.04.2024 get ()
+        Long         ДанныесСервера = 0l;
+        try {
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" ИмяТаблицы  "+ИмяТаблицы
+                    + "\n"+" ВерсииНаАндройдеСерверная  "+ВерсииНаАндройдеСерверная
+                    + "\n"+" PublicID  "+PublicID+"\n");
+
+
+            // TODO: 05.04.2024   GET()-> получаем данные с сервера
+            ДанныесСервера = МетодОбменаЗаданиеСервера_сервераПолучаем_Сервер(ВерсииНаАндройдеСерверная, ИмяТаблицы, PublicID);
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" ДанныесСервера  "+ДанныесСервера+ "\n"+" ИмяТаблицы  "+ИмяТаблицы
+                    +"\n"+" ВерсииНаАндройдеСерверная " +ВерсииНаАндройдеСерверная);
+
+
+
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" ИмяТаблицы  "+ИмяТаблицы);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        return  ДанныесСервера;
+    }
+// TODO: 07.04.2024
+
+
+    // TODO: 07.09.2023 После Успешного ПОлучение и Успешной Отправки Выравниваем Версию  Данных AFTER
+
+    private void методПослеУспешногоПолученияПовышаемВерсию(@NonNull String ИмяТаблицыОтАндройда_Локальноая) {
+        try{
+            // TODO: 19.11.2022 ПОДНИМАЕМ ВЕРИСЮ ДАННЫХ
+            Integer РезультатПовышенииВерсииДанных =
+                    new SubClassUpVersionDATA().МетодVesrionUPMODIFITATION_Client(ИмяТаблицыОтАндройда_Локальноая,context);
+            Log.d(this.getClass().getName(), " РезультатПовышенииВерсииДанных  " + РезультатПовышенииВерсииДанных);
+
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                    " ВерсияДанныхсСамогоSqlServer  ");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+    }
+// TODO: 07.04.2024
+
+    @NonNull
+    private Long МетодОбменаЗаданиеСервера_сервераПолучаем_Сервер(@NonNull  Long ВерсияДанных,
+                                                                  @NonNull String ИмяТаблицы,
+                                                                  @NonNull  Integer ID) {
+        Long  РезультатДанныесСервера=0l;
+        try{
+            Log.d(this.getClass().getName(), " ВерсияДанных" + ВерсияДанных+" ID "   + ID + "ИмяТаблицы"  + ИмяТаблицы);
+            //////////TODO МЕТОД get
+            РезультатДанныесСервера =
+                    МетодПолучаемДаннныесСервера(ИмяТаблицы,
+                            ID,
+                            ВерсияДанных );
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" РезультатДанныесСервера  "+РезультатДанныесСервера);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        return РезультатДанныесСервера;
+    }
+// TODO: 07.04.2024
+
+
+
+
+
+
+    // TODO: 19.08.2021   КОнец Класс ВЫЧИСЛЯЕТ ЕЩЕ НЕ ОТРРВЛЕННЫЕ СООБЩЕНИЯ НА СЕРВЕР ИЗ ЧАТА
+    /////МЕТОД КОГДА НА СЕРВЕРЕ ВЕРСИЯ ДАННЫХ ВЫШЕ И МЫ ПОЛУЧАЕМ ДАННЫЕ С СЕРВРА
+    @SuppressLint("SuspiciousIndentation")
+    Long МетодПолучаемДаннныесСервера( @NonNull String ИмяТаблицы,
+                                       @NonNull Integer ID
+            , @NonNull Long  ВерсияДанных) {
+
+        Long РезультатФоновнойСинхронизации=0l;
+        try {
+            // TODO: 02.04.2024  Адресс и Порт Сервера Jboss
+            // TODO: 02.04.2024  Адресс и Порт Сервера Jboss
+            String   ИмяСерверИзХранилица = getHiltJbossDebug.values().stream().map(m->String.valueOf(m)).findFirst().get();
+            Integer    ПортСерверИзХранилица = getHiltJbossDebug.keySet().stream().mapToInt(m->m).findFirst().getAsInt();
+
+
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " ИмяСерверИзХранилица " + ИмяСерверИзХранилица+
+                    " ПортСерверИзХранилица " +ПортСерверИзХранилица );
+            // TODO: 10.11.2022  Получение JSON-потока
+            InputStream BufferGetData =new Class_MODEL_synchronized(context). методGetByteFromServerAsync(
+                    ИмяТаблицы,
+                    "application/gzip",
+                    "Хотим Получить  JSON"
+                    ,ВерсияДанных,
+                    ID,
+                    ИмяСерверИзХранилица
+                    ,ПортСерверИзХранилица,getsslSocketFactory2);
+            // TODO: 01.12.2023
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " BufferGetData " +BufferGetData );
+
+            if (BufferGetData!=null) {
+                //////TODO запускаем метод распарстивая JSON
+                РезультатФоновнойСинхронизации=        МетодПарсингJSONФайлаОтСервреравФоне(BufferGetData, ИмяТаблицы);
+            }
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" РезультатФоновнойСинхронизации "+РезультатФоновнойСинхронизации+
+                    " BufferGetData " +BufferGetData);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ////// начало запись в файл
+        }
+        return РезультатФоновнойСинхронизации;
+    }
+
+// TODO: 07.04.2024
+
+    /////// TODO МЕТОД ПАСРИНГА ПРИШЕДШЕГО  С СЕРВЕРА ВНУТРИ ASYNSTASK В ФОНЕ
+    Long МетодПарсингJSONФайлаОтСервреравФоне(@NonNull  InputStream БуферGetByteJson,
+                                              @NonNull  String имяТаблицаAsync) throws InterruptedException, JSONException {
+        // TODO: 05.07.2023 result suync
+        Long  РезультСинхрониазции=0l;
+        try {
+            Log.d(this.getClass().getName(), " имяТаблицаAsync " + имяТаблицаAsync + " БуферПолученныйJSON " +БуферGetByteJson.available()  );
+            //TODO БУфер JSON от Сервера
+            //  ObjectMapper jsonGenerator = new PUBLIC_CONTENT(context).getGeneratorJackson();
+
+            final JsonParser jsonParser= jsonGenerator.createParser(БуферGetByteJson);
+            JsonNode jsonNodeParentMAP= jsonParser.readValueAsTree();
+            if (jsonNodeParentMAP!=null && jsonNodeParentMAP.size()>0) {
+                Log.d(this.getClass().getName(),"\n" + " class " +
+                        Thread.currentThread().getStackTrace()[2].getClassName()
+                        + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                        " jsonNodeParentMAP.size() " +jsonNodeParentMAP.size() );
+
+                // TODO: 03.10.2023 все кроме байт
+                РезультСинхрониазции=   методRowJsonRow(jsonNodeParentMAP,имяТаблицаAsync);
+                Log.d(this.getClass().getName(),"\n" + " class " +
+                        Thread.currentThread().getStackTrace()[2].getClassName()
+                        + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                        " БуферGetByteJson " +БуферGetByteJson );
+
+
+            }
+// TODO: 14.09.2023 exit
+            БуферGetByteJson.close();
+
+            Log.d(this.getClass().getName(),"\n" + " class " +
+                    Thread.currentThread().getStackTrace()[2].getClassName()
+                    + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                    " РезультСинхрониазции " + РезультСинхрониазции);
+            // TODO: 01.05.2023 clear
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        return   РезультСинхрониазции ;
+    }
+
+// TODO: 07.04.2024
+
+
+    // TODO: 13.09.2023   ROW
+    Long методRowJsonRow(@NonNull  JsonNode jsonNodeParentMAP,
+                         @NonNull String имяТаблицаAsync){
+        Long РезультСинхрониазции=0l;
+        try{
+            if (jsonNodeParentMAP.size()>0) {
+                // TODO: 11.10.2022 callback метод обратно в актвити #1
+                ИндексВизуальнойДляPrograssBar=0;
+                Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasemirrorbinary/" + имяТаблицаAsync + "");
+                ContentResolver resolver = context.getContentResolver();
+                Bundle bundle=new Bundle();
+                bundle.putSerializable("jsonNodeParentMAP", (Serializable) jsonNodeParentMAP);
+                bundle.putString("nametable",имяТаблицаAsync);
+                Проценты = new Class_Visible_Processing_Async(context).
+                        ГенерируемПРОЦЕНТЫДляAsync(ПозицияТекущейТаблицы, ГлавныеТаблицыСинхронизации.size());
+
+                // TODO: 22.01.2024 текущее отобраение процентов
+
+                методCallBackPrograssBars(  Проценты,имяТаблицаAsync,ПозицияТекущейТаблицы);
+
+                Bundle bundleРезультатОбновлениеМассовой =resolver.call(uri,имяТаблицаAsync,new StringBuffer(имяТаблицаAsync).toString(),bundle);
+                РезультСинхрониазции=bundleРезультатОбновлениеМассовой.getLong("completeasync",0l)   ;
+            }
+            Log.d(this.getClass().getName(),"\n" + " class " +
+                    Thread.currentThread().getStackTrace()[2].getClassName()
+                    + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() );
+
+            // TODO: 01.05.2023 clear
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        return  РезультСинхрониазции;
+    }
+    // TODO: 07.04.2024
+
+    ////////TODO     МЕТОД ГЕНЕРИРОУЕМ JSON ПОЛЯ НА ОСНОВАНИЕ НАШИХ ДАННЫХ ДЛЯ ПОСЛЕДЖУЮЩЕ ОТПРАВКИ  POST()->
+
+    Long МетодГенерацииJSON(@NonNull  Cursor КурсорДляОтправкиДанныхНаСерверОтАндройда,
+                            @NonNull String имяТаблицыОтАндройда_локальноая) {
+        Long РезультатСинхронизации = 0l;
+        try {
+            if (КурсорДляОтправкиДанныхНаСерверОтАндройда!=null) {
+                if (КурсорДляОтправкиДанныхНаСерверОтАндройда.getCount()>0) {
+                    КурсорДляОтправкиДанныхНаСерверОтАндройда.moveToFirst();
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                            + " КурсорДляОтправкиДанныхНаСерверОтАндройда "+КурсорДляОтправкиДанныхНаСерверОтАндройда.getCount() );
+                    StringWriter stringWriterJSONAndroid=    new StringWriter();
+                    //   ObjectMapper jsonGenerator = new PUBLIC_CONTENT(context).getGeneratorJackson();
+                    SimpleModule module = new SimpleModule();
+                    // TODO: 11.09.2023  какая текущапя таблица
+                    if (имяТаблицыОтАндройда_локальноая.equalsIgnoreCase("materials_databinary")
+                            || имяТаблицыОтАндройда_локальноая.equalsIgnoreCase("data_chat") ) {
+                        module.addSerializer(Cursor.class, new GeneratorBinarySONSerializer(context));
+                    } else {
+                        module.addSerializer(Cursor.class, new GeneratorJSONSerializer(context));
+                    }
+                    jsonGenerator.registerModule(module);
+                    jsonGenerator.getFactory().createGenerator( stringWriterJSONAndroid ).useDefaultPrettyPrinter();
+                    byte[] BufferJsonForSendServer=  jsonGenerator.writeValueAsBytes(КурсорДляОтправкиДанныхНаСерверОтАндройда);
+                    // TODO: 23.03.2023 ID ПРОФЕСИИ
+                    КурсорДляОтправкиДанныхНаСерверОтАндройда.close();
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                            + " BufferJsonForSendServer"+BufferJsonForSendServer );
+
+                    // TODO: 14.03.2023 ПОСЫЛАЕМ ДАННЫЕ СГЕНЕРИРОНГО JSON НА СЕРВЕР ---->SERVER
+                    РезультатСинхронизации = new AsynsProccessor.SubClass_SendToServer(context)
+                            .МетодПосылаетНаСерверСозданныйJSONФайлвФоне(BufferJsonForSendServer, имяТаблицыОтАндройда_локальноая ); ////СГЕНЕРИРОВАНЫЙ JSON ФАЙЛ ЕСЛИ БОЛЬШЕ 2 ССИМВОЛОМ В НЕМ ТО ОТПРАВЛЯЕМ
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                            + " РезультатОтветаОтСервреУспешнаяВставкаИлиОбновления " +РезультатСинхронизации );
+                }else{
+                    Log.d(this.getClass().getName(), " НЕ т данных  "+"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                            + " РезультатОтветаОтСервреУспешнаяВставкаИлиОбновления " +РезультатСинхронизации +
+                            " КурсорДляОтправкиДанныхНаСерверОтАндройда " +КурсорДляОтправкиДанныхНаСерверОтАндройда.getCount());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        return  РезультатСинхронизации;
+    }
 
 
 }
