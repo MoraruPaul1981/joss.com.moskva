@@ -42,15 +42,12 @@ import java.io.Serializable;
 import java.io.StringWriter;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -61,13 +58,7 @@ import javax.net.ssl.SSLSocketFactory;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Action;
-import io.reactivex.rxjava3.functions.Function;
-import io.reactivex.rxjava3.functions.Predicate;
-import io.reactivex.rxjava3.parallel.ParallelFlowable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class AsynsProccessor extends Class_MODEL_synchronized {
@@ -76,7 +67,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
     public CopyOnWriteArrayList<String> ГлавныеТаблицыСинхронизации =new CopyOnWriteArrayList();
 
     public SQLiteDatabase sqLiteDatabase ;
-    public PUBLIC_CONTENT public_contentДатыДляГлавныхТаблицСинхронизации;
+    public PUBLIC_CONTENT ГлавныхТаблицСинхронизации;
     public boolean ФлагУказываетЧтоТОлькоОбработкаТаблицДляЧАТА = false;
     public  String ФлагКакуюЧастьСинхронизацииЗапускаем =new String();
 
@@ -100,9 +91,6 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
     public  String КлючДляFirebaseNotification = "2a1819db-60c8-4ca3-a752-1b6cd9cadfa1";
 
 
-    public     CopyOnWriteArrayList<Long>  ЛистТаблицыОбмена;
-
-
     public   ObjectMapper jsonGenerator;
 
     public SSLSocketFactory getsslSocketFactory2;
@@ -118,7 +106,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                            @NonNull LinkedHashMap<Integer,String> getHiltJbossDebug,@NonNull  LinkedHashMap<Integer,String> getHiltJbossReliz) {
         super(context);
         this.context=context;
-        this.   public_contentДатыДляГлавныхТаблицСинхронизации=new PUBLIC_CONTENT(context);
+        this.ГлавныхТаблицСинхронизации =new PUBLIC_CONTENT(context);
         this.   sqLiteDatabase=    GetSQLiteDatabase.SqliteDatabase();
         this.jsonGenerator=    jsonGenerator;
         this.getsslSocketFactory2=    getsslSocketFactory2;
@@ -433,8 +421,8 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
                     ///упаковываем в j
                     Log.d(this.getClass().getName(), "  БуферJsonОтСервераmodification_server  " + БуферJsonОтСервераmodification_server);
-                    public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц = new LinkedHashMap<String, Long>();
-                    public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.clear();
+                    ГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц = new LinkedHashMap<String, Long>();
+                    ГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.clear();
                     // TODO: 09.08.2023  бежим по данным версии сервера
                     Flowable.fromIterable(БуферJsonОтСервераmodification_server)
                             .onBackpressureBuffer()
@@ -447,7 +435,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                                         @Override
                                         public void accept(String НазваниеТаблицыСервера, String ВерсияДанныхСервернойТаблицы) {
                                             if (НазваниеТаблицыСервера.trim().equalsIgnoreCase("name")) {
-                                                public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.add(ВерсияДанныхСервернойТаблицы.trim());
+                                                ГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.add(ВерсияДанныхСервернойТаблицы.trim());
                                                 НазваниеСервернойТаблицы =ВерсияДанныхСервернойТаблицы.trim();
 
                                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -456,7 +444,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                                                         + " ВерсияДанныхСервернойТаблицы " + ВерсияДанныхСервернойТаблицы );
                                             }
                                             if (НазваниеТаблицыСервера.trim().equalsIgnoreCase("versionserverversion")) {
-                                                public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.put(НазваниеСервернойТаблицы.trim(),
+                                                ГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.put(НазваниеСервернойТаблицы.trim(),
                                                         Long.valueOf(ВерсияДанныхСервернойТаблицы));
 
                                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -469,7 +457,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
                                                 // TODO: 09.08.2023  даты заполяем таблиц с серверар
                                                 Date ДатаВерсииДанныхSQLServer=    new FormattingVersionDastaSqlserver(context).formattingDateOnVersionSqlServer(ВерсияДанныхСервернойТаблицы);
-                                                public_contentДатыДляГлавныхТаблицСинхронизации.  ВерсииДатыСерверныхТаблиц.put(НазваниеСервернойТаблицы.trim(), ДатаВерсииДанныхSQLServer );
+                                                ГлавныхТаблицСинхронизации.  ВерсииДатыСерверныхТаблиц.put(НазваниеСервернойТаблицы.trim(), ДатаВерсииДанныхSQLServer );
 
 
                                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -501,8 +489,8 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                             + " РезультатСинхронизации " + РезультатСинхронизации);
 
                     Log.i(this.getClass().getName(), " ИменаТаблицыОтАндройда "
-                            + public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.toString() +
-                            " ВерсииВсехСерверныхТаблиц " + public_contentДатыДляГлавныхТаблицСинхронизации.toString() +
+                            + ГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.toString() +
+                            " ВерсииВсехСерверныхТаблиц " + ГлавныхТаблицСинхронизации.toString() +
                             "  ДанныеПришлаСпискаТаблицДляОбмена " + ДанныеПришлаСпискаТаблицДляОбмена);
                 }
             }else {
@@ -990,7 +978,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                     bundleComunications.putString("Статус" ,"AsyncPrograssBar");
                     bundleComunications.putInt("Проценны" ,Проценны);
                     bundleComunications.putString("имятаблицы" ,имяТаблицаAsync);
-                    bundleComunications.putInt("maxtables" ,public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.size());
+                    bundleComunications.putInt("maxtables" , ГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.size());
                     bundleComunications.putInt("currentposition" ,ПозицияТекущейТаблицы);
                     intentComunications.putExtras(bundleComunications);
 
@@ -1227,12 +1215,15 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
     //todo  ПОД КЛАСС  С ГЛАВНМ ЦИКЛОМ ОБМЕНА ДАННЫМИ ТАБЛИ
     Long МетодГлавныхЦиклТаблицДляСинхронизации(@NonNull Integer ID)
             throws ExecutionException, InterruptedException {//КонтекстСинхроДляКонтроллера
-        ЛистТаблицыОбмена = new CopyOnWriteArrayList<>();
+        // TODO: 07.04.2024
+        final Long[] ResultatSync = {0l};
         try {
             Log.i(this.getClass().getName(), " ИменаТаблицыОтАндройда "
-                    + public_contentДатыДляГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.toString()
+                    + ГлавныхТаблицСинхронизации.ИменаТаблицыОтАндройда.toString()
                     + " ВерсииВсехСерверныхТаблиц "
-                    + public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.toString());
+                    + ГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.toString()
+                    + " ВерсииДатыСерверныхТаблиц "
+                    + ГлавныхТаблицСинхронизации.ВерсииДатыСерверныхТаблиц.toString());
 
 
 // TODO: 21.08.2023 ГЛАВНЫЙ ЦИКЛ СИХРОНИАЗЦИИ--многопоточный
@@ -1240,12 +1231,14 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                 @Override
                 public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
 
-                     // TODO: 14.12.2023  топль POSt SINGLE
-                   new  ProccesorSecerialynch(context).startingAsyncposledovatelno();
+
+            /*         // TODO: 14.12.2023  топль POSt () Последовательно
+                 ResultatSync[0] =   new  ProccesorSecerialynch( context,  jsonGenerator,
+                         getsslSocketFactory2,  getHiltJbossDebug,  getHiltJbossReliz).startingAsyncposledovatelno();
 
                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " sequential  ");
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " sequential  "+" ResultatSync " + ResultatSync[0]);*/
 
 
 
@@ -1254,13 +1247,14 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                 @Override
                 public void onComplete() {
 
-                    // TODO: 21.08.2023  только GET Parelleing
-              new ProccesorparallelSynch( ).startingAsyncParallels();
+                    // TODO: 21.08.2023  только GET() Параллено
+           ResultatSync[0] =        new ProccesorparallelSynch( context,  jsonGenerator,
+                      getsslSocketFactory2,  getHiltJbossDebug,  getHiltJbossReliz).startingAsyncParallels();
 
 
                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "parallel"   );
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "parallel"+" ResultatSync " + ResultatSync[0]);
                 }
 
                 @Override
@@ -1285,7 +1279,7 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                     this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber()  );
         }
-        return ЛистТаблицыОбмена.stream().reduce(0l, (a, b) -> a + b).longValue();
+        return  ;
     }
 
 

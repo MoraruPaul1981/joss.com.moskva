@@ -16,15 +16,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLSocketFactory;
 
 import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Function;
-import io.reactivex.rxjava3.functions.Predicate;
 
 public class ProccesorSecerialynch   extends  AsynsProccessor {
     public ProccesorSecerialynch(@NonNull Context context, @NonNull ObjectMapper jsonGenerator,
@@ -39,7 +36,7 @@ public class ProccesorSecerialynch   extends  AsynsProccessor {
     public void startingAsyncposledovatelno() {
         try{
 
-            Flowable.fromIterable( public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.keySet())
+            Flowable.fromIterable( ГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.keySet())
                     .map(new Function<String, String>() {
                         @Override
                         public String apply(String ТаблицаОбработываемаяParallel) throws Throwable {
@@ -111,10 +108,10 @@ public class ProccesorSecerialynch   extends  AsynsProccessor {
         Long   РезультатТаблицыОбмена=0l;
         try{
             // TODO: 21.08.2023 Запуск Синхронизации после получение Версии
-            Long     ВерсияДанныхОтSqlServer = public_contentДатыДляГлавныхТаблицСинхронизации.
+            Long     ВерсияДанныхОтSqlServer = ГлавныхТаблицСинхронизации.
                     ВерсииВсехСерверныхТаблиц.get(ИмяТаблицыоТВерсияДанныхОтSqlServer);
             // TODO: 02.04.2024 верям данных
-            Date ВремяВерсияОтSqlServer =          public_contentДатыДляГлавныхТаблицСинхронизации.
+            Date ВремяВерсияОтSqlServer =          ГлавныхТаблицСинхронизации.
                     ВерсииДатыСерверныхТаблиц.get(ИмяТаблицыоТВерсияДанныхОтSqlServer);
 
 
@@ -134,7 +131,7 @@ public class ProccesorSecerialynch   extends  AsynsProccessor {
                             ВерсияДанныхОтSqlServer, ID,ВремяВерсияОтSqlServer);
 
 
-            ЛистТаблицыОбмена.add(РезультатТаблицыОбмена);
+            ЛистТаблицыОбменаAfterAsync.add(РезультатТаблицыОбмена);
             // TODO: 12.07.2023
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

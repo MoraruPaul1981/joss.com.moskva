@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -36,10 +35,10 @@ public class ProccesorparallelSynch  extends  AsynsProccessor{
         super(context, jsonGenerator, getsslSocketFactory2, getHiltJbossDebug, getHiltJbossReliz);
     }
 
-    public void startingAsyncParallels() {
+    public Long startingAsyncParallels() {
+        final Long[] РезультатТаблицыОбмена = new Long[0];
         try{
-
-            Flowable.fromIterable( public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.keySet())
+            Flowable.fromIterable( ГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.keySet())
                     .map(new Function<String, String>() {
                         @Override
                         public String apply(String ТаблицаОбработываемаяParallel) throws Throwable {
@@ -57,7 +56,7 @@ public class ProccesorparallelSynch  extends  AsynsProccessor{
                         public void accept(String ТаблицаОбработываемаяParallel) throws Throwable {
 
                             // TODO: 06.12.2023  запуск синхризуции по таблице конктерной
-                            Long   РезультатТаблицыОбмена   =        getLooTablesPOSTANDGET(ТаблицаОбработываемаяParallel);
+                          РезультатТаблицыОбмена[0] =        getLooTablesPOSTANDGET(ТаблицаОбработываемаяParallel);
 
                             // TODO: 15.09.2023
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -65,7 +64,7 @@ public class ProccesorparallelSynch  extends  AsynsProccessor{
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
                                     " ТаблицаОбработываемаяParallel"
                                     +ТаблицаОбработываемаяParallel
-                                    + " РезультатТаблицыОбмена " +РезультатТаблицыОбмена );
+                                    + " РезультатТаблицыОбмена " + РезультатТаблицыОбмена[0]);
                         }
                     })
                     .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
@@ -100,6 +99,7 @@ public class ProccesorparallelSynch  extends  AsynsProccessor{
                     this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber()  );
         }
+        return РезультатТаблицыОбмена[0];
     }
 
 // TODO: 07.04.2024
@@ -111,10 +111,10 @@ public class ProccesorparallelSynch  extends  AsynsProccessor{
         Long   РезультатТаблицыОбмена=0l;
         try{
             // TODO: 21.08.2023 Запуск Синхронизации после получение Версии
-            Long     ВерсияДанныхОтSqlServer = public_contentДатыДляГлавныхТаблицСинхронизации.
+            Long     ВерсияДанныхОтSqlServer = ГлавныхТаблицСинхронизации.
                     ВерсииВсехСерверныхТаблиц.get(ИмяТаблицыоТВерсияДанныхОтSqlServer);
             // TODO: 02.04.2024 верям данных
-            Date ВремяВерсияОтSqlServer =          public_contentДатыДляГлавныхТаблицСинхронизации.
+            Date ВремяВерсияОтSqlServer =          ГлавныхТаблицСинхронизации.
                     ВерсииДатыСерверныхТаблиц.get(ИмяТаблицыоТВерсияДанныхОтSqlServer);
 
 
@@ -134,7 +134,7 @@ public class ProccesorparallelSynch  extends  AsynsProccessor{
                             ВерсияДанныхОтSqlServer, ID,ВремяВерсияОтSqlServer);
 
 
-            ЛистТаблицыОбмена.add(РезультатТаблицыОбмена);
+            ЛистТаблицыОбменаAfterAsync.add(РезультатТаблицыОбмена);
             // TODO: 12.07.2023
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
