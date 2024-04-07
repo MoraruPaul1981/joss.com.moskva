@@ -10,6 +10,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.dsy.dsu.BusinessLogicAll.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.BusinessLogicAll.Class_MODEL_synchronized;
 import com.dsy.dsu.BusinessLogicAll.Class_Visible_Processing_Async;
 import com.dsy.dsu.BusinessLogicAll.Jakson.GeneratorBinarySONSerializer;
@@ -534,7 +535,7 @@ public class ProccesorparallelSynch   {
         Long РезультатСинхронизации=0l;
         try {
             // TODO: 15.02.2022  ДАННЫЕ ДЛЯ ОТПРАВКИ НА СЕРВЕР
-            Cursor cursorForSendServer= методГлавныйGetDataForAsync(ИмяТаблицы ,ВерсииНаАндройдеСерверная );
+            Cursor cursorForSendServer= методГлавныйGetDataForAsync(ИмяТаблицы ,ВерсииНаАндройдеСерверная ,PublicID);
             /////TODO результаты   количество отправляемой информации на сервера
             if (cursorForSendServer!=null && cursorForSendServer.getCount() > 0) {
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -816,11 +817,12 @@ public class ProccesorparallelSynch   {
     }
     // TODO: 07.04.2024
 
-    ////////TODO     МЕТОД ГЕНЕРИРОУЕМ JSON ПОЛЯ НА ОСНОВАНИЕ НАШИХ ДАННЫХ ДЛЯ ПОСЛЕДЖУЮЩЕ ОТПРАВКИ  POST()->
 
+
+    ////////TODO     МЕТОД ГЕНЕРИРОУЕМ JSON ПОЛЯ НА ОСНОВАНИЕ НАШИХ ДАННЫХ ДЛЯ ПОСЛЕДЖУЮЩЕ ОТПРАВКИ  POST()->
     Long МетодГенерацииJSON(@NonNull  Cursor КурсорДляОтправкиДанныхНаСерверОтАндройда,
                             @NonNull String Таблицы) {
-        Long РезультатСинхронизации = 0l;
+        Long ResultatSendingJsonJboss = 0l;
         try {
             if (КурсорДляОтправкиДанныхНаСерверОтАндройда!=null) {
                 if (КурсорДляОтправкиДанныхНаСерверОтАндройда.getCount()>0) {
@@ -829,6 +831,7 @@ public class ProccesorparallelSynch   {
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                             + " КурсорДляОтправкиДанныхНаСерверОтАндройда "+КурсорДляОтправкиДанныхНаСерверОтАндройда.getCount() );
+
                     StringWriter stringWriterJSONAndroid=    new StringWriter();
                     //   ObjectMapper jsonGenerator = new PUBLIC_CONTENT(context).getGeneratorJackson();
                     SimpleModule module = new SimpleModule();
@@ -852,17 +855,18 @@ public class ProccesorparallelSynch   {
 
 
                     // TODO: 14.03.2023 ПОСЫЛАЕМ ДАННЫЕ СГЕНЕРИРОНГО JSON НА СЕРВЕР ---->SERVER
-                    РезультатСинхронизации = new SendJsonCompliteToJboss().sendingJsonCompliteToJboss(context,BufferJsonForSendServer,Таблицы,getHiltJbossDebug,PublicID,getsslSocketFactory2 );
+                    ResultatSendingJsonJboss = new SendJsonCompliteToJboss().sendingJsonCompliteToJboss(context,BufferJsonForSendServer,
+                            Таблицы,getHiltJbossDebug,PublicID,getsslSocketFactory2 );
 
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                            + " РезультатОтветаОтСервреУспешнаяВставкаИлиОбновления " +РезультатСинхронизации );
+                            + " РезультатОтветаОтСервреУспешнаяВставкаИлиОбновления " +ResultatSendingJsonJboss );
                 }else{
                     Log.d(this.getClass().getName(), " НЕ т данных  "+"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                            + " РезультатОтветаОтСервреУспешнаяВставкаИлиОбновления " +РезультатСинхронизации +
+                            + " РезультатОтветаОтСервреУспешнаяВставкаИлиОбновления " +ResultatSendingJsonJboss +
                             " КурсорДляОтправкиДанныхНаСерверОтАндройда " +КурсорДляОтправкиДанныхНаСерверОтАндройда.getCount());
                 }
             }
@@ -873,7 +877,81 @@ public class ProccesorparallelSynch   {
             new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-        return  РезультатСинхронизации;
+        return  ResultatSendingJsonJboss;
+    }
+// TODO: 07.04.2024
+
+
+
+
+
+
+    // TODO: 15.02.2022 синхрогниазции таблиц
+    @NonNull
+    private Cursor методГлавныйGetDataForAsync( @NonNull  String Таблица,
+                                                @NonNull Long ВерсияДанныхДляСравения,
+                                                @NonNull Integer PublicId) {
+        Cursor  cursor=null;
+        try{
+          //  ПубличныйIDДляФрагмента = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(context);
+
+            Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabaseonlyasync/" + Таблица.trim() + "");
+            ContentResolver resolver = context.getContentResolver();
+            Bundle data=null;
+
+            switch (Таблица.trim()) {
+                // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ____ID    // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ____ID    // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ____ID
+                case "settings_tabels":
+                    data=new Bundle();
+                    data.putString("query","" +
+                            "  SELECT DISTINCT  * FROM " +Таблица+"   as gett " +
+                            "  WHERE   gett.current_table > "+ВерсияДанныхДляСравения+" AND gett. onesignal IS NOT NULL " +
+                            " AND gett.user_update IN ( SELECT DISTINCT getin.user_update " +
+                            "  FROM " +Таблица+" as getin " +
+                            " WHERE   getin.user_update="+PublicId+" ) "+"" );
+
+                    Log.d(this.getClass().getName(), " Таблица Все остальные  _id " + Таблица);
+                    break;
+                case "data_notification":
+                    data=new Bundle();
+                    data.putString("query"," SELECT DISTINCT  * FROM " +Таблица+" as gett" +
+                            " WHERE   gett.current_table >  "+ВерсияДанныхДляСравения+"" );
+                    Log.d(this.getClass().getName(), " Таблица Все остальные  _id " + Таблица);
+                    break;
+                // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID   // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID
+                // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID
+                default:
+                    data=new Bundle();
+                    data.putString("query"," SELECT DISTINCT  * FROM " +Таблица+" as gett" +
+                            " WHERE   gett.current_table >  "+ВерсияДанныхДляСравения+
+                            " AND gett.user_update IN ( SELECT DISTINCT getin.user_update " +
+                            " FROM " +Таблица+"  as getin " +
+                            "WHERE   getin.user_update="+PublicId+" ) "+"" );
+                    break;
+            }
+            // TODO: 08.08.2023 ГЛАВНОЕ ПОЛУЧЕНИЕ ДАННЫХ  ДЛя ОТПРАВКИ НА СЕРВЕР
+            // TODO: 16.05.2023
+            if (data.size()>0) {
+                cursor = resolver.query(uri,new String[]{"*"},data,null);// TODO: 13.10.2022 ,"Удаленная"
+            }
+
+            Log.d(this.getClass().getName(), "\n" + " class " +
+                    Thread.currentThread().getStackTrace()[2].getClassName()
+                    + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    "cursor   " + cursor  + "  Таблица " +Таблица
+                            + " data.size() " +data.size());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            // TODO: 01.09.2021 метод вызова
+            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        return cursor;
     }
 
 

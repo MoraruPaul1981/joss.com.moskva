@@ -669,68 +669,6 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
 
 
-    // TODO: 15.02.2022 синхрогниазции таблиц
-    @NonNull
-    private Cursor методГлавныйGetDataForAsync( @NonNull  String имяТаблицыОтАндройда_локальноая,
-                                                @NonNull Long ВерсияДанныхДляСравения) {
-        Cursor  cursor=null;
-        try{
-            ПубличныйIDДляФрагмента = new Class_Generations_PUBLIC_CURRENT_ID().ПолучениеПубличногоТекущегоПользователяID(context);
-
-            Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabaseonlyasync/" + имяТаблицыОтАндройда_локальноая.trim() + "");
-            ContentResolver resolver = context.getContentResolver();
-            Bundle data=null;
-
-            switch (имяТаблицыОтАндройда_локальноая.trim()) {
-                // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ____ID    // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ____ID    // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ____ID
-                case "settings_tabels":
-                    data=new Bundle();
-                    data.putString("query","" +
-                            "  SELECT DISTINCT  * FROM " +имяТаблицыОтАндройда_локальноая+"   as gett " +
-                            "  WHERE   gett.current_table > "+ВерсияДанныхДляСравения+" AND gett. onesignal IS NOT NULL " +
-                            " AND gett.user_update IN ( SELECT DISTINCT getin.user_update " +
-                            "  FROM " +имяТаблицыОтАндройда_локальноая+" as getin " +
-                            " WHERE   getin.user_update="+ПубличныйIDДляФрагмента+" ) "+"" );
-
-                    Log.d(this.getClass().getName(), " имяТаблицыОтАндройда_локальноая Все остальные  _id " + имяТаблицыОтАндройда_локальноая);
-                    break;
-                case "data_notification":
-                    data=new Bundle();
-                    data.putString("query"," SELECT DISTINCT  * FROM " +имяТаблицыОтАндройда_локальноая+" as gett" +
-                            " WHERE   gett.current_table >  "+ВерсияДанныхДляСравения+"" );
-                    Log.d(this.getClass().getName(), " имяТаблицыОтАндройда_локальноая Все остальные  _id " + имяТаблицыОтАндройда_локальноая);
-                    break;
-                // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID   // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID
-                // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID // TODO: 23.03.2023 ТАБЛИЦЫ С ПОЛЕМ ID
-                default:
-                    data=new Bundle();
-                    data.putString("query"," SELECT DISTINCT  * FROM " +имяТаблицыОтАндройда_локальноая+" as gett" +
-                            " WHERE   gett.current_table >  "+ВерсияДанныхДляСравения+
-                            " AND gett.user_update IN ( SELECT DISTINCT getin.user_update " +
-                            " FROM " +имяТаблицыОтАндройда_локальноая+"  as getin " +
-                            "WHERE   getin.user_update="+ПубличныйIDДляФрагмента+" ) "+"" );
-                    break;
-            }
-            // TODO: 08.08.2023 ГЛАВНОЕ ПОЛУЧЕНИЕ ДАННЫХ  ДЛя ОТПРАВКИ НА СЕРВЕР
-            // TODO: 16.05.2023
-            if (data.size()>0) {
-                cursor = resolver.query(uri,new String[]{"*"},data,null);// TODO: 13.10.2022 ,"Удаленная"
-            }
-            Log.d(this.getClass().getName(), "cursor   " + cursor  + "  имяТаблицыОтАндройда_локальноая " +имяТаблицыОтАндройда_локальноая
-                    + " data.size() " +data.size());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            // TODO: 01.09.2021 метод вызова
-            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-        return cursor;
-    }
-
-
 
     // TODO: 04.11.2021  метод ПОСЫЛАЕМ ТОЛЬКО NULL В ПОЛЕ ID  НА СЕРВЕР
 
