@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -36,8 +37,9 @@ public class ProccesorparallelSynch  extends  AsynsProccessor{
     }
 
     public Long startingAsyncParallels() {
-        final Long[] РезультатТаблицыОбмена = new Long[0];
+        CopyOnWriteArrayList<Long> coutSucceessItemAsycnTables=new CopyOnWriteArrayList();
         try{
+            // TODO: 07.04.2024  
             Flowable.fromIterable( ГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.keySet())
                     .map(new Function<String, String>() {
                         @Override
@@ -56,7 +58,7 @@ public class ProccesorparallelSynch  extends  AsynsProccessor{
                         public void accept(String ТаблицаОбработываемаяParallel) throws Throwable {
 
                             // TODO: 06.12.2023  запуск синхризуции по таблице конктерной
-                          РезультатТаблицыОбмена[0] =        getLooTablesPOSTANDGET(ТаблицаОбработываемаяParallel);
+                            coutSucceessItemAsycnTables.add(getLooTablesPOSTANDGET(ТаблицаОбработываемаяParallel))      ;
 
                             // TODO: 15.09.2023
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -64,7 +66,7 @@ public class ProccesorparallelSynch  extends  AsynsProccessor{
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
                                     " ТаблицаОбработываемаяParallel"
                                     +ТаблицаОбработываемаяParallel
-                                    + " РезультатТаблицыОбмена " + РезультатТаблицыОбмена[0]);
+                                    + " coutSucceessItemAsycnTables " +coutSucceessItemAsycnTables.size());
                         }
                     })
                     .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
@@ -99,7 +101,7 @@ public class ProccesorparallelSynch  extends  AsynsProccessor{
                     this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber()  );
         }
-        return РезультатТаблицыОбмена[0];
+        return coutSucceessItemAsycnTables.stream().mapToLong(l->l).count();
     }
 
 // TODO: 07.04.2024
@@ -124,17 +126,11 @@ public class ProccesorparallelSynch  extends  AsynsProccessor{
                     " ВерсияДанныхОтSqlServer " +ВерсияДанныхОтSqlServer+ " ИмяТаблицыоТВерсияДанныхОтSqlServer "
                     + ИмяТаблицыоТВерсияДанныхОтSqlServer +
                     "   ВремяВерсияОтSqlServer " + ВремяВерсияОтSqlServer);
-
-
-
-
+            
             /////////////TODO ИДЕМ ПО ШАГАМ К ЗАПУСКИ СИНХРОГНИАЗЦИИ
             РезультатТаблицыОбмена=
                     analysVersionServerWithAnroidPOST(ИмяТаблицыоТВерсияДанныхОтSqlServer,
                             ВерсияДанныхОтSqlServer, ID,ВремяВерсияОтSqlServer);
-
-
-            ЛистТаблицыОбменаAfterAsync.add(РезультатТаблицыОбмена);
             // TODO: 12.07.2023
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -164,7 +160,7 @@ public class ProccesorparallelSynch  extends  AsynsProccessor{
                                            @NonNull  Long ВерсияДанныхсSqlServer,
                                            @NonNull  Integer PublicID,
                                            @NonNull Date     ВремяОтSqlServer) {
-        ArrayList<Long> ЛистУспешнойОбработкиСинх=new ArrayList<>();
+     Long УспешнойОбработкиСинх = 0l;
 
         try  (Cursor КурсорДляАнализаВерсииДанныхАндройда = getCurcorForAllVersionDataAndroid(ИмяТаблицы);){
             // TODO: 05.04.2024  получаем верисю данных андройд версия всехданных
@@ -204,7 +200,7 @@ public class ProccesorparallelSynch  extends  AsynsProccessor{
 
 
 
-                ЛистУспешнойОбработкиСинх=   ObservableRetryPostAndGet(ИмяТаблицы,
+                УспешнойОбработкиСинх=   ObservableRetryPostAndGet(ИмяТаблицы,
                         ВерсияДанныхсSqlServer,
                         PublicID,
                         ВерсииНаАндройдеЛокальная,
@@ -212,12 +208,20 @@ public class ProccesorparallelSynch  extends  AsynsProccessor{
                         ВремяДанныхНаАндройде,
                         ВремяОтSqlServer);
 
+
+                Log.d(this.getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n"+
+                        " УспешнойОбработкиСинх " +УспешнойОбработкиСинх);
+
             }
 
             Log.d(this.getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
-                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n"+" ЛистУспешнойОбработкиСинх " +ЛистУспешнойОбработкиСинх);
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n"+
+                    " УспешнойОбработкиСинх " +УспешнойОбработкиСинх);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -225,21 +229,21 @@ public class ProccesorparallelSynch  extends  AsynsProccessor{
             new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-        return ЛистУспешнойОбработкиСинх.stream().reduce(0l, (a, b) -> a + b).longValue();
+        return УспешнойОбработкиСинх;
     }
 
 
     // TODO: 07.04.2024
 
 
-    private  ArrayList<Long> ObservableRetryPostAndGet(@NonNull String ИмяТаблицы,
+    private   Long  ObservableRetryPostAndGet(@NonNull String ИмяТаблицы,
                                                        @NonNull Long ВерсияДанныхсSqlServer,
                                                        @NonNull  Integer  PublicID,
                                                        @NonNull Long ВерсииНаАндройдеЛокальная,
                                                        @NonNull Long  ВерсииНаАндройдеСерверная,
                                                        @NonNull Date  ВремяДанныхНаАндройде,
                                                        @NonNull Date   ВремяОтSqlServer) {
-        ArrayList<Long> ЛистУспешнойОбработкиСинх=new ArrayList<>();
+      ArrayList<Long> SuccessInsertOrUpdates=new ArrayList<>();
         try{
 
 
@@ -262,7 +266,7 @@ public class ProccesorparallelSynch  extends  AsynsProccessor{
 
 
                             //TODO СЛЕДУЮЩИЙ ЭТАМ РАБОТЫ ОПРЕДЕЛЯЕМ ЧТО МЫ ДЕЛАЕМ ПОЛУЧАЕМ ДАННЫЕ С СЕВРЕРА ИЛИ НА ОБОРОТ  ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР
-                            Long РезультатУспешнойВсатвкиИлиОбвовлениясСервера=       AceccssAndCoohceGetDatatingAndPostDating(
+                      Long     РезультатУспешной =       AceccssAndCoohceGetDatatingAndPostDating(
                                     ИмяТаблицы,
                                     ВерсияДанныхсSqlServer,
                                     PublicID,
@@ -270,24 +274,26 @@ public class ProccesorparallelSynch  extends  AsynsProccessor{
                                     ВерсииНаАндройдеСерверная,
                                     ВремяДанныхНаАндройде,
                                     ВремяОтSqlServer);
+                            // TODO: 07.04.2024
+
                             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                    "РезультатУспешнойВсатвкиИлиОбвовлениясСервера " + РезультатУспешнойВсатвкиИлиОбвовлениясСервера);
-                            // TODO: 30.10.2023  записываем результат
-                            ЛистУспешнойОбработкиСинх.add(РезультатУспешнойВсатвкиИлиОбвовлениясСервера);
+                                    "SuccessInsertOrUpdates " + SuccessInsertOrUpdates);
 
-                            if (РезультатУспешнойВсатвкиИлиОбвовлениясСервера >0 ) {
+                            if (РезультатУспешной >0 ) {
+                                // TODO: 07.04.2024 записываем рузультат успешной вставки или обновления
+                                SuccessInsertOrUpdates.add(РезультатУспешной);
                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                        "РезультатУспешнойВсатвкиИлиОбвовлениясСервера  " + РезультатУспешнойВсатвкиИлиОбвовлениясСервера);
+                                        "SuccessInsertOrUpdates  " + SuccessInsertOrUpdates);
                                 return true;
                             } else {
                                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                        "РезультатУспешнойВсатвкиИлиОбвовлениясСервера " + РезультатУспешнойВсатвкиИлиОбвовлениясСервера);
+                                        "SuccessInsertOrUpdates " + SuccessInsertOrUpdates);
                                 return false;
                             }
                         }
@@ -295,10 +301,11 @@ public class ProccesorparallelSynch  extends  AsynsProccessor{
 
 
 
-
-
-            Log.e(this.getClass().getName(), "   ИмяТаблицы "
-                    + ИмяТаблицы + " ЛистУспешнойОбработкиСинх " + ЛистУспешнойОбработкиСинх.size());
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                    "SuccessInsertOrUpdates " + SuccessInsertOrUpdates+"\n"+
+                     " SuccessInsertOrUpdates.stream().mapToLong(m->m).count() " +SuccessInsertOrUpdates.stream().mapToLong(m->m).count());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -309,7 +316,7 @@ public class ProccesorparallelSynch  extends  AsynsProccessor{
         }
 
 
-        return ЛистУспешнойОбработкиСинх;
+        return SuccessInsertOrUpdates.stream().mapToLong(m->m).count();
     }
 // TODO: 07.04.2024
 
