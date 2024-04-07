@@ -36,15 +36,9 @@ import java.util.concurrent.ScheduledFuture;
 /////--------TODO В ДАННОМ КЛАССЕ СОБРАНЫ ВСЕ СТАТИЧЕСКИЕ ПЕРЕМЕННЫЕ ДЛЯ РАБОТЫ ВСЕГО ПРИЛОЖЕНИЯ DSU-1  ( И БОЛЬШНЕ В КЛАСЕ НИЧЕГО НЕТ )
 public  class PUBLIC_CONTENT extends SubClassCreatingMainAllTables {
             //////////
-            CompletableFuture completableFutureМенеджер;
-                ScheduledFuture scheduledFuture;
-                Context context;
-                public CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда = new CopyOnWriteArrayList();
-    public ArrayList<String> ИменаПроектовОтСервера = new ArrayList<String>(); ////список проектов
-    ////ГЛАВНЫЙ СПИСОК ТАБЛИЦ ДЛЯ  ОБМЕНАМИ ДАННЫМИ ИЗ НЕГО БУДЕТ БРАТЬСЯ СПИСКО ТАБЛИЦ
-    public LinkedHashMap<String, Long> ВерсииВсехСерверныхТаблиц =  new LinkedHashMap<String, Long>();
 
-    public LinkedHashMap<String, Date> ВерсииДатыСерверныхТаблиц =  new LinkedHashMap<>();
+    Context context;
+
            public    CompletionService МенеджерПотоков;
            public    CompletionService МенеджерМногоПотоков;
            public ExecutorService МенеджерПотоковСервис;

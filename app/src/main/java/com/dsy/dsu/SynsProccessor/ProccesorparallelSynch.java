@@ -29,18 +29,28 @@ import io.reactivex.rxjava3.functions.Predicate;
 
 public class ProccesorparallelSynch  extends  AsynsProccessor{
 
-
+    CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
+     LinkedHashMap<String, Long> ВерсииВсехСерверныхТаблиц ;
+       LinkedHashMap<String, Date> ВерсииДатыСерверныхТаблиц;
     public ProccesorparallelSynch(@NonNull Context context, @NonNull ObjectMapper jsonGenerator,
                                   @NonNull SSLSocketFactory getsslSocketFactory2, @NonNull LinkedHashMap<Integer,
-            String> getHiltJbossDebug, @NonNull LinkedHashMap<Integer, String> getHiltJbossReliz) {
+            String> getHiltJbossDebug, @NonNull LinkedHashMap<Integer
+            , String> getHiltJbossReliz, @NonNull  CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда,
+                                  @NonNull LinkedHashMap<String, Long> ВерсииВсехСерверныхТаблиц ,
+                                  @NonNull  LinkedHashMap<String, Date> ВерсииДатыСерверныхТаблиц) {
         super(context, jsonGenerator, getsslSocketFactory2, getHiltJbossDebug, getHiltJbossReliz);
+
+        this.ИменаТаблицыОтАндройда=ИменаТаблицыОтАндройда;
+        this.ВерсииВсехСерверныхТаблиц=ВерсииВсехСерверныхТаблиц;
+        this.ВерсииДатыСерверныхТаблиц=ВерсииДатыСерверныхТаблиц;
+
     }
 
     public Long startingAsyncParallels() {
         CopyOnWriteArrayList<Long> coutSucceessItemAsycnTables=new CopyOnWriteArrayList();
         try{
             // TODO: 07.04.2024  
-            Flowable.fromIterable( ГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.keySet())
+            Flowable.fromIterable( ВерсииВсехСерверныхТаблиц.keySet())
                     .map(new Function<String, String>() {
                         @Override
                         public String apply(String ТаблицаОбработываемаяParallel) throws Throwable {
@@ -113,11 +123,9 @@ public class ProccesorparallelSynch  extends  AsynsProccessor{
         Long   РезультатТаблицыОбмена=0l;
         try{
             // TODO: 21.08.2023 Запуск Синхронизации после получение Версии
-            Long     ВерсияДанныхОтSqlServer = ГлавныхТаблицСинхронизации.
-                    ВерсииВсехСерверныхТаблиц.get(ИмяТаблицыоТВерсияДанныхОтSqlServer);
+            Long     ВерсияДанныхОтSqlServer = ВерсииВсехСерверныхТаблиц.get(ИмяТаблицыоТВерсияДанныхОтSqlServer);
             // TODO: 02.04.2024 верям данных
-            Date ВремяВерсияОтSqlServer =          ГлавныхТаблицСинхронизации.
-                    ВерсииДатыСерверныхТаблиц.get(ИмяТаблицыоТВерсияДанныхОтSqlServer);
+            Date ВремяВерсияОтSqlServer = ВерсииДатыСерверныхТаблиц.get(ИмяТаблицыоТВерсияДанныхОтSqlServer);
 
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
