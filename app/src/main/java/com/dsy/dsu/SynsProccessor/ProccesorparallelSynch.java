@@ -119,7 +119,8 @@ public class ProccesorparallelSynch   {
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
                                     " ТаблицаОбработываемаяParallel"
                                     +ТаблицаОбработываемаяParallel
-                                    + " coutSucceessItemAsycnTables " +coutSucceessItemAsycnTables.size());
+                                    + " coutSucceessItemAsycnTables " +coutSucceessItemAsycnTables.size()+
+                                     " coutSucceessItemAsycnTables.stream().mapToLong(l->l)  .reduce(0, Long::sum)" +coutSucceessItemAsycnTables.stream().mapToLong(l->l)  .reduce(0, Long::sum));
                         }
                     })
                     .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
@@ -154,7 +155,7 @@ public class ProccesorparallelSynch   {
                     this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber()  );
         }
-        return coutSucceessItemAsycnTables.stream().mapToLong(l->l).count();
+        return coutSucceessItemAsycnTables.stream().mapToLong(l->l)  .reduce(0, Long::sum);
     }
 
 // TODO: 07.04.2024
@@ -285,13 +286,13 @@ public class ProccesorparallelSynch   {
                     .forEachWhile(new Predicate<Integer>() {
                         @Override
                         public boolean test(Integer integer) throws Throwable {
-                        try{
+                        try (       Cursor КурсорДляАнализаВерсииДанныхАндройда = getCurcorForAllVersionDataAndroid(ИмяТаблицы);){
                          // TODO: 07.04.2024  получаем данные локалные лдля сравенния
-                          Cursor КурсорДляАнализаВерсииДанныхАндройда = getCurcorForAllVersionDataAndroid(ИмяТаблицы);
+
                                 // TODO: 05.04.2024  получаем верисю данных андройд версия всехданных
                                 if (КурсорДляАнализаВерсииДанныхАндройда.getCount() > 0) {
                                     КурсорДляАнализаВерсииДанныхАндройда.moveToFirst();
-                                }
+
 
 
                           Long   ВерсииНаАндройдеЛокальная     =
@@ -330,12 +331,19 @@ public class ProccesorparallelSynch   {
                                     ВремяОтSqlServer);
                             // TODO: 07.04.2024
 
-                            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+
+                                    if (КурсорДляАнализаВерсииДанныхАндройда!=null &&
+                                            ! КурсорДляАнализаВерсииДанныхАндройда.isClosed()) {
+                                        КурсорДляАнализаВерсииДанныхАндройда.close();
+                                    }
+
+
+                                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
                                     "SuccessInsertOrUpdates " + SuccessInsertOrUpdates);
 
-                            КурсорДляАнализаВерсииДанныхАндройда.close();
+
 
                             if (РезультатУспешной >0 ) {
                                 // TODO: 07.04.2024 записываем рузультат успешной вставки или обновления
@@ -352,6 +360,7 @@ public class ProccesorparallelSynch   {
                                         "SuccessInsertOrUpdates " + SuccessInsertOrUpdates);
                                 return false;
                             }
+                                }
 
                         } catch (Exception e) {
                             e.printStackTrace();
