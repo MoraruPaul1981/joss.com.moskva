@@ -1240,12 +1240,12 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                 @Override
                 public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
 
-/*                    // TODO: 14.12.2023  топль POSt SINGLE
-                    getDataJsonSequential( "sequential"  );
+                     // TODO: 14.12.2023  топль POSt SINGLE
+                   new  ProccesorSecerialynch(context).startingAsyncposledovatelno();
 
                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " sequential  ");*/
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " sequential  ");
 
 
 
@@ -1253,9 +1253,10 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
                 @Override
                 public void onComplete() {
+
                     // TODO: 21.08.2023  только GET Parelleing
-              getDataJsonParallels( );
-                  //  metofstartingGetPostSingleAndParallel( "parallel",Schedulers.from(Executors.newFixedThreadPool(1)) );
+              new ProccesorparallelSynch( ).startingAsyncParallels();
+
 
                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

@@ -36,7 +36,7 @@ public class ProccesorparallelSynch  extends  AsynsProccessor{
         super(context, jsonGenerator, getsslSocketFactory2, getHiltJbossDebug, getHiltJbossReliz);
     }
 
-    private void startingAsyncParallels() {
+    public void startingAsyncParallels() {
         try{
 
             Flowable.fromIterable( public_contentДатыДляГлавныхТаблицСинхронизации.ВерсииВсехСерверныхТаблиц.keySet())
@@ -293,19 +293,6 @@ public class ProccesorparallelSynch  extends  AsynsProccessor{
                         }
                     });
 
-            //TODO СЛЕДУЮЩИЙ ЭТАМ РАБОТЫ ОПРЕДЕЛЯЕМ ЧТО МЫ ДЕЛАЕМ ПОЛУЧАЕМ ДАННЫЕ С СЕВРЕРА ИЛИ НА ОБОРОТ  ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР
-            Long РезультатУспешнойВсатвкиИлиОбвовлениясСервера=       AceccssAndCoohceGetDatatingAndPostDating(
-                    ИмяТаблицы,
-                    ВерсияДанныхсSqlServer,
-                    PublicID,
-                    ВерсииНаАндройдеЛокальная,
-                    ВерсииНаАндройдеСерверная,
-                    ВремяДанныхНаАндройде,
-                    ВремяОтSqlServer);
-            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                    "РезультатУспешнойВсатвкиИлиОбвовлениясСервера " + РезультатУспешнойВсатвкиИлиОбвовлениясСервера);
 
 
 
