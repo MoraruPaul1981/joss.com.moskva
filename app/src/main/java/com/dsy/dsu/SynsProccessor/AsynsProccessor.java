@@ -648,54 +648,21 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
 
 // TODO: 21.08.2023 ГЛАВНЫЙ ЦИКЛ СИХРОНИАЗЦИИ--многопоточный
-            Completable.complete().blockingSubscribe(new CompletableObserver() {
-                @Override
-                public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+            // TODO: 21.08.2023  только GET() Параллено
+            ResultatSync[0] =        new ProccesorparallelSynch( context,
+                    jsonGenerator,
+                    getsslSocketFactory2,
+                    getHiltJbossDebug,
+                    getHiltJbossReliz ,
+                    ИменаТаблицыОтАндройда,
+                    ВерсииВсехСерверныхТаблиц,
+                    ВерсииДатыСерверныхТаблиц,
+                    PublicID).startingAsyncParallels();
 
 
-            /*         // TODO: 14.12.2023  топль POSt () Последовательно
-                 ResultatSync[0] =   new  ProccesorSecerialynch( context,  jsonGenerator,
-                         getsslSocketFactory2,  getHiltJbossDebug,  getHiltJbossReliz).startingAsyncposledovatelno();
-
-                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " sequential  "+" ResultatSync " + ResultatSync[0]);*/
-
-
-
-                }
-
-
-                @Override
-                public void onComplete() {
-
-                    // TODO: 21.08.2023  только GET() Параллено
-           ResultatSync[0] =        new ProccesorparallelSynch( context,
-                   jsonGenerator,
-                      getsslSocketFactory2,
-                   getHiltJbossDebug,
-                   getHiltJbossReliz ,
-                  ИменаТаблицыОтАндройда,
-                   ВерсииВсехСерверныхТаблиц,
-                   ВерсииДатыСерверныхТаблиц,
-                   PublicID).startingAsyncParallels();
-
-
-                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "parallel"+" ResultatSync " + ResultatSync[0]);
-                }
-
-                @Override
-                public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                    e.printStackTrace();
-                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                            this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber()  );
-                }
-            });
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "parallel"+" ResultatSync " + ResultatSync[0]);
             // TODO: 15.09.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

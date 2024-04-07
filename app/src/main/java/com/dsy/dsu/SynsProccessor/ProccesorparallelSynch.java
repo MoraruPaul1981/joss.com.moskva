@@ -98,18 +98,7 @@ public class ProccesorparallelSynch   {
 
             // TODO: 07.04.2024  
             Flowable.fromIterable( ВерсииВсехСерверныхТаблиц.keySet())
-                    .map(new Function<String, String>() {
-                        @Override
-                        public String apply(String ТаблицаОбработываемаяParallel) throws Throwable {
-                            if(!ТаблицаОбработываемаяParallel.equalsIgnoreCase("errordsu1")){
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                return ТаблицаОбработываемаяParallel;
-                            }
-                            return new String();
-                        }
-                    }).filter(fil->!fil.toString().isEmpty())
+                  .filter(fil->!fil.toString().isEmpty())
                     .doOnNext(new io.reactivex.rxjava3.functions.Consumer<String>() {
                         @Override
                         public void accept(String ТаблицаОбработываемаяParallel) throws Throwable {
@@ -957,7 +946,7 @@ public class ProccesorparallelSynch   {
                     data=new Bundle();
                     data.putString("query"," SELECT DISTINCT  * FROM " +Таблица+" as gett" +
                             " WHERE   gett.current_table >  "+ВерсияДанныхДляСравения+
-                            " AND gett.user_update = "+PublicId+" ) "+";" );
+                            " AND gett.user_update = "+PublicId + ""+";" );
                     break;
             }
             // TODO: 08.08.2023 ГЛАВНОЕ ПОЛУЧЕНИЕ ДАННЫХ  ДЛя ОТПРАВКИ НА СЕРВЕР
