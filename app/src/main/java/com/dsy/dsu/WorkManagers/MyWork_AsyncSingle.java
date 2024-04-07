@@ -97,20 +97,6 @@ public class MyWork_AsyncSingle extends Worker {
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
     }
 
-    @SuppressLint("RestrictedApi")
-    @NonNull
-    @Override
-    public Executor getBackgroundExecutor() {
-        Log.i(getApplicationContext().getClass().getName(),
-                "public Executor getBackgroundExecutor() {");
-        return  Executors.newSingleThreadExecutor();
-    }
-    @SuppressLint("RestrictedApi")
-    @NonNull
-    @Override
-    public TaskExecutor getTaskExecutor() {
-        return super.getTaskExecutor();
-    }
 
     @NonNull
     @Override

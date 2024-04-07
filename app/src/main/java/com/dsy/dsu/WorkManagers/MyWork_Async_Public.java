@@ -63,19 +63,6 @@ public class MyWork_Async_Public extends Worker {
 
 
 
-    @NonNull
-    @Override
-    public ListenableFuture<ForegroundInfo> getForegroundInfoAsync() {
-        return super.getForegroundInfoAsync();
-    }
-
-
-    @NonNull
-    @Override
-    public ForegroundInfo getForegroundInfo() {
-        return super.getForegroundInfo();
-    }
-
 
 
     @NonNull
@@ -185,16 +172,6 @@ public class MyWork_Async_Public extends Worker {
 
 
 
-
-
-    @SuppressLint("RestrictedApi")
-    @NonNull
-    @Override
-    public Executor getBackgroundExecutor() {
-        Log.i(getApplicationContext().getClass().getName(),
-                "public Executor getBackgroundExecutor() {");
-        return  Executors.newSingleThreadExecutor();
-    }
 
 
 
