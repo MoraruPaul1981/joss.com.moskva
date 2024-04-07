@@ -10,6 +10,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.dsy.dsu.BootAndAsync.BlBootAsync.SendMainActivity;
+import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusPrograssBar;
 import com.dsy.dsu.BusinessLogicAll.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.BusinessLogicAll.Class_MODEL_synchronized;
 import com.dsy.dsu.BusinessLogicAll.Class_Visible_Processing_Async;
@@ -22,6 +24,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 
 import java.io.InputStream;
@@ -55,6 +58,10 @@ public class ProccesorparallelSynch   {
      LinkedHashMap<String, Long> ВерсииВсехСерверныхТаблиц ;
        LinkedHashMap<String, Date> ВерсииДатыСерверныхТаблиц;
     Integer PublicID;
+    Integer ПозицияТекущейТаблицы=1;
+
+    public   int Проценты;
+    public Integer ИндексВизуальнойДляPrograssBar=0;
     public ProccesorparallelSynch(@NonNull Context context,
                                   @NonNull ObjectMapper jsonGenerator,
                                   @NonNull SSLSocketFactory getsslSocketFactory2,
@@ -743,7 +750,7 @@ public class ProccesorparallelSynch   {
                         " jsonNodeParentMAP.size() " +jsonNodeParentMAP.size() );
 
                 // TODO: 03.10.2023 все кроме байт
-                РезультСинхрониазции=   методRowJsonRow(jsonNodeParentMAP,имяТаблицаAsync);
+                РезультСинхрониазции=   методRowJsonRow(jsonNodeParentMAP,имяТаблицаAsync,ИменаТаблицыОтАндройда);
                 Log.d(this.getClass().getName(),"\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
@@ -778,19 +785,20 @@ public class ProccesorparallelSynch   {
 
     // TODO: 13.09.2023   ROW
     Long методRowJsonRow(@NonNull  JsonNode jsonNodeParentMAP,
-                         @NonNull String имяТаблицаAsync){
+                         @NonNull String имяТаблицаAsync,
+                         @NonNull CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда ){
         Long РезультСинхрониазции=0l;
         try{
+            int Проценты = 0;
             if (jsonNodeParentMAP.size()>0) {
-                // TODO: 11.10.2022 callback метод обратно в актвити #1
-                ИндексВизуальнойДляPrograssBar=0;
+                // TODO: 11.10.2022 callback
                 Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasemirrorbinary/" + имяТаблицаAsync + "");
                 ContentResolver resolver = context.getContentResolver();
                 Bundle bundle=new Bundle();
                 bundle.putSerializable("jsonNodeParentMAP", (Serializable) jsonNodeParentMAP);
                 bundle.putString("nametable",имяТаблицаAsync);
                 Проценты = new Class_Visible_Processing_Async(context).
-                        ГенерируемПРОЦЕНТЫДляAsync(ПозицияТекущейТаблицы, ГлавныеТаблицыСинхронизации.size());
+                        ГенерируемПРОЦЕНТЫДляAsync(ПозицияТекущейТаблицы, ИменаТаблицыОтАндройда.size());
 
                 // TODO: 22.01.2024 текущее отобраение процентов
 
@@ -804,8 +812,6 @@ public class ProccesorparallelSynch   {
                     + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() );
-
-            // TODO: 01.05.2023 clear
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -939,7 +945,7 @@ public class ProccesorparallelSynch   {
                     Thread.currentThread().getStackTrace()[2].getClassName()
                     + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
                     "cursor   " + cursor  + "  Таблица " +Таблица
                             + " data.size() " +data.size());
 
@@ -952,6 +958,57 @@ public class ProccesorparallelSynch   {
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
         return cursor;
+    }
+
+// TODO: 07.04.2024
+
+
+
+    //todo МЕТОД ВИЗУАЛЬНОГО ОТВЕТА ИЗ СЛУЖБЫ ОБРАБТНО В activity async
+    public void методCallBackPrograssBars(@NonNull int Проценны, @NonNull String имяТаблицаAsync,
+                                          @NonNull Integer ПозицияТекущейТаблицы)  {
+        try {
+            class SendUserДанныеДляPrograssbar extends SendMainActivity {
+
+                public SendUserДанныеДляPrograssbar(Context context) {
+                    super(context);
+                }
+
+                @Override
+                public void startSendBroadSesiver() {
+                    //  super.startSendBroadSesiver();
+                    intentComunications.setAction("Broad_messageAsyncPrograssBar");
+                    bundleComunications.putString("Статус" ,"AsyncPrograssBar");
+                    bundleComunications.putInt("Проценны" ,Проценны);
+                    bundleComunications.putString("имятаблицы" ,имяТаблицаAsync);
+                    bundleComunications.putInt("maxtables" ,  ИменаТаблицыОтАндройда.size());
+                    bundleComunications.putInt("currentposition" ,ПозицияТекущейТаблицы);
+                    intentComunications.putExtras(bundleComunications);
+
+                    EventBus.getDefault().post(new MessageEvensBusPrograssBar(intentComunications));;
+
+      /*              // TODO: 22.01.2024 останавливаем службу
+                    stopServiceBoot();*/
+
+                }
+            }
+            // TODO: 22.01.2024 когда режим офлайн
+            new SendUserДанныеДляPrograssbar(context).startSendBroadSesiver();
+
+
+            Log.d(this.getClass().getName(), "\n" + " class " +
+                    Thread.currentThread().getStackTrace()[2].getClassName()
+                    + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    + " Проценны " +Проценны);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
     }
 
 

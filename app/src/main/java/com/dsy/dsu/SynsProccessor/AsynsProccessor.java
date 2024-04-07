@@ -71,31 +71,11 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
     ArrayList<String> ИменаПроектовОтСервера = new ArrayList<String>();
     public LinkedHashMap<String, Date> ВерсииДатыСерверныхТаблиц =  new LinkedHashMap<>();
     LinkedHashMap<String, Long> ВерсииВсехСерверныхТаблиц =  new LinkedHashMap<String, Long>();
-
     public SQLiteDatabase sqLiteDatabase ;
-
-    public boolean ФлагУказываетЧтоТОлькоОбработкаТаблицДляЧАТА = false;
-
-
-    public  Integer ИндексТекущейОперацииРеальногРезультатОбработкиАтблицы=0;
-
-
-
-    public  Integer МаксималноеКоличествоСтрочекJSON;
     public SharedPreferences preferences;
-    public   int Проценты;
-    public Integer ИндексВизуальнойДляPrograssBar=0;
-
     public Integer  ПубличныйIDДляФрагмента=0;
-
-
-    public                 Integer ПозицияТекущейТаблицы=1;
-
     public     String НазваниеСервернойТаблицы=new String();
-
-
     public  String КлючДляFirebaseNotification = "2a1819db-60c8-4ca3-a752-1b6cd9cadfa1";
-
 
     public   ObjectMapper jsonGenerator;
 
@@ -615,52 +595,6 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
 
 
-    //todo МЕТОД ВИЗУАЛЬНОГО ОТВЕТА ИЗ СЛУЖБЫ ОБРАБТНО В activity async
-    public void методCallBackPrograssBars(@NonNull int Проценны, @NonNull String имяТаблицаAsync,
-                                          @NonNull Integer ПозицияТекущейТаблицы)  {
-        try {
-            class SendUserДанныеДляPrograssbar extends SendMainActivity {
-
-                public SendUserДанныеДляPrograssbar(Context context) {
-                    super(context);
-                }
-
-                @Override
-                public void startSendBroadSesiver() {
-                    //  super.startSendBroadSesiver();
-                    intentComunications.setAction("Broad_messageAsyncPrograssBar");
-                    bundleComunications.putString("Статус" ,"AsyncPrograssBar");
-                    bundleComunications.putInt("Проценны" ,Проценны);
-                    bundleComunications.putString("имятаблицы" ,имяТаблицаAsync);
-                    bundleComunications.putInt("maxtables" ,  ИменаТаблицыОтАндройда.size());
-                    bundleComunications.putInt("currentposition" ,ПозицияТекущейТаблицы);
-                    intentComunications.putExtras(bundleComunications);
-
-                    EventBus.getDefault().post(new MessageEvensBusPrograssBar(intentComunications));;
-
-      /*              // TODO: 22.01.2024 останавливаем службу
-                    stopServiceBoot();*/
-
-                }
-            }
-            // TODO: 22.01.2024 когда режим офлайн
-            new SendUserДанныеДляPrograssbar(context).startSendBroadSesiver();
-
-
-            Log.d(this.getClass().getName(), "\n" + " class " +
-                    Thread.currentThread().getStackTrace()[2].getClassName()
-                    + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " Проценны " +Проценны);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
 
 
 
