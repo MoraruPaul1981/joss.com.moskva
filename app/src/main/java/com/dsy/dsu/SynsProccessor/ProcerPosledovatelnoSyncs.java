@@ -44,19 +44,24 @@ public class ProcerPosledovatelnoSyncs extends  ProccesorparallelSynch {
 
             flowable.doOnNext(new io.reactivex.rxjava3.functions.Consumer<String>() {
                         @Override
-                        public void accept(String ТаблицаОбработываемаяParallel) throws Throwable {
+                        public void accept(String ТаблицаОбработываемаяPosledovatel) throws Throwable {
+
+
+                            // TODO: 08.04.2024 Показываем пользовалю ПРоценты
+                            setChangeProzentyForPrograssbar(ТаблицаОбработываемаяPosledovatel, ВерсииВсехСерверныхТаблиц);
 
                             // TODO: 06.12.2023  запуск синхризуции по таблице конктерной
-                            coutSucceessItemAsycnTables.add(getLooTablesPOSTANDGET(ТаблицаОбработываемаяParallel))      ;
+                            coutSucceessItemAsycnTables.add(getLooTablesPOSTANDGET(ТаблицаОбработываемаяPosledovatel))      ;
 
                             // TODO: 15.09.2023
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                    " ТаблицаОбработываемаяParallel"
-                                    +ТаблицаОбработываемаяParallel
+                                    " ТаблицаОбработываемаяPosledovatel"
+                                    +ТаблицаОбработываемаяPosledovatel
                                     + " coutSucceessItemAsycnTables " +coutSucceessItemAsycnTables.size()+
-                                    " coutSucceessItemAsycnTables.stream().mapToLong(l->l)  .reduce(0, Long::sum)" +coutSucceessItemAsycnTables.stream().mapToLong(l->l)  .reduce(0, Long::sum));
+                                    " coutSucceessItemAsycnTables.stream().mapToLong(l->l)  .reduce(0, Long::sum)"
+                                    +coutSucceessItemAsycnTables.stream().mapToLong(l->l)  .reduce(0, Long::sum));
                         }
                     })
                     .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {

@@ -663,9 +663,8 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
                     + "\n" + "parallel"+" ResultatSync " + ResultatSync[0]);
-
-
-          /*  // TODO: 21.08.2023  только Последовательно
+/*
+            // TODO: 21.08.2023  только Последовательно
             ResultatSync[0] =        new ProcerPosledovatelnoSyncs( context,
                     jsonGenerator,
                     getsslSocketFactory2,
