@@ -208,8 +208,8 @@ public class ProccesorparallelSynch   {
                                            @NonNull  Long ВерсияДанныхсSqlServer,
                                            @NonNull  Integer PublicID,
                                            @NonNull Date     ВремяОтSqlServer) {
-        final Long[] УспешнойОбработкиСинх = {0l};
 
+        CopyOnWriteArrayList<Long> copyУспешнойОбработкиСинх=new CopyOnWriteArrayList<>();
         try  {
                 Log.d(this.getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
@@ -230,16 +230,16 @@ public class ProccesorparallelSynch   {
                     public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
 
 // TODO: 08.04.2024 через Retry Obsever множественое ображение  к серверу
-                        УспешнойОбработкиСинх[0] =   ObservableRetryGETAndPOST(ИмяТаблицы,
+                        copyУспешнойОбработкиСинх.add(  ObservableRetryGETAndPOST(ИмяТаблицы,
                                 ВерсияДанныхсSqlServer,
                                 PublicID,
-                                ВремяОтSqlServer,"POST");
+                                ВремяОтSqlServer,"POST"));
 
                         Log.d(this.getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
                                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n"+
-                                " УспешнойОбработкиСинх " + УспешнойОбработкиСинх[0]);
+                                " copyУспешнойОбработкиСинх " + copyУспешнойОбработкиСинх.size());
 
                     }
 
@@ -248,16 +248,16 @@ public class ProccesorparallelSynch   {
 
 
 // TODO: 08.04.2024 через Retry Obsever множественое ображение  к серверу
-                        УспешнойОбработкиСинх[0] =   ObservableRetryGETAndPOST(ИмяТаблицы,
+                        copyУспешнойОбработкиСинх.add(  ObservableRetryGETAndPOST(ИмяТаблицы,
                                 ВерсияДанныхсSqlServer,
                                 PublicID,
-                                ВремяОтSqlServer,"GET");
+                                ВремяОтSqlServer,"GET"));
 
                         Log.d(this.getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
                                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n"+
-                                " УспешнойОбработкиСинх " + УспешнойОбработкиСинх[0]);
+                                " copyУспешнойОбработкиСинх " + copyУспешнойОбработкиСинх.size());
 
 
                     }
@@ -276,7 +276,7 @@ public class ProccesorparallelSynch   {
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n"+
-                    " УспешнойОбработкиСинх " + УспешнойОбработкиСинх[0]);
+                    " copyУспешнойОбработкиСинх" + copyУспешнойОбработкиСинх.stream().mapToLong(m->m).reduce(0,Long::sum));
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -284,13 +284,13 @@ public class ProccesorparallelSynch   {
             new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-        return УспешнойОбработкиСинх[0];
+        return  copyУспешнойОбработкиСинх.stream().mapToLong(m->m).reduce(0,Long::sum);
     }
 
 
     // TODO: 07.04.2024
 
-    @SuppressLint("Range")
+    @SuppressLint("SuspiciousIndentation")
     private   Long ObservableRetryGETAndPOST(@NonNull String ИмяТаблицы,
                                              @NonNull Long ВерсияДанныхсSqlServer,
                                              @NonNull  Integer  PublicID,
