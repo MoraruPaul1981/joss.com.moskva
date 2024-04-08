@@ -29,7 +29,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.work.Data;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
@@ -56,7 +55,7 @@ import android.widget.TextView;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.BusinessLogicAll.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.OrdersTransports.Background.ServiceOrserTransportService;
-import com.dsy.dsu.Dashboard.MainActivity_Dashboard;
+import com.dsy.dsu.Dashboard.View.MainActivity_Dashboard;
 import com.dsy.dsu.R;
 import com.dsy.dsu.Services.ServiceUpdatePoОбновлениеПО;
 import com.dsy.dsu.WorkManagers.BL_WorkMangers.CreateSingleWorkManager;

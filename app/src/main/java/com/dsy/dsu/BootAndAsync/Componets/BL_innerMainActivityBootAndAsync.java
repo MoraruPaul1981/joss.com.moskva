@@ -31,7 +31,7 @@ import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusUpdatePO;
 import com.dsy.dsu.BootAndAsync.Service.IntentServiceBoot;
 import com.dsy.dsu.BootAndAsync.Window.MainActivityBootAndAsync;
 import com.dsy.dsu.BusinessLogicAll.Permissions.ClassPermissions;
-import com.dsy.dsu.Dashboard.MainActivity_Dashboard;
+import com.dsy.dsu.Dashboard.View.MainActivity_Dashboard;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.Errors.MainActivity_Errors;
 import com.dsy.dsu.Passwords.MainActivityPasswords;
@@ -42,7 +42,6 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.Date;
 import java.util.LinkedHashMap;
 
-import javax.inject.Inject;
 import javax.net.ssl.SSLSocketFactory;
 
 // TODO: 19.01.2024  внутренаяя бизнес логика Активтив BootAndAsync

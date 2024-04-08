@@ -44,7 +44,7 @@ import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.BusinessLogicAll.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.Services.Service_Get1C_ПолучениеДанныхОт1С;
 import com.dsy.dsu.Gsons.SubClass_JSON_B_P_GET_1C_shipment_of_materials;
-import com.dsy.dsu.Dashboard.MainActivity_Dashboard;
+import com.dsy.dsu.Dashboard.View.MainActivity_Dashboard;
 import com.dsy.dsu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;

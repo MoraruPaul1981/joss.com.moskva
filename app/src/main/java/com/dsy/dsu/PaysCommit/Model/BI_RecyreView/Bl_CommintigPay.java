@@ -29,7 +29,7 @@ import com.dsy.dsu.PaysCommit.Model.BI_RecyreView.LiveData.GetLiveDataForrecyreV
 import com.dsy.dsu.PaysCommit.Model.LeftDividerItemDecoratorCommitPay;
 import com.dsy.dsu.PaysCommit.View.RecyreView.MyRecycleViewAdapterCommingPay;
 import com.dsy.dsu.PaysCommit.View.RecyreViewIsNull.MyRecycleViewIsNullAdapterPay;
-import com.dsy.dsu.Dashboard.MainActivity_Dashboard;
+import com.dsy.dsu.Dashboard.View.MainActivity_Dashboard;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.R;
 import com.dsy.dsu.Services.Service_Notificatios_Для_Согласования;

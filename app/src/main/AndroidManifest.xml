@@ -1555,7 +1555,7 @@
             android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Dashboard.MainActivity_Dashboard" />
+                android:value=".Dashboard.View.MainActivity_Dashboard" />
 
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />
@@ -1625,7 +1625,7 @@
         <!-- активити прикложения ДСУ-1 -->
         <!-- активити прикложения ДСУ-1  singleTask singleTop  standard -->
         <activity
-            android:name=".Dashboard.MainActivity_Dashboard"
+            android:name=".Dashboard.View.MainActivity_Dashboard"
             android:exported="true"
             android:grantUriPermissions="true"
             android:label="Союз-Автодор"
