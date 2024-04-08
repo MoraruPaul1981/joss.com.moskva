@@ -35,6 +35,7 @@ import java.util.LinkedHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import javax.net.ssl.SSLSocketFactory;
 
@@ -239,7 +240,7 @@ public class ProccesorparallelSynch   {
                                 + " время: " + new Date() + "\n+" +
                                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n"+
-                                " copyУспешнойОбработкиСинх " + copyУспешнойОбработкиСинх.size());
+                                " copyУспешнойОбработкиСинх " + copyУспешнойОбработкиСинх.size()+"POST");
 
                     }
 
@@ -257,7 +258,7 @@ public class ProccesorparallelSynch   {
                                 + " время: " + new Date() + "\n+" +
                                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n"+
-                                " copyУспешнойОбработкиСинх " + copyУспешнойОбработкиСинх.size());
+                                " copyУспешнойОбработкиСинх " + copyУспешнойОбработкиСинх.size()+"GET");
 
 
                     }
@@ -819,7 +820,7 @@ public class ProccesorparallelSynch   {
                         " jsonNodeParentMAP.size() " +jsonNodeParentMAP.size() );
 
                 // TODO: 03.10.2023 все кроме байт
-                РезультСинхрониазции=   методRowJsonRow(jsonNodeParentMAP,имяТаблицаAsync,ИменаТаблицыОтАндройда);
+                РезультСинхрониазции=   методRowJsonRow(jsonNodeParentMAP,имяТаблицаAsync,ВерсииВсехСерверныхТаблиц);
                 Log.d(this.getClass().getName(),"\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
@@ -855,10 +856,12 @@ public class ProccesorparallelSynch   {
     // TODO: 13.09.2023   ROW
     Long методRowJsonRow(@NonNull  JsonNode jsonNodeParentMAP,
                          @NonNull String имяТаблицаAsync,
-                         @NonNull CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда){
+                         @NonNull  LinkedHashMap<String, Long> ВерсииВсехСерверныхТаблиц){
         Long РезультСинхрониазции=0l;
         try{
-            Integer ПозицияТекущейТаблицы=      ИменаТаблицыОтАндройда.indexOf(имяТаблицаAsync);
+        ArrayList<String> ВерсииВсехFindCurrentTable= (ArrayList<String>) ВерсииВсехСерверныхТаблиц.keySet().stream().collect(Collectors.toList());
+
+            Integer ПозицияТекущейТаблицы=      ВерсииВсехFindCurrentTable.indexOf(имяТаблицаAsync);
             int Проценты = 0;
             if (jsonNodeParentMAP.size()>0) {
                 // TODO: 11.10.2022 callback

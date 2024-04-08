@@ -30,15 +30,28 @@ public class HiltJboss {
     @Singleton
     @QualifierJbossServer3
     public  LinkedHashMap<Integer,String> getHiltJbossDebug(@ApplicationContext Context context) {
-        LinkedHashMap<Integer,String> МассивПортовСервераDebug= new LinkedHashMap();
+        LinkedHashMap<Integer,String> МассивПортовСервераDebugandRelize= new LinkedHashMap();
         try {
+
+
+            // TODO: 18.03.2023 московский сервер ЧЕРЕЗ DNS
+ /*       МассивПортовСервера.putIfAbsent(8888,"base.dsu1.ru");// TODO: 10.11.2022 РЕЛИЗ  Москвовский
+        МассивПортовСервера.putIfAbsent(8889,"base.dsu1.ru");// TODO: 10.11.2022 РЕЛИЗ  Москвовский
+        МассивПортовСервера.putIfAbsent(8890,"base.dsu1.ru");// TODO: 10.11.2022 РЕЛИЗ  Москвовский*/
+
+            // TODO: 18.03.2023 московский сервер
+            МассивПортовСервераDebugandRelize.putIfAbsent(8888,"80.70.108.165");// TODO: 10.11.2022 РЕЛИЗ  Москвовский
+            МассивПортовСервераDebugandRelize.putIfAbsent(8890,"80.70.108.165");// TODO: 10.11.2022 РЕЛИЗ  Москвовский
+            МассивПортовСервераDebugandRelize.putIfAbsent(8889,"80.70.108.165");// TODO: 10.11.2022 РЕЛИЗ  Москвовский
+
+     /*
             // TODO: 18.03.2023 ДЕБАГ  сервер
             МассивПортовСервераDebug.putIfAbsent(8080,"192.168.3.4");// TODO: 10.11.2022 Debug
-
+*/
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " МассивПортовСервера " + МассивПортовСервераDebug);
+                    + " МассивПортовСервераDebugandRelize " + МассивПортовСервераDebugandRelize);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -47,7 +60,7 @@ public class HiltJboss {
             new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-        return МассивПортовСервераDebug;
+        return МассивПортовСервераDebugandRelize;
 
     }
 

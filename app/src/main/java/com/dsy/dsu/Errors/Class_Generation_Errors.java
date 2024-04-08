@@ -77,13 +77,15 @@ public class Class_Generation_Errors {
                 classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("whose_error", ЛокальнаяВерсияПОСравнение);
                 String СгенерированованныйДатаДляВставки = new Class_Generation_Data(context).ГлавнаяДатаИВремяОперацийСБазойДанных();
                 classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("date_update", СгенерированованныйДатаДляВставки);
-                ///TODO РЕЗУЛЬТАТ ВСТАВКИ ДАННЫХ
-                if (!ТекстОшибки.equalsIgnoreCase("java.net.SocketTimeoutException: timeout")
-                        && !ТекстОшибки.equalsIgnoreCase("java.lang.NumberFormatException: null")
-                        && !ТекстОшибки.trim().matches("(.*)java.net.UnknownHostException: Unable to resolve host(.*)")
+
+                ///TODO Записываем ошибки только определного сорта
+                if (!ТекстОшибки.trim().matches("(.*)java.net.UnknownHostException: Unable to resolve host(.*)")
                         && !ТекстОшибки.trim().matches("(.*)java.net.SocketTimeoutException: failed to connect(.*)")
                         && !ТекстОшибки.trim().matches("(.*)java.net.sockettimeoutexception: failed to connect(.*)")
-                        && !ТекстОшибки.trim().matches("(.*)java.net.SocketTimeoutException:")) {
+                        && !ТекстОшибки.trim().matches("(.*)java.net.SocketTimeoutException:(.*)")
+                        && !ТекстОшибки.trim().matches("(.*)java.net.SocketTimeoutException: timeout(.*)")
+                        && !ТекстОшибки.trim().matches("(.*)java.lang.NumberFormatException: null(.*)")
+                        && !ТекстОшибки.trim().matches("(.*)java.net.ConnectException:(.*)")) {
 
                     // TODO: 21.12.2022  главная  файл ErrorDSU1
                    метометодЗаписьОшибкиОбынуюТаблицуErrorDSU1( );
