@@ -32,6 +32,8 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -210,7 +212,7 @@ public class ProccesorparallelSynch   {
                                            @NonNull  Integer PublicID,
                                            @NonNull Date     ВремяОтSqlServer) {
 
-        CopyOnWriteArrayList<Long> copyУспешнойОбработкиСинх=new CopyOnWriteArrayList<>();
+        ConcurrentSkipListSet<Long> copyУспешнойОбработкиСинх=new ConcurrentSkipListSet<>();
         try  {
                 Log.d(this.getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +

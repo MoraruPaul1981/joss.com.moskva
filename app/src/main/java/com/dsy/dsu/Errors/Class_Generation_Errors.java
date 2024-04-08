@@ -79,13 +79,9 @@ public class Class_Generation_Errors {
                 classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("date_update", СгенерированованныйДатаДляВставки);
 
                 ///TODO Записываем ошибки только определного сорта
-                if (!ТекстОшибки.trim().matches("(.*)java.net.UnknownHostException: Unable to resolve host(.*)")
-                        && !ТекстОшибки.trim().matches("(.*)java.net.SocketTimeoutException: failed to connect(.*)")
-                        && !ТекстОшибки.trim().matches("(.*)java.net.sockettimeoutexception: failed to connect(.*)")
-                        && !ТекстОшибки.trim().matches("(.*)java.net.SocketTimeoutException:(.*)")
-                        && !ТекстОшибки.trim().matches("(.*)java.net.SocketTimeoutException: timeout(.*)")
-                        && !ТекстОшибки.trim().matches("(.*)java.lang.NumberFormatException: null(.*)")
-                        && !ТекстОшибки.trim().matches("(.*)java.net.ConnectException:(.*)")) {
+                if (!ТекстОшибки.trim().matches("(.*)UnknownHostException(.*)")
+                        && !ТекстОшибки.trim().matches("(.*)SocketTimeoutException(.*)")
+                        && !ТекстОшибки.trim().matches("(.*)ConnectException(.*)")) {
 
                     // TODO: 21.12.2022  главная  файл ErrorDSU1
                    метометодЗаписьОшибкиОбынуюТаблицуErrorDSU1( );
