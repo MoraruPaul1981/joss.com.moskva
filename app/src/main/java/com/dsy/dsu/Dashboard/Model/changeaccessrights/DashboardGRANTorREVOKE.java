@@ -237,7 +237,7 @@ public class DashboardGRANTorREVOKE implements InGRANTs {
         try{
         layoutParams = (LinearLayout.LayoutParams) Кнопкаправа6и7.getLayoutParams();
 
-
+            layoutParams.topMargin=10;
         layoutParams.height = 300;
            /* layoutParams.setMargins(40,20,40,5);*/
 
