@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -22,8 +24,15 @@ Context context;
         Date ДатаВерсииДанныхSQLServer = null;
         try {
             // SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS" );
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS" );
-            ДатаВерсииДанныхSQLServer = formatter.parse(ВерсияДанныхСервернойТаблицы);
+
+            DateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+            try{
+                ДатаВерсииДанныхSQLServer = dateFormat.parse(ВерсияДанныхСервернойТаблицы);
+            }catch(ParseException parseEx){
+                //parseEx.printStackTrace();
+                dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                ДатаВерсииДанныхSQLServer = dateFormat.parse(ВерсияДанныхСервернойТаблицы);
+            }
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
