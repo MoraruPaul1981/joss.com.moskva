@@ -239,7 +239,7 @@ public class DashboardGRANTorREVOKE implements InGRANTs {
 
 
         layoutParams.height = 300;
-            layoutParams.setMargins(40,50,40,10);
+           /* layoutParams.setMargins(40,20,40,5);*/
 
         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

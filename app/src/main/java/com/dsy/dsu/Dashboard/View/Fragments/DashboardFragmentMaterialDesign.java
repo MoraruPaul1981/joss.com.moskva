@@ -274,7 +274,7 @@ public class DashboardFragmentMaterialDesign extends  DialogFragment  {
             // TODO: 11.01.2024  ПОЛУЧАЕМ Права
 
             Integer getGrantRemote=    dashboardGRANTorREVOKE.getGrantRemote(getContext() ,getHiltPublicId);
-
+            //TODO
             Log.d(this.getClass().getName(),"\n" + " class " +
                     Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
