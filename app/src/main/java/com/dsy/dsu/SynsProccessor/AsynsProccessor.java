@@ -646,14 +646,6 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                     + " ВерсииДатыСерверныхТаблиц "
                     + ВерсииДатыСерверныхТаблиц.toString());
 
-
-
-
-
-
-
-
-
 // TODO: 21.08.2023 ГЛАВНЫЙ ЦИКЛ СИХРОНИАЗЦИИ
             // TODO: 21.08.2023  только  Параллено
             ResultatSync[0] =        new ProccesorparallelSynch( context,
@@ -666,8 +658,14 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                     ВерсииДатыСерверныхТаблиц,
                     PublicID).startingAsyncParallels();
 
+            // TODO: 08.04.2024
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
+                    + "\n" + "parallel"+" ResultatSync " + ResultatSync[0]);
 
-       /*     // TODO: 21.08.2023  только Последовательно
+
+      /*      // TODO: 21.08.2023  только Последовательно
             ResultatSync[0] =        new ProcerPosledovatelnoSyncs( context,
                     jsonGenerator,
                     getsslSocketFactory2,
@@ -677,16 +675,11 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                     ВерсииВсехСерверныхТаблиц,
                     ВерсииДатыСерверныхТаблиц,
                     PublicID).startingAsyncParallels();*/
-
-            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
-                    + "\n" + "parallel"+" ResultatSync " + ResultatSync[0]);
-            // TODO: 15.09.2023
+        /*    // TODO: 15.09.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                    "  ResultatSync[0] " + ResultatSync[0]);
+                    "  ResultatSync[0] " + ResultatSync[0]);*/
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +

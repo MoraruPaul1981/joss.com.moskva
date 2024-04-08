@@ -230,11 +230,14 @@ public class ProccesorparallelSynch   {
                     @Override
                     public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
 
+                        Observable observablePost=      Observable.range(1,Integer.MAX_VALUE)
+                                .take(1);
+
 // TODO: 08.04.2024 через Retry Obsever множественое ображение  к серверу
                         copyУспешнойОбработкиСинх.add(  ObservableRetryGETAndPOST(ИмяТаблицы,
                                 ВерсияДанныхсSqlServer,
                                 PublicID,
-                                ВремяОтSqlServer,"POST"));
+                                ВремяОтSqlServer,"POST",observablePost));
 
                         Log.d(this.getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
@@ -248,11 +251,14 @@ public class ProccesorparallelSynch   {
                     public void onComplete() {
 
 
+                        Observable observableGet=      Observable.range(1,Integer.MAX_VALUE)
+                                .take(10,TimeUnit.MINUTES);
+
 // TODO: 08.04.2024 через Retry Obsever множественое ображение  к серверу
                         copyУспешнойОбработкиСинх.add(  ObservableRetryGETAndPOST(ИмяТаблицы,
                                 ВерсияДанныхсSqlServer,
                                 PublicID,
-                                ВремяОтSqlServer,"GET"));
+                                ВремяОтSqlServer,"GET",observableGet));
 
                         Log.d(this.getClass().getName(), "\n"
                                 + " время: " + new Date() + "\n+" +
@@ -296,38 +302,27 @@ public class ProccesorparallelSynch   {
                                              @NonNull Long ВерсияДанныхсSqlServer,
                                              @NonNull  Integer  PublicID,
                                              @NonNull Date   ВремяОтSqlServer,
-                                             @NonNull String CooserGetandPost) {
-        final Long[] РезультатУспешной = {0l};
+                                             @NonNull String CooserGetandPost,
+                                             @NonNull      Observable observable) {
+        final Long[] РезультатУспешнойиПолучениеДанных = {0l};
         try{
             // TODO: 02.11.2023  ПРИНИМАЕМ ДАННЫЕ ОТ СЕРВЕРА ПО ЧАСТЯМ
-            Observable.range(1,Integer.MAX_VALUE)
-                    .take(15, TimeUnit.MINUTES)
-                    .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Throwable {
-                            Exception e=new Exception(throwable);
-                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    })//.concatMap(i -> Observable.just(i).delay(300, TimeUnit.MILLISECONDS))
-                    .forEachWhile(new Predicate<Integer>() {
+            observable .forEachWhile(new Predicate<Integer>() {
                         @Override
                         public boolean test(Integer integer) throws Throwable {
                         try {
 
                             // TODO: 08.04.2024 выполения операции  GET ()
-                             РезультатУспешной[0] =  getCursorWithVersion( ИмяТаблицы, ВерсияДанныхсSqlServer, PublicID, ВремяОтSqlServer,  CooserGetandPost);
+                            РезультатУспешнойиПолучениеДанных[0] =  getCursorWithVersion( ИмяТаблицы, ВерсияДанныхсSqlServer, PublicID, ВремяОтSqlServer,  CooserGetandPost);
 
                                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                    "РезультатУспешной " + РезультатУспешной[0]);
+                                    "РезультатУспешнойиПолучениеДанных " + РезультатУспешнойиПолучениеДанных[0]);
 
-                            if (РезультатУспешной[0] >0 ) {
+                            if (РезультатУспешнойиПолучениеДанных[0] >0 ) {
                                 // TODO: 07.04.2024 записываем рузультат успешной вставки или обновления
-                                SuccessInsertOrUpdates.add(РезультатУспешной[0]);
+                                SuccessInsertOrUpdates.add(РезультатУспешнойиПолучениеДанных[0]);
                             }
                             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -342,7 +337,7 @@ public class ProccesorparallelSynch   {
                                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
 
-                            if (РезультатУспешной[0] >0 ) {
+                            if (РезультатУспешнойиПолучениеДанных[0] >0 ) {
                               return  true;
                             }else {
                                 return false;
@@ -369,6 +364,34 @@ public class ProccesorparallelSynch   {
 
         return SuccessInsertOrUpdates.stream().mapToLong(m->m).count();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     @SuppressLint("Range")
