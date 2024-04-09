@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.dsy.dsu.Errors.Class_Generation_Errors;
+import com.dsy.dsu.SynsProccessor.PrograsBarAsync.GetPrograssbarChangeIndicator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
@@ -17,7 +18,6 @@ import javax.net.ssl.SSLSocketFactory;
 
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.functions.Action;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class ProcerPosledovatelnoSyncs extends  ProccesorparallelSynch {
     public ProcerPosledovatelnoSyncs(@NonNull Context context, @NonNull ObjectMapper jsonGenerator,
@@ -38,7 +38,7 @@ public class ProcerPosledovatelnoSyncs extends  ProccesorparallelSynch {
             SuccessInsertOrUpdates=new ArrayList<>();
 
             // TODO: 07.04.2024
-            Flowable  flowable=     Flowable.fromIterable( ВерсииВсехСерверныхТаблиц.keySet())
+            Flowable  flowable=     Flowable.fromIterable( VesionTableAsync.keySet())
                     .filter(fil->!fil.toString().isEmpty());
 
 
@@ -48,7 +48,7 @@ public class ProcerPosledovatelnoSyncs extends  ProccesorparallelSynch {
 
 
                             // TODO: 08.04.2024 Показываем пользовалю ПРоценты
-                            setChangeProzentyForPrograssbar(ТаблицаОбработываемаяPosledovatel, ВерсииВсехСерверныхТаблиц);
+                            new GetPrograssbarChangeIndicator(context).setAsyncrograssbarList( NameTableAsync,ТаблицаОбработываемаяPosledovatel);
 
                             // TODO: 06.12.2023  запуск синхризуции по таблице конктерной
                             coutSucceessItemAsycnTables.add(getLooTablesPOSTANDGET(ТаблицаОбработываемаяPosledovatel))      ;

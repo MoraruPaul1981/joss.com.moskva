@@ -18,6 +18,7 @@ import com.dsy.dsu.BusinessLogicAll.Jakson.GeneratorBinarySONSerializer;
 import com.dsy.dsu.BusinessLogicAll.Jakson.GeneratorJSONSerializer;
 import com.dsy.dsu.BusinessLogicAll.SubClassUpVersionDATA;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
+import com.dsy.dsu.SynsProccessor.PrograsBarAsync.GetPrograssbarChangeIndicator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,7 +33,6 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
@@ -41,7 +41,6 @@ import java.util.stream.Collectors;
 
 import javax.net.ssl.SSLSocketFactory;
 
-import hilt_aggregated_deps._com_dsy_dsu_Hilt_OneSignal_DataModuleOneSignal;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.core.Flowable;
@@ -57,17 +56,16 @@ public class ProccesorparallelSynch   {
 
 
 
-  Context context;
-  ObjectMapper jsonGenerator;
-     SSLSocketFactory getsslSocketFactory2;
-     LinkedHashMap<Integer, String> getHiltJbossDebug;
-    LinkedHashMap<Integer, String> getHiltJbossReliz;
-    CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
-     LinkedHashMap<String, Long> ВерсииВсехСерверныхТаблиц ;
-       LinkedHashMap<String, Date> ВерсииДатыСерверныхТаблиц;
-    Integer PublicID;
-
-    ArrayList<Long> SuccessInsertOrUpdates ;
+   protected Context context;
+    protected  ObjectMapper jsonGenerator;
+    protected   SSLSocketFactory getsslSocketFactory2;
+    protected   LinkedHashMap<Integer, String> getHiltJbossDebug;
+    private   LinkedHashMap<Integer, String> getHiltJbossReliz;
+    protected   CopyOnWriteArrayList<String> NameTableAsync;
+    protected   LinkedHashMap<String, Long> VesionTableAsync;
+    protected    LinkedHashMap<String, Date> DatesTableAsync;
+    protected Integer PublicID;
+    protected   ArrayList<Long> SuccessInsertOrUpdates ;
 
 
 
@@ -77,9 +75,9 @@ public class ProccesorparallelSynch   {
                                   @NonNull LinkedHashMap<Integer, String> getHiltJbossDebug,
                                   @NonNull LinkedHashMap<Integer, String> getHiltJbossReliz,
 
-                                  @NonNull  CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда,
-                                  @NonNull LinkedHashMap<String, Long> ВерсииВсехСерверныхТаблиц ,
-                                  @NonNull  LinkedHashMap<String, Date> ВерсииДатыСерверныхТаблиц,
+                                  @NonNull  CopyOnWriteArrayList<String> NameTableAsync,
+                                  @NonNull LinkedHashMap<String, Long> VesionTableAsync,
+                                  @NonNull  LinkedHashMap<String, Date> DatesTableAsync,
                                   @NonNull Integer PublicID) {
 
 
@@ -90,9 +88,9 @@ public class ProccesorparallelSynch   {
         this.    getHiltJbossDebug=getHiltJbossDebug;
         this.  getHiltJbossReliz=getHiltJbossReliz;
 
-        this.ИменаТаблицыОтАндройда=ИменаТаблицыОтАндройда;
-        this.ВерсииВсехСерверныхТаблиц=ВерсииВсехСерверныхТаблиц;
-        this.ВерсииДатыСерверныхТаблиц=ВерсииДатыСерверныхТаблиц;
+        this.NameTableAsync = NameTableAsync;
+        this.VesionTableAsync = VesionTableAsync;
+        this.DatesTableAsync = DatesTableAsync;
 
         this.  PublicID=PublicID;
 
@@ -104,7 +102,7 @@ public class ProccesorparallelSynch   {
             SuccessInsertOrUpdates=new ArrayList<>();
 
             // TODO: 07.04.2024  
-            ParallelFlowable     flowable= (ParallelFlowable)    Flowable.fromIterable( ВерсииВсехСерверныхТаблиц.keySet())
+            ParallelFlowable     flowable= (ParallelFlowable)    Flowable.fromIterable( VesionTableAsync.keySet())
                   .filter(fil->!fil.toString().isEmpty())
                 .parallel(3).runOn(Schedulers.computation());
             flowable.doOnNext(new Consumer<String>() {
@@ -112,20 +110,25 @@ public class ProccesorparallelSynch   {
                         public void accept(String ТаблицаОбработываемаяParallel) throws Throwable {
 
 
+
                             // TODO: 08.04.2024 Показываем пользовалю ПРоценты
-                            setChangeProzentyForPrograssbar(ТаблицаОбработываемаяParallel, ВерсииВсехСерверныхТаблиц);
+                            new GetPrograssbarChangeIndicator(context).setAsyncrograssbarMap( VesionTableAsync,ТаблицаОбработываемаяParallel);
+
 
                             // TODO: 06.12.2023  запуск синхризуции по таблице конктерной
                             coutSucceessItemAsycnTables.add(getLooTablesPOSTANDGET(ТаблицаОбработываемаяParallel))      ;
 
                             // TODO: 15.09.2023
-                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                             Log.d(this.getClass().getName(),"\n" + " class "
+                                     + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
                                     " ТаблицаОбработываемаяParallel"
-                                    +ТаблицаОбработываемаяParallel
+                                    +ТаблицаОбработываемаяParallel+"\n"
                                     + " coutSucceessItemAsycnTables " +coutSucceessItemAsycnTables.size()+
-                                     " coutSucceessItemAsycnTables.stream().mapToLong(l->l)  .reduce(0, Long::sum)" +coutSucceessItemAsycnTables.stream().mapToLong(l->l)  .reduce(0, Long::sum));
+                                     " coutSucceessItemAsycnTables.stream().mapToLong(l->l)  .reduce(0, Long::sum)"
+                                     +coutSucceessItemAsycnTables.stream().mapToLong(l->l)  .reduce(0, Long::sum)+"\n"+
+                                      " VesionTableAsync "+VesionTableAsync);
                         }
                     })
                     .doOnError(new Consumer<Throwable>() {
@@ -172,9 +175,9 @@ public class ProccesorparallelSynch   {
         Long   РезультатТаблицыОбмена=0l;
         try{
             // TODO: 21.08.2023 Запуск Синхронизации после получение Версии
-            Long     ВерсияДанныхОтSqlServer = ВерсииВсехСерверныхТаблиц.get(ИмяТаблицыоТВерсияДанныхОтSqlServer);
+            Long     ВерсияДанныхОтSqlServer = VesionTableAsync.get(ИмяТаблицыоТВерсияДанныхОтSqlServer);
             // TODO: 02.04.2024 верям данных
-            Date ВремяВерсияОтSqlServer = ВерсииДатыСерверныхТаблиц.get(ИмяТаблицыоТВерсияДанныхОтSqlServer);
+            Date ВремяВерсияОтSqlServer = DatesTableAsync.get(ИмяТаблицыоТВерсияДанныхОтSqlServer);
 
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -851,7 +854,7 @@ public class ProccesorparallelSynch   {
                         " jsonNodeParentMAP.size() " +jsonNodeParentMAP.size() );
 
                 // TODO: 03.10.2023 все кроме байт
-                РезультСинхрониазции=   методRowJsonRow(jsonNodeParentMAP,имяТаблицаAsync,ВерсииВсехСерверныхТаблиц);
+                РезультСинхрониазции=   методRowJsonRow(jsonNodeParentMAP,имяТаблицаAsync, VesionTableAsync);
                 Log.d(this.getClass().getName(),"\n" + " class " +
                         Thread.currentThread().getStackTrace()[2].getClassName()
                         + "\n" +
@@ -922,32 +925,7 @@ public class ProccesorparallelSynch   {
 
 
 
-    public void setChangeProzentyForPrograssbar(@NonNull String имяТаблицаAsync, @NonNull LinkedHashMap<String, Long> ВерсииВсехСерверныхТаблиц) {
 
-        try {
-        int Проценты;
-        ArrayList<String> ВерсииВсехFindCurrentTable= (ArrayList<String>) ВерсииВсехСерверныхТаблиц.keySet().stream().collect(Collectors.toList());
-
-        Integer ПозицияТекущейТаблицы=      ВерсииВсехFindCurrentTable.indexOf(имяТаблицаAsync)+1;
-        Проценты = new Class_Visible_Processing_Async(context).
-                ГенерируемПРОЦЕНТЫДляAsync(ПозицияТекущейТаблицы, ИменаТаблицыОтАндройда.size());
-        // TODO: 22.01.2024 текущее отобраение процентов
-        методCallBackPrograssBars(  Проценты, имяТаблицаAsync,ПозицияТекущейТаблицы);
-
-        Log.d(this.getClass().getName(),"\n" + " class " +
-                Thread.currentThread().getStackTrace()[2].getClassName()
-                + "\n" +
-                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()+
-                " Проценты " +Проценты+" имяТаблицаAsync " +имяТаблицаAsync);
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-    }
-    }
     // TODO: 07.04.2024
 
 
@@ -1087,52 +1065,6 @@ public class ProccesorparallelSynch   {
 
 
 
-    //todo МЕТОД ВИЗУАЛЬНОГО ОТВЕТА ИЗ СЛУЖБЫ ОБРАБТНО В activity async
-    public void методCallBackPrograssBars(@NonNull int Проценны, @NonNull String имяТаблицаAsync,
-                                          @NonNull Integer ПозицияТекущейТаблицы)  {
-        try {
-            class SendUserДанныеДляPrograssbar extends SendMainActivity {
-
-                public SendUserДанныеДляPrograssbar(Context context) {
-                    super(context);
-                }
-
-                @Override
-                public void startSendBroadSesiver() {
-                    //  super.startSendBroadSesiver();
-                    intentComunications.setAction("Broad_messageAsyncPrograssBar");
-                    bundleComunications.putString("Статус" ,"AsyncPrograssBar");
-                    bundleComunications.putInt("Проценны" ,Проценны);
-                    bundleComunications.putString("имятаблицы" ,имяТаблицаAsync);
-                    bundleComunications.putInt("maxtables" ,  ИменаТаблицыОтАндройда.size());
-                    bundleComunications.putInt("currentposition" ,ПозицияТекущейТаблицы);
-                    intentComunications.putExtras(bundleComunications);
-
-                    EventBus.getDefault().post(new MessageEvensBusPrograssBar(intentComunications));;
-
-      /*              // TODO: 22.01.2024 останавливаем службу
-                    stopServiceBoot();*/
-
-                }
-            }
-            // TODO: 22.01.2024 когда режим офлайн
-            new SendUserДанныеДляPrograssbar(context).startSendBroadSesiver();
-
-
-            Log.d(this.getClass().getName(), "\n" + " class " +
-                    Thread.currentThread().getStackTrace()[2].getClassName()
-                    + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    + " Проценны " +Проценны);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
 
 
 }
