@@ -5,8 +5,8 @@ import 'Polos.dart';
 class ParserJson {
 
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+  Map<String, dynamic> toJson(Map<String, dynamic> data ) {
+/*    final Map<String, dynamic> data = new Map<String, dynamic>();*/
      print('data $data');
     return data;
   }
