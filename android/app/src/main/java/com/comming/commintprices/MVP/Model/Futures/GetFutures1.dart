@@ -1,6 +1,8 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import '../Errors/ErrorsPrint.dart';
+import '../Jsons/Parser/ParcesPerson1.dart';
 import '../Jsons/Polo/Polos.dart';
 import 'InFuture.dart';
 
@@ -13,7 +15,9 @@ class GetFutures  implements InGetFutures {
   @override
   Future<List<Person>> fetchPerson( { required  String url }  ) async {
     // TODO: implement fetchPerson
-    final url='https://jsonplaceholder.typicode.com/photos' as String;
+    dynamic JsonMap;
+    try{
+   /* final url='https://jsonplaceholder.typicode.com/photos' as String;*/
     final parsedUrl=Uri.parse(url) as Uri;
     final getresponse= await http.get(parsedUrl);
 
@@ -24,16 +28,21 @@ class GetFutures  implements InGetFutures {
 
       print('jsonString $jsonString');
 
-      dynamic JsonMap=ParserJson().parserPerson(jsonString);
+       JsonMap=ParserJson().parserPerson(jsonString);
 
 
       print('JsonMap $JsonMap');
-      return JsonMap;
+
 
     } else {
       print('response $getresponse');
-      throw Exception('Request Api Error');
     }
+    //TODO error
+  } on Exception catch (e) {
+  PrintingErrors printingErrors= new PrintingErrors();
+  printingErrors.printingError(e,'mainTextButton46.dart','main()');
+  }
+    return JsonMap;
   }
 
 

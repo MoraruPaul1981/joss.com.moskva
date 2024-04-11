@@ -24,7 +24,7 @@ void main() {
 
 
     GetFutures getFutures=GetFutures();
-    getFutures. fetchPerson();
+    getFutures. fetchPerson(  url: 'https://jsonplaceholder.typicode.com/photos');
 
    //TODO error
   } on Exception catch (e) {
