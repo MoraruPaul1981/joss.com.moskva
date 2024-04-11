@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'GetError.dart';
+import 'InGetError.dart';
 
 //TODO errors all modules
   class PrintingErrors implements GetError {

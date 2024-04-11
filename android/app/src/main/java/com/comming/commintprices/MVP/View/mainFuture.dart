@@ -11,6 +11,8 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:isolate';
 
+import '../Model/Futures/GetFutures1.dart';
+
 
 void main() {
   try {
@@ -18,14 +20,30 @@ void main() {
   // throw ('This is an error !!!');
   // runApp(const CommingPrices());
 
-  proccedtvoid(nik: 121);
+  //proccedtvoid(nik: 121);
 
-   //TODO error  genetator -26.03.2024--9.17
-  } catch (e) {
+
+    GetFutures getFutures=GetFutures();
+    getFutures. fetchPerson();
+
+   //TODO error
+  } on Exception catch (e) {
     PrintingErrors printingErrors= new PrintingErrors();
     printingErrors.printingError(e,'mainTextButton46.dart','main()');
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 //TODO  просто метод  void
 void proccedtvoid({String? firstName, String lastName = 'Todo',required int nik}) async{
