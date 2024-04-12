@@ -43,6 +43,33 @@ class Person1 implements InPolos{
 
 
 
+
+
+
+  @override
+  Person2 fromJsonPerson2(Map<String, Person2> json) {
+    // TODO: implement fromJsonPerson2
+    throw UnimplementedError();
+  }
+
+  @override
+  Person2 fromJsondynamic(Map<String, dynamic> json) {
+    // TODO: implement fromJsondynamic
+    throw UnimplementedError();
+  }
+
+  @override
+  Map<String, Person2> toJson2Person2() {
+    // TODO: implement toJson2Person2
+    throw UnimplementedError();
+  }
+
+  @override
+  Map<String, Person2> toJsonPerson2() {
+    // TODO: implement toJsonPerson2
+    throw UnimplementedError();
+  }
+
   @override
   Map<String, dynamic> toJson() {
     // TODO: implement toJson
@@ -53,19 +80,6 @@ class Person1 implements InPolos{
   Map<String, dynamic> toJson2() {
     // TODO: implement toJson2
     throw UnimplementedError();
-  }
-
-
-  @override
-  Person2 fromJson(Map<String, dynamic> json) {
-    // TODO: implement fromJson
-    _albumId = json['albumId'];
-    _id = json['id'];
-    _title = json['title'];
-    _url = json['url'];
-    _thumbnailUrl = json['thumbnailUrl'];
-
-    return  Person2(albumId: _albumId, id: _id, title: _title, url: _url, thumbnailUrl: _thumbnailUrl);
   }
 
 

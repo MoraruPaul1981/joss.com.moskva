@@ -14,13 +14,15 @@ class ParserJson1   implements InterfaceParserJson {
     // TODO: implement parserPerson
   var   person;
     try{
-      List<dynamic> list=json.decode(responseBody) as List<dynamic>;
-
-       person=list.map((model) => Person2().fromJson(model)).toList() as   List<Person1>;
-
-      print('person $person');
 
 
+      List<Person1> list=json.decode(responseBody) as List<Person1>;
+
+       person=list.map((model) => Person2().fromJson(model as Map<String, Person2>)) .toList() as   List<dynamic>;
+
+      //list.where((e) => e["albumId"] == 3);
+
+     print("person $person");
       //TODO error
     } on Exception catch (e) {
      PrintingErrors printingErrors= new PrintingErrors();
