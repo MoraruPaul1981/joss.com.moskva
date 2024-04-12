@@ -75,7 +75,7 @@ public class ClassOneSingnalGenerator {
             PUBLIC_CONTENT public_contentменеджер=new PUBLIC_CONTENT(context);
 
             // TODO: 23.12.2021 ЧЕТЫРЕ ПОПЫТКИ ПОДКЛЮЧЕНИЕ В СЕВРЕРУONESIGNAL
-            Observable.interval(0, 25, TimeUnit.SECONDS, Schedulers.single())
+            Observable.interval(0, 10, TimeUnit.SECONDS, Schedulers.single())
                     .timeInterval()
                     .take(1,TimeUnit.MINUTES)
                   .doOnError(new Consumer<Throwable>() {
@@ -312,7 +312,7 @@ public class ClassOneSingnalGenerator {
 
             }
 
-            // TODO: 12.04.2024 close Cursor 
+            // TODO: 12.04.2024 close Cursor
             if(cursorOldOneSignal!=null && ! cursorOldOneSignal.isClosed()){
                 cursorOldOneSignal.close();
             }
