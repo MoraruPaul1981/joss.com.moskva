@@ -27,7 +27,7 @@ void main() {
     getFutures. fetchPerson(  url: 'https://jsonplaceholder.typicode.com/photos');
 
    //TODO error
-  } on Exception catch (e) {
+  }  catch (e) {
     PrintingErrors printingErrors= new PrintingErrors();
     printingErrors.printingError(e,'mainTextButton46.dart','main()');
   }

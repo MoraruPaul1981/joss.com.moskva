@@ -22,7 +22,7 @@ try{
     this._url = url;
     this._thumbnailUrl = thumbnailUrl;
     //TODO error
-  } on Exception catch (e) {
+  }   catch (e) {
   print('e $e');
   }
 
@@ -40,7 +40,7 @@ try{
       _thumbnailUrl = json['thumbnailUrl'] as String?;
 
       //TODO error
-    } on Exception catch (e) {
+    }   catch (e) {
       print('e $e');
     }
 
@@ -59,7 +59,7 @@ try{
       _thumbnailUrl = json['thumbnailUrl'] as String?;
 
       //TODO error
-    } on Exception catch (e) {
+    }   catch (e) {
       print('e $e');
     }
 

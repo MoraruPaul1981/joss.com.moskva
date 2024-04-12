@@ -52,7 +52,7 @@ class Person1 implements InPolos{
       _thumbnailUrl = json['thumbnailUrl'] as String?;
 
       //TODO error
-    } on Exception catch (e) {
+    }   catch (e) {
       print('e $e');
     }
 
@@ -71,7 +71,7 @@ class Person1 implements InPolos{
       _thumbnailUrl = json['thumbnailUrl'] as String?;
 
       //TODO error
-    } on Exception catch (e) {
+    }   catch (e) {
       print('e $e');
     }
 

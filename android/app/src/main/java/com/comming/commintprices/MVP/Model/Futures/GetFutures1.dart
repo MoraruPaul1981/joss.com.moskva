@@ -38,7 +38,7 @@ class GetFutures1  implements InGetFutures {
       print('response $getresponse');
     }
     //TODO error
-  } on Exception catch (e) {
+  }   catch (e) {
   PrintingErrors printingErrors= new PrintingErrors();
   printingErrors.printingError(e,'mainTextButton46.dart','main()');
   }

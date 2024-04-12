@@ -26,7 +26,7 @@ class ParserJson3   implements InterfaceParserJson {
       print('person $person');
 
       //TODO error
-    } on Exception catch (e) {
+    }   catch (e) {
       PrintingErrors printingErrors= new PrintingErrors();
       printingErrors.printingError(e,'mainTextButton46.dart','main()');
     }

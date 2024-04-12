@@ -16,17 +16,22 @@ class ParserJson1   implements InterfaceParserJson {
     try{
 
 
-      List<Person1> list=json.decode(responseBody) as List<Person1>;
+     // List<dynamic> list=json.decode(responseBody) as List<dynamic>;
+      List<dynamic> list=json.decode(responseBody)  ;
 
-       person=list.map((model) => Person2().fromJson(model as Map<String, Person2>)) .toList() as   List<dynamic>;
+        person=list.map((model) => Person2().fromJsondynamic(model )) .toList().isEmpty as   List<Person2>;
+
+      // person=list.map((model) => Person2().fromJsonPerson2(model )) .toList() as   List<dynamic>;
 
       //list.where((e) => e["albumId"] == 3);
 
      print("person $person");
       //TODO error
-    } on Exception catch (e) {
+    }  catch (e) {
      PrintingErrors printingErrors= new PrintingErrors();
       printingErrors.printingError(e,'ParserJson1.class','main()');
+    }finally {
+      print('finally');
     }
     return person ;
   }
