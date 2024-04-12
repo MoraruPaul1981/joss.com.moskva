@@ -65,7 +65,7 @@ public class ProccesorparallelSynch   {
     protected   LinkedHashMap<String, Long> VesionTableAsync;
     protected    LinkedHashMap<String, Date> DatesTableAsync;
     protected Integer PublicID;
-    protected   ArrayList<Long> SuccessInsertOrUpdates ;
+    protected   ConcurrentSkipListSet<Long> SuccessInsertOrUpdates ;
 
 
 
@@ -99,7 +99,7 @@ public class ProccesorparallelSynch   {
     public Long startingAsyncParallels() {
         CopyOnWriteArrayList<Long> coutSucceessItemAsycnTables=new CopyOnWriteArrayList();
         try{
-            SuccessInsertOrUpdates=new ArrayList<>();
+            SuccessInsertOrUpdates=new ConcurrentSkipListSet<>();
 
             // TODO: 07.04.2024  
             ParallelFlowable     flowable= (ParallelFlowable)    Flowable.fromIterable( VesionTableAsync.keySet())

@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.net.ssl.SSLSocketFactory;
@@ -35,7 +36,7 @@ public class ProcerPosledovatelnoSyncs extends  ProccesorparallelSynch {
     public Long startingAsyncParallels() {
         CopyOnWriteArrayList<Long> coutSucceessItemAsycnTables=new CopyOnWriteArrayList();
         try{
-            SuccessInsertOrUpdates=new ArrayList<>();
+            SuccessInsertOrUpdates=new ConcurrentSkipListSet<>();
 
             // TODO: 07.04.2024
             Flowable  flowable=     Flowable.fromIterable( VesionTableAsync.keySet())
