@@ -328,7 +328,8 @@ public class ProccesorparallelSynch   {
                         try {
 
                             // TODO: 08.04.2024 выполения операции  GET ()
-                            concurrentSkipListSetResultSucceessGetAsyncCurerentTable.add(getCursorWithVersion( ИмяТаблицы, ВерсияДанныхсSqlServer, PublicID, ВремяОтSqlServer,  CooserGetandPost));
+                            concurrentSkipListSetResultSucceessGetAsyncCurerentTable.add(
+                                    getCursorWithVersion( ИмяТаблицы, ВерсияДанныхсSqlServer, PublicID, ВремяОтSqlServer,  CooserGetandPost));
 
                             // TODO: 12.04.2024 get Получаем результат
                            getAsyncCurerentTable=       concurrentSkipListSetResultSucceessGetAsyncCurerentTable.pollLast();
@@ -557,7 +558,8 @@ public class ProccesorparallelSynch   {
                     // TODO: 05.04.2024
                     if ( !ВремяОтSqlServer.equals(ВремяДанныхНаАндройде)) {
                         // TODO: 05.04.2024
-                        if (!ИмяТаблицы.equalsIgnoreCase("errordsu1")) {
+                        if (!ИмяТаблицы.trim().equalsIgnoreCase("errordsu1")
+                        && !ИмяТаблицы.trim().equalsIgnoreCase("settings_tabels")) {
 
                             ////// todo МЕТОД GET() в фоне    ////// todo МЕТОД GET
                             ДанныеПосылаемИлиПринимаемНаСервер = МетодДанныеПолучаемНаСервервФоне(ИмяТаблицы, ВерсииНаАндройдеСерверная, PublicID);
@@ -570,7 +572,8 @@ public class ProccesorparallelSynch   {
 
                             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " ДанныеПосылаемИлиПринимаемНаСервер  " + ДанныеПосылаемИлиПринимаемНаСервер+
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " ДанныеПосылаемИлиПринимаемНаСервер  "
+                                    + ДанныеПосылаемИлиПринимаемНаСервер+
                                     "\n"+ " ВремяДанныхНаАндройде " +ВремяДанныхНаАндройде+" ВремяДанныхНаАндройде " +ВремяДанныхНаАндройде);
                         }
                     }
