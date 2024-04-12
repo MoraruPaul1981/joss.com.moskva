@@ -19,13 +19,31 @@ class ParserJson1   implements InterfaceParserJson {
      // List<dynamic> list=json.decode(responseBody) as List<dynamic>;
       List<dynamic> list=json.decode(responseBody)  ;
 
-        person=list.map((model) => Person2().fromJsondynamic(model )) .toList().isEmpty as   List<Person2>;
+      List<Person2>  person=list.map((model) => Person2().fromJsondynamic(model )) .toList() as   List<Person2>;
+
+      print("person $person");
+
+     Map<int,Person2> map= person.asMap();
+
+
+      for(Person2 p in map.values){
+        print(Person2);
+
+      }
+
+      for(int p in map.keys){
+        print(map.values.elementAt(p));
+
+      }
+
+
+      //map.keys.forEach((k,v) => print('${k}: ${v}') );
 
       // person=list.map((model) => Person2().fromJsonPerson2(model )) .toList() as   List<dynamic>;
 
       //list.where((e) => e["albumId"] == 3);
 
-     print("person $person");
+     print("map $map");
       //TODO error
     }  catch (e) {
      PrintingErrors printingErrors= new PrintingErrors();
