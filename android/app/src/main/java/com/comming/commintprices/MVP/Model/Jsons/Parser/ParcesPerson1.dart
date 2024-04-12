@@ -26,6 +26,11 @@ class ParserJson1   implements InterfaceParserJson {
      Map<int,Person2> map= person.asMap();
 
 
+        ///Map.from(map).entries.where(  (element) => element.key == 3 );
+
+      var trueEntries = map.entries.where((MapEntry e) => e.value==3);
+
+
       for(Person2 p in map.values){
         print(Person2);
 
