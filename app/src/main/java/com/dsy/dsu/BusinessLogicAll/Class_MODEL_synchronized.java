@@ -78,7 +78,8 @@ import okio.BufferedSink;
     private Class_MODEL_synchronized ссылка_MODELsynchronized = null;
     private String ПубличноеЛогин =      new String();
     private  String ПубличноеПароль =   new String();
-    public Integer ID = 0;
+
+
     private SQLiteDatabase sqLiteDatabase ;
     public Class_MODEL_synchronized(  @NotNull Context context) {
         super(context);
@@ -2243,122 +2244,61 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                                                                                String Поля) {
 /////todo КОД ЗАПОЛЕНЕИЯ ДАННЫМИ В СПИНЕР ЦФО ДЕПАРТАМЕНТ МЕСЯЦ
         Integer РезультатОбновлениеЧерезКонтрейнер = 0;
-//
         Class_GRUD_SQL_Operations class_grud_sql_operationsЗаписываемВыбранныйРежимИнтрернетаWifiИлиMobil;
-
+        long PublicId=0l;
                 try {
-
                     Log.d(this.getClass().getName(), " ПередаваемыйРежимИнтрентета  " + ПередаваемыйРежимИнтрентета);
-
                     ////TODO ОБНУЛЯЕМ КАКУЮ ОРГАНИЗАЦИЮ ВЫБРАЛИ ОЧИЩАЕМ ВСТАВЛЕМ ППАРАМЕТР WIF-FI
-
-
-                    ///////
                     class_grud_sql_operationsЗаписываемВыбранныйРежимИнтрернетаWifiИлиMobil=new Class_GRUD_SQL_Operations(context);
-
 
                     // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
                     Class_GRUD_SQL_Operations class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ= new Class_GRUD_SQL_Operations(context);
-                    ///
                     class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ.concurrentHashMapНабор.put("СамFreeSQLКОд",
                             " SELECT id  FROM successlogin  ORDER BY date_update DESC ;");
-
-
                     // TODO: 12.10.2021  Ссылка Менеджер Потоков
-
                     PUBLIC_CONTENT  Class_Engine_SQLГдеНаходитьсяМенеджерПотоков =new PUBLIC_CONTENT (context);
-
-
-                    ///////
-                    SQLiteCursor            Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО= (SQLiteCursor) class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ.
+                    SQLiteCursor            Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО=
+                            (SQLiteCursor) class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ.
                             new GetаFreeData(context).getfreedata(class_grud_sql_operationsПолучаемНаБазуUUIDфиоПолучаемИзТаблицыФИОИМЯ.concurrentHashMapНабор,
                             Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,sqLiteDatabase);
-
                     if(Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.getCount()>0){
-                        //
                         Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.moveToFirst();
-
-                        /////
-                        ID =         Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.getInt(0);
-
-
-                        Log.d(this.getClass().getName(), " ID  " + ID);
+                      PublicId =         Курсор_ПолучаемИмяСотрудникаИзТаблицыФИО.getInt(0);
+                        Log.d(this.getClass().getName(), " PublicId  " + PublicId);
                     }
-
-
-
                     // TODO: 06.09.2021 ВТОРОЕ ДЕЙСТИВЕ ПОСЛЕ ОЧИСТКИ ВСТАВЛЯЕМ  ПОЛУЧЕНЫЙ СТАТУС   ДЛЯ WIFI MOBILE
-
-                    ///////
                     class_grud_sql_operationsЗаписываемВыбранныйРежимИнтрернетаWifiИлиMobil=new Class_GRUD_SQL_Operations(context);
-
-
                     // TODO: 06.09.2021  ПАРАМЕТРЫ ДЛЯ ПЕРВОГО ДЕЙСТИЯ ОЧИЩЕНИЯ
-
-                    ////////
                     class_grud_sql_operationsЗаписываемВыбранныйРежимИнтрернетаWifiИлиMobil.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы",Таблица);
-
-                    ////////
                     class_grud_sql_operationsЗаписываемВыбранныйРежимИнтрернетаWifiИлиMobil.concurrentHashMapНабор.put("Флаг_ЧерезКакоеПолеОбновлением","id");
-                    ////////
-                    class_grud_sql_operationsЗаписываемВыбранныйРежимИнтрернетаWifiИлиMobil.concurrentHashMapНабор.put("ЗначениеФлагОбновления", ID);
-
-//
-
+                    class_grud_sql_operationsЗаписываемВыбранныйРежимИнтрернетаWifiИлиMobil.concurrentHashMapНабор.put("ЗначениеФлагОбновления", PublicId);
                     class_grud_sql_operationsЗаписываемВыбранныйРежимИнтрернетаWifiИлиMobil.
                             concurrentHashMapНабор.put("ЗнакФлагОбновления","="); //или =   или <   >
-
                     // TODO: 06.09.2021  КОНТЕРЙНЕР ДЛЯ ПЕРВОГО ДЕЙСТИЯ ОЧИЩЕНИЯ
-
                     ContentValues ВставляемВБАзуВыбранныйРежимИнтренета=new ContentValues();
-
             ВставляемВБАзуВыбранныйРежимИнтренета = new ContentValues();
-
-
-
-
-
-                    ВставляемВБАзуВыбранныйРежимИнтренета.put("id", ID);
-
+                    ВставляемВБАзуВыбранныйРежимИнтренета.put("id", PublicId);
                     ВставляемВБАзуВыбранныйРежимИнтренета.put(Поля, ПередаваемыйРежимИнтрентета);
-
-
                     ////TODO ДАТА
                     String СгенерированованныйДатаДляДаннойОперации=     new Class_Generation_Data(context).ГлавнаяДатаИВремяОперацийСБазойДанных();
-
-
                     ВставляемВБАзуВыбранныйРежимИнтренета.put("date_update", СгенерированованныйДатаДляДаннойОперации);
-
-                    class_grud_sql_operationsЗаписываемВыбранныйРежимИнтрернетаWifiИлиMobil.contentValuesДляSQLBuilder_Для_GRUD_Операций.putAll(ВставляемВБАзуВыбранныйРежимИнтренета);
-
-
+                    class_grud_sql_operationsЗаписываемВыбранныйРежимИнтрернетаWifiИлиMobil.
+                            contentValuesДляSQLBuilder_Для_GRUD_Операций.putAll(ВставляемВБАзуВыбранныйРежимИнтренета);
                     // TODO: 06.09.2021  САМА ОПАРАЦИИЯ ОБНОВЛЕНИЯ СТАТУ WIFI ИЛИ MOBILE
                     // TODO: 12.10.2021  Ссылка Менеджер Потоков
-
-
                     ///TODO РЕЗУЛЬТАТ ОБНОВЛЕНИЕ ДАННЫХ
-
-
                     РезультатОбновлениеЧерезКонтрейнер= (Integer)  class_grud_sql_operationsЗаписываемВыбранныйРежимИнтрернетаWifiИлиMobil.
                             new UpdateData(context).updatedata(class_grud_sql_operationsЗаписываемВыбранныйРежимИнтрернетаWifiИлиMobil.concurrentHashMapНабор,
                             class_grud_sql_operationsЗаписываемВыбранныйРежимИнтрернетаWifiИлиMobil.contentValuesДляSQLBuilder_Для_GRUD_Операций ,
                             Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,sqLiteDatabase);
-
-
                     Log.d(this.getClass().getName(), "РезультатОбновлениеЧерезКонтрейнер   " + РезультатОбновлениеЧерезКонтрейнер);
-
-                    ///поймать ошибку
                 } catch (Exception e) {
-                    //  Block of code to handle errors
                     e.printStackTrace();
-                    ///метод запись ошибок в таблицу
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                             " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
                     new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                             Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    ///////
                 }
-
         return РезультатОбновлениеЧерезКонтрейнер;
     }
 

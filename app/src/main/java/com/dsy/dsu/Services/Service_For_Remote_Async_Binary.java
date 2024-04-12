@@ -18,7 +18,6 @@ import androidx.annotation.Nullable;
 
 
 import com.dsy.dsu.Errors.Class_Generation_Errors;
-import com.dsy.dsu.BusinessLogicAll.SubClass_Connection_BroadcastReceiver_Sous_Asyns_Glassfish;
 import com.dsy.dsu.Hilt.JbossAdrress.QualifierJbossServer3;
 import com.dsy.dsu.Hilt.JbossAdrress.QualifierJbossServer4;
 import com.dsy.dsu.SynsProccessor.AsynsProccessor;
@@ -48,7 +47,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class Service_For_Remote_Async_Binary extends IntentService {
     protected LocalBinderAsync binderBinderRemoteAsync = new LocalBinderAsync();
     private Service_For_Public.LocalBinderОбщий localBinderОбщий;
-    private      Integer ПубличныйIDДляФрагмента=0;
+    private      Integer PublicID =0;
     @Inject
     ObjectMapper getHiltJaksonObjectMapper;
     @Inject
@@ -65,6 +64,11 @@ public class Service_For_Remote_Async_Binary extends IntentService {
     @QualifierJbossServer4
     public LinkedHashMap<Integer,String> getHiltJbossReliz;
 
+
+
+    @Inject
+    Integer getHiltPublicId;
+
     public Service_For_Remote_Async_Binary() {
         super("Service_For_Remote_Async");
     }
@@ -75,16 +79,15 @@ public class Service_For_Remote_Async_Binary extends IntentService {
         try{
       /*     AHilt a = EntryPoints.get(getApplicationContext(), HiltInterface.class).metodA();
          String HILTTTT=   a.metodA();*/
-
           //  sqlite.isOpen();
-            МетодБиндинuCлужбыPublic(getApplicationContext());
+            /// ПубличныйIDДляФрагмента = new SubClass_Connection_BroadcastReceiver_Sous_Asyns_Glassfish().МетодПолучениеяПубличногоID(getApplicationContext());
 
-       ПубличныйIDДляФрагмента = new SubClass_Connection_BroadcastReceiver_Sous_Asyns_Glassfish().МетодПолучениеяПубличногоID(getApplicationContext());
+            МетодБиндинuCлужбыPublic(getApplicationContext());
 
             Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
-                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +  "  ПубличныйIDДляФрагмента " +ПубличныйIDДляФрагмента);
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +  "  ПубличныйIDДляФрагмента " + PublicID);
 
 
     } catch (Exception e) {
@@ -227,7 +230,9 @@ try{
         Long       ФинальныйРезультатAsyncBackgroud=0l;
         try{
             // TODO: 25.03.2023 ДОПОЛНИТЕОТНЕ УДЛАНИЕ СТАТУСА УДАЛЕНИЕ ПОСЛЕ СИНХРОНИАЗЦИИ
-            ФинальныйРезультатAsyncBackgroud  = new AsynsProccessor(context,getHiltJaksonObjectMapper,getsslSocketFactory2,getHiltJbossDebug, getHiltJbossReliz)
+            ФинальныйРезультатAsyncBackgroud  = new AsynsProccessor(context,getHiltJaksonObjectMapper,
+                    getsslSocketFactory2,getHiltJbossDebug,
+                    getHiltJbossReliz,getHiltPublicId)
                     .МетодЗАпускаФоновойСинхронизации(context  );
 
 
@@ -235,7 +240,7 @@ try{
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                    + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud);
+                    + " ФинальныйРезультатAsyncBackgroud " +ФинальныйРезультатAsyncBackgroud + " getHiltPublicId " +getHiltPublicId);
             // TODO: 26.03.2023 дополнительное удаление после Удаление статсу удалнеенон
             if (ФинальныйРезультатAsyncBackgroud>0) {
                 МетодПослеСинхрониазцииУдалениеСтатусаУдаленный(getApplicationContext());

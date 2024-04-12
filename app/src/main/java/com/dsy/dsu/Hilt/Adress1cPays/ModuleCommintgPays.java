@@ -25,7 +25,6 @@ public class ModuleCommintgPays {
 
 
     @Provides
-    @Singleton
     public StringBuilder  getHiltCommintgPays(@ApplicationContext Context context ) {
         String АдресСеврера1сДляgetFile=new String();
         try {

@@ -9,6 +9,8 @@ import com.dsy.dsu.AllDatabases.SQLTE.GetSQLiteDatabase;
 import com.dsy.dsu.CnangeServers.PUBLIC_CONTENT;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 
+import java.util.Date;
+
 
 public class Class_Generations_PUBLIC_CURRENT_ID {
     Context context;
@@ -22,7 +24,7 @@ public class Class_Generations_PUBLIC_CURRENT_ID {
     public Integer ПолучениеПубличногоТекущегоПользователяID(Context context) {
         ///TODO --первая вставка
         this.context =context;
-        Integer ПубличныйIDДляФрагмента = 0;
+        Integer PublicID = 0;
         try{
             if (this.context !=null) {
                 SQLiteCursor CurcorGetPublicId = null;
@@ -36,22 +38,33 @@ public class Class_Generations_PUBLIC_CURRENT_ID {
                         , sqLiteDatabase);
                 Log.d(this.getClass().getName(), "GetData " + CurcorGetPublicId);
                 // TODO: 09.09.2021 resultat
-                if (CurcorGetPublicId.getCount() > 0) {
+                if (CurcorGetPublicId!=null &&
+                        CurcorGetPublicId.getCount() > 0) {
                     CurcorGetPublicId.moveToFirst();
-                    ПубличныйIDДляФрагмента = CurcorGetPublicId.getInt(0);
+                    PublicID = CurcorGetPublicId.getInt(0);
                     Log.d(this.getClass().getName(), "  ФИНАЛ ФОНОВАЯ  СИНХРОНИЗАЦИИ СЛУЖБА КОЛИЧЕСТВО УСПЕШНЫХ ВСТАКОВ полученный публичный id ПЕРЕД ВСТАВКОЙ"
-                            + " ПубличныйIDДляФрагмента " + ПубличныйIDДляФрагмента);
+                            + " PublicID " + PublicID);
+                }
+                // TODO: 12.04.2024  закрываем Курсор
+                if (CurcorGetPublicId!=null &&  !CurcorGetPublicId.isClosed()){
+                    CurcorGetPublicId.close();
                 }
             }
+
+            Log.d(context.getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                    + " PublicID " +PublicID);
+            // TODO: 12.04.2024
         } catch (Exception e) {
             e.printStackTrace();
-            ///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
             new Class_Generation_Errors(this.context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
                     this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-        return  ПубличныйIDДляФрагмента;
+        return  PublicID;
     }
 }

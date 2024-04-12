@@ -32,10 +32,10 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class MyWork_Async_Public extends Worker {
-    private String ИмяСлужбыWorkManger ="WorkManager Synchronizasiy_Data";
-    private  String ИмяСлужбыSingleWorkManger ="WorkManager Synchronizasiy_Data Disposable";
-    private ServiceConnection serviceConnectionWorkManager;
-    private Service_For_Remote_Async_Binary.LocalBinderAsync localBinderAsyncWorkmanager;
+    protected String ИмяСлужбыWorkManger ="WorkManager Synchronizasiy_Data";
+    protected  String ИмяСлужбыSingleWorkManger ="WorkManager Synchronizasiy_Data Disposable";
+    protected ServiceConnection serviceConnectionWorkManager;
+    protected Service_For_Remote_Async_Binary.LocalBinderAsync localBinderAsyncWorkmanager;
 
     // TODO: 28.09.2022
     @SuppressLint("RestrictedApi")

@@ -27,7 +27,6 @@ public class ModuleCommintgPrices {
 
 
     @Provides
-    @Singleton
     public String  getHiltCommintgPrices(@ApplicationContext Context context) {
         String  АдресСеврера1сДляgetFilePrices=new String() ;
         try {

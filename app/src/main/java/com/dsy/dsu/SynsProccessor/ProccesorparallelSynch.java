@@ -112,7 +112,7 @@ public class ProccesorparallelSynch   {
 
 
                             // TODO: 08.04.2024 Показываем пользовалю ПРоценты
-                            new GetPrograssbarChangeIndicator(context).setAsyncrograssbarMap( VesionTableAsync,ТаблицаОбработываемаяParallel);
+                            new GetPrograssbarChangeIndicator(context).setAsyncrograssbarList( NameTableAsync,ТаблицаОбработываемаяParallel);
 
 
                             // TODO: 06.12.2023  запуск синхризуции по таблице конктерной
