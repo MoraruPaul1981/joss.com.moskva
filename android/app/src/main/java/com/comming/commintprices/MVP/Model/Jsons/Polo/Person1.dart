@@ -19,21 +19,13 @@ class Person1 implements InPolos{
         String? title,
         String? url,
         String? thumbnailUrl}) {
-    if (albumId != null) {
+
       this._albumId = albumId;
-    }
-    if (id != null) {
       this._id = id;
-    }
-    if (title != null) {
       this._title = title;
-    }
-    if (url != null) {
       this._url = url;
-    }
-    if (thumbnailUrl != null) {
       this._thumbnailUrl = thumbnailUrl;
-    }
+
   }
 
   int? get albumId => _albumId;

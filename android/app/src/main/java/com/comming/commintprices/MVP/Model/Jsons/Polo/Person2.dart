@@ -1,11 +1,6 @@
 import 'InPersons.dart';
 
 
-
-
-
-
-
 class Person2 implements InPolos{
   int? _albumId;
   int? _id;
@@ -14,26 +9,22 @@ class Person2 implements InPolos{
   String? _thumbnailUrl;
 
   Person2(
-      { required  int  albumId,
-        int? id,
-        String? title,
-        String? url,
-        String? thumbnailUrl}) {
-      this._albumId = albumId;
-      this._id = id;
-      this._title = title;
-      this._url = url;
-      this._thumbnailUrl = thumbnailUrl;
+      {   int?  albumId,
+          int? id,
+           String? title,
+            String? url,
+           String? thumbnailUrl}) {
+
+    this._albumId = albumId;
+    this._id = id;
+    this._title = title;
+    this._url = url;
+    this._thumbnailUrl = thumbnailUrl;
 
   }
 
 
 
-  @override
-  fromJson(Map<String, dynamic> json) {
-    // TODO: implement fromJson
-    throw UnimplementedError();
-  }
 
   @override
   Map<String, dynamic> toJson() {
@@ -47,14 +38,29 @@ class Person2 implements InPolos{
     throw UnimplementedError();
   }
 
-
-   Person2.fromJson(Map<String, dynamic> json) {
+  @override
+  Person2 fromJson(Map<String, dynamic> json) {
+    // TODO: implement fromJson
     _albumId = json['albumId'];
     _id = json['id'];
     _title = json['title'];
     _url = json['url'];
     _thumbnailUrl = json['thumbnailUrl'];
+
+    return  Person2(albumId: _albumId, id: _id, title: _title, url: _url, thumbnailUrl: _thumbnailUrl);
   }
+
+
+
+
+
+/*   Person2.fromJson(Map<String, dynamic> json) {
+    _albumId = json['albumId'];
+    _id = json['id'];
+    _title = json['title'];
+    _url = json['url'];
+    _thumbnailUrl = json['thumbnailUrl'];
+  }*/
 
 
 }
