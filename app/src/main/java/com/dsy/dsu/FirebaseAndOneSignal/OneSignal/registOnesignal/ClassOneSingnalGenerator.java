@@ -1,9 +1,12 @@
 package com.dsy.dsu.FirebaseAndOneSignal.OneSignal.registOnesignal;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -143,8 +146,21 @@ public class ClassOneSingnalGenerator {
     private String getNewKeyTokernFronOneSignal(@NonNull String КлючДляFirebaseNotification) {
         String НовыйКлючОтOneSingnal = null;
         try{
+
+            String СтарыйКлючОтOneSignal=    getFindOldKeyOneSingal();
+
+
+            Log.d(this.getClass().getName(),"\n"
+                    + " bremy: " + new Date()+"\n+"
+                    + "  class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                    " СтарыйКлючОтOneSignal " +СтарыйКлючОтOneSignal + " НовыйКлючОтOneSingnal " +НовыйКлючОтOneSingnal);
+
         // TODO: 05.01.2022
-         НовыйКлючОтOneSingnal =     МетодПолучениеКлючаОтСервераONESIGNALЕслиОЕстьКОнечноВНЕСКОЛЬКОПОпыток(КлючДляFirebaseNotification);
+         НовыйКлючОтOneSingnal =     МетодПолучениеКлючаОтСервераONESIGNALЕслиОЕстьКОнечноВНЕСКОЛЬКОПОпыток(КлючДляFirebaseNotification,СтарыйКлючОтOneSignal);
+            // TODO: 12.04.2024
+
         Log.d(this.getClass().getName(), "\n"
                 + " время: " + new Date()+"\n+" +
                 " Класс в процессе... " +  this.getClass().getName()+"\n"+
@@ -169,128 +185,56 @@ public class ClassOneSingnalGenerator {
         try{
 
 
-     String СтарыйКлючОтOneSignal=       getOldKeyOneSignal(  AllListIDДляOneSignal,public_contentменеджер,НовыйКлючОтOneSingnal);
-
-
-            Log.d(this.getClass().getName(),"\n"
-                    + " bremy: " + new Date()+"\n+"
-                    + "  class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                     " СтарыйКлючОтOneSignal " +СтарыйКлючОтOneSignal + " НовыйКлючОтOneSingnal " +НовыйКлючОтOneSingnal);
-
-            setWriterNewKeyInSqlLite(НовыйКлючОтOneSingnal, СтарыйКлючОтOneSignal);
+            setWriterNewKeyInSqlLite(НовыйКлючОтOneSingnal);
 
             Log.d(this.getClass().getName(),"\n"
                     + " bremy: " + new Date()+"\n+"
                     + "  class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                    " СтарыйКлючОтOneSignal " +СтарыйКлючОтOneSignal);
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    " НовыйКлючОтOneSingnal " +НовыйКлючОтOneSingnal);
         } catch (Exception e ) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
 
-     private void setWriterNewKeyInSqlLite(@NonNull String НовыйКлючОтOneSingnal, String СтарыйКлючОтOneSignal) {
+     private void setWriterNewKeyInSqlLite(@NonNull String НовыйКлючОтOneSingnal ) {
         try{
          // TODO: 10.12.2022 проверка условия сстоит записывать ключновый или нет от SINGONE FIREBASE
-         if (НовыйКлючОтOneSingnal !=null  && СтарыйКлючОтOneSignal!=null) {
-             if (  СтарыйКлючОтOneSignal.equalsIgnoreCase(НовыйКлючОтOneSingnal)) {
+         if (НовыйКлючОтOneSingnal !=null   ) {
                  // TODO: 04.01.2022  ПРИШЕЛ НОВЫЙ КЛЮЧ И ЕГО НАДО ЗАПИСАТЬ ДЛЯ ONESINGNAL
-                 new WriterNewKeyOneSignal(context, НовыйКлючОтOneSingnal,  sqLiteDatabase);
+                 new WriterNewKeyOneSignal(sqLiteDatabase,context ,НовыйКлючОтOneSingnal ).writeingNewOneSingle();
 
                  Log.d(this.getClass().getName(),"\n"
                          + " bremy: " + new Date()+"\n+"
                          + "  class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                          " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                         " СтарыйКлючОтOneSignal " + СтарыйКлючОтOneSignal + " НовыйКлючОтOneSingnal " +НовыйКлючОтOneSingnal);
-             }
+                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
+                         + " НовыйКлючОтOneSingnal " +НовыйКлючОтOneSingnal);
+
          }
      } catch (Exception e ) {
          e.printStackTrace();
          Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                  + Thread.currentThread().getStackTrace()[2].getLineNumber());
-         new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+         new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                 Thread.currentThread().getStackTrace()[2].getMethodName(),
                  Thread.currentThread().getStackTrace()[2].getLineNumber());
      }
      }
 
-     private String getOldKeyOneSignal(@NonNull Class_GRUD_SQL_Operations class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal,
-                                       @NonNull   PUBLIC_CONTENT public_contentменеджер,
-                                       @NonNull String НовыйКлючОтOneSingnal) {
-        String  СтарыйКлючОтOneSignal = null;
-     try {
 
-         class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                 concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","settings_tabels");
-         class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                 concurrentHashMapНабор.put("СтолбцыОбработки","onesignal");
-         class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                 concurrentHashMapНабор.put("ФорматПосика","  onesignal=? ");
-         ///"_id > ?   AND _id< ?"
-         //////
-         class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                 concurrentHashMapНабор.put("УсловиеПоиска1", НовыйКлючОтOneSingnal.trim());
-         class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                 concurrentHashMapНабор.put("УсловиеСортировки","date_update DESC");
-         class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                 concurrentHashMapНабор.put("УсловиеЛимита","1");
-
-         // TODO: 03.08.2023  вытаскиваем Данные
-         SQLiteCursor     Курсор_ПолучаемУжеЗагруженныйЕслиНОНЕИзменильсяIDДляONESIGNAL = (SQLiteCursor)
-                 class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                         new GetData(context).getdata(class_grud_sql_operationsПолучаемПубличныйПолучениеВсегоСпискаIDДляOneSignal.
-                         concurrentHashMapНабор,public_contentменеджер.МенеджерПотоков, sqLiteDatabase);
-
-
-
-
-         if(Курсор_ПолучаемУжеЗагруженныйЕслиНОНЕИзменильсяIDДляONESIGNAL.getCount()>0){
-             Курсор_ПолучаемУжеЗагруженныйЕслиНОНЕИзменильсяIDДляONESIGNAL.moveToFirst();
-             // TODO: 28.03.2024  получаем старй колюч
-             СтарыйКлючОтOneSignal=Курсор_ПолучаемУжеЗагруженныйЕслиНОНЕИзменильсяIDДляONESIGNAL.getString(0);
-             Log.d(this.getClass().getName(),"\n"
-                     + " bremy: " + new Date()+"\n+"
-                     + "  class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                     " СтарыйКлючОтOneSignal " +СтарыйКлючОтOneSignal);
-         }
-
-         Курсор_ПолучаемУжеЗагруженныйЕслиНОНЕИзменильсяIDДляONESIGNAL.close();
-     } catch (Exception e ) {
-         e.printStackTrace();
-         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                 + Thread.currentThread().getStackTrace()[2].getLineNumber());
-         new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                 Thread.currentThread().getStackTrace()[2].getLineNumber());
-     }
-       return   СтарыйКлючОтOneSignal;
-     }
 
 
      // TODO: 24.12.2021  МетодПолучение Статуса Ключа От Сервера OneSignal
 
-    private String МетодПолучениеКлючаОтСервераONESIGNALЕслиОЕстьКОнечноВНЕСКОЛЬКОПОпыток(@NonNull String PublicKeyOneSignal) {
+    private String МетодПолучениеКлючаОтСервераONESIGNALЕслиОЕстьКОнечноВНЕСКОЛЬКОПОпыток(@NonNull String PublicKeyOneSignal,
+                                                                                          @NonNull String СтарыйКлючОтOneSignal) {
         String  НовыйКлючОтOneSingnal = null;
         try{
             // todo OneSignal Initialization
@@ -309,7 +253,7 @@ public class ClassOneSingnalGenerator {
             ///   "+79158111806" "sousautodor@gmail.com"
             // TODO: 28.03.2024 полылаем ключ ОБЩИЙ
             Map<String, String> params = new HashMap<String, String>();
-            OneSignal.sendTag("Authorization", "Basic "+  PublicKeyOneSignal.trim()  );
+            OneSignal.sendTag("Authorization", "Basic "+ СтарыйКлючОтOneSignal +"" );//TODO "db29ca6e-455f-474c-a2cd-30f910bc9d1f"
             OneSignal.sendTag("Content-type", "application/json");
             OneSignal.sendTag("grp_msg", "android");
             OneSignal.sendTag("android_background_data", "true");
@@ -343,6 +287,52 @@ public class ClassOneSingnalGenerator {
     }
         return НовыйКлючОтOneSingnal;
     }
+
+// TODO: 12.04.2024
+
+
+
+
+
+
+    @SuppressLint("Range")
+    private String getFindOldKeyOneSingal() {
+        String getOldkeyOneSignal = null;
+        try{
+            Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" + "settings_tabels" + "");
+            ContentResolver contentResolver = context.getContentResolver();
+            Cursor cursorOldOneSignal = contentResolver.query(uri, new String[]{},
+                    new String(" SELECT onesignal  FROM    settings_tabels      ORDER BY id  LIMIT   1  "),
+                    new String[]{}, null);///   "  //// SELECT * FROM  viewtabel WHERE year_tabels=?  AND month_tabels=?  AND cfo=?  AND status_send!=?
+
+            if (cursorOldOneSignal.getCount() > 0) {
+                cursorOldOneSignal.moveToFirst();
+                // TODO: 11.01.2024
+                getOldkeyOneSignal = cursorOldOneSignal.getString(cursorOldOneSignal.getColumnIndex("onesignal"));
+
+            }
+
+            // TODO: 12.04.2024 close Cursor 
+            if(cursorOldOneSignal!=null && ! cursorOldOneSignal.isClosed()){
+                cursorOldOneSignal.close();
+            }
+            Log.d(this.getClass().getName(),"\n"
+                    + " bremy: " + new Date()+"\n+"
+                    + "  class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                     " getOldkeyOneSignal "+getOldkeyOneSignal);
+        } catch (Exception e ) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        return getOldkeyOneSignal;
+    }
+
 
 
 }

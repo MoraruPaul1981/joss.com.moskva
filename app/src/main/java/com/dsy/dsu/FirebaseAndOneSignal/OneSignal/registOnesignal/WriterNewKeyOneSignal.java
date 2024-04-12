@@ -29,13 +29,23 @@ import io.reactivex.rxjava3.functions.Predicate;
 class WriterNewKeyOneSignal {
     private SQLiteDatabase sqLiteDatabase;
 
-    public WriterNewKeyOneSignal(Context context,
-                                 String НовыйIdОТСервтераOneSignal,
-                                 SQLiteDatabase sqLiteDatabase) {
+    private  Context context;
+    private  String НовыйIdОТСервтераOneSignal;
+
+
+    public WriterNewKeyOneSignal(SQLiteDatabase sqLiteDatabase,
+                                 Context context,
+                                 String новыйIdОТСервтераOneSignal) {
+        // TODO: 12.04.2024
+        this.sqLiteDatabase = sqLiteDatabase;
+        this.context = context;
+        this.НовыйIdОТСервтераOneSignal = новыйIdОТСервтераOneSignal;
+
+    }
+
+    void writeingNewOneSingle(){
 
         try {
-            this.sqLiteDatabase = sqLiteDatabase;
-
             // TODO: 14.11.2021  ПОВТОРЫЙ ЗАПУСК ВОРК МЕНЕДЖЕР
             // TODO: 30.09.2021 МЕТОД ЗАПУСКА СИНХРОНИЗАЦИИ ЧАТА ПО РАСПИСАНИЮ , НЕ ВЗАВИСИМОСТИ ОТ СОЗДАВАЛ ЛИ СООБЩЕНИЕ ИЛИ НЕТ
             Integer PublicId =
@@ -58,7 +68,8 @@ class WriterNewKeyOneSignal {
                             /// TODO ########################################################ЧАСТЬ ТРЕТЬЯ УДАЛЕНИЯ ДАННЫХ В ТАБЛИЦАХ настройки системы
                             if (writerNewKeyOneSignals > 0) {
                                 // TODO: 29.12.2021 ЧАСТЬ ТЕРТЬЯ УДАЛАЕНИЯ ЛИШНЕХ КЛЮЧЕЙ СТАРЫХ ИЗ ДВУХ ТАБЛЦ ПО ТЕКУЩЕМУ ПОЛЬЗОВАТЕЛ
-                                Integer РезультатПосикаИУдалениявТаблицах_settings_tabels = МетодПослеУспешнойОбновленияКлючаОтOneSignalИщемУдаляемДубли(context,
+                                Integer РезультатПосикаИУдалениявТаблицах_settings_tabels =
+                                        МетодПослеУспешнойОбновленияКлючаОтOneSignalИщемУдаляемДубли(context,
                                         ТаблицаДляПолучениеКлючаONESIGNAL,
                                         PublicId,
                                         НовыйIdОТСервтераOneSignal);
@@ -87,9 +98,11 @@ class WriterNewKeyOneSignal {
                     .onErrorComplete(new Predicate<Throwable>() {
                         @Override
                         public boolean test(Throwable throwable) throws Throwable {
-                            Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                            Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :"
+                                    + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(throwable.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(throwable.toString(),
+                                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                                     Thread.currentThread().getStackTrace()[2].getLineNumber());
                             return false;
                         }
@@ -112,11 +125,24 @@ class WriterNewKeyOneSignal {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
 
+
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
     private void МетодУвеличениеВерсииДанныхПриСменеКлючаOneSingnal(Context context
