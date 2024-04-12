@@ -1613,7 +1613,7 @@ import okio.BufferedSink;
 
 
     /////////КОНТЕЙНЕР ВСТВКИ ДАННЫХ УНИВЕРСАЛЬНЫЙ
-    Long ВставкаДанныхЧерезКонтейнерПервыйолученныйПубличныйIDотСервера(String ТаблицаКудаВставляем, ContentValues КонтейнерДляВставкиПубличныйID)
+    public Long ВставкаДанныхЧерезКонтейнерПервыйолученныйПубличныйIDотСервера(String ТаблицаКудаВставляем, ContentValues КонтейнерДляВставкиПубличныйID)
             throws ExecutionException,
             InterruptedException, TimeoutException {
         ///////////////////////////////////////////////////////////////////////////
@@ -2973,53 +2973,6 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
 
 
 
-    public Long getWritingNePublicIdFromSetingTable(@NonNull Integer PublicID)
-            throws ExecutionException, InterruptedException {
-    Long ResultNewPuvlicIdFronSettingTable = 0l;
-                try {
-
-                                    ContentValues АдаптерВставкиПолученогоПубличногоID = new ContentValues();
-
-                                    // TODO: 12.04.2024
-                                    PackageInfo pInfo = context. getPackageManager().getPackageInfo(context. getPackageName(), 0);
-                                    String version = pInfo.versionName;//Version Name
-                                    Integer verCode = pInfo.versionCode;//Version Code
-
-                                  // TODO: 29.12.2021
-                                     АдаптерВставкиПолученогоПубличногоID.put("user_update", PublicID);
-                                    АдаптерВставкиПолученогоПубличногоID.put("uuid", PublicID);
-                                    АдаптерВставкиПолученогоПубличногоID.put("version_dsu1",  Integer.parseInt(verCode.toString()));
-
-                                    String NewUUIDForSettingYable= new Class_Generation_Data(context).ГлавнаяДатаИВремяОперацийСБазойДанных() ;
-                                    АдаптерВставкиПолученогоПубличногоID.put("date_update", NewUUIDForSettingYable);
-
-                                    // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ
-                                    Long NewLongVrsion = new SubClassUpVersionDATA().upVersionCurentTable("settings_tabels",context);
-                                    АдаптерВставкиПолученогоПубличногоID.put("current_table", NewLongVrsion);
-
-
-                                    //////todo САМА НЕ ПОСТРЕДВСТВЕНА ЗАПИС ДАННЫХ В ТАБЛИЦУ НАСТЙКИ СИТЕМЫ
-                                    ResultNewPuvlicIdFronSettingTable =
-                                                ВставкаДанныхЧерезКонтейнерПервыйолученныйПубличныйIDотСервера("settings_tabels",
-                                                АдаптерВставкиПолученогоПубличногоID);
-
-                                    // TODO: 02.05.2021
-                            Log.d(context.getClass().getName(), "\n"
-                                    + " время: " + new Date()+"\n+" +
-                                    " Класс в процессе... " +  this.getClass().getName()+"\n"+
-                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                                    " ЗаписьВSettingTabel " +ResultNewPuvlicIdFronSettingTable);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
-                            + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                            Thread.currentThread().getStackTrace()[2].getMethodName(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
-        return ResultNewPuvlicIdFronSettingTable;
-    }
 
 
 

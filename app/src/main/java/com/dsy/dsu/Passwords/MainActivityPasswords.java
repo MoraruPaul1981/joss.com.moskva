@@ -51,6 +51,7 @@ import com.dsy.dsu.EventBus.EventBuss;
 import com.dsy.dsu.Hilt.JbossAdrress.QualifierJbossServer3;
 import com.dsy.dsu.Hilt.JbossAdrress.QualifierJbossServer4;
 import com.dsy.dsu.R;
+import com.dsy.dsu.Settings.Model.BL.GetSettingTableSaves;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.jakewharton.rxbinding4.view.RxView;
@@ -386,9 +387,8 @@ public class MainActivityPasswords extends AppCompatActivity {
         Long ЗаписьВSettingTabel=0l;
         try {
                 /// TODO: 22.02.2022 ЗАПИСЬ ="settings_tabels";
-                ЗаписьВSettingTabel =
-                        new Class_MODEL_synchronized(getApplicationContext()).getWritingNePublicIdFromSetingTable(
-                                ПолученинныйПубличныйID);
+                ЗаписьВSettingTabel =new GetSettingTableSaves().getWritingPasswordSetingTable(getApplicationContext(),ПолученинныйПубличныйID);
+
                 // TODO: 10.09.2021  РЕЗУЛЬТАТ ЗАПИСИ СОТРУДНИКА ЗАПИСИ В БАЗУ
 
             Log.d(getApplicationContext().getClass().getName(), "\n"
