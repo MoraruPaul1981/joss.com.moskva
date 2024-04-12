@@ -1,8 +1,9 @@
 
 
-import '../Polo/Polos.dart';
+import '../Polo/Person1.dart';
 
 abstract  class InPolos {
+
 
   InPolos.fromJson(Map<String, dynamic> json) ;
 

@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 import '../../Errors/ErrorsPrint.dart';
-import '../Polo/Polos.dart';
+import '../Polo/Person1.dart';
 import 'InParcesJson.dart';
 
 
@@ -13,7 +13,7 @@ class ParserJson2   implements InterfaceParserJson {
 
   //TODO
   @override
-  List<Person> parserPerson(String responseBody) {
+  List<Person1> parserPerson(String responseBody) {
     // TODO: implement parserPerson
     var  list ;
     var   person;
@@ -21,7 +21,7 @@ class ParserJson2   implements InterfaceParserJson {
       list =json.decode(responseBody) as List<dynamic>;
 
       print('list $list');
-      person=list.map((model) =>  Person.fromJson((model)) ) as Person ;
+      person=list.map((model) =>  Person1.fromJson((model)) ) as Person1 ;
 
       print('person $person');
 

@@ -1,11 +1,19 @@
-class Person {
+import 'InPersons.dart';
+
+
+
+
+
+
+
+class Person1 implements InPolos{
   int? _albumId;
   int? _id;
   String? _title;
   String? _url;
   String? _thumbnailUrl;
 
-  Person(
+  Person1(
       {int? albumId,
         int? id,
         String? title,
@@ -39,7 +47,26 @@ class Person {
   String? get thumbnailUrl => _thumbnailUrl;
   set thumbnailUrl(String? thumbnailUrl) => _thumbnailUrl = thumbnailUrl;
 
-  Person.fromJson(Map<String, dynamic> json) {
+  @override
+  fromJson(Map<String, dynamic> json) {
+    // TODO: implement fromJson
+    throw UnimplementedError();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    // TODO: implement toJson
+    throw UnimplementedError();
+  }
+
+  @override
+  Map<String, dynamic> toJson2() {
+    // TODO: implement toJson2
+    throw UnimplementedError();
+  }
+
+
+  Person1.fromJson(Map<String, dynamic> json) {
     _albumId = json['albumId'];
     _id = json['id'];
     _title = json['title'];
@@ -49,13 +76,6 @@ class Person {
 
 
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['albumId'] = this._albumId;
-    data['id'] = this._id;
-    data['title'] = this._title;
-    data['url'] = this._url;
-    data['thumbnailUrl'] = this._thumbnailUrl;
-    return data;
-  }
+
+
 }

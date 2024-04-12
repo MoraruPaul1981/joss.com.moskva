@@ -1,9 +1,9 @@
 
-import '../Polo/Polos.dart';
+import '../Polo/Person1.dart';
 
 abstract  class  InterfaceParserJson {
 
-  List<Person> parserPerson(String responseBody) ;
+  List<Person1> parserPerson(String responseBody) ;
 
 }
 

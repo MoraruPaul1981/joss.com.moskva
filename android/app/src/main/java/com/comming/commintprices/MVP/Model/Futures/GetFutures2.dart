@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import '../Errors/ErrorsPrint.dart';
 import '../Jsons/Parser/ParcesPerson1.dart';
-import '../Jsons/Polo/Polos.dart';
+import '../Jsons/Polo/Person1.dart';
 import 'InFuture.dart';
 
 
@@ -14,7 +14,7 @@ class GetFutures2  implements InGetFutures {
 
   //TODO
   @override
-  Future<List<Person>> fetchPerson( { required  String url }  ) async {
+  Future<List<Person1>> fetchPerson( { required  String url }  ) async {
     dynamic JsonMap;
     try{
     // TODO: implement fetchPerson
