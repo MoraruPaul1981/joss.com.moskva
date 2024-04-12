@@ -24,7 +24,7 @@ class GetFuturesSous  implements InGetFutures {
     final getresponse= await http.get(
         parsedUrl,
       headers: {
-          'Content-Type , application/gzip ':'charset=UTF-8',
+        'Content-Type':'application/gzip ;charset=UTF-8',
         'Accept-Encoding':'gzip,deflate,sdch',
         'Connection':'Keep-Alive',
         'Accept-Language':'ru-RU',
@@ -37,8 +37,13 @@ class GetFuturesSous  implements InGetFutures {
           () => print(' whenComplete  http.get '),
     )
         .catchError(
-          (Object error) => print(' http.get Error: $error'),
-    );
+          (Object error) {
+            PrintingErrors printingErrors= new PrintingErrors();
+            printingErrors.printingError(error,'mainTextButton46.dart','main()');
+          });
+
+
+
 
 
 
