@@ -23,7 +23,7 @@ void main() {
   //proccedtvoid(nik: 121);
 
 
-    GetFutures getFutures=GetFutures();
+    GetFutures1 getFutures=GetFutures1();
     getFutures. fetchPerson(  url: 'https://jsonplaceholder.typicode.com/photos');
 
    //TODO error

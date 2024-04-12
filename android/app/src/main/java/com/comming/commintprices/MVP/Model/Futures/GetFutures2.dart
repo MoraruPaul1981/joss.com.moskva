@@ -9,7 +9,7 @@ import 'InFuture.dart';
 
 
 
-class GetFutures  implements InGetFutures {
+class GetFutures2  implements InGetFutures {
 
 
   //TODO
@@ -29,7 +29,7 @@ class GetFutures  implements InGetFutures {
 
       print('jsonString $jsonString');
 
-       JsonMap=ParserJson().parserPerson(jsonString);
+       JsonMap=ParserJson1().parserPerson(jsonString);
 
 
       print('JsonMap $JsonMap');

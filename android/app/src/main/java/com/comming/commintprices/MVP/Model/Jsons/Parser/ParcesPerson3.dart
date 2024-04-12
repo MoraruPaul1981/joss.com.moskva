@@ -9,7 +9,7 @@ import 'InParcesJson.dart';
 
 
 
-class ParserJson   implements InterfaceParserJson {
+class ParserJson2   implements InterfaceParserJson {
 
   //TODO
   @override
