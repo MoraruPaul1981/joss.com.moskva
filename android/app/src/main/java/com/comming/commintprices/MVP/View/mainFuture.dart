@@ -27,7 +27,14 @@ void main() {
 
     InGetFutures getFuturesSous=new GetFuturesSous();
 
-    getFuturesSous. fetchPerson(  url: 'https://jsonplaceholder.typicode.com/photos');
+
+    //TODO адрес пинга к серверу
+
+    var jbossserverlink = "http://" + "192.168.3.4" + ":" + "8080" + "/"+  "jboss-1.0-SNAPSHOT/sous.jboss.runtimejboss" as String;
+    //TODO
+    print('jbossserverlink .. $jbossserverlink');
+
+    getFuturesSous. fetchPerson(  url: jbossserverlink);//TODO 'https://jsonplaceholder.typicode.com/photos'
     //TODO
     print('starting .. GetFuturesSous');
 

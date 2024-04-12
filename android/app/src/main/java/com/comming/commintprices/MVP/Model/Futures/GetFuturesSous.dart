@@ -24,7 +24,13 @@ class GetFuturesSous  implements InGetFutures {
     final getresponse= await http.get(
         parsedUrl,
       headers: {
-          '':''
+          'Content-Type , application/gzip ':'charset=UTF-8',
+        'Accept-Encoding':'gzip,deflate,sdch',
+        'Connection':'Keep-Alive',
+        'Accept-Language':'ru-RU',
+        'identifier':'moraru',
+        'p_identifier':'moraru1981',
+        'id_device_androis':'8cddcf623bdc9434',
 
       }
     ).whenComplete(
