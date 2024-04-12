@@ -387,13 +387,16 @@ public class MainActivityPasswords extends AppCompatActivity {
         try {
                 /// TODO: 22.02.2022 ЗАПИСЬ ="settings_tabels";
                 ЗаписьВSettingTabel =
-                        new Class_MODEL_synchronized(getApplicationContext()).МетодЗАписиПолученогоОтСервреаIDПубличногоВТАблицу_settings_tabels(
+                        new Class_MODEL_synchronized(getApplicationContext()).getWritingNePublicIdFromSetingTable(
                                 ПолученинныйПубличныйID);
                 // TODO: 10.09.2021  РЕЗУЛЬТАТ ЗАПИСИ СОТРУДНИКА ЗАПИСИ В БАЗУ
-                Log.d(this.getClass().getName(), " БуферПолученнниеДанныхПолученияIDотСервера " +
-                        " УСПЕШАЯ ЗАПИСЬ ПУБЛИЧНОГО id SUCCEESS !!!!  " +
-                        "ТАБЛИЦА settings_tabels  РезультатЗаписиНовгоIDБАзуВТаблицеНАСТРОЕКПОЛЬЗОВТЕЛЯ_ДЛяЗАПИСИВТаблицу_settings_tabels "
-                        + ЗаписьВSettingTabel );
+
+            Log.d(getApplicationContext().getClass().getName(), "\n"
+                    + " время: " + new Date()+"\n+" +
+                    " Класс в процессе... " +  this.getClass().getName()+"\n"+
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                    " ЗаписьВSettingTabel " +ЗаписьВSettingTabel);
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -661,9 +664,10 @@ public class MainActivityPasswords extends AppCompatActivity {
         Boolean ФлагЕслиРАзрешенияКамераИлиНет=false;
         try{
 // TODO: 29.09.2023 ВТОРОЙ Observavle самой операции аунтификации и сохрание пароля
-            Integer БуферПубличныйIDОтСервера = 0;
+
             ПубличноеЛогин = ИмяДляВходаСистему.getText().toString().trim();///получаем из формы имя для того чтобы постучаться на сервер
             Log.d(getPackageName().getClass().getName(), "ПубличноеИмяПользовательДлСервлета " + ПубличноеЛогин);
+
             ПубличноеПароль = ПарольДляВходаСистему.getText().toString().trim();///////получаем из формы пароль для того чтобы постучаться на сервер
             Log.d(getPackageName().getClass().getName(), "ПубличноеПарольДлСервлета " + ПубличноеПароль);
 
@@ -673,13 +677,15 @@ public class MainActivityPasswords extends AppCompatActivity {
                         new Class_Find_Setting_User_Network(getApplicationContext()).МетодПроветяетКакуюУстановкуВыбралПользовательСети();
                 if (ПроверкаНАстройкиСети == true) {
                     Boolean РеальныйПингСервера =
-                            new Class_Connections_Server(getApplicationContext()).МетодПингаСервераРаботаетИлиНет(getApplicationContext(),getsslSocketFactory2,getHiltJbossDebug,getHiltJbossReliz);
+                            new Class_Connections_Server(getApplicationContext()).МетодПингаСервераРаботаетИлиНет(getApplicationContext(),
+                                    getsslSocketFactory2,getHiltJbossDebug,getHiltJbossReliz);
                     // TODO: 07.10.2023 пинг сервера
                     if (РеальныйПингСервера == true) {
                         // TODO: 07.10.2023 проверка разрешений на КАМЕРУ
                         ClassPerssionAdvanceRoles classPerssionAdvanceRoles=new ClassPerssionAdvanceRoles();
                          ФлагЕслиРАзрешенияКамераИлиНет=      classPerssionAdvanceRoles.metodPerssionAdvanceRoles();;
                         if (ФлагЕслиРАзрешенияКамераИлиНет==true) {
+
                             // TODO: 15.09.2023 ОБРАБОТКА ПАРОЛИ
                             методGetПарольОбработка(КнопкаВходавСистему);
                             Log.d(this.getClass().getName(), " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +

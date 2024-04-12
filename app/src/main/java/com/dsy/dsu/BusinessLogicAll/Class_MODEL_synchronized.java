@@ -21,7 +21,6 @@ import com.dsy.dsu.BusinessLogicAll.DATE.Class_Generation_Data;
 import com.dsy.dsu.CnangeServers.PUBLIC_CONTENT;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
 import com.dsy.dsu.Hilt.OkhhtpBuilder.GetOkhhtpBuilder;
-import com.dsy.dsu.Hilt.OkhhtpBuilder.GetOkhhtpBuilderTLS;
 import com.dsy.dsu.Hilt.OkhhtpBuilder.InGetOkhhtpBuilder;
 import com.google.common.io.ByteSource;
 
@@ -2974,40 +2973,14 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
 
 
 
-    public Long МетодЗАписиПолученогоОтСервреаIDПубличногоВТАблицу_settings_tabels(@NonNull Integer ПолученныйотСервреаПубличныйID) throws ExecutionException, InterruptedException {
-    Long Результат_ЗаписиНовгоЗначениевТАБЛИЦУ_settings_tabels = 0l;
-        // TODO: 20.04.2021 определяем ели UUID или нет
-        SQLiteCursor Курсор_УзнаемЕслиUUIDВТАблицеОрганизация = null;
+    public Long getWritingNePublicIdFromSetingTable(@NonNull Integer PublicID)
+            throws ExecutionException, InterruptedException {
+    Long ResultNewPuvlicIdFronSettingTable = 0l;
                 try {
                     String ТаблицаКоторуюнадоИзменитьВерсиюДанных="settings_tabels";
-                        ///TODO ВСТАВКА НОВГО ТАБЕЛЯ В ТАБЛИЦУ
-                        if (ПолученныйотСервреаПубличныйID > 0) {
-                            ////////
-      Class_GRUD_SQL_Operations class_grud_sql_operationsЗАписиПолученогоОтСервреаIDПубличного=new Class_GRUD_SQL_Operations(context);
-                            class_grud_sql_operationsЗАписиПолученогоОтСервреаIDПубличного.
-                                    concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы",ТаблицаКоторуюнадоИзменитьВерсиюДанных);
-                            class_grud_sql_operationsЗАписиПолученогоОтСервреаIDПубличного.concurrentHashMapНабор.put("СтолбцыОбработки","user_update");
-                            class_grud_sql_operationsЗАписиПолученогоОтСервреаIDПубличного
-                                    .concurrentHashMapНабор.put("ФорматПосика","user_update=?   AND user_update IS NOT NULL ");
-                            class_grud_sql_operationsЗАписиПолученогоОтСервреаIDПубличного.
-                                    concurrentHashMapНабор.put("УсловиеПоиска1",ПолученныйотСервреаПубличныйID);
-                            class_grud_sql_operationsЗАписиПолученогоОтСервреаIDПубличного.concurrentHashMapНабор.put("УсловиеСортировки","date_update DESC");
-                            Курсор_УзнаемЕслиUUIDВТАблицеОрганизация= (SQLiteCursor)  class_grud_sql_operationsЗАписиПолученогоОтСервреаIDПубличного.
-                                    new GetData(context).getdata(class_grud_sql_operationsЗАписиПолученогоОтСервреаIDПубличного.concurrentHashMapНабор,
-                                    Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,sqLiteDatabase);
-
-                            Log.d(this.getClass().getName(), "GetData " +Курсор_УзнаемЕслиUUIDВТАблицеОрганизация );
-                            int UUIDдлянастроуки = 0;
-                                if (Курсор_УзнаемЕслиUUIDВТАблицеОрганизация.getCount() > 0) {
-                                    Курсор_УзнаемЕслиUUIDВТАблицеОрганизация.moveToFirst();
-                                    //////todo А ТУТУ КОГДА ЕСТЬ ДАННЫЕ
-                                    int IndexUUID = Курсор_УзнаемЕслиUUIDВТАблицеОрганизация.getColumnIndex("user_update");
-                                    int UUIDОрншанизации = Курсор_УзнаемЕслиUUIDВТАблицеОрганизация.getInt(IndexUUID);
-                                    Log.d(this.getClass().getName(), "IndexUUID " + IndexUUID);
-                                    // TODO: 06.09.2021  когда данные не были получены
-                                } else {
+                        if (PublicID > 0) {
                                     ContentValues АдаптерВставкиПолученогоПубличногоID = new ContentValues();
-                                    АдаптерВставкиПолученогоПубличногоID.put("user_update", ПолученныйотСервреаПубличныйID);
+                                    АдаптерВставкиПолученогоПубличногоID.put("user_update", PublicID);
                                     //TODOверсия программы самой например 601
                                     //Object ВрсияПрограммы=BuildConfig.VERSION_CODE;
                                     PackageInfo pInfo = context. getPackageManager().getPackageInfo(context. getPackageName(), 0);
@@ -3018,33 +2991,40 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                                     Log.d(this.getClass().getName(), " uildConfig.VERSION_CODE ВрсияПрограммы  "
                                             + verCode.toString());
                                     ////TODO ДАТА
-                                    String СгенерированованныйДатаДляЗАписиПолученогоОтСервреаIDПубличного=
-                                            new Class_Generation_Data(context).ГлавнаяДатаИВремяОперацийСБазойДанных();
-                                    АдаптерВставкиПолученогоПубличногоID.put("date_update", СгенерированованныйДатаДляЗАписиПолученогоОтСервреаIDПубличного);
-                                    АдаптерВставкиПолученогоПубличногоID.put("uuid", ПолученныйотСервреаПубличныйID);
+                                  Long NewUUIDForSettingYable=Long.parseLong(new Class_Generation_Data(context).ГлавнаяДатаИВремяОперацийСБазойДанных());
+
+                                    АдаптерВставкиПолученогоПубличногоID.put("date_update", NewUUIDForSettingYable);
+                                    АдаптерВставкиПолученогоПубличногоID.put("uuid", PublicID);
                                     /////////
 
                                     // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ
                                     Long РезультатУвеличинаяВерсияДЛяТАБЛИЦЫНАСТРОЙКИ =
                                             new SubClassUpVersionDATA().МетодПовышаемВерсииMODIFITATION_Client(ТаблицаКоторуюнадоИзменитьВерсиюДанных,context);
-                                    Log.d(this.getClass().getName(), " РезультатУвеличинаяВерсияДЛяТАБЛИЦЫНАСТРОЙКИ  " + РезультатУвеличинаяВерсияДЛяТАБЛИЦЫНАСТРОЙКИ);
 
                                     АдаптерВставкиПолученогоПубличногоID.put("current_table", РезультатУвеличинаяВерсияДЛяТАБЛИЦЫНАСТРОЙКИ);
 
-
-
                                     //////todo САМА НЕ ПОСТРЕДВСТВЕНА ЗАПИС ДАННЫХ В ТАБЛИЦУ НАСТЙКИ СИТЕМЫ
-                                    Результат_ЗаписиНовгоЗначениевТАБЛИЦУ_settings_tabels =
+                                    ResultNewPuvlicIdFronSettingTable =
                                                 ВставкаДанныхЧерезКонтейнерПервыйолученныйПубличныйIDотСервера(ТаблицаКоторуюнадоИзменитьВерсиюДанных,
                                                 АдаптерВставкиПолученогоПубличногоID);
-                                    Log.d(this.getClass().getName(), "Результат_ЗаписиНовгоЗначениевТАБЛИЦУ_settings_tabels "
-                                            + Результат_ЗаписиНовгоЗначениевТАБЛИЦУ_settings_tabels);
+                                    Log.d(this.getClass().getName(), "ResultNewPuvlicIdFronSettingTable "
+                                            + ResultNewPuvlicIdFronSettingTable);
                                     // TODO: 02.05.2021
-                                }
+
+                            Log.d(context.getClass().getName(), "\n"
+                                    + " время: " + new Date()+"\n+" +
+                                    " Класс в процессе... " +  this.getClass().getName()+"\n"+
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                                    " ЗаписьВSettingTabel " +ResultNewPuvlicIdFronSettingTable);
+
                         }
+
+
+
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
+                            + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                             + Thread.currentThread().getStackTrace()[2].getLineNumber());
                     new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                             Thread.currentThread().getStackTrace()[2].getMethodName(),
@@ -3052,7 +3032,7 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                 }
 
 
-        return Результат_ЗаписиНовгоЗначениевТАБЛИЦУ_settings_tabels;
+        return ResultNewPuvlicIdFronSettingTable;
     }
 
 
