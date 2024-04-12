@@ -39,17 +39,12 @@ class Person {
   String? get thumbnailUrl => _thumbnailUrl;
   set thumbnailUrl(String? thumbnailUrl) => _thumbnailUrl = thumbnailUrl;
 
-
-
-
-  List<dynamic>? fromJson(Map<String, dynamic> json) {
-       List<dynamic>? data  ;
+  Person.fromJson(Map<String, dynamic> json) {
     _albumId = json['albumId'];
     _id = json['id'];
     _title = json['title'];
     _url = json['url'];
     _thumbnailUrl = json['thumbnailUrl'];
-    return data;
   }
 
 
@@ -63,5 +58,4 @@ class Person {
     data['thumbnailUrl'] = this._thumbnailUrl;
     return data;
   }
-
 }

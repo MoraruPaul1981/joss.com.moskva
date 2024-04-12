@@ -9,7 +9,7 @@ import 'InParcesJson.dart';
 
 
 
-class ParserJson3   implements InterfaceParserJson {
+class ParserJson2   implements InterfaceParserJson {
 
   //TODO
   @override
@@ -21,8 +21,7 @@ class ParserJson3   implements InterfaceParserJson {
       list =json.decode(responseBody) as List<dynamic>;
 
       print('list $list');
-      Person person=new Person();
-      person=list.map((model) =>  person.fromJson((model))?.toList()) as Person ;
+      person=list.map((model) =>  Person.fromJson((model)) ) as Person ;
 
       print('person $person');
 

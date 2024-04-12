@@ -15,21 +15,30 @@ class ParserJson1   implements InterfaceParserJson {
   @override
   List<Person> parserPerson(String responseBody) {
     // TODO: implement parserPerson
-    var  list ;
+    List<dynamic>  list ;
     var   person;
     try{
-      list =json.decode(responseBody) as List<dynamic>;
+      list =json.decode(responseBody) as  List<dynamic>  ;
 
       print('list $list');
-      Person person=new Person();
-      person=list.map((model) =>  person.fromJson((model))?.toList()) as Person ;
+
+
+      //Map<int, dynamic> map = list.asMap()   ;
+      Map<int, dynamic> map2 ;  ;
+
+      list.forEach((k,v) => map2.putIfAbsent(k, () => v);
+
+      //person=list.map((model) =>  Person.fromJson((model))) as Person ;
+
+      //list.asMap()
 
       print('person $person');
 
       //TODO error
     } on Exception catch (e) {
-      PrintingErrors printingErrors= new PrintingErrors();
-      printingErrors.printingError(e,'mainTextButton46.dart','main()');
+      print(e);
+ /*     PrintingErrors printingErrors= new PrintingErrors();
+      printingErrors.printingError(e,'mainTextButton46.dart','main()');*/
     }
     return person ;
   }
