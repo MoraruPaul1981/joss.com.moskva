@@ -35,7 +35,10 @@ class ParserJson1   implements InterfaceParserJson {
         print(map.values.elementAt(p));
 
       }
-
+      map.entries.forEach((      MapEntry<int, Person2> element) {
+        print(element.key);
+        print(element.value);
+      });
 
       //map.keys.forEach((k,v) => print('${k}: ${v}') );
 
