@@ -33,11 +33,20 @@ class GetFuturesSous  implements InGetFutures {
         'id_device_androis':'8cddcf623bdc9434',
 
       }
-    ).whenComplete(
-          () => print(' whenComplete  http.get '),
+    ).then((value) => {
+      print(' then value $value'),
+      print(' then value $value'),
+    })
+
+        .whenComplete(
+          () {
+            print(' whenComplete  http.get ');
+            print(' whenComplete  http.get ');
+          },
     )
         .catchError(
           (Object error) {
+            print(' catchError  $error');
             PrintingErrors printingErrors= new PrintingErrors();
             printingErrors.printingError(error,'mainTextButton46.dart','main()');
           });
@@ -46,9 +55,9 @@ class GetFuturesSous  implements InGetFutures {
 
 
 
+    print(' then value  ');
 
-
-    if (getresponse.statusCode==200) {
+ /*   if (getresponse.statusCode==200) {
       print('response $getresponse');
 
       final jsonString=getresponse.body;
@@ -65,7 +74,7 @@ class GetFuturesSous  implements InGetFutures {
 
     } else {
       print('response $getresponse');
-    }
+    }*/
     //TODO error
   }   catch (e) {
   PrintingErrors printingErrors= new PrintingErrors();
