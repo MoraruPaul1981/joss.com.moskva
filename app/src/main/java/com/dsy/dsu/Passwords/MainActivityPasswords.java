@@ -292,16 +292,16 @@ public class MainActivityPasswords extends AppCompatActivity {
 
     private void методGetПарольОбработка(View v) {
         try{
-        Integer БуферПубличныйIDОтСервера;
+        Integer PublicID;
         //TODO запукаем метод Афторизаиция по ЛОГИНУ И ПАРОЛЮ
-        БуферПубличныйIDОтСервера = new Class_MODEL_synchronized(getApplicationContext()).
+        PublicID = new Class_MODEL_synchronized(getApplicationContext()).
                 методАвторизацииЛогинИПаполь(getApplicationContext(), preferences, ПубличноеЛогин, ПубличноеПароль,getsslSocketFactory2,
 
                         getHiltJbossDebug,getHiltJbossReliz);
-        Log.d(this.getClass().getName(), " БуферПубличныйIDОтСервера " + БуферПубличныйIDОтСервера);
+        Log.d(this.getClass().getName(), " PublicID " + PublicID);
 
         // TODO: 24.08.2023 УСПЕШНЫЙ КОД ЛОГИРОВАНИЕ И ПАРОЛЬ
-        switch (БуферПубличныйIDОтСервера){
+        switch (PublicID){
             case 0:
                 МетодВизуальногоОтображениеРаботыКоннекта("Сервер выкл !!!", v);
                 break;
@@ -315,17 +315,17 @@ public class MainActivityPasswords extends AppCompatActivity {
 
                 ClassAfterForfardFaseApp classAfterForfardFaseApp=new ClassAfterForfardFaseApp();
 
-                classAfterForfardFaseApp.ClassAfterForfardFaseApp( БуферПубличныйIDОтСервера, v);
+                classAfterForfardFaseApp.ClassAfterForfardFaseApp( PublicID, v);
 
                 Log.d(this.getClass().getName(), " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                         " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber()+
-                        " Класс  :" + Thread.currentThread().getStackTrace()[2].getClassName()+ " БуферПубличныйIDОтСервера " +БуферПубличныйIDОтСервера);
+                        " Класс  :" + Thread.currentThread().getStackTrace()[2].getClassName()+ " PublicID " +PublicID);
 
                 break;
         }
             Log.d(this.getClass().getName(), " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber()+
-                    " Класс  :" + Thread.currentThread().getStackTrace()[2].getClassName()+ " БуферПубличныйIDОтСервера " +БуферПубличныйIDОтСервера);
+                    " Класс  :" + Thread.currentThread().getStackTrace()[2].getClassName()+ " PublicID " +PublicID);
     } catch (Exception e) {
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                 " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
@@ -410,26 +410,24 @@ public class MainActivityPasswords extends AppCompatActivity {
     }
 
 
-    private void методВходВFaceApp(@NonNull Integer БуферПубличныйIDОтСервера) {
+    private void методВходВFaceApp(@NonNull Integer PublicID) {
         try {
             // TODO: 01.12.2022 записываем режим синъронизации
-
-                Log.d(this.getClass().getName(), " stopLoading() asyncTaskLoaderАунтификацияПользователя ");
                 Intent IntentStartFaceApp = new Intent();
-                IntentStartFaceApp.putExtra("ID", БуферПубличныйIDОтСервера);
+                IntentStartFaceApp.putExtra("ID", PublicID);
                 IntentStartFaceApp.putExtra("ПубличноеИмяПользовательДлСервлета", ПубличноеЛогин);
                 IntentStartFaceApp.putExtra("ПубличноеПарольДлСервлета", ПубличноеПароль);
                 IntentStartFaceApp.setClass(getApplication(), MainActivityBootAndAsync.class);
                 IntentStartFaceApp.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);/// FLAG_ACTIVITY_SINGLE_TOP
 
                 startActivity(IntentStartFaceApp);
-                finish();
+                finishAffinity();
 
             Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date()+"\n+" +
                     " Класс в процессе... " +  this.getClass().getName()+"\n"+
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                    " БуферПубличныйIDОтСервера " +БуферПубличныйIDОтСервера);
+                    " PublicID " +PublicID);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -727,10 +725,10 @@ public class MainActivityPasswords extends AppCompatActivity {
 
     class  ClassAfterForfardFaseApp{
         // TODO: 29.09.2023 метод перехода после успепешно аунификации и переход в саму программа
-     void       ClassAfterForfardFaseApp(@NonNull   Integer БуферПубличныйIDОтСервера,@NonNull View v){
+     void       ClassAfterForfardFaseApp(@NonNull   Integer PublicID,@NonNull View v){
          try{
 
-         Long ЗаписьВSuccesLogin=       методЗаписьВSuccesLogin(БуферПубличныйIDОтСервера, v);//Integer ПолученинныйПубличныйID
+         Long ЗаписьВSuccesLogin=       методЗаписьВSuccesLogin(PublicID, v);//Integer ПолученинныйПубличныйID
          // TODO: 29.09.2023 SuccesLogin
              if (  ЗаписьВSuccesLogin>0  ) {
 
@@ -739,14 +737,14 @@ public class MainActivityPasswords extends AppCompatActivity {
                          " Класс  :" + Thread.currentThread().getStackTrace()[2].getClassName()   + " ЗаписьВSuccesLogin " +ЗаписьВSuccesLogin);
 
 
-                 Long ЗаписьВSettingTabel=       методЗаписьВSettingTabel(БуферПубличныйIDОтСервера, v);//Integer ПолученинныйПубличныйID
+                 Long ЗаписьВSettingTabel=       методЗаписьВSettingTabel(PublicID, v);//Integer ПолученинныйПубличныйID
                  // TODO: 29.09.2023 SettingTabel
 
 
-                 if (ЗаписьВSettingTabel>0) {
-                     методЗаписываемПубличныйID(БуферПубличныйIDОтСервера);
+                 if (ЗаписьВSettingTabel>0) {//TODO после  успешного получение от сервер Public ID для текущего проекта
+                     методЗаписываемПубличныйID(PublicID);
 
-                     методВходВFaceApp(БуферПубличныйIDОтСервера);
+                     методВходВFaceApp(PublicID);
                  }
 
              }

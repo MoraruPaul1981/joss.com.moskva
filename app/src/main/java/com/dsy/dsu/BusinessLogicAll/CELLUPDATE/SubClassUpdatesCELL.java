@@ -138,7 +138,7 @@ public class SubClassUpdatesCELL {
             String Дата =     new Class_Generation_Data(context).ГлавнаяДатаИВремяОперацийСБазойДанныхДОП();
             contentValuesОбноленияЯчейкиSingleTanel.put("date_update", Дата);
 
-            Long Версия = new SubClassUpVersionDATA().МетодПовышаемВерсииMODIFITATION_Client(    ТаблицаОбработки,context);
+            Long Версия = new SubClassUpVersionDATA().upVersionCurentTable(    ТаблицаОбработки,context);
             contentValuesОбноленияЯчейкиSingleTanel.put("current_table", Версия);
 
             // TODO: 12.04.2023 отправялем в провайдеор
@@ -180,7 +180,7 @@ public class SubClassUpdatesCELL {
             String Дата =     new Class_Generation_Data(context).ГлавнаяДатаИВремяОперацийСБазойДанныхДОП();
             contentValuesОбноленияЯчейкиSingleTanel.put("date_update", Дата);
 
-            Long Версия = new SubClassUpVersionDATA().МетодПовышаемВерсииMODIFITATION_Client(    ТаблицаОбработки,context);
+            Long Версия = new SubClassUpVersionDATA().upVersionCurentTable(    ТаблицаОбработки,context);
             contentValuesОбноленияЯчейкиSingleTanel.put("current_table", Версия);
 
             // TODO: 12.04.2023 отправялем в провайдеор

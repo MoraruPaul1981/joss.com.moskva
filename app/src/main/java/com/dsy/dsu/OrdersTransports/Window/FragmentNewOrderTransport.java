@@ -6,7 +6,6 @@ import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -42,7 +41,6 @@ import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.work.Data;
 
 
 import com.dsy.dsu.Errors.Class_Generation_Errors;
@@ -851,7 +849,7 @@ public class FragmentNewOrderTransport extends Fragment {
                                         Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" + table + "");
                                         ContentValues valuesNewOrderTransport = new ContentValues();
                                         valuesNewOrderTransport.put("user_update", ПубличныйID);
-                                        Long ВерсияДанныхUp = new SubClassUpVersionDATA().МетодПовышаемВерсииMODIFITATION_Client(table, getContext());
+                                        Long ВерсияДанныхUp = new SubClassUpVersionDATA().upVersionCurentTable(table, getContext());
                                         valuesNewOrderTransport.put("current_table", ВерсияДанныхUp);
                                         String ДатаОбновления = new Class_Generation_Data(getContext()).ГлавнаяДатаИВремяОперацийСБазойДанных();
                                         valuesNewOrderTransport.put("date_update", ДатаОбновления);

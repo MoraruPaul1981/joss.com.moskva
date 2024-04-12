@@ -161,8 +161,8 @@ public class SubClassUpVersionDATA {
 
     // TODO:MAX cURRENT table
     @SuppressLint("SuspiciousIndentation")
-    public Long МетодПовышаемВерсииMODIFITATION_Client(@NotNull String Текущаятаблицы,
-                                                @NotNull Context context) {
+    public Long upVersionCurentTable(@NotNull String Текущаятаблицы,
+                                     @NotNull Context context) {
 
         Long  ПовышенняВерсия=0l;
             try  ( Cursor Курсор_АнализMODIFITATION_Client= ( Cursor) sqLiteDatabase.rawQuery(" SELECT *  FROM " +

@@ -54,7 +54,7 @@ public class Class_Generation_Errors {
         Long PезультатВставкиНовойОшибки = 0l;
         try {
             if (context != null) {
-                Long ВерсияДанных = new SubClassUpVersionDATA().МетодПовышаемВерсииMODIFITATION_Client("errordsu1"
+                Long ВерсияДанных = new SubClassUpVersionDATA().upVersionCurentTable("errordsu1"
                         , context );
                 Long UUID = (Long)
                         new Class_Generation_UUID(context).МетодГенерацииUUID();

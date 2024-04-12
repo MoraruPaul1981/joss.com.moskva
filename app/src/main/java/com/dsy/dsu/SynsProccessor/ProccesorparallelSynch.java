@@ -316,25 +316,34 @@ public class ProccesorparallelSynch   {
                                              @NonNull Date   ВремяОтSqlServer,
                                              @NonNull String CooserGetandPost,
                                              @NonNull      Observable observable) {
-        final Long[] РезультатУспешнойиПолучениеДанных = {0l};
+
+
+        ConcurrentSkipListSet<Long> concurrentSkipListSetResultSucceessGetAsyncCurerentTable=new ConcurrentSkipListSet<>();
         try{
             // TODO: 02.11.2023  ПРИНИМАЕМ ДАННЫЕ ОТ СЕРВЕРА ПО ЧАСТЯМ
             observable .forEachWhile(new Predicate<Integer>() {
                         @Override
                         public boolean test(Integer integer) throws Throwable {
+                            Long getAsyncCurerentTable=0l;
                         try {
 
                             // TODO: 08.04.2024 выполения операции  GET ()
-                            РезультатУспешнойиПолучениеДанных[0] =  getCursorWithVersion( ИмяТаблицы, ВерсияДанныхсSqlServer, PublicID, ВремяОтSqlServer,  CooserGetandPost);
+                            concurrentSkipListSetResultSucceessGetAsyncCurerentTable.add(getCursorWithVersion( ИмяТаблицы, ВерсияДанныхсSqlServer, PublicID, ВремяОтSqlServer,  CooserGetandPost));
 
-                                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            // TODO: 12.04.2024 get Получаем результат
+                           getAsyncCurerentTable=       concurrentSkipListSetResultSucceessGetAsyncCurerentTable.pollLast();
+
+
+                            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                    "РезультатУспешнойиПолучениеДанных " + РезультатУспешнойиПолучениеДанных[0]);
+                                    "concurrentSkipListSetResultSucceessGetAsyncCurerentTable " + concurrentSkipListSetResultSucceessGetAsyncCurerentTable
+                                    + "\n"+
+                                    "getAsyncCurerentTable " + getAsyncCurerentTable);
 
-                            if (РезультатУспешнойиПолучениеДанных[0] >0 ) {
+                            if (getAsyncCurerentTable >0 ) {
                                 // TODO: 07.04.2024 записываем рузультат успешной вставки или обновления
-                                SuccessInsertOrUpdates.add(РезультатУспешнойиПолучениеДанных[0]);
+                                SuccessInsertOrUpdates.add(getAsyncCurerentTable);
                             }
                             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -349,7 +358,7 @@ public class ProccesorparallelSynch   {
                                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
 
-                            if (РезультатУспешнойиПолучениеДанных[0] >0 ) {
+                            if (getAsyncCurerentTable >0 ) {
                               return  true;
                             }else {
                                 return false;

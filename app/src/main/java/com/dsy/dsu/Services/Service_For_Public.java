@@ -38,7 +38,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Optional;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
@@ -589,7 +588,7 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                 // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ
                 Long РезультатУвеличиваемВерсияДатаТАбель =
                         new SubClassUpVersionDATA()
-                                .МетодПовышаемВерсииMODIFITATION_Client(    НазваниеОбрабоатываемойТаблицы,getApplicationContext());
+                                .upVersionCurentTable(    НазваниеОбрабоатываемойТаблицы,getApplicationContext());
                 Log.d(this.getClass().getName(), " РезультатУвеличиваемВерсияДатаТАбель  " + РезультатУвеличиваемВерсияДатаТАбель);
                 contentValuesДляДатаТабель.put("current_table", РезультатУвеличиваемВерсияДатаТАбель);
                 Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" + НазваниеОбрабоатываемойТаблицы + "");
@@ -649,7 +648,7 @@ public Cursor МетодПолучениеДанныхЧерезCursorLoader(@No
                 // TODO: 22.09.2022 дополнительные параменты ДатаТабель
                 // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ
                 Long РезультатУвеличиваемВерсияДатаТАбель =
-                        new SubClassUpVersionDATA().МетодПовышаемВерсииMODIFITATION_Client(    НазваниеОбрабоатываемойТаблицы,getApplicationContext());
+                        new SubClassUpVersionDATA().upVersionCurentTable(    НазваниеОбрабоатываемойТаблицы,getApplicationContext());
                 Log.d(this.getClass().getName(), " РезультатУвеличиваемВерсияДатаТАбель  " + РезультатУвеличиваемВерсияДатаТАбель);
                 contentValuesДляТабель.put("current_table", РезультатУвеличиваемВерсияДатаТАбель);
                 // TODO: 21.09.2023 TABEL

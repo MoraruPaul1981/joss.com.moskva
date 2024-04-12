@@ -550,7 +550,7 @@ public class ServiceOrserTransportService extends IntentService {
                 contentValuesУданиеЗаказаТраспорта.put("status",5);
                 String Дата =     new Class_Generation_Data(getApplicationContext()).ГлавнаяДатаИВремяОперацийСБазойДанныхДОП();
                 contentValuesУданиеЗаказаТраспорта.put("date_update", Дата);
-                Long Версия = new SubClassUpVersionDATA().МетодПовышаемВерсииMODIFITATION_Client(    ТаблицаОбработки
+                Long Версия = new SubClassUpVersionDATA().upVersionCurentTable(    ТаблицаОбработки
                         ,getApplicationContext() );
                 contentValuesУданиеЗаказаТраспорта.put("current_table", Версия);
                 // TODO: 12.04.2023 удаление ЗАказа Траспрта

@@ -2393,7 +2393,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                     = new Class_GRUD_SQL_Operations(getApplicationContext());
             // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ
             Long РезультатУвеличинаяВерсияДАныхЧата =
-                    new SubClassUpVersionDATA().МетодПовышаемВерсииMODIFITATION_Client(    "data_tabels",getApplicationContext());
+                    new SubClassUpVersionDATA().upVersionCurentTable(    "data_tabels",getApplicationContext());
             Log.d(this.getClass().getName(), " РезультатУвеличинаяВерсияДАныхЧата  " + РезультатУвеличинаяВерсияДАныхЧата);
 
             АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("current_table", РезультатУвеличинаяВерсияДАныхЧата);

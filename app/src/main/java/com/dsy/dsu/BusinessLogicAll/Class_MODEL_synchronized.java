@@ -1959,7 +1959,7 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                 // TODO: 30.01.2022
 
                 // TODO: 19.11.2022 ПОДНИМАЕМ ВЕРИСЮ ДАННЫХ
-                Long РезультатУвеличинаяВерсияДАныхЧата = new SubClassUpVersionDATA().МетодПовышаемВерсииMODIFITATION_Client(ТаблицаОткудаУдлаяемЗапись,context );
+                Long РезультатУвеличинаяВерсияДАныхЧата = new SubClassUpVersionDATA().upVersionCurentTable(ТаблицаОткудаУдлаяемЗапись,context );
                 Log.d(this.getClass().getName(), " РезультатУвеличинаяВерсияДАныхЧата  " + РезультатУвеличинаяВерсияДАныхЧата);
 
                 classGrudSqlOperationsУдалениеДанныхЧерезКонтейнерУниверсальная.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("current_table",
@@ -2058,7 +2058,7 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
 
 
                 // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ
-                Long РезультатУвеличинаяВерсияПриудалениеСотрудника = new SubClassUpVersionDATA().МетодПовышаемВерсииMODIFITATION_Client(ТаблицаОткудаУдлаяемЗапись,context );
+                Long РезультатУвеличинаяВерсияПриудалениеСотрудника = new SubClassUpVersionDATA().upVersionCurentTable(ТаблицаОткудаУдлаяемЗапись,context );
                 Log.d(this.getClass().getName(), " РезультатУвеличинаяВерсияПриудалениеСотрудника  " + РезультатУвеличинаяВерсияПриудалениеСотрудника);
 
                 //TODO  конец курант ча
@@ -2167,7 +2167,7 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
 
 
                 // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ
-                Long РезультатУвеличинаяВерсияДАныхЧата = new SubClassUpVersionDATA().МетодПовышаемВерсииMODIFITATION_Client(ТаблицаОткудаУдлаяемЗапись,context);
+                Long РезультатУвеличинаяВерсияДАныхЧата = new SubClassUpVersionDATA().upVersionCurentTable(ТаблицаОткудаУдлаяемЗапись,context);
                 Log.d(this.getClass().getName(), " РезультатУвеличинаяВерсияДАныхЧата  " + РезультатУвеличинаяВерсияДАныхЧата);
 
                 //TODO  конец курант ча
@@ -2977,50 +2977,38 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
             throws ExecutionException, InterruptedException {
     Long ResultNewPuvlicIdFronSettingTable = 0l;
                 try {
-                    String ТаблицаКоторуюнадоИзменитьВерсиюДанных="settings_tabels";
-                        if (PublicID > 0) {
+
                                     ContentValues АдаптерВставкиПолученогоПубличногоID = new ContentValues();
-                                    АдаптерВставкиПолученогоПубличногоID.put("user_update", PublicID);
-                                    //TODOверсия программы самой например 601
-                                    //Object ВрсияПрограммы=BuildConfig.VERSION_CODE;
+
+                                    // TODO: 12.04.2024
                                     PackageInfo pInfo = context. getPackageManager().getPackageInfo(context. getPackageName(), 0);
                                     String version = pInfo.versionName;//Version Name
                                     Integer verCode = pInfo.versionCode;//Version Code
-                                    // TODO: 29.12.2021
-                                    АдаптерВставкиПолученогоПубличногоID.put("version_dsu1",  Integer.parseInt(verCode.toString()));
-                                    Log.d(this.getClass().getName(), " uildConfig.VERSION_CODE ВрсияПрограммы  "
-                                            + verCode.toString());
-                                    ////TODO ДАТА
-                                  Long NewUUIDForSettingYable=Long.parseLong(new Class_Generation_Data(context).ГлавнаяДатаИВремяОперацийСБазойДанных());
 
-                                    АдаптерВставкиПолученогоПубличногоID.put("date_update", NewUUIDForSettingYable);
+                                  // TODO: 29.12.2021
+                                     АдаптерВставкиПолученогоПубличногоID.put("user_update", PublicID);
                                     АдаптерВставкиПолученогоПубличногоID.put("uuid", PublicID);
-                                    /////////
+                                    АдаптерВставкиПолученогоПубличногоID.put("version_dsu1",  Integer.parseInt(verCode.toString()));
+
+                                    String NewUUIDForSettingYable= new Class_Generation_Data(context).ГлавнаяДатаИВремяОперацийСБазойДанных() ;
+                                    АдаптерВставкиПолученогоПубличногоID.put("date_update", NewUUIDForSettingYable);
 
                                     // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ
-                                    Long РезультатУвеличинаяВерсияДЛяТАБЛИЦЫНАСТРОЙКИ =
-                                            new SubClassUpVersionDATA().МетодПовышаемВерсииMODIFITATION_Client(ТаблицаКоторуюнадоИзменитьВерсиюДанных,context);
+                                    Long NewLongVrsion = new SubClassUpVersionDATA().upVersionCurentTable("settings_tabels",context);
+                                    АдаптерВставкиПолученогоПубличногоID.put("current_table", NewLongVrsion);
 
-                                    АдаптерВставкиПолученогоПубличногоID.put("current_table", РезультатУвеличинаяВерсияДЛяТАБЛИЦЫНАСТРОЙКИ);
 
                                     //////todo САМА НЕ ПОСТРЕДВСТВЕНА ЗАПИС ДАННЫХ В ТАБЛИЦУ НАСТЙКИ СИТЕМЫ
                                     ResultNewPuvlicIdFronSettingTable =
-                                                ВставкаДанныхЧерезКонтейнерПервыйолученныйПубличныйIDотСервера(ТаблицаКоторуюнадоИзменитьВерсиюДанных,
+                                                ВставкаДанныхЧерезКонтейнерПервыйолученныйПубличныйIDотСервера("settings_tabels",
                                                 АдаптерВставкиПолученогоПубличногоID);
-                                    Log.d(this.getClass().getName(), "ResultNewPuvlicIdFronSettingTable "
-                                            + ResultNewPuvlicIdFronSettingTable);
-                                    // TODO: 02.05.2021
 
+                                    // TODO: 02.05.2021
                             Log.d(context.getClass().getName(), "\n"
                                     + " время: " + new Date()+"\n+" +
                                     " Класс в процессе... " +  this.getClass().getName()+"\n"+
                                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
                                     " ЗаписьВSettingTabel " +ResultNewPuvlicIdFronSettingTable);
-
-                        }
-
-
-
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
@@ -3030,8 +3018,6 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                             Thread.currentThread().getStackTrace()[2].getMethodName(),
                             Thread.currentThread().getStackTrace()[2].getLineNumber());
                 }
-
-
         return ResultNewPuvlicIdFronSettingTable;
     }
 

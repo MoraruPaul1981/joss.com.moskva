@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -39,7 +38,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.work.Data;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
@@ -2106,7 +2104,7 @@ public class Fragment3_Now_Create_Tasks extends Fragment {
                             // TODO: 21.03.2022 #1 для первой таблицы
                             // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ
                             Long РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудникаПервая=
-                                    new SubClassUpVersionDATA().МетодПовышаемВерсииMODIFITATION_Client(    ТаблицаОбработки,getContext());
+                                    new SubClassUpVersionDATA().upVersionCurentTable(    ТаблицаОбработки,getContext());
                             Log.d(this.getClass().getName(), " РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудникаПервая  " + РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудникаПервая);
 
                             Log.d(this.getClass().getName(), "  РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудникаПервая " + РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудникаПервая);

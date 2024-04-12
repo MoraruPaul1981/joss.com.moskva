@@ -337,7 +337,7 @@ public class ContentProviderSynsUpdateChangeDeleting extends ContentProvider {
             String     table = МетодОпределяемТаблицу(uri);
 
             final Long[] ПовышенаяВерсияДанных = {new SubClassUpVersionDATA().
-                    МетодПовышаемВерсииMODIFITATION_Client(table, getContext() )};
+                    upVersionCurentTable(table, getContext() )};
             Log.d(this.getClass().getName(), " ПовышенаяВерсияДанных  " + ПовышенаяВерсияДанных[0]);
 
             String ФлагКакойСинхронизацияПерваяИлиНет=         preferences.getString("РежимЗапускаСинхронизации", "");

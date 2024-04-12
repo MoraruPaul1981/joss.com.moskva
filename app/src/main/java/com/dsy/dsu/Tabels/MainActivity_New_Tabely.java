@@ -981,7 +981,7 @@ while(iterator.hasNext()){
 
                 // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ
                 Long РезультатУвеличинаяВерсияДАныхЧата =
-                        new SubClassUpVersionDATA().МетодПовышаемВерсииMODIFITATION_Client(   "tabel",getApplicationContext() );
+                        new SubClassUpVersionDATA().upVersionCurentTable(   "tabel",getApplicationContext() );
                 Log.d(this.getClass().getName(), " РезультатУвеличинаяВерсияДАныхЧата  " + РезультатУвеличинаяВерсияДАныхЧата);
 
                 АдаптерВставкиНовгоТабеля.put("current_table", РезультатУвеличинаяВерсияДАныхЧата);

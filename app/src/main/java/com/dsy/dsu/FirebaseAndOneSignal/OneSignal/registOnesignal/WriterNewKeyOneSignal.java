@@ -130,7 +130,7 @@ class WriterNewKeyOneSignal {
             Class_GRUD_SQL_Operations class_grud_sql_operationsПовышаемВерсиюДанныхПриПолученииНовогоКлючаONESINGLE = new Class_GRUD_SQL_Operations(context);
             // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ
             Long РезультатУвеличинаяВерсияПриУвеличенияПриПолученияКлючаONESINGLE =
-                    new SubClassUpVersionDATA().МетодПовышаемВерсииMODIFITATION_Client(
+                    new SubClassUpVersionDATA().upVersionCurentTable(
                             ТаблицаКоторуюнадоИзменитьВерсиюДанныхТАюдицы_VIEW_ONESIGNAL, context);
             Log.d(this.getClass().getName(), " РезультатУвеличинаяВерсияПриУвеличенияПриПолученияКлючаONESINGLE  " +
                     РезультатУвеличинаяВерсияПриУвеличенияПриПолученияКлючаONESINGLE);
@@ -183,7 +183,7 @@ class WriterNewKeyOneSignal {
 
             // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ
             Long РезультатУвеличинаяВерсияДАныхЧата =
-                    new SubClassUpVersionDATA().МетодПовышаемВерсииMODIFITATION_Client(ТаблицаОбрработкиВСдлужбеOneSignal, context);
+                    new SubClassUpVersionDATA().upVersionCurentTable(ТаблицаОбрработкиВСдлужбеOneSignal, context);
             Log.d(this.getClass().getName(), " РезультатУвеличинаяВерсияДАныхЧата  " + РезультатУвеличинаяВерсияДАныхЧата);
 
             // TODO: 27.08.2021 само значние

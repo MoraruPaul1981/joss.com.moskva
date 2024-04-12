@@ -24,7 +24,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 import androidx.loader.content.AsyncTaskLoader;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.work.Data;
 
 
 import com.dsy.dsu.AllDatabases.SQLTE.GetSQLiteDatabase;
@@ -60,7 +59,6 @@ import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Predicate;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import io.reactivex.rxjava3.schedulers.Timed;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -553,7 +551,7 @@ public class Service_for_AdminissionMaterial extends IntentService {
 
                 // TODO: 22.09.2022 ПОЛУЧЕМ ПОВЫШЕНУЮ ВЕРИСЮ ДАННЫХ
                 Long РезультатУвеличиваемВерсияДатаТАбель =
-                        new SubClassUpVersionDATA().МетодПовышаемВерсииMODIFITATION_Client(НазваниеОбрабоатываемойТаблицы,context);
+                        new SubClassUpVersionDATA().upVersionCurentTable(НазваниеОбрабоатываемойТаблицы,context);
                 Log.d(this.getClass().getName(), " РезультатУвеличиваемВерсияДатаТАбель  " + РезультатУвеличиваемВерсияДатаТАбель);
                 // TODO: 18.11.2022
                 contentValuesДляДатаТабель.put("current_table", РезультатУвеличиваемВерсияДатаТАбель);
@@ -865,7 +863,7 @@ public class Service_for_AdminissionMaterial extends IntentService {
 
                         // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ
                         Long РезультатУвеличиваемВерсияПолучениеНовогоМатериала =
-                                new SubClassUpVersionDATA().МетодПовышаемВерсииMODIFITATION_Client(НазваниеОбрабоатываемойТаблицы,getApplicationContext());
+                                new SubClassUpVersionDATA().upVersionCurentTable(НазваниеОбрабоатываемойТаблицы,getApplicationContext());
                         Log.d(this.getClass().getName(), " РезультатУвеличиваемВерсияПолучениеНовогоМатериала  " + РезультатУвеличиваемВерсияПолучениеНовогоМатериала);
 
                         contentValuesСозданиеНовогоМатериала.put("current_table", РезультатУвеличиваемВерсияПолучениеНовогоМатериала);
@@ -954,7 +952,7 @@ public class Service_for_AdminissionMaterial extends IntentService {
                                     // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ
                                     Long РезультатУвеличиваемВерсияПолучениеНовогоМатериала =
                                             new SubClassUpVersionDATA()
-                                                    .МетодПовышаемВерсииMODIFITATION_Client(НазваниеОбрабоатываемойТаблицы,getApplicationContext());
+                                                    .upVersionCurentTable(НазваниеОбрабоатываемойТаблицы,getApplicationContext());
                                     Log.d(this.getClass().getName(), " РезультатУвеличиваемВерсияПолучениеНовогоМатериала  " + РезультатУвеличиваемВерсияПолучениеНовогоМатериала);
 
                                     contentValuesСозданиеНовогоМатериала.put("current_table", РезультатУвеличиваемВерсияПолучениеНовогоМатериала);
@@ -1264,7 +1262,7 @@ public class Service_for_AdminissionMaterial extends IntentService {
 
                         // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ
                         Long РезультатУвеличиваемВерсияПолучениеНовогоМатериала =
-                                new SubClassUpVersionDATA().МетодПовышаемВерсииMODIFITATION_Client(НазваниеОбрабоатываемойТаблицы,getApplicationContext());
+                                new SubClassUpVersionDATA().upVersionCurentTable(НазваниеОбрабоатываемойТаблицы,getApplicationContext());
                         Log.d(this.getClass().getName(), " РезультатУвеличиваемВерсияПолучениеНовогоМатериала  " + РезультатУвеличиваемВерсияПолучениеНовогоМатериала);
 
                         // TODO: 18.11.2022
