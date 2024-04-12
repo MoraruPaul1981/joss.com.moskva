@@ -1,4 +1,5 @@
 import 'InPersons.dart';
+import 'Person2.dart';
 
 
 
@@ -39,11 +40,8 @@ class Person1 implements InPolos{
   String? get thumbnailUrl => _thumbnailUrl;
   set thumbnailUrl(String? thumbnailUrl) => _thumbnailUrl = thumbnailUrl;
 
-  @override
-  fromJson(Map<String, dynamic> json) {
-    // TODO: implement fromJson
-    throw UnimplementedError();
-  }
+
+
 
   @override
   Map<String, dynamic> toJson() {
@@ -58,14 +56,29 @@ class Person1 implements InPolos{
   }
 
 
-  Person1.fromJson(Map<String, dynamic> json) {
+  @override
+  Person2 fromJson(Map<String, dynamic> json) {
+    // TODO: implement fromJson
     _albumId = json['albumId'];
     _id = json['id'];
     _title = json['title'];
     _url = json['url'];
     _thumbnailUrl = json['thumbnailUrl'];
+
+    return  Person2(albumId: _albumId, id: _id, title: _title, url: _url, thumbnailUrl: _thumbnailUrl);
   }
 
+
+
+
+
+/*   Person2.fromJson(Map<String, dynamic> json) {
+    _albumId = json['albumId'];
+    _id = json['id'];
+    _title = json['title'];
+    _url = json['url'];
+    _thumbnailUrl = json['thumbnailUrl'];
+  }*/
 
 
 
