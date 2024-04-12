@@ -28,49 +28,70 @@ try{
 
   }
 
-
-
-
   @override
-  Map<String, dynamic> toJson() {
-    // TODO: implement toJson
+  Person2 fromJsonPerson2(Map<String, Person2> json) {
+    // TODO: implement fromJsonPerson2
     try{
-    //TODO error
-  } on Exception catch (e) {
-  print('e $e');
-  }
-    throw UnimplementedError();
-  }
+      // TODO: implement fromJson
+      _albumId = json['albumId'] as int?;
+      _id = json['id'] as int?;
+      _title = json['title'] as String?;
+      _url = json['url'] as String?;
+      _thumbnailUrl = json['thumbnailUrl'] as String?;
 
-  @override
-  Map<String, dynamic> toJson2() {
-    // TODO: implement toJson2
-    try{
-    //TODO error
-  } on Exception catch (e) {
-  print('e $e');
-  }
-    throw UnimplementedError();
-  }
-
-  @override
-  Person2 fromJson(Map<String, Person2> json) {
-    try{
-    // TODO: implement fromJson
-    _albumId = json['albumId'] as int?;
-    _id = json['id'] as int?;
-    _title = json['title'] as String?;
-    _url = json['url'] as String?;
-    _thumbnailUrl = json['thumbnailUrl'] as String?;
-
-    //TODO error
-  } on Exception catch (e) {
-  print('e $e');
-  }
+      //TODO error
+    } on Exception catch (e) {
+      print('e $e');
+    }
 
     return  Person2(albumId: _albumId, id: _id, title: _title, url: _url, thumbnailUrl: _thumbnailUrl);
   }
 
+  @override
+  Person2 fromJsondynamic(Map<String, dynamic> json) {
+    // TODO: implement fromJsondynamic
+    try{
+      // TODO: implement fromJson
+      _albumId = json['albumId'] as int?;
+      _id = json['id'] as int?;
+      _title = json['title'] as String?;
+      _url = json['url'] as String?;
+      _thumbnailUrl = json['thumbnailUrl'] as String?;
+
+      //TODO error
+    } on Exception catch (e) {
+      print('e $e');
+    }
+
+    return  Person2(albumId: _albumId, id: _id, title: _title, url: _url, thumbnailUrl: _thumbnailUrl);
+  }
+
+  @override
+  Map<String, Person2> toJson2Person2() {
+    // TODO: implement toJson2Person2
+    throw UnimplementedError();
+  }
+
+  @override
+  Map<String, dynamic> toJson2dynamic() {
+    // TODO: implement toJson2dynamic
+    throw UnimplementedError();
+  }
+
+  @override
+  Map<String, Person2> toJsonPerson2() {
+    // TODO: implement toJsonPerson2
+    throw UnimplementedError();
+  }
+
+  @override
+  Map<String, dynamic> toJsondynamic() {
+    // TODO: implement toJsondynamic
+    throw UnimplementedError();
+  }
+
+
+ 
 
 
 

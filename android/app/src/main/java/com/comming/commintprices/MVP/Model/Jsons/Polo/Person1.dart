@@ -40,27 +40,53 @@ class Person1 implements InPolos{
   String? get thumbnailUrl => _thumbnailUrl;
   set thumbnailUrl(String? thumbnailUrl) => _thumbnailUrl = thumbnailUrl;
 
-
-
-
-
-
-
   @override
   Person2 fromJsonPerson2(Map<String, Person2> json) {
     // TODO: implement fromJsonPerson2
-    throw UnimplementedError();
+    try{
+      // TODO: implement fromJson
+      _albumId = json['albumId'] as int?;
+      _id = json['id'] as int?;
+      _title = json['title'] as String?;
+      _url = json['url'] as String?;
+      _thumbnailUrl = json['thumbnailUrl'] as String?;
+
+      //TODO error
+    } on Exception catch (e) {
+      print('e $e');
+    }
+
+    return  Person2(albumId: _albumId, id: _id, title: _title, url: _url, thumbnailUrl: _thumbnailUrl);
   }
 
   @override
   Person2 fromJsondynamic(Map<String, dynamic> json) {
     // TODO: implement fromJsondynamic
-    throw UnimplementedError();
+    try{
+      // TODO: implement fromJson
+      _albumId = json['albumId'] as int?;
+      _id = json['id'] as int?;
+      _title = json['title'] as String?;
+      _url = json['url'] as String?;
+      _thumbnailUrl = json['thumbnailUrl'] as String?;
+
+      //TODO error
+    } on Exception catch (e) {
+      print('e $e');
+    }
+
+    return  Person2(albumId: _albumId, id: _id, title: _title, url: _url, thumbnailUrl: _thumbnailUrl);
   }
 
   @override
   Map<String, Person2> toJson2Person2() {
     // TODO: implement toJson2Person2
+    throw UnimplementedError();
+  }
+
+  @override
+  Map<String, dynamic> toJson2dynamic() {
+    // TODO: implement toJson2dynamic
     throw UnimplementedError();
   }
 
@@ -71,17 +97,17 @@ class Person1 implements InPolos{
   }
 
   @override
-  Map<String, dynamic> toJson() {
-    // TODO: implement toJson
+  Map<String, dynamic> toJsondynamic() {
+    // TODO: implement toJsondynamic
     throw UnimplementedError();
   }
 
-  @override
-  Map<String, dynamic> toJson2() {
-    // TODO: implement toJson2
-    throw UnimplementedError();
-  }
 
+
+
+
+
+ 
 
 
 

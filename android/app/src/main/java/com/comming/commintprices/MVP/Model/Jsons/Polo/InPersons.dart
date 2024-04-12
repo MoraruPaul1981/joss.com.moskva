@@ -1,7 +1,8 @@
-
-
 import '../Polo/Person1.dart';
 import 'Person2.dart';
+
+
+
 
 abstract  class InPolos {
 
@@ -20,17 +21,19 @@ abstract  class InPolos {
 
 
 
-
-
-
   //todo  dynamic
   Person2  fromJsondynamic(Map<String, dynamic> json) ;
 
   Map<String, dynamic> toJsondynamic() ;
 
   Map<String, dynamic> toJson2dynamic() ;
+
+
+
+
+
 }
 
 
 
-}
+
