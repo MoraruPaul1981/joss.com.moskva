@@ -9,7 +9,7 @@ import 'InFuture.dart';
 
 
 
-class GetFutures2  implements InGetFutures {
+class GetFuturesSous  implements InGetFutures {
 
 
   //TODO
@@ -17,8 +17,6 @@ class GetFutures2  implements InGetFutures {
   Future<List<Person1>> fetchPerson( { required  String url }  ) async {
     dynamic JsonMap;
     try{
-    // TODO: implement fetchPerson
-    final url='https://jsonplaceholder.typicode.com/photos' as String;
     final parsedUrl=Uri.parse(url) as Uri;
     final getresponse= await http.get(parsedUrl);
 

@@ -12,6 +12,8 @@ import 'package:http/http.dart' as http;
 import 'dart:isolate';
 
 import '../Model/Futures/GetFutures1.dart';
+import '../Model/Futures/GetFuturesSous.dart';
+import '../Model/Futures/InFuture.dart';
 
 
 void main() {
@@ -23,8 +25,11 @@ void main() {
   //proccedtvoid(nik: 121);
 
 
-    GetFutures1 getFutures=GetFutures1();
-    getFutures. fetchPerson(  url: 'https://jsonplaceholder.typicode.com/photos');
+    InGetFutures getFuturesSous=new GetFuturesSous();
+
+    getFuturesSous. fetchPerson(  url: 'https://jsonplaceholder.typicode.com/photos');
+    //TODO
+    print('starting .. GetFuturesSous');
 
    //TODO error
   }  catch (e) {

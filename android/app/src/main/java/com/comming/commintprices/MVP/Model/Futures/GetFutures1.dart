@@ -17,7 +17,6 @@ class GetFutures1  implements InGetFutures {
     // TODO: implement fetchPerson
     dynamic JsonMap;
     try{
-   /* final url='https://jsonplaceholder.typicode.com/photos' as String;*/
     final parsedUrl=Uri.parse(url) as Uri;
     final getresponse= await http.get(parsedUrl);
 
