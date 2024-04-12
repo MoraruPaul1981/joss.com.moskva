@@ -59,7 +59,7 @@ Context context;
         try {
             int Проценты;
 
-            Integer ПозицияТекущейТаблицы=      NameTableAsync.indexOf(NameTableAsync)+1;
+            Integer ПозицияТекущейТаблицы=      NameTableAsync.indexOf(имяТаблицаAsync)+1;
             Проценты = new Class_Visible_Processing_Async(context).
                     ГенерируемПРОЦЕНТЫДляAsync(ПозицияТекущейТаблицы, NameTableAsync.size());
 
