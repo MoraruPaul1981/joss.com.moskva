@@ -17,7 +17,7 @@ class ParserJson1   implements InterfaceParserJson {
       List<dynamic> list=json.decode(responseBody)  ;
       List<Person2>  person=list.map((model) => Person2().fromJsondynamic(model )) .toList() as   List<Person2>;
       print("person $person");
-     Map<int,Person2> map= person .asMap();
+     Map<int,Person2> map= person.asMap();
      print("map $map");
       //TODO error
     }  catch (e) {

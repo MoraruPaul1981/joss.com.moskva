@@ -18,7 +18,24 @@ class GetFuturesSous  implements InGetFutures {
     dynamic JsonMap;
     try{
     final parsedUrl=Uri.parse(url) as Uri;
-    final getresponse= await http.get(parsedUrl);
+
+
+
+    final getresponse= await http.get(
+        parsedUrl,
+      headers: {
+          '':''
+
+      }
+    ).whenComplete(
+          () => print(' whenComplete  http.get '),
+    )
+        .catchError(
+          (Object error) => print(' http.get Error: $error'),
+    );
+
+
+
 
     if (getresponse.statusCode==200) {
       print('response $getresponse');
@@ -29,6 +46,8 @@ class GetFuturesSous  implements InGetFutures {
 
        JsonMap=ParserJson1().parserPerson(jsonString);
 
+
+      
 
       print('JsonMap $JsonMap');
       return JsonMap;
