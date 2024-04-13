@@ -30,17 +30,7 @@ void main() {
 
     //TODO адрес пинга к серверу
 
-    var jbossserverlink = "http://" + "192.168.3.4" + ":" + "8080" + "/"+  "jboss-1.0-SNAPSHOT/sous.jboss.runtimejboss" as String;
 
-
-    var jbossserverparams  = "?" + "NameTable= "+
-        "&" + "JobForServer=Хотим Получить Статус Реальной Работы SQL SERVER"+
-        "&" + "IdUser=5"
-        + "&" + "VersionData=0" as String;
-
-    String  jbossserverfinal = jbossserverlink + jbossserverparams;
-    //TODO
-    print('jbossserverfinal .. $jbossserverfinal');
 
     getFuturesSous. fetchPerson(  url: jbossserverfinal);//TODO 'https://jsonplaceholder.typicode.com/photos'
     //TODO
