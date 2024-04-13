@@ -6,12 +6,17 @@ import 'package:flutter/material.dart';
 import '../Model/AdressJboss/getAdress.dart';
 import '../Model/Errors/ErrorsPrint.dart';
 import '../Model/Futures/Jboss/GetFuturesJboss.dart';
+import '../Model/Futures/one1C/GetFutures1C.dart';
+import '../Model/Jsons/1C/Polo/Person1C.dart';
 import '../Model/Jsons/jboss/Polo/Personjboss.dart';
 import 'package:logger/logger.dart';
 
+
+var logger;
+
 Future<void> main() async {
   try {
-    var logger = Logger(
+     logger = Logger(
       printer: PrettyPrinter(
       lineLength: 50,
       colors: true,
@@ -27,16 +32,18 @@ Future<void> main() async {
 
 
     //TODO адрес пинга к серверу  Jboss Debug
-    var adressCurrentJbossdebug=  GetAdressJbossDebug().adressJboss(IdUser: 5, JobForServer: "Хотим Получить Статус Реальной Работы SQL SERVER") as String;
+    var adressCurrent1C=  GetAdress1C().adress1C(IdUser: 5, JobForServer: "Хотим Получить Статус Реальной Работы SQL SERVER") as String;
     //TODO
-    print('adressCurrentJbossdebug .. $adressCurrentJbossdebug');
+    print('adressCurrent1C .. $adressCurrent1C');
 
-    List<Personjboss>? list   = await  GetFuturesJbossDebug(). fetchPerson(  url: adressCurrentJbossdebug);//TODO 'https://jsonplaceholder.typicode.com/photos'
+    List<Person1C>? list   = await  GetFutures1C(). fetchPerson(  url: adressCurrent1C);//TODO 'https://jsonplaceholder.typicode.com/photos'
     //TODO
-    print('end  .. $list ');
+    logger.i('end  .. $list ');
 
-   //TODO error
-  }  catch (e) {
+
+    //TODO  // Your code goes here
+  }   catch (e, stacktrace) {
+    logger.e("Got an error here!", error: e ,stackTrace: stacktrace);
     PrintingErrors printingErrors= new PrintingErrors();
     printingErrors.printingError(e,'mainTextButton46.dart','main()');
   }
