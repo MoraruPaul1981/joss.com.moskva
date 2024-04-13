@@ -4,29 +4,11 @@ import 'InFuture.dart';
 
 
 
-class GetAdressJbossDebug implements InAdressJboss {
-  //TODO
-  @override
-  String? adressJboss({required int IdUser, required String JobForServer}) {
-    // TODO: implement adressJboss
-    // TODO: implement adressJboss
-    String?  jbossserverfinal;
-    try {
-      var jbossserverlink = "http://" + "192.168.3.4" + ":" + "8080" + "/"+
-          "jboss-1.0-SNAPSHOT/sous.jboss.runtimejboss" as String;
-      var jbossserverparams  = "?" + "NameTable= "+
-          "&" + "JobForServer="+JobForServer+
-          "&" + "IdUser="+IdUser.toString()
-          + "&" + "VersionData=0" as String;
-      jbossserverfinal = jbossserverlink + jbossserverparams;
-      //TODO
-      print('jbossserverfinal .. $jbossserverfinal');
-    } catch (e) {
-      print(e);
-    }
-    return  jbossserverfinal;
-  }
-}
+////TODO jboss  ////TODO jboss ////TODO jboss ////TODO jboss
+
+
+
+
 
 
 
@@ -37,45 +19,58 @@ class GetAdressJboss implements InAdressJboss{
   String? adressJboss({required int IdUser, required String JobForServer}) {
     // TODO: implement adressJboss
     // TODO: implement adressJboss
-    String?  jbossserverfinal;
+    String?  serverJboss;
     try {
-      var jbossserverlink = "http://" + "192.168.3.4" + ":" + "8080" + "/"+  "jboss-1.0-SNAPSHOT/sous.jboss.runtimejboss" as String;
+      // TODO: 18.03.2023 московский сервер
+   //  8888,"80.70.108.165");// TODO: 10.11.2022 РЕЛИЗ  Москвовский
+  //   8890,"80.70.108.165");// TODO: 10.11.2022 РЕЛИЗ  Москвовский
+    // 8889,"80.70.108.165");// TODO: 10.11.2022 РЕЛИЗ  Москвовский
+
+      var jbossserverlink = "http://" + "80.70.108.165" + ":" + "8888" + "/"+  "jboss-1.0-SNAPSHOT/sous.jboss.runtimejboss".trim() as String;
       var jbossserverparams  = "?" + "NameTable= "+
           "&" + "JobForServer="+JobForServer+
           "&" + "IdUser="+IdUser.toString()
           + "&" + "VersionData=0" as String;
-      jbossserverfinal = jbossserverlink + jbossserverparams;
+    serverJboss = jbossserverlink + jbossserverparams;
       //TODO
-      print('jbossserverfinal .. $jbossserverfinal');
+      print('serverJboss .. $serverJboss');
     } catch (e) {
       print(e);
     }
-    return  jbossserverfinal;
+    return  serverJboss;
   }
 }
 
 
 
 
-class GetAdress1CDebug implements InAdress1C{
+
+
+
+
+
+
+class GetAdressJbossDebug implements InAdressJboss {
+  //TODO
   @override
-  String? adress1C({required int IdUser, required String JobForServer}) {
-    // TODO: implement adress1C
-// TODO: implement adressJboss
-    String?  serverfinal1c;
+  String? adressJboss({required int IdUser, required String JobForServer}) {
+    // TODO: implement adressJboss
+    // TODO: implement adressJboss
+    String?  serverJbossDebug;
     try {
-      var jbossserverlink = "http://" + "192.168.3.4" + ":" + "8080" + "/"+  "jboss-1.0-SNAPSHOT/sous.jboss.runtimejboss" as String;
+      var jbossserverlink = "http://" + "192.168.3.4" + ":" + "8080" + "/"+
+          "jboss-1.0-SNAPSHOT/sous.jboss.runtimejboss".trim() as String;
       var jbossserverparams  = "?" + "NameTable= "+
           "&" + "JobForServer="+JobForServer+
           "&" + "IdUser="+IdUser.toString()
           + "&" + "VersionData=0" as String;
-      serverfinal1c = jbossserverlink + jbossserverparams;
+      serverJbossDebug = jbossserverlink + jbossserverparams;
       //TODO
-      print('serverfinal1c .. $serverfinal1c');
+      print('serverJbossDebug .. $serverJbossDebug');
     } catch (e) {
       print(e);
     }
-    return  serverfinal1c;
+    return  serverJbossDebug;
   }
 }
 
@@ -83,24 +78,119 @@ class GetAdress1CDebug implements InAdress1C{
 
 
 
-class GetAdress1C implements InAdress1C{
+
+
+
+
+
+
+
+
+
+
+
+
+////TODO 1c ////TODO 1c ////TODO 1c ////TODO 1c
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//TODO Prices
+
+
+class GetAdress1CPrices implements InAdress1C{
   @override
   String? adress1C({required int IdUser, required String JobForServer}) {
     // TODO: implement adress1C
     // TODO: implement adressJboss
-    String?   serverfinal1c;
+    String?   serverPrices;
     try {
-      var serverfinal1clink = "http://" + "192.168.3.4" + ":" + "8080" + "/"+  "jboss-1.0-SNAPSHOT/sous.jboss.runtimejboss" as String;
-      var serverfinal1cparams  = "?" + "NameTable= "+
-          "&" + "JobForServer="+JobForServer+
-          "&" + "IdUser="+IdUser.toString()
-          + "&" + "VersionData=0" as String;
-      serverfinal1c = serverfinal1clink + serverfinal1cparams;
+      serverPrices    ="http://uat.dsu1.ru:55080/dds/hs/jsonto1ccena/listofdocuments".trim() as String;
       //TODO
-      print('jbossserverfinal .. $serverfinal1c');
+      print('serverPrices .. $serverPrices');
     } catch (e) {
       print(e);
     }
-    return  serverfinal1c;
+    return  serverPrices;
+  }
+}
+
+
+
+class GetAdress1CPricesDebug implements InAdress1C{
+  @override
+  String? adress1C({required int IdUser, required String JobForServer}) {
+    // TODO: implement adress1C
+    // TODO: implement adressJboss
+    String?   serverPricesDebug;
+    try {
+      serverPricesDebug    ="http://uat.dsu1.ru:55080/dds/hs/jsonto1ccena/listofdocuments".trim() as String;
+      //TODO
+      print('serverPricesDebug .. $serverPricesDebug');
+    } catch (e) {
+      print(e);
+    }
+    return  serverPricesDebug;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+//TODO Pay
+
+
+class GetAdress1CPay implements InAdress1C{
+  @override
+  String? adress1C({required int IdUser, required String JobForServer}) {
+    // TODO: implement adress1C
+    // TODO: implement adressJboss
+    String?   server1CPay;
+    try {
+      server1CPay    ="http://uat.dsu1.ru:55080/dds/hs/jsonto1c/listofdocuments".trim() as String;
+      //TODO
+      print('server1CPay .. $server1CPay');
+    } catch (e) {
+      print(e);
+    }
+    return  server1CPay;
+  }
+}
+
+
+
+class GetAdress1CPayDebug implements InAdress1C{
+  @override
+  String? adress1C({required int IdUser, required String JobForServer}) {
+    // TODO: implement adress1C
+    // TODO: implement adressJboss
+    String?   serverfinalPayDebug;
+    try {
+      serverfinalPayDebug    =        "http://192.168.3.10/dds_copy/hs/jsonto1c/listofdocuments".trim();// TODO: 18.01.2024 DEBUG as String;
+      //TODO
+      print('serverfinalPayDebug .. $serverfinalPayDebug');
+    } catch (e) {
+      print(e);
+    }
+    return  serverfinalPayDebug;
   }
 }
