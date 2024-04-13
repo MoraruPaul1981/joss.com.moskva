@@ -7,24 +7,31 @@ import '../Model/AdressJboss/getAdress.dart';
 import '../Model/Errors/ErrorsPrint.dart';
 import '../Model/Futures/Jboss/GetFuturesJboss.dart';
 import '../Model/Jsons/jboss/Polo/Personjboss.dart';
-
+import 'package:logger/logger.dart';
 
 Future<void> main() async {
   try {
-
+    var logger = Logger(
+      printer: PrettyPrinter(
+      lineLength: 50,
+      colors: true,
+      printEmojis: true,
+      printTime: true,
+    ),);
   // throw ('This is an error !!!');
   // runApp(const CommingPrices());
 
   //proccedtvoid(nik: 121);
 
 
-    //TODO адрес пинга к серверу
-    var adressCurrent=  GetAdressJbossDebug().adressJboss(IdUser: 5, JobForServer: "Хотим Получить Статус Реальной Работы SQL SERVER") as String;
 
+
+    //TODO адрес пинга к серверу  Jboss Debug
+    var adressCurrentJbossdebug=  GetAdressJbossDebug().adressJboss(IdUser: 5, JobForServer: "Хотим Получить Статус Реальной Работы SQL SERVER") as String;
     //TODO
-    print('adressCurrent .. $adressCurrent');
+    print('adressCurrentJbossdebug .. $adressCurrentJbossdebug');
 
-    List<Personjboss>? list   = await  GetFuturesJbossDebug(). fetchPerson(  url: adressCurrent)   ;//TODO 'https://jsonplaceholder.typicode.com/photos'
+    List<Personjboss>? list   = await  GetFuturesJbossDebug(). fetchPerson(  url: adressCurrentJbossdebug);//TODO 'https://jsonplaceholder.typicode.com/photos'
     //TODO
     print('end  .. $list ');
 

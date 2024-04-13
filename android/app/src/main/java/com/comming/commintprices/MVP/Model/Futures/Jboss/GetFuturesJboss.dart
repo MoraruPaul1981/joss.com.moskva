@@ -7,14 +7,20 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import '../../Errors/ErrorsPrint.dart';
 import 'dart:io';
-
 import '../../Jsons/jboss/Polo/Personjboss.dart';
 import 'Interfaces/InFutureJboss.dart';
 
-
+import 'package:logger/logger.dart';
 
 class GetFuturesJbossDebug  implements InFutureJboss,InGetCompleteJboss {
 
+  var logger = Logger(
+    printer: PrettyPrinter(
+      lineLength: 50,
+      colors: true,
+      printEmojis: true,
+      printTime: true,
+  ),);
 
   //TODO
   @override
@@ -58,14 +64,11 @@ class GetFuturesJbossDebug  implements InFutureJboss,InGetCompleteJboss {
           });
 
 
+    logger.i("end fetchPerson");
 
-
-
-    print(' end  value  ');
-
-
-    //TODO error
-  }   catch (e) {
+    //TODO  // Your code goes here
+  }   catch (e, stacktrace) {
+      logger.e("Got an error here!", error: e ,stackTrace: stacktrace);
   PrintingErrors printingErrors= new PrintingErrors();
   printingErrors.printingError(e,'mainTextButton46.dart','main()');
   }
@@ -91,19 +94,18 @@ class GetFuturesJbossDebug  implements InFutureJboss,InGetCompleteJboss {
         print('responsejboss.statusCode $responsejboss.statusCode');
 
         if (responsejboss.statusCode==200) {
-
-
-
+          //TODO получаем байты от сервера
           final decoded_data = GZipCodec().decode(responsejboss.bodyBytes);
-        String d=  utf8.decode(decoded_data, allowMalformed: true);
 
-          print('d $d');
+          //TODO переводим из Gzip в реальнфые данные
+        String getPublicId=  utf8.decode(decoded_data, allowMalformed: true);
+          print('getPublicId $getPublicId');
 
-          var original=utf8.encode(responsejboss.body);
+   /*       var original=utf8.encode(responsejboss.body);
           var compressed=gzip.encode(original);
           var decompressed=gzip.decode(compressed);
           print('decompressed $decompressed');
-
+*/
 /*          List<int> stringBytes = utf8.encode(responsejboss.body);
           List<int> gzipBytes = new  GZipCodec().encode(stringBytes);
           String compressedString = utf8.decode(gzipBytes, allowMalformed: true);
@@ -139,5 +141,7 @@ class GetFuturesJbossDebug  implements InFutureJboss,InGetCompleteJboss {
     }
 
   }
+
+
 
 }
