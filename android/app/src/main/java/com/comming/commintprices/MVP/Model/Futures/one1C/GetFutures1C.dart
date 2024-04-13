@@ -25,21 +25,22 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
     try{
     final parsedUrl=Uri.parse(url) as Uri;
 
-  int PublicId=8;
-    BigInt Uuid=0 as BigInt;
+    int PublicId=8;
+    BigInt Uuid=BigInt.parse('0')  ;
 
 
     //TODO base64
-    String? credentials1C=     GetConverts().convertBase64(  user: 'dsu1Admin', password: 'dsu1Admin');
-    print(' credentials1C  $credentials1C');
+    String? basicAuth=     GetConverts().convertBase64(  user: 'dsu1Admin', password: 'dsu1Admin');
 
+    print(' basicAuth  $basicAuth');
 
+   //TODO главный запрос
      await http.get(
         parsedUrl,
       headers: {
         'user':PublicId.toString(),
         'uuid':Uuid.toString(),
-        'Authorization':'Basic  $credentials1C',
+        'authorization':'$basicAuth',
       }
     ).then(( Response backresponsejboss  ) => {
 
@@ -85,11 +86,6 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
     try{
       print('getComplete $response1C');
 
-      String? stream_size =  response1C.headers["stream_size"] as String;
-
-      print('stream_size $stream_size');
-
-      if (stream_size !=null && !stream_size.isEmpty) {
         //TODO
         print('response1C.statusCode $response1C.statusCode');
 
@@ -133,9 +129,7 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
           //TODO
           print('response1C.statusCode $response1C.statusCode');
         }
-      }
-      // TODO
-      print('stream_size $stream_size');
+
     }   catch (e) {
       PrintingErrors printingErrors= new PrintingErrors();
       printingErrors.printingError(e,'mainTextButton46.dart','main()');

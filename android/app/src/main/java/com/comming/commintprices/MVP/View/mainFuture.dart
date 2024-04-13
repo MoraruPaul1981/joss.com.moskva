@@ -32,7 +32,7 @@ Future<void> main() async {
 
 
     //TODO адрес пинга к серверу  Jboss Debug
-    var adressCurrent1C=  GetAdress1CPrices().adress1C(IdUser: 5, JobForServer: "Хотим Получить Статус Реальной Работы SQL SERVER") as String;
+    var adressCurrent1C=  GetAdress1CPrices().adress1C(IdUser: 5, JobForServer: "getDataFrom1cPries") as String;
     //TODO
     print('adressCurrent1C .. $adressCurrent1C');
 
