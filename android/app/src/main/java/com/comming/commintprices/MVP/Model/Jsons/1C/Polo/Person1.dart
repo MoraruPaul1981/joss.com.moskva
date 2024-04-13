@@ -1,4 +1,5 @@
-import 'InPersons.dart';
+
+import '../../InPersons.dart';
 import 'Person2.dart';
 
 

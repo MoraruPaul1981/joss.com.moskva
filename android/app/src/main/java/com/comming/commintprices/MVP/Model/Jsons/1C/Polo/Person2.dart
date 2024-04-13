@@ -1,5 +1,7 @@
-import 'InPersons.dart';
 
+
+
+import '../../InPersons.dart';
 
 class Person2 implements InPolos{
   int? _albumId;

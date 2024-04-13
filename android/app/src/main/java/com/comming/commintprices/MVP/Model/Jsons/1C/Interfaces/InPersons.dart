@@ -1,8 +1,9 @@
-import '../Polo/Person1.dart';
-import 'Person2.dart';
 
 
 
+
+
+import '1C/Polo/Person2.dart';
 
 abstract  class InPolos {
 
