@@ -5,15 +5,15 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import '../Errors/ErrorsPrint.dart';
-import '../Jsons/Parser/ParcesPerson1.dart';
-import '../Jsons/Polo/Person1.dart';
-import 'InFuture.dart';
+import '../../Errors/ErrorsPrint.dart';
+import '../../Jsons/Parser/ParcesPerson1.dart';
+import '../../Jsons/Polo/Person1.dart';
+import '../InFuture.dart';
 import 'dart:io';
 
 
 
-class GetFuturesSous  implements InGetFutures,InGetComplete {
+class GetFuturesJbossDebug  implements InGetFutures,InGetComplete {
 
 
   //TODO
@@ -139,13 +139,5 @@ class GetFuturesSous  implements InGetFutures,InGetComplete {
     }
 
   }
-
-
-
-
-
-
-
-
 
 }

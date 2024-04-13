@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../Model/AdressJboss/getAdress.dart';
 import '../Model/Errors/ErrorsPrint.dart';
-import '../Model/Futures/GetFuturesSous.dart';
+import '../Model/Futures/Jboss/GetFuturesJbossDebug.dart';
 import '../Model/Jsons/Polo/Person1.dart';
 
 
@@ -24,7 +24,7 @@ Future<void> main() async {
     //TODO
     print('adressCurrent .. $adressCurrent');
 
-    List<Person1>? list   = await  GetFuturesSous(). fetchPerson(  url: adressCurrent)   ;//TODO 'https://jsonplaceholder.typicode.com/photos'
+    List<Person1>? list   = await  GetFuturesJbossDebug(). fetchPerson(  url: adressCurrent)   ;//TODO 'https://jsonplaceholder.typicode.com/photos'
     //TODO
     print('end  .. $list ');
 
