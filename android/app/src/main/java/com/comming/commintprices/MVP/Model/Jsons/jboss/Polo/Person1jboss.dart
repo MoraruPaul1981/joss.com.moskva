@@ -1,21 +1,15 @@
 
-import '../../InPersons.dart';
-import 'Person2.dart';
 
+import '../Interfaces/IntPoJoJboss.dart';
 
-
-
-
-
-
-class Person1 implements InPolos{
+class Person1jboss implements IntPoJoJboss{
   int? _albumId;
   int? _id;
   String? _title;
   String? _url;
   String? _thumbnailUrl;
 
-  Person1(
+  Person1jboss(
       {int? albumId,
         int? id,
         String? title,
@@ -42,7 +36,7 @@ class Person1 implements InPolos{
   set thumbnailUrl(String? thumbnailUrl) => _thumbnailUrl = thumbnailUrl;
 
   @override
-  Person2 fromJsonPerson2(Map<String, Person2> json) {
+  Person1jboss fromJsonPerson2(Map<String, Person1jboss> json) {
     // TODO: implement fromJsonPerson2
     try{
       // TODO: implement fromJson
@@ -57,11 +51,11 @@ class Person1 implements InPolos{
       print('e $e');
     }
 
-    return  Person2(albumId: _albumId, id: _id, title: _title, url: _url, thumbnailUrl: _thumbnailUrl);
+    return  Person1jboss(albumId: _albumId, id: _id, title: _title, url: _url, thumbnailUrl: _thumbnailUrl);
   }
 
   @override
-  Person2 fromJsondynamic(Map<String, dynamic> json) {
+  Person1jboss fromJsondynamic(Map<String, dynamic> json) {
     // TODO: implement fromJsondynamic
     try{
       // TODO: implement fromJson
@@ -76,11 +70,11 @@ class Person1 implements InPolos{
       print('e $e');
     }
 
-    return  Person2(albumId: _albumId, id: _id, title: _title, url: _url, thumbnailUrl: _thumbnailUrl);
+    return  Person1jboss(albumId: _albumId, id: _id, title: _title, url: _url, thumbnailUrl: _thumbnailUrl);
   }
 
   @override
-  Map<String, Person2> toJson2Person2() {
+  Map<String, Person1jboss> toJson2Person2() {
     // TODO: implement toJson2Person2
     throw UnimplementedError();
   }
@@ -92,7 +86,7 @@ class Person1 implements InPolos{
   }
 
   @override
-  Map<String, Person2> toJsonPerson2() {
+  Map<String, Person1jboss> toJsonPerson2() {
     // TODO: implement toJsonPerson2
     throw UnimplementedError();
   }
@@ -108,12 +102,13 @@ class Person1 implements InPolos{
 
 
 
+
  
 
 
 
 
-/*   Person2.fromJson(Map<String, dynamic> json) {
+/*   Person1jboss.fromJson(Map<String, dynamic> json) {
     _albumId = json['albumId'];
     _id = json['id'];
     _title = json['title'];

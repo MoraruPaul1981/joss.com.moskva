@@ -1,6 +1,6 @@
 
 
-import '1C/Polo/Person1.dart';
+import '1C/Polo/Person1jboss.dart';
 
 abstract  class  InterfaceParserJson {
 

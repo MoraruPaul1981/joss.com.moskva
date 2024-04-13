@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../Model/AdressJboss/getAdress.dart';
 import '../Model/Errors/ErrorsPrint.dart';
 import '../Model/Futures/Jboss/GetFuturesJbossDebug.dart';
-import '../Model/Jsons/Polo/Person1.dart';
+import '../Model/Jsons/Polo/Person1jboss.dart';
 
 
 Future<void> main() async {

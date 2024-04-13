@@ -6,8 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import '../../Errors/ErrorsPrint.dart';
-import '../../Jsons/Parser/ParcesPerson1.dart';
-import '../../Jsons/Polo/Person1.dart';
+import '../../Jsons/Parser/ParcesPerson1Jboss.dart';
+import '../../Jsons/Polo/Person1jboss.dart';
 import '../InFuture.dart';
 import 'dart:io';
 

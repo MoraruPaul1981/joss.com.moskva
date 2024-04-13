@@ -1,5 +1,5 @@
 
-import '../../InPersons.dart';
+import '../../IntPoJoJboss.dart';
 import 'Person2.dart';
 
 

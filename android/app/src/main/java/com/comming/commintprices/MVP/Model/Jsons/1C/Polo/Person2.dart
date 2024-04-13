@@ -1,7 +1,7 @@
 
 
 
-import '../../InPersons.dart';
+import '../../IntPoJoJboss.dart';
 
 class Person2 implements InPolos{
   int? _albumId;
