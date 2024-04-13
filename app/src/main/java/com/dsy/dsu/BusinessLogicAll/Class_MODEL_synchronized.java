@@ -2237,6 +2237,7 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
 
 ///todo записываем выбраную  ОРГАНИЗАЦИЮ В БАЗУ
 
+    @SuppressLint("SuspiciousIndentation")
     public Integer МетодКоторыйЗаписываемВыбранныйРежимИнтрернетаWifiИлиMobile(String ПередаваемыйРежимИнтрентета,
                                                                                Context КонтекстWIFI,
                                                                                String Таблица,
