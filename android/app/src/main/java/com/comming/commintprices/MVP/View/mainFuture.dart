@@ -1,20 +1,11 @@
+import 'dart:async';
 import 'dart:isolate';
 
 import 'package:flutter/material.dart';
-import 'package:injectable/injectable.dart';
+
 import '../Model/AdressJboss/getAdress.dart';
 import '../Model/Errors/ErrorsPrint.dart';
-import 'dart:async';
-import 'dart:convert';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'dart:io';
-import 'package:http/http.dart' as http;
-import 'dart:isolate';
-
-import '../Model/Futures/GetFutures1.dart';
 import '../Model/Futures/GetFuturesSous.dart';
-import '../Model/Futures/InFuture.dart';
 import '../Model/Jsons/Polo/Person1.dart';
 
 
@@ -33,7 +24,7 @@ Future<void> main() async {
     //TODO
     print('adressCurrent .. $adressCurrent');
 
-    List<dynamic>? list   = await  GetFuturesSous(). fetchPerson(  url: adressCurrent)   ;//TODO 'https://jsonplaceholder.typicode.com/photos'
+    List<Person1>? list   = await  GetFuturesSous(). fetchPerson(  url: adressCurrent)   ;//TODO 'https://jsonplaceholder.typicode.com/photos'
     //TODO
     print('end  .. $list ');
 
