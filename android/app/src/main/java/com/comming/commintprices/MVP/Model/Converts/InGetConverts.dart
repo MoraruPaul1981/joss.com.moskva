@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 
 //TODO
  abstract class InGetConverts  {
-  Uint8List? convertBase64(String userorpassword);
+  //TODO base64
+  String? convertBase64({required String user, required String  password});
+
+  //TODO base64URL
+  String? convertBase64URL({required String user, required String  password});
 }
 
 

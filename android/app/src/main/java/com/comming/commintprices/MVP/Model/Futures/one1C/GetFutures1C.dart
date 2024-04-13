@@ -26,23 +26,20 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
     final parsedUrl=Uri.parse(url) as Uri;
 
   int PublicId=8;
-    int Uuid=0;
-    String userName='dsu1Admin';
-    String paasword='dsu1Admin';
+    BigInt Uuid=0 as BigInt;
+
 
     //TODO base64
-    Uint8List? base64userName=     GetConverts().convertBase64(userName);
-    print(' base64userName  $base64userName');
+    String? credentials1C=     GetConverts().convertBase64(  user: 'dsu1Admin', password: 'dsu1Admin');
+    print(' credentials1C  $credentials1C');
 
-    Uint8List? base64paasword=     GetConverts().convertBase64(paasword);
-    print(' base64paasword  $base64paasword');
 
      await http.get(
         parsedUrl,
       headers: {
         'user':PublicId.toString(),
         'uuid':Uuid.toString(),
-        'Authorization':'Basic  $userName:$paasword',
+        'Authorization':'Basic  $credentials1C',
       }
     ).then(( Response backresponsejboss  ) => {
 
