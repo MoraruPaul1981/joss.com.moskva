@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -23,19 +24,23 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
     try{
     final parsedUrl=Uri.parse(url) as Uri;
 
+  int PublicId=8;
+    int Uuid=0;
+    String userName='dsu1Admin';
+    String paasword='dsu1Admin';
+
+
+    convertBase64(userName);
+
+
 
 
      await http.get(
         parsedUrl,
       headers: {
-        'Content-Type':'application/gzip ;charset=UTF-8',
-        'Accept-Encoding':'gzip,deflate,sdch',
-        'Connection':'Keep-Alive',
-        'Accept-Language':'ru-RU',
-        'identifier':'moraru',
-        'p_identifier':'moraru1981',
-        'id_device_androis':'8cddcf623bdc9434',
-
+        'user':PublicId.toString(),
+        'uuid':Uuid.toString(),
+        'Authorization':'Basic  $userName:$paasword',
       }
     ).then(( Response backresponsejboss  ) => {
 
@@ -71,6 +76,8 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
   }
   return   JsonMap;
   }
+
+
 
   @override
   void getComplete({required http.Response response1C}) {
@@ -137,7 +144,20 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
   }
 
 
-
+  Uint8List? convertBase64(String userorpassword) {
+    //TODO
+    Uint8List?   userbyte64;
+    try{
+    final bytes = utf8.encode(userorpassword);
+        userbyte64 = base64.encode(bytes) as Uint8List  ;
+    // TODO
+    print('userbyte64 $userbyte64');
+  }   catch (e) {
+  PrintingErrors printingErrors= new PrintingErrors();
+  printingErrors.printingError(e,'mainTextButton46.dart','main()');
+  }
+  return userbyte64;
+  }
 
 
 
