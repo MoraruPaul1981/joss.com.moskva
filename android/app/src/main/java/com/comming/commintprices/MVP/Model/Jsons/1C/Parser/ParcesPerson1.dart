@@ -1,25 +1,26 @@
 import 'dart:convert';
 
 import '../../../Errors/ErrorsPrint.dart';
-import '../../InParserJsonJboss.dart';
-import '../Polo/Person1.dart';
-import '../Polo/Person2.dart';
+
+import '../Interfaces/InParserJson1c.dart';
+import '../Polo/Person1C.dart';
 
 
 
 
-class ParserJson1   implements InterfaceParserJson {
+
+class ParserJson1   implements InParserJson1c {
 
   //TODO
   @override
-  List<Person1> parserPerson(String responseBody) {
+  List<Person1C> parserPerson(String responseBody) {
     // TODO: implement parserPerson
   var   person;
     try{
       List<dynamic> list=json.decode(responseBody)  ;
-      List<Person2>  person=list.map((model) => Person2().fromJsondynamic(model )) .toList() as   List<Person2>;
+      List<Person1C>  person=list.map((model) => Person1C().fromJsondynamic(model )) .toList() as   List<Person1C>;
       print("person $person");
-     Map<int,Person2> map= person.asMap();
+     Map<int,Person1C> map= person.asMap();
      print("map $map");
       //TODO error
     }  catch (e) {

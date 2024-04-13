@@ -1,21 +1,17 @@
 
-import '../../IntPoJoJboss.dart';
-import 'Person2.dart';
+
+import '../Interfaces/InPolos1c.dart';
 
 
 
-
-
-
-
-class Person1 implements InPolos{
+class Person1C implements InPolos1c{
   int? _albumId;
   int? _id;
   String? _title;
   String? _url;
   String? _thumbnailUrl;
 
-  Person1(
+  Person1C(
       {int? albumId,
         int? id,
         String? title,
@@ -42,7 +38,7 @@ class Person1 implements InPolos{
   set thumbnailUrl(String? thumbnailUrl) => _thumbnailUrl = thumbnailUrl;
 
   @override
-  Person2 fromJsonPerson2(Map<String, Person2> json) {
+  Person1C fromJsonPerson2(Map<String, Person1C> json) {
     // TODO: implement fromJsonPerson2
     try{
       // TODO: implement fromJson
@@ -57,11 +53,11 @@ class Person1 implements InPolos{
       print('e $e');
     }
 
-    return  Person2(albumId: _albumId, id: _id, title: _title, url: _url, thumbnailUrl: _thumbnailUrl);
+    return  Person1C(albumId: _albumId, id: _id, title: _title, url: _url, thumbnailUrl: _thumbnailUrl);
   }
 
   @override
-  Person2 fromJsondynamic(Map<String, dynamic> json) {
+  Person1C fromJsondynamic(Map<String, dynamic> json) {
     // TODO: implement fromJsondynamic
     try{
       // TODO: implement fromJson
@@ -76,11 +72,11 @@ class Person1 implements InPolos{
       print('e $e');
     }
 
-    return  Person2(albumId: _albumId, id: _id, title: _title, url: _url, thumbnailUrl: _thumbnailUrl);
+    return  Person1C(albumId: _albumId, id: _id, title: _title, url: _url, thumbnailUrl: _thumbnailUrl);
   }
 
   @override
-  Map<String, Person2> toJson2Person2() {
+  Map<String, Person1C> toJson2Person2() {
     // TODO: implement toJson2Person2
     throw UnimplementedError();
   }
@@ -92,7 +88,7 @@ class Person1 implements InPolos{
   }
 
   @override
-  Map<String, Person2> toJsonPerson2() {
+  Map<String, Person1C> toJsonPerson2() {
     // TODO: implement toJsonPerson2
     throw UnimplementedError();
   }
