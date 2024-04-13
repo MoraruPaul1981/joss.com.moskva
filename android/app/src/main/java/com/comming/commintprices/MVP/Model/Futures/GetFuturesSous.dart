@@ -15,8 +15,8 @@ class GetFuturesSous  implements InGetFutures,InGetComplete {
 
   //TODO
   @override
-  Future<List<Person1>> fetchPerson( { required  String url }  ) async {
-    dynamic JsonMap;
+  Future<List<Person1>?> fetchPerson( { required  String url }  ) async {
+    List<Person1>? JsonMap;
     try{
     final parsedUrl=Uri.parse(url) as Uri;
 
@@ -37,7 +37,7 @@ class GetFuturesSous  implements InGetFutures,InGetComplete {
     ).then(( Response backresponsejboss  ) => {
 
        getComplete( responsejboss: backresponsejboss),
-       
+
       print(' then value $backresponsejboss'),
     })
 

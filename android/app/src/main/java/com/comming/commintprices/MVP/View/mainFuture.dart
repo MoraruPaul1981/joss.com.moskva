@@ -2,6 +2,7 @@ import 'dart:isolate';
 
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import '../Model/AdressJboss/getAdress.dart';
 import '../Model/Errors/ErrorsPrint.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -14,9 +15,10 @@ import 'dart:isolate';
 import '../Model/Futures/GetFutures1.dart';
 import '../Model/Futures/GetFuturesSous.dart';
 import '../Model/Futures/InFuture.dart';
+import '../Model/Jsons/Polo/Person1.dart';
 
 
-void main() {
+Future<void> main() async {
   try {
 
   // throw ('This is an error !!!');
@@ -25,16 +27,15 @@ void main() {
   //proccedtvoid(nik: 121);
 
 
-    InGetFutures getFuturesSous=new GetFuturesSous();
-
-
     //TODO адрес пинга к серверу
+    var adressCurrent=  GetAdressJbossDebug().adressJboss(IdUser: 5, JobForServer: "Хотим Получить Статус Реальной Работы SQL SERVER") as String;
 
-
-
-    getFuturesSous. fetchPerson(  url: jbossserverfinal);//TODO 'https://jsonplaceholder.typicode.com/photos'
     //TODO
-    print('starting .. GetFuturesSous');
+    print('adressCurrent .. $adressCurrent');
+
+    List<dynamic>? list   = await  GetFuturesSous(). fetchPerson(  url: adressCurrent)   ;//TODO 'https://jsonplaceholder.typicode.com/photos'
+    //TODO
+    print('end  .. $list ');
 
    //TODO error
   }  catch (e) {

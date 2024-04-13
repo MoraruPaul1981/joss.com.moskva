@@ -10,18 +10,14 @@ import '../Jsons/Polo/Person1.dart';
 
 abstract  class InAdressJboss {
 
-  String? adressJboss( {required String IdUser ,required String JobForServer } ) ;
-
-
-
+  String? adressJboss( {required int IdUser ,required String JobForServer } ) ;
 
 }
+
+
 abstract  class InAdress1C {
 
-  String? adress1C( {required String IdUser ,required String JobForServer } ) ;
-
-
-
+  String? adress1C( {required int IdUser ,required String JobForServer } ) ;
 
 }
 
