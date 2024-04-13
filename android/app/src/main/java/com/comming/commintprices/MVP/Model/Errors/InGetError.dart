@@ -4,3 +4,5 @@ import 'package:flutter/material.dart';
  abstract class GetError  {
   void printingError(Object error,String metoderr,String claserr);
 }
+
+

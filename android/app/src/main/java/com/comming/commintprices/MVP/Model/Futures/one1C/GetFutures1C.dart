@@ -6,6 +6,7 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import '../../Converts/GetConverts.dart';
 import '../../Errors/ErrorsPrint.dart';
 import 'dart:io';
 
@@ -29,11 +30,12 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
     String userName='dsu1Admin';
     String paasword='dsu1Admin';
 
+    //TODO base64
+    Uint8List? base64userName=     GetConverts().convertBase64(userName);
+    print(' base64userName  $base64userName');
 
-    convertBase64(userName);
-
-
-
+    Uint8List? base64paasword=     GetConverts().convertBase64(paasword);
+    print(' base64paasword  $base64paasword');
 
      await http.get(
         parsedUrl,
@@ -144,20 +146,8 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
   }
 
 
-  Uint8List? convertBase64(String userorpassword) {
-    //TODO
-    Uint8List?   userbyte64;
-    try{
-    final bytes = utf8.encode(userorpassword);
-        userbyte64 = base64.encode(bytes) as Uint8List  ;
-    // TODO
-    print('userbyte64 $userbyte64');
-  }   catch (e) {
-  PrintingErrors printingErrors= new PrintingErrors();
-  printingErrors.printingError(e,'mainTextButton46.dart','main()');
-  }
-  return userbyte64;
-  }
+
+
 
 
 
