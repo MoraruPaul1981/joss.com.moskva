@@ -6,20 +6,20 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import '../../Errors/ErrorsPrint.dart';
-import '../../Jsons/Parser/ParcesPerson1Jboss.dart';
-import '../../Jsons/Polo/Person1jboss.dart';
-import '../InFuture.dart';
 import 'dart:io';
 
+import '../../Jsons/jboss/Polo/Personjboss.dart';
+import 'Interfaces/InFutureJboss.dart';
 
 
-class GetFuturesJbossDebug  implements InGetFutures,InGetComplete {
+
+class GetFuturesJbossDebug  implements InFutureJboss,InGetCompleteJboss {
 
 
   //TODO
   @override
-  Future<List<Person1>?> fetchPerson( { required  String url }  ) async {
-    List<Person1>? JsonMap;
+  Future<List<Personjboss>?> fetchPerson( { required  String url }  ) async {
+    List<Personjboss>? JsonMap;
     try{
     final parsedUrl=Uri.parse(url) as Uri;
 

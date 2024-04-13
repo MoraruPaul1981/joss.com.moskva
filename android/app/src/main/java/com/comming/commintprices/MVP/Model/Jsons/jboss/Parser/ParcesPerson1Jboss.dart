@@ -3,7 +3,7 @@ import 'dart:convert';
 import '../../../Errors/ErrorsPrint.dart';
 
 import '../Interfaces/InParserJsonJboss.dart';
-import '../Polo/Person1jboss.dart';
+import '../Polo/Personjboss.dart';
 
 
 
@@ -14,14 +14,14 @@ class ParcesPerson1Jboss   implements InParserJsonJboss {
 
   //TODO
   @override
-  List<Person1jboss> parserPerson(String responseBody) {
+  List<Personjboss> parserPerson(String responseBody) {
     // TODO: implement parserPerson
   var   person;
     try{
       List<dynamic> list=json.decode(responseBody)  ;
-      List<Person1jboss>  person=list.map((model) => Person1jboss().fromJsondynamic(model )) .toList() as   List<Person1jboss>;
+      List<Personjboss>  person=list.map((model) => Personjboss().fromJsondynamic(model )) .toList() as   List<Personjboss>;
       print("person $person");
-     Map<int,Person1jboss> map= person.asMap();
+     Map<int,Personjboss> map= person.asMap();
      print("map $map");
       //TODO error
     }  catch (e) {

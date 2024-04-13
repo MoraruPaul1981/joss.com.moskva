@@ -12,7 +12,8 @@ class GetAdressJbossDebug implements InAdressJboss {
     // TODO: implement adressJboss
     String?  jbossserverfinal;
     try {
-      var jbossserverlink = "http://" + "192.168.3.4" + ":" + "8080" + "/"+  "jboss-1.0-SNAPSHOT/sous.jboss.runtimejboss" as String;
+      var jbossserverlink = "http://" + "192.168.3.4" + ":" + "8080" + "/"+
+          "jboss-1.0-SNAPSHOT/sous.jboss.runtimejboss" as String;
       var jbossserverparams  = "?" + "NameTable= "+
           "&" + "JobForServer="+JobForServer+
           "&" + "IdUser="+IdUser.toString()
@@ -31,7 +32,7 @@ class GetAdressJbossDebug implements InAdressJboss {
 
 
 
-class GetAdressJbossReliz implements InAdressJboss{
+class GetAdressJboss implements InAdressJboss{
   @override
   String? adressJboss({required int IdUser, required String JobForServer}) {
     // TODO: implement adressJboss

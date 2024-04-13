@@ -1,11 +1,11 @@
 
 
 
-import '../Polo/Person1jboss.dart';
+import '../Polo/Personjboss.dart';
 
 abstract  class  InParserJsonJboss {
 
-  List<Person1jboss> parserPerson(String responseBody) ;
+  List<Personjboss> parserPerson(String responseBody) ;
 
 }
 

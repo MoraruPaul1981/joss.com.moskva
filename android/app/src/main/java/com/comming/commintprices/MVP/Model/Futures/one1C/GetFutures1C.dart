@@ -6,20 +6,20 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import '../../Errors/ErrorsPrint.dart';
-import '../../Jsons/Parser/ParcesPerson1Jboss.dart';
-import '../../Jsons/Polo/Person1jboss.dart';
-import '../InFuture.dart';
 import 'dart:io';
 
+import '../../Jsons/1C/Polo/Person1C.dart';
+import 'Interfaces/InFuture1C.dart';
 
 
-class GetFuturesJbossDebug  implements InGetFutures,InGetComplete {
+
+class GetFutures1C  implements InFuture1C,InGetComplete1C {
 
 
   //TODO
   @override
-  Future<List<Person1>?> fetchPerson( { required  String url }  ) async {
-    List<Person1>? JsonMap;
+  Future<List<Person1C>?> fetchPerson( { required  String url }  ) async {
+    List<Person1C>? JsonMap;
     try{
     final parsedUrl=Uri.parse(url) as Uri;
 
@@ -39,7 +39,7 @@ class GetFuturesJbossDebug  implements InGetFutures,InGetComplete {
       }
     ).then(( Response backresponsejboss  ) => {
 
-       getComplete( responsejboss: backresponsejboss),
+       getComplete( response1C: backresponsejboss),
 
       print(' then value $backresponsejboss'),
     })
@@ -72,34 +72,31 @@ class GetFuturesJbossDebug  implements InGetFutures,InGetComplete {
   return   JsonMap;
   }
 
-
-
-  //TODO ответ от сервер отвечаем
   @override
-  void getComplete({required http.Response responsejboss}) {
+  void getComplete({required http.Response response1C}) {
     // TODO: implement getComplete
 
     try{
-      print('getComplete $responsejboss');
+      print('getComplete $response1C');
 
-      String? stream_size =  responsejboss.headers["stream_size"] as String;
+      String? stream_size =  response1C.headers["stream_size"] as String;
 
       print('stream_size $stream_size');
 
       if (stream_size !=null && !stream_size.isEmpty) {
-    //TODO
-        print('responsejboss.statusCode $responsejboss.statusCode');
+        //TODO
+        print('response1C.statusCode $response1C.statusCode');
 
-        if (responsejboss.statusCode==200) {
+        if (response1C.statusCode==200) {
 
 
 
-          final decoded_data = GZipCodec().decode(responsejboss.bodyBytes);
-        String d=  utf8.decode(decoded_data, allowMalformed: true);
+          final decoded_data = GZipCodec().decode(response1C.bodyBytes);
+          String d=  utf8.decode(decoded_data, allowMalformed: true);
 
           print('d $d');
 
-          var original=utf8.encode(responsejboss.body);
+          var original=utf8.encode(response1C.body);
           var compressed=gzip.encode(original);
           var decompressed=gzip.decode(compressed);
           print('decompressed $decompressed');
@@ -110,7 +107,7 @@ class GetFuturesJbossDebug  implements InGetFutures,InGetComplete {
 
           print('compressedString $compressedString');*/
 
-      /*      Uint8List getuint8list=responsejboss.bodyBytes;
+          /*      Uint8List getuint8list=responsejboss.bodyBytes;
 
           print('getuint8list $getuint8list');
 
@@ -122,22 +119,26 @@ class GetFuturesJbossDebug  implements InGetFutures,InGetComplete {
 
 
 
-        //  List<Person1>? JsonMap=ParserJson1().parserPerson(jsonString);
+          //  List<Person1>? JsonMap=ParserJson1().parserPerson(jsonString);
 
-         // print('JsonMap $JsonMap');
+          // print('JsonMap $JsonMap');
 
         } else {
           //TODO
-          print('responsejboss.statusCode $responsejboss.statusCode');
+          print('response1C.statusCode $response1C.statusCode');
         }
       }
-     // TODO
+      // TODO
       print('stream_size $stream_size');
     }   catch (e) {
       PrintingErrors printingErrors= new PrintingErrors();
       printingErrors.printingError(e,'mainTextButton46.dart','main()');
     }
-
   }
+
+
+
+
+
 
 }
