@@ -25,7 +25,7 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
     try{
     final parsedUrl=Uri.parse(url) as Uri;
 
-    int PublicId=8;
+    int PublicId=5;
     BigInt Uuid=BigInt.parse('0')  ;
 
 
@@ -90,13 +90,22 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
         print('response1C.statusCode $response1C.statusCode');
 
         if (response1C.statusCode==200) {
+       /*   final decoded_data = GZipCodec().decode(response1C.bodyBytes);
+          String d=  utf8.decode(decoded_data, allowMalformed: true);*/
+
+          final  List<int> uint8listget1CPrices=     response1C.bodyBytes  ;
+
+       Uint16List uint16list=   Uint8List.fromList(uint8listget1CPrices).buffer.asUint16List();
 
 
+          String s1 = new String.fromCharCodes(uint16list);
+          print('s $s1');
+          String s2 = new String.fromCharCodes(uint8listget1CPrices);
+          print('s $s2');
 
-          final decoded_data = GZipCodec().decode(response1C.bodyBytes);
-          String d=  utf8.decode(decoded_data, allowMalformed: true);
+    var outputAsUint8List = new Uint8List.fromList(uint8listget1CPrices);
 
-          print('d $d');
+          print('outputAsUint8List $outputAsUint8List');
 
           var original=utf8.encode(response1C.body);
           var compressed=gzip.encode(original);
