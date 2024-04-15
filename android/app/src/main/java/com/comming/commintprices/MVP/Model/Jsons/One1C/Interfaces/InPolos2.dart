@@ -20,7 +20,7 @@ abstract  class InPolos2 {
 
 
   //todo  dynamic
- Person1C  fromJsondynamic(Map<String, dynamic> json) ;
+ Person1CTwo  fromJsondynamic(Map<String, dynamic> json) ;
 
 
 

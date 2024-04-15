@@ -233,7 +233,7 @@ class Person1C implements InPolos1c{
 }
 
 
-///TODO
+///TODO  конец первого класса
 
 
 
@@ -242,7 +242,14 @@ class Person1C implements InPolos1c{
 
 
 
-class Person2<T extends MapEntry<String,dynamic>> implements InPolos2{
+
+
+///TODO  начало второга класса
+
+
+
+
+class Person1CTwo implements InPolos2{
 
   String?   CFO    ;
   String?  Data;
@@ -260,7 +267,7 @@ class Person2<T extends MapEntry<String,dynamic>> implements InPolos2{
 
 
 
-  Person2(
+  Person1CTwo(
       {String?   CFO ,
         String?  Data,
         String?  StatyaDDS,
@@ -296,8 +303,10 @@ class Person2<T extends MapEntry<String,dynamic>> implements InPolos2{
 
 
   @override
-  Person1C fromJsondynamic( Map<String, dynamic> json) {
+  Person1CTwo fromJsondynamic( Map<String, dynamic> json) {
     // TODO: implement fromJsondynamic
+
+    var person1ctwo;
     try {
 
 
@@ -315,23 +324,35 @@ class Person2<T extends MapEntry<String,dynamic>> implements InPolos2{
           print('element$elementTwo');
           print('element$elementTwo');
 
-
-          print(elementTwo.entries.elementAt(0));
-          print(elementTwo.entries.elementAt(1));
-          print(elementTwo.entries);
+          elementTwo.forEach((key, value) {
+            print(' elementTwo.entries.elementAt(0) $elementTwo.entries.elementAt(0)');
 
 
-          elementTwo.entries.forEach((elementRow) {
-            print('element   $elementRow.key');
-            print('element  $elementRow.value');
           });
 
 
-          elementTwo.values.forEach((element) {
-            print('element$element');
-            print('element$element');
 
-          });
+
+
+          print('json &json');
+
+          person1ctwo=Person1CTwo(CFO: elementTwo.entries.elementAt(0).value ,
+              Data:elementTwo.entries.elementAt(1).value ,
+              StatyaDDS:elementTwo.entries.elementAt(2).value ,
+              Nomenklatura:elementTwo.entries.elementAt(3).value ,
+              EdIzm:elementTwo.entries.elementAt(4).value ,
+              Cena:elementTwo.entries.elementAt(5).value ,
+              Kolichestvo:elementTwo.entries.elementAt(6).value ,
+              CFORaskhoda:elementTwo.entries.elementAt(7).value ,
+              UUID:elementTwo.entries.elementAt(8).value ,
+              NDoc:elementTwo.entries.elementAt(9).value ,
+              NStr:elementTwo.entries.elementAt(10).value ,
+              Kontragent:elementTwo.entries.elementAt(11).value  );
+
+
+          print('person1c &person1c');
+
+
           print('element$elementTwo');
           print('element$elementTwo');
 
@@ -346,48 +367,91 @@ class Person2<T extends MapEntry<String,dynamic>> implements InPolos2{
 
 
 
-      /*     listisert.forEach((element) {
-          final asMap =  element as Map<String, dynamic>;
-
-          print('asMap$asMap');
-
-          print('asMap$asMap');
-
-        });*/
-
-
-
-
-
-
-
-
-      // TODO: implement fromJson
-      CFO = json['CFO']  ;
-      Data = json['Data'] ;
-      StatyaDDS = json['StatyaDDS']  ;
-      Nomenklatura = json['Nomenklatura']  ;
-      EdIzm = json['EdIzm']  ;
-      Cena = json['Cena']  ;
-      Kolichestvo = json['Kolichestvo']  ;
-      CFORaskhoda = json['CFORaskhoda']  ;
-      UUID = json['UUID']  ;
-      NDoc = json['NDoc']  ;
-      NStr = json['NStr']  ;
-      Kontragent = json['Kontragent']  ;
-
-      print('json &json');
-
 
       //TODO error
     }   catch (e, stacktrace) {
       print(' get ERROR $e get stacktrace $stacktrace ');
     }
 
-    return  Person1C(CFO: CFO, Data:Data, StatyaDDS:StatyaDDS, Nomenklatura:Nomenklatura,
-        EdIzm:EdIzm, Cena:Cena, Kolichestvo:Kolichestvo, CFORaskhoda:CFORaskhoda,
-        UUID:UUID, NDoc:NDoc, NStr:NStr,Kontragent:Kontragent );
+    return  person1ctwo;
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  @override
+  Map<String, Person1C> toJson2Person2() {
+    // TODO: implement toJson2Person2
+    throw UnimplementedError();
+  }
+
+  @override
+  Map<String, dynamic> toJson2dynamic() {
+    // TODO: implement toJson2dynamic
+    throw UnimplementedError();
+  }
+
+  @override
+  Map<String, Person1C> toJsonPerson2() {
+    // TODO: implement toJsonPerson2
+    throw UnimplementedError();
+  }
+
+  @override
+  Map<String, dynamic> toJsondynamic() {
+    // TODO: implement toJsondynamic
+    throw UnimplementedError();
+  }
+
+  @override
+  Person1C fromJsondynamicList(List listDynamic) {
+    // TODO: implement fromJsondynamicList
+    try{
+
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
+    }
+
+    return  Person1C( );
+  }
+
+  @override
+  Person1C fromJsonPerson2(Map<String, Person1C> json) {
+    // TODO: implement fromJsonPerson2
+    throw UnimplementedError();
+  }
+
+
+
 
 
 
@@ -411,7 +475,14 @@ class Person2<T extends MapEntry<String,dynamic>> implements InPolos2{
 }
 
 
-///TODO
+///TODO  конец второго класса
+
+
+
+
+
+
+
 
 
 
