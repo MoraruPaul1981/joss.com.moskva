@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '../../../Errors/ErrorsPrint.dart';
+
 
 import '../Interfaces/InParserJsonJboss.dart';
 import '../Polo/Personjboss.dart';
@@ -24,11 +24,9 @@ class ParcesPerson1Jboss   implements InParserJsonJboss {
      Map<int,Personjboss> map= person.asMap();
      print("map $map");
       //TODO error
-    }  catch (e) {
-     PrintingErrors printingErrors= new PrintingErrors();
-      printingErrors.printingError(e,'ParserJson1.class','main()');
-    }finally {
-      print('finally');
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
     }
     return person ;
   }

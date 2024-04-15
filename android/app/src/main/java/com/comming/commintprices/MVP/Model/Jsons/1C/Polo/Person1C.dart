@@ -49,8 +49,9 @@ class Person1C implements InPolos1c{
       _thumbnailUrl = json['thumbnailUrl'] as String?;
 
       //TODO error
-    }   catch (e) {
-      print('e $e');
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
     }
 
     return  Person1C(albumId: _albumId, id: _id, title: _title, url: _url, thumbnailUrl: _thumbnailUrl);
@@ -68,8 +69,8 @@ class Person1C implements InPolos1c{
       _thumbnailUrl = json['thumbnailUrl'] as String?;
 
       //TODO error
-    }   catch (e) {
-      print('e $e');
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
     }
 
     return  Person1C(albumId: _albumId, id: _id, title: _title, url: _url, thumbnailUrl: _thumbnailUrl);

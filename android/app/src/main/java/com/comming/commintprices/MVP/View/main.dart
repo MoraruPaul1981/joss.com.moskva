@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../Model/Errors/ErrorsPrint.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
@@ -10,14 +9,14 @@ import 'package:http/http.dart' as http;
 
 
 void main() {
-  PrintingErrors? printingErrors;
+
   try {
 
   // throw ('This is an error !!!');
    runApp(const CommingPrices());
-   //TODO error  genetator -26.03.2024--9.17
-  } catch (e) {
-    printingErrors?.printingError(e,'mainTextButton46.dart','main()');
+    //TODO error
+  }   catch (e, stacktrace) {
+    print(' get ERROR $e get stacktrace $stacktrace ');
   }
 }
 

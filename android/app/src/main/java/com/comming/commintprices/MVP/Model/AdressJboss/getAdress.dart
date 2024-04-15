@@ -34,9 +34,11 @@ class GetAdressJboss implements InAdressJboss{
     serverJboss = jbossserverlink + jbossserverparams;
       //TODO
       print('serverJboss .. $serverJboss');
-    } catch (e) {
-      print(e);
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
     }
+
     return  serverJboss;
   }
 }
@@ -67,9 +69,11 @@ class GetAdressJbossDebug implements InAdressJboss {
       serverJbossDebug = jbossserverlink + jbossserverparams;
       //TODO
       print('serverJbossDebug .. $serverJbossDebug');
-    } catch (e) {
-      print(e);
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
     }
+
     return  serverJbossDebug;
   }
 }
@@ -121,9 +125,11 @@ class GetAdress1CPrices implements InAdress1C{
       serverPrices    ="http://uat.dsu1.ru:55080/dds/hs/jsonto1ccena/listofdocuments".trim() as String;
       //TODO
       print('serverPrices .. $serverPrices');
-    } catch (e) {
-      print(e);
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
     }
+
     return  serverPrices;
   }
 }
@@ -140,9 +146,11 @@ class GetAdress1CPricesDebug implements InAdress1C{
       serverPricesDebug    ="http://uat.dsu1.ru:55080/dds/hs/jsonto1ccena/listofdocuments".trim() as String;
       //TODO
       print('serverPricesDebug .. $serverPricesDebug');
-    } catch (e) {
-      print(e);
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
     }
+
     return  serverPricesDebug;
   }
 }
@@ -169,9 +177,11 @@ class GetAdress1CPay implements InAdress1C{
       server1CPay    ="http://uat.dsu1.ru:55080/dds/hs/jsonto1c/listofdocuments".trim() as String;
       //TODO
       print('server1CPay .. $server1CPay');
-    } catch (e) {
-      print(e);
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
     }
+
     return  server1CPay;
   }
 }
@@ -188,9 +198,11 @@ class GetAdress1CPayDebug implements InAdress1C{
       serverfinalPayDebug    =        "http://192.168.3.10/dds_copy/hs/jsonto1c/listofdocuments".trim();// TODO: 18.01.2024 DEBUG as String;
       //TODO
       print('serverfinalPayDebug .. $serverfinalPayDebug');
-    } catch (e) {
-      print(e);
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
     }
+
     return  serverfinalPayDebug;
   }
 }

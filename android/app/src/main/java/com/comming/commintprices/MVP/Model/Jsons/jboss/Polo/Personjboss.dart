@@ -47,8 +47,9 @@ class Personjboss implements IntPoJoJboss{
       _thumbnailUrl = json['thumbnailUrl'] as String?;
 
       //TODO error
-    }   catch (e) {
-      print('e $e');
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
     }
 
     return  Personjboss(albumId: _albumId, id: _id, title: _title, url: _url, thumbnailUrl: _thumbnailUrl);
@@ -66,8 +67,9 @@ class Personjboss implements IntPoJoJboss{
       _thumbnailUrl = json['thumbnailUrl'] as String?;
 
       //TODO error
-    }   catch (e) {
-      print('e $e');
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
     }
 
     return  Personjboss(albumId: _albumId, id: _id, title: _title, url: _url, thumbnailUrl: _thumbnailUrl);

@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
-import '../Errors/ErrorsPrint.dart';
+
 import 'InGetConverts.dart';
 
 //TODO
@@ -24,10 +24,11 @@ import 'InGetConverts.dart';
           'Basic ' + base64.encode(utf8.encode('$user:$password'));
       // TODO
       print('basicAuthbyte64 $basicAuthbyte64');
-    }   catch (e) {
-      PrintingErrors printingErrors= new PrintingErrors();
-      printingErrors.printingError(e,'mainTextButton46.dart','main()');
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
     }
+
     return basicAuthbyte64;
   }
 
@@ -45,10 +46,11 @@ import 'InGetConverts.dart';
       //String decoded = stringToBase64Url.decode(encoded);
       // TODO
       print('basicAuthbyte64URL $basicAuthbyte64URL');
-    }   catch (e) {
-      PrintingErrors printingErrors= new PrintingErrors();
-      printingErrors.printingError(e,'mainTextButton46.dart','main()');
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
     }
+
     return basicAuthbyte64URL;
   }
 

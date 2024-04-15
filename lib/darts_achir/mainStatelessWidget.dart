@@ -14,9 +14,9 @@ void main() {
     //BL b=  BL();
     print(" main class BL Hello !!!! " );
 
-  }    catch (e){
-    print(" Exception class BL Hello !!!! " );///
-
+    //TODO error
+  }   catch (e, stacktrace) {
+    print(' get ERROR $e get stacktrace $stacktrace ');
   }
 }//TODO END void main() {
 

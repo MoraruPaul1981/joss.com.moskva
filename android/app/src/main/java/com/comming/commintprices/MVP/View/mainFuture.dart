@@ -4,7 +4,6 @@ import 'dart:isolate';
 import 'package:flutter/material.dart';
 
 import '../Model/AdressJboss/getAdress.dart';
-import '../Model/Errors/ErrorsPrint.dart';
 import '../Model/Futures/Jboss/GetFuturesJboss.dart';
 import '../Model/Futures/one1C/GetFutures1C.dart';
 import '../Model/Jsons/1C/Polo/Person1C.dart';
@@ -41,11 +40,9 @@ Future<void> main() async {
     logger.i('end  .. $list ');
 
 
-    //TODO  // Your code goes here
+    //TODO error
   }   catch (e, stacktrace) {
-    logger.e("Got an error here!", error: e ,stackTrace: stacktrace);
-    PrintingErrors printingErrors= new PrintingErrors();
-    printingErrors.printingError(e,'mainTextButton46.dart','main()');
+    print(' get ERROR $e get stacktrace $stacktrace ');
   }
 }
 
@@ -77,10 +74,10 @@ void proccedtvoid({String? firstName, String lastName = 'Todo',required int nik}
         .then((value) => gettt(  ss: value) )
         .catchError((e) {throw Exception('Some arbitrary error');})
         .whenComplete(() =>  print('nik $nik'));
-  } catch (e) {
-    print(e);
-    PrintingErrors printingErrors= new PrintingErrors();
-    printingErrors.printingError(e,'mainTextButton46.dart','main()');
+    //TODO error
+    //TODO error
+  }   catch (e, stacktrace) {
+    print(' get ERROR $e get stacktrace $stacktrace ');
   }
 }
 
@@ -88,11 +85,11 @@ void proccedtvoid({String? firstName, String lastName = 'Todo',required int nik}
 void  gettt( { required String ss })  {
     try{
     print('ss $ss');
-  } catch (e) {
-  print(e);
-  PrintingErrors printingErrors= new PrintingErrors();
-  printingErrors.printingError(e,'mainTextButton46.dart','main()');
-  }
+      //TODO error
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
+    }
 }
 
 
@@ -205,9 +202,9 @@ Widget _futureBuilder() {
       late ErrorWidget errwid;
       try {
         errwid=ErrorWidget(snapshot.error.toString());
-      } catch (e) {
-        PrintingErrors printingErrors= new PrintingErrors();
-        printingErrors.printingError(e,'mainTextButton46.dart','main()');
+        //TODO error
+      }   catch (e, stacktrace) {
+        print(' get ERROR $e get stacktrace $stacktrace ');
       }
       return errwid;
     }
@@ -287,9 +284,9 @@ Widget _futureBuilder() {
               seconds: 5
           ),
         );
-      } catch (e) {
-        PrintingErrors printingErrors= new PrintingErrors();
-        printingErrors.printingError(e,'mainTextButton46.dart','main()');
+        //TODO error
+      }   catch (e, stacktrace) {
+        print(' get ERROR $e get stacktrace $stacktrace ');
       }
      return 'FutureBuilder success    '+new DateTime.now().toString();
     //  return '';

@@ -8,7 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import '../../Converts/GetConverts.dart';
-import '../../Errors/ErrorsPrint.dart';
+
 import 'dart:io';
 
 import '../../Jsons/1C/Polo/Person1C.dart';
@@ -60,9 +60,7 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
     )
         .catchError(
           (Object error) {
-            print(' catchError  $error');
-            PrintingErrors printingErrors= new PrintingErrors();
-            printingErrors.printingError(error,'mainTextButton46.dart','main()');
+            print(' get ERROR $e get stacktrace $stacktrace ');
           });
 
 
@@ -72,11 +70,11 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
     print(' end  value  ');
 
 
-    //TODO error
-  }   catch (e) {
-  PrintingErrors printingErrors= new PrintingErrors();
-  printingErrors.printingError(e,'mainTextButton46.dart','main()');
-  }
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
+    }
+
   return   JsonMap;
   }
 
@@ -185,10 +183,11 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
           print('response1C.statusCode $response1C.statusCode');
         }
 
-    }   catch (e) {
-      PrintingErrors printingErrors= new PrintingErrors();
-      printingErrors.printingError(e,'mainTextButton46.dart','main()');
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
     }
+
   }
 
 

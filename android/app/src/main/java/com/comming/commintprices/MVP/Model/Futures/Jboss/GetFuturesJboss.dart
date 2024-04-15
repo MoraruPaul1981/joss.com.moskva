@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import '../../Errors/ErrorsPrint.dart';
+
 import 'dart:io';
 import '../../Jsons/jboss/Polo/Personjboss.dart';
 import 'Interfaces/InFutureJboss.dart';
@@ -58,9 +58,7 @@ class GetFuturesJbossDebug  implements InFutureJboss,InGetCompleteJboss {
     )
         .catchError(
           (Object error) {
-            print(' catchError  $error');
-            PrintingErrors printingErrors= new PrintingErrors();
-            printingErrors.printingError(error,'mainTextButton46.dart','main()');
+            print(' get ERROR $e get stacktrace $stacktrace ');
           });
 
 
@@ -69,8 +67,7 @@ class GetFuturesJbossDebug  implements InFutureJboss,InGetCompleteJboss {
     //TODO  // Your code goes here
   }   catch (e, stacktrace) {
       logger.e("Got an error here!", error: e ,stackTrace: stacktrace);
-  PrintingErrors printingErrors= new PrintingErrors();
-  printingErrors.printingError(e,'mainTextButton46.dart','main()');
+      print(' get ERROR $e get stacktrace $stacktrace ');
   }
   return   JsonMap;
   }
@@ -135,9 +132,9 @@ class GetFuturesJbossDebug  implements InFutureJboss,InGetCompleteJboss {
       }
      // TODO
       print('stream_size $stream_size');
-    }   catch (e) {
-      PrintingErrors printingErrors= new PrintingErrors();
-      printingErrors.printingError(e,'mainTextButton46.dart','main()');
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
     }
 
   }

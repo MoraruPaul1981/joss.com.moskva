@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '../../../Errors/ErrorsPrint.dart';
+
 
 import '../Interfaces/InParserJson1c.dart';
 import '../Polo/Person1C.dart';
@@ -23,11 +23,9 @@ class ParserJson1   implements InParserJson1c {
      Map<int,Person1C> map= person.asMap();
      print("map $map");
       //TODO error
-    }  catch (e) {
-     PrintingErrors printingErrors= new PrintingErrors();
-      printingErrors.printingError(e,'ParserJson1.class','main()');
-    }finally {
-      print('finally');
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
     }
     return person ;
   }
