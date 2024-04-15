@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.dsy.dsu.BootAndAsync.BlBootAsync.DeletingFiles.GetDeletingFilesJsonAndApk;
 import com.dsy.dsu.BootAndAsync.BlBootAsync.SendMainActivity;
 import com.dsy.dsu.BootAndAsync.EventsBus.MessageEvensBusAyns;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
@@ -206,9 +207,11 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
             if (РежимРаботыСети.equals("WIFI")  || РежимРаботыСети.equals("Mobile")  ) {
                 Log.i(this.getClass().getName(),  Thread.currentThread().getStackTrace()[2].getMethodName()+ "РежимРаботыСети " + РежимРаботыСети);
 
-                // TODO: 18.02.2023 удаление перед анализо файлов json И .apk
 
-                МетодДополнительногоУдалениеФайлов();
+
+
+                // TODO: 18.02.2023 удаление Файлов перед Обновление ПО или Анализм Версии ПО
+                new GetDeletingFilesJsonAndApk(context).startingDeletingFileJson();
 
                 // TODO: 18.02.2023 удаление перед анализо файлов json И .apk
 
@@ -318,47 +321,7 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
         return РежимРаботыСети;
     }
 
-     Integer МетодДополнительногоУдалениеФайлов() {
-        Integer РезультатУдаления = 0;
-        try {
-            String PatchDeleteJsonAnalitic="SousAvtoFile/UpdatePO";
-/////TODO  УДАЛЕНИЕ .JSON ФАЙЛА
-            File ФайлыДляОбновлениеПОУдалениеПриАнализеJSONВерсии;
-            if (Build.VERSION.SDK_INT >= 30) {
-                // TODO: 10.04.2022
-                ФайлыДляОбновлениеПОУдалениеПриАнализеJSONВерсии =
-                        getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS+ File.separator + PatchDeleteJsonAnalitic);
-            } else {
-                ФайлыДляОбновлениеПОУдалениеПриАнализеJSONВерсии = Environment.getExternalStoragePublicDirectory(
-                        Environment.DIRECTORY_DOWNLOADS+ File.separator + PatchDeleteJsonAnalitic);
-            }
 
-            // TODO: 10.04.2022
-            File[] Files = ФайлыДляОбновлениеПОУдалениеПриАнализеJSONВерсии.listFiles();
-
-            if (Files!=null) {
-                for (int i = 0; i < Files.length; i++) {
-                    String ИмяФайла = Files[i].getName();
-                    // TODO: 10.04.2022//    boolean ПосикПоНазваниюФайла=Files[j].getName().matches("(.*).json(.*)");
-                    boolean ФайлУдаленияJson = ИмяФайла.trim().matches("(.*)update_dsu1(.*)") &&
-                            ИмяФайла.trim().matches("(.*)json(.*)") ;//    boolean ПосикПоНазваниюФайла=Files[j].getName().matches("(.*).json(.*)");
-                    if(ФайлУдаленияJson==true){
-                        Files[i].delete();
-                        Log.d(this.getClass().getName(), "ФайлУдаленияJson" + ФайлУдаленияJson );
-                    }
-                }
-            }
-            Log.d(this.getClass().getName(), "Files" + Files);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-            Log.d(this.getClass().getName(), " ошибка  faceapp из меню МетодДополнительногоУдалениеФайлов Обновление ПО ");
-        }
-        return РезультатУдаления;
-    }
 
 
 

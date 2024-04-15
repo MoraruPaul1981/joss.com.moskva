@@ -24,6 +24,7 @@ import androidx.annotation.UiThread;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 
+import com.dsy.dsu.BootAndAsync.BlBootAsync.DeletingFiles.GetDeletingFilesJsonAndApk;
 import com.dsy.dsu.BusinessLogicAll.Class_MODEL_synchronized;
 import com.dsy.dsu.CnangeServers.PUBLIC_CONTENT;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
@@ -94,7 +95,11 @@ public     void МетодСообщениеАнализПО( ) {
                         Maybe.fromAction(new Action() {
                             @Override
                             public void run() throws Throwable {
-                                // TODO: 29.07.2023 АНАЛИЗ ПО
+
+                                // TODO: 18.02.2023 удаление Файлов перед Обновление ПО или Анализм Версии ПО
+                              new GetDeletingFilesJsonAndApk(context).startingDeletingFileApk();
+
+                                // TODO: 29.07.2023 ЗАгрузки  ПО
                                FileAPK =    МетодЗагрузкиAPK(getHiltJbossDebug,getHiltJbossReliz) ;
 
                                 Log.w(context.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName() + " СервернаяВерсияПОВнутри  "
