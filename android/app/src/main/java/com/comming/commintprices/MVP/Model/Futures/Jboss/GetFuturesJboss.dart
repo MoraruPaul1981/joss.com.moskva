@@ -58,7 +58,7 @@ class GetFuturesJbossDebug  implements InFutureJboss,InGetCompleteJboss {
     )
         .catchError(
           (Object error) {
-            print(' get ERROR $e get stacktrace $stacktrace ');
+            print(' get ERROR $error get stacktrace   ');
           });
 
 

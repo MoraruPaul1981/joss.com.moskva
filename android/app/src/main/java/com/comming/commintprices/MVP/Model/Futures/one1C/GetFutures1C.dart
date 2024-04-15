@@ -17,6 +17,7 @@ import 'Interfaces/InFuture1C.dart';
 import 'package:dart_json_mapper/dart_json_mapper.dart' show JsonMapper, jsonSerializable,initializeJsonMapper, JsonProperty;
 import 'package:dart_json_mapper_flutter/dart_json_mapper_flutter.dart' show flutterAdapter;
 
+import 'dart:typed_data' show Uint8List,Uint16List;
 
 class GetFutures1C  implements InFuture1C,InGetComplete1C {
 
@@ -60,7 +61,7 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
     )
         .catchError(
           (Object error) {
-            print(' get ERROR $e get stacktrace $stacktrace ');
+            print(' get ERROR $error  ');
           });
 
 
@@ -95,6 +96,17 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
           String d=  utf8.decode(decoded_data, allowMalformed: true);*/
 
         //  final  List<int> uint8listget1CPrices=     response1C.bodyBytes  ;
+
+
+
+          final byteData = response1C.bodyBytes.buffer.asByteData();
+       final bugffer=   byteData.buffer;
+
+          var list = bugffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes);
+         String resul= utf8.decode(list);
+
+
+
          var resiljson=JsonMapper.serialize(response1C.bodyBytes);
 
          print('resiljson $resiljson');
