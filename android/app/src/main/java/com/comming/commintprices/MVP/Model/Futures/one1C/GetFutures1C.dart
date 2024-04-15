@@ -14,8 +14,9 @@ import 'dart:io';
 import '../../Jsons/1C/Polo/Person1C.dart';
 import 'Interfaces/InFuture1C.dart';
 
-import 'package:dart_json_mapper/dart_json_mapper.dart' show JsonMapper, jsonSerializable;
+import 'package:dart_json_mapper/dart_json_mapper.dart' show JsonMapper, jsonSerializable,initializeJsonMapper, JsonProperty;
 import 'package:dart_json_mapper_flutter/dart_json_mapper_flutter.dart' show flutterAdapter;
+
 
 class GetFutures1C  implements InFuture1C,InGetComplete1C {
 
@@ -96,11 +97,18 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
           String d=  utf8.decode(decoded_data, allowMalformed: true);*/
 
         //  final  List<int> uint8listget1CPrices=     response1C.bodyBytes  ;
+         var resiljson=JsonMapper.serialize(response1C.bodyBytes);
 
+         print('resiljson $resiljson');
 
+      Map<String, dynamic>? map=    JsonMapper.toMap(response1C.bodyBytes );
+
+         print('map $map');
           //TODO processing String
 
-          var convertDataToJson = json.decode(response1C.bodyBytes as String);
+          var convertDataToJson = response1C.bodyBytes.buffer   ;
+
+      Map<String, dynamic>? map2=    JsonMapper.toMap(convertDataToJson);
 
           print('convertDataToJson $convertDataToJson');
 
