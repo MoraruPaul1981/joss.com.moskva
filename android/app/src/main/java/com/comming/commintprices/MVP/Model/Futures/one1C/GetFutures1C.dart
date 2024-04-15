@@ -14,7 +14,8 @@ import 'dart:io';
 import '../../Jsons/1C/Polo/Person1C.dart';
 import 'Interfaces/InFuture1C.dart';
 
-
+import 'package:dart_json_mapper/dart_json_mapper.dart' show JsonMapper, jsonSerializable;
+import 'package:dart_json_mapper_flutter/dart_json_mapper_flutter.dart' show flutterAdapter;
 
 class GetFutures1C  implements InFuture1C,InGetComplete1C {
 
@@ -99,7 +100,7 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
 
           //TODO processing String
 
-          var convertDataToJson = json.decode(response1C.body);
+          var convertDataToJson = json.decode(response1C.bodyBytes as String);
 
           print('convertDataToJson $convertDataToJson');
 
