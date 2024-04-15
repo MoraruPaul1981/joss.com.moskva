@@ -95,26 +95,37 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
           String d=  utf8.decode(decoded_data, allowMalformed: true);*/
 
         //  final  List<int> uint8listget1CPrices=     response1C.bodyBytes  ;
-          final  Uint8List uint8listget1CPrices=     response1C.bodyBytes  ;
 
+
+          //TODO processing String
+
+          var convertDataToJson = json.decode(response1C.body);
+
+          print('convertDataToJson $convertDataToJson');
+
+       //   var stringJson=     response1C.body as String  ;
+
+
+          print('convertDataToJson $convertDataToJson');
+
+
+          //TODO proccerig byte
+
+
+  /*        final  Uint8List uint8listget1CPrices=     response1C.bodyBytes  ;
           final  ByteBuffer buffer2=     response1C.bodyBytes.buffer  ;
           var codes = Uint16List.view(buffer2);
           var content = String.fromCharCodes(codes);
           print('content $content');
-
-
-
           print('uint8listget1CPrices $uint8listget1CPrices');
-
           final  ByteBuffer byteBuffer=     response1C.bodyBytes.buffer   ;
           print('byteBuffer $byteBuffer');
-
           var uint16list=   byteBuffer.asInt16List(0) ;
           print('uint16list $uint16list');
           String s1 = new String.fromCharCodes(uint16list);
           print('s1 $s1');
 
-          final  String stringJson=     response1C.body  ;
+
 
 
           print('stringJson $stringJson');
@@ -136,7 +147,7 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
           var original=utf8.encode(response1C.body);
           var compressed=gzip.encode(original);
           var decompressed=gzip.decode(compressed);
-          print('decompressed $decompressed');
+          print('decompressed $decompressed');*/
 
 /*          List<int> stringBytes = utf8.encode(responsejboss.body);
           List<int> gzipBytes = new  GZipCodec().encode(stringBytes);

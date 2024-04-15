@@ -34,12 +34,15 @@ dependencies:
   injectable: ^2.3.5
   material: ^1.0.0+2
   logger: ^2.0.2+1
+  dart_json_mapper:
+  dart_json_mapper_flutter:
 
   flutter:
     sdk: flutter
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
 dev_dependencies:
+  build_runner:
   flutter_test:
     sdk: flutter
 
