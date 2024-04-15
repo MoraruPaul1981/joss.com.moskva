@@ -1,4 +1,5 @@
 
+import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'package:flutter/foundation.dart';
 
 
@@ -14,21 +15,26 @@ import '../../../Jsons/1C/Polo/Person1C.dart';
 
 abstract  class InFuture1C {
 
-  Future<List<Person1C>?> fetchPerson({ required String   url}) ;
+  Future<List<Person1C>?> getPing1C({ required String   url}) ;
 
+  Future<String?> getStringPing1C({ required String   url}) ;
 
-/* final url='https://jsonplaceholder.typicode.com/photos' as String;
-      // TODO: implement fetchPerson
-      final url='https://jsonplaceholder.typicode.com/photos' as String;
-      */
-
+  Future<Json?> getJsonPing1C({ required String   url}) ;
 
 }
+
+
+
 
 
 abstract  class InGetComplete1C {
 
   void getComplete({ required Response response1C}) ;
+
+  String getStringComplete({ required Response response1C}) ;
+
+
+  Json getJsonComplete({ required Response response1C}) ;
 
 
 

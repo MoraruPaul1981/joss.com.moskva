@@ -35,7 +35,7 @@ Future<void> main() async {
     //TODO
     print('adressCurrent1C .. $adressCurrent1C');
 
-    List<Person1C>? list   = await  GetFutures1C(). fetchPerson(  url: adressCurrent1C);//TODO 'https://jsonplaceholder.typicode.com/photos'
+    List<Person1C>? list   = await  GetFutures1C(). getPing1C(  url: adressCurrent1C);//TODO 'https://jsonplaceholder.typicode.com/photos'
     //TODO
     logger.i('end  .. $list ');
 
