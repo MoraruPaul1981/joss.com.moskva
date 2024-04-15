@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -93,13 +94,38 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
        /*   final decoded_data = GZipCodec().decode(response1C.bodyBytes);
           String d=  utf8.decode(decoded_data, allowMalformed: true);*/
 
-          final  List<int> uint8listget1CPrices=     response1C.bodyBytes  ;
+        //  final  List<int> uint8listget1CPrices=     response1C.bodyBytes  ;
+          final  Uint8List uint8listget1CPrices=     response1C.bodyBytes  ;
 
-       Uint16List uint16list=   Uint8List.fromList(uint8listget1CPrices).buffer.asUint16List();
+          final  ByteBuffer buffer2=     response1C.bodyBytes.buffer  ;
+          var codes = Uint16List.view(buffer2);
+          var content = String.fromCharCodes(codes);
+          print('content $content');
 
 
+
+          print('uint8listget1CPrices $uint8listget1CPrices');
+
+          final  ByteBuffer byteBuffer=     response1C.bodyBytes.buffer   ;
+          print('byteBuffer $byteBuffer');
+
+          var uint16list=   byteBuffer.asInt16List(0) ;
+          print('uint16list $uint16list');
           String s1 = new String.fromCharCodes(uint16list);
-          print('s $s1');
+          print('s1 $s1');
+
+          final  String stringJson=     response1C.body  ;
+
+
+          print('stringJson $stringJson');
+
+
+
+     //  Uint16List uint16list=   Uint8List.fromList(uint8listget1CPrices).buffer.asUint16List();
+
+
+         // String s1 = new String.fromCharCodes(uint16list);
+          //print('s $s1');
           String s2 = new String.fromCharCodes(uint8listget1CPrices);
           print('s $s2');
 
