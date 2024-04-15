@@ -58,9 +58,67 @@ class Person1C implements InPolos1c{
 
 
   @override
-  Person1C fromJsondynamic(Map<String, dynamic> json) {
+  Person1C fromJsondynamic( Map<String, dynamic> json) {
     // TODO: implement fromJsondynamic
-    try{
+    try {
+
+
+      json.entries.forEach((element) {
+
+        print('element$element');
+        print('element$element');
+
+
+        element.value.forEach((element) {
+          print('element$element');
+          print('element$element');
+
+           var elementTwo=element as Map<String ,dynamic>;
+          print('element$elementTwo');
+          print('element$elementTwo');
+
+
+          elementTwo.entries.forEach((elementRow) {
+            print('element   $elementRow.key');
+            print('element  $elementRow.value');
+          });
+
+
+          elementTwo.values.forEach((element) {
+            print('element$element');
+            print('element$element');
+
+          });
+          print('element$elementTwo');
+          print('element$elementTwo');
+
+        });
+
+
+      });
+
+
+
+
+
+
+
+   /*     listisert.forEach((element) {
+          final asMap =  element as Map<String, dynamic>;
+
+          print('asMap$asMap');
+
+          print('asMap$asMap');
+
+        });*/
+
+
+
+
+
+
+
+
       // TODO: implement fromJson
       CFO = json['CFO']  ;
       Data = json['Data'] ;
@@ -76,6 +134,7 @@ class Person1C implements InPolos1c{
       Kontragent = json['Kontragent']  ;
 
       print('json &json');
+
 
       //TODO error
     }   catch (e, stacktrace) {
@@ -115,19 +174,18 @@ class Person1C implements InPolos1c{
   Person1C fromJsondynamicList(List listDynamic) {
     // TODO: implement fromJsondynamicList
     try{
-      // TODO: implement fromJson
-      NStr = listDynamic.elementAtOrNull(0) as int?;
-      Data = listDynamic.elementAtOrNull(1) as int?;
-      CFORaskhoda = listDynamic.elementAtOrNull(2) as String?;
-      UUID =listDynamic.elementAtOrNull(3) as String?;
-      NDoc = listDynamic.elementAtOrNull(4) as String?;
-
-      //TODO error
+ 
     }   catch (e, stacktrace) {
       print(' get ERROR $e get stacktrace $stacktrace ');
     }
 
-    return  Person1C(albumId: NStr, id: Data, title: CFORaskhoda, url: UUID, thumbnailUrl: NDoc);
+    return  Person1C( );
+  }
+
+  @override
+  Person1C fromJsonPerson2(Map<String, Person1C> json) {
+    // TODO: implement fromJsonPerson2
+    throw UnimplementedError();
   }
 
 

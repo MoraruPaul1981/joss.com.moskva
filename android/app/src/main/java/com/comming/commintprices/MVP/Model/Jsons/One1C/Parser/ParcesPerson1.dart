@@ -48,8 +48,11 @@ class Uint8ListConverters implements JsonConverter<List<dynamic>,List<Person1C>>
   @override
   List<Person1C> toJson(List object) {
     // TODO: implement toJson
-
-    throw UnimplementedError();
+    var listpersol;
+   Map <int,dynamic> map= object.asMap();
+   print("map $map");
+   return listpersol ;
+   /// throw UnimplementedError();
   }
 
 

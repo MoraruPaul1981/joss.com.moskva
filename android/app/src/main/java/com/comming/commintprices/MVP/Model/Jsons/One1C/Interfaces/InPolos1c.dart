@@ -24,7 +24,7 @@ abstract  class InPolos1c {
 
 
   //todo  dynamic
-  Person1C  fromJsondynamic(Map<String, dynamic> json) ;
+ Person1C  fromJsondynamic(Map<String, dynamic> json) ;
 
   Person1C  fromJsondynamicList( List<dynamic> listDynamic) ;
 

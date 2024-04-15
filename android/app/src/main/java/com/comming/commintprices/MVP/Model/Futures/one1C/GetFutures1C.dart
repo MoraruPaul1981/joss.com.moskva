@@ -103,6 +103,7 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
 
 
 
+
           final byteData = response1C.bodyBytes.buffer.asByteData();
        final bugffer=   byteData.buffer;
 
@@ -111,17 +112,20 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
          String resul= utf8.decode(list);
           print('resul $resul');
 
+
+
           List<dynamic> listDynamic=json.decode(utf8.decode(list))  ;
           print('listDynamic $listDynamic');
 
-       Map<String,dynamic> mapp=   listDynamic.asMap().cast<String,dynamic >();
 
-        List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  mapp )) .toList() as   List<Person1C>;
+
+
+        List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  model )) .toList() as   List<Person1C>;
 
 
           print('resul $resul');
 
-        //var  listjson2 =     Uint8ListConverters().toJson(listDynamic) as Map<int, dynamic>?;
+       var  listjson2 =     Uint8ListConverters().toJson(listDynamic) ;//as Map<int, dynamic>?
 
         ///  print('listjson2 $listjson2');
 
