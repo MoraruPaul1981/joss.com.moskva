@@ -36,7 +36,10 @@ public class GetJsonOt1cComminhgPrices extends  GetJsonOt1cComminhgPricesParent 
 
 
     @Override
-    public  byte[] getByteComminhgPrices(@NonNull Context context, @NonNull String adress, @NonNull Integer PublicId, @NonNull ObjectMapper objectMapper) {
+    public  byte[] getByteComminhgPrices(@NonNull Context context,
+                                         @NonNull String adress,
+                                         @NonNull Integer PublicId,
+                                         @NonNull ObjectMapper objectMapper) {
         // TODO: 26.12.2023
         final byte[][] getbyteComminhgPrices = {null};
         try{
