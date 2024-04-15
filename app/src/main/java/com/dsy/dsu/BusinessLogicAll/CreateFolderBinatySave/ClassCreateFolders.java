@@ -11,7 +11,7 @@ import java.io.File;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 
- class ClassCreateFolders {
+ public class ClassCreateFolders {
 
   protected   Context context;
     protected String patchFileName;

@@ -3008,6 +3008,8 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                                                   @NonNull SSLSocketFactory getsslSocketFactory2) {
         final File[] СамФайлJsonandApk = {null};
                 try {
+                    String PatchDeleteJsonAnalitic="SousAvtoFile/UpdatePO";
+
                     String СтрокаСвязиСсервером ="http://"+ИмяСервера+":"+ИмяПорта+"/";;
                     СтрокаСвязиСсервером = СтрокаСвязиСсервером.replace(" ", "%20");
                     СтрокаСвязиСсервером = СтрокаСвязиСсервером + АдресЗагрузки; /////"dsu1.glassfish/update_android_dsu1/output-metadata.json";
@@ -3118,9 +3120,9 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
 
                                         File ПутькФайлу = null;
                                         if (Build.VERSION.SDK_INT >= 30) {
-                                            ПутькФайлу = context.getExternalFilesDir( Environment.DIRECTORY_DOWNLOADS);
+                                        ПутькФайлу = context.getExternalFilesDir( Environment.DIRECTORY_DOWNLOADS+ File.separator + PatchDeleteJsonAnalitic);
                                         } else {
-                                            ПутькФайлу = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                                            ПутькФайлу = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS+ File.separator + PatchDeleteJsonAnalitic);
                                         }
                                         СамФайлJsonandApk[0] = new File(ПутькФайлу, "/" + ИмяФайлаЗагрузки );
                                         if (!СамФайлJsonandApk[0].getParentFile().mkdirs() ) {

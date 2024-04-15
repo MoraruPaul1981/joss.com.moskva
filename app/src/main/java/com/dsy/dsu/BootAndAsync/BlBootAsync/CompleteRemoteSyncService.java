@@ -186,6 +186,8 @@ public class CompleteRemoteSyncService {
             Completable.complete().subscribe(new CompletableObserver() {
                 @Override
                 public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+
+
                     // TODO: 22.01.2024  создание журнала ошщибок
                     методCreateJornalErrorApp();
 
@@ -194,6 +196,9 @@ public class CompleteRemoteSyncService {
 
                     // TODO: 14.08.2023 создаем папку для BinaryFile CommitPay1C Соласования
                     new ClassCreateFolderCommitPays1C(context).МетодCreateFoldersBinaty();
+
+                    // TODO: 14.08.2023 создаем папку для Обновления ПО
+                    new ClassCreateFolderUpdatePO (context).МетодCreateFoldersBinaty();
 
 
 
@@ -855,7 +860,8 @@ public class CompleteRemoteSyncService {
     ) {
         Integer СервернаяВерсия=0;
         try {
-            СервернаяВерсия = localBinderОбновлениеПО.getService().МетодГлавныйОбновленияПОДоAsync(true, context,getHiltJbossDebug,getHiltJbossReliz  );
+            СервернаяВерсия = localBinderОбновлениеПО.getService().МетодГлавныйОбновленияПОДоAsync(true,
+                    context,getHiltJbossDebug,getHiltJbossReliz  );
 
             Log.i(this.getClass().getName(), " Атоманически установкаОбновление ПО " +
                     Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());

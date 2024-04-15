@@ -321,14 +321,16 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
      Integer МетодДополнительногоУдалениеФайлов() {
         Integer РезультатУдаления = 0;
         try {
+            String PatchDeleteJsonAnalitic="SousAvtoFile/UpdatePO";
 /////TODO  УДАЛЕНИЕ .JSON ФАЙЛА
             File ФайлыДляОбновлениеПОУдалениеПриАнализеJSONВерсии;
             if (Build.VERSION.SDK_INT >= 30) {
                 // TODO: 10.04.2022
-                ФайлыДляОбновлениеПОУдалениеПриАнализеJSONВерсии = getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+                ФайлыДляОбновлениеПОУдалениеПриАнализеJSONВерсии =
+                        getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS+ File.separator + PatchDeleteJsonAnalitic);
             } else {
                 ФайлыДляОбновлениеПОУдалениеПриАнализеJSONВерсии = Environment.getExternalStoragePublicDirectory(
-                        Environment.DIRECTORY_DOWNLOADS);
+                        Environment.DIRECTORY_DOWNLOADS+ File.separator + PatchDeleteJsonAnalitic);
             }
 
             // TODO: 10.04.2022
@@ -338,7 +340,8 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                 for (int i = 0; i < Files.length; i++) {
                     String ИмяФайла = Files[i].getName();
                     // TODO: 10.04.2022//    boolean ПосикПоНазваниюФайла=Files[j].getName().matches("(.*).json(.*)");
-                    boolean ФайлУдаленияJson = ИмяФайла.trim().matches("(.*)update_dsu1(.*)") ;//    boolean ПосикПоНазваниюФайла=Files[j].getName().matches("(.*).json(.*)");
+                    boolean ФайлУдаленияJson = ИмяФайла.trim().matches("(.*)update_dsu1(.*)") &&
+                            ИмяФайла.trim().matches("(.*)json(.*)") ;//    boolean ПосикПоНазваниюФайла=Files[j].getName().matches("(.*).json(.*)");
                     if(ФайлУдаленияJson==true){
                         Files[i].delete();
                         Log.d(this.getClass().getName(), "ФайлУдаленияJson" + ФайлУдаленияJson );
@@ -376,9 +379,12 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
                                        @NonNull LinkedHashMap<Integer,String> getHiltJbossReliz ) {
         Integer СервернаяВерсияПОВнутри = 0;
         try {
+            String PatchDeleteJsonAnalitic="SousAvtoFile/UpdatePO";
+
             // TODO: 02.04.2024  Адресс и Порт Сервера Jboss
             String   ИмяСерверИзХранилица = getHiltJbossDebug.values().stream().map(m->String.valueOf(m)).findFirst().get();
             Integer    ПортСерверИзХранилица = getHiltJbossDebug.keySet().stream().mapToInt(m->m).findFirst().getAsInt();
+
             // TODO: 08.01.2022 Полученм JSON File  для анализа
             File ФайлJsonОтСервера = new Class_MODEL_synchronized(getApplicationContext()).
                     МетодЗагрузкиОбновлениеПОсСервера(new PUBLIC_CONTENT(getApplicationContext()).getСсылкаНаРежимСервераОбновлениеПО(),
@@ -391,9 +397,13 @@ public class ServiceUpdatePoОбновлениеПО extends IntentService {////
             if(ФайлJsonОтСервера!=null && ФайлJsonОтСервера.isFile()){
                 File ФайлJSonКоторыйУжеСохраненный = null;
                 if (Build.VERSION.SDK_INT >= 30) {
-                    ФайлJSonКоторыйУжеСохраненный = getApplicationContext().getExternalFilesDir( Environment.DIRECTORY_DOWNLOADS+"/" + "update_dsu1.json");
+                    ФайлJSonКоторыйУжеСохраненный =
+                            getApplicationContext().getExternalFilesDir( Environment.DIRECTORY_DOWNLOADS
+                                    + File.separator + PatchDeleteJsonAnalitic  +File.separator + "update_dsu1.json");
                 } else {
-                    ФайлJSonКоторыйУжеСохраненный = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS+"/" + "update_dsu1.json");
+                    ФайлJSonКоторыйУжеСохраненный =
+                            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS
+                                    + File.separator + PatchDeleteJsonAnalitic+File.separator + "update_dsu1.json");
                 }
                 Reader reader = new InputStreamReader( new FileInputStream(ФайлJSonКоторыйУжеСохраненный), StandardCharsets.UTF_8);
                 BufferedReader bufferedReader = null;
