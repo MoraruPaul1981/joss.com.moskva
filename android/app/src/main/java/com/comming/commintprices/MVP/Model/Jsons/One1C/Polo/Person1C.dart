@@ -1,6 +1,7 @@
 
 
 import '../Interfaces/InPolos1c.dart';
+import '../Interfaces/InPolos2.dart';
 
 
 
@@ -60,6 +61,8 @@ class Person1C implements InPolos1c{
   @override
   Person1C fromJsondynamic( Map<String, dynamic> json) {
     // TODO: implement fromJsondynamic
+
+    var person1c;
     try {
 
 
@@ -78,17 +81,36 @@ class Person1C implements InPolos1c{
           print('element$elementTwo');
 
 
-          elementTwo.entries.forEach((elementRow) {
-            print('element   $elementRow.key');
-            print('element  $elementRow.value');
-          });
+          print(elementTwo.entries.elementAt(0));
+          print(elementTwo.entries.elementAt(1));
+          print(elementTwo.entries);
 
 
-          elementTwo.values.forEach((element) {
-            print('element$element');
-            print('element$element');
 
-          });
+          // TODO: implement fromJson
+          CFO = elementTwo.entries.elementAt(0).value as String  ;
+          Data = elementTwo.entries.elementAt(1).value as String;
+          StatyaDDS = elementTwo.entries.elementAt(2).value as String  ;
+          Nomenklatura = elementTwo.entries.elementAt(3).value as String  ;
+          EdIzm = elementTwo.entries.elementAt(4).value as String  ;
+          Cena =elementTwo.entries.elementAt(5).value as String  ;
+          Kolichestvo = elementTwo.entries.elementAt(6).value as String ;
+          CFORaskhoda = elementTwo.entries.elementAt(7).value as String ;
+          UUID = elementTwo.entries.elementAt(8).value as String ;
+          NDoc = elementTwo.entries.elementAt(9).value as String ;
+          NStr = elementTwo.entries.elementAt(10).value as String ;
+          Kontragent = elementTwo.entries.elementAt(11).value as String  ;
+
+          print('json &json');
+
+          person1c=Person1C(CFO: CFO, Data:Data, StatyaDDS:StatyaDDS, Nomenklatura:Nomenklatura,
+              EdIzm:EdIzm, Cena:Cena, Kolichestvo:Kolichestvo, CFORaskhoda:CFORaskhoda,
+              UUID:UUID, NDoc:NDoc, NStr:NStr,Kontragent:Kontragent );
+
+
+          print('person1c &person1c');
+
+
           print('element$elementTwo');
           print('element$elementTwo');
 
@@ -103,48 +125,46 @@ class Person1C implements InPolos1c{
 
 
 
-   /*     listisert.forEach((element) {
-          final asMap =  element as Map<String, dynamic>;
-
-          print('asMap$asMap');
-
-          print('asMap$asMap');
-
-        });*/
-
-
-
-
-
-
-
-
-      // TODO: implement fromJson
-      CFO = json['CFO']  ;
-      Data = json['Data'] ;
-      StatyaDDS = json['StatyaDDS']  ;
-      Nomenklatura = json['Nomenklatura']  ;
-      EdIzm = json['EdIzm']  ;
-      Cena = json['Cena']  ;
-      Kolichestvo = json['Kolichestvo']  ;
-      CFORaskhoda = json['CFORaskhoda']  ;
-      UUID = json['UUID']  ;
-      NDoc = json['NDoc']  ;
-      NStr = json['NStr']  ;
-      Kontragent = json['Kontragent']  ;
-
-      print('json &json');
-
 
       //TODO error
     }   catch (e, stacktrace) {
       print(' get ERROR $e get stacktrace $stacktrace ');
     }
 
-    return  Person1C(CFO: CFO, Data:Data, StatyaDDS:StatyaDDS, Nomenklatura:Nomenklatura,
-      EdIzm:EdIzm, Cena:Cena, Kolichestvo:Kolichestvo, CFORaskhoda:CFORaskhoda,
-        UUID:UUID, NDoc:NDoc, NStr:NStr,Kontragent:Kontragent );
+    return  person1c;
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   @override
   Map<String, Person1C> toJson2Person2() {
@@ -211,3 +231,189 @@ class Person1C implements InPolos1c{
 
 
 }
+
+
+///TODO
+
+
+
+
+
+
+
+
+class Person2<T extends MapEntry<String,dynamic>> implements InPolos2{
+
+  String?   CFO    ;
+  String?  Data;
+  String?  StatyaDDS;
+  String?  Nomenklatura;
+  String?   EdIzm;
+  String?  Cena;
+  String?  Kolichestvo;
+  String?  CFORaskhoda;
+  String?   UUID;
+  String?  NDoc;
+  String?   NStr;
+  String?   Kontragent  ;
+
+
+
+
+  Person2(
+      {String?   CFO ,
+        String?  Data,
+        String?  StatyaDDS,
+        String?  Nomenklatura,
+        String?   EdIzm,
+        String?  Cena,
+        String?  Kolichestvo,
+        String?  CFORaskhoda,
+        String?   UUID,
+        String?  NDoc,
+        String?   NStr,
+        String?   Kontragent}) {
+
+//TODO
+
+    this.  CFO =CFO;
+    this.  Data =Data;
+    this.  StatyaDDS =StatyaDDS;
+    this.  Nomenklatura =Nomenklatura;
+    this.  EdIzm =EdIzm;
+    this.  Cena =Cena;
+    this.  Kolichestvo =Kolichestvo;
+    this.  CFORaskhoda =CFORaskhoda;
+    this.  UUID =UUID;
+    this.  NDoc =NDoc;
+    this.  CFO =CFO;
+    this.  NStr =NStr;
+    this.  CFO =CFO;
+    this.  Kontragent =Kontragent;
+
+  }
+
+
+
+  @override
+  Person1C fromJsondynamic( Map<String, dynamic> json) {
+    // TODO: implement fromJsondynamic
+    try {
+
+
+      json.entries.forEach((element) {
+
+        print('element$element');
+        print('element$element');
+
+
+        element.value.forEach((element) {
+          print('element$element');
+          print('element$element');
+
+          var elementTwo=element as Map<String ,dynamic>;
+          print('element$elementTwo');
+          print('element$elementTwo');
+
+
+          print(elementTwo.entries.elementAt(0));
+          print(elementTwo.entries.elementAt(1));
+          print(elementTwo.entries);
+
+
+          elementTwo.entries.forEach((elementRow) {
+            print('element   $elementRow.key');
+            print('element  $elementRow.value');
+          });
+
+
+          elementTwo.values.forEach((element) {
+            print('element$element');
+            print('element$element');
+
+          });
+          print('element$elementTwo');
+          print('element$elementTwo');
+
+        });
+
+
+      });
+
+
+
+
+
+
+
+      /*     listisert.forEach((element) {
+          final asMap =  element as Map<String, dynamic>;
+
+          print('asMap$asMap');
+
+          print('asMap$asMap');
+
+        });*/
+
+
+
+
+
+
+
+
+      // TODO: implement fromJson
+      CFO = json['CFO']  ;
+      Data = json['Data'] ;
+      StatyaDDS = json['StatyaDDS']  ;
+      Nomenklatura = json['Nomenklatura']  ;
+      EdIzm = json['EdIzm']  ;
+      Cena = json['Cena']  ;
+      Kolichestvo = json['Kolichestvo']  ;
+      CFORaskhoda = json['CFORaskhoda']  ;
+      UUID = json['UUID']  ;
+      NDoc = json['NDoc']  ;
+      NStr = json['NStr']  ;
+      Kontragent = json['Kontragent']  ;
+
+      print('json &json');
+
+
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
+    }
+
+    return  Person1C(CFO: CFO, Data:Data, StatyaDDS:StatyaDDS, Nomenklatura:Nomenklatura,
+        EdIzm:EdIzm, Cena:Cena, Kolichestvo:Kolichestvo, CFORaskhoda:CFORaskhoda,
+        UUID:UUID, NDoc:NDoc, NStr:NStr,Kontragent:Kontragent );
+  }
+
+
+
+
+
+
+
+
+
+/*   Person2.fromJson(Map<String, dynamic> json) {
+    _albumId = json['albumId'];
+    _id = json['id'];
+    _title = json['title'];
+    _url = json['url'];
+    _thumbnailUrl = json['thumbnailUrl'];
+  }*/
+
+
+
+
+}
+
+
+///TODO
+
+
+
+
+
