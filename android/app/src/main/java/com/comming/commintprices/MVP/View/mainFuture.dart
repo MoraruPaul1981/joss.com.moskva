@@ -2,13 +2,11 @@ import 'dart:async';
 import 'dart:isolate';
 
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 import '../Model/AdressJboss/getAdress.dart';
-import '../Model/Futures/Jboss/GetFuturesJboss.dart';
 import '../Model/Futures/one1C/GetFutures1C.dart';
-import '../Model/Jsons/1C/Polo/Person1C.dart';
-import '../Model/Jsons/jboss/Polo/Personjboss.dart';
-import 'package:logger/logger.dart';
+import '../Model/Jsons/One1C/Polo/Person1C.dart';
 
 
 var logger;
@@ -31,11 +29,11 @@ Future<void> main() async {
 
 
     //TODO адрес пинга к серверу  Jboss Debug
-    var adressCurrent1C=  GetAdress1CPrices().adress1C(IdUser: 5, JobForServer: "getDataFrom1cPries") as String;
+    var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
     //TODO
     print('adressCurrent1C .. $adressCurrent1C');
 
-    List<Person1C>? list   = await  GetFutures1C(). getPing1C(  url: adressCurrent1C);//TODO 'https://jsonplaceholder.typicode.com/photos'
+    List<Person1C>? list   = await  GetFutures1C(). getPing1C(  url: adressCurrent1C, IdUser: 8);//TODO 'https://jsonplaceholder.typicode.com/photos'
     //TODO
     logger.i('end  .. $list ');
 

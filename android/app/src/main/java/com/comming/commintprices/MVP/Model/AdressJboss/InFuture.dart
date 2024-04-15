@@ -9,17 +9,16 @@ import 'package:http/http.dart';
 
 
 abstract  class InAdressJboss {
-
-  String? adressJboss( {required int IdUser ,required String JobForServer } ) ;
-
+  String? adressJboss( {required String JobForServer, required int IdUser,required int VersionData} ) ;
 }
 
 
 abstract  class InAdress1C {
-
-  String? adress1C( {required int IdUser ,required String JobForServer } ) ;
-
+  String? adress1C() ;
 }
+
+
+
 
 
 

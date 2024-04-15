@@ -16,7 +16,7 @@ import 'InFuture.dart';
 
 class GetAdressJboss implements InAdressJboss{
   @override
-  String? adressJboss({required int IdUser, required String JobForServer}) {
+  String? adressJboss({ required String JobForServer,required int IdUser,required int VersionData}) {
     // TODO: implement adressJboss
     // TODO: implement adressJboss
     String?  serverJboss;
@@ -28,9 +28,9 @@ class GetAdressJboss implements InAdressJboss{
 
       var jbossserverlink = "http://" + "80.70.108.165" + ":" + "8888" + "/"+  "jboss-1.0-SNAPSHOT/sous.jboss.runtimejboss".trim() as String;
       var jbossserverparams  = "?" + "NameTable= "+
-          "&" + "JobForServer="+JobForServer+
+          "&" + "JobForServer="+JobForServer.toString()+
           "&" + "IdUser="+IdUser.toString()
-          + "&" + "VersionData=0" as String;
+          + "&" + VersionData.toString();
     serverJboss = jbossserverlink + jbossserverparams;
       //TODO
       print('serverJboss .. $serverJboss');
@@ -55,7 +55,7 @@ class GetAdressJboss implements InAdressJboss{
 class GetAdressJbossDebug implements InAdressJboss {
   //TODO
   @override
-  String? adressJboss({required int IdUser, required String JobForServer}) {
+  String? adressJboss({required String JobForServer,required int IdUser,required int VersionData}) {
     // TODO: implement adressJboss
     // TODO: implement adressJboss
     String?  serverJbossDebug;
@@ -63,9 +63,9 @@ class GetAdressJbossDebug implements InAdressJboss {
       var jbossserverlink = "http://" + "192.168.3.4" + ":" + "8080" + "/"+
           "jboss-1.0-SNAPSHOT/sous.jboss.runtimejboss".trim() as String;
       var jbossserverparams  = "?" + "NameTable= "+
-          "&" + "JobForServer="+JobForServer+
+          "&" + "JobForServer="+JobForServer.toString()+
           "&" + "IdUser="+IdUser.toString()
-          + "&" + "VersionData=0" as String;
+          + "&" + VersionData.toString();
       serverJbossDebug = jbossserverlink + jbossserverparams;
       //TODO
       print('serverJbossDebug .. $serverJbossDebug');
@@ -117,7 +117,7 @@ class GetAdressJbossDebug implements InAdressJboss {
 
 class GetAdress1CPrices implements InAdress1C{
   @override
-  String? adress1C({required int IdUser, required String JobForServer}) {
+  String? adress1C() {
     // TODO: implement adress1C
     // TODO: implement adressJboss
     String?   serverPrices;
@@ -138,7 +138,7 @@ class GetAdress1CPrices implements InAdress1C{
 
 class GetAdress1CPricesDebug implements InAdress1C{
   @override
-  String? adress1C({required int IdUser, required String JobForServer}) {
+  String? adress1C() {
     // TODO: implement adress1C
     // TODO: implement adressJboss
     String?   serverPricesDebug;
@@ -169,7 +169,7 @@ class GetAdress1CPricesDebug implements InAdress1C{
 
 class GetAdress1CPay implements InAdress1C{
   @override
-  String? adress1C({required int IdUser, required String JobForServer}) {
+  String? adress1C() {
     // TODO: implement adress1C
     // TODO: implement adressJboss
     String?   server1CPay;
@@ -190,7 +190,7 @@ class GetAdress1CPay implements InAdress1C{
 
 class GetAdress1CPayDebug implements InAdress1C{
   @override
-  String? adress1C({required int IdUser, required String JobForServer}) {
+  String? adress1C() {
     // TODO: implement adress1C
     // TODO: implement adressJboss
     String?   serverfinalPayDebug;

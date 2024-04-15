@@ -4,6 +4,7 @@ import 'dart:ffi';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:dart_json_mapper/src/model/annotations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -11,7 +12,8 @@ import '../../Converts/GetConverts.dart';
 
 import 'dart:io';
 
-import '../../Jsons/1C/Polo/Person1C.dart';
+import '../../Jsons/One1C/Parser/ParcesPerson1.dart';
+import '../../Jsons/One1C/Polo/Person1C.dart';
 import 'Interfaces/InFuture1C.dart';
 
 import 'package:dart_json_mapper/dart_json_mapper.dart' show JsonMapper, jsonSerializable,initializeJsonMapper, JsonProperty;
@@ -24,12 +26,12 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
 
   //TODO
   @override
-  Future<List<Person1C>?> getPing1C( { required  String url }  ) async {
+  Future<List<Person1C>?> getPing1C( { required  String url,required int IdUser }  ) async {
     List<Person1C>? JsonMap;
     try{
     final parsedUrl=Uri.parse(url) as Uri;
 
-    int PublicId=5;
+
     BigInt Uuid=BigInt.parse('0')  ;
 
 
@@ -42,7 +44,7 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
      await http.get(
         parsedUrl,
       headers: {
-        'user':PublicId.toString(),
+        'user':IdUser.toString(),
         'uuid':Uuid.toString(),
         'authorization':'$basicAuth',
       }
@@ -104,7 +106,9 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
 
           print('resul $resul');
 
+          List<int>? listjson = new   Uint8ListConverters().toJson(list);
 
+          print('listjson $listjson');
 
         } else {
           //TODO
@@ -116,6 +120,30 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
       print(' get ERROR $e get stacktrace $stacktrace ');
     }
 
+  }
+
+  @override
+  Json getJsonComplete({required http.Response response1C}) {
+    // TODO: implement getJsonComplete
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Json?> getJsonPing1C({required String url,required int IdUser}) {
+    // TODO: implement getJsonPing1C
+    throw UnimplementedError();
+  }
+
+  @override
+  String getStringComplete({required http.Response response1C}) {
+    // TODO: implement getStringComplete
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String?> getStringPing1C({required String url,required int IdUser}) {
+    // TODO: implement getStringPing1C
+    throw UnimplementedError();
   }
 
 
