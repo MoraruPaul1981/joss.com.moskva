@@ -31,28 +31,29 @@ class ParserJson1   implements InParserJson1c {
     }
     return person ;
   }
-
+  
 }
 
 ///TODO Converts to and from [Uint8List] and [List]<[int]>.
-class Uint8ListConverters implements JsonConverter<Uint8List?, List<int>?> {
+class Uint8ListConverters implements JsonConverter<List<dynamic>,List<Person1C>> {
   /// Create a new instance of [Uint8ListConverter].
   const Uint8ListConverters();
 
-
   @override
-  Uint8List? fromJson(List<int>? json) {
-    if (json == null) return null;
-
-    return Uint8List.fromList(json);
+  List fromJson(List<Person1C> json) {
+    // TODO: implement fromJson
+    throw UnimplementedError();
   }
 
   @override
-  List<int>? toJson(Uint8List? object) {
-    if (object == null) return null;
+  List<Person1C> toJson(List object) {
+    // TODO: implement toJson
 
-    return object.toList();
+    throw UnimplementedError();
   }
+
+
+
 
 
 }

@@ -97,18 +97,33 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
        /*   final decoded_data = GZipCodec().decode(response1C.bodyBytes);
           String d=  utf8.decode(decoded_data, allowMalformed: true);*/
         //  final  List<int> uint8listget1CPrices=     response1C.bodyBytes  ;
+
+
+
+
+
+
           final byteData = response1C.bodyBytes.buffer.asByteData();
        final bugffer=   byteData.buffer;
 
           Uint8List list = bugffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes) ;
         //  var list = bugffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes);
          String resul= utf8.decode(list);
+          print('resul $resul');
+
+          List<dynamic> listDynamic=json.decode(utf8.decode(list))  ;
+          print('listDynamic $listDynamic');
+
+       Map<String,dynamic> mapp=   listDynamic.asMap().cast<String,dynamic >();
+
+        List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  mapp )) .toList() as   List<Person1C>;
+
 
           print('resul $resul');
 
-          List<int>? listjson = new   Uint8ListConverters().toJson(list);
+        //var  listjson2 =     Uint8ListConverters().toJson(listDynamic) as Map<int, dynamic>?;
 
-          print('listjson $listjson');
+        ///  print('listjson2 $listjson2');
 
         } else {
           //TODO

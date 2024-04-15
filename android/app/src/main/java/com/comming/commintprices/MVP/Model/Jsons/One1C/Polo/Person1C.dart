@@ -5,75 +5,86 @@ import '../Interfaces/InPolos1c.dart';
 
 
 class Person1C implements InPolos1c{
-  int? _albumId;
-  int? _id;
-  String? _title;
-  String? _url;
-  String? _thumbnailUrl;
+
+  String?   CFO    ;
+  String?  Data;
+  String?  StatyaDDS;
+  String?  Nomenklatura;
+  String?   EdIzm;
+  String?  Cena;
+  String?  Kolichestvo;
+  String?  CFORaskhoda;
+  String?   UUID;
+  String?  NDoc;
+  String?   NStr;
+  String?   Kontragent  ;
+
+
+
 
   Person1C(
-      {int? albumId,
-        int? id,
-        String? title,
-        String? url,
-        String? thumbnailUrl}) {
+      {String?   CFO ,
+      String?  Data,
+      String?  StatyaDDS,
+      String?  Nomenklatura,
+      String?   EdIzm,
+      String?  Cena,
+      String?  Kolichestvo,
+      String?  CFORaskhoda,
+      String?   UUID,
+      String?  NDoc,
+      String?   NStr,
+      String?   Kontragent}) {
 
-      this._albumId = albumId;
-      this._id = id;
-      this._title = title;
-      this._url = url;
-      this._thumbnailUrl = thumbnailUrl;
+//TODO
+
+    this.  CFO =CFO;
+    this.  Data =Data;
+    this.  StatyaDDS =StatyaDDS;
+    this.  Nomenklatura =Nomenklatura;
+    this.  EdIzm =EdIzm;
+    this.  Cena =Cena;
+    this.  Kolichestvo =Kolichestvo;
+    this.  CFORaskhoda =CFORaskhoda;
+    this.  UUID =UUID;
+    this.  NDoc =NDoc;
+    this.  CFO =CFO;
+    this.  NStr =NStr;
+    this.  CFO =CFO;
+    this.  Kontragent =Kontragent;
 
   }
 
-  int? get albumId => _albumId;
-  set albumId(int? albumId) => _albumId = albumId;
-  int? get id => _id;
-  set id(int? id) => _id = id;
-  String? get title => _title;
-  set title(String? title) => _title = title;
-  String? get url => _url;
-  set url(String? url) => _url = url;
-  String? get thumbnailUrl => _thumbnailUrl;
-  set thumbnailUrl(String? thumbnailUrl) => _thumbnailUrl = thumbnailUrl;
 
-  @override
-  Person1C fromJsonPerson2(Map<String, Person1C> json) {
-    // TODO: implement fromJsonPerson2
-    try{
-      // TODO: implement fromJson
-      _albumId = json['albumId'] as int?;
-      _id = json['id'] as int?;
-      _title = json['title'] as String?;
-      _url = json['url'] as String?;
-      _thumbnailUrl = json['thumbnailUrl'] as String?;
-
-      //TODO error
-      //TODO error
-    }   catch (e, stacktrace) {
-      print(' get ERROR $e get stacktrace $stacktrace ');
-    }
-
-    return  Person1C(albumId: _albumId, id: _id, title: _title, url: _url, thumbnailUrl: _thumbnailUrl);
-  }
 
   @override
   Person1C fromJsondynamic(Map<String, dynamic> json) {
     // TODO: implement fromJsondynamic
     try{
       // TODO: implement fromJson
-      _albumId = json['albumId'] as int?;
-      _id = json['id'] as int?;
-      _title = json['title'] as String?;
-      _url = json['url'] as String?;
-      _thumbnailUrl = json['thumbnailUrl'] as String?;
+      CFO = json['CFO']  ;
+      Data = json['Data'] ;
+      StatyaDDS = json['StatyaDDS']  ;
+      Nomenklatura = json['Nomenklatura']  ;
+      EdIzm = json['EdIzm']  ;
+      Cena = json['Cena']  ;
+      Kolichestvo = json['Kolichestvo']  ;
+      CFORaskhoda = json['CFORaskhoda']  ;
+      UUID = json['UUID']  ;
+      NDoc = json['NDoc']  ;
+      NStr = json['NStr']  ;
+      Kontragent = json['Kontragent']  ;
+
+      print('json &json');
 
       //TODO error
     }   catch (e, stacktrace) {
       print(' get ERROR $e get stacktrace $stacktrace ');
     }
 
-    return  Person1C(albumId: _albumId, id: _id, title: _title, url: _url, thumbnailUrl: _thumbnailUrl);
+    return  Person1C(CFO: CFO, Data:Data, StatyaDDS:StatyaDDS, Nomenklatura:Nomenklatura,
+      EdIzm:EdIzm, Cena:Cena, Kolichestvo:Kolichestvo, CFORaskhoda:CFORaskhoda,
+        UUID:UUID, NDoc:NDoc, NStr:NStr,Kontragent:Kontragent );
   }
 
   @override
@@ -99,6 +110,26 @@ class Person1C implements InPolos1c{
     // TODO: implement toJsondynamic
     throw UnimplementedError();
   }
+
+  @override
+  Person1C fromJsondynamicList(List listDynamic) {
+    // TODO: implement fromJsondynamicList
+    try{
+      // TODO: implement fromJson
+      NStr = listDynamic.elementAtOrNull(0) as int?;
+      Data = listDynamic.elementAtOrNull(1) as int?;
+      CFORaskhoda = listDynamic.elementAtOrNull(2) as String?;
+      UUID =listDynamic.elementAtOrNull(3) as String?;
+      NDoc = listDynamic.elementAtOrNull(4) as String?;
+
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
+    }
+
+    return  Person1C(albumId: NStr, id: Data, title: CFORaskhoda, url: UUID, thumbnailUrl: NDoc);
+  }
+
 
 
 
