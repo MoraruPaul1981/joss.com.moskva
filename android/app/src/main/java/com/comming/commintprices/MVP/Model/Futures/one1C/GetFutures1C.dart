@@ -12,9 +12,9 @@ import '../../Converts/GetConverts.dart';
 
 import 'dart:io';
 
-
+import '../../Jsons/One1C/Interfaces/InParserJson1c.dart';
 import '../../Jsons/One1C/Polo/Person1C.dart';
-import '../../Jsons/One1C/Polo/Person1CTwo.dart';
+import '../../Jsons/One1C/Polo/Person1Cspoler.dart';
 import 'Interfaces/InFuture1C.dart';
 
 import 'package:dart_json_mapper/dart_json_mapper.dart' show JsonMap, JsonMapper, JsonProperty, initializeJsonMapper, jsonSerializable;
@@ -22,7 +22,7 @@ import 'package:dart_json_mapper_flutter/dart_json_mapper_flutter.dart' show flu
 
 import 'dart:typed_data' show Uint8List,Uint16List;
 
-class GetFutures1C  implements InFuture1C,InGetComplete1C,InGetListDynamic1C {
+class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c {
 
 
   //TODO
@@ -103,13 +103,16 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C,InGetListDynamic1C {
         print('listDynamic $listDynamic');
 
 
-        List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  json:  model  )) .toList() as   List<Person1C>;
-
-        List<Person1CTwo>  personTWO=listDynamic.map((model) => Person1CTwo().fromJsondynamic(  json:  model  )) .toList() as   List<Person1CTwo>;
+      List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  json:  model  )) .toList() as   List<Person1C>;
 
 
-          print('person $person');
-          print('personTWO $personTWO');
+      List<Person1Cspoler>  personSpoler=listDynamic.map((model) => Person1Cspoler().fromJsondynamic(  json:  model  )) .toList() as   List<Person1Cspoler>;
+
+
+       print('person $person');
+     print('personSpoler $personSpoler');
+
+
 
 
         } else {
@@ -141,6 +144,14 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C,InGetListDynamic1C {
 }
 return getList1cdynamic;
   }
+
+  @override
+  List<Person1C> parserPerson(String responseBody) {
+    // TODO: implement parserPerson
+    throw UnimplementedError();
+  }
+
+ 
 
 
 

@@ -5,7 +5,7 @@ import '../Interfaces/InPolos1c.dart';
 
 
 
-class Person1C implements InPolos1c{
+class Person1Cspoler implements InPolos1cSpoler{
 
   String?   CFO    ;
   String?  Data;
@@ -23,7 +23,7 @@ class Person1C implements InPolos1c{
 
 
 
-  Person1C(
+  Person1Cspoler(
       {String?   CFO ,
       String?  Data,
       String?  StatyaDDS,
@@ -59,7 +59,7 @@ class Person1C implements InPolos1c{
 
 
   @override
-  Person1C fromJsondynamic({required Map<String, dynamic> json}) {
+  Person1Cspoler fromJsondynamic({required Map<String, dynamic> json}) {
     // TODO: implement fromJsondynamic
 
     var person1c;
@@ -103,7 +103,7 @@ class Person1C implements InPolos1c{
 
           print('json &json');
 
-          person1c=Person1C(CFO: CFO, Data:Data, StatyaDDS:StatyaDDS, Nomenklatura:Nomenklatura,
+          person1c=Person1Cspoler(CFO: CFO, Data:Data, StatyaDDS:StatyaDDS, Nomenklatura:Nomenklatura,
               EdIzm:EdIzm, Cena:Cena, Kolichestvo:Kolichestvo, CFORaskhoda:CFORaskhoda,
               UUID:UUID, NDoc:NDoc, NStr:NStr,Kontragent:Kontragent );
 
@@ -135,7 +135,7 @@ class Person1C implements InPolos1c{
   }
 
   @override
-  Person1C loopGwerenetorPolo(Map<String, dynamic> json) {
+  Person1Cspoler loopGwerenetorPolo(Map<String, dynamic> json) {
     // TODO: implement loopGwerenetorPolo
     // TODO: implement fromJsondynamic
     var person1;
@@ -158,7 +158,7 @@ class Person1C implements InPolos1c{
 
           //TODO вставляем полцученные даннфые в КЛАСС
 
-          person1=Person1C(CFO: elementTwo.entries.elementAt(0).value ,
+          person1=Person1Cspoler(CFO: elementTwo.entries.elementAt(0).value ,
               Data:elementTwo.entries.elementAt(1).value ,
               StatyaDDS:elementTwo.entries.elementAt(2).value ,
               Nomenklatura:elementTwo.entries.elementAt(3).value ,

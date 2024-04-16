@@ -43,17 +43,3 @@ abstract  class InGeDecode1C {
 
 }
 
-abstract  class InGetListDynamic1C {
-
-  List<dynamic> getList1cDynamic({ required Response response1C}) ;
-
-
-
-/*   final decoded_data = GZipCodec().decode(response1C.bodyBytes);
-          String d=  utf8.decode(decoded_data, allowMalformed: true);*/
-//  final  List<int> uint8listget1CPrices=     response1C.bodyBytes  ;
-
-
-
-
-}
