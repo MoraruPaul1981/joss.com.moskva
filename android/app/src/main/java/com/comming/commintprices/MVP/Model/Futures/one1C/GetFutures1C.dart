@@ -27,13 +27,11 @@ import 'dart:typed_data' show Uint8List,Uint16List;
 
 class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGetGZip1C{
 
-  late Future<List<Person1Cspoler>?> personSpoler;
-  late  Future<String?>  getCallPing1c;
-
   //TODO get Ping 1C
   @override
   Future<String?> getPing1C( { required  String url,required int IdUser }  ) async {
     //TODO CAll PING
+    late var  getCompletePing;
     try{
     final parsedUrl=Uri.parse(url) as Uri;
     BigInt Uuid=BigInt.parse('0')  ;
@@ -51,14 +49,15 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGet
     ).then(( Response backresponsejboss  ) => {
 
       //TODO PING
-       getCompletePing( response1C: backresponsejboss),
+          getCompletePing=    getCompletePing( response1C: backresponsejboss) as Future<String?>,
 
-      print(' then then $backresponsejboss'),
+      print(' then getCompletePing $getCompletePing'),
+      print( ' backresponsejboss..$backresponsejboss'),
 
     })
         .whenComplete(
           () {
-            print(' whenComplete  personSpoler $personSpoler' );
+            print(' whenComplete  PINg' );
           },
     )
         .catchError(
@@ -72,7 +71,7 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGet
       print(' get ERROR $e get stacktrace $stacktrace ');
     }
 
-  return   getCallPing1c;
+  return   getCompletePing;
   }
 
 
@@ -81,9 +80,13 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGet
   @override
   Future<List<Person1Cspoler>?> getGettingJson1C({required String url, required int IdUser, required int UUID}) async {
     // TODO: implement getGettingJson1C
+     late  var getjson1C;
     try{
       final parsedUrl=Uri.parse(url) as Uri;
-      BigInt Uuid=BigInt.parse('0')  ;
+      BigInt Uuid=BigInt.parse(UUID.toString())  ;
+      //TODO Paramerts
+      print('parsedUrl..$parsedUrl'+'Uuid..$Uuid'+ 'IdUser..$IdUser');
+
       //TODO base64
       String? basicAuth=     GetConverts().convertBase64(  user: 'dsu1Admin', password: 'dsu1Admin');
       print(' basicAuth  $basicAuth');
@@ -97,14 +100,15 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGet
           }
       ).then(( Response backresponsejboss  ) => {
 
-        getCompleteCallBackJson( response1C: backresponsejboss),
+        getjson1C=   getCompleteCallBackJson( response1C: backresponsejboss) as   Future<List<Person1Cspoler>?>,
 
-        print(' then then $backresponsejboss'),
+        print(' then then $getjson1C'),
+        print(' then backresponsejboss $backresponsejboss'),
 
       })
           .whenComplete(
             () {
-          print(' whenComplete  personSpoler $personSpoler' );
+          print(' whenComplete  getjson1C $getjson1C' );
         },
       )
           .catchError(
@@ -118,7 +122,7 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGet
       print(' get ERROR $e get stacktrace $stacktrace ');
     }
 
-    return   personSpoler;
+    return   getjson1C;
   }
 
 
@@ -135,14 +139,14 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGet
 
 
   @override
-  List<dynamic>  getList1cDynamic({required http.Response response1C}) {
+  List  getList1cDynamic({required http.Response response1C}) {
     var   getList1cdynamic;
     try{
     final byteData = response1C.bodyBytes.buffer.asByteData();
     final bugffer=   byteData.buffer;
     Uint8List list = bugffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes) ;
     //TODO
-    getList1cdynamic=json.decode(utf8.decode(list)) as List<dynamic>  ;
+    getList1cdynamic=json.decode(utf8.decode(list))   ;
     //TODO
     print('getList1cdynamic $getList1cdynamic');
     //TODO error
@@ -243,7 +247,7 @@ return getList1cdynamic;
 
         //TODO получаем данные JSON
         ///List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  json:  model  )) .toList() as   List<Person1C>;
-        personSpoler=listDynamic.map((model) => Person1Cspoler().fromJsondynamic(  json:  model  )) .toList() as   Future<List<Person1Cspoler>?>;
+        personSpoler=listDynamic.map((model) => Person1Cspoler().fromJsondynamic(  json:  model  )) .toList() as    List<Person1Cspoler>  ;
         // print('person $person');
         print('personSpoler $personSpoler');
       } else {
@@ -261,15 +265,16 @@ return getList1cdynamic;
 
 
   @override
-   void  getCompletePing({required http.Response response1C}) async {
+  Future<String?>   getCompletePing({required http.Response response1C}) async {
     // TODO: implement getCompletePing
+    late  String?  getCallPing1c;
     try{
       print('getComplete $response1C');
       //TODO
       print('response1C.statusCode $response1C.statusCode');
       if (response1C.statusCode==200) {
         //TODO realy ping
-        getCallPing1c=  getPingDynamic(response1C: response1C) as Future<String?> ;
+        getCallPing1c=  getPingDynamic(response1C: response1C) as String? ;
         print('getCallPing1c $getCallPing1c');
 
       } else {
@@ -281,6 +286,7 @@ return getList1cdynamic;
     }   catch (e, stacktrace) {
       print(' get ERROR $e get stacktrace $stacktrace ');
     }
+    return getCallPing1c;
   }
 
 

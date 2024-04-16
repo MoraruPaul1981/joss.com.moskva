@@ -34,9 +34,19 @@ Future<void> main() async {
     //TODO
     print('adressCurrent1C .. $adressCurrent1C');
 
-     List<Person1Cspoler>?  personSpoler   =await GetFutures1C().getPing1C(url: adressCurrent1C, IdUser: 5); ///await  GetFutures1C(). getPing1C(  url: adressCurrent1C, IdUser: 8);//TODO 'https://jsonplaceholder.typicode.com/photos'
-    //TODO
-    logger.i('personSpoler  .. $personSpoler ');
+     String?    ping1C   =await GetFutures1C().getPing1C(url: adressCurrent1C, IdUser: 5);
+
+     logger.i('ping1C  .. $ping1C ');
+
+     List<Person1Cspoler>?  personSpoler   =await GetFutures1C().getGettingJson1C(url: adressCurrent1C, IdUser: 5, UUID: 0);
+
+     logger.i('personSpoler  .. $personSpoler ');
+
+     var value = await Future.wait([GetFutures1C().getPing1C(url: adressCurrent1C, IdUser: 5)
+       ,GetFutures1C().getGettingJson1C(url: adressCurrent1C, IdUser: 5, UUID: 0)]);
+
+
+    logger.i('value  .. $value ');
 
 
     //TODO error
