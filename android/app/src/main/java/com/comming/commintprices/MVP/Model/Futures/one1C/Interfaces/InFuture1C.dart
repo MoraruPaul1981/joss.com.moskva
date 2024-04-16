@@ -11,9 +11,9 @@ import '../../../Jsons/One1C/Polo/Person1Cspoler.dart';
 
 abstract  class InFuture1C {
 
-  Future<List<Person1Cspoler>?> getPing1C({ required String   url, required int IdUser}) ;
+  Future<String?> getPing1C({ required String   url, required int IdUser}) ;
 
-  Future<List<Person1Cspoler>?> getGettingJson1C({ required String   url, required int IdUser}) ;
+  Future<List<Person1Cspoler>?> getGettingJson1C({ required String   url, required int IdUser, required int UUID}) ;
 
   Future<List<Person1Cspoler>?> getSend1C({ required String   url, required int IdUser}) ;
 
@@ -23,10 +23,21 @@ abstract  class InFuture1C {
 
 
 
+
+
+
 abstract  class InGetComplete1C {
   //TODO
   void getComplete({ required Response response1C}) ;
 }
+
+
+
+
+
+
+
+
 
 
 abstract  class InGetGZip1C {

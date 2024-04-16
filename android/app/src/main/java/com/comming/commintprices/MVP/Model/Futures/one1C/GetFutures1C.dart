@@ -25,24 +25,19 @@ import 'dart:typed_data' show Uint8List,Uint16List;
 
 class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGetGZip1C{
 
-  late List<Person1Cspoler>  personSpoler;
+  late Future<List<Person1Cspoler>?> personSpoler;
+  late Future<String?> getCallPing1c;
 
-  //TODO
+  //TODO get Ping 1C
   @override
-  Future<List<Person1Cspoler>?> getPing1C( { required  String url,required int IdUser }  ) async {
-
+  Future<String?> getPing1C( { required  String url,required int IdUser }  ) async {
+    //TODO CAll PING
     try{
     final parsedUrl=Uri.parse(url) as Uri;
-
-
     BigInt Uuid=BigInt.parse('0')  ;
-
-
     //TODO base64
     String? basicAuth=     GetConverts().convertBase64(  user: 'dsu1Admin', password: 'dsu1Admin');
-
     print(' basicAuth  $basicAuth');
-
    //TODO главный запрос
      await http.get(
         parsedUrl,
@@ -58,7 +53,6 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGet
       print(' then then $backresponsejboss'),
 
     })
-
         .whenComplete(
           () {
             print(' whenComplete  personSpoler $personSpoler' );
@@ -75,8 +69,58 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGet
       print(' get ERROR $e get stacktrace $stacktrace ');
     }
 
-  return   personSpoler;
+  return   getCallPing1c;
   }
+
+
+
+//TODO get JSON
+  @override
+  Future<List<Person1Cspoler>?> getGettingJson1C({required String url, required int IdUser, required int UUID}) async {
+    // TODO: implement getGettingJson1C
+    try{
+      final parsedUrl=Uri.parse(url) as Uri;
+      BigInt Uuid=BigInt.parse('0')  ;
+      //TODO base64
+      String? basicAuth=     GetConverts().convertBase64(  user: 'dsu1Admin', password: 'dsu1Admin');
+      print(' basicAuth  $basicAuth');
+      //TODO главный запрос
+      await http.get(
+          parsedUrl,
+          headers: {
+            'user':IdUser.toString(),
+            'uuid':Uuid.toString(),
+            'authorization':'$basicAuth',
+          }
+      ).then(( Response backresponsejboss  ) => {
+
+        getComplete( response1C: backresponsejboss),
+
+        print(' then then $backresponsejboss'),
+
+      })
+          .whenComplete(
+            () {
+          print(' whenComplete  personSpoler $personSpoler' );
+        },
+      )
+          .catchError(
+              (Object error) {
+            print(' get ERROR $error  ');
+          });
+
+
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
+    }
+
+    return   personSpoler;
+  }
+
+
+
+
 
 
 
@@ -114,6 +158,7 @@ return getList1cdynamic;
       final byteData = response1C.bodyBytes.buffer.asByteData();
       final bugffer=   byteData.buffer;
       Uint8List list = bugffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes) ;
+      //TODO
       getPing1C=json.decode(utf8.decode(list)) as String ;
       //TODO
       print('getPing1C $getPing1C');
@@ -127,11 +172,7 @@ return getList1cdynamic;
 
 
 
-  @override
-  List<Person1C> parserPerson(String responseBody) {
-    // TODO: implement parserPerson
-    throw UnimplementedError();
-  }
+
 
   @override
   void getComplete({required http.Response response1C}) {
@@ -160,21 +201,15 @@ return getList1cdynamic;
     }
   }
 
-  @override
-  Future<List<Person1Cspoler>?> getGettingJson1C({required String url, required int IdUser}) {
-    // TODO: implement getGettingJson1C
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<Person1Cspoler>?> getSend1C({required String url, required int IdUser}) {
-    // TODO: implement getSend1C
-    throw UnimplementedError();
-  }
 
 
 
 
+
+
+
+
+  //TODO Пока не используются но скоро будет
 
   @override
   List<int> getGZip1CList({required http.Response response1C}) {
@@ -215,4 +250,14 @@ return getList1cdynamic;
   }
 
 
+
+
+  @override
+  Future<List<Person1Cspoler>?> getSend1C({required String url, required int IdUser}) {
+    // TODO: implement getSend1C
+    throw UnimplementedError();
   }
+
+
+
+}
