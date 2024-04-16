@@ -22,7 +22,7 @@ import 'package:dart_json_mapper_flutter/dart_json_mapper_flutter.dart' show flu
 
 import 'dart:typed_data' show Uint8List,Uint16List;
 
-class GetFutures1C  implements InFuture1C,InGetComplete1C {
+class GetFutures1C  implements InFuture1C,InGetComplete1C,InGetListDynamic1C {
 
 
   //TODO
@@ -95,31 +95,12 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
         print('response1C.statusCode $response1C.statusCode');
 
         if (response1C.statusCode==200) {
-       /*   final decoded_data = GZipCodec().decode(response1C.bodyBytes);
-          String d=  utf8.decode(decoded_data, allowMalformed: true);*/
-        //  final  List<int> uint8listget1CPrices=     response1C.bodyBytes  ;
 
 
 
+        List<dynamic>  listDynamic=  getList1cDynamic(response1C: response1C);
 
-
-
-
-          final byteData = response1C.bodyBytes.buffer.asByteData();
-       final bugffer=   byteData.buffer;
-
-          Uint8List list = bugffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes) ;
-        //  var list = bugffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes);
-         String resul= utf8.decode(list);
-          print('resul $resul');
-
-
-
-          List<dynamic> listDynamic=json.decode(utf8.decode(list))  ;
-          print('listDynamic $listDynamic');
-
-
-
+        print('listDynamic $listDynamic');
 
 
         List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  json:  model  )) .toList() as   List<Person1C>;
@@ -143,33 +124,23 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
 
   }
 
-  @override
-  Json getJsonComplete({required http.Response response1C}) {
-    // TODO: implement getJsonComplete
-    throw UnimplementedError();
-  }
 
   @override
-  Future<Json?> getJsonPing1C({required String url,required int IdUser}) {
-    // TODO: implement getJsonPing1C
-    throw UnimplementedError();
+  List getList1cDynamic({required http.Response response1C}) {
+    var   getList1cdynamic;
+    try{
+    final byteData = response1C.bodyBytes.buffer.asByteData();
+    final bugffer=   byteData.buffer;
+    Uint8List list = bugffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes) ;
+    getList1cdynamic=json.decode(utf8.decode(list))  ;
+    //TODO
+    print('getList1cdynamic $getList1cdynamic');
+    //TODO error
+  }   catch (e, stacktrace) {
+  print(' get ERROR $e get stacktrace $stacktrace ');
+}
+return getList1cdynamic;
   }
-
-  @override
-  String getStringComplete({required http.Response response1C}) {
-    // TODO: implement getStringComplete
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<String?> getStringPing1C({required String url,required int IdUser}) {
-    // TODO: implement getStringPing1C
-    throw UnimplementedError();
-  }
-
-
-
-
 
 
 

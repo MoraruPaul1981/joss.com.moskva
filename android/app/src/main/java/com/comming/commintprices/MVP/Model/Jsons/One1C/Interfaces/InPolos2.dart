@@ -5,6 +5,7 @@
 
 
 import '../Polo/Person1C.dart';
+import '../Polo/Person1CTwo.dart';
 
 abstract  class InPolos2 {
 
