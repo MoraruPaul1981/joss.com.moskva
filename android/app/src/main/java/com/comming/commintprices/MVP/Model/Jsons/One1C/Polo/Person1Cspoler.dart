@@ -12,12 +12,12 @@ class Person1Cspoler implements InPolos1cSpoler{
   String?  StatyaDDS;
   String?  Nomenklatura;
   String?   EdIzm;
-  String?  Cena;
-  String?  Kolichestvo;
+  int?  Cena;
+  int?  Kolichestvo;
   String?  CFORaskhoda;
-  String?   UUID;
+  int?   UUID;
   String?  NDoc;
-  String?   NStr;
+  int?   NStr;
   String?   Kontragent  ;
 
 
@@ -29,12 +29,12 @@ class Person1Cspoler implements InPolos1cSpoler{
       String?  StatyaDDS,
       String?  Nomenklatura,
       String?   EdIzm,
-      String?  Cena,
-      String?  Kolichestvo,
+        int?  Cena,
+        int?  Kolichestvo,
       String?  CFORaskhoda,
-      String?   UUID,
+        int?   UUID,
       String?  NDoc,
-      String?   NStr,
+        int?   NStr,
       String?   Kontragent}) {
 
 //TODO
@@ -78,13 +78,6 @@ class Person1Cspoler implements InPolos1cSpoler{
 
            var elementTwo=element as Map<String ,dynamic>;
           print('element$elementTwo');
-          print('element$elementTwo');
-
-
-          print(elementTwo.entries.elementAt(0));
-          print(elementTwo.entries.elementAt(1));
-          print(elementTwo.entries);
-
 
 
           // TODO: implement fromJson
@@ -93,15 +86,26 @@ class Person1Cspoler implements InPolos1cSpoler{
           StatyaDDS = elementTwo.entries.elementAt(2).value as String  ;
           Nomenklatura = elementTwo.entries.elementAt(3).value as String  ;
           EdIzm = elementTwo.entries.elementAt(4).value as String  ;
-          Cena =elementTwo.entries.elementAt(5).value as String  ;
-          Kolichestvo = elementTwo.entries.elementAt(6).value as String ;
-          CFORaskhoda = elementTwo.entries.elementAt(7).value as String ;
-          UUID = elementTwo.entries.elementAt(8).value as String ;
-          NDoc = elementTwo.entries.elementAt(9).value as String ;
-          NStr = elementTwo.entries.elementAt(10).value as String ;
-          Kontragent = elementTwo.entries.elementAt(11).value as String  ;
+          //TODO cena
+          var gettingcena=elementTwo.entries.elementAt(5).value as String;
+          Cena =  int.tryParse( gettingcena.trim().replaceAll(RegExp(r'[^0-9]'), '')) ?? 0;
 
-          print('json &json');
+          //TODO количество
+          var gettingKolichestvo=elementTwo.entries.elementAt(6).value as String ;
+          Kolichestvo =  int.tryParse(  gettingKolichestvo.trim().replaceAll(RegExp(r'[^0-9]'), '')) ?? 0;;
+          CFORaskhoda = elementTwo.entries.elementAt(7).value as String ;
+
+          //TODO uuid
+          var gettingUUID=elementTwo.entries.elementAt(8).value as String;
+          UUID =  int.tryParse(   gettingUUID.trim().replaceAll(RegExp(r'[^0-9]'), '')) ?? 0;
+
+          NDoc = elementTwo.entries.elementAt(9).value as String ;
+
+          var gettingNStr=elementTwo.entries.elementAt(10).value as String;
+          NStr =  int.tryParse(   gettingNStr.trim().replaceAll(RegExp(r'[^0-9]'), '')) ?? 0;
+
+          Kontragent = elementTwo.entries.elementAt(11).value as String  ;
+          print('Kontragent $Kontragent');
 
           person1c=Person1Cspoler(CFO: CFO, Data:Data, StatyaDDS:StatyaDDS, Nomenklatura:Nomenklatura,
               EdIzm:EdIzm, Cena:Cena, Kolichestvo:Kolichestvo, CFORaskhoda:CFORaskhoda,

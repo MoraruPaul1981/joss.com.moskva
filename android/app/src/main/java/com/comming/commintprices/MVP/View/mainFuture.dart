@@ -7,6 +7,7 @@ import 'package:logger/logger.dart';
 import '../Model/AdressJboss/getAdress.dart';
 import '../Model/Futures/one1C/GetFutures1C.dart';
 import '../Model/Jsons/One1C/Polo/Person1C.dart';
+import '../Model/Jsons/One1C/Polo/Person1Cspoler.dart';
 
 
 var logger;
@@ -33,9 +34,9 @@ Future<void> main() async {
     //TODO
     print('adressCurrent1C .. $adressCurrent1C');
 
-    List<Person1C>? list   = await  GetFutures1C(). getPing1C(  url: adressCurrent1C, IdUser: 8);//TODO 'https://jsonplaceholder.typicode.com/photos'
+     List<Person1Cspoler>?  personSpoler   =await GetFutures1C().getPing1C(url: adressCurrent1C, IdUser: 8); ///await  GetFutures1C(). getPing1C(  url: adressCurrent1C, IdUser: 8);//TODO 'https://jsonplaceholder.typicode.com/photos'
     //TODO
-    logger.i('end  .. $list ');
+    logger.i('personSpoler  .. $personSpoler ');
 
 
     //TODO error

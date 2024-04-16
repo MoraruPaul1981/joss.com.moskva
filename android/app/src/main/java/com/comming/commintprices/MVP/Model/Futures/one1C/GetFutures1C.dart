@@ -8,6 +8,7 @@ import 'package:dart_json_mapper/src/model/annotations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import '../../../View/mainFuture.dart';
 import '../../Converts/GetConverts.dart';
 
 import 'dart:io';
@@ -22,13 +23,14 @@ import 'package:dart_json_mapper_flutter/dart_json_mapper_flutter.dart' show flu
 
 import 'dart:typed_data' show Uint8List,Uint16List;
 
-class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c {
+class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGetDecode1C{
 
+  late List<Person1Cspoler>  personSpoler;
 
   //TODO
   @override
-  Future<List<Person1C>?> getPing1C( { required  String url,required int IdUser }  ) async {
-    List<Person1C>? JsonMap;
+  Future<List<Person1Cspoler>?> getPing1C( { required  String url,required int IdUser }  ) async {
+
     try{
     final parsedUrl=Uri.parse(url) as Uri;
 
@@ -51,15 +53,15 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c {
       }
     ).then(( Response backresponsejboss  ) => {
 
-       getComplete( response1C: backresponsejboss),
+   getComplete( response1C: backresponsejboss),
 
-      print(' then value $backresponsejboss'),
+      print(' then then $backresponsejboss'),
+
     })
 
         .whenComplete(
           () {
-            print(' whenComplete  http.get ');
-            print(' whenComplete  http.get ');
+            print(' whenComplete  personSpoler $personSpoler' );
           },
     )
         .catchError(
@@ -68,64 +70,21 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c {
           });
 
 
-
-
-
-    print(' end  value  ');
-
-
       //TODO error
     }   catch (e, stacktrace) {
       print(' get ERROR $e get stacktrace $stacktrace ');
     }
 
-  return   JsonMap;
+  return   personSpoler;
   }
 
 
 
-  @override
-  void getComplete({required http.Response response1C}) {
-    // TODO: implement getComplete
-
-    try{
-      print('getComplete $response1C');
-
-        //TODO
-        print('response1C.statusCode $response1C.statusCode');
-
-        if (response1C.statusCode==200) {
-
-
-
-        List<dynamic>  listDynamic=  getList1cDynamic(response1C: response1C);
-
-        print('listDynamic $listDynamic');
-
-
-      List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  json:  model  )) .toList() as   List<Person1C>;
-
-
-      List<Person1Cspoler>  personSpoler=listDynamic.map((model) => Person1Cspoler().fromJsondynamic(  json:  model  )) .toList() as   List<Person1Cspoler>;
-
-
-       print('person $person');
-     print('personSpoler $personSpoler');
 
 
 
 
-        } else {
-          //TODO
-          print('response1C.statusCode $response1C.statusCode');
-        }
 
-      //TODO error
-    }   catch (e, stacktrace) {
-      print(' get ERROR $e get stacktrace $stacktrace ');
-    }
-
-  }
 
 
   @override
@@ -151,8 +110,84 @@ return getList1cdynamic;
     throw UnimplementedError();
   }
 
- 
+  @override
+  void getComplete({required http.Response response1C}) {
+    // TODO: implement getComplete
+    try{
+      print('getComplete $response1C');
+      //TODO
+      print('response1C.statusCode $response1C.statusCode');
+      if (response1C.statusCode==200) {
+        List<dynamic>  listDynamic=  getList1cDynamic(response1C: response1C);
+        print('listDynamic $listDynamic');
+
+        //TODO получаем данные JSON
+        ///List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  json:  model  )) .toList() as   List<Person1C>;
+          personSpoler=listDynamic.map((model) => Person1Cspoler().fromJsondynamic(  json:  model  )) .toList() as   List<Person1Cspoler>;
+        // print('person $person');
+        print('personSpoler $personSpoler');
+      } else {
+        //TODO
+        print('response1C.statusCode $response1C.statusCode');
+      }
+
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
+    }
+  }
+
+  @override
+  Future<List<Person1Cspoler>?> getGettingJson1C({required String url, required int IdUser}) {
+    // TODO: implement getGettingJson1C
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Person1Cspoler>?> getSend1C({required String url, required int IdUser}) {
+    // TODO: implement getSend1C
+    throw UnimplementedError();
+  }
 
 
+
+
+
+  @override
+  List<int> Decode1CByte({required http.Response response1C}) {
+   late List<int> uint8listget1CPrices;
+    try{
+    // TODO: implement Decode1CByte
+        final decoded_data = GZipCodec().decode(response1C.bodyBytes);
+          uint8listget1CPrices=     response1C.bodyBytes;
+        /*   final decoded_data = GZipCodec().decode(response1C.bodyBytes);
+          String d=  utf8.decode(decoded_data, allowMalformed: true);*/
+//  final  List<int> uint8listget1CPrices=     response1C.bodyBytes  ;
+        print('uint8listget1CPrices $uint8listget1CPrices');
+        //TODO error
+      }   catch (e, stacktrace) {
+        print(' get ERROR $e get stacktrace $stacktrace ');
+      }
+      return uint8listget1CPrices;
 
 }
+
+  @override
+  String Decode1CSting({required http.Response response1C}) {
+    // TODO: implement Decode1CSting
+    // TODO: implement Decode1CSting
+    late String getExplorDEcor;
+    try{
+      final decoded_data = GZipCodec().decode(response1C.bodyBytes);
+      getExplorDEcor=  utf8.decode(decoded_data, allowMalformed: true);
+      /*   final decoded_data = GZipCodec().decode(response1C.bodyBytes);
+          String d=  utf8.decode(decoded_data, allowMalformed: true);*/
+//  final  List<int> uint8listget1CPrices=     response1C.bodyBytes  ;
+      print('getExplorDEcor $getExplorDEcor');
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
+    }
+    return getExplorDEcor;
+  }
+  }
