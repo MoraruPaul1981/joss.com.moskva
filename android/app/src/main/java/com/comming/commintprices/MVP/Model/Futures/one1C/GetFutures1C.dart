@@ -23,7 +23,7 @@ import 'package:dart_json_mapper_flutter/dart_json_mapper_flutter.dart' show flu
 
 import 'dart:typed_data' show Uint8List,Uint16List;
 
-class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGetDecode1C{
+class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGetGZip1C{
 
   late List<Person1Cspoler>  personSpoler;
 
@@ -88,13 +88,14 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGet
 
 
   @override
-  List getList1cDynamic({required http.Response response1C}) {
+  List<dynamic>  getList1cDynamic({required http.Response response1C}) {
     var   getList1cdynamic;
     try{
     final byteData = response1C.bodyBytes.buffer.asByteData();
     final bugffer=   byteData.buffer;
     Uint8List list = bugffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes) ;
-    getList1cdynamic=json.decode(utf8.decode(list))  ;
+    //TODO
+    getList1cdynamic=json.decode(utf8.decode(list)) as List<dynamic>  ;
     //TODO
     print('getList1cdynamic $getList1cdynamic');
     //TODO error
@@ -103,6 +104,28 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGet
 }
 return getList1cdynamic;
   }
+
+
+  @override
+  String getPingDynamic({required http.Response response1C}) {
+    // TODO: implement getStringcDynamic
+    var   getPing1C;
+    try{
+      final byteData = response1C.bodyBytes.buffer.asByteData();
+      final bugffer=   byteData.buffer;
+      Uint8List list = bugffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes) ;
+      getPing1C=json.decode(utf8.decode(list)) as String ;
+      //TODO
+      print('getPing1C $getPing1C');
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
+    }
+    return getPing1C;
+  }
+
+
+
 
   @override
   List<Person1C> parserPerson(String responseBody) {
@@ -154,7 +177,7 @@ return getList1cdynamic;
 
 
   @override
-  List<int> Decode1CByte({required http.Response response1C}) {
+  List<int> getGZip1CList({required http.Response response1C}) {
    late List<int> uint8listget1CPrices;
     try{
     // TODO: implement Decode1CByte
@@ -173,7 +196,7 @@ return getList1cdynamic;
 }
 
   @override
-  String Decode1CSting({required http.Response response1C}) {
+  String getGZipCSting({required http.Response response1C}) {
     // TODO: implement Decode1CSting
     // TODO: implement Decode1CSting
     late String getExplorDEcor;
@@ -190,4 +213,6 @@ return getList1cdynamic;
     }
     return getExplorDEcor;
   }
+
+
   }

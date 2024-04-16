@@ -24,13 +24,16 @@ abstract  class InFuture1C {
 
 
 abstract  class InGetComplete1C {
+  //TODO
   void getComplete({ required Response response1C}) ;
 }
 
 
-abstract  class InGetDecode1C {
-  String Decode1CSting({ required Response response1C}) ;
-  List<int> Decode1CByte({ required Response response1C}) ;
+abstract  class InGetGZip1C {
+  //TODO
+  String getGZipCSting({ required Response response1C}) ;
+  //TODO
+  List<int> getGZip1CList({ required Response response1C}) ;
 
 /*   final decoded_data = GZipCodec().decode(response1C.bodyBytes);
           String d=  utf8.decode(decoded_data, allowMalformed: true);*/
