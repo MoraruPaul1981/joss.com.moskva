@@ -1,6 +1,6 @@
 
-import '../Polo/Person1C.dart';
-import '../Polo/Person1Cspoler.dart';
+import '../../../Jsons/One1C/Polo/Person1C.dart';
+import '../../../Jsons/One1C/Polo/Person1Cspoler.dart';
 
 abstract  class InPolos1c {
 

@@ -13,7 +13,9 @@ import '../../Converts/GetConverts.dart';
 
 import 'dart:io';
 
-import '../../Jsons/One1C/Interfaces/InParserJson1c.dart';
+import 'Interfaces/InGetComplete1C.dart';
+import 'Interfaces/InGetGZip1C.dart';
+import 'Interfaces/InParserJson1c.dart';
 import '../../Jsons/One1C/Polo/Person1C.dart';
 import '../../Jsons/One1C/Polo/Person1Cspoler.dart';
 import 'Interfaces/InFuture1C.dart';
@@ -26,7 +28,7 @@ import 'dart:typed_data' show Uint8List,Uint16List;
 class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGetGZip1C{
 
   late Future<List<Person1Cspoler>?> personSpoler;
-  late Future<String?> getCallPing1c;
+  late  Future<String?>  getCallPing1c;
 
   //TODO get Ping 1C
   @override
@@ -48,7 +50,8 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGet
       }
     ).then(( Response backresponsejboss  ) => {
 
-   getComplete( response1C: backresponsejboss),
+      //TODO PING
+       getCompletePing( response1C: backresponsejboss),
 
       print(' then then $backresponsejboss'),
 
@@ -94,7 +97,7 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGet
           }
       ).then(( Response backresponsejboss  ) => {
 
-        getComplete( response1C: backresponsejboss),
+        getCompleteCallBackJson( response1C: backresponsejboss),
 
         print(' then then $backresponsejboss'),
 
@@ -174,33 +177,6 @@ return getList1cdynamic;
 
 
 
-  @override
-  void getComplete({required http.Response response1C}) {
-    // TODO: implement getComplete
-    try{
-      print('getComplete $response1C');
-      //TODO
-      print('response1C.statusCode $response1C.statusCode');
-      if (response1C.statusCode==200) {
-        List<dynamic>  listDynamic=  getList1cDynamic(response1C: response1C);
-        print('listDynamic $listDynamic');
-
-        //TODO получаем данные JSON
-        ///List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  json:  model  )) .toList() as   List<Person1C>;
-          personSpoler=listDynamic.map((model) => Person1Cspoler().fromJsondynamic(  json:  model  )) .toList() as   List<Person1Cspoler>;
-        // print('person $person');
-        print('personSpoler $personSpoler');
-      } else {
-        //TODO
-        print('response1C.statusCode $response1C.statusCode');
-      }
-
-      //TODO error
-    }   catch (e, stacktrace) {
-      print(' get ERROR $e get stacktrace $stacktrace ');
-    }
-  }
-
 
 
 
@@ -210,7 +186,6 @@ return getList1cdynamic;
 
 
   //TODO Пока не используются но скоро будет
-
   @override
   List<int> getGZip1CList({required http.Response response1C}) {
    late List<int> uint8listget1CPrices;
@@ -252,11 +227,91 @@ return getList1cdynamic;
 
 
 
+
+
+
+  @override
+  void getCompleteCallBackJson({required http.Response response1C}) {
+    // TODO: implement getCompleteCallBackJson
+    try{
+      print('getComplete $response1C');
+      //TODO
+      print('response1C.statusCode $response1C.statusCode');
+      if (response1C.statusCode==200) {
+        List<dynamic>  listDynamic=  getList1cDynamic(response1C: response1C);
+        print('listDynamic $listDynamic');
+
+        //TODO получаем данные JSON
+        ///List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  json:  model  )) .toList() as   List<Person1C>;
+        personSpoler=listDynamic.map((model) => Person1Cspoler().fromJsondynamic(  json:  model  )) .toList() as   Future<List<Person1Cspoler>?>;
+        // print('person $person');
+        print('personSpoler $personSpoler');
+      } else {
+        //TODO
+        print('response1C.statusCode $response1C.statusCode');
+      }
+
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
+    }
+  }
+
+
+
+
+  @override
+   void  getCompletePing({required http.Response response1C}) async {
+    // TODO: implement getCompletePing
+    try{
+      print('getComplete $response1C');
+      //TODO
+      print('response1C.statusCode $response1C.statusCode');
+      if (response1C.statusCode==200) {
+        //TODO realy ping
+        getCallPing1c=  getPingDynamic(response1C: response1C) as Future<String?> ;
+        print('getCallPing1c $getCallPing1c');
+
+      } else {
+        //TODO
+        print('response1C.statusCode $response1C.statusCode');
+      }
+
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   @override
   Future<List<Person1Cspoler>?> getSend1C({required String url, required int IdUser}) {
     // TODO: implement getSend1C
     throw UnimplementedError();
   }
+
+
+
 
 
 

@@ -20,35 +20,3 @@ abstract  class InFuture1C {
 }
 
 
-
-
-
-
-
-
-abstract  class InGetComplete1C {
-  //TODO
-  void getComplete({ required Response response1C}) ;
-}
-
-
-
-
-
-
-
-
-
-
-abstract  class InGetGZip1C {
-  //TODO
-  String getGZipCSting({ required Response response1C}) ;
-  //TODO
-  List<int> getGZip1CList({ required Response response1C}) ;
-
-/*   final decoded_data = GZipCodec().decode(response1C.bodyBytes);
-          String d=  utf8.decode(decoded_data, allowMalformed: true);*/
-//  final  List<int> uint8listget1CPrices=     response1C.bodyBytes  ;
-
-}
-

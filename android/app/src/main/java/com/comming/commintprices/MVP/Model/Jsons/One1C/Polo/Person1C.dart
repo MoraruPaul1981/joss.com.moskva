@@ -1,6 +1,6 @@
 
 
-import '../Interfaces/InPolos1c.dart';
+import '../../../Futures/one1C/Interfaces/InPolos1c.dart';
 
 
 
