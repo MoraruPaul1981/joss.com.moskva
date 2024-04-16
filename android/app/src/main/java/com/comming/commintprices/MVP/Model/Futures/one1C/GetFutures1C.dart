@@ -12,11 +12,12 @@ import '../../Converts/GetConverts.dart';
 
 import 'dart:io';
 
-import '../../Jsons/One1C/Parser/ParcesPerson1.dart';
+
 import '../../Jsons/One1C/Polo/Person1C.dart';
+import '../../Jsons/One1C/Polo/Person1CTwo.dart';
 import 'Interfaces/InFuture1C.dart';
 
-import 'package:dart_json_mapper/dart_json_mapper.dart' show JsonMapper, jsonSerializable,initializeJsonMapper, JsonProperty;
+import 'package:dart_json_mapper/dart_json_mapper.dart' show JsonMap, JsonMapper, JsonProperty, initializeJsonMapper, jsonSerializable;
 import 'package:dart_json_mapper_flutter/dart_json_mapper_flutter.dart' show flutterAdapter;
 
 import 'dart:typed_data' show Uint8List,Uint16List;
@@ -120,14 +121,15 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C {
 
 
 
-        List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  model )) .toList() as   List<Person1C>;
+
+        List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  json:  model  )) .toList() as   List<Person1C>;
+
+        List<Person1CTwo>  personTWO=listDynamic.map((model) => Person1CTwo().fromJsondynamic(  json:  model  )) .toList() as   List<Person1CTwo>;
 
 
-          print('resul $resul');
+          print('person $person');
+          print('personTWO $personTWO');
 
-       var  listjson2 =     Uint8ListConverters().toJson(listDynamic) ;//as Map<int, dynamic>?
-
-        ///  print('listjson2 $listjson2');
 
         } else {
           //TODO

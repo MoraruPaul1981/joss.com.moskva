@@ -59,7 +59,7 @@ class Person1C implements InPolos1c{
 
 
   @override
-  Person1C fromJsondynamic( Map<String, dynamic> json) {
+  Person1C fromJsondynamic({required Map<String, dynamic> json}) {
     // TODO: implement fromJsondynamic
 
     var person1c;
@@ -134,179 +134,11 @@ class Person1C implements InPolos1c{
     return  person1c;
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   @override
-  Map<String, Person1C> toJson2Person2() {
-    // TODO: implement toJson2Person2
-    throw UnimplementedError();
-  }
-
-  @override
-  Map<String, dynamic> toJson2dynamic() {
-    // TODO: implement toJson2dynamic
-    throw UnimplementedError();
-  }
-
-  @override
-  Map<String, Person1C> toJsonPerson2() {
-    // TODO: implement toJsonPerson2
-    throw UnimplementedError();
-  }
-
-  @override
-  Map<String, dynamic> toJsondynamic() {
-    // TODO: implement toJsondynamic
-    throw UnimplementedError();
-  }
-
-  @override
-  Person1C fromJsondynamicList(List listDynamic) {
-    // TODO: implement fromJsondynamicList
-    try{
- 
-    }   catch (e, stacktrace) {
-      print(' get ERROR $e get stacktrace $stacktrace ');
-    }
-
-    return  Person1C( );
-  }
-
-  @override
-  Person1C fromJsonPerson2(Map<String, Person1C> json) {
-    // TODO: implement fromJsonPerson2
-    throw UnimplementedError();
-  }
-
-
-
-
-
-
-
- 
-
-
-
-
-/*   Person2.fromJson(Map<String, dynamic> json) {
-    _albumId = json['albumId'];
-    _id = json['id'];
-    _title = json['title'];
-    _url = json['url'];
-    _thumbnailUrl = json['thumbnailUrl'];
-  }*/
-
-
-
-
-}
-
-
-///TODO  конец первого класса
-
-
-
-
-
-
-
-
-
-
-///TODO  начало второга класса
-
-
-
-
-class Person1CTwo implements InPolos2{
-
-  String?   CFO    ;
-  String?  Data;
-  String?  StatyaDDS;
-  String?  Nomenklatura;
-  String?   EdIzm;
-  String?  Cena;
-  String?  Kolichestvo;
-  String?  CFORaskhoda;
-  String?   UUID;
-  String?  NDoc;
-  String?   NStr;
-  String?   Kontragent  ;
-
-
-
-
-  Person1CTwo(
-      {String?   CFO ,
-        String?  Data,
-        String?  StatyaDDS,
-        String?  Nomenklatura,
-        String?   EdIzm,
-        String?  Cena,
-        String?  Kolichestvo,
-        String?  CFORaskhoda,
-        String?   UUID,
-        String?  NDoc,
-        String?   NStr,
-        String?   Kontragent}) {
-
-//TODO
-
-    this.  CFO =CFO;
-    this.  Data =Data;
-    this.  StatyaDDS =StatyaDDS;
-    this.  Nomenklatura =Nomenklatura;
-    this.  EdIzm =EdIzm;
-    this.  Cena =Cena;
-    this.  Kolichestvo =Kolichestvo;
-    this.  CFORaskhoda =CFORaskhoda;
-    this.  UUID =UUID;
-    this.  NDoc =NDoc;
-    this.  CFO =CFO;
-    this.  NStr =NStr;
-    this.  CFO =CFO;
-    this.  Kontragent =Kontragent;
-
-  }
-
-
-
-  @override
-  Person1CTwo fromJsondynamic( Map<String, dynamic> json) {
+  Person1C loopGwerenetorPolo(Map<String, dynamic> json) {
+    // TODO: implement loopGwerenetorPolo
     // TODO: implement fromJsondynamic
-
-    var person1ctwo;
+    var person1;
     try {
 
 
@@ -324,19 +156,9 @@ class Person1CTwo implements InPolos2{
           print('element$elementTwo');
           print('element$elementTwo');
 
-          elementTwo.forEach((key, value) {
-            print(' elementTwo.entries.elementAt(0) $elementTwo.entries.elementAt(0)');
+          //TODO вставляем полцученные даннфые в КЛАСС
 
-
-          });
-
-
-
-
-
-          print('json &json');
-
-          person1ctwo=Person1CTwo(CFO: elementTwo.entries.elementAt(0).value ,
+          person1=Person1C(CFO: elementTwo.entries.elementAt(0).value ,
               Data:elementTwo.entries.elementAt(1).value ,
               StatyaDDS:elementTwo.entries.elementAt(2).value ,
               Nomenklatura:elementTwo.entries.elementAt(3).value ,
@@ -361,104 +183,13 @@ class Person1CTwo implements InPolos2{
 
       });
 
-
-
-
-
-
-
-
       //TODO error
     }   catch (e, stacktrace) {
       print(' get ERROR $e get stacktrace $stacktrace ');
     }
 
-    return  person1ctwo;
+    return  person1;
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  @override
-  Map<String, Person1C> toJson2Person2() {
-    // TODO: implement toJson2Person2
-    throw UnimplementedError();
-  }
-
-  @override
-  Map<String, dynamic> toJson2dynamic() {
-    // TODO: implement toJson2dynamic
-    throw UnimplementedError();
-  }
-
-  @override
-  Map<String, Person1C> toJsonPerson2() {
-    // TODO: implement toJsonPerson2
-    throw UnimplementedError();
-  }
-
-  @override
-  Map<String, dynamic> toJsondynamic() {
-    // TODO: implement toJsondynamic
-    throw UnimplementedError();
-  }
-
-  @override
-  Person1C fromJsondynamicList(List listDynamic) {
-    // TODO: implement fromJsondynamicList
-    try{
-
-    }   catch (e, stacktrace) {
-      print(' get ERROR $e get stacktrace $stacktrace ');
-    }
-
-    return  Person1C( );
-  }
-
-  @override
-  Person1C fromJsonPerson2(Map<String, Person1C> json) {
-    // TODO: implement fromJsonPerson2
-    throw UnimplementedError();
-  }
-
-
-
-
-
-
-
-
-
-
 
 
 /*   Person2.fromJson(Map<String, dynamic> json) {
@@ -470,12 +201,8 @@ class Person1CTwo implements InPolos2{
   }*/
 
 
-
-
 }
 
-
-///TODO  конец второго класса
 
 
 
