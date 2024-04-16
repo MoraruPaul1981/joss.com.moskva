@@ -27,11 +27,16 @@ import 'dart:typed_data' show Uint8List,Uint16List;
 
 class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGetGZip1C{
 
+  late List<Person1Cspoler> getJson1cSuccess;
+
+
+
+
   //TODO get Ping 1C
   @override
   Future<String?> getPing1C( { required  String url,required int IdUser }  ) async {
     //TODO CAll PING
-    late var  getCompletePing;
+    late var  getPing;
     try{
     final parsedUrl=Uri.parse(url) as Uri;
     BigInt Uuid=BigInt.parse('0')  ;
@@ -47,12 +52,12 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGet
         'authorization':'$basicAuth',
       }
     ).then(( Response backresponsejboss  ) => {
+      //TODO ping worker server
+         getPing=    getCompletePing( response1C: backresponsejboss),
+         print(' then getPing $getPing'),
+         print( ' backresponsejboss..$backresponsejboss'),
 
-      //TODO PING
-          getCompletePing=    getCompletePing( response1C: backresponsejboss) as Future<String?>,
 
-      print(' then getCompletePing $getCompletePing'),
-      print( ' backresponsejboss..$backresponsejboss'),
 
     })
         .whenComplete(
@@ -71,7 +76,7 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGet
       print(' get ERROR $e get stacktrace $stacktrace ');
     }
 
-  return   getCompletePing;
+  return   getPing;
   }
 
 
@@ -100,15 +105,15 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGet
           }
       ).then(( Response backresponsejboss  ) => {
 
-        getjson1C=   getCompleteCallBackJson( response1C: backresponsejboss) as   Future<List<Person1Cspoler>?>,
+        getCompleteCallBackJson( response1C: backresponsejboss)    ,
 
-        print(' then then $getjson1C'),
         print(' then backresponsejboss $backresponsejboss'),
 
       })
           .whenComplete(
             () {
-          print(' whenComplete  getjson1C $getjson1C' );
+         // print(' whenComplete  getjson1C $getjson1C' );
+        print(' whenComplete getJson1cSuccess ..$getJson1cSuccess' );
         },
       )
           .catchError(
@@ -122,7 +127,7 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGet
       print(' get ERROR $e get stacktrace $stacktrace ');
     }
 
-    return   getjson1C;
+    return   getJson1cSuccess;
   }
 
 
@@ -158,7 +163,7 @@ return getList1cdynamic;
 
 
   @override
-  String getPingDynamic({required http.Response response1C}) {
+  String getPingDynamicDontaunt({required http.Response response1C}) {
     // TODO: implement getStringcDynamic
     var   getPing1C;
     try{
@@ -175,6 +180,8 @@ return getList1cdynamic;
     }
     return getPing1C;
   }
+
+
 
 
 
@@ -235,8 +242,9 @@ return getList1cdynamic;
 
 
   @override
-  void getCompleteCallBackJson({required http.Response response1C}) {
+  void  getCompleteCallBackJson({required http.Response response1C}) {
     // TODO: implement getCompleteCallBackJson
+    // TODO: implement getComplete
     try{
       print('getComplete $response1C');
       //TODO
@@ -247,9 +255,9 @@ return getList1cdynamic;
 
         //TODO получаем данные JSON
         ///List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  json:  model  )) .toList() as   List<Person1C>;
-        personSpoler=listDynamic.map((model) => Person1Cspoler().fromJsondynamic(  json:  model  )) .toList() as    List<Person1Cspoler>  ;
+          getJson1cSuccess=listDynamic.map((model) => Person1Cspoler().fromJsondynamic(  json:  model  )) .toList() as   List<Person1Cspoler>;
         // print('person $person');
-        print('personSpoler $personSpoler');
+        print('personSpoler $getJson1cSuccess');
       } else {
         //TODO
         print('response1C.statusCode $response1C.statusCode');
@@ -265,17 +273,27 @@ return getList1cdynamic;
 
 
   @override
-  Future<String?>   getCompletePing({required http.Response response1C}) async {
+  Future<String?>    getCompletePing({required http.Response response1C}) async {
     // TODO: implement getCompletePing
-    late  String?  getCallPing1c;
+    late  var  getCallPing1c;
     try{
       print('getComplete $response1C');
       //TODO
       print('response1C.statusCode $response1C.statusCode');
       if (response1C.statusCode==200) {
         //TODO realy ping
-        getCallPing1c=  getPingDynamic(response1C: response1C) as String? ;
-        print('getCallPing1c $getCallPing1c');
+        print(' then backresponsejboss. contentLength $response1C.contentLength');
+    //TODO PING
+    if (response1C. contentLength==73) {
+      //TODO
+    getCallPing1c= getPingDynamicDontaunt(response1C: response1C) as Future<String?>  ;
+
+    print('getCallPing1c $getCallPing1c');
+    }else{
+      getCallPing1c='Successful authentication';
+
+      print('getCallPing1c $getCallPing1c');
+    }
 
       } else {
         //TODO

@@ -34,13 +34,18 @@ Future<void> main() async {
     //TODO
     print('adressCurrent1C .. $adressCurrent1C');
 
-     String?    ping1C   =await GetFutures1C().getPing1C(url: adressCurrent1C, IdUser: 5);
+     String?    ping1C   =await GetFutures1C().getPing1C(url: adressCurrent1C, IdUser:8);
 
      logger.i('ping1C  .. $ping1C ');
 
-     List<Person1Cspoler>?  personSpoler   =await GetFutures1C().getGettingJson1C(url: adressCurrent1C, IdUser: 5, UUID: 0);
+     if (ping1C=='Successful authentication') {
+       //TODO
+       List<Person1Cspoler>?  personSpoler   =await GetFutures1C().getGettingJson1C(url: adressCurrent1C, IdUser: 8, UUID: 0);
 
-     logger.i('personSpoler  .. $personSpoler ');
+       logger.i('personSpoler  .. $personSpoler ');
+     } else {
+       logger.i(' Dont Aunt ping1C  .. $ping1C ');
+     }
 
      var value = await Future.wait([GetFutures1C().getPing1C(url: adressCurrent1C, IdUser: 5)
        ,GetFutures1C().getGettingJson1C(url: adressCurrent1C, IdUser: 5, UUID: 0)]);

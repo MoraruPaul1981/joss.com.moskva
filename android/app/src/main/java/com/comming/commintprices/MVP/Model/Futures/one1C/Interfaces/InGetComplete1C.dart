@@ -8,8 +8,10 @@ import '../../../Jsons/One1C/Polo/Person1Cspoler.dart';
 abstract  class InGetComplete1C {
   //TODO
   Future<String?> getCompletePing({ required Response response1C}) ;
+
+
   //TODO
-  Future<List<Person1Cspoler>?>  getCompleteCallBackJson({ required Response response1C}) ;
+   void    getCompleteCallBackJson({ required Response response1C}) ;
 }
 
 
