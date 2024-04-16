@@ -47,13 +47,6 @@ Future<void> main() async {
        logger.i(' Dont Aunt ping1C  .. $ping1C ');
      }
 
-     var value = await Future.wait([GetFutures1C().getPing1C(url: adressCurrent1C, IdUser: 5)
-       ,GetFutures1C().getGettingJson1C(url: adressCurrent1C, IdUser: 5, UUID: 0)]);
-
-
-    logger.i('value  .. $value ');
-
-
     //TODO error
   }   catch (e, stacktrace) {
     print(' get ERROR $e get stacktrace $stacktrace ');

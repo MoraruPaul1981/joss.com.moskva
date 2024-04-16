@@ -250,13 +250,20 @@ return getList1cdynamic;
       //TODO
       print('response1C.statusCode $response1C.statusCode');
       if (response1C.statusCode==200) {
+        //TODO
         List<dynamic>  listDynamic=  getList1cDynamic(response1C: response1C);
+
         print('listDynamic $listDynamic');
 
-        //TODO получаем данные JSON
-        ///List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  json:  model  )) .toList() as   List<Person1C>;
+        if (!listDynamic.isEmpty) {
+          //TODO получаем данные JSON
+          ///List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  json:  model  )) .toList() as   List<Person1C>;
+          ///TODO
           getJson1cSuccess=listDynamic.map((model) => Person1Cspoler().fromJsondynamic(  json:  model  )) .toList() as   List<Person1Cspoler>;
-        // print('person $person');
+          // print('person $person');
+        }
+
+
         print('personSpoler $getJson1cSuccess');
       } else {
         //TODO
@@ -284,7 +291,7 @@ return getList1cdynamic;
         //TODO realy ping
         print(' then backresponsejboss. contentLength $response1C.contentLength');
     //TODO PING
-    if (response1C. contentLength==73) {
+    if (response1C. contentLength!<=73) {
       //TODO
     getCallPing1c= getPingDynamicDontaunt(response1C: response1C) as Future<String?>  ;
 
