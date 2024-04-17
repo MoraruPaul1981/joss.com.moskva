@@ -34,12 +34,13 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGet
 
   //TODO get Ping 1C
   @override
-  Future<String?> getPing1C( { required  String url,required int IdUser }  ) async {
+  Future<String?> getPing1C( { required  String url  }  ) async {
     //TODO CAll PING
     late var  getPing;
     try{
     final parsedUrl=Uri.parse(url) as Uri;
     BigInt Uuid=BigInt.parse('0')  ;
+    int IdUser=0;
     //TODO base64
     String? basicAuth=     GetConverts().convertBase64(  user: 'dsu1Admin', password: 'dsu1Admin');
     print(' basicAuth  $basicAuth');
@@ -113,7 +114,7 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGet
           .whenComplete(
             () {
          // print(' whenComplete  getjson1C $getjson1C' );
-        print(' whenComplete getJson1cSuccess ..$getJson1cSuccess' );
+        print(' whenComplete getJson1cSuccess ' );
         },
       )
           .catchError(
@@ -250,25 +251,47 @@ return getList1cdynamic;
       //TODO
       print('response1C.statusCode $response1C.statusCode');
       if (response1C.statusCode==200) {
+
         //TODO
-        List<dynamic>  listDynamic=  getList1cDynamic(response1C: response1C);
+        print('response1C. contentLength....$response1C. contentLength');
+        if (response1C. contentLength!>100) {
 
-        print('listDynamic $listDynamic');
+          List<dynamic>  listDynamic=  getList1cDynamic(response1C: response1C);
+          print('listDynamic $listDynamic');
 
-        if (!listDynamic.isEmpty) {
-          //TODO получаем данные JSON
-          ///List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  json:  model  )) .toList() as   List<Person1C>;
+          if (!listDynamic.isEmpty) {
+
+                    //TODO получаем данные JSON
+            print('istDynamic.isEmpty..$listDynamic.isEmpty');
+
+                    ///List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  json:  model  )) .toList() as   List<Person1C>;
+                    ///TODO
+                    getJson1cSuccess=listDynamic.map((model) => Person1Cspoler().fromJsondynamic(  json:  model  )) .toList() as   List<Person1Cspoler>;
+                    // print('person $person');
+
+                  }else{
+
+            //TODO
+            print('istDynamic.isEmpty..$listDynamic.isEmpty');
+          }
+
+        } else {
+          print('response1C. contentLength..$response1C. contentLength');
+
+          List<dynamic>  listDynamic=   [];
           ///TODO
           getJson1cSuccess=listDynamic.map((model) => Person1Cspoler().fromJsondynamic(  json:  model  )) .toList() as   List<Person1Cspoler>;
-          // print('person $person');
-        }
 
+          //getCallPing1c= getPingDynamicDontaunt(response1C: response1C) as Future<String?>  ;
+        }
 
         print('personSpoler $getJson1cSuccess');
       } else {
         //TODO
         print('response1C.statusCode $response1C.statusCode');
       }
+
+
 
       //TODO error
     }   catch (e, stacktrace) {
@@ -291,16 +314,9 @@ return getList1cdynamic;
         //TODO realy ping
         print(' then backresponsejboss. contentLength $response1C.contentLength');
     //TODO PING
-    if (response1C. contentLength!<=73) {
-      //TODO
-    getCallPing1c= getPingDynamicDontaunt(response1C: response1C) as Future<String?>  ;
+    getCallPing1c= getPingDynamicDontaunt(response1C: response1C) as  String?   ;
 
     print('getCallPing1c $getCallPing1c');
-    }else{
-      getCallPing1c='Successful authentication';
-
-      print('getCallPing1c $getCallPing1c');
-    }
 
       } else {
         //TODO

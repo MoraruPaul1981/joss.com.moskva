@@ -34,19 +34,27 @@ Future<void> main() async {
     //TODO
     print('adressCurrent1C .. $adressCurrent1C');
 
-     String?    ping1C   =await GetFutures1C().getPing1C(url: adressCurrent1C, IdUser:8);
+     String?    ping1C   =await GetFutures1C().getPing1C(url: adressCurrent1C );
 
-     logger.i('ping1C  .. $ping1C ');
+     logger.i('ping1C  .. $ping1C '+'ping1C..$ping1C');
 
-     if (ping1C=='Successful authentication') {
+     if (   ping1C!=null) {
        //TODO
-       List<Person1Cspoler>?  personSpoler   =await GetFutures1C().getGettingJson1C(url: adressCurrent1C, IdUser: 8, UUID: 0);
+       int length = ping1C.length;
+       logger.i(' length .. $length ');
+
+       if (length>5) {
+       //TODO
+       List<Person1Cspoler>?  personSpoler   =await GetFutures1C().getGettingJson1C(url: adressCurrent1C, IdUser: 5, UUID: 0);
 
        logger.i('personSpoler  .. $personSpoler ');
-     } else {
-       logger.i(' Dont Aunt ping1C  .. $ping1C ');
-     }
 
+     } else {
+       logger.i(' length  .. $length ');
+     }
+     }else{
+       logger.i('ping1C  .. $ping1C ');
+     }
     //TODO error
   }   catch (e, stacktrace) {
     print(' get ERROR $e get stacktrace $stacktrace ');
