@@ -65,7 +65,6 @@ class Person1C implements InPolos1c{
     var person1c;
     try {
 
-
       json.entries.forEach((element) {
 
         print('element$element');

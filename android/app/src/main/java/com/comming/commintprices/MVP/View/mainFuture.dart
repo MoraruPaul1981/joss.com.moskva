@@ -8,61 +8,18 @@ import '../Model/AdressJboss/getAdress.dart';
 import '../Model/Futures/one1C/GetFutures1C.dart';
 import '../Model/Jsons/One1C/Polo/Person1C.dart';
 import '../Model/Jsons/One1C/Polo/Person1Cspoler.dart';
+import '../Model/Loggers/GetErrors.dart';
+
+late Logger logger;
 
 
-var logger;
-
- Future<void> main()  async {
+ void main()  {
   try {
-     logger = Logger(
-      printer: PrettyPrinter(
-      lineLength: 50,
-      colors: true,
-      printEmojis: true,
-      printTime: true,
-    ),);
-  // throw ('This is an error !!!');
-  // runApp(const CommingPrices());
 
-  //proccedtvoid(nik: 121);
+    //TODO starting Main Code
+  MainGetPingGetPingGetLog();
 
-
-
-
-     //TODO Get PING
-     String? ping1C=await  getJson1cPing() as String?     ;
-     logger.i('ping1C  .. $ping1C '+'ping1C..$ping1C');
-
-
-     //TODO Get JSON
-     List<Person1Cspoler>   getJSon1CFuture=  await  getJson1cGetJson(   ping1C) as List<Person1Cspoler>         ;
-     logger.i('ping1C  .. $ping1C '+'getJSon1CFuture..$getJSon1CFuture');
-
-     logger.i('Isolate.current.debugName  .. $Isolate.current.debugName');
-    // Future f2=  Future<int>.value(getIIn());
-    // Future f2=  Future<int>.sync(() => getIIn());
-      Future f2=Isolate.run(() =>  Future<int>.sync(() => getIIn()));
-    // Future f2=   Future<int>.sync(() => getIIn());
-
-
-     f2.then((value) {
-       logger.i('value then  .. $value');
-       logger.i('Isolate.current.debugName  .. $Isolate.current.debugName');
-     })
-     .whenComplete(
-             () {
-               logger.i('whenComplete Future<int>.value(2021)');
-               logger.i('Isolate.current.debugName  .. $Isolate.current.debugName');
-         },
-  ).catchError((e) {
-    throw Exception('Some arbitrary error');
-  });
-     final result = await f2;
-
-
-     logger.d(' result .. $result ');
-     logger.i('Isolate.current.debugName  .. $Isolate.current.debugName');
-
+  logger.i('starting Main Code');
     //TODO error
   }   catch (e, stacktrace) {
     print(' get ERROR $e get stacktrace $stacktrace ');
@@ -71,16 +28,35 @@ var logger;
 
 
 
-     int  getIIn(){
-     late var dfdf;
-   try {
-   dfdf=   77777 as int ;
-   logger.i('Isolate.current.debugName  .. $Isolate.current.debugName');
-   } catch (e) {
-     print(e);
-   }
-   return dfdf;
-    }
+//TODO main code GEt Ping get JSON get Logger
+
+ Future<void> MainGetPingGetPingGetLog() async {
+   try{
+
+   //TODO get LOGGER int
+   logger=  await  Future<Logger>.value(GetErros().loggers());
+
+    //TODO Get PING
+    String? ping1C=await  getJson1cPing() as String?     ;
+    logger.i('ping1C  .. $ping1C '+'ping1C..$ping1C');
+
+
+    //TODO Get JSON
+    List<Person1Cspoler>   getJSon1CFuture=  await  getJson1cGetJson(   ping1C : ping1C) as List<Person1Cspoler>         ;
+    logger.i('ping1C  .. $ping1C '+'getJSon1CFuture..$getJSon1CFuture');
+
+
+    //TODO end Competing
+    getJsonCompeling(getJSon1CFuture: getJSon1CFuture);
+    logger.i('END getJsonCompeling() ping1C  .. $ping1C '+'getJSon1CFuture..$getJSon1CFuture');
+
+    logger.i('Isolate.current.debugName  ..  '+Isolate.current.debugName.toString());
+
+   //TODO error
+ }   catch (e, stacktrace) {
+    print(' get ERROR $e get stacktrace $stacktrace ');
+}
+ }
 
 
 
@@ -88,7 +64,17 @@ var logger;
 
 
 
-//TODO main metod starting JSON
+
+
+
+
+
+
+
+
+
+
+//TODO main metod PING
 Future<String?>  getJson1cPing() async {
   //TODO
  late  var    ping1C;
@@ -115,8 +101,8 @@ Future<String?>  getJson1cPing() async {
 
 
 
-//TODO main metod starting JSON
- Future<List<Person1Cspoler>>     getJson1cGetJson( String?  ping1C) async {
+//TODO main metod   JSON
+ Future<List<Person1Cspoler>>     getJson1cGetJson( { required String?  ping1C } ) async {
    //TODO
   print('ping1C .. $ping1C');
   late var   getJSon1CFuture;
@@ -127,18 +113,15 @@ Future<String?>  getJson1cPing() async {
    logger.i('ping1C  .. $ping1C '+'ping1C..$ping1C'+'adressCurrent1C... $adressCurrent1C');
    if (   ping1C!=null) {
      //TODO
-     int length = ping1C.length;
-     logger.i(' length .. $length ');
-
-     if (length>5) {
-     //TODO
+     if (ping1C.isNotEmpty) {
+     //TODO запускаем
          getJSon1CFuture   =await GetFutures1C().getGettingJson1C(url: adressCurrent1C, IdUser: 8, UUID: 0)   as   List<Person1Cspoler>      ;
      logger.i('getJSon1CFuture  .. $getJSon1CFuture.last ');
        } else {
-         logger.i(' length  .. $length ');
+       logger.i(' ping1C.isNotEmpty .. $ping1C.isNotEmpty '+'ping1C..$ping1C');
        }
        }else{
-         logger.i('ping1C  .. $ping1C ');
+     logger.i( 'ping1C..$ping1C');
        }
          //TODO error
        }   catch (e, stacktrace) {
@@ -148,6 +131,25 @@ Future<String?>  getJson1cPing() async {
 }
 
 
+
+
+//TODO main metod endinf CompelteN
+  void  getJsonCompeling({ required List<Person1Cspoler?>   getJSon1CFuture })   {
+  try{
+    //TODO yes
+    if (  getJSon1CFuture.isNotEmpty) {
+      logger.i( 'ping1C..$getJSon1CFuture'+ 'getJSon1CFuture.isNotEmpty '+getJSon1CFuture.isNotEmpty.toString());
+    } else {
+      logger.i( 'ping1C..$getJSon1CFuture'+ 'getJSon1CFuture.isNotEmpty '+getJSon1CFuture.isNotEmpty.toString());
+    }
+    logger.i( 'ping1C..$getJSon1CFuture');
+
+    //TODO error
+  }   catch (e, stacktrace) {
+    print(' get ERROR $e get stacktrace $stacktrace ');
+  }
+
+}
 
 
 
