@@ -297,14 +297,14 @@ return getList1cdynamic;
           List<dynamic>  listDynamic=  getList1cDynamic(response1C: response1C);
           print('listDynamic $listDynamic');
 
-          if (listDynamic.isNotEmpty && listDynamic.contains(2)) {
+          if (listDynamic.isNotEmpty ) {
 
             //TODO получаем данные JSON
             print('listDynamic.isNotEmpty ..$listDynamic.isNotEmpty '+'listDynamic.contains(2) .. $listDynamic.contains(2)');
 
             ///List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  json:  model  )) .toList() as   List<Person1C>;
             ///TODO
-            getJson1cMapSuccess=listDynamic.map((model) => Person1Cspoler().fromJsonMapdynamic(  json:  model  )) .toList() as   List<Person1NestedList>;
+            getJson1cMapSuccess=listDynamic.map((model) => Person1NestedList().fromJsonMapdynamic(  json:  model  )) .toList() as   List<Person1NestedList>;
             //TODO
             print('getJson1cSuccess..$getJson1cSuccess');
 
@@ -371,7 +371,7 @@ return getList1cdynamic;
           List<dynamic>  listDynamic=  getList1cDynamic(response1C: response1C);
           print('listDynamic $listDynamic');
 
-          if (listDynamic.isNotEmpty && listDynamic.contains(2)) {
+          if (listDynamic.isNotEmpty  ) {
 
                     //TODO получаем данные JSON
             print('listDynamic.isNotEmpty ..$listDynamic.isNotEmpty '+'listDynamic.contains(2) .. $listDynamic.contains(2)');
