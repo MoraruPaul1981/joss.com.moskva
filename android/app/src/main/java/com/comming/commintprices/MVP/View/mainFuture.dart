@@ -6,8 +6,8 @@ import 'package:logger/logger.dart';
 
 import '../Model/AdressJboss/getAdress.dart';
 import '../Model/Futures/one1C/GetFutures1C.dart';
-import '../Model/Jsons/One1C/Polo/Person1C.dart';
 import '../Model/Jsons/One1C/Polo/Person1Cspoler.dart';
+import '../Model/Jsons/One1C/Polo/Person1NestedList.dart';
 import '../Model/Loggers/GetErrors.dart';
 
 late Logger logger;
@@ -36,21 +36,25 @@ late Logger logger;
    //TODO get LOGGER int
    logger=  await  Future<Logger>.value(GetErros().loggers());
 
-    //TODO Get PING
+    //TODO After Get PING
     String? ping1C=await  getJson1cPing() as String?     ;
     logger.i('ping1C  .. $ping1C '+'ping1C..$ping1C');
 
 
-    //TODO Get JSON
-    List<Person1Cspoler>   getJSon1CFuture=  await  getJson1cGetJson(   ping1C : ping1C) as List<Person1Cspoler>         ;
-    logger.i('ping1C  .. $ping1C '+'getJSon1CFuture..$getJSon1CFuture');
+    //TODO Get After JSON
+    /*List<Person1Cspoler>   getJSon1CFuture=  await  getJson1cGetJson(   ping1C : ping1C) as List<Person1Cspoler> ;
+   logger.i('ping1C  .. $ping1C '+'getJSon1CFuture..$getJSon1CFuture');*/
+
+    List<Person1Cspoler>   getJSon1CMapFuture=  await  getJson1cMapGetJson(   ping1C : ping1C) as List<Person1Cspoler> ;
+    logger.i('ping1C  .. $ping1C '+'getJSon1CMapFuture..$getJSon1CMapFuture');
 
 
-    //TODO end Competing
+
+/*   //TODO After Complete JSON
     getJsonCompeling(getJSon1CFuture: getJSon1CFuture);
     logger.i('END getJsonCompeling() ping1C  .. $ping1C '+'getJSon1CFuture..$getJSon1CFuture');
 
-    logger.i('Isolate.current.debugName  ..  '+Isolate.current.debugName.toString());
+    logger.i('Isolate.current.debugName  ..  '+Isolate.current.debugName.toString());*/
 
    //TODO error
  }   catch (e, stacktrace) {
@@ -129,6 +133,68 @@ Future<String?>  getJson1cPing() async {
     }
     return getJSon1CFuture;
 }
+
+
+//TODO main metod   JSON
+Future<List<Person1NestedList>>     getJson1cMapGetJson( { required String?  ping1C } ) async {
+  //TODO
+  print('ping1C .. $ping1C');
+  late var   getJSon1CFuture;
+  //TODO
+  try{
+    //TODO адрес пинга к серверу  Jboss Debug
+    var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
+    logger.i('ping1C  .. $ping1C '+'ping1C..$ping1C'+'adressCurrent1C... $adressCurrent1C');
+    if (   ping1C!=null) {
+      //TODO
+      if (ping1C.isNotEmpty) {
+        //TODO запускаем
+        getJSon1CFuture   =await GetFutures1C().getGettingMapJson1C(url: adressCurrent1C, IdUser: 8, UUID: 0)   as   List<Person1NestedList>      ;
+        logger.i('getJSon1CFuture  .. $getJSon1CFuture.last ');
+      } else {
+        logger.i(' ping1C.isNotEmpty .. $ping1C.isNotEmpty '+'ping1C..$ping1C');
+      }
+    }else{
+      logger.i( 'ping1C..$ping1C');
+    }
+    //TODO error
+  }   catch (e, stacktrace) {
+    print(' get ERROR $e get stacktrace $stacktrace ');
+  }
+  return getJSon1CFuture;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,6 +1,7 @@
 
 
 import '../../../Futures/one1C/Interfaces/InPolos1c.dart';
+import 'Person1NestedList.dart';
 
 
 
@@ -193,6 +194,12 @@ class Person1Cspoler implements InPolos1cSpoler{
     }
 
     return  person1;
+  }
+
+  @override
+  Map<String, Person1NestedList> fromJsonMapdynamic({required Map<String, dynamic> json}) {
+    // TODO: implement fromJsonMapdynamic
+    throw UnimplementedError();
   }
 
 

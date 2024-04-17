@@ -3,7 +3,7 @@
 
 import 'package:http/http.dart';
 
-import '../../../Jsons/One1C/Polo/Person1C.dart';
+
 
 abstract  class  InParserJson1c {
 
