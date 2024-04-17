@@ -38,17 +38,21 @@ var logger;
      List<Person1Cspoler>   getJSon1CFuture=  await  getJson1cGetJson(   ping1C) as List<Person1Cspoler>         ;
      logger.i('ping1C  .. $ping1C '+'getJSon1CFuture..$getJSon1CFuture');
 
-
+     logger.i('Isolate.current.debugName  .. $Isolate.current.debugName');
     // Future f2=  Future<int>.value(getIIn());
-     Future f2=  Future<int>.sync(() => getIIn());
+    // Future f2=  Future<int>.sync(() => getIIn());
+      Future f2=Isolate.run(() =>  Future<int>.sync(() => getIIn()));
+    // Future f2=   Future<int>.sync(() => getIIn());
 
 
      f2.then((value) {
        logger.i('value then  .. $value');
+       logger.i('Isolate.current.debugName  .. $Isolate.current.debugName');
      })
      .whenComplete(
              () {
                logger.i('whenComplete Future<int>.value(2021)');
+               logger.i('Isolate.current.debugName  .. $Isolate.current.debugName');
          },
   ).catchError((e) {
     throw Exception('Some arbitrary error');
@@ -57,7 +61,7 @@ var logger;
 
 
      logger.d(' result .. $result ');
-
+     logger.i('Isolate.current.debugName  .. $Isolate.current.debugName');
 
     //TODO error
   }   catch (e, stacktrace) {
@@ -71,6 +75,7 @@ var logger;
      late var dfdf;
    try {
    dfdf=   77777 as int ;
+   logger.i('Isolate.current.debugName  .. $Isolate.current.debugName');
    } catch (e) {
      print(e);
    }
