@@ -46,8 +46,14 @@ Future<void> main() async {
        if (length>5) {
        //TODO
        List<Person1Cspoler>?  personSpoler   =await GetFutures1C().getGettingJson1C(url: adressCurrent1C, IdUser: 5, UUID: 0);
-
        logger.i('personSpoler  .. $personSpoler ');
+
+       if (personSpoler!.isNotEmpty) {
+         logger.i('personSpoler!.isNotEmpty  .. $personSpoler!.isNotEmpty ');
+       } else {
+         logger.i('personSpoler!.isNotEmpty .. $personSpoler!.isNotEmpty');
+       }
+
 
      } else {
        logger.i(' length  .. $length ');
