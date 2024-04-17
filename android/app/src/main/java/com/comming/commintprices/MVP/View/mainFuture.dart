@@ -13,11 +13,11 @@ import '../Model/Loggers/GetErrors.dart';
 late Logger logger;
 
 
- void main()  {
+ Future<void> main()  async {
   try {
 
     //TODO starting Main Code
-  MainGetPingGetPingGetLog();
+    await MainGetPingGetPingGetLog();
 
   logger.i('starting Main Code');
     //TODO error
