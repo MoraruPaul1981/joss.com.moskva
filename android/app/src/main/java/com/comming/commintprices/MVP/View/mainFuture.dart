@@ -29,15 +29,34 @@ var logger;
 
 
 
-    //TODO получение данных с сервреа
-     var ping1C=await  getJson1cPing() as String?     ;
-
-
+     //TODO Get PING
+     String? ping1C=await  getJson1cPing() as String?     ;
      logger.i('ping1C  .. $ping1C '+'ping1C..$ping1C');
 
-   var personSpoler=    getJson1cGetJson(   ping1C) as List<Person1Cspoler>?;
 
-     logger.i('ping1C  .. $ping1C '+'personSpoler..$personSpoler');
+     //TODO Get JSON
+     List<Person1Cspoler>   getJSon1CFuture=  await  getJson1cGetJson(   ping1C) as List<Person1Cspoler>         ;
+     logger.i('ping1C  .. $ping1C '+'getJSon1CFuture..$getJSon1CFuture');
+
+
+     Future f2=  Future<int>.value(getIIn());
+
+
+     f2.then((value) {
+       logger.i('value then  .. $value');
+     })
+     .whenComplete(
+             () {
+               logger.i('whenComplete Future<int>.value(2021)');
+         },
+  ).catchError((e) {
+    throw Exception('Some arbitrary error');
+  });
+     final result = await f2;
+
+
+     logger.d(' result .. $result ');
+
 
     //TODO error
   }   catch (e, stacktrace) {
@@ -47,7 +66,15 @@ var logger;
 
 
 
-
+    int getIIn(){
+     late int dfdf;
+   try {
+   dfdf=77777;
+   } catch (e) {
+     print(e);
+   }
+   return dfdf;
+    }
 
 
 
@@ -83,20 +110,15 @@ Future<String?>  getJson1cPing() async {
 
 
 //TODO main metod starting JSON
-Future<List<Person1Cspoler>?>   getJson1cGetJson( String?  ping1C) async {
+ Future<List<Person1Cspoler>>     getJson1cGetJson( String?  ping1C) async {
    //TODO
   print('ping1C .. $ping1C');
- late var  personSpoler;
+  late var   getJSon1CFuture;
+  //TODO
    try{
   //TODO адрес пинга к серверу  Jboss Debug
   var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
-  //TODO
-  print('adressCurrent1C .. $adressCurrent1C');
-
-   String?    ping1C   =await GetFutures1C().getPing1C(url: adressCurrent1C );
-
-   logger.i('ping1C  .. $ping1C '+'ping1C..$ping1C');
-
+   logger.i('ping1C  .. $ping1C '+'ping1C..$ping1C'+'adressCurrent1C... $adressCurrent1C');
    if (   ping1C!=null) {
      //TODO
      int length = ping1C.length;
@@ -104,19 +126,8 @@ Future<List<Person1Cspoler>?>   getJson1cGetJson( String?  ping1C) async {
 
      if (length>5) {
      //TODO
-      personSpoler   =await GetFutures1C().getGettingJson1C(url: adressCurrent1C, IdUser: 8, UUID: 0) as  List<Person1Cspoler>?;
-     logger.i('personSpoler  .. $personSpoler.last ');
-
-
-
-
-     if (personSpoler!.isNotEmpty) {
-       logger.i('personSpoler!.isNotEmpty  .. $personSpoler!.isNotEmpty ');
-     } else {
-       logger.i('personSpoler!.isNotEmpty .. $personSpoler!.isNotEmpty');
-     }
-
-
+         getJSon1CFuture   =await GetFutures1C().getGettingJson1C(url: adressCurrent1C, IdUser: 8, UUID: 0)   as   List<Person1Cspoler>      ;
+     logger.i('getJSon1CFuture  .. $getJSon1CFuture.last ');
        } else {
          logger.i(' length  .. $length ');
        }
@@ -127,7 +138,7 @@ Future<List<Person1Cspoler>?>   getJson1cGetJson( String?  ping1C) async {
        }   catch (e, stacktrace) {
         print(' get ERROR $e get stacktrace $stacktrace ');
     }
-    return personSpoler;
+    return getJSon1CFuture;
 }
 
 
