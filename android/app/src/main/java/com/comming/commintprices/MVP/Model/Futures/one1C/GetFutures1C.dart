@@ -25,7 +25,7 @@ import 'package:dart_json_mapper_flutter/dart_json_mapper_flutter.dart' show flu
 
 import 'dart:typed_data' show Uint8List,Uint16List;
 
-class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGetGZip1C{
+class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c {
 
   late List<Person1Cspoler> getJson1cSuccess;
 
@@ -57,9 +57,6 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c ,InGet
          getPing=    getCompletePing( response1C: backresponsejboss),
          print(' then getPing $getPing'),
          print( ' backresponsejboss..$backresponsejboss'),
-
-
-
     })
         .whenComplete(
           () {
@@ -197,44 +194,7 @@ return getList1cdynamic;
 
 
 
-  //TODO Пока не используются но скоро будет
-  @override
-  List<int> getGZip1CList({required http.Response response1C}) {
-   late List<int> uint8listget1CPrices;
-    try{
-    // TODO: implement Decode1CByte
-        final decoded_data = GZipCodec().decode(response1C.bodyBytes);
-          uint8listget1CPrices=     response1C.bodyBytes;
-        /*   final decoded_data = GZipCodec().decode(response1C.bodyBytes);
-          String d=  utf8.decode(decoded_data, allowMalformed: true);*/
-//  final  List<int> uint8listget1CPrices=     response1C.bodyBytes  ;
-        print('uint8listget1CPrices $uint8listget1CPrices');
-        //TODO error
-      }   catch (e, stacktrace) {
-        print(' get ERROR $e get stacktrace $stacktrace ');
-      }
-      return uint8listget1CPrices;
 
-}
-
-  @override
-  String getGZipCSting({required http.Response response1C}) {
-    // TODO: implement Decode1CSting
-    // TODO: implement Decode1CSting
-    late String getExplorDEcor;
-    try{
-      final decoded_data = GZipCodec().decode(response1C.bodyBytes);
-      getExplorDEcor=  utf8.decode(decoded_data, allowMalformed: true);
-      /*   final decoded_data = GZipCodec().decode(response1C.bodyBytes);
-          String d=  utf8.decode(decoded_data, allowMalformed: true);*/
-//  final  List<int> uint8listget1CPrices=     response1C.bodyBytes  ;
-      print('getExplorDEcor $getExplorDEcor');
-      //TODO error
-    }   catch (e, stacktrace) {
-      print(' get ERROR $e get stacktrace $stacktrace ');
-    }
-    return getExplorDEcor;
-  }
 
 
 
@@ -334,36 +294,6 @@ return getList1cdynamic;
     }
     return getCallPing1c;
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  @override
-  Future<List<Person1Cspoler>?> getSend1C({required String url, required int IdUser}) {
-    // TODO: implement getSend1C
-    throw UnimplementedError();
-  }
-
-
-
 
 
 

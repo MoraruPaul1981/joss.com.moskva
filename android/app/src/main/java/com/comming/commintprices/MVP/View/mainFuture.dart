@@ -12,7 +12,7 @@ import '../Model/Jsons/One1C/Polo/Person1Cspoler.dart';
 
 var logger;
 
-Future<void> main() async {
+ void main()  {
   try {
      logger = Logger(
       printer: PrettyPrinter(
@@ -26,45 +26,59 @@ Future<void> main() async {
 
   //proccedtvoid(nik: 121);
 
+    //TODO получение данных с сервреа
+    startingGetJson1cCompleting();
 
+     logger.i('startingGetJson1cCompleting...');
 
-
-    //TODO адрес пинга к серверу  Jboss Debug
-    var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
-    //TODO
-    print('adressCurrent1C .. $adressCurrent1C');
-
-     String?    ping1C   =await GetFutures1C().getPing1C(url: adressCurrent1C );
-
-     logger.i('ping1C  .. $ping1C '+'ping1C..$ping1C');
-
-     if (   ping1C!=null) {
-       //TODO
-       int length = ping1C.length;
-       logger.i(' length .. $length ');
-
-       if (length>5) {
-       //TODO
-       List<Person1Cspoler>?  personSpoler   =await GetFutures1C().getGettingJson1C(url: adressCurrent1C, IdUser: 5, UUID: 0);
-       logger.i('personSpoler  .. $personSpoler ');
-
-       if (personSpoler!.isNotEmpty) {
-         logger.i('personSpoler!.isNotEmpty  .. $personSpoler!.isNotEmpty ');
-       } else {
-         logger.i('personSpoler!.isNotEmpty .. $personSpoler!.isNotEmpty');
-       }
-
-
-     } else {
-       logger.i(' length  .. $length ');
-     }
-     }else{
-       logger.i('ping1C  .. $ping1C ');
-     }
     //TODO error
   }   catch (e, stacktrace) {
     print(' get ERROR $e get stacktrace $stacktrace ');
   }
+}
+
+
+
+//TODO main metod starting JSON
+   void  startingGetJson1cCompleting() async {
+   //TODO
+   try{
+  //TODO адрес пинга к серверу  Jboss Debug
+  var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
+  //TODO
+  print('adressCurrent1C .. $adressCurrent1C');
+
+   String?    ping1C   =await GetFutures1C().getPing1C(url: adressCurrent1C );
+
+   logger.i('ping1C  .. $ping1C '+'ping1C..$ping1C');
+
+   if (   ping1C!=null) {
+     //TODO
+     int length = ping1C.length;
+     logger.i(' length .. $length ');
+
+     if (length>5) {
+     //TODO
+     List<Person1Cspoler>?  personSpoler   =await GetFutures1C().getGettingJson1C(url: adressCurrent1C, IdUser: 5, UUID: 0);
+     logger.i('personSpoler  .. $personSpoler ');
+
+     if (personSpoler!.isNotEmpty) {
+       logger.i('personSpoler!.isNotEmpty  .. $personSpoler!.isNotEmpty ');
+     } else {
+       logger.i('personSpoler!.isNotEmpty .. $personSpoler!.isNotEmpty');
+     }
+
+
+   } else {
+     logger.i(' length  .. $length ');
+   }
+   }else{
+     logger.i('ping1C  .. $ping1C ');
+   }
+     //TODO error
+   }   catch (e, stacktrace) {
+    print(' get ERROR $e get stacktrace $stacktrace ');
+}
 }
 
 

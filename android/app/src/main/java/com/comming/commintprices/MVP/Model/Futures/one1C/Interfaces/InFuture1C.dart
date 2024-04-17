@@ -15,7 +15,7 @@ abstract  class InFuture1C {
 
   Future<List<Person1Cspoler>?> getGettingJson1C({ required String   url, required int IdUser, required int UUID}) ;
 
-  Future<List<Person1Cspoler>?> getSend1C({ required String   url, required int IdUser}) ;
+
 
 }
 
