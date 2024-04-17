@@ -259,15 +259,16 @@ return getList1cdynamic;
           List<dynamic>  listDynamic=  getList1cDynamic(response1C: response1C);
           print('listDynamic $listDynamic');
 
-          if (!listDynamic.isEmpty) {
+          if (listDynamic.isNotEmpty && listDynamic.contains(2)) {
 
                     //TODO получаем данные JSON
-            print('istDynamic.isEmpty..$listDynamic.isEmpty');
+            print('listDynamic.isNotEmpty ..$listDynamic.isNotEmpty '+'listDynamic.contains(2) .. $listDynamic.contains(2)');
 
                     ///List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  json:  model  )) .toList() as   List<Person1C>;
                     ///TODO
                     getJson1cSuccess=listDynamic.map((model) => Person1Cspoler().fromJsondynamic(  json:  model  )) .toList() as   List<Person1Cspoler>;
-                    // print('person $person');
+                 //TODO
+                 print('getJson1cSuccess..$getJson1cSuccess');
 
                   }else{
 
@@ -278,11 +279,15 @@ return getList1cdynamic;
         } else {
           print('response1C. contentLength..$response1C. contentLength');
 
+          //TODO PING
+        String?  getCallPing1c= getPingDynamicDontaunt(response1C: response1C) as  String?   ;
+          print('getCallPing1c $getCallPing1c');
+
           List<dynamic>  listDynamic=   [];
           ///TODO
           getJson1cSuccess=listDynamic.map((model) => Person1Cspoler().fromJsondynamic(  json:  model  )) .toList() as   List<Person1Cspoler>;
-
-          //getCallPing1c= getPingDynamicDontaunt(response1C: response1C) as Future<String?>  ;
+          //TODO
+          print('getJson1cSuccess..$getJson1cSuccess');
         }
 
         print('personSpoler $getJson1cSuccess');
