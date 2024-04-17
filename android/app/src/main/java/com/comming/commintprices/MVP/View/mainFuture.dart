@@ -39,7 +39,8 @@ var logger;
      logger.i('ping1C  .. $ping1C '+'getJSon1CFuture..$getJSon1CFuture');
 
 
-     Future f2=  Future<int>.value(getIIn());
+    // Future f2=  Future<int>.value(getIIn());
+     Future f2=  Future<int>.sync(() => getIIn());
 
 
      f2.then((value) {
@@ -66,10 +67,10 @@ var logger;
 
 
 
-    int getIIn(){
-     late int dfdf;
+     int  getIIn(){
+     late var dfdf;
    try {
-   dfdf=77777;
+   dfdf=   77777 as int ;
    } catch (e) {
      print(e);
    }
