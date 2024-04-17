@@ -12,6 +12,8 @@ abstract  class InGetComplete1C {
 
   //TODO
    void    getCompleteCallBackJson({ required Response response1C}) ;
+
+   List<Person1Cspoler>?     getCompleteFutureCallBackJson({ required Response response1C}) ;
 }
 
 
