@@ -85,10 +85,13 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices>  {
              final UUID = listManual[index].UUID.toString().trim();
             //TODO
             return Card(
+              color: Colors .grey[100],
+              elevation: 1.0,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               child: ListTile (
                 leading: const Icon(Icons.flight_sharp),
                 subtitle: Text(""),
-                  trailing: Icon(Icons.unfold_more_double),
+                  trailing: Icon(Icons.more_vert),
                 onTap: () {
              print('object');
              ScaffoldMessenger.of(context).showSnackBar( SnackBar(
