@@ -87,6 +87,8 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices>  {
             return Card(
               child: ListTile (
                 leading: const Icon(Icons.flight_sharp),
+                subtitle: Text(""),
+                  trailing: Icon(Icons.unfold_more_double),
                 onTap: () {
              print('object');
              ScaffoldMessenger.of(context).showSnackBar( SnackBar(
