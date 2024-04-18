@@ -14,9 +14,7 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices>  {
     return Scaffold(
         backgroundColor: Colors.grey,
         body: Column(children: <Widget>[
-
-
-
+          
           Row(
             //ROW 1
             children: [
