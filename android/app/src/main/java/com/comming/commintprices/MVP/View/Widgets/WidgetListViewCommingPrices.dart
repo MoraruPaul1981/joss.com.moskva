@@ -88,32 +88,42 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices>  {
               color: Colors .grey[100],
               elevation: 1.0,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-              child: ListTile (
-                leading: const Icon(Icons.flight_sharp),
-                subtitle: Text(""),
-                  trailing: Icon(Icons.more_vert),
-                onTap: () {
-             print('object');
-             ScaffoldMessenger.of(context).showSnackBar( SnackBar(
-               content: Text(user.trim().toLowerCase()+"\n"+
-                 "uuid-> "+  UUID),
-             ));
-
+              child:
+              InkWell(
+                borderRadius: BorderRadius.circular(8),
+                onTap: (){
+                  print('object');
                 },
-                title: SizedBox(
-                height: 45,
-            child: Center(
-                    child:
-                    Text(listManual[index].CFO.toString().trim(),
-                  style: TextStyle(height:2,fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black.withOpacity(0.7),
-                    decoration: TextDecoration.underline,
-                    decorationColor: Colors .blue[300],
-                    decorationStyle: TextDecorationStyle.wavy,) ,
+                child: Padding(
+                  padding: const EdgeInsets.all(1.0),
+                  child: ListTile (
+                    leading: const Icon(Icons.flight_sharp),
+                    subtitle: Text(""),
+                      trailing: Icon(Icons.more_vert),
+                    onTap: () {
+                               print('object');
+                               ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+                   content: Text(user.trim().toLowerCase()+"\n"+
+                     "uuid-> "+  UUID),
+                               ));
+                
+                    },
+                    title: SizedBox(
+                    height: 45,
+                              child: Center(
+                        child:
+                        Text(listManual[index].CFO.toString().trim(),
+                      style: TextStyle(height:2,fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black.withOpacity(0.7),
+                        decoration: TextDecoration.underline,
+                        decorationColor: Colors .blue[300],
+                        decorationStyle: TextDecorationStyle.wavy,) ,
+                    ),
+                              ),
+                              ),
+                  ),
                 ),
-            ),
-            ),
               ),
             );
           },
