@@ -17,12 +17,15 @@ late Logger logger;
   try {
 
 
+    //TODO get LOGGER int
+    logger=  await  Future<Logger>.value(GetErros().loggers());
+    logger.i('Future<void> main() $logger');
 
 
-
+    runApp(await const CommingPrices());
 
     //TODO starting Main Code Get Data
-    await mainGettingData();
+   /// await mainGettingData();
 
   logger.i('starting Main Code');
     //TODO error
@@ -92,9 +95,6 @@ late Logger logger;
 ///TODO START DATA
  Future<void> mainGettingData() async {
    try{
-
-   //TODO get LOGGER int
-   logger=  await  Future<Logger>.value(GetErros().loggers());
 
     //TODO After Get PING
     String? ping1C=await  getJson1cPing() as String?     ;
@@ -278,7 +278,8 @@ class CommingPrices extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
   @override
-  State<MyHomePage> createState() => _MyHomePageState2();
+ // State<MyHomePage> createState() => _MyHomePageState2();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 
@@ -344,118 +345,12 @@ class _MyHomePageState2 extends State<MyHomePage>  {
 
 
 
-Widget _futureBuilder() {
-  return FutureBuilder<String>(
-    future: getDataFuture(),
-    builder: (context, AsyncSnapshot snapshot) {
-
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return getWaitingFutureBuilder(snapshot);
-      } else   {
-          return getAfterFutureBuilderColumn(snapshot);
-      }
-
-    }
-    );
-}
-
-
-
-    //TODO метод возвраяет ыиджет ошибочный
-    ErrorWidget getFutureBuilderError(AsyncSnapshot snapshot) {
-      late ErrorWidget errwid;
-      try {
-        errwid=ErrorWidget(snapshot.error.toString());
-        //TODO error
-      }   catch (e, stacktrace) {
-        print(' get ERROR $e get stacktrace $stacktrace ');
-      }
-      return errwid;
-    }
-
-
-        //TODO метод возвраяет виджет после Операции
-         Widget getAfterFutureBuilderColumn(AsyncSnapshot snapshot) {
-
-           if (snapshot.hasData && snapshot.data.toString().isNotEmpty ) {
-             return Column(
-               mainAxisSize: MainAxisSize.min,
-               children: [
-                 Text(
-                   snapshot.data.toString(),textAlign: TextAlign.center,
-                 ),
-                 ElevatedButton(
-                     onPressed: () {},
-                     child: const Text(
-                         'Refrech'
-                     ))
-               ],
-             );
-           }else if(snapshot.hasError){
-
-             return getFutureBuilderError(snapshot);
-
-           } else{
-             return Column(
-               mainAxisSize: MainAxisSize.min,
-               children: [
-                 Text(
-                   snapshot.data.toString(),textAlign: TextAlign.center,
-                 ),
-                 ElevatedButton(
-                     onPressed: () {},
-                     child: const Text(
-                         'Refrech NULLL'
-                     ))
-               ],
-             );
-           }
-        }
 
 
 
 
 
-                //TODO метод   Операции в ПРОЦЕССЕ......
-                Widget getWaitingFutureBuilder(AsyncSnapshot snapshot) {
-                  return Padding(
-                    padding: const EdgeInsets.only(
-                        top: 200, bottom: 0, left: 0, right: 0),
-                    child: SizedBox(
-                      height: 20.0,
-                      width: 20.0,
-                      child: Transform.scale(
-                        scale: 2,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 3,
-                          valueColor: AlwaysStoppedAnimation(
-                              Colors.red),
 
-                        ),
-                      ),
-                    ),
-                  );
-                }
-
-
-
-
-    //TODO пользовательские метод Future
-    Future<String> getDataFuture() async{
-      try{
-        await  Future.delayed(
-          const Duration(
-              seconds: 5
-          ),
-        );
-        //TODO error
-      }   catch (e, stacktrace) {
-        print(' get ERROR $e get stacktrace $stacktrace ');
-      }
-     return 'FutureBuilder success    '+new DateTime.now().toString();
-    //  return '';
-      //throw 'Erross!!';
-    }
 
 
 
@@ -481,7 +376,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   radius:50,
                 ),
                 Text(
-                  'Priyanshu',
+                  'Союз-Автодор',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 40.0,
@@ -490,7 +385,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 Text(
-                  '2222Flutter Developer',
+                  'г.Иваново ул.Проездная 27/18',
                   style: TextStyle(
                     fontSize: 20.0,
                     fontFamily: 'Source Sans Pro',
@@ -511,7 +406,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       title:
                       Text(
-                        '+91 7355689902',
+                        '+79158111806',
                         style: TextStyle(
                           fontFamily: 'Pacifico',
                           fontSize: 20.0,
@@ -534,7 +429,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       title:
                       Text(
-                        'priyanshutaru@gmial.com',
+                        'SOUS@gmial.com',
                         style: TextStyle(
                           fontFamily: 'Pacifico',
                           fontSize: 20.0,
@@ -556,7 +451,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       title:
                       Text(
-                        'priyanshutaru@gmial.com',
+                        'SOUS2@gmial.com',
                         style: TextStyle(
                           fontFamily: 'Pacifico',
                           fontSize: 20.0,
