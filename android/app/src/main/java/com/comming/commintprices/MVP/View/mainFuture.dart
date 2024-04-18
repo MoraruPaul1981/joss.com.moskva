@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:isolate';
 
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -9,25 +8,30 @@ import '../Model/Futures/one1C/GetFutures1C.dart';
 import '../Model/Jsons/One1C/Polo/Person1CList.dart';
 import '../Model/Jsons/One1C/Polo/Person1CMap.dart';
 import '../Model/Loggers/GetErrors.dart';
+import 'Widgets/WidgetPhoneMail.dart';
+import 'Widgets/WidgetRow.dart';
 
 late Logger logger;
 
 
  Future<void> main()  async {
   try {
-
-
     //TODO get LOGGER int
     logger=  await  Future<Logger>.value(GetErros().loggers());
     logger.i('Future<void> main() $logger');
 
 
-    runApp(await const CommingPrices());
+    //TODO starting UI
+    runApp( const MainWidgetCommingPrices());
 
-    //TODO starting Main Code Get Data
+    logger.i('starting CommingPrices()');
+
+
+
+    //TODO starting DATA
    /// await mainGettingData();
+  logger.i('starting mainGettingData()');
 
-  logger.i('starting Main Code');
     //TODO error
   }   catch (e, stacktrace) {
     print(' get ERROR $e get stacktrace $stacktrace ');
@@ -254,217 +258,32 @@ Future<List<Person1CMap>>     getJson1cMapGetJson( { required String?  ping1C } 
 
 
 
-
-
-
-
-
-
-
-
 ///TODO UI
-
-class CommingPrices extends StatelessWidget {
-  const CommingPrices({super.key});
+class MainWidgetCommingPrices extends StatelessWidget {
+  const MainWidgetCommingPrices({super.key});
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
-      home: const MyHomePage(),
+      home: const StatefulWidgetCommingPrices(),
     );
   }
 
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+class StatefulWidgetCommingPrices extends StatefulWidget {
+  const StatefulWidgetCommingPrices({super.key});
   @override
- // State<MyHomePage> createState() => _MyHomePageState2();
-  State<MyHomePage> createState() => _MyHomePageState();
+
+/*  //TODO widget ROW
+  State<StatefulWidgetCommingPrices> createState() => WidgetRow();*/
+
+//TODO widget Mail Phone
+  State<StatefulWidgetCommingPrices> createState() => WidgetPhoneMail();
+
 }
 
 
 
-//TODO класс dart future проекта Два #1
-class _MyHomePageState2 extends State<MyHomePage>  {
 
 
-
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Scaffold(
-      backgroundColor: Colors.grey,
-        body: Column(children: <Widget>[
-
-
-
-          Row(
-            //ROW 1
-            children: [
-              Container(
-                color: Colors.orange,
-                margin: EdgeInsets.all(25.0),
-                child: FlutterLogo(
-                  size: 60.0,
-                ),
-              ),
-            ],
-          ),
-
-
-
-          Row(//ROW 2
-              children: [
-
-                Container(
-                  color: Colors.blue,
-                  margin: EdgeInsets.all(25.0),
-                  child: FlutterLogo(
-                    size: 60.0,
-                  ),
-                ),
-
-              ]),
-
-
-          Row(// ROW 3
-              children: [
-                Container(
-                  color: Colors.purple,
-                  margin: EdgeInsets.all(25.0),
-                  child: FlutterLogo(
-                    size: 60.0,
-                  ),
-                ),
-              ]),
-        ]));
-  }
-
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//TODO класс dart future проекта Два #2
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.blue,
-        body: SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children:<Widget> [
-                CircleAvatar(
-                  radius:50,
-                ),
-                Text(
-                  'Союз-Автодор',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 40.0,
-                    fontFamily: 'Pacifico',
-                    color: Colors.white,
-                  ),
-                ),
-                Text(
-                  'г.Иваново ул.Проездная 27/18',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontFamily: 'Source Sans Pro',
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Card(
-
-                  margin: EdgeInsets.all(20.0),
-                  color: Colors.white,
-                  child: ListTile(
-                      leading:
-                      Icon(
-                        Icons.phone,
-                        color: Colors.black,
-                        size: 20.0,
-                      ),
-                      title:
-                      Text(
-                        '+79158111806',
-                        style: TextStyle(
-                          fontFamily: 'Pacifico',
-                          fontSize: 20.0,
-                          color: Colors.black54,
-                        ),
-                      )
-
-                  ),
-                ),
-                Card(
-
-                  margin: EdgeInsets.all(20.0),
-                  color: Colors.white,
-                  child: ListTile(
-                      leading:
-                      Icon(
-                        Icons.email,
-                        color: Colors.black,
-                        size: 20.0,
-                      ),
-                      title:
-                      Text(
-                        'SOUS@gmial.com',
-                        style: TextStyle(
-                          fontFamily: 'Pacifico',
-                          fontSize: 20.0,
-                          color: Colors.black54,
-                        ),
-                      )
-
-                  ),
-                ),
-                Card(
-                  margin: EdgeInsets.all(20.0),
-                  color: Colors.white,
-                  child: ListTile(
-                      leading:
-                      Icon(
-                        Icons.email,
-                        color: Colors.black,
-                        size: 20.0,
-                      ),
-                      title:
-                      Text(
-                        'SOUS2@gmial.com',
-                        style: TextStyle(
-                          fontFamily: 'Pacifico',
-                          fontSize: 20.0,
-                          color: Colors.black54,
-                        ),
-                      )
-
-                  ),
-                )
-              ],
-            )
-        ),
-      );
-  }
-}
 
