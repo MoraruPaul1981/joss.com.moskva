@@ -82,13 +82,16 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices>  {
           itemCount: listManual.length,
           itemBuilder: (context,index){
              final user = listManual[index].CFO.toString().trim();
+             final UUID = listManual[index].UUID.toString().trim();
             //TODO
             return Card(
               child: ListTile (
+                leading: const Icon(Icons.flight_sharp),
                 onTap: () {
              print('object');
              ScaffoldMessenger.of(context).showSnackBar( SnackBar(
-               content: Text(user.trim().toLowerCase()),
+               content: Text(user.trim().toLowerCase()+"\n"+
+                 "uuid-> "+  UUID),
              ));
 
                 },
