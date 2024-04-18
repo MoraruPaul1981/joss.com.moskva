@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../Model/Jsons/One1C/Polo/Person1CListManual.dart';
-import '../mainFuture.dart';
+import '../main.dart';
 
 //TODO Виджет сотоящий из трех строк Телефон и Две Почты
 class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices>  {
