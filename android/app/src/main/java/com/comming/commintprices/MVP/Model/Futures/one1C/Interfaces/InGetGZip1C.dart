@@ -3,7 +3,7 @@ import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'package:http/http.dart';
 
 
-import '../../../Jsons/One1C/Polo/Person1Cspoler.dart';
+import '../../../Jsons/One1C/Polo/Person1CList.dart';
 
 
 

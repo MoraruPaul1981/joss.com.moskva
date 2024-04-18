@@ -9,16 +9,16 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
 import '../../Converts/GetConverts.dart';
-import '../../Jsons/One1C/Polo/Person1Cspoler.dart';
-import '../../Jsons/One1C/Polo/Person1NestedList.dart';
+import '../../Jsons/One1C/Polo/Person1CList.dart';
+import '../../Jsons/One1C/Polo/Person1CMap.dart';
 import 'Interfaces/InFuture1C.dart';
 import 'Interfaces/InGetComplete1C.dart';
 import 'Interfaces/InParserJson1c.dart';
 
 class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c {
 
-  late List<Person1Cspoler> getJson1cSuccess;
-  late List<Person1NestedList> getJson1cMapSuccess;
+  late List<Person1CList> getJson1cSuccess;
+  late List<Map<String, Person1CMap>>?  getJson1cMapSuccess;
 
 
 
@@ -72,7 +72,7 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c {
 
 //TODO get JSON
   @override
-  Future<List<Person1Cspoler>?> getGettingJson1C({required String url, required int IdUser, required int UUID}) async {
+  Future<List<Person1CList>> getDownloadJsonList({required String url, required int IdUser, required int UUID}) async {
     // TODO: implement getGettingJson1C
     late var getJson1cSucces;
     try{
@@ -96,7 +96,7 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c {
 
     //    getCompleteCallBackJson( response1C: backresponsejboss)    ,
 
-        getJson1cSucces=  getCompleteFutureCallBackJson(response1C: backresponsejboss)as   List<Person1Cspoler>?  ,
+        getJson1cSucces=  getGeneratorListCallBack(response1C: backresponsejboss)as   List<Person1CList>  ,
 
         print(' then getJson1cSucces $getJson1cSucces'),
 
@@ -143,7 +143,7 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c {
 
 
   @override
-   List<Person1Cspoler>?  getCompleteFutureCallBackJson({required http.Response response1C}) {
+   List<Person1CList>  getGeneratorListCallBack({required http.Response response1C}) {
     // TODO: implement getCompleteFutureCallBackJson
   late var getJson1cSucces;
 
@@ -164,17 +164,14 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c {
 
           if (listDynamic.isNotEmpty ) {
 
+
             //TODO получаем данные JSON
             print('listDynamic.isNotEmpty ..$listDynamic.isNotEmpty '+'listDynamic.contains(2) .. $listDynamic.contains(2)');
 
-            ///List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  json:  model  )) .toList() as   List<Person1C>;
             ///TODO
-            //getJson1cSucces=listDynamic.map((model) => Person1Cspoler().fromJsondynamic(  json:  model  )) .toList() as   List<Person1Cspoler?>;
-            List<Person1Cspoler?> nested=
-            getJson1cSucces=listDynamic.map((model) => Person1NestedList().fromJsondynamic(  json:  model  )) .toList() as   List<Person1Cspoler?>;
+           getJson1cSucces=listDynamic.map((model) => Person1CList().loopGeneratorListPolo(  json:  model  )) .toList() as   List<Person1CList?>;
 
-            print('nested ..$nested');
-
+            print('getJson1cSucces ..$getJson1cSucces');
             //TODO
             print('getJson1cSuccess..$getJson1cSuccess');
 
@@ -193,7 +190,7 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c {
 
           List<dynamic>  listDynamic=   [];
           ///TODO
-          getJson1cSucces=listDynamic.map((model) => Person1Cspoler().fromJsondynamic(  json:  model  )) .toList() as   List<Person1Cspoler>;
+          getJson1cSucces=listDynamic.map((model) => Person1CList().loopGeneratorListPolo(  json:  model  )) .toList() as   List<Person1CList>;
           //TODO
           print('getJson1cSuccess..$getJson1cSuccess');
         }
@@ -279,69 +276,6 @@ return getList1cdynamic;
 
 
 
-  @override
-  List<Person1NestedList>? getCompleteFutureMapCallBackJson({required http.Response response1C}) {
-    // TODO: implement getCompleteFutureMapCallBackJson
-    // TODO: implement getCompleteCallBackJson
-    // TODO: implement getComplete
-    try{
-      print('getComplete $response1C');
-      //TODO
-      print('response1C.statusCode $response1C.statusCode');
-      if (response1C.statusCode==200) {
-
-        //TODO
-        print('response1C. contentLength....$response1C. contentLength');
-        if (response1C. contentLength!>100) {
-
-          List<dynamic>  listDynamic=  getList1cDynamic(response1C: response1C);
-          print('listDynamic $listDynamic');
-
-          if (listDynamic.isNotEmpty ) {
-
-            //TODO получаем данные JSON
-            print('listDynamic.isNotEmpty ..$listDynamic.isNotEmpty '+'listDynamic.contains(2) .. $listDynamic.contains(2)');
-
-            ///List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  json:  model  )) .toList() as   List<Person1C>;
-            ///TODO
-            getJson1cMapSuccess=listDynamic.map((model) => Person1NestedList().fromJsonMapdynamic(  json:  model  )) .toList() as   List<Person1NestedList>;
-            //TODO
-            print('getJson1cSuccess..$getJson1cSuccess');
-
-          }else{
-
-            //TODO
-            print('istDynamic.isEmpty..$listDynamic.isEmpty');
-          }
-
-        } else {
-          print('response1C. contentLength..$response1C. contentLength');
-
-          //TODO PING
-          String?  getCallPing1c= getPingDynamicDontaunt(response1C: response1C) as  String?   ;
-          print('getCallPing1c $getCallPing1c');
-
-          List<dynamic>  listDynamic=   [];
-          ///TODO
-          getJson1cMapSuccess=listDynamic.map((model) => Person1Cspoler().fromJsonMapdynamic(  json:  model  )) .toList() as   List<Person1NestedList>;
-          //TODO
-          print('getJson1cMapSuccess..$getJson1cMapSuccess');
-        }
-
-        print('getJson1cMapSuccess $getJson1cMapSuccess');
-      } else {
-        //TODO
-        print('response1C.statusCode $response1C.statusCode');
-      }
-
-
-
-      //TODO error
-    }   catch (e, stacktrace) {
-      print(' get ERROR $e get stacktrace $stacktrace ');
-    }
-  }
-
 
 
 
@@ -378,7 +312,7 @@ return getList1cdynamic;
 
                     ///List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  json:  model  )) .toList() as   List<Person1C>;
                     ///TODO
-                    getJson1cSuccess=listDynamic.map((model) => Person1Cspoler().fromJsondynamic(  json:  model  )) .toList() as   List<Person1Cspoler>;
+                    getJson1cSuccess=listDynamic.map((model) => Person1CList().loopGeneratorListPolo(  json:  model  )) .toList() as   List<Person1CList>;
                  //TODO
                  print('getJson1cSuccess..$getJson1cSuccess');
 
@@ -397,7 +331,7 @@ return getList1cdynamic;
 
           List<dynamic>  listDynamic=   [];
           ///TODO
-          getJson1cSuccess=listDynamic.map((model) => Person1Cspoler().fromJsondynamic(  json:  model  )) .toList() as   List<Person1Cspoler>;
+          getJson1cSuccess=listDynamic.map((model) => Person1CList().loopGeneratorListPolo(  json:  model  )) .toList() as   List<Person1CList>;
           //TODO
           print('getJson1cSuccess..$getJson1cSuccess');
         }
@@ -448,7 +382,7 @@ return getList1cdynamic;
   }
 
   @override
-  Future<List<Person1NestedList>?> getGettingMapJson1C({required String url, required int IdUser, required int UUID}) async {
+  Future<List<Person1CMap>> getDownloadJsonMap({required String url, required int IdUser, required int UUID}) async {
     // TODO: implement getCompleteMapCallBackJson
     // TODO: implement getGettingJson1C
     late var getJson1cSucces;
@@ -473,7 +407,7 @@ return getList1cdynamic;
 
         //    getCompleteCallBackJson( response1C: backresponsejboss)    ,
 
-        getJson1cSucces=  getCompleteFutureMapCallBackJson(response1C: backresponsejboss) as   List<Person1NestedList>?  ,
+        getJson1cSucces=  getGeneratorMapCallBack(response1C: backresponsejboss) as  List<Map<String, Person1CMap>>  ,
 
         print(' then getJson1cSucces $getJson1cSucces'),
 
@@ -497,6 +431,14 @@ return getList1cdynamic;
 
     return   getJson1cSucces;
   }
+
+  @override
+  List<Map<String, Person1CMap>> getGeneratorMapCallBack({required http.Response response1C}) {
+    // TODO: implement getCompleteFutureMapCallBackJson
+    throw UnimplementedError();
+  }
+
+
 
 
 
