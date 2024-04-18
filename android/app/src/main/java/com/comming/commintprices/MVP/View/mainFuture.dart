@@ -16,8 +16,13 @@ late Logger logger;
  Future<void> main()  async {
   try {
 
-    //TODO starting Main Code
-    await MainGetPingGetPingGetLog();
+
+
+
+
+
+    //TODO starting Main Code Get Data
+    await mainGettingData();
 
   logger.i('starting Main Code');
     //TODO error
@@ -28,9 +33,64 @@ late Logger logger;
 
 
 
-//TODO main code GEt Ping get JSON get Logger
 
- Future<void> MainGetPingGetPingGetLog() async {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///TODO START DATA
+ Future<void> mainGettingData() async {
    try{
 
    //TODO get LOGGER int
@@ -41,9 +101,12 @@ late Logger logger;
     logger.i('ping1C  .. $ping1C '+'ping1C..$ping1C');
 
 
-    //TODO Get After JSON
+    //TODO Get After JSON LIST
     List<Person1CList>   getJSon1CFuture=  await  getJson1cGetJson(   ping1C : ping1C) as List<Person1CList> ;
    logger.i('ping1C  .. $ping1C '+'getJSon1CFuture..$getJSon1CFuture');
+
+
+     //TODO Get After JSON MAP
 
 /*    List<Person1CMap>   getJSon1CMapFuture=  await  getJson1cMapGetJson(   ping1C : ping1C) as List<Person1CMap> ;
     logger.i('ping1C  .. $ping1C '+'getJSon1CMapFuture..$getJSon1CMapFuture');*/
@@ -166,39 +229,6 @@ Future<List<Person1CMap>>     getJson1cMapGetJson( { required String?  ping1C } 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //TODO main metod endinf CompelteN
   void  getJsonCompeling({ required List<Person1CList?>   getJSon1CFuture })   {
   try{
@@ -217,6 +247,7 @@ Future<List<Person1CMap>>     getJson1cMapGetJson( { required String?  ping1C } 
 
 }
 
+//TODO end   DATA
 
 
 
@@ -231,65 +262,7 @@ Future<List<Person1CMap>>     getJson1cMapGetJson( { required String?  ping1C } 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//TODO  просто метод  void
-void proccedtvoid({String? firstName, String lastName = 'Todo',required int nik}) async{
-  try {
-
-    print('firstName $firstName');
-    print('lastName $lastName');
-
-
-
-    final Future <String> futureString= Isolate.run(
-            () =>  Future<String>.sync(()=> getDataFuture() ));
-
-         futureString
-        .then((value) => gettt(  ss: value) )
-        .catchError((e) {throw Exception('Some arbitrary error');})
-        .whenComplete(() =>  print('nik $nik'));
-    //TODO error
-    //TODO error
-  }   catch (e, stacktrace) {
-    print(' get ERROR $e get stacktrace $stacktrace ');
-  }
-}
-
-
-void  gettt( { required String ss })  {
-    try{
-    print('ss $ss');
-      //TODO error
-      //TODO error
-    }   catch (e, stacktrace) {
-      print(' get ERROR $e get stacktrace $stacktrace ');
-    }
-}
-
-
-
-
-
-
-
-
+///TODO UI
 
 class CommingPrices extends StatelessWidget {
   const CommingPrices({super.key});

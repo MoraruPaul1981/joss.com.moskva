@@ -17,8 +17,10 @@ import 'Interfaces/InParserJson1c.dart';
 
 class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c {
 
-  late List<Person1CList> getJson1cSuccess;
-  late List<Map<String, Person1CMap>>?  getJson1cMapSuccess;
+  //TODO
+  late List<Person1CList> getPerson1CList;
+  //TODO
+  late List<Map<String, Person1CMap>>?  getPerson1CMap;
 
 
 
@@ -173,7 +175,7 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c {
 
             print('getJson1cSucces ..$getJson1cSucces');
             //TODO
-            print('getJson1cSuccess..$getJson1cSuccess');
+            print('getJson1cSuccess..$getPerson1CList');
 
           }else{
 
@@ -192,10 +194,10 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c {
           ///TODO
           getJson1cSucces=listDynamic.map((model) => Person1CList().loopGeneratorListPolo(  json:  model  )) .toList() as   List<Person1CList>;
           //TODO
-          print('getJson1cSuccess..$getJson1cSuccess');
+          print('getJson1cSuccess..$getPerson1CList');
         }
 
-        print('personSpoler $getJson1cSuccess');
+        print('personSpoler $getPerson1CList');
       } else {
         //TODO
         print('response1C.statusCode $response1C.statusCode');
@@ -312,9 +314,9 @@ return getList1cdynamic;
 
                     ///List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  json:  model  )) .toList() as   List<Person1C>;
                     ///TODO
-                    getJson1cSuccess=listDynamic.map((model) => Person1CList().loopGeneratorListPolo(  json:  model  )) .toList() as   List<Person1CList>;
+                    getPerson1CList=listDynamic.map((model) => Person1CList().loopGeneratorListPolo(  json:  model  )) .toList() as   List<Person1CList>;
                  //TODO
-                 print('getJson1cSuccess..$getJson1cSuccess');
+                 print('getJson1cSuccess..$getPerson1CList');
 
                   }else{
 
@@ -331,12 +333,12 @@ return getList1cdynamic;
 
           List<dynamic>  listDynamic=   [];
           ///TODO
-          getJson1cSuccess=listDynamic.map((model) => Person1CList().loopGeneratorListPolo(  json:  model  )) .toList() as   List<Person1CList>;
+          getPerson1CList=listDynamic.map((model) => Person1CList().loopGeneratorListPolo(  json:  model  )) .toList() as   List<Person1CList>;
           //TODO
-          print('getJson1cSuccess..$getJson1cSuccess');
+          print('getJson1cSuccess..$getPerson1CList');
         }
 
-        print('personSpoler $getJson1cSuccess');
+        print('personSpoler $getPerson1CList');
       } else {
         //TODO
         print('response1C.statusCode $response1C.statusCode');
