@@ -38,21 +38,25 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices>  {
           elevation: 500,
     ),
       body: ListView.builder(
+          scrollDirection: Axis.vertical, // Axis.horizontal for horizontal list view.
           itemCount: listManual.length,
           itemBuilder: (context,index){
             //TODO
             return Card(
               child: ListTile (
-                onTap: () {},
-                title: Text(listManual[index].CFO.toString().trim(),
+                onTap: () {
+             print('object');
+                },
+                title: Align(
+                    child:
+                    Text(listManual[index].CFO.toString().trim(),
                   style: TextStyle(height:2,fontSize: 13,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'Hind',
                       color: Colors.black.withOpacity(0.7),
                     decoration: TextDecoration.underline,
                     decorationColor: Colors .blue[300],
                     decorationStyle: TextDecorationStyle.wavy,) ,
-                ),
+                )),
               ),
             );
           },
