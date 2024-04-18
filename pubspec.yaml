@@ -36,6 +36,7 @@ dependencies:
   logger: ^2.0.2+1
   dart_json_mapper: ^2.2.12+1
   dart_json_mapper_flutter: ^2.0.1
+  flutter_background_service: ^4.0.0
 
   flutter:
     sdk: flutter
