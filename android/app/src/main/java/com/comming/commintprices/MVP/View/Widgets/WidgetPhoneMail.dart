@@ -18,6 +18,9 @@ class WidgetPhoneMail extends State<StatefulWidgetCommingPrices>  {
             children:<Widget> [
               CircleAvatar(
                 radius:50,
+                backgroundImage:
+                NetworkImage('https://valday.com/img/122841.jpg'),
+                backgroundColor: Colors.transparent,
               ),
               Text(
                 'Союз-Автодор',
