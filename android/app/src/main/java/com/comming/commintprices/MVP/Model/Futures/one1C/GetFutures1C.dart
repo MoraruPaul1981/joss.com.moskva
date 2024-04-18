@@ -9,11 +9,12 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
 import '../../Converts/GetConverts.dart';
+import '../../Interfacess1C/InFuture1C.dart';
+import '../../Interfacess1C/InGetComplete1C.dart';
+import '../../Interfacess1C/InParserJson1c.dart';
 import '../../Jsons/One1C/Polo/Person1CList.dart';
 import '../../Jsons/One1C/Polo/Person1CMap.dart';
-import 'Interfaces/InFuture1C.dart';
-import 'Interfaces/InGetComplete1C.dart';
-import 'Interfaces/InParserJson1c.dart';
+
 
 class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c {
 

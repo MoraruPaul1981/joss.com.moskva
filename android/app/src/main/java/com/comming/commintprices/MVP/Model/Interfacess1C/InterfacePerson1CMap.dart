@@ -1,9 +1,7 @@
 
 import 'dart:collection';
 
-
-import '../../../Jsons/One1C/Polo/Person1CList.dart';
-import '../../../Jsons/One1C/Polo/Person1CMap.dart';
+import '../Jsons/One1C/Polo/Person1CMap.dart';
 
 
 
