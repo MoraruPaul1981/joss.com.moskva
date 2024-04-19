@@ -217,8 +217,8 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
         bottom: PreferredSize(
           preferredSize:  const Size.fromHeight(4.0),
           child: Container(
-            color: Colors.blue[800],
-            height: 2.0,
+            color:Colors.blue[100],
+            height: 2,
           ),
         ),
         backgroundColor: Colors.blue[300],
