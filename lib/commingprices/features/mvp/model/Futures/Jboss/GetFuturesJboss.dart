@@ -2,8 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:commintprices/commingprices/features/mvp/model/Futures/Jboss/Interfaces/InFutureJboss.dart';
-import 'package:commintprices/commingprices/features/mvp/model/Jsons/jboss/Polo/Personjboss.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -12,6 +11,9 @@ import 'dart:io';
 
 
 import 'package:logger/logger.dart';
+
+import '../../Jsons/jboss/Polo/Personjboss.dart';
+import 'Interfaces/InFutureJboss.dart';
 
 class GetFuturesJbossDebug  implements InFutureJboss,InGetCompleteJboss {
 

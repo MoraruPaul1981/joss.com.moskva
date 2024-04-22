@@ -2,7 +2,8 @@
 
 
 
-import 'package:commintprices/commingprices/features/mvp/model/Jsons/jboss/Polo/Personjboss.dart';
+
+import '../Polo/Personjboss.dart';
 
 abstract  class  InParserJsonJboss {
 

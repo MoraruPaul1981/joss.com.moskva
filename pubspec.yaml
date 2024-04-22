@@ -98,3 +98,13 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+  ## При активации с помощью команды pub global activate и ввода my_command_2 запустится bin/my_command_2.dart
+## Этот проект поддерживает все платформы
+platforms:
+  android:
+  ios:
+  linux:
+  macos:
+  web:
+  windows:

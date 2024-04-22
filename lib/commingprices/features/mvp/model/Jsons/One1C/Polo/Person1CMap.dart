@@ -4,8 +4,8 @@ import 'dart:collection';
 
 
 
-import 'package:commintprices/commingprices/features/mvp/model/Interfacess1C/InterfacePerson1CMap.dart';
 
+import '../../../Interfacess1C/InterfacePerson1CMap.dart';
 import 'Person1CList.dart';
 
 

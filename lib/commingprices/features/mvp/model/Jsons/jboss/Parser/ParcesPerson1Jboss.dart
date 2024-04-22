@@ -2,9 +2,9 @@ import 'dart:convert';
 
 
 
-import 'package:commintprices/commingprices/features/mvp/model/Jsons/jboss/Polo/Personjboss.dart';
 
 import '../Interfaces/InParserJsonJboss.dart';
+import '../Polo/Personjboss.dart';
 
 
 

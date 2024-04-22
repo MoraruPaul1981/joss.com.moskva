@@ -1,16 +1,17 @@
 import 'dart:async';
 
-import 'package:commintprices/commingprices/features/mvp/model/Jsons/One1C/Polo/Person1CList.dart';
-import 'package:commintprices/commingprices/features/mvp/model/Loggers/GetErrors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
+import 'commingprices/features/mvp/model/AdressJboss/getAdress.dart';
+import 'commingprices/features/mvp/model/Futures/one1C/GetFutures1C.dart';
+import 'commingprices/features/mvp/model/Jsons/One1C/Polo/Person1CList.dart';
+import 'commingprices/features/mvp/model/Jsons/One1C/Polo/Person1CMap.dart';
+import 'commingprices/features/mvp/model/Loggers/GetErrors.dart';
+import 'commingprices/features/mvp/view/Widgets/WidgetListViewCommingPrices.dart';
 
-import 'package:commintprices/commingprices/features/mvp/model/AdressJboss/getAdress.dart';
-import 'package:commintprices/commingprices/features/mvp/model/Futures/one1C/GetFutures1C.dart';
-import 'package:commintprices/commingprices/features/mvp/model/Jsons/One1C/Polo/Person1CMap.dart';
-import 'package:commintprices/commingprices/features/mvp/view/Widgets/WidgetListViewCommingPrices.dart';
+
 
 
 

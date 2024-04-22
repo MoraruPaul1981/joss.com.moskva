@@ -1,7 +1,9 @@
 
 import 'dart:collection';
 
-import 'package:commintprices/commingprices/features/mvp/model/Jsons/One1C/Polo/Person1CListManual.dart';
+import '../Jsons/One1C/Polo/Person1CListManual.dart';
+
+
 
 
 

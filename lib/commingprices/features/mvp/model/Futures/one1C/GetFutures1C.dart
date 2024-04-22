@@ -3,15 +3,19 @@ import 'dart:convert';
 import 'dart:isolate';
 import 'dart:typed_data' show Uint8List,Uint16List;
 import 'dart:typed_data';
-import 'package:commintprices/commingprices/features/mvp/model/Converts/GetConverts.dart';
-import 'package:commintprices/commingprices/features/mvp/model/Interfacess1C/InFuture1C.dart';
-import 'package:commintprices/commingprices/features/mvp/model/Interfacess1C/InGetComplete1C.dart';
-import 'package:commintprices/commingprices/features/mvp/model/Interfacess1C/InParserJson1c.dart';
-import 'package:commintprices/commingprices/features/mvp/model/Jsons/One1C/Polo/Person1CList.dart';
-import 'package:commintprices/commingprices/features/mvp/model/Jsons/One1C/Polo/Person1CMap.dart';
+
+
+
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+
+import '../../Converts/GetConverts.dart';
+import '../../Interfacess1C/InFuture1C.dart';
+import '../../Interfacess1C/InGetComplete1C.dart';
+import '../../Interfacess1C/InParserJson1c.dart';
+import '../../Jsons/One1C/Polo/Person1CList.dart';
+import '../../Jsons/One1C/Polo/Person1CMap.dart';
 
 
 

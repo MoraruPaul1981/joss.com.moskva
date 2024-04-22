@@ -1,5 +1,6 @@
 
-import 'package:commintprices/commingprices/features/mvp/model/AdressJboss/InFuture.dart';
+
+import 'InFuture.dart';
 
 ////TODO jboss  ////TODO jboss ////TODO jboss ////TODO jboss
 

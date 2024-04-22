@@ -5,7 +5,7 @@
 
 
 
-import 'package:commintprices/commingprices/features/mvp/model/Interfacess1C/InterfacePerson1CList.dart';
+import '../../../Interfacess1C/InterfacePerson1CList.dart';
 
 class Person1CList implements InterfacePerson1CList {
 

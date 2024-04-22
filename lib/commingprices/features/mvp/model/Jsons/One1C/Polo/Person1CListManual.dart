@@ -1,11 +1,11 @@
 
 
 
+
+
+
+
 import '../../../Interfacess1C/InterfacePerson1CListManual.dart';
-
-
-
-
 
 class Person1CListManual implements InterfacePerson1CListManual {
 
