@@ -19,17 +19,27 @@ import 'features/commingprices/cleanarchitecture/presenter/widgets/WidgetListVie
 late Logger logger;
 
 
- Future<void> main()  async {
+  void  main()    {
   try {
     //TODO int LOGGER
-    logger=  await  Future<Logger>.value(GetErros().loggers());
+  Future<Logger>.value(GetErros().loggers()).then((value) {
+
+    logger=value;
     logger.i('start  Future<void> main()  async  logger .. $logger');
 
+      return logger;
+    }).whenComplete(() {
+
+    logger.i('start  Future<void> main()  async  logger .. $logger');
     //TODO starting UI
     runApp(  startingwidgetCommingPrices(  logger: logger));
 
     logger.i('end  Future<void> main()  async');
 
+  }).catchError(
+   (Object error) {
+   print(' get ERROR $error  ');
+   });
     //TODO error
   }   catch (e, stacktrace) {
     print(' get ERROR $e get stacktrace $stacktrace ');
