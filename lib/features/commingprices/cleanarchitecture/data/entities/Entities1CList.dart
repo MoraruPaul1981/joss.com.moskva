@@ -2,7 +2,7 @@
 
 
 
-import '../usercases/Interfaces/InterfaceEntities1CList.dart';
+import '../../domain/usercases/Interfaces/InterfaceEntities1CList.dart';
 
 class Entities1CList implements InterfaceEntities1CList {
 

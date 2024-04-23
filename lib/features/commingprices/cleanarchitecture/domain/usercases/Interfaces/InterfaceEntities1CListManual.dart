@@ -1,14 +1,7 @@
 
 import 'dart:collection';
 
-import '../../entities/Entities1CListManual.dart';
-
-
-
-
-
-
-
+import '../../../data/entities/Entities1CListManual.dart';
 
 
 

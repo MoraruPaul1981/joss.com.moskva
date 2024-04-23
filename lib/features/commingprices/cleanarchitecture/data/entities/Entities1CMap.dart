@@ -2,7 +2,8 @@
 
 import 'dart:collection';
 
-import '../usercases/Interfaces/InterfaceEntities1CMap.dart';
+
+import '../../domain/usercases/Interfaces/InterfaceEntities1CMap.dart';
 import 'Entities1CList.dart';
 
 

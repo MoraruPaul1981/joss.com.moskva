@@ -5,8 +5,8 @@
 
 
 
-import '../../entities/Entities1CList.dart';
-import '../../entities/Entities1CMap.dart';
+import '../../../data/entities/Entities1CList.dart';
+import '../../../data/entities/Entities1CMap.dart';
 
 abstract  class InFuture1C {
 

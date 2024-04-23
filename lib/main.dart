@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 
-import 'features/commingprices/cleanarchitecture/data/local/Futures/GetFutures1C.dart';
-import 'features/commingprices/cleanarchitecture/domain/entities/Entities1CList.dart';
-import 'features/commingprices/cleanarchitecture/domain/entities/Entities1CMap.dart';
+import 'features/commingprices/cleanarchitecture/data/entities/Entities1CList.dart';
+import 'features/commingprices/cleanarchitecture/data/entities/Entities1CMap.dart';
+import 'features/commingprices/cleanarchitecture/data/remote/Futures/GetFutures1C.dart';
+import 'features/commingprices/cleanarchitecture/data/remote/Futures/getPing.dart';
 import 'features/commingprices/cleanarchitecture/domain/usercases/AdressJboss/getAdress.dart';
 import 'features/commingprices/cleanarchitecture/domain/usercases/Loggers/GetErrors.dart';
 import 'features/commingprices/cleanarchitecture/presenter/widgets/WidgetListViewCommingPrices/WidgetListViewCommingPrices.dart';
@@ -20,21 +21,21 @@ late Logger logger;
 
  Future<void> main()  async {
   try {
-    //TODO get LOGGER int
+    //TODO int LOGGER
     logger=  await  Future<Logger>.value(GetErros().loggers());
-    logger.i('Future<void> main() $logger');
+    logger.i('logger  .. $logger');
+
+    //TODO int Ping
+    String? ping1C=await   GetPing().  getJson1cPing() as String?     ;
+    logger.i('ping1C  .. $ping1C '+'ping1C..$ping1C');
+
 
 
     //TODO starting UI
-    runApp( const MainWidgetCommingPrices());
+    runApp(  startingwidgetCommingPrices(  logger));
 
     logger.i('starting CommingPrices()');
 
-
-    //TODO starting DATA
-   /// await mainGettingData();
-  logger.i('starting mainGettingData()');
-
     //TODO error
   }   catch (e, stacktrace) {
     print(' get ERROR $e get stacktrace $stacktrace ');
@@ -99,38 +100,6 @@ late Logger logger;
 
 
 
-///TODO START DATA
- Future<void> mainGettingData() async {
-   try{
-
-    //TODO After Get PING
-    String? ping1C=await  getJson1cPing() as String?     ;
-    logger.i('ping1C  .. $ping1C '+'ping1C..$ping1C');
-
-
-    //TODO Get After JSON LIST
-    List<Entities1CList>   getJSon1CFuture=  await  getJson1cGetJson(   ping1C : ping1C) as List<Entities1CList> ;
-   logger.i('ping1C  .. $ping1C '+'getJSon1CFuture..$getJSon1CFuture');
-
-
-     //TODO Get After JSON MAP
-
-/*    List<Person1CMap>   getJSon1CMapFuture=  await  getJson1cMapGetJson(   ping1C : ping1C) as List<Person1CMap> ;
-    logger.i('ping1C  .. $ping1C '+'getJSon1CMapFuture..$getJSon1CMapFuture');*/
-
-
-
-/*   //TODO After Complete JSON
-    getJsonCompeling(getJSon1CFuture: getJSon1CFuture);
-    logger.i('END getJsonCompeling() ping1C  .. $ping1C '+'getJSon1CFuture..$getJSon1CFuture');
-
-    logger.i('Isolate.current.debugName  ..  '+Isolate.current.debugName.toString());*/
-
-   //TODO error
- }   catch (e, stacktrace) {
-    print(' get ERROR $e get stacktrace $stacktrace ');
-}
- }
 
 
 
@@ -143,118 +112,6 @@ late Logger logger;
 
 
 
-
-
-
-
-
-//TODO main metod PING
-Future<String?>  getJson1cPing() async {
-  //TODO
- late  var    ping1C;
-  try{
-    //TODO адрес пинга к серверу  Jboss Debug
-    var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
-    //TODO
-    print('adressCurrent1C .. $adressCurrent1C');
-
-    ping1C   = await GetFutures1C().getPing1C(url: adressCurrent1C ) as    String?  ;
-
-    logger.i('ping1C  .. $ping1C '+'ping1C..$ping1C');
-
-
-    //TODO error
-  }   catch (e, stacktrace) {
-    print(' get ERROR $e get stacktrace $stacktrace ');
-  }
-  return ping1C;
-}
-
-
-
-
-
-
-//TODO main metod   JSON
- Future<List<Entities1CList>>     getJson1cGetJson( { required String?  ping1C } ) async {
-   //TODO
-  print('ping1C .. $ping1C');
-  late var   getJSon1CFuture;
-  //TODO
-   try{
-  //TODO адрес пинга к серверу  Jboss Debug
-  var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
-   logger.i('ping1C  .. $ping1C '+'ping1C..$ping1C'+'adressCurrent1C... $adressCurrent1C');
-   if (   ping1C!=null) {
-     //TODO
-     if (ping1C.isNotEmpty) {
-     //TODO запускаем
-         getJSon1CFuture   =await GetFutures1C().getDownloadJsonList(url: adressCurrent1C, IdUser: 8, UUID: 0)   as   List<Entities1CList>      ;
-     logger.i('getJSon1CFuture  .. $getJSon1CFuture.last ');
-       } else {
-       logger.i(' ping1C.isNotEmpty .. $ping1C.isNotEmpty '+'ping1C..$ping1C');
-       }
-       }else{
-     logger.i( 'ping1C..$ping1C');
-       }
-         //TODO error
-       }   catch (e, stacktrace) {
-        print(' get ERROR $e get stacktrace $stacktrace ');
-    }
-    return getJSon1CFuture;
-}
-
-
-//TODO main metod   JSON
-Future<List<Entities1CMap>>     getJson1cMapGetJson( { required String?  ping1C } ) async {
-  //TODO
-  print('ping1C .. $ping1C');
-  late var   getJSon1CFuture;
-  //TODO
-  try{
-    //TODO адрес пинга к серверу  Jboss Debug
-    var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
-    logger.i('ping1C  .. $ping1C '+'ping1C..$ping1C'+'adressCurrent1C... $adressCurrent1C');
-    if (   ping1C!=null) {
-      //TODO
-      if (ping1C.isNotEmpty) {
-        //TODO запускаем
-        getJSon1CFuture   =await GetFutures1C().getDownloadJsonMap(url: adressCurrent1C, IdUser: 8, UUID: 0)   as   List<Entities1CMap>      ;
-        logger.i('getJSon1CFuture  .. $getJSon1CFuture.last ');
-      } else {
-        logger.i(' ping1C.isNotEmpty .. $ping1C.isNotEmpty '+'ping1C..$ping1C');
-      }
-    }else{
-      logger.i( 'ping1C..$ping1C');
-    }
-    //TODO error
-  }   catch (e, stacktrace) {
-    print(' get ERROR $e get stacktrace $stacktrace ');
-  }
-  return getJSon1CFuture;
-}
-
-
-
-//TODO main metod endinf CompelteN
-  void  getJsonCompeling({ required List<Entities1CList?>   getJSon1CFuture })   {
-  try{
-    //TODO yes
-    if (  getJSon1CFuture.isNotEmpty) {
-      logger.i( 'ping1C..$getJSon1CFuture'+ 'getJSon1CFuture.isNotEmpty '+getJSon1CFuture.isNotEmpty.toString());
-    } else {
-      logger.i( 'ping1C..$getJSon1CFuture'+ 'getJSon1CFuture.isNotEmpty '+getJSon1CFuture.isNotEmpty.toString());
-    }
-    logger.i( 'ping1C..$getJSon1CFuture');
-
-    //TODO error
-  }   catch (e, stacktrace) {
-    print(' get ERROR $e get stacktrace $stacktrace ');
-  }
-
-}
-
-//TODO end   DATA
 
 
 
@@ -285,8 +142,14 @@ Future<List<Entities1CMap>>     getJson1cMapGetJson( { required String?  ping1C 
 
 
 ///TODO UI
-class MainWidgetCommingPrices extends StatelessWidget {
-  const MainWidgetCommingPrices({super.key});
+class startingwidgetCommingPrices extends StatelessWidget {
+
+  Logger logger;
+
+    startingwidgetCommingPrices( this. logger,{super.key});
+
+
+
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
@@ -295,14 +158,15 @@ class MainWidgetCommingPrices extends StatelessWidget {
         splashFactory: InkRipple.splashFactory,
       ),
       debugShowCheckedModeBanner: false,
-      home:   StatefulWidgetCommingPrices(),
+      home:   StatefulWidgetCommingPrices(logger),
     );
   }
 
 }
 
 class StatefulWidgetCommingPrices extends StatefulWidget {
-    StatefulWidgetCommingPrices({super.key});
+  Logger logger;
+    StatefulWidgetCommingPrices(this. logger,{super.key});
   @override
 
 /*  //TODO widget ROW
@@ -314,6 +178,7 @@ class StatefulWidgetCommingPrices extends StatefulWidget {
   //TODO Comming Prices
   State<StatefulWidgetCommingPrices> createState() => WidgetListViewCommingPrices();//TODO//
   //TODO
+
   //TODO ENDING widget
 }
 

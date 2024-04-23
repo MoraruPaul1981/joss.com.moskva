@@ -3,7 +3,8 @@ import 'package:commintprices/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../domain/entities/Entities1CListManual.dart';
+import '../../../data/entities/Entities1CListManual.dart';
+
 
 
 
@@ -19,8 +20,7 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
   Widget build(BuildContext context) {
     // TODO: implement build
     ////TODO получение данны на Виджет
-    listManual = getListmanual();
-
+    getJSon();
     print('listManual...  $listManual');
       return getWidgetScaffold(listManual);
   }
@@ -200,4 +200,14 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
     ];
     return listManual;
   }
+}
+
+
+void getJSon(){
+try {
+  print('getJSon()');
+} catch (e) {
+  print(e);
+}
+
 }

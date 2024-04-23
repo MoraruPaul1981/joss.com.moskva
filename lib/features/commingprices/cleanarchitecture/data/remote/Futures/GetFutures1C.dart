@@ -7,12 +7,13 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
-import '../../../domain/entities/Entities1CList.dart';
-import '../../../domain/entities/Entities1CMap.dart';
+
 import '../../../domain/usercases/Converts/GetConverts.dart';
 import '../../../domain/usercases/Interfaces/InFuture1C.dart';
 import '../../../domain/usercases/Interfaces/InGetComplete1C.dart';
 import '../../../domain/usercases/Interfaces/InParserJson1c.dart';
+import '../../entities/Entities1CList.dart';
+import '../../entities/Entities1CMap.dart';
 
 
 

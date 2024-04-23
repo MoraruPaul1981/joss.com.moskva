@@ -4,7 +4,8 @@
 
 
 
-import '../usercases/Interfaces/InterfaceEntities1CListManual.dart';
+
+import '../../domain/usercases/Interfaces/InterfaceEntities1CListManual.dart';
 
 class Entities1CListManual implements InterfaceEntities1CListManual {
 

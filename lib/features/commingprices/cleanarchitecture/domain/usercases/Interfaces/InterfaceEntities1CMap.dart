@@ -1,7 +1,8 @@
 
 import 'dart:collection';
 
-import '../../entities/Entities1CMap.dart';
+import '../../../data/entities/Entities1CMap.dart';
+
 
 
 

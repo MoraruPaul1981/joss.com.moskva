@@ -1,8 +1,7 @@
 
 import 'dart:collection';
 
-import '../../entities/Entities1CList.dart';
-
+import '../../../data/entities/Entities1CList.dart';
 
 
 
