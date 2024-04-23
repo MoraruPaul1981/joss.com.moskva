@@ -11,11 +11,15 @@ import '../../../domain/entities/Entities1CListManual.dart';
 //TODO Виджет сотоящий из трех строк Телефон и Две Почты
 class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
 
+  //TODO json data
+
+  late List<Entities1CListManual> listManual;
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     ////TODO получение данны на Виджет
-    List<Entities1CListManual> listManual = getListmanual();
+    listManual = getListmanual();
 
     print('listManual...  $listManual');
       return getWidgetScaffold(listManual);
