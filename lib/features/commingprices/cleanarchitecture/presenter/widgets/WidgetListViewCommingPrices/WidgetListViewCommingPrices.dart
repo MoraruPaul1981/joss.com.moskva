@@ -2,6 +2,7 @@
 import 'package:commintprices/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/src/logger.dart';
 
 import '../../../data/entities/Entities1CListManual.dart';
 
@@ -11,19 +12,49 @@ import '../../../data/entities/Entities1CListManual.dart';
 
 //TODO Виджет сотоящий из трех строк Телефон и Две Почты
 class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
-
+  Logger logger;
   //TODO json data
 
-  late List<Entities1CListManual> listManual=getListmanual();
+  late List<Entities1CListManual> listManual = getListmanual();
+
+  WidgetListViewCommingPrices({ required this.logger } );
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    ////TODO получение данны на Виджет
-    getJSon();
+    // TODO: Главный виджет
     print('listManual...  $listManual');
-      return getWidgetScaffold(listManual);
+    return FutureBuilder<String>(
+      future: downloadData(  logger: logger), // function where you call your api
+      builder: (BuildContext context,
+          AsyncSnapshot<String> snapshot) { // AsyncSnapshot<Your object type>
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: Text('Please wait its loading...'));
+        } else {
+          if (snapshot.hasError)
+            return Center(child: Text('Error: ${snapshot.error}'));
+          else
+            return getWidgetScaffold(
+                listManual); // snapshot.data  :- get your object which is pass from your downloadData() function
+        }
+      },
+    );
   }
+
+}
+Future<String> downloadData({ required  logger })async{
+
+  logger.i('downloadData( ');
+  //   var response =  await http.get('https://getProjectList');
+  return Future.value("Data download successfully"); // return your response
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -200,14 +231,6 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
     ];
     return listManual;
   }
-}
 
 
-void getJSon(){
-try {
-  print('getJSon()');
-} catch (e) {
-  print(e);
-}
 
-}
