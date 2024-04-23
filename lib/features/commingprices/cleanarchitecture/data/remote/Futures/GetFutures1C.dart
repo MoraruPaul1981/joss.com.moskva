@@ -22,7 +22,7 @@ class GetFutures1C  implements InFuture1C  {
 
   //TODO json get MAP
   @override
-  Future<List<Map<String, List<Entities1CMap>>?>> getDownloadJsonMaps({required String url,
+  Future<List<Map<String, List<Entities1CMap>>>?> getDownloadJsonMaps({required String url,
     required int IdUser, required int UUID}) async {
     // TODO: implement getDownloadJsonMaps
     try{

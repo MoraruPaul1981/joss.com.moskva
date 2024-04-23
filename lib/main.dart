@@ -15,37 +15,53 @@ import 'features/commingprices/cleanarchitecture/domain/usercases/Loggers/GetErr
 import 'features/commingprices/cleanarchitecture/presenter/widgets/WidgetListViewCommingPrices/WidgetListViewCommingPrices.dart';
 
 
-
-
 late Logger logger;
-
 
   void  main()    {
   try {
-    //TODO int LOGGER
-  Future<Logger>.value(  GetErros().loggers())
-      .then((value) {
-        //TODO then
-    logger= value;
-    logger.i('start  Future<void> main()  async  logger .. $logger');
-      return logger;
-    }).whenComplete(() {
+    print('Start  void  main() ');
 
-    logger.i('start  Future<void> main()  async  logger .. $logger');
-    //TODO starting UI
-    runApp(  startingwidgetCommingPrices(  logger: logger));
+    //TODO starting .....
+  startingCommintPrices();
 
-    logger.i('end  Future<void> main()  async');
-
-  }).catchError(
-   (Object error) {
-   print(' get ERROR $error  ');
-   });
+    print('END  void  main() ');
     //TODO error
   }   catch (e, stacktrace) {
     print(' get ERROR $e get stacktrace $stacktrace ');
   }
 }
+
+
+
+
+
+
+
+//TODO метод запуска coming prices
+  void startingCommintPrices() {
+    //TODO int LOGGER
+    Future<Logger>.value(  GetErros().loggers())
+
+        .then((value) {
+          //TODO then
+      logger= value;
+      logger.i('start  Future<void> main()  async  logger .. $logger');
+
+        return logger;
+
+      }).whenComplete(() {
+
+      logger.i('start  Future<void> main()  async  logger .. $logger');
+      //TODO starting UI
+      runApp(  startingwidgetCommingPrices(  logger: logger));
+
+      logger.i('end  Future<void> main()  async');
+
+    }).catchError(
+     (Object error) {
+     print(' get ERROR $error  ');
+     });
+  }
 
 
 
@@ -148,9 +164,9 @@ late Logger logger;
 
 ///TODO UI
 class startingwidgetCommingPrices extends StatelessWidget {
-
+//TODO log
   Logger logger;
-
+//TODO cunstructor
      startingwidgetCommingPrices( { required this.logger,super.key});
 
 
