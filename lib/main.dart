@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:isolate';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -22,11 +23,11 @@ late Logger logger;
   void  main()    {
   try {
     //TODO int LOGGER
-  Future<Logger>.value(GetErros().loggers()).then((value) {
-
-    logger=value;
+  Future<Logger>.value(  GetErros().loggers())
+      .then((value) {
+        //TODO then
+    logger= value;
     logger.i('start  Future<void> main()  async  logger .. $logger');
-
       return logger;
     }).whenComplete(() {
 
