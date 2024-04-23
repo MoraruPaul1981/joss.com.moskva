@@ -3,64 +3,31 @@ import 'package:commintprices/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/entities/Entities1CListManual.dart';
+import '../../../domain/entities/Entities1CListManual.dart';
 
 
 
 
 //TODO Виджет сотоящий из трех строк Телефон и Две Почты
 class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    ////TODO получение данны на Виджет
+    List<Entities1CListManual> listManual = getListmanual();
 
-    Entities1CListManual person1cListManual = Entities1CListManual();
+    print('listManual...  $listManual');
+      return getWidgetScaffold(listManual);
+  }
 
-    List<Entities1CListManual> listManual = [
-      //TODO
-      person1cListManual.loopGeneratorListPolo(
-          CFOKey: '(Закрыт) Ремонт а/д Ковров-Шуя-Кинешма (1этап)',
-          UUIDKey: 1111),
-      person1cListManual.loopGeneratorListPolo(
-          CFOKey:
-              '(закрыт) Воссст. изн-х слоев а/д Иваново-Родники (45+338 - 46+003) №909 от 12.09.2018               ',
-          UUIDKey: 2222),
-      person1cListManual.loopGeneratorListPolo(
-          CFOKey:
-              '(закрыт) Ганантийный ремонт Белино-Михайловское (объект с того года)                                ',
-          UUIDKey: 3333),
-      person1cListManual.loopGeneratorListPolo(
-          CFOKey:
-              '(Закрыт) Механизированная уборка и содержание дорог г.Фурманов №1 от 1.01.2018                      ',
-          UUIDKey: 4444),
-      person1cListManual.loopGeneratorListPolo(
-          CFOKey:
-              '(Закрыт) Работы по устройству слоёв износа а/д М5"Урал" Челябинская обл. №101 от 25.06.2018         ',
-          UUIDKey: 5555),
-      person1cListManual.loopGeneratorListPolo(
-          CFOKey:
-              '(Закрыт) Ремонт а/д Устюжно-Валдай 741751 от 07.08.17                                               ',
-          UUIDKey: 6666),
-      person1cListManual.loopGeneratorListPolo(
-          CFOKey:
-              '(закрыт) Содержание 2018-2019 Лежневского и Ивановского р-нов (Григорьев Алексей)                   ',
-          UUIDKey: 7777),
-      person1cListManual.loopGeneratorListPolo(
-          CFOKey:
-              '(Закрыт) Содержание а/д Р600 Кострома-Иваново №450 от 19.12.16 (с ноября закрыт)                    ',
-          UUIDKey: 8888),
-      person1cListManual.loopGeneratorListPolo(
-          CFOKey:
-              'Уборка города в рамках подготовки к выборам (Благотворительность)                                   ',
-          UUIDKey: 9999),
-      person1cListManual.loopGeneratorListPolo(
-          CFOKey:
-              'АБЗ первый, второй (Михалевский АБЗ) ПЕРЕВОЗКА МАТЕРИАЛОВ                                           ',
-          UUIDKey: 10000)
-    ];
 
-    String klickUsingData;
-    return Scaffold(
+
+
+  //TODO РАбоий Виджет
+  Widget getWidgetScaffold(List<Entities1CListManual> listManual){
+    ////TODO сам виджет
+    return new Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         leading: new Icon(Icons.live_tv),
@@ -88,7 +55,7 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
                 shrinkWrap: true,
                 primary: false,
                 scrollDirection:
-                    Axis.vertical, // Axis.horizontal for horizontal list view.
+                Axis.vertical, // Axis.horizontal for horizontal list view.
                 itemCount: listManual.length,
                 itemBuilder: (context, index) {
                   final user = listManual[index].CFO.toString().trim();
@@ -157,5 +124,76 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
         ),
       ),
     );
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  List<Entities1CListManual> getListmanual() {
+    Entities1CListManual person1cListManual = Entities1CListManual();
+
+    List<Entities1CListManual> listManual = [
+      //TODO
+      person1cListManual.loopGeneratorListPolo(
+          CFOKey: '(Закрыт) Ремонт а/д Ковров-Шуя-Кинешма (1этап)',
+          UUIDKey: 1111),
+      person1cListManual.loopGeneratorListPolo(
+          CFOKey:
+              '(закрыт) Воссст. изн-х слоев а/д Иваново-Родники (45+338 - 46+003) №909 от 12.09.2018               ',
+          UUIDKey: 2222),
+      person1cListManual.loopGeneratorListPolo(
+          CFOKey:
+              '(закрыт) Ганантийный ремонт Белино-Михайловское (объект с того года)                                ',
+          UUIDKey: 3333),
+      person1cListManual.loopGeneratorListPolo(
+          CFOKey:
+              '(Закрыт) Механизированная уборка и содержание дорог г.Фурманов №1 от 1.01.2018                      ',
+          UUIDKey: 4444),
+      person1cListManual.loopGeneratorListPolo(
+          CFOKey:
+              '(Закрыт) Работы по устройству слоёв износа а/д М5"Урал" Челябинская обл. №101 от 25.06.2018         ',
+          UUIDKey: 5555),
+      person1cListManual.loopGeneratorListPolo(
+          CFOKey:
+              '(Закрыт) Ремонт а/д Устюжно-Валдай 741751 от 07.08.17                                               ',
+          UUIDKey: 6666),
+      person1cListManual.loopGeneratorListPolo(
+          CFOKey:
+              '(закрыт) Содержание 2018-2019 Лежневского и Ивановского р-нов (Григорьев Алексей)                   ',
+          UUIDKey: 7777),
+      person1cListManual.loopGeneratorListPolo(
+          CFOKey:
+              '(Закрыт) Содержание а/д Р600 Кострома-Иваново №450 от 19.12.16 (с ноября закрыт)                    ',
+          UUIDKey: 8888),
+      person1cListManual.loopGeneratorListPolo(
+          CFOKey:
+              'Уборка города в рамках подготовки к выборам (Благотворительность)                                   ',
+          UUIDKey: 9999),
+      person1cListManual.loopGeneratorListPolo(
+          CFOKey:
+              'АБЗ первый, второй (Михалевский АБЗ) ПЕРЕВОЗКА МАТЕРИАЛОВ                                           ',
+          UUIDKey: 10000)
+    ];
+    return listManual;
   }
 }

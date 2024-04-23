@@ -10,7 +10,7 @@ import 'features/commingprices/cleanarchitecture/domain/entities/Entities1CList.
 import 'features/commingprices/cleanarchitecture/domain/entities/Entities1CMap.dart';
 import 'features/commingprices/cleanarchitecture/domain/usercases/AdressJboss/getAdress.dart';
 import 'features/commingprices/cleanarchitecture/domain/usercases/Loggers/GetErrors.dart';
-import 'features/commingprices/cleanarchitecture/presenter/widgets/WidgetListViewCommingPrices.dart';
+import 'features/commingprices/cleanarchitecture/presenter/widgets/WidgetListViewCommingPrices/WidgetListViewCommingPrices.dart';
 
 
 
