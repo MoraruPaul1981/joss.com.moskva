@@ -4,10 +4,9 @@
 
 
 
+import '../usercases/Interfaces/InterfacePerson1CListManual.dart';
 
-import '../../../Interfacess1C/InterfacePerson1CListManual.dart';
-
-class Person1CListManual implements InterfacePerson1CListManual {
+class Entities1CListManual implements InterfacePerson1CListManual {
 
   String? CFO;
 
@@ -24,7 +23,7 @@ class Person1CListManual implements InterfacePerson1CListManual {
   String? Kontragent;
 
 
-  Person1CListManual({String? CFO,
+  Entities1CListManual({String? CFO,
     String? Data,
     String? StatyaDDS,
     String? Nomenklatura,
@@ -56,12 +55,12 @@ class Person1CListManual implements InterfacePerson1CListManual {
 
 
   @override
-  Person1CListManual loopGeneratorListPolo({required String CFOKey, required int UUIDKey }  ) {
+  Entities1CListManual loopGeneratorListPolo({required String CFOKey, required int UUIDKey }  ) {
     // TODO: implement fromJsondynamic
     var person1cListManual;
     try {
           //TODO ЗАполяем данные в класс
-          person1cListManual = Person1CListManual(CFO: CFOKey,
+          person1cListManual = Entities1CListManual(CFO: CFOKey,
               Data: Data,
               StatyaDDS: StatyaDDS,
               Nomenklatura: Nomenklatura,

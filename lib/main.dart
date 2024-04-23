@@ -4,14 +4,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
-import 'commingprices/features/mvp/model/AdressJboss/getAdress.dart';
-import 'commingprices/features/mvp/model/Futures/one1C/GetFutures1C.dart';
-import 'commingprices/features/mvp/model/Jsons/One1C/Polo/Person1CList.dart';
-import 'commingprices/features/mvp/model/Jsons/One1C/Polo/Person1CMap.dart';
-import 'commingprices/features/mvp/model/Loggers/GetErrors.dart';
-import 'commingprices/features/mvp/view/Widgets/WidgetListViewCommingPrices.dart';
 
-
+import 'features/commingprices/cleanarchitecture/data/local/Futures/GetFutures1C.dart';
+import 'features/commingprices/cleanarchitecture/domain/entities/Entities1CList.dart';
+import 'features/commingprices/cleanarchitecture/domain/entities/Entities1CMap.dart';
+import 'features/commingprices/cleanarchitecture/domain/usercases/AdressJboss/getAdress.dart';
+import 'features/commingprices/cleanarchitecture/domain/usercases/Loggers/GetErrors.dart';
+import 'features/commingprices/cleanarchitecture/presenter/widgets/WidgetListViewCommingPrices.dart';
 
 
 
@@ -110,7 +109,7 @@ late Logger logger;
 
 
     //TODO Get After JSON LIST
-    List<Person1CList>   getJSon1CFuture=  await  getJson1cGetJson(   ping1C : ping1C) as List<Person1CList> ;
+    List<Entities1CList>   getJSon1CFuture=  await  getJson1cGetJson(   ping1C : ping1C) as List<Entities1CList> ;
    logger.i('ping1C  .. $ping1C '+'getJSon1CFuture..$getJSon1CFuture');
 
 
@@ -177,7 +176,7 @@ Future<String?>  getJson1cPing() async {
 
 
 //TODO main metod   JSON
- Future<List<Person1CList>>     getJson1cGetJson( { required String?  ping1C } ) async {
+ Future<List<Entities1CList>>     getJson1cGetJson( { required String?  ping1C } ) async {
    //TODO
   print('ping1C .. $ping1C');
   late var   getJSon1CFuture;
@@ -190,7 +189,7 @@ Future<String?>  getJson1cPing() async {
      //TODO
      if (ping1C.isNotEmpty) {
      //TODO запускаем
-         getJSon1CFuture   =await GetFutures1C().getDownloadJsonList(url: adressCurrent1C, IdUser: 8, UUID: 0)   as   List<Person1CList>      ;
+         getJSon1CFuture   =await GetFutures1C().getDownloadJsonList(url: adressCurrent1C, IdUser: 8, UUID: 0)   as   List<Entities1CList>      ;
      logger.i('getJSon1CFuture  .. $getJSon1CFuture.last ');
        } else {
        logger.i(' ping1C.isNotEmpty .. $ping1C.isNotEmpty '+'ping1C..$ping1C');
@@ -207,7 +206,7 @@ Future<String?>  getJson1cPing() async {
 
 
 //TODO main metod   JSON
-Future<List<Person1CMap>>     getJson1cMapGetJson( { required String?  ping1C } ) async {
+Future<List<Entities1CMap>>     getJson1cMapGetJson( { required String?  ping1C } ) async {
   //TODO
   print('ping1C .. $ping1C');
   late var   getJSon1CFuture;
@@ -220,7 +219,7 @@ Future<List<Person1CMap>>     getJson1cMapGetJson( { required String?  ping1C } 
       //TODO
       if (ping1C.isNotEmpty) {
         //TODO запускаем
-        getJSon1CFuture   =await GetFutures1C().getDownloadJsonMap(url: adressCurrent1C, IdUser: 8, UUID: 0)   as   List<Person1CMap>      ;
+        getJSon1CFuture   =await GetFutures1C().getDownloadJsonMap(url: adressCurrent1C, IdUser: 8, UUID: 0)   as   List<Entities1CMap>      ;
         logger.i('getJSon1CFuture  .. $getJSon1CFuture.last ');
       } else {
         logger.i(' ping1C.isNotEmpty .. $ping1C.isNotEmpty '+'ping1C..$ping1C');
@@ -238,7 +237,7 @@ Future<List<Person1CMap>>     getJson1cMapGetJson( { required String?  ping1C } 
 
 
 //TODO main metod endinf CompelteN
-  void  getJsonCompeling({ required List<Person1CList?>   getJSon1CFuture })   {
+  void  getJsonCompeling({ required List<Entities1CList?>   getJSon1CFuture })   {
   try{
     //TODO yes
     if (  getJSon1CFuture.isNotEmpty) {

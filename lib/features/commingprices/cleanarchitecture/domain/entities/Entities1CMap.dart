@@ -2,16 +2,13 @@
 
 import 'dart:collection';
 
-
-
-
-import '../../../Interfacess1C/InterfacePerson1CMap.dart';
-import 'Person1CList.dart';
+import '../usercases/Interfaces/InterfacePerson1CMap.dart';
+import 'Entities1CList.dart';
 
 
 
 
-class Person1CMap implements InterfacePerson1CMap{
+class Entities1CMap implements InterfacePerson1CMap{
   //TODO main varible
   String?   CFO    ;
   String?  Data;
@@ -29,7 +26,7 @@ class Person1CMap implements InterfacePerson1CMap{
 
 
 
-Person1CMap(
+Entities1CMap(
       {String?   CFO ,
       String?  Data,
       String?  StatyaDDS,
@@ -63,11 +60,11 @@ Person1CMap(
   }
 
   @override
-  List<Map<String, Person1CMap>> loopGeneratorMapPolo({required Map<String, dynamic> json}) {
+  List<Map<String, Entities1CMap>> loopGeneratorMapPolo({required Map<String, dynamic> json}) {
     // TODO: implement fromJsondynamic
-    List<Map<String, Person1CMap>>  returnMap=   [];
+    List<Map<String, Entities1CMap>>  returnMap=   [];
   //TODO
-    Person1CMap   person1cMap;
+    Entities1CMap   person1cMap;
     try {
       json.entries.forEach((elementMap) {
         //TODO root
@@ -143,7 +140,7 @@ Person1CMap(
 
 
           //TODO ЗАполяем данные в класс
-          person1cMap = Person1CMap(CFO: CFO,
+          person1cMap = Entities1CMap(CFO: CFO,
               Data: Data,
               StatyaDDS: StatyaDDS,
               Nomenklatura: Nomenklatura,
@@ -201,7 +198,7 @@ Person1CMap(
   void   getGeneterMap({required person1cMap,   required  MapEntry<String, dynamic> elementMap }) {
   try{
         if (person1cMap!=null) {
-          Map<String, Person1CMap>?     returnMap = {
+          Map<String, Entities1CMap>?     returnMap = {
                   elementMap.key.toString(): person1cMap,
                 };
       print('map $person1cMap'+' elementMap.key.toString()..$elementMap.key.toString()');

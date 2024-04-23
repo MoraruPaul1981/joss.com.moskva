@@ -2,12 +2,9 @@
 
 
 
+import '../usercases/Interfaces/InterfacePerson1CList.dart';
 
-
-
-import '../../../Interfacess1C/InterfacePerson1CList.dart';
-
-class Person1CList implements InterfacePerson1CList {
+class Entities1CList implements InterfacePerson1CList {
 
   String? CFO;
 
@@ -24,7 +21,7 @@ class Person1CList implements InterfacePerson1CList {
   String? Kontragent;
 
 
-  Person1CList({String? CFO,
+  Entities1CList({String? CFO,
     String? Data,
     String? StatyaDDS,
     String? Nomenklatura,
@@ -56,7 +53,7 @@ class Person1CList implements InterfacePerson1CList {
 
 
   @override
-  Person1CList loopGeneratorListPolo({required Map<String, dynamic> json}) {
+  Entities1CList loopGeneratorListPolo({required Map<String, dynamic> json}) {
     // TODO: implement fromJsondynamic
 
     var person1cList;
@@ -134,7 +131,7 @@ class Person1CList implements InterfacePerson1CList {
 
 
           //TODO ЗАполяем данные в класс
-          person1cList = Person1CList(CFO: CFO,
+          person1cList = Entities1CList(CFO: CFO,
               Data: Data,
               StatyaDDS: StatyaDDS,
               Nomenklatura: Nomenklatura,

@@ -3,7 +3,8 @@ import 'package:commintprices/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../Model/Jsons/One1C/Polo/Person1CListManual.dart';
+import '../../domain/entities/Entities1CListManual.dart';
+
 
 
 
@@ -13,9 +14,9 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
   Widget build(BuildContext context) {
     // TODO: implement build
 
-    Person1CListManual person1cListManual = Person1CListManual();
+    Entities1CListManual person1cListManual = Entities1CListManual();
 
-    List<Person1CListManual> listManual = [
+    List<Entities1CListManual> listManual = [
       //TODO
       person1cListManual.loopGeneratorListPolo(
           CFOKey: '(Закрыт) Ремонт а/д Ковров-Шуя-Кинешма (1этап)',

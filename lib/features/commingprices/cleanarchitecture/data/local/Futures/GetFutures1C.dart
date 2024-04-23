@@ -3,19 +3,17 @@ import 'dart:convert';
 import 'dart:isolate';
 import 'dart:typed_data' show Uint8List,Uint16List;
 import 'dart:typed_data';
-
-
-
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
-import '../../Converts/GetConverts.dart';
-import '../../Interfacess1C/InFuture1C.dart';
-import '../../Interfacess1C/InGetComplete1C.dart';
-import '../../Interfacess1C/InParserJson1c.dart';
-import '../../Jsons/One1C/Polo/Person1CList.dart';
-import '../../Jsons/One1C/Polo/Person1CMap.dart';
+import '../../../domain/entities/Entities1CList.dart';
+import '../../../domain/entities/Entities1CMap.dart';
+import '../../../domain/usercases/Converts/GetConverts.dart';
+import '../../../domain/usercases/Interfaces/InFuture1C.dart';
+import '../../../domain/usercases/Interfaces/InGetComplete1C.dart';
+import '../../../domain/usercases/Interfaces/InParserJson1c.dart';
+
 
 
 
@@ -23,9 +21,9 @@ import '../../Jsons/One1C/Polo/Person1CMap.dart';
 class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c {
 
   //TODO
-  late List<Person1CList> getPerson1CList;
+  late List<Entities1CList> getPerson1CList;
   //TODO
-  late List<Map<String, Person1CMap>>?  getPerson1CMap;
+  late List<Map<String, Entities1CMap>>?  getPerson1CMap;
 
 
 
@@ -79,7 +77,7 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c {
 
 //TODO get JSON
   @override
-  Future<List<Person1CList>> getDownloadJsonList({required String url, required int IdUser, required int UUID}) async {
+  Future<List<Entities1CList>> getDownloadJsonList({required String url, required int IdUser, required int UUID}) async {
     // TODO: implement getGettingJson1C
     late var getJson1cSucces;
     try{
@@ -103,7 +101,7 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c {
 
     //    getCompleteCallBackJson( response1C: backresponsejboss)    ,
 
-        getJson1cSucces=  getGeneratorListCallBack(response1C: backresponsejboss)as   List<Person1CList>  ,
+        getJson1cSucces=  getGeneratorListCallBack(response1C: backresponsejboss)as   List<Entities1CList>  ,
 
         print(' then getJson1cSucces $getJson1cSucces'),
 
@@ -150,7 +148,7 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c {
 
 
   @override
-   List<Person1CList>  getGeneratorListCallBack({required http.Response response1C}) {
+   List<Entities1CList>  getGeneratorListCallBack({required http.Response response1C}) {
     // TODO: implement getCompleteFutureCallBackJson
   late var getJson1cSucces;
 
@@ -176,7 +174,7 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c {
             print('listDynamic.isNotEmpty ..$listDynamic.isNotEmpty '+'listDynamic.contains(2) .. $listDynamic.contains(2)');
 
             ///TODO
-           getJson1cSucces=listDynamic.map((model) => Person1CList().loopGeneratorListPolo(  json:  model  )) .toList() as   List<Person1CList?>;
+           getJson1cSucces=listDynamic.map((model) => Entities1CList().loopGeneratorListPolo(  json:  model  )) .toList() as   List<Entities1CList?>;
 
             print('getJson1cSucces ..$getJson1cSucces');
             //TODO
@@ -197,7 +195,7 @@ class GetFutures1C  implements InFuture1C,InGetComplete1C ,InParserJson1c {
 
           List<dynamic>  listDynamic=   [];
           ///TODO
-          getJson1cSucces=listDynamic.map((model) => Person1CList().loopGeneratorListPolo(  json:  model  )) .toList() as   List<Person1CList>;
+          getJson1cSucces=listDynamic.map((model) => Entities1CList().loopGeneratorListPolo(  json:  model  )) .toList() as   List<Entities1CList>;
           //TODO
           print('getJson1cSuccess..$getPerson1CList');
         }
@@ -319,7 +317,7 @@ return getList1cdynamic;
 
                     ///List<Person1C>  person=listDynamic.map((model) => Person1C().fromJsondynamic(  json:  model  )) .toList() as   List<Person1C>;
                     ///TODO
-                    getPerson1CList=listDynamic.map((model) => Person1CList().loopGeneratorListPolo(  json:  model  )) .toList() as   List<Person1CList>;
+                    getPerson1CList=listDynamic.map((model) => Entities1CList().loopGeneratorListPolo(  json:  model  )) .toList() as   List<Entities1CList>;
                  //TODO
                  print('getJson1cSuccess..$getPerson1CList');
 
@@ -338,7 +336,7 @@ return getList1cdynamic;
 
           List<dynamic>  listDynamic=   [];
           ///TODO
-          getPerson1CList=listDynamic.map((model) => Person1CList().loopGeneratorListPolo(  json:  model  )) .toList() as   List<Person1CList>;
+          getPerson1CList=listDynamic.map((model) => Entities1CList().loopGeneratorListPolo(  json:  model  )) .toList() as   List<Entities1CList>;
           //TODO
           print('getJson1cSuccess..$getPerson1CList');
         }
@@ -389,7 +387,7 @@ return getList1cdynamic;
   }
 
   @override
-  Future<List<Person1CMap>> getDownloadJsonMap({required String url, required int IdUser, required int UUID}) async {
+  Future<List<Entities1CMap>> getDownloadJsonMap({required String url, required int IdUser, required int UUID}) async {
     // TODO: implement getCompleteMapCallBackJson
     // TODO: implement getGettingJson1C
     late var getJson1cSucces;
@@ -414,7 +412,7 @@ return getList1cdynamic;
 
         //    getCompleteCallBackJson( response1C: backresponsejboss)    ,
 
-        getJson1cSucces=  getGeneratorMapCallBack(response1C: backresponsejboss) as  List<Map<String, Person1CMap>>  ,
+        getJson1cSucces=  getGeneratorMapCallBack(response1C: backresponsejboss) as  List<Map<String, Entities1CMap>>  ,
 
         print(' then getJson1cSucces $getJson1cSucces'),
 
@@ -440,7 +438,7 @@ return getList1cdynamic;
   }
 
   @override
-  List<Map<String, Person1CMap>> getGeneratorMapCallBack({required http.Response response1C}) {
+  List<Map<String, Entities1CMap>> getGeneratorMapCallBack({required http.Response response1C}) {
     // TODO: implement getCompleteFutureMapCallBackJson
     throw UnimplementedError();
   }
