@@ -14,7 +14,7 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
 
   //TODO json data
 
-  late List<Entities1CListManual> listManual;
+  late List<Entities1CListManual> listManual=getListmanual();
 
   @override
   Widget build(BuildContext context) {
