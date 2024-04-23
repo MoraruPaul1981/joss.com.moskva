@@ -2,13 +2,13 @@
 
 import 'dart:collection';
 
-import '../usercases/Interfaces/InterfacePerson1CMap.dart';
+import '../usercases/Interfaces/InterfaceEntities1CMap.dart';
 import 'Entities1CList.dart';
 
 
 
 
-class Entities1CMap implements InterfacePerson1CMap{
+class Entities1CMap implements InterfaceEntities1CMap{
   //TODO main varible
   String?   CFO    ;
   String?  Data;

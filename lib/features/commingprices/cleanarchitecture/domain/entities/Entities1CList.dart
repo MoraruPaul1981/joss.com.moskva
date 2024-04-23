@@ -2,9 +2,9 @@
 
 
 
-import '../usercases/Interfaces/InterfacePerson1CList.dart';
+import '../usercases/Interfaces/InterfaceEntities1CList.dart';
 
-class Entities1CList implements InterfacePerson1CList {
+class Entities1CList implements InterfaceEntities1CList {
 
   String? CFO;
 
