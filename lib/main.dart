@@ -23,16 +23,18 @@ late Logger logger;
   try {
     //TODO int LOGGER
     logger=  await  Future<Logger>.value(GetErros().loggers());
+
     logger.i('logger  .. $logger');
 
     //TODO int Ping
     String? ping1C=await   GetPing().  getJson1cPing() as String?     ;
+
     logger.i('ping1C  .. $ping1C '+'ping1C..$ping1C');
 
 
 
     //TODO starting UI
-    runApp(  startingwidgetCommingPrices(  logger));
+    runApp(  startingwidgetCommingPrices(  logger: logger));
 
     logger.i('starting CommingPrices()');
 
@@ -146,7 +148,7 @@ class startingwidgetCommingPrices extends StatelessWidget {
 
   Logger logger;
 
-    startingwidgetCommingPrices( this. logger,{super.key});
+     startingwidgetCommingPrices( { required this.logger,super.key});
 
 
 
