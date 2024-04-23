@@ -15,7 +15,7 @@ import 'features/commingprices/cleanarchitecture/domain/usercases/Loggers/GetErr
 import 'features/commingprices/cleanarchitecture/presenter/widgets/WidgetListViewCommingPrices/WidgetListViewCommingPrices.dart';
 
 
-late Logger logger;
+
 
   void  main()    {
   try {
@@ -39,6 +39,9 @@ late Logger logger;
 
 //TODO метод запуска coming prices
   void startingCommintPrices() {
+
+    late Logger logger;
+
     //TODO int LOGGER
     Future<Logger>.value(  GetErros().loggers())
 

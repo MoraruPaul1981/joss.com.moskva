@@ -14,9 +14,9 @@ import '../../../data/entities/Entities1CMap.dart';
 
 abstract  class InFuture1C {
   //TODO
-  Future<List<Map<String, List<Entities1CMap>>>?> getDownloadJsonMaps({ required String   url, required int IdUser, required int UUID}) ;
+  Future<List<Map<String, List<Entities1CMap>>>> getDownloadJsonMaps({ required String   url, required int IdUser, required int UUID}) ;
   //TODO
-  List<Map<String, List<Entities1CMap>>?>  getGeneratorMapCallBack({required  Response response1C}) ;
+  List<Map<String, List<Entities1CMap>>>  getGeneratorMapCallBack({required  Response response1C}) ;
 
 
 }

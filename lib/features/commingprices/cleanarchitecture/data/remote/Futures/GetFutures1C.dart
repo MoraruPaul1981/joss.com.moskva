@@ -16,13 +16,13 @@ import '../../entities/Entities1CMap.dart';
 
 class GetFutures1C  implements InFuture1C  {
   //TODO
-  late List<Map<String, List<Entities1CMap>>?> getmap;
+  late List<Map<String, List<Entities1CMap>>> getmap;
 
 
 
   //TODO json get MAP
   @override
-  Future<List<Map<String, List<Entities1CMap>>>?> getDownloadJsonMaps({required String url,
+  Future<List<Map<String, List<Entities1CMap>>>> getDownloadJsonMaps({required String url,
     required int IdUser, required int UUID}) async {
     // TODO: implement getDownloadJsonMaps
     try{
@@ -45,7 +45,7 @@ class GetFutures1C  implements InFuture1C  {
       ).then(( Response backresponsejboss  ) => {
 
 //TODO Пришел succees ot server 1C
-      getmap=  getGeneratorMapCallBack(response1C: backresponsejboss) as List<Map<String, List<Entities1CMap>>?>,
+      getmap=  getGeneratorMapCallBack(response1C: backresponsejboss) as List<Map<String, List<Entities1CMap>>>,
 
       print(' then backresponsejboss  $backresponsejboss' ),
 
@@ -76,7 +76,7 @@ class GetFutures1C  implements InFuture1C  {
 
 
   @override
-  List<Map<String, List<Entities1CMap>>?> getGeneratorMapCallBack({required  Response response1C}) {
+  List<Map<String, List<Entities1CMap>>> getGeneratorMapCallBack({required  Response response1C}) {
     // TODO: implement getGeneratorMapCallBack
     try{
       print('response1C.statusCode $response1C.statusCode');
