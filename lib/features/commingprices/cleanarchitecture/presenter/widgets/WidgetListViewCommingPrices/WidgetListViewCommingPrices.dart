@@ -31,7 +31,14 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
         if (snapshot.connectionState == ConnectionState.waiting) {
             return     Scaffold(
               backgroundColor: Colors.red[900],
-              body: Column(children: <Widget>[
+              body: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+
+
+
+
+                  children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -42,6 +49,16 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
 
                   ],
                 ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CircularProgressIndicator(),
+                        ),
+
+                      ],
+                    ),
 
 
 
