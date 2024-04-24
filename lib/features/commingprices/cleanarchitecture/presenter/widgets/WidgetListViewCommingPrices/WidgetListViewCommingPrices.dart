@@ -41,11 +41,13 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
                     Container(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: CircularProgressIndicator(backgroundColor: Colors.grey,
+                        child: CircularProgressIndicator(
+                            strokeWidth: 10.0,
+                            backgroundColor: Colors.grey,
                             valueColor: AlwaysStoppedAnimation<Color>(Colors.red)),
                       ),
-                      height: 50.0,
-                      width: 50.0,
+                      height: 100.0,
+                      width: 100.0,
                     ),
 
                   ],
@@ -56,7 +58,9 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
                         Container(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: CircularProgressIndicator(backgroundColor: Colors.grey,
+                            child: CircularProgressIndicator(
+                                strokeWidth: 5.0,
+                                backgroundColor: Colors.grey,
                                 valueColor: AlwaysStoppedAnimation<Color>(Colors.red)),
                           ),
                           height: 50.0,
