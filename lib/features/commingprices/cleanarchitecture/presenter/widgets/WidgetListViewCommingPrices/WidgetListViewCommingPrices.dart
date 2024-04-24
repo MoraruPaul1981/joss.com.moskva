@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/src/logger.dart';
 
 import '../../../data/entities/Entities1CListManual.dart';
+import 'WidgetScaffoldSuccessData.dart';
 
 
 
@@ -242,7 +243,8 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
 
         }
         if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-          return getWidgetScaffold(listManual);
+          //TODO когда ест данные
+          return    WidgetScaffoldSuccessData().getWidgetScaffold(listManual);
         }
 
         if (snapshot.hasError){
@@ -273,7 +275,7 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
 
 Future<String> downloadData({ required  logger })async{
 
-await Future.delayed(Duration(seconds: 1))
+await Future.delayed(Duration(seconds: 10))
      .catchError(
          (Object error) {
        print(' get ERROR $error  ');
@@ -293,7 +295,7 @@ await Future.delayed(Duration(seconds: 1))
 
 
 
-  //TODO РАбоий Виджет
+ /* //TODO РАбоий Виджет
   Widget getWidgetScaffold(List<Entities1CListManual> listManual){
     ////TODO сам виджет
     return new Scaffold(
@@ -439,10 +441,10 @@ await Future.delayed(Duration(seconds: 1))
             label: const Text('Цфо'),
             backgroundColor: Colors.blue[300],
             onPressed: () {
-              /* Navigator.push(
+              *//* Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => CameraScreen()),
-              );*/
+              );*//*
             },
           ),
         ),
@@ -453,7 +455,7 @@ await Future.delayed(Duration(seconds: 1))
 
 
 
-
+*/
 
 
 
