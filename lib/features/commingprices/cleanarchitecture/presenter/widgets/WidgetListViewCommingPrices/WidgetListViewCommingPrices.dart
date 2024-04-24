@@ -1,4 +1,6 @@
 
+import 'dart:isolate';
+
 import 'package:commintprices/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -176,6 +178,14 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
 
 
 
+
+
+
+
+
+
+
+
                     //TODO END ROW
 
                   ],
@@ -221,7 +231,11 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
 
 Future<String> downloadData({ required  logger })async{
 
-  await Future.delayed(Duration(seconds: 30));
+ Future.delayed(Duration(seconds: 1))
+     .catchError(
+         (Object error) {
+       print(' get ERROR $error  ');
+     }) ;
   //   var response =  await http.get('https://getProjectList');
   return  "Data download successfully"; // return your response
 }
