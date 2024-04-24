@@ -344,6 +344,21 @@ await Future.delayed(Duration(seconds: 1))
             ],
           ),
 
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: SizedBox(
+                    height: 35,
+                    child: SearchBar(
+                      hintText: 'Поиск',
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
 
 
 
