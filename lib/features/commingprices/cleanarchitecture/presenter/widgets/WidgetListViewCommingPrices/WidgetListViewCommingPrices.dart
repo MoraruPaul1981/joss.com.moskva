@@ -23,29 +23,75 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
   Widget build(BuildContext context) {
     // TODO: Главный виджет
     print('listManual...  $listManual');
+
     return FutureBuilder<String>(
       future: downloadData(  logger: logger), // function where you call your api
-      builder: (BuildContext context,
-          AsyncSnapshot<String> snapshot) { // AsyncSnapshot<Your object type>
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) { // AsyncSnapshot<Your object type>
+
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: Text('Please wait its loading...'));
-        } else {
-          if (snapshot.hasError)
-            return Center(child: Text('Error: ${snapshot.error}'));
-          else
-            return getWidgetScaffold(
-                listManual); // snapshot.data  :- get your object which is pass from your downloadData() function
+            return     Scaffold(
+              backgroundColor: Colors.red[900],
+              body: Column(children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CircularProgressIndicator(),
+                    ),
+
+                  ],
+                ),
+
+
+
+
+
+              ])
+
+
+          );
+
+
+
+
+
         }
-      },
+      /*  if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+          return getWidgetScaffold(listManual);
+        }*/
+
+        if (snapshot.hasError){
+          return Center(child: Text(' There was a problem Error: ${snapshot.error}'));
+      }
+
+        return new Scaffold(
+          backgroundColor: Colors.grey[200],
+
+            body: Column(
+            children: <Widget>[
+            Container(
+            height: 150.0,
+            width: 120.0,
+            child: Center(child: new Text('Hey I am Mir')),
+        ),
+        ],
+        ),
+        );
+      }
     );
   }
 
 }
+
+
+
+
 Future<String> downloadData({ required  logger })async{
 
-  logger.i('downloadData( ');
+  await Future.delayed(Duration(seconds: 3));
   //   var response =  await http.get('https://getProjectList');
-  return Future.value("Data download successfully"); // return your response
+  return  "Data download successfully"; // return your response
 }
 
 
