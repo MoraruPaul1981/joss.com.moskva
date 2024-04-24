@@ -152,7 +152,15 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
                       ],
                     ),
 
-
+                    Tooltip(
+                      message: 'Delete',
+                      child: IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () {
+                          print('Delete button pressed');
+                        },
+                      ),
+                    ),
 
 
 
