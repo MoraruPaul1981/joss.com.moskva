@@ -35,38 +35,120 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
+
+
+
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Container(
+                      height: 150,
+                      width: 150,
+                      // color: Colors.red,
+                      decoration: BoxDecoration(
+                        color: Colors.black, //assign either here or to the container
+                        borderRadius: BorderRadius.circular(24),),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: CircularProgressIndicator(
-                            strokeWidth: 10.0,
-                            backgroundColor: Colors.grey,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.red)),
+                        child:  Theme(
+                          data: Theme.of(context).copyWith(hintColor: Colors.white),
+                          child: CircularProgressIndicator(
+                              strokeWidth: 10.0,
+                              backgroundColor: Colors.grey,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.red)),
+                        ),
                       ),
-                      height: 100.0,
-                      width: 100.0,
                     ),
 
                   ],
                 ),
+
+
+
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Container(
+                          height: 150,
+                          width: 150,
+                          // color: Colors.red,
+                          decoration: BoxDecoration(
+                            color: Colors.black, //assign either here or to the container
+                            borderRadius: BorderRadius.circular(24),),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: CircularProgressIndicator(
-                                strokeWidth: 5.0,
-                                backgroundColor: Colors.grey,
-                                valueColor: AlwaysStoppedAnimation<Color>(Colors.red)),
+                            child: Theme(
+                              data: Theme.of(context).copyWith(hintColor: Colors.white),
+                              child: CircularProgressIndicator(
+                                  strokeWidth: 5.0,
+                                  backgroundColor: Colors.grey,
+                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.red)),
+                            ),
                           ),
-                          height: 50.0,
-                          width: 50.0,
                         ),
 
+                      ],
+                    ),
+                    
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          height: 150,
+                          width: 150,
+                          // color: Colors.red,
+                          decoration: BoxDecoration(
+                            color: Colors.black, //assign either here or to the container
+                            borderRadius: BorderRadius.circular(24),),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child:
+                               Text(
+                              'Hello!',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 40,
+                                fontWeight: FontWeight.w200,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+
+                      ],
+
+                    ),
+
+
+
+
+
+
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          height: 150,
+                          width: 150,
+                          // color: Colors.red,
+                          decoration: BoxDecoration(
+                            color: Colors.black, //assign either here or to the container
+                            borderRadius: BorderRadius.circular(24),),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child:
+                            IconButton(
+                              icon: Icon(Icons.add,
+                                color:Colors.red,
+                                size: 40.0,), onPressed: () {
+                                // Do something when the button is pressed
+                              print('object;'); },
+                              ),
+                            )
+                          ),
                       ],
                     ),
 
@@ -74,7 +156,12 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
 
 
 
-              ])
+
+
+                    //TODO END ROW
+
+                  ],
+              ),
 
 
           );
@@ -116,7 +203,7 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
 
 Future<String> downloadData({ required  logger })async{
 
-  await Future.delayed(Duration(seconds: 3));
+  await Future.delayed(Duration(seconds: 30));
   //   var response =  await http.get('https://getProjectList');
   return  "Data download successfully"; // return your response
 }
