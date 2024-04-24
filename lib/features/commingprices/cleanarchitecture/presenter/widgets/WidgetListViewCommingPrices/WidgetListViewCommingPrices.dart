@@ -30,7 +30,7 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
 
         if (snapshot.connectionState == ConnectionState.waiting) {
             return     Scaffold(
-              backgroundColor: Colors.red[900],
+              backgroundColor: Colors.black,
               body: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -38,9 +38,14 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CircularProgressIndicator(),
+                    Container(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(backgroundColor: Colors.grey,
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.red)),
+                      ),
+                      height: 50.0,
+                      width: 50.0,
                     ),
 
                   ],
@@ -48,9 +53,14 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CircularProgressIndicator(),
+                        Container(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CircularProgressIndicator(backgroundColor: Colors.grey,
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.red)),
+                          ),
+                          height: 50.0,
+                          width: 50.0,
                         ),
 
                       ],
