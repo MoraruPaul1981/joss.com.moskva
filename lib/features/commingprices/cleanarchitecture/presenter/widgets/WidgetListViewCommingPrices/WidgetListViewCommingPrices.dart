@@ -95,7 +95,7 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
 
                       ],
                     ),
-                    
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -158,11 +158,11 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
                                 print('object;'); },
                                 ),
                             ),
-                            
-                            
-                            
-                            
-                            
+
+
+
+
+
                             )
                           ),
                       ],
@@ -241,9 +241,9 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
 
 
         }
-      /*  if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+        if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
           return getWidgetScaffold(listManual);
-        }*/
+        }
 
         if (snapshot.hasError){
           return Center(child: Text(' There was a problem Error: ${snapshot.error}'));
@@ -273,7 +273,7 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
 
 Future<String> downloadData({ required  logger })async{
 
-await Future.delayed(Duration(seconds: 5))
+await Future.delayed(Duration(seconds: 1))
      .catchError(
          (Object error) {
        print(' get ERROR $error  ');
@@ -306,17 +306,56 @@ await Future.delayed(Duration(seconds: 5))
         elevation: 500,
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: SizedBox(
-              height: 35,
-              child: SearchBar(
-                hintText: 'Поиск',
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+
+
+
+          Row(
+            children: [
+              Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: SizedBox(
+                  height: 35,
+                  child: SearchBar(
+                    hintText: 'Поиск',
+                  ),
+                ),
               ),
-            ),
+              ),
+            ],
           ),
+
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: SizedBox(
+                    height: 35,
+                    child: SearchBar(
+                      hintText: 'Поиск',
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+
+
+
+
+
+
+
+
+
+
+
+
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(3.0),
