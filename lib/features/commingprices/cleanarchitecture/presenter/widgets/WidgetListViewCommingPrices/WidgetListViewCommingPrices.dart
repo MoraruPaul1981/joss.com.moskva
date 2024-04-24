@@ -34,10 +34,6 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
               body: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-
-
-
-
                   children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
