@@ -9,7 +9,7 @@ import 'package:logger/src/logger.dart';
 
 import '../../../data/entities/Entities1CListManual.dart';
 
-class   WidgetScaffoldSuccessData {
+class   WidgetSuccessData {
 
 
   //TODO РАбоий Виджет

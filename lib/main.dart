@@ -12,7 +12,7 @@ import 'features/commingprices/cleanarchitecture/data/remote/Futures/GetFutures1
 import 'features/commingprices/cleanarchitecture/data/remote/Futures/getPing.dart';
 import 'features/commingprices/cleanarchitecture/domain/usercases/AdressJboss/getAdress.dart';
 import 'features/commingprices/cleanarchitecture/domain/usercases/Loggers/GetErrors.dart';
-import 'features/commingprices/cleanarchitecture/presenter/widgets/WidgetListViewCommingPrices/WidgetListViewCommingPrices.dart';
+import 'features/commingprices/cleanarchitecture/presenter/widgets/WidgetListViewCommingPrices/WidgetStartingCommingPrices.dart';
 
 
 
@@ -200,7 +200,7 @@ class StatefulWidgetCommingPrices extends StatefulWidget {
   State<StatefulWidgetCommingPrices> createState() => WidgetPhoneMail();*/////
 
   //TODO Comming Prices
-  State<StatefulWidgetCommingPrices> createState() => WidgetListViewCommingPrices( logger: logger);//TODO//
+  State<StatefulWidgetCommingPrices> createState() => WidgetStartingCommingPrices( logger: logger);//TODO//
   //TODO
 
   //TODO ENDING widget
