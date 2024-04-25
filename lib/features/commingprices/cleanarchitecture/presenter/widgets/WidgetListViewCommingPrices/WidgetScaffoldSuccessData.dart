@@ -173,7 +173,7 @@ class   WidgetScaffoldSuccessData {
 
             child: NavigationBar(
               onDestinationSelected: (int index) {
-              print('index ..$index');
+              print('NavigationBar.. выбор index ..$index');
               },
               indicatorColor: Colors.red,
               selectedIndex: 1,
