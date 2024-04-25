@@ -17,12 +17,27 @@ class   WidgetScaffoldSuccessData {
     ////TODO сам виджет
     return new Scaffold(
       backgroundColor: Colors.blue[200],
-      appBar: AppBar(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(40.0), // here the desired height
+        child:
+        AppBar(
         leading: new Icon(Icons.live_tv),
         backgroundColor: Colors.blue[300],
-        title: Text('Выбор цфо'),
+        title:
+        Text(
+          'Согласования',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.w300,
+          ),
+          textAlign: TextAlign.center,
+        ),
+
+
         centerTitle: true,
         elevation: 500,
+      ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -37,7 +52,7 @@ class   WidgetScaffoldSuccessData {
                 child: Padding(
                   padding: const EdgeInsets.all(2.0),
                   child: Container(
-                    margin: new EdgeInsets.only( left: 5,top:2,right: 5,bottom: 2),
+                    margin: new EdgeInsets.only( left: 10,top:5,right: 10,bottom: 2),
                     height: 35,
                     child: SearchBar(
                       hintText: 'Поиск',
@@ -70,14 +85,13 @@ class   WidgetScaffoldSuccessData {
                     return Column(
                       children: [
                         Card(
+                          semanticContainer: true,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
                           color: Colors.grey[100],
-                          elevation: 1.0,
+                          elevation: 3.0,
+                          margin: EdgeInsets.all(5),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20)),
-                          child: ConstrainedBox(
-                            constraints: new BoxConstraints(
-                                minHeight: 20.0,
-                                maxHeight: 300.0,),
                             child: ListTile(
                               leading: const Icon(Icons.flight_sharp),
                               subtitle: Text(""),
@@ -110,7 +124,6 @@ class   WidgetScaffoldSuccessData {
                                 ),
                               ),
                             ),
-                          ),
                         ),
                       ],
                     );
@@ -119,6 +132,9 @@ class   WidgetScaffoldSuccessData {
               ),
             ),
           ),
+
+
+
 
 
 
