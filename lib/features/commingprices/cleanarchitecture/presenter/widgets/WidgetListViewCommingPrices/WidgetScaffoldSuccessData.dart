@@ -154,33 +154,43 @@ class   WidgetScaffoldSuccessData {
       children: [
         Expanded(
         child: Container(
+          margin: new EdgeInsets.only( left: 2,top: 0,right: 2,bottom: 0),
           height: 60,
           clipBehavior: Clip.hardEdge,
           // color: Colors.red,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(24),
-              topLeft: Radius.circular(24),),),
-            child:
-            NavigationBar(
-              destinations: [
+            // color: Theme.of(context).backgroundColor,
+              color: Colors.white,
+              border: Border.all(
+                color: Colors.blue[300]!,
+                width: 0.5,
+              ),
+              borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(20),
+                topLeft: Radius.circular(20),
+              ),
+          ),
+            child: NavigationBar(
+              onDestinationSelected: (int index) {
+
+              },
+              indicatorColor: Colors.amber,
+              selectedIndex: 1,
+              destinations: const <Widget>[
                 NavigationDestination(
-                  icon: Icon(
-                      Icons.home), label: 'Назад',),
-
+                  selectedIcon: Icon(Icons.home),
+                  icon: Icon(Icons.home_outlined),
+                  label: 'Home',
+                ),
                 NavigationDestination(
-                  icon: Icon(
-                      Icons.explore), label: 'Перейти',),
-
+                  icon: Icon(Icons.data_usage),
+                  label: 'Data',
+                ),
                 NavigationDestination(
-                  icon: Icon(
-                      Icons.person), label: 'Профайл',),
-
-                NavigationDestination(
-                  icon: Icon(
-                      Icons.settings_rounded), label: 'Настройки',),
-
-
+                  selectedIcon: Icon(Icons.map),
+                  icon: Icon(Icons.maps_ugc),
+                  label: 'Map',
+                ),
               ],
 
             ),
