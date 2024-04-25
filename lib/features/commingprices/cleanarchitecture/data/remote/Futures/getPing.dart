@@ -26,7 +26,7 @@ class GetPing implements InterfacePings {
   @override
   Future<String> getJson1cPing({ required BuildContext context, required Logger logger}) async {
     // TODO: implement getJson1cPing
-    late var  getPing;
+    late String  getPing;
     try{
       //TODO адрес пинга к серверу  Jboss Debug
       var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
@@ -40,6 +40,7 @@ class GetPing implements InterfacePings {
         String? basicAuth=     GetConverts().convertBase64(  user: 'dsu1Admin', password: 'dsu1Admin');
         print(' basicAuth  $basicAuth');
         //TODO главный запрос
+
         await http.get(
             parsedUrl,
             headers: {
@@ -47,22 +48,26 @@ class GetPing implements InterfacePings {
               'uuid':Uuid.toString(),
               'authorization':'$basicAuth',
             }
-        ).then(( Response backresponsejboss  ) => {
-          //TODO ping worker server
-          getPing=    getCompletePing( response1C: backresponsejboss) as Future<String?>,
-          print(' then getPing $getPing'),
-          print( ' backresponsejboss..$backresponsejboss'),
-        })
-            .whenComplete(
-              () {
-            print(' whenComplete  PINg $getPing' );
-          },
-        )
-            .catchError(
+        ).catchError(
                 (Object error) {
-              print(' get ERROR $error  ');
-            });
+              logger.i(' get ERROR $error  ');
+            }).then((backresponsejboss) {
+        //TODO then
+        //TODO ping worker server
+        getPing=    Future<String>
+            .sync(()=> getCompletePing( response1C: backresponsejboss))
+            .catchError(
+                (Object error){
+              logger.i(' get ERROR $error  ');
+            }) as String;
+        logger.i('start  Future<void> main()  async  getPing .. $getPing');
+        return getPing;
 
+      }).whenComplete(() => {
+        logger.i('start  Future<void> main()  async  getPing .. $getPing'),
+        });
+
+    logger.i(' then getPing  $getPing'+' getPing..$getPing');
 
         //TODO error
       }   catch (e, stacktrace) {
@@ -86,7 +91,7 @@ class GetPing implements InterfacePings {
         //TODO realy ping
         print(' then backresponsejboss. contentLength $response1C.contentLength');
         //TODO PING
-        getCallPing1c= getPingDynamicDontaunt(response1C: response1C) as  String?   ;
+        getCallPing1c= getPingDynamicDontaunt(response1C: response1C) as  String   ;
 
         print('getCallPing1c $getCallPing1c');
 
