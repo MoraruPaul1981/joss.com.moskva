@@ -13,7 +13,7 @@ class   WidgetSuccessData {
 
 
   //TODO РАбоий Виджет
-  Widget getWidgetScaffold(List<Entities1CListManual> listManual){
+  Widget getWidgetScaffold({required BuildContext context, required AsyncSnapshot<String> snapshot}){
     ////TODO сам виджет
     return new Scaffold(
       backgroundColor: Colors.blue[200],

@@ -39,31 +39,47 @@ class WidgetStartingCommingPrices extends State<StatefulWidgetCommingPrices> {
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) { // AsyncSnapshot<Your object type>
 
 
-        ////TODO Принимаем Решение что делать показывать пользователю   или продолжить  ожидание
+        ////TODO В  ожидание
         if (snapshot.connectionState == ConnectionState.waiting) {
-
-              logger.i('napshot.connectionState$snapshot.connectionState');
-
-              //TODO виджет когда мы ожидаем
-              GetWidgetWaitingPing(). getWidgetWaitingPing(context:context, snapshot:snapshot);
-
-        }
-        if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-          //TODO когда ест данные
-          intarfaceNasDataError=    GetWidgetHasData();
-          return   intarfaceNasDataError .getWidgeterrorOrhas(context: context, snapshot: snapshot);
-
+          logger.i('napshot.connectionState$snapshot.connectionState');
+          //TODO виджет когда мы ожидаем
+          return  GetWidgetWaitingPing(). getWidgetWaitingPing(context:context, snapshot:snapshot);
         }
 
+        ////TODO В  Сервер закончил Обработки
+        if (snapshot.connectionState == ConnectionState.done) {
+          logger.i('napshot.connectionState$snapshot.connectionState');
+
+          ///TODO пришли данные
+          if (  snapshot.hasData) {
+            logger.i('snapshot.hasData$snapshot.hasData');
+            //TODO когда ест данные
+            return   WidgetSuccessData().getWidgetScaffold(context:context, snapshot:snapshot);
+
+          } else {
+            //TODO нет пришгли  данных
+            logger.i('snapshot.hasData$snapshot.hasData');
+         intarfaceNasDataError=    GetWidgetHasData();
+        return   intarfaceNasDataError .getWidgeterrorOrhas(context: context, snapshot: snapshot);
+          }
+        }
+
+
+
+
+        ///TODO сгенерировальсь Error
         if (snapshot.hasError){
           //TODO когда ест данные
+          logger.i('napshot.connectionState$snapshot.connectionState');
           intarfaceNasDataError=    GetWidgetErrors();
           return   intarfaceNasDataError .getWidgeterrorOrhas(context: context, snapshot: snapshot);
-
       }
-      //TODO нет данных
-        intarfaceNasDataError=    GetWidgetHasData();
-        return   intarfaceNasDataError .getWidgeterrorOrhas(context: context, snapshot: snapshot);
+
+
+        ///TODO по умолчанию показывам как крутиться програсс БАр
+        logger.i('napshot.connectionState$snapshot.connectionState');
+        //TODO виджет когда мы ожидаем
+        return  GetWidgetWaitingPing(). getWidgetWaitingPing(context:context, snapshot:snapshot);
       }
     );
   }
