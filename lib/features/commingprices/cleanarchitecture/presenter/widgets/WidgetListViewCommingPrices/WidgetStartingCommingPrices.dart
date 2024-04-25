@@ -59,7 +59,7 @@ class WidgetStartingCommingPrices extends State<StatefulWidgetCommingPrices> {
             logger.i('snapshot.hasData$snapshot.hasData');
 
            var  listMapcallback1c=snapshot.data as     List<Map<String, List<Entities1CMap>>>  ;
-            logger.i('listMapcallback1c..${listMapcallback1c}');
+            logger.i('listMapcallback1c..${listMapcallback1c}'+ " snapshot.hasData..$snapshot.hasData ");
 
             //TODO когда ест данные
             return   WidgetSuccessData().getWidgetScaffold(context:context, snapshot:snapshot,listMapcallback1c:  listMapcallback1c );
