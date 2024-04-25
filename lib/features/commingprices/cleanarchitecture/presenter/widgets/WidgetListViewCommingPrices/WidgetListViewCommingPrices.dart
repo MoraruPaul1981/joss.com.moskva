@@ -159,11 +159,6 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
                                 print('object;'); },
                                 ),
                             ),
-
-
-
-
-
                             )
                           ),
                       ],
@@ -275,7 +270,7 @@ class WidgetListViewCommingPrices extends State<StatefulWidgetCommingPrices> {
 
 Future<String> downloadData({ required  logger })async{
 
-await Future.delayed(Duration(seconds: 10))
+await Future.delayed(Duration(seconds: 2))
      .catchError(
          (Object error) {
        print(' get ERROR $error  ');

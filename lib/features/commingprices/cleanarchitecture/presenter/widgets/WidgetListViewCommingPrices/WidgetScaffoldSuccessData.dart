@@ -143,13 +143,100 @@ class   WidgetScaffoldSuccessData {
               ),
             ),
           ),
+
+
+
+          //TODO  кенопка снизу
+
+    Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+        child: Container(
+          height: 60,
+          clipBehavior: Clip.hardEdge,
+          // color: Colors.red,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(24),
+              topLeft: Radius.circular(24),),),
+            child:
+            NavigationBar(
+              destinations: [
+                NavigationDestination(
+                  icon: Icon(
+                      Icons.home), label: 'Назад',),
+
+                NavigationDestination(
+                  icon: Icon(
+                      Icons.explore), label: 'Перейти',),
+
+                NavigationDestination(
+                  icon: Icon(
+                      Icons.person), label: 'Профайл',),
+
+                NavigationDestination(
+                  icon: Icon(
+                      Icons.settings_rounded), label: 'Настройки',),
+
+
+              ],
+
+            ),
+
+        ),
+        ),
+      ],
+    ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         ],
       ),
 
 
 
+
+
+
+
+/*
+
 //TODO  кенопка снизу
-      floatingActionButton: Expanded(
+      floatingActionButton:
+      Expanded(
         child: Padding(
           padding: const EdgeInsets.all(3.0),
           child: FloatingActionButton.extended(
@@ -158,14 +245,19 @@ class   WidgetScaffoldSuccessData {
             label: const Text('Цфо'),
             backgroundColor: Colors.blue[300],
             onPressed: () {
-              /* Navigator.push(
+              *//* Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => CameraScreen()),
-              );*/
+                MaterialPageRoute(builder: (_) => CameraScreen()),*//*
+            //  );
             },
           ),
         ),
-      ),
+      ),*/
+
+
+
+
+
     );
   }
 
