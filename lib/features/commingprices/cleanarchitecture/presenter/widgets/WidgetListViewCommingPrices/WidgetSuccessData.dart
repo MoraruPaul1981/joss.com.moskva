@@ -8,12 +8,16 @@ import 'package:flutter/material.dart';
 import 'package:logger/src/logger.dart';
 
 import '../../../data/entities/Entities1CListManual.dart';
+import '../../../data/entities/Entities1CMap.dart';
 
 class   WidgetSuccessData {
 
 
   //TODO РАбоий Виджет
-  Widget getWidgetScaffold({required BuildContext context, required AsyncSnapshot<String> snapshot}){
+  Widget getWidgetScaffold({
+    required BuildContext context,
+    required AsyncSnapshot<String> snapshot,
+    required List<Map<String, List<Entities1CMap>>> listMapcallback1c }){
     ////TODO сам виджет
     return new Scaffold(
       backgroundColor: Colors.blue[200],

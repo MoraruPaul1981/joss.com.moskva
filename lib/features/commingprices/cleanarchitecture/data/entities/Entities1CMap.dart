@@ -61,9 +61,9 @@ Entities1CMap(
   }
 
   @override
-  List<Map<String, Entities1CMap>> loopGeneratorMapPolo({required Map<String, dynamic> json}) {
+  List<Map<String, List<Entities1CMap>>> loopGeneratorMapPolo({required Map<String, dynamic> json}) {
     // TODO: implement fromJsondynamic
-    List<Map<String, Entities1CMap>>  returnMap=   [];
+    List<Map<String, List<Entities1CMap>>> returnMap=   [];
   //TODO
     Entities1CMap   person1cMap;
     try {

@@ -23,7 +23,16 @@ class GetWidgetErrors implements IntarfaceNasDataError  {
           Container(
             height: 150.0,
             width: 120.0,
-            child: Center(child: new Text(' Ошибка в программме : ${snapshot.error}')),
+            child: Center(child: new Text(
+                ' Ошибка в программме : ${snapshot.error}',
+              style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.w300,
+            ),
+              textAlign: TextAlign.center,
+
+            )),
           ),
         ],
       ),

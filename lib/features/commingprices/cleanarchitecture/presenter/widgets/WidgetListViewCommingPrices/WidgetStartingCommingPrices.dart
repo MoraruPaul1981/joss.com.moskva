@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/src/logger.dart';
 
 import '../../../data/entities/Entities1CListManual.dart';
+import '../../../data/entities/Entities1CMap.dart';
 import 'GetWidgetErrors.dart';
 import 'GetWidgetHasData.dart';
 import 'GetWidgetWaitingPing.dart';
@@ -46,6 +47,9 @@ class WidgetStartingCommingPrices extends State<StatefulWidgetCommingPrices> {
           return  GetWidgetWaitingPing(). getWidgetWaitingPing(context:context, snapshot:snapshot);
         }
 
+
+
+
         ////TODO В  Сервер закончил Обработки
         if (snapshot.connectionState == ConnectionState.done) {
           logger.i('napshot.connectionState$snapshot.connectionState');
@@ -53,8 +57,12 @@ class WidgetStartingCommingPrices extends State<StatefulWidgetCommingPrices> {
           ///TODO пришли данные
           if (  snapshot.hasData) {
             logger.i('snapshot.hasData$snapshot.hasData');
+
+           var  listMapcallback1c=snapshot.data as     List<Map<String, List<Entities1CMap>>>  ;
+            logger.i('listMapcallback1c..${listMapcallback1c}');
+
             //TODO когда ест данные
-            return   WidgetSuccessData().getWidgetScaffold(context:context, snapshot:snapshot);
+            return   WidgetSuccessData().getWidgetScaffold(context:context, snapshot:snapshot,listMapcallback1c:  listMapcallback1c );
 
           } else {
             //TODO нет пришгли  данных

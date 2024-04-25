@@ -23,7 +23,16 @@ class GetWidgetHasData implements IntarfaceNasDataError  {
           Container(
             height: 150.0,
             width: 120.0,
-            child: Center(child: new Text(' Нет данных !!!! : ${snapshot.data}'))),
+            child: Center(child: new Text(
+                ' Нет данных !!!! : ${snapshot.data}',
+
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+                fontWeight: FontWeight.w300,
+              ),
+              textAlign: TextAlign.center,
+            )),
           ),
         ],
       ),
