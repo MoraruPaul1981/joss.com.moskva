@@ -184,13 +184,19 @@ class   WidgetScaffoldSuccessData {
                   label: 'Назад',
                 ),
                 NavigationDestination(
-                  icon: Icon(Icons.data_usage),
+                  selectedIcon: Icon(Icons.data_usage ),
+                  icon: Icon(Icons.data_usage_outlined),
                   label: 'Данные',
                 ),
                 NavigationDestination(
-                  selectedIcon: Icon(Icons.map),
-                  icon: Icon(Icons.maps_ugc),
+                  selectedIcon: Icon(Icons.maps_ugc),
+                  icon: Icon(Icons.maps_ugc_outlined),
                   label: 'Расширения',
+                ),
+                NavigationDestination(
+                  selectedIcon: Icon(Icons.accessibility_new),
+                  icon: Icon(Icons.accessibility_new_outlined),
+                  label: 'Начисления',
                 ),
               ],
 
