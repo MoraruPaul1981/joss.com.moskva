@@ -170,26 +170,27 @@ class   WidgetScaffoldSuccessData {
                 topLeft: Radius.circular(20),
               ),
           ),
+
             child: NavigationBar(
               onDestinationSelected: (int index) {
-
+              print('index ..$index');
               },
-              indicatorColor: Colors.amber,
+              indicatorColor: Colors.red,
               selectedIndex: 1,
               destinations: const <Widget>[
                 NavigationDestination(
                   selectedIcon: Icon(Icons.home),
                   icon: Icon(Icons.home_outlined),
-                  label: 'Home',
+                  label: 'Назад',
                 ),
                 NavigationDestination(
                   icon: Icon(Icons.data_usage),
-                  label: 'Data',
+                  label: 'Данные',
                 ),
                 NavigationDestination(
                   selectedIcon: Icon(Icons.map),
                   icon: Icon(Icons.maps_ugc),
-                  label: 'Map',
+                  label: 'Расширения',
                 ),
               ],
 
