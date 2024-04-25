@@ -6,11 +6,11 @@ import 'package:logger/logger.dart';
 
 abstract  class InterfacePings {
   //TODO
-  Future<String>  getJson1cPing({ required BuildContext context, required Logger logger});
+  Future<String>  getResponse1cPing({ required BuildContext context, required Logger logger});
 
   //TODO
-  Future<String>  getCompletePing({required  Response response1C});
+  Future<String>  getComplitingResponse({required  Response response1C});
 
   //TODO
-  String getPingDynamicDontaunt({required  Response response1C});
+  String getResponseDecoder({required  Response response1C});
 }

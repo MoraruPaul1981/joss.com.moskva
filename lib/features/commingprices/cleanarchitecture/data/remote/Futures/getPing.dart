@@ -24,7 +24,7 @@ class GetPing implements InterfacePings {
 
 
   @override
-  Future<String> getJson1cPing({ required BuildContext context, required Logger logger}) async {
+  Future<String> getResponse1cPing({ required BuildContext context, required Logger logger}) async {
     // TODO: implement getJson1cPing
     late String  getPing;
     try{
@@ -41,7 +41,7 @@ class GetPing implements InterfacePings {
         print(' basicAuth  $basicAuth');
         //TODO главный запрос
 
-        await http.get(
+      Response  backresponsejboss =  await http.get(
             parsedUrl,
             headers: {
               'user':IdUser.toString(),
@@ -51,23 +51,17 @@ class GetPing implements InterfacePings {
         ).catchError(
                 (Object error) {
               logger.i(' get ERROR $error  ');
-            }).then((backresponsejboss) {
-        //TODO then
-        //TODO ping worker server
-        getPing=    Future<String>
-            .sync(()=> getCompletePing( response1C: backresponsejboss))
-            .catchError(
-                (Object error){
-              logger.i(' get ERROR $error  ');
-            }) as String;
-        logger.i('start  Future<void> main()  async  getPing .. $getPing');
-        return getPing;
+            });
 
-      }).whenComplete(() => {
-        logger.i('start  Future<void> main()  async  getPing .. $getPing'),
-        });
+      //TODO
+      getPing= await   Future<String>.value( getComplitingResponse( response1C: backresponsejboss))
+          .catchError(
+        (Object error) {
+            logger.i(' get ERROR $error  ');
+          }
+      );
+      logger.i(' get getPing $getPing  ');
 
-    logger.i(' then getPing  $getPing'+' getPing..$getPing');
 
         //TODO error
       }   catch (e, stacktrace) {
@@ -80,7 +74,7 @@ class GetPing implements InterfacePings {
 
 
   @override
-  Future<String>    getCompletePing({required  Response response1C}) async {
+  Future<String>    getComplitingResponse({required  Response response1C}) async {
     // TODO: implement getCompletePing
     late  var  getCallPing1c;
     try{
@@ -91,7 +85,7 @@ class GetPing implements InterfacePings {
         //TODO realy ping
         print(' then backresponsejboss. contentLength $response1C.contentLength');
         //TODO PING
-        getCallPing1c= getPingDynamicDontaunt(response1C: response1C) as  String   ;
+        getCallPing1c= getResponseDecoder(response1C: response1C) as  String   ;
 
         print('getCallPing1c $getCallPing1c');
 
@@ -117,7 +111,7 @@ class GetPing implements InterfacePings {
 
 
   @override
-  String getPingDynamicDontaunt({required  Response response1C}) {
+  String getResponseDecoder({required  Response response1C}) {
     // TODO: implement getStringcDynamic
     var   getPing1C;
     try{

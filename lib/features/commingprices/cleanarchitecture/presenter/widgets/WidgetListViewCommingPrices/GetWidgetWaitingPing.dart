@@ -12,7 +12,7 @@ class GetWidgetWaitingPing {
 
   //TODO Виджет ожидание пипнга от сервера 1С
   Widget getWidgetWaitingPing({required BuildContext context,
-    required AsyncSnapshot<String> snapshot}){
+    required AsyncSnapshot<String> snapshot,required Color alwaysStop}){
     ////TODO сам виджет
 
     return     Scaffold(
@@ -39,7 +39,7 @@ class GetWidgetWaitingPing {
                     child: CircularProgressIndicator(
                         strokeWidth: 10.0,
                         backgroundColor: Colors.grey,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.red)),
+                        valueColor: AlwaysStoppedAnimation<Color>(alwaysStop)),
                   ),
                 ),
               ),

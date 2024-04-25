@@ -42,7 +42,7 @@ class WidgetStartingCommingPrices extends State<StatefulWidgetCommingPrices> {
   FutureBuilder<String> getFutureBuilder() {
     IntarfaceNasDataError intarfaceNasDataError;
     return FutureBuilder<String>(
-      future:GetPing(). getJson1cPing(context:context, logger: logger), // function where you call your api
+      future:GetPing(). getResponse1cPing(context:context, logger: logger), // function where you call your api
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) { // AsyncSnapshot<Your object type>
 
 
@@ -50,14 +50,14 @@ class WidgetStartingCommingPrices extends State<StatefulWidgetCommingPrices> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           logger.i('napshot.connectionState$snapshot.connectionState');
           //TODO виджет когда мы ожидаем
-          return  GetWidgetWaitingPing(). getWidgetWaitingPing(context:context, snapshot:snapshot);
+          return  GetWidgetWaitingPing(). getWidgetWaitingPing(context:context, snapshot:snapshot, alwaysStop:Colors.red);
         }
 
 
 
 
         ////TODO В  Сервер закончил Обработки
-        if (snapshot.connectionState == ConnectionState.done) {
+       /* if (snapshot.connectionState == ConnectionState.done) {
           logger.i('napshot.connectionState$snapshot.connectionState');
 
           ///TODO пришли данные
@@ -82,7 +82,7 @@ class WidgetStartingCommingPrices extends State<StatefulWidgetCommingPrices> {
          intarfaceNasDataError=    GetWidgetHasData();
         return   intarfaceNasDataError .getWidgeterrorOrhas(context: context, snapshot: snapshot);
           }
-        }
+        }*/
 
 
 
@@ -97,10 +97,12 @@ class WidgetStartingCommingPrices extends State<StatefulWidgetCommingPrices> {
 
 
 
-        ///TODO по умолчанию показывам как крутиться програсс БАр
+        //TODO Возврат по умолчанию
         logger.i('napshot.connectionState$snapshot.connectionState');
         //TODO виджет когда мы ожидаем
-        return  GetWidgetWaitingPing(). getWidgetWaitingPing(context:context, snapshot:snapshot);
+        return  GetWidgetWaitingPing(). getWidgetWaitingPing(context:context, snapshot:snapshot,alwaysStop: Colors.grey);
+
+
       }
     );
   }
