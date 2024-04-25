@@ -7,11 +7,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/src/logger.dart';
 
+import '../../../data/entities/Entities1CList.dart';
 import '../../../data/entities/Entities1CListManual.dart';
 import '../../../data/entities/Entities1CMap.dart';
 
 class   WidgetSuccessData {
 
+  late List<Entities1CList> list;
 
   //TODO РАбоий Виджет
   Widget getWidgetScaffold({
@@ -81,10 +83,10 @@ class   WidgetSuccessData {
                   primary: false,
                   scrollDirection:
                   Axis.vertical, // Axis.horizontal for horizontal list view.
-                  itemCount: listManual.length,
+                  itemCount: listMapcallback1c.length,
                   itemBuilder: (context, index) {
-                    final user = listManual[index].CFO.toString().trim();
-                    final UUID = listManual[index].UUID.toString().trim();
+                    final user = list[index].CFO.toString().trim();
+                    final UUID = list[index].UUID.toString().trim();
                     //TODO
                     return Column(
                       children: [
@@ -114,7 +116,7 @@ class   WidgetSuccessData {
                                 height: 45,
                                 child: Center(
                                   child: Text(
-                                    listManual[index].CFO.toString().trim(),
+                                    list[index].CFO.toString().trim(),
                                     style: TextStyle(
                                       height: 2,
                                       fontSize: 13,
@@ -202,73 +204,8 @@ class   WidgetSuccessData {
       ],
     ),
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         ],
       ),
-
-
-
-
-
-
-
-/*
-
-//TODO  кенопка снизу
-      floatingActionButton:
-      Expanded(
-        child: Padding(
-          padding: const EdgeInsets.all(3.0),
-          child: FloatingActionButton.extended(
-            elevation: 20.0,
-            icon: const Icon(Icons.person_add),
-            label: const Text('Цфо'),
-            backgroundColor: Colors.blue[300],
-            onPressed: () {
-              *//* Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => CameraScreen()),*//*
-            //  );
-            },
-          ),
-        ),
-      ),*/
-
-
-
-
 
     );
   }

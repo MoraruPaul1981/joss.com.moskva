@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:isolate';
 import 'dart:typed_data' show Uint8List,Uint16List;
 import 'dart:typed_data';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -23,7 +24,7 @@ class GetPing implements InterfacePings {
 
 
   @override
-  Future<String?> getJson1cPing() async {
+  Future<String> getJson1cPing({ required BuildContext context, required Logger logger}) async {
     // TODO: implement getJson1cPing
     late var  getPing;
     try{
@@ -74,7 +75,7 @@ class GetPing implements InterfacePings {
 
 
   @override
-  Future<String?>    getCompletePing({required  Response response1C}) async {
+  Future<String>    getCompletePing({required  Response response1C}) async {
     // TODO: implement getCompletePing
     late  var  getCallPing1c;
     try{
@@ -100,6 +101,15 @@ class GetPing implements InterfacePings {
     }
     return getCallPing1c;
   }
+
+
+
+
+
+
+
+
+
 
   @override
   String getPingDynamicDontaunt({required  Response response1C}) {
