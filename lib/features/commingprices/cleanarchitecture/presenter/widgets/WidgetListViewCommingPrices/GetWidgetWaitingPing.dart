@@ -46,9 +46,12 @@ class GetWidgetWaitingPing {
                           ColorizeAnimatedText('Союз-Автодор', textStyle: TextStyle(color: Colors.grey,
                             fontSize: 35,
                             fontWeight: FontWeight.w200,),textAlign:  TextAlign.center,
-                              colors:[Colors.grey,Colors.black,Colors.white,Colors.black] ),
-
-                        ]),
+                              colors:[Colors.grey,Colors.black,Colors.white,Colors.black] ),]
+                            ,
+                      pause: Duration(microseconds: 10),
+                      isRepeatingAnimation: true,
+                      repeatForever: true,
+                    ),
 
 //
                  /* Text(
