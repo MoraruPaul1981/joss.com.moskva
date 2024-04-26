@@ -177,10 +177,6 @@ class startingwidgetCommingPrices extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.grey,
-        splashFactory: InkRipple.splashFactory,
-      ),
       debugShowCheckedModeBanner: false,
       home:   StatefulWidgetCommingPrices(logger),
     );

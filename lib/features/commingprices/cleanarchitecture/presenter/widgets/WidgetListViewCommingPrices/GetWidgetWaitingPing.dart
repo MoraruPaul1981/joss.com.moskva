@@ -15,9 +15,8 @@ class GetWidgetWaitingPing {
   Widget getWidgetWaitingPing({required BuildContext context,
     required AsyncSnapshot<String> snapshot,required Color alwaysStop}){
     ////TODO сам виджет
-
-    return     Scaffold(
-      backgroundColor: Colors.black,
+    return new Scaffold(
+      backgroundColor: Colors.grey[200],
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -35,7 +34,7 @@ class GetWidgetWaitingPing {
                 width: 300,
                 // color: Colors.red,
                 decoration: BoxDecoration(
-                  color: Colors.black, //assign either here or to the container
+                  color: Colors.grey[200], //assign either here or to the container
                   borderRadius: BorderRadius.circular(24),),
                 child:  Padding(
                   padding: EdgeInsets.all(2.0),
@@ -44,25 +43,14 @@ class GetWidgetWaitingPing {
                     AnimatedTextKit(
                         animatedTexts: [
                           ColorizeAnimatedText('Союз-Автодор', textStyle: TextStyle(color: Colors.grey,
-                            fontSize: 35,
+                            fontSize: 40,
                             fontWeight: FontWeight.w200,),textAlign:  TextAlign.center,
-                              colors:[Colors.grey,Colors.black,Colors.white,Colors.black] ),]
+                              colors:[Colors.black,Colors.white,Colors.grey,Colors.black] ),]
                             ,
                       pause: Duration(microseconds: 10),
                       isRepeatingAnimation: true,
-                      repeatForever: true,
+                      repeatForever: false,
                     ),
-
-//
-                 /* Text(
-                    'Союз-Автодор',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 30,
-                      fontWeight: FontWeight.w200,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),*/
                 ),
               ),
 
