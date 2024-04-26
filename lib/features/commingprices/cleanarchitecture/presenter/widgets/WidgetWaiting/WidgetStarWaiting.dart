@@ -59,10 +59,11 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
         }
 
 
-
+/*
         ////TODO В  Сервер закончил Обработки
         if (snapshot.connectionState == ConnectionState.done) {
           logger.i('napshot.connectionState$snapshot.connectionState');
+
 
           ///TODO пришли данные
           if (  !snapshot.hasData) {
@@ -72,6 +73,9 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
             //TODO return ERROR
             return widgetWatingCallBack;
 
+
+            //TODO нет пришгли  данных
+            //TODO нет пришгли  данных
           } else {
             logger.i('napshot.connectionState$snapshot.connectionState');
             //TODO нет пришгли  данных
@@ -80,11 +84,11 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
             return widgetWatingCallBack;
 
           }
-        }
+        }*/
 
 
         ///TODO сгенерировальсь Error
-        if (snapshot.hasError) {
+        if (!snapshot.hasError) {
           //TODO когда ест данные
           logger.e('napshot.connectionState$snapshot.connectionState'+'snapshot.error.toString()..'+snapshot.error.toString());
           //TODO Возврат по умолчанию
