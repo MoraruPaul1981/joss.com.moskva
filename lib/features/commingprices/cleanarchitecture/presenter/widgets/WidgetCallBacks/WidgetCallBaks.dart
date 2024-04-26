@@ -30,6 +30,7 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
 
 
   ///TODO  методы ожидания
+  @override
   Widget getWidgetProccingWait({required BuildContext context, required AsyncSnapshot<String> snapshot,required  Logger logger}){
 //TODO
   logger.i("starting  getWidgetProccingWait");
@@ -44,6 +45,7 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
 
 
   ///TODO метод по умочанию
+   @override
   Widget getWidgetProccingDefault( {required BuildContext context, required AsyncSnapshot<String> snapshot,required  Logger logger}){
 //TODO
     logger.i("starting  getWidgetProccingDefault");
@@ -56,6 +58,7 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
 
 
   ///TODO метод по умочанию
+  @override
   Widget getWidgetProccingError( {required BuildContext context, required AsyncSnapshot<String> snapshot,required  Logger logger}){
 //TODO
     logger.i("starting  getWidgetProccingError");
@@ -71,6 +74,7 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
 
 
   ///TODO метод есть данные
+  @override
   Widget getWidgetProccingNasData( {required BuildContext context, required AsyncSnapshot<String> snapshot,required  Logger logger}){
 //TODO
 
@@ -78,8 +82,8 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
     logger.i('getPingBack..${getPingBack}'+ " snapshot.hasData..$snapshot.hasData ");
 
 
-    var  backPing=snapshot.data as     List<Map<String, List<Entities1CMap>>>  ;
-    logger.i('backPing..${backPing}'+ " snapshot.hasData..$snapshot.hasData ");
+    /*var  backPing=snapshot.data as     List<Map<String, List<Entities1CMap>>>  ;
+    logger.i('backPing..${backPing}'+ " snapshot.hasData..$snapshot.hasData ");*/
 
 
     logger.i("starting  getWidgetProccingNasData");
@@ -92,6 +96,7 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
 
 
   ///TODO метод нет данных
+  @override
   Widget getWidgetProccingDontData( {required BuildContext context, required AsyncSnapshot<String> snapshot,required  Logger logger}){
 //TODO
     logger.i("starting  getWidgetProccingDontData");

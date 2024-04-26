@@ -44,7 +44,7 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
 
     return FutureBuilder<String>(
       //TODO get JSON PING ot 1C
-      future:GetPing(). getResponse1cPing(context:context, logger: logger), // TODO метод который и делать пинг с сервером
+      future:   GetPing(). getResponse1cPing(context:context, logger: logger), // TODO метод который и делать пинг с сервером
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) { // AsyncSnapshot<Your object type>
 
 
@@ -59,14 +59,13 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
         }
 
 
-/*
         ////TODO В  Сервер закончил Обработки
         if (snapshot.connectionState == ConnectionState.done) {
           logger.i('napshot.connectionState$snapshot.connectionState');
 
 
           ///TODO пришли данные
-          if (  !snapshot.hasData) {
+          if (  snapshot.hasData) {
             logger.i('snapshot.hasData$snapshot.hasData'+'napshot.connectionState$snapshot.connectionState');
             //TODO нет пришгли  данных
             widgetWatingCallBack = WidgetCallBaks().  getWidgetProccingNasData(   context:context,   snapshot:snapshot,logger:logger);
@@ -84,11 +83,11 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
             return widgetWatingCallBack;
 
           }
-        }*/
+        }
 
 
         ///TODO сгенерировальсь Error
-        if (!snapshot.hasError) {
+        if (snapshot.hasError) {
           //TODO когда ест данные
           logger.e('napshot.connectionState$snapshot.connectionState'+'snapshot.error.toString()..'+snapshot.error.toString());
           //TODO Возврат по умолчанию

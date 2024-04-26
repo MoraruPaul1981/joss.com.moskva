@@ -8,7 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-
+import "dart:async";
+import "dart:isolate";
 
 
 import 'package:logger/logger.dart';
@@ -28,6 +29,7 @@ class GetPing implements InterfacePings {
     // TODO: implement getJson1cPing
     late String  getPing;
     try{
+      // Read some data.
       //TODO адрес пинга к серверу  Jboss Debug
       var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
       //TODO
