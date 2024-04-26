@@ -102,7 +102,7 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
         ///TODO сгенерировальсь Error
         if (snapshot.hasError) {
           //TODO когда ест данные
-          logger.i('napshot.connectionState$snapshot.connectionState');
+          logger.e('napshot.connectionState$snapshot.connectionState'+'snapshot.error.toString()..'+snapshot.error.toString());
           //TODO Возврат по умолчанию
           intarfaceWaiting = GetWidgetWaitingErrors();
 
