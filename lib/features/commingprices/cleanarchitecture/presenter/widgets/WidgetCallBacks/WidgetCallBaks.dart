@@ -1,5 +1,7 @@
 
+import 'dart:async';
 import 'dart:isolate';
+import 'dart:ui';
 
 import 'package:commintprices/main.dart';
 import 'package:flutter/cupertino.dart';
@@ -81,7 +83,6 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
     var  getPingBack=snapshot.data as     String ;
     logger.i('getPingBack..${getPingBack}'+ " snapshot.hasData..$snapshot.hasData ");
 
-
     /*var  backPing=snapshot.data as     List<Map<String, List<Entities1CMap>>>  ;
     logger.i('backPing..${backPing}'+ " snapshot.hasData..$snapshot.hasData ");*/
 
@@ -107,6 +108,13 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
         alwaysStop: Colors.red,
         currentText: 'Нет данных !!!');
   }
+
+
+
+
+
+
+
 
 
 

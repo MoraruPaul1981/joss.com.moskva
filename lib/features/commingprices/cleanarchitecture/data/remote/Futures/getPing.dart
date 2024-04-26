@@ -29,6 +29,7 @@ class GetPing implements InterfacePings {
     // TODO: implement getJson1cPing
     late String  getPing;
     try{
+
       // Read some data.
       //TODO адрес пинга к серверу  Jboss Debug
       var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
@@ -73,6 +74,11 @@ class GetPing implements InterfacePings {
       return   getPing;
   }
 
+  
+  
+  
+  
+  
 
 
   @override
@@ -132,4 +138,14 @@ class GetPing implements InterfacePings {
   }
 
 
+
+
+
+
+  ///TODO END  class
 }
+
+
+
+
+
