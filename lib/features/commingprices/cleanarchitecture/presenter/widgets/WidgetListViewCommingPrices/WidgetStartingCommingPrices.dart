@@ -50,7 +50,7 @@ class WidgetStartingCommingPrices extends State<StatefulWidgetCommingPrices> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           logger.i('napshot.connectionState$snapshot.connectionState');
           //TODO виджет когда мы ожидаем
-          return  GetWidgetWaitingPing(). getWidgetWaitingPing(context:context, snapshot:snapshot, alwaysStop:Colors.grey);
+          return  GetWidgetWaitingPing(). getWidgetWaitingPing(context:context, snapshot:snapshot, alwaysStop:Colors.red);
         }
 
 
@@ -100,7 +100,7 @@ class WidgetStartingCommingPrices extends State<StatefulWidgetCommingPrices> {
         //TODO Возврат по умолчанию
         logger.i('napshot.connectionState$snapshot.connectionState');
         //TODO виджет когда мы ожидаем
-          return  GetWidgetWaitingPing(). getWidgetWaitingPing(context:context, snapshot:snapshot,alwaysStop: Colors.red);
+          return  GetWidgetWaitingPing(). getWidgetWaitingPing(context:context, snapshot:snapshot,alwaysStop: Colors.black);
 
       }
     );

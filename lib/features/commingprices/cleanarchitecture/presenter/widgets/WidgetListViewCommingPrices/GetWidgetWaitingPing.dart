@@ -58,24 +58,24 @@ class GetWidgetWaitingPing {
 
           ),
 
-/*
+
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
                 margin: new EdgeInsets.symmetric(vertical: 20.0),
-                height: 150,
-                width: 150,
+                height: 40,
+                width: 40,
                 // color: Colors.red,
                 decoration: BoxDecoration(
-                  color: Colors.black, //assign either here or to the container
+                  color: Colors.grey[200], //assign either here or to the container
                   borderRadius: BorderRadius.circular(24),),
                 child: Padding(
                   padding: const EdgeInsets.all(2.0),
                   child:  Theme(
                     data: Theme.of(context).copyWith(hintColor: Colors.white),
                     child: CircularProgressIndicator(
-                        strokeWidth: 10.0,
+                        strokeWidth: 4.0,
                         backgroundColor: Colors.grey,
                         valueColor: AlwaysStoppedAnimation<Color>(alwaysStop)),
                   ),
@@ -84,8 +84,6 @@ class GetWidgetWaitingPing {
 
             ],
           ),
-*/
-
 
 
           //TODO END ROW
