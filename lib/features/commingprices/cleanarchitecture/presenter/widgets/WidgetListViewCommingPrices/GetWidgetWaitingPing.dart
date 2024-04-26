@@ -43,8 +43,10 @@ class GetWidgetWaitingPing {
 
                     AnimatedTextKit(
                         animatedTexts: [
-                          ColorizeAnimatedText('text', textStyle: TextStyle(fontSize:  50.0,fontWeight: FontWeight.bold),
-                              colors:[Colors.purple,Colors.blue,Colors.yellow,Colors.red] ),
+                          ColorizeAnimatedText('Союз-Автодор', textStyle: TextStyle(color: Colors.grey,
+                            fontSize: 35,
+                            fontWeight: FontWeight.w200,),textAlign:  TextAlign.center,
+                              colors:[Colors.grey,Colors.blue,Colors.white,Colors.red] ),
 
                         ]),
 
