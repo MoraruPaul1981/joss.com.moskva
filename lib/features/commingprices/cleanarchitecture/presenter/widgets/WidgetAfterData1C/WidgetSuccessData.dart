@@ -13,7 +13,7 @@ import '../../../data/entities/Entities1CMap.dart';
 
 class   WidgetSuccessData {
 
-  late List<Entities1CList> list;
+  late List<Entities1CList> list;//TODO сохранили как тест временно ...
 
   //TODO РАбоий Виджет
   Widget getWidgetScaffold({

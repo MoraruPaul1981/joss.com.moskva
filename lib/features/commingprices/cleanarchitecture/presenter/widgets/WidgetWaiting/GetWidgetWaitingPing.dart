@@ -7,13 +7,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/src/logger.dart';
 
+import 'Intarface/IntarfaceWaiting.dart';
+
+
+
 
 /////////TODO класс ожидание ответа пинга от 1с
-class GetWidgetWaitingPing {
+class GetWidgetWaitingPing  implements   IntarfaceWaiting {
 
   //TODO Виджет ожидание пипнга от сервера 1С
   Widget getWidgetWaitingPing({required BuildContext context,
-    required AsyncSnapshot<String> snapshot,required Color alwaysStop}){
+    required AsyncSnapshot<String> snapshot,required Color alwaysStop,required String currentText}){
     ////TODO сам виджет
     return new Scaffold(
       backgroundColor: Colors.grey[200],
@@ -42,12 +46,12 @@ class GetWidgetWaitingPing {
 
                     AnimatedTextKit(
                         animatedTexts: [
-                          ColorizeAnimatedText('Союз-Автодор', textStyle: TextStyle(color: Colors.grey,
+                          ColorizeAnimatedText(currentText, textStyle: TextStyle(color: Colors.grey,
                             fontSize: 40,
                             fontWeight: FontWeight.w200,),textAlign:  TextAlign.center,
                               colors:[Colors.black,Colors.white,Colors.grey,Colors.black] ),]
                             ,
-                      pause: Duration(microseconds: 10),
+                      pause: Duration(microseconds: 1),
                       isRepeatingAnimation: true,
                       repeatForever: false,
                     ),

@@ -11,10 +11,11 @@ import 'package:http/http.dart';
 
 
 
-abstract  class IntarfaceNasDataError {
+abstract  class IntarfaceWaiting {
 
   //TODO
-  Widget getWidgeterrorOrhas({required BuildContext context, required AsyncSnapshot<String> snapshot});
+  Widget getWidgetWaitingPing({required BuildContext context,
+    required AsyncSnapshot<String> snapshot,required Color alwaysStop,required String currentText});
 
 
 }

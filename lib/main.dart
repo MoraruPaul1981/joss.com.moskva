@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:isolate';
 
+import 'package:commintprices/features/commingprices/cleanarchitecture/presenter/widgets/WidgetWaiting/WidgetStarWaiting.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -12,7 +13,7 @@ import 'features/commingprices/cleanarchitecture/data/remote/Futures/GetFutures1
 import 'features/commingprices/cleanarchitecture/data/remote/Futures/getPing.dart';
 import 'features/commingprices/cleanarchitecture/domain/usercases/AdressJboss/getAdress.dart';
 import 'features/commingprices/cleanarchitecture/domain/usercases/Loggers/GetErrors.dart';
-import 'features/commingprices/cleanarchitecture/presenter/widgets/WidgetListViewCommingPrices/WidgetStartingCommingPrices.dart';
+
 
 
 
@@ -196,7 +197,7 @@ class StatefulWidgetCommingPrices extends StatefulWidget {
   State<StatefulWidgetCommingPrices> createState() => WidgetPhoneMail();*/////
 
   //TODO Comming Prices
-  State<StatefulWidgetCommingPrices> createState() => WidgetStartingCommingPrices( logger: logger);//TODO//
+  State<StatefulWidgetCommingPrices> createState() => WidgetStarWaiting( logger: logger);//TODO//
   //TODO
 
   //TODO ENDING widget

@@ -6,27 +6,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/src/logger.dart';
 
+
 import '../../../data/entities/Entities1CListManual.dart';
 import '../../../data/entities/Entities1CMap.dart';
 import '../../../data/remote/Futures/getPing.dart';
-import 'GetWidgetErrors.dart';
-import 'GetWidgetHasData.dart';
+import 'GetWidgetWaitingDontConnections1C.dart';
+import 'GetWidgetWaitingErrors.dart';
 import 'GetWidgetWaitingPing.dart';
-import 'IntrafaceNasDataError/InterfaceNasDataError.dart';
-import 'WidgetSuccessData.dart';
+import 'Intarface/IntarfaceWaiting.dart';
+
+
 
 
 
 
 
 //TODO Виджет сотоящий из трех строк Телефон и Две Почты
-class WidgetStartingCommingPrices extends State<StatefulWidgetCommingPrices> {
+class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
   Logger logger;
   //TODO json data
-
-
-
-  WidgetStartingCommingPrices({ required this.logger } );
+  WidgetStarWaiting({ required this.logger } );
 
   @override
   Widget build(BuildContext context) {
@@ -35,33 +34,35 @@ class WidgetStartingCommingPrices extends State<StatefulWidgetCommingPrices> {
     return getFutureBuilder();
   }
 
-
-
-
   //TODO метод получени пинга сервер аи в будущем получени еданных 1С
   FutureBuilder<String> getFutureBuilder() {
-    IntarfaceNasDataError intarfaceNasDataError;
+
+    ///TODO
+   late  IntarfaceWaiting intarfaceWaiting;
+
     return FutureBuilder<String>(
-      future:GetPing(). getResponse1cPing(context:context, logger: logger), // function where you call your api
+      future:GetPing(). getResponse1cPing(context:context, logger: logger), // TODO метод который и делать пинг с сервером
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) { // AsyncSnapshot<Your object type>
 
 
         ////TODO В  ожидание
         if (snapshot.connectionState == ConnectionState.waiting) {
           logger.i('napshot.connectionState$snapshot.connectionState');
+
           //TODO виджет когда мы ожидаем
-          return  GetWidgetWaitingPing(). getWidgetWaitingPing(context:context, snapshot:snapshot, alwaysStop:Colors.red);
+          intarfaceWaiting= GetWidgetWaitingPing();
+          ///TODO return
+          return intarfaceWaiting. getWidgetWaitingPing(context:context, snapshot:snapshot, alwaysStop:Colors.red,currentText:'Союз-Автодор');
         }
 
 
 
-
-        ////TODO В  Сервер закончил Обработки
-       /* if (snapshot.connectionState == ConnectionState.done) {
+   /*     ////TODO В  Сервер закончил Обработки
+        if (snapshot.connectionState == ConnectionState.done) {
           logger.i('napshot.connectionState$snapshot.connectionState');
 
           ///TODO пришли данные
-          if (  snapshot.hasData) {
+          if (  !snapshot.hasData) {
             logger.i('snapshot.hasData$snapshot.hasData');
 
 
@@ -69,12 +70,12 @@ class WidgetStartingCommingPrices extends State<StatefulWidgetCommingPrices> {
             logger.i('getPingBack..${getPingBack}'+ " snapshot.hasData..$snapshot.hasData ");
 
 
-
+*//*
            var  listMapcallback1c=snapshot.data as     List<Map<String, List<Entities1CMap>>>  ;
-            logger.i('listMapcallback1c..${listMapcallback1c}'+ " snapshot.hasData..$snapshot.hasData ");
+            logger.i('listMapcallback1c..${listMapcallback1c}'+ " snapshot.hasData..$snapshot.hasData ");*//*
 
             //TODO когда ест данные
-            return   WidgetSuccessData().getWidgetScaffold(context:context, snapshot:snapshot,listMapcallback1c:  listMapcallback1c );
+           // return   WidgetSuccessData().getWidgetScaffold(context:context, snapshot:snapshot,listMapcallback1c:  listMapcallback1c );
 
           } else {
             //TODO нет пришгли  данных
@@ -82,25 +83,30 @@ class WidgetStartingCommingPrices extends State<StatefulWidgetCommingPrices> {
          intarfaceNasDataError=    GetWidgetHasData();
         return   intarfaceNasDataError .getWidgeterrorOrhas(context: context, snapshot: snapshot);
           }
-        }*/
-
+        }
+*/
 
 
 
         ///TODO сгенерировальсь Error
-        if (snapshot.hasError){
+        if (snapshot.hasError) {
           //TODO когда ест данные
           logger.i('napshot.connectionState$snapshot.connectionState');
-          intarfaceNasDataError=    GetWidgetErrors();
-          return   intarfaceNasDataError .getWidgeterrorOrhas(context: context, snapshot: snapshot);
-      }
+          //TODO Возврат по умолчанию
+          intarfaceWaiting = GetWidgetWaitingErrors();
 
+          ///TODO return
+          return intarfaceWaiting.getWidgetWaitingPing(context: context,
+              snapshot: snapshot,
+              alwaysStop: Colors.red,
+              currentText: snapshot.error.toString());
+        }
 
 
         //TODO Возврат по умолчанию
-        logger.i('napshot.connectionState$snapshot.connectionState');
-        //TODO виджет когда мы ожидаем
-          return  GetWidgetWaitingPing(). getWidgetWaitingPing(context:context, snapshot:snapshot,alwaysStop: Colors.black);
+        intarfaceWaiting= GetWidgetWaitingDontConnections1C();
+        ///TODO return
+        return intarfaceWaiting. getWidgetWaitingPing(context:context, snapshot:snapshot, alwaysStop:Colors.red,currentText:'выкл. Сервер !!!');
 
       }
     );
