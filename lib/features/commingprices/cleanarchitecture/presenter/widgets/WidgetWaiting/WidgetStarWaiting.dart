@@ -52,39 +52,50 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
           //TODO виджет когда мы ожидаем
           intarfaceWaiting= GetWidgetWaitingPing();
           ///TODO return
-          return intarfaceWaiting. getWidgetWaitingPing(context:context, snapshot:snapshot, alwaysStop:Colors.red,currentText:'Союз-Автодор');
+          return intarfaceWaiting.
+          getWidgetWaitingPing(context:context, snapshot:snapshot,
+              alwaysStop:Colors.white,currentText:'Союз-Автодор');
         }
 
 
 
-   /*     ////TODO В  Сервер закончил Обработки
-        if (snapshot.connectionState == ConnectionState.done) {
+        ////TODO В  Сервер закончил Обработки
+/*        if (snapshot.connectionState == ConnectionState.done) {
           logger.i('napshot.connectionState$snapshot.connectionState');
 
           ///TODO пришли данные
-          if (  !snapshot.hasData) {
+          if (  snapshot.hasData) {
             logger.i('snapshot.hasData$snapshot.hasData');
+
+            intarfaceWaiting= GetWidgetWaitingPing();
+            //TODO
+            return intarfaceWaiting.
+            getWidgetWaitingPing(context:context, snapshot:snapshot,
+                alwaysStop:Colors.red,currentText:'Союз-Автодор');
 
 
             var  getPingBack=snapshot.data as     String ;
             logger.i('getPingBack..${getPingBack}'+ " snapshot.hasData..$snapshot.hasData ");
 
 
-*//*
+
            var  listMapcallback1c=snapshot.data as     List<Map<String, List<Entities1CMap>>>  ;
-            logger.i('listMapcallback1c..${listMapcallback1c}'+ " snapshot.hasData..$snapshot.hasData ");*//*
+            logger.i('listMapcallback1c..${listMapcallback1c}'+ " snapshot.hasData..$snapshot.hasData ");
 
             //TODO когда ест данные
            // return   WidgetSuccessData().getWidgetScaffold(context:context, snapshot:snapshot,listMapcallback1c:  listMapcallback1c );
 
           } else {
             //TODO нет пришгли  данных
-            logger.i('snapshot.hasData$snapshot.hasData');
-         intarfaceNasDataError=    GetWidgetHasData();
-        return   intarfaceNasDataError .getWidgeterrorOrhas(context: context, snapshot: snapshot);
+            intarfaceWaiting= GetWidgetWaitingDontConnections1C();
+            ///TODO return
+            return     intarfaceWaiting.getWidgetWaitingPing(context: context,
+                snapshot: snapshot,
+                alwaysStop: Colors.red,
+                currentText: 'выкл. Сервер !!!');
+
           }
-        }
-*/
+        }*/
 
 
 
@@ -104,9 +115,11 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
 
 
         //TODO Возврат по умолчанию
-        intarfaceWaiting= GetWidgetWaitingDontConnections1C();
+        intarfaceWaiting= GetWidgetWaitingPing();
         ///TODO return
-        return intarfaceWaiting. getWidgetWaitingPing(context:context, snapshot:snapshot, alwaysStop:Colors.red,currentText:'выкл. Сервер !!!');
+        return intarfaceWaiting.
+        getWidgetWaitingPing(context:context, snapshot:snapshot,
+            alwaysStop:Colors.black,currentText:'Союз-Автодор');
 
       }
     );

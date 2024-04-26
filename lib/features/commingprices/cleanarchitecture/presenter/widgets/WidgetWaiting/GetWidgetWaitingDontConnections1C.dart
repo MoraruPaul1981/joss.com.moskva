@@ -48,7 +48,7 @@ class GetWidgetWaitingDontConnections1C  implements   IntarfaceWaiting {
                     AnimatedTextKit(
                         animatedTexts: [
                           ColorizeAnimatedText(currentText, textStyle: TextStyle(color: Colors.grey,
-                            fontSize: 40,
+                            fontSize: 25,
                             fontWeight: FontWeight.w200,),textAlign:  TextAlign.center,
                               colors:[Colors.black,Colors.white,Colors.grey,Colors.black] ),]
                             ,
