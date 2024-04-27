@@ -51,14 +51,9 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) { // AsyncSnapshot<Your object type>
 
         ////TODO В  ожидание
-  /*      if (snapshot.connectionState == ConnectionState.waiting) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
           logger.i('napshot.connectionState$snapshot.connectionState');
-
-          //TODO виджет когда мы ожидаем
-          widgetWatingCallBack = WidgetCallBaks().  getWidgetProccingWait(    context:context,   snapshot:snapshot,logger:logger);
-          //TODO return
-          return widgetWatingCallBack;
-        }*/
+        }
 
 
         ////TODO В  Сервер закончил Обработки
@@ -67,7 +62,7 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
 
 
           ///TODO пришли данные
-          if ( ! snapshot.hasData) {
+          if (   snapshot.hasData) {
             logger.i('snapshot.hasData$snapshot.hasData'+'napshot.connectionState$snapshot.connectionState');
             //TODO нет пришгли  данных
             widgetWatingCallBack = WidgetCallBaks().  getWidgetProccingNasData(   context:context,   snapshot:snapshot,logger:logger);
