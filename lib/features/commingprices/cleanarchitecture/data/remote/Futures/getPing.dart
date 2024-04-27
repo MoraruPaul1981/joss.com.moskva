@@ -29,6 +29,7 @@ class GetPing implements InterfacePings {
     // TODO: implement getJson1cPing
     Completer<String> completer= new Completer<String> ();;
     try{
+
       // Emulating a long running task
       String  getPing= await  getResponsePing(logger) ;
 
@@ -41,8 +42,6 @@ class GetPing implements InterfacePings {
       }
       return   completer.future;
   }
-
-
 
 
 
