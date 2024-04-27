@@ -31,7 +31,7 @@ class GetPing implements InterfacePings {
     try{
 
       // Emulating a long running task
-      String  getPing= await  getResponsePing(logger) ;
+      Future<String>  getPing=    getResponsePing(logger) ;
 
       completer.complete(getPing) ;
 
@@ -76,11 +76,11 @@ class GetPing implements InterfacePings {
             logger.i(' get ERROR $error  ');
           });
 
-    String  getPing=await   getCompetePing(   backresponsejboss, logger);
-    logger.i('start getPing ..  '+getPing+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+    Future<String>  getPing=    getCompetePing(   backresponsejboss, logger);
+    logger.i('start getPing ..  '+getPing.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
     //ЕЩВЩ
     completer.complete(getPing);
-    logger.i('start getPing ..  '+getPing+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+    logger.i('start getPing ..  '+getPing.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
     } catch (e) {
       print(e);
     }
@@ -97,10 +97,10 @@ class GetPing implements InterfacePings {
     try {
       //TODO адрес пинга к серверу  Jboss Debug
       //String   getPing=      getComplitingResponse(   backresponsejboss);
-      String getPing=await compute(getComplitingResponse ,backresponsejboss  );
-      logger.i('start getPing ..  '+getPing+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+      Future<String> getPing=  compute(getComplitingResponse ,backresponsejboss  );
+      logger.i('start getPing ..  '+getPing.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
       completer.complete(getPing);
-      logger.i('start getPing ..  '+getPing+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+      logger.i('start getPing ..  '+getPing.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
     } catch (e) {
       print(e);
     }

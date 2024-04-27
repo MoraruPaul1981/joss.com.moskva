@@ -16,6 +16,7 @@ import 'Intarface/IntarfaceWaiting.dart';
 class GetWidgetWaitingPing  implements   IntarfaceWaiting {
 
   //TODO Виджет ожидание пипнга от сервера 1С
+  @override
   Widget getWidgetWaitingPing({required BuildContext context,
     required AsyncSnapshot<String> snapshot,required Color alwaysStop,required String currentText}){
     ////TODO сам виджет
