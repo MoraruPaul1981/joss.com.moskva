@@ -1,8 +1,10 @@
 
+import 'dart:async';
 import 'dart:isolate';
 
 import 'package:commintprices/main.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/src/logger.dart';
 
@@ -10,6 +12,7 @@ import 'package:logger/src/logger.dart';
 import '../../../data/entities/Entities1CListManual.dart';
 import '../../../data/entities/Entities1CMap.dart';
 import '../../../data/remote/Futures/getPing.dart';
+import '../../../domain/usercases/tests/Tests.dart';
 import '../WidgetAfterData1C/WidgetSuccessData.dart';
 import '../WidgetCallBacks/WidgetCallBaks.dart';
 import 'GetWidgetWaitingDontConnections1C.dart';
@@ -42,11 +45,13 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
     ///TODO return Widget
    late Widget widgetWatingCallBack;
 
+
+   Testing().startingTest(logger);
+
     return FutureBuilder<String>(
       //TODO get JSON PING ot 1C
       future:   GetPing(). getResponse1cPing(context:context, logger: logger), // TODO метод который и делать пинг с сервером
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) { // AsyncSnapshot<Your object type>
-
 
         ////TODO В  ожидание
         if (snapshot.connectionState == ConnectionState.waiting) {
