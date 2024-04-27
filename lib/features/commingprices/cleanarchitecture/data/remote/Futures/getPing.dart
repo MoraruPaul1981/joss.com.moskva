@@ -50,7 +50,7 @@ class GetPing implements InterfacePings {
   //TODO  getCompetePing()
    Future<String>  getResponsePing(Logger logger)   async {
     // Read some data.
-  late   String getPing;
+  Completer<String> completer= new Completer<String> ();;
     try {
     //TODO адрес пинга к серверу  Jboss Debug
     var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
@@ -77,12 +77,15 @@ class GetPing implements InterfacePings {
             logger.i(' get ERROR $error  ');
           });
 
-    getPing=await   getCompetePing(   backresponsejboss, logger);
+    String  getPing=await   getCompetePing(   backresponsejboss, logger);
+    logger.i('start getPing ..  '+getPing+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+    //ЕЩВЩ
+    completer.complete(getPing);
     logger.i('start getPing ..  '+getPing+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
     } catch (e) {
       print(e);
     }
-    return getPing;
+    return completer.future;
   }
 
 
