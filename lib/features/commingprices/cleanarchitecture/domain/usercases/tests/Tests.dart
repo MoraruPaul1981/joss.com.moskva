@@ -16,55 +16,87 @@ import '../../../data/remote/Futures/getPing.dart';
 ///TODO class TEst
 class Testing {
 
-  void startingTest(Logger logger){
+  Future<void> startingTest(Logger logger) async {
 
-    SynchronousFuture<String>? synchronousFuture;
+    try {
+      SynchronousFuture<String>? synchronousFuture;
 
-    Completer c2 = new Completer();
+      Completer<int> completer = new Completer<int> ();
 
 
-    //TODO
+      //TODO
 
-    int _counter;
+      int _counter;
 
-    int loop(int val) {
-      int count = 0;
-      for (int i = 1; i <= val; i++) {
-        count += i;
-      }
-      return count;
+      int loop(int val) {
+            int count = 0;
+            for (int i = 1; i <= val; i++) {
+              count += i;
+            }
+            return count;
+          }
+
+      Future<int> _onPressed() async {
+            int result = await compute(loop, 100 );
+            return result;
+          }
+
+
+      int result = await Future<int>.sync( () =>   _onPressed( ));
+      logger.i('result'+result.toString());
+
+      Future<int>.sync( () =>   _onPressed( )).then((value) {
+            //TODO then
+            logger.i('start value .. ');
+            logger.i('start value ..  '+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+            return value;
+
+          }).catchError(
+                  (Object error) {
+                logger.i(' get ERROR $error  ');
+              }
+          )
+              .whenComplete(() => {
+            logger.i('start value ..  '+'Isolate.current.debugName'+Isolate.current.debugName.toString(),
+            ),
+          }
+          );
+    } catch (e) {
+      print(e);
     }
-
-    Future<int> _onPressed() async {
-      int result = await compute(loop, 100 );
-      return result;
-    }
-
-
-    Future<int>.sync( () =>   _onPressed( )).then((value) {
-      //TODO then
-      logger.i('start value .. ');
-      logger.i('start value ..  '+'Isolate.current.debugName'+Isolate.current.debugName.toString());
-      return value;
-
-    }).catchError(
-            (Object error) {
-          logger.i(' get ERROR $error  ');
-        }
-    )
-        .whenComplete(() => {
-      logger.i('start value ..  '+'Isolate.current.debugName'+Isolate.current.debugName.toString(),
-      ),
-    }
-    );
-
-
-
-
-
     print(startingTest);
   }
 
+//TODO Complete
+
+  Future<void> startingTestCompleter(Logger logger) async {
+
+    try {
+      SynchronousFuture<String>? synchronousFuture=new SynchronousFuture('');
+      Completer<int> completer = new Completer<int> ();
+      // Emulating a long running task
+      // ....
+      logger.i('start value ..  '+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+
+    /*  completer.future.then((value) {
+        print(value);
+      }).catchError((error) {
+        print('Caught error: $error');
+        completer.completeError(error);
+      });*/
+
+
+      completer.complete(12);
+      //TODO
+    int ff= await completer.future ;
+
+      logger.i('start ff ..  '+ff.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+
+    } catch (e) {
+      print(e);
+    }
+    print(startingTest);
+  }
 
 
 

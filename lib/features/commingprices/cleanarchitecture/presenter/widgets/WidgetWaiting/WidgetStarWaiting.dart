@@ -46,7 +46,8 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
    late Widget widgetWatingCallBack;
 
 
-   Testing().startingTest(logger);
+  // Testing().startingTest(logger);
+   Testing().startingTestCompleter(logger);
 
     return FutureBuilder<String>(
       //TODO get JSON PING ot 1C
