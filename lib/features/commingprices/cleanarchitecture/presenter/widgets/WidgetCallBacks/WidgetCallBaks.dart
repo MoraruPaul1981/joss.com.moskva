@@ -40,7 +40,7 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
     ///TODO return
   return   intarfaceWaiting.
     getWidgetWaitingPing(context:context, snapshot:snapshot,
-        alwaysStop:Colors.white,currentText:'Союз-Автодор');
+        alwaysStop:Colors.black,currentText:'Союз-Автодор');
   }
 
 
