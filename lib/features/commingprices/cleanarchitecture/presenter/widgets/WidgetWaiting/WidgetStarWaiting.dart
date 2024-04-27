@@ -44,11 +44,7 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
 
     ///TODO return Widget
    late Widget widgetWatingCallBack;
-
-
-  // Testing().startingTest(logger);
-   Testing().startingTestCompleter(logger);
-
+   ///TODO возращаем call back
     return FutureBuilder<String>(
       //TODO get JSON PING ot 1C
       future:   GetPing(). getResponse1cPing(context:context, logger: logger), // TODO метод который и делать пинг с сервером

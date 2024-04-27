@@ -29,49 +29,73 @@ class GetPing implements InterfacePings {
     // TODO: implement getJson1cPing
     late String  getPing;
     try{
+      Completer<String> completer = new Completer<String> ();
+      // Emulating a long running task
 
-      // Read some data.
-      //TODO адрес пинга к серверу  Jboss Debug
-      var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
+      getPing= await      compute(getCompetePing ,logger  );
+
+      logger.i('start getPing ..  '+getPing+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+
+      completer.complete(getPing   ) ;
       //TODO
-      print('adressCurrent1C .. $adressCurrent1C');
+      getPing= await  completer.future  ;
 
-        final parsedUrl=Uri.parse(adressCurrent1C) as Uri;
-        BigInt Uuid=BigInt.parse('0')  ;
-        int IdUser=0;
-        //TODO base64
-        String? basicAuth=     GetConverts().convertBase64(  user: 'dsu1Admin', password: 'dsu1Admin');
-        print(' basicAuth  $basicAuth');
-        //TODO главный запрос
-
-      Response  backresponsejboss =  await http.get(
-            parsedUrl,
-            headers: {
-              'user':IdUser.toString(),
-              'uuid':Uuid.toString(),
-              'authorization':'$basicAuth',
-            }
-        ).catchError(
-                (Object error) {
-              logger.i(' get ERROR $error  ');
-            });
-
-      //TODO
-      getPing= await   Future<String>.value( getComplitingResponse( response1C: backresponsejboss))
-          .catchError(
-        (Object error) {
-            logger.i(' get ERROR $error  ');
-          }
-      );
-      logger.i(' get getPing $getPing  ');
-
-
+      logger.i('start getPing ..  '+getPing+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
         //TODO error
       }   catch (e, stacktrace) {
         print(' get ERROR $e get stacktrace $stacktrace ');
       }
-
       return   getPing;
+  }
+
+
+
+
+
+
+  //TODO  getCompetePing()
+   Future<String>  getCompetePing(Logger logger)   async {
+    // Read some data.
+  late   String getPing;
+    try {
+    //TODO адрес пинга к серверу  Jboss Debug
+    var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
+    //TODO
+    print('adressCurrent1C .. $adressCurrent1C');
+
+      final parsedUrl=Uri.parse(adressCurrent1C) as Uri;
+      BigInt Uuid=BigInt.parse('0')  ;
+      int IdUser=0;
+      //TODO base64
+      String? basicAuth=     GetConverts().convertBase64(  user: 'dsu1Admin', password: 'dsu1Admin');
+      print(' basicAuth  $basicAuth');
+      //TODO главный запрос
+
+    Response  backresponsejboss =  await http.get(
+          parsedUrl,
+          headers: {
+            'user':IdUser.toString(),
+            'uuid':Uuid.toString(),
+            'authorization':'$basicAuth',
+          }
+      ).catchError(
+              (Object error) {
+            logger.i(' get ERROR $error  ');
+          });
+
+    //TODO
+    getPing= await   Future<String>.value( getComplitingResponse( response1C: backresponsejboss))
+        .catchError(
+      (Object error) {
+          logger.i(' get ERROR $error  ');
+        }
+    );
+    logger.i('start value ..  '+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+      logger.i(' get getPing $getPing  ');
+    } catch (e) {
+      print(e);
+    }
+    return getPing;
   }
 
   

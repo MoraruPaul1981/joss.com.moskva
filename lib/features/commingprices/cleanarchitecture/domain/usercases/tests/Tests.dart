@@ -64,37 +64,22 @@ class Testing {
 //TODO Complete
 
   Future<void> startingTestCompleter(Logger logger) async {
-
     try {
-      SynchronousFuture<String>? synchronousFuture=new SynchronousFuture('');
       Completer<int> completer = new Completer<int> ();
       // Emulating a long running task
-
-      //Future<int> f() => Future.value(compute(loop, 100 ));
-       // int result = await compute(loop, 100 );
-      // ....
-      logger.i('start value ..  '+'Isolate.current.debugName'+Isolate.current.debugName.toString());
-
-    /*  completer.future.then((value) {
-        print(value);
-      }).catchError((error) {
-        print('Caught error: $error');
-        completer.completeError(error);
-      });*/
-
-
       completer.complete(compute(loop, 100 ));
       //TODO
-    int ff= await  completer.future  ;
+      int ff= await  completer.future  ;
       logger.i('start value ..  '+'Isolate.current.debugName'+Isolate.current.debugName.toString());
-
-      logger.i('start ff ..  '+ff.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
     } catch (e) {
       print(e);
     }
     print(startingTest);
   }
+
+
+
 
   int loop(int val) {
     int count = 0;
