@@ -26,15 +26,9 @@ class Testing {
 
       //TODO
 
-      int _counter;
 
-      int loop(int val) {
-            int count = 0;
-            for (int i = 1; i <= val; i++) {
-              count += i;
-            }
-            return count;
-          }
+
+
 
       Future<int> _onPressed() async {
             int result = await compute(loop, 100 );
@@ -75,6 +69,9 @@ class Testing {
       SynchronousFuture<String>? synchronousFuture=new SynchronousFuture('');
       Completer<int> completer = new Completer<int> ();
       // Emulating a long running task
+
+      //Future<int> f() => Future.value(compute(loop, 100 ));
+       // int result = await compute(loop, 100 );
       // ....
       logger.i('start value ..  '+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
@@ -86,9 +83,10 @@ class Testing {
       });*/
 
 
-      completer.complete(12);
+      completer.complete(compute(loop, 100 ));
       //TODO
-    int ff= await completer.future ;
+    int ff= await  completer.future  ;
+      logger.i('start value ..  '+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
       logger.i('start ff ..  '+ff.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
@@ -98,6 +96,17 @@ class Testing {
     print(startingTest);
   }
 
+  int loop(int val) {
+    int count = 0;
+    try {
 
+      for (int i = 1; i <= val; i++) {
+            count += i;
+          }
+    } catch (e) {
+      print(e);
+    }
+    return count;
+  }
 
 }
