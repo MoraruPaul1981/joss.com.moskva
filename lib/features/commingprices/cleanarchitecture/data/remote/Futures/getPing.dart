@@ -30,7 +30,7 @@ class GetPing implements InterfacePings {
     Completer<String> completer= new Completer<String> ();;
     try{
       // Emulating a long running task
-      String  getPing= await  getCompetePing(logger) ;
+      String  getPing= await  getResponsePing(logger) ;
 
       completer.complete(getPing) ;
 
@@ -48,7 +48,7 @@ class GetPing implements InterfacePings {
 
 
   //TODO  getCompetePing()
-   Future<String>  getCompetePing(Logger logger)   async {
+   Future<String>  getResponsePing(Logger logger)   async {
     // Read some data.
   late   String getPing;
     try {
@@ -77,30 +77,70 @@ class GetPing implements InterfacePings {
             logger.i(' get ERROR $error  ');
           });
 
-    //TODO
-    getPing= await   Future<String>.value( getComplitingResponse( response1C: backresponsejboss))
-        .catchError(
-      (Object error) {
-          logger.i(' get ERROR $error  ');
-        }
-    );
-    logger.i('start value ..  '+'Isolate.current.debugName'+Isolate.current.debugName.toString());
-      logger.i(' get getPing $getPing  ');
+    getPing=await   getCompetePing(   backresponsejboss, logger);
+    logger.i('start getPing ..  '+getPing+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
     } catch (e) {
       print(e);
     }
     return getPing;
   }
 
-  
-  
-  
-  
-  
+
+
+
+  //TODO  getCompetePing()
+  Future<String>  getCompetePing( Response  backresponsejboss,Logger logger)   async {
+    // Read some data.
+    Completer<String> completer= new Completer<String> ();;
+    try {
+      //TODO адрес пинга к серверу  Jboss Debug
+      //String   getPing=      getComplitingResponse(   backresponsejboss);
+      String getPing=await compute(getComplitingResponse ,backresponsejboss  );
+      logger.i('start getPing ..  '+getPing+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+      completer.complete(getPing);
+      logger.i('start getPing ..  '+getPing+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+    } catch (e) {
+      print(e);
+    }
+    return completer.future;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   @override
-  Future<String>    getComplitingResponse({required  Response response1C}) async {
+   String    getComplitingResponse(  Response response1C)   {
     // TODO: implement getCompletePing
     late  var  getCallPing1c;
     try{
