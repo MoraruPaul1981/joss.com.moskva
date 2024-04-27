@@ -25,27 +25,21 @@ class GetPing implements InterfacePings {
 
 
   @override
-  Future<String> getResponse1cPing({ required BuildContext context, required Logger logger}) async {
+  Future<String> getResponse1cPing({ required BuildContext context, required Logger logger})  async {
     // TODO: implement getJson1cPing
-    late String  getPing;
+    Completer<String> completer= new Completer<String> ();;
     try{
-      Completer<String> completer = new Completer<String> ();
       // Emulating a long running task
+      String  getPing= await  getCompetePing(logger) ;
 
-      getPing= await      compute(getCompetePing ,logger  );
+      completer.complete(getPing) ;
 
-      logger.i('start getPing ..  '+getPing+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
-
-      completer.complete(getPing   ) ;
-      //TODO
-      getPing= await  completer.future  ;
-
-      logger.i('start getPing ..  '+getPing+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+      logger.i('start getPing ..  '+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
         //TODO error
       }   catch (e, stacktrace) {
         print(' get ERROR $e get stacktrace $stacktrace ');
       }
-      return   getPing;
+      return   completer.future;
   }
 
 
