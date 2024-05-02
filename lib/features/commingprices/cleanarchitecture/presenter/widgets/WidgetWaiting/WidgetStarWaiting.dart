@@ -44,6 +44,10 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
 
     ///TODO return Widget
    late Widget widgetWatingCallBack;
+
+
+
+
    ///TODO возращаем call back
     return FutureBuilder<List<Map<String, List<Entities1CMap>>>>(
       //TODO get JSON PING ot 1C

@@ -33,7 +33,7 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
 
   ///TODO  методы ожидания
   @override
-  Widget getWidgetProccerWaiting({required BuildContext context, required AsyncSnapshot<String> snapshot,required  Logger logger}){
+  Widget getWidgetProccerWaiting({required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
 //TODO
   logger.i("starting  getWidgetProccingWait");
   IntarfaceWaiting  intarfaceWaiting= GetWidgetWaitingPing();
@@ -47,7 +47,7 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
 
   ///TODO метод по умочанию
    @override
-  Widget getWidgetProccingDefault( {required BuildContext context, required AsyncSnapshot<String> snapshot,required  Logger logger}){
+  Widget getWidgetProccingDefault( {required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
 //TODO
     logger.i("starting  getWidgetProccingDefault");
     IntarfaceWaiting  intarfaceWaiting= GetWidgetWaitingPing();
@@ -60,7 +60,7 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
 
   ///TODO метод по умочанию
   @override
-  Widget getWidgetProccingError( {required BuildContext context, required AsyncSnapshot<String> snapshot,required  Logger logger}){
+  Widget getWidgetProccingError( {required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
 //TODO
     logger.i("starting  getWidgetProccingError");
     IntarfaceWaiting  intarfaceWaiting  = GetWidgetWaitingErrors();
@@ -93,7 +93,7 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
 
   ///TODO метод нет данных
   @override
-  Widget getWidgetProccingDontData( {required BuildContext context, required AsyncSnapshot<String> snapshot,required  Logger logger}){
+  Widget getWidgetProccingDontData( {required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
 //TODO
     logger.i("starting  getWidgetProccingDontData");
     IntarfaceWaiting  intarfaceWaiting   = GetWidgetWaitingDontConnections1C();
