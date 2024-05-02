@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:isolate';
+import 'dart:js_interop';
 import 'dart:typed_data' show Uint8List,Uint16List;
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
@@ -51,15 +52,11 @@ late  Response backresponsejboss;
       print(' basicAuth  $basicAuth');
 
 
-      //TODO главный запрос Идем в сеть///TODO  Response response=
-        await http.get(
-          parsedUrl,
-          headers: {
-            'user':IdUser.toString(),
-            'uuid':Uuid.toString(),
-            'authorization':'$basicAuth',
-          }
-      ).catchError(
+      //TODO главный запрос PING
+
+      Future<Response?>responsePing =    GetFutures1C().getDownloadJsonMaps(url:basicAuth.toString(),IdUser:IdUser ,UUID:Uuid.toInt() ,logger: logger);
+
+      responsePing.catchError(
               (Object error) {
             logger.i(' catchError  ERROR $error  ');
 
@@ -85,7 +82,8 @@ late  Response backresponsejboss;
          //TODO Self-data
              .then((value) {
                //TODO Self-data
-           List<Map<String, List<Entities1CMap>>>? list=[];
+         // Future<List<Map<String, List<Entities1CMap>>>>  list=GetFutures1C().getDownloadJsonMaps(basicAuth,IdUser,Uuid)  ;
+           List<Map<String, List<Entities1CMap>>> list =[];
 
            completer.complete(list );
 

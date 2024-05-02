@@ -6,6 +6,7 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:logger/logger.dart';
 
 
 import '../../../domain/usercases/Converts/GetConverts.dart';
@@ -15,16 +16,15 @@ import '../../entities/Entities1CMap.dart';
 
 
 class GetFutures1C  implements InFuture1C  {
+
+
+
+
   //TODO
-  late List<Map<String, List<Entities1CMap>>> getmap;
-
-
-
-  //TODO json get MAP
   @override
-  Future<List<Map<String, List<Entities1CMap>>>> getDownloadJsonMaps({required String url,
-    required int IdUser, required int UUID}) async {
+  Future<Response?> getDownloadJsonMaps({required String url, required int IdUser, required int UUID,required Logger logger}) async {
     // TODO: implement getDownloadJsonMaps
+    late  Response  getResponse;
     try{
       final parsedUrl=Uri.parse(url) as Uri;
       BigInt Uuid=BigInt.parse(UUID.toString())  ;
@@ -35,48 +35,36 @@ class GetFutures1C  implements InFuture1C  {
       String? basicAuth=     GetConverts().convertBase64(  user: 'dsu1Admin', password: 'dsu1Admin');
       print(' basicAuth  $basicAuth');
       //TODO главный запрос
-      await http.get(
+      getResponse=  await http.get(
           parsedUrl,
           headers: {
             'user':IdUser.toString(),
             'uuid':Uuid.toString(),
             'authorization':'$basicAuth',
           }
-      ).then(( Response backresponsejboss  ) => {
-
-//TODO Пришел succees ot server 1C
-      getmap=  getGeneratorMapCallBack(response1C: backresponsejboss) as List<Map<String, List<Entities1CMap>>>,
-
-      print(' then backresponsejboss  $backresponsejboss' ),
-
-          print(' then getJson1cSucces getJson1cSucces'),
-
-      })
-          .whenComplete(
-            () {
-              print(' whenComplete getmap  $getmap' );
-
-            },
-      )
-          .catchError(
+      ).catchError(
               (Object error) {
             print(' get ERROR $error  ');
           });
 
-
+      logger.i('start getResponse ..  '+getResponse.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
       //TODO error
     }   catch (e, stacktrace) {
       print(' get ERROR $e get stacktrace $stacktrace ');
     }
-    return       getmap;
-
+    return getResponse;
   }
 
 
 
 
+
+  //TODO
+
+
+
   @override
-  List<Map<String, List<Entities1CMap>>> getGeneratorMapCallBack({required  Response response1C}) {
+  List<Map<String, List<Entities1CMap>>>? getGeneratorMapCallBack({required  Response response1C,required Logger logger}) {
     // TODO: implement getGeneratorMapCallBack
     try{
       print('response1C.statusCode $response1C.statusCode');
@@ -85,7 +73,7 @@ class GetFutures1C  implements InFuture1C  {
 
         //TODO
         print('response1C. contentLength....$response1C. contentLength');
-      /*  if (response1C. contentLength!>100) {
+        /*  if (response1C. contentLength!>100) {
 
           List<dynamic>  listDynamic=  getList1cDynamic(response1C: response1C);
           print('listDynamic $listDynamic');
@@ -135,10 +123,11 @@ class GetFutures1C  implements InFuture1C  {
       print(' get ERROR $e get stacktrace $stacktrace ');
     }
 
-    return getmap;
+    return null;
   }
 
-  }
+}
+
 
 
 
