@@ -8,12 +8,15 @@ import '../../../data/entities/Entities1CMap.dart';
 import '../Paramets/getParaments.dart';
 
 abstract  class InterfacePings {
-  //TODO
-
+  //TODO main metod
   Future<List<Map<String, List<Entities1CMap>>>>  getResponse1c({ required BuildContext context, required Logger logger});
 
-  //TODO
-  List<Map<String, List<Entities1CMap>>>   getComplitingResponse(  Response backresponsejboss);
+  //TODO  self data
+  List<Map<String, List<Entities1CMap>>>   getComplitingResponseYoursData(  Response backresponsejboss);
+
+
+  //TODO  ping
+  String   getComplitingResponsePing(  Response backresponsejboss);
 
 
 }

@@ -98,7 +98,7 @@ class GetPing implements InterfacePings {
   //TODO  getCompetePing()
   Future<String>  getCompetePing(  Response backresponsejboss, Logger logger)   async {
     //TODO Read some data.
-    return  getComplitingResponse(backresponsejboss) ;
+    return  getComplitingResponsePing(backresponsejboss) ;
   }
 
 
@@ -107,7 +107,7 @@ class GetPing implements InterfacePings {
   //TODO  getCompetePing()
   Future<List<Map<String, List<Entities1CMap>>>>  getCompeteSelfData(  Response backresponsejboss, Logger logger)   async {
     //TODO Read some data.
-    return  getComplitingResponse(backresponsejboss) ;
+    return  getComplitingResponsePing(backresponsejboss) ;
   }
 
 
@@ -140,7 +140,7 @@ class GetPing implements InterfacePings {
 
 
   @override
-  List<Map<String, List<Entities1CMap>>>    getComplitingResponse(  Response backresponsejboss)   {
+  List<String>    getComplitingResponsePing(  Response backresponsejboss)   {
     // TODO: implement getCompletePing
     late  var  getCallPing1c;
     try{

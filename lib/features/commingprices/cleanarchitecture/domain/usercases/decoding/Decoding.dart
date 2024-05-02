@@ -10,6 +10,9 @@ import 'package:http/src/response.dart';
 import '../Interfaces/InterfaceDecoding.dart';
 
 class  getDecodingCallback implements InterfaceDecoding{
+
+
+  //TODO decoce PING
   @override
   String getResponseDecoderPing({required Response response1C}) {
     // TODO: implement getResponseDecoder
@@ -33,6 +36,8 @@ class  getDecodingCallback implements InterfaceDecoding{
 
 
 
+
+//TODO  decoce Self Data
   @override
   List<Map<String, List<Entities1CMap>>> getResponseDecoderYoursData({required Response response1C}) {
     // TODO: implement getResponseDecoderYoursData
