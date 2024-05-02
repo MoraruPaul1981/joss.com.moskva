@@ -31,7 +31,7 @@ class GetPing implements InterfacePings {
     // TODO: implement getJson1cPing
     // Read some data.
     Completer<List<Map<String, List<Entities1CMap>>>> completer= new Completer<List<Map<String, List<Entities1CMap>>>>  ();
-    /*try {
+    try {
       //TODO адрес пинга к серверу  Jboss Debug
       var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
       //TODO
@@ -79,7 +79,7 @@ class GetPing implements InterfacePings {
       logger.i('start completer.future ..  '+completer.future.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
     } catch (e) {
       print(e);
-    }*/
+    }
     return   completer.future;
   }
 
@@ -88,14 +88,18 @@ class GetPing implements InterfacePings {
 
 
 
+/*
+  //TODO  getCompetePing() compute
+  Future<List<Map<String, List<Entities1CMap>>>>  getCompetePing(  Response backresponsejboss, Logger logger)   async {
+    //TODO Read some data.
+    return compute(getComplitingResponse ,backresponsejboss  );
+  }*/
 
   //TODO  getCompetePing()
   Future<List<Map<String, List<Entities1CMap>>>>  getCompetePing(  Response backresponsejboss, Logger logger)   async {
     //TODO Read some data.
-    return compute(getComplitingResponse ,backresponsejboss  );
+    return  getComplitingResponse(backresponsejboss) ;
   }
-
-
 
 
 

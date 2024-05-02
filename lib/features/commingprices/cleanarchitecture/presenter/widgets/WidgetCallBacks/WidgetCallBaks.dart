@@ -33,7 +33,7 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
 
   ///TODO  методы ожидания
   @override
-  Widget getWidgetProccingWait({required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
+  Widget getWidgetProccerWaiting({required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
 //TODO
   logger.i("starting  getWidgetProccingWait");
   IntarfaceWaiting  intarfaceWaiting= GetWidgetWaitingPing();
@@ -42,7 +42,6 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
     getWidgetWaitingPing(context:context, snapshot:snapshot,
         alwaysStop:Colors.black,currentText:'Союз-Автодор');
   }
-
 
 
 

@@ -17,7 +17,7 @@ import '../../../../data/entities/Entities1CMap.dart';
 abstract  class IntarfaceCallBaks {
 
   //TODO
-  Widget getWidgetProccingWait({required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger});
+  Widget getWidgetProccerWaiting({required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger});
   //TODO
   Widget getWidgetProccingDefault( {required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger});
   //TODO

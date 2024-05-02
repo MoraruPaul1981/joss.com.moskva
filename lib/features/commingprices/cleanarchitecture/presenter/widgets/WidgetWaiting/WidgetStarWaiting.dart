@@ -57,7 +57,7 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           logger.i('napshot.connectionState$snapshot.connectionState');
           //TODO Возврат по умолчанию
-          widgetWatingCallBack =WidgetCallBaks().   getWidgetProccingDefault(  context:context,   snapshot:snapshot,logger:logger);
+          widgetWatingCallBack =WidgetCallBaks().   getWidgetProccerWaiting(  context:context,   snapshot:snapshot,logger:logger);
           //TODO return
           return widgetWatingCallBack;
 
