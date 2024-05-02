@@ -1,26 +1,16 @@
 
 
-import 'dart:convert';
+import "dart:async";
 import 'dart:isolate';
-import 'dart:js_interop';
-import 'dart:typed_data' show Uint8List,Uint16List;
-import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import "dart:async";
-import "dart:isolate";
-
-
 import 'package:logger/logger.dart';
 
-import '../../../../../../main.dart';
 import '../../../domain/usercases/AdressJboss/getAdress.dart';
 import '../../../domain/usercases/Converts/GetConverts.dart';
 import '../../../domain/usercases/Interfaces/InterfacePings.dart';
-import '../../../domain/usercases/Loggers/GetErrors.dart';
-import '../../../domain/usercases/Paramets/getParaments.dart';
 import '../../../domain/usercases/decoding/Decoding.dart';
 import '../../entities/Entities1CMap.dart';
 import 'GetFutures1C.dart';
@@ -119,7 +109,7 @@ late  Response backresponsejboss;
   }*/
 
   //TODO  getCompetePing()
-  Future<String>  getCompetePing(  Response backresponsejboss, Logger logger)   async {
+  Future<String>  getCompetePing(  Response? backresponsejboss, Logger logger)   async {
     //TODO Read some data.
     return  getComplitingResponsePing(backresponsejboss) ;
   }
@@ -163,14 +153,14 @@ late  Response backresponsejboss;
 
 //TODO PING
   @override
-   String   getComplitingResponsePing(  Response backresponsejboss)   {
+   String   getComplitingResponsePing(  Response? backresponsejboss)   {
     // TODO: implement getCompletePing
     late  var  getCallPing1c;
     try{
       print('getComplete $backresponsejboss');
       //TODO
       print('response1C.statusCode $backresponsejboss.statusCode');
-      if (backresponsejboss.statusCode==200) {
+      if (backresponsejboss?.statusCode==200) {
         //TODO realy ping
         print(' then backresponsejboss. contentLength $backresponsejboss.contentLength');
         //TODO PING

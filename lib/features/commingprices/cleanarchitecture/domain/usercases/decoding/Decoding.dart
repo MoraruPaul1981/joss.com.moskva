@@ -14,15 +14,15 @@ class  getDecodingCallback implements InterfaceDecoding{
 
   //TODO decoce PING
   @override
-  String getResponseDecoderPing({required Response response1C}) {
+  String getResponseDecoderPing({required Response? response1C}) {
     // TODO: implement getResponseDecoder
     var   getPing1C;
     try{
-      final byteData = response1C.bodyBytes.buffer.asByteData();
-      final bugffer=   byteData.buffer;
-      Uint8List list = bugffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes) ;
+      final byteData = response1C?.bodyBytes.buffer.asByteData();
+      final bugffer=   byteData?.buffer;
+      Uint8List? list = bugffer?.asUint8List(byteData!.offsetInBytes, byteData.lengthInBytes) ;
       //TODO
-      getPing1C=json.decode(utf8.decode(list)) as String ;
+      getPing1C=json.decode(utf8.decode(list as List<int>)) as String ;
       //TODO
       print('getPing1C $getPing1C');
       //TODO error
