@@ -19,6 +19,7 @@ import '../../../domain/usercases/AdressJboss/getAdress.dart';
 import '../../../domain/usercases/Converts/GetConverts.dart';
 import '../../../domain/usercases/Interfaces/InterfacePings.dart';
 import '../../../domain/usercases/Loggers/GetErrors.dart';
+import '../../../domain/usercases/Paramets/getParaments.dart';
 import 'GetFutures1C.dart';
 
 class GetPing implements InterfacePings {
@@ -66,11 +67,6 @@ class GetPing implements InterfacePings {
         return backresponsejboss;
 
       });
-
-    /*  Future<String>  getPing=    getCompetePing(   backresponsejboss, logger);
-      logger.i('start getPing ..  '+getPing.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
-      //ЕЩВЩ
-      completer.complete(getPing);*/
       logger.i('start completer.future ..  '+completer.future.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
     } catch (e) {
       print(e);
@@ -85,20 +81,11 @@ class GetPing implements InterfacePings {
 
 
   //TODO  getCompetePing()
-  Future<String>  getCompetePing( Response  backresponsejboss,Logger logger)   async {
-    // Read some data.
-    Completer<String> completer= new Completer<String> ();;
-    try {
-      //TODO адрес пинга к серверу  Jboss Debug
-      //String   getPing=      getComplitingResponse(   backresponsejboss);
-      Future<String> getPing=  compute(getComplitingResponse ,backresponsejboss  );
-      logger.i('start getPing ..  '+getPing.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
-      completer.complete(getPing);
-      logger.i('start getPing ..  '+getPing.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
-    } catch (e) {
-      print(e);
-    }
-    return completer.future;
+  Future<String>  getCompetePing(  Response backresponsejboss, Logger logger)   async {
+    //TODO Read some data.
+    GetParamentsPing params=new GetParamentsPing(backresponsejboss: backresponsejboss,logger:logger);
+
+    return compute(getComplitingResponse ,params  );
   }
 
 
@@ -136,24 +123,25 @@ class GetPing implements InterfacePings {
 
 
   @override
-  String    getComplitingResponse(  Response response1C)   {
+  String    getComplitingResponse(  GetParamentsPing params)   {
     // TODO: implement getCompletePing
     late  var  getCallPing1c;
     try{
-      print('getComplete $response1C');
+      print('getComplete $params');
       //TODO
-      print('response1C.statusCode $response1C.statusCode');
-      if (response1C.statusCode==200) {
+      print('response1C.statusCode $params.backresponsejboss.statusCode');
+      if (params.backresponsejboss.statusCode==200) {
         //TODO realy ping
-        print(' then backresponsejboss. contentLength $response1C.contentLength');
+        print(' then backresponsejboss. contentLength $params.backresponsejboss.contentLength');
         //TODO PING
-        getCallPing1c= getResponseDecoder(response1C: response1C) as  String   ;
+        getCallPing1c= getResponseDecoder(response1C: params.backresponsejboss) as  String   ;
 
         print('getCallPing1c $getCallPing1c');
-
+        params.logger.i('start getCallPing1c ..  '+getCallPing1c.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
       } else {
         //TODO
-        print('response1C.statusCode $response1C.statusCode');
+        print('response1C.statusCode $params.backresponsejboss.statusCode');
+        params.logger.i('response1C.statusCode $params.backresponsejboss.statusCode'+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
       }
 
       //TODO error
