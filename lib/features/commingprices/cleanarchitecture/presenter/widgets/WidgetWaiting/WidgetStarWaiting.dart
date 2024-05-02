@@ -50,9 +50,14 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
       future:   GetPing(). getResponse1cPing(context:context, logger: logger), // TODO метод который и делать пинг с сервером
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) { // AsyncSnapshot<Your object type>
 
-        ////TODO В  ожидание
+        ////TODO В  waiting
       if (snapshot.connectionState == ConnectionState.waiting) {
           logger.i('napshot.connectionState$snapshot.connectionState');
+          //TODO Возврат по умолчанию
+          widgetWatingCallBack =WidgetCallBaks().   getWidgetProccingDefault(  context:context,   snapshot:snapshot,logger:logger);
+          //TODO return
+          return widgetWatingCallBack;
+
         }
 
 

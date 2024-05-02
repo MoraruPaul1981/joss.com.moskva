@@ -9,7 +9,7 @@ abstract  class InterfacePings {
   Future<String>  getResponse1cPing({ required BuildContext context, required Logger logger});
 
   //TODO
-   String   getComplitingResponse(  Response response1C);
+  String   getComplitingResponse(  Response response1C);
 
   //TODO
   String getResponseDecoder({required  Response response1C});

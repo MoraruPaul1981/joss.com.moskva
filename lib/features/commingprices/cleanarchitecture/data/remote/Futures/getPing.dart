@@ -27,34 +27,13 @@ class GetPing implements InterfacePings {
   @override
   Future<String> getResponse1cPing({ required BuildContext context, required Logger logger})  async {
     // TODO: implement getJson1cPing
-    Completer<String> completer= new Completer<String> ();;
-    try{
-
-      // Emulating a long running task
-      Future<String>  getPing=    getResponsePing(logger) ;
-
-      completer.complete(getPing) ;
-
-      logger.i('start getPing ..  '+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
-        //TODO error
-      }   catch (e, stacktrace) {
-        print(' get ERROR $e get stacktrace $stacktrace ');
-      }
-      return   completer.future;
-  }
-
-
-
-
-  //TODO  getCompetePing()
-   Future<String>  getResponsePing(Logger logger)   async {
     // Read some data.
-  Completer<String> completer= new Completer<String> ();;
+    Completer<String> completer= new Completer<String> ();;
     try {
-    //TODO адрес пинга к серверу  Jboss Debug
-    var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
-    //TODO
-    print('adressCurrent1C .. $adressCurrent1C');
+      //TODO адрес пинга к серверу  Jboss Debug
+      var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
+      //TODO
+      print('adressCurrent1C .. $adressCurrent1C');
 
       final parsedUrl=Uri.parse(adressCurrent1C) as Uri;
       BigInt Uuid=BigInt.parse('0')  ;
@@ -64,7 +43,7 @@ class GetPing implements InterfacePings {
       print(' basicAuth  $basicAuth');
       //TODO главный запрос
 
-    Response  backresponsejboss =  await http.get(
+      Response  backresponsejboss =  await http.get(
           parsedUrl,
           headers: {
             'user':IdUser.toString(),
@@ -73,19 +52,34 @@ class GetPing implements InterfacePings {
           }
       ).catchError(
               (Object error) {
-            logger.i(' get ERROR $error  ');
-          });
+            logger.i(' catchError  ERROR $error  ');
 
-    Future<String>  getPing=    getCompetePing(   backresponsejboss, logger);
-    logger.i('start getPing ..  '+getPing.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
-    //ЕЩВЩ
-    completer.complete(getPing);
-    logger.i('start getPing ..  '+getPing.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+          }).then((backresponsejboss) {
+        //TODO then
+        logger.i('then backresponsejboss .. $backresponsejboss');
+
+        Future<String>  getPing=    getCompetePing(   backresponsejboss, logger);
+        logger.i('start getPing ..  '+getPing.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+
+        completer.complete(getPing);
+
+        return backresponsejboss;
+
+      });
+
+    /*  Future<String>  getPing=    getCompetePing(   backresponsejboss, logger);
+      logger.i('start getPing ..  '+getPing.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+      //ЕЩВЩ
+      completer.complete(getPing);*/
+      logger.i('start completer.future ..  '+completer.future.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
     } catch (e) {
       print(e);
     }
-    return completer.future;
+    return   completer.future;
   }
+
+
+
 
 
 
@@ -142,7 +136,7 @@ class GetPing implements InterfacePings {
 
 
   @override
-   String    getComplitingResponse(  Response response1C)   {
+  String    getComplitingResponse(  Response response1C)   {
     // TODO: implement getCompletePing
     late  var  getCallPing1c;
     try{
@@ -202,7 +196,7 @@ class GetPing implements InterfacePings {
 
 
 
-  ///TODO END  class
+///TODO END  class
 }
 
 
