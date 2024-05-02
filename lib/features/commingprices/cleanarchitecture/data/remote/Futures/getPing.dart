@@ -28,8 +28,6 @@ class GetPing implements InterfacePings {
   //TODO
 late Logger logger;
 
-late String resultPing;
-
 late  Response backresponsejboss;
 
   @override
@@ -53,8 +51,8 @@ late  Response backresponsejboss;
       print(' basicAuth  $basicAuth');
 
 
-      //TODO главный запрос Идем в сеть
-    Response response=  await http.get(
+      //TODO главный запрос Идем в сеть///TODO  Response response=
+        await http.get(
           parsedUrl,
           headers: {
             'user':IdUser.toString(),
@@ -65,39 +63,44 @@ late  Response backresponsejboss;
               (Object error) {
             logger.i(' catchError  ERROR $error  ');
 
-          });/*.then((backresponsejboss) async {
+          }).then((backresponsejboss) async {
         //TODO then
         logger.i('then backresponsejboss .. $backresponsejboss');
 
-*//*
         //TODO Get PING
-       Future<String> FuturegetPing=    getCompetePing(   backresponsejboss, logger)
+         getCompetePing(   backresponsejboss, logger)
             .catchError(
                 (Object error) {
               logger.i(' catchError  ERROR $error  ');
+            })
 
+         //TODO PING
+           .then((value) {
+             //TODO PING
+          logger.i('start value ..  '+value.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+          return value;
+          })
+
+
+         //TODO Self-data
+             .then((value) {
+               //TODO Self-data
+           List<Map<String, List<Entities1CMap>>>? list=[];
+
+           completer.complete(list );
+
+           logger.i('start value ..  '+value.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+           return value;
+
+         });
+
+
+        return backresponsejboss;
             });
 
-        resultPing= await FuturegetPing;
-        logger.i('start resultPing ..  '+resultPing.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
-*//*
 
 
 
-
-
-
-   completer.complete();
-
-        /////TODO  END
-       // logger.i('start getPing ..  '+FuturegetPing.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
-        return backresponsejboss;
-      });*/
-      await response;
-
-      List<Map<String, List<Entities1CMap>>>? list=[];
-
-      completer.complete(list );
       logger.i('start completer.future ..  '+completer.future.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
     } catch (e) {
       print(e);
