@@ -7,6 +7,8 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
+import '../../../../data/entities/Entities1CMap.dart';
+
 
 
 
@@ -15,7 +17,7 @@ abstract  class IntarfaceWaiting {
 
   //TODO
   Widget getWidgetWaitingPing({required BuildContext context,
-    required AsyncSnapshot<String> snapshot,required Color alwaysStop,required String currentText});
+    required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required Color alwaysStop,required String currentText});
 
 
 }

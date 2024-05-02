@@ -40,18 +40,21 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
   }
 
   //TODO метод получени пинга сервер аи в будущем получени еданных 1С
-  List<Map<String, List<Entities1CMap>>> getFutureBuilder() {
+  FutureBuilder<List<Map<String, List<Entities1CMap>>>> getFutureBuilder() {
 
     ///TODO return Widget
    late Widget widgetWatingCallBack;
    ///TODO возращаем call back
     return FutureBuilder<List<Map<String, List<Entities1CMap>>>>(
       //TODO get JSON PING ot 1C
-      future:   GetPing(). getResponse1c(context:context, logger: logger), // TODO метод который и делать пинг с сервером
-      builder: (BuildContext context, AsyncSnapshot<String> snapshot) { // AsyncSnapshot<Your object type>
+      future:   GetPing(). getResponse1c(context:context, logger: logger),
+      builder: (BuildContext context, AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot) {
+
+ //TODO само обработка
+
 
         ////TODO В  waiting
-      if (snapshot.connectionState == ConnectionState.waiting) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           logger.i('napshot.connectionState$snapshot.connectionState');
           //TODO Возврат по умолчанию
           widgetWatingCallBack =WidgetCallBaks().   getWidgetProccingDefault(  context:context,   snapshot:snapshot,logger:logger);
@@ -99,10 +102,6 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
           return widgetWatingCallBack;
         }
 
-
-
-
-
         //TODO DEFALUT
         logger.i('napshot.connectionState$snapshot.connectionState');
         //TODO Возврат по умолчанию
@@ -110,7 +109,13 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
         //TODO return
         return widgetWatingCallBack;
 
-      }
+
+
+
+
+
+    }, // TODO метод который и делать пинг с сервером
+
     );
   }
 

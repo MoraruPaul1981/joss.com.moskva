@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
 
+import '../../../../data/entities/Entities1CMap.dart';
+
 
 
 
@@ -15,15 +17,15 @@ import 'package:logger/logger.dart';
 abstract  class IntarfaceCallBaks {
 
   //TODO
-  Widget getWidgetProccingWait({required BuildContext context, required AsyncSnapshot<String> snapshot,required  Logger logger});
+  Widget getWidgetProccingWait({required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger});
   //TODO
-  Widget getWidgetProccingDefault( {required BuildContext context, required AsyncSnapshot<String> snapshot,required  Logger logger});
+  Widget getWidgetProccingDefault( {required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger});
   //TODO
-  Widget getWidgetProccingError( {required BuildContext context, required AsyncSnapshot<String> snapshot,required  Logger logger});
+  Widget getWidgetProccingError( {required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger});
 //TODO
-  Widget getWidgetProccingNasData( {required BuildContext context, required AsyncSnapshot<String> snapshot,required  Logger logger});
+  Widget getWidgetProccingNasData( {required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>>snapshot,required  Logger logger});
   //TODO
-  Widget getWidgetProccingDontData( {required BuildContext context, required AsyncSnapshot<String> snapshot,required  Logger logger});
+  Widget getWidgetProccingDontData( {required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger});
 
 }
 

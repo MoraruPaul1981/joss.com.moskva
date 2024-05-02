@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logger/src/logger.dart';
 
+import '../../../data/entities/Entities1CMap.dart';
 import 'Intarface/IntarfaceWaiting.dart';
 
 
@@ -19,7 +20,7 @@ class GetWidgetWaitingDontConnections1C  implements   IntarfaceWaiting {
   //TODO Виджет ожидание пипнга от сервера 1С
   @override
   Widget getWidgetWaitingPing({required BuildContext context,
-    required AsyncSnapshot<String> snapshot,required Color alwaysStop,required String currentText}){
+    required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required Color alwaysStop,required String currentText}){
     ////TODO сам виджет
     return new Scaffold(
       backgroundColor: Colors.grey[200],

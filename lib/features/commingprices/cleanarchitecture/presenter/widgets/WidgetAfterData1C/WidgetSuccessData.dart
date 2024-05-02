@@ -18,7 +18,7 @@ class   WidgetSuccessData {
   //TODO РАбоий Виджет
   Widget getWidgetScaffold({
     required BuildContext context,
-    required AsyncSnapshot<String> snapshot,
+    required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,
     required List<Map<String, List<Entities1CMap>>> listMapcallback1c }){
     ////TODO сам виджет
     return new Scaffold(
