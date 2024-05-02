@@ -15,6 +15,5 @@ abstract  class InterfacePings {
   //TODO
   List<Map<String, List<Entities1CMap>>>   getComplitingResponse(  Response backresponsejboss);
 
-  //TODO
-  String getResponseDecoder({required  Response response1C});
+
 }

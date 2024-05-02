@@ -20,6 +20,7 @@ import '../../../domain/usercases/Converts/GetConverts.dart';
 import '../../../domain/usercases/Interfaces/InterfacePings.dart';
 import '../../../domain/usercases/Loggers/GetErrors.dart';
 import '../../../domain/usercases/Paramets/getParaments.dart';
+import '../../../domain/usercases/decoding/Decoding.dart';
 import '../../entities/Entities1CMap.dart';
 import 'GetFutures1C.dart';
 
@@ -62,7 +63,6 @@ class GetPing implements InterfacePings {
         logger.i('then backresponsejboss .. $backresponsejboss');
 
         //TODO поулченый ответ от сеи парсим
-
         Future<List<Map<String, List<Entities1CMap>>>>  getPing=    getCompetePing(   backresponsejboss, logger)
             .catchError(
                 (Object error) {
@@ -96,13 +96,19 @@ class GetPing implements InterfacePings {
   }*/
 
   //TODO  getCompetePing()
-  Future<List<Map<String, List<Entities1CMap>>>>  getCompetePing(  Response backresponsejboss, Logger logger)   async {
+  Future<String>  getCompetePing(  Response backresponsejboss, Logger logger)   async {
     //TODO Read some data.
     return  getComplitingResponse(backresponsejboss) ;
   }
 
 
 
+
+  //TODO  getCompetePing()
+  Future<List<Map<String, List<Entities1CMap>>>>  getCompeteSelfData(  Response backresponsejboss, Logger logger)   async {
+    //TODO Read some data.
+    return  getComplitingResponse(backresponsejboss) ;
+  }
 
 
 
@@ -145,7 +151,7 @@ class GetPing implements InterfacePings {
         //TODO realy ping
         print(' then backresponsejboss. contentLength $backresponsejboss.contentLength');
         //TODO PING
-        getCallPing1c= getResponseDecoder(response1C: backresponsejboss) as  String   ;
+        getCallPing1c= getDecodingCallback().getResponseDecoderPing(response1C: backresponsejboss) as  String   ;
 
         print('getCallPing1c $getCallPing1c');
     //logger.i('start getCallPing1c ..  '+getCallPing1c.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
@@ -161,39 +167,6 @@ class GetPing implements InterfacePings {
     }
     return getCallPing1c;
   }
-
-
-
-
-
-
-
-
-
-
-  @override
-  String getResponseDecoder({required  Response response1C}) {
-    // TODO: implement getStringcDynamic
-    var   getPing1C;
-    try{
-      final byteData = response1C.bodyBytes.buffer.asByteData();
-      final bugffer=   byteData.buffer;
-      Uint8List list = bugffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes) ;
-      //TODO
-      getPing1C=json.decode(utf8.decode(list)) as String ;
-      //TODO
-      print('getPing1C $getPing1C');
-      //TODO error
-    }   catch (e, stacktrace) {
-      print(' get ERROR $e get stacktrace $stacktrace ');
-    }
-    return getPing1C;
-  }
-
-
-
-
-
 
 ///TODO END  class
 }
