@@ -17,15 +17,18 @@ import '../../../../data/entities/Entities1CMap.dart';
 abstract  class IntarfaceCallBaks {
 
   //TODO
-  Widget getWidgetProccerWaiting({required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger});
+  Widget getWidgetProccerWaiting({required BuildContext context, required AsyncSnapshot<String> snapshot,required  Logger logger});
   //TODO
-  Widget getWidgetProccingDefault( {required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger});
+  Widget getWidgetProccingDefault( {required BuildContext context, required AsyncSnapshot<String> snapshot,required  Logger logger});
   //TODO
-  Widget getWidgetProccingError( {required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger});
-//TODO
+  Widget getWidgetProccingError( {required BuildContext context, required AsyncSnapshot<String> snapshot,required  Logger logger});
+
+//TODO SELF DATA
   Widget getWidgetProccingNasData( {required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>>snapshot,required  Logger logger});
+
+
   //TODO
-  Widget getWidgetProccingDontData( {required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger});
+  Widget getWidgetProccingDontData( {required BuildContext context, required AsyncSnapshot<String> snapshot,required  Logger logger});
 
 }
 

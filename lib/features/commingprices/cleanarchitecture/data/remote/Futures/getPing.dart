@@ -27,12 +27,15 @@ import 'GetFutures1C.dart';
 class GetPing implements InterfacePings {
 
 
+late Logger logger;
+
   @override
   Future<List<Map<String, List<Entities1CMap>>>> getResponse1c({ required BuildContext context, required Logger logger})  async {
     // TODO: implement getJson1cPing
     // Read some data.
     Completer<List<Map<String, List<Entities1CMap>>>> completer= new Completer<List<Map<String, List<Entities1CMap>>>>  ();
     try {
+      this.logger=logger;
       //TODO адрес пинга к серверу  Jboss Debug
       var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
       //TODO
@@ -138,9 +141,9 @@ class GetPing implements InterfacePings {
 
 
 
-
+//TODO PING
   @override
-  List<String>    getComplitingResponsePing(  Response backresponsejboss)   {
+   String   getComplitingResponsePing(  Response backresponsejboss)   {
     // TODO: implement getCompletePing
     late  var  getCallPing1c;
     try{
@@ -154,11 +157,11 @@ class GetPing implements InterfacePings {
         getCallPing1c= getDecodingCallback().getResponseDecoderPing(response1C: backresponsejboss) as  String   ;
 
         print('getCallPing1c $getCallPing1c');
-    //logger.i('start getCallPing1c ..  '+getCallPing1c.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+    logger.i('start getCallPing1c ..  '+getCallPing1c.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
       } else {
         //TODO
         print('response1C.statusCode $backresponsejboss.statusCode');
-      //  params.logger.i('response1C.statusCode $params.backresponsejboss.statusCode'+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+    logger.i('response1C.statusCode $backresponsejboss.statusCode'+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
       }
 
       //TODO error
@@ -166,6 +169,20 @@ class GetPing implements InterfacePings {
       print(' get ERROR $e get stacktrace $stacktrace ');
     }
     return getCallPing1c;
+  }
+
+
+
+
+  ///TODO sel data
+
+  @override
+  List<Map<String, List<Entities1CMap>>> getComplitingResponseYoursData(http.Response backresponsejboss) {
+    // TODO: implement getComplitingResponseYoursData
+
+    //TODO
+    print('response1C.statusCode $backresponsejboss.statusCode');
+    throw UnimplementedError();
   }
 
 ///TODO END  class

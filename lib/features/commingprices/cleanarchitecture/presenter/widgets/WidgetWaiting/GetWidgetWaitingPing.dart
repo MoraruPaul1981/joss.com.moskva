@@ -20,7 +20,7 @@ class GetWidgetWaitingPing  implements   IntarfaceWaiting {
   //TODO Виджет ожидание пипнга от сервера 1С
   @override
   Widget getWidgetWaitingPing({required BuildContext context,
-    required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,
+    required AsyncSnapshot<String> snapshot,
     required Color alwaysStop,required String currentText}){
     ////TODO сам виджет
     return new Scaffold(
