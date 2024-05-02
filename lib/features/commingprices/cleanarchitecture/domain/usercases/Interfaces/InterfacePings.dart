@@ -8,7 +8,7 @@ import '../Paramets/getParaments.dart';
 
 abstract  class InterfacePings {
   //TODO
-  Future<String>  getResponse1cPing({ required BuildContext context, required Logger logger});
+  Future<String>  getResponse1c({ required BuildContext context, required Logger logger});
 
   //TODO
   String   getComplitingResponse(  Response backresponsejboss);

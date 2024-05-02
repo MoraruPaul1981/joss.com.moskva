@@ -47,7 +47,7 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
    ///TODO возращаем call back
     return FutureBuilder<String>(
       //TODO get JSON PING ot 1C
-      future:   GetPing(). getResponse1cPing(context:context, logger: logger), // TODO метод который и делать пинг с сервером
+      future:   GetPing(). getResponse1c(context:context, logger: logger), // TODO метод который и делать пинг с сервером
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) { // AsyncSnapshot<Your object type>
 
         ////TODO В  waiting

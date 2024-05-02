@@ -26,7 +26,7 @@ class GetPing implements InterfacePings {
 
 
   @override
-  Future<String> getResponse1cPing({ required BuildContext context, required Logger logger})  async {
+  Future<String> getResponse1c({ required BuildContext context, required Logger logger})  async {
     // TODO: implement getJson1cPing
     // Read some data.
     Completer<String> completer= new Completer<String> ();;
@@ -59,6 +59,8 @@ class GetPing implements InterfacePings {
           }).then((backresponsejboss) {
         //TODO then
         logger.i('then backresponsejboss .. $backresponsejboss');
+
+        //TODO поулченый ответ от сеи парсим
 
         Future<String>  getPing=    getCompetePing(   backresponsejboss, logger)
             .catchError(
