@@ -15,7 +15,7 @@ import 'Intarface/IntarfaceWaiting.dart';
 
 
 /////////TODO класс ожидание ответа пинга от 1с
-class GetWidgetWaitingDontConnections1C  implements   IntarfaceWaiting {
+class GetWidgetWaitingDontConn  implements   IntarfaceWaiting {
 
   //TODO Виджет ожидание пипнга от сервера 1С
   @override

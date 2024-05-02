@@ -13,13 +13,15 @@ import '../../../data/entities/Entities1CMap.dart';
 
 class   WidgetSuccessData {
 
+
+  //TODO сохранили как тест временно ...
   late List<Entities1CList> list;//TODO сохранили как тест временно ...
 
   //TODO РАбоий Виджет
   Widget getWidgetScaffold({
     required BuildContext context,
-    required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,
-    required List<Map<String, List<Entities1CMap>>> listMapcallback1c }){
+    required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot}
+      ){
     ////TODO сам виджет
     return new Scaffold(
       backgroundColor: Colors.blue[200],
@@ -83,7 +85,7 @@ class   WidgetSuccessData {
                   primary: false,
                   scrollDirection:
                   Axis.vertical, // Axis.horizontal for horizontal list view.
-                  itemCount: listMapcallback1c.length,
+                  itemCount: snapshot.data?.length,
                   itemBuilder: (context, index) {
                     final user = list[index].CFO.toString().trim();
                     final UUID = list[index].UUID.toString().trim();

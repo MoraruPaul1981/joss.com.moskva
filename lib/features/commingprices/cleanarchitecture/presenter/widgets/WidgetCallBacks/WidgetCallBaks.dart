@@ -14,9 +14,10 @@ import '../../../data/entities/Entities1CListManual.dart';
 import '../../../data/entities/Entities1CMap.dart';
 import '../../../data/remote/Futures/getPing.dart';
 import '../WidgetAfterData1C/WidgetSuccessData.dart';
-import '../WidgetWaiting/GetWidgetWaitingDontConnections1C.dart';
+import '../WidgetWaiting/GetWidgetDefault.dart';
+import '../WidgetWaiting/GetWidgetWaitingDontConn.dart';
 import '../WidgetWaiting/GetWidgetWaitingErrors.dart';
-import '../WidgetWaiting/GetWidgetWaitingPing.dart';
+import '../WidgetWaiting/GetWidgetWaiting.dart';
 import '../WidgetWaiting/Intarface/IntarfaceWaiting.dart';
 import 'Interface/IntarfaceCallBaks.dart';
 
@@ -36,7 +37,7 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
   Widget getWidgetProccerWaiting({required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
 //TODO
   logger.i("starting  getWidgetProccingWait");
-  IntarfaceWaiting  intarfaceWaiting= GetWidgetWaitingPing();
+  IntarfaceWaiting  intarfaceWaiting= GetWidgetWaiting();
     ///TODO return
   return   intarfaceWaiting.
     getWidgetWaitingPing(context:context, snapshot:snapshot,
@@ -50,7 +51,7 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
   Widget getWidgetProccingDefault( {required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
 //TODO
     logger.i("starting  getWidgetProccingDefault");
-    IntarfaceWaiting  intarfaceWaiting= GetWidgetWaitingPing();
+    IntarfaceWaiting  intarfaceWaiting= GetWidgetDefault();
     ///TODO return
     return   intarfaceWaiting.
     getWidgetWaitingPing(context:context, snapshot:snapshot,
@@ -86,7 +87,7 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
 
     List<Map<String, List<Entities1CMap>>> listMapcallback1c =snapshot as List<Map<String, List<Entities1CMap>>>;
 
-    return  WidgetSuccessData().getWidgetScaffold(context:context,snapshot:snapshot,listMapcallback1c:listMapcallback1c);
+    return  WidgetSuccessData().getWidgetScaffold(context:context,snapshot:snapshot);
   }
 
 
@@ -96,7 +97,7 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
   Widget getWidgetProccingDontData( {required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
 //TODO
     logger.i("starting  getWidgetProccingDontData");
-    IntarfaceWaiting  intarfaceWaiting   = GetWidgetWaitingDontConnections1C();
+    IntarfaceWaiting  intarfaceWaiting   = GetWidgetWaitingDontConn();
     ///TODO return
     return     intarfaceWaiting.getWidgetWaitingPing(context: context,
         snapshot: snapshot,

@@ -25,9 +25,12 @@ import '../../entities/Entities1CMap.dart';
 import 'GetFutures1C.dart';
 
 class GetPing implements InterfacePings {
-
-
+  //TODO
 late Logger logger;
+
+late String resultPing;
+
+late  Response backresponsejboss;
 
   @override
   Future<List<Map<String, List<Entities1CMap>>>> getResponse1c({ required BuildContext context, required Logger logger})  async {
@@ -65,19 +68,37 @@ late Logger logger;
         //TODO then
         logger.i('then backresponsejboss .. $backresponsejboss');
 
-        //TODO поулченый ответ от сеи парсим
-        Future<List<Map<String, List<Entities1CMap>>>>  getPing=    getCompetePing(   backresponsejboss, logger)
+        //TODO Get PING
+       Future<String> FuturegetPing=    getCompetePing(   backresponsejboss, logger)
             .catchError(
                 (Object error) {
               logger.i(' catchError  ERROR $error  ');
 
-            });
-        logger.i('start getPing ..  '+getPing.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+            }).then((value)   {
+              //TODO reslut ping
+         resultPing= value;
+          logger.i('start resultPing ..  '+resultPing.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+              return  resultPing;
+        }).then((backresponsejboss)   {
+         //TODO reslut ping
+         resultPing= backresponsejboss;
+         logger.i('start resultPing ..  '+resultPing.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+         return  resultPing;
+       });
+        /////TODO
 
-        completer.complete(getPing);
 
+
+
+
+
+
+
+
+
+        /////TODO  END
+        logger.i('start getPing ..  '+FuturegetPing.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
         return backresponsejboss;
-
       });
       logger.i('start completer.future ..  '+completer.future.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
     } catch (e) {
@@ -107,10 +128,10 @@ late Logger logger;
 
 
 
-  //TODO  getCompetePing()
+  //TODO  getCompeteSelfData()
   Future<List<Map<String, List<Entities1CMap>>>>  getCompeteSelfData(  Response backresponsejboss, Logger logger)   async {
     //TODO Read some data.
-    return  getComplitingResponsePing(backresponsejboss) ;
+    return  getComplitingResponseYoursData(backresponsejboss) ;
   }
 
 

@@ -15,9 +15,9 @@ import '../../../data/remote/Futures/getPing.dart';
 import '../../../domain/usercases/tests/Tests.dart';
 import '../WidgetAfterData1C/WidgetSuccessData.dart';
 import '../WidgetCallBacks/WidgetCallBaks.dart';
-import 'GetWidgetWaitingDontConnections1C.dart';
+import 'GetWidgetWaitingDontConn.dart';
 import 'GetWidgetWaitingErrors.dart';
-import 'GetWidgetWaitingPing.dart';
+import 'GetWidgetWaiting.dart';
 import 'Intarface/IntarfaceWaiting.dart';
 
 
@@ -51,7 +51,12 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
    ///TODO возращаем call back
     return FutureBuilder<List<Map<String, List<Entities1CMap>>>>(
       //TODO get JSON PING ot 1C
-      future:   GetPing(). getResponse1c(context:context, logger: logger),
+      future:   GetPing(). getResponse1c(context:context, logger: logger)
+          .then((value) {
+        //TODO then
+        logger.i('start  Future<void> main()  async  logger .. $logger');
+        return value;
+      }),
       builder: (BuildContext context, AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot) {
 
  //TODO само обработка
@@ -105,6 +110,16 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
           //TODO return ERROR
           return widgetWatingCallBack;
         }
+
+
+
+
+
+
+
+
+
+
 
         //TODO DEFALUT
         logger.i('napshot.connectionState$snapshot.connectionState');

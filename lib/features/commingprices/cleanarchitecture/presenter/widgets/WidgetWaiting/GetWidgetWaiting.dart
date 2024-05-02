@@ -15,7 +15,7 @@ import 'Intarface/IntarfaceWaiting.dart';
 
 
 /////////TODO класс ожидание ответа пинга от 1с
-class GetWidgetWaitingPing  implements   IntarfaceWaiting {
+class GetWidgetWaiting  implements   IntarfaceWaiting {
 
   //TODO Виджет ожидание пипнга от сервера 1С
   @override
@@ -67,9 +67,7 @@ class GetWidgetWaitingPing  implements   IntarfaceWaiting {
           ),
 
 
-          Visibility(
-            visible: false,
-            child: Row(
+         Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
@@ -94,7 +92,6 @@ class GetWidgetWaitingPing  implements   IntarfaceWaiting {
 
               ],
             ),
-          ),
 
 
 
