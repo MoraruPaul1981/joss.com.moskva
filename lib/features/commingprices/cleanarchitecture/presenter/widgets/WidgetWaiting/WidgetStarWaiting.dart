@@ -51,12 +51,7 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
    ///TODO возращаем call back
     return FutureBuilder<List<Map<String, List<Entities1CMap>>>>(
       //TODO get JSON PING ot 1C
-      future:   GetPing(). getResponse1c(context:context, logger: logger)
-          .then((value) {
-        //TODO then
-        logger.i('start  Future<void> main()  async  logger .. $logger');
-        return value;
-      }),
+      future:   GetPing(). getResponse1c(context:context, logger: logger),
       builder: (BuildContext context, AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot) {
 
  //TODO само обработка

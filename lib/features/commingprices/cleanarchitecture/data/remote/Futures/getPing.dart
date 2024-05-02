@@ -33,10 +33,11 @@ late String resultPing;
 late  Response backresponsejboss;
 
   @override
-  Future<List<Map<String, List<Entities1CMap>>>> getResponse1c({ required BuildContext context, required Logger logger})  async {
+  Future<List<Map<String, List<Entities1CMap>>>>? getResponse1c({ required BuildContext context, required Logger logger})  async {
     // TODO: implement getJson1cPing
     // Read some data.
-    Completer<List<Map<String, List<Entities1CMap>>>> completer= new Completer<List<Map<String, List<Entities1CMap>>>>  ();
+   late Completer<List<Map<String, List<Entities1CMap>>>> completer=new Completer();
+
     try {
       this.logger=logger;
       //TODO адрес пинга к серверу  Jboss Debug
@@ -53,7 +54,7 @@ late  Response backresponsejboss;
 
 
       //TODO главный запрос Идем в сеть
-     await http.get(
+    Response response=  await http.get(
           parsedUrl,
           headers: {
             'user':IdUser.toString(),
@@ -64,42 +65,39 @@ late  Response backresponsejboss;
               (Object error) {
             logger.i(' catchError  ERROR $error  ');
 
-          }).then((backresponsejboss) {
+          });/*.then((backresponsejboss) async {
         //TODO then
         logger.i('then backresponsejboss .. $backresponsejboss');
 
+*//*
         //TODO Get PING
        Future<String> FuturegetPing=    getCompetePing(   backresponsejboss, logger)
             .catchError(
                 (Object error) {
               logger.i(' catchError  ERROR $error  ');
 
-            }).then((value)   {
-              //TODO reslut ping
-         resultPing= value;
-          logger.i('start resultPing ..  '+resultPing.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
-              return  resultPing;
-        }).then((backresponsejboss)   {
-         //TODO reslut ping
-         resultPing= backresponsejboss;
-         logger.i('start resultPing ..  '+resultPing.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
-         return  resultPing;
-       });
-        /////TODO
+            });
+
+        resultPing= await FuturegetPing;
+        logger.i('start resultPing ..  '+resultPing.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+*//*
 
 
 
 
 
 
-
-
-
+   completer.complete();
 
         /////TODO  END
-        logger.i('start getPing ..  '+FuturegetPing.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+       // logger.i('start getPing ..  '+FuturegetPing.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
         return backresponsejboss;
-      });
+      });*/
+      await response;
+
+      List<Map<String, List<Entities1CMap>>>? list=[];
+
+      completer.complete(list );
       logger.i('start completer.future ..  '+completer.future.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
     } catch (e) {
       print(e);
