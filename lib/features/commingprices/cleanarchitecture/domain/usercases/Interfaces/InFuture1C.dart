@@ -15,7 +15,7 @@ import '../../../data/entities/Entities1CMap.dart';
 
 abstract  class InFuture1C {
   //TODO
-  Future<Response?> getDownloadJsonMaps({ required String   url, required int IdUser, required int UUID,required Logger logger}) ;
+  Future<Response?> getDownloadJsonMaps({ required  Uri   url, required int IdUser, required int UUID,required Logger logger}) ;
 
 
 

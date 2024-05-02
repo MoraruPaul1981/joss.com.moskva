@@ -35,16 +35,12 @@ late  Response backresponsejboss;
       print('adressCurrent1C .. $adressCurrent1C');
 
       final parsedUrl=Uri.parse(adressCurrent1C) as Uri;
-      BigInt Uuid=BigInt.parse('0')  ;
-      int IdUser=0;
-      //TODO base64
-      String? basicAuth=     GetConverts().convertBase64(  user: 'dsu1Admin', password: 'dsu1Admin');
-      print(' basicAuth  $basicAuth');
-
+      final  BigInt Uuid=BigInt.parse('0')  ;
+      final int IdUser=0;
 
       //TODO главный запрос PING
 
-      Future<Response?>responsePing =    GetFutures1C().getDownloadJsonMaps(url:basicAuth.toString(),IdUser:IdUser ,UUID:Uuid.toInt() ,logger: logger);
+      Future<Response?>responsePing =    GetFutures1C().getDownloadJsonMaps(url:parsedUrl ,IdUser:IdUser ,UUID:Uuid.toInt() ,logger: logger);
 
       responsePing.catchError(
               (Object error) {

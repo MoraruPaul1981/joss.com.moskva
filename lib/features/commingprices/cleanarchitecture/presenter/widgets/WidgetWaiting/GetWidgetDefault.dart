@@ -67,9 +67,7 @@ class GetWidgetDefault  implements   IntarfaceWaiting {
           ),
 
 
-          Visibility(
-            visible: false,
-            child: Row(
+         Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
@@ -94,7 +92,7 @@ class GetWidgetDefault  implements   IntarfaceWaiting {
 
               ],
             ),
-          ),
+
 
 
 

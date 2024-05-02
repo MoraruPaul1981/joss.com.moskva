@@ -22,24 +22,23 @@ class GetFutures1C  implements InFuture1C  {
 
   //TODO
   @override
-  Future<Response?> getDownloadJsonMaps({required String url, required int IdUser, required int UUID,required Logger logger}) async {
+  Future<Response?> getDownloadJsonMaps({required Uri url, required int IdUser, required int UUID,required Logger logger}) async {
     // TODO: implement getDownloadJsonMaps
     late  Response  getResponse;
     try{
-      final parsedUrl=Uri.parse(url) as Uri;
-      BigInt Uuid=BigInt.parse(UUID.toString())  ;
       //TODO Paramerts
-      print('parsedUrl..$parsedUrl'+'Uuid..$Uuid'+ 'IdUser..$IdUser');
-
+      print('url..$url'+'IdUser..$IdUser'+ 'UUID..$UUID');
       //TODO base64
-      String? basicAuth=     GetConverts().convertBase64(  user: 'dsu1Admin', password: 'dsu1Admin');
+      final   String? basicAuth=     GetConverts().convertBase64(  user: 'dsu1Admin', password: 'dsu1Admin');
+
       print(' basicAuth  $basicAuth');
+
       //TODO главный запрос
       getResponse=  await http.get(
-          parsedUrl,
+          url,
           headers: {
             'user':IdUser.toString(),
-            'uuid':Uuid.toString(),
+            'uuid':UUID.toString(),
             'authorization':'$basicAuth',
           }
       ).catchError(
