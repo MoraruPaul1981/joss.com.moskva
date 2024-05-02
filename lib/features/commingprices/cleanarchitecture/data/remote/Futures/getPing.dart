@@ -42,9 +42,10 @@ class GetPing implements InterfacePings {
       //TODO base64
       String? basicAuth=     GetConverts().convertBase64(  user: 'dsu1Admin', password: 'dsu1Admin');
       print(' basicAuth  $basicAuth');
-      //TODO главный запрос
 
-      Response  backresponsejboss =  await http.get(
+
+      //TODO главный запрос Идем в сеть
+     await http.get(
           parsedUrl,
           headers: {
             'user':IdUser.toString(),
@@ -59,7 +60,12 @@ class GetPing implements InterfacePings {
         //TODO then
         logger.i('then backresponsejboss .. $backresponsejboss');
 
-        Future<String>  getPing=    getCompetePing(   backresponsejboss, logger);
+        Future<String>  getPing=    getCompetePing(   backresponsejboss, logger)
+            .catchError(
+                (Object error) {
+              logger.i(' catchError  ERROR $error  ');
+
+            });
         logger.i('start getPing ..  '+getPing.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
         completer.complete(getPing);
@@ -83,9 +89,7 @@ class GetPing implements InterfacePings {
   //TODO  getCompetePing()
   Future<String>  getCompetePing(  Response backresponsejboss, Logger logger)   async {
     //TODO Read some data.
-    GetParamentsPing params=new GetParamentsPing(backresponsejboss: backresponsejboss,logger:logger);
-
-    return compute(getComplitingResponse ,params  );
+    return compute(getComplitingResponse ,backresponsejboss  );
   }
 
 
@@ -123,25 +127,25 @@ class GetPing implements InterfacePings {
 
 
   @override
-  String    getComplitingResponse(  GetParamentsPing params)   {
+  String    getComplitingResponse(  Response backresponsejboss)   {
     // TODO: implement getCompletePing
     late  var  getCallPing1c;
     try{
-      print('getComplete $params');
+      print('getComplete $backresponsejboss');
       //TODO
-      print('response1C.statusCode $params.backresponsejboss.statusCode');
-      if (params.backresponsejboss.statusCode==200) {
+      print('response1C.statusCode $backresponsejboss.statusCode');
+      if (backresponsejboss.statusCode==200) {
         //TODO realy ping
-        print(' then backresponsejboss. contentLength $params.backresponsejboss.contentLength');
+        print(' then backresponsejboss. contentLength $backresponsejboss.contentLength');
         //TODO PING
-        getCallPing1c= getResponseDecoder(response1C: params.backresponsejboss) as  String   ;
+        getCallPing1c= getResponseDecoder(response1C: backresponsejboss) as  String   ;
 
         print('getCallPing1c $getCallPing1c');
-        params.logger.i('start getCallPing1c ..  '+getCallPing1c.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+    //logger.i('start getCallPing1c ..  '+getCallPing1c.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
       } else {
         //TODO
-        print('response1C.statusCode $params.backresponsejboss.statusCode');
-        params.logger.i('response1C.statusCode $params.backresponsejboss.statusCode'+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+        print('response1C.statusCode $backresponsejboss.statusCode');
+      //  params.logger.i('response1C.statusCode $params.backresponsejboss.statusCode'+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
       }
 
       //TODO error

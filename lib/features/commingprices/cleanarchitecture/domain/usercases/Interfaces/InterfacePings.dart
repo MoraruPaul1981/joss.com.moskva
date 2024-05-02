@@ -11,7 +11,7 @@ abstract  class InterfacePings {
   Future<String>  getResponse1cPing({ required BuildContext context, required Logger logger});
 
   //TODO
-  String   getComplitingResponse(  GetParamentsPing params);
+  String   getComplitingResponse(  Response backresponsejboss);
 
   //TODO
   String getResponseDecoder({required  Response response1C});
