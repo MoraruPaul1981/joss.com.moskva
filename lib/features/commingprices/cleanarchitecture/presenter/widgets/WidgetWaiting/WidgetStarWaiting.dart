@@ -40,12 +40,12 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
   }
 
   //TODO метод получени пинга сервер аи в будущем получени еданных 1С
-  FutureBuilder<String> getFutureBuilder() {
+  List<Map<String, List<Entities1CMap>>> getFutureBuilder() {
 
     ///TODO return Widget
    late Widget widgetWatingCallBack;
    ///TODO возращаем call back
-    return FutureBuilder<String>(
+    return FutureBuilder<List<Map<String, List<Entities1CMap>>>>(
       //TODO get JSON PING ot 1C
       future:   GetPing(). getResponse1c(context:context, logger: logger), // TODO метод который и делать пинг с сервером
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) { // AsyncSnapshot<Your object type>

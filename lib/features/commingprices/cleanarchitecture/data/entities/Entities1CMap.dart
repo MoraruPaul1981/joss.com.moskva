@@ -3,6 +3,8 @@
 import 'dart:collection';
 
 
+import 'package:dart_json_mapper/dart_json_mapper.dart';
+
 import '../../domain/usercases/Interfaces/InterfaceEntities1CMap.dart';
 import 'Entities1CList.dart';
 
@@ -214,22 +216,6 @@ Entities1CMap(
 
 
 
-
-
-
-
-
-
-
-
-
-/*   Person2.fromJson(Map<String, dynamic> json) {
-    _albumId = json['albumId'];
-    _id = json['id'];
-    _title = json['title'];
-    _url = json['url'];
-    _thumbnailUrl = json['thumbnailUrl'];
-  }*/
 
 
 }

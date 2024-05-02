@@ -20,17 +20,18 @@ import '../../../domain/usercases/Converts/GetConverts.dart';
 import '../../../domain/usercases/Interfaces/InterfacePings.dart';
 import '../../../domain/usercases/Loggers/GetErrors.dart';
 import '../../../domain/usercases/Paramets/getParaments.dart';
+import '../../entities/Entities1CMap.dart';
 import 'GetFutures1C.dart';
 
 class GetPing implements InterfacePings {
 
 
   @override
-  Future<String> getResponse1c({ required BuildContext context, required Logger logger})  async {
+  Future<List<Map<String, List<Entities1CMap>>>> getResponse1c({ required BuildContext context, required Logger logger})  async {
     // TODO: implement getJson1cPing
     // Read some data.
-    Completer<String> completer= new Completer<String> ();;
-    try {
+    Completer<List<Map<String, List<Entities1CMap>>>> completer= new Completer<List<Map<String, List<Entities1CMap>>>>  ();
+    /*try {
       //TODO адрес пинга к серверу  Jboss Debug
       var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
       //TODO
@@ -62,7 +63,7 @@ class GetPing implements InterfacePings {
 
         //TODO поулченый ответ от сеи парсим
 
-        Future<String>  getPing=    getCompetePing(   backresponsejboss, logger)
+        Future<List<Map<String, List<Entities1CMap>>>>  getPing=    getCompetePing(   backresponsejboss, logger)
             .catchError(
                 (Object error) {
               logger.i(' catchError  ERROR $error  ');
@@ -78,7 +79,7 @@ class GetPing implements InterfacePings {
       logger.i('start completer.future ..  '+completer.future.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
     } catch (e) {
       print(e);
-    }
+    }*/
     return   completer.future;
   }
 
@@ -89,7 +90,7 @@ class GetPing implements InterfacePings {
 
 
   //TODO  getCompetePing()
-  Future<String>  getCompetePing(  Response backresponsejboss, Logger logger)   async {
+  Future<List<Map<String, List<Entities1CMap>>>>  getCompetePing(  Response backresponsejboss, Logger logger)   async {
     //TODO Read some data.
     return compute(getComplitingResponse ,backresponsejboss  );
   }
@@ -129,7 +130,7 @@ class GetPing implements InterfacePings {
 
 
   @override
-  String    getComplitingResponse(  Response backresponsejboss)   {
+  List<Map<String, List<Entities1CMap>>>    getComplitingResponse(  Response backresponsejboss)   {
     // TODO: implement getCompletePing
     late  var  getCallPing1c;
     try{
