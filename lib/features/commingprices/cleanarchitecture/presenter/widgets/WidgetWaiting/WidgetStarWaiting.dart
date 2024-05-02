@@ -74,7 +74,11 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
 
 
           ///TODO пришли данные
-          if (   snapshot.hasData) {
+          ///
+          var  isArray=snapshot.data as   List<Map<String, List<Entities1CMap>>>;
+          //TODO
+          if (   snapshot.hasData && isArray.length>0) {
+
             logger.i('snapshot.hasData$snapshot.hasData'+'napshot.connectionState$snapshot.connectionState');
             //TODO нет пришгли  данных
             widgetWatingCallBack = WidgetCallBaks().  getWidgetProccingNasData(   context:context,   snapshot:snapshot,logger:logger);
