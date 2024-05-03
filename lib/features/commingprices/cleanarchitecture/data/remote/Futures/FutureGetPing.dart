@@ -117,35 +117,41 @@ late Logger logger;
 //TODO self-data
 Future<List<Map<String, List<Entities1CMap>>>> getthefinalSelfData(String? IspingOtServer, Logger logger,int IdUser,BigInt Uuid) async {
   //TODO
-     var    getSelfDataCallBack;
-  //TODO когад пришли данные
-  if (IspingOtServer!.isNotEmpty) {
-    FuturesGetSelfData futuresGetSelfData=new FuturesGetSelfData();
+  late List<Map<String, List<Entities1CMap>>>      getSelfDataCallBack=[];
+  try {
+    //TODO когад пришли данные
+    if (IspingOtServer!.isNotEmpty) {
+      FuturesGetSelfData futuresGetSelfData=new FuturesGetSelfData();
 
-    //TODO адрес пинга к серверу
-    var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
-    final parsedUrl=Uri.parse(adressCurrent1C) as Uri;
-
-
-    Future<Response>responseSelfDataFuture =     getDownloadJsonMaps(url:parsedUrl ,IdUser:IdUser ,UUID:Uuid.toInt() ,logger: logger);
-    //TODO первый Этам получаем данные из СЕТИ
-    responseSelfDataFuture.catchError(
-            (Object error) {
-          logger.i(' catchError  ERROR $error  ');
-          //TODO оБРАБОТКА пинга
-        });
-    //TODO получаем Responce
-    Response  responseSelfDataCallBack=await  responseSelfDataFuture;
-    //TODO then
-    logger.i(' responseSelfDataCallBack .. $responseSelfDataCallBack');
+      //TODO адрес пинга к серверу
+      var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
+      final parsedUrl=Uri.parse(adressCurrent1C) as Uri;
 
 
-    logger.i('Result IspingOtServer ..  '+IspingOtServer.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
-  }else{
-    logger.i('Result IspingOtServer ..  '+IspingOtServer.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+      Future<Response>responseSelfDataFuture =     getDownloadJsonMaps(url:parsedUrl ,IdUser:IdUser ,UUID:Uuid.toInt() ,logger: logger);
+      //TODO первый Этам получаем данные из СЕТИ
+      responseSelfDataFuture.catchError(
+              (Object error) {
+            logger.i(' catchError  ERROR $error  ');
+            //TODO оБРАБОТКА пинга
+          });
+      //TODO получаем Responce
+      Response  responseSelfDataCallBack=await  responseSelfDataFuture;
+      //TODO then
+      logger.i(' responseSelfDataCallBack .. $responseSelfDataCallBack');
+
+
+      logger.i('Result IspingOtServer ..  '+IspingOtServer.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+    }else{
+      logger.i('Result IspingOtServer ..  '+IspingOtServer.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+    }
+    //TODO end Call bACK
+    logger.i('Result getSelfDataCallBack ..  '+getSelfDataCallBack.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+    //TODO
+  }   catch (e, stacktrace) {
+    print(' get ERROR $e get stacktrace $stacktrace ');
   }
-  logger.i('Result getSelfDataCallBack ..  '+getSelfDataCallBack.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
-  //TODO
+
   return  getSelfDataCallBack;
 
 }
