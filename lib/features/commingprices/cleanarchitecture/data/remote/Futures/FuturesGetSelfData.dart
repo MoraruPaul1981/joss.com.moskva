@@ -19,7 +19,7 @@ class FuturesGetSelfData  implements InterfaceFutureResponse,InterfaceFutureSelf
 
   //TODO
   @override
-  Future<Response?> getDownloadJsonMaps({required Uri url, required int IdUser, required int UUID,required Logger logger}) async {
+  Future<Response> getDownloadJsonMaps({required Uri url, required int IdUser, required int UUID,required Logger logger}) async {
     // TODO: implement getDownloadJsonMaps
     late  Response  getResponse;
     try{

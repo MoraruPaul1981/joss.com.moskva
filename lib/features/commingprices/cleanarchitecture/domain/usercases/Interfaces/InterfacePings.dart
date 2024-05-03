@@ -14,10 +14,10 @@ abstract  class InterfacePings {
 
 
   //TODO  ping
-  String   getComplitingResponsePing( Response backresponsejboss);
+   String   getComplitingResponsePing( Response backresponsejboss);
 
 
   //TODO
-  Future<String>  getCompetePing(  Response backresponsejboss, Logger logger);
+   Future<String>   getCompetePing(  Response backresponsejboss, Logger logger);
 
 }
