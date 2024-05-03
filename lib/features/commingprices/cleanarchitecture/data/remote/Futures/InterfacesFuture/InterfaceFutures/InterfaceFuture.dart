@@ -22,10 +22,10 @@ abstract  class InterfaceFutureResponse {
 abstract  class InterfaceFutureSelfData {
   //TODO
 
-  Future<List<Map<String, List<Entities1CMap>>>>?  getCompeteSelfData(  Response backresponsejboss, Logger logger);
+
 
   //TODO
-  List<Map<String, List<Entities1CMap>>>?  getGeneratorMapCallBack({required  Response response1C,required Logger logger}) ;
+  Future<List<Map<String, List<Entities1CMap>>>>  getGeneratorProcessSelfData({required  Response response1C,required Logger logger}) ;
 
 
 

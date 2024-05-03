@@ -1,4 +1,5 @@
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:isolate';
 import 'dart:typed_data' show Uint8List,Uint16List;
@@ -17,20 +18,7 @@ import 'InterfacesFuture/InterfaceFutures/InterfaceFuture.dart';
 
 class FuturesGetSelfData  implements InterfaceFutureResponse,InterfaceFutureSelfData  {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-  //TODO
+  //TODO получаем данные self-data
   @override
   Future<Response> getDownloadJsonMaps({required Uri url, required int IdUser, required int UUID,required Logger logger}) async {
     // TODO: implement getDownloadJsonMaps
@@ -66,21 +54,16 @@ class FuturesGetSelfData  implements InterfaceFutureResponse,InterfaceFutureSelf
 
 
 
+ /* TODO  generator process
+ TODO  of processing the
+ TODO  incoming stream*/
   @override
-  Future<List<Map<String, List<Entities1CMap>>>>? getCompeteSelfData(http.Response backresponsejboss, Logger )  async{
-    // TODO: implement getCompeteSelfData
-    //TODO Read some data.
-    return Future.value( getGeneratorMapCallBack(  response1C: backresponsejboss,logger:Logger))  ;//TODO   return compute(getComplitingResponse ,backresponsejboss  );
-  }
-
-
-
-  //TODO
-  @override
-  List<Map<String, List<Entities1CMap>>>? getGeneratorMapCallBack({required  Response response1C,required Logger logger}) {
+  Future<List<Map<String, List<Entities1CMap>>>> getGeneratorProcessSelfData({required  Response response1C,required Logger logger}) {
     // TODO: implement getGeneratorMapCallBack
     try{
       print('response1C.statusCode $response1C.statusCode');
+
+      logger.i('Result esponse1C.statusCode ..  '+response1C.statusCode.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
       if (response1C.statusCode==200) {
 
@@ -136,7 +119,7 @@ class FuturesGetSelfData  implements InterfaceFutureResponse,InterfaceFutureSelf
       print(' get ERROR $e get stacktrace $stacktrace ');
     }
 
-    return null;
+    return Future.value('fg' as FutureOr<List<Map<String, List<Entities1CMap>>>>);
   }
 
 

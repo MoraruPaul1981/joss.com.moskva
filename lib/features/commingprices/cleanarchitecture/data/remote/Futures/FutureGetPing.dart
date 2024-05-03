@@ -25,10 +25,10 @@ late Logger logger;
 
 
   @override
-  Future<List<Map<String, List<Entities1CMap>>>>? getResponse1c({ required BuildContext context, required Logger logger})  async {
+  Future<List<Map<String, List<Entities1CMap>>>> getResponse1c({ required BuildContext context, required Logger logger})  async {
     // TODO: implement getJson1cPing
    late Completer<List<Map<String, List<Entities1CMap>>>> completer=Completer.sync();
-   late List<Map<String, List<Entities1CMap>>> SelfData =[];
+   late List<Map<String, List<Entities1CMap>>> getSelfDataCallBack =[];
     try {
       //TODO init LOGER
       this.logger=logger;
@@ -57,15 +57,15 @@ late Logger logger;
 
 
       //TODO закрвваем Compete после все отработынных операций  #3
-      completer.complete(SelfData );
+      completer.complete(getSelfDataCallBack );
       logger.i('Result completer.isCompleted ..  '+completer.isCompleted.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
-      return SelfData;
+      return getSelfDataCallBack;
            //TODO END   CALL BACK
     }   catch (e, stacktrace) {
       print(' get ERROR $e get stacktrace $stacktrace ');
       //TODO
       //TODO закрвваем Compete
-      completer.completeError(SelfData );
+      completer.completeError(getSelfDataCallBack );
     }
     return   completer.future;
   }
@@ -120,27 +120,32 @@ Future<List<Map<String, List<Entities1CMap>>>> getthefinalSelfData(String? Ispin
   try {
     //TODO когад пришли данные
     if (IspingOtServer!.isNotEmpty) {
-      FuturesGetSelfData futuresGetSelfData=new FuturesGetSelfData();
-
       //TODO адрес пинга к серверу
       var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
       final parsedUrl=Uri.parse(adressCurrent1C) as Uri;
 
+      logger.i('Result IspingOtServer ..  '+IspingOtServer.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
-      Future<Response> responseSelfDataFuture =     getDownloadJsonMaps(url:parsedUrl ,IdUser:IdUser ,UUID:Uuid.toInt() ,logger: logger);
-      //TODO первый Этам получаем данные из СЕТИ
+      FuturesGetSelfData futuresGetSelfData=   new FuturesGetSelfData();
+//TODO получаем данные от 1с Севра
+      Future<Response> responseSelfDataFuture =  futuresGetSelfData.getDownloadJsonMaps(url:parsedUrl ,IdUser:IdUser ,UUID:Uuid.toInt() ,logger: logger);
+
       responseSelfDataFuture.catchError(
               (Object error) {
             logger.i(' catchError  ERROR $error  ');
             //TODO оБРАБОТКА пинга
           });
-      //TODO получаем Responce
-      Response  responseSelfDataCallBack=await  responseSelfDataFuture;
+      //TODO получаем Responce Self-Data
+      Response  CallBackresponseSelfData=await  responseSelfDataFuture;
       //TODO then
-      logger.i(' responseSelfDataCallBack .. $responseSelfDataCallBack');
+      logger.i(' CallBackresponseSelfData .. $CallBackresponseSelfData');
 
+      //TODO производим обработку пришедшего с  данными Response
+     // futuresGetSelfData getGeneratorMapCallBack
 
-      logger.i('Result IspingOtServer ..  '+IspingOtServer.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+      getSelfDataCallBack=  await futuresGetSelfData.getGeneratorProcessSelfData(  response1C:CallBackresponseSelfData, logger:logger);
+
+      logger.i('Result getSelfDataCallBack ..  '+getSelfDataCallBack.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
     }else{
       logger.i('Result IspingOtServer ..  '+IspingOtServer.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
     }
