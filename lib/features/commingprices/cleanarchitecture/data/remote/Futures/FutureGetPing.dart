@@ -128,7 +128,7 @@ Future<List<Map<String, List<Entities1CMap>>>> getthefinalSelfData(String? Ispin
       final parsedUrl=Uri.parse(adressCurrent1C) as Uri;
 
 
-      Future<Response>responseSelfDataFuture =     getDownloadJsonMaps(url:parsedUrl ,IdUser:IdUser ,UUID:Uuid.toInt() ,logger: logger);
+      Future<Response> responseSelfDataFuture =     getDownloadJsonMaps(url:parsedUrl ,IdUser:IdUser ,UUID:Uuid.toInt() ,logger: logger);
       //TODO первый Этам получаем данные из СЕТИ
       responseSelfDataFuture.catchError(
               (Object error) {

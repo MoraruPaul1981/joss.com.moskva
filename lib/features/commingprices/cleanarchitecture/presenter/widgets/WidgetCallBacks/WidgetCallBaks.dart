@@ -105,7 +105,7 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
     required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
 //TODO
     logger.i("starting  getWidgetProccingDontData");
-    IntarfaceWaiting  intarfaceWaiting   = GetWidgetWaitingDontConn();
+    IntarfaceWaiting  intarfaceWaiting   = GetWidgetWaitingDontData();
     ///TODO return
     return     intarfaceWaiting.getWidgetWaitingPing(context: context,
         snapshot: snapshot,

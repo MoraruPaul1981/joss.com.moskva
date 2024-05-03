@@ -112,7 +112,7 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
         //TODO нет пришгли  данных
         widgetWatingCallBack = WidgetCallBaks().  getWidgetProccingDontData(   context:context,   snapshot:snapshot,logger:logger);
         //TODO return ERROR
-        return widgetWatingCallBack;;
+        return widgetWatingCallBack;
 
 
     }, // TODO метод который и делать пинг с сервером
