@@ -56,24 +56,18 @@ late Completer<List<Map<String, List<Entities1CMap>>>> completer;
         logger.i('then backresponsejboss .. $backresponsejboss');
 
         //TODO Get PING
-         getCompetePing(   backresponsejboss, logger)
-            .catchError(
+        Future<String> getProcessingPing=    getCompetePing(   backresponsejboss, logger);
+        //TODO  processing ping
+        getProcessingPing.catchError(
                 (Object error) {
               logger.i(' catchError  ERROR $error  ');
             })
-
-
-
          //TODO оБРАБОТКА даННЫХ
            .then((value) {
              //TODO PING
           logger.i('Result PINGs value ..  '+value.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
           return value;
           })
-
-
-
-
          //TODO Self-data
              .then((value ) {
                //TODO Self-data
