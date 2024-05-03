@@ -50,7 +50,7 @@ late Logger logger;
       final  BigInt Uuid=BigInt.parse('0')  ;
       final int IdUser=8;
 
-      List<Map<String, List<Entities1CMap>>> getSelfDataCallBack=  getthefinalSelfData(IspingOtServer, logger,IdUser,Uuid);
+      List<Map<String, List<Entities1CMap>>> getSelfDataCallBack=await  getthefinalSelfData(IspingOtServer, logger,IdUser,Uuid);
       logger.i('Result getSelfDataCallBack ..  '+getSelfDataCallBack.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
 
