@@ -83,6 +83,9 @@ late Logger logger;
 
 
 
+
+
+
            //TODO закрвваем Compete
            completer.complete(SelfData );
            logger.i('Result completer.isCompleted ..  '+completer.isCompleted.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
