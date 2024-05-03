@@ -9,8 +9,8 @@ import 'package:logger/logger.dart';
 
 import 'features/commingprices/cleanarchitecture/data/entities/Entities1CList.dart';
 import 'features/commingprices/cleanarchitecture/data/entities/Entities1CMap.dart';
-import 'features/commingprices/cleanarchitecture/data/remote/Futures/GetFutures1C.dart';
-import 'features/commingprices/cleanarchitecture/data/remote/Futures/getPing.dart';
+import 'features/commingprices/cleanarchitecture/data/remote/Futures/FuturesGetSelfData.dart';
+import 'features/commingprices/cleanarchitecture/data/remote/Futures/FutureGetPing.dart';
 import 'features/commingprices/cleanarchitecture/domain/usercases/AdressJboss/getAdress.dart';
 import 'features/commingprices/cleanarchitecture/domain/usercases/Loggers/GetErrors.dart';
 

@@ -12,7 +12,7 @@ import 'package:logger/src/logger.dart';
 
 import '../../../data/entities/Entities1CListManual.dart';
 import '../../../data/entities/Entities1CMap.dart';
-import '../../../data/remote/Futures/getPing.dart';
+import '../../../data/remote/Futures/FutureGetPing.dart';
 import '../WidgetAfterData1C/WidgetSuccessData.dart';
 import '../WidgetWaiting/GetWidgetDefault.dart';
 import '../WidgetWaiting/GetWidgetWaitingDontConn.dart';
@@ -89,6 +89,12 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
 
     return  WidgetSuccessData().getWidgetScaffold(context:context,snapshot:snapshot);
   }
+
+
+
+
+
+
 
 
 

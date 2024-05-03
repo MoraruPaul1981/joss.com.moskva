@@ -10,15 +10,12 @@ import 'package:logger/logger.dart';
 
 
 import '../../../domain/usercases/Converts/GetConverts.dart';
-import '../../../domain/usercases/Interfaces/InFuture1C.dart';
 import '../../entities/Entities1CMap.dart';
+import 'InterfacesFuture/InterfaceFutures/InterfaceFuture.dart';
 
 
 
-class GetFutures1C  implements InFuture1C  {
-
-
-
+class FuturesGetSelfData  implements InterfaceFutureResponse  {
 
   //TODO
   @override
@@ -56,8 +53,26 @@ class GetFutures1C  implements InFuture1C  {
 
 
 
+  @override
+  Future<List<Map<String, List<Entities1CMap>>>>? getCompeteSelfData(http.Response backresponsejboss, Logger )  async{
+    // TODO: implement getCompeteSelfData
+    //TODO Read some data.
+    return Future.value( getGeneratorMapCallBack(  response1C: backresponsejboss,logger:Logger))  ;//TODO   return compute(getComplitingResponse ,backresponsejboss  );
+  }
 
 
+
+
+
+
+
+
+
+
+  
+  
+  
+  
   //TODO
 
 
@@ -124,6 +139,7 @@ class GetFutures1C  implements InFuture1C  {
 
     return null;
   }
+
 
 }
 

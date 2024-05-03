@@ -13,9 +13,9 @@ import '../../../domain/usercases/Converts/GetConverts.dart';
 import '../../../domain/usercases/Interfaces/InterfacePings.dart';
 import '../../../domain/usercases/decoding/Decoding.dart';
 import '../../entities/Entities1CMap.dart';
-import 'GetFutures1C.dart';
+import 'FuturesGetSelfData.dart';
 
-class GetPing implements InterfacePings {
+class FutureGetPing implements InterfacePings  {
   //TODO
 late Logger logger;
 
@@ -40,7 +40,7 @@ late  Response backresponsejboss;
 
       //TODO главный запрос PING
 
-      Future<Response?>responsePing =    GetFutures1C().getDownloadJsonMaps(url:parsedUrl ,IdUser:IdUser ,UUID:Uuid.toInt() ,logger: logger);
+      Future<Response?>responsePing =    FuturesGetSelfData().getDownloadJsonMaps(url:parsedUrl ,IdUser:IdUser ,UUID:Uuid.toInt() ,logger: logger);
 
       responsePing.catchError(
               (Object error) {
@@ -97,27 +97,17 @@ late  Response backresponsejboss;
 
 
 
-/*
-  //TODO  getCompetePing() compute
-  Future<List<Map<String, List<Entities1CMap>>>>  getCompetePing(  Response backresponsejboss, Logger logger)   async {
-    //TODO Read some data.
-    return compute(getComplitingResponse ,backresponsejboss  );
-  }*/
-
-  //TODO  getCompetePing()
-  Future<String>  getCompetePing(  Response? backresponsejboss, Logger logger)   async {
-    //TODO Read some data.
-    return  getComplitingResponsePing(backresponsejboss) ;
-  }
 
 
 
 
-  //TODO  getCompeteSelfData()
-  Future<List<Map<String, List<Entities1CMap>>>>  getCompeteSelfData(  Response backresponsejboss, Logger logger)   async {
-    //TODO Read some data.
-    return  getComplitingResponseYoursData(backresponsejboss) ;
-  }
+
+
+
+
+
+
+
 
 
 
@@ -189,6 +179,17 @@ late  Response backresponsejboss;
     //TODO
     print('response1C.statusCode $backresponsejboss.statusCode');
     throw UnimplementedError();
+  }
+
+
+
+
+
+  @override
+  Future<String> getCompetePing(http.Response? backresponsejboss, Logger logger) async {
+    // TODO: implement getCompetePing
+    //TODO Read some data.
+    return  getComplitingResponsePing(backresponsejboss) ;///TODO    return compute(getComplitingResponse ,backresponsejboss  );
   }
 
 ///TODO END  class

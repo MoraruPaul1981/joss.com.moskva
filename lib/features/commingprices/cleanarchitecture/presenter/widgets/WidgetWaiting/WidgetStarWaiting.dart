@@ -11,7 +11,7 @@ import 'package:logger/src/logger.dart';
 
 import '../../../data/entities/Entities1CListManual.dart';
 import '../../../data/entities/Entities1CMap.dart';
-import '../../../data/remote/Futures/getPing.dart';
+import '../../../data/remote/Futures/FutureGetPing.dart';
 import '../../../domain/usercases/tests/Tests.dart';
 import '../WidgetAfterData1C/WidgetSuccessData.dart';
 import '../WidgetCallBacks/WidgetCallBaks.dart';
@@ -51,12 +51,10 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
    ///TODO возращаем call back
     return FutureBuilder<List<Map<String, List<Entities1CMap>>>>(
       //TODO get JSON PING ot 1C
-      future:   GetPing(). getResponse1c(context:context, logger: logger),
+      future:   FutureGetPing(). getResponse1c(context:context, logger: logger),
       builder: (BuildContext context, AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot) {
 
- //TODO само обработка
-
-
+   //TODO само обработка
         ////TODO В  waiting
         if (snapshot.connectionState == ConnectionState.waiting) {
           logger.i('napshot.connectionState$snapshot.connectionState');
@@ -72,13 +70,8 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
         if (snapshot.connectionState == ConnectionState.done) {
           logger.i('napshot.connectionState$snapshot.connectionState');
 
-
-          ///TODO пришли данные
-          ///
-          var  isArray=snapshot.data as   List<Map<String, List<Entities1CMap>>>;
-          //TODO
-          if (   snapshot.hasData && isArray.length>0) {
-
+          ///TODO пришол ПИНГ УСпешный
+          if (   snapshot.hasData ) {
             logger.i('snapshot.hasData$snapshot.hasData'+'napshot.connectionState$snapshot.connectionState');
             //TODO нет пришгли  данных
             widgetWatingCallBack = WidgetCallBaks().  getWidgetProccingNasData(   context:context,   snapshot:snapshot,logger:logger);
@@ -86,8 +79,8 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
             return widgetWatingCallBack;
 
 
-            //TODO нет пришгли  данных
-            //TODO нет пришгли  данных
+            //TODO ПИНГ НЕ УСПЕШЕНЫЙ СЕРВЕР ВЫКЛЮЧИН
+            //TODO
           } else {
             logger.i('napshot.connectionState$snapshot.connectionState');
             //TODO нет пришгли  данных
@@ -113,23 +106,12 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
 
 
 
-
-
-
-
-
-
-
         //TODO DEFALUT
         logger.i('napshot.connectionState$snapshot.connectionState');
         //TODO Возврат по умолчанию
         widgetWatingCallBack =WidgetCallBaks().   getWidgetProccingDefault(  context:context,   snapshot:snapshot,logger:logger);
         //TODO return
         return widgetWatingCallBack;
-
-
-
-
 
 
     }, // TODO метод который и делать пинг с сервером

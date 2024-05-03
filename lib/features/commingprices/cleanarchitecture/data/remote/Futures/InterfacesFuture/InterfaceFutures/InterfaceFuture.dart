@@ -1,28 +1,28 @@
 
-
-import 'dart:convert';
-import 'dart:isolate';
-import 'dart:typed_data' show Uint8List,Uint16List;
-import 'dart:typed_data';
-import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
-
-import '../../../data/entities/Entities1CMap.dart';
-
+import '../../../../entities/Entities1CMap.dart';
 
 
-abstract  class InFuture1C {
+
+
+
+abstract  class InterfaceFutureResponse {
   //TODO
   Future<Response?> getDownloadJsonMaps({ required  Uri   url, required int IdUser, required int UUID,required Logger logger}) ;
 
+  Future<List<Map<String, List<Entities1CMap>>>>?  getCompeteSelfData(  Response backresponsejboss, Logger logger);
+
+}
 
 
+
+
+
+
+abstract  class InterfaceFutureSelfData {
   //TODO
   List<Map<String, List<Entities1CMap>>>?  getGeneratorMapCallBack({required  Response response1C,required Logger logger}) ;
 
 
 }
-
-
