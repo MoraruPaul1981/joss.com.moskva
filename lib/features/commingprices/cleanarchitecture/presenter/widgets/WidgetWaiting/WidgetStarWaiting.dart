@@ -65,7 +65,6 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
 
         }
 
-/*
         ////TODO В  Сервер закончил Обработки
         if (snapshot.connectionState == ConnectionState.done) {
           logger.i('napshot.connectionState$snapshot.connectionState');
@@ -92,7 +91,7 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
             return widgetWatingCallBack;
 
           }
-        }*/
+        }
 
 
         ///TODO сгенерировальсь Error

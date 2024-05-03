@@ -17,6 +17,19 @@ import 'InterfacesFuture/InterfaceFutures/InterfaceFuture.dart';
 
 class FuturesGetSelfData  implements InterfaceFutureResponse,InterfaceFutureSelfData  {
 
+
+
+
+
+
+
+
+
+
+
+
+
+
   //TODO
   @override
   Future<Response> getDownloadJsonMaps({required Uri url, required int IdUser, required int UUID,required Logger logger}) async {

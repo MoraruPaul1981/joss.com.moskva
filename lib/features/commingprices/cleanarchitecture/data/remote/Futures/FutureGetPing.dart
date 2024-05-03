@@ -5,6 +5,7 @@ import 'dart:isolate';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
@@ -14,6 +15,7 @@ import '../../../domain/usercases/Converts/GetConverts.dart';
 import '../../../domain/usercases/Interfaces/InterfacePings.dart';
 import '../../../domain/usercases/decoding/Decoding.dart';
 import '../../entities/Entities1CMap.dart';
+import 'FuturesGetSelfData.dart';
 import 'InterfacesFuture/InterfaceFutures/InterfaceFuture.dart';
 
 class FutureGetPing implements InterfacePings ,InterfaceFutureResponse  {
@@ -30,32 +32,32 @@ late Logger logger;
     try {
       //TODO init LOGER
       this.logger=logger;
-      //TODO адрес пинга к серверу  Jboss Debug
+      //TODO адрес пинга к серверу
       var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
-      //TODO
       print('adressCurrent1C .. $adressCurrent1C');
-
       final parsedUrl=Uri.parse(adressCurrent1C) as Uri;
+      print('parsedUrl .. $parsedUrl');
 
 
       //TODO главный запрос PING
       String IspingOtServer = await wegetthefinalPing(parsedUrl,  logger);
-
       logger.i('Result IspingOtServer ..  '+IspingOtServer.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
 
 
 
       //TODO когад пришли данные
-      List<Map<String, List<Entities1CMap>>> selfdata=  getthefinalSelfData(IspingOtServer, logger);
+      final  BigInt Uuid=BigInt.parse('0')  ;
+      final int IdUser=8;
 
-      logger.i('Result selfdata ..  '+selfdata.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+      List<Map<String, List<Entities1CMap>>> getSelfDataCallBack=  getthefinalSelfData(IspingOtServer, logger,IdUser,Uuid);
+      logger.i('Result getSelfDataCallBack ..  '+getSelfDataCallBack.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
 
 
 
 
-      //TODO закрвваем Compete
+      //TODO закрвваем Compete после все отработынных операций
       completer.complete(SelfData );
       logger.i('Result completer.isCompleted ..  '+completer.isCompleted.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
       return SelfData;
@@ -113,18 +115,38 @@ late Logger logger;
   }
 
 //TODO self-data
-List<Map<String, List<Entities1CMap>>> getthefinalSelfData(String IspingOtServer, Logger logger) {
+Future<List<Map<String, List<Entities1CMap>>>> getthefinalSelfData(String? IspingOtServer, Logger logger,int IdUser,BigInt Uuid) async {
   //TODO
-  late  List<Map<String, List<Entities1CMap>>>selfdata=[];
+     var    getSelfDataCallBack;
   //TODO когад пришли данные
-  if (IspingOtServer.isNotEmpty) {
-    //TODO  запукаем механизх Получение данных
+  if (IspingOtServer!.isNotEmpty) {
+    FuturesGetSelfData futuresGetSelfData=new FuturesGetSelfData();
+
+    //TODO адрес пинга к серверу
+    var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
+    final parsedUrl=Uri.parse(adressCurrent1C) as Uri;
+
+
+    Future<Response>responseSelfDataFuture =     getDownloadJsonMaps(url:parsedUrl ,IdUser:IdUser ,UUID:Uuid.toInt() ,logger: logger);
+    //TODO первый Этам получаем данные из СЕТИ
+    responseSelfDataFuture.catchError(
+            (Object error) {
+          logger.i(' catchError  ERROR $error  ');
+          //TODO оБРАБОТКА пинга
+        });
+    //TODO получаем Responce
+    Response  responseSelfDataCallBack=await  responseSelfDataFuture;
+    //TODO then
+    logger.i(' responseSelfDataCallBack .. $responseSelfDataCallBack');
+
+
     logger.i('Result IspingOtServer ..  '+IspingOtServer.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
   }else{
     logger.i('Result IspingOtServer ..  '+IspingOtServer.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
   }
-
-  return  selfdata;
+  logger.i('Result getSelfDataCallBack ..  '+getSelfDataCallBack.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+  //TODO
+  return  getSelfDataCallBack;
 
 }
 
