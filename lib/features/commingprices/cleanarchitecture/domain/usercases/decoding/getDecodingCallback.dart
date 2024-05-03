@@ -39,7 +39,7 @@ class  getDecodingCallback implements InterfaceDecoding{
 
 //TODO  decoce Self Data
   @override
-  Uint8List getResponseDecoderSelfData({required Response response1C}) {
+  List getResponseDecoderSelfData({required Response response1C}) {
     // TODO: implement getResponseDecoderYoursData
     late var   getList1cdynamic;
     try{
@@ -47,7 +47,7 @@ class  getDecodingCallback implements InterfaceDecoding{
       final bugffer=   byteData.buffer;
       Uint8List list = bugffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes) ;
       //TODO
-      getList1cdynamic=json.decode(utf8.decode(list))     ;//as List<dynamic>
+      getList1cdynamic=json.decode(utf8.decode(list))   ;
       //TODO
       print('getList1cdynamic $getList1cdynamic');
       //TODO error
@@ -55,6 +55,7 @@ class  getDecodingCallback implements InterfaceDecoding{
       print(' get ERROR $e get stacktrace $stacktrace ');
     }
     return getList1cdynamic;
+
   }
 
 

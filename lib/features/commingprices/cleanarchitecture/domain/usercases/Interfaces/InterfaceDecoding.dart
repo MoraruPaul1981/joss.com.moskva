@@ -13,7 +13,7 @@ abstract  class InterfaceDecoding {
   String getResponseDecoderPing({required  Response response1C});
 
   //todo  dynamic Sekf DatA
-  List<dynamic>  getResponseDecoderSelfData({required  Response response1C});
+  List  getResponseDecoderSelfData({required  Response response1C});
 
 
 }
