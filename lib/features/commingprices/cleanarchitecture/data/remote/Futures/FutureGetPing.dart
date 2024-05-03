@@ -13,7 +13,7 @@ import 'package:logger/logger.dart';
 import '../../../domain/usercases/AdressJboss/getAdress.dart';
 import '../../../domain/usercases/Converts/GetConverts.dart';
 import '../../../domain/usercases/Interfaces/InterfacePings.dart';
-import '../../../domain/usercases/decoding/Decoding.dart';
+import '../../../domain/usercases/decoding/getDecodingCallback.dart';
 import '../../entities/Entities1CMap.dart';
 import 'FuturesGetSelfData.dart';
 import 'InterfacesFuture/InterfaceFutures/InterfaceFuture.dart';

@@ -11,6 +11,7 @@ import 'package:logger/logger.dart';
 
 
 import '../../../domain/usercases/Converts/GetConverts.dart';
+import '../../../domain/usercases/decoding/getDecodingCallback.dart';
 import '../../entities/Entities1CMap.dart';
 import 'InterfacesFuture/InterfaceFutures/InterfaceFuture.dart';
 
@@ -58,17 +59,26 @@ class FuturesGetSelfData  implements InterfaceFutureResponse,InterfaceFutureSelf
  TODO  of processing the
  TODO  incoming stream*/
   @override
-  Future<List<Map<String, List<Entities1CMap>>>> getGeneratorProcessSelfData({required  Response response1C,required Logger logger}) {
+  Future<List<Map<String, List<Entities1CMap>>>> getGeneratorProcessSelfData({required  Response response1C,
+    required Logger logger}) {
     // TODO: implement getGeneratorMapCallBack
     try{
       print('response1C.statusCode $response1C.statusCode');
 
-      logger.i('Result esponse1C.statusCode ..  '+response1C.statusCode.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+      logger.i('Result esponse1C.statusCode ..  '+response1C.statusCode.toString()+
+          ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
       if (response1C.statusCode==200) {
 
         //TODO
         print('response1C. contentLength....$response1C. contentLength');
+
+
+
+        List<dynamic>  getuint8listSelfCall=   new   getDecodingCallback().   getResponseDecoderSelfData(response1C:response1C);
+
+        logger.i(' getuint8listSelfCall ..  '+getuint8listSelfCall.toString()+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+
         /*  if (response1C. contentLength!>100) {
 
           List<dynamic>  listDynamic=  getList1cDynamic(response1C: response1C);

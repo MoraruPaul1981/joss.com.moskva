@@ -39,11 +39,22 @@ class  getDecodingCallback implements InterfaceDecoding{
 
 //TODO  decoce Self Data
   @override
-  List<Map<String, List<Entities1CMap>>> getResponseDecoderYoursData({required Response response1C}) {
+  Uint8List getResponseDecoderSelfData({required Response response1C}) {
     // TODO: implement getResponseDecoderYoursData
-    //TODO
-    print('getPing1C .....');
-    throw UnimplementedError();
+    late var   getList1cdynamic;
+    try{
+      final byteData = response1C.bodyBytes.buffer.asByteData();
+      final bugffer=   byteData.buffer;
+      Uint8List list = bugffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes) ;
+      //TODO
+      getList1cdynamic=json.decode(utf8.decode(list))     ;//as List<dynamic>
+      //TODO
+      print('getList1cdynamic $getList1cdynamic');
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
+    }
+    return getList1cdynamic;
   }
 
 
