@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:isolate';
 import 'dart:typed_data' show Uint8List,Uint16List;
 import 'dart:typed_data';
+import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -57,11 +58,12 @@ class FuturesGetSelfData  implements InterfaceFutureResponse,InterfaceFutureSelf
 
  /* TODO  generator process
  TODO  of processing the
- TODO  incoming stream*/
+ TODO  incoming stream */
   @override
   Future<List<Map<String, List<Entities1CMap>>>> getGeneratorProcessSelfData({required  Response response1C,
     required Logger logger}) {
     // TODO: implement getGeneratorMapCallBack
+   late  List<Map<String, List<Entities1CMap>>> getJson1cSucces;
     try{
       print('response1C.statusCode $response1C.statusCode');
 
@@ -69,61 +71,30 @@ class FuturesGetSelfData  implements InterfaceFutureResponse,InterfaceFutureSelf
           ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
       if (response1C.statusCode==200) {
-
         //TODO
-        print('response1C. contentLength....$response1C. contentLength');
+        print('response1C.statusCode....$response1C.statusCode');
 
 
-
-        List<dynamic>  getuint8listSelfCall=   new   getDecodingCallback().   getResponseDecoderSelfData(response1C:response1C);
-
-        logger.i(' getuint8listSelfCall ..  '+getuint8listSelfCall.toString()+'Isolate.current.debugName'+Isolate.current.debugName.toString());
-
-        /*  if (response1C. contentLength!>100) {
-
-          List<dynamic>  listDynamic=  getList1cDynamic(response1C: response1C);
-          print('listDynamic $listDynamic');
-
-          if (listDynamic.isNotEmpty ) {
+        List<dynamic>  getListSeflData=   new   getDecodingCallback().   getResponseDecoderSelfData(response1C:response1C,logger: logger);
+        logger.i(' getListSeflData ..  '+getListSeflData.toString()+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
 
-            //TODO получаем данные JSON
-            print('listDynamic.isNotEmpty ..$listDynamic.isNotEmpty '+'listDynamic.contains(2) .. $listDynamic.contains(2)');
-
-            ///TODO
-            getJson1cSucces=listDynamic.map((model) => Entities1CList().loopGeneratorListPolo(  json:  model  )) .toList() as   List<Entities1CList?>;
-
-            print('getJson1cSucces ..$getJson1cSucces');
-            //TODO
-            print('getJson1cSuccess..$getPerson1CList');
-
-          }else{
-
-            //TODO
-            print('istDynamic.isEmpty..$listDynamic.isEmpty');
-          }
-
-        } else {
-          print('response1C. contentLength..$response1C. contentLength');
-
-          //TODO PING
-          String?  getCallPing1c= getPingDynamicDontaunt(response1C: response1C) as  String?   ;
-          print('getCallPing1c $getCallPing1c');
-
-          List<dynamic>  listDynamic=   [];
+        if (getListSeflData.isNotEmpty ) {
+          //TODO получаем данные JSON
+          logger.i('getListSeflData.isNotEmpty ..$getListSeflData.isNotEmpty'+'Isolate.current.debugName'+Isolate.current.debugName.toString());
           ///TODO
-          getJson1cSucces=listDynamic.map((model) => Entities1CList().loopGeneratorListPolo(  json:  model  )) .toList()
-          as   List<Entities1CList>;
-          //TODO
-          print('getJson1cSuccess..$getPerson1CList');
-        }*/
+       var   get=getListSeflData.map((model) => Entities1CMap().loopGeneratorMapPolo(  json:  model  )) .toList() ;
 
-        print('personSpoler');
+          print('get ..$get');
+        }
+
+        logger.i('getListSeflData.isNotEmpty ..$getListSeflData.isNotEmpty'+'Isolate.current.debugName'+Isolate.current.debugName.toString());
       } else {
         //TODO
-        print('response1C.statusCode $response1C.statusCode');
+        logger.i(' response1C ..  '+response1C.toString()+'Isolate.current.debugName'+Isolate.current.debugName.toString());
       }
-
+      //TODO
+      logger.i(' response1C ..  '+response1C.toString()+'Isolate.current.debugName'+Isolate.current.debugName.toString());
       //TODO error
     }   catch (e, stacktrace) {
       print(' get ERROR $e get stacktrace $stacktrace ');

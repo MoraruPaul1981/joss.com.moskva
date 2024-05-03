@@ -12,7 +12,7 @@ import 'Entities1CList.dart';
 
 
 @JsonSerializable()
-class Entities1CMap  {
+class Entities1CMapSerializable  {
   //TODO main varible
   String?   CFO    ;
   String?  Data;
@@ -30,7 +30,7 @@ class Entities1CMap  {
 
 
 
-  Entities1CMap(
+  Entities1CMapSerializable(
       {String?   CFO ,
         String?  Data,
         String?  StatyaDDS,

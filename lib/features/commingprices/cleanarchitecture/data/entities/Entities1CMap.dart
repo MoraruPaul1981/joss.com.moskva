@@ -72,20 +72,31 @@ Entities1CMap(
       json.entries.forEach((elementMap) {
         //TODO root
         try{
-        print('element$elementMap');
+        String getKey=  elementMap.key as String;
+        print('getKey..$getKey');
         print('element$elementMap');
 
+
+
+
+         //TODO сама СТРОЧКИ
+          //TODO сама СТРОЧКИ
+          //TODO сама СТРОЧКИ
 
         elementMap.value.forEach((element) {
           //TODO
           print('element$element');
           print('element$element');
 
+
+          //TODO сама строчка
+          //TODO сама строчка
+          //TODO сама строчка
           var elementTwo = element as Map<String, dynamic>;
           print('element$elementTwo');
 
 
-          // TODO: implement fromJson
+          // TODO: implement fromJson,
           CFO = elementTwo.entries
               .elementAt(0)
               .value as String;
@@ -158,25 +169,14 @@ Entities1CMap(
 
 
           print('person....$person1cMap');
+          //TODO заполенение уже в компонент
+
+
+
+
+
+
           print('person....$person1cMap');
-
-
-          //TODO map
-/*
-          if (person1cMap!=null) {
-            returnMap = {
-              UUID.toString(): person1cMap,
-            };*/
-        /*    print('map $person1cMap'+' elementMap.key.toString()..$elementMap.key.toString()');
-          } else {
-            print('map $person1cMap'+' elementMap.key.toString()..$elementMap.key.toString()');
-          }
-          prin*///t('map $returnMap');
-
-
-        /* getGeneterMap(person1cMap:person1cMap,  elementMap:elementMap);
-
-          print('returnMap$returnMap');*/
 
         });
         print('returnMap$returnMap');
