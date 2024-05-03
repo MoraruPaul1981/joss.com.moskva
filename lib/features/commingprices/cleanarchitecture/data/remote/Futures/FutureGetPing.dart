@@ -39,14 +39,14 @@ late Logger logger;
       print('parsedUrl .. $parsedUrl');
 
 
-      //TODO главный запрос PING
+      //TODO главный запрос PING #1
       String IspingOtServer = await wegetthefinalPing(parsedUrl,  logger);
       logger.i('Result IspingOtServer ..  '+IspingOtServer.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
 
 
 
-      //TODO когад пришли данные
+      //TODO когад пришли данные #2
       final  BigInt Uuid=BigInt.parse('0')  ;
       final int IdUser=8;
 
@@ -56,8 +56,7 @@ late Logger logger;
 
 
 
-
-      //TODO закрвваем Compete после все отработынных операций
+      //TODO закрвваем Compete после все отработынных операций  #3
       completer.complete(SelfData );
       logger.i('Result completer.isCompleted ..  '+completer.isCompleted.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
       return SelfData;
