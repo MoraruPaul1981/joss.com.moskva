@@ -65,7 +65,7 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
 
         }
 
-
+/*
         ////TODO В  Сервер закончил Обработки
         if (snapshot.connectionState == ConnectionState.done) {
           logger.i('napshot.connectionState$snapshot.connectionState');
@@ -92,7 +92,7 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
             return widgetWatingCallBack;
 
           }
-        }
+        }*/
 
 
         ///TODO сгенерировальсь Error
@@ -100,7 +100,6 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
           //TODO когда ест данные
           logger.e('napshot.connectionState$snapshot.connectionState'+'snapshot.error.toString()..'+snapshot.error.toString());
           //TODO Возврат по умолчанию
-
           widgetWatingCallBack = WidgetCallBaks().  getWidgetProccingError( context:context,   snapshot:snapshot,logger:logger);
           //TODO return ERROR
           return widgetWatingCallBack;
@@ -111,10 +110,10 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
 
         //TODO DEFALUT
         logger.i('napshot.connectionState$snapshot.connectionState');
-        //TODO Возврат по умолчанию
-        widgetWatingCallBack =WidgetCallBaks().   getWidgetProccingDefault(  context:context,   snapshot:snapshot,logger:logger);
-        //TODO return
-        return widgetWatingCallBack;
+        //TODO нет пришгли  данных
+        widgetWatingCallBack = WidgetCallBaks().  getWidgetProccingDontData(   context:context,   snapshot:snapshot,logger:logger);
+        //TODO return ERROR
+        return widgetWatingCallBack;;
 
 
     }, // TODO метод который и делать пинг с сервером
