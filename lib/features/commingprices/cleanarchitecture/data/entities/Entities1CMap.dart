@@ -65,7 +65,12 @@ Entities1CMap(
   @override
   List<Map<String, List<Entities1CMap>>> loopGeneratorMapPolo({required Map<String, dynamic> json}) {
     // TODO: implement fromJsondynamic
-    List<Map<String, List<Entities1CMap>>> returnMap=   [];
+   late List<Map<String, List<Entities1CMap>>> returnMap=   [];
+
+   late List<Entities1CMap> list1CMap=[];
+   
+    late Map<String, List<Entities1CMap>> map=    Map<String, List<Entities1CMap>>();
+
   //TODO
     Entities1CMap   person1cMap;
     try {
@@ -167,20 +172,29 @@ Entities1CMap(
               NStr: NStr,
               Kontragent: Kontragent);
 
-
           print('person....$person1cMap');
           //TODO заполенение уже в компонент
 
+          //TODO Первый ШАГ ЗАПОЛЕНЕНИЕ  в лист
+          list1CMap.add(person1cMap);
+
+          print('person1cMap....$person1cMap');
+          print('list1CMap....$list1CMap');
+
+        });//TODO    //TODO  КОНЕЦ сама СТРОЧЕК
 
 
+        print('returnMap...$list1CMap');
 
+        map.putIfAbsent(getKey, () => list1CMap);
 
+        print('map...$map');
 
-          print('person....$person1cMap');
+        returnMap.add(map);
 
-        });
-        print('returnMap$returnMap');
+        print('returnMap...$returnMap');
 
+          //TODO    //TODO  КОНЕЦ сама СТРОЧКИ
         //TODO error
       }   catch (e, stacktrace) {
         print(' get ERROR $e get stacktrace $stacktrace ');
