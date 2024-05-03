@@ -62,6 +62,8 @@ late Completer<List<Map<String, List<Entities1CMap>>>> completer;
               logger.i(' catchError  ERROR $error  ');
             })
 
+
+
          //TODO оБРАБОТКА даННЫХ
            .then((value) {
              //TODO PING
@@ -70,22 +72,26 @@ late Completer<List<Map<String, List<Entities1CMap>>>> completer;
           })
 
 
+
+
          //TODO Self-data
-             .then((value) {
+             .then((value ) {
                //TODO Self-data
-
-
-
-         // Future<List<Map<String, List<Entities1CMap>>>>  list=GetFutures1C().getDownloadJsonMaps(basicAuth,IdUser,Uuid)  ;
+           var  IspingOtServer=value as  String?;
+           logger.i('Result Self Data  IspingOtServer ..  '+IspingOtServer.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
            List<Map<String, List<Entities1CMap>>> SelfData =[];
+           //TODO когад пришли данные
+           if (IspingOtServer!.isNotEmpty) {
+             logger.i('Result IspingOtServer ..  '+IspingOtServer.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
+           }
+
+           //TODO закрвваем Compete
            completer.complete(SelfData );
-
-           logger.i('Result Self Data  value ..  '+value.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+           logger.i('Result completer.isCompleted ..  '+completer.isCompleted.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
            return SelfData;
 
          });
-
          //TODO CALL BACk
         return backresponsejboss;
             });
