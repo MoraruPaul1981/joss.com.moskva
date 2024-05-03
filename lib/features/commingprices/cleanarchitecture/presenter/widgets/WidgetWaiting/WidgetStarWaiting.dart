@@ -70,9 +70,14 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
         if (snapshot.connectionState == ConnectionState.done) {
           logger.i('napshot.connectionState$snapshot.connectionState');
 
+          ///
+          var  isArray=snapshot.data as   List<Map<String, List<Entities1CMap>>>;
+
           ///TODO пришол ПИНГ УСпешный
-          if (   snapshot.hasData ) {
-            logger.i('snapshot.hasData$snapshot.hasData'+'napshot.connectionState$snapshot.connectionState');
+          if (   snapshot.hasData && isArray.length>0) {
+
+            logger.i('snapshot.hasData...$snapshot.hasData'+'isArray.length...$isArray.length'
+                +'napshot.connectionState$snapshot.connectionState');
             //TODO нет пришгли  данных
             widgetWatingCallBack = WidgetCallBaks().  getWidgetProccingNasData(   context:context,   snapshot:snapshot,logger:logger);
             //TODO return ERROR

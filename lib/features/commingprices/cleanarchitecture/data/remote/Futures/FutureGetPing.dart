@@ -14,21 +14,24 @@ import '../../../domain/usercases/Interfaces/InterfacePings.dart';
 import '../../../domain/usercases/decoding/Decoding.dart';
 import '../../entities/Entities1CMap.dart';
 import 'FuturesGetSelfData.dart';
+import 'InterfacesFuture/InterfaceFutures/InterfaceFuture.dart';
 
-class FutureGetPing implements InterfacePings  {
+class FutureGetPing implements InterfacePings ,InterfaceFutureResponse  {
   //TODO
 late Logger logger;
 
 late  Response backresponsejboss;
 
+late Completer<List<Map<String, List<Entities1CMap>>>> completer;
+
   @override
   Future<List<Map<String, List<Entities1CMap>>>>? getResponse1c({ required BuildContext context, required Logger logger})  async {
     // TODO: implement getJson1cPing
-    // Read some data.
-   late Completer<List<Map<String, List<Entities1CMap>>>> completer=new Completer();
-
     try {
+      //TODO init LOGER
       this.logger=logger;
+      //TODO new Competer
+      completer=new Completer();
       //TODO адрес пинга к серверу  Jboss Debug
       var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
       //TODO
@@ -40,12 +43,14 @@ late  Response backresponsejboss;
 
       //TODO главный запрос PING
 
-      Future<Response?>responsePing =    FuturesGetSelfData().getDownloadJsonMaps(url:parsedUrl ,IdUser:IdUser ,UUID:Uuid.toInt() ,logger: logger);
+      Future<Response?>responsePing =    getDownloadJsonMaps(url:parsedUrl ,IdUser:IdUser ,UUID:Uuid.toInt() ,logger: logger);
 
       responsePing.catchError(
               (Object error) {
             logger.i(' catchError  ERROR $error  ');
 
+
+            //TODO оБРАБОТКА пинга
           }).then((backresponsejboss)  {
         //TODO then
         logger.i('then backresponsejboss .. $backresponsejboss');
@@ -57,10 +62,10 @@ late  Response backresponsejboss;
               logger.i(' catchError  ERROR $error  ');
             })
 
-         //TODO PING
+         //TODO оБРАБОТКА даННЫХ
            .then((value) {
              //TODO PING
-          logger.i('start value ..  '+value.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+          logger.i('Result PINGs value ..  '+value.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
           return value;
           })
 
@@ -68,26 +73,25 @@ late  Response backresponsejboss;
          //TODO Self-data
              .then((value) {
                //TODO Self-data
+
+
+
          // Future<List<Map<String, List<Entities1CMap>>>>  list=GetFutures1C().getDownloadJsonMaps(basicAuth,IdUser,Uuid)  ;
-           List<Map<String, List<Entities1CMap>>> list =[];
+           List<Map<String, List<Entities1CMap>>> SelfData =[];
 
-           completer.complete(list );
+           completer.complete(SelfData );
 
-           logger.i('start list ..  '+list.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
-           return list;
+           logger.i('Result Self Data  value ..  '+value.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+           return SelfData;
 
          });
 
-
+         //TODO CALL BACk
         return backresponsejboss;
             });
-
-
-
-
       logger.i('start completer.future ..  '+completer.future.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
-    } catch (e) {
-      print(e);
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
     }
     return   completer.future;
   }
@@ -169,17 +173,42 @@ late  Response backresponsejboss;
 
 
 
-
-  ///TODO sel data
-
   @override
-  List<Map<String, List<Entities1CMap>>> getComplitingResponseYoursData(http.Response backresponsejboss) {
-    // TODO: implement getComplitingResponseYoursData
+  Future<http.Response?> getDownloadJsonMaps({required Uri url, required int IdUser, required int UUID, required Logger logger}) async {
+    // TODO: implement getDownloadJsonMaps
+    // TODO: implement getDownloadJsonMaps
+    late  Response  getResponse;
+    try{
+      //TODO Paramerts
+      print('url..$url'+'IdUser..$IdUser'+ 'UUID..$UUID');
+      //TODO base64
+      final   String? basicAuth=     GetConverts().convertBase64(  user: 'dsu1Admin', password: 'dsu1Admin');
 
-    //TODO
-    print('response1C.statusCode $backresponsejboss.statusCode');
-    throw UnimplementedError();
+      print(' basicAuth  $basicAuth');
+
+      //TODO главный запрос
+      getResponse=  await http.get(
+          url,
+          headers: {
+            'user':IdUser.toString(),
+            'uuid':UUID.toString(),
+            'authorization':'$basicAuth',
+          }
+      ).catchError(
+              (Object error) {
+            print(' get ERROR $error  ');
+          });
+
+      logger.i('start getResponse ..  '+getResponse.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+      //TODO error
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
+    }
+    return getResponse;
   }
+
+
+
 
 
 
@@ -191,6 +220,7 @@ late  Response backresponsejboss;
     //TODO Read some data.
     return  getComplitingResponsePing(backresponsejboss) ;///TODO    return compute(getComplitingResponse ,backresponsejboss  );
   }
+
 
 ///TODO END  class
 }

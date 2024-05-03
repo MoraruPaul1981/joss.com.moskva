@@ -15,7 +15,7 @@ import 'InterfacesFuture/InterfaceFutures/InterfaceFuture.dart';
 
 
 
-class FuturesGetSelfData  implements InterfaceFutureResponse  {
+class FuturesGetSelfData  implements InterfaceFutureResponse,InterfaceFutureSelfData  {
 
   //TODO
   @override
@@ -62,21 +62,7 @@ class FuturesGetSelfData  implements InterfaceFutureResponse  {
 
 
 
-
-
-
-
-
-
-
-  
-  
-  
-  
   //TODO
-
-
-
   @override
   List<Map<String, List<Entities1CMap>>>? getGeneratorMapCallBack({required  Response response1C,required Logger logger}) {
     // TODO: implement getGeneratorMapCallBack
