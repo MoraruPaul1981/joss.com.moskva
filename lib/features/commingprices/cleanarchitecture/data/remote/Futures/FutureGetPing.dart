@@ -4,6 +4,7 @@ import "dart:async";
 import 'dart:isolate';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
@@ -13,7 +14,6 @@ import '../../../domain/usercases/Converts/GetConverts.dart';
 import '../../../domain/usercases/Interfaces/InterfacePings.dart';
 import '../../../domain/usercases/decoding/Decoding.dart';
 import '../../entities/Entities1CMap.dart';
-import 'FuturesGetSelfData.dart';
 import 'InterfacesFuture/InterfaceFutures/InterfaceFuture.dart';
 
 class FutureGetPing implements InterfacePings ,InterfaceFutureResponse  {
@@ -22,16 +22,15 @@ late Logger logger;
 
 late  Response backresponsejboss;
 
-late Completer<List<Map<String, List<Entities1CMap>>>> completer;
+
 
   @override
   Future<List<Map<String, List<Entities1CMap>>>>? getResponse1c({ required BuildContext context, required Logger logger})  async {
     // TODO: implement getJson1cPing
+   late Completer<List<Map<String, List<Entities1CMap>>>> completer=new Completer () ;
     try {
       //TODO init LOGER
       this.logger=logger;
-      //TODO new Competer
-      completer=new Completer();
       //TODO адрес пинга к серверу  Jboss Debug
       var adressCurrent1C=  GetAdress1CPrices().adress1C( ) as String;
       //TODO
@@ -42,19 +41,14 @@ late Completer<List<Map<String, List<Entities1CMap>>>> completer;
       final int IdUser=0;
 
       //TODO главный запрос PING
-
       Future<Response?>responsePing =    getDownloadJsonMaps(url:parsedUrl ,IdUser:IdUser ,UUID:Uuid.toInt() ,logger: logger);
-
       responsePing.catchError(
               (Object error) {
             logger.i(' catchError  ERROR $error  ');
-
-
             //TODO оБРАБОТКА пинга
           }).then((backresponsejboss)  {
         //TODO then
         logger.i('then backresponsejboss .. $backresponsejboss');
-
         //TODO Get PING
         Future<String> getProcessingPing=    getCompetePing(   backresponsejboss, logger);
         //TODO  processing ping
@@ -68,6 +62,9 @@ late Completer<List<Map<String, List<Entities1CMap>>>> completer;
           logger.i('Result PINGs value ..  '+value.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
           return value;
           })
+
+
+
          //TODO Self-data
              .then((value ) {
                //TODO Self-data
@@ -76,6 +73,12 @@ late Completer<List<Map<String, List<Entities1CMap>>>> completer;
            List<Map<String, List<Entities1CMap>>> SelfData =[];
            //TODO когад пришли данные
            if (IspingOtServer!.isNotEmpty) {
+
+
+
+             logger.i('Result IspingOtServer ..  '+IspingOtServer.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+
+           }else{
              logger.i('Result IspingOtServer ..  '+IspingOtServer.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
            }
@@ -143,7 +146,7 @@ late Completer<List<Map<String, List<Entities1CMap>>>> completer;
 
 //TODO PING
   @override
-   String   getComplitingResponsePing(  Response? backresponsejboss)   {
+   String   getComplitingResponsePing(    Response? backresponsejboss)   {
     // TODO: implement getCompletePing
     late  var  getCallPing1c;
     try{
@@ -215,10 +218,10 @@ late Completer<List<Map<String, List<Entities1CMap>>>> completer;
 
 
   @override
-  Future<String> getCompetePing(http.Response? backresponsejboss, Logger logger) async {
+  Future<String> getCompetePing( Response? backresponsejboss, Logger logger) async {
     // TODO: implement getCompetePing
-    //TODO Read some data.
-    return  getComplitingResponsePing(backresponsejboss) ;///TODO    return compute(getComplitingResponse ,backresponsejboss  );
+      return  getComplitingResponsePing(     backresponsejboss) ;///TODO    return compute(getComplitingResponse ,backresponsejboss  );
+    return    compute(getComplitingResponsePing,backresponsejboss)  ;///TODO    return compute(getComplitingResponse ,backresponsejboss  );
   }
 
 

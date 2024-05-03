@@ -34,7 +34,8 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
 
   ///TODO  методы ожидания
   @override
-  Widget getWidgetProccerWaiting({required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
+  Widget getWidgetProccerWaiting({required BuildContext context,
+    required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
 //TODO
   logger.i("starting  getWidgetProccingWait");
   IntarfaceWaiting  intarfaceWaiting= GetWidgetWaiting();
@@ -48,7 +49,8 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
 
   ///TODO метод по умочанию
    @override
-  Widget getWidgetProccingDefault( {required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
+  Widget getWidgetProccingDefault( {required BuildContext context,
+     required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
 //TODO
     logger.i("starting  getWidgetProccingDefault");
     IntarfaceWaiting  intarfaceWaiting= GetWidgetDefault();
@@ -61,7 +63,8 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
 
   ///TODO метод по умочанию
   @override
-  Widget getWidgetProccingError( {required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
+  Widget getWidgetProccingError( {required BuildContext context,
+    required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
 //TODO
     logger.i("starting  getWidgetProccingError");
     IntarfaceWaiting  intarfaceWaiting  = GetWidgetWaitingErrors();
@@ -77,7 +80,8 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
 
   ///TODO метод есть данные
   @override
-  Widget getWidgetProccingNasData( {required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
+  Widget getWidgetProccingNasData( {required BuildContext context,
+    required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
 //TODO
 
     var  getPingBack=snapshot.data as     String ;
@@ -95,12 +99,10 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
 
 
 
-
-
-
   ///TODO метод нет данных
   @override
-  Widget getWidgetProccingDontData( {required BuildContext context, required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
+  Widget getWidgetProccingDontData( {required BuildContext context,
+    required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
 //TODO
     logger.i("starting  getWidgetProccingDontData");
     IntarfaceWaiting  intarfaceWaiting   = GetWidgetWaitingDontConn();
@@ -110,15 +112,6 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
         alwaysStop: Colors.red,
         currentText: 'Нет данных !!!');
   }
-
-
-
-
-
-
-
-
-
 
 
 
