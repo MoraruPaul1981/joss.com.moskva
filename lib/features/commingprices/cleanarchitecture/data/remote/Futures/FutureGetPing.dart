@@ -40,17 +40,17 @@ late Logger logger;
 
 
       //TODO главный запрос PING #1
-      String IspingOtServer = await wegetthefinalPing(parsedUrl,  logger);
+         String IspingOtServer = await wegetthefinalPing(parsedUrl,  logger);
       logger.i('Result IspingOtServer ..  '+IspingOtServer.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
 
 
 
       //TODO когад пришли данные #2
-      final  BigInt Uuid=BigInt.parse('0')  ;
-      final int IdUser=8;
+        BigInt Uuid=BigInt.parse('0')  ;
+       int IdUser=8;
 
-      List<Map<String, List<Entities1CMap>>> getSelfDataCallBack=await  getthefinalSelfData(IspingOtServer, logger,IdUser,Uuid);
+          List<Map<String, List<Entities1CMap>>> getSelfDataCallBack=await  getthefinalSelfData(IspingOtServer, logger,IdUser,Uuid);
       logger.i('Result getSelfDataCallBack ..  '+getSelfDataCallBack.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
 
@@ -80,8 +80,8 @@ late Logger logger;
     late String getpingCallBack;
     try {
       //TODO только для пинга
-      final  BigInt Uuid=BigInt.parse('0')  ;
-      final int IdUser=0;
+        BigInt Uuid=BigInt.parse('0')  ;
+       int IdUser=0;
 
       late  Response backresponsejboss;
       Future<Response>responsePing =     getDownloadJsonMaps(url:parsedUrl ,IdUser:IdUser ,UUID:Uuid.toInt() ,logger: logger);
@@ -128,7 +128,7 @@ Future<List<Map<String, List<Entities1CMap>>>> getthefinalSelfData(String? Ispin
 
       FuturesGetSelfData futuresGetSelfData=   new FuturesGetSelfData();
 //TODO получаем данные от 1с Севра
-      Future<Response> responseSelfDataFuture =  futuresGetSelfData.getDownloadJsonMaps(url:parsedUrl ,IdUser:IdUser ,UUID:Uuid.toInt() ,logger: logger);
+         Future<Response> responseSelfDataFuture =  futuresGetSelfData.getDownloadJsonMaps(url:parsedUrl ,IdUser:IdUser ,UUID:Uuid.toInt() ,logger: logger);
 
       responseSelfDataFuture.catchError(
               (Object error) {
@@ -136,14 +136,12 @@ Future<List<Map<String, List<Entities1CMap>>>> getthefinalSelfData(String? Ispin
             //TODO оБРАБОТКА пинга
           });
       //TODO получаем Responce Self-Data
-      Response  CallBackresponseSelfData=await  responseSelfDataFuture;
+      final   Response  CallBackresponseSelfData=await  responseSelfDataFuture;
       //TODO then
       logger.i(' CallBackresponseSelfData .. $CallBackresponseSelfData');
 
       //TODO производим обработку пришедшего с  данными Response
-     // futuresGetSelfData getGeneratorMapCallBack
-
-      getSelfDataCallBack=  await futuresGetSelfData.getGeneratorProcessSelfData(  response1C:CallBackresponseSelfData, logger:logger);
+         getSelfDataCallBack=  await futuresGetSelfData.getGeneratorProcessSelfData(  response1C:CallBackresponseSelfData, logger:logger);
 
       logger.i('Result getSelfDataCallBack ..  '+getSelfDataCallBack.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
     }else{
@@ -151,21 +149,15 @@ Future<List<Map<String, List<Entities1CMap>>>> getthefinalSelfData(String? Ispin
     }
     //TODO end Call bACK
     logger.i('Result getSelfDataCallBack ..  '+getSelfDataCallBack.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+
     //TODO
   }   catch (e, stacktrace) {
     print(' get ERROR $e get stacktrace $stacktrace ');
   }
 
-  return  getSelfDataCallBack;
+  return  Future(() => getSelfDataCallBack) ;
 
 }
-
-
-
-
-
-
-
 
 
 

@@ -75,7 +75,7 @@ class FuturesGetSelfData  implements InterfaceFutureResponse,InterfaceFutureSelf
         print('response1C.statusCode....$response1C.statusCode');
 
       //TODO  первая операция ДИнамик
-        List<dynamic>  getListSeflData=   new   getDecodingCallback().   getResponseDecoderSelfData(response1C:response1C,logger: logger);
+        final  List<dynamic>  getListSeflData=   new   getDecodingCallback().   getResponseDecoderSelfData(response1C:response1C,logger: logger);
         logger.i(' getListSeflData ..  '+getListSeflData.toString()+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
 
@@ -100,7 +100,7 @@ class FuturesGetSelfData  implements InterfaceFutureResponse,InterfaceFutureSelf
       print(' get ERROR $e get stacktrace $stacktrace ');
     }
 
-    return Future.value('fg' as FutureOr<List<Map<String, List<Entities1CMap>>>>);
+    return Future(() => getJson1cSucces) ; //TODO  Future.value('fg' as FutureOr<List<Map<String, List<Entities1CMap>>>>)
   }
 
 
