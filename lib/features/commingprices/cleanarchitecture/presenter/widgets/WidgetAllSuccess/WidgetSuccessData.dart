@@ -10,26 +10,37 @@ import 'package:logger/src/logger.dart';
 import '../../../data/entities/Entities1CList.dart';
 import '../../../data/entities/Entities1CListManual.dart';
 import '../../../data/entities/Entities1CMap.dart';
+import '../WidgetWaiting/Intarface/IntafaceSuccessData.dart';
 
-class   WidgetSuccessData {
+class   WidgetSuccessData implements IntafaceSuccessData {
 
+  @override
+  late Logger logger;
 
-  //TODO сохранили как тест временно ...
-    late AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot;
-    late  Logger logger;
-    late List<Map<String, List<Entities1CMap>>>? receiveddatafromC1;
+  @override
+  late List<Map<String, List<Entities1CMap>>>? receiveddatafromC1;
+
+  @override
+  late AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot;
+  @override
+  late BuildContext context;
 
   //TODO РАбоий Виджет
+    @override
   Widget getWidgetScaffold({
-    required BuildContext context,
-    required   AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,
-    required  Logger logger
+    required  context,
+    required    snapshot,
+    required   logger
   })
 
   {
-    logger.i('snapshot ..  '+snapshot.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+    logger.i('snapshot ..  '+snapshot.toString()+''+'Isolate.current.debugName'
+        +Isolate.current.debugName.toString());
+
     receiveddatafromC1=  snapshot.data ?.cast<Map<String, List<Entities1CMap>>>().toList();
-    logger.i('receiveddatafromC1 ..  '+receiveddatafromC1!.length.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+
+    logger.i('receiveddatafromC1 ..  '+receiveddatafromC1!.length.toString()+
+        ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
     ////TODO сам виджет
     return new Scaffold(
       backgroundColor: Colors.blue[200],
@@ -219,6 +230,11 @@ class   WidgetSuccessData {
 
     );
   }
+
+
+
+
+
 
 
 

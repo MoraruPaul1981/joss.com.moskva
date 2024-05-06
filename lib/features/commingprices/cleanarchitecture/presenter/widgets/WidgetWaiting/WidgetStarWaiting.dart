@@ -1,24 +1,12 @@
 
-import 'dart:async';
-import 'dart:isolate';
-
 import 'package:commintprices/main.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/src/logger.dart';
 
-
-import '../../../data/entities/Entities1CListManual.dart';
 import '../../../data/entities/Entities1CMap.dart';
 import '../../../data/remote/Futures/FutureGetPing.dart';
-import '../../../domain/usercases/tests/Tests.dart';
-import '../WidgetAfterData1C/WidgetSuccessData.dart';
 import '../WidgetCallBacks/WidgetCallBaks.dart';
-import 'GetWidgetWaitingDontConn.dart';
-import 'GetWidgetWaitingErrors.dart';
-import 'GetWidgetWaiting.dart';
-import 'Intarface/IntarfaceWaiting.dart';
 
 
 
