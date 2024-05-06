@@ -44,7 +44,7 @@ class   WidgetSuccessData implements IntafaceSuccessData {
         ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
     ////TODO сам виджет
     return new Scaffold(
-      backgroundColor: Colors.blue[200],
+      backgroundColor: Colors.grey[600],
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(40.0), // here the desired height
         child:
@@ -154,7 +154,7 @@ class   WidgetSuccessData implements IntafaceSuccessData {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black.withOpacity(0.7),
                                       decoration: TextDecoration.underline,
-                                      decorationColor: Colors.blue[300],
+                                      decorationColor: Colors.grey[300],
                                       decorationStyle: TextDecorationStyle.wavy,
                                     ),
                                   ),
@@ -191,7 +191,7 @@ class   WidgetSuccessData implements IntafaceSuccessData {
             // color: Theme.of(context).backgroundColor,
               color: Colors.white,
               border: Border.all(
-                color: Colors.blue[300]!,
+                color: Colors.grey[300]!,
                 width: 0.5,
               ),
               borderRadius: const BorderRadius.only(
