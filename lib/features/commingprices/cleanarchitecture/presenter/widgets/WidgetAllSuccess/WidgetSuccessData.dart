@@ -368,7 +368,7 @@ return getfirstTransformationionofincomingData;
     // TODO: implement fourthtransformation
     String? getCfo;
     try{
-      getCfo=    getfourthtransformation.elementAt(0).CFO;
+      getCfo=    getfourthtransformation.elementAt(0).CFO as String ;
       logger.i('get getCfo ..  '+getCfo.toString()+
           ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
     } catch (e, stacktrace) {
