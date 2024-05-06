@@ -18,10 +18,19 @@ abstract  class IntafaceSuccessData {
     late BuildContext context;
 
 
-  //TODO
+  //TODO  //TODO  первоя Трансформация ДАнных
   Widget getWidgetScaffold({required   context, required     snapshot, required    logger });
 //TODO
-  void firstTransformationionofincomingData({required  AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot});
+  List<Map<String, List<Entities1CMap>>> firstTransformationionofincomingData(
+      {required  AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,
+    required Logger logger});
+
+
+  //TODO  //TODO  ВТОРАЯ Трансформация ДАнных
+   Map<String, List<Entities1CMap>> secondConversionData(
+      {required   List<Map<String, List<Entities1CMap>>> getlistMap,
+        required Logger logger});
+
 
 }
 

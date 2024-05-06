@@ -16,14 +16,12 @@ class   WidgetSuccessData implements IntafaceSuccessData {
 
   @override
   late Logger logger;
-
-  @override
-  late List<Map<String, List<Entities1CMap>>>? receiveddatafromC1;
-
   @override
   late AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot;
   @override
   late BuildContext context;
+  @override
+  late List<Map<String, List<Entities1CMap>>>? receiveddatafromC1;
 
   //TODO РАбоий Виджет
     @override
@@ -39,7 +37,7 @@ class   WidgetSuccessData implements IntafaceSuccessData {
 
 
     //TODO первая трансформацйия пришедших Данных
-    firstTransformationionofincomingData( snapshot: snapshot);
+      receiveddatafromC1= firstTransformationionofincomingData( snapshot: snapshot,logger: logger);
 
     logger.i('receiveddatafromC1 ..  '+receiveddatafromC1!.length.toString()+
         ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
@@ -236,20 +234,52 @@ class   WidgetSuccessData implements IntafaceSuccessData {
 
   //TODO  первоя Трансформация ДАнных
   @override
-    void firstTransformationionofincomingData({required  AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot}) {
+  List<Map<String, List<Entities1CMap>>> firstTransformationionofincomingData(
+      {required  AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,
+        required Logger logger}) {
+      //TODO
+    List<Map<String, List<Entities1CMap>>>   getfirstTransformationionofincomingData=[];
       try{
         //TODO первое получение Данных
-      receiveddatafromC1=  snapshot.data ?.cast<Map<String, List<Entities1CMap>>>().toList();
-      logger.i('get receiveddatafromC1 ..  '+receiveddatafromC1.toString()+
+        getfirstTransformationionofincomingData=  snapshot.data!.cast<Map<String, List<Entities1CMap>>>().toList();
+
+      logger.i('get getfirstTransformationionofincomingData ..  '+getfirstTransformationionofincomingData.toString()+
           ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
       //TODO error
     } catch (e, stacktrace) {
   print(' get ERROR $e get stacktrace $stacktrace ');
 }
-
+return getfirstTransformationionofincomingData;
 
 }
+
+
+
+
+  //TODO  Вторая Трансформация ДАнных
+
+  @override
+  Map<String, List<Entities1CMap>> secondConversionData(
+      {required List<Map<String, List<Entities1CMap>>> getlistMap,
+        required Logger logger}) {
+    // TODO: implement secondConversionData
+    //TODO
+    Map<String, List<Entities1CMap>>   getsecondConversionData={};
+    try{
+      //TODO первое получение Данных
+    //  getsecondConversionData
+      logger.i('get getsecondConversionData ..  '+getsecondConversionData.toString()+
+          ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+
+      //TODO error
+    } catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
+    }
+    return getsecondConversionData;
+  }
+
+
 
 
 
