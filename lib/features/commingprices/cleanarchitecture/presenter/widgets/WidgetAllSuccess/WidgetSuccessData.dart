@@ -321,18 +321,8 @@ return getfirstTransformationionofincomingData;
     try{
       //TODO первое получение Данных
       getsecondConversionData=  receiveddatafromC1.elementAt(index) as     Map<String, List<Entities1CMap>>  ;
-
-   List<Entities1CMap> childredRowCommintPrices=   getsecondConversionData.values.single;
-
-    String Key=   getsecondConversionData.keys.single;
-
-      String? getCfo=    childredRowCommintPrices.elementAt(0).CFO;
-
-
-
       logger.i('get getsecondConversionData ..  '+getsecondConversionData.toString()+
           ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
-
       //TODO error
     } catch (e, stacktrace) {
       print(' get ERROR $e get stacktrace $stacktrace ');
