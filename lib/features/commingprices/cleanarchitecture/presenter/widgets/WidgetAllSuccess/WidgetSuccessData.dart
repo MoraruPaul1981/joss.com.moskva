@@ -54,11 +54,11 @@ class   WidgetSuccessData implements IntafaceSuccessData {
         title: Padding(padding: EdgeInsets.all(1.0),
         child: AnimatedTextKit(
           animatedTexts: [
-            ColorizeAnimatedText('Согласование', textStyle: TextStyle(color: Colors.black,
+            ColorizeAnimatedText('Согласования', textStyle: TextStyle(color: Colors.black,
               fontSize: 22,
-              fontWeight: FontWeight.w200,),textAlign:  TextAlign.center,
-                colors:[Colors.black,Colors.white,Colors.grey,Colors.black] ),],
-          pause: Duration(microseconds: 100),
+              fontWeight: FontWeight.w300,),textAlign:  TextAlign.center,
+                colors:[Colors.black,Colors.black,Colors.white,Colors.white] ),],
+          pause: Duration(microseconds: 10),
           isRepeatingAnimation: true,
           repeatForever: false,
         ),
