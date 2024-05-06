@@ -36,16 +36,28 @@ class   WidgetSuccessData implements IntafaceTransformationSuccessData {
         +Isolate.current.debugName.toString());
 
 
-    //TODO первая трансформацйия пришедших Данных
-      receiveddatafromC1= firstTransformationionofincomingData( snapshot: snapshot,logger: logger);
-    logger.i('receiveddatafromC1 ..  '+receiveddatafromC1!.length.toString()+
-        ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+      //TODO первая трансформацйия пришедших Данных
+        receiveddatafromC1= firstTransformationionofincomingData( snapshot: snapshot,logger: logger);
+      logger.i('receiveddatafromC1 ..  '+receiveddatafromC1!.length.toString()+
+          ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
 
-      //TODO вторая трасформайция пришедших данных
-      Map<String, List<Entities1CMap>>   getsecondConversionData=secondConversionData(receiveddatafromC1:receiveddatafromC1,logger: logger,index:5);
-    logger.i('getsecondConversionData ..  '+getsecondConversionData!.length.toString()+
-        ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+        //TODO вторая трасформайция пришедших данных
+        Map<String, List<Entities1CMap>>   getsecondConversionData=secondConversionData(receiveddatafromC1:receiveddatafromC1,logger: logger,index:5);
+      logger.i('getsecondConversionData ..  '+getsecondConversionData!.length.toString()+
+          ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+
+  //TODO третья  трасформайция пришедших данных
+      List<Entities1CMap> getthirdtransformationData= thirdtransformationData( thirdtransformationData:getsecondConversionData, logger:logger ,index:0);
+      logger.i('getthirdtransformationData ..  '+getthirdtransformationData!.length.toString()+
+          ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+
+      //TODO четвертая  трасформайция пришедших данных
+      String? getfourthtransformation= fourthtransformation(  getfourthtransformation:getthirdtransformationData,logger:logger);
+      logger.i('getfourthtransformation ..  '+getfourthtransformation!.length.toString()+
+          ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+
+
 
 
 
