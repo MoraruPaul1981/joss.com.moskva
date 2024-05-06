@@ -63,13 +63,11 @@ Entities1CMap(
   }
 
   @override
-  List<Map<String, List<Entities1CMap>>> loopGeneratorMapPolo({required Map<String, dynamic> json}) {
+Map<String, List<Entities1CMap>> loopGeneratorMapPolo({required Map<String, dynamic> json}) {
     // TODO: implement fromJsondynamic
-   late List<Map<String, List<Entities1CMap>>> returnMap=   [];
+   late  Map<String, List<Entities1CMap>> returnMap=   Map<String, List<Entities1CMap>>();
 
    late List<Entities1CMap> list1CMap=[];
-   
-    late Map<String, List<Entities1CMap>> map=    Map<String, List<Entities1CMap>>();
 
   //TODO
     Entities1CMap   person1cMap;
@@ -186,13 +184,11 @@ Entities1CMap(
 
         print('returnMap...$list1CMap');
 
-        map.putIfAbsent(getKey, () => list1CMap);
-
-        print('map...$map');
-
-        returnMap.add(map);
+        returnMap.putIfAbsent(getKey, () => list1CMap);
 
         print('returnMap...$returnMap');
+
+
 
           //TODO    //TODO  КОНЕЦ сама СТРОЧКИ
         //TODO error
